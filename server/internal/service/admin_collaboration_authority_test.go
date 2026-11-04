@@ -149,7 +149,10 @@ func adminCollaborationStateSnapshot(t *testing.T, f *adminCollaborationFixture)
 
 func (f *adminCollaborationFixture) closeAsCreator(t *testing.T) {
 	t.Helper()
-	p := lifecycleParams(t, f.collaborationQueueFixture, "complete", "done", 1, 1)
+	// These administration fixtures need a closed issue with its external
+	// handler retained. Creator cancellation supplies that legitimate setup;
+	// the dedicated R38 forced-completion cases keep their own complete action.
+	p := lifecycleParams(t, f.collaborationQueueFixture, "cancel", "cancelled", 1, 1)
 	if _, err := f.svc.ChangeLifecycle(f.ctx, p); err != nil {
 		t.Fatal(err)
 	}

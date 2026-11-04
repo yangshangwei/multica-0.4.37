@@ -1,0 +1,103 @@
+{
+  "recorded_at": "2026-11-02T13:24:20.000212+00:00",
+  "reviewer": "/root/rki6_result_review (native trellis-check)",
+  "scope": "actual selected resume-20261101 adapter-v6 and final4 run-make-check-v6.py; independent cross-session review",
+  "verdict": "changes-required",
+  "blocking_findings_open": 1,
+  "clearance_issued": false,
+  "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "adapter_sha256": {
+    "go": "b8c5d5adbece4f781a00a230b4f6ffbbfed195f4e44826d53997d72b3f160079",
+    "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "launcher_sha256": "7e2592d1b6e0a795ce9078f4c97d04255f635d392ff7e16a154309aa87695516",
+  "source_env_sha256": "99475d2e36917761e88bab9687073ddb182c131241d8d815b7eb18850572dfe2",
+  "test_sha256": {
+    "go_contracts": "ddeb1c96fbefa7aaa4f88b8b0478f313eda4abc4eb26eff369c2b5e284aed66a",
+    "launcher_contracts": "4fc48dc97ca194c7cb4df1eead377b2fd134054b7c4e43e9d1cb58c75390f5c6"
+  },
+  "actual_at_report": {
+    "go": "b8c5d5adbece4f781a00a230b4f6ffbbfed195f4e44826d53997d72b3f160079",
+    "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+    "go_contracts": "ddeb1c96fbefa7aaa4f88b8b0478f313eda4abc4eb26eff369c2b5e284aed66a",
+    "launcher_contracts": "4fc48dc97ca194c7cb4df1eead377b2fd134054b7c4e43e9d1cb58c75390f5c6",
+    "launcher": "7e2592d1b6e0a795ce9078f4c97d04255f635d392ff7e16a154309aa87695516",
+    "source": "99475d2e36917761e88bab9687073ddb182c131241d8d815b7eb18850572dfe2"
+  },
+  "reviewed_bytes_still_match_at_report": true,
+  "closed_prior_findings": [
+    "AV5-1",
+    "AV5-N1"
+  ],
+  "open_prior_findings": [
+    "AV5-2 end-to-end data-only environment contract"
+  ],
+  "findings": [
+    {
+      "id": "AV6-CROSS-1",
+      "severity": "medium",
+      "blocking": true,
+      "status": "not fixed; selected source outside reviewer ownership",
+      "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check-v6.py",
+      "issue": "Canonical shlex.quote copy is Bash-safe but not safe for the root Makefile include/export grammar. Parser permits brace-form ${shell ...}, which Make executes even inside quotes.",
+      "evidence": "make-loader-probe.json",
+      "required_fix": "Reject or correctly separate Make expressions before canonical data enters Make include; verify both $() and ${} through a real reviewer-owned include/export Makefile. Keep actual source/flags unchanged and rebind all modified SHA values."
+    }
+  ],
+  "nonblocking_notes": [
+    {
+      "id": "AV6-CROSS-N1",
+      "issue": "Selected source and launcher leave HOME/GOCACHE/GOMODCACHE/GOPATH to the caller. No private account/home isolation is established by the launch configuration hashes.",
+      "status": "No caller account/home writes observed by this review; inherited MULTICA_TASK_* configuration roots are removed and test-owned HOME remains usable.",
+      "recommendation": "The sole executor should record the caller context and use package-private HOME with explicit caches if account isolation is required, without global task-root overrides."
+    }
+  ],
+  "verification": {
+    "go_contracts": {
+      "command": [
+        "python3",
+        ".omx/private/collaboration-resume-20261101/adapter-v6/check-go-isolation-test.py"
+      ],
+      "tests": 14,
+      "pass": 14,
+      "fail": 0,
+      "exit_code": 0,
+      "log": "go-contracts.log",
+      "log_sha256": "f28ed94af29d6bf951be4c04e94fd75eda06a70528bfa5e34b0a8a11845a547e"
+    },
+    "launcher_contracts": {
+      "command": [
+        "python3",
+        ".omx/private/collaboration-resume-20261101/adapter-v6/check-launcher-test.py"
+      ],
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "exit_code": 0,
+      "log": "launcher-contracts.log",
+      "log_sha256": "39b401765bb78b4f9f12a6eaf9a9ef51a6cb1eaa255f2b01e2d0df23c6edd532"
+    },
+    "make_probe": {
+      "file": "make-loader-probe.json",
+      "sha256": "5ca23bae4e0e17d7c1781d876b4ccca89220a71c033aa5f040f946a81e1bdbfb",
+      "owned_marker_created": true,
+      "exit_code": 0,
+      "reproducer": "make-loader-probe.py",
+      "reproducer_sha256": "79fd82bc421b499520e6ce83ec65fb0aaa42c5d50a339df177c24a49e037098f"
+    },
+    "python_AST": "pass",
+    "lint": "not run: no product/TS edits; fullcheck sole executor owns this gate",
+    "typecheck": "not run: private Python review only; fullcheck sole executor owns this gate"
+  },
+  "production_changes": false,
+  "selected_scripts_modified": false,
+  "shared_ledger_modified": false,
+  "actual_launcher_executed": false,
+  "actual_source_env_executed": false,
+  "whole_make_check_executed": false,
+  "database_operations": 0,
+  "network_operations": 0,
+  "real_provider_calls": 0,
+  "report": "review.md",
+  "report_sha256": "ea886ba4183cfc3a4658801bec7d0150a1810b812f382d6a16cff3dd4f198565"
+}

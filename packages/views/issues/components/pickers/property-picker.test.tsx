@@ -91,6 +91,9 @@ describe("PropertyPicker optional external navigation reset", () => {
     const user = userEvent.setup(); const onPick = vi.fn();
     render(<Harness reset={false} onPick={onPick} />);
     const input = await screen.findByPlaceholderText("Search");
+    expect(input).not.toHaveAttribute("aria-controls");
+    expect(input).not.toHaveAttribute("aria-activedescendant");
+    expect(screen.queryByRole("option")).toBeNull();
     await user.click(screen.getByText("Swap")); await user.click(input); await user.keyboard("{Enter}");
     expect(onPick).toHaveBeenCalledExactlyOnceWith("Grace");
   });

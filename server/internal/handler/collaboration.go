@@ -70,6 +70,8 @@ type CollaborationIssueResponse struct {
 	} `json:"session"`
 	Execution                 service.CollaborationExecutionView       `json:"execution"`
 	CurrentInformationRequest *CollaborationInformationRequestResponse `json:"current_information_request"`
+	AIPolicy                  string                                   `json:"ai_policy"`
+	Delivery                  *service.CollaborationDeliverySummary    `json:"delivery,omitempty"`
 	Capabilities              collaboration.Capabilities               `json:"capabilities"`
 	OrdinaryChildren          CollaborationOrdinaryChildren            `json:"ordinary_children"`
 }
@@ -184,6 +186,13 @@ func (h *Handler) collaborationIssueResponseInSnapshot(ctx context.Context, acce
 	// and a complete supported projection, independently of runtime availability.
 	out.Capabilities.ControlAI, out.Capabilities.SubmitCommand = false, false
 	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	out.AIPolicy = access.AIPolicy
+	out.Delivery, err = svc.DeliveryView(ctx, access)
+	if err != nil {
+		return out, err
+	}
+	out.Capabilities = service.CollaborationDeliveryCapabilities(access, out.Delivery)
+	out.Capabilities.ControlAI, out.Capabilities.SubmitCommand = false, false
 	out.CollaborationIssueFields, err = svc.IssueFields(ctx, access)
 	if err != nil {
 		return out, err

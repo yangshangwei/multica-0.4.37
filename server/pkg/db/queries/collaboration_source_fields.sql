@@ -8,6 +8,7 @@ WHERE workspace_id = sqlc.arg(workspace_id)::uuid
   AND (sqlc.arg(search)::text = ''
     OR strpos(lower(title), lower(sqlc.arg(search)::text)) > 0
     OR number::text = sqlc.arg(search)::text
+    OR lower(sqlc.arg(identifier_prefix)::text || '-' || number::text) = lower(sqlc.arg(search)::text)
     OR id::text = lower(sqlc.arg(search)::text))
 ORDER BY number DESC, id
 LIMIT 201;

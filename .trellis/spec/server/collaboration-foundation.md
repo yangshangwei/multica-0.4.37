@@ -16,6 +16,12 @@ Migrations 620–642 now add typed targets, per-target input identity, execution
 
 ## 2. Signatures
 
+Formal result/basis, exact acceptance/revision, atomic self-completion and
+initiator-owned manual policy follow
+[collaboration delivery](./collaboration-delivery.md). This supersedes the old
+optional-note acceptance and unrestricted ordinary creator completion contract;
+the scoped R38 disabled-creator administrative exception remains independent.
+
 - `auth.WithAuthenticatedPrincipal(ctx, AuthenticatedPrincipal)` is called by
   successful authentication branches. A private context key records the verified
   JWT/PAT/task/cloud credential; request actor headers cannot supply it.
@@ -49,7 +55,7 @@ Migrations 620–642 now add typed targets, per-target input identity, execution
   collaboration source before projecting body, attachments or comment threads.
 - `StatusOptions(ctx, issueID, action)` projects lifecycle/manual status choices
   and the prescribed target for `request_information`, `return_information`, or
-  `submit_acceptance`. Directed writes carry `expected_status` and
+  `submit_acceptance`, or `return_acceptance`. Directed writes carry `expected_status` and
   `status_options_version`; returns also identify the saved information request.
 - `NewCollaborationAccountReconciler(q, tx)` supplies `Reconcile(ctx, limit)` and
   `Run(ctx)`. Handler construction owns its dependencies; main starts it with the
@@ -292,8 +298,10 @@ rename, category/archival change or different restore target returns
 retains the refusal even if the catalog is later restored. An ordinary transfer
 rejects status confirmation fields. A return restores the parent request when it
 was nested. `acceptance-submissions` hands a noncreator handler's result to the
-creator with an in_review-category key and supersedes the chain; it never
-completes. System status keys cannot be archived, so restore fallback to
+creator with an in_review-category key and supersedes the chain; it requires
+immutable nonblank result/basis and never completes by itself. Exact initiator
+acceptance/revision and pending-result bypass protection follow the delivery
+contract. System status keys cannot be archived, so restore fallback to
 canonical `in_progress` applies only to archived custom keys. None of these
 actions touches queue, run, command or grant state. Detail exposes
 `current_information_request` and `request_information`/`return_information`/

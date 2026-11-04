@@ -90,7 +90,7 @@ func TestCollaborationWorkflowRoutesPreserveResponsibilityAndMinimalRecovery(t *
 	leaveKey := uuid.NewString()
 	refusal := call(cToken, http.MethodPost, base+"/leave", leaveKey, input("5", "")).Want(http.StatusConflict).Map()
 	// The committed refusal carries its status so clients settle it as final.
-	if refusal["code"] != "handler_must_transfer" || refusal["status"] != float64(http.StatusConflict) {
+	if refusal["code"] != "handler_must_transfer" || refusal["collaboration_revision"] != "5" || refusal["status"] != float64(http.StatusConflict) {
 		t.Fatalf("handler leave refusal: %v", refusal)
 	}
 	verify(call(testToken, http.MethodPost, base+"/participants/"+c+"/remove", uuid.NewString(), input("5", "")), "participant_removed", "6")
@@ -100,7 +100,14 @@ func TestCollaborationWorkflowRoutesPreserveResponsibilityAndMinimalRecovery(t *
 		t.Fatal("removal did not atomically return responsibility to creator")
 	}
 	call(cToken, http.MethodGet, base, "", nil).Want(http.StatusNotFound)
-	verify(call(cToken, http.MethodGet, base+"/operations/"+leaveKey, "", nil), "handler_must_transfer", "5")
+	// Own recovery stays HTTP 200 after removal and retains the original
+	// refusal status so it cannot be mistaken for a successful operation.
+	recovered := call(cToken, http.MethodGet, base+"/operations/"+leaveKey, "", nil).Want(http.StatusOK)
+	body := recovered.Map()
+	if len(body) != 3 || body["code"] != refusal["code"] || body["collaboration_revision"] != refusal["collaboration_revision"] ||
+		body["status"] != refusal["status"] || recovered.Header().Get("Cache-Control") != "no-store" {
+		t.Fatalf("nonminimal or changed original refusal recovery: %v", body)
+	}
 	key = uuid.NewString()
 	verify(call(bToken, http.MethodPost, base+"/leave", key, input("6", "")), "participant_left", "7")
 	call(bToken, http.MethodGet, base, "", nil).Want(http.StatusNotFound)

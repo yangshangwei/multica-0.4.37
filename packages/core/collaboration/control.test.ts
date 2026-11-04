@@ -48,6 +48,13 @@ it("captures one authorized snapshot and excludes hold/gate expectations from St
   expect(() => parseCollaborationActionDraft(draft)).toThrow();
 });
 
+it("rejects new Resume for an explicit manual task while retaining Stop and original recovery", () => {
+  const { scope, issue } = setup();
+  const manual = { ...issue, ai_policy: "manual" as const };
+  expect(() => prepareCollaborationControl(scope, manual, requestId, "resume", { scope: "issue" })).toThrow();
+  expect(parseCollaborationControlDraft(prepareCollaborationControl(scope, manual, requestId, "stop", { scope: "issue" })).action).toBe("stop");
+});
+
 it("captures v6 comprehension without upgrading a retained v5 control request", async () => {
   const { client, scope, issue, draft } = setup();
   const current = parseCollaborationIssue({ ...issue, execution: collaborationHostExecutionFixture })!;

@@ -26,6 +26,7 @@ export function prepareCollaborationSwitch(
   scope: CollaborationScope, issue: CollaborationIssue, requestId: string, selection: CollaborationSwitchSelection, proposal?: CollaborationSwitchProposal,
 ): CollaborationDraft {
   if (!issue.execution || !issue.write_context || issue.capabilities.control_ai !== true || !isCollaborationScopeCurrent(scope)) throw new CollaborationUnavailableError();
+  if (issue.ai_policy === "manual" && selection.action !== "revoke_target_switch_consent") throw new CollaborationUnavailableError();
   const target = issue.execution.targets.find((candidate) => candidate.id === selection.targetId.toLowerCase());
   if (!target) throw new CollaborationUnavailableError();
   if ((selection.action === "propose_target_switch" || selection.action === "commit_target_switch") && !canOrganizeCollaborationResources(scope, issue)) throw new CollaborationUnavailableError();

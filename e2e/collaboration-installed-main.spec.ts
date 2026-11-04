@@ -5,6 +5,7 @@ import type { CollaborationCommentInput, CollaborationCommentReceipt, Collaborat
 import { TestApiClient } from "./fixtures";
 import { authenticateControlWeb, controlAccountPath, seedCollaborationControlJourney } from "./fixtures/collaboration-control-journey";
 import { dockerTaskURL, InstalledMainClient, type InstalledMainMetadata, type InstalledMainWrite } from "./fixtures/collaboration-installed-main";
+import { selectCollaborationRecipient } from "./fixtures/collaboration-offline-handoff";
 
 // The local runner handles secrets outside Playwright tracing. This actual
 // installed Main evidence supplements the canonical service/renderer journeys;
@@ -53,8 +54,7 @@ async function webOperation(page: Page, issueId: string, action: "invite" | "tra
   const label = action === "invite" ? "Add participant" : "Transfer";
   await page.getByRole("button", { name: label, exact: true }).click();
   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: label, exact: true }) });
-  await form.getByLabel("Exact recipient", { exact: true }).fill(userId);
-  await form.getByRole("button", { name: "Find account", exact: true }).click();
+  await selectCollaborationRecipient(page, form, { id: userId, name });
   await expect(form.getByText(`Selected account: ${name}`, { exact: true })).toBeVisible();
   if (action === "transfer") await form.getByLabel("Note", { exact: true }).fill(note);
   const endpoint = `/api/collaboration/issues/${issueId}/${action === "invite" ? "participants" : "handoffs"}`;
@@ -111,8 +111,7 @@ async function webInformationForm(page: Page, issueId: string, action: DirectedA
   expect(options.options).toHaveLength(1);
   if (action === "request_information") {
     if (!recipient) throw new Error("Request information needs the exact participant recipient");
-    await form.getByLabel("Exact recipient", { exact: true }).fill(recipient.id);
-    await form.getByRole("button", { name: "Find account", exact: true }).click();
+    await selectCollaborationRecipient(page, form, recipient);
     await expect(form.getByText(`Selected account: ${recipient.name}`, { exact: true })).toBeVisible();
   }
   const select = form.getByLabel("Status", { exact: true });

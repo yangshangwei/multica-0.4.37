@@ -23,7 +23,8 @@ test("Web reads synthetic frozen preparation without inferring termination acros
       await focus.evaluate((element) => {
         const root = element.closest<HTMLElement>('[data-tab-scroll-root="account-detail"]');
         if (!root) throw new Error("Preparation screenshot requires its actual account detail scroll root");
-        root.scrollTop += element.getBoundingClientRect().top - root.getBoundingClientRect().top - 12;
+        // Center within all scrolling ancestors so fractional layout cannot clip the top edge.
+        element.scrollIntoView({ block: "center", inline: "nearest", behavior: "instant" });
       });
       await current.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
       await expect(focus).toBeInViewport({ ratio: 1 });

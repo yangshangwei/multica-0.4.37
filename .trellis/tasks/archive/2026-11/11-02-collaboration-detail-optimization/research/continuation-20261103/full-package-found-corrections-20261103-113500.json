@@ -1,0 +1,44 @@
+{
+  "started_at": "2026-11-03T03:35:00.800223+00:00",
+  "database": "multica_detail_20261103_080906_service",
+  "package": "./internal/service",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-p",
+    "2",
+    "-parallel",
+    "2",
+    "-timeout=40m",
+    "-count=1",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^Test(BuiltinSkillsConformToTemplate|CollaborationAcceptanceSubmissionReturnsOpenIssueToCreator)$"
+  ],
+  "output": "/tmp/multica-detail-verification-20261103/full-package-found-corrections-20261103-113500.jsonl",
+  "exit_code": 0,
+  "inventory": {
+    "pass": [
+      "TestBuiltinSkillsConformToTemplate/multica-autopilots",
+      "TestBuiltinSkillsConformToTemplate/multica-creating-agents",
+      "TestBuiltinSkillsConformToTemplate/multica-mentioning",
+      "TestBuiltinSkillsConformToTemplate/multica-onboarding",
+      "TestBuiltinSkillsConformToTemplate/multica-projects-and-resources",
+      "TestBuiltinSkillsConformToTemplate/multica-runtimes-and-repos",
+      "TestBuiltinSkillsConformToTemplate/multica-skill-importing",
+      "TestBuiltinSkillsConformToTemplate/multica-squads",
+      "TestBuiltinSkillsConformToTemplate/multica-working-on-issues",
+      "TestBuiltinSkillsConformToTemplate",
+      "TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

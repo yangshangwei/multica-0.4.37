@@ -184,7 +184,7 @@ func TestCollaborationCommandHistoryAutomaticM11Detach(t *testing.T) {
 					t.Fatal(err)
 				}
 				f.fx.Cleanup(t, `DELETE FROM issue_status WHERE workspace_id=$1`, f.workspace)
-				_, err = f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f.collaborationQueueFixture, "complete", "done", 1, 1))
+				_, err = f.svc.ChangeLifecycle(f.ctx, deliveredCompletionParams(t, f.collaborationQueueFixture, "done"))
 			}
 			if err != nil {
 				t.Fatal(err)

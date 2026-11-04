@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { expect, type Locator, type Page, type Route } from "@playwright/test";
+import { expect, type Locator, type Page, type Request, type Route } from "@playwright/test";
 import type {
   CollaborationActivity, CollaborationCommentInput, CollaborationCommentReceipt, CollaborationComments,
   CollaborationIssue, CollaborationMentionTargets, CollaborationNotification, CollaborationParticipants,
@@ -8,6 +8,7 @@ import type {
 } from "@multica/core/collaboration";
 import { TestApiClient } from "../fixtures";
 import { seedCollaborationResourceOfferJourney } from "./collaboration-resource-offers";
+import { revealCollaborationEditingAction } from "./collaboration-editing";
 
 interface ResourceReceipt {
   issue_id: string; status: number; code: string; request_id: string;
@@ -217,16 +218,26 @@ async function selectMentions(page: Page, fixture: CollaborationMentionJourney, 
   for (const target of targets) expect(content).toContain(`mention://${target.kind}/${target.resourceId}`);
   return content;
 }
-async function previewComment(page: Page, fixture: CollaborationMentionJourney) {
-  const responsePending = page.waitForResponse((response) => new URL(response.url()).pathname === `${issuePath(fixture)}/comments/trigger-preview`
-    && response.request().method() === "POST");
-  await composerFor(page).getByRole("button", { name: "Preview delivery", exact: true }).click();
-  const response = await responsePending;
-  expect(response.status()).toBe(200);
-  const preview: CollaborationTriggerPreview = await response.json();
-  expect(preview.issue_id).toBe(fixture.issueId);
-  await expect(composerFor(page).getByRole("button", { name: "Send comment", exact: true })).toBeEnabled();
-  return preview;
+async function previewComment(page: Page, fixture: CollaborationMentionJourney,
+  buttonName: "Preview delivery" | "Send comment" = "Preview delivery") {
+  const commentPath = `${issuePath(fixture)}/comments`;
+  let commentPosts = 0;
+  const observeWrite = (request: Request) => {
+    if (new URL(request.url()).pathname === commentPath && request.method() === "POST") commentPosts += 1;
+  };
+  page.on("request", observeWrite);
+  try {
+    const responsePending = page.waitForResponse((response) => new URL(response.url()).pathname === `${commentPath}/trigger-preview`
+      && response.request().method() === "POST");
+    await composerFor(page).getByRole("button", { name: buttonName, exact: true }).click();
+    const response = await responsePending;
+    expect(response.status()).toBe(200);
+    const preview: CollaborationTriggerPreview = await response.json();
+    expect(preview.issue_id).toBe(fixture.issueId);
+    await expect(composerFor(page).getByRole("button", { name: "Send comment", exact: true })).toBeEnabled();
+    expect(commentPosts).toBe(0);
+    return preview;
+  } finally { page.off("request", observeWrite); }
 }
 function assertPreview(preview: CollaborationTriggerPreview, fixture: CollaborationMentionJourney, targets: MentionTarget[], suppressed: string[] = []) {
   expect(preview.targets).toHaveLength(targets.length);
@@ -373,13 +384,31 @@ export async function exercisePartialMentionRefusal(page: Page, humanPage: Page,
   assertPreview(await previewComment(page, fixture), fixture, targets);
   const selectedA = composerFor(page).getByRole("checkbox", { name: new RegExp(fixture.agentA.name) });
   await expect(selectedA).toBeChecked();
-  // Changing suppression retires this preview; inspect the next preview's state.
+  // Suppression retires the preview. Send obtains fresh impact confirmation without publishing.
   await selectedA.click();
-  await expect(composerFor(page).getByRole("button", { name: "Send comment", exact: true })).toBeDisabled();
+  await expect(selectedA).toHaveCount(0);
+  await expect(composerFor(page).getByRole("button", { name: "Send comment", exact: true })).toBeEnabled();
   await expect(composerFor(page).getByLabel("Add comment", { exact: true })).toHaveValue(content);
-  assertPreview(await previewComment(page, fixture), fixture, targets, [fixture.agentA.targetId]);
-  await expect(selectedA).not.toBeChecked();
-  await expect(composerFor(page).getByText("AI trigger suppressed", { exact: true })).toBeVisible();
+  const commentPosts: Request[] = [];
+  const observe = (request: Request) => {
+    if (new URL(request.url()).pathname === `${issuePath(fixture)}/comments` && request.method() === "POST") commentPosts.push(request);
+  };
+  page.on("request", observe);
+  try {
+    assertPreview(await previewComment(page, fixture, "Send comment"), fixture, targets, [fixture.agentA.targetId]);
+    await expect(composerFor(page).getByText("Review the AI targets and their impact, then confirm by sending the comment.", { exact: true })).toBeVisible();
+    await expect(selectedA).not.toBeChecked();
+    await expect(composerFor(page).getByLabel("Add comment", { exact: true })).toHaveValue(content);
+    expect(commentPosts).toHaveLength(0);
+    expect(await readJourneyState(fixture)).toEqual(before);
+    // Manual Preview rechecks suppression without publishing the retained draft.
+    assertPreview(await previewComment(page, fixture), fixture, targets, [fixture.agentA.targetId]);
+    await expect(selectedA).not.toBeChecked();
+    await expect(composerFor(page).getByText("AI trigger suppressed", { exact: true })).toBeVisible();
+    await expect(composerFor(page).getByLabel("Add comment", { exact: true })).toHaveValue(content);
+    expect(commentPosts).toHaveLength(0);
+    expect(await readJourneyState(fixture)).toEqual(before);
+  } finally { page.off("request", observe); }
   await selectedA.click();
   const preview = await previewComment(page, fixture);
   assertPreview(preview, fixture, targets);
@@ -489,7 +518,7 @@ async function editComment(page: Page, fixture: CollaborationMentionJourney, com
   return receipt;
 }
 async function editBody(page: Page, fixture: CollaborationMentionJourney, description: string) {
-  await page.getByRole("button", { name: "Edit issue", exact: true }).click();
+  await (await revealCollaborationEditingAction(page, "Edit issue")).click();
   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Edit issue", exact: true }) });
   await form.getByLabel("Description", { exact: true }).fill(description);
   const responsePending = page.waitForResponse((response) => new URL(response.url()).pathname === issuePath(fixture) && response.request().method() === "PATCH");

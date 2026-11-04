@@ -307,7 +307,8 @@ func TestCollaborationWholeLifecycleKeepsAllTargetBarriersOnReopen(t *testing.T)
 	member := seedQueueMember(t, f, root, memberGrant, 1)
 	w1 := f.submit(t, f.creator, "direct waiting")
 	w2 := submitTarget(t, f, squad.ID, f.handler, "squad waiting", pgtype.UUID{})
-	if _, err := f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "complete", "done", 1, 1)); err != nil {
+	closed, err := f.svc.ChangeLifecycle(f.ctx, deliveredCompletionParams(t, f, "done"))
+	if err != nil {
 		t.Fatal(err)
 	}
 	if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=ANY($1::uuid[]) AND state='cancelled'`, []pgtype.UUID{w1.CommandID, w2.CommandID}) != 2 ||
@@ -315,7 +316,7 @@ func TestCollaborationWholeLifecycleKeepsAllTargetBarriersOnReopen(t *testing.T)
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_run WHERE id=$1 AND settled_at IS NULL AND proof_state='unknown'`, member.ID) != 1 {
 		t.Fatal("whole completion missed target work or a member barrier")
 	}
-	if _, err := f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "reopen", "todo", 2, 2)); err != nil {
+	if _, err := f.svc.ChangeLifecycle(f.ctx, lifecycleParams(t, f, "reopen", "todo", closed.CollaborationRevision, 2)); err != nil {
 		t.Fatal(err)
 	}
 	control := f.issueControl(t)

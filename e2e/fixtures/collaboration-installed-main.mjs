@@ -8,6 +8,7 @@ import process from "node:process";
 import { createInterface } from "node:readline";
 import { _electron as electron, expect } from "@playwright/test";
 import { nativeAcceptanceHome, nativeInstalledLayout } from "./collaboration-installed-layout.mjs";
+import { selectCollaborationRecipient } from "./collaboration-recipient-picker.mjs";
 
 // This process controls the packaged executable. It never imports an alternate
 // Main, replaces IPC handlers, injects auth, or changes the OS home directory.
@@ -442,9 +443,7 @@ async function dispatch(message) {
       const baseline = await refreshIssue(message.issueId);
       await page.getByRole("button", { name: "Transfer", exact: true }).click();
       const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Transfer", exact: true }) });
-      await form.getByLabel("Exact recipient", { exact: true }).fill(message.recipientId);
-      await form.getByRole("button", { name: "Find account", exact: true }).click();
-      await expect(form.getByText(`Selected account: ${message.recipientName}`, { exact: true })).toBeVisible();
+      await selectCollaborationRecipient(page, form, { id: message.recipientId, name: message.recipientName });
       await form.getByLabel("Note", { exact: true }).fill(message.note);
       const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/collaboration/issues/${message.issueId}/handoffs`
         && response.request().method() === "POST");
@@ -470,9 +469,7 @@ async function dispatch(message) {
       assert.equal(options.action, message.action);
       assert.equal(options.options.length, 1);
       if (message.action === "request_information") {
-        await form.getByLabel("Exact recipient", { exact: true }).fill(message.recipientId);
-        await form.getByRole("button", { name: "Find account", exact: true }).click();
-        await expect(form.getByText(`Selected account: ${message.recipientName}`, { exact: true })).toBeVisible();
+        await selectCollaborationRecipient(page, form, { id: message.recipientId, name: message.recipientName });
       }
       const select = form.getByLabel("Status", { exact: true });
       await expect(select.locator("option")).toHaveCount(1);

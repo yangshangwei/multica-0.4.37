@@ -1,4 +1,9 @@
 export { CollaborationIssueSchema, CollaborationWorkbenchSchema, CollaborationOperationSchema, CollaborationStatusOptionsSchema, parseCollaborationIssue, parseCollaborationWorkbench, parseCollaborationOperation, parseCollaborationStatusOptions } from "./schema";
+export * from "./delivery-schema";
+export { collaborationDeliveryHistoryOptions } from "./delivery-queries";
+export { deriveCollaborationDetailState, collaborationHasAIActivity } from "./presentation";
+export type { CollaborationDetailAction, CollaborationDetailStage } from "./presentation";
+export type { CollaborationResultInput, CollaborationAcceptanceReturnInput, CollaborationAIPolicyInput } from "./schema";
 export type { CollaborationIssue, CollaborationWorkbench, CollaborationOperation, CollaborationWriteInput, CollaborationParticipantInput, CollaborationHandoffInput, CollaborationHandoffPurpose, CollaborationDirectedStatusInput, CollaborationInformationReturnInput, CollaborationAcceptanceInput, CollaborationEditInput, CollaborationStatusAction, CollaborationLifecycleAction, CollaborationStatusOptions, CollaborationStatusInput, CollaborationLifecycleInput } from "./schema";
 export { CollaborationRecipientSchema, parseCollaborationRecipient } from "./schema";
 export type { CollaborationRecipient, CollaborationRecipientInput } from "./schema";

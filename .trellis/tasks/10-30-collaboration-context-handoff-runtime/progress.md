@@ -1,8 +1,20 @@
 # 可靠上下文交接与召回：当前进度
 
+当前结论：任务保持 **in_progress**。最新v10实际make exit2/check-script130；静态15/15、TS13,082、Go82包/20,852pass/0fail/22skip通过。浏览器39pass、36fail、1interrupted、22显式skip、341未运行，零重试；已中断，完整候选不通过。见 [最终中断观察](research/continuation-20261102/coordinator/v10/final-interrupted-observation.json)。
+
+当前选定 v10 候选为干净 `118fc53e`。本任务已重算7,960个产品文件及17个runtime框架文件，分别匹配产品指纹 `9f72fc21…d80ee` 和框架hash `5eaea44f…ed94c9`；RKI6独立复核1,794项通过、normal/race各62pass按相同字节范围复用。实际CLI/Go/pnpm/launcher/env字节也已核对，见 [v10绑定准备](research/continuation-20261102/coordinator/v10/binding-preparation.json)。最终付费登记仍未开放。
+
+原唯一执行会话连续Azure resource错误，知识协调会话 `01a19c0e-5cc4-77e0-b2d3-bd2842d39899` 已恢复同一轮v10，独立入口复核pass-with-notes/0阻塞、32项离线预检和同源桌面构件安装核对已通过。v10已于2026-11-02 19:56:51UTC启动，PID92594，静态15/15、TS13,082及Go82包/20,852pass/0fail/22skip已通过，浏览器阶段因已证auth模块身份混用而中断，完整候选未通过；见 [启动观察](research/continuation-20261102/coordinator/v10/run-start-observation.json)。先前未启动快照保留。恢复状态见 `../11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-execution-recovery.json`；本会话只复核共享证据，不启动重复DB/API/Redis/Provider。
+
+v10浏览器的共同错误已只读定位：CoreProvider注册auth模块99423，页面边界读取另一模块10100；后者在SSR抛出未初始化异常。构建trace含final4/final3两套workspace来源，API/login/config/me实际200；具体Playwright等待点因未开trace而未知。见 [只读诊断](research/continuation-20261102/coordinator/v10/category-timeouts/20261103-readonly-diagnosis.json)。唯一执行者已停止无效运行并保留实际结果，下一候选使用自有workspace依赖路径和新构建验证；当前没有进行live复现、源码修改或真实Provider。
+
+后续为同候选密码模式C3四项与runtime三项、最终绑定、原冻结系列余14次及runtime25的独立串行窗口。已有runtime25预算消耗0，原系列下一E3 after trial2；外部push/CI/部署/发布未授权。覆盖与sqlc版本复用依据见 [覆盖清单](research/continuation-20261102/coordinator/coverage-note.md)，顺序见 [推进计划](continuation-plan-2026-11-02.md)。
+
+2026-11-02 本轮初始记录（历史）：用户要求列计划并继续，现按 [推进计划](continuation-plan-2026-11-02.md) 恢复原任务。RKI6 当前 normal/race 结果已由原生 check 子代理独立复核，pass-with-notes、0 阻塞；1,794 项只读交叉核查全部通过，历史 38 份证据原字节保留。v5 脚本独立复核为 changes-required：API 10/1 参数污染 Go 默认值测试、Shell 执行 dotenv 两项阻塞；新 v6 在独立目录修复，已通过首轮 17 项无 DB 契约，最终独立复核待完成。新整轮候选位于 `mc-collaboration-final5-20261102`，冻结 `7af9ab990`，7,960 文件产品指纹仍为 `9f72fc21…d80ee`，CLI/renderer 同源核对通过；新配置副本、临时目录和账户 HOME 单独登记。最新完整验收仍是旧候选 exit 2；本轮尚未启动完整重跑或真实 Provider，runtime25 消耗0、最终付费绑定保持未开放。
+
 状态：**9项审计及5项召回复核跟进已全部修复、独立复核并合入 `9e7f18785`；真实模型验收未开始**。任务保持 `in_progress`。
 
-2026-11-02 当前入口：知识、RK1框架、交付准备及后续修复均已合流；产品候选639bf6ef8完整check实际exit2（TS13082/Go20852命名pass，browser296pass47fail89skip7未运行），不能标最终通过。memory LIFO及Transfer测试修复已独立复核合入。静止自有API/Web/renderer后，当前在两个已迁移新库上串行执行最终639 RK1 fake normal/race，现各62pass、0fail/skip、exit0；产品指纹9f72fc21…d80ee重算一致、工作树产品干净。RKI-1–5已复核，RKI-6执行证据已齐、独立结果复核待429恢复，付费runnable=false、最终source_id空、runtime25消耗0。原实验下一E3aftertrial2/余14，K1–K3/E0b/安装账号/AC43另需预算。原生焦点原断言已重验1pass；v5及RKI6结果独立复核仍受429阻断，最新完整候选未验收通过。详见父机器台账。
+2026-11-02 早期入口（保留历史）：知识、RK1框架、交付准备及后续修复均已合流；产品候选639bf6ef8完整check实际exit2（TS13082/Go20852命名pass，browser296pass47fail89skip7未运行），不能标最终通过。memory LIFO及Transfer测试修复已独立复核合入。静止自有API/Web/renderer后，当前在两个已迁移新库上串行执行最终639 RK1 fake normal/race，现各62pass、0fail/skip、exit0；产品指纹9f72fc21…d80ee重算一致、工作树产品干净。RKI-1–5已复核，RKI-6执行证据已齐、独立结果复核待429恢复，付费runnable=false、最终source_id空、runtime25消耗0。原实验下一E3aftertrial2/余14，K1–K3/E0b/安装账号/AC43另需预算。原生焦点原断言已重验1pass；v5及RKI6结果独立复核仍受429阻断，最新完整候选未验收通过。详见父机器台账。
 
 以下保留初轮交付及2026-11-01交接历史；其中“仍在修复/未提交/19次”均是当时快照，不作为当前启动依据。
 

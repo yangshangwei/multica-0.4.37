@@ -67,6 +67,7 @@ func handoffAcceptance(t *testing.T, f *collaborationQueueFixture, revision int6
 	t.Helper()
 	options := handoffTestOptions(t, f, "submit_acceptance", pgtype.UUID{})
 	return CollaborationAcceptanceParams{CollaborationWorkflowRequest: workflowRequest(f, revision), Note: note,
+		Basis:          "The stage result and its supporting checks were reviewed.",
 		ExpectedStatus: options.DefaultStatus, StatusOptionsVersion: options.StatusOptionsVersion}
 }
 
@@ -289,8 +290,9 @@ func TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator(t *testing.T
 	if !former.Capabilities.ControlAI || !former.Capabilities.Comment || former.Capabilities.Transfer || former.Capabilities.SubmitAcceptance {
 		t.Fatalf("former handler rights: %+v", former.Capabilities)
 	}
-	// The creator now handles the issue but cannot submit to themselves.
-	if _, err = f.svc.SubmitAcceptance(f.ctx, CollaborationAcceptanceParams{CollaborationWorkflowRequest: workflowRequest(f, 4)}); !collaborationErrorCode(err, "already_creator") {
+	// The creator handles a pending exact result; another submission cannot
+	// replace it without the explicit revision decision.
+	if _, err = f.svc.SubmitAcceptance(f.ctx, CollaborationAcceptanceParams{CollaborationWorkflowRequest: workflowRequest(f, 4)}); !collaborationErrorCode(err, "acceptance_pending") {
 		t.Fatalf("creator self submission: %v", err)
 	}
 }

@@ -174,7 +174,7 @@ func (s *CollaborationService) lockCollaborationRuntimeSource(ctx context.Contex
 	if t.session.ID != sessionHint.ID {
 		return nil, invalidCollaborationLedger("runtime session changed")
 	}
-	t.access = CollaborationIssueAccess{Issue: issue, SessionID: t.session.ID, LifecycleEpoch: state.LifecycleEpoch, Revision: state.Revision, QueueState: t.session.QueueState, ControlVersion: t.session.ControlVersion, EventSequence: t.session.EventSeq, InformationRequestID: state.ActiveInformationRequestID}
+	t.access = CollaborationIssueAccess{Issue: issue, SessionID: t.session.ID, LifecycleEpoch: state.LifecycleEpoch, Revision: state.Revision, QueueState: t.session.QueueState, ControlVersion: t.session.ControlVersion, EventSequence: t.session.EventSeq, InformationRequestID: state.ActiveInformationRequestID, AIPolicy: state.AiPolicy}
 	if current {
 		currentIDs, err := q.GetCollaborationWorkflowUserIDs(ctx, idsParam)
 		if err != nil {
@@ -341,6 +341,9 @@ func (r *collaborationRuntimeState) currentAdmission(ctx context.Context) error 
 }
 
 func (r *collaborationRuntimeState) currentGroupAdmission(ctx context.Context) error {
+	if code := collaborationAIPolicyRefusal(r.access.AIPolicy); code != "" {
+		return collaborationError(http.StatusConflict, code)
+	}
 	if !r.gate.Enabled {
 		return collaborationError(http.StatusConflict, "collaboration_execution_unavailable")
 	}
@@ -694,6 +697,9 @@ func (s *CollaborationService) promoteCollaborationRuntimeBatch(ctx context.Cont
 	}
 	deny := func(code string) (collaborationRuntimePromotion, error) {
 		return collaborationRuntimePromotion{RefusalCode: code}, nil
+	}
+	if code := collaborationAIPolicyRefusal(t.access.AIPolicy); code != "" {
+		return deny(code)
 	}
 	if !t.gate.Enabled {
 		return deny("collaboration_execution_unavailable")

@@ -55,9 +55,9 @@ export function CollaborationResourceOffers({ scope, issue, resources, locked, s
   const query = useQuery(collaborationResourceOffersOptions(client, scope, issue.id, cursors.at(-1) ?? null));
   const page = query.isSuccess ? query.data : null;
   const organizer = issue.capabilities.invite === true && [issue.creator.user_id, issue.handler.user_id].includes(scope.userId);
-  const canOrganize = canOrganizeCollaborationResources(scope, issue) && resources.can_organize === true;
+  const canOrganize = issue.ai_policy !== "manual" && canOrganizeCollaborationResources(scope, issue) && resources.can_organize === true;
   const canSupply = canOfferCollaborationResources(scope, issue);
-  const canOffer = canSupply && page?.can_offer === true;
+  const canOffer = issue.ai_policy !== "manual" && canSupply && page?.can_offer === true;
   const coherent = resources.issue_id === issue.id.toLowerCase() && resources.lifecycle_epoch === issue.lifecycle_epoch && resources.target_set_version === issue.execution?.target_set_version;
   // Drop only local selection when its action is no longer permitted. The
   // independently persisted operation keeps its original recovery identity.

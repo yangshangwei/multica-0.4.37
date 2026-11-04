@@ -15,6 +15,7 @@ type collaborationCreateIssueBody struct {
 	HandlerUserID             *string                    `json:"handler_user_id"`
 	Title                     string                     `json:"title"`
 	Description               string                     `json:"description"`
+	AIPolicy                  json.RawMessage            `json:"ai_policy"`
 	ProjectID                 *string                    `json:"project_id"`
 	ParentIssueID             *string                    `json:"parent_issue_id"`
 	DraftID                   *string                    `json:"draft_id"`
@@ -43,6 +44,13 @@ func (h *Handler) CreateCollaborationIssue(w http.ResponseWriter, r *http.Reques
 	}
 	p := service.CollaborationCreateParams{Title: body.Title, Description: body.Description, RequestID: r.Header.Get("Idempotency-Key"),
 		Status: body.Status, Priority: body.Priority, StartDate: body.StartDate, DueDate: body.DueDate, Properties: body.Properties}
+	if len(body.AIPolicy) > 0 {
+		if json.Unmarshal(body.AIPolicy, &p.AIPolicy) != nil ||
+			(p.AIPolicy != service.CollaborationAIPolicyManual && p.AIPolicy != service.CollaborationAIPolicyAssisted) {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_ai_policy", "error": "Invalid task policy"})
+			return
+		}
+	}
 	if body.Stage != nil {
 		p.Stage = &pgtype.Int4{Int32: *body.Stage, Valid: true}
 	}

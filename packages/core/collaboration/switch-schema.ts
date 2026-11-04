@@ -53,7 +53,7 @@ const refusal = z.enum(["stale_authority", "stale_scope", "stale_control_version
   "issue_closed", "forbidden", "target_not_found", "target_pause_required", "invalid_target_configuration", "config_invalid", "grant_required",
   "stop_unconfirmed", "runtime_registration_required", "runtime_upgrade_required", "resource_unavailable", "owner_not_participant", "resource_owner_not_participant", "resource_owner_unavailable", "target_configuration_changed",
   "switch_proposal_not_found", "switch_consent_not_found", "switch_already_committed", "stale_switch_proposal", "stale_switch_consent", "switch_consent_required",
-  "collaboration_client_upgrade_required", "execution_mode_unsupported", "execution_consent_required"]);
+  "collaboration_client_upgrade_required", "execution_mode_unsupported", "execution_consent_required", "task_manual"]);
 
 const fullSwitchReceipt = z.object({
   redacted: z.literal(false).optional(),
@@ -64,6 +64,7 @@ const fullSwitchReceipt = z.object({
   grant_id: z.null(), batch_id: z.null(), command_id: z.null(), run_id: z.null(), run_settled: z.literal(false),
   channels: z.array(z.never()).length(0), target_holds: z.array(z.never()).length(0),
 }).refine((value) => {
+  if (value.code === "task_manual") return value.status === 409 && value.action !== "revoke_target_switch_consent";
   const succeeded = value.code === outcomes[value.action];
   if (!succeeded) return value.status >= 400 && refusal.safeParse(value.code).success;
   return value.proposal_id !== null && (value.status === 200 || value.status === 201) &&
@@ -73,7 +74,8 @@ const redactedSwitchReceipt = z.strictObject({
   redacted: z.literal(true), protocol_version: z.literal(2), issue_id: uuid,
   request_id: z.string().min(1).max(128), action: z.enum(Object.keys(outcomes) as [keyof typeof outcomes, ...Array<keyof typeof outcomes>]),
   status: z.number().int().min(200).max(599), code: z.union([z.enum(Object.values(outcomes)), refusal]),
-}).refine((value) => value.code === outcomes[value.action] ? value.status === 200 || value.status === 201 : value.status >= 400 && refusal.safeParse(value.code).success);
+}).refine((value) => value.code === "task_manual" ? value.status === 409 && value.action !== "revoke_target_switch_consent" :
+  value.code === outcomes[value.action] ? value.status === 200 || value.status === 201 : value.status >= 400 && refusal.safeParse(value.code).success);
 export const CollaborationSwitchReceiptSchema = z.union([redactedSwitchReceipt, fullSwitchReceipt]);
 export type CollaborationSwitchReceipt = z.infer<typeof CollaborationSwitchReceiptSchema>;
 

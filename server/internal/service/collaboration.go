@@ -66,6 +66,7 @@ type CollaborationIssueAccess struct {
 	AccountEpoch     pgtype.Int8 `json:"-"`
 	StatusCategory   string      `json:"-"`
 	SourceMember     bool        `json:"-"`
+	AIPolicy         string      `json:"-"`
 	// InformationRequestID is the open top of the request chain, if any.
 	InformationRequestID pgtype.UUID                `json:"-"`
 	Capabilities         collaboration.Capabilities `json:"capabilities"`
@@ -115,6 +116,7 @@ func (s *CollaborationService) ResolveIssueAccess(ctx context.Context, q *db.Que
 		Handler:              row.Issue.AssigneeType.Valid && row.Issue.AssigneeType.String == "member" && row.Issue.AssigneeID == viewerID,
 		InformationRecipient: row.InformationRequestID.Valid && row.InformationRecipientID == viewerID,
 		StatusCategory:       row.StatusCategory, QueueState: row.QueueState,
+		AIPolicy: row.AiPolicy,
 	})
 	if !caps.Read {
 		return result, collaborationError(http.StatusNotFound, "not_found")
@@ -123,6 +125,7 @@ func (s *CollaborationService) ResolveIssueAccess(ctx context.Context, q *db.Que
 		AuthorityEpoch: row.AuthorityEpoch, EventSequence: row.EventSeq,
 		SessionID: row.SessionID, QueueState: row.QueueState, ControlVersion: row.ControlVersion,
 		ParticipantEpoch: row.ParticipantEpoch, AccountEpoch: row.AccountEpoch, StatusCategory: row.StatusCategory, SourceMember: row.SourceMember,
+		AIPolicy:             row.AiPolicy,
 		InformationRequestID: row.InformationRequestID, Capabilities: caps}, nil
 }
 
@@ -132,6 +135,7 @@ type CollaborationCreateParams struct {
 	RequestID                 string
 	Title                     string
 	Description               string
+	AIPolicy                  string `json:",omitempty"`
 	ProjectID                 pgtype.UUID
 	ParentIssueID             pgtype.UUID
 	DraftID                   *pgtype.UUID               `json:",omitempty"`
@@ -193,6 +197,9 @@ func (s *CollaborationService) CreateInTx(ctx context.Context, tx pgx.Tx, p Coll
 	}
 	if !p.SourceWorkspaceID.Valid || !p.HandlerID.Valid || strings.TrimSpace(p.Title) == "" || len(p.RequestID) == 0 || len(p.RequestID) > 128 {
 		return empty, collaborationError(http.StatusBadRequest, "invalid_collaboration_creation")
+	}
+	if p.AIPolicy != "" && p.AIPolicy != CollaborationAIPolicyManual && p.AIPolicy != CollaborationAIPolicyAssisted {
+		return empty, collaborationError(http.StatusBadRequest, "invalid_ai_policy")
 	}
 	encoded, err := json.Marshal(p)
 	if err != nil {
@@ -314,6 +321,11 @@ func (s *CollaborationService) createCollaborationIssueInTx(ctx context.Context,
 	}
 	if _, err = q.CreateIssueCollaboration(ctx, created.Issue.ID); err != nil {
 		return empty, err
+	}
+	if p.AIPolicy == CollaborationAIPolicyManual {
+		if err = q.UpdateCollaborationAIPolicy(ctx, db.UpdateCollaborationAIPolicyParams{IssueID: created.Issue.ID, AiPolicy: p.AIPolicy}); err != nil {
+			return empty, err
+		}
 	}
 	for _, user := range users {
 		if _, err = q.CreateCollaborationParticipant(ctx, db.CreateCollaborationParticipantParams{IssueID: created.Issue.ID, UserID: user.ID}); err != nil {

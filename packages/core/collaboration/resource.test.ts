@@ -42,6 +42,24 @@ it("checks current ownership and records the observed target and binding version
   expect(() => prepareCollaborationResource(scope, issue, { ...resources, target_set_version: "1" }, draft.requestId, selection)).toThrow();
 });
 
+it("denies new manual task resource admission without erasing retained grant controls", () => {
+  const { scope, issue, resources, selection, draft } = setup();
+  const manual = { ...issue, ai_policy: "manual" as const };
+  expect(canOfferCollaborationResources(scope, manual)).toBe(false);
+  expect(canOrganizeCollaborationResources(scope, manual)).toBe(false);
+  expect(() => prepareCollaborationResource(scope, manual, resources, draft.requestId, selection)).toThrow();
+  const granted = structuredClone(resources);
+  const retained = granted.targets[0]!.resources[0]!;
+  retained.consented = true;
+  retained.grant_id = resourceReceiptFixture.grant_id;
+  retained.grant_epoch = "1";
+  retained.can_revoke = true;
+  expect(parseCollaborationResourceDraft(prepareCollaborationResource(scope, manual, granted, draft.requestId,
+    { action: "revoke_grant", targetId: selection.targetId, agentId: selection.agentId })).action).toBe("revoke_grant");
+  expect(parseCollaborationResourceDraft(prepareCollaborationResource(scope, manual, resources, draft.requestId,
+    { action: "withdraw_resource_offer", offer: parseCollaborationResourceOffer(resourceOfferFixture)! })).action).toBe("withdraw_resource_offer");
+});
+
 it("refuses v6 consent when all execution metadata is absent without breaking v5 consent", () => {
   const { scope, issue, resources, selection, draft } = setup();
   const hostIssue = parseCollaborationIssue({ ...issue, execution: collaborationHostExecutionFixture })!;

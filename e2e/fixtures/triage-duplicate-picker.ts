@@ -106,7 +106,9 @@ export async function duplicatePickerFlow(
   const list = dialog.getByRole("listbox", { name: copy.candidates, exact: true });
   const options = list.getByRole("option");
   const reason = zh ? "同一上传故障，保留客户的补充说明" : "Same upload failure; retain the customer's additional context";
+  await expect(input).toBeFocused();
   await dialog.getByRole("textbox", { name: copy.reason, exact: true }).fill(reason);
+  await expect(dialog.getByRole("textbox", { name: copy.reason, exact: true })).toHaveValue(reason);
   await input.click();
   await expect(input).toHaveValue("");
   await expect(list).toBeVisible();

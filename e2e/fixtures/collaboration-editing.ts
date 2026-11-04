@@ -17,7 +17,7 @@ export interface CollaborationEditingFixture {
   labels: [Reference, Reference];
   property: Reference;
   project: { id: string; title: string };
-  parent: { id: string; title: string };
+  parent: { id: string; identifier: string; title: string };
   ordinary: { id: string; title: string };
   iterations: [IterationReference, IterationReference];
 }
@@ -110,8 +110,11 @@ export async function createCollaborationWithInitialFields(page: Page, fixture: 
   await toggleLabel(page, dialog, fixture.labels[0].name);
   await setTextProperty(page, dialog, fixture.property.name, "Initial delivery context");
   await dialog.getByLabel("Project", { exact: true }).selectOption(fixture.project.id);
-  await dialog.getByLabel("Parent issue", { exact: true }).selectOption(fixture.parent.id);
-  await dialog.getByLabel("Stage under parent", { exact: true }).fill("2");
+  await dialog.getByRole("button", { name: "Parent issue", exact: true }).click();
+  const parentOption = page.getByRole("button", { name: `${fixture.parent.identifier} ${fixture.parent.title}`, exact: true });
+  await expect(parentOption).toBeVisible();
+  await parentOption.click();
+  await dialog.getByLabel("Subtask stage number (optional)", { exact: true }).fill("2");
   await dialog.getByLabel("Iteration", { exact: true }).selectOption(fixture.iterations[0].id);
   const created = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/collaboration/issues" && response.request().method() === "POST");
   await dialog.getByRole("button", { name: "Create collaboration issue", exact: true }).click();
@@ -129,8 +132,17 @@ export async function createCollaborationWithInitialFields(page: Page, fixture: 
   return issue;
 }
 
+export async function revealCollaborationEditingAction(page: Page, name: "Edit issue" | "Edit source fields" | "Change iteration") {
+  const workflow = page.getByRole("region", { name: "Issue actions", exact: true });
+  await expect(workflow).toBeVisible();
+  const action = workflow.getByRole("button", { name, exact: true });
+  if (!await action.isVisible()) await workflow.locator("summary").filter({ hasText: /^More actions$/ }).click();
+  await expect(action).toBeVisible();
+  return action;
+}
+
 export async function exerciseCollaborationFields(page: Page, fixture: CollaborationEditingFixture, issueId: string) {
-  await page.getByRole("button", { name: "Edit issue", exact: true }).click();
+  await (await revealCollaborationEditingAction(page, "Edit issue")).click();
   let form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Edit issue", exact: true }) });
   await toggleLabel(page, form, fixture.labels[1].name);
   await setTextProperty(page, form, fixture.property.name, "Reviewed delivery context");
@@ -142,14 +154,14 @@ export async function exerciseCollaborationFields(page: Page, fixture: Collabora
     labels: expect.arrayContaining([expect.objectContaining({ id: fixture.labels[1].id })]),
   });
 
-  await page.getByRole("button", { name: "Edit source fields", exact: true }).click();
+  await (await revealCollaborationEditingAction(page, "Edit source fields")).click();
   form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Edit source fields", exact: true }) });
-  await form.getByLabel("Stage under parent", { exact: true }).fill("3");
+  await form.getByLabel("Subtask stage number (optional)", { exact: true }).fill("3");
   await form.getByRole("button", { name: "Confirm", exact: true }).click();
   await expect(form).toHaveCount(0);
   expect(await fixture.source.requestJSON(`/api/collaboration/issues/${issueId}`)).toMatchObject({ source_structure: { stage: 3 } });
 
-  await page.getByRole("button", { name: "Change iteration", exact: true }).click();
+  await (await revealCollaborationEditingAction(page, "Change iteration")).click();
   form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Change iteration", exact: true }) });
   await form.getByLabel("Iteration", { exact: true }).selectOption(fixture.iterations[1].id);
   await expect(form.getByRole("button", { name: "Confirm", exact: true })).toBeDisabled();
@@ -162,7 +174,6 @@ export async function exerciseCollaborationFields(page: Page, fixture: Collabora
 export async function sendCollaborationComment(page: Page, content: string) {
   const composer = page.getByRole("form", { name: "Comments", exact: true });
   await composer.getByLabel("Add comment", { exact: true }).fill(content);
-  await composer.getByRole("button", { name: "Preview delivery", exact: true }).click();
   const send = composer.getByRole("button", { name: "Send comment", exact: true });
   await expect(send).toBeEnabled();
   const response = page.waitForResponse((item) => /\/api\/collaboration\/issues\/[^/]+\/comments$/.test(new URL(item.url()).pathname)

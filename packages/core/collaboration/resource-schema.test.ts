@@ -64,6 +64,14 @@ it.each(["resource_owner_not_participant", "resource_owner_unavailable"])("recog
   expect(parseCollaborationResourceReceipt({ ...resourceReceiptFixture, action: "register_target", target_id: null, grant_id: null, scope: "issue", status: 409, code })?.code).toBe(code);
 });
 
+it("keeps manual resource admission refusal exact and content-free on recovery", () => {
+  const manual = { redacted: true, protocol_version: 2, issue_id: resourceReceiptFixture.issue_id, request_id: resourceReceiptFixture.request_id,
+    action: "register_target", code: "task_manual", status: 409 };
+  expect(parseCollaborationResourceReceipt(manual)).toEqual(manual);
+  expect(parseCollaborationResourceReceipt({ ...manual, status: 400 })).toBeNull();
+  expect(parseCollaborationResourceReceipt({ ...manual, status: 200 })).toBeNull();
+});
+
 const offerId = "00000000-0000-4000-8000-000000000091";
 const authority = { expected_lifecycle_epoch: "1", expected_participant_epoch: "2", expected_account_epoch: "3" };
 const offerActions = [

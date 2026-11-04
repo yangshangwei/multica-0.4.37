@@ -97,7 +97,7 @@ func TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait(t *te
 				f.fx.Count(t, `SELECT count(*) FROM admin_operation WHERE target_id=$1`, p.IssueID) != 0 ||
 				f.fx.Count(t, `SELECT count(*) FROM admin_audit_event WHERE target_id=$1`, p.IssueID) != 0 ||
 				f.fx.Count(t, `SELECT count(*) FROM issue_handoff WHERE issue_id=$1 AND purpose='admin_reopen'`, p.IssueID) != 0 ||
-				f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND status='done' AND creator_id=$2`, p.IssueID, f.creator) != 1 {
+				f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND status='cancelled' AND creator_id=$2`, p.IssueID, f.creator) != 1 {
 				t.Fatal("a lock-time refusal partially reopened, reassigned or changed the retained control ledger")
 			}
 		})

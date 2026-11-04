@@ -5,19 +5,16 @@ import type { IssuePriority } from "../types/issue";
 import { ISSUE_PROPERTY_TYPES, parseActorRef, type IssuePropertyValue } from "../types/property";
 import { CollaborationExecutionSchema } from "./execution-schema";
 import { nonnegativeVersion, positiveVersion } from "./version";
+import { CollaborationAccountSummarySchema } from "./account-schema";
+import { CollaborationAIPolicySchema, CollaborationDeliverySummarySchema, CollaborationDeliveryConfirmationSchema, type CollaborationAIPolicy } from "./delivery-schema";
+export { CollaborationAccountSummarySchema } from "./account-schema";
 
 const statusCategory = z.enum(["backlog", "todo", "in_progress", "in_review", "blocked", "done", "cancelled"]);
-const statusAction = z.enum(["change_status", "complete", "cancel", "reopen", "request_information", "return_information", "submit_acceptance"]);
+const statusAction = z.enum(["change_status", "complete", "cancel", "reopen", "request_information", "return_information", "submit_acceptance", "return_acceptance"]);
 
 export type CollaborationStatusAction = z.infer<typeof statusAction>;
 export type CollaborationLifecycleAction = Extract<CollaborationStatusAction, "complete" | "cancel" | "reopen">;
 
-export const CollaborationAccountSummarySchema = z.object({
-  user_id: z.string().uuid(),
-  name: z.string().catch("Unavailable account"),
-  avatar_url: z.string().catch(""),
-  external: z.boolean(),
-});
 const accountSummary = CollaborationAccountSummarySchema;
 
 const sourceWorkspaceSummary = z.object({
@@ -218,6 +215,8 @@ export const CollaborationIssueSchema = z.object({
   id: z.string().uuid(),
   title: z.string(),
   description: z.string(),
+  ai_policy: CollaborationAIPolicySchema.optional(),
+  delivery: CollaborationDeliverySummarySchema.optional(),
   // Absence on an older server is unknown, not a date-clear instruction.
   start_date: z.iso.date().nullish(),
   due_date: z.iso.date().nullish(),
@@ -260,9 +259,18 @@ export const CollaborationIssueSchema = z.object({
     request_information: z.boolean().catch(false),
     return_information: z.boolean().catch(false),
     submit_acceptance: z.boolean().catch(false),
+    return_acceptance: z.boolean().optional(),
+    change_ai_policy: z.boolean().optional(),
   }),
   current_information_request: informationRequest.nullish(),
-}).refine((issue) => issue.ordinary_children?.items.every((child) => child.id !== issue.id.toLowerCase()) !== false,
+}).refine((issue) => {
+  const delivery = issue.delivery;
+  if (delivery === undefined) return true;
+  return [delivery.current, delivery.latest].every((item) => item === null || item.issue_id === issue.id.toLowerCase() &&
+    (item.lifecycle_epoch === null || BigInt(item.lifecycle_epoch) <= BigInt(issue.lifecycle_epoch))) &&
+    (delivery.current === null || delivery.current.lifecycle_epoch === null || delivery.current.lifecycle_epoch === issue.lifecycle_epoch) &&
+    (delivery.current === null || !["done", "cancelled"].includes(issue.status_category));
+}, "Delivery must belong to this issue and lifecycle").refine((issue) => issue.ordinary_children?.items.every((child) => child.id !== issue.id.toLowerCase()) !== false,
   "An ordinary child cannot be its shared parent").refine((issue) => {
   const values = issue.properties;
   const definitions = issue.property_definitions;
@@ -323,15 +331,17 @@ export const CollaborationStatusOptionsSchema = z.object({
       case "cancel": return option.category === "cancelled";
       case "request_information": return option.category === "blocked";
       case "submit_acceptance": return option.category === "in_review";
+      case "return_acceptance": return option.category === "in_progress";
       case "return_information":
+        return option.category !== "done" && option.category !== "cancelled";
       case "change_status":
-      case "reopen": return option.category !== "done" && option.category !== "cancelled";
+      case "reopen": return option.category !== "done" && option.category !== "cancelled" && option.category !== "in_review";
       default: return false;
     }
   }),
   "Status category must match the action",
 ).refine(
-  (value) => !["request_information", "return_information", "submit_acceptance"].includes(value.action) || value.options.length === 1,
+  (value) => !["request_information", "return_information", "submit_acceptance", "return_acceptance"].includes(value.action) || value.options.length === 1,
   "A directed handoff has exactly one prescribed status",
 );
 
@@ -342,6 +352,7 @@ export const CollaborationOperationSchema = z.object({
   code: z.string().refine((value) => value.trim().length > 0, "Operation code must not be empty"),
   collaboration_revision: positiveVersion,
   status_options: CollaborationStatusOptionsSchema.nullish(),
+  delivery_confirmation: CollaborationDeliveryConfirmationSchema.optional(),
 });
 
 export type CollaborationOperation = z.infer<typeof CollaborationOperationSchema>;
@@ -378,8 +389,21 @@ export interface CollaborationInformationReturnInput extends CollaborationWriteI
   note: string;
 }
 
-export interface CollaborationAcceptanceInput extends CollaborationWriteInput, CollaborationDirectedStatusInput {
+export interface CollaborationResultInput {
   note: string;
+  basis: string;
+  draftId?: string;
+  attachmentIds?: string[];
+  sourceCommentId?: string;
+}
+export interface CollaborationAcceptanceInput extends CollaborationWriteInput, CollaborationDirectedStatusInput, CollaborationResultInput {}
+export interface CollaborationAcceptanceReturnInput extends CollaborationWriteInput, CollaborationDirectedStatusInput {
+  submissionId: string;
+  targetUserId: string;
+  note: string;
+}
+export interface CollaborationAIPolicyInput extends CollaborationWriteInput {
+  aiPolicy: CollaborationAIPolicy;
 }
 
 /** Omit untouched fields. Dates clear with null/empty; metadata null preserves. */
@@ -413,6 +437,12 @@ export interface CollaborationStatusInput extends CollaborationWriteInput {
 
 export interface CollaborationLifecycleInput extends CollaborationStatusInput {
   action: CollaborationLifecycleAction;
+  submissionId?: string;
+  note?: string;
+  basis?: string;
+  draftId?: string;
+  attachmentIds?: string[];
+  sourceCommentId?: string;
 }
 
 /** Null means unavailable, never an ordinary issue or an empty successful list. */

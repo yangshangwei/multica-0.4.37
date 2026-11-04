@@ -15,7 +15,9 @@ type collaborationStatusBody struct {
 
 type collaborationLifecycleBody struct {
 	collaborationStatusBody
-	Action string `json:"action"`
+	collaborationResultBody
+	Action       string  `json:"action"`
+	SubmissionID *string `json:"submission_id"`
 }
 
 func (h *Handler) GetCollaborationStatusOptions(w http.ResponseWriter, r *http.Request) {
@@ -44,16 +46,29 @@ func (h *Handler) ChangeCollaborationLifecycle(w http.ResponseWriter, r *http.Re
 	r.Header.Del("X-Workspace-ID")
 	r.Header.Del("X-Workspace-Slug")
 	var body collaborationLifecycleBody
-	if !decodeCollaborationWorkflowBody(w, r, &body) {
+	if !decodeCollaborationWorkflowBodyLimit(w, r, &body, 1<<20) {
 		return
 	}
 	request, ok := collaborationWorkflowRequest(w, r, body.collaborationWorkflowBody)
 	if !ok {
 		return
 	}
+	draft, attachments, comment, ok := collaborationResultSelection(w, body.collaborationResultBody)
+	if !ok {
+		return
+	}
+	p := service.CollaborationLifecycleParams{CollaborationWorkflowRequest: request,
+		Action: body.Action, TargetStatus: body.Status, StatusOptionsVersion: body.StatusOptionsVersion,
+		Note: body.Note, Basis: body.Basis, DraftID: draft, AttachmentIDs: attachments, SourceCommentID: comment}
+	if body.SubmissionID != nil {
+		id, valid := parseUUIDOrBadRequest(w, *body.SubmissionID, "submission_id")
+		if !valid {
+			return
+		}
+		p.SubmissionID = &id
+	}
 	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
-	receipt, err := svc.ChangeLifecycle(r.Context(), service.CollaborationLifecycleParams{CollaborationWorkflowRequest: request,
-		Action: body.Action, TargetStatus: body.Status, StatusOptionsVersion: body.StatusOptionsVersion})
+	receipt, err := svc.ChangeLifecycle(r.Context(), p)
 	if err == nil && receipt.ParentWakeup != nil {
 		h.notifyParentOfChildDone(r.Context(), receipt.ParentWakeup.Before, receipt.ParentWakeup.After)
 	}

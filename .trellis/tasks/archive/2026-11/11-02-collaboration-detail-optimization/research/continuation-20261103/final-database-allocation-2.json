@@ -1,0 +1,30 @@
+{
+  "allocated_at": "20261103_115734",
+  "reason": "fresh complete replay after two verified documentation/test expectation corrections; original failed DB retained",
+  "allocations": [
+    {
+      "lane": "service",
+      "package": "./internal/service",
+      "database": "multica_detail_final2_20261103_115734_service",
+      "configuration": "/tmp/multica-detail-verification-20261103/final2-service-env.json",
+      "template": "multica_detail_final_template_20261103_101054",
+      "state": "fresh_schema_only"
+    },
+    {
+      "lane": "handler",
+      "package": "./internal/handler",
+      "database": "multica_detail_final2_20261103_115734_handler",
+      "configuration": "/tmp/multica-detail-verification-20261103/final2-handler-env.json",
+      "template": "multica_detail_final_template_20261103_101054",
+      "state": "fresh_schema_only"
+    },
+    {
+      "lane": "router",
+      "package": "./cmd/server",
+      "database": "multica_detail_final2_20261103_115734_router",
+      "configuration": "/tmp/multica-detail-verification-20261103/final2-router-env.json",
+      "template": "multica_detail_final_template_20261103_101054",
+      "state": "fresh_schema_only"
+    }
+  ]
+}

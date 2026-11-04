@@ -413,7 +413,7 @@ func (q *Queries) CreateCollaborationSession(ctx context.Context, issueID pgtype
 }
 
 const createIssueCollaboration = `-- name: CreateIssueCollaboration :one
-INSERT INTO issue_collaboration (issue_id) VALUES ($1) RETURNING issue_id, revision, authority_epoch, lifecycle_epoch, active_information_request_id, created_at
+INSERT INTO issue_collaboration (issue_id) VALUES ($1) RETURNING issue_id, revision, authority_epoch, lifecycle_epoch, active_information_request_id, created_at, ai_policy
 `
 
 func (q *Queries) CreateIssueCollaboration(ctx context.Context, issueID pgtype.UUID) (IssueCollaboration, error) {
@@ -426,6 +426,7 @@ func (q *Queries) CreateIssueCollaboration(ctx context.Context, issueID pgtype.U
 		&i.LifecycleEpoch,
 		&i.ActiveInformationRequestID,
 		&i.CreatedAt,
+		&i.AiPolicy,
 	)
 	return i, err
 }
@@ -488,7 +489,7 @@ func (q *Queries) FinishCollaborationCommand(ctx context.Context, arg FinishColl
 }
 
 const getCollaborationAccess = `-- name: GetCollaborationAccess :one
-SELECT i.id, i.workspace_id, i.title, i.description, i.status, i.priority, i.assignee_type, i.assignee_id, i.creator_type, i.creator_id, i.parent_issue_id, i.acceptance_criteria, i.context_refs, i.position, i.due_date, i.created_at, i.updated_at, i.number, i.project_id, i.origin_type, i.origin_id, i.first_executed_at, i.start_date, i.metadata, i.stage, i.properties, i.revision, i.last_activity_at, i.admission_status, i.current_iteration_id, i.iteration_rollover_count, c.revision AS collaboration_revision, c.lifecycle_epoch, c.authority_epoch, s.event_seq,
+SELECT i.id, i.workspace_id, i.title, i.description, i.status, i.priority, i.assignee_type, i.assignee_id, i.creator_type, i.creator_id, i.parent_issue_id, i.acceptance_criteria, i.context_refs, i.position, i.due_date, i.created_at, i.updated_at, i.number, i.project_id, i.origin_type, i.origin_id, i.first_executed_at, i.start_date, i.metadata, i.stage, i.properties, i.revision, i.last_activity_at, i.admission_status, i.current_iteration_id, i.iteration_rollover_count, c.revision AS collaboration_revision, c.lifecycle_epoch, c.authority_epoch, c.ai_policy, s.event_seq,
        s.id AS session_id, s.queue_state, s.control_version,
        participant.epoch AS participant_epoch, account_fence.epoch AS account_epoch,
        (u.disabled_at IS NULL)::boolean AS account_active, u.email AS viewer_email,
@@ -518,6 +519,7 @@ type GetCollaborationAccessRow struct {
 	CollaborationRevision  int64       `json:"collaboration_revision"`
 	LifecycleEpoch         int64       `json:"lifecycle_epoch"`
 	AuthorityEpoch         int64       `json:"authority_epoch"`
+	AiPolicy               string      `json:"ai_policy"`
 	EventSeq               int64       `json:"event_seq"`
 	SessionID              pgtype.UUID `json:"session_id"`
 	QueueState             string      `json:"queue_state"`
@@ -572,6 +574,7 @@ func (q *Queries) GetCollaborationAccess(ctx context.Context, arg GetCollaborati
 		&i.CollaborationRevision,
 		&i.LifecycleEpoch,
 		&i.AuthorityEpoch,
+		&i.AiPolicy,
 		&i.EventSeq,
 		&i.SessionID,
 		&i.QueueState,
@@ -1107,7 +1110,7 @@ func (q *Queries) LockCollaborationUsers(ctx context.Context, userIds []pgtype.U
 }
 
 const lockIssueCollaboration = `-- name: LockIssueCollaboration :one
-SELECT issue_id, revision, authority_epoch, lifecycle_epoch, active_information_request_id, created_at FROM issue_collaboration WHERE issue_id = $1 FOR UPDATE
+SELECT issue_id, revision, authority_epoch, lifecycle_epoch, active_information_request_id, created_at, ai_policy FROM issue_collaboration WHERE issue_id = $1 FOR UPDATE
 `
 
 func (q *Queries) LockIssueCollaboration(ctx context.Context, issueID pgtype.UUID) (IssueCollaboration, error) {
@@ -1120,6 +1123,7 @@ func (q *Queries) LockIssueCollaboration(ctx context.Context, issueID pgtype.UUI
 		&i.LifecycleEpoch,
 		&i.ActiveInformationRequestID,
 		&i.CreatedAt,
+		&i.AiPolicy,
 	)
 	return i, err
 }

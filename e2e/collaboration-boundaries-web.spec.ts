@@ -2,7 +2,8 @@ import { randomBytes, randomUUID } from "node:crypto";
 import { expect, test, type Browser, type BrowserContext, type Page } from "@playwright/test";
 import type { CollaborationIssue } from "@multica/core/collaboration";
 import { TestApiClient } from "./fixtures";
-import { authenticateCollaborationEditor } from "./fixtures/collaboration-editing";
+import { authenticateCollaborationEditor, revealCollaborationEditingAction } from "./fixtures/collaboration-editing";
+import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
 import { sql } from "./fixtures/core-journeys";
 
 // Collaboration boundaries no client spec proved (collab-audit.md §2 Gap 5,
@@ -179,11 +180,25 @@ test("Gap 5: a source workspace holding a collaboration issue cannot be deleted,
   expect(openRefusal).toEqual({ status: 409, body: { code: "workspace_has_collaboration_records", error: "This workspace contains collaboration records." } });
   expect(await workspaceInventory(workspace.id, issueId)).toEqual(before);
 
-  // Completed by the creator, and a non-creator participant has left: still refused (AC62).
+  // The external handler submits a result; the creator accepts that exact delivery.
+  // A completed collaboration still prevents workspace teardown (AC62).
+  const submissionOptions = await handler.api.requestJSON<{ default_status: string; status_options_version: string }>(`${root(issueId)}/status-options?action=submit_acceptance`);
+  const submitted = await write(handler, `${root(issueId)}/acceptance-submissions`, { ...observed(await readIssue(handler, issueId)),
+    note: "Completed the boundary-check work.", basis: "Verified the retained source records and attachment.", attachment_ids: [],
+    expected_status: submissionOptions.default_status, status_options_version: submissionOptions.status_options_version });
+  expect(submitted.status).toBe(200);
+  expect(submitted.body).toMatchObject({ code: "acceptance_submitted" });
+  const pending = await readIssue(creator, issueId);
+  expect(pending).toMatchObject({ status_category: "in_review", handler: { user_id: creator.id } });
+  const submission = pending.delivery!.current!;
+  expect(submission.id).toMatch(/^[0-9a-f-]{36}$/i);
+  expect(submission).toMatchObject({ author_user_id: handler.id, evidence_state: "available", decision: null });
+  expect(submitted.body.delivery_confirmation).toEqual({ submission_id: submission.id, attachment_ids: [] });
   const options = await creator.api.requestJSON<{ default_status: string; status_options_version: string }>(`${root(issueId)}/status-options?action=complete`);
   const completed = await write(creator, `${root(issueId)}/lifecycle`, { ...observed(await readIssue(creator, issueId)), action: "complete",
-    status: options.default_status, status_options_version: options.status_options_version });
-  expect(completed.body).toMatchObject({ code: "completed" });
+    submission_id: submission.id, status: options.default_status, status_options_version: options.status_options_version });
+  expect(completed.status).toBe(200);
+  expect(completed.body).toMatchObject({ code: "completed", delivery_confirmation: { submission_id: submission.id, attachment_ids: [] } });
   const left = await write(peer, `${root(issueId)}/leave`, observed(await readIssue(peer, issueId)));
   expect(left.body).toMatchObject({ code: "participant_left" });
   expect(await readIssue(creator, issueId)).toMatchObject({ status_category: "done", session: { queue_state: "closed" } });
@@ -224,7 +239,9 @@ test("Gap 5: a source workspace holding a collaboration issue cannot be deleted,
   expect(await workspaceInventory(workspace.id, issueId)).toEqual(settled);
   expect((await creator.api.getWorkspaces()).map((item) => item.id)).toContain(workspace.id);
   expect(await creator.api.requestJSON(`/api/issues/${ordinary.id}`)).toMatchObject({ title: ordinary.title });
-  expect(await readIssue(handler, issueId)).toMatchObject({ id: issueId, status_category: "done", handler: { user_id: handler.id } });
+  expect(await readIssue(handler, issueId)).toMatchObject({ id: issueId, status_category: "done", handler: { user_id: creator.id },
+    delivery: { current: null, latest: { id: submission.id, author_user_id: handler.id,
+      decision: { kind: "accepted", submission_id: submission.id, actor_user_id: creator.id } } } });
   const comments = await handler.api.requestJSON<{ items: { id: string; content: string }[] }>(`${root(issueId)}/comments`);
   expect(comments.items).toEqual(expect.arrayContaining([expect.objectContaining({ id: comment.body.comment_id, content: `Retained discussion ${fixture.key}` })]));
   const file = await fetch(`${apiUrl}${root(issueId)}/attachments/${fixture.attachment!.id}/content`, { headers: { Authorization: `Bearer ${handler.api.getToken()}` } });
@@ -233,8 +250,8 @@ test("Gap 5: a source workspace holding a collaboration issue cannot be deleted,
   expect((await send(peer, root(issueId))).status).toBe(404);
 });
 
-/** Visible labels of the workflow buttons (workflow.tsx renders one per true capability). */
-const visibleActions = async (page: Page) => (await actionsRow(page).getByRole("button").allTextContents()).map((text) => text.trim());
+/** Include collapsed descendants so an unauthorized action cannot hide inside More actions. */
+const renderedActions = async (page: Page) => (await actionsRow(page).getByRole("button", { includeHidden: true }).allTextContents()).map((text) => text.trim());
 
 /**
  * P registers and authorizes its own agent A as an AI target, so A is in every
@@ -252,6 +269,7 @@ async function authorizeOwnAgent(page: Page, fixture: Boundary) {
     VALUES ($1, $2, $3, $4, $5, $6)`, [process.env.MULTICA_DEPLOYMENT_ID, fixture.creator.id, fixture.workspace.id, runtime.id, randomUUID(), randomBytes(32)]);
   await page.goto(`/account?view=participating&issue=${fixture.issueId}`);
   await expect(page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible({ timeout: 30_000 });
+  await revealCollaborationDisclosure(page, "AI execution");
   await page.getByRole("button", { name: "Manage AI resources", exact: true }).click();
   await page.getByRole("button", { name: "Add AI target", exact: true }).click();
   await page.getByLabel("Resource workspace", { exact: true }).selectOption(fixture.workspace.id);
@@ -316,27 +334,30 @@ test("Gap 7: hidden manager actions POSTed by the wrong role are refused and cha
     expect((control.body as unknown as CommentReceipt).targets).toEqual([expect.objectContaining({ target_id: agent.targetId, state: "waiting" })]);
     expect(await commandRows()).toEqual([{ author_user_id: creator.id, state: "waiting" }]);
 
-    // Each client shows exactly the actions its role holds.
+    // Current actions combine the role with the exact delivery state. No result
+    // exists yet, so the external creator cannot accept or self-complete it.
     await openIssuePage(pages.creator!.page, fixture, "source");
-    const creatorActions = ["Add participant", "Transfer", "Request information", "Change status", "Complete issue", "Cancel issue", "Edit issue"];
+    await revealCollaborationDisclosure(pages.creator!.page, "More actions");
+    const creatorActions = ["Comments", "Transfer", "Change status", "Add participant", "Change AI policy", "Cancel issue", "Edit issue"];
     if ((await readIssue(creator, issueId)).source_structure !== undefined) creatorActions.push("Edit source fields", "Change iteration");
-    await expect.poll(() => visibleActions(pages.creator!.page)).toEqual(creatorActions);
+    await expect.poll(() => renderedActions(pages.creator!.page)).toEqual(creatorActions);
     await openIssuePage(pages.handler!.page, fixture, "account");
-    await expect.poll(() => visibleActions(pages.handler!.page))
-      .toEqual(["Add participant", "Transfer", "Request information", "Submit for acceptance", "Change status", "Edit issue"]);
+    await revealCollaborationDisclosure(pages.handler!.page, "More actions");
+    await expect.poll(() => renderedActions(pages.handler!.page))
+      .toEqual(["Start work", "Submit result", "Request information", "Add participant", "Transfer", "Edit issue"]);
     for (const name of ["peer", "former"]) {
       await openIssuePage(pages[name]!.page, fixture, "account");
-      await expect.poll(() => visibleActions(pages[name]!.page)).toEqual(["Leave issue"]);
+      await expect.poll(() => renderedActions(pages[name]!.page)).toEqual(["Comments", "Leave issue"]);
     }
     await openIssuePage(pages.member!.page, fixture, "source");
-    await expect(actionsRow(pages.member!.page).getByRole("button")).toHaveCount(0);
+    await expect.poll(() => renderedActions(pages.member!.page)).toEqual(["Comments"]);
     // Only the creator can remove participants (participants.tsx canRemove).
     for (const name of ["creator", "handler"]) {
       await pages[name]!.page.getByRole("region", { name: "Issue actions", exact: true }).getByRole("button", { name: "Participants", exact: true }).click();
       await expect(pages[name]!.page.getByRole("list", { name: "Participants", exact: true }).getByRole("listitem")).toHaveCount(4);
     }
     await expect(pages.creator!.page.getByRole("button", { name: `Remove ${peer.name}`, exact: true })).toBeVisible();
-    await expect(pages.handler!.page.getByRole("button", { name: /^Remove / })).toHaveCount(0);
+    await expect(pages.handler!.page.getByRole("button", { name: /^Remove /, includeHidden: true })).toHaveCount(0);
 
     // M, a source member outside the issue, comments through the real composer
     // and mentions A: the comment lands, A is refused for M's role and nothing
@@ -408,7 +429,7 @@ test("Gap 7: hidden manager actions POSTed by the wrong role are refused and cha
 type Activity = { items: { kind: string; actor: { user_id: string; name: string } | null; changes: { field: string; before: string | null; after: string | null }[] }[] };
 
 async function editThroughForm(page: Page, issueId: string, fields: { title?: string; start?: string; due?: string }) {
-  await actionsRow(page).getByRole("button", { name: "Edit issue", exact: true }).click();
+  await (await revealCollaborationEditingAction(page, "Edit issue")).click();
   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Edit issue", exact: true }) });
   if (fields.title !== undefined) await form.getByLabel("Title", { exact: true }).fill(fields.title);
   if (fields.start !== undefined) await form.getByLabel("Start date", { exact: true }).fill(fields.start);
@@ -460,6 +481,7 @@ test("Smaller gaps: title/date edits leave attributed records, the exact recipie
     // Another participant sees the attributed record in the activity panel.
     await peerSide.page.goto(`/account?view=participating&issue=${issueId}`);
     await expect(peerSide.page.getByRole("heading", { name: newTitle, exact: true })).toBeVisible({ timeout: 30_000 });
+    await revealCollaborationDisclosure(peerSide.page, "Activity");
     const record = peerSide.page.getByRole("region", { name: "Activity", exact: true }).locator("li")
       .filter({ hasText: "Issue edited" }).filter({ hasText: handler.name });
     await expect(record).toHaveCount(1);
@@ -475,6 +497,7 @@ test("Smaller gaps: title/date edits leave attributed records, the exact recipie
     const invitesBefore = await inviteOps();
     const lookup = (value: string) => creatorSide.page.waitForResponse((r) => new URL(r.url()).pathname === "/api/collaboration/recipients/resolve"
       && r.request().method() === "POST" && (r.request().postDataJSON() as { value: string }).value === value);
+    await revealCollaborationDisclosure(creatorSide.page, "More actions");
     await actionsRow(creatorSide.page).getByRole("button", { name: "Add participant", exact: true }).click();
     const invite = creatorSide.page.locator("form").filter({ has: creatorSide.page.getByRole("heading", { name: "Add participant", exact: true }) });
     await invite.getByRole("button", { name: "Recipient", exact: true }).click();

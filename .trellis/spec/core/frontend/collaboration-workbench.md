@@ -8,6 +8,9 @@ forms, gated creation and controlled attachment delivery. Source-page routing,
 fields, iterations and discussion editing follow the shared
 [source/editing contract](../../server/collaboration-source-editing.md).
 General AI execution and full product acceptance retain their separate gates.
+Formal results, exact initiator decisions and manual policy follow
+[the delivery contract](../../server/collaboration-delivery.md); shared layout and
+disclosure behavior follow [the detail contract](../../views/frontend/collaboration-detail.md).
 
 ## 2. Signatures
 
@@ -21,12 +24,23 @@ The source picker, private draft/byte API and native capability signatures are
 defined in [collaboration content](../../server/collaboration-content.md).
 Account/issue subscriptions follow [collaboration realtime](../../server/collaboration-realtime.md).
 
+`delivery-schema.ts` is a pure schema leaf for submission/decision/policy and
+content-free `delivery_confirmation`. `collaborationDeliveryHistoryOptions` uses
+a protected infinite Query; `deriveCollaborationDetailState` owns stage and
+primary/secondary actions, and `collaborationHasAIActivity` owns facts-based
+console presence. `useCollaborationDeliveryForm(scope, "result")` is separate
+from `"comment"`; result intents carry the exact `deliveryDraftId`.
+
 ## 3. Contracts
 
 React Query owns issue/workbench/comment/activity/notification data. Persisted
 drafts contain client intent and original observations, never a second server
 state store. Current and participating lists remain separate; transferring work
 does not remove the participant's detail or notification-independent entry.
+The synchronous StorageAdapter currently persists form/operation JSON as
+plaintext localStorage. Preserve Server/viewer/source/issue/purpose scoping and
+access-loss erasure; do not describe these records as client-encrypted or add a
+new key lifecycle. Server uploaded bytes retain their separate encryption.
 
 Issue detail reads use the shared recovery request deadline (10 seconds) while
 retaining the caller's cancellation signal. This bounds polling, focus and
@@ -61,16 +75,27 @@ explicit source authority before deleting its draft. Only a confirmed authority
 loss triggers protected cleanup. A failed authority refresh does not establish
 that loss.
 
-`executeCollaborationAction` settles a non-obsolete `ApiError` HTTP 409 only
-when the existing operation schema validates `code: "stale_revision"`, a positive
-decimal-string `collaboration_revision`, and an absent or matching body status.
-The current minimal workflow writer can omit body `status`; this known refusal
-must not remain an unknown request or render a query-loading error. Interpret it
-inside the awaited `protectCollaborationRead` callback, so scope/access-epoch
-checks still precede exact-draft retirement and authorized-view invalidation.
-Keep the form input and require explicit adoption of the latest baseline plus a
-new submit/key. Do not normalize arbitrary error codes or contradictory/malformed
-receipts, change the low-level API error contract, or retry automatically.
+`executeCollaborationAction` settles only schema-valid final refusals recognized
+by `collaborationDeliveryRefusalStatus(code)`. The operation must have a positive
+decimal `collaboration_revision`, no result confirmation, and an absent or
+matching body `status`; HTTP errors must match that code's status. This includes
+the existing statusless `stale_revision`/409 and declared committed role/file
+403/404 receipts. Only workflow POST transport preserves those declared receipt
+envelopes. Plain read/access denials retain normal cleanup; malformed or
+contradictory declared envelopes remain unavailable, not confirmed access loss.
+Interpret refusals inside the awaited `protectCollaborationRead` callback so
+scope/access-epoch checks precede operation retirement and authorized invalidation.
+Keep mutable result text/basis/files, and require an explicit new submit/key with
+current observations. Unrecognized codes, mismatched statuses and unknown commits
+keep the original operation unresolved; do not normalize every HTTP error or retry.
+
+Result submission and completion success/recovery require a validated exact
+`delivery_confirmation`, even for text-only work. Pending acceptance captures
+the current submission's attachment IDs internally as `submissionAttachmentIds`
+and sends its ID without rebinding result fields. Compare that original ID/file
+set before retiring a bundle. Normalize valid uppercase UUID observations; retire
+only the matching result form/draft, including after unmount, without clearing a
+newer bundle. A refused operation retires while its unsent form remains editable.
 
 Creation retirement requires the own-result GET's HTTP 200 and strict
 actor/source/request correlation with `outcome: rejected` and a recognized code.
@@ -105,6 +130,13 @@ epoch. Recoveries started with current access still use the issue guard so a
 fresh denial clears its cache. Only already-known access loss uses the
 account-only guard and accepts content-free recovery.
 
+Delivery history uses the optional-history transport: a missing route triggers
+parent revalidation and preserves authorized detail, while a structured object
+denial erases protected state. Pages enforce matching issue/author/decision IDs,
+at most 100 rows, descending exact sequences, immutable overlap consistency and
+cursor progress. Missing history and legacy/malformed evidence remain unavailable;
+do not infer a result or decision from status or nearby comments.
+
 Each issue denial retains the exact `ApiError` instance propagated into its
 protected Query entries. A successful, current-epoch authoritative issue read
 clears only that instance from the current Server/viewer cache. Cleared reads
@@ -137,6 +169,15 @@ hold and control versions for server validation. Submission/creation rollout
 remains independent. Exact-recipient lookups and edit forms reject stale responses
 or baselines without silently replacing user intent.
 
+Manual policy blocks new command/Resume/resource/Switch preparation, retaining
+Stop, withdrawal, waiting cancellation and original-request recovery. Supported
+current capabilities still control every action. Absent old-server policy is
+unknown, not enforced manual. Assisted restoration never creates Resume intent.
+AI console omission requires supported empty execution facts and no historical
+input, selected run, pending request or error. Discover retained command history
+only when the current execution snapshot does not already establish activity;
+history bodies remain lazy and missing/error history keeps a factual entry visible.
+
 Recipient search uses `collaborationRecipientSearchOptions` below the current
 Server/viewer issue key or creation-delivery key, then `recipient-search`, the
 trimmed query and `membersOnly`. Infinite pages forward `AbortSignal`, use the
@@ -162,8 +203,8 @@ parse; new forms write an empty string.
 | Unknown execution or absent write context | No inferred control authority |
 | Supported participant with closed rollout gate | Stop/R45 remain available; Resume still validates |
 | Unknown write response or malformed receipt | Retain original key and pending intent |
-| Valid HTTP 409 stale_revision with absent/matching body status | Settle as refused; retain form input and require explicit latest-version submit |
-| Other statusless error code or contradictory body status | Preserve uncertain intent and original-key recovery |
+| Recognized final refusal with matching HTTP/body status, or allowed absent body status | Retire exact operation; retain form input and require explicit current-version submit |
+| Unrecognized code, contradictory status or malformed declared POST receipt | Preserve uncertain intent and original-key recovery |
 | Fresh recovery permission denial | Clear protected issue cache and obsolete drafts |
 | Current-epoch authority read succeeds after denial | Clear that denial's propagated Query errors without restoring old data or fetching inactive reads |
 | Authority recovery is unavailable or fails | Retain denial and data-free protected state |
@@ -175,6 +216,9 @@ parse; new forms write an empty string.
 | Upload cancelled after transport began | Abort transport; retain original recovery identity |
 | Attachment-bearing comment omits/mismatches file confirmation | Keep original request uncertain |
 | Comment settles after its component unmounts | Retire that exact bundle in core; do not clear a newer draft |
+| Result success lacks/mismatches submission/file confirmation | Keep original operation and bundle unresolved |
+| Missing delivery summary or legacy/unavailable result | No inferred acceptance; explicit authorized repair only |
+| Manual task with retained history/pending intent/error | Preserve console discovery, Stop and original recovery; no new execution |
 
 ## 5. Good / Base / Bad Cases
 
@@ -199,6 +243,14 @@ uses public creation with actual uploads and observes the account WebSocket
 before checking immediate preview/detail cleanup. Native Electron exercises the
 production download IPC and restart with an isolated profile. Resource form E2E
 uses owned runtime/enrollment fixtures without launching an AI process.
+
+`delivery-result.test.ts`, `delivery-history.test.ts`,
+`result-operation.test.ts` and `presentation.test.ts` own exact delivery/policy
+parsing, cross-issue/author/decision correlation, descending/cursor/history bounds,
+optional route versus object denial, committed and malformed POST refusals,
+text-only/file confirmation, uppercase draft retirement, old/new bundle separation
+and unknown/manual action derivation. Views keeps happy-path wiring and named
+accessibility/recovery regressions; it does not repeat the pure helper matrices.
 
 Mixed-mention journeys keep one H+A+B+S comment and correlate each queued AI
 command with its target, channel, batch and input event. Revoke A only after the
@@ -244,9 +296,15 @@ drop the issue scope for GET recovery.
 Correct: import the pure schema leaf; retain the issue guard until access loss
 is already known, then allow only the exact content-free receipt contract.
 
-Wrong: settle every HTTP 409, or normalize a refusal outside the access guard.
-Correct: interpret only the validated stale-revision refusal within the protected
-request; let the existing confirmed-result path retire its exact pending intent.
+Wrong: settle every HTTP error, erase form input on a committed file refusal, or
+normalize a receipt outside the access guard.
+Correct: validate the recognized code/status/envelope within the protected request;
+retire the exact operation, preserve unsent form input and require explicit retry.
+
+Wrong: treat completed status as initiator acceptance or retire a result form from
+a generic successful code without its exact submission/file confirmation.
+Correct: retain unavailable decision facts and require correlated confirmation;
+the R38 administrative exception never invents an initiator decision.
 
 ## Recorded-run and ordinary-child reads
 

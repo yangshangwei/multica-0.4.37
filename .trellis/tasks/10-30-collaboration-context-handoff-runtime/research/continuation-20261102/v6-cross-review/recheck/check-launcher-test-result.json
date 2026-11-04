@@ -1,0 +1,22 @@
+{
+  "name": "check-launcher-test.py",
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/contracts/deny-network.sb",
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/contracts/check-launcher-test.py"
+  ],
+  "exit_code": 0,
+  "log": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/v6-cross-review/recheck/check-launcher-test.log",
+  "log_sha256": "f17435d0308c0595b7aa9e7d93c4e133533f4ddc308741ffdd4286de3465968b",
+  "network_policy": "deny network*",
+  "observed_summary": [
+    "",
+    "----------------------------------------------------------------------",
+    "Ran 22 tests in 0.100s",
+    "",
+    "OK"
+  ]
+}

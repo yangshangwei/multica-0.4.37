@@ -1,0 +1,37 @@
+{
+  "started_at": "2026-11-03T02:39:40.655925+00:00",
+  "database": "multica_detail_20261103_080906_handler",
+  "package": "./internal/handler",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-p",
+    "2",
+    "-count=1",
+    "./internal/handler",
+    "-run",
+    "^TestCollaborationCreationPolicyHTTPRejectsPresentInvalidEnums$"
+  ],
+  "output": "/tmp/multica-detail-verification-20261103/server-review-creation-policy-enum-red-1-20261103-103940.jsonl",
+  "exit_code": 1,
+  "inventory": {
+    "pass": [
+      "TestCollaborationCreationPolicyHTTPRejectsPresentInvalidEnums/empty",
+      "TestCollaborationCreationPolicyHTTPRejectsPresentInvalidEnums/unknown"
+    ],
+    "fail": [
+      "TestCollaborationCreationPolicyHTTPRejectsPresentInvalidEnums/null",
+      "TestCollaborationCreationPolicyHTTPRejectsPresentInvalidEnums/number",
+      "TestCollaborationCreationPolicyHTTPRejectsPresentInvalidEnums/object",
+      "TestCollaborationCreationPolicyHTTPRejectsPresentInvalidEnums/array",
+      "TestCollaborationCreationPolicyHTTPRejectsPresentInvalidEnums"
+    ],
+    "skip": []
+  }
+}

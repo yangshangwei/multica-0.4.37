@@ -140,10 +140,7 @@ func TestAdminCollaborationLifecyclePreservesCreatorAndRealActor(t *testing.T) {
 
 func TestAdminCollaborationReopenAssignsExistingParticipantAtomically(t *testing.T) {
 	f := newAdminCollaborationFixture(t)
-	closeParams := lifecycleParams(t, f.collaborationQueueFixture, "complete", "done", 1, 1)
-	if _, err := f.svc.ChangeLifecycle(f.ctx, closeParams); err != nil {
-		t.Fatal(err)
-	}
+	f.closeAsCreator(t)
 	// Retained information history cannot become a stale return-to obligation
 	// when administration assigns the reopened responsibility to someone else.
 	information := f.fx.Insert(t, "issue_handoff", testutil.Cols{"issue_id": f.issue.Issue.ID, "actor_user_id": f.creator,

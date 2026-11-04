@@ -6,6 +6,7 @@ import { TestApiClient } from "../fixtures";
 import { authenticateCollaborationEditor } from "./collaboration-editing";
 import { memoryAuthority, memoryEnvironment } from "./collaboration-memory";
 import { nativeScreenshot, selectDesktopWorkspace } from "./collaboration-native";
+import { revealCollaborationDisclosure } from "./collaboration-disclosures";
 
 export const digest = (text: string) => createHash("sha256").update(text).digest("hex");
 export const sourcePanel = (page: Page) => page.getByRole("region", { name: "Knowledge candidates", exact: true });
@@ -90,6 +91,7 @@ export async function openKnowledge(page: Page, actor: TestApiClient, path: stri
   observeKnowledgeHints(page);
   await authenticateCollaborationEditor(page, actor.getToken()!);
   await page.goto(path);
+  await revealCollaborationDisclosure(page, "Knowledge candidates");
   await expect(sourcePanel(page)).toBeVisible();
 }
 

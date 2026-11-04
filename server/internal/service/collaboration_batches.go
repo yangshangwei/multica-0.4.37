@@ -154,6 +154,9 @@ func (t *collaborationQueueTx) ensureTargetChannel(ctx context.Context, target d
 }
 
 func (t *collaborationQueueTx) appendInput(ctx context.Context, p CollaborationSubmitCommandParams) (CollaborationQueueReceipt, bool, error) {
+	if code := collaborationAIPolicyRefusal(t.access.AIPolicy); code != "" {
+		return t.receipt(code, http.StatusConflict), false, nil
+	}
 	if !t.access.Capabilities.SubmitCommand || (t.access.Issue.AdmissionStatus != "not_required" && t.access.Issue.AdmissionStatus != "accepted") {
 		return t.receipt("command_unavailable", http.StatusConflict), false, nil
 	}

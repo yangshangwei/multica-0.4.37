@@ -4,6 +4,7 @@ import { test, expect, type Page } from "@playwright/test";
 import pg from "pg";
 import { TestApiClient } from "./fixtures";
 import { selectCollaborationRecipient } from "./fixtures/collaboration-offline-handoff";
+import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
 
 const apiUrl = process.env.COLLABORATION_E2E_API_URL;
 type Snapshot = { id: string; collaboration_revision: string; lifecycle_epoch: string; write_context: { participant_epoch: string; account_epoch: string } };
@@ -144,6 +145,7 @@ test("Web creates one private issue after lost upload/create responses and revok
     const commentReceipt = await posted.json();
     expect(commentReceipt.attachment_ids).toHaveLength(1);
     const imageId = commentReceipt.attachment_ids[0];
+    await revealCollaborationDisclosure(recipientPage, "Attachments");
     const recipientAttachments = recipientPage.getByRole("region", { name: "Attachments", exact: true });
     await expect(recipientAttachments.getByRole("button", { name: "Preview comment-preview.png", exact: true })).toBeVisible();
 
@@ -237,7 +239,7 @@ test("Web explicitly resubmits rejected creation input without losing files or r
     const rejectedInput: unknown = refusal.request().postDataJSON();
     expect(await (await resultResponse).json()).toEqual({ request_id: createKeys[0], source_workspace_id: workspace.id,
       actor_user_id: actor.id, outcome: "rejected", code: "account_unavailable" });
-    const message = "The issue was not created. Your draft and files are preserved; you can submit again.";
+    const message = "The issue was not created. Your draft and files are preserved.";
     await expect(dialog.getByText(message, { exact: true })).toBeVisible();
     await expect(dialog.getByLabel("Title", { exact: true })).toBeEnabled();
     await expect(dialog.getByRole("checkbox", { name: "Include correction-note.txt", exact: true })).toBeChecked();

@@ -90,3 +90,10 @@ it("accepts only explicitly redacted original outcomes without current resource 
     expect(parseCollaborationSwitchReceipt({ ...redacted, ...patch })).toBeNull();
   }
 });
+
+it("retains a manual Switch refusal with no execution side effects or private data", () => {
+  const manual = { redacted: true, protocol_version: 2, issue_id: id, request_id: "original", action: input.action, code: "task_manual", status: 409 };
+  expect(parseCollaborationSwitchReceipt(manual)).toEqual(manual);
+  expect(parseCollaborationSwitchReceipt({ ...manual, status: 400 })).toBeNull();
+  expect(parseCollaborationSwitchReceipt({ ...manual, status: 200 })).toBeNull();
+});

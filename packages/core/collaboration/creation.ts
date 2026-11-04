@@ -49,6 +49,7 @@ export function prepareCollaborationCreation(form: CollaborationDeliveryForm, re
   return CollaborationCreationDraftSchema.parse({ kind: "creation", scope: form.scope, draftId: form.draftId, requestId, createdAt: Date.now(),
     input: { source_workspace_id: form.scope.context.sourceWorkspaceId, title: form.title, description: form.content,
       ...form.initialFields,
+      ai_policy: form.aiPolicy ?? "assisted",
       handler_user_id: form.recipient?.user_id ?? form.scope.userId,
       ...(form.selectedAttachmentIds.length ? { draft_id: form.draftId, attachment_ids: form.selectedAttachmentIds } : {}) } });
 }

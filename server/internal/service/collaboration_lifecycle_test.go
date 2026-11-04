@@ -41,6 +41,51 @@ func lifecycleParams(t *testing.T, f *collaborationQueueFixture, action, target 
 	return p
 }
 
+// Successful completion fixtures explicitly deliver the current handler's
+// result first. Keep lifecycleParams unchanged for missing-delivery, stale and
+// role refusals. Self-handled fixtures record their result atomically instead.
+func deliveredCompletionParams(t *testing.T, f *collaborationQueueFixture, target string) CollaborationLifecycleParams {
+	t.Helper()
+	f.fx.Cleanup(t, `DELETE FROM issue_handoff WHERE issue_id=$1`, f.issue.Issue.ID)
+	access := mustAccess(t, f, f.ctx)
+	delivery, err := f.svc.DeliveryView(f.ctx, access)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var submission *pgtype.UUID
+	if delivery != nil && delivery.Current != nil {
+		submission = &delivery.Current.ID
+	} else if access.Issue.AssigneeID != access.Issue.CreatorID {
+		handler := access.Issue.AssigneeID
+		handlerCtx := collaborationContext(util.UUIDToString(handler))
+		if _, password := auth.PasswordSessionFromContext(f.ctx); password {
+			credential, err := f.svc.Queries.GetPasswordCredential(f.ctx, handler)
+			if err != nil {
+				t.Fatal(err)
+			}
+			handlerCtx = auth.WithPasswordSession(handlerCtx, auth.PasswordSession{UserID: util.UUIDToString(handler), Version: credential.SessionVersion, Kind: "jwt"})
+		}
+		handlerAccess := mustAccess(t, f, handlerCtx)
+		p := handoffAcceptance(t, f, access.Revision, "Completed the requested work and recorded its result.")
+		p.ExpectedLifecycleEpoch = handlerAccess.LifecycleEpoch
+		p.ExpectedParticipantEpoch, p.ExpectedAccountEpoch = handlerAccess.ParticipantEpoch.Int64, handlerAccess.AccountEpoch.Int64
+		r, err := f.svc.SubmitAcceptance(handlerCtx, p)
+		if err != nil || r.DeliveryConfirmation == nil {
+			t.Fatalf("prepare formal delivery: %+v %v", r, err)
+		}
+		submission = &r.DeliveryConfirmation.SubmissionID
+		access = mustAccess(t, f, f.ctx)
+	}
+	p := lifecycleParams(t, f, "complete", target, access.Revision, access.LifecycleEpoch)
+	p.ExpectedParticipantEpoch, p.ExpectedAccountEpoch = access.ParticipantEpoch.Int64, access.AccountEpoch.Int64
+	if submission != nil {
+		p.SubmissionID = submission
+	} else {
+		p.Note, p.Basis = "Completed the requested work and recorded its result.", "The requested work and supporting checks are complete."
+	}
+	return p
+}
+
 func statusParams(t *testing.T, f *collaborationQueueFixture, target string, revision int64) CollaborationStatusParams {
 	t.Helper()
 	options, err := f.svc.StatusOptions(f.ctx, f.issue.Issue.ID, "change_status")
@@ -80,13 +125,17 @@ func TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue(t *testing.T
 			f.fx.Exec(t, `DELETE FROM member WHERE workspace_id=$1 AND user_id=$2`, f.workspace, f.creator)
 			f.fx.Exec(t, `UPDATE collaboration_execution_gate SET enabled=false, creation_enabled=false WHERE id=1`)
 			p := lifecycleParams(t, f, tc.action, tc.target, 1, 1)
+			if tc.action == "complete" {
+				p = deliveredCompletionParams(t, f, tc.target)
+			}
+			beforeClose := mustAccess(t, f, f.ctx)
 			r, err := f.svc.ChangeLifecycle(f.ctx, p)
 			stopped, found := groupControlResult(r.Execution, run.GroupID)
-			if err != nil || !found || r.QueueState != "closed" || r.ControlVersion != 2 || r.CollaborationRevision != 2 || stopped.GroupSettled != (tc.attempts == 0) {
+			if err != nil || !found || r.QueueState != "closed" || r.ControlVersion != 2 || r.CollaborationRevision != beforeClose.Revision+1 || stopped.GroupSettled != (tc.attempts == 0) {
 				t.Fatalf("close: %+v %v", r, err)
 			}
-			if f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND status=$2 AND assignee_id=$3 AND creator_id=$4`, f.issue.Issue.ID, tc.target, f.handler, f.creator) != 1 ||
-				f.fx.Count(t, `SELECT count(*) FROM issue_collaboration WHERE issue_id=$1 AND revision=2 AND authority_epoch=2 AND lifecycle_epoch=2 AND active_information_request_id IS NULL`, f.issue.Issue.ID) != 1 ||
+			if f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND status=$2 AND assignee_id=$3 AND creator_id=$4`, f.issue.Issue.ID, tc.target, beforeClose.Issue.AssigneeID, f.creator) != 1 ||
+				f.fx.Count(t, `SELECT count(*) FROM issue_collaboration WHERE issue_id=$1 AND revision=$2 AND authority_epoch=$3 AND lifecycle_epoch=2 AND active_information_request_id IS NULL`, f.issue.Issue.ID, beforeClose.Revision+1, beforeClose.AuthorityEpoch+1) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM issue_handoff WHERE id=$1 AND resolution='superseded'`, information) != 1 {
 				t.Fatal("close lost status, responsibility or lifecycle versions")
 			}
@@ -116,9 +165,9 @@ func TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue(t *testing.T
 			if _, err = f.svc.SubmitCommand(f.ctx, CollaborationSubmitCommandParams{CollaborationQueueRequest: request, TargetID: f.targetID, InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: 1, ExpectedConfigVersion: 1, Content: "must not execute"}); err == nil {
 				t.Fatal("closed issue accepted command")
 			}
-			p = lifecycleParams(t, f, "reopen", "todo", 2, 2)
+			p = lifecycleParams(t, f, "reopen", "todo", r.CollaborationRevision, 2)
 			r, err = f.svc.ChangeLifecycle(f.ctx, p)
-			if err != nil || r.QueueState != "paused" || r.ControlVersion != 3 || r.CollaborationRevision != 3 {
+			if err != nil || r.QueueState != "paused" || r.ControlVersion != 3 || r.CollaborationRevision != beforeClose.Revision+2 {
 				t.Fatalf("reopen: %+v %v", r, err)
 			}
 			after, err := f.svc.Queries.GetCollaborationRun(f.ctx, db.GetCollaborationRunParams{SessionID: f.issue.SessionID, RunID: run.ID})
@@ -126,7 +175,7 @@ func TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue(t *testing.T
 				t.Fatalf("reopen rewrote old run: %+v %v", after, err)
 			}
 			if f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE issue_id=$1`, f.issue.Issue.ID) != 1 ||
-				f.fx.Count(t, `SELECT count(*) FROM issue_collaboration WHERE issue_id=$1 AND revision=3 AND authority_epoch=3 AND lifecycle_epoch=3`, f.issue.Issue.ID) != 1 ||
+				f.fx.Count(t, `SELECT count(*) FROM issue_collaboration WHERE issue_id=$1 AND revision=$2 AND authority_epoch=$3 AND lifecycle_epoch=3`, f.issue.Issue.ID, beforeClose.Revision+2, beforeClose.AuthorityEpoch+2) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=ANY($1::uuid[]) AND state='cancelled'`, []pgtype.UUID{second.CommandID, third.CommandID}) != 2 {
 				t.Fatal("reopen duplicated the session or resurrected cancelled commands")
 			}
@@ -216,7 +265,7 @@ func TestCollaborationStatusChangesOnlyStatusAndRecordsIteration(t *testing.T) {
 	run := f.run(t, command, 1)
 	waiting := f.submit(t, f.creator, "waiting input")
 	beforeNotifications := f.fx.Count(t, `SELECT count(*) FROM collaboration_notification WHERE issue_id=$1`, f.issue.Issue.ID)
-	for i, target := range []string{"blocked", "in_review"} {
+	for i, target := range []string{"blocked", "in_progress"} {
 		p := statusParams(t, f, target, int64(i+1))
 		r, err := f.svc.ChangeStatus(collaborationContext(f.handler), p)
 		if err != nil || r.Code != "status_changed" || r.ControlVersion != 1 || r.QueueState != "active" {
@@ -234,7 +283,7 @@ func TestCollaborationStatusChangesOnlyStatusAndRecordsIteration(t *testing.T) {
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_notification WHERE issue_id=$1`, f.issue.Issue.ID) != beforeNotifications {
 		t.Fatal("manual status changed authority, information request, queue or notifications")
 	}
-	if f.fx.Count(t, `SELECT count(*) FROM iteration_event WHERE iteration_id=$1 AND actor->>'user_id'=$2 AND after_facts->>'status_key'=ANY($3::text[])`, iid, f.handler, []string{"blocked", "in_review"}) != 2 ||
+	if f.fx.Count(t, `SELECT count(*) FROM iteration_event WHERE iteration_id=$1 AND actor->>'user_id'=$2 AND after_facts->>'status_key'=ANY($3::text[])`, iid, f.handler, []string{"blocked", "in_progress"}) != 2 ||
 		f.fx.Count(t, `SELECT count(*) FROM collaboration_event WHERE issue_id=$1 AND kind='status_changed' AND actor_user_id=$2 AND payload->>'previous_status'=ANY($3::text[])`, f.issue.Issue.ID, f.handler, []string{"todo", "blocked"}) != 2 {
 		t.Fatal("manual status lost atomic actor/before/after audit")
 	}
@@ -246,7 +295,7 @@ func TestCollaborationStatusChangesOnlyStatusAndRecordsIteration(t *testing.T) {
 
 func TestCollaborationStatusOptionsAreScopedAndRefusalsReplay(t *testing.T) {
 	f := newCollaborationLifecycleFixture(t)
-	custom := f.fx.Insert(t, "issue_status", testutil.Cols{"workspace_id": f.workspace, "key": "qa_ready", "name": "Ready", "category": "in_review", "color": "#000000"})
+	custom := f.fx.Insert(t, "issue_status", testutil.Cols{"workspace_id": f.workspace, "key": "qa_ready", "name": "Ready", "category": "in_progress", "color": "#000000"})
 	p := statusParams(t, f, "qa_ready", 1)
 	f.fx.Exec(t, `UPDATE issue_status SET archived_at=now(), updated_at=now() WHERE id=$1`, custom)
 	r, err := f.svc.ChangeStatus(f.ctx, p)
@@ -267,7 +316,7 @@ func TestCollaborationStatusOptionsAreScopedAndRefusalsReplay(t *testing.T) {
 	if err != nil || !reflect.DeepEqual(original, r) || f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND status='todo'`, f.issue.Issue.ID) != 1 {
 		t.Fatalf("reprojection changed historical receipt or retried mutation: %+v %v", original, err)
 	}
-	for _, target := range []string{"done", "cancelled", "unknown"} {
+	for _, target := range []string{"in_review", "done", "cancelled", "unknown"} {
 		p = statusParams(t, f, target, 1)
 		if _, err = f.svc.ChangeStatus(f.ctx, p); !collaborationErrorCode(err, "status_unavailable") {
 			t.Fatalf("manual status accepted invalid category: %s %v", target, err)
@@ -280,7 +329,7 @@ func TestCollaborationStatusOptionsAreScopedAndRefusalsReplay(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, option := range opts.Options {
-		if option.Key == "other_only" || option.Category == "done" || option.Category == "cancelled" {
+		if option.Key == "other_only" || option.Category == "in_review" || option.Category == "done" || option.Category == "cancelled" {
 			t.Fatalf("unavailable source option leaked: %+v", option)
 		}
 	}
@@ -295,7 +344,7 @@ func TestCollaborationStatusRefusalReplayDoesNotRestoreIneligibleOptions(t *test
 	for _, scenario := range []string{"ended", "revoked_manager"} {
 		t.Run(scenario, func(t *testing.T) {
 			f := newCollaborationLifecycleFixture(t)
-			custom := f.fx.Insert(t, "issue_status", testutil.Cols{"workspace_id": f.workspace, "key": "ready", "name": "Ready", "category": "in_review", "color": "#000000"})
+			custom := f.fx.Insert(t, "issue_status", testutil.Cols{"workspace_id": f.workspace, "key": "ready", "name": "Ready", "category": "in_progress", "color": "#000000"})
 			p := statusParams(t, f, "ready", 1)
 			actor := f.creator
 			if scenario == "revoked_manager" {
@@ -308,7 +357,7 @@ func TestCollaborationStatusRefusalReplayDoesNotRestoreIneligibleOptions(t *test
 				t.Fatalf("initial refusal: %+v %v", refused, err)
 			}
 			if scenario == "ended" {
-				closeRequest := lifecycleParams(t, f, "complete", "done", 1, 1)
+				closeRequest := deliveredCompletionParams(t, f, "done")
 				if _, err = f.svc.ChangeLifecycle(f.ctx, closeRequest); err != nil {
 					t.Fatal(err)
 				}
@@ -337,13 +386,14 @@ func TestCollaborationLifecycleRequiredWritesRollbackAndLostCommitRecovers(t *te
 			f := newCollaborationLifecycleFixture(t)
 			run := f.run(t, f.submit(t, f.handler, "current"), 1)
 			f.submit(t, f.creator, "waiting")
-			p := lifecycleParams(t, f, "complete", "done", 1, 1)
+			p := deliveredCompletionParams(t, f, "done")
+			beforeClose := mustAccess(t, f, f.ctx)
 			f.svc.TxStarter = workflowFaultStarter{TxStarter: f.pool, needle: needle}
 			if _, err := f.svc.ChangeLifecycle(f.ctx, p); err == nil {
 				t.Fatal("injected failure was ignored")
 			}
-			if f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND status='todo'`, f.issue.Issue.ID) != 1 ||
-				f.fx.Count(t, `SELECT count(*) FROM issue_collaboration WHERE issue_id=$1 AND revision=1 AND lifecycle_epoch=1`, f.issue.Issue.ID) != 1 ||
+			if f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND status=$2`, f.issue.Issue.ID, beforeClose.Issue.Status) != 1 ||
+				f.fx.Count(t, `SELECT count(*) FROM issue_collaboration WHERE issue_id=$1 AND revision=$2 AND lifecycle_epoch=1`, f.issue.Issue.ID, beforeClose.Revision) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND queue_state='active' AND control_version=1 AND active_group_id=$2`, f.targetID, run.GroupID) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE session_id=$1 AND state='waiting'`, f.issue.SessionID) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_operation WHERE scope_id=$1 AND request_id=$2`, f.issue.Issue.ID, p.RequestID) != 0 {
@@ -352,7 +402,7 @@ func TestCollaborationLifecycleRequiredWritesRollbackAndLostCommitRecovers(t *te
 		})
 	}
 	f := newCollaborationLifecycleFixture(t)
-	p := lifecycleParams(t, f, "complete", "done", 1, 1)
+	p := deliveredCompletionParams(t, f, "done")
 	fault := &queueFaultStarter{TxStarter: f.pool, lostCommit: true}
 	f.svc.TxStarter = fault
 	if _, err := f.svc.ChangeLifecycle(f.ctx, p); err == nil || fault.begins.Load() != 1 {
@@ -371,7 +421,7 @@ func TestCollaborationLifecycleRequiredWritesRollbackAndLostCommitRecovers(t *te
 
 func TestCollaborationLifecycleConcurrentCloseAndSubmission(t *testing.T) {
 	f := newCollaborationLifecycleFixture(t)
-	p := lifecycleParams(t, f, "complete", "done", 1, 1)
+	p := deliveredCompletionParams(t, f, "done")
 	start := make(chan struct{})
 	done := make(chan error, 2)
 	var wg sync.WaitGroup
@@ -403,6 +453,9 @@ func TestCollaborationLifecycleRechecksCatalogAndPermitAfterLockWait(t *testing.
 			p := lifecycleParams(t, f, "complete", "finished", 1, 1)
 			sp := statusParams(t, f, "in_progress", 1)
 			run := f.run(t, f.submit(t, f.handler, "potential launch"), 0)
+			if scenario != "former_handler" {
+				p = deliveredCompletionParams(t, f, "finished")
+			}
 			tx, err := f.pool.Begin(f.ctx)
 			if err != nil {
 				t.Fatal(err)
@@ -466,9 +519,9 @@ func TestCollaborationLifecycleRechecksCatalogAndPermitAfterLockWait(t *testing.
 func TestCollaborationLifecycleVersionsRemainExact(t *testing.T) {
 	f := newCollaborationLifecycleFixture(t)
 	const large int64 = 9007199254740993
-	f.fx.Exec(t, `UPDATE issue_collaboration SET revision=$2, lifecycle_epoch=$2, authority_epoch=$2 WHERE issue_id=$1`, f.issue.Issue.ID, large)
+	f.fx.Exec(t, `UPDATE issue_collaboration SET revision=$2, lifecycle_epoch=$3, authority_epoch=$2 WHERE issue_id=$1`, f.issue.Issue.ID, large-1, large)
 	f.fx.Exec(t, `UPDATE collaboration_session SET control_version=$2 WHERE id=$1`, f.issue.SessionID, large)
-	p := lifecycleParams(t, f, "complete", "done", large, large)
+	p := deliveredCompletionParams(t, f, "done")
 	r, err := f.svc.ChangeLifecycle(f.ctx, p)
 	if err != nil {
 		t.Fatal(err)
@@ -511,7 +564,7 @@ func TestCollaborationStatusOptionsRequireEligibleRoleAndActualCatalog(t *testin
 
 func TestCollaborationLifecycleConcurrentSameRequestHasOneEffect(t *testing.T) {
 	f := newCollaborationLifecycleFixture(t)
-	p := lifecycleParams(t, f, "complete", "done", 1, 1)
+	p := deliveredCompletionParams(t, f, "done")
 	start := make(chan struct{})
 	type result struct {
 		receipt CollaborationWorkflowReceipt
@@ -567,8 +620,8 @@ func (tx *lifecycleCommitBarrierTx) Commit(ctx context.Context) error {
 
 func TestCollaborationStatusCatalogRowsRemainLockedUntilCommit(t *testing.T) {
 	f := newCollaborationLifecycleFixture(t)
-	custom := f.fx.Insert(t, "issue_status", testutil.Cols{"workspace_id": f.workspace, "key": "review_ready", "name": "Review ready", "category": "in_review", "color": "#000000"})
-	p := statusParams(t, f, "review_ready", 1)
+	custom := f.fx.Insert(t, "issue_status", testutil.Cols{"workspace_id": f.workspace, "key": "progress_ready", "name": "Progress ready", "category": "in_progress", "color": "#000000"})
+	p := statusParams(t, f, "progress_ready", 1)
 	ready, release := make(chan int, 1), make(chan struct{})
 	f.svc.TxStarter = lifecycleCommitBarrierStarter{TxStarter: f.pool, ready: ready, release: release}
 	ctx, cancel := context.WithTimeout(f.ctx, 10*time.Second)
@@ -616,13 +669,17 @@ func TestCollaborationLifecycleIterationFailureRollsBackCloseAndReopen(t *testin
 				f.fx.Exec(t, `UPDATE collaboration_session SET queue_state='closed' WHERE id=$1`, f.issue.SessionID)
 			}
 			p := lifecycleParams(t, f, action, target, 1, 1)
+			if action == "complete" {
+				p = deliveredCompletionParams(t, f, target)
+				before = mustAccess(t, f, f.ctx).Issue.Status
+			}
 			f.svc.TxStarter = workflowFaultStarter{TxStarter: f.pool, needle: "INSERT INTO iteration_event"}
 			if _, err := f.svc.ChangeLifecycle(f.ctx, p); err == nil {
 				t.Fatal("failed iteration fact was ignored")
 			}
 			if f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND status=$2`, f.issue.Issue.ID, before) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND queue_state=$2 AND control_version=1`, f.issue.SessionID, queue) != 1 ||
-				f.fx.Count(t, `SELECT count(*) FROM issue_collaboration WHERE issue_id=$1 AND lifecycle_epoch=1 AND revision=1`, f.issue.Issue.ID) != 1 {
+				f.fx.Count(t, `SELECT count(*) FROM issue_collaboration WHERE issue_id=$1 AND lifecycle_epoch=1 AND revision=$2`, f.issue.Issue.ID, p.ExpectedCollaborationRevision) != 1 {
 				t.Fatal("iteration error partially changed lifecycle")
 			}
 			f.svc.TxStarter = f.pool

@@ -1,0 +1,34 @@
+{
+  "started_at": "2026-11-03T05:18:04.732111+00:00",
+  "database": "multica_detail_final2_20261103_115734_router",
+  "package": "./cmd/server",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-p",
+    "2",
+    "-parallel",
+    "2",
+    "-timeout=40m",
+    "-count=1",
+    "-race",
+    "./cmd/server",
+    "-run",
+    "^TestCollaborationWorkflowRoutesPreserveResponsibilityAndMinimalRecovery$"
+  ],
+  "output": "/tmp/multica-detail-verification-20261103/callers-workflow-recovery-green-v3-20261103-131804.jsonl",
+  "exit_code": 0,
+  "inventory": {
+    "pass": [
+      "TestCollaborationWorkflowRoutesPreserveResponsibilityAndMinimalRecovery"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

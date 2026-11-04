@@ -145,8 +145,18 @@
     "parent": "Parent issue",
     "parentProjectHint": "If no project is selected, the new issue inherits its parent's project.",
     "findParent": "Find source issues by title or number",
+    "chooseParent": "Choose a parent issue (optional)",
+    "parentHint": "Optional. This collaboration issue will be a sub-issue of the task you choose.",
+    "noParent": "No parent issue",
+    "parentsLoading": "Loading tasks...",
+    "parentsUnavailable": "Tasks could not be loaded. Try again.",
+    "retryParents": "Retry loading tasks",
+    "noParents": "No tasks are available in this source workspace.",
+    "noMatchingParents": "No matching tasks.",
     "refineParents": "Showing the latest 200 matches. Refine the search to find another issue.",
     "stage": "Stage under parent",
+    "stageInputLabel": "Subtask stage number (optional)",
+    "stageHint": "Use positive whole numbers (1, 2, 3) to group the parent's subtasks into batches. Matching numbers share a batch. Leave blank if no batches are needed.",
     "iteration": "Iteration",
     "allowCompleted": "Include this completed issue in the active iteration",
     "iterationsDisabled": "Iterations are disabled in the source workspace.",
@@ -193,7 +203,7 @@
   },
   "detail": {
     "title": "Issue detail",
-    "description": "Description",
+    "description": "Requirements",
     "handler": "Handler",
     "creator": "Creator",
     "source": "Source workspace",
@@ -205,7 +215,9 @@
     "noComments": "No comments yet.",
     "unknownAuthor": "Unavailable author",
     "contentRestricted": "Files and linked workspace resources require a controlled viewer.",
-    "commentHistory": "Comment history"
+    "commentHistory": "Comment history",
+    "context": "Issue details",
+    "referenceFiles": "Files and reference material"
   },
   "workflow": {
     "title": "Issue actions",
@@ -253,7 +265,13 @@
     "handlerEffect": "Handling will return to the creator in the same operation.",
     "empty": "No active participants.",
     "creator": "Creator",
-    "handler": "Current handler"
+    "handler": "Current handler",
+    "permissionContext": "Current permissions",
+    "yourRole": "Your role",
+    "participant": "Participant",
+    "reader": "Reader",
+    "view": "Read",
+    "discuss": "Discuss"
   },
   "resources": {
     "manage": "Manage AI resources",
@@ -468,7 +486,9 @@
     },
     "mentionPeople": "People",
     "mentionAI": "AI targets",
-    "mentionAll": "@all · All participants"
+    "mentionAll": "@all · All participants",
+    "draftChanged": "The comment changed while its delivery was checked. Review your current input and publish again.",
+    "confirmAI": "Review the AI targets and their impact, then confirm by sending the comment."
   },
   "activity": {
     "title": "Activity",
@@ -538,7 +558,35 @@
     "close": "Close",
     "saved": "Your draft is saved on this device.",
     "error": "Could not create the issue. Your draft and uploaded files are preserved.",
-    "rejected": "The issue was not created. Your draft and files are preserved; you can submit again."
+    "rejected": "The issue was not created. Your draft and files are preserved.",
+    "cancel": "Cancel",
+    "rejectionReasons": {
+      "accountUnavailable": "The selected recipient is unavailable. Choose another account.",
+      "collaborationUnavailable": "This source workspace cannot create collaboration issues. Choose another workspace or ask its administrator to enable collaboration.",
+      "attachmentSelection": "Some selected files are not valid for this draft. Remove them or attach the correct files.",
+      "attachmentUnavailable": "A selected file is no longer available. Remove it or attach it again.",
+      "attachmentConsumed": "These files have already been used. Remove them and attach the files again.",
+      "parentUnavailable": "The parent issue is unavailable. Clear it or choose another issue.",
+      "projectUnavailable": "The project is unavailable. Clear it or choose another project.",
+      "reviewRequired": "This workspace requires issue review. Use its review process or ask an administrator to change the creation settings.",
+      "issueLimitReached": "This workspace has reached its issue limit. Ask an administrator to adjust the limit before submitting again.",
+      "statusUnavailable": "The selected status is unavailable. Choose a current status.",
+      "invalidPriority": "Choose a valid priority before submitting again.",
+      "invalidStartDate": "The start date is invalid. Choose a valid date or clear it.",
+      "invalidDueDate": "The due date is invalid. Choose a valid date or clear it.",
+      "invalidLabels": "Some selected labels are unavailable. Remove them or choose current labels.",
+      "propertiesUnavailable": "Some initial fields are unavailable or archived. Clear their values or ask an administrator to restore the fields.",
+      "invalidPropertyValue": "An initial field value is invalid. Check the field values before submitting again.",
+      "propertiesTooLarge": "The initial field values are too large. Shorten their text or remove values.",
+      "invalidStage": "Use a positive whole number for the stage or clear it.",
+      "parentCycle": "That parent would create a cycle. Choose a different parent or clear it.",
+      "iterationDisabled": "Iterations are disabled in this workspace. Clear the iteration or ask an administrator to enable them.",
+      "iterationUnavailable": "The selected iteration is unavailable. Clear it or choose a current iteration.",
+      "iterationChanged": "The iteration changed. Review and accept its current version before submitting again.",
+      "iterationHistory": "The selected iteration cannot accept this issue history. Clear it or choose another iteration.",
+      "iterationValidation": "The iteration no longer accepts these initial fields. Review the iteration and fields before submitting again.",
+      "unknown": "The creation was rejected. Review the inputs or ask a workspace administrator before submitting again."
+    }
   },
   "attachments": {
     "title": "Attachments",
@@ -647,7 +695,8 @@
       "selected": "Selected",
       "recent": "Recent collaboration",
       "all": "All accounts"
-    }
+    },
+    "accountId": "Account ID: {{id}}"
   },
   "memory": {
     "title": "Shared context",
@@ -866,5 +915,61 @@
     "decisionAt": "Latest decision at",
     "recoveryReadError": "Local recovery entries could not be read.",
     "versionLabel": "Version"
+  },
+  "delivery": {
+    "title": "Delivered result",
+    "result": "Result",
+    "basis": "Basis",
+    "author": "Submitted by",
+    "submittedAt": "Submitted at",
+    "empty": "No result has been submitted yet.",
+    "unavailable": "Result records are unavailable on this server.",
+    "resultUnavailable": "The result is unavailable.",
+    "basisUnavailable": "The basis is unavailable.",
+    "legacy": "Delivery evidence is unavailable. Revise or resubmit before acceptance.",
+    "noAcceptanceRecorded": "No initiator acceptance is recorded for this result.",
+    "history": "Earlier results and decisions",
+    "emptyHistory": "No earlier results.",
+    "sourceComment": "Open the source comment",
+    "decisions": {
+      "accepted": "Accepted",
+      "returned": "Returned for revision",
+      "cancelled": "Submission cancelled"
+    },
+    "decidedBy": "Decision by",
+    "decisionAt": "Decided at",
+    "revisionRecipient": "Revision recipient",
+    "evidence": "Evidence files",
+    "filesUnavailable": "Some files referenced by this result are unavailable.",
+    "hint": "Describe the outcome and its basis. Files are optional.",
+    "tooLong": "Result and basis must each be no more than 64 KiB of text.",
+    "revisionReason": "Revision reason",
+    "accept": "Accept and complete",
+    "selfComplete": "Record result and complete",
+    "submit": "Submit result",
+    "return": "Return for revision",
+    "start": "Start work",
+    "more": "More actions",
+    "stages": {
+      "waiting_information": "Waiting for information",
+      "pending_acceptance": "Awaiting acceptance",
+      "legacy_review": "In review · delivery unavailable",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "preparationBlocked": "Resolve the unfinished result operation before preparing another comment as a result.",
+    "reuseFiles": "Choose shared files",
+    "clearFiles": "Clear selected files",
+    "useComment": "Use in result"
+  },
+  "policy": {
+    "title": "AI participation",
+    "manual": "Manual",
+    "assisted": "Assisted",
+    "unknown": "Policy unavailable",
+    "change": "Change AI policy",
+    "manualHint": "New AI input and execution are disabled for this issue. Existing runs retain their stop confirmation and history.",
+    "assistedHint": "AI use requires current authorization. Changing this policy does not resume paused work.",
+    "creationHint": "Manual issues use human comments and results. Assisted issues can use authorized AI resources."
   }
 }

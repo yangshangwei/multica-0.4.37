@@ -1,4 +1,5 @@
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { type CollaborationLabel, type CollaborationPropertyDefinition, type CollaborationRecipientAccount, type CollaborationScope, type CollaborationSourceOptions, type CollaborationSourceStructure } from "@multica/core/collaboration";
 import { MAX_ISSUE_PROPERTY_ACTOR_VALUES, actorRefValuesFromValue, parseActorRef, type IssuePropertyValue } from "@multica/core/types";
 import { Button } from "@multica/ui/components/ui/button";
@@ -7,6 +8,7 @@ import { CustomPropertyValueDisplay, CustomPropertyValueInput } from "../issues/
 import { PropertyPicker, PickerItem } from "../issues/components/pickers/property-picker";
 import { useT } from "../i18n";
 import { CollaborationAccountPicker } from "./account-picker";
+import { collaborationPickerContentClass } from "./form-styles";
 
 export const collaborationSelectClass = "block min-h-11 w-full min-w-0 rounded-md border border-input bg-background px-3 text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
@@ -16,7 +18,7 @@ export function CollaborationLabelInput({ labels, selectedIds, onChange, disable
   const [search, setSearch] = useState("");
   const selected = selectedIds.map((id) => labels.find((label) => label.id === id)?.name ?? id);
   return <div className="min-w-0 space-y-2"><p className="text-body font-medium">{t(($) => $.fields.labels)}</p>
-    <PropertyPicker open={!disabled && open} onOpenChange={setOpen} searchable onSearchChange={setSearch} searchPlaceholder={t(($) => $.fields.findLabel)} align="start"
+    <PropertyPicker open={!disabled && open} onOpenChange={setOpen} searchable onSearchChange={setSearch} searchPlaceholder={t(($) => $.fields.findLabel)} contentClassName={collaborationPickerContentClass} align="start"
       triggerAriaLabel={t(($) => $.fields.labels)} triggerRender={<Button type="button" variant="outline" disabled={disabled} className="h-auto min-h-11 max-w-full whitespace-normal text-left [overflow-wrap:anywhere]" />}
       trigger={selected.length ? selected.join(", ") : t(($) => $.fields.none)}>
       <PickerItem selected={selectedIds.length === 0} onClick={() => onChange([])}>{t(($) => $.fields.none)}</PickerItem>
@@ -89,12 +91,27 @@ function CollaborationActorPropertyInput({ scope, issueId, sourceId, labelId, pi
 
 export interface CollaborationSourceSelection { projectId: string | null; parentIssueId: string | null; stage: number | null }
 
-export function CollaborationSourceInputs({ options, value, onChange, current, parentSearch, onParentSearch, disabled }: {
+export function CollaborationSourceInputs({ options, value, onChange, current, parentSearch, onParentSearch, parentsPending = false, parentsError, onRetryParents, disabled }: {
   options: CollaborationSourceOptions; value: CollaborationSourceSelection; onChange: (value: CollaborationSourceSelection) => void;
   current?: CollaborationSourceStructure; parentSearch: string; onParentSearch: (search: string) => void; disabled: boolean;
+  parentsPending?: boolean; parentsError?: unknown; onRetryParents?: () => void;
 }) {
   const { t } = useT("collaboration");
   const id = useId();
+  const [parentOpen, setParentOpen] = useState(false);
+  const [chosenParent, setChosenParent] = useState<CollaborationSourceOptions["parents"][number] | null>(null);
+  const searchInput = useRef<HTMLInputElement>(null);
+  const selectedParent = options.parents.find((parent) => parent.id === value.parentIssueId)
+    ?? (chosenParent?.id === value.parentIssueId ? chosenParent : null)
+    ?? (current?.parent_issue?.id === value.parentIssueId ? current.parent_issue : null);
+  const parentLabel = value.parentIssueId ? [selectedParent?.identifier, selectedParent?.name].filter(Boolean).join(" ") || value.parentIssueId
+    : t(($) => $.fields.chooseParent);
+  const chooseParent = (parent: CollaborationSourceOptions["parents"][number] | null) => {
+    setChosenParent(parent);
+    onChange({ ...value, parentIssueId: parent?.id ?? null, stage: parent ? value.stage : null });
+    setParentOpen(false);
+  };
+  const parentsReady = !parentsPending && !parentsError;
   return <fieldset disabled={disabled} className="min-w-0 space-y-4">
     <div className="space-y-2"><label htmlFor={`${id}-project`} className="text-body">{t(($) => $.fields.project)}</label>
       <select id={`${id}-project`} value={value.projectId ?? ""} className={collaborationSelectClass} onChange={(event) => onChange({ ...value, projectId: event.target.value || null })}>
@@ -103,19 +120,32 @@ export function CollaborationSourceInputs({ options, value, onChange, current, p
         {options.projects.map((project) => <option key={project.id} value={project.id}>{project.name}</option>)}
       </select>
     </div>
-    <div className="space-y-2"><label htmlFor={`${id}-search`} className="text-body">{t(($) => $.fields.findParent)}</label>
-      <Input id={`${id}-search`} value={parentSearch} maxLength={200} onChange={(event) => onParentSearch(event.target.value)} />
-      <label htmlFor={`${id}-parent`} className="block text-body">{t(($) => $.fields.parent)}</label>
-      <select id={`${id}-parent`} value={value.parentIssueId ?? ""} className={collaborationSelectClass} onChange={(event) => onChange({ ...value, parentIssueId: event.target.value || null })}>
-        <option value="">{t(($) => $.fields.none)}</option>
-        {value.parentIssueId && !options.parents.some((item) => item.id === value.parentIssueId) && <option value={value.parentIssueId}>{current?.parent_issue?.id === value.parentIssueId ? current.parent_issue.name || value.parentIssueId : value.parentIssueId}</option>}
-        {options.parents.map((parent) => <option key={parent.id} value={parent.id}>{parent.identifier} {parent.name}</option>)}
-      </select>
-      {options.parents_truncated && <p className="text-caption text-muted-foreground">{t(($) => $.fields.refineParents)}</p>}
+    <div className="min-w-0 space-y-2"><p className="text-body">{t(($) => $.fields.parent)}</p>
+      <PropertyPicker open={!disabled && parentOpen} onOpenChange={setParentOpen} searchable onSearchChange={onParentSearch}
+        searchPlaceholder={t(($) => $.fields.findParent)} searchMaxLength={200} searchInputRef={searchInput} contentClassName={collaborationPickerContentClass} align="start" width="w-[min(24rem,calc(100vw-2rem))]"
+        navigationResetKey={`${parentSearch}:${parentsReady ? options.parents.map((parent) => parent.id).join(",") : "pending"}`}
+        triggerAriaLabel={t(($) => $.fields.parent)} triggerAriaDescription={`${parentLabel}. ${t(($) => $.fields.parentHint)}`}
+        triggerRender={<Button type="button" variant="outline" disabled={disabled} className="h-auto min-h-11 w-full justify-between whitespace-normal text-left [overflow-wrap:anywhere]" />}
+        trigger={<><span className="min-w-0">{parentLabel}</span><ChevronDown aria-hidden className="size-4 shrink-0 text-muted-foreground" /></>}
+        footer={parentsReady && options.parents_truncated ? <p className="px-2 py-2 text-caption text-muted-foreground">{t(($) => $.fields.refineParents)}</p> : undefined}>
+        {parentsReady && value.parentIssueId && <PickerItem selected={false} emptyValue onClick={() => chooseParent(null)}><span className="flex min-h-8 items-center">{t(($) => $.fields.noParent)}</span></PickerItem>}
+        {parentsPending ? <p role="status" className="px-2 py-3 text-body text-muted-foreground">{t(($) => $.fields.parentsLoading)}</p>
+          : parentsError ? <div role="alert" className="space-y-2 px-2 py-3 text-body"><p>{t(($) => $.fields.parentsUnavailable)}</p>
+            {onRetryParents && <Button type="button" variant="outline" className="min-h-11" onClick={() => { searchInput.current?.focus(); onRetryParents(); }}>{t(($) => $.fields.retryParents)}</Button>}
+          </div>
+          : options.parents.length === 0 ? <p role="status" className="px-2 py-3 text-body text-muted-foreground">{parentSearch.trim() ? t(($) => $.fields.noMatchingParents) : t(($) => $.fields.noParents)}</p>
+          : options.parents.map((parent) => <PickerItem key={parent.id} selected={parent.id === value.parentIssueId} onClick={() => chooseParent(parent)}>
+            <span className={`min-h-8 min-w-0 py-1 [overflow-wrap:anywhere] ${parent.id === value.parentIssueId ? "font-medium text-foreground" : ""}`}>
+              <span className="text-caption text-muted-foreground">{parent.identifier}</span>{" "}{parent.name}
+            </span>
+          </PickerItem>)}
+      </PropertyPicker>
+      <p className="text-caption text-muted-foreground">{t(($) => $.fields.parentHint)}</p>
     </div>
-    <div className="space-y-2"><label htmlFor={`${id}-stage`} className="text-body">{t(($) => $.fields.stage)}</label>
-      <Input id={`${id}-stage`} type="number" min={1} max={2147483647} step={1} value={value.stage ?? ""} onChange={(event) => onChange({ ...value, stage: event.target.value === "" ? null : event.target.valueAsNumber })} />
-    </div>
+    {value.parentIssueId && <div className="space-y-2"><label htmlFor={`${id}-stage`} className="text-body">{t(($) => $.fields.stageInputLabel)}</label>
+      <Input id={`${id}-stage`} aria-describedby={`${id}-stage-hint`} className="pointer-coarse:min-h-11" type="number" min={1} max={2147483647} step={1} value={value.stage ?? ""} onChange={(event) => onChange({ ...value, stage: event.target.value === "" ? null : event.target.valueAsNumber })} />
+      <p id={`${id}-stage-hint`} className="text-caption text-muted-foreground">{t(($) => $.fields.stageHint)}</p>
+    </div>}
   </fieldset>;
 }
 

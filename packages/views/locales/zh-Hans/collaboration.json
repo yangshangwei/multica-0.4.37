@@ -145,8 +145,18 @@
     "parent": "父任务",
     "parentProjectHint": "未选择项目时，新任务沿用父任务所属项目。",
     "findParent": "按标题或编号查找来源任务",
+    "chooseParent": "选择父任务（可选）",
+    "parentHint": "可选。选择后，这项协作任务会成为它的子任务。",
+    "noParent": "不设置父任务",
+    "parentsLoading": "正在加载任务...",
+    "parentsUnavailable": "任务加载失败，请重试。",
+    "retryParents": "重新加载任务",
+    "noParents": "来源工作空间暂无可选任务。",
+    "noMatchingParents": "没有匹配的任务。",
     "refineParents": "当前显示最近 200 个结果，请缩小搜索范围查找其他任务。",
     "stage": "父任务下的阶段",
+    "stageInputLabel": "子任务阶段编号（可选）",
+    "stageHint": "填写 1、2、3 等正整数，为父任务的子任务分批。相同编号属于同一批；没有分批计划可留空。",
     "iteration": "迭代",
     "allowCompleted": "将这项已完成任务加入当前进行中的迭代",
     "iterationsDisabled": "来源工作空间已停用迭代。",
@@ -193,7 +203,7 @@
   },
   "detail": {
     "title": "任务详情",
-    "description": "描述",
+    "description": "任务要求",
     "handler": "处理人",
     "creator": "发起人",
     "source": "来源工作空间",
@@ -205,7 +215,9 @@
     "noComments": "暂无评论。",
     "unknownAuthor": "作者不可用",
     "contentRestricted": "文件及链接的工作空间资源需要通过受控查看器访问。",
-    "commentHistory": "评论历史"
+    "commentHistory": "评论历史",
+    "context": "任务信息",
+    "referenceFiles": "文件与参考材料"
   },
   "workflow": {
     "title": "任务操作",
@@ -253,7 +265,13 @@
     "handlerEffect": "处理责任将同时交回发起人。",
     "empty": "暂无有效参与者。",
     "creator": "发起人",
-    "handler": "当前处理人"
+    "handler": "当前处理人",
+    "permissionContext": "当前权限",
+    "yourRole": "你的角色",
+    "participant": "参与者",
+    "reader": "查看者",
+    "view": "查看",
+    "discuss": "参与讨论"
   },
   "resources": {
     "manage": "管理 AI 资源",
@@ -468,7 +486,9 @@
     },
     "mentionPeople": "人员",
     "mentionAI": "AI 目标",
-    "mentionAll": "@all · 全体参与者"
+    "mentionAll": "@all · 全体参与者",
+    "draftChanged": "预览期间评论已变更。请检查当前内容后重新发送。",
+    "confirmAI": "请核对 AI 对象及影响，再发送评论确认。"
   },
   "activity": {
     "title": "操作记录",
@@ -538,7 +558,35 @@
     "close": "关闭",
     "saved": "草稿已保存在此设备。",
     "error": "无法创建任务，草稿和已上传的文件仍保留。",
-    "rejected": "任务未创建，草稿和文件已保留。你可以再次提交。"
+    "rejected": "任务未创建，草稿和文件已保留。",
+    "cancel": "取消",
+    "rejectionReasons": {
+      "accountUnavailable": "所选接收人不可用。请选择其他账号。",
+      "collaborationUnavailable": "此来源工作空间无法创建协作任务。请选择其他工作空间，或请管理员开放协作功能。",
+      "attachmentSelection": "部分所选文件不适用于此草稿。请移除这些文件，或重新添加正确的文件。",
+      "attachmentUnavailable": "部分所选文件已不可用。请移除这些文件，或重新添加。",
+      "attachmentConsumed": "这些文件已用于其他提交。请移除后重新添加文件。",
+      "parentUnavailable": "父任务已不可用。请清除选择，或选择其他任务。",
+      "projectUnavailable": "项目已不可用。请清除选择，或选择其他项目。",
+      "reviewRequired": "此工作空间要求先审核任务。请通过待审流程创建，或请管理员调整创建设置。",
+      "issueLimitReached": "此工作空间的任务数量已达上限。请联系管理员调整上限后再提交。",
+      "statusUnavailable": "所选状态已不可用。请选择当前可用的状态。",
+      "invalidPriority": "请先选择有效的优先级，再提交。",
+      "invalidStartDate": "开始日期无效。请选择有效日期，或清除日期。",
+      "invalidDueDate": "截止日期无效。请选择有效日期，或清除日期。",
+      "invalidLabels": "部分所选标签已不可用。请移除这些标签，或选择当前可用的标签。",
+      "propertiesUnavailable": "部分初始字段已不可用或归档。请清除对应值，或请管理员恢复字段。",
+      "invalidPropertyValue": "部分初始字段的值无效。请检查字段值后再提交。",
+      "propertiesTooLarge": "初始字段的内容过大。请缩短文本，或移除部分字段值。",
+      "invalidStage": "阶段需填写正整数，也可以留空。",
+      "parentCycle": "所选父任务会形成循环。请选择其他父任务，或清除选择。",
+      "iterationDisabled": "此工作空间未开放迭代。请清除迭代选择，或请管理员开放迭代功能。",
+      "iterationUnavailable": "所选迭代已不可用。请清除选择，或选择当前可用的迭代。",
+      "iterationChanged": "迭代已发生变化。请检查并采用当前版本后再提交。",
+      "iterationHistory": "所选迭代无法接收此任务的历史记录。请清除选择，或选择其他迭代。",
+      "iterationValidation": "所选迭代不再接受这些初始字段。请检查迭代和字段后再提交。",
+      "unknown": "此次创建被拒绝。请检查填写内容，或联系工作空间管理员后再提交。"
+    }
   },
   "attachments": {
     "title": "附件",
@@ -646,7 +694,8 @@
       "selected": "已选",
       "recent": "最近协作",
       "all": "全部账号"
-    }
+    },
+    "accountId": "账号 ID：{{id}}"
   },
   "memory": {
     "title": "协作上下文",
@@ -865,5 +914,61 @@
     "decisionAt": "最近决定时间",
     "recoveryReadError": "无法读取本地恢复记录。",
     "versionLabel": "版本"
+  },
+  "delivery": {
+    "title": "交付结果",
+    "result": "结果",
+    "basis": "依据",
+    "author": "提交人",
+    "submittedAt": "提交时间",
+    "empty": "尚未提交结果。",
+    "unavailable": "此服务端暂不提供结果记录。",
+    "resultUnavailable": "结果不可用。",
+    "basisUnavailable": "依据不可用。",
+    "legacy": "交付证据不可用，请修改或重新提交后再验收。",
+    "noAcceptanceRecorded": "此结果未记录发起人验收。",
+    "history": "历史结果与决定",
+    "emptyHistory": "暂无更早的结果。",
+    "sourceComment": "查看来源评论",
+    "decisions": {
+      "accepted": "已验收",
+      "returned": "已退回修改",
+      "cancelled": "提交已取消"
+    },
+    "decidedBy": "决定人",
+    "decisionAt": "决定时间",
+    "revisionRecipient": "修改接收人",
+    "evidence": "依据文件",
+    "filesUnavailable": "此结果引用的部分文件不可用。",
+    "hint": "说明交付结果及判断依据，文件可选。",
+    "tooLong": "结果与依据的文本大小均不能超过 64 KiB。",
+    "revisionReason": "修改原因",
+    "accept": "验收并完成",
+    "selfComplete": "记录结果并完成",
+    "submit": "提交结果",
+    "return": "退回修改",
+    "start": "开始处理",
+    "more": "更多操作",
+    "stages": {
+      "waiting_information": "等待补充信息",
+      "pending_acceptance": "等待验收",
+      "legacy_review": "审核中 · 交付证据不可用",
+      "completed": "已完成",
+      "cancelled": "已取消"
+    },
+    "preparationBlocked": "请先处理当前结果未完成的操作，再引用另一条评论。",
+    "reuseFiles": "选择已共享文件",
+    "clearFiles": "清除所选文件",
+    "useComment": "引用为结果"
+  },
+  "policy": {
+    "title": "AI 参与方式",
+    "manual": "手动处理",
+    "assisted": "AI 辅助",
+    "unknown": "策略不可用",
+    "change": "修改 AI 策略",
+    "manualHint": "此任务不接受新的 AI 输入或执行，已有执行的停止确认与历史仍会保留。",
+    "assistedHint": "使用 AI 仍需当前授权，修改策略不会恢复已暂停的执行。",
+    "creationHint": "手动任务通过评论和结果交付协作，AI 辅助任务可使用已授权资源。"
   }
 }

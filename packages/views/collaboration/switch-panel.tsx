@@ -26,7 +26,7 @@ export function CollaborationSwitchPanel({ scope, issue, targetId, locked, submi
   const [error, setError] = useState<unknown>(null);
   const query = useQuery({ ...collaborationSwitchProposalsOptions(client, scope, issue.id, targetId), enabled: open });
   const target = issue.execution?.targets.find((item) => item.id === targetId);
-  const canOrganize = canOrganizeCollaborationResources(scope, issue);
+  const canOrganize = issue.ai_policy !== "manual" && canOrganizeCollaborationResources(scope, issue);
   const close = () => setSelection(null);
   if (!target) return null;
   return <div className="min-w-0 space-y-3">
@@ -44,7 +44,7 @@ export function CollaborationSwitchPanel({ scope, issue, targetId, locked, submi
           <CollaborationResourceSummary resource={resource} />
           <p className="text-caption">{resource.revoked ? t(($) => $.execution.consentRevoked) : resource.consented ? t(($) => $.execution.consented) : t(($) => $.execution.consentMissing)}</p>
           {resource.owner_user_id === scope.userId && proposal.status !== "committed" && <div className="flex flex-wrap gap-2">
-            {!resource.consented && !resource.revoked && proposal.status !== "stale" && <Button variant="outline" size="sm" disabled={locked || query.isFetching || selection !== null} className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" onClick={() => setSelection({ action: "consent", issue, proposal, agentId: resource.agent_id, name: resource.agent_name || resource.agent_id })}>{t(($) => $.resources.authorize, { name: resource.agent_name || resource.agent_id })}</Button>}
+            {issue.ai_policy !== "manual" && !resource.consented && !resource.revoked && proposal.status !== "stale" && <Button variant="outline" size="sm" disabled={locked || query.isFetching || selection !== null} className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" onClick={() => setSelection({ action: "consent", issue, proposal, agentId: resource.agent_id, name: resource.agent_name || resource.agent_id })}>{t(($) => $.resources.authorize, { name: resource.agent_name || resource.agent_id })}</Button>}
             {resource.consented && !resource.revoked && <Button variant="outline" size="sm" disabled={locked || query.isFetching || selection !== null} className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" onClick={() => {
               try { setSelection({ action: "revoke", issue, draft: prepareCollaborationSwitch(scope, issue, crypto.randomUUID(), { action: "revoke_target_switch_consent", targetId, proposalId: proposal.proposal_id, agentId: resource.agent_id }, proposal) }); }
               catch (failure) { setError(failure); }
@@ -63,7 +63,7 @@ export function CollaborationSwitchPanel({ scope, issue, targetId, locked, submi
         try { await submit(prepareCollaborationSwitch(scope, selection.issue, crypto.randomUUID(), { action: "propose_target_switch", targetId, roster: collaborationResourceRoster(candidate) })); close(); }
         catch (failure) { setError(failure); }
       }} />}
-      {selection?.action === "consent" && <CollaborationResourceConsentForm scope={scope} issueId={issue.id} targetId={targetId} agentId={selection.agentId} proposalId={selection.proposal.proposal_id} name={selection.name} locked={locked} close={close} submit={submit}
+      {selection?.action === "consent" && <CollaborationResourceConsentForm scope={scope} issueId={issue.id} targetId={targetId} agentId={selection.agentId} proposalId={selection.proposal.proposal_id} name={selection.name} locked={locked} disabled={issue.ai_policy === "manual"} close={close} submit={submit}
         executionViewVersion={issue.execution?.protocol_version}
         resource={selection.proposal.resources.find((resource) => resource.agent_id === selection.agentId)}
         prepare={(identity) => prepareCollaborationSwitch(scope, selection.issue, crypto.randomUUID(), { action: "consent_target_switch", targetId, proposalId: selection.proposal.proposal_id, agentId: selection.agentId, identity: identity.identity! }, selection.proposal)} />}

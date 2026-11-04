@@ -115,6 +115,11 @@ func collaborationParentLifecycleBody(t *testing.T, shared, action, status strin
 	}
 	body := collaborationEditBodyValues()
 	body["action"], body["status"], body["status_options_version"] = action, status, options.StatusOptionsVersion
+	if action == "complete" {
+		// This fixture's creator is its current handler, so result and basis
+		// are recorded atomically with completion rather than by self-transfer.
+		body["note"], body["basis"] = "The shared child work is complete.", "The requested child work and supporting checks are complete."
+	}
 	return body
 }
 
@@ -127,7 +132,10 @@ func TestCollaborationChildCompletionWakesOrdinaryParentOnce(t *testing.T) {
 			call := func() {
 				t.Helper()
 				out := testutil.Call(t, testHandler.ChangeCollaborationLifecycle, collaborationEditRequest(shared, testUserID, key, body)).Want(http.StatusOK)
-				if len(out.Map()) != 2 || strings.Contains(out.Body.String(), parent) || strings.Contains(out.Body.String(), "Shared child reference") {
+				result := out.Map()
+				confirmation, ok := result["delivery_confirmation"].(map[string]any)
+				if len(result) != 3 || !ok || len(confirmation) != 2 || confirmation["submission_id"] == nil || confirmation["attachment_ids"] == nil ||
+					strings.Contains(out.Body.String(), parent) || strings.Contains(out.Body.String(), "Shared child reference") {
 					t.Fatal("lifecycle receipt disclosed the internal parent transition")
 				}
 			}

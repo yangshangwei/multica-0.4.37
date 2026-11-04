@@ -24,14 +24,14 @@ export function CollaborationResourcePanel({ scope, issue, locked, submit }: { s
   const [selection, setSelection] = useState<Selection | null>(null);
   const [error, setError] = useState<unknown>(null);
   const query = useQuery({ ...collaborationResourcesOptions(client, scope, issue.id), enabled: open });
-  const canOrganize = canOrganizeCollaborationResources(scope, issue) && query.data?.can_organize === true;
+  const canOrganize = issue.ai_policy !== "manual" && canOrganizeCollaborationResources(scope, issue) && query.data?.can_organize === true;
   const coherent = query.isSuccess && query.data.issue_id === issue.id.toLowerCase() && query.data.lifecycle_epoch === issue.lifecycle_epoch &&
     query.data.target_set_version === issue.execution?.target_set_version;
   const currentTarget = (target: CollaborationResources["targets"][number]) => coherent && issue.execution?.targets.some((item) =>
     item.id === target.target_id && item.kind === target.kind && item.resource_id === target.resource_id && item.target_epoch === target.target_epoch && item.config_version === target.config_version);
   const selectedTarget = selection?.action === "consent" ? selection.resources.targets.find((target) => target.target_id === selection.targetId) : undefined;
   const selectedResource = selection?.action === "consent" ? query.data?.targets.find((target) => target.target_id === selection.targetId)?.resources.find((resource) => resource.agent_id === selection.agentId) : undefined;
-  const consentCurrent = selection?.action === "consent" && selectedTarget !== undefined && currentTarget(selectedTarget) && canOfferCollaborationResources(scope, issue) &&
+  const consentCurrent = issue.ai_policy !== "manual" && selection?.action === "consent" && selectedTarget !== undefined && currentTarget(selectedTarget) && canOfferCollaborationResources(scope, issue) &&
     selection.issue.lifecycle_epoch === issue.lifecycle_epoch && selection.issue.write_context?.account_epoch === issue.write_context?.account_epoch &&
     selection.issue.write_context?.participant_epoch === issue.write_context?.participant_epoch && selectedResource?.can_consent === true && selectedResource.owner_user_id === scope.userId;
   // This is unsubmitted UI state; pending operations live in the core draft store.
@@ -66,7 +66,7 @@ export function CollaborationResourcePanel({ scope, issue, locked, submit }: { s
           <CollaborationResourceSummary resource={resource} />
           <p className="text-caption">{resource.consented ? t(($) => $.execution.consented) : t(($) => $.execution.consentMissing)}</p>
           {resource.owner_user_id === scope.userId && <div className="flex flex-wrap gap-2">
-            {resource.can_consent === true && <Button variant="outline" size="sm" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" disabled={locked || query.isFetching || !currentTarget(target) || selection !== null} onClick={() => setSelection({ action: "consent", issue, resources: query.data!, targetId: target.target_id, agentId: resource.agent_id, name: resource.agent_name || resource.agent_id })}>{t(($) => $.resources.authorize, { name: resource.agent_name || resource.agent_id })}</Button>}
+            {issue.ai_policy !== "manual" && resource.can_consent === true && <Button variant="outline" size="sm" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" disabled={locked || query.isFetching || !currentTarget(target) || selection !== null} onClick={() => setSelection({ action: "consent", issue, resources: query.data!, targetId: target.target_id, agentId: resource.agent_id, name: resource.agent_name || resource.agent_id })}>{t(($) => $.resources.authorize, { name: resource.agent_name || resource.agent_id })}</Button>}
             {resource.can_revoke === true && <Button variant="outline" size="sm" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11 [overflow-wrap:anywhere]" disabled={locked || query.isFetching || !currentTarget(target) || selection !== null} onClick={() => {
               try { setSelection({ action: "revoke", issue, resources: query.data!, draft: prepareCollaborationResource(scope, issue, query.data!, crypto.randomUUID(), { action: "revoke_grant", targetId: target.target_id, agentId: resource.agent_id }) }); }
               catch (failure) { setError(failure); }

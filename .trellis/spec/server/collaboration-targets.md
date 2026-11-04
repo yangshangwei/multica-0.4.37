@@ -63,6 +63,18 @@ A parent reference never grants ordinary execution access to shared content.
 
 ## 3. Contracts
 
+### Task-owned manual policy
+
+The persisted `issue_collaboration.ai_policy` is independent of rollout gates,
+grants, holds and termination proof. See
+[results and manual policy](./collaboration-delivery.md). Manual blocks new AI
+comment/command input, registration/resource/Switch admission, Resume,
+continuation, promotion, Claim and Permit. Transition to manual pauses and requests
+Stop through the existing machinery; retained input/history and original proof
+barriers survive. Human workflow, Stop, waiting cancellation, withdrawal and
+original-key recovery retain their normal authority. Assisted restoration never
+releases pause/hold or automatically resumes execution.
+
 ### Inputs, channels and migrations
 
 A permanent issue session owns global pause/close and event order. Targets keep
@@ -213,7 +225,9 @@ without changing that label. Capture a fresh authoritative snapshot for a new
 human action, while keeping an earlier refused key and receipt immutable.
 
 Creator `POST /api/collaboration/issues/{id}/lifecycle` with `action: complete`
-or `cancel` closes business state, pauses channels and stops live groups. Every
+requires the exact pending submission or atomic self-result contract; R38 has its
+separate scoped administrative exception. Complete or cancel closes business
+state, pauses channels and stops live groups. Every
 author's waiting command is cancelled with retained body/target/batch/sequence
 and exact automatic `issue_completed` or `issue_cancelled` actor/event/time.
 Consumed live inputs remain distinct. Closed/disabled Resume and unconfirmed

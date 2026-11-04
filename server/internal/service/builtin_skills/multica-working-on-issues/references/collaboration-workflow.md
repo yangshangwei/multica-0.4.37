@@ -55,6 +55,44 @@ the same input after conditions improve. Unknown/missing results keep the old
 key; reading or reloading never submits automatically. A result grants no issue
 or source access; successful detail recovery retains its normal authorization.
 
+## Human delivery and task AI policy
+
+Formal delivery is a human action with a nonblank result and supporting basis,
+each at most 65,536 UTF-8 bytes. Text-only delivery needs no file. The submission
+freezes its exact acceptance-handoff identity, author/time, optional source
+comment and retained issue-file IDs. Editing or deleting that comment preserves
+the submitted snapshot and evidence.
+
+The current handler submits through `acceptance-submissions`. Ordinary acceptance
+belongs to the initiator: confirm the exact pending submission in review, with
+the initiator handling it and no open information request. An initiator handling
+their own work may record result/basis and complete atomically. Returning a result
+through `acceptance-returns` requires its exact submission, a nonblank reason and
+an explicitly selected eligible recipient. Earlier results/decisions remain in
+history through resubmission and reopening. Legacy or unavailable evidence needs
+an explicit replacement. Generic status/transfer cannot create or skip acceptance.
+The existing scoped disabled-creator management completion exception remains;
+that administrative status never fabricates an initiator acceptance record.
+
+Ordinary comments publish through validated preflight and remain discussion,
+including when they describe a successful outcome. Explicit AI targeting needs
+visible impact confirmation. Keep formal submission/decision/policy changes in
+the human controls; admitted-run credentials do not acquire these rights.
+
+Task policy is `manual` or `assisted`; new and existing stored tasks default to
+assisted when no policy was supplied. An absent field from an old server is
+unknown, not verified manual enforcement. Only the initiator changes policy.
+Manual pauses and requests Stop through the existing proof-aware controls, denies
+new AI input/launch/Resume, and retains pending input, history and original
+recovery. Restoring assisted leaves queues paused until explicit authorized
+Resume. Policy, deployment admission, consent and termination proof are separate.
+
+Every human write retains its original request and observations. Result success
+or own recovery confirms only `submission_id` and the exact `attachment_ids`;
+content/file credentials remain protected. Missing or mismatched confirmation
+stays uncertain. Recognized committed refusals preserve editable input; refresh
+is an explicit new baseline, never an automatic replacement request.
+
 Human creation may author initial status, priority, dates, labels/property values
 and source structure/iteration in the same issue transaction. Later metadata
 edits use the shared PATCH; iteration membership uses the dedicated PUT with its

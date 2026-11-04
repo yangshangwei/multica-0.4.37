@@ -18,8 +18,8 @@ Every contract below is traced to source in
 
 ## Collaboration tasks require their own workflow
 
-Before collaboration commands, files, consent, recovery or knowledge proposals,
-read `references/collaboration-workflow.md`. It defines gated execution modes,
+Before collaboration commands, delivery/acceptance, files, consent, recovery or knowledge proposals,
+read `references/collaboration-workflow.md`: human delivery/policy, gated execution,
 narrow run credentials, source-bound inputs and exact-request recovery.
 Unknown protocols or unsupported actions cannot fall back to ordinary execution.
 Host permissions apply; separate directories are not an OS sandbox.

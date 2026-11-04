@@ -455,6 +455,16 @@ func (s *CollaborationService) AuthorizeTargetInputInTx(ctx context.Context, tx 
 }
 
 func lockAndAuthorizeCollaborationTargetInput(ctx context.Context, q *db.Queries, issueID pgtype.UUID, target db.CollaborationTarget) (string, error) {
+	// Every caller already owns this issue's source/session transaction. Read
+	// the same collaboration fence so direct borrowed admission cannot bypass
+	// a policy change by omitting the human capability projection.
+	state, err := q.LockIssueCollaboration(ctx, issueID)
+	if err != nil {
+		return "", err
+	}
+	if code := collaborationAIPolicyRefusal(state.AiPolicy); code != "" {
+		return code, nil
+	}
 	grants, err := q.LockCollaborationTargetGrants(ctx, target.ID)
 	if err != nil {
 		return "", err
@@ -511,6 +521,9 @@ func (s *CollaborationService) AuthorizedMentionTargets(ctx context.Context, q *
 			reason = "target_busy"
 		case configuration.Offline:
 			reason = "runtime_offline"
+		}
+		if code := collaborationAIPolicyRefusal(access.AIPolicy); code != "" {
+			reason = code
 		}
 		result = append(result, CollaborationMentionTarget{TargetID: target.ID, Kind: collaboration.TargetKind(target.Kind), ResourceID: target.ResourceID,
 			Name: configuration.Name, TargetEpoch: target.TargetEpoch, ConfigVersion: target.ConfigVersion,

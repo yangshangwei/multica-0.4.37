@@ -4,6 +4,7 @@ import type { StorageAdapter } from "../types/storage";
 import { CollaborationCreationInputSchema, CollaborationCreationFieldsSchema } from "./creation-schema";
 import { CollaborationAttachmentSelectionSchema, collaborationAttachmentIds } from "./attachment-schema";
 import { CollaborationAccountSummarySchema } from "./schema";
+import { CollaborationAIPolicySchema } from "./delivery-schema";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const prefix = "multica_collaboration_delivery:";
@@ -14,8 +15,9 @@ export const CollaborationDeliveryContextSchema = z.discriminatedUnion("kind", [
 const scopeSchema = z.strictObject({ server: z.string(), userId: uuid, context: CollaborationDeliveryContextSchema });
 const base = { scope: scopeSchema, draftId: uuid, createdAt: z.number().int().nonnegative() };
 export const CollaborationDeliveryFormSchema = z.strictObject({
-  ...base, kind: z.literal("form"), purpose: z.enum(["creation", "comment", "attachment"]),
+  ...base, kind: z.literal("form"), purpose: z.enum(["creation", "comment", "attachment", "result"]),
   title: z.string().max(1000), content: z.string().max(1_000_000),
+  basis: z.string().max(1_000_000).optional(), sourceCommentId: uuid.nullable().optional(), aiPolicy: CollaborationAIPolicySchema.optional(),
   // Unused since the shared recipient picker; kept so saved strict drafts still parse. New forms write "".
   recipientQuery: z.string().max(1000),
   recipient: CollaborationAccountSummarySchema.nullable(), selectedAttachmentIds: collaborationAttachmentIds,
@@ -23,7 +25,9 @@ export const CollaborationDeliveryFormSchema = z.strictObject({
   // A mutable form retains an unfinished numeric value; immutable requests
   // still use the stricter creation schema before any transport begins.
   initialFields: CollaborationCreationFieldsSchema.safeExtend({ stage: z.number().nullable().optional() }).optional(),
-}).refine((form) => (form.purpose === "creation") === (form.scope.context.kind === "creation") && (form.parentCommentId == null || form.purpose === "comment"));
+}).refine((form) => (form.purpose === "creation") === (form.scope.context.kind === "creation") && (form.parentCommentId == null || form.purpose === "comment") &&
+  (form.basis === undefined || form.purpose === "result") && (form.sourceCommentId == null || form.purpose === "result") &&
+  (form.aiPolicy === undefined || form.purpose === "creation"));
 const fileSchema = z.strictObject({ name: z.string().min(1), type: z.string(), size: z.number().int().nonnegative().max(104857600), sha256: z.string().regex(/^[a-f0-9]{64}$/) });
 export const CollaborationUploadDraftSchema = z.strictObject({ ...base, kind: z.literal("upload"), requestId: uuid, file: fileSchema });
 export const CollaborationCreationDraftSchema = z.strictObject({ ...base, kind: z.literal("creation"), requestId: uuid, input: CollaborationCreationInputSchema.nullable() })
@@ -140,5 +144,6 @@ export function clearCollaborationCreationDrafts(scope: { server: string; userId
 
 export function newCollaborationDeliveryForm(scope: CollaborationDeliveryScope, purpose: CollaborationDeliveryForm["purpose"]): CollaborationDeliveryForm {
   return CollaborationDeliveryFormSchema.parse({ scope: { server: scope.server, userId: scope.userId, context: scope.context }, purpose, kind: "form", draftId: crypto.randomUUID(), createdAt: Date.now(),
-    title: "", content: "", recipientQuery: "", recipient: null, selectedAttachmentIds: [] });
+    title: "", content: "", recipientQuery: "", recipient: null, selectedAttachmentIds: [],
+    ...(purpose === "result" ? { basis: "", sourceCommentId: null } : {}), ...(purpose === "creation" ? { aiPolicy: "assisted" } : {}) });
 }

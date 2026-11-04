@@ -19,10 +19,11 @@ import { recoverFocus } from "./focus";
 import { useCollaborationLabels } from "./labels";
 
 type CommentProps = { scope: CollaborationScope; issue: CollaborationIssue; comment: CollaborationComment; onReply: (comment: CollaborationComment) => void;
+  onPrepareResult?: (comment: CollaborationComment) => void;
   onLoadContent?: () => void; contentLoading?: boolean; contentError?: unknown; contentStale?: boolean };
 type Editor = { action: "edit" | "delete"; revision: string; content: string; attachmentIds: string[] };
 
-export function CollaborationCommentList({ scope, issue, comments, onReply }: Omit<CommentProps, "comment"> & { comments: CollaborationComment[] }) {
+export function CollaborationCommentList({ scope, issue, comments, onReply, onPrepareResult }: Omit<CommentProps, "comment"> & { comments: CollaborationComment[] }) {
   const drafts = useCollaborationPendingDrafts({ ...scope, issueId: issue.id });
   const pendingIds = [...new Set([...drafts.commentChanges.map((draft) => parseCollaborationCommentChangeDraft(draft).commentId),
     ...drafts.discussion.flatMap((draft) => { const id = parseCollaborationDiscussionDraft(draft).commentId; return id ? [id] : []; })])].filter((id) => !comments.some((comment) => comment.id === id));
@@ -33,13 +34,13 @@ export function CollaborationCommentList({ scope, issue, comments, onReply }: Om
   const additionalIds = [...new Set([...restoredIds, ...pendingIds])].filter((id) => !comments.some((comment) => comment.id === id));
   const byId = new Map(comments.map((comment) => [comment.id, comment]));
   return <ol className="space-y-6">
-    {[...additionalIds, ...byId.keys()].map((id) => <CommentItem key={id} scope={scope} issue={issue} commentId={id} comment={byId.get(id)} onReply={onReply} />)}
+    {[...additionalIds, ...byId.keys()].map((id) => <CommentItem key={id} scope={scope} issue={issue} commentId={id} comment={byId.get(id)} onReply={onReply} onPrepareResult={onPrepareResult} />)}
   </ol>;
 }
 
 // Keep one component identity when an individually restored comment joins a
 // loaded page, so paging cannot discard its unsent editor or recovery state.
-function CommentItem({ scope, issue, commentId, comment, onReply }: Omit<CommentProps, "comment"> & { commentId: string; comment?: CollaborationComment }) {
+function CommentItem({ scope, issue, commentId, comment, onReply, onPrepareResult }: Omit<CommentProps, "comment"> & { commentId: string; comment?: CollaborationComment }) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
   const [requestedRevision, setRequestedRevision] = useState<string | null>(null);
@@ -48,7 +49,7 @@ function CommentItem({ scope, issue, commentId, comment, onReply }: Omit<Comment
     enabled: comment === undefined || omitted && requestedRevision === comment.comment_revision });
   const restored = omitted && requestedRevision === comment.comment_revision && query.data?.comment_revision === comment.comment_revision && query.data.content_state !== "omitted";
   const current = restored ? query.data : comment ?? query.data;
-  if (current) return <CommentCard scope={scope} issue={issue} comment={current} onReply={onReply}
+  if (current) return <CommentCard scope={scope} issue={issue} comment={current} onReply={onReply} onPrepareResult={onPrepareResult}
     contentLoading={query.isFetching} contentError={requestedRevision ? query.error : undefined}
     contentStale={omitted && requestedRevision === comment.comment_revision && !!query.data && query.data.comment_revision !== comment.comment_revision}
     onLoadContent={() => {
@@ -60,7 +61,7 @@ function CommentItem({ scope, issue, commentId, comment, onReply }: Omit<Comment
   return <li><CollaborationQueryState error={query.error} retry={() => void query.refetch()} /></li>;
 }
 
-function CommentCard({ scope, issue, comment, onReply, onLoadContent, contentLoading, contentError, contentStale }: CommentProps) {
+function CommentCard({ scope, issue, comment, onReply, onPrepareResult, onLoadContent, contentLoading, contentError, contentStale }: CommentProps) {
   const { t } = useT("collaboration");
   const labels = useCollaborationLabels();
   const client = useQueryClient();
@@ -108,12 +109,17 @@ function CommentCard({ scope, issue, comment, onReply, onLoadContent, contentLoa
       <Avatar className="size-6"><AvatarImage src={comment.author?.avatar_url || undefined} alt="" /><AvatarFallback>{author.slice(0, 1)}</AvatarFallback></Avatar>
       <span className="font-medium text-foreground [overflow-wrap:anywhere]">{author}</span>
       {comment.author?.external === true && <span>{t(($) => $.detail.external)}</span>}
-      {comment.author_authority && <span>{labels.commentAuthorRole(comment.author_authority.role)}</span>}
-      <span>{comment.author_authority ? comment.author_authority.can_submit_command === true
-        ? t(($) => $.recall.authorCanSubmit) : t(($) => $.recall.authorCannotSubmit) : t(($) => $.recall.authorUnknown)}</span>
       <time dateTime={comment.created_at}>{new Date(comment.created_at).toLocaleString()}</time>
       {comment.resolved_at !== null && <span>{comment.resolved_by ? t(($) => $.commentActions.resolvedBy, { name: comment.resolved_by.name }) : t(($) => $.detail.resolved)}</span>}
     </div>
+    {comment.author_authority && <details className="min-w-0 text-caption text-muted-foreground">
+      <summary className="cursor-pointer py-1 pointer-coarse:min-h-11">{t(($) => $.participants.permissionContext)}</summary>
+      <div className="flex flex-wrap gap-x-3 gap-y-1 py-2">
+        {comment.author_authority && <span>{labels.commentAuthorRole(comment.author_authority.role)}</span>}
+        <span>{comment.author_authority ? comment.author_authority.can_submit_command === true
+          ? t(($) => $.recall.authorCanSubmit) : t(($) => $.recall.authorCannotSubmit) : t(($) => $.recall.authorUnknown)}</span>
+      </div>
+    </details>}
     {comment.parent_id && <AppLink href={accountPath({ view: "participating", issueId: issue.id, commentId: comment.parent_id })} className="inline-block py-1 text-caption text-muted-foreground underline underline-offset-2 pointer-coarse:min-h-11">{t(($) => $.commentActions.parent)}</AppLink>}
     {comment.deleted_at !== null ? <p className="text-body text-muted-foreground">{t(($) => $.detail.deleted)}</p> : omitted
       ? <div className="space-y-2"><p className="text-body text-muted-foreground">{t(($) => $.recall.omitted)}</p>
@@ -124,6 +130,7 @@ function CommentCard({ scope, issue, comment, onReply, onLoadContent, contentLoa
     {comment.deleted_at === null && !omitted && <CollaborationCommentAttachments scope={scope} issueId={issue.id} attachmentIds={comment.attachment_ids} />}
     <div className="flex flex-wrap gap-2">
       {issue.capabilities.comment === true && <Button type="button" variant="ghost" size="sm" className="pointer-coarse:min-h-11" disabled={drafts.comments.length > 0 || drafts.error} onClick={() => onReply(comment)}>{t(($) => $.commentActions.reply)}</Button>}
+      {onPrepareResult && !omitted && comment.deleted_at === null && comment.content.trim() && <Button type="button" variant="ghost" size="sm" className="pointer-coarse:min-h-11" disabled={drafts.actions.length > 0 || drafts.error} onClick={() => onPrepareResult(comment)}>{t(($) => $.delivery.useComment)}</Button>}
       {canEdit && !editor && <><Button ref={editButton} type="button" variant="ghost" size="sm" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => begin("edit")}>{t(($) => $.commentActions.edit)}</Button>
         <Button type="button" variant="ghost" size="sm" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => begin("delete")}>{t(($) => $.commentActions.delete)}</Button></>}
     </div>

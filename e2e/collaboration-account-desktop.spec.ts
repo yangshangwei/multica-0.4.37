@@ -9,11 +9,12 @@ import { TestApiClient } from "./fixtures";
 import { openDesktop, deepLink, selectDesktopWorkspace, nativeScreenshot, captureNativeSection, responseEvidence, type NativeHarness } from "./fixtures/collaboration-native";
 import { seedCollaborationResourceJourney, type CollaborationResourceSnapshot } from "./fixtures/collaboration-resources";
 import { createCollaborationWithInitialFields, exerciseCollaborationDiscussion, exerciseCollaborationFields,
-  seedCollaborationEditing } from "./fixtures/collaboration-editing";
+  revealCollaborationEditingAction, seedCollaborationEditing } from "./fixtures/collaboration-editing";
 import { attachRecordedChild, detachRecordedChild, exerciseRecordedPages, recordedAccountPath,
   removeRecordViewer, seedCollaborationRecordJourney, showRecordedUsage } from "./fixtures/collaboration-records";
 import { exerciseCollaborationResourceOffers, resourceOfferAccountPath, seedCollaborationResourceOfferJourney } from "./fixtures/collaboration-resource-offers";
 import { exerciseCollaborationCommandHistory } from "./fixtures/collaboration-command-history";
+import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
 
 // Existing-record tests use a DB seed; the named creation/attachment test below
 // uses the actual gated creation API and an explicitly enabled isolated server.
@@ -355,6 +356,7 @@ test("Desktop creates a private collaboration issue, downloads through native IP
     await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
     expect((await snapshot(page)).accountGroup!.tabs).toHaveLength(1);
     expect((await snapshot(page)).accountGroup!.tabs[0].url).toContain(`issue=${issue.id}`);
+    await revealCollaborationDisclosure(page, "Attachments");
     const attachments = page.getByRole("region", { name: "Attachments", exact: true });
     await attachments.getByRole("button", { name: "Preview desktop-note.txt", exact: true }).click();
     await expect(page.getByText(bytes.toString(), { exact: true })).toBeVisible();
@@ -382,6 +384,7 @@ test("Desktop creates a private collaboration issue, downloads through native IP
     app = native.app; page = native.page;
     await native.start();
     await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
+    await revealCollaborationDisclosure(page, "Attachments");
     await expect(page.getByRole("region", { name: "Attachments", exact: true }).getByRole("button", { name: "Preview desktop-note.txt", exact: true })).toBeVisible();
     expect((await snapshot(page)).accountGroup!.tabs).toHaveLength(1);
     expect((await snapshot(page)).accountGroup!.tabs[0].url).toContain(`issue=${issue.id}`);
@@ -406,6 +409,7 @@ test("Desktop child links, recorded pages and result notifications survive popou
     const source = await openDesktop(sourceProfile, { token: records.member.getToken()!, deepLink: `multica://account${recordedAccountPath(records).slice("/account".length)}` });
     app = source.app;
     await source.start();
+    await revealCollaborationDisclosure(source.page, "Sub-issues");
     const sourceChildren = source.page.getByRole("region", { name: "Sub-issues", exact: true });
     const childLink = sourceChildren.getByRole("link", { name: `${records.child.identifier} ${records.child.title}`, exact: true });
     await expect(childLink).toBeVisible();
@@ -419,6 +423,7 @@ test("Desktop child links, recorded pages and result notifications survive popou
     await attachRecordedChild(source.page, records);
     await expect.poll(async () => (await records.member.requestJSON<{ parent_issue_id: string | null }>(`/api/issues/${records.child.id}`)).parent_issue_id).toBe(records.issue.id);
     await deepLink(app, recordedAccountPath(records));
+    await revealCollaborationDisclosure(source.page, "Sub-issues");
     await expect(childLink).toBeVisible();
     const copied = await copyNativeAccountLink(app, source.page, recordedAccountPath(records), testInfo, "source-account");
     expect(new URL(copied).pathname + new URL(copied).search).toBe(recordedAccountPath(records));
@@ -436,6 +441,7 @@ test("Desktop child links, recorded pages and result notifications survive popou
     expect(sourceAccountUrl.pathname + sourceAccountUrl.search + sourceAccountUrl.hash).toBe(recordedAccountPath(records, true));
     const copiedRun = new URL(await copyNativeAccountLink(app, sourcePopup, recordedAccountPath(records, true), testInfo, "source-run"));
     expect(copiedRun.pathname + copiedRun.search + copiedRun.hash).toBe(recordedAccountPath(records, true));
+    await revealCollaborationDisclosure(sourcePopup, "Sub-issues");
     await expect(sourcePopup.getByRole("region", { name: "Sub-issues", exact: true }).getByRole("link", { name: `${records.child.identifier} ${records.child.title}`, exact: true })).toBeVisible();
     await showRecordedUsage(sourcePopup, records.runId);
     await nativeScreenshot(app, sourcePopup, testInfo.outputPath("desktop-record-source-popout.png"));
@@ -450,6 +456,7 @@ test("Desktop child links, recorded pages and result notifications survive popou
     const viewer = await openDesktop(viewerProfile, { token: records.viewer.getToken()!, deepLink: `multica://account${new URL(copied).search}` });
     app = viewer.app;
     await viewer.start();
+    await revealCollaborationDisclosure(viewer.page, "Sub-issues");
     const outsideChildren = viewer.page.getByRole("region", { name: "Sub-issues", exact: true });
     await expect(outsideChildren.getByText(records.child.title, { exact: true })).toBeVisible();
     await expect(outsideChildren.getByRole("link")).toHaveCount(0);
@@ -506,6 +513,8 @@ test("Desktop child links, recorded pages and result notifications survive popou
     await restarted.page.getByText("Open as new window", { exact: true }).click();
     const popup = await popupReady;
     await expect(popup.getByText(records.input, { exact: true })).toBeVisible();
+    await revealCollaborationDisclosure(popup, "Sub-issues");
+    await expect(popup.getByRole("region", { name: "Sub-issues", exact: true }).getByText(records.child.title, { exact: true })).toBeVisible();
     await expect(popup.getByRole("region", { name: "Sub-issues", exact: true }).getByRole("link")).toHaveCount(0);
     await nativeScreenshot(app, popup, testInfo.outputPath("desktop-records-outside-popout.png"));
     await removeRecordViewer(records);
@@ -550,7 +559,7 @@ test("Desktop authors initial fields and preserves discussion through shared edi
     const window = await app.browserWindow(native.page);
     await window.evaluate((target) => target.webContents.setZoomFactor(2));
     await window.dispose();
-    await native.page.getByRole("button", { name: "Edit issue", exact: true }).click();
+    await (await revealCollaborationEditingAction(native.page, "Edit issue")).click();
     const editDescription = native.page.getByLabel("Description", { exact: true });
     await editDescription.evaluate((element) => element.scrollIntoView({ block: "center" }));
     await expect(editDescription).toBeInViewport({ ratio: 1 });
@@ -584,6 +593,7 @@ test("Desktop resource owners authorize, withdraw and commit a held configuratio
     const page = native.page;
     await native.start();
     await expect(page.getByRole("heading", { name: resource.title, exact: true })).toBeVisible();
+    await revealCollaborationDisclosure(page, "AI execution");
     await page.getByRole("button", { name: "Manage AI resources", exact: true }).click();
     await page.getByRole("button", { name: "Add AI target", exact: true }).click();
     await page.getByLabel("Resource workspace", { exact: true }).selectOption(resource.workspace.id);

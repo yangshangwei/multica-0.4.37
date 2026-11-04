@@ -26,6 +26,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Collaboration recorded runs](../../server/collaboration-records.md) | Private record paging, exact usage, page-chain integrity, child hints and compatible run anchors | Current R51/R52 increment |
 | [Collaboration trigger previews](../../server/collaboration-preview-wakeup.md) | Additive grouping facts, strict peer validation and current-draft preview identity | Focused preview increment |
 | [Collaboration workbench](./collaboration-workbench.md) | Account reads, scoped creation/files, resource forms, schema boundaries and original-key recovery | Gated Web/Desktop workflow; full product pending |
+| [Collaboration results and manual policy](../../server/collaboration-delivery.md) | Exact result/decision schema, protected bounded history, confirmation and task-owned admission | Human workflow verified; general execution evidence separate |
 | [Collaboration knowledge](./collaboration-knowledge.md) | Strict projections, monotonic leases/cache erasure, exact sources and original-intent recovery | Implemented client contract; execution gate separate |
 | [Settings Recovery](../../views/frontend/settings-recovery.md) | Exact-Query denial and cancellation rollback, PAT parsing and one-time secret ownership | Active |
 | [Connection Recovery](../../desktop/frontend/connection-recovery.md) | Recovery request deadlines/cancellation, transient auth metadata and workspace query errors | Active |

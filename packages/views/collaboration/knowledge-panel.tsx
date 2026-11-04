@@ -41,6 +41,7 @@ function KnowledgeCollection({ scope, issue, target, query, page, setPage, sourc
   refreshView?: () => Promise<CollaborationKnowledgeCandidates | undefined>;
 }) {
   const { t } = useT("collaboration"); const client = useQueryClient(); const id = useId(); const busy = useRef(false);
+  const root = useRef<HTMLElement>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null), [proposal, setProposal] = useState<KnowledgeProposalMode | null>(null);
   const [intent, setIntent] = useState<KnowledgeIntent | null>(null), [, setRevision] = useState(0);
   const [feedback, setFeedback] = useState<{ text: string; failed: boolean } | null>(null);
@@ -59,6 +60,13 @@ function KnowledgeCollection({ scope, issue, target, query, page, setPage, sourc
   });
   const locked = mutation.isPending || intent !== null;
   const current = query.data;
+  const recoveryAttention = pending.length > 0 || storageError || cleanupFailed || feedback?.failed === true;
+  useEffect(() => {
+    if (!recoveryAttention) return;
+    for (let ancestor = root.current?.parentElement; ancestor; ancestor = ancestor.parentElement) {
+      if (ancestor instanceof HTMLDetailsElement) ancestor.open = true;
+    }
+  }, [recoveryAttention]);
   // Later pages cannot renew their first-page lease. Recheck from the root
   // after Core erases that boundary; human-authored drafts stay mounted.
   useEffect(() => {
@@ -136,7 +144,7 @@ function KnowledgeCollection({ scope, issue, target, query, page, setPage, sourc
   }
   // The panel's own in-memory intent is never dismissable; it still has Retry and Check.
   const dismissable = (identity: KnowledgeOperationIdentity) => unconfirmed.includes(identity.requestId) && intent?.requestId !== identity.requestId;
-  return <section id={issue ? "knowledge" : undefined} aria-labelledby={`${id}-title`} className="min-w-0 space-y-5 rounded-md border border-border p-4 sm:p-5 pointer-coarse:[&_button]:min-h-11">
+  return <section ref={root} id={issue ? "knowledge" : undefined} aria-labelledby={`${id}-title`} className="min-w-0 space-y-5 rounded-md border border-border p-4 sm:p-5 pointer-coarse:[&_button]:min-h-11">
     <div className="flex flex-wrap items-start justify-between gap-3"><div className="min-w-0 space-y-2"><h3 id={`${id}-title`} className="text-body font-semibold">{issue ? t(($) => $.knowledge.title) : t(($) => $.knowledge.managed)}</h3>
       <p className="max-w-prose text-caption text-muted-foreground">{issue ? t(($) => $.knowledge.intro) : t(($) => $.knowledge.managedIntro)}</p></div>
       {issue && sourceView?.capabilities.can_propose === true && !proposal && <Button type="button" variant="outline" disabled={locked} onClick={() => { setProposal({}); setFeedback(null); }}>{t(($) => $.knowledge.propose)}</Button>}

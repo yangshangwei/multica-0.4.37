@@ -1,0 +1,99 @@
+{
+  "phase": "baseline",
+  "locale": "en",
+  "services": {
+    "health": {
+      "status": "ok",
+      "pid": 16116,
+      "commit": "unknown",
+      "started_at": "2026-11-02T15:25:24Z"
+    },
+    "base_commit": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "api_binary_sha256": "06439cee6c7a2b1aa6741f54815ef0e6f170999ee3f7b957aa19231b9999e069"
+  },
+  "workspace_id": "2b595e6b-74dc-447c-9fae-d9ea2056b189",
+  "fixtures": [
+    {
+      "admission_status": "not_required",
+      "id": "01a19ce7-72b3-7add-b601-021e6ddba7bf",
+      "workspace_id": "2b595e6b-74dc-447c-9fae-d9ea2056b189",
+      "number": 1,
+      "identifier": "SOUR-1",
+      "title": "Alpha source planning 3a4541b9",
+      "description": null,
+      "status": "todo",
+      "status_category": "todo",
+      "status_name": "",
+      "priority": "none",
+      "assignee_type": null,
+      "assignee_id": null,
+      "creator_type": "member",
+      "creator_id": "f09e641e-3817-4e31-a18a-844b1407acb6",
+      "parent_issue_id": null,
+      "project_id": null,
+      "position": -1,
+      "stage": null,
+      "start_date": null,
+      "due_date": null,
+      "created_at": "2026-11-02T23:36:16+08:00",
+      "updated_at": "2026-11-02T23:36:16+08:00",
+      "revision": 1,
+      "last_activity_at": "2026-11-02T23:36:16.297099+08:00",
+      "metadata": {},
+      "properties": {},
+      "labels": [],
+      "current_iteration_id": null,
+      "iteration_rollover_count": 0
+    },
+    {
+      "admission_status": "not_required",
+      "id": "01a19ce7-72c4-7311-a168-a9d2766804e0",
+      "workspace_id": "2b595e6b-74dc-447c-9fae-d9ea2056b189",
+      "number": 2,
+      "identifier": "SOUR-2",
+      "title": "Beta source task 3a4541b9 — 这是一项用于检查长标题换行的来源任务，包含较长的说明和可辨识的任务内容。Beta source task 3a4541b9 — 这是一项用于检查长标题换行的来源任务，包含较长的说明和可辨识的任务内容。",
+      "description": null,
+      "status": "todo",
+      "status_category": "todo",
+      "status_name": "",
+      "priority": "none",
+      "assignee_type": null,
+      "assignee_id": null,
+      "creator_type": "member",
+      "creator_id": "f09e641e-3817-4e31-a18a-844b1407acb6",
+      "parent_issue_id": null,
+      "project_id": null,
+      "position": -2,
+      "stage": null,
+      "start_date": null,
+      "due_date": null,
+      "created_at": "2026-11-02T23:36:16+08:00",
+      "updated_at": "2026-11-02T23:36:16+08:00",
+      "revision": 1,
+      "last_activity_at": "2026-11-02T23:36:16.318314+08:00",
+      "metadata": {},
+      "properties": {},
+      "labels": [],
+      "current_iteration_id": null,
+      "iteration_rollover_count": 0
+    }
+  ],
+  "screenshots": [
+    {
+      "filename": "baseline-en-wide.png",
+      "width": 1280,
+      "height": 950,
+      "scrollWidth": 1280
+    },
+    {
+      "filename": "baseline-en-narrow.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    }
+  ],
+  "full_identifier_matches": 0,
+  "creation_posts": 0,
+  "page_errors": [],
+  "interpretation": "Baseline observation only. The old disconnected controls and complete-identifier failure were reproduced; this is not repair acceptance."
+}

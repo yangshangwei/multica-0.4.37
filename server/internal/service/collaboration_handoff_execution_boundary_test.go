@@ -135,7 +135,7 @@ func TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion(t *tes
 	formerCtx := collaborationPasswordContext(util.MustParseUUID(f.handler), 1)
 	submit := handoffAcceptance(t, f.collaborationQueueFixture, 1, "Stage result and tests are ready; the AI is still active")
 	receipt, err := f.svc.SubmitAcceptance(formerCtx, submit)
-	if err != nil || receipt.Code != "acceptance_submitted" || receipt.QueueState != "active" || before != handoffBoundaryExecutionSnapshot(t, f) {
+	if err != nil || receipt.Code != "acceptance_submitted" || receipt.DeliveryConfirmation == nil || receipt.QueueState != "active" || before != handoffBoundaryExecutionSnapshot(t, f) {
 		t.Fatalf("acceptance stopped/resumed/restarted the live permitted run: %+v %v", receipt, err)
 	}
 	creator := mustAccess(t, f.collaborationQueueFixture, f.ctx)
@@ -174,6 +174,7 @@ func TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion(t *tes
 		t.Fatal("AI success, stage submission or human validation implicitly completed the issue")
 	}
 	complete := lifecycleParams(t, f.collaborationQueueFixture, "complete", "done", current.Revision, current.LifecycleEpoch)
+	complete.SubmissionID = &receipt.DeliveryConfirmation.SubmissionID
 	beforeRefusal := handoffBoundaryExecutionSnapshot(t, f)
 	if _, err = f.svc.ChangeLifecycle(formerCtx, complete); !collaborationErrorCode(err, "forbidden") || beforeRefusal != handoffBoundaryExecutionSnapshot(t, f) {
 		t.Fatalf("former handler's successful validation granted whole completion: %v", err)

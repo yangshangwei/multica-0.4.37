@@ -1,0 +1,253 @@
+{
+  "recorded_at": "2026-11-02T13:22:05.256271+00:00",
+  "reviewer": "native trellis-check adapter_v5_review follow-up",
+  "scope": "exact frozen versioned adapter-v6 bytes; runtime copies compared read-only; full execution owned by another authorized session",
+  "verdict": "changes-required",
+  "blocking_findings_open": 1,
+  "clearance_issued": false,
+  "adapter_sha256": {
+    "go": "eabbfdfe047ec686a6e25d413be9dc14dc1ce068ac72317530d6ec049f84aa29",
+    "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "launcher_sha256": "836f2d066b74edbb14e39fda49ac314e40f11b9618cbd8d07eb44c020747ad1f",
+  "component_verdicts": {
+    "go_adapter": {
+      "verdict": "pass",
+      "blocking_findings_open": 0
+    },
+    "pnpm_adapter": {
+      "verdict": "pass",
+      "blocking_findings_open": 0
+    },
+    "launcher": {
+      "verdict": "changes-required",
+      "blocking_findings_open": 1
+    }
+  },
+  "AV5_closure": {
+    "AV5-1": "closed; both fresh and recursive executable-test paths remove API pool keys; real unchanged pure tests revalidated through original evidence",
+    "AV5-2": "partial; source parsing and downstream Bash loads are literal, but downstream Make include still evaluates the canonical file",
+    "AV5-N1": "closed; actual adapter and launcher bytes must match configuration and independent review before Make",
+    "AV5-N3": "closed for launcher default; private mode0700 HOME within evidence scope with explicit cache/browser paths and no global task-root override"
+  },
+  "findings": [
+    {
+      "id": "AV6-1",
+      "severity": "medium",
+      "blocking": true,
+      "status": "not_fixed_outside_write_scope",
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6/run-make-check.py",
+      "line": 45,
+      "related_lines": [
+        136,
+        138,
+        139
+      ],
+      "consumer_file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/Makefile",
+      "consumer_lines": [
+        8,
+        29
+      ],
+      "issue": "Shell-only canonical quoting does not preserve the safe literal contract across the real Make include/export stage.",
+      "proof": "make-loader-probe.json: under network-denied sandbox, the exact v6 canonical writer emits an accepted literal $(shell printf ... > reviewer-owned marker); real /usr/bin/make with the repository-equivalent include/export statements executes it and creates the marker. Actual private env and business Makefile were not executed.",
+      "additional_proof": "make-multiline-probe.json: a multiline value accepted by the parser and covered by the Bash contract is emitted as a literal multiline assignment; real Make rejects its second line with exit2/missing separator.",
+      "coverage_gap": "check-launcher-test.py fake Make directly launches Bash to source ENV_FILE; it does not exercise the actual Make include/export parser.",
+      "required_fix": "Reject Make-unsafe/unsupported literal values before the canonical file is created, or provide a distinct safe Make input surface. Add a network-free actual Make include/export regression and an explicit multiline acceptance/refusal contract. Preserve original test assertions and the source input file."
+    }
+  ],
+  "verified_behavior": [
+    "AV4 fail-closed ordinary go test guards remain; no unmarked/default/remote/unallocated recursion forward.",
+    "API budget remains10/1 for non-test and compile-only commands; executable Go test children drop only API pool env keys, retaining test-owned later overrides and HOME.",
+    "Fixed make-check command arguments and forwarded exit codes are preserved by fake contracts.",
+    "Actual changed adapter, launcher and source hashes, dirty candidate, missing clearance/nonprivate HOME and prior evidence overwrite are rejected by the existing contracts.",
+    "Private task HOME and build-temp scope/ownership guards are present; no global MULTICA_TASK_CONFIG_ROOT or WORKSPACES_ROOT test override is supplied.",
+    "pnpm source is byte-identical to v5, preserving the repository agent-CLI guard, selectors, worker/retry/timeout arguments and renderer/API wiring."
+  ],
+  "verification": {
+    "go_contracts": {
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1) (allow default) (deny network*)",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6/check-go-isolation-test.py"
+      ],
+      "exit_code": 0,
+      "named_pass": 17,
+      "expected_count": 17,
+      "source_sha256": "31bcefb99e7ca5265f31594aa07a56857e8701f84405b4f6cf78b5b55baee5df",
+      "log_sha256": "3f73c48dda9f96b450047007353d87fd8d02eea277531133e76a92e69090517d",
+      "network_denied": true,
+      "all_database_commands_fake": true,
+      "services_started": 0,
+      "real_provider_calls": 0
+    },
+    "launcher_contracts": {
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1) (allow default) (deny network*)",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6/check-launcher-test.py"
+      ],
+      "exit_code": 0,
+      "named_pass": 11,
+      "expected_count": 11,
+      "source_sha256": "ae7de706ba04fd11a125a436d7a2b9e92cbf276e7375fc67bb6661c34884ba0c",
+      "log_sha256": "0ee992dce75d96123ece954bc160e35d8e9cc0de8fd4624d0db1885a34a7a472",
+      "network_denied": true,
+      "all_database_commands_fake": true,
+      "services_started": 0,
+      "real_provider_calls": 0
+    },
+    "pool_artifacts": [
+      {
+        "version": "v5",
+        "actual_counts": {
+          "run": 7,
+          "pass": 3,
+          "fail": 4,
+          "skip": 0
+        },
+        "exit_code": 1,
+        "test_names": [
+          "TestPoolSizing_DefaultsWhenNothingSet",
+          "TestPoolSizing_URLParamsHonoredWhenEnvUnset",
+          "TestPoolSizing_EnvOverridesURL",
+          "TestPoolSizing_PartialURLParam",
+          "TestPoolSizing_InvalidEnvFallsBackToCodeDefault",
+          "TestPoolSizing_InvalidEnvFallsBackToURLParam",
+          "TestPoolSizing_MinClampedToMax"
+        ],
+        "actual_log_sha256": "70de5c4d115ecf831dacfa9f36f5479420ad9943e577e6841297383d6c17bcad",
+        "recorded_log_sha256_matches": true,
+        "source_hashes": {
+          "server/cmd/server/dbstats.go": {
+            "actual_sha256": "588b1a7d781c965b7d3fd525af940549ad9d8653a04b68390ff1338c3dcb7f1b",
+            "expected_sha256": "588b1a7d781c965b7d3fd525af940549ad9d8653a04b68390ff1338c3dcb7f1b",
+            "matches": true
+          },
+          "server/cmd/server/dbstats_test.go": {
+            "actual_sha256": "027dcb6059a6e0f77a09e4277ded200e81e924aae23a6cc67835737719877c71",
+            "expected_sha256": "027dcb6059a6e0f77a09e4277ded200e81e924aae23a6cc67835737719877c71",
+            "matches": true
+          }
+        },
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1) (allow default) (deny network*)",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/mc-collaboration-final5-20261102/server",
+          "test",
+          "-p",
+          "2",
+          "./cmd/server/dbstats.go",
+          "./cmd/server/dbstats_test.go",
+          "-count=1",
+          "-json"
+        ],
+        "network_denied": true,
+        "exact_file_list_excludes_DB_TestMain": true
+      },
+      {
+        "version": "v6",
+        "actual_counts": {
+          "run": 7,
+          "pass": 7,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "test_names": [
+          "TestPoolSizing_DefaultsWhenNothingSet",
+          "TestPoolSizing_URLParamsHonoredWhenEnvUnset",
+          "TestPoolSizing_EnvOverridesURL",
+          "TestPoolSizing_PartialURLParam",
+          "TestPoolSizing_InvalidEnvFallsBackToCodeDefault",
+          "TestPoolSizing_InvalidEnvFallsBackToURLParam",
+          "TestPoolSizing_MinClampedToMax"
+        ],
+        "actual_log_sha256": "0587267ab1cec4fb4eb957da46738a335bce17757ae34dfea2cd64a25ec4bc92",
+        "recorded_log_sha256_matches": true,
+        "source_hashes": {
+          "server/cmd/server/dbstats.go": {
+            "actual_sha256": "588b1a7d781c965b7d3fd525af940549ad9d8653a04b68390ff1338c3dcb7f1b",
+            "expected_sha256": "588b1a7d781c965b7d3fd525af940549ad9d8653a04b68390ff1338c3dcb7f1b",
+            "matches": true
+          },
+          "server/cmd/server/dbstats_test.go": {
+            "actual_sha256": "027dcb6059a6e0f77a09e4277ded200e81e924aae23a6cc67835737719877c71",
+            "expected_sha256": "027dcb6059a6e0f77a09e4277ded200e81e924aae23a6cc67835737719877c71",
+            "matches": true
+          }
+        },
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1) (allow default) (deny network*)",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6/check-bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/mc-collaboration-final5-20261102/server",
+          "test",
+          "-p",
+          "2",
+          "./cmd/server/dbstats.go",
+          "./cmd/server/dbstats_test.go",
+          "-count=1",
+          "-json"
+        ],
+        "network_denied": true,
+        "exact_file_list_excludes_DB_TestMain": true
+      }
+    ],
+    "python_ast": "five source files parsed successfully",
+    "runtime_copies": {
+      "check-bin/go": {
+        "exists": true,
+        "sha256": "eabbfdfe047ec686a6e25d413be9dc14dc1ce068ac72317530d6ec049f84aa29",
+        "matches_versioned_source": true
+      },
+      "check-bin/pnpm": {
+        "exists": true,
+        "sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+        "matches_versioned_source": true
+      },
+      "run-make-check.py": {
+        "exists": true,
+        "sha256": "836f2d066b74edbb14e39fda49ac314e40f11b9618cbd8d07eb44c020747ad1f",
+        "matches_versioned_source": true
+      },
+      "check-go-isolation-test.py": {
+        "exists": true,
+        "sha256": "31bcefb99e7ca5265f31594aa07a56857e8701f84405b4f6cf78b5b55baee5df",
+        "matches_versioned_source": true
+      },
+      "check-launcher-test.py": {
+        "exists": true,
+        "sha256": "ae7de706ba04fd11a125a436d7a2b9e92cbf276e7375fc67bb6661c34884ba0c",
+        "matches_versioned_source": true
+      }
+    },
+    "lint": "Repo lint not run in private-harness slice; no Python lint package installed.",
+    "typecheck": "Not applicable to this Python-only private-harness review; full candidate owner runs repository typecheck."
+  },
+  "nonblocking_notes": [
+    "The examples are candidate-specific registrations, not execution permits. The authorized final4 owner must select their own exact source/env/renderer configuration and independent review identity.",
+    "Clearance for these Go/pnpm bytes does not clear another launcher version or an overall product candidate.",
+    "Arbitrary Go flag combinations outside the fixed make-check path were not broadened or verified."
+  ],
+  "limitations": [
+    "No DB connection, creation, migration, cleanup or write; allocation and SQL commands in contract tests were fakes.",
+    "No services, GUI, provider CLIs or duplicate wholecheck started.",
+    "Existing actual dbstats pure-file tests were audited via raw logs/hashes/7 names and unchanged source hashes; not rerun by reviewer.",
+    "Shared cluster capacity, real package/GUI outcomes and current runtime configuration require the single authorized fullcheck owner.",
+    "Original fullcheck exit2 and earlier fixture failures remain unchanged."
+  ],
+  "source_files_modified": false,
+  "real_provider_calls": 0,
+  "whole_checks_started": 0,
+  "final_product_accepted": false,
+  "next_action": "Repair and independently re-review the exact replacement launcher; Go/pnpm components may reuse this scoped byte-specific pass."
+}

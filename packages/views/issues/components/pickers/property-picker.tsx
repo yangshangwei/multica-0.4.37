@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from "@multica/ui/components/ui/tooltip";
 import { isImeComposing } from "@multica/core/utils";
+import { cn } from "@multica/ui/lib/utils";
 import { useT } from "../../../i18n";
 
 const HIGHLIGHT_CLASS = "bg-accent";
@@ -92,9 +93,12 @@ export function PropertyPicker({
   side = "bottom",
   searchable = false,
   searchPlaceholder,
+  searchMaxLength,
   onSearchChange,
   navigationResetKey,
   searchInputRef,
+  listboxId,
+  contentClassName,
   header,
   tooltip,
   children,
@@ -111,11 +115,15 @@ export function PropertyPicker({
   side?: React.ComponentProps<typeof PopoverContent>["side"];
   searchable?: boolean;
   searchPlaceholder?: string | undefined;
+  searchMaxLength?: number;
   onSearchChange?: (query: string) => void;
   /** Invalidate navigation after an external result change. Typed search wins
    * over a simultaneous reset; append-only display pages may keep this key. */
   navigationResetKey?: string;
   searchInputRef?: React.Ref<HTMLInputElement>;
+  /** Opt-in native textbox relationship; children own the named listbox/options. */
+  listboxId?: string;
+  contentClassName?: string;
   /** Custom sticky header rendered above the scrollable list. Use for
    *  filter toggles, search inputs, or any UI that must stay visible while
    *  the list scrolls. The built-in `searchable` input renders just above
@@ -140,6 +148,7 @@ export function PropertyPicker({
   const accessibleTrigger = usePickerTrigger({ trigger, triggerRender, triggerAriaLabel, triggerAriaDescription });
   const [query, setQuery] = useState("");
   const highlightedIndex = useRef(-1);
+  const [activeOptionId, setActiveOptionId] = useState<string>();
   const navigation = useRef<{ key: string | undefined; items: HTMLButtonElement[] }>({ key: navigationResetKey, items: [] });
   const suppressUniqueSelection = useRef(false);
   const [tooltipHover, setTooltipHover] = useState(false);
@@ -163,7 +172,10 @@ export function PropertyPicker({
       item.classList.remove(HIGHLIGHT_CLASS);
     }
     items[index]?.classList.add(HIGHLIGHT_CLASS);
-  }, []);
+    const active = items[index];
+    setActiveOptionId(listboxId && active?.id && active.getAttribute("role") === "option" &&
+      active.closest('[role="listbox"]')?.id === listboxId ? active.id : undefined);
+  }, [listboxId]);
 
   // Resolve against the committed candidates, not the previous search DOM.
   // Also called at keydown: a child layout effect can fire Enter before this
@@ -187,8 +199,9 @@ export function PropertyPicker({
   }, [navigationResetKey, paintHighlight]);
 
   useLayoutEffect(() => {
-    syncNavigation(getItems());
-  }, [children, getItems, syncNavigation, open]);
+    if (open) syncNavigation(getItems());
+    else paintHighlight(getItems(), -1);
+  }, [children, getItems, syncNavigation, open, paintHighlight]);
 
   // Reset the search state on the open -> closed transition rather than inside
   // an open-change handler. Every picker closes itself after a selection by
@@ -263,13 +276,14 @@ export function PropertyPicker({
       ) : (
         popoverTrigger
       )}
-      <PopoverContent align={align} side={side} className={`${width} gap-0 p-0`}>
+      <PopoverContent align={align} side={side} className={cn(width, "gap-0 p-0", contentClassName)}>
         {searchable && (
           <div className="px-2 py-1.5 border-b">
             <input
               ref={searchInputRef}
               type="text"
               value={query}
+              maxLength={searchMaxLength}
               onChange={(e) => {
                 setQuery(e.target.value);
                 pendingSearchHighlight.current = true;
@@ -278,6 +292,9 @@ export function PropertyPicker({
               onKeyDown={handleKeyDown}
               placeholder={placeholder}
               aria-label={filterAria}
+              aria-controls={open ? listboxId : undefined}
+              aria-haspopup={listboxId ? "listbox" : undefined}
+              aria-activedescendant={open ? activeOptionId : undefined}
               className="w-full bg-transparent text-body placeholder:text-muted-foreground outline-none"
             />
           </div>
@@ -299,6 +316,9 @@ export function PickerItem({
   disabled,
   onClick,
   hoverClassName,
+  optionId,
+  ariaLabel,
+  className,
   tooltip,
   emptyValue = false,
   children,
@@ -307,6 +327,10 @@ export function PickerItem({
   disabled?: boolean;
   onClick: () => void;
   hoverClassName?: string;
+  /** Supplying an option ID opts this native row into listbox semantics. */
+  optionId?: string;
+  ariaLabel?: string;
+  className?: string;
   /**
    * Marks this row as the field's fixed empty value ("No project",
    * "Unassigned", "No stage"). Such a row is pinned first for the eye but
@@ -328,10 +352,16 @@ export function PickerItem({
     <button
       type="button"
       data-picker-item
+      id={optionId}
+      role={optionId ? "option" : undefined}
+      aria-label={ariaLabel}
+      aria-selected={optionId ? selected : undefined}
+      aria-disabled={optionId ? disabled === true : undefined}
+      tabIndex={optionId ? -1 : undefined}
       {...(emptyValue ? { [EMPTY_ITEM_ATTR]: "" } : {})}
       disabled={disabled}
       onClick={onClick}
-      className={`flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-left text-body ${disabled ? "opacity-50 cursor-not-allowed" : hoverClassName ?? "hover:bg-accent"} transition-colors`}
+      className={cn("flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-left text-body", disabled ? "opacity-50 cursor-not-allowed" : hoverClassName ?? "hover:bg-accent", "transition-colors", className)}
     >
       {/* min-w-0 lets long children (like truncated label names) shrink
           inside the flex row instead of pushing the selected checkmark off
@@ -341,6 +371,7 @@ export function PickerItem({
           right edge. */}
       <span className="flex min-w-0 flex-1 items-center gap-2">{children}</span>
       <Check
+        aria-hidden
         className={`h-3.5 w-3.5 shrink-0 text-muted-foreground ${
           selected ? "" : "invisible"
         }`}

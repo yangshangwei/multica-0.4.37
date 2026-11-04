@@ -1,0 +1,51 @@
+{
+  "reviewed_at": "2026-11-02T20:16:07.150188+00:00",
+  "reviewer": "/root/mainline_runtime_impact",
+  "scope": "read-only exact new mainline delta; no execution or acceptance clearance",
+  "frozen_candidate": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "mainline_head": "c6da1538a708d9a87763cdbf862df5326918082c",
+  "common_parent": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "mainline_only_commits": [
+    "4ba3a868a02e2e1e00499447c67b0f61cf3307d7",
+    "9dd8a5d99a01205d64a8be6275fca7b6a364cfdc",
+    "55bb7802f7fb99434f15ad055fc406243e2c9068",
+    "c6da1538a708d9a87763cdbf862df5326918082c"
+  ],
+  "frozen_only_commit": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "frozen_only_paths": [
+    "e2e/collaboration-memory-web.spec.ts",
+    "e2e/settings-preferences.spec.ts"
+  ],
+  "production_changed_paths": [
+    "server/internal/service/collaboration_source_fields.go",
+    "server/pkg/db/queries/collaboration_source_fields.sql",
+    "server/pkg/db/generated/collaboration_source_fields.sql.go",
+    "packages/views/collaboration/creation-form.tsx",
+    "packages/views/collaboration/account-picker.tsx",
+    "packages/views/collaboration/field-inputs.tsx",
+    "packages/views/collaboration/form-styles.ts",
+    "packages/views/collaboration/labels.ts",
+    "packages/views/collaboration/workflow.tsx",
+    "packages/views/issues/components/pickers/property-picker.tsx",
+    "packages/views/locales/en/collaboration.json",
+    "packages/views/locales/zh-Hans/collaboration.json"
+  ],
+  "production_path_count": 12,
+  "runtime_handoff_checkpoint_recall_claim_provider_implementation_changed": false,
+  "password7_spec_and_all_fixture_bytes_changed": false,
+  "shared_recipient_dependency_overlap": true,
+  "overlap_evidence": [
+    "chain-web L45/L54 and chain-desktop L40/L44 invoke changed workflow/account-picker/PropertyPicker",
+    "offline fixture L215/L221 invokes invite/transfer through changed shared controls",
+    "unchanged exact full-ID footer helper L107-L117; labels preserved; no selector failure claimed",
+    "runtime fixture L23-L25 seeds transfer via API; L116-L133 checks unchanged retained context/records"
+  ],
+  "disposition": [
+    "v10 evidence remains scoped to frozen118fc; do not relabel it as c6da mainline acceptance",
+    "later integrated candidate needs creation/source-search and handoff-recipient journey revalidation; retain both runtime specs for integrated build identity",
+    "reconcile frozen-only E2E interaction patch rather than dropping it",
+    "sqlc queries/generated output changed on mainline: prior exact-unchanged generation reuse applies only to frozen9f72 candidate; use properly source-bound later generation evidence",
+    "final paid source/CLI/build/registration identity remains pending until the final candidate is agreed and verified"
+  ],
+  "tests_builds_DB_services_network_Provider_calls": 0
+}

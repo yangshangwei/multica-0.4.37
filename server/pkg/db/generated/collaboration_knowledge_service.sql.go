@@ -808,7 +808,7 @@ func (q *Queries) LockKnowledgeRunSources(ctx context.Context, arg LockKnowledge
 }
 
 const lockKnowledgeSourceCollaboration = `-- name: LockKnowledgeSourceCollaboration :one
-SELECT issue_id, revision, authority_epoch, lifecycle_epoch, active_information_request_id, created_at FROM issue_collaboration WHERE issue_id=$1 FOR SHARE NOWAIT
+SELECT issue_id, revision, authority_epoch, lifecycle_epoch, active_information_request_id, created_at, ai_policy FROM issue_collaboration WHERE issue_id=$1 FOR SHARE NOWAIT
 `
 
 func (q *Queries) LockKnowledgeSourceCollaboration(ctx context.Context, issueID pgtype.UUID) (IssueCollaboration, error) {
@@ -821,6 +821,7 @@ func (q *Queries) LockKnowledgeSourceCollaboration(ctx context.Context, issueID 
 		&i.LifecycleEpoch,
 		&i.ActiveInformationRequestID,
 		&i.CreatedAt,
+		&i.AiPolicy,
 	)
 	return i, err
 }

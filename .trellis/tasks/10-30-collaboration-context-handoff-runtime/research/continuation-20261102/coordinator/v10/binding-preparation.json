@@ -1,0 +1,83 @@
+{
+  "recorded_at": "2026-11-02T19:51:32.932663+00:00",
+  "state": "preparatory-byte-identity-verified; full-acceptance-not-claimed",
+  "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+  "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+  "tracked_product_files": 7960,
+  "dirty_product_paths": [],
+  "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+  "framework_files": 17,
+  "byte_bindings": {
+    "go": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/go",
+      "sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+      "matches_registered_input": true
+    },
+    "pnpm": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/pnpm",
+      "sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+      "matches_registered_input": true
+    },
+    "complete_check_launcher": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/run-make-check-v10.py",
+      "sha256": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+      "matches_registered_input": true
+    },
+    "complete_check_source_env": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/check-source-v10.env",
+      "sha256": "41a20e71e0d9806867e5beba8deaac291d2a5a577255d0689701957a99e64f18",
+      "matches_registered_input": true
+    },
+    "multica_cli": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/multica",
+      "sha256": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19",
+      "matches_registered_input": true
+    },
+    "rk1_launcher": {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py",
+      "sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+      "matches_registered_input": true
+    }
+  },
+  "evidence": {
+    "source_manifest": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v10/source-manifest-118fc53e.json",
+    "source_manifest_sha256": "b4c00ed11db06532fef9b0de88179118096d0b4236113343667043c78da9bc10",
+    "RKI6_review": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/rki6-review/review.json",
+    "RKI6_review_sha256": "41b99b24d9cecd457b5a2b192af0666e356be509d270c2ccca6f50e5cc8e7672",
+    "desktop_installation": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-artifact-installation.json",
+    "desktop_installation_sha256": "9a08837f7442bd7e958b21821eda60fa5db23a94383f532dbae5de8f757b610e",
+    "v10_preparation": ".trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/preparation.json",
+    "v10_preparation_sha256": "61ef2efdb3192c8ede7db1e5ff028ec307bdcc04b03229f218040d72f73457e6",
+    "recovery_owner": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-execution-recovery.json"
+  },
+  "reuse_limits": {
+    "RKI6_normal_pass": 62,
+    "RKI6_race_pass": 62,
+    "RKI6_source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "reuse_basis": "exact same 7960-file product source and 17-file framework; independent RKI6 review pass-with-notes",
+    "runtime_model_understanding_claimed": false,
+    "wholecheck_or_password7_pass_claimed": false,
+    "H6_semantic_manual_review_required": true,
+    "result_cause_pagination_over_32_included": false
+  },
+  "real_entry_runnable": false,
+  "paid_source_binding_changed": false,
+  "runtime_budget": {
+    "approved_cap": 25,
+    "consumed": 0
+  },
+  "original_budget": {
+    "remaining_cap": 14,
+    "next": "E3 after trial 2"
+  },
+  "actions": {
+    "source_manifest_generated": 1,
+    "hash_reads": true,
+    "builds": 0,
+    "database_actions": 0,
+    "services_started_or_stopped": 0,
+    "Provider_calls": 0,
+    "repository_checks": 0
+  }
+}

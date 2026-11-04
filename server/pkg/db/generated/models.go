@@ -1552,6 +1552,7 @@ type IssueCollaboration struct {
 	LifecycleEpoch             int64              `json:"lifecycle_epoch"`
 	ActiveInformationRequestID pgtype.UUID        `json:"active_information_request_id"`
 	CreatedAt                  pgtype.Timestamptz `json:"created_at"`
+	AiPolicy                   string             `json:"ai_policy"`
 }
 
 type IssueDependency struct {

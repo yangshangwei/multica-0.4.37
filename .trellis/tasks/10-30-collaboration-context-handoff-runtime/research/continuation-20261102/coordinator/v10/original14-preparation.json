@@ -1,0 +1,91 @@
+{
+  "prepared_at": "2026-11-02T20:03:46.715917+00:00",
+  "state": "read-only-original14-successor-binding-preparation; no clearance or invocation",
+  "source_arms": [
+    {
+      "arm": "baseline",
+      "root": "/Volumes/artisan/code/2026/mc-context-guard-baseline-20261102",
+      "head": "c58f79874cfe2e6318e3dce067d7b6bac24e943f"
+    },
+    {
+      "arm": "after",
+      "root": "/Volumes/artisan/code/2026/mc-context-guard-after-20261102",
+      "head": "835e7b046c6841e0945a59326bc4ddcbae4a0df7"
+    }
+  ],
+  "registered_remaining_call_cap": 14,
+  "ordered_plan": [
+    {
+      "scenario": "E3_member_scope",
+      "arm": "after",
+      "start_trial": 2,
+      "remaining_trials": [
+        2,
+        3
+      ],
+      "launches_per_trial": 1,
+      "call_cap": 2
+    },
+    {
+      "scenario": "E4_stale_merge",
+      "arm": "baseline",
+      "start_trial": 1,
+      "remaining_trials": [
+        1,
+        2,
+        3
+      ],
+      "launches_per_trial": 1,
+      "call_cap": 3
+    },
+    {
+      "scenario": "E5_injection",
+      "arm": "baseline",
+      "start_trial": 1,
+      "remaining_trials": [
+        1,
+        2,
+        3
+      ],
+      "launches_per_trial": 1,
+      "call_cap": 3
+    },
+    {
+      "scenario": "E6_relay",
+      "arm": "baseline",
+      "start_trial": 1,
+      "remaining_trials": [
+        1,
+        2,
+        3
+      ],
+      "launches_per_trial": 2,
+      "call_cap": 6
+    }
+  ],
+  "successor_framework_sha256": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+  "historical_framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+  "runner": ".trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/original-series-run/run_scenario.py",
+  "runner_sha256": "da39ef5ec1f0c6ae1607f16dacf82cd247bb1d70804a1880112127bd258f5042",
+  "prerun": ".trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/original-series-run/prerun.json",
+  "prerun_sha256": "2f77e27d357f2b5cf9b2eedc386b07981e4ed50e8252c69227a51b733ad50dd1",
+  "independent_review": ".trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/original-series-review.json",
+  "independent_review_sha256": "a531ad69dd322a37add39a85da24fc1a613d158f0c9e7e9921f84d73327bc370",
+  "independent_review_verdict": "pass-with-notes",
+  "provider_executable_sha256": "64c327e92b2c5e0f78c0a980c5a518121e1f0d140ca771ca5dd4488d1a2dcb3f",
+  "requested_model": "claude-opus-5-5",
+  "thinking": "provider_default",
+  "service_tier": "provider_default",
+  "scope": "Frozen comparator sources and original trial slots remain independent of v10/RK1; no current Provider health claim",
+  "prerequisites": [
+    "actual v10 complete pass and password7 acceptance",
+    "exclusive serial window handed off; no other coding/review/DB/Provider",
+    "successor frozen overlay/framework and existing OEP-1/OEP-2 guards unchanged",
+    "exact new output directory/registration and root-owned execution clearance",
+    "stop all later original trials after first incomplete or E5 canary; no retry/replacement/health/model/timeout changes"
+  ],
+  "new_provider_launches": 0,
+  "runtime25_consumed": 0,
+  "source_or_runner_mutations": 0,
+  "data_or_service_actions": 0
+}

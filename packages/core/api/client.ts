@@ -1,6 +1,7 @@
 import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, IterationListSchema, IterationDetailSchema, IterationIssuesSchema, IterationEventsSchema, IterationPreviewSchema, IterationWriteResultSchema, type IterationCreateInput, type IterationDraft, type IterationWriteInput } from "./iteration-schemas";
 import { z } from "zod";
 import { parseCollaborationActivity } from "../collaboration/activity-schema";
+import { collaborationDeliveryRefusalStatus, parseCollaborationDeliveryHistory } from "../collaboration/delivery-schema";
 import { parseCollaborationRunRecords } from "../collaboration/run-records-schema";
 import { COLLABORATION_HANDOFF_MAX_JSON_BYTES, parseCollaborationRunHandoff } from "../collaboration/run-handoff-schema";
 import {
@@ -26,7 +27,7 @@ import { PersonalAccessTokenListSchema, CreatePersonalAccessTokenResponseSchema 
 import {
   parseCollaborationIssue, parseCollaborationOperation, parseCollaborationWorkbench, parseCollaborationStatusOptions, parseCollaborationRecipient, parseCollaborationRecipientSearch, parseCollaborationFieldOptions,
   type CollaborationWriteInput, type CollaborationParticipantInput, type CollaborationHandoffInput,
-  type CollaborationInformationReturnInput, type CollaborationAcceptanceInput, type CollaborationEditInput, type CollaborationIterationInput, type CollaborationRecipientInput, type CollaborationRecipientSearchInput,
+  type CollaborationInformationReturnInput, type CollaborationAcceptanceInput, type CollaborationAcceptanceReturnInput, type CollaborationAIPolicyInput, type CollaborationEditInput, type CollaborationIterationInput, type CollaborationRecipientInput, type CollaborationRecipientSearchInput,
   type CollaborationStatusAction, type CollaborationLifecycleAction, type CollaborationStatusInput, type CollaborationLifecycleInput,
 } from "../collaboration/schema";
 import {
@@ -1549,6 +1550,8 @@ export class ApiClient {
     input: CollaborationWriteInput,
     fields: {
       target_user_id?: string; purpose?: string; note?: string; information_request_id?: string; expected_status?: string;
+      basis?: string; submission_id?: string; draft_id?: string; attachment_ids?: string[]; source_comment_id?: string;
+      ai_policy?: CollaborationAIPolicyInput["aiPolicy"];
       action?: CollaborationLifecycleAction; status?: string; status_options_version?: string;
       title?: string; description?: string; start_date?: string | null; due_date?: string | null;
       priority?: CollaborationEditInput["priority"]; label_ids?: CollaborationEditInput["labelIds"]; properties?: CollaborationEditInput["properties"];
@@ -1601,12 +1604,38 @@ export class ApiClient {
     }, options);
   }
 
+  async returnCollaborationAcceptance(id: string, input: CollaborationAcceptanceReturnInput, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/acceptance-returns`, input, {
+      submission_id: input.submissionId, target_user_id: input.targetUserId, note: input.note,
+      expected_status: input.expectedStatus, status_options_version: input.statusOptionsVersion,
+    }, options);
+  }
+
+  async changeCollaborationAIPolicy(id: string, input: CollaborationAIPolicyInput, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/ai-policy`, input, { ai_policy: input.aiPolicy }, options);
+  }
+
+  async getCollaborationDeliveryHistory(id: string, params: { limit?: number; cursor?: string } = {}, options?: { signal?: AbortSignal }) {
+    z.uuid().parse(id);
+    const query = z.strictObject({ limit: z.number().int().min(1).max(100).optional(), cursor: z.string().min(1).max(512).optional() }).parse(params);
+    const search = new URLSearchParams();
+    if (query.limit !== undefined) search.set("limit", String(query.limit));
+    if (query.cursor !== undefined) search.set("cursor", query.cursor);
+    const raw = await this.fetchCollaborationOptionalHistory(`/api/collaboration/issues/${encodeURIComponent(id)}/acceptance-submissions${search.size ? `?${search}` : ""}`, { signal: options?.signal });
+    const page = parseCollaborationDeliveryHistory(raw);
+    return page && sameResourceIdentity(page.issue_id, id) && page.items.length <= (query.limit ?? 50) && page.next_cursor !== query.cursor ? page : null;
+  }
+
   /** Hands the stage result to the creator. It never completes the issue. */
   async submitCollaborationAcceptance(id: string, input: CollaborationAcceptanceInput, options?: { signal?: AbortSignal }) {
     return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/acceptance-submissions`, input, {
       expected_status: input.expectedStatus,
       status_options_version: input.statusOptionsVersion,
       note: input.note,
+      basis: input.basis,
+      draft_id: input.draftId,
+      attachment_ids: input.attachmentIds,
+      source_comment_id: input.sourceCommentId,
     }, options);
   }
 
@@ -1643,6 +1672,16 @@ export class ApiClient {
     try { return await this.fetchCollaboration(path, options); }
     catch (error) {
       if (!(error instanceof ApiError)) throw error;
+      if (options?.method === "POST" && !error.isStaleAuthResponse && [403, 404].includes(error.status) &&
+        typeof error.body === "object" && error.body !== null && Object.hasOwn(error.body, "status") && Object.hasOwn(error.body, "collaboration_revision")) {
+        const receipt = parseCollaborationOperation(error.body);
+        // A committed role/file refusal carries its own status and revision.
+        // It does not establish loss of the caller's independent issue access.
+        if (receipt?.status === error.status && receipt.delivery_confirmation === undefined &&
+          collaborationDeliveryRefusalStatus(receipt.code) === error.status) return receipt;
+        // A malformed declared receipt proves neither the outcome nor access loss.
+        return undefined;
+      }
       if (![401, 403, 404, 410].includes(error.status)) {
         const receipt = parseCollaborationOperation(error.body);
         if (receipt?.status === error.status) return receipt;
@@ -1890,6 +1929,12 @@ export class ApiClient {
       action: input.action,
       status: input.status,
       status_options_version: input.statusOptionsVersion,
+      submission_id: input.submissionId,
+      note: input.note,
+      basis: input.basis,
+      draft_id: input.draftId,
+      attachment_ids: input.attachmentIds,
+      source_comment_id: input.sourceCommentId,
     }, options);
   }
 

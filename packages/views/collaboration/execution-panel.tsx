@@ -1,7 +1,8 @@
-import { useRef } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { collaborationKeys, executeCollaborationCommandCancel, executeCollaborationResource, parseCollaborationResourceDraft, parseCollaborationCommandCancelDraft, parseCollaborationControlDraft, prepareCollaborationControl, prepareCollaborationCommandCancel,
   recoverCollaborationControl, recoverCollaborationSwitch, sendCollaborationControl, sendCollaborationSwitch, useCollaborationPendingDrafts,
+  collaborationCommandHistoryOptions, collaborationHasAIActivity,
   type CollaborationDraft, type CollaborationIssue, type CollaborationScope } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
 import { useT } from "../i18n";
@@ -22,8 +23,11 @@ export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { s
   const labels = useCollaborationLabels();
   const client = useQueryClient();
   const pending = useCollaborationPendingDrafts({ ...scope, issueId: issue.id });
+  const discoverHistory = issue.execution === null || !collaborationHasAIActivity(issue);
+  const history = useInfiniteQuery({ ...collaborationCommandHistoryOptions(client, scope, issue.id), enabled: issue.capabilities.read === true && discoverHistory });
   const submitting = useRef(false);
   const panel = useRef<HTMLElement>(null);
+  const disclosure = useRef<HTMLDetailsElement>(null);
   const control = useMutation({ mutationKey: [...collaborationKeys.issue(scope, issue.id), "execution-control"], retry: false, networkMode: "always", mutationFn: async ({ draft, recover }: { draft: CollaborationDraft; recover: boolean }) => {
     try { parseCollaborationControlDraft(draft); } catch {
       try { parseCollaborationCommandCancelDraft(draft); } catch {
@@ -45,6 +49,13 @@ export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { s
   const receiptMode = receipt?.scope === "target" ? targetMode(receipt.target_id) : hasHostRuns ? hostMode : undefined;
   const canControl = issue.capabilities.control_ai === true && issue.write_context != null;
   const locked = control.isPending || pending.execution.length > 0 || pending.error;
+  const historyError = discoverHistory ? history.error : null;
+  const historyState = discoverHistory ? history.isSuccess ? history.data.pages.some((page) => page.items.length > 0 || page.next_cursor !== null) : "unknown" : false;
+  const attention = pending.execution.length > 0 || control.isPending || control.data !== undefined || pending.error || !!control.error || !!historyError || !!selectedRunId;
+  const hasActivity = collaborationHasAIActivity(issue, { pending: attention, selectedRunId, error: historyError, history: historyState });
+  const compact = !attention && historyState !== true && discoverHistory;
+  const pendingRequests = pending.execution.map((draft) => draft.requestId).join(",");
+  useEffect(() => { if (attention && disclosure.current) disclosure.current.open = true; }, [attention, selectedRunId, pendingRequests, pending.error, control.isPending, control.error, historyError]);
   const laneName = (id: string) => t(($) => $.execution.lane, { number: (execution?.channels.findIndex((lane) => lane.id === id) ?? -1) + 1 });
   const targetName = (id: string) => {
     const target = execution?.targets.find((item) => item.id === id);
@@ -66,15 +77,20 @@ export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { s
     const draft = prepareCollaborationControl(scope, issue, crypto.randomUUID(), action, targetId ? { scope: "target", targetId } : { scope: "issue" });
     submit(draft);
   }
-  return <section ref={panel} tabIndex={-1} aria-label={t(($) => $.execution.title)} className="min-w-0 space-y-4 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring">
-    <h3 className="text-body font-semibold">{t(($) => $.execution.title)}</h3>
+  if (!hasActivity && (issue.ai_policy === "manual" || !canControl)) return null;
+  return <details ref={disclosure} open={!compact} className="min-w-0 space-y-4">
+    <summary className="cursor-pointer py-2 text-body font-semibold outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11">{t(($) => $.execution.title)}</summary>
+    <section ref={panel} tabIndex={-1} aria-label={t(($) => $.execution.title)} className="min-w-0 space-y-4 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring">
+    <h3 className="sr-only">{t(($) => $.execution.title)}</h3>
+    {issue.ai_policy === "manual" && <p className="text-caption text-muted-foreground">{t(($) => $.policy.manualHint)}</p>}
+    {historyError && <CollaborationQueryState error={historyError} retry={() => void history.refetch()} />}
     {execution?.protocol_version !== 6
       ? <p className="text-caption text-muted-foreground">{t(($) => $.execution.unavailable)}</p>
       : execution.execution_gate.enabled !== true && <p className="text-caption text-muted-foreground">{t(($) => $.execution.newExecutionDisabled)}</p>}
     <p className="text-caption text-muted-foreground">{t(($) => $.execution.stopScope)}</p>
     {hasHostRuns && <p className="text-caption text-muted-foreground">{t(($) => $.host.stopScope)}</p>}
     <p className="text-body">{labels.execution(issue.session.queue_state)}</p>
-    {canControl && execution && <div className="flex flex-wrap gap-2"><Button variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => act("stop")}>{t(($) => $.execution.stopAll)}</Button><Button variant="outline" className="pointer-coarse:min-h-11" disabled={locked || issue.session.queue_state === "closed"} onClick={() => act("resume")}>{t(($) => $.execution.resumeAll)}</Button></div>}
+    {canControl && execution && <div className="flex flex-wrap gap-2"><Button variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => act("stop")}>{t(($) => $.execution.stopAll)}</Button><Button variant="outline" className="pointer-coarse:min-h-11" disabled={locked || issue.session.queue_state === "closed" || issue.ai_policy === "manual"} onClick={() => act("resume")}>{t(($) => $.execution.resumeAll)}</Button></div>}
     {pending.error && <p role="alert" className="text-body">{t(($) => $.workflow.storageError)}</p>}
     {control.error && <CollaborationQueryState error={control.error} />}
     {control.isPending && <p role="status">{t(($) => $.workflow.pending)}</p>}
@@ -99,7 +115,7 @@ export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { s
         <ul className="space-y-4">{targets.map((target) => <li key={target.id} className="min-w-0 space-y-2">
           <div className="flex flex-wrap items-baseline gap-2"><span className="text-body font-medium">{target.kind === "squad" ? t(($) => $.execution.squad) : t(($) => $.execution.agent)}</span><span className="break-all text-caption text-muted-foreground">{target.resource_id}</span></div>
           <p className="text-caption">{target.revoked_at !== null ? t(($) => $.execution.revoked) : target.hold_reason ? labels.execution(target.hold_reason) : t(($) => $.execution.released)}</p>
-          {canControl && <div className="flex flex-wrap gap-2"><Button size="sm" variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => act("stop", target.id)}>{t(($) => $.execution.stop)}</Button><Button size="sm" variant="outline" className="pointer-coarse:min-h-11" disabled={locked || target.revoked_at !== null || issue.session.queue_state === "closed"} onClick={() => act("resume", target.id)}>{t(($) => $.execution.resume)}</Button></div>}
+          {canControl && <div className="flex flex-wrap gap-2"><Button size="sm" variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => act("stop", target.id)}>{t(($) => $.execution.stop)}</Button><Button size="sm" variant="outline" className="pointer-coarse:min-h-11" disabled={locked || target.revoked_at !== null || issue.session.queue_state === "closed" || issue.ai_policy === "manual"} onClick={() => act("resume", target.id)}>{t(($) => $.execution.resume)}</Button></div>}
           {canControl && <CollaborationSwitchPanel scope={scope} issue={issue} targetId={target.id} locked={locked} submit={submit} />}
         </li>)}</ul>
         <ol className="space-y-4">{groups.map((group) => <li key={group.id} className="min-w-0 space-y-2">
@@ -116,7 +132,7 @@ export function CollaborationExecutionPanel({ scope, issue, selectedRunId }: { s
       </div>;
     })}
     {execution?.targets.filter((target) => target.channel_id === null).map((target) => <p key={target.id} className="text-caption">{target.hold_reason ? labels.execution(target.hold_reason) : t(($) => $.execution.released)}</p>)}
-    {selectedRunId && execution && !execution.runs.some((run) => run.id === selectedRunId) && <p className="text-body text-muted-foreground">{t(($) => $.records.unavailable)}</p>}
+    {selectedRunId && !execution?.runs.some((run) => run.id === selectedRunId) && <p id={`run-${selectedRunId}`} tabIndex={-1} className="text-body text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring">{t(($) => $.records.unavailable)}</p>}
     <CollaborationCommandHistory key={`${scope.apiScope}:${scope.userId}:${issue.id}`} scope={scope} issueId={issue.id} />
-  </section>;
+  </section></details>;
 }

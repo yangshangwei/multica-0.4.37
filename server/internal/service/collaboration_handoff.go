@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"strings"
+	"unicode/utf8"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -33,6 +35,19 @@ type CollaborationInformationReturnParams struct {
 
 type CollaborationAcceptanceParams struct {
 	CollaborationWorkflowRequest
+	ExpectedStatus       string
+	StatusOptionsVersion string
+	Note                 string
+	Basis                string        `json:",omitempty"`
+	DraftID              *pgtype.UUID  `json:",omitempty"`
+	AttachmentIDs        []pgtype.UUID `json:",omitempty"`
+	SourceCommentID      *pgtype.UUID  `json:",omitempty"`
+}
+
+type CollaborationAcceptanceReturnParams struct {
+	CollaborationWorkflowRequest
+	SubmissionID         pgtype.UUID
+	TargetUserID         pgtype.UUID
 	ExpectedStatus       string
 	StatusOptionsVersion string
 	Note                 string
@@ -265,11 +280,20 @@ func (s *CollaborationService) SubmitAcceptance(ctx context.Context, p Collabora
 		if t.access.Issue.CreatorType != "member" || !creator.Valid {
 			return t.result("target_unavailable", http.StatusConflict), nil
 		}
-		if creator == t.actor {
-			return t.result("already_creator", http.StatusConflict), nil
-		}
 		if refusal, ok := t.openForHandoff(); !ok {
 			return *refusal, nil
+		}
+		current, err := t.currentDelivery(ctx)
+		if err != nil && !errors.Is(err, errCollaborationDeliveryEvidence) {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if current != nil && current.EvidenceState == "available" {
+			return t.result("acceptance_pending", http.StatusConflict), nil
+		}
+		// The actual handler may explicitly replace legacy evidence. This also
+		// admits the creator-handler, who cannot transfer an old result to self.
+		if creator == t.actor && current == nil && err == nil {
+			return t.result("already_creator", http.StatusConflict), nil
 		}
 		// A disabled creator cannot accept; R38 administration is separate and
 		// never redirects acceptance to another account.
@@ -293,13 +317,92 @@ func (s *CollaborationService) SubmitAcceptance(ctx context.Context, p Collabora
 			}
 			return CollaborationWorkflowReceipt{}, err
 		}
-		if _, err := t.handoff(ctx, collaborationHandoff{target: creator, purpose: "acceptance", note: p.Note, status: p.ExpectedStatus}); err != nil {
+		input := collaborationDeliveryInput{note: p.Note, basis: p.Basis, draft: p.DraftID, attachments: p.AttachmentIDs, sourceComment: p.SourceCommentID}
+		if refusal, err := t.prepareDelivery(ctx, input); refusal != nil || err != nil {
+			if refusal != nil {
+				return *refusal, nil
+			}
+			return CollaborationWorkflowReceipt{}, err
+		}
+		var handoff db.IssueHandoff
+		if creator == t.actor {
+			previous := t.access.Issue.Status
+			if p.ExpectedStatus != previous {
+				if err = t.recordStatusChange(ctx, p.ExpectedStatus); err != nil {
+					return CollaborationWorkflowReceipt{}, err
+				}
+			}
+			handoff, err = t.q.CreateCollaborationHandoff(ctx, db.CreateCollaborationHandoffParams{IssueID: t.access.Issue.ID,
+				ActorUserID: t.actor, FromUserID: t.actor, ToUserID: t.actor, Purpose: "acceptance", Note: p.Note, PreviousStatus: previous})
+			t.handoffID = handoff.ID
+		} else {
+			handoff, err = t.handoff(ctx, collaborationHandoff{target: creator, purpose: "acceptance", note: p.Note, status: p.ExpectedStatus})
+		}
+		if err != nil {
 			return CollaborationWorkflowReceipt{}, err
 		}
 		if err := t.supersedeInformation(ctx); err != nil {
 			return CollaborationWorkflowReceipt{}, err
 		}
-		return t.finishWith(ctx, "acceptance_submitted", creator, nil, map[string]any{"status": t.access.Issue.Status})
+		return t.finishWith(ctx, "acceptance_submitted", creator, nil, map[string]any{"status": t.access.Issue.Status, "delivery": t.deliveryPayload(input, handoff)})
+	})
+}
+
+func (s *CollaborationService) ReturnAcceptance(ctx context.Context, p CollaborationAcceptanceReturnParams) (CollaborationWorkflowReceipt, error) {
+	return s.mutateCollaborationWorkflow(ctx, p.CollaborationWorkflowRequest, p.TargetUserID, "return_acceptance", p, func(t *collaborationWorkflowTx) (CollaborationWorkflowReceipt, error) {
+		if refusal, ok := t.openForHandoff(); !ok {
+			return *refusal, nil
+		}
+		if !p.SubmissionID.Valid {
+			return t.result("submission_changed", http.StatusConflict), nil
+		}
+		if strings.TrimSpace(p.Note) == "" {
+			return t.result("revision_reason_required", http.StatusBadRequest), nil
+		}
+		if !utf8.ValidString(p.Note) || len(p.Note) > collaborationDeliveryTextLimit {
+			return t.result("revision_reason_too_large", http.StatusBadRequest), nil
+		}
+		current, err := t.currentDelivery(ctx)
+		if errors.Is(err, errCollaborationDeliveryEvidence) {
+			return t.result("delivery_unavailable", http.StatusConflict), nil
+		}
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if current == nil {
+			return t.result("submission_not_pending", http.StatusConflict), nil
+		}
+		if current.ID != p.SubmissionID {
+			return t.result("submission_changed", http.StatusConflict), nil
+		}
+		if t.handler() != t.actor || t.access.StatusCategory != "in_review" || t.access.InformationRequestID.Valid {
+			return t.result("acceptance_pending", http.StatusConflict), nil
+		}
+		eligible, err := t.eligibleRecipient(ctx, p.TargetUserID)
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if !eligible {
+			return t.result("target_unavailable", http.StatusConflict), nil
+		}
+		if refusal, err := t.validateStatus(ctx, "return_acceptance", p.ExpectedStatus, p.StatusOptionsVersion); refusal != nil || err != nil {
+			if refusal != nil {
+				return *refusal, nil
+			}
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if _, err = t.enroll(ctx, p.TargetUserID); err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if _, err = t.handoff(ctx, collaborationHandoff{target: p.TargetUserID, purpose: "transfer", note: p.Note, status: p.ExpectedStatus}); err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if err = t.supersedeInformation(ctx); err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		decision := collaborationDeliveryDecisionPayload{Version: 1, SubmissionID: current.ID, LifecycleEpoch: t.access.LifecycleEpoch,
+			Kind: "returned", Reason: &p.Note, TargetUserID: p.TargetUserID}
+		return t.finishWith(ctx, "acceptance_returned", p.TargetUserID, nil, map[string]any{"status": t.access.Issue.Status, "delivery_decision": decision})
 	})
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { keepPreviousData, useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown, LoaderCircle, Search } from "lucide-react";
 import {
@@ -17,6 +17,7 @@ import { ActorAvatar } from "@multica/ui/components/common/actor-avatar";
 import { useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
 import { PickerItem, PickerSection, PropertyPicker } from "../issues/components/pickers/property-picker";
+import { collaborationFocusWithinClass, collaborationPickerContentClass } from "./form-styles";
 
 export interface CollaborationAccountPickerProps {
   scope: CollaborationScope;
@@ -65,6 +66,8 @@ export function CollaborationAccountPicker({
   const { t } = useT("collaboration");
   const client = useQueryClient();
   const exactId = useId();
+  const listboxId = `${exactId}-accounts`;
+  const searchInput = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [query, setQuery] = useState("");
@@ -105,7 +108,9 @@ export function CollaborationAccountPicker({
   const sourceMember = firstPage?.source_member;
   const exactAccount = exact.data ? toAccount(exact.data) : null;
   const exactAllowed = exactAccount !== null && (!membersOnly || exactAccount.external === false);
-  const navigationResetKey = `${query}:${allAccounts.map(accountIdentity).join(",")}`;
+  // PropertyPicker compares committed row identity for removals/reorders; keep
+  // this key stable when pagination only appends accounts.
+  const navigationResetKey = query;
   const canSelectMore = maxSelected === undefined || selectedAccounts.length < maxSelected;
 
   const pick = (account: CollaborationRecipientAccount) => {
@@ -125,28 +130,31 @@ export function CollaborationAccountPicker({
     const unavailable = membersOnly && account.external !== false;
     const blocked = disabled || unavailable || multiple && !isSelected && !canSelectMore;
     return <div key={id} data-recipient-row>
-      <PickerItem selected={isSelected} disabled={blocked} onClick={() => pick(account)}>
-        <ActorAvatar name={account.name} initials={initials(account.name)} avatarUrl={account.avatar_url} size="sm" />
+      <PickerItem selected={isSelected} disabled={blocked} optionId={`${listboxId}-${id}`}
+        ariaLabel={`${account.name}, ${t(($) => $.recipientPicker.accountId, { id })}${account.external === true ? `, ${t(($) => $.recipientPicker.external)}` : ""}`}
+        className={`pointer-coarse:min-h-11 ${isSelected ? "font-medium text-foreground" : ""}`} onClick={() => pick(account)}>
+        <span aria-hidden><ActorAvatar name={account.name} initials={initials(account.name)} avatarUrl={account.avatar_url} size="sm" /></span>
         <span className="min-w-0 flex-1">
           <span className="flex min-w-0 items-center gap-2">
             <span className="min-w-0 truncate">{account.name}</span>
             {account.external === true && <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 text-caption text-muted-foreground">{t(($) => $.recipientPicker.external)}</span>}
           </span>
+          <span className="block text-caption text-muted-foreground [overflow-wrap:anywhere]">{t(($) => $.recipientPicker.accountId, { id })}</span>
         </span>
       </PickerItem>
     </div>;
   };
 
   const list = query
-    ? <div role="listbox" aria-label={label}>{allAccounts.map(renderAccount)}</div>
-    : <div role="listbox" aria-label={label}>
+    ? <div id={listboxId} role="listbox" aria-label={label} aria-multiselectable={multiple || undefined}>{allAccounts.map(renderAccount)}</div>
+    : <div id={listboxId} role="listbox" aria-label={label} aria-multiselectable={multiple || undefined}>
       {sections.map((section) => section.accounts.length > 0 && <PickerSection key={section.key} label={t(($) => $.recipientPicker.sections[section.key])}>
         {section.accounts.map(renderAccount)}
       </PickerSection>)}
     </div>;
 
   const exactFooter = query && <div className="space-y-2">
-    {!exactOpen && <button type="button" className="flex min-h-11 w-full items-center gap-2 rounded-md px-2 text-left text-caption text-muted-foreground hover:bg-accent hover:text-foreground" onClick={() => setExactOpen(true)}>
+    {!exactOpen && <button type="button" className="flex min-h-11 w-full items-center gap-2 rounded-md px-2 text-left text-caption text-muted-foreground hover:bg-accent hover:text-foreground" onClick={() => { searchInput.current?.focus(); setExactOpen(true); }}>
       <Search aria-hidden className="size-4 shrink-0" />{t(($) => $.recipientPicker.exactLookup)}
     </button>}
     {exactOpen && <div className="space-y-2 border-t p-2">
@@ -159,26 +167,30 @@ export function CollaborationAccountPicker({
       {exact.data && !exactAllowed && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.fields.sourceAccountOnly)}</p>}
       {exactAccount && exactAllowed && <div className="flex items-center gap-2 rounded-md border border-border p-2">
         <ActorAvatar name={exactAccount.name} initials={initials(exactAccount.name)} avatarUrl={exactAccount.avatar_url} size="sm" />
-        <span className="min-w-0 flex-1 truncate text-body">{exactAccount.name}</span>
+        <span className="min-w-0 flex-1 text-body"><span className="block truncate">{exactAccount.name}</span>
+          <span className="block text-caption text-muted-foreground [overflow-wrap:anywhere]">{t(($) => $.recipientPicker.accountId, { id: accountIdentity(exactAccount) })}</span>
+        </span>
         {exactAccount.external === true && <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 text-caption text-muted-foreground">{t(($) => $.recipientPicker.external)}</span>}
         <Button type="button" variant="outline" className="min-h-11 shrink-0" disabled={multiple && !canSelectMore} onClick={() => pick(exactAccount)}>{t(($) => $.creation.useRecipient)}</Button>
       </div>}
     </div>}
   </div>;
 
-  return <div data-recipient-picker className="min-w-0">
+  return <div data-recipient-picker className={`min-w-0 ${collaborationFocusWithinClass}`}>
     <PropertyPicker open={isOpen} onOpenChange={(next) => { setOpen(next); if (!next) { setExactOpen(false); setExactText(""); setExactRequest(""); } }}
       width="w-96 max-w-[calc(100vw-24px)]" align="start" searchable searchPlaceholder={t(($) => $.recipientPicker.search)}
-      navigationResetKey={navigationResetKey} onSearchChange={setInput}
-      triggerAriaLabel={label} triggerRender={<button type="button" aria-label={label} disabled={disabled} className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-md border border-input bg-background px-3 text-left text-body hover:bg-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" />} trigger={<span className="flex min-w-0 items-center gap-2">
+      navigationResetKey={navigationResetKey} onSearchChange={setInput} listboxId={listboxId} searchInputRef={searchInput} contentClassName={collaborationPickerContentClass}
+      triggerAriaLabel={label} triggerRender={<button type="button" aria-label={label} disabled={disabled} className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-left text-body hover:bg-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" />} trigger={<span className="flex min-w-0 flex-1 items-center gap-2">
         {display && <ActorAvatar name={display.name} initials={initials(display.name)} avatarUrl={display.avatar_url} size="sm" />}
-        <span className="min-w-0 flex-1 truncate">{multiple && selectedAccounts.length > 1 ? t(($) => $.recipientPicker.selectedCount, { count: selectedAccounts.length }) : displayName}</span>
+        <span className="min-w-0 flex-1"><span className="block truncate">{multiple && selectedAccounts.length > 1 ? t(($) => $.recipientPicker.selectedCount, { count: selectedAccounts.length }) : displayName}</span>
+          {display && (!multiple || selectedAccounts.length <= 1) && <span className="block text-caption text-muted-foreground [overflow-wrap:anywhere]">{t(($) => $.recipientPicker.accountId, { id: accountIdentity(display) })}</span>}
+        </span>
         {display?.external === true && <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 text-caption text-muted-foreground">{t(($) => $.recipientPicker.external)}</span>}
         <ChevronDown aria-hidden className="size-4 shrink-0 text-muted-foreground" />
       </span>}
       footer={<>
         {search.isFetchingNextPage && <p role="status" className="px-2 py-2 text-caption text-muted-foreground"><LoaderCircle aria-hidden className="mr-1 inline size-3.5 animate-spin" />{t(($) => $.recipientPicker.loadingMore)}</p>}
-        {search.hasNextPage && <button type="button" className="min-h-11 w-full rounded-md px-2 text-left text-caption text-muted-foreground hover:bg-accent hover:text-foreground" disabled={search.isFetchingNextPage} onClick={() => void search.fetchNextPage()}>{t(($) => $.recipientPicker.loadMore)}</button>}
+        {search.hasNextPage && <button type="button" className="min-h-11 w-full rounded-md px-2 text-left text-caption text-muted-foreground hover:bg-accent hover:text-foreground" disabled={search.isFetchingNextPage} onClick={() => { searchInput.current?.focus(); void search.fetchNextPage(); }}>{t(($) => $.recipientPicker.loadMore)}</button>}
         {exactFooter}
       </>}
     >
@@ -186,6 +198,7 @@ export function CollaborationAccountPicker({
       {membersOnly && sourceMember === false && <p role="note" className="px-2 py-2 text-caption text-muted-foreground">{t(($) => $.recipientPicker.membersOnlyHint)}</p>}
       {search.isPending && !search.data && <p role="status" className="px-2 py-3 text-caption text-muted-foreground"><LoaderCircle aria-hidden className="mr-1 inline size-3.5 animate-spin" />{t(($) => $.recipientPicker.loading)}</p>}
       {search.isError && <CollaborationQueryState error={search.error} retry={() => {
+        searchInput.current?.focus();
         if (search.isFetchNextPageError) void search.fetchNextPage();
         else void search.refetch();
       }} />}

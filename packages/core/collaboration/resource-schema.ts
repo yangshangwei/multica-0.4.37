@@ -88,10 +88,11 @@ const action = z.enum(["register_target", "consent_resource", "revoke_grant", "o
 const failure = z.enum(["not_found", "forbidden", "stale_authority", "stale_scope", "stale_grant", "stale_target", "target_exists", "target_not_found",
   "issue_closed", "owner_not_participant", "resource_owner_not_participant", "resource_owner_unavailable", "target_configuration_changed", "runtime_registration_required", "invalid_target_configuration",
   "invalid_resource_offer", "invalid_resource_offer_query", "resource_offer_not_found", "stale_offer", "offer_withdrawn", "offer_adopted", "resource_not_owned", "resource_workspace_unavailable", "resource_options_unavailable", "resource_not_found",
-  "collaboration_client_upgrade_required", "execution_mode_unsupported", "execution_consent_required"]);
+  "collaboration_client_upgrade_required", "execution_mode_unsupported", "execution_consent_required", "task_manual"]);
 const code = z.union([z.enum(["target_registered", "resource_consented", "grant_revoked", "grant_already_revoked", "resource_offered", "resource_offer_withdrawn", "resource_offer_adopted"]), failure]);
 const receiptBase = { protocol_version: z.literal(2), issue_id: uuid, request_id: z.string().min(1).max(128), action, status: z.number().int().min(200).max(599), code };
 function validOutcome(value: { action: z.infer<typeof action>; code: string; status: number }) {
+  if (value.code === "task_manual") return value.status === 409 && value.action !== "revoke_grant" && value.action !== "withdraw_resource_offer";
   if (failure.safeParse(value.code).success) return value.status >= 400;
   if (value.status !== 200 && value.status !== 201) return false;
   switch (value.action) {

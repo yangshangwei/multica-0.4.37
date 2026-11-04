@@ -8,6 +8,7 @@ import { setCollaborationGate, legacyLaneMissing } from "./fixtures/lane-guards"
 import { deepLink, openDesktop, type NativeHarness } from "./fixtures/collaboration-native";
 import { seedCollaborationRecordJourney } from "./fixtures/collaboration-records";
 import { memoryAuthority } from "./fixtures/collaboration-memory";
+import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
 import { apiApprove, apiProposal, approveKnowledge, captureKnowledge, chooseCandidate, fillKnowledge, openKnowledge,
   observeKnowledgeHints, openTarget, reviewPanel, seedKnowledge, selectKnowledgeOption, sourcePanel, submitKnowledge, targetItems, targetPanel,
   type KnowledgeFixture } from "./fixtures/collaboration-knowledge";
@@ -301,6 +302,7 @@ test("Desktop native source review and independent project/workspace contributio
     await deepLink(native.app, f.path);
     await native.page.bringToFront();
     await expect.poll(() => connected.length, { timeout: 10_000 }).toBeGreaterThan(0);
+    await revealCollaborationDisclosure(native.page, "Knowledge candidates");
     await expect(sourcePanel(native.page)).toBeVisible();
     const first = await externalProposal(native.page, f);
     expect(native.errors).toEqual([]);
@@ -313,6 +315,7 @@ test("Desktop native source review and independent project/workspace contributio
     traceStarted = true;
     await native.start();
     await deepLink(native.app, f.path);
+    await revealCollaborationDisclosure(native.page, "Knowledge candidates");
     await ownerVersions(native.page, f, first, info, native);
     const previous = (await targetItems(f.owner, f.workspace.id)).knowledge_revision;
     await f.owner.requestJSON(`${f.root}/memory`, { method: "PUT", headers: { "Idempotency-Key": randomUUID() }, body: { expected_version: "1", content: "Replacement source without the old conclusion." } });

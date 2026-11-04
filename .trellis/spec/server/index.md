@@ -9,6 +9,7 @@
 | [Security Boundaries](./security-boundaries.md) | Credential minting gates and automation authorization principals | Active |
 | [Database test isolation](./database-test-isolation.md) | Explicit test databases, TestMain guards, compile-only commands and bounded audit | Active |
 | [Collaboration foundation](./collaboration-foundation.md) | Authority, creation, human workflow and pre-v2 execution history | Foundation |
+| [Collaboration results and manual policy](./collaboration-delivery.md) | Immutable delivery, exact initiator decisions, self-completion, bounded history and task-owned AI admission | Human Web/Electron journey verified; provider/installed Main evidence separate |
 | [Collaboration content](./collaboration-content.md) | Gated atomic creation, encrypted drafts, retained references and current-authority native downloads | Public API implemented; full product gate retained |
 | [Collaboration realtime](./collaboration-realtime.md) | Account/issue scopes, final-send authority, retained outbox and Query recovery | Account transport implemented; full product pending |
 | [Collaboration records and children](./collaboration-records.md) | Ordinary-child references, retained run telemetry, proven group notifications and shared run links | R51/R52 increment verified; full product pending |

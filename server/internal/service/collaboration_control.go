@@ -212,6 +212,9 @@ func (s *CollaborationService) ResumeQueue(ctx context.Context, p CollaborationR
 		result := func(code string, status int) (CollaborationQueueReceipt, error) {
 			return t.controlReceipt(code, status, p.CollaborationStopQueueParams), nil
 		}
+		if code := collaborationAIPolicyRefusal(t.access.AIPolicy); code != "" {
+			return result(code, http.StatusConflict)
+		}
 		if t.session.QueueState == "closed" {
 			return result("issue_closed", http.StatusConflict)
 		}

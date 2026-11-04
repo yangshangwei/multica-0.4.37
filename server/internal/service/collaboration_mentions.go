@@ -236,6 +236,8 @@ func collaborationCommentTargetPreview(access CollaborationIssueAccess, input Co
 			item.Code = "not_participant"
 		case collaboration.TerminalCategory(access.StatusCategory) || access.QueueState == "closed":
 			item.Code = "issue_closed"
+		case collaborationAIPolicyRefusal(access.AIPolicy) != "":
+			item.Code = collaborationAIPolicyRefusal(access.AIPolicy)
 		case !access.Capabilities.SubmitCommand:
 			item.Code = "command_unavailable"
 		default:

@@ -406,6 +406,10 @@ func (s *CollaborationService) collaborationQueueMutationInTx(ctx context.Contex
 	var receipt CollaborationQueueReceipt
 	if t.access.LifecycleEpoch != p.ExpectedLifecycleEpoch || t.participant.Epoch != p.ExpectedParticipantEpoch || t.account.Epoch != p.ExpectedAccountEpoch {
 		receipt = t.receipt("stale_authority", http.StatusConflict)
+	} else if code := collaborationAIPolicyRefusal(t.access.AIPolicy); code != "" && collaborationMutationRequiresAssistedPolicy(kind) {
+		// Original operations replay above this check. Manual refuses only new
+		// admission; Stop, withdrawal, revocation and cancellation remain usable.
+		receipt = t.receipt(code, http.StatusConflict)
 	} else {
 		required, checkErr := t.hostClientRequiredForMutation(ctx, kind, payload)
 		if checkErr != nil {

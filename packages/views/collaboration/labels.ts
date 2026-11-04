@@ -3,6 +3,35 @@ import { useT } from "../i18n";
 export function useCollaborationLabels() {
   const { t } = useT("collaboration");
   return {
+    creationRejection: (code: string) => {
+      switch (code) {
+        case "account_unavailable": return t(($) => $.creation.rejectionReasons.accountUnavailable);
+        case "collaboration_unavailable": return t(($) => $.creation.rejectionReasons.collaborationUnavailable);
+        case "invalid_attachment_selection": case "attachment_scope_mismatch": return t(($) => $.creation.rejectionReasons.attachmentSelection);
+        case "attachment_not_found": return t(($) => $.creation.rejectionReasons.attachmentUnavailable);
+        case "attachment_draft_consumed": return t(($) => $.creation.rejectionReasons.attachmentConsumed);
+        case "parent_issue_not_found": return t(($) => $.creation.rejectionReasons.parentUnavailable);
+        case "project_not_found": return t(($) => $.creation.rejectionReasons.projectUnavailable);
+        case "triage_review_required": return t(($) => $.creation.rejectionReasons.reviewRequired);
+        case "issue_limit_reached": return t(($) => $.creation.rejectionReasons.issueLimitReached);
+        case "status_unavailable": return t(($) => $.creation.rejectionReasons.statusUnavailable);
+        case "invalid_priority": return t(($) => $.creation.rejectionReasons.invalidPriority);
+        case "invalid_start_date": return t(($) => $.creation.rejectionReasons.invalidStartDate);
+        case "invalid_due_date": return t(($) => $.creation.rejectionReasons.invalidDueDate);
+        case "invalid_labels": return t(($) => $.creation.rejectionReasons.invalidLabels);
+        case "invalid_properties": case "property_archived": return t(($) => $.creation.rejectionReasons.propertiesUnavailable);
+        case "invalid_property_value": return t(($) => $.creation.rejectionReasons.invalidPropertyValue);
+        case "properties_too_large": return t(($) => $.creation.rejectionReasons.propertiesTooLarge);
+        case "invalid_stage": return t(($) => $.creation.rejectionReasons.invalidStage);
+        case "parent_cycle": return t(($) => $.creation.rejectionReasons.parentCycle);
+        case "iteration_disabled": return t(($) => $.creation.rejectionReasons.iterationDisabled);
+        case "iteration_not_found": return t(($) => $.creation.rejectionReasons.iterationUnavailable);
+        case "iteration_revision_conflict": return t(($) => $.creation.rejectionReasons.iterationChanged);
+        case "iteration_history_move_unsupported": return t(($) => $.creation.rejectionReasons.iterationHistory);
+        case "iteration_validation_failed": return t(($) => $.creation.rejectionReasons.iterationValidation);
+        default: return t(($) => $.creation.rejectionReasons.unknown);
+      }
+    },
     commentAuthorRole: (role: string) => {
       switch (role) {
         case "creator": return t(($) => $.detail.creator);
@@ -97,7 +126,9 @@ export function useCollaborationLabels() {
         case "transfer": return t(($) => $.workflow.transfer);
         case "request_information": return t(($) => $.workflow.requestInformation);
         case "return_information": return t(($) => $.workflow.returnInformation);
-        case "submit_acceptance": return t(($) => $.workflow.acceptance);
+        case "submit_acceptance": return t(($) => $.delivery.submit);
+        case "return_acceptance": return t(($) => $.delivery.return);
+        case "change_ai_policy": return t(($) => $.policy.change);
         case "change_status": return t(($) => $.workflow.changeStatus);
         case "complete": return t(($) => $.workflow.complete);
         case "cancel": return t(($) => $.workflow.cancelIssue);

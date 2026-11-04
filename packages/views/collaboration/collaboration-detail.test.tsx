@@ -85,6 +85,7 @@ it("opens ordinary children in their returned source workspace and downgrades to
   state.children = { source_workspace_slug: "actual-source", items: [child] };
   const view = () => <CollaborationDetail scope={scope} destination={{ view: "participating", issueId: issue.id, commentId: null }} />;
   const mounted = renderWithI18n(view());
+  await userEvent.click(screen.getByText("Sub-issues", { selector: "summary" }));
   const section = screen.getByRole("region", { name: "Sub-issues" });
   const link = within(section).getByRole("link", { name: /SRC-9 Independent child/ });
   expect(link).toHaveAttribute("href", `/actual-source/issues/${child.id}`);
@@ -99,11 +100,12 @@ it("opens ordinary children in their returned source workspace and downgrades to
   expect(navigation.prefetch).not.toHaveBeenCalled();
 });
 
-it("distinguishes missing child support from an explicitly empty projected list", () => {
+it("distinguishes missing child support from an explicitly empty projected list", async () => {
   setApiInstance(new ApiClient("https://detail.example"));
   const scope = collaborationScope(issue.creator.user_id);
   const view = () => <CollaborationDetail scope={scope} destination={{ view: "participating", issueId: issue.id, commentId: null }} />;
   const mounted = renderWithI18n(view());
+  await userEvent.click(screen.getByText("Sub-issues", { selector: "summary" }));
   expect(screen.getByText("Sub-issue references are unavailable on this server.")).toBeInTheDocument();
   expect(screen.queryByText("No sub-issues.")).not.toBeInTheDocument();
   state.children = { source_workspace_slug: null, items: [] };

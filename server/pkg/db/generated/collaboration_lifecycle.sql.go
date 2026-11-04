@@ -26,7 +26,7 @@ func (q *Queries) AdvanceCollaborationContentRevision(ctx context.Context, issue
 const advanceCollaborationLifecycle = `-- name: AdvanceCollaborationLifecycle :one
 UPDATE issue_collaboration SET revision = revision + 1,
     authority_epoch = authority_epoch + 1, lifecycle_epoch = lifecycle_epoch + 1
-WHERE issue_id = $1 RETURNING issue_id, revision, authority_epoch, lifecycle_epoch, active_information_request_id, created_at
+WHERE issue_id = $1 RETURNING issue_id, revision, authority_epoch, lifecycle_epoch, active_information_request_id, created_at, ai_policy
 `
 
 func (q *Queries) AdvanceCollaborationLifecycle(ctx context.Context, issueID pgtype.UUID) (IssueCollaboration, error) {
@@ -39,6 +39,7 @@ func (q *Queries) AdvanceCollaborationLifecycle(ctx context.Context, issueID pgt
 		&i.LifecycleEpoch,
 		&i.ActiveInformationRequestID,
 		&i.CreatedAt,
+		&i.AiPolicy,
 	)
 	return i, err
 }

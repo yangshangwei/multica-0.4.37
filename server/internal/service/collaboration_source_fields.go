@@ -56,7 +56,8 @@ func collaborationSourceOptions(ctx context.Context, q *db.Queries, workspace, e
 	if err != nil {
 		return nil, err
 	}
-	parents, err := q.ListCollaborationSourceParents(ctx, db.ListCollaborationSourceParentsParams{WorkspaceID: workspace, ExcludedIssueID: excluded, Search: search})
+	prefix := util.ResolveIssuePrefix(ws.IssuePrefix, ws.Name)
+	parents, err := q.ListCollaborationSourceParents(ctx, db.ListCollaborationSourceParentsParams{WorkspaceID: workspace, ExcludedIssueID: excluded, Search: search, IdentifierPrefix: prefix})
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +67,7 @@ func collaborationSourceOptions(ctx context.Context, q *db.Queries, workspace, e
 	}
 	for _, parent := range parents {
 		out.Parents = append(out.Parents, CollaborationSourceReference{ID: util.UUIDToString(parent.ID), Name: parent.Title,
-			Identifier: fmt.Sprintf("%s-%d", util.ResolveIssuePrefix(ws.IssuePrefix, ws.Name), parent.Number)})
+			Identifier: fmt.Sprintf("%s-%d", prefix, parent.Number)})
 	}
 	settings, err := q.GetIterationSettings(ctx, workspace)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {

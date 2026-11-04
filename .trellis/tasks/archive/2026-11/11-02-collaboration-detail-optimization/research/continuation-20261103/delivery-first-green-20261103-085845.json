@@ -1,0 +1,39 @@
+{
+  "started_at": "2026-11-03T00:58:45.963185+00:00",
+  "database": "multica_detail_20261103_080906_service",
+  "package": "./internal/service",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-p",
+    "2",
+    "-count=1",
+    "./internal/service",
+    "-run",
+    "^TestCollaboration(GenericStatusesCannotManufactureReview|Delivery|ExternalCompletionRequiresDelivery|SelfDelivery|LegacyDelivery)"
+  ],
+  "output": "/tmp/multica-detail-verification-20261103/delivery-first-green-20261103-085845.jsonl",
+  "exit_code": 0,
+  "inventory": {
+    "pass": [
+      "TestCollaborationGenericStatusesCannotManufactureReview",
+      "TestCollaborationDeliveryRevisionResubmissionAndExactAcceptance",
+      "TestCollaborationLegacyDeliveryRequiresExplicitReplacement",
+      "TestCollaborationSelfDeliveryIsAtomicAndRecoverable",
+      "TestCollaborationDeliveryRequiresBasisAndBoundsProse/blank_basis",
+      "TestCollaborationDeliveryRequiresBasisAndBoundsProse/result_bytes",
+      "TestCollaborationDeliveryRequiresBasisAndBoundsProse/basis_bytes",
+      "TestCollaborationDeliveryRequiresBasisAndBoundsProse",
+      "TestCollaborationDeliveryRejectsBlankResult",
+      "TestCollaborationExternalCompletionRequiresDelivery"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

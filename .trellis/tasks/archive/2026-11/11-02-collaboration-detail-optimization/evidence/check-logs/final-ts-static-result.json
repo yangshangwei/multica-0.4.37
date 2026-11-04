@@ -1,0 +1,15 @@
+{
+  "command": [
+    "pnpm",
+    "exec",
+    "turbo",
+    "run",
+    "lint",
+    "typecheck",
+    "--filter=!@multica/mobile",
+    "--concurrency=1",
+    "--force"
+  ],
+  "process_result": 0,
+  "log": "/tmp/multica-detail-verification-20261103/final-ts-static.log"
+}

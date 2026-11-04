@@ -1,5 +1,5 @@
 import { expect, it, vi } from "vitest";
-import { act, screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
@@ -19,6 +19,142 @@ const account = { user_id: id, name: "Creator", avatar_url: "", external: true }
 const caps = { reference: true, read: true, comment: true, control_ai: true, submit_command: true, invite: true, transfer: true, remove_participants: true, leave: false, edit: true, edit_source_structure: false, reorder: false, change_status: true, complete: true, cancel: true, reopen: false, resolve_thread: true, react: true };
 const issue = parseCollaborationIssue({ id, title: "Transfer me", description: "Body", status: "todo", status_category: "todo", priority: "none", source_workspace: { id, name: "Source", identifier: "SRC-1" }, creator: account, handler: account,
   collaboration_revision: "9007199254740993", lifecycle_epoch: "1", write_context: { participant_epoch: "2", account_epoch: "3" }, session: { id, queue_state: "paused", control_version: "1" }, capabilities: caps })!;
+
+const submissionId = "00000000-0000-4000-8000-000000000009";
+const submission = { id: submissionId, issue_id: id, event_seq: "8", lifecycle_epoch: "1", author_user_id: recipientId,
+  author: { ...account, user_id: recipientId, name: "Result author" }, created_at: "2026-11-03T00:00:00Z", result: "Delivered outcome",
+  basis: "Verified against the requested checks", attachment_ids: [], source_comment_id: null, evidence_state: "available" as const, decision: null };
+
+// Server/Core own the permission, identity and lifecycle matrices. These tests
+// verify the human forms send their explicit result and selected decision.
+it("requires a result and basis for text-only delivery and preserves the input across dismissal", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const source = { ...issue, creator: submission.author, status: "in_progress", status_category: "in_progress" as const,
+    ai_policy: "manual" as const, delivery: { current: null, latest: null, has_history: false },
+    capabilities: { ...issue.capabilities, submit_acceptance: true, complete: false, return_acceptance: false, change_ai_policy: false } };
+  const fetch = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>().mockImplementation(async (url) => new Response(JSON.stringify(new URL(url).pathname.endsWith("status-options")
+    ? { action: "submit_acceptance", status_options_version: "a".repeat(64), default_status: "in_review", options: [{ key: "in_review", name: "In review", category: "in_review" }] }
+    : { code: "acceptance_submitted", status: 200, collaboration_revision: "9007199254740994", delivery_confirmation: { submission_id: submissionId, attachment_ids: [] } })));
+  vi.stubGlobal("fetch", fetch);
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={source} /></QueryClientProvider>);
+  const permissions = screen.getByLabelText("Current permissions");
+  expect(permissions).toHaveTextContent("Current handler");
+  expect(permissions).toHaveTextContent("Submit result");
+  expect(permissions).not.toHaveTextContent("Accept and complete");
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: /Submit (result|for acceptance)/ }));
+  await user.type(await screen.findByLabelText("Result"), "A text-only result");
+  const form = screen.getByRole("form", { name: "Submit result" });
+  expect(within(form).getByRole("button", { name: "Submit result" })).toBeDisabled();
+  await user.type(screen.getByLabelText("Basis"), "Checked the requested behavior");
+  await user.click(within(form).getByRole("button", { name: "Close" }));
+  await user.click(screen.getByRole("button", { name: "Submit result" }));
+  expect(screen.getByLabelText("Result")).toHaveValue("A text-only result");
+  expect(screen.getByLabelText("Basis")).toHaveValue("Checked the requested behavior");
+  await user.click(within(screen.getByRole("form", { name: "Submit result" })).getByRole("button", { name: "Submit result" }));
+  expect(await screen.findByText("Action confirmed.")).toBeInTheDocument();
+  const write = fetch.mock.calls.find(([url]) => new URL(url).pathname.endsWith("acceptance-submissions"));
+  expect(JSON.parse(String(write?.[1]?.body))).toMatchObject({ note: "A text-only result", basis: "Checked the requested behavior", attachment_ids: [] });
+});
+
+it("accepts the exact observed submission and shows its author before completion", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const source = { ...issue, status: "in_review", status_category: "in_review" as const, ai_policy: "manual" as const,
+    delivery: { current: submission, latest: submission, has_history: true }, capabilities: { ...issue.capabilities, return_acceptance: true, change_ai_policy: true } };
+  const fetch = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>().mockImplementation(async (url) => new Response(JSON.stringify(new URL(url).pathname.endsWith("status-options")
+    ? { action: "complete", status_options_version: "a".repeat(64), default_status: "done", options: [{ key: "done", name: "Done", category: "done" }] }
+    : { code: "completed", status: 200, collaboration_revision: "9007199254740994", delivery_confirmation: { submission_id: submissionId, attachment_ids: [] } })));
+  vi.stubGlobal("fetch", fetch);
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={source} /></QueryClientProvider>);
+  const permissions = screen.getByLabelText("Current permissions");
+  expect(permissions).toHaveTextContent("Accept and complete");
+  expect(permissions).not.toHaveTextContent("Record result and complete");
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: /Accept and complete|^Complete$/ }));
+  const form = await screen.findByRole("form", { name: "Accept and complete" });
+  expect(within(form).getByText("Result author")).toBeInTheDocument();
+  expect(within(form).getByText("Delivered outcome")).toBeInTheDocument();
+  expect(within(form).queryByLabelText("Result")).not.toBeInTheDocument();
+  await user.click(within(form).getByRole("button", { name: "Accept and complete" }));
+  expect(await screen.findByText("Action confirmed.")).toBeInTheDocument();
+  const write = fetch.mock.calls.find(([url]) => new URL(url).pathname.endsWith("lifecycle"));
+  expect(JSON.parse(String(write?.[1]?.body))).toMatchObject({ action: "complete", submission_id: submissionId });
+});
+
+it("returns the exact result with a reason and defaults to its actual author", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const source = { ...issue, status: "in_review", status_category: "in_review" as const, ai_policy: "manual" as const,
+    delivery: { current: submission, latest: submission, has_history: true }, capabilities: { ...issue.capabilities, return_acceptance: true, change_ai_policy: true } };
+  const fetch = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>().mockImplementation(async (url) => new Response(JSON.stringify(new URL(url).pathname.endsWith("status-options")
+    ? { action: "return_acceptance", status_options_version: "a".repeat(64), default_status: "in_progress", options: [{ key: "in_progress", name: "In progress", category: "in_progress" }] }
+    : { code: "acceptance_returned", status: 200, collaboration_revision: "9007199254740994" })));
+  vi.stubGlobal("fetch", fetch);
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={source} /></QueryClientProvider>);
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Return for revision" }));
+  const form = await screen.findByRole("form", { name: "Return for revision" });
+  expect(within(form).getByText("Selected account: Result author")).toBeInTheDocument();
+  expect(within(form).getByRole("button", { name: "Return for revision" })).toBeDisabled();
+  await user.type(within(form).getByLabelText("Revision reason"), "Cover the missing case");
+  await user.click(within(form).getByRole("button", { name: "Return for revision" }));
+  expect(await screen.findByText("Action confirmed.")).toBeInTheDocument();
+  const write = fetch.mock.calls.find(([url]) => new URL(url).pathname.endsWith("acceptance-returns"));
+  expect(JSON.parse(String(write?.[1]?.body))).toMatchObject({ submission_id: submissionId, target_user_id: recipientId, note: "Cover the missing case" });
+});
+
+it("records a self-handled result and completes without a transfer form", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const source = { ...issue, ai_policy: "manual" as const, delivery: { current: null, latest: null, has_history: false } };
+  const fetch = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>().mockImplementation(async (url) => new Response(JSON.stringify(new URL(url).pathname.endsWith("status-options")
+    ? { action: "complete", status_options_version: "a".repeat(64), default_status: "done", options: [{ key: "done", name: "Done", category: "done" }] }
+    : { code: "completed", status: 200, collaboration_revision: "9007199254740994", delivery_confirmation: { submission_id: submissionId, attachment_ids: [] } })));
+  vi.stubGlobal("fetch", fetch);
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={source} /></QueryClientProvider>);
+  const permissions = screen.getByLabelText("Current permissions");
+  expect(permissions).toHaveTextContent("Record result and complete");
+  expect(permissions).not.toHaveTextContent("Accept and complete");
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Record result and complete" }));
+  const form = await screen.findByRole("form", { name: "Record result and complete" });
+  expect(within(form).queryByRole("button", { name: "Recipient" })).not.toBeInTheDocument();
+  await user.type(within(form).getByLabelText("Result"), "Finished my own work");
+  await user.type(within(form).getByLabelText("Basis"), "Checked the requested result");
+  await user.click(within(form).getByRole("button", { name: "Record result and complete" }));
+  expect(await screen.findByText("Action confirmed.")).toBeInTheDocument();
+  const write = fetch.mock.calls.find(([url]) => new URL(url).pathname.endsWith("lifecycle"));
+  expect(JSON.parse(String(write?.[1]?.body))).toMatchObject({ action: "complete", note: "Finished my own work", basis: "Checked the requested result", attachment_ids: [] });
+  expect(fetch.mock.calls.some(([url]) => new URL(url).pathname.endsWith("handoffs"))).toBe(false);
+});
+
+it("shows the current-viewer context beside Participants and opens the scoped list by keyboard in Chinese", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const participant = { ...account, user_id: recipientId, name: "Current participant", account_active: true };
+  const source = { ...issue, creator: participant, handler: participant, write_context: null,
+    capabilities: { ...issue.capabilities, comment: false, edit: false, complete: false } };
+  const fetch = vi.fn(async (url: string) => {
+    if (new URL(url).pathname.endsWith("/participants")) return new Response(JSON.stringify({
+      protocol_version: 1, issue_id: id, collaboration_revision: source.collaboration_revision, participants: [participant],
+    }));
+    throw new Error("Unexpected participant context request");
+  });
+  vi.stubGlobal("fetch", fetch);
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={source} /></QueryClientProvider>, { locale: "zh-Hans" });
+  const permissions = screen.getByLabelText("当前权限");
+  expect(within(permissions).getByText("查看者")).toBeInTheDocument();
+  expect(permissions).not.toHaveTextContent("验收并完成");
+  expect(permissions).not.toHaveTextContent("编辑任务");
+  expect(fetch).not.toHaveBeenCalled();
+  const trigger = screen.getByRole("button", { name: "参与者" });
+  trigger.focus();
+  await userEvent.setup().keyboard("{Enter}");
+  expect(trigger).toHaveAttribute("aria-expanded", "true");
+  const list = await screen.findByRole("list", { name: "参与者" });
+  expect(await within(list).findByText("Current participant")).toBeInTheDocument();
+  expect(within(list).getByText("发起人")).toBeInTheDocument();
+  expect(within(list).getByText("当前处理人")).toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "移除 Current participant" })).not.toBeInTheDocument();
+  expect(fetch).toHaveBeenCalledTimes(1);
+});
 
 async function chooseExactRecipient(user: ReturnType<typeof userEvent.setup>, value: string) {
   await user.click(screen.getByRole("button", { name: "Recipient" }));

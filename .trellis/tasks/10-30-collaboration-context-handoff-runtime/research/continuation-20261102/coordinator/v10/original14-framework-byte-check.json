@@ -1,0 +1,42 @@
+{
+  "observed_at": "2026-11-02T20:08:33.836900+00:00",
+  "source_registration": ".trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/original-series-run/prerun.json",
+  "arms": [
+    {
+      "arm": "baseline",
+      "framework_sha256": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+      "framework_files": {
+        "host_context_experiment_evidence_test.go": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+        "host_context_experiment_fixture_test.go": "0245a0719d82c3b9a2d1c754c7df27504b837776a4d04ac2bdb71864afa794d6",
+        "host_context_experiment_stop_test.go": "2ddb69382caac52ef6afbaf3b6e4246a07d52aa3c06f0a6e0b1b5f8453a8908d",
+        "host_context_experiment_test.go": "09e5d6cc4e1abca7cb332e6c2b30b563351021fcaf730d8ee6445b2257fa6893"
+      },
+      "dirty_only_registered_overlay": true,
+      "dirty_paths": [
+        "?? server/internal/daemon/collaborationrun/host_context_experiment_evidence_test.go",
+        "?? server/internal/daemon/collaborationrun/host_context_experiment_fixture_test.go",
+        "?? server/internal/daemon/collaborationrun/host_context_experiment_stop_test.go",
+        "?? server/internal/daemon/collaborationrun/host_context_experiment_test.go"
+      ]
+    },
+    {
+      "arm": "after",
+      "framework_sha256": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+      "framework_files": {
+        "host_context_experiment_evidence_test.go": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+        "host_context_experiment_fixture_test.go": "0245a0719d82c3b9a2d1c754c7df27504b837776a4d04ac2bdb71864afa794d6",
+        "host_context_experiment_stop_test.go": "2ddb69382caac52ef6afbaf3b6e4246a07d52aa3c06f0a6e0b1b5f8453a8908d",
+        "host_context_experiment_test.go": "09e5d6cc4e1abca7cb332e6c2b30b563351021fcaf730d8ee6445b2257fa6893"
+      },
+      "dirty_only_registered_overlay": true,
+      "dirty_paths": [
+        " M server/internal/daemon/collaborationrun/host_context_experiment_fixture_test.go",
+        " M server/internal/daemon/collaborationrun/host_context_experiment_test.go",
+        "?? server/internal/daemon/collaborationrun/host_context_experiment_stop_test.go"
+      ]
+    }
+  ],
+  "new_Provider_calls": 0,
+  "tests_builds_or_DB_actions": 0,
+  "execution_clearance_issued": false
+}

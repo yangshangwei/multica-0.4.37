@@ -326,6 +326,9 @@ func TestCollaborationHostIntegrationHumanActionsNeedNoAIMetadata(t *testing.T) 
 					status = "cancelled"
 				}
 				request := lifecycleParams(t, f.collaborationQueueFixture, action, status, 1, 1)
+				if action == "complete" {
+					request = deliveredCompletionParams(t, f.collaborationQueueFixture, status)
+				}
 				if request.ExecutionViewVersion != 0 {
 					t.Fatal("human lifecycle unexpectedly inherited AI metadata")
 				}

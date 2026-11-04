@@ -111,7 +111,13 @@ function AttachmentDeliveryForm({ scope, issue }: { scope: CollaborationScope; i
   // Unfinished uploads, deliveries and storage errors must not hide in a collapsed section.
   const attention = draft.uploads.length > 0 || draft.deliveries.length > 0 || Boolean(draft.error) || send.isError;
   const disclosure = useRef<HTMLDetailsElement>(null);
-  useEffect(() => { if (attention && disclosure.current) disclosure.current.open = true; }, [attention]);
+  useEffect(() => {
+    if (!attention || !disclosure.current) return;
+    disclosure.current.open = true;
+    for (let ancestor = disclosure.current.parentElement; ancestor; ancestor = ancestor.parentElement) {
+      if (ancestor instanceof HTMLDetailsElement) ancestor.open = true;
+    }
+  }, [attention]);
   return <details ref={disclosure} className="space-y-4"><summary className="cursor-pointer py-2 text-body font-medium pointer-coarse:min-h-11">{t(($) => $.attachments.add)}</summary>
     <CollaborationAttachmentPicker scope={scope} form={draft.form} update={draft.update} uploads={draft.uploads} onBusyChange={setUploading} disabled={send.isPending || draft.deliveries.length > 0 || Boolean(draft.error)} />
     <Button type="button" className="pointer-coarse:min-h-11" disabled={locked || draft.form.selectedAttachmentIds.length === 0} onClick={() => send.mutate({ value: prepareCollaborationAttachmentDelivery(draft.form, crypto.randomUUID()), recovery: false })}>{t(($) => $.attachments.deliver)}</Button>

@@ -17,7 +17,6 @@ afterEach(() => setSchemaLogger(noopLogger));
 it.each([
   { action: "change_status", category: "blocked" },
   { action: "change_status", category: "in_progress" },
-  { action: "change_status", category: "in_review" },
   { action: "change_status", category: "backlog" },
   { action: "reopen", category: "todo" },
   { action: "complete", category: "done" },
@@ -26,6 +25,7 @@ it.each([
   { action: "return_information", category: "blocked" },
   { action: "return_information", category: "backlog" },
   { action: "submit_acceptance", category: "in_review" },
+  { action: "return_acceptance", category: "in_progress" },
 ])("parses $action options with category $category", ({ action, category }) => {
   const value = { ...options, action, options: [{ key: "source_custom", name: "Source status", category }], default_status: "source_custom" };
   expect(parseCollaborationStatusOptions({ ...value, private_extra: "PRIVATE_OPTION_EXTRA" })).toEqual(value);
@@ -63,6 +63,8 @@ it.each([
   { action: "reopen", options: [{ key: "todo", name: "Wrong", category: "cancelled" }] },
   { action: "request_information" },
   { action: "submit_acceptance" },
+  { action: "change_status", options: [{ key: "todo", name: "Cannot fabricate review", category: "in_review" }] },
+  { action: "reopen", options: [{ key: "todo", name: "Cannot fabricate review", category: "in_review" }] },
   { action: "return_information", options: [{ key: "todo", name: "Wrong", category: "done" }] },
   { action: "return_information", options: [...options.options, { key: "blocked", name: "Unexpected choice", category: "blocked" }] },
 ])("does not make malformed or inapplicable options actionable", (patch) => {
