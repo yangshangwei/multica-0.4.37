@@ -49,7 +49,7 @@
       "includes_H2b": true,
       "H6_launches_per_trial": 2
     },
-    "next_action": "source_review_recommends_existing_H5_quote_only_no_write_fake_regression; implementation_not_started; original8remainblocked",
+    "next_action": "H5quote-onlyfake gapclosed; originalE5blockingreview and remaining8paused; currentruntime realmodel acceptance separately owned",
     "progress_phase": "blocked_on_registered_E5_output_canary",
     "experiment_next_arm": "baseline",
     "e2b_status": "3_valid_pass",
@@ -175,6 +175,21 @@
       "independent_review": "research/e5-source-review-20261105/h5-coverage/final-review.json",
       "blocking_findings_in_review": 0,
       "original_failure_open": true
+    },
+    "h5_quote_regression": {
+      "status": "completed_verified_integrated",
+      "worktree": "/Volumes/artisan/code/2026/mc-h5-quote-20261105",
+      "plan": "research/h5-quote-regression-20261105/plan.md",
+      "real_calls": 0,
+      "heavy_window": "new_independent_cluster_serial_no_shared_DB; no_observed_competingtests; peertransport502",
+      "runtime_frozen_registration_changed": false,
+      "mutation": "expected regression failure after disabling answercheck; oldcontrols passed",
+      "normal": "7namedpass3leaf3fake0fail/skip",
+      "race": "7namedpass3leaf3fake0fail/skip",
+      "static": "gofmt and tagged cmd/server vet passed",
+      "report": "research/h5-quote-regression-20261105/verification.md",
+      "independent_review": "research/h5-quote-regression-20261105/review/actual-final-review.json",
+      "successor_framework_hash": "265f3dad838f87ce7f319bbeaf555d702060f5bb2863e0585cdc73e268fb122c"
     }
   }
 }

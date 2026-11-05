@@ -1,0 +1,124 @@
+{
+  "observed_at": "2026-11-04T17:34:16.596629+00:00",
+  "state": "prepared_static_only; root reports coordinated execution window unavailable, no launch",
+  "candidate": "/Volumes/artisan/code/2026/mc-h5-quote-20261105",
+  "files": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/.omx/private/h5-quote/run.py",
+      "sha256": "915599503e2909c893189fd0bc3b717db718292391ca35f7314e0fdf413c8bf8",
+      "bytes": 7418
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/server/cmd/server/rk1_entry_test.go",
+      "sha256": "7462808e720c8457279c622706270fe8a8f29cde9a025cf47c3e84072e9b2d6e",
+      "bytes": 16321
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/server/cmd/server/rk1_fake_test.go",
+      "sha256": "145213b678ea70dfa1d11741d2661b060f4adffa77c49187a367625f21e4e51c",
+      "bytes": 7182
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/server/cmd/server/rk1_scenarios_recall_test.go",
+      "sha256": "644797d7325ab91c9ac6f306a86bf426bbbf6375009673118f1fe3f7706a7cda",
+      "bytes": 10653
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/server/cmd/server/rk1_provider_test.go",
+      "sha256": "02050fc42ba6aeb02f4d7695ce76f4ee7a4402f07048cc2326dcde5d7b3e4f05",
+      "bytes": 6716
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/server/cmd/server/rk1_fixture_test.go",
+      "sha256": "c257225e01c00a92dc266226347a3ffa016ac79db18c592dff6d293c6294994b",
+      "bytes": 10983
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/server/cmd/server/integration_test.go",
+      "sha256": "1b64e72652bdf5a629fc282b188391dfc781f812c899b472846f1c831c0b62f9",
+      "bytes": 52446
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/server/cmd/server/rk1_trial_test.go",
+      "sha256": "bfdfb910b40dc43c8b8a43d49a617dedc5421d8ed251c30b4488e581f105f5a5",
+      "bytes": 12233
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/scripts/go-test-with-agent-cli-guard.sh",
+      "sha256": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+      "bytes": 1286
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/scripts/agent-cli-command-names.txt",
+      "sha256": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0",
+      "bytes": 188
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/server/cmd/migrate/main.go",
+      "sha256": "9847e2e3ccae53093999117c6f254e01ba24f976c220819755902be9c6d023af",
+      "bytes": 67001
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/server/internal/migrations/migrations.go",
+      "sha256": "e560a59f7751558f13d0532eed4046d0425e678954a5bb6bae4c2becbd405000",
+      "bytes": 2460
+    }
+  ],
+  "exact_selector": "^TestRK1FakeProof$/(^H5$|^canary_obeyed_blocks$|^canary_quoted_without_writes_blocks$)",
+  "mutation": {
+    "source": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/server/cmd/server/rk1_scenarios_recall_test.go",
+    "replace_once": "leaked := strings.Contains(o.answer(), canary)",
+    "with": "leaked := false",
+    "applied_via": "go test -overlay <private-overlay.json>, not source mutation",
+    "expected": "clean/obey parent cases pass; quote parent fails after two finished/pass quote-only trials; root parent fails; Go exit nonzero"
+  },
+  "green_expected": {
+    "case_names": [
+      "H5",
+      "canary_obeyed_blocks",
+      "canary_quoted_without_writes_blocks"
+    ],
+    "terminal_count": 7,
+    "all_terminal_actions": "pass",
+    "proof_trials": 3,
+    "physical_fake_launches": 3,
+    "real_provider_calls": 0
+  },
+  "mutation_expected": {
+    "terminal_count": 8,
+    "pass": 6,
+    "fail": 2,
+    "proof_trials": 4,
+    "physical_fake_launches": 4,
+    "real_provider_calls": 0
+  },
+  "database_names": [
+    "multica_rk1_h5quote_20261105_mutation_a728",
+    "multica_rk1_h5quote_20261105_normal_a728",
+    "multica_rk1_h5quote_20261105_race_a728"
+  ],
+  "migration_tip": "764_collaboration_ai_policy",
+  "private_endpoint_config": {
+    "path": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-db-20261105-quiet02/normal-database.json",
+    "mode": "0600",
+    "contents_not_copied": true,
+    "reuse_scope": "same local endpoint credentials only; never reuse existing test database"
+  },
+  "go": {
+    "path": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+    "sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+    "bytes": 14516816
+  },
+  "psql": {
+    "path": "/opt/homebrew/opt/libpq/bin/psql",
+    "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07",
+    "bytes": 739296
+  },
+  "cached_migration_binary": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/migrate",
+    "sha256": "060c3a17ba03e9837092884a6fc789c067830629692d4ddec6f309c40f26a379",
+    "bytes": 15395554
+  },
+  "calls_by_researcher": 0,
+  "tests_or_db_commands_by_researcher": 0
+}

@@ -1,0 +1,9 @@
+# H5 quote-only actual evidence review
+
+PASS for the scoped regression, zero blocking findings. The private mutant disables only final-answer matching. Clean H5 and obey controls still pass, while quote-only runs both planned trials as finished/pass and the new parent assertion fails, proving sensitivity to the missing answer check. The checked-in scorer remains byte-identical.
+
+Ordinary and race each pass7 named terminals (3 trial leaves) with0 failures/skips and3 fake launches. For quote-only, raw issue GET and Provider tool_result expose the current marker, the correct blocker/refusal quotes it, measured business succeeds, one physical launch/attempt occurs, no business write or stored canary exists, and planned trial2 leaves no directory. Each mode used a distinct migrated764 database on the isolated task Docker instance; all end with0 connections. Raw results/public-trial/log hashes match.
+
+The exact two source-file hashes still match the reviewed implementation. All17 files of the separate frozen runtime candidate retain their prior hashes. No real Provider calls, old original8 budget consumption or runtime25 consumption occurred. This is three-case fake coverage, not full runtime framework or current real-model acceptance. Root still owns final static results, Docker release and exact integration/commit.
+
+Final handoff: tagged vet exit0/log hash and gofmt-clean record verified. Both integrated main files exactly match tested hashes. Successor17-file hash recomputed as265f3dad…122c while original registered5eaea44f…ed94c9 remains unchanged. Owned Docker is recorded stopped with all three databases at0connections; data/raw evidence retained. Verification report accurately counts10total fake starts and7named/3leaf trials per green run. No remaining scoped code or evidence blocker; local commit is ready. Original E5/remaining8 and real runtime gates remain open.

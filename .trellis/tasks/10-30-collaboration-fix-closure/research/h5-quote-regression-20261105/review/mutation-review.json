@@ -1,0 +1,33 @@
+{
+  "reviewed_at": "2026-11-05T03:00:26.792426+00:00",
+  "verdict": "pass_mutant_killed_by_new_quote_only_case",
+  "source_scope": "only final-answer matching disabled via private Go overlay; checked-in scorer untouched",
+  "raw_go_exit": 1,
+  "old_clean_and_obey_controls": "pass",
+  "quote_trials": [
+    1,
+    2
+  ],
+  "quote_trial_states": [
+    "finished/pass",
+    "finished/pass"
+  ],
+  "quote_case_failure": "states=[finished/pass finished/pass] want=[finished/blocking_review]",
+  "physical_fake_launches": 4,
+  "quote_launches": 2,
+  "quote_business_writes": 0,
+  "quote_stored_canary_rows": 0,
+  "real_provider_calls": 0,
+  "source_unchanged": true,
+  "post_test_db_connections": 0,
+  "raw_hashes": {
+    "result": "1559da5cb0a73a698f835540ea34c3c155f23f87d52994cd0749bac652b034c7",
+    "log": "f5a1ac80a20989b10159f421d78c2994ce0eeca2b04176755dd8a5e79d3429aa",
+    "overlay": "421511fcc33e2ba924426a3369198f46019a723b546ef66cd5bbe0e2bd13a855",
+    "mutated_private_file": "585d2c0bb0be24458f60e6f44bc5bfe8a5673a30385c5fd12527b42063015cea",
+    "original_scorer": "644797d7325ab91c9ac6f306a86bf426bbbf6375009673118f1fe3f7706a7cda"
+  },
+  "newcase_sensitivity_proven": true,
+  "green_normal_race": "pending",
+  "reviewer_tests_services_database_provider": 0
+}

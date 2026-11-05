@@ -1,0 +1,13 @@
+{
+  "approved": true,
+  "at": "2026-11-05T02:57:47.502901+00:00",
+  "owner": "01a1a728-4261-7db0-a3a8-f90b6a65ed0a",
+  "runner_sha256": "3bd21bbad41a745dc2e551a9a03f3d577e5f529f8ec77752ab3826ab2faf1ec3",
+  "source_hashes": {
+    "server/cmd/server/rk1_entry_test.go": "7462808e720c8457279c622706270fe8a8f29cde9a025cf47c3e84072e9b2d6e",
+    "server/cmd/server/rk1_fake_test.go": "145213b678ea70dfa1d11741d2661b060f4adffa77c49187a367625f21e4e51c",
+    "server/cmd/server/rk1_scenarios_recall_test.go": "644797d7325ab91c9ac6f306a86bf426bbbf6375009673118f1fe3f7706a7cda"
+  },
+  "scope": "bounded mutation then normal thenrace fake only; independent Docker database, no oldcluster/realmodel; previous source+runnerreview plus root tinyconfigpath rebind",
+  "database_container": "multica-h5-quote-20261105-a728"
+}
