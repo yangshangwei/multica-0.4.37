@@ -98,6 +98,47 @@ and race validation on separate owned databases, retaining all raw results.
 Never carry the resulting successor framework hash into an earlier frozen real-run
 registration silently, or count fake launches against either real-model budget.
 
+## Runtime operator observations and registered trial outcomes
+
+1. **Scope:** task-private recorders around the frozen RK1 launcher. The original
+   launcher compares complete `operator_facts()` at scenario admission; it does
+   not continuously attest operator state or require a post-run identical tree.
+2. **Signatures:** `operator_gate(observed, registered, admission)` rejects every
+   admission mismatch. Private plugin manifests contain relative path, file/link
+   kind and content hash/link target, using the launcher's aggregate digest.
+   Post-run records separately expose `operator_changes`, `plugin_changes`,
+   original executor/stop results, captures and public/private launch accounting.
+3. **Contract:** preserve operator HOME/configuration and all fingerprinted paths;
+   never exempt a cache or Git directory by name. Capture full manifests before
+   and after an invocation, with selected mutable metadata bytes kept privately
+   when a content comparison is needed. A hash inventory is not a full content
+   backup or proof of the intermediate bytes loaded by the Provider.
+4. **Errors:** prelaunch drift refuses execution. Post-run drift must not prevent
+   saving actual trial failures, canary stops or consumed launches. An incomplete
+   runtime or failed original invocation still stops subsequent scenarios. A
+   separate recorder assertion failure remains recorded and requires explicit
+   disposition; it cannot overwrite the original verdict or silently authorize
+   a later scenario. Never rerun a consumed trial to obtain cleaner evidence.
+5. **Cases:** valid behavior plus changed plugin fingerprints can be reported as
+   registered behavior passed and operator stability unproven. That distinction
+   does not establish harmless drift. Proven behavior-relevant environment faults
+   remain blocking. `next_scenario_authorized` stays false until root reviews
+   actual differences and binds a new registration/window.
+6. **Verification:** credential-free controls compare manifests with the original
+   digest (including links), reject admission drift, and exercise post-run drift
+   together with an actual failed/incomplete/canary trial through the recorder's
+   result path. H1 counts three measured starts separately from seed copies;
+   H6 counts two measured starts per trial. Capture CLI files once after stable
+   metadata observations, rather than rehashing large binaries every poll.
+7. **Wrong / correct:** replacing a historical helper exit1 with pass or asserting
+   a changed marketplace file is harmless from its name is wrong. Keep the raw
+   trial and helper outcomes, document the original versus added requirement,
+   retain the unresolved stability claim, and improve future evidence capture.
+
+Evidence: runtime task `research/continuation-20261105/plugin-drift-resolution/`
+and the unchanged E0a result/independent review. No original launcher, seventeen
+framework files, model, budget or scoring rule was changed by this disposition.
+
 ## Knowledge fake proof and runtime input promotion
 
 1. **Scope:** the `agentintegration && !windows` knowledge sibling in
