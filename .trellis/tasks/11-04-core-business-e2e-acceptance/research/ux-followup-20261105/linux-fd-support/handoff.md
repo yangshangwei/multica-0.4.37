@@ -1,0 +1,9 @@
+# Linux daemon descriptor boundary support
+
+Current core owner controls implementation in mc-core-fd-fix-20261105 and original Linux full Main reproduction. This thread independently inspected the two detached launch sites, Linux CLOEXEC helper, non-Linux no-op, managed-handoff forwarding, and the real parent/bridge/leaf regression. No source edit, database access, build, browser, container or test command was run by this support lane.
+
+Observed mechanism matches Go1.27 source: os/exec prepares explicit standard streams/ExtraFiles, then syscall/exec_linux.go clears CLOEXEC for each explicit child mapping; inherited FD>=3 outside those mappings must already be CLOEXEC. Marking flags does not close the parent's live descriptors. Linux /proc enumeration and EBADF races remain local; other failures abort launch. Both initial background daemon and self-update successor are prepared immediately before Start; Windows breakaway retry is unchanged via the non-Linux no-op.
+
+The regression puts unrelated descriptors at64/65 so explicit ExtraFiles fd3 cannot overwrite and accidentally hide the defect. It asserts parent-pipe usability, EOF while the child remains alive, missing unrelated descriptors in the child, exact managed stdin bytes, explicit file mapping and stdout/stderr. The required executable evidence is a recorded noop-helper baseline failure followed by the same test passing with the actual helper, then the original installed Linux workflow with unchanged business assertions.
+
+Do not upgrade this source review to full Linux acceptance. Product fix still needs the owner's red/green, appropriate compile/adjacent regression, package source/artifact binding and original full-flow outcome. Preserve old timeout and primary/cleanup errors; P95 has already been accepted and is unrelated.

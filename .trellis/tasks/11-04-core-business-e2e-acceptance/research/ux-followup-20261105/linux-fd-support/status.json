@@ -1,0 +1,14 @@
+{
+  "state": "static_review_pass_runtime_pending",
+  "implementation_owner": "core/linux_daemon_fd_fix",
+  "implementation_checkout": "/Volumes/artisan/code/2026/mc-core-fd-fix-20261105",
+  "support_scope": "Independent read-only descriptor/launch/error/test review",
+  "source_edit_performed": false,
+  "runtime_checks_performed": false,
+  "independent_review_pending": false,
+  "remaining_acceptance": "Owner's real Linux noop-control failure, repaired regression, package identity and original full Main workflow",
+  "performance": "User accepted recorded2155.025ms; no further optimization or gate rerun",
+  "review": "static-review.md",
+  "production_findings": "No blocking finding",
+  "fixture_note": "PID publication failure afterchildStart should register immediate cleanup; relayedtoowner"
+}
