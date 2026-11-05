@@ -4,9 +4,9 @@
   "registered_by_session": "claude multica-0-4-37-35",
   "runnable": false,
   "not_runnable_reasons": [
-    "current-source deterministic normal02/race03 and fullpassword7 accepted; reviewed committed execution binding including regenerated CLI artifact remains pending",
-    "operator configuration plugin-tree fingerprint is changing; prepared binding is not live-stable and exact launcher admission recheck remains required",
-    "exclusive model window is not confirmed and native task-message gateway is returning502; runtime25 approved/unused; original8 stopped independently"
+    "helper86541 independently reviewed and frozen source passed; final live database/upfront CLI capture and launcher check-only await execution window",
+    "Warp Claude closed by user and absence verified; core batch still running, explicit E0a window not yet released",
+    "prepared operator facts now reflect intended subprocess environment; exact equality must hold at build/check/run"
   ],
   "framework_files": "server/cmd/server/rk1_*_test.go (build tag agentintegration, !windows)",
   "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
@@ -88,7 +88,7 @@
     "current final639 fake normal/race passed; independent result review remains unavailable after gateway429",
     "user currently permits local preparation only; exclusive serial gateway window and applicable execution authority required before paid execution"
   ],
-  "maintained_at": "2026-11-04T16:59:10.758678+00:00",
+  "maintained_at": "2026-11-05T03:00:26.044091+00:00",
   "authorization_reference": "../continuation-20261102/coordinator/authorization-recall.md",
   "selected_candidate_preparation": "../continuation-20261105/paid-binding-preflight.json",
   "historical_gate_reasons_before_20261104": [
@@ -158,7 +158,7 @@
     "~/.claude/CLAUDE.md": "7cd2f85f979b138c2557af3cd736a4911c323e03ac2e6ace45f85070fd5feca7",
     "~/.claude/hooks/": "094bb0d044f311ec46bed8880c1fe8d8804f00531b7bd8566f33a3d99111e0da",
     "~/.claude/skills/": "0d7e2e273437697ef11e22d168f70fd0e7b7523e9411f1c2167b26e413919789",
-    "~/.claude/plugins/": "1497906a9f34dd1d40af590dc95a3f697970caffdb70b76c8b57add84fac772c",
+    "~/.claude/plugins/": "617d9c5d6b208b7b1b44aa4ac5bff262a738b926b70886f16dda143873050d8c",
     "~/.claude/agents/": "e418e8871a56f58d80832c9a89e0430c37b12efd70d775539f9df512bf026bba",
     "~/.claude/commands/": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "managed:/Library/Application Support/ClaudeCode/": null,
@@ -231,5 +231,15 @@
     },
     "selected_candidate_preparation": "../continuation-20261102/coordinator/v10/binding-preparation.json"
   },
-  "operator_binding_status": "PREPARED_NOT_STABLE"
+  "operator_binding_status": "PREPARED_IN_ACTUAL_ENV; recheck at admission",
+  "real_entry_preparation": {
+    "helper_commit": "86541bb37",
+    "helper_sha256": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
+    "review": "../continuation-20261105/real-entry/readiness-review.json",
+    "controls_passed": 7,
+    "calls": 0,
+    "env_sha256": "082f454ff70aac7e4f4feb6b870f00724b9ea9d1870c6f489f8ea9d2b8c8cb55",
+    "config_sha256": "2c16a4f70fe4db6ae59ca544d6e893f63a541de9d8b9a727d3a605438b898d50",
+    "database_allocated": false
+  }
 }
