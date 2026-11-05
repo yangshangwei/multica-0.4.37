@@ -2,12 +2,8 @@
   "series": "RK1",
   "scope": "runtime scenarios of runtime-addendum.json, including RK1-H2b (budgeted 2026-11-01T10:33:57Z)",
   "registered_by_session": "claude multica-0-4-37-35",
-  "runnable": false,
-  "not_runnable_reasons": [
-    "H1accepted; H2metadata prepared and allstagepermitsfalse",
-    "CoreLinux/P95owner explicitly retains window; noH2database/build/check/Provider until explicitrelease",
-    "At execution recheck exact current fulloperator/source/helper/CLI and freshDB binding"
-  ],
+  "runnable": true,
+  "not_runnable_reasons": [],
   "framework_files": "server/cmd/server/rk1_*_test.go (build tag agentintegration, !windows)",
   "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
   "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
@@ -88,7 +84,7 @@
     "current final639 fake normal/race passed; independent result review remains unavailable after gateway429",
     "user currently permits local preparation only; exclusive serial gateway window and applicable execution authority required before paid execution"
   ],
-  "maintained_at": "2026-11-05T10:10:21.021650+00:00",
+  "maintained_at": "2026-11-05T11:48:37.575836+00:00",
   "authorization_reference": "../continuation-20261102/coordinator/authorization-recall.md",
   "selected_candidate_preparation": "../continuation-20261105/paid-binding-preflight.json",
   "historical_gate_reasons_before_20261104": [
@@ -231,7 +227,7 @@
     },
     "selected_candidate_preparation": "../continuation-20261102/coordinator/v10/binding-preparation.json"
   },
-  "operator_binding_status": "H2_PREPARED_ACTUAL_ENV; exact admission refresh required at window",
+  "operator_binding_status": "H2actualenv checked at admission; postmanifest observation",
   "real_entry_preparation": {
     "helper_commit": "86541bb37",
     "helper_sha256": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
@@ -245,14 +241,14 @@
   },
   "execution_window": {
     "owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
-    "granted_by": "01a1a7a6-02dc-7722-a9d6-7d05385edb2d",
-    "scenario": "RK1-H1",
+    "granted_by": "01a1a731-b1e5-7b11-b83e-55efca5293d6",
+    "scenario": "RK1-H2",
     "start_trial": 1,
     "trials": 3,
     "paid_launches": 3,
     "outer_timeout_minutes": 26,
-    "recorded_at": "2026-11-05T06:21:00.601697+00:00",
-    "hold": "preparation then actualinvocation up to26minutes; release onexit"
+    "recorded_at": "2026-11-05T11:48:37.575836+00:00",
+    "hold": "preparation then one original invocation up to26min; release onexit"
   },
   "actual_E0a": {
     "label": "RK1-E0a-t1",
@@ -303,7 +299,7 @@
       "launches_per_trial": 1,
       "paid_launches_expected": 3
     },
-    "database_created": false,
-    "window_granted": false
+    "database_created": true,
+    "window_granted": true
   }
 }
