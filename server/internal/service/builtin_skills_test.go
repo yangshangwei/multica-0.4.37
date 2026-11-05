@@ -245,6 +245,7 @@ func TestWorkingOnIssuesSkillCoversIssueLoopContracts(t *testing.T) {
 		"`todo` starts work now, `backlog` parks it",
 		"`--stage <N>`",
 		"when a whole stage finishes",
+		"`in_review` still awaits acceptance and does not close the stage",
 		"multica issue status <child-id> todo",
 		// MUL-5442: the brief's Issue Metadata section defers the full
 		// write discipline here. Every relocated ban is anchored
@@ -471,6 +472,9 @@ func TestSquadsSkillCoversLeaderRoutingContract(t *testing.T) {
 		"--roots-only --summary",
 		"--thread <thread-id> --tail 30",
 		"scan the roots first, then open the threads",
+		"member result comment on the same issue",
+		"only `done`/`cancelled` children close that barrier",
+		"`in_review` still awaits acceptance",
 	}
 	for _, want := range mustContain {
 		if !strings.Contains(body, want) {

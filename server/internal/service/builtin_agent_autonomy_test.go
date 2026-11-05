@@ -310,6 +310,64 @@ func TestSquadTemplates_LifecycleEvidenceRouting(t *testing.T) {
 	}
 }
 
+// Inspect each independently delivered instruction body. Combining them would
+// hide a stale leader policy behind the newer squad policy injected after it.
+func TestReviewGateInstructionsCoverEveryRosterRole(t *testing.T) {
+	squad, ok := SquadTemplateByKey("review-gate")
+	if !ok {
+		t.Fatal("review-gate squad is missing")
+	}
+	leader, ok := AgentRoleTemplateByKey(squad.LeaderTemplateKey)
+	if !ok {
+		t.Fatal("review-gate leader is missing")
+	}
+	if leader.Version != 3 || squad.Version != 3 {
+		t.Errorf("leader/squad versions = %d/%d, want 3/3 after correcting the leader policy", leader.Version, squad.Version)
+	}
+	checks := map[string]string{
+		"code-reviewer":                  "差异",
+		"security-reviewer":              "数据暴露",
+		"qa-engineer":                    "变更有效",
+		"agent-evaluator":                "Agent/Skill/MCP",
+		"experience-validation-engineer": "可访问性",
+		"migration-reviewer":             "schema/API/客户端",
+	}
+	if len(squad.Members) != len(checks) {
+		t.Fatalf("review-gate has %d specialist seats, want %d", len(squad.Members), len(checks))
+	}
+	for name, body := range map[string]string{"leader": leader.Instructions(), "squad": squad.Instructions()} {
+		t.Run(name, func(t *testing.T) {
+			for _, member := range squad.Members {
+				condition, exists := checks[member.TemplateKey]
+				if !exists {
+					t.Errorf("unexpected review-gate role %q", member.TemplateKey)
+					continue
+				}
+				role, exists := AgentRoleTemplateByKey(member.TemplateKey)
+				if !exists {
+					t.Errorf("missing role template %q", member.TemplateKey)
+					continue
+				}
+				found := false
+				for _, line := range strings.Split(body, "\n") {
+					if strings.HasPrefix(line, "|") && strings.Contains(line, role.Title("zh")) && strings.Contains(line, condition) {
+						found = true
+						break
+					}
+				}
+				if !found {
+					t.Errorf("%s policy has no %q routing row for %s", name, condition, member.TemplateKey)
+				}
+			}
+			for _, contract := range []string{"unknown", "hold", "作者", "每轮只交给一位"} {
+				if !strings.Contains(body, contract) {
+					t.Errorf("%s policy is missing review boundary %q", name, contract)
+				}
+			}
+		})
+	}
+}
+
 // TestReleaseGateGovernanceDrill_Contract pins the release-gate governance drill:
 // the release routing policy strings together the five governance checks
 // (契约兼容, 安全, 供应链, 产品结果, 灾备恢复), reports which were skipped, keeps the

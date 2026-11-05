@@ -290,8 +290,9 @@ as a completed model-driven security workflow.
 Retain the private-owner return, no-action and current-leader attribution checks
 in `squad_worker_comment_wakes_leader_test.go`, `squad_no_action_test.go` and
 `squad_evaluation_provenance_test.go`. Run handler tests against an explicitly
-selected disposable, migrated `DATABASE_URL`: `handler/TestMain` otherwise defaults
-to the local application database and can exit 0 after `Skipping tests`.
+selected disposable, migrated `DATABASE_URL`: current `handler/TestMain` refuses
+missing/invalid/unreachable configuration. Older candidates may use a local
+fallback or silently skip; never run them without the explicit isolated boundary.
 Assert the exact expected `run`/`pass` event sets, no skips/failures, and use
 `scripts/go-test-with-agent-cli-guard.sh` to reject ambient agent CLI execution.
 
@@ -632,3 +633,13 @@ evidence that an LLM independently gathered or summarized the data.
 Managed publication is opt-in and preserves the existing deployment consumer protocols.
 See [Resource publishing](./resource-publishing.md) for upload limits, locking,
 CAS/replay, audit recovery, catalog snapshot and compatibility contracts.
+
+## Delivered work and accepted stages
+
+1. **Scope:** ordinary issue turns, child stage barriers and Review Gate routing; this is separate from account collaboration state machines.
+2. **Signatures:** `writeWorkflowIssue`, `notifyParentOfChildDone`, `isTerminalChildStatus`, `CompleteTask`; review-gate-lead template version 3, review-gate squad version 3.
+3. **Contract:** an agent delivers an assigned issue/sub-issue to `in_review`. Human acceptance or an existing authorized integration produces `done`; `done/cancelled` alone close the ordinary child stage barrier. Completing an execution does not change the issue. Same-issue member result comments use the existing leader wake route; they are not child-stage acceptance.
+4. **Matrix:** child→in_review waits; child→done/cancelled checks its parent stage; dispatch leaves the parent in progress; unknown required specialist evidence cannot pass review. Guest/Agent Identity status prohibitions remain authoritative.
+5. **Cases:** good is a delivered child visibly awaiting acceptance; base is existing same-issue worker return; bad is telling a child that in_review automatically advances the next stage or bypassing acceptance with a new parent trigger.
+6. **Tests:** generated assignment/comment/leader briefs state the same distinction. Review Gate leader and squad must independently cover all six actual review seats, with conditions and missing-evidence behavior. Keep skill line budgets, source maps, bilingual summaries and generated Chinese docs synchronized.
+7. **Wrong/correct:** wrong: runtime completed ⇒ issue accepted. Correct: delivery, execution completion, human acceptance and parent wake are distinct facts. Role template upgrades never overwrite existing workspace copies; new defaults require explicit instance upgrade for old agents.

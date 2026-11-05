@@ -307,7 +307,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "review-gate-lead",
-		Version:            2,
+		Version:            3,
 		DefaultName:        "Review Gate Lead",
 		AvatarEmoji:        "🚧",
 		Autonomy:           AutonomyCoordinator,
@@ -317,8 +317,8 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 			"zh": "合并门禁负责人",
 		},
 		Descriptions: map[string]string{
-			"en": "Routes a finished change through code, security and verification review, then reports one verdict.",
-			"zh": "把已完成的改动依次交给代码审查、安全审查和验证，最后给出一个结论。",
+			"en": "Coordinates code, security and test review, plus agent, experience and migration checks when applicable.",
+			"zh": "协调改动所需的代码、安全、测试，以及智能体评测、体验和迁移审查，给出统一结论。",
 		},
 	},
 	{

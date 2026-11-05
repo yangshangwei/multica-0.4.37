@@ -297,8 +297,14 @@ it.
 
 ## Comment and mention behavior
 
-If an issue is assigned to a squad, a new comment can wake the squad leader. This
-is leader routing, not member fan-out.
+If an issue is assigned to a squad, a member result comment on the same issue
+can wake its leader under the comment-routing rules. This is leader routing,
+not member fan-out.
+
+A result on a separate child issue follows the stage barrier instead:
+only `done`/`cancelled` children close that barrier and wake the parent leader
+when the stage finishes. A child in `in_review` still awaits acceptance;
+finishing its execution alone does not advance the parent.
 
 Squad mention format:
 

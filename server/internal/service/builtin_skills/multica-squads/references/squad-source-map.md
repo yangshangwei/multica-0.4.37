@@ -349,6 +349,13 @@ server/internal/handler/issue_child_done.go       # dispatchParentAssigneeTrigge
 
 Contracts:
 
+- a member result comment on the same squad-assigned issue follows
+  `comment.go`'s assignee fallback; a comment on a separate child is not a
+  result on the parent. `notifyParentOfChildDone` evaluates a child's transition
+  into a terminal category through `isTerminalChildStatus` and
+  `terminalChildPredicate`: only `done`/`cancelled` qualify. `in_review` remains
+  delivery awaiting human/integration acceptance. `TaskService.CompleteTask`
+  does not change that issue status;
 - when a child issue closes a stage barrier and the parent is assigned to a
   squad, the parent squad leader is triggered (triggerChildDoneSquad in
   issue_child_done.go);

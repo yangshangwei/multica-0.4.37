@@ -17,7 +17,7 @@ Open **Squads → Templates**, then choose **Apply to project** to use a workflo
 |---|---|---|
 | **Feature Delivery Squad** | Lead, Product Analyst, Architect, Implementer, QA Engineer, Code Reviewer | What the issue currently lacks: criteria, a design, the change, proof it works, a review |
 | **Bug Fix Squad** | Lead, Product Analyst, QA Engineer, Diagnostician, Implementer | Triage, reproduce, diagnose unknown causes, fix with a regression test, verify |
-| **Review Gate Squad** | Lead, Code Reviewer, Security Reviewer, QA Engineer | What the change has not been read for yet: correctness, security, proof it works |
+| **Review Gate Squad** | Lead, Code Reviewer, Security Reviewer, QA Engineer, Agent Evaluator, Experience Validation Engineer, Migration Reviewer | Which applicable checks remain: code, security, tests, agent behavior, experience or migration; must-fix findings return to the author |
 | **Discovery Squad** | Lead, Product Analyst, Architect | Whether the question is "what would count as done" or "how would we build it" — answers only, no code |
 | **Docs Squad** | Lead, Technical Writer, Code Reviewer | Which document the shipped change invalidated, then whether the draft matches the code |
 | **Maintenance Squad** | Lead, Security Reviewer, Diagnostician, Implementer, QA Engineer | Diagnose unknown flaky-test or upgrade failures, then handle one item at a time with verification |
@@ -85,7 +85,9 @@ When a non-Backlog issue is assigned to a squad, Multica immediately enqueues a 
 3. **Leader posts one delegation comment.** The comment `@`-mentions the chosen member(s) using the exact mention markdown from the roster — that mention triggers a new `task` for each mentioned agent.
 4. **Leader records its evaluation** via `multica squad activity <issue-id> action --reason "..."`. This writes an entry to the issue's activity timeline so humans can see the leader actually evaluated the trigger.
 5. **The dispatch turn leaves the parent `in_progress`.** Same agent-managed status contract as a direct agent assignment — coordinating the squad is working the parent's ask, so the parent moves from `todo` to `in_progress`, and dispatching members is not delivery, so it stays there while the squad works.
-6. **Leader stops.** The leader does not do the implementation itself. When the delegated member posts back — or when a sub-issue / stage barrier closes — the leader is re-triggered to read the update and either delegate the next step, escalate, move the parent to `in_review` once the overall goal is met, or stay silent. `done` is left to a human reviewer or existing integrations (for example a PR with close intent that merges).
+6. **Leader stops.** The leader does not do the implementation itself. A delegated member's result comment on the same issue can wake the leader under the [comment-routing rules](#leader-re-trigger-rules). The leader then reads the update and either delegates the next step, escalates, moves the parent to `in_review` once the overall goal is met, or stays silent. `done` is left to a human reviewer or existing integrations (for example a PR with close intent that merges).
+
+Work split into sub-issues uses a separate stage barrier. A child at `in_review` has delivered its work and still awaits acceptance; that status does not close a stage. When every child in the lowest unfinished stage reaches a `done` or `cancelled` category, an eligible parent agent or squad leader can be woken under the existing routing rules. Parents in Backlog, already closed, or assigned to a person do not wake an agent. Without explicit stages, all children form one group. Finishing an agent execution does not change these issue states.
 
 If the issue is in **Backlog**, the leader is not triggered — Backlog is a parking lot, same rule as for direct agent assignment.
 

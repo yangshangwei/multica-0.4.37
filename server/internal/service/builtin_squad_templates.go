@@ -216,8 +216,8 @@ var builtinSquadTemplates = []SquadTemplate{
 			"zh": "合并门禁小队",
 		},
 		Descriptions: map[string]string{
-			"en": "Reads a finished change for correctness, security and test coverage, then reports one verdict.",
-			"zh": "从正确性、安全性和测试覆盖三个角度读完一份改动，给出统一结论。",
+			"en": "Reviews a finished change for code, security and tests, with agent, experience and migration checks when applicable.",
+			"zh": "审查已完成的改动，按需核对代码、安全、测试、智能体行为、体验和迁移证据，给出统一结论。",
 		},
 	},
 	{

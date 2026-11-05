@@ -375,15 +375,14 @@ close intent writes the literal `done` key.
   Squad leaders: dispatching members is not delivery — a dispatch turn
   leaves the parent `in_progress`, and it moves to `in_review` only when a
   later re-trigger confirms the overall goal is met.
-- **`in_review`** is an accepted issue status. Some workflows use it while a PR
-  is open and awaiting review; moving to it is an explicit mutation.
-- **`done`** on a child issue posts a system comment on its parent. If a PR
-  carries close intent (`Closes MUL-XXXX`), it advances the issue to `done`
-  itself on merge — you do not also need to flip it manually.
+- **`in_review`** records delivery awaiting acceptance; moving to it is an
+  explicit mutation. A child in `in_review` still awaits acceptance and does not close the stage.
+- **`done`** is confirmed by a human or existing integration. A merged PR with
+  close intent (`Closes MUL-XXXX`) can advance the issue to `done`;
+  child `done`/`cancelled` transitions notify the parent only when the stage closes.
 - **`cancelled`** is a terminal, user-driven decision to close the issue. Like
-  `done` it enqueues no new agent work, but it does **not** stop tasks already in
-  flight — a run in progress keeps going (MUL-4465). To stop a running task,
-  cancel the task itself.
+  `done`, it starts no new work on the closed issue; a child may close its parent's
+  stage. It does **not** stop tasks already in flight (MUL-4465); cancel the running task itself.
 - **Failed issue-triggered tasks** may roll an issue from `in_progress` back to
   `todo` when no active task / retry remains — that is the main server-owned
   status write on the agent-run path.
@@ -435,7 +434,8 @@ Creating every serial step as `todo` enqueues the whole chain at once.
 `--stage <N>` (N ≥ 1) groups sub-issues under the same parent into ordered
 stages. The parent assignee is woken **once, when a whole stage finishes** —
 i.e. every sub-issue in the lowest unfinished stage has reached a terminal
-status (`done`/`cancelled`). A completion that does not close a stage is silent
+status (`done`/`cancelled`). Delivery at `in_review` leaves that barrier open.
+A completion that does not close a stage is silent
 (no comment, no wake). A sibling set with **no** stages is one implicit stage,
 so the parent is woken once when the *last* sub-issue finishes — not on every
 child.

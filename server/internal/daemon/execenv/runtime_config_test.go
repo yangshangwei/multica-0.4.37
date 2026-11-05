@@ -197,10 +197,9 @@ func TestStatusRuleIsFactJudgmentAtBothMoments(t *testing.T) {
 		"whoever the assignee is",
 		// Delivery lands in in_review and the ceiling keeps `done` human.
 		"`done` stays human",
-		// Assigned deliverables must not be misread as status-neutral
-		// research: stage barriers and parent notifications key off the
-		// delivery write.
-		"stage barriers and parent notifications depend on that signal",
+		// Delivery records the work awaiting acceptance. The stage barrier
+		// separately waits for a terminal child status.
+		"A sub-issue in `in_review` still awaits acceptance",
 		// Invariant 1: conversation does not move the board. Ancillary is
 		// defined by OUTPUT (no part of the issue's own deliverable), not by
 		// activity words like "research" that also describe real work.
@@ -270,6 +269,37 @@ func TestStatusRuleIsFactJudgmentAtBothMoments(t *testing.T) {
 	// The squad-leader bullet must not leak into the ordinary path.
 	if strings.Contains(out, "dispatching members is not delivery") {
 		t.Errorf("ordinary-agent brief must not carry the squad-leader status bullet:\n%s", out)
+	}
+}
+
+func TestIssueWorkflowSeparatesDeliveryFromStageAcceptance(t *testing.T) {
+	t.Parallel()
+	cases := []struct {
+		name string
+		ctx  TaskContextForEnv
+	}{
+		{"assignment", TaskContextForEnv{IssueID: "issue-1"}},
+		{"comment", TaskContextForEnv{IssueID: "issue-1", TriggerCommentID: "comment-1"}},
+		{"leader", TaskContextForEnv{IssueID: "issue-1", IsSquadLeader: true}},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			out := buildMetaSkillContent("claude", tc.ctx)
+			for _, contract := range []string{
+				"You delivered what the issue itself asks for and it awaits acceptance → `in_review`",
+				"A sub-issue in `in_review` still awaits acceptance",
+				"stage barriers close only when all children in the stage reach `done` or `cancelled`",
+				"`done` stays human",
+			} {
+				if !strings.Contains(out, contract) {
+					t.Errorf("%s workflow is missing delivery/acceptance contract %q", tc.name, contract)
+				}
+			}
+			if strings.Contains(out, "stage barriers and parent notifications depend on that signal") {
+				t.Error("in_review must not promise stage advancement before acceptance")
+			}
+		})
 	}
 }
 
