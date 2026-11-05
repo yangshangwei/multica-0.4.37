@@ -1,0 +1,107 @@
+{
+  "reviewed_at": "2026-11-05T13:22:51.519534+00:00",
+  "reviewer": "/root/acceptance_review",
+  "scope": "Failure diagnosis, stopped final records and non-executable continuation proposal before user exception decision",
+  "verdict": "pass-with-notes",
+  "blocking_record_proposal_findings": 0,
+  "diagnosis_review": {
+    "exact_original_hashes_verified": 8,
+    "matched_provider_session": "Exact session/cwd reference only; hash matches,4api-request timestamps match diagnosis",
+    "final_request_to_end_seconds": 49.853591,
+    "API_error_retry_fields": "No visible error/retry code in exact retainedsession;3is_error fields arefalse. Absence isnotproof ofno upstreamerror/retry.",
+    "host_duration_seconds": 300.527,
+    "captured_launch_span_seconds": 300.440531,
+    "timing_labels_corrected": true,
+    "causal_scope": "Local fixedProvider timeout/missingresult proven; upstreamdelayreason remainsunknown. No causal plugin/model/network/productclaim.",
+    "no_model_probe_rerun_or_broad_history_search": true
+  },
+  "final_records": {
+    "runnable": false,
+    "actual_H3a_independent_review_linked": true,
+    "evidence_integrity_checks": 120,
+    "scenario_verdict": "STOP_ORIGINAL_INCOMPLETE",
+    "t1": "finished/pass",
+    "t2": "incomplete/provider_result_missing",
+    "t3": "notstarted",
+    "consumed": 12,
+    "remaining": 13,
+    "cap": 25,
+    "helper_original_exit1_preserved": true
+  },
+  "proposal_review": {
+    "state": "reviewable only, not executable or authorized",
+    "slots": [
+      {
+        "scenario": "H3a",
+        "trials": [
+          3
+        ],
+        "maximum_paid_starts": 1
+      },
+      {
+        "scenario": "H3b",
+        "trials": [
+          1,
+          2,
+          3
+        ],
+        "maximum_paid_starts": 3
+      },
+      {
+        "scenario": "H5",
+        "trials": [
+          1,
+          2,
+          3
+        ],
+        "maximum_paid_starts": 3
+      },
+      {
+        "scenario": "H6",
+        "trials": [
+          1,
+          2,
+          3
+        ],
+        "starts_per_trial": 2,
+        "maximum_paid_starts": 6
+      }
+    ],
+    "new_total": 13,
+    "cumulative_ceiling": 25,
+    "repeat_or_replace_failed_or_completed_slot": false,
+    "original_source_model_prompts_scoring_five_min_timeout_17files_unchanged": true,
+    "exception_pair": "Only exacthash-bound H3at2 publicincomplete and causallylinked H3ainvocationexit1/stop; otherold/new failuresstillrefuse",
+    "separate_entry": "Would require reviewed implementation+credentialfree controls onlyafter explicituserdecision; original stoppedlauncher/history nevermutated",
+    "new_failure_rule": "First new incomplete/runtime/environment/harness failure orH5canary stopscontinuation; H6manualsemanticreview retained",
+    "additional_health_calls": false,
+    "automatic_next_scenario": false
+  },
+  "decision_gate": {
+    "explicit_user_exception_required": true,
+    "exact_rule_source": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json:91",
+    "rule": "Stop every later trial and scenario after the first incomplete runtime/environment/harness result.",
+    "why": "H3at2 is an actual originalincomplete, unlike E0aauxiliary postbinding observation. Genericcontinue/remainingquota cannot waive this priorcondition.",
+    "choices": "Authorize only proposed13unattemptedslots with originalfailurepreserved, or retainstop/partialacceptance. Neither increasesbudget.",
+    "current_authorization_to_implement_or_launch_exception": false
+  },
+  "privacy": {
+    "credential_URL_JWT_runtime_token_provider_key_pattern_matches": 0,
+    "raw_provider_session_prompts_thinking_and_paths": "keptprivate; publicsafe counts/timestamps/hashes only"
+  },
+  "hashes": {
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/h3a-entry/failure-diagnosis.md": "1ec996b9f3351a9ada33963b3616fda9c42ffee5ed1ab4bc6c20acd8c36507eb",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/h3a-entry/failure-diagnosis.json": "8d84338f9eef493a4232976087958e4bcfbc943a2591aef3774bff7710186e95",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/h3a-entry/independent-review.json": "e5807dddbc40ff880b431fb5ba002457c407fb2d77b75ee76d3b3841d30b991b",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/continuation-proposal.md": "4cba4c9061ebccf23cd9eed55aee08ce3d6592f7615ab62296b1c46e8848aadb",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-registration.json": "723cd5d0de9998e4a83d4f1c0a3cb7c9d818834b6e04c4ce821b31834fe82d14",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json": "14cbb67a8f12ac2d9a9c4fe77f90634ce16a1d8e5564f9b3bd0814b4ccee07f2"
+  },
+  "operations": {
+    "Go": 0,
+    "database": 0,
+    "Provider": 0,
+    "tests": 0,
+    "source_edits": 0
+  }
+}

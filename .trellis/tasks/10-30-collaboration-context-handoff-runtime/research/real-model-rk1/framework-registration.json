@@ -2,8 +2,12 @@
   "series": "RK1",
   "scope": "runtime scenarios of runtime-addendum.json, including RK1-H2b (budgeted 2026-11-01T10:33:57Z)",
   "registered_by_session": "claude multica-0-4-37-35",
-  "runnable": true,
-  "not_runnable_reasons": [],
+  "runnable": false,
+  "not_runnable_reasons": [
+    "Original stop rule triggered: H3a t2 incomplete/provider_result_missing; t3,H3b,H5,H6 notstarted",
+    "No replacement/healthcall/modelchange/timeoutextension or automaticretry; retain original failure and all spent starts",
+    "Modelwindowreleased; readonly diagnosis/independentreview only"
+  ],
   "framework_files": "server/cmd/server/rk1_*_test.go (build tag agentintegration, !windows)",
   "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
   "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
@@ -84,7 +88,7 @@
     "current final639 fake normal/race passed; independent result review remains unavailable after gateway429",
     "user currently permits local preparation only; exclusive serial gateway window and applicable execution authority required before paid execution"
   ],
-  "maintained_at": "2026-11-05T12:42:19.456100+00:00",
+  "maintained_at": "2026-11-05T13:03:49.470074+00:00",
   "authorization_reference": "../continuation-20261102/coordinator/authorization-recall.md",
   "selected_candidate_preparation": "../continuation-20261105/paid-binding-preflight.json",
   "historical_gate_reasons_before_20261104": [
@@ -227,7 +231,7 @@
     },
     "selected_candidate_preparation": "../continuation-20261102/coordinator/v10/binding-preparation.json"
   },
-  "operator_binding_status": "H3acurrentactualenv; strictadmission/postmanifest",
+  "operator_binding_status": "original runtime stop active; postdelta retained",
   "real_entry_preparation": {
     "helper_commit": "86541bb37",
     "helper_sha256": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
@@ -319,5 +323,20 @@
     "independent_review": "../continuation-20261105/h2b-entry/independent-review.json",
     "accepted": true,
     "disposition": "../continuation-20261105/h2b-entry/disposition.json"
+  },
+  "actual_H3a": {
+    "summary": "../continuation-20261105/h3a-entry/result-summary.json",
+    "raw_trials": [
+      "t1 finished/pass",
+      "t2 incomplete/provider_result_missing",
+      "t3 notstarted"
+    ],
+    "consumed_total": 12,
+    "remaining": 13,
+    "original_stop_triggered": true,
+    "independent_review": "../continuation-20261105/h3a-entry/independent-review.json",
+    "evidence_integrity_checks": 120,
+    "scenario_verdict": "STOP_ORIGINAL_INCOMPLETE",
+    "diagnosis": "../continuation-20261105/h3a-entry/failure-diagnosis.json"
   }
 }

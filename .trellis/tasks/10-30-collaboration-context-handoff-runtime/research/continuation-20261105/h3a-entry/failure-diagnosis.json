@@ -1,0 +1,137 @@
+{
+  "at": "2026-11-05T13:08:14.883831+00:00",
+  "scope": "bounded read-only diagnosis of original H3a trial2; no rerun or raw prompt publication",
+  "label": "RK1-H3a-t2",
+  "classification": "confirmed_fixed_provider_timeout; upstream_reason_not_proven",
+  "registered_verdict": "measured:provider_result_missing",
+  "actual_status": "incomplete",
+  "physical_launches": 1,
+  "authorized_attempts": 1,
+  "wrapper_exit": 143,
+  "execution_exit_codes": [
+    143
+  ],
+  "runner_error": null,
+  "provider_timeout_seconds": 300,
+  "observed_host_duration_seconds": 300.527,
+  "launch_started_at": "2026-11-05T12:55:32.20106Z",
+  "launch_finished_at": "2026-11-05T13:00:32.641591Z",
+  "stdout": {
+    "frames": 40,
+    "types": {
+      "system": 32,
+      "assistant": 5,
+      "user": 3
+    },
+    "thinking_token_events": 29,
+    "result_frames": 0,
+    "assistant_text_blocks": 0,
+    "invalid_frames_observed": 0
+  },
+  "tool_timeline": [
+    {
+      "assistant_frame": 13,
+      "request_at": "2026-11-05T12:56:48.420Z",
+      "response_at": "2026-11-05T12:56:49.790Z",
+      "tool_error": false,
+      "interrupted": false,
+      "preview_stdout_bytes": 29999,
+      "stderr_bytes": 0,
+      "operation_kind": "Multica issue context read"
+    },
+    {
+      "assistant_frame": 15,
+      "request_at": "2026-11-05T12:58:18.181Z",
+      "response_at": "2026-11-05T12:58:18.253Z",
+      "tool_error": false,
+      "interrupted": false,
+      "preview_stdout_bytes": 341,
+      "stderr_bytes": 190,
+      "operation_kind": "Python inspection of exact persisted first tool output"
+    },
+    {
+      "assistant_frame": 38,
+      "request_at": "2026-11-05T12:59:42.679Z",
+      "response_at": "2026-11-05T12:59:42.770Z",
+      "tool_error": false,
+      "interrupted": false,
+      "preview_stdout_bytes": 775,
+      "stderr_bytes": 0,
+      "operation_kind": "Python inspection of exact persisted first tool output"
+    }
+  ],
+  "provider_api_request_times": [
+    "2026-11-05T12:55:32.447Z",
+    "2026-11-05T12:56:49.816Z",
+    "2026-11-05T12:58:18.272Z",
+    "2026-11-05T12:59:42.788Z"
+  ],
+  "final_request_to_launch_finish_seconds": 49.854,
+  "error_evidence": {
+    "tool_result_error_or_interrupt": false,
+    "captured_provider_transport_error_code": null,
+    "exact_session_api_error_retry_fields_observed": false,
+    "exact_debug_log_present": false,
+    "limitations": "Missing visible error/retry fields does not prove absence of upstream retries or network latency; no exact debug log available."
+  },
+  "context_exposure": {
+    "context_reads": 1,
+    "returned_comments": 200,
+    "persisted_full_output_bytes": 75131,
+    "first_visible_preview_bytes": 29999,
+    "decisive_code_in_first_preview": false,
+    "decisive_code_in_second_tool_result": false,
+    "decisive_code_in_third_tool_result": true,
+    "third_tool_result_at": "2026-11-05T12:59:42.770Z",
+    "decisive_code_sha256": "da7ac580995f201f89caadc33cd33c3f4a6a448c49f0a4e4e30813e2ef717e65"
+  },
+  "Multica_HTTP": {
+    "calls": 3025,
+    "non2xx": 0
+  },
+  "lifecycle": {
+    "business_outcome": "failure",
+    "proof_state": "host_exit_observed",
+    "progress_state": "settled",
+    "run_events": {
+      "handoff_binding": 1,
+      "handoff_snapshot": 1,
+      "outcome": 1,
+      "preparation": 1,
+      "record_checkpoint": 3,
+      "recording_seal": 1,
+      "resource_snapshot": 1
+    },
+    "seal_reason": "completed"
+  },
+  "evidence_sha256": {
+    "public": "9a4b94050ad696c46512b0833d27398ac0c6ef48770f6085d1db1283f9d628ce",
+    "launch": "0ba87959a50b85d02b23e7fd00ab86c8b5e8d85c19ea9c646140e537b1686acf",
+    "stdout": "7cead9b9ceccc94a239e2d9471c3605e87640c982f0f892bd933497715a1eb32",
+    "trace": "a15bd20bbe3fe97bc326db3ddf65fed10892199392899244f28f4f8ce16dc426",
+    "host_log": "70f871659fd11b77b6a47ef8b88296a30a5731d29b0b3b76ce4bb459606ea4d9",
+    "parent_go_log": "3b92130302d1435260b2b705fc4e703efe1b56b86ce419fdde1772ae4e739263",
+    "helper_result": "74d9564df4510570e62163e8edb0125034efd0ecb43001f9ce57cb22ae422db0",
+    "exact_provider_session": "3cd5680d3a12984c6d2ec0ca5f63bade6c29e2af9f4377212a4f3649f22a0e95"
+  },
+  "preserved_stop": {
+    "new_H3a_calls": 2,
+    "cumulative_consumed": 12,
+    "remaining": 13,
+    "trial3_started": false,
+    "later_scenarios_stopped": true
+  },
+  "next_action": "Preserve stop and spent slots. Root may separately decide a future authorized continuation contract/window; no automaticretry, timeoutincrease, modelchange or productpatch is supported by this diagnosis.",
+  "unproven": [
+    "why final upstream inference failed to finish in remainingabout50seconds",
+    "whether inter-request delay was reasoning, network/server latency or retry",
+    "whether shrinkingcontext orchangingconfiguration would affectoutcome"
+  ],
+  "new_commands": {
+    "Go": 0,
+    "database": 0,
+    "Provider": 0,
+    "version_probe": 0,
+    "tests": 0
+  }
+}
