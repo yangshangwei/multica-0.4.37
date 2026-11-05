@@ -63,3 +63,5 @@ M1 is not accepted as a complete milestone. Controlled high-risk execution, curr
 User explicitly authorized codex exec. New production-router29 and compiled CLI→real API20 checks passed with independent review. The new regression file covers filter intersections/pagination, distinct runtime-owner revocation/rebind, and mutable role text versus immutable provenance; production implementation did not change.
 
 Three bounded real Codex processes ran against synthetic actual claims. Reporter and reviewer completed with correct guided role behavior. Leader correctly persisted one queued/blocked delegation and failed evaluation, but exceeded180s and lacked a final response: two complete passes, one timeout. This is a retained failed process result, not full model reliability or prompt-injection robustness. No retry beyond3 calls. See `11-06-agent-m1-targeted-validation/verification.md` (active or archive) and its independent evidence.
+
+Targeted test/code-evidence commit: `467b857ac` on isolated branch `codex/agent-rnd-m1-20261105`. Testing campaign completed with the leader timeout retained as a failed completion result.

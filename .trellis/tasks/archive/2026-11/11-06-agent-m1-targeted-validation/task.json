@@ -3,7 +3,7 @@
   "name": "agent-m1-targeted-validation",
   "title": "M1 定向对抗与 Codex 行为验收",
   "description": "针对已交付M1范围补足真实路由对抗、实际CLI兼容与受限Codex exec角色行为证据，保留失败，不扩大产品验收结论。",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -11,16 +11,23 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-11-06",
-  "completedAt": null,
+  "completedAt": "2026-11-06",
   "branch": "codex/agent-rnd-m1-20261105",
   "base_branch": "codex/cross-workspace-collaboration",
   "worktree_path": null,
-  "commit": null,
+  "commit": "467b857ac",
   "pr_url": null,
   "subtasks": [],
   "children": [],
   "parent": "11-05-agent-squad-rnd-improvements",
   "relatedFiles": [],
-  "notes": "",
-  "meta": {}
+  "notes": "Bounded targeted campaign executed and independently reviewed:29 router/20 CLI pass,2 complete Codex guided passes,1 leader process timeout after correct actions. This is not all-trials pass; raw failure retained; no retry budget remains.",
+  "meta": {
+    "test_campaign": "executed",
+    "deterministic": "pass",
+    "model_completed": 2,
+    "model_timeout": 1,
+    "all_model_trials_passed": false,
+    "no_product_fix_needed_from_observed_evidence": true
+  }
 }

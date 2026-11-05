@@ -120,3 +120,37 @@ Delivered three independently accepted M1 children in isolated worktree; parent 
 ### Next Steps
 
 - Continue M1 controlled execution, current-artifact delivery gates and durable receipts before M2/M3; preserve dirty integration checkout.
+
+
+## Session 132: M1 targeted API CLI and real Codex validation
+<!-- trellis-session: v=2 fp=80242c4e8616b45b -->
+
+**Date**: 2026-11-06
+**Task**: M1 targeted API CLI and real Codex validation
+**Branch**: `codex/agent-rnd-m1-20261105`
+
+### Summary
+
+29 new router cases and20 compiled CLI/API checks pass; two real Codex samples complete; leader correct actions but180s timeout retained.
+
+### Main Changes
+
+- Add regression coverage for filter intersection, runtime-owner authority and mutable role text.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `467b857ac` | Prove scoped agent workflows through the real CLI and bounded model trials |
+
+### Testing
+
+- [OK] Independent29 router +4 subset;20 real CLI/API;3 bounded codex exec processes with2complete and1timeout.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Continue remaining M1; investigate leader process timeout only with a separately bounded experiment; no full M1–M3 closure.
