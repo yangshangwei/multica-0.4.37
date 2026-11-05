@@ -1,7 +1,8 @@
 import { randomUUID } from "node:crypto";
+import { lifecycleThroughUI, submitResultThroughUI } from "./collaboration-control-gaps";
 import { expect, type Locator, type Page } from "@playwright/test";
 import type {
-  CollaborationCommandHistory, CollaborationIssue, CollaborationOperation, CollaborationResourceReceipt, CollaborationResources,
+  CollaborationCommandHistory, CollaborationIssue, CollaborationResourceReceipt, CollaborationResources,
 } from "@multica/core/collaboration";
 import { assertProviderInput, type SentCrossClientComment } from "./collaboration-cross-client-execution";
 import {
@@ -255,24 +256,6 @@ export async function exerciseSameLaneControls(seed: Fixture, creatorPage: Page,
     scope: "Actual public Web/Electron controls and registration/consent with offline test-owned resources; no process/proof inference. Canonical service/Linux scope evidence is separate." };
 }
 
-async function closeThroughUI(page: Page, fixture: LifecycleFixture, action: "complete" | "cancel") {
-  const label = action === "complete" ? "Complete issue" : "Cancel issue";
-  await page.getByRole("button", { name: label, exact: true }).click();
-  const form = page.locator("form").filter({ has: page.getByRole("heading", { name: label, exact: true }) });
-  await form.getByLabel("Status", { exact: true }).selectOption(action === "complete" ? "done" : "cancelled");
-  const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${lifecycleIssuePath(fixture.issueId)}/lifecycle`
-    && response.request().method() === "POST");
-  await form.getByRole("button", { name: "Confirm", exact: true }).click();
-  const response = await pending;
-  expect(response.status()).toBe(200);
-  const receipt: CollaborationOperation = await response.json();
-  expect(receipt.code).toBe(action === "complete" ? "completed" : "cancelled");
-  const requestId = response.request().headers()["idempotency-key"];
-  if (!requestId) throw new Error("Lifecycle close omitted its original request identity");
-  expect(response.request().postDataJSON()).toMatchObject({ action, status: action === "complete" ? "done" : "cancelled" });
-  await expect(form).toHaveCount(0);
-  return { receipt, requestId, input: response.request().postDataJSON() as Record<string, unknown> };
-}
 
 export async function exerciseLiveClose(seed: Fixture, creatorPage: Page, handlerPage: Page, client: "web" | "electron", action: "complete" | "cancel",
   controls: { proxy: Awaited<ReturnType<typeof createLifecycleRuntimeTransport>>; daemons: Awaited<ReturnType<typeof startLifecycleDaemons>>; capture: Capture }) {
@@ -297,8 +280,21 @@ export async function exerciseLiveClose(seed: Fixture, creatorPage: Page, handle
   for (const visit of [visitA, visitB]) expect(permitted.execution!.runs.find((run) => run.id === visit.input.identity.run_id))
     .toMatchObject({ proof_state: "unknown", settled_at: null, forced_disposition: null });
   for (const command of waiting) expect(permitted.execution!.commands.find((item) => item.id === command.commandId)?.state).toBe("waiting");
+  let submissionId: string | undefined;
+  if (action === "complete") {
+    await refreshLifecyclePage(handlerPage, fixture);
+    const result = await submitResultThroughUI(handlerPage, fixture.issueId,
+      "The participant delivers the recorded task state for creator acceptance.",
+      "Both controlled runs remain unsettled and all four waiting inputs remain visible before acceptance.");
+    submissionId = result.submissionId;
+    const submitted = await read();
+    expect(submitted.delivery!.current!.id).toBe(submissionId);
+    expect(submitted.session).toEqual(permitted.session);
+    expect(submitted.execution).toEqual(permitted.execution);
+  }
   await refreshLifecyclePage(creatorPage, fixture);
-  const closed = await closeThroughUI(creatorPage, fixture, action);
+  const closed = await lifecycleThroughUI(creatorPage, fixture.issueId, action, submissionId);
+  expect(closed.input.status).toBe(action === "complete" ? "done" : "cancelled");
   for (const visit of [visitA, visitB]) await controls.proxy.waitForHeldProof(visit.input.identity.run_id);
   const closing = await read();
   expect(closing).toMatchObject({ status_category: action === "complete" ? "done" : "cancelled", session: { queue_state: "closed" } });

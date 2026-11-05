@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
-import { homedir } from "node:os";
+import { accessSync, closeSync, constants, existsSync, mkdirSync, openSync, readFileSync, readSync, realpathSync, statSync, writeFileSync } from "node:fs";
+import { homedir, tmpdir } from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { createInterface } from "node:readline";
@@ -22,22 +22,64 @@ const executable = nativeMode ? nativeExecutable : `${packageRoot}/multica-deskt
 const packagePath = nativeLayout?.asar ?? `${packageRoot}/resources/app.asar`;
 const bundledCliPath = nativeLayout?.cli ?? `${packageRoot}/resources/app.asar.unpacked/resources/bin/multica`;
 const protocolPrefix = "MULTICA_INSTALLED_REPLY ";
+const timelinePrefix = "MULTICA_INSTALLED_EVENT ";
+const timelineStarted = performance.now();
+const timelineCommands = new Set(["install", "init", "login", "navigate", "read", "control", "comment", "cancel", "history",
+  "host-records", "handoff", "workflow", "reload", "restart", "capture", "status", "close"]);
+let timelineEntries = 0;
+
+async function commandEvent(message, phase, outcome) {
+  // Fixed fields only: never serialize message input, responses, error text or account identity.
+  if (timelineEntries >= 512) return;
+  timelineEntries += 1;
+  const event = { id: Number.isSafeInteger(message?.id) && message.id >= 0 ? message.id : 0,
+    command: timelineCommands.has(message?.command) ? message.command : "unknown", phase, outcome,
+    elapsedMs: performance.now() - timelineStarted };
+  // Flush the stage before entering an operation that may never return.
+  await new Promise((resolve, reject) => process.stdout.write(`${timelinePrefix}${JSON.stringify(event)}\n`,
+    (error) => error ? reject(error) : resolve()));
+}
+
+async function commandPhase(message, phase, operation) {
+  await commandEvent(message, phase, "started");
+  try {
+    const result = await operation();
+    await commandEvent(message, phase, "completed");
+    return result;
+  } catch (error) {
+    try { await commandEvent(message, phase, "failed"); }
+    catch (eventError) { throw new AggregateError([error, eventError], "Installed operation and event transport failed", { cause: error }); }
+    throw error;
+  }
+}
 const secrets = new Set();
 const errors = [];
 const responses = [];
 const accountRequests = [];
 const writes = [];
+const mainErrorCodes = [];
 let app;
 let page;
 let apiUrl;
 let appUrl;
 let executionViewVersion;
 let installation;
+let authenticatedUserId;
+let managedDeploymentId;
+const discoveryCLI = "/acceptance/discovery/claude";
+const discoveryMarker = "/root/.multica/installed-main-unexpected-agent-execution.log";
 
 function scrub(value) {
   let text = typeof value === "string" ? value : JSON.stringify(value);
   for (const secret of secrets) text = text.replaceAll(secret, "<private-fixture-value>");
   return text.replace(/\b(?:eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+|mdt_[A-Za-z0-9_-]+|pat_[A-Za-z0-9_-]+)\b/g, "<credential>");
+}
+
+function failureText(error, depth = 0) {
+  // Keep each controller-side failure through the existing credential scrubber.
+  const own = scrub(error instanceof Error ? error.stack ?? error.message : String(error)).slice(0, 8192);
+  if (!(error instanceof AggregateError) || depth >= 4) return own;
+  return [own, ...error.errors.slice(0, 8).map((item, index) => `Failure ${index + 1}: ${failureText(item, depth + 1)}`)].join("\n");
 }
 
 function reply(id, value, error) {
@@ -185,6 +227,126 @@ async function cliAvailable() {
   });
 }
 
+async function workflowButton(label) {
+  const button = page.getByRole("button", { name: label, exact: true });
+  if (!await button.isVisible()) {
+    const summary = page.locator("details > summary:visible").filter({ hasText: /^More actions$/ });
+    await expect(summary).toBeVisible();
+    const disclosure = summary.locator("..");
+    if (await disclosure.getAttribute("open") === null) await summary.click();
+    await expect(disclosure).toHaveAttribute("open", "");
+  }
+  await button.click();
+}
+
+function verifyOwnedManagedDaemon(main, status) {
+  const profile = `desktop-${new URL(apiUrl).host.replace(/:/g, "-").toLowerCase()}`;
+  const directory = path.join(main.home, ".multica", "profiles", profile);
+  assert.equal(status.profile, profile);
+  assert.equal(status.serverUrl, apiUrl);
+  assert(Number.isSafeInteger(status.pid) && status.pid > 0);
+  assert.equal(Number(readFileSync(path.join(directory, "daemon.pid"), "utf8").trim()), status.pid);
+  const config = JSON.parse(readFileSync(path.join(directory, "config.json"), "utf8"));
+  assert.equal(config.server_url, apiUrl);
+  assert.equal(config.management_deployment_id, managedDeploymentId);
+  assert.equal(readFileSync(path.join(directory, ".desktop-user-id"), "utf8").trim(), authenticatedUserId);
+  process.kill(status.pid, 0);
+}
+
+async function stopOwnedManagedDaemon() {
+  if (!app || !authenticatedUserId || !managedDeploymentId) return;
+  const status = await page.evaluate(() => window.daemonAPI.getStatus());
+  if (status.state === "stopped") return;
+  assert.equal(status.state, "running", "Uncertain daemon ownership requires coordinator cleanup");
+  const main = await app.evaluate(({ app }) => ({ home: app.getPath("home") }));
+  verifyOwnedManagedDaemon(main, status);
+  const stopped = await page.evaluate(() => window.daemonAPI.stop());
+  assert.equal(stopped.success, true, "The verified task-owned daemon must stop during fixture cleanup");
+  await expect.poll(() => page.evaluate(() => window.daemonAPI.getStatus()), { timeout: 30_000 }).toMatchObject({ state: "stopped" });
+}
+
+// Diagnostic projections deliberately omit raw log text, credentials and signed proofs.
+const diagnosticCodes = new Set(["challenge_expired", "challenge_time_window", "challenge_scope_mismatch", "challenge_invalid",
+  "cli_unavailable", "cli_download_failed", "cli_checksum_failed", "cli_extract_failed", "cli_install_failed", "cli_validation_failed",
+  "request_failed", "operation_failed", "EACCES", "EPERM", "ENOENT", "ENOEXEC", "EROFS", "EADDRINUSE", "ECONNREFUSED", "ETIMEDOUT"]);
+function safeErrorCode(error) { return diagnosticCodes.has(error?.code) ? error.code : "unclassified"; }
+function recordMainErrorCodes(chunk) {
+  const text = Buffer.isBuffer(chunk) ? chunk.subarray(-8192).toString("utf8") : String(chunk).slice(-8192);
+  for (const code of text.match(/\b[A-Za-z_]+\b/g) ?? []) {
+    if (diagnosticCodes.has(code)) mainErrorCodes.push(code);
+  }
+  for (const [marker, code] of [["managed installation setup failed", "managed_setup_failed"], ["failed to mint PAT", "pat_mint_failed"],
+    ["CLI auto-install failed", "cli_auto_install_failed"], ["restart after credential change failed", "credential_restart_failed"]]) {
+    if (text.includes(marker)) mainErrorCodes.push(code);
+  }
+  mainErrorCodes.splice(0, Math.max(0, mainErrorCodes.length - 20));
+}
+function directoryDiagnostic(directory) {
+  try {
+    const info = statSync(directory);
+    let writableAccess = false;
+    try { accessSync(directory, constants.W_OK); writableAccess = true; } catch { /* Report access only; never write a probe file. */ }
+    return { directory: info.isDirectory(), mode: (info.mode & 0o777).toString(8), uid: info.uid, writableAccess };
+  } catch (error) { return { unavailable: true, code: safeErrorCode(error) }; }
+}
+function diagnosticFile(file, root, limit = 65536) {
+  if (!existsSync(file)) return { exists: false };
+  const resolved = realpathSync(file);
+  if (!resolved.startsWith(realpathSync(root) + path.sep)) return { exists: true, outside_expected_home: true };
+  const info = statSync(resolved);
+  const summary = { exists: true, bytes: info.size, mode: (info.mode & 0o777).toString(8), uid: info.uid };
+  if (!info.isFile()) return { ...summary, regular: false };
+  const fd = openSync(resolved, "r");
+  try {
+    const bytes = Buffer.alloc(Math.min(info.size, limit));
+    const read = readSync(fd, bytes, 0, bytes.length, Math.max(0, info.size - limit));
+    return { ...summary, text: bytes.subarray(0, read).toString("utf8"), truncated: info.size > limit };
+  } finally { closeSync(fd); }
+}
+async function daemonFailureDiagnostic(main, expectedState) {
+  const profile = `desktop-${new URL(apiUrl).host.replace(/:/g, "-").toLowerCase()}`;
+  const directory = path.join(main.home, ".multica", "profiles", profile);
+  const raw = await page.evaluate(async ({ server, user, codes }) => {
+    const daemon = await window.daemonAPI.getStatus();
+    const metadata = await window.daemonAPI.getInstallationMetadata();
+    const states = ["running", "stopped", "starting", "stopping", "installing_cli", "cli_not_found", "recovery_paused", "auth_expired"];
+    const stages = ["cli_setup", "registration", "binding", "credentials", "restart"];
+    const diagnostic = (value) => value ? { code: codes.includes(value.code) ? value.code : "unknown",
+      stage: stages.includes(value.stage) ? value.stage : "unknown", httpStatus: Number.isInteger(value.httpStatus) ? value.httpStatus : null } : null;
+    return { state: states.includes(daemon.state) ? daemon.state : "unknown", pid: Number.isSafeInteger(daemon.pid) ? daemon.pid : null,
+      profileMatches: daemon.profile === `desktop-${new URL(server).host.replace(/:/g, "-").toLowerCase()}`,
+      serverMatches: daemon.serverUrl === server, diagnostics: { cli: diagnostic(daemon.diagnostics?.cli), connection: diagnostic(daemon.diagnostics?.connection) },
+      installation: { present: metadata !== null && metadata !== undefined, serverMatches: metadata?.serverUrl === server, userMatches: metadata?.userId === user },
+      autoStart: (await window.daemonAPI.getPrefs()).autoStart };
+  }, { server: apiUrl, user: authenticatedUserId ?? null, codes: [...diagnosticCodes] });
+  const files = {};
+  for (const name of ["config.json", ".desktop-user-id", "daemon.pid", "daemon.err.log", "daemon.log"]) {
+    try {
+      const { text, ...facts } = diagnosticFile(path.join(directory, name), main.home);
+      files[name] = facts;
+      if (text === undefined) continue;
+      if (name === "config.json" && !facts.truncated) {
+        const value = JSON.parse(text);
+        Object.assign(files[name], { serverMatches: value.server_url === apiUrl, deploymentMatches: value.management_deployment_id === managedDeploymentId,
+          deploymentPresent: typeof value.management_deployment_id === "string", credentialPresent: typeof value.token === "string" && value.token.length > 0 });
+      } else if (name === ".desktop-user-id") files[name].userMatches = text.trim() === authenticatedUserId;
+      else if (name === "daemon.pid") files[name].pid = /^\d+$/.test(text.trim()) ? Number(text.trim()) : null;
+      else if (name.endsWith(".log")) {
+        files[name].tail_sha256 = sha256Text(text);
+        files[name].errorCodes = [...new Set((text.match(/\b[A-Za-z_]+\b/g) ?? []).filter(code => diagnosticCodes.has(code)))].slice(-20);
+        files[name].markers = ["no agent runtimes could be registered", "not logged in", "permission denied", "read-only file system", "exec format error", "address already in use", "no such file or directory", "daemon-managed task"]
+          .filter(marker => text.toLowerCase().includes(marker));
+      }
+    } catch (error) { files[name] = { diagnostic_read_failed: true, code: safeErrorCode(error) }; }
+  }
+  const cli = statSync(bundledCliPath);
+  return { expectedState, actual: raw, expectedProfile: profile, authenticated: Boolean(authenticatedUserId), managedDeploymentAdvertised: Boolean(managedDeploymentId),
+    platform: main.platform, controllerUid: process.getuid?.() ?? null, profileFiles: files,
+    home: directoryDiagnostic(main.home), temporaryDirectory: directoryDiagnostic(tmpdir()),
+    bundledCLI: { mode: (cli.mode & 0o777).toString(8), uid: cli.uid, bytes: cli.size }, mainErrorCodes: [...mainErrorCodes] };
+}
+function sha256Text(value) { return createHash("sha256").update(value).digest("hex"); }
+
 async function metadata() {
   const main = await app.evaluate(({ app }) => ({
     packaged: app.isPackaged, appPath: app.getAppPath(), name: app.getName(), version: app.getVersion(),
@@ -211,6 +373,7 @@ async function metadata() {
     updater: await window.updater.getPreferences(),
   }));
   native.cliInstalled = await cliAvailable();
+  if (!nativeMode) assert(!existsSync(discoveryMarker), "The discovery-only CLI must never execute an agent task");
   assert.equal(native.appInfo.version, main.version);
   assert.equal(native.appInfo.os, nativeLayout?.apiOS ?? "linux");
   assert.equal(native.config.ok, true);
@@ -219,8 +382,19 @@ async function metadata() {
   assert.equal(native.config.config.appUrl, appUrl);
   assert.equal(native.preferences.autoStart, false);
   assert.equal(native.updater.automaticUpdates, false);
-  await expect.poll(() => page.evaluate(() => window.daemonAPI.getStatus()), { timeout: 30_000 }).toMatchObject({ state: "stopped" });
-  native.daemon = await page.evaluate(() => window.daemonAPI.getStatus());
+  const expectedDaemonState = authenticatedUserId && managedDeploymentId ? "running" : "stopped";
+  try {
+    await expect.poll(() => page.evaluate(() => window.daemonAPI.getStatus()), { timeout: 30_000 }).toMatchObject({ state: expectedDaemonState });
+    native.daemon = await page.evaluate(() => window.daemonAPI.getStatus());
+    if (expectedDaemonState === "running") verifyOwnedManagedDaemon(main, native.daemon);
+  } catch (error) {
+    let timer;
+    const diagnostic = await Promise.race([
+      daemonFailureDiagnostic(main, expectedDaemonState).catch((failure) => ({ capture_failed: true, code: safeErrorCode(failure) })),
+      new Promise((resolve) => { timer = setTimeout(() => resolve({ capture_timed_out: true }), 3000); }),
+    ]).finally(() => clearTimeout(timer));
+    throw new Error(`${error instanceof Error ? error.message : "Daemon state assertion failed"}\nInstalled daemon diagnostic: ${JSON.stringify(diagnostic)}`);
+  }
   assert.equal(native.cliInstalled, true);
   const tabs = await page.evaluate(() => {
     const state = JSON.parse(localStorage.getItem("multica_tabs") ?? "null")?.state;
@@ -234,8 +408,11 @@ async function metadata() {
 
 async function launch() {
   app = await electron.launch({ executablePath: executable, args: nativeMode ? [] : ["--no-sandbox"],
-    ...(nativeMode ? { env: { ...process.env, MULTICA_PACKAGED_ACCEPTANCE: "1", MULTICA_PACKAGED_ACCEPTANCE_HOME: process.env.MULTICA_PACKAGED_ACCEPTANCE_HOME } } : {}),
+    env: nativeMode ? { ...process.env, MULTICA_PACKAGED_ACCEPTANCE: "1", MULTICA_PACKAGED_ACCEPTANCE_HOME: process.env.MULTICA_PACKAGED_ACCEPTANCE_HOME }
+      : { ...process.env, PATH: `${path.dirname(discoveryCLI)}:${process.env.PATH ?? ""}`, MULTICA_CLAUDE_PATH: discoveryCLI,
+          MULTICA_INSTALLED_DISCOVERY_MARKER: discoveryMarker },
     timeout: 60_000 });
+  app.process().stderr?.on("data", recordMainErrorCodes);
   page = await app.firstWindow({ timeout: 45_000 });
   page.setDefaultTimeout(20_000);
   page.on("pageerror", (error) => errors.push(scrub(error.message)));
@@ -263,7 +440,12 @@ async function launch() {
   await page.reload();
   await expect.poll(() => new URL(page.url()).pathname).toBe(`${packagePath}/out/renderer/index.html`);
   await expect.poll(() => page.evaluate(() => typeof window.daemonAPI?.getPrefs)).toBe("function");
-  await expect.poll(() => page.evaluate(() => window.daemonAPI.getStatus().then((status) => status.state)), { timeout: 90_000 }).toBe("stopped");
+  const expectedDaemonState = authenticatedUserId && managedDeploymentId ? "running" : "stopped";
+  await expect.poll(() => page.evaluate(() => window.daemonAPI.getStatus().then((status) => status.state)), { timeout: 90_000 }).toBe(expectedDaemonState);
+  if (expectedDaemonState === "running") {
+    const main = await app.evaluate(({ app }) => ({ home: app.getPath("home") }));
+    verifyOwnedManagedDaemon(main, await page.evaluate(() => window.daemonAPI.getStatus()));
+  }
   await expect.poll(cliAvailable, { timeout: 90_000 }).toBe(true);
 }
 
@@ -301,8 +483,19 @@ async function dispatch(message) {
       }
       if (debSha256 !== undefined) installation = installDeb(message.expectedInstallation);
       assert(existsSync(executable) && existsSync(packagePath), "Mount the current electron-builder directory package");
+      if (!nativeMode) {
+        assert(existsSync(discoveryCLI), "Mount the explicit discovery-only CLI for this container");
+        assert(!existsSync(discoveryMarker), "A fresh container has no unexpected agent invocation");
+      }
       apiUrl = taskEndpoint(message.apiUrl, "apiUrl");
       appUrl = taskEndpoint(message.appUrl, "appUrl");
+      const configResponse = await fetch(`${apiUrl}/api/config`);
+      assert.equal(configResponse.status, 200);
+      const publicConfig = await configResponse.json();
+      if (publicConfig.managed_installation_supported === true) {
+        assert.match(publicConfig.deployment_id, /^[0-9a-f-]{36}$/i);
+        managedDeploymentId = publicConfig.deployment_id;
+      }
       const home = nativeMode ? process.env.MULTICA_PACKAGED_ACCEPTANCE_HOME : "/root";
       const userData = nativeMode ? path.join(home, ".config", "Multica") : "/root/.config/Multica";
       createProfileFile(path.join(home, ".multica", "desktop.json"), { schemaVersion: 1, apiUrl, appUrl,
@@ -333,6 +526,7 @@ async function dispatch(message) {
       const data = await response.json();
       secrets.add(data.token);
       assert.equal(data.user.id, message.userId);
+      authenticatedUserId = message.userId;
       await expect(username).toHaveCount(0);
       await expect(page.getByRole("heading", { name: "Collaboration", exact: true })).toBeVisible({ timeout: 45_000 });
       return { status: response.status(), userId: data.user.id, actualPasswordForm: true };
@@ -441,7 +635,7 @@ async function dispatch(message) {
     }
     case "handoff": {
       const baseline = await refreshIssue(message.issueId);
-      await page.getByRole("button", { name: "Transfer", exact: true }).click();
+      await workflowButton("Transfer");
       const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Transfer", exact: true }) });
       await selectCollaborationRecipient(page, form, { id: message.recipientId, name: message.recipientName });
       await form.getByLabel("Note", { exact: true }).fill(message.note);
@@ -455,13 +649,13 @@ async function dispatch(message) {
     }
     case "workflow": {
       const label = { request_information: "Request information", return_information: "Return information",
-        submit_acceptance: "Submit for acceptance" }[message.action];
+        submit_acceptance: "Submit result" }[message.action];
       assert(label, "Only the named human workflow branches are available");
       const baseline = await refreshIssue(message.issueId);
       assert.equal(baseline.capabilities[message.action], true);
       const optionsPending = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/collaboration/issues/${message.issueId}/status-options`
         && new URL(response.url()).searchParams.get("action") === message.action && response.request().method() === "GET");
-      await page.getByRole("button", { name: label, exact: true }).click();
+      await workflowButton(label);
       const form = page.locator("form").filter({ has: page.getByRole("heading", { name: label, exact: true }) });
       const optionsResponse = await optionsPending;
       assert.equal(optionsResponse.status(), 200);
@@ -477,16 +671,28 @@ async function dispatch(message) {
       assert(selectedStatus, "The directed workflow must expose its prescribed status");
       assert.equal(selectedStatus, options.default_status);
       await select.selectOption(selectedStatus);
-      await form.getByLabel("Note", { exact: true }).fill(message.note);
+      if (message.action === "submit_acceptance") {
+        assert(typeof message.basis === "string" && message.basis.trim(), "Result submission needs an explicit basis");
+        await form.getByLabel("Result", { exact: true }).fill(message.note);
+        await form.getByLabel("Basis", { exact: true }).fill(message.basis);
+      } else {
+        await form.getByLabel("Note", { exact: true }).fill(message.note);
+      }
       const requestPath = `/api/collaboration/issues/${message.issueId}/${message.action === "request_information" ? "handoffs"
         : message.action === "return_information" ? "information-returns" : "acceptance-submissions"}`;
       const pending = page.waitForResponse((response) => new URL(response.url()).pathname === requestPath && response.request().method() === "POST");
-      await form.getByRole("button", { name: "Confirm", exact: true }).click();
+      await form.getByRole("button", { name: message.action === "submit_acceptance" ? "Submit result" : "Confirm", exact: true }).click();
       const outcome = await originalResponse(pending, 200, baseline);
       assert.equal(outcome.input.expected_collaboration_revision, baseline.collaboration_revision);
       assert.equal(outcome.input.expected_status, selectedStatus);
       assert.equal(outcome.input.status_options_version, options.status_options_version);
       if (message.action === "return_information") assert.equal(outcome.input.information_request_id, baseline.current_information_request.id);
+      if (message.action === "submit_acceptance") {
+        assert.equal(outcome.input.note, message.note);
+        assert.equal(outcome.input.basis, message.basis);
+        assert.deepEqual(outcome.input.attachment_ids, []);
+        assert.match(outcome.receipt.delivery_confirmation.submission_id, /^[0-9a-f-]{36}$/i);
+      }
       await expect(form).toHaveCount(0);
       return { ...outcome, selectedStatus, baseline };
     }
@@ -495,11 +701,13 @@ async function dispatch(message) {
       return metadata();
     }
     case "restart": {
-      await app.close();
-      await launch();
-      await refreshIssue(message.issueId);
-      await expect(page.locator("#password-username")).toHaveCount(0);
-      return metadata();
+      await commandPhase(message, "restart.close", () => app.close());
+      await commandPhase(message, "restart.launch", () => launch());
+      await commandPhase(message, "restart.refresh", async () => {
+        await refreshIssue(message.issueId);
+        await expect(page.locator("#password-username")).toHaveCount(0);
+      });
+      return commandPhase(message, "restart.metadata", () => metadata());
     }
     case "capture": {
       await page.evaluate(async () => { await document.fonts.ready;
@@ -513,8 +721,15 @@ async function dispatch(message) {
     }
     case "status": return metadata();
     case "close": {
-      if (app) await app.close();
-      app = undefined;
+      const failures = [];
+      try { if (!nativeMode) assert(!existsSync(discoveryMarker), "The discovery-only CLI must never execute an agent task"); }
+      catch (error) { failures.push(error); }
+      try { await commandPhase(message, "close.stop-daemon", () => stopOwnedManagedDaemon()); }
+      catch (error) { failures.push(error); }
+      try { if (app) await commandPhase(message, "close.application", () => app.close()); app = undefined; }
+      catch (error) { failures.push(error); }
+      if (failures.length === 1) throw failures[0];
+      if (failures.length > 1) throw new AggregateError(failures, "Installed controller shutdown failures", { cause: failures[0] });
       return { closed: true, errors: [...errors], accountRequests: [...accountRequests], responses: [...responses] };
     }
     default: throw new Error("Unknown installed-client fixture command");
@@ -527,10 +742,20 @@ for await (const line of input) {
   try {
     message = JSON.parse(line);
     assert(Number.isInteger(message.id) && typeof message.command === "string");
-    reply(message.id, await dispatch(message));
+    await commandEvent(message, "command", "started");
+    const value = await dispatch(message);
+    await commandEvent(message, "command", "completed");
+    reply(message.id, value);
     if (message.command === "close") break;
   } catch (error) {
-    reply(message?.id ?? null, undefined, scrub(error instanceof Error ? error.stack ?? error.message : String(error)));
+    let failure = error;
+    try { await commandEvent(message, "command", "failed"); }
+    catch (eventError) { failure = new AggregateError([error, eventError], "Installed command and event transport failed", { cause: error }); }
+    reply(message?.id ?? null, undefined, failureText(failure));
   }
 }
-if (app) await app.close().catch(() => undefined);
+if (app) {
+  const cleanup = { id: 0, command: "close" };
+  try { await commandPhase(cleanup, "eof.stop-daemon", () => stopOwnedManagedDaemon()); }
+  finally { await commandPhase(cleanup, "eof.application", () => app.close()).catch(() => undefined); }
+}

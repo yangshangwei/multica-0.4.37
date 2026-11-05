@@ -4,8 +4,10 @@ import type { CollaborationCommentInput, CollaborationCommentReceipt, Collaborat
   CollaborationControlInput, CollaborationControlReceipt, CollaborationIssue, CollaborationOperation, CollaborationStatusOptions, CollaborationWorkbench } from "@multica/core/collaboration";
 import { TestApiClient } from "./fixtures";
 import { authenticateControlWeb, controlAccountPath, seedCollaborationControlJourney } from "./fixtures/collaboration-control-journey";
-import { dockerTaskURL, InstalledMainClient, type InstalledMainMetadata, type InstalledMainWrite } from "./fixtures/collaboration-installed-main";
+import { dockerTaskURL, finishInstalledMainJourney, InstalledMainClient, type InstalledMainMetadata, type InstalledMainWrite } from "./fixtures/collaboration-installed-main";
 import { selectCollaborationRecipient } from "./fixtures/collaboration-offline-handoff";
+import { directedFormThroughUI } from "./fixtures/collaboration-handoff-chain";
+import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
 
 // The local runner handles secrets outside Playwright tracing. This actual
 // installed Main evidence supplements the canonical service/renderer journeys;
@@ -52,7 +54,9 @@ async function refreshWebIssue(page: Page, issueId: string) {
 async function webOperation(page: Page, issueId: string, action: "invite" | "transfer", userId: string, name: string, note = "") {
   const baseline = await refreshWebIssue(page, issueId);
   const label = action === "invite" ? "Add participant" : "Transfer";
-  await page.getByRole("button", { name: label, exact: true }).click();
+  const actionButton = page.getByRole("button", { name: label, exact: true });
+  if (!await actionButton.isVisible()) await revealCollaborationDisclosure(page, "More actions");
+  await actionButton.click();
   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: label, exact: true }) });
   await selectCollaborationRecipient(page, form, { id: userId, name });
   await expect(form.getByText(`Selected account: ${name}`, { exact: true })).toBeVisible();
@@ -96,43 +100,44 @@ interface DirectedWrite extends InstalledMainWrite<CollaborationOperation, Recor
 }
 
 async function webInformationForm(page: Page, issueId: string, action: DirectedAction, note: string,
-  recipient?: { id: string; name: string }): Promise<DirectedWrite> {
+  recipient?: { id: string; name: string }, basis?: string): Promise<DirectedWrite> {
+  return { ...await directedFormThroughUI(page, issueId, action, note, recipient, basis), resultText: "Action confirmed." };
+}
+
+async function webReturnResult(page: Page, issueId: string, target: { id: string; name: string }, reason: string) {
   const baseline = await refreshWebIssue(page, issueId);
-  expect(baseline.capabilities[action]).toBe(true);
-  const label = { request_information: "Request information", return_information: "Return information", submit_acceptance: "Submit for acceptance" }[action];
+  const submission = baseline.delivery?.current;
+  expect(submission?.id).toMatch(/^[0-9a-f-]{36}$/i);
+  expect(baseline.capabilities.return_acceptance).toBe(true);
   const optionsPending = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/collaboration/issues/${issueId}/status-options`
-    && new URL(response.url()).searchParams.get("action") === action && response.request().method() === "GET");
-  await page.getByRole("button", { name: label, exact: true }).click();
-  const form = page.locator("form").filter({ has: page.getByRole("heading", { name: label, exact: true }) });
-  const optionsResponse = await optionsPending;
-  expect(optionsResponse.status()).toBe(200);
-  const options: CollaborationStatusOptions = await optionsResponse.json();
-  expect(options.action).toBe(action);
-  expect(options.options).toHaveLength(1);
-  if (action === "request_information") {
-    if (!recipient) throw new Error("Request information needs the exact participant recipient");
-    await selectCollaborationRecipient(page, form, recipient);
-    await expect(form.getByText(`Selected account: ${recipient.name}`, { exact: true })).toBeVisible();
-  }
-  const select = form.getByLabel("Status", { exact: true });
-  await expect(select.locator("option")).toHaveCount(1);
-  await select.selectOption(options.default_status);
-  await form.getByLabel("Note", { exact: true }).fill(note);
-  const endpoint = `/api/collaboration/issues/${issueId}/${action === "request_information" ? "handoffs" : action === "return_information" ? "information-returns" : "acceptance-submissions"}`;
-  const pending = page.waitForResponse((response) => new URL(response.url()).pathname === endpoint && response.request().method() === "POST");
-  await form.getByRole("button", { name: "Confirm", exact: true }).click();
-  const response = await pending;
+    && new URL(response.url()).searchParams.get("action") === "return_acceptance" && response.request().method() === "GET");
+  await page.getByRole("button", { name: "Return for revision", exact: true }).click();
+  const form = page.getByRole("form", { name: "Return for revision", exact: true });
+  await expect(form.locator(`[data-submission-id="${submission!.id}"]`)).toHaveCount(1);
+  await selectCollaborationRecipient(page, form, target);
+  await form.getByLabel("Revision reason", { exact: true }).fill(reason);
+  const response = await optionsPending;
   expect(response.status()).toBe(200);
-  const receipt: CollaborationOperation = await response.json();
-  const input: Record<string, unknown> = response.request().postDataJSON();
-  const requestId = response.request().headers()["idempotency-key"]!;
+  const options: CollaborationStatusOptions = await response.json();
+  expect(options.action).toBe("return_acceptance");
+  expect(options.options).toHaveLength(1);
+  await form.getByLabel("Status", { exact: true }).selectOption(options.default_status);
+  const pending = page.waitForResponse((result) => new URL(result.url()).pathname === `/api/collaboration/issues/${issueId}/acceptance-returns`
+    && result.request().method() === "POST");
+  await form.getByRole("button", { name: "Return for revision", exact: true }).click();
+  const returned = await pending;
+  expect(returned.status()).toBe(200);
+  const input = returned.request().postDataJSON();
+  expect(input).toMatchObject({ submission_id: submission!.id, target_user_id: target.id, note: reason,
+    expected_status: options.default_status, status_options_version: options.status_options_version,
+    expected_collaboration_revision: baseline.collaboration_revision, expected_lifecycle_epoch: baseline.lifecycle_epoch,
+    expected_participant_epoch: baseline.write_context!.participant_epoch, expected_account_epoch: baseline.write_context!.account_epoch });
+  const requestId = returned.request().headers()["idempotency-key"];
   expect(requestId).toMatch(/^[0-9a-f-]{36}$/i);
-  expect(input).toMatchObject({ expected_collaboration_revision: baseline.collaboration_revision, expected_lifecycle_epoch: baseline.lifecycle_epoch,
-    expected_participant_epoch: baseline.write_context!.participant_epoch, expected_account_epoch: baseline.write_context!.account_epoch,
-    expected_status: options.default_status, status_options_version: options.status_options_version, note });
-  if (action === "return_information") expect(input.information_request_id).toBe(baseline.current_information_request!.id);
+  const receipt: CollaborationOperation = await returned.json();
+  expect(receipt.code).toBe("acceptance_returned");
   await expect(form).toHaveCount(0);
-  return { receipt, input, requestId, baseline, selectedStatus: options.default_status, resultText: "Action confirmed." };
+  return { baseline, submission, receipt, input, requestId };
 }
 
 test("installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume", async ({ page }, testInfo) => {
@@ -178,6 +183,7 @@ test("installed Linux full Main and production Web hand off the same issue, pres
     installedHandlerId: user.id, sourceWorkspaceId: fixture.sourceWorkspace.id, webTransfer: transferToInstalled,
     nativeExecutionScope: "Full packaged production Main/preload/renderer and bundled CLI version bootstrap; remote permit is a public protocol simulation with no executable, outcome or proof" };
   let started = false;
+  const failures: unknown[] = [];
   try {
     const boot = await native.command<InstalledMainMetadata>("init", { apiUrl: dockerTaskURL(fixture.apiUrl), appUrl: dockerTaskURL(webURL), executionViewVersion: 6 }, 180_000);
     started = true;
@@ -210,6 +216,12 @@ test("installed Linux full Main and production Web hand off the same issue, pres
       expect(after.status).toBe(outcome.selectedStatus);
       expect(outcome.input.expected_collaboration_revision).toBe(outcome.baseline.collaboration_revision);
       expect((await native.command<CollaborationIssue>("read", { path: root })).handler.user_id).toBe(handlerId);
+      if (action === "submit_acceptance") {
+        const submission = after.delivery!.current!;
+        expect(submission).toMatchObject({ author_user_id: user.id, result: outcome.input.note, basis: outcome.input.basis,
+          evidence_state: "available", decision: null });
+        expect(outcome.receipt.delivery_confirmation).toEqual({ submission_id: submission.id, attachment_ids: [] });
+      }
       if (action === "request_information") expect(after.current_information_request?.recipient.user_id).toBe(handlerId);
       else expect(after.current_information_request).toBeNull();
       workflowWrites.push({ client, action, outcome, after });
@@ -220,15 +232,23 @@ test("installed Linux full Main and production Web hand off the same issue, pres
     const returnedByWeb = await webInformationForm(page, fixture.issueId, "return_information", "Web creator returns the requested information");
     await checkDirected("web", "return_information", returnedByWeb, user.id);
     const acceptanceByNative = await native.command<DirectedWrite>("workflow", { issueId: fixture.issueId, action: "submit_acceptance",
-      note: "Installed handler submits for creator acceptance" });
+      note: "Installed handler submits for creator acceptance", basis: "Confirmed the creator returned the requested information and the same task identity remains." });
     await checkDirected("electron", "submit_acceptance", acceptanceByNative, fixture.creatorId);
     const requestedByWeb = await webInformationForm(page, fixture.issueId, "request_information", "Web creator requests information from the installed participant", { id: user.id, name });
     await checkDirected("web", "request_information", requestedByWeb, user.id);
     const returnedByNative = await native.command<DirectedWrite>("workflow", { issueId: fixture.issueId, action: "return_information",
       note: "Installed participant returns information to its requester" });
     await checkDirected("electron", "return_information", returnedByNative, fixture.creatorId);
-    const handoffForWebAcceptance = await webOperation(page, fixture.issueId, "transfer", user.id, name, "Same handler switches to Web for acceptance submission");
-    expect(handoffForWebAcceptance.receipt.code).toBe("transferred");
+    const handoffForWebAcceptance = await webReturnResult(page, fixture.issueId, { id: user.id, name },
+      "Please revise the exact installed result before submitting it from Web.");
+    const returnedForWeb = await readWeb();
+    expect(returnedForWeb.handler.user_id).toBe(user.id);
+    expect(returnedForWeb.delivery?.current).toBeNull();
+    expect(returnedForWeb.delivery?.latest).toMatchObject({ id: handoffForWebAcceptance.submission!.id,
+      result: handoffForWebAcceptance.submission!.result, basis: handoffForWebAcceptance.submission!.basis,
+      decision: { kind: "returned", submission_id: handoffForWebAcceptance.submission!.id, actor_user_id: fixture.creatorId, target_user_id: user.id } });
+    expect(returnedForWeb.session).toEqual(handoffForWebAcceptance.baseline.session);
+    expect(returnedForWeb.execution).toEqual(handoffForWebAcceptance.baseline.execution);
     const handlerContext = await page.context().browser()!.newContext({ baseURL: webURL });
     try {
       const login = await handlerContext.request.post(`${fixture.apiUrl}/auth/login`, { data: { username, password } });
@@ -240,7 +260,8 @@ test("installed Linux full Main and production Web hand off the same issue, pres
       await handlerContext.addInitScript(() => { localStorage.setItem("multica-locale", "en"); localStorage.setItem("multica:chat:isOpen", "false"); });
       const handlerWeb = await handlerContext.newPage();
       await handlerWeb.goto(new URL(controlAccountPath(fixture), webURL).href);
-      const acceptanceByWeb = await webInformationForm(handlerWeb, fixture.issueId, "submit_acceptance", "Same installed handler submits acceptance from Web");
+      const acceptanceByWeb = await webInformationForm(handlerWeb, fixture.issueId, "submit_acceptance", "Same installed handler submits acceptance from Web", undefined,
+        "Confirmed the installed participant returned information and the same user explicitly submits the revised result.");
       await checkDirected("web", "submit_acceptance", acceptanceByWeb, fixture.creatorId);
     } finally { await handlerContext.close(); }
     const workflowFinished = await readWeb();
@@ -252,8 +273,16 @@ test("installed Linux full Main and production Web hand off the same issue, pres
     expect(new Set(workflowWrites.map((entry) => entry.outcome.requestId)).size).toBe(6);
     evidence.directedWorkflows = { writes: workflowWrites, sameUserWebLogin: user.id, handoffForWebAcceptance,
       finalStatus: workflowFinished.status, activityKinds: activity.items.map((item) => item.kind) };
-    const handoffAfterWorkflows = await webOperation(page, fixture.issueId, "transfer", user.id, name, "Web resumes original installed-handler control journey");
-    expect(handoffAfterWorkflows.receipt.code).toBe("transferred");
+    const handoffAfterWorkflows = await webReturnResult(page, fixture.issueId, { id: user.id, name },
+      "Retain this revised submission and return responsibility for the explicit control journey.");
+    const returnedForControl = await readWeb();
+    expect(returnedForControl.handler.user_id).toBe(user.id);
+    expect(returnedForControl.delivery?.current).toBeNull();
+    expect(returnedForControl.delivery?.latest?.decision).toMatchObject({ kind: "returned",
+      submission_id: handoffAfterWorkflows.submission!.id, actor_user_id: fixture.creatorId, target_user_id: user.id });
+    expect(returnedForControl.session).toEqual(workflowFinished.session);
+    expect(returnedForControl.execution).toEqual(workflowFinished.execution);
+    evidence.directedReturns = [handoffForWebAcceptance, handoffAfterWorkflows];
 
     const resume = await webControl(page, fixture.issueId, "resume");
     expect(resume.receipt).toMatchObject({ code: "resumed", queue_state: "active" });
@@ -360,7 +389,8 @@ test("installed Linux full Main and production Web hand off the same issue, pres
     expect(restarted.main.packaged).toBe(true);
     expect(restarted.artifactSha256).toBe(boot.artifactSha256);
     expect(restarted.main.userData).toBe(boot.main.userData);
-    expect(restarted.native.daemon.state).toBe("stopped");
+    // Managed credential reconciliation may launch the verified Desktop-owned daemon after login.
+    expect(restarted.native.daemon.state).toBe("running");
     expect(restarted.tabs?.accountTabs).toHaveLength(1);
     expect(sharedFacts(await readNative())).toEqual(sharedFacts(afterTransferBack));
     expect(await native.command("read", { path: `${root}/commands?limit=100` })).toEqual(priorHistory);
@@ -389,15 +419,26 @@ test("installed Linux full Main and production Web hand off the same issue, pres
     evidence.final = { sharedFacts: sharedFacts(current), status, transport: native.transportEvidence };
     await testInfo.attach("installed-full-main-journey", { contentType: "application/json", body: JSON.stringify(evidence, null, 2) });
   } catch (error) {
+    // Keep the business error even if the same blocked controller cannot report status or close.
+    failures.push(error);
+    try {
+      // Snapshot the completed stage boundaries before asking a possibly blocked controller for status.
+      await testInfo.attach("installed-full-main-primary-timeline", { contentType: "application/json",
+        body: JSON.stringify(native.transportEvidence, null, 2) });
+    } catch (attachmentError) { failures.push(attachmentError); }
     if (started) {
-      try {
-        evidence.failureState = await native.command("status", {}, 20_000);
-        await testInfo.attach("installed-full-main-failure", { contentType: "application/json", body: JSON.stringify(evidence, null, 2) });
-      } catch { /* Preserve the original failure if the native process exited. */ }
+      try { evidence.failureState = await native.command("status", {}, 20_000); }
+      catch (captureError) { failures.push(captureError); }
     }
-    throw error;
+    try {
+      await testInfo.attach("installed-full-main-failure", { contentType: "application/json", body: JSON.stringify(evidence, null, 2) });
+    } catch (attachmentError) { failures.push(attachmentError); }
   } finally {
-    await fixture.simulatedDaemon.disconnect();
-    await native.close();
+    await finishInstalledMainJourney(failures, [
+      () => fixture.simulatedDaemon.disconnect(),
+      () => native.close(),
+      () => testInfo.attach("installed-full-main-command-timeline", { contentType: "application/json",
+        body: JSON.stringify(native.transportEvidence, null, 2) }),
+    ]);
   }
 });

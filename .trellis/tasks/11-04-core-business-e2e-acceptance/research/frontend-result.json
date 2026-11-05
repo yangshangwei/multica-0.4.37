@@ -1,0 +1,288 @@
+{
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "worktree": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104",
+  "generated_at": "2026-11-04T16:16:23.774638+00:00",
+  "agent_source_edits": [],
+  "commands": [
+    {
+      "id": "01-static",
+      "argv": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "lint",
+        "typecheck",
+        "--filter=!@multica/mobile",
+        "--concurrency=1",
+        "--force"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104",
+      "started_at": "2026-11-04T15:47:45.935787+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "finished_at": "2026-11-04T15:51:59.803131+00:00",
+      "duration_seconds": 253.866,
+      "summary_lines": [
+        "@multica/ui:lint: \u2716 3 problems (0 errors, 3 warnings)",
+        "@multica/views:lint: \u2716 27 problems (0 errors, 27 warnings)",
+        "@multica/desktop:lint: \u2716 1 problem (0 errors, 1 warning)",
+        "Tasks:    15 successful, 15 total"
+      ]
+    },
+    {
+      "id": "02-ui-exports",
+      "argv": [
+        "pnpm",
+        "check:ui-exports"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104",
+      "started_at": "2026-11-04T15:51:59.804926+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "finished_at": "2026-11-04T15:52:02.916541+00:00",
+      "duration_seconds": 3.111,
+      "summary_lines": []
+    },
+    {
+      "id": "03-nonmobile-tests",
+      "argv": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "test",
+        "--filter=!@multica/mobile",
+        "--concurrency=1",
+        "--force",
+        "--",
+        "--maxWorkers=2"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104",
+      "started_at": "2026-11-04T15:52:02.917162+00:00",
+      "status": "FAIL",
+      "exit_code": 1,
+      "finished_at": "2026-11-04T16:08:40.118024+00:00",
+      "duration_seconds": 997.197,
+      "summary_lines": [
+        "@multica/views:test:      \u2713 retains cached rows, filters, and selection after a failed refresh  400ms",
+        "@multica/views:test:      \u2713 waits for every result, blocks duplicate submission and retains only failed selections  476ms",
+        "@multica/views:test: React does not recognize the `newTabTitle` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `newtabtitle` instead. If you accidentally passed it from a parent component, remove it from the DOM element.",
+        "@multica/views:test:      \u2713 keeps its baseline across a failed refresh and confirms on retry  342ms",
+        "@multica/views:test:      \u2713 opens the created project when preparation failed so it can be retried there  887ms",
+        "@multica/views:test:  \u276f modals/create-project-local-mode.test.tsx (11 tests | 1 failed) 22940ms",
+        "@multica/views:test: stderr | chat/components/chat-new-chat-button.test.tsx > NewChatButton > reports failed pin updates and rolls back the favorite",
+        "@multica/views:test:      \u2713 keeps cold Retry mounted while fetching and never reports a failed read as an empty list  1030ms",
+        "@multica/views:test:      \u2713 retains a failed member confirmation and blocks repeated submissions  403ms",
+        "@multica/views:test:      \u2713 retains a failed invitation confirmation and blocks repeated submissions  312ms",
+        "@multica/views:test:      \u2713 reports failed pin updates and rolls back the favorite  476ms",
+        "@multica/views:test: React does not recognize the `newTabTitle` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `newtabtitle` instead. If you accidentally passed it from a parent component, remove it from the DOM element.",
+        "@multica/views:test:      \u2713 re-consumes a row on the next fetch after the consume failed  1026ms",
+        "@multica/views:test: React does not recognize the `newTabTitle` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `newtabtitle` instead. If you accidentally passed it from a parent component, remove it from the DOM element.",
+        "@multica/views:test: React does not recognize the `newTabTitle` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `newtabtitle` instead. If you accidentally passed it from a parent component, remove it from the DOM element.",
+        "@multica/views:test:    \u2713 locks uncertain saves until a successful read and retains the draft on failed refresh  1153ms",
+        "@multica/views:test:      \u2713 shows loading and recovers a failed choices request in the popover  346ms",
+        "@multica/views:test: An empty string (\"\") was passed to the src attribute. This may cause the browser to download the whole page again over the network. To fix this, either do not render the element at all or pass null to src instead of an empty string.",
+        "@multica/views:test:    \u2713 lazily shows exact prepared files and failed Git preparation without asserting run completion  412ms",
+        "@multica/views:test:  Test Files  1 failed | 592 passed (593)",
+        "@multica/views:test:       Tests  1 failed | 7164 passed (7165)",
+        "@multica/views:test: \u2009ELIFECYCLE\u2009 Test failed. See above for more details.",
+        "Tasks:    1 successful, 5 total",
+        "Failed:    @multica/views#test",
+        "ERROR  run failed: command  exited (1)"
+      ]
+    },
+    {
+      "id": "04-mobile-typecheck",
+      "argv": [
+        "pnpm",
+        "-C",
+        "apps/mobile",
+        "typecheck"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104",
+      "started_at": "2026-11-04T16:08:40.141545+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "finished_at": "2026-11-04T16:08:54.826405+00:00",
+      "duration_seconds": 14.688,
+      "summary_lines": []
+    },
+    {
+      "id": "05-mobile-lint",
+      "argv": [
+        "pnpm",
+        "-C",
+        "apps/mobile",
+        "lint"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104",
+      "started_at": "2026-11-04T16:08:54.837227+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "finished_at": "2026-11-04T16:09:05.177769+00:00",
+      "duration_seconds": 10.34,
+      "summary_lines": [
+        "\u2716 7 problems (0 errors, 7 warnings)"
+      ]
+    },
+    {
+      "id": "06-mobile-tests",
+      "argv": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/apps/mobile",
+      "started_at": "2026-11-04T16:09:05.180161+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "finished_at": "2026-11-04T16:09:11.883706+00:00",
+      "duration_seconds": 6.703,
+      "summary_lines": [
+        "Test Files  28 passed (28)",
+        "Tests  196 passed (196)"
+      ]
+    },
+    {
+      "id": "07-mobile-wrapper",
+      "argv": [
+        "bash",
+        "scripts/ios-run.test.sh"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/apps/mobile",
+      "started_at": "2026-11-04T16:09:11.887987+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "finished_at": "2026-11-04T16:09:12.872116+00:00",
+      "duration_seconds": 0.983,
+      "summary_lines": [
+        "ios-run.test.sh: all assertions passed"
+      ]
+    },
+    {
+      "id": "08-remaining-packages",
+      "argv": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "test",
+        "--filter=@multica/docs",
+        "--filter=@multica/web",
+        "--filter=@multica/desktop",
+        "--concurrency=1",
+        "--force",
+        "--",
+        "--maxWorkers=2"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104",
+      "reason": "Initial turbo bailed after views failure; these package suites did not execute.",
+      "started_at": "2026-11-04T16:11:38.571876+00:00",
+      "status": "PASS",
+      "finished_at": "2026-11-04T16:13:39.558870+00:00",
+      "duration_seconds": 120.988,
+      "exit_code": 0
+    },
+    {
+      "id": "09-local-mode-replay",
+      "argv": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "modals/create-project-local-mode.test.tsx",
+        "--maxWorkers=1",
+        "--reporter=verbose"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/packages/views",
+      "reason": "One bounded full-file replay of the only failed initial identity after confirming Vitest 5000ms timeout; unchanged sources and assertions, zero retry and unchanged timeout.",
+      "started_at": "2026-11-04T16:13:39.568142+00:00",
+      "status": "PASS",
+      "finished_at": "2026-11-04T16:13:51.769801+00:00",
+      "duration_seconds": 12.201,
+      "exit_code": 0
+    }
+  ],
+  "packages": [
+    {
+      "package": "@multica/core",
+      "passed": 4455,
+      "failed": 0,
+      "total": 4455,
+      "files": 331,
+      "evidence": "evidence/frontend/03-nonmobile-tests.stdout.log"
+    },
+    {
+      "package": "@multica/views",
+      "passed": 7164,
+      "failed": 1,
+      "total": 7165,
+      "files": 593,
+      "evidence": "evidence/frontend/03-nonmobile-tests.stdout.log"
+    },
+    {
+      "package": "@multica/docs",
+      "passed": 62,
+      "failed": 0,
+      "total": 62,
+      "files": 9,
+      "evidence": "evidence/frontend/08-remaining-packages.stdout.log"
+    },
+    {
+      "package": "@multica/web",
+      "passed": 290,
+      "failed": 0,
+      "total": 290,
+      "files": 34,
+      "evidence": "evidence/frontend/08-remaining-packages.stdout.log"
+    },
+    {
+      "package": "@multica/desktop",
+      "passed": 1272,
+      "failed": 0,
+      "total": 1272,
+      "files": 102,
+      "evidence": "evidence/frontend/08-remaining-packages.stdout.log"
+    }
+  ],
+  "nonmobile": {
+    "unique_tests": 13244,
+    "unique_files": 1069,
+    "initial_package_results_pass": 13243,
+    "initial_package_results_fail": 1,
+    "initial_complete_turbo_exit": 1,
+    "later_passing_unique_tests": 13244,
+    "replay_tests": 11,
+    "replay_passed": 11,
+    "original_failed_identity": "@multica/views/modals/create-project-local-mode.test.tsx > CreateProjectModal \u2014 local directory execution mode > blocks parallel mode for a folder that is not a git repository",
+    "failure_kind": "Vitest 5000ms timeout",
+    "replay_failed_identity_duration_ms": 420,
+    "stability_risk_open": true,
+    "root_cause_proven": false,
+    "single_complete_green_run": false
+  },
+  "mobile": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "lint_warnings": 7,
+    "tests_passed": 196,
+    "files_passed": 28,
+    "ios_wrapper_assertion_groups": 3,
+    "native_UI_tested": false
+  },
+  "static": {
+    "turbo_tasks_passed": 15,
+    "cache_hits": 0,
+    "lint_warnings": 31,
+    "ui_exports": "PASS"
+  },
+  "limits": [
+    "Initial complete nonmobile Turbo run failed and remains failed; later missing-package run plus full-file replay is not a new complete green run.",
+    "Only one unchanged full-file replay was executed; it does not prove the original timeout root cause or a product fix.",
+    "Mobile suite is Node/headless and wrapper verification, not native iOS UI.",
+    "No source changes or dependency changes by this agent. Existing warnings remain; production build changed only the permitted Next generated import in observed worktree status."
+  ]
+}

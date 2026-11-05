@@ -652,6 +652,9 @@ func runDaemonBackground(cmd *cobra.Command) error {
 	child.SysProcAttr = daemonSysProcAttr(true)
 
 	startChild := func() (int, error) {
+		if err := prepareDaemonChildFds(); err != nil {
+			return 0, fmt.Errorf("prepare inherited descriptors for daemon: %w", err)
+		}
 		if err := child.Start(); err != nil {
 			if isAccessDeniedSpawnErr(err) {
 				// Retry without breakaway. Reset the cmd state — exec.Cmd is
@@ -661,6 +664,9 @@ func runDaemonBackground(cmd *cobra.Command) error {
 				child.Stdout = logFile
 				child.Stderr = logFile
 				child.SysProcAttr = daemonSysProcAttr(false)
+				if err := prepareDaemonChildFds(); err != nil {
+					return 0, fmt.Errorf("prepare inherited descriptors for daemon retry: %w", err)
+				}
 				if err := child.Start(); err != nil {
 					return 0, fmt.Errorf("start daemon (no breakaway): %w", err)
 				}
@@ -1219,6 +1225,9 @@ func runDaemonForeground(cmd *cobra.Command) error {
 		child.SysProcAttr = daemonSysProcAttr(true)
 
 		startSuccessor := func() (int, error) {
+			if err := prepareDaemonChildFds(); err != nil {
+				return 0, fmt.Errorf("prepare inherited descriptors for daemon restart: %w", err)
+			}
 			if err := child.Start(); err != nil {
 				// Runtimes were already deregistered by triggerRestart() before handoff.
 				// The supervisor-spawned successor re-registers on startup; do not
@@ -1228,6 +1237,9 @@ func runDaemonForeground(cmd *cobra.Command) error {
 					child.Stdout = logFile
 					child.Stderr = logFile
 					child.SysProcAttr = daemonSysProcAttr(false)
+					if err := prepareDaemonChildFds(); err != nil {
+						return 0, fmt.Errorf("prepare inherited descriptors for daemon restart retry: %w", err)
+					}
 					if err := child.Start(); err != nil {
 						logger.Error("failed to start new daemon (no breakaway)", "error", err)
 						return 0, fmt.Errorf("failed to start new daemon at %s without breakaway: %w", restartBin, err)

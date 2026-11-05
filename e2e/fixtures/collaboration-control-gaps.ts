@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { revealCollaborationDisclosure } from "./collaboration-disclosures";
 import { expect, type Browser, type Page } from "@playwright/test";
 import type {
   CollaborationCommandHistory, CollaborationCommentReceipt, CollaborationIssue, CollaborationMentionTargets,
@@ -132,19 +133,54 @@ export async function mentionNames(client: TestApiClient, issueId: string) {
   } };
 }
 
+/** Submit real result evidence before exercising the creator's acceptance. */
+export async function submitResultThroughUI(page: Page, issueId: string, result: string, basis: string) {
+  const action = page.getByRole("button", { name: "Submit result", exact: true });
+  if (!await action.isVisible()) await revealCollaborationDisclosure(page, "More actions");
+  const optionsPending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/status-options`
+    && new URL(response.url()).searchParams.get("action") === "submit_acceptance" && response.request().method() === "GET");
+  await action.click();
+  const optionsResponse = await optionsPending;
+  expect(optionsResponse.status()).toBe(200);
+  const options: { default_status: string; status_options_version: string } = await optionsResponse.json();
+  const form = page.getByRole("form", { name: "Submit result", exact: true });
+  await form.getByLabel("Result", { exact: true }).fill(result);
+  await form.getByLabel("Basis", { exact: true }).fill(basis);
+  await form.getByLabel("Status", { exact: true }).selectOption(options.default_status);
+  const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/acceptance-submissions`
+    && response.request().method() === "POST");
+  await form.getByRole("button", { name: "Submit result", exact: true }).click();
+  const response = await pending;
+  expect(response.status()).toBe(200);
+  const input = response.request().postDataJSON();
+  expect(input).toMatchObject({ note: result, basis, attachment_ids: [], expected_status: options.default_status,
+    status_options_version: options.status_options_version });
+  const receipt: CollaborationOperation = await response.json();
+  expect(receipt.code).toBe("acceptance_submitted");
+  const submissionId = receipt.delivery_confirmation?.submission_id;
+  expect(submissionId).toMatch(/^[0-9a-f-]{36}$/i);
+  expect(receipt.delivery_confirmation?.attachment_ids).toEqual([]);
+  await expect(form).toHaveCount(0);
+  return { submissionId: submissionId!, receipt, input };
+}
+
 /** Complete, cancel or reopen through the shared workflow form. */
-export async function lifecycleThroughUI(page: Page, issueId: string, action: "complete" | "cancel" | "reopen") {
-  const label = { complete: "Complete issue", cancel: "Cancel issue", reopen: "Reopen issue" }[action];
+export async function lifecycleThroughUI(page: Page, issueId: string, action: "complete" | "cancel" | "reopen", submissionId?: string) {
+  if (action === "complete" && !submissionId) throw new Error("Acceptance must identify the exact submitted result");
+  const label = { complete: "Accept and complete", cancel: "Cancel issue", reopen: "Reopen issue" }[action];
+  const actionButton = page.getByRole("button", { name: label, exact: true });
+  if (!await actionButton.isVisible()) await revealCollaborationDisclosure(page, "More actions");
   const optionsPending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/status-options`
     && new URL(response.url()).searchParams.get("action") === action && response.request().method() === "GET");
-  await page.getByRole("button", { name: label, exact: true }).click();
+  await actionButton.click();
   const optionsResponse = await optionsPending;
   expect(optionsResponse.status()).toBe(200);
   const options: { default_status: string; status_options_version: string; options: { key: string; category: string }[] } = await optionsResponse.json();
   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: label, exact: true }) });
+  if (submissionId) await expect(form.locator(`[data-submission-id="${submissionId}"]`)).toHaveCount(1);
   await form.getByLabel("Status", { exact: true }).selectOption(options.default_status);
   const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/lifecycle` && response.request().method() === "POST");
-  await form.getByRole("button", { name: "Confirm", exact: true }).click();
+  await form.getByRole("button", { name: action === "complete" ? "Accept and complete" : "Confirm", exact: true }).click();
   const response = await pending;
   expect(response.status()).toBe(200);
   const receipt: CollaborationOperation = await response.json();
@@ -153,11 +189,17 @@ export async function lifecycleThroughUI(page: Page, issueId: string, action: "c
   if (!requestId) throw new Error("The lifecycle form omitted its original request key");
   const input: Record<string, unknown> = response.request().postDataJSON();
   expect(input).toMatchObject({ action, status: options.default_status, status_options_version: options.status_options_version });
+  if (submissionId) {
+    expect(input.submission_id).toBe(submissionId);
+    expect(receipt.delivery_confirmation).toEqual({ submission_id: submissionId, attachment_ids: [] });
+  }
   await expect(form).toHaveCount(0);
   return { receipt, requestId, input, options };
 }
 export async function leaveThroughUI(page: Page, issueId: string) {
-  await page.getByRole("button", { name: "Leave issue", exact: true }).click();
+  const actionButton = page.getByRole("button", { name: "Leave issue", exact: true });
+  if (!await actionButton.isVisible()) await revealCollaborationDisclosure(page, "More actions");
+  await actionButton.click();
   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Leave issue", exact: true }) });
   const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/leave` && response.request().method() === "POST");
   await form.getByRole("button", { name: "Confirm", exact: true }).click();
@@ -170,7 +212,9 @@ export async function leaveThroughUI(page: Page, issueId: string) {
 }
 
 export async function inviteThroughUI(page: Page, issueId: string, target: { id: string; name: string }) {
-  await page.getByRole("button", { name: "Add participant", exact: true }).click();
+  const actionButton = page.getByRole("button", { name: "Add participant", exact: true });
+  if (!await actionButton.isVisible()) await revealCollaborationDisclosure(page, "More actions");
+  await actionButton.click();
   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Add participant", exact: true }) });
   await selectHandoffRecipient(page, form, target);
   const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/participants` && response.request().method() === "POST");

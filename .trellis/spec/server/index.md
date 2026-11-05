@@ -7,6 +7,7 @@
 | Guide | Description | Status |
 |-------|-------------|--------|
 | [Security Boundaries](./security-boundaries.md) | Credential minting gates and automation authorization principals | Active |
+| [Daemon process descriptors](./daemon-process-descriptors.md) | Linux background/self-update CLOEXEC isolation and real pipe EOF contract | Active |
 | [Database test isolation](./database-test-isolation.md) | Explicit test databases, TestMain guards, compile-only commands and bounded audit | Active |
 | [Collaboration foundation](./collaboration-foundation.md) | Authority, creation, human workflow and pre-v2 execution history | Foundation |
 | [Collaboration results and manual policy](./collaboration-delivery.md) | Immutable delivery, exact initiator decisions, self-completion, bounded history and task-owned AI admission | Human Web/Electron journey verified; provider/installed Main evidence separate |

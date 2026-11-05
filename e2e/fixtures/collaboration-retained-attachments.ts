@@ -1,3 +1,4 @@
+import { revealCollaborationDisclosure } from "./collaboration-disclosures";
 import { createHash, randomUUID } from "node:crypto";
 import { expect, type Locator, type Page } from "@playwright/test";
 import type { TestApiClient } from "../fixtures";
@@ -91,6 +92,11 @@ async function assertIdle(fixture: RetainedAttachmentFixture, actor: TestApiClie
   return issue;
 }
 
+async function attachmentsPanel(page: Page) {
+  await revealCollaborationDisclosure(page, "Attachments");
+  return page.getByRole("region", { name: "Attachments", exact: true });
+}
+
 async function preview(session: RetainedSession, container: Locator, file: CollaborationAttachment, bytes: Buffer) {
   await container.getByRole("button", { name: `Preview ${file.name}`, exact: true }).first().click();
   const dialog = session.page.getByRole("dialog", { name: file.name, exact: true });
@@ -159,7 +165,7 @@ export async function exerciseTypedCreation(session: RetainedSession, fixture: R
   const source = await fixture.owner.requestJSON<{ id: string; assignee_type: string | null; assignee_id: string | null; collaboration: { creator: { user_id: string }; handler: { user_id: string } } }>(`/api/issues/${created.id}`);
   expect(source).toMatchObject({ id: created.id, collaboration: { creator: { user_id: fixture.ownerId }, handler: { user_id: fixture.creatorId } } });
   expect(source).toMatchObject({ assignee_type: "member", assignee_id: fixture.creatorId });
-  await preview(session, page.getByRole("region", { name: "Attachments", exact: true }), file, bytes);
+  await preview(session, await attachmentsPanel(page), file, bytes);
   const firstDownload = await session.download(page.getByRole("region", { name: "Attachments", exact: true })
     .getByRole("button", { name: `Download ${file.name}`, exact: true }), file.name, bytes, "typed-creation");
   await page.reload();
@@ -168,7 +174,7 @@ export async function exerciseTypedCreation(session: RetainedSession, fixture: R
   session = await session.restart();
   await expect(session.page.getByRole("heading", { name: title, exact: true })).toBeVisible();
   expect((await assertIdle(fixture, fixture.owner, created.id)).execution).toEqual(created.execution);
-  await preview(session, session.page.getByRole("region", { name: "Attachments", exact: true }), file, bytes);
+  await preview(session, await attachmentsPanel(session.page), file, bytes);
   return { issue_id: created.id, fixture_issue_id: fixture.issueId, request_id: requestId, creation_actor: fixture.ownerId,
     handler_id: fixture.creatorId, source_workspace_id: fixture.executionWorkspace.id,
     typed_agent: { id: fixture.agent.resource_id, catalogue_issue_id: fixture.issueId, target_id: fixture.agent.target_id, owned_by_creator: true },
@@ -232,7 +238,7 @@ async function displayAndDownload(session: RetainedSession, file: CollaborationA
     await expect(comment.getByRole("button", { name: `Preview ${file.name}`, exact: true })).toHaveCount(0);
   }
   await expect(page.locator(`[id="comment-${deletedId}"]`).getByText("Comment deleted", { exact: true })).toBeVisible();
-  const panel = page.getByRole("region", { name: "Attachments", exact: true });
+  const panel = await attachmentsPanel(page);
   await preview(session, panel, file, bytes);
   const issueDownload = await session.download(panel.getByRole("button", { name: `Download ${file.name}`, exact: true }), file.name, bytes, `${stage}-issue`);
   const history = await historyContainer(page, removedId);
@@ -371,7 +377,7 @@ export async function exerciseRetainedAttachments(author: RetainedSession, reade
   expect((await readFiles(fixture.creator, fixture.issueId)).attachments.find((item) => item.id === file.id)).toEqual(file);
   await author.page.reload();
   await expect(author.page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
-  await preview(author, author.page.getByRole("region", { name: "Attachments", exact: true }), file, bytes);
+  await preview(author, await attachmentsPanel(author.page), file, bytes);
   const rejoin = await fixture.creator.requestJSON<{ code: string }>(`${root}/participants`, {
     method: "POST", headers: { "Idempotency-Key": randomUUID() }, body: {
       ...observations(await readIssue(fixture.creator, fixture.issueId)), target_user_id: fixture.handlerId,

@@ -20,7 +20,6 @@ import { selectHandoffRecipient } from "./collaboration-offline-handoff";
 import { chooseView } from "./collaboration-source-surface";
 import { deepLink, nativeScreenshot, openDesktop, selectDesktopWorkspace, type NativeHarness } from "./collaboration-native";
 
-const task = ".trellis/tasks/11-02-collaboration-detail-optimization";
 const checkout = realpathSync(resolve(import.meta.dirname, "../.."));
 const issuePath = (id: string) => `/api/collaboration/issues/${id}`;
 const accountPath = (id: string) => collaborationAccountPath({ view: "participating", issueId: id });
@@ -113,11 +112,25 @@ function assertListener(url: string, expected: number): void {
 export async function detailJourneyProvenance(): Promise<DetailJourneyProvenance> {
   const filename = process.env.COLLABORATION_DETAIL_PROVENANCE_FILE;
   if (!filename || !isAbsolute(filename)) throw new Error("Explicit detail journey runtime provenance is required");
+  const task = process.env.COLLABORATION_DETAIL_TASK;
+  const allocationFilename = process.env.COLLABORATION_DETAIL_ALLOCATION_FILE;
+  if (!task || !/^\.trellis\/tasks\/[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(task)
+    || !allocationFilename || !isAbsolute(allocationFilename)) {
+    throw new Error("Explicit current detail journey task and allocation are required");
+  }
   const raw = object(JSON.parse(readFileSync(filename, "utf8")));
   if (raw.runtime_permitted !== true || raw.task !== task || realpathSync(textField(raw, "source_root")) !== checkout) {
     throw new Error("Detail journey runtime permit does not match this task and checkout");
   }
-  const allocation = object(JSON.parse(readFileSync(join(checkout, task, "research/continuation-20261103/application-preparation.json"), "utf8")));
+  const allocationBytes = readFileSync(allocationFilename);
+  if (realpathSync(textField(raw, "allocation_file")) !== realpathSync(allocationFilename)
+    || raw.allocation_sha256 !== sha256(allocationBytes)) {
+    throw new Error("Detail journey allocation differs from the permitted record");
+  }
+  const allocation = object(JSON.parse(allocationBytes.toString("utf8")));
+  if (allocation.task !== task || realpathSync(textField(allocation, "source_root")) !== checkout) {
+    throw new Error("Detail journey allocation does not belong to this task and checkout");
+  }
   const apiUrl = origin(textField(raw, "api_url"));
   const webUrl = origin(textField(raw, "production_web_url"));
   const rendererUrl = origin(textField(raw, "renderer_url"));

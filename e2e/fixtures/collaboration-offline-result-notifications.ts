@@ -160,7 +160,8 @@ export async function publishOfflineWorkflow(state: OfflineResultFixture) {
     expect(options.action).toBe(action);
     const requestId = randomUUID();
     const input = { ...observations(before), ...fields, expected_status: options.default_status, status_options_version: options.status_options_version,
-      note: `Offline ${action} fixture`, ...(action === "return_information" ? { information_request_id: before.current_information_request!.id } : {}) };
+      note: `Offline ${action} fixture`, ...(action === "return_information" ? { information_request_id: before.current_information_request!.id } : {}),
+      ...(action === "submit_acceptance" ? { basis: "The requested information was explicitly returned; the handler submits this exact offline result.", attachment_ids: [] } : {}) };
     const path = `${root}/${action === "request_information" ? "handoffs" : action === "return_information" ? "information-returns" : "acceptance-submissions"}`;
     const receipt = CollaborationOperationSchema.parse(await actor.client.requestJSON(path, { method: "POST", headers: { "Idempotency-Key": requestId }, body: input }));
     const kind = action === "request_information" ? "information_requested" : action === "return_information" ? "information_returned" : "acceptance_submitted";
@@ -168,6 +169,12 @@ export async function publishOfflineWorkflow(state: OfflineResultFixture) {
     const after = await readIssue(actor.client, fixture.issueId);
     expect(after.session).toEqual(before.session);
     expect(after.execution).toEqual(before.execution);
+    if (action === "submit_acceptance") {
+      const submission = after.delivery!.current!;
+      expect(submission).toMatchObject({ author_user_id: actor.id, result: input.note, basis: input.basis,
+        evidence_state: "available", decision: null });
+      expect(receipt.delivery_confirmation).toEqual({ submission_id: submission.id, attachment_ids: [] });
+    }
     const received = (await notifications(recipient.client, fixture.issueId)).filter((item) => item.kind === kind);
     expect(received).toHaveLength(1);
     const notice = received[0]!;

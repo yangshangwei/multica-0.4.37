@@ -167,3 +167,15 @@ Wrong: silently reuse a prior full-suite database or let a second source's rows
 escape the fixture's cleanup scope. Correct: register every exact source fixture,
 use a fresh migrated database per complete run, and inspect original failed state
 before classifying a failure as environment-related.
+
+## Test state must not inherit a repository
+
+1. **Scope:** package tests that discover Git roots or write agent/editor sidecars, especially `internal/daemon/execenv`; applies to launcher-selected `HOME`, `TMPDIR`, `TMP`, and `TEMP`.
+2. **Signature:** resolve the dedicated state directory, then run `git -C <state-root> rev-parse --show-toplevel` before any test. Keep explicit `GOCACHE`, `GOMODCACHE`, and `GOPATH`.
+3. **Contract:** the directory must exist outside every checkout/worktree and return nonzero with empty Git-root output. Give each package private child directories. Evidence and read-only binaries may remain in a checkout; execution state may not. Container tests use their own executable tmpfs.
+4. **Errors:** a Git root, an unexpected successful probe, or an unresolved directory refuses execution. Database isolation does not prevent filesystem writes to a discovered ancestor.
+5. **Cases:** external dedicated directory passes; `<repo>/.omx/private/tmp` and any linked worktree child fail even when unique to the run.
+6. **Verification:** exercise both rejection paths; replay the affected original package on a new database without changing assertions. Preserve the initial failure and any sidecar observation. Without a pre-run snapshot, do not assume the sidecar was new or reconstruct its former contents.
+7. **Wrong/correct:** per-package directories inside `.omx/private` still inherit the repository. Put the state root outside Git, prove that boundary first, and retain raw first-run evidence.
+
+Evidence: `11-04-core-business-e2e-acceptance/research/backend-tmp-isolation.md`; original execenv had 655 PASS / 5 FAIL, then 660 PASS on a fresh database with the Git-external state root. This does not retroactively make the original full run successful.

@@ -159,7 +159,9 @@ test("Packaged full Main controls a real native host run and explicitly resumes 
     const restarted = await native.command<InstalledMainMetadata>("restart", { issueId: issue.id, title: issue.title });
     expect(restarted.artifactSha256).toBe(boot.artifactSha256);
     expect(restarted.main.userData).toBe(boot.main.userData);
-    expect(restarted.native.daemon.state).toBe("stopped");
+    // The controller verifies this managed daemon's exact private profile, PID,
+    // server, deployment and user. Its liveness does not resume the paused AI lane.
+    expect(restarted.native.daemon.state).toBe("running");
     const restored = await native.command<CollaborationIssue>("read", { path: `/api/collaboration/issues/${issue.id}` });
     expect(restored.execution?.protocol_version).toBe(6);
     expect(restored.execution).toEqual(paused.execution);

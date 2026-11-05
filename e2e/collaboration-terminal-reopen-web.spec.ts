@@ -1,8 +1,9 @@
 import { test, expect } from "@playwright/test";
+import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
 import { clickControl, controlEnvironmentReady, panelFor, seedCollaborationControlJourney, targetRow } from "./fixtures/collaboration-control-journey";
 import {
   commentThroughUI, gapControlBody, gapWorkflowObservations, lifecycleThroughUI, mentionNames, openGapSession, queuedInput, rawGapRequest,
-  readGapHistory, readGapIssue, reloadGapPage, showGapHistory, type GapSession,
+  readGapHistory, readGapIssue, reloadGapPage, showGapHistory, submitResultThroughUI, type GapSession,
 } from "./fixtures/collaboration-control-gaps";
 
 test.use({ actionTimeout: 15_000, screenshot: "only-on-failure", trace: "retain-on-failure" });
@@ -39,8 +40,17 @@ test("Web closed issue refuses @agent and Resume, only the creator reopens, and 
 
     // Close through the creator's UI (AC57): waiting inputs are cancelled; the
     // permitted run is asked to stop but its termination stays unconfirmed.
+    const submissionAuthor = await openGapSession(browser, fixture, "handler", webUrl);
+    sessions.push(submissionAuthor);
+    const submitted = await submitResultThroughUI(submissionAuthor.page, fixture.issueId,
+      "The handler submits the observed task state for creator acceptance.",
+      "The original A input remains in flight and the later A/B inputs are still waiting before acceptance.");
+    const afterSubmission = await readGapIssue(fixture);
+    expect(afterSubmission.execution).toEqual(live.execution);
+    expect(afterSubmission.session).toEqual(live.session);
+    expect(afterSubmission.delivery!.current!.id).toBe(submitted.submissionId);
     await reloadGapPage(page, fixture.issueId, fixture.title);
-    const completed = await lifecycleThroughUI(page, fixture.issueId, "complete");
+    const completed = await lifecycleThroughUI(page, fixture.issueId, "complete", submitted.submissionId);
     const closed = await readGapIssue(fixture);
     expect(closed).toMatchObject({ status_category: "done", session: { queue_state: "closed" } });
     expect(closed.execution.runs).toEqual([expect.objectContaining({ id: pending.runId, forced_disposition: "stopped", proof_state: "unknown", progress_state: "ending", settled_at: null })]);
@@ -85,7 +95,10 @@ test("Web closed issue refuses @agent and Resume, only the creator reopens, and 
     const handler = await openGapSession(browser, fixture, "handler", webUrl);
     sessions.push(handler);
     await expect(panelFor(handler.page).getByRole("button", { name: "Stop all", exact: true })).toBeEnabled();
+    const handlerActions = handler.page.locator("details > summary:visible").filter({ hasText: /^More actions$/ });
+    if (await handlerActions.count() > 0) await revealCollaborationDisclosure(handler.page, "More actions");
     await expect(handler.page.getByRole("button", { name: "Reopen issue", exact: true })).toHaveCount(0);
+    if (!await page.getByRole("button", { name: "Reopen issue", exact: true }).isVisible()) await revealCollaborationDisclosure(page, "More actions");
     await expect(page.getByRole("button", { name: "Reopen issue", exact: true })).toBeVisible();
     expect((await rawGapRequest(fixture, "handler", "GET", `${root}/status-options?action=reopen`)).status).toBe(403);
     const creatorOptions = await fixture.creator.requestJSON<{ default_status: string; status_options_version: string }>(`${root}/status-options?action=reopen`);
@@ -123,7 +136,8 @@ test("Web closed issue refuses @agent and Resume, only the creator reopens, and 
     await reloadGapPage(page, fixture.issueId, fixture.title);
     await expect(panelFor(page).locator(":scope > p").filter({ hasText: /^Paused$/ })).toBeVisible();
     await expect(page.getByRole("button", { name: "Reopen issue", exact: true })).toHaveCount(0);
-    await expect(page.getByRole("button", { name: "Complete issue", exact: true })).toBeVisible();
+    if (!await page.getByRole("button", { name: "Record result and complete", exact: true }).isVisible()) await revealCollaborationDisclosure(page, "More actions");
+    await expect(page.getByRole("button", { name: "Record result and complete", exact: true })).toBeVisible();
     for (const input of [a2, b1]) await showGapHistory(page, input.commandId, input.marker, "Cancelled", "The collaboration was completed");
 
     // 5. Resume all after reopen: the unconfirmed run still holds lane A (R17).

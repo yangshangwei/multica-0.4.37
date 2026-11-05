@@ -1,0 +1,682 @@
+{
+  "at": "2026-11-05T05:34:28.611097+00:00",
+  "run": "linux-delivery-replay-1/linux-delivery-r6",
+  "run_sha256": "d323e02499bb7429b2e7400a3cabdb86d37d3a2e403775c6b93daa24daeab63c",
+  "results_sha256": "2824608c3aff1ef87a2badac7ca356e748ea365a1a72b48c3cf456d2c1e8e0f6",
+  "trace_files": 0,
+  "failure_attachment": false,
+  "reported_failure": "Installed Main close exceeded30000ms",
+  "masking_confirmed": "finally awaits native.close and can replace the original catch/rethrow error; catch status has20s timeout and silently discards its own failure",
+  "last_successful_writes": [
+    {
+      "time_local": "13:02:46.122",
+      "method": "POST",
+      "path_suffix": "/acceptance-submissions",
+      "status": 200
+    },
+    {
+      "time_local": "13:02:47.161",
+      "method": "POST",
+      "path_suffix": "/acceptance-returns",
+      "status": 200
+    },
+    {
+      "time_local": "13:02:47.672",
+      "method": "POST",
+      "path_suffix": "/control",
+      "status": 200
+    },
+    {
+      "time_local": "13:02:49.223",
+      "method": "POST",
+      "path_suffix": "/control",
+      "status": 200
+    },
+    {
+      "time_local": "13:02:49.959",
+      "method": "POST",
+      "path_suffix": "/control",
+      "status": 200
+    },
+    {
+      "time_local": "13:02:50.696",
+      "method": "POST",
+      "path_suffix": "/comments/trigger-preview",
+      "status": 200
+    },
+    {
+      "time_local": "13:02:50.816",
+      "method": "POST",
+      "path_suffix": "/comments",
+      "status": 201
+    },
+    {
+      "time_local": "13:02:51.496",
+      "method": "POST",
+      "path_suffix": "/comments/trigger-preview",
+      "status": 200
+    },
+    {
+      "time_local": "13:02:51.623",
+      "method": "POST",
+      "path_suffix": "/comments",
+      "status": 201
+    },
+    {
+      "time_local": "13:02:52.275",
+      "method": "POST",
+      "path_suffix": "/commands/ee1423fb-22f3-4bd8-b703-ee90e7966537/cancel",
+      "status": 200
+    },
+    {
+      "time_local": "13:02:53.925",
+      "method": "POST",
+      "path_suffix": "/control",
+      "status": 200
+    },
+    {
+      "time_local": "13:02:55.572",
+      "method": "POST",
+      "path_suffix": "/control",
+      "status": 409
+    },
+    {
+      "time_local": "13:02:56.306",
+      "method": "POST",
+      "path_suffix": "/control",
+      "status": 200
+    },
+    {
+      "time_local": "13:02:57.044",
+      "method": "POST",
+      "path_suffix": "/control",
+      "status": 200
+    },
+    {
+      "time_local": "13:02:57.710",
+      "method": "POST",
+      "path_suffix": "/control",
+      "status": 200
+    },
+    {
+      "time_local": "13:02:59.732",
+      "method": "POST",
+      "path_suffix": "/control",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.450",
+      "method": "POST",
+      "path_suffix": "/control",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.829",
+      "method": "POST",
+      "path_suffix": "/handoffs",
+      "status": 200
+    }
+  ],
+  "last_business_reads": [
+    {
+      "time_local": "13:03:00.005",
+      "method": "GET",
+      "path_suffix": "/attachments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.010",
+      "method": "GET",
+      "path_suffix": "/reactions",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.014",
+      "method": "GET",
+      "path_suffix": "/comments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.015",
+      "method": "GET",
+      "path_suffix": "/memory",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.020",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.024",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.075",
+      "method": "GET",
+      "path_suffix": "/activity",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.103",
+      "method": "GET",
+      "path_suffix": "/mention-targets",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.179",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 503
+    },
+    {
+      "time_local": "13:03:00.221",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.252",
+      "method": "GET",
+      "path_suffix": "/reactions",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.255",
+      "method": "GET",
+      "path_suffix": "/attachments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.257",
+      "method": "GET",
+      "path_suffix": "/memory",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.257",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.261",
+      "method": "GET",
+      "path_suffix": "/comments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.292",
+      "method": "GET",
+      "path_suffix": "/mention-targets",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.299",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.325",
+      "method": "GET",
+      "path_suffix": "/activity",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.450",
+      "method": "POST",
+      "path_suffix": "/control",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.463",
+      "method": "GET",
+      "path_suffix": "/memory",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.463",
+      "method": "GET",
+      "path_suffix": "/attachments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.464",
+      "method": "GET",
+      "path_suffix": "/reactions",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.469",
+      "method": "GET",
+      "path_suffix": "/comments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.473",
+      "method": "GET",
+      "path_suffix": "/activity",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.491",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.494",
+      "method": "OPTIONS",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.495",
+      "method": "OPTIONS",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.495",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 503
+    },
+    {
+      "time_local": "13:03:00.506",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.508",
+      "method": "OPTIONS",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.508",
+      "method": "OPTIONS",
+      "path_suffix": "/memory",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.510",
+      "method": "GET",
+      "path_suffix": "/mention-targets",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.512",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 503
+    },
+    {
+      "time_local": "13:03:00.515",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 503
+    },
+    {
+      "time_local": "13:03:00.520",
+      "method": "GET",
+      "path_suffix": "/attachments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.528",
+      "method": "GET",
+      "path_suffix": "/reactions",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.530",
+      "method": "GET",
+      "path_suffix": "/comments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.537",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.545",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.549",
+      "method": "GET",
+      "path_suffix": "/memory",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.550",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.568",
+      "method": "GET",
+      "path_suffix": "/mention-targets",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.592",
+      "method": "GET",
+      "path_suffix": "/activity",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.608",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:00.927",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 503
+    },
+    {
+      "time_local": "13:03:00.985",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.016",
+      "method": "GET",
+      "path_suffix": "/reactions",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.018",
+      "method": "GET",
+      "path_suffix": "/attachments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.020",
+      "method": "GET",
+      "path_suffix": "/memory",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.023",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.029",
+      "method": "GET",
+      "path_suffix": "/comments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.041",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.062",
+      "method": "GET",
+      "path_suffix": "/mention-targets",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.085",
+      "method": "GET",
+      "path_suffix": "/activity",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.829",
+      "method": "POST",
+      "path_suffix": "/handoffs",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.842",
+      "method": "GET",
+      "path_suffix": "/attachments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.847",
+      "method": "GET",
+      "path_suffix": "/reactions",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.849",
+      "method": "GET",
+      "path_suffix": "/comments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.850",
+      "method": "GET",
+      "path_suffix": "/memory",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.854",
+      "method": "GET",
+      "path_suffix": "/activity",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.858",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.868",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.882",
+      "method": "GET",
+      "path_suffix": "/mention-targets",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.977",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.995",
+      "method": "OPTIONS",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.995",
+      "method": "OPTIONS",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:01.995",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 503
+    },
+    {
+      "time_local": "13:03:02.000",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 503
+    },
+    {
+      "time_local": "13:03:02.010",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.012",
+      "method": "OPTIONS",
+      "path_suffix": "/memory",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.013",
+      "method": "OPTIONS",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.016",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 503
+    },
+    {
+      "time_local": "13:03:02.025",
+      "method": "GET",
+      "path_suffix": "/attachments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.026",
+      "method": "GET",
+      "path_suffix": "/reactions",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.032",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.035",
+      "method": "GET",
+      "path_suffix": "/comments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.038",
+      "method": "GET",
+      "path_suffix": "/activity",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.041",
+      "method": "GET",
+      "path_suffix": "/memory",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.046",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.067",
+      "method": "GET",
+      "path_suffix": "/mention-targets",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.074",
+      "method": "GET",
+      "path_suffix": "/reactions",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.079",
+      "method": "GET",
+      "path_suffix": "/attachments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.080",
+      "method": "GET",
+      "path_suffix": "/memory",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.087",
+      "method": "GET",
+      "path_suffix": "/knowledge-candidates",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.087",
+      "method": "GET",
+      "path_suffix": "/activity",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.094",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.102",
+      "method": "GET",
+      "path_suffix": "/comments",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.117",
+      "method": "GET",
+      "path_suffix": "/mention-targets",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.117",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.148",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.595",
+      "method": "GET",
+      "path_suffix": "/issue",
+      "status": 200
+    },
+    {
+      "time_local": "13:03:02.608",
+      "method": "GET",
+      "path_suffix": "/commands",
+      "status": 200
+    }
+  ],
+  "strong_inference": "Native restart command immediately follows last commandsGET. Its120s timeout +20s status attempt +30s close attempt +10s termination wait explains elapsed214.9s after first~35s completed business actions. Exact original error/command boundary was not retained.",
+  "unproven": [
+    "Exact restart hang step: app.close, launch, reload, auth or daemon readiness",
+    "Product versus fixture causality",
+    "Whether close timeout is independent or blocked behind pending serialized restart"
+  ],
+  "verdict": "FAIL remains; no confirmed narrow product fix. No repeat without improved failure preservation/command timeline.",
+  "recommendation": "Preserve primary error immediately before status capture; use AggregateError or attach cleanup failure while retaining primary; record only command name/id/start/end/error classification in controller transport, no credential/payload; bounded isolated restart diagnosis if authorized."
+}

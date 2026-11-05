@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
 import type { CollaborationParticipants, CollaborationResources, CollaborationWorkbench } from "@multica/core/collaboration";
 import { clickControl, controlEnvironmentReady, panelFor, seedCollaborationControlJourney, targetRow } from "./fixtures/collaboration-control-journey";
 import {
@@ -44,9 +45,11 @@ test("Web Leave issue refuses creator and handler; an owner's departure revokes 
     const handler = await openGapSession(browser, fixture, "handler", webUrl);
     sessions.push(handler);
     for (const session of [creator, handler]) {
+      if (!await session.page.getByRole("button", { name: "Transfer", exact: true }).isVisible()) await revealCollaborationDisclosure(session.page, "More actions");
       await expect(session.page.getByRole("button", { name: "Transfer", exact: true })).toBeVisible();
       await expect(session.page.getByRole("button", { name: "Leave issue", exact: true })).toHaveCount(0);
     }
+    if (!await owner.page.getByRole("button", { name: "Leave issue", exact: true }).isVisible()) await revealCollaborationDisclosure(owner.page, "More actions");
     await expect(owner.page.getByRole("button", { name: "Leave issue", exact: true })).toBeVisible();
     const participantsBefore = await fixture.creator.requestJSON<CollaborationParticipants>(`${root}/participants`);
     const beforeRefusals = await readGapIssue(fixture);

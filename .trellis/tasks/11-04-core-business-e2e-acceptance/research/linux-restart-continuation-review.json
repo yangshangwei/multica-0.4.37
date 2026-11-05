@@ -1,0 +1,43 @@
+{
+  "verdict": "PASS",
+  "blocking_findings_open": 0,
+  "reviewed_at": "2026-11-05T07:25:25.686615+00:00",
+  "patch_sha256": "37e9e8bfd9e0f2782c08dfdddfd3dd20ac9204e29420799d148b676af232480b",
+  "increment_sha256": "4298fd9e449a59b653f1beef6dc5fc1cc7d1e6d9b5872a117c62199a7ad26d0d",
+  "scope": "Four-file Linux restart diagnostic fixture only",
+  "checks": {
+    "primary_error_before_status_capture": true,
+    "cleanup_all_independent_steps_attempted": true,
+    "original_error_identity_and_order": true,
+    "aggregate_errors_cause_primary": true,
+    "command_event_phase_flush_before_blocking_operation": true,
+    "timeline_fields_allowlisted_and_payload_free": true,
+    "timeline_cap": 512,
+    "timeouts_unchanged": true,
+    "assertions_unchanged": true,
+    "node_tests": 11,
+    "node_test_failures": 0,
+    "node_syntax": "PASS",
+    "ts_syntax": "PASS",
+    "diff_check": "PASS",
+    "browser_db_service_actions": false
+  },
+  "notes": [
+    "Linux close timeout remains an acceptance failure until actual replay; this patch improves evidence and does not claim a product fix.",
+    "Full lint and semantic typecheck were not run for ignored E2E fixture paths."
+  ],
+  "fixed_during_review": [
+    {
+      "finding": "Controller failed-event transport exception could replace the original operation error",
+      "resolution": "Author aggregates original operation error first, event error second, and preserves original as cause"
+    },
+    {
+      "finding": "Controller aggregate members were lost in stack-only reply serialization",
+      "resolution": "Author added bounded recursive aggregate member formatting through the existing credential scrubber"
+    }
+  ],
+  "validation_provenance": {
+    "reviewer": "Read exact current patch and hashes; ran Node syntax, TS syntactic diagnostics and scoped diff checks",
+    "author": "Exact-hash manifest records 11 focused Node tests passed including two actual-controller-function regressions"
+  }
+}
