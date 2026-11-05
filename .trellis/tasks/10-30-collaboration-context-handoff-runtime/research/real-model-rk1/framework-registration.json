@@ -2,12 +2,8 @@
   "series": "RK1",
   "scope": "runtime scenarios of runtime-addendum.json, including RK1-H2b (budgeted 2026-11-01T10:33:57Z)",
   "registered_by_session": "claude multica-0-4-37-35",
-  "runnable": false,
-  "not_runnable_reasons": [
-    "helper86541 independently reviewed and frozen source passed; final live database/upfront CLI capture and launcher check-only await execution window",
-    "Warp Claude closed by user and absence verified; core batch still running, explicit E0a window not yet released",
-    "prepared operator facts now reflect intended subprocess environment; exact equality must hold at build/check/run"
-  ],
+  "runnable": true,
+  "not_runnable_reasons": [],
   "framework_files": "server/cmd/server/rk1_*_test.go (build tag agentintegration, !windows)",
   "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
   "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
@@ -88,7 +84,7 @@
     "current final639 fake normal/race passed; independent result review remains unavailable after gateway429",
     "user currently permits local preparation only; exclusive serial gateway window and applicable execution authority required before paid execution"
   ],
-  "maintained_at": "2026-11-05T03:00:26.044091+00:00",
+  "maintained_at": "2026-11-05T03:36:06.461469+00:00",
   "authorization_reference": "../continuation-20261102/coordinator/authorization-recall.md",
   "selected_candidate_preparation": "../continuation-20261105/paid-binding-preflight.json",
   "historical_gate_reasons_before_20261104": [
@@ -231,7 +227,7 @@
     },
     "selected_candidate_preparation": "../continuation-20261102/coordinator/v10/binding-preparation.json"
   },
-  "operator_binding_status": "PREPARED_IN_ACTUAL_ENV; recheck at admission",
+  "operator_binding_status": "CURRENT_ACTUAL_ENV; enforced every stage",
   "real_entry_preparation": {
     "helper_commit": "86541bb37",
     "helper_sha256": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
@@ -240,6 +236,17 @@
     "calls": 0,
     "env_sha256": "082f454ff70aac7e4f4feb6b870f00724b9ea9d1870c6f489f8ea9d2b8c8cb55",
     "config_sha256": "2c16a4f70fe4db6ae59ca544d6e893f63a541de9d8b9a727d3a605438b898d50",
-    "database_allocated": false
+    "database_allocated": true,
+    "database_receipt": "../continuation-20261105/real-entry/database-recovery-and-allocation.json"
+  },
+  "execution_window": {
+    "owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
+    "granted_by": "01a1a731-b1e5-7b11-b83e-55efca5293d6",
+    "scenario": "RK1-E0a",
+    "start_trial": 1,
+    "launches": 1,
+    "outer_timeout_minutes": 12,
+    "expires_at": "2026-11-05T03:46:30+00:00",
+    "recorded_at": "2026-11-05T03:36:06.461469+00:00"
   }
 }
