@@ -1,0 +1,14 @@
+{
+  "original_run": "ux01",
+  "recipient": "PASS1/1",
+  "interrupted_before_delivery": "API stop left TCP TIME_WAIT; preflight socket without reuse failed",
+  "evidence": "No LISTEN process,ownedbrowser0,allallocatedDBconnections0,SO_REUSEADDR bind success",
+  "change": "Only preflight bind enables SO_REUSEADDR; actual existing listener still prevents bind",
+  "before_runner_sha256": "96d9e32e9c9ad943b08f62d7d35c84c76ddf05a5bcd86c9aabc5db3195980998",
+  "runner_sha256": "588fd01246e07a39f378219c36879f75bd55526df53311b76818d61cd9ff0122",
+  "next_run": "ux02:delivery,admin-web,admin-desktop on new DBs; do not repeat passed recipient",
+  "bounded_socket_control": {
+    "actual_listener_refused": true,
+    "errno": 48
+  }
+}

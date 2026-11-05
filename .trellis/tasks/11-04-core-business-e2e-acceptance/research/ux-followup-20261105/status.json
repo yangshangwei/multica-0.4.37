@@ -1,19 +1,21 @@
 {
-  "state": "prepared_static_review_pass_runtime_not_run",
+  "state": "completed_incremental_ux_acceptance",
   "owned_test": "e2e/collaboration-recipient-picker-web.spec.ts",
   "product_commit_under_test": "5a7440952",
   "original_campaign_untouched": true,
-  "shared_runtime_owner": "01a1a731-b1e5-7b11-b83e-55efca5293d6",
-  "shared_owner_instruction": "Static recipient spec and research only; no heavy build/DB/browser until handoff.",
-  "runtime_started": false,
-  "actual_browser_test_status": "NOT_RUN",
+  "shared_runtime_owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
+  "shared_owner_instruction": "UX explicitly released after ownedprocesses0/6DBconnections0; runtimeH1next",
+  "runtime_started": true,
+  "actual_browser_test_status": "PASS5/5, exact4spec inventory, retries0/skips0",
   "known_prepared_followups": [
     "Distinct-account search-to-create acceptance",
     "Real administrative Web+nativeDesktop regression",
     "Heading-scoped Attachments selector proposal"
   ],
   "permission_question_needed": false,
-  "next_action": "Coordinator opens an explicit isolated runtime window; then run the current-UX acceptance batch with zero retries.",
+  "next_action": "No remaining UX4spec work. RuntimeH1 owns next window; old core Linux/performance gates remain separate.",
   "static_review": "PASS",
-  "source_sha256": "4975f7e6198cac880216138b71b0bdfa0099c636f20416e808caae21de0b12a4"
+  "source_sha256": "4975f7e6198cac880216138b71b0bdfa0099c636f20416e808caae21de0b12a4",
+  "updated_at": "2026-11-05T06:21:43.397396+00:00",
+  "final_independent_review": "PASS"
 }

@@ -1,0 +1,52 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+Scope: all 11 workspace projects
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +2031
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 2031, reused 1875, downloaded 0, added 0
+Progress: resolved 2031, reused 1979, downloaded 0, added 398
+Progress: resolved 2031, reused 1979, downloaded 0, added 960
+Progress: resolved 2031, reused 1979, downloaded 0, added 1278
+Progress: resolved 2031, reused 1979, downloaded 0, added 1565
+Progress: resolved 2031, reused 1979, downloaded 0, added 1674
+Progress: resolved 2031, reused 1979, downloaded 0, added 1822
+Progress: resolved 2031, reused 1979, downloaded 0, added 2018
+Progress: resolved 2031, reused 1979, downloaded 0, added 2028
+Progress: resolved 2031, reused 1979, downloaded 0, added 2030
+Progress: resolved 2031, reused 1979, downloaded 0, added 2031, done
+
+devDependencies:
++ @playwright/test 1.58.2
++ @types/node 25.5.0
++ @types/pg 8.20.0
++ knip 6.32.2
++ pg 8.20.0
++ turbo 2.9.5
++ typescript 5.9.3
+
+apps/docs postinstall$ fumadocs-mdx
+apps/docs postinstall: [MDX] types generated
+apps/docs postinstall: Done
+apps/web postinstall$ fumadocs-mdx
+apps/desktop postinstall$ electron-builder install-app-deps
+apps/web postinstall: [MDX] types generated
+apps/web postinstall: Done
+apps/desktop postinstall:   • electron-builder  version=26.8.1
+apps/desktop postinstall:   • loaded configuration  file=/Volumes/artisan/code/2026/mc-ux-e2e-49e991156-20261105/apps/desktop/electron-builder.yml
+apps/desktop postinstall:   • packageManager not detected by file, falling back to environment detection  resolvedPackageManager=pnpm detected=/Volumes/artisan/code/2026/mc-ux-e2e-49e991156-20261105/apps/desktop
+apps/desktop postinstall:   • detected workspace root for project using packageManager field  pm=pnpm config=pnpm@10.28.2 resolved=/Volumes/artisan/code/2026/mc-ux-e2e-49e991156-20261105 projectDir=/Volumes/artisan/code/2026/mc-ux-e2e-49e991156-20261105/apps/desktop
+apps/desktop postinstall:   • executing @electron/rebuild  electronVersion=39.8.7 arch=arm64 buildFromSource=false workspaceRoot=/Volumes/artisan/code/2026/mc-ux-e2e-49e991156-20261105 projectDir=./ appDir=./
+apps/desktop postinstall:   • installing native dependencies  arch=arm64
+apps/desktop postinstall:   • completed installing native dependencies
+apps/desktop postinstall: Done
+╭ Warning ─────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│   Ignored build scripts: core-js@3.49.0, electron-winstaller@5.4.0,          │
+│   msw@2.12.14, protobufjs@7.5.5, sharp@0.34.5, unicode-animations@1.0.3,     │
+│   unrs-resolver@1.12.0.                                                      │
+│   Run "pnpm approve-builds" to pick which dependencies should be allowed     │
+│   to run scripts.                                                            │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Done in 14s using pnpm v10.28.2

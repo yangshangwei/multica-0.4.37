@@ -1,0 +1,122 @@
+{
+  "run_id": "ux01",
+  "candidate": "49e99115610fad4c88447d9580cac24498d49a1a",
+  "source_id": "7c24721a6c44bbd87926ec50769750149c77b0160ae9829e638efc281a0bb3d3",
+  "api_binary_sha256": "5f022731952135967afe736b6d3fcc46fb724da897e218ba1e1496f486d14773",
+  "web_build_id": "3h0wxk4pNc_v3fF1eSijE",
+  "renderer_index_sha256": "01bcd980b365af8e230459eaad4a746268913dccd1a311ee46386cc13989a8c3",
+  "preload_sha256": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5",
+  "selected": [
+    "recipient",
+    "delivery",
+    "admin-web",
+    "admin-desktop"
+  ],
+  "rows": [
+    {
+      "key": "recipient",
+      "spec": "e2e/collaboration-recipient-picker-web.spec.ts",
+      "database": "multica_ux_49e991_20261105_ux01_recipient",
+      "state": "complete",
+      "started_at": 1793859109.3767219,
+      "auth": "legacy",
+      "expected_tests": 1,
+      "api_pid": 66187,
+      "before": {
+        "database": "multica_ux_49e991_20261105_ux01_recipient",
+        "migrations": 752,
+        "users": 0,
+        "issues": 0,
+        "roles": 0,
+        "gate": [
+          {
+            "creation_enabled": true,
+            "enabled": false,
+            "host_execution_enabled": false,
+            "epoch": "2"
+          }
+        ]
+      },
+      "source_sha256": "4975f7e6198cac880216138b71b0bdfa0099c636f20416e808caae21de0b12a4",
+      "browser_cleanup": {
+        "observed_processes": 11,
+        "remaining_processes": 0,
+        "remaining_pids": []
+      },
+      "exit_code": 0,
+      "framework_stats": {
+        "startTime": "2026-11-05T06:12:01.261Z",
+        "duration": 4474.986,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "id": "3816d6535569401f4102-f55cbf56b30c1f738b53",
+          "title": "Web recipient picker exposes self/recent/search results and preserves the outer dialog on Escape",
+          "project": "chromium",
+          "status": "expected",
+          "terminals": [
+            "passed"
+          ],
+          "duration_ms": 3196
+        }
+      ],
+      "finished_at": 1793859126.077823,
+      "actual_tests": 1,
+      "source_unchanged": true,
+      "after": {
+        "database": "multica_ux_49e991_20261105_ux01_recipient",
+        "migrations": 752,
+        "users": 2,
+        "issues": 2,
+        "roles": 0,
+        "gate": [
+          {
+            "creation_enabled": true,
+            "enabled": false,
+            "host_execution_enabled": false,
+            "epoch": "2"
+          }
+        ]
+      },
+      "acceptance_pass": true,
+      "connections_after_stop": 0
+    },
+    {
+      "key": "delivery",
+      "spec": "e2e/collaboration-delivery-web.spec.ts",
+      "database": "multica_ux_49e991_20261105_ux01_delivery",
+      "state": "setup",
+      "started_at": 1793859131.114012
+    }
+  ],
+  "state": "interrupted",
+  "automatic_retries": 0,
+  "started_at": 1793859105.210903,
+  "real_models": "NOT_RUN",
+  "native_scope": "Electron harness using production routing/preload/renderer, not installed Main",
+  "artifact_id": "2f85e2dd32bef30d8db3a31b0a024048f206b5daffad6cae4622ebf348f7d11a",
+  "error": "OSError: [Errno 48] Address already in use",
+  "finished_at": 1793859131.879477,
+  "final_browser_cleanup": {
+    "observed_processes": 11,
+    "remaining_processes": 0,
+    "remaining_pids": []
+  },
+  "cleanup_connections": [
+    {
+      "database": "multica_ux_49e991_20261105_ux01_recipient",
+      "connections": 0
+    },
+    {
+      "database": "multica_ux_49e991_20261105_ux01_delivery",
+      "connections": 0
+    }
+  ],
+  "final_source_matches": true,
+  "final_artifacts_match": true,
+  "acceptance_status": "NOT_PASSED"
+}

@@ -146,7 +146,8 @@ test("Web creates one private issue after lost upload/create responses and revok
     expect(commentReceipt.attachment_ids).toHaveLength(1);
     const imageId = commentReceipt.attachment_ids[0];
     await revealCollaborationDisclosure(recipientPage, "Attachments");
-    const recipientAttachments = recipientPage.getByRole("region", { name: "Attachments", exact: true });
+    const recipientAttachments = recipientPage.getByRole("region", { name: "Attachments", exact: true })
+      .filter({ has: recipientPage.getByRole("heading", { name: "Attachments", exact: true }) });
     await expect(recipientAttachments.getByRole("button", { name: "Preview comment-preview.png", exact: true })).toBeVisible();
 
     const capability = await viewer.requestJSON<{ url: string }>(`/api/collaboration/issues/${createdId}/attachments/${imageId}/capabilities`, { method: "POST", body: { intent: "download" } });

@@ -1,7 +1,7 @@
 {
-  "state": "prepared_not_started",
+  "state": "executed_five_cases_pass_resources_released",
   "runtime_authorized_by_shared_owner": false,
-  "source_root": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "source_root": "/Volumes/artisan/code/2026/mc-ux-e2e-49e991156-20261105",
   "product_commit": "5a7440952",
   "candidate_document_commit": "2aa291e5d",
   "private_control_root": "/Volumes/artisan/e2e-private/ux-acceptance-20261105",
@@ -81,5 +81,12 @@
     ],
     "elapsed_time_is_not_permission": true,
     "requested_next_window": "After explicit core handoff and knowledge scheduling; no preemption"
-  }
+  },
+  "actual_candidate": "49e99115610fad4c88447d9580cac24498d49a1a",
+  "expected_test_count": 5,
+  "actual_browser_tests": 5,
+  "passed": 5,
+  "failed": 0,
+  "results": "evidence/acceptance-summary.json",
+  "cleanup": "evidence/final-resource-audit.json"
 }

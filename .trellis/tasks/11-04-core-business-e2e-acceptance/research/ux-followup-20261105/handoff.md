@@ -16,3 +16,6 @@ The task now contains concurrent E2E dirty work. Stage/commit only the explicit 
 
 ## Coordination
 Core owner explicitly allowed only static recipient/research work and estimated15–30minutes to its next boundary. This estimate grants no runtime permission. After it finishes, coordinate knowledge's queued full window before starting any new work. If the planned batch cannot fit, keep it NOT_RUN and preserve preparation for the next authorized window.
+
+## Execution completed
+After explicit knowledgeRELEASE, independent candidate49e991156 was built and verified. Five cases passed with worker1/retries0 across ux01 recipient and ux02 remaining4; originalTIME_WAIT setup interruption retained.20screenshots recorded.6ownedDBconnections0,allownedports/processes stopped. RuntimeH1 explicitly receivedREADY. Current result.md/evidence/acceptance-summary.json supersede earlier preparation-only status without rewriting its historical findings.
