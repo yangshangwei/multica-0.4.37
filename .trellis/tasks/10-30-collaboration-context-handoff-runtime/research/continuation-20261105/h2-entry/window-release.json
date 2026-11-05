@@ -1,0 +1,51 @@
+{
+  "at": "2026-11-05T12:01:11.949289+00:00",
+  "state": "RELEASED",
+  "owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
+  "scenario": "RK1-H2",
+  "first_started": "2026-11-05T11:53:20.167961Z",
+  "last_finished": "2026-11-05T12:00:28.668022Z",
+  "helper_finished": "2026-11-05T12:00:28.905039+00:00",
+  "original_exit": 0,
+  "helper_review_ready": true,
+  "trial_results": [
+    {
+      "label": "RK1-H2-t1",
+      "status": "finished",
+      "verdict": "pass",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    },
+    {
+      "label": "RK1-H2-t2",
+      "status": "finished",
+      "verdict": "pass",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    },
+    {
+      "label": "RK1-H2-t3",
+      "status": "finished",
+      "verdict": "pass",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    }
+  ],
+  "new_paid": 3,
+  "fake_seeds": 6,
+  "total_paid": 7,
+  "remaining": 18,
+  "all_permits_false": true,
+  "next_scenario": false,
+  "active_test_browser_provider_processes": [],
+  "owned_database": "multica_rk1_20261105_real_h2_a729",
+  "owned_DB_connections_excluding_probe": 0,
+  "DB_retained": true,
+  "remaining_work": "read-only independent result review"
+}

@@ -1,0 +1,160 @@
+{
+  "at": "2026-11-05T12:03:25.940927+00:00",
+  "state": "read_only_prepared_H2_independent_review_and_new_window_pending",
+  "execution_head": "fbd0e04afcd6c31794e5cd8db3b2e6979885f4c3",
+  "observed_status": [
+    "?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2-t1.json",
+    "?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2-t2.json",
+    "?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2-t3.json"
+  ],
+  "product_source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+  "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+  "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+  "helper_path": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/runtime_entry.py",
+  "helper_sha256": "2220c3211f39544a187694ba205902b3e8e0080f21ce946e678d78a36f49f27c",
+  "prior_public": [
+    {
+      "label": "RK1-E0a-t1",
+      "status": "finished",
+      "verdict": "pass",
+      "measured_starts": 1,
+      "sha256": "5b0b221f0401db1424494864778e173daf9b229cdc007255467200c1a68db0ba"
+    },
+    {
+      "label": "RK1-H1-t1",
+      "status": "finished",
+      "verdict": "pass",
+      "measured_starts": 1,
+      "sha256": "28ab93f865aba6d2b8acb51d2fc35b214492b9db5a71b3dd3120e208fed8dbf9"
+    },
+    {
+      "label": "RK1-H1-t2",
+      "status": "finished",
+      "verdict": "pass",
+      "measured_starts": 1,
+      "sha256": "7963fba183a752098e28a9de01cfbae995bf56af2ee945c37554dedba9c3c129"
+    },
+    {
+      "label": "RK1-H1-t3",
+      "status": "finished",
+      "verdict": "pass",
+      "measured_starts": 1,
+      "sha256": "2f575d44f93683dc05670fb3c1641fff74e3468de9141b15d38c1616642e4008"
+    },
+    {
+      "label": "RK1-H2-t1",
+      "status": "finished",
+      "verdict": "pass",
+      "measured_starts": 1,
+      "sha256": "f1a4ce9102ffae32f7282ab402c66f2753bdafb0b2cc97095e18e814a1885d55"
+    },
+    {
+      "label": "RK1-H2-t2",
+      "status": "finished",
+      "verdict": "pass",
+      "measured_starts": 1,
+      "sha256": "f820e5486141649e86949fa7e47324f9235ee947830994cb24839a7a43539956"
+    },
+    {
+      "label": "RK1-H2-t3",
+      "status": "finished",
+      "verdict": "pass",
+      "measured_starts": 1,
+      "sha256": "9422623b33c342fcee96a9f91004fab7d235499796ab0f3aa879b436d4a00476"
+    }
+  ],
+  "prior_invocations": [
+    {
+      "scenario": "RK1-E0a",
+      "exit_code": 0,
+      "stop_state": {
+        "triggered": false,
+        "incomplete_or_blocking_trials": [],
+        "missing_requested_trials": [],
+        "unexpected_trials": []
+      },
+      "sha256": "eb49cd73bfea5c789fb77d912bc1fe49142825d8f31ad48751d2df627e30f780"
+    },
+    {
+      "scenario": "RK1-H1",
+      "exit_code": 0,
+      "stop_state": {
+        "triggered": false,
+        "incomplete_or_blocking_trials": [],
+        "missing_requested_trials": [],
+        "unexpected_trials": []
+      },
+      "sha256": "c584e7c60f4050e4344de0f71f1261db41d012477d578636b1950e6c602b2626"
+    },
+    {
+      "scenario": "RK1-H2",
+      "exit_code": 0,
+      "stop_state": {
+        "triggered": false,
+        "incomplete_or_blocking_trials": [],
+        "missing_requested_trials": [],
+        "unexpected_trials": []
+      },
+      "sha256": "1f17d06133a750d677f9976be41a12a338b0f38bd844c39edea0d7f663302c08"
+    }
+  ],
+  "paid_consumed": 7,
+  "cap": 25,
+  "remaining": 18,
+  "scenario": "RK1-H2b",
+  "start_trial": 1,
+  "trials": 3,
+  "paid_starts_expected": 3,
+  "fake_seed_starts_expected": 6,
+  "total_physical_starts_expected": 9,
+  "CLI_captures_expected": 10,
+  "Go_timeout_minutes": 26,
+  "if_allthree_start_consumed": 10,
+  "if_allthree_start_remaining": 15,
+  "additional_to_H2": [
+    "member provider_result is truncated at4096byte sourceprefix",
+    "decisivecode absentfromstartup prefix",
+    "matching handoff/source CLI response must contain code",
+    "actual Provider toolresult must expose code; otherwise unsupported_correct_answer even if answercorrect"
+  ],
+  "unchanged": [
+    "exact3line memberidentity/code/wakesource scoring",
+    "leader/member seeds fake",
+    "singlemeasuredcontinuationpertrial",
+    "17frameworkfiles and original launcher",
+    "firstincomplete/blocking stop and actualpublic/privatecounting"
+  ],
+  "launcher_check": [
+    "python3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py",
+    "RK1-H2b",
+    "1",
+    "--check-only"
+  ],
+  "launcher_actual": [
+    "python3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py",
+    "RK1-H2b",
+    "1"
+  ],
+  "helper_arguments": [
+    "--scenario",
+    "RK1-H2b",
+    "--start-trial",
+    "1",
+    "--config",
+    "<new-private-config>",
+    "--permit",
+    "<new-private-permit>"
+  ],
+  "root_next": [
+    "finish independentH2 review/disposition and preserve originalresults",
+    "commit reviewed taskregistration/operatorbinding and apply executioncheckout; retain productidentity",
+    "receive explicit core/knowledge sharedwindow",
+    "rootnewDB764/temp/config and exactpermit describe/build/check/run",
+    "actualH2b once, passivecapture allseed/measuredCLIcopies",
+    "independentreviewcodeexposure andbudget/operatorchanges; noautomaticH3a"
+  ],
+  "new_execution_authorized": false,
+  "Go_DB_build_tests_Provider_plugin_scan": false
+}
