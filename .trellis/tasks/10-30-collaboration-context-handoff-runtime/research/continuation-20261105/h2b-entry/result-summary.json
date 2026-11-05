@@ -1,0 +1,76 @@
+{
+  "at": "2026-11-05T12:27:13.299298+00:00",
+  "scenario": "RK1-H2b",
+  "original_exit": 0,
+  "helper_review_ready": true,
+  "trials": [
+    {
+      "label": "RK1-H2b-t1",
+      "status": "finished",
+      "verdict": "pass",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    },
+    {
+      "label": "RK1-H2b-t2",
+      "status": "finished",
+      "verdict": "pass",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    },
+    {
+      "label": "RK1-H2b-t3",
+      "status": "finished",
+      "verdict": "pass",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    }
+  ],
+  "new_paid": 3,
+  "fake_seeds": 6,
+  "total_paid": 10,
+  "remaining": 15,
+  "source_stable": true,
+  "capture_hashes_match_upfront": true,
+  "CLI_captures": 10,
+  "final_status_allowed": true,
+  "operator_changes": {
+    "~/.claude/plugins/": {
+      "before": "3abdc4664960b40751b006320fcd79b7bcc179112b2d4a88cbec3e2d63e5ea74",
+      "after": "e58713833ac71539dee81727c478519818dc10326e501ebcceee8ba7de2303e9"
+    }
+  },
+  "plugin_changed_paths_count": 2,
+  "independent_review": "independent-review.json",
+  "next_scenario_authorized": false,
+  "private_result": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/run-result.json",
+  "private_result_sha256": "10ae0fedcf37cfa9e29ece6d4b69f463f1ce31a07b1bf56ec33d360d36a09994",
+  "public_results": [
+    {
+      "label": "RK1-H2b-t1",
+      "sha256": "ec1990bdc982d0f1350befbe4972879e5c4956edd6f9794f98dd1c7f8ba491c3",
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2b-t1.json"
+    },
+    {
+      "label": "RK1-H2b-t2",
+      "sha256": "8fcb103a282d86aa5a4d6de2aa2de2921ece818b3e607a294c724828660cbec3",
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2b-t2.json"
+    },
+    {
+      "label": "RK1-H2b-t3",
+      "sha256": "5a2f48bc823aca228d1857ab3bfafe904ca8551e706190bea7b817e8e11968ef",
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2b-t3.json"
+    }
+  ],
+  "window_release": "window-release.json",
+  "independent_checks_passed": 289,
+  "independent_checks_failed": 0,
+  "registered_H2b_accepted": true,
+  "operator_delta_disposition": "marketplace timestamps and usage UUID only, selected/installed code unchanged; no continuous/fulltree stability claim"
+}

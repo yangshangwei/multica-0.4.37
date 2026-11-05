@@ -4,13 +4,13 @@
   "decided_at": "2026-11-01T04:26:26Z",
   "decision_source": "User answers in session multica-0-4-37-87 on 2026-11-01: fix product gaps 2 and 3 before testing and narrow H1; allocate the full 19-launch runtime set",
   "research": "../real-model-runtime-framework-research.md (7a90f3d78)",
-  "status": "H2threepassed_independently_total7_remaining18; H2bbindingpending",
+  "status": "H2bthreepassed_independently_total10_remaining15; H3adisabled",
   "not_runnable_reasons": [
-    "H2original3of3 independentlyaccepted273checks and specificpoll/catalog observations dispositioned; preserveallrawdata",
-    "H2b current fullconfiguration/source/CLI/newDB binding pending; noautomaticfollowup"
+    "H2b3of3 independentlyaccepted289checks and specificoperator/poll observations dispositioned; allrawdata retained",
+    "H3a-only exact admission and explicit shared window pending; no automatic later scenario"
   ],
   "runtime_call_cap": 25,
-  "runtime_consumed": 7,
+  "runtime_consumed": 10,
   "cap_scope": "Real Provider launches for the runtime scenarios below only (22 for E0a/H1/H2/H3a/H3b/H5/H6 as listed, plus 3 for H2b). Not transferable to or from the original E0-E6 series. Knowledge scenarios K1-K3 and ordinary-task E0b are not covered by this cap.",
   "runtime_scenarios": [
     {
@@ -99,7 +99,7 @@
       "correction": "From 96cedf485 until ac2a24f8f the smoke authorizer rejected knowledge_version=1 on the claim with HTTP 403, so the smoke could not pass at those HEADs and proved nothing there; the registered claim that the query is accepted holds only from ac2a24f8f. Confirmed independently by session multica-0-4-37-0b."
     }
   ],
-  "updated_at": "2026-11-05T12:06:37.602682+00:00",
+  "updated_at": "2026-11-05T12:40:02.068887+00:00",
   "decisions": [
     {
       "at": "2026-11-01T10:33:57Z",
@@ -231,5 +231,14 @@
     "independent_review": "../continuation-20261105/h2-entry/independent-review.json",
     "accepted": true,
     "disposition": "../continuation-20261105/h2-entry/disposition.json"
+  },
+  "actual_H2b": {
+    "summary": "../continuation-20261105/h2b-entry/result-summary.json",
+    "raw_trials": "3finished/pass",
+    "consumed_total": 10,
+    "remaining": 15,
+    "independent_review": "../continuation-20261105/h2b-entry/independent-review.json",
+    "accepted": true,
+    "disposition": "../continuation-20261105/h2b-entry/disposition.json"
   }
 }
