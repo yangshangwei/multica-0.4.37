@@ -22,6 +22,33 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg17
+        env:
+          POSTGRES_DB: multica_release_test
+          POSTGRES_USER: multica
+          POSTGRES_PASSWORD: multica
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U multica -d multica_release_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgres://multica:multica@localhost:5432/multica_release_test?sslmode=disable
+      TASK_DATABASE_NAME: multica_release_test
+      REDIS_TEST_URL: redis://localhost:6379/1
     outputs:
       tag_name: ${{ steps.release_meta.outputs.tag_name }}
       is_stable: ${{ steps.release_meta.outputs.is_stable }}
@@ -83,6 +110,16 @@ jobs:
 
       - name: Verify Go test wrapper
         run: bash scripts/test-go.test.sh
+
+      - name: Verify database test preconditions
+        run: bash scripts/go-test-with-agent-cli-guard.sh -- node --test scripts/go-test-database-preconditions.test.mjs
+
+      - name: Verify test database identity and run migrations
+        run: |
+          : "${DATABASE_URL:?explicit test database required}"
+          command -v psql >/dev/null
+          test "$(psql "$DATABASE_URL" -X -Atqc 'SELECT current_database()')" = "$TASK_DATABASE_NAME"
+          go -C server run ./cmd/migrate up
 
       - name: Run tests
         run: bash scripts/test-go.sh --race

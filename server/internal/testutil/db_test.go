@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -21,31 +23,35 @@ const (
 )
 
 // TestMain builds the workspace the fixture builders hang off, in the same
-// shape internal/handler's TestMain builds it. Without a database the suite
-// exits green rather than red: the same contract every other DB-backed package
-// here follows, so a laptop without Postgres still runs the rest of the tree.
+// shape internal/handler's TestMain builds it. No explicit database runs only
+// the HTTP helper tests; an explicitly configured but broken database is a
+// setup failure, never a successful skip of the fixture tests.
 func TestMain(m *testing.M) {
 	ctx := context.Background()
-	dbURL := os.Getenv("DATABASE_URL")
+	dbURL := strings.TrimSpace(os.Getenv("DATABASE_URL"))
 	if dbURL == "" {
-		dbURL = "postgres://multica:multica@localhost:5432/multica?sslmode=disable"
+		fmt.Fprintln(os.Stderr, "testutil: DATABASE_URL is not configured; DB fixture tests are disabled")
+		os.Exit(m.Run())
 	}
 
 	pool, err := pgxpool.New(ctx, dbURL)
 	if err != nil {
-		fmt.Printf("Skipping DB fixture tests: could not connect: %v\n", err)
-		os.Exit(m.Run())
+		fmt.Fprintln(os.Stderr, "testutil DB fixture tests: invalid DATABASE_URL; configure an isolated, migrated test database")
+		os.Exit(2)
 	}
-	if err := pool.Ping(ctx); err != nil {
-		fmt.Printf("Skipping DB fixture tests: database not reachable: %v\n", err)
+	probeCtx, cancelProbe := context.WithTimeout(ctx, 5*time.Second)
+	probeErr := pool.Ping(probeCtx)
+	cancelProbe()
+	if probeErr != nil {
+		fmt.Fprintln(os.Stderr, "testutil DB fixture tests: database connection failed; verify DATABASE_URL and test database readiness")
 		pool.Close()
-		os.Exit(m.Run())
+		os.Exit(2)
 	}
 
 	if err := seedFixtureWorkspace(ctx, pool); err != nil {
-		fmt.Printf("Skipping DB fixture tests: seed failed: %v\n", err)
+		fmt.Fprintln(os.Stderr, "testutil DB fixture tests: fixture setup failed; verify test database migrations and permissions")
 		pool.Close()
-		os.Exit(m.Run())
+		os.Exit(2)
 	}
 	testPool = pool
 

@@ -51,13 +51,16 @@ func TestMain(m *testing.M) {
 
 	pool, err := pgxpool.New(ctx, dbURL)
 	if err != nil {
-		fmt.Printf("Skipping tests: could not connect to database: %v\n", err)
-		os.Exit(0)
+		fmt.Fprintln(os.Stderr, "handler tests: invalid DATABASE_URL; configure an isolated, migrated test database")
+		os.Exit(2)
 	}
-	if err := pool.Ping(ctx); err != nil {
-		fmt.Printf("Skipping tests: database not reachable: %v\n", err)
+	probeCtx, cancelProbe := context.WithTimeout(ctx, 5*time.Second)
+	probeErr := pool.Ping(probeCtx)
+	cancelProbe()
+	if probeErr != nil {
+		fmt.Fprintln(os.Stderr, "handler tests: database connection failed; verify DATABASE_URL and test database readiness")
 		pool.Close()
-		os.Exit(0)
+		os.Exit(2)
 	}
 
 	queries := db.New(pool)

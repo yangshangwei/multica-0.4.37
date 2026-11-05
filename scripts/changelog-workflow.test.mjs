@@ -11,6 +11,36 @@ const jobs = new Map();
 for (const match of workflow.matchAll(/^ {2}([a-z][a-z0-9-]*):\n([\s\S]*?)(?=^ {2}[a-z][a-z0-9-]*:|$(?![\s\S]))/gm)) jobs.set(match[1], match[2]);
 const needs = (name) => (/^ {4}needs: (.+)$/m.exec(jobs.get(name) ?? "")?.[1] ?? "").replace(/[[\]]/g, "").split(/[,\s]+/).filter(Boolean);
 
+test("release verification prepares its declared database before running required tests", () => {
+  const body = jobs.get("verify");
+  assert.match(body, /image: pgvector\/pgvector:pg17/);
+  const database = /^ {10}POSTGRES_DB: (\S+)$/m.exec(body)?.[1];
+  assert.equal(database, "multica_release_test");
+  const databaseURL = /^ {6}DATABASE_URL: (\S+)$/m.exec(body)?.[1];
+  assert.ok(databaseURL, "release verification requires an explicit DATABASE_URL");
+  assert.equal(new URL(databaseURL).pathname, `/${database}`);
+  assert.ok(body.includes(`pg_isready -U multica -d ${database}`));
+  assert.match(body, /image: redis:7-alpine/);
+  assert.match(body, /REDIS_TEST_URL: redis:\/\/localhost:6379\/1/);
+  const identityCheck = body.indexOf("SELECT current_database()");
+  const migration = body.indexOf("go -C server run ./cmd/migrate up");
+  const tests = body.indexOf("bash scripts/test-go.sh --race");
+  assert.ok(identityCheck > 0 && identityCheck < migration && migration < tests,
+    "the selected database must be verified and migrated before Go tests");
+  assert.match(body, /TASK_DATABASE_NAME: multica_release_test/);
+});
+
+test("backend CI runs the offline database and release regressions when their inputs change", () => {
+  const ci = readFileSync(resolve(scripts, "../.github/workflows/ci.yml"), "utf8");
+  const filters = / {12}backend:\n([\s\S]*?) {12}sqlc:/.exec(ci)?.[1] ?? "";
+  for (const path of [".github/workflows/release.yml", "scripts/changelog-workflow.test.mjs", "scripts/changelog-test-helpers.mjs", "scripts/go-test-database-preconditions.test.mjs"]) {
+    assert.ok(filters.includes(`'${path}'`), `${path} must trigger backend verification`);
+  }
+  const backend = /^ {2}backend-tests:\n([\s\S]*?)(?=^ {2}[a-z][a-z0-9-]*:)/m.exec(ci)?.[1] ?? "";
+  assert.match(backend, /actions\/setup-node@\S+[\s\S]*?node-version: 22/);
+  assert.match(backend, /node --test scripts\/changelog-workflow\.test\.mjs scripts\/go-test-database-preconditions\.test\.mjs/);
+});
+
 test("repository-wide serialization starts before discovery and never cancels an active release", () => {
   assert.match(workflow.split("\njobs:")[0], /concurrency:\n {2}group: changelog-release-\$\{\{ github.repository \}\}\n {2}cancel-in-progress: false/);
 });

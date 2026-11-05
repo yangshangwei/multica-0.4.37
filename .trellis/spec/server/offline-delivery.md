@@ -194,11 +194,12 @@ variants rather than weakening architecture checks after a host-default mismatch
 
 For `go -C server test -json ./cmd/server -run '^TestPlatformAdmin'`, verify
 database readiness before starting and require named test `run`/`pass` events
-in the JSON output. Its `TestMain` can print `Skipping integration tests:` and
-exit zero when PostgreSQL is unreachable or still recovering (`57P03`), without
-running a single test. A package-level `pass` alone is not acceptance evidence.
-Retain that skipped attempt, restore database readiness, and rerun the same
-selection; report actual executed, passed, failed and skipped test counts.
+in the JSON output. Current `TestMain` fails with a sanitized nonzero result when
+PostgreSQL is unreachable; older candidates may print `Skipping integration tests:`
+and exit zero without executing tests. A package-level `pass` alone is never
+acceptance evidence. Retain the failed/skipped attempt, restore database readiness,
+and rerun the same selection; report actual executed, passed, failed and skipped
+counts. See database-test-isolation.md for mandatory versus optional DB entry points.
 
 ## Wrong versus correct
 

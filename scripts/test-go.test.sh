@@ -25,6 +25,7 @@ case "${1:-}" in
       echo "unexpected go list arguments: $*" >&2
       exit 2
     fi
+    printf '%s\n' "$*" >>"$MULTICA_TEST_GO_CALLS"
     printf '%s\n' \
       github.com/multica-ai/multica/server \
       github.com/multica-ai/multica/server/internal/daemon \
@@ -44,9 +45,10 @@ esac
 EOF
 chmod 755 "$BIN_DIR/go"
 
-PATH="$BIN_DIR:$PATH" bash "$SCRIPT_DIR/test-go.sh" --race
+DATABASE_URL='postgres://fake-test-only.invalid/wrapper' PATH="$BIN_DIR:$PATH" bash "$SCRIPT_DIR/test-go.sh" --race
 
-expected_calls='test -timeout=40m -race -p 1 -parallel 2 github.com/multica-ai/multica/server github.com/multica-ai/multica/server/internal/daemon github.com/multica-ai/multica/server/internal/handler github.com/multica-ai/multica/server/internal/service
+expected_calls='list ./...
+test -timeout=40m -race -p 1 -parallel 2 github.com/multica-ai/multica/server github.com/multica-ai/multica/server/internal/daemon github.com/multica-ai/multica/server/internal/handler github.com/multica-ai/multica/server/internal/service
 test -timeout=40m -race -p 2 -parallel 2 ./pkg/agent/...'
 actual_calls=$(cat "$CALLS_FILE")
 if [ "$actual_calls" != "$expected_calls" ]; then
@@ -76,5 +78,29 @@ if ! grep -q '^usage: .*test-go.sh \[--race\]$' "$OUTPUT_FILE"; then
   cat "$OUTPUT_FILE" >&2
   exit 1
 fi
+
+for configuration in absent whitespace; do
+  : >"$CALLS_FILE"
+  set +e
+  (
+    unset DATABASE_URL
+    if [ "$configuration" = whitespace ]; then
+      export DATABASE_URL=$' \t\r\n'
+    fi
+    PATH="$BIN_DIR:$PATH" bash "$SCRIPT_DIR/test-go.sh" --race
+  ) >"$OUTPUT_FILE" 2>&1
+  status=$?
+  set -e
+  if [ "$status" -ne 2 ] || [ -s "$CALLS_FILE" ]; then
+    echo "$configuration database configuration must exit 2 before invoking go" >&2
+    cat "$OUTPUT_FILE" "$CALLS_FILE" >&2
+    exit 1
+  fi
+  if ! grep -q 'explicit DATABASE_URL' "$OUTPUT_FILE"; then
+    echo "$configuration database configuration did not explain the requirement" >&2
+    cat "$OUTPUT_FILE" >&2
+    exit 1
+  fi
+done
 
 echo "test-go.test.sh: PASS"

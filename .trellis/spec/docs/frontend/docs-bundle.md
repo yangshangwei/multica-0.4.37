@@ -153,8 +153,9 @@ five choices in the current skill creation UI. Keep English and Chinese
   `lint` script.
 - Handler docs tests require the package's migrated database fixture even though
   the endpoints themselves only read the bundle. Use an isolated clone and
-  verify named tests actually ran: an unreachable database makes the package's
-  `TestMain` print `Skipping tests` and exit successfully.
+  verify named tests actually ran. Current `TestMain` fails nonzero for an
+  unreachable database; older candidates may print `Skipping tests` and exit
+  successfully. A package exit status never substitutes for named-test evidence.
 
 ## Wrong vs Correct
 

@@ -26,6 +26,16 @@ case "$#" in
     ;;
 esac
 
+# Some test helpers still have local-development defaults. Refuse missing
+# configuration before even listing packages, so none can reach that database.
+case "${DATABASE_URL:-}" in
+  *[![:space:]]*) ;;
+  *)
+    echo "Go tests require an explicit DATABASE_URL for an isolated test database; use go test -c for compile-only checks" >&2
+    exit 2
+    ;;
+esac
+
 cd "$REPO_ROOT/server"
 packages=$(go list ./...)
 regular_packages=()

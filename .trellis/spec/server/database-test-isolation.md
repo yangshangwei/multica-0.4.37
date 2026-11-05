@@ -13,7 +13,9 @@ The handler and server-router test packages initialize shared fixtures in `TestM
 
 ## 3. Environment and execution contract
 
-Both entry points require nonblank `DATABASE_URL` before creating a pool, running fixture cleanup/setup, or constructing a router. Missing or whitespace-only values print a content-free configuration error and exit **2**. Do not restore an implicit localhost database fallback.
+Both mandatory entry points require nonblank `DATABASE_URL` before creating a pool, running fixture cleanup/setup, or constructing a router. Missing or whitespace-only values print a content-free configuration error and exit **2**. Invalid configuration and an unreachable explicit database also fail with a nonzero exit and sanitized diagnostics. Bound the connection probe, not the subsequent test/fixture lifetime. Never print a raw connection error that can contain credentials. Do not restore an implicit localhost database fallback.
+
+`scripts/test-go.sh` checks the same nonblank requirement before `go list` or any package invocation. `internal/testutil` may run pure HTTP helpers without a database, with explicit DB-test skips and no fallback; once `DATABASE_URL` is provided, parsing, connection and seed failures must fail the package. Release verification provisions its own database and Redis, proves the database identity, and applies migrations before invoking this wrapper.
 
 An explicit URL is not proof of ownership. The caller must select its recorded test database, keep credentials in the private environment file, and serialize service/handler/router suites that share a database. Browser fixtures use their own database. Different workspace IDs do not isolate singleton gates or package-global fixture cleanup.
 
@@ -118,7 +120,8 @@ or retention policy.
 | Registry matches but rendered API/WS addresses differ | Reject browser entry; explicitly select the startup `ENV_FILE`, retaining the original failed source/configuration evidence |
 | `-run '^$'` | Still executes `TestMain`; never use as a compile-only check |
 | `go build` / `go test -c` | Compiles without executing `TestMain` |
-| Explicit but unreachable database | Existing connection handling remains; exit status alone never proves tests ran |
+| Explicit but malformed/unreachable database | Nonzero exit before tests/fixtures, sanitized error; never convert setup failure into success |
+| testutil with no database configured | Pure helper tests may run; DB cases explicitly skip, no implicit connection |
 | Reused whole-suite database with retained history | Inspect queued work and immutable timestamps; preserve it and run final verification on a fresh owned database |
 | Secondary source fixture teardown | No pending ordinary event may reference a removed issue; protected knowledge history remains unchanged |
 
@@ -129,6 +132,11 @@ or retention policy.
 - Bad: an empty test filter against an older revision with no explicit environment can initialize and clean the default database even though no test body runs. Never rerun that unsafe path merely to obtain red evidence.
 
 ## 6. Required regressions
+
+`scripts/go-test-database-preconditions.test.mjs` compiles actual handler/router/testutil binaries with `go test -c`, then runs only deliberately isolated negative startup cases. Strip inherited PostgreSQL connection settings, use synthetic credentials and a nonexistent task-owned Unix socket, and assert nonzero failures without printing the synthetic credential. Its no-database testutil case is intentionally different from the two mandatory packages. Wrapper tests must prove blank input runs no `go list` or test command; release graph tests pin services, explicit database identity and migration ordering.
+
+These checks do not replace full named-test inventory: per-test opt-in skips and unreachable helpers remain separate coverage concerns.
+
 
 `TestHandlerTestMainRequiresExplicitDatabase` and `TestRouterTestMainRequiresExplicitDatabase` execute newly guarded test binaries with absent and whitespace-only configuration. They require exit 2 and the expected configuration error, without initialization output.
 
