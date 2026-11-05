@@ -21,6 +21,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Global scope navigation](../../core/frontend/global-scope-navigation.md) | Full-path session history, account mementos and committed navigation intent | Active |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
+| [Agent critical-path CI](./agent-critical-path-ci.md) | Four production-Web paths, exact inventory and isolated launch contract | Active |
 | [E2E Run Environment](./e2e-run-environment.md) | The Playwright suite must target `next build` + `next start`, never `next dev` | Active |
 
 ---

@@ -1,0 +1,111 @@
+name: Agent critical path
+
+on:
+  pull_request:
+    branches: [main, codex/cross-workspace-collaboration]
+    paths:
+      - 'server/**'
+      - 'apps/web/**'
+      - 'packages/**'
+      - 'e2e/**'
+      - 'scripts/agent-critical-path*'
+      - 'scripts/check-agent-critical-path*'
+      - 'scripts/dev-env.sh'
+      - 'scripts/local-env.sh'
+      - 'playwright*.config.*'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - '.npmrc'
+      - 'turbo.json'
+      - '.github/workflows/agent-critical-path.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-critical-path-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: agent-critical-path
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: pgvector/pgvector:pg17
+        env:
+          POSTGRES_DB: agent_smoke
+          POSTGRES_USER: smoke
+          POSTGRES_PASSWORD: synthetic-smoke-password
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd "pg_isready -U smoke -d agent_smoke"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/agent-smoke-browsers
+      SMOKE_RUN: ${{ runner.temp }}/agent-smoke-run
+      SMOKE_CONFIG: ${{ runner.temp }}/agent-smoke-allocation.json
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.x'
+          check-latest: true
+          cache-dependency-path: server/go.sum
+
+      - name: Install locked dependencies and Chromium
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm exec playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client lsof
+
+      - name: Verify smoke contracts
+        run: |
+          node --test scripts/check-agent-critical-path.test.mjs scripts/agent-critical-path.test.mjs scripts/agent-critical-path-workflow.test.mjs
+          bash -n scripts/agent-critical-path.sh
+
+      - name: Record runner-owned allocation
+        env:
+          SMOKE_PG_PORT: ${{ job.services.postgres.ports[5432] }}
+        run: |
+          node --input-type=module <<'JS'
+          import { writeFileSync } from 'node:fs';
+          const config = {
+            version: 1, owner: 'agent-critical-path', databaseName: 'agent_smoke',
+            databaseUrl: `postgres://smoke:synthetic-smoke-password@127.0.0.1:${process.env.SMOKE_PG_PORT}/agent_smoke?sslmode=disable`,
+            browserPath: process.env.PLAYWRIGHT_BROWSERS_PATH,
+          };
+          writeFileSync(process.env.SMOKE_CONFIG, JSON.stringify(config), {mode:0o600,flag:'wx'});
+          JS
+
+      - name: Run four production-Web paths without a model
+        run: node scripts/agent-critical-path.mjs --config "$SMOKE_CONFIG" --output "$SMOKE_RUN"
+
+      # Only the launcher's sanitized allowlist is published. Raw state/env and
+      # credential-bearing registry manifests stay in the runner's temp area.
+      - name: Retain smoke evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-critical-path-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/agent-smoke-run/evidence/
+          if-no-files-found: error
+          retention-days: 14
