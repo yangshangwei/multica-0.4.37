@@ -1,15 +1,17 @@
 {
-  "state": "focused_linux_regression_evidence_pass_original_workflow_pending",
+  "state": "repaired_linux_variant_full_main_pass",
   "implementation_owner": "core/linux_daemon_fd_fix",
   "implementation_checkout": "/Volumes/artisan/code/2026/mc-core-fd-fix-20261105",
   "support_scope": "Independent read-only descriptor/launch/error/test review",
   "source_edit_performed": false,
   "runtime_checks_performed": false,
   "independent_review_pending": false,
-  "remaining_acceptance": "Core owner rebuilds fixedCLI/package variant and runs original Linux fullMain workflow; no full-flow pass claimed",
+  "remaining_acceptance": "Owner integration/commit and campaign final disposition; independent platform/upgrade/model gates remain separate",
   "performance": "User accepted recorded2155.025ms; no further optimization or gate rerun",
-  "review": "runtime-evidence-review.md",
+  "review": "full-main-evidence-review.md",
   "production_findings": "No blocking finding",
   "fixture_note": "Prior PIDpublication failure cleanup gap closed by owner; finaltesthash3b01449",
-  "reviewed_external_runtime_results": "REDFAIL0.82/GREENPASS0.06/finalcleanupGREENPASS0.07; exactsource/binaryhashes verified"
+  "reviewed_external_runtime_results": "FocusedRED/GREEN plus originalLinuxfullMain1PASS47.268s,retry0;restart.close52.387ms",
+  "package_followup": "Owner accepted pre/post source hash and non-CLI file/mode/symlink binding; post-build permit must pin new package path and CLI hash.",
+  "linux_restart_defect": "VERIFIED_CLOSED_FOR_REPAIRED_VARIANT"
 }

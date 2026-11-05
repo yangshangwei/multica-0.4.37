@@ -1,0 +1,19 @@
+{
+  "verdict": "PASS: only intended CLI bytes changed in package copy",
+  "base_candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "variant": "base candidate plus daemon FD CLOEXEC patch",
+  "patch_sha256": "d6f4ceeb660833114171946763b850da890b5115503faa95e6d14d3d632c0bcb",
+  "package": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/fd-fix/package",
+  "cli_sha256": "8ad7a9ac0df22fa916a9d006080effb9409193c3b5b8624b5f3365cb42a395b2",
+  "unchanged_asar_sha256": "5da9b5eb86ffd6513f21acdab19a57c755807c2620833a8e77714a01997afd8d",
+  "unchanged_executable_sha256": "379334fb6707615062d32fcc481a8a8d3140938531378ccba14f3fa169665043",
+  "entries": 85,
+  "non_cli_entries_unchanged": 84,
+  "changed_regular_files": [
+    "resources/app.asar.unpacked/resources/bin/multica"
+  ],
+  "all_names_modes_and_symlinks_match": true,
+  "package_record_sha256": "cad1876d05ae4b7df6c9123f16b63a8fdce8f6948a625af1785fb785ea9ae3ee",
+  "own_execution": "read-only file/hash verification; no tests/build/DB",
+  "full_main_acceptance": "PENDING"
+}

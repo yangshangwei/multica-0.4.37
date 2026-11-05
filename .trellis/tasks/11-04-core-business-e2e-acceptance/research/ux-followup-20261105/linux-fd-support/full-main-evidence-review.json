@@ -1,0 +1,105 @@
+{
+  "reviewed_at": "2026-11-05T11:49:02.384323+00:00",
+  "verdict": "PASS: repaired-variant original Linux full Main case and recorded cleanup",
+  "original_frozen_failure_preserved": true,
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "variant": "fixed-background-fd-boundary",
+  "cli_sha256": "8ad7a9ac0df22fa916a9d006080effb9409193c3b5b8624b5f3365cb42a395b2",
+  "named_cases": [
+    {
+      "name": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+      "status": "expected",
+      "result_statuses": [
+        "passed"
+      ],
+      "retries": [
+        0
+      ]
+    }
+  ],
+  "stats": {
+    "startTime": "2026-11-05T11:45:17.686Z",
+    "duration": 47268.545999999995,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "source_matches": true,
+  "acceptance_pass": true,
+  "restart_phase_duration_ms": {
+    "restart.close": 52.387,
+    "restart.launch": 1471.45,
+    "restart.refresh": 919.669,
+    "restart.metadata": 590.786
+  },
+  "six_directed_writes": [
+    [
+      "electron",
+      "request_information",
+      "information_requested"
+    ],
+    [
+      "web",
+      "return_information",
+      "information_returned"
+    ],
+    [
+      "electron",
+      "submit_acceptance",
+      "acceptance_submitted"
+    ],
+    [
+      "web",
+      "request_information",
+      "information_requested"
+    ],
+    [
+      "electron",
+      "return_information",
+      "information_returned"
+    ],
+    [
+      "web",
+      "submit_acceptance",
+      "acceptance_submitted"
+    ]
+  ],
+  "directed_revision_returns": 2,
+  "control_entries": [
+    "resume",
+    "stoppedB",
+    "resumedB",
+    "stoppedA",
+    "refused",
+    "stoppedAll",
+    "partial",
+    "stoppedSquad",
+    "resumedSquad",
+    "finalStop"
+  ],
+  "native_ipc_stubs": false,
+  "home_override": false,
+  "timeline_truncated": false,
+  "page_errors": [],
+  "cleanup": {
+    "ports": {
+      "18784": "",
+      "13704": "",
+      "5878": "",
+      "60284": ""
+    },
+    "remaining_owned_containers": [],
+    "core_prefix_databases_retained": 160,
+    "connections": 0,
+    "scope_note": "This core-prefix audit is160DBs, not the earlier161 broader-prefix inventory"
+  },
+  "executed_scope": "Full packaged production Main/preload/renderer and bundled CLI version bootstrap; remote permit is a public protocol simulation with no executable, outcome or proof",
+  "own_work": "Read-only original JSON/attachments/source/package hash review; no new runtime actions",
+  "evidence_hashes": {
+    ".omx/private/core-e2e-20261104/runtime/runs/linux-fixed-fd-integration-1/linux-fixed-fd-r8/run.json": "731a608c5f7a8806c6095f5d22fc2baeb32bcd1569847da8ea649a43cc45ce33",
+    ".omx/private/core-e2e-20261104/runtime/runs/linux-fixed-fd-integration-1/linux-fixed-fd-r8/results.json": "7d5e2a6b82d0033f420ebd2e844709a23489de305f4d10d768dfdbd4ac92741d",
+    ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/fd-fix-final-cleanup/summary.json": "236ae021d8ffd015b42a9836bbf9431765fa96c712ce9aa63a1c8dea8a0aab2f",
+    ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/fd-fix-final-cleanup/databases.json": "3e0b9201e3d20fa49492c986c0a05a53dda39f4eabe81d84d7274958766759b6"
+  }
+}
