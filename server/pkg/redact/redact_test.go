@@ -3,6 +3,7 @@ package redact
 import (
 	"encoding/json"
 	"os"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -70,6 +71,33 @@ func TestRedactCollaborationCapabilities(t *testing.T) {
 				t.Fatal("a non-capability identifier was changed")
 			}
 		}
+	}
+}
+
+func TestRedactCollaborationCapabilitiesPreservesWordBoundaries(t *testing.T) {
+	t.Parallel()
+	for _, prefix := range []string{"mcb_", "mct_"} {
+		t.Run(prefix, func(t *testing.T) {
+			capability := asm(prefix, strings.Repeat("a0", 32))
+			for _, input := range []string{
+				"value-" + capability,
+				capability + "-suffix",
+				capability + "-" + capability,
+			} {
+				got := Text(input)
+				if strings.Contains(got, capability) || !strings.Contains(got, "[REDACTED MULTICA CAPABILITY]") {
+					t.Fatal("hyphen-delimited capability lost its existing redaction coverage")
+				}
+				if Text(got) != got {
+					t.Fatal("capability word-boundary redaction is not idempotent")
+				}
+			}
+			for _, input := range []string{"label_" + capability, capability + "_id"} {
+				if Text(input) != input {
+					t.Fatal("embedded ordinary identifier must keep the existing word-boundary behavior")
+				}
+			}
+		})
 	}
 }
 
@@ -465,5 +493,162 @@ func TestRedactMultipleSecrets(t *testing.T) {
 	}
 	if strings.Contains(got, "ghp_") {
 		t.Fatal("GitHub token not redacted in multi-secret text")
+	}
+}
+
+func TestInputMapSensitiveFields(t *testing.T) {
+	t.Parallel()
+	for _, key := range []string{
+		"password", "Passwd", "passphrase", "api_key", "apiKey", "APIKey", "api-secret",
+		"secret", "secretKey", "access_token", "authToken", "refresh-token", "TOKEN",
+		"private_key", "clientSecret", "Authorization", "Proxy-Authorization",
+		"GITHUB_TOKEN", "DB_PASSWORD", "DATABASE_URL", "service-api-key", "aws_secret_access_key", "secretAccessKey",
+	} {
+		t.Run(key, func(t *testing.T) {
+			for _, value := range []any{"synthetic-private-value", 123456, true, []any{"synthetic-private-value"}, map[string]any{"value": "synthetic-private-value"}} {
+				input := map[string]any{"items": []any{map[string]any{key: value}}}
+				got := InputMap(input)
+				field := got["items"].([]any)[0].(map[string]any)[key]
+				if field != "[REDACTED CREDENTIAL]" {
+					t.Fatalf("sensitive %s value of type %T was retained", key, value)
+				}
+				if !reflect.DeepEqual(input["items"].([]any)[0].(map[string]any)[key], value) {
+					t.Fatal("redaction changed the original input")
+				}
+				if !reflect.DeepEqual(InputMap(got), got) {
+					t.Fatal("field redaction is not idempotent")
+				}
+			}
+			stringsInput := map[string]string{key: "synthetic-private-value"}
+			got := InputMap(map[string]any{"env": stringsInput})
+			if got["env"].(map[string]string)[key] != "[REDACTED CREDENTIAL]" || stringsInput[key] != "synthetic-private-value" {
+				t.Fatal("string map must be copied and its sensitive value redacted")
+			}
+		})
+	}
+}
+
+func TestInputMapPreservesNonSecretFields(t *testing.T) {
+	t.Parallel()
+	input := map[string]any{
+		"token_count": 23, "token_usage": map[string]any{"input_tokens": 1, "output_tokens": 2},
+		"max_tokens": 42, "public_key": "public-value", "publicToken": "public-value",
+		"token_type": "synthetic-type", "token_id": "synthetic-id", "key": "ordinary-key",
+		"name": "example", "path": "/a/secret/file", "password": "", "api_key": nil,
+	}
+	if got := InputMap(input); !reflect.DeepEqual(got, input) {
+		t.Fatalf("non-secret or absent fields changed: %#v", got)
+	}
+}
+
+func TestTextRedactsJSONMembersWithoutReformatting(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct{ name, input, want string }{
+		{"format", "result: {\n  \"password\" : \"private phrase\", \"count\":9007199254740993\n}\n", "result: {\n  \"password\" : \"[REDACTED CREDENTIAL]\", \"count\":9007199254740993\n}\n"},
+		{"escapes", `{"apiKey":"private\"phrase\\tail","ok":true}`, `{"apiKey":"[REDACTED CREDENTIAL]","ok":true}`},
+		{"escaped key and duplicate", `{"\u0070assword":"first","password":"second","password":null}`, `{"\u0070assword":"[REDACTED CREDENTIAL]","password":"[REDACTED CREDENTIAL]","password":null}`},
+		{"nested", `{"items":[{"clientSecret":"value","Authorization":"Basic opaque"}],"count":2}`, `{"items":[{"clientSecret":"[REDACTED CREDENTIAL]","Authorization":"[REDACTED CREDENTIAL]"}],"count":2}`},
+		{"composite", `{"password":{"wrapped":["private"]},"api_key":["value"],"ok":true}`, `{"password":"[REDACTED CREDENTIAL]","api_key":"[REDACTED CREDENTIAL]","ok":true}`},
+		{"scalar", `{"password":123456,"client_secret":false,"token":true}`, `{"password":"[REDACTED CREDENTIAL]","client_secret":"[REDACTED CREDENTIAL]","token":"[REDACTED CREDENTIAL]"}`},
+		{"empty", `{"password":"","api_key":null,"public_token":"public","token_count":12}`, `{"password":"","api_key":null,"public_token":"public","token_count":12}`},
+		{"normal", "{\"message\":\"say \\\"password\\\" in the docs\",\"id\":9007199254740993}", "{\"message\":\"say \\\"password\\\" in the docs\",\"id\":9007199254740993}"},
+		{"adjacent records", `{"password":"one"} {"TOKEN":"two"}`, `{"password":"[REDACTED CREDENTIAL]"} {"TOKEN":"[REDACTED CREDENTIAL]"}`},
+		{"aws secret", `{"aws_secret_access_key":"ordinary-private-value","secretAccessKey":"other-value"}`, `{"aws_secret_access_key":"[REDACTED CREDENTIAL]","secretAccessKey":"[REDACTED CREDENTIAL]"}`},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Text(tt.input); got != tt.want {
+				t.Fatalf("unexpected redaction:\n got: %s\nwant: %s", got, tt.want)
+			}
+			if got := Text(tt.want); got != tt.want {
+				t.Fatalf("redaction is not idempotent: %s", got)
+			}
+		})
+	}
+}
+
+func TestTextLargeJSONKeysAndUnmatchedQuotes(t *testing.T) {
+	t.Parallel()
+	largeKey := strings.Repeat("ordinary", 150000)
+	for _, input := range []string{
+		`{"` + largeKey + `":"normal value","count":1}`,
+		`{"message":"` + strings.Repeat(`escaped\"quote `, 100000),
+		strings.Repeat(`"`, 100000),
+	} {
+		if Text(input) != input {
+			t.Fatal("large non-sensitive text changed")
+		}
+	}
+	input := `{"` + largeKey + `_password":"synthetic-secret"}`
+	if got := Text(input); strings.Contains(got, "synthetic-secret") {
+		t.Fatal("a large sensitive key bypassed redaction")
+	}
+}
+
+func BenchmarkText(b *testing.B) {
+	for _, tt := range []struct{ name, input string }{
+		{"8KiBText", strings.Repeat("ordinary log line\n", 512)[:8192]},
+		{"300KiBText", strings.Repeat("中", 100*1024)},
+		{"JSON", strings.Repeat(`{"password":"synthetic-private-value","token_count":12}`+"\n", 100)},
+	} {
+		b.Run(tt.name, func(b *testing.B) {
+			b.SetBytes(int64(len(tt.input)))
+			b.ReportAllocs()
+			for b.Loop() {
+				Text(tt.input)
+			}
+		})
+	}
+}
+
+func TestTextRedactsInvalidOrOversizedSensitiveJSON(t *testing.T) {
+	t.Parallel()
+	for _, input := range []string{
+		`{"password":"synthetic-secret`,
+		`{"password":synthetic-secret}`,
+		`{"password":123synthetic-secret}`,
+		`{"password":"synthetic-secret` + strings.Repeat("x", 1024*1024) + `","ok":true}`,
+		`{"password":` + strings.Repeat("[", 64) + `"synthetic-secret"` + strings.Repeat("]", 64) + `}`,
+	} {
+		got := Text(input)
+		if strings.Contains(got, "synthetic-secret") || !strings.Contains(got, "[REDACTED CREDENTIAL]") {
+			t.Fatalf("invalid or oversized sensitive value retained: %s", truncateForLog(got))
+		}
+		if Text(got) != got {
+			t.Fatal("fail-closed redaction is not idempotent")
+		}
+	}
+	for _, input := range []string{`plain log: {unfinished`, `{"count":oops`, `print("ordinary text")`, `{"token_count":12}`} {
+		if Text(input) != input {
+			t.Fatalf("unrelated text changed: %s", input)
+		}
+	}
+}
+
+func TestRedactMulticaTokens(t *testing.T) {
+	t.Parallel()
+	for _, prefix := range []string{"mul_", "mdt_", "mat_", "mpi_", "mpc_"} {
+		body := strings.Repeat("a0", 20)
+		if prefix == "mpi_" || prefix == "mpc_" {
+			body = strings.Repeat("a0_", 14) + "-"
+		}
+		token := asm(prefix, body)
+		for _, input := range []string{token, "value " + token + " end", `{"value":"` + token + `"}`, token + "," + token} {
+			got := Text(input)
+			if strings.Contains(got, token) || !strings.Contains(got, "[REDACTED MULTICA TOKEN]") {
+				t.Fatalf("%s credential was not redacted", prefix)
+			}
+			if Text(got) != got {
+				t.Fatal("token redaction is not idempotent")
+			}
+		}
+		for _, input := range []string{token[:len(token)-1], token + "a", "label_" + token, token + "_id", "label-" + token} {
+			if Text(input) != input {
+				t.Fatalf("credential-like identifier changed: %s", input)
+			}
+		}
+	}
+	proof := asm("mip_", "eyJ", strings.Repeat("a", 16), ".", strings.Repeat("b", 20), ".", strings.Repeat("c", 20))
+	if got := Text(proof); got != "[REDACTED MULTICA PROOF]" || Text(got) != got {
+		t.Fatalf("installation attribution proof not redacted: %s", got)
 	}
 }

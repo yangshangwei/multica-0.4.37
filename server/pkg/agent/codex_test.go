@@ -1339,7 +1339,7 @@ func TestCodexRawItemMCPToolCall(t *testing.T) {
 		t.Fatalf("expected MCP arguments, got %#v", begin.Input["arguments"])
 	}
 	credentials, ok := arguments["credentials"].(map[string]any)
-	if !ok || credentials["api_key"] != "[REDACTED API KEY]" {
+	if !ok || credentials["api_key"] != "[REDACTED CREDENTIAL]" {
 		t.Fatalf("expected nested MCP secret to be redacted, got %#v", arguments["credentials"])
 	}
 

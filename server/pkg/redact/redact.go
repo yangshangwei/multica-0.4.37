@@ -3,7 +3,9 @@
 package redact
 
 import (
+	"encoding/json"
 	"regexp"
+	"strings"
 )
 
 // secretPattern pairs a compiled regex with its replacement text.
@@ -61,8 +63,10 @@ var patterns = []secretPattern{
 	// JWT tokens (three base64url segments)
 	{regexp.MustCompile(`\bey[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b`), "[REDACTED JWT]"},
 
-	// Collaboration business/termination capabilities can appear as bare text
-	// or JSON values without a Bearer header or a key=value prefix.
+	// Collaboration capabilities use word boundaries so a capability adjacent
+	// to a hyphen in a log label is still redacted. Keep this established rule
+	// separate from the first-party token scanner, whose stricter boundary is
+	// needed for ordinary identifiers and base64url tokens.
 	{regexp.MustCompile(`\b(?:mcb|mct)_[a-f0-9]{64}\b`), "[REDACTED MULTICA CAPABILITY]"},
 
 	// Generic "Bearer <token>" in output
@@ -73,6 +77,50 @@ var patterns = []secretPattern{
 
 	// Generic key=value patterns for common secret env var names
 	{regexp.MustCompile(`(?i)(?:API_KEY|API_SECRET|SECRET_KEY|SECRET|ACCESS_TOKEN|AUTH_TOKEN|PRIVATE_KEY|DATABASE_URL|DB_PASSWORD|DB_URL|REDIS_URL|PASSWORD|TOKEN)\s*[=:]\s*\S+`), "[REDACTED CREDENTIAL]"},
+}
+
+// Match the token and installation-proof formats minted by auth and
+// plugin_token. Check boundaries separately so a separator is not consumed
+// when two credentials are adjacent, including base64url tokens ending in '-'.
+var multicaToken = regexp.MustCompile(`(?:mul|mdt|mat)_[a-f0-9]{40}|(?:mpi|mpc)_[A-Za-z0-9_-]{43}|mip_ey[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}`)
+
+const credentialPlaceholder = "[REDACTED CREDENTIAL]"
+
+// sensitiveKey recognizes complete credential names and delimited credential
+// suffixes. In particular, token_count, token_usage and token_id are metadata,
+// and public_key/public_token are deliberately not credentials.
+func sensitiveKey(key string) bool {
+	var normalized strings.Builder
+	for i := 0; i < len(key); i++ {
+		c := key[i]
+		if c == '-' {
+			c = '_'
+		}
+		if c >= 'A' && c <= 'Z' {
+			if i > 0 && ((key[i-1] >= 'a' && key[i-1] <= 'z') ||
+				(key[i-1] >= '0' && key[i-1] <= '9') ||
+				(key[i-1] >= 'A' && key[i-1] <= 'Z' && i+1 < len(key) && key[i+1] >= 'a' && key[i+1] <= 'z')) {
+				normalized.WriteByte('_')
+			}
+			c += 'a' - 'A'
+		}
+		normalized.WriteByte(c)
+	}
+	key = normalized.String()
+	for _, public := range []string{"public_key", "public_token"} {
+		if key == public || strings.HasSuffix(key, "_"+public) {
+			return false
+		}
+	}
+	for _, name := range []string{
+		"password", "passwd", "passphrase", "api_key", "api_secret", "secret", "secret_key",
+		"token", "private_key", "secret_access_key", "authorization", "database_url", "db_url", "redis_url",
+	} {
+		if key == name || strings.HasSuffix(key, "_"+name) {
+			return true
+		}
+	}
+	return false
 }
 
 // maxRedactDepth bounds the walk in redactValue. Tool inputs are decoded from
@@ -87,8 +135,8 @@ const maxRedactDepth = 32
 // this package exists to prevent, so the fail-safe direction is to drop it.
 const depthLimitPlaceholder = "[REDACTED DEPTH LIMIT]"
 
-// InputMap returns a copy of m with every string value passed through Text,
-// including strings nested inside maps and slices.
+// InputMap returns a copy of m with credential fields masked and every other
+// string value passed through Text, including nested maps and slices.
 //
 // The nested walk is load-bearing, not defensive tidying: providers record
 // structured tool inputs, and Codex records a file edit as
@@ -108,7 +156,11 @@ func redactMap(m map[string]any, depth int) map[string]any {
 	}
 	out := make(map[string]any, len(m))
 	for k, v := range m {
-		out[k] = redactValue(v, depth+1)
+		if sensitiveKey(k) && v != nil && v != "" {
+			out[k] = credentialPlaceholder
+		} else {
+			out[k] = redactValue(v, depth+1)
+		}
 	}
 	return out
 }
@@ -145,7 +197,11 @@ func redactValue(v any, depth int) any {
 	case map[string]string:
 		out := make(map[string]string, len(t))
 		for k, e := range t {
-			out[k] = Text(e)
+			if sensitiveKey(k) && e != "" {
+				out[k] = credentialPlaceholder
+			} else {
+				out[k] = Text(e)
+			}
 		}
 		return out
 	default:
@@ -166,8 +222,140 @@ func redactValue(v any, depth int) any {
 // running the agent. Transcript visibility is an authorization concern and is
 // handled at that layer, not by string replacement here.
 func Text(s string) string {
+	s = redactJSONMembers(s)
+	s = redactMulticaTokens(s)
 	for _, p := range patterns {
 		s = p.re.ReplaceAllString(s, p.replacement)
 	}
 	return s
+}
+
+func redactMulticaTokens(s string) string {
+	var out strings.Builder
+	copied := 0
+	for _, match := range multicaToken.FindAllStringIndex(s, -1) {
+		start, end := match[0], match[1]
+		if (start > 0 && tokenByte(s[start-1])) || (end < len(s) && tokenByte(s[end])) {
+			continue
+		}
+		out.WriteString(s[copied:start])
+		switch s[start : start+4] {
+		case "mip_":
+			out.WriteString("[REDACTED MULTICA PROOF]")
+		default:
+			out.WriteString("[REDACTED MULTICA TOKEN]")
+		}
+		copied = end
+	}
+	if copied == 0 {
+		return s
+	}
+	out.WriteString(s[copied:])
+	return out.String()
+}
+
+func tokenByte(c byte) bool {
+	return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9' || c == '_' || c == '-'
+}
+
+// A sensitive JSON value may itself be a large object. Bound the decoder's
+// allocation and the structural scan; invalid or over-budget values lose the
+// remaining text rather than falling back to disclosing the secret.
+const maxJSONValueBytes = 1 << 20
+
+// redactJSONMembers replaces only value spans, preserving formatting, duplicate
+// keys and exact numeric literals elsewhere. It also handles JSON embedded in
+// log text without requiring the entire log line to be a JSON document.
+func redactJSONMembers(s string) string {
+	var out strings.Builder
+	copied := 0
+	for scan := 0; scan < len(s); {
+		q := strings.IndexByte(s[scan:], '"')
+		if q < 0 {
+			break
+		}
+		start := scan + q
+		scan = start + 1
+		backslashes := 0
+		for i := start - 1; i >= 0 && s[i] == '\\'; i-- {
+			backslashes++
+		}
+		if backslashes%2 != 0 {
+			continue
+		}
+		end := jsonStringEnd(s, start)
+		if end < 0 {
+			break
+		}
+		colon := skipJSONSpace(s, end)
+		if colon == len(s) || s[colon] != ':' {
+			continue
+		}
+		var key string
+		if json.Unmarshal([]byte(s[start:end]), &key) != nil || !sensitiveKey(key) {
+			continue
+		}
+		valueStart := skipJSONSpace(s, colon+1)
+		decoder := json.NewDecoder(strings.NewReader(s[valueStart:min(len(s), valueStart+maxJSONValueBytes)]))
+		var value json.RawMessage
+		err := decoder.Decode(&value)
+		valueEnd := valueStart + int(decoder.InputOffset())
+		next := skipJSONSpace(s, valueEnd)
+		if err != nil || !boundedJSONDepth(value) ||
+			(next < len(s) && s[next] != ',' && s[next] != '}' && s[next] != ']') {
+			out.WriteString(s[copied:valueStart])
+			out.WriteString(`"` + credentialPlaceholder + `"`)
+			return out.String()
+		}
+		scan = valueEnd
+		if string(value) == `null` || string(value) == `""` {
+			continue
+		}
+		out.WriteString(s[copied:valueStart])
+		out.WriteString(`"` + credentialPlaceholder + `"`)
+		copied = valueEnd
+	}
+	if copied == 0 {
+		return s
+	}
+	out.WriteString(s[copied:])
+	return out.String()
+}
+
+func jsonStringEnd(s string, start int) int {
+	for i := start + 1; i < len(s); i++ {
+		switch s[i] {
+		case '\\':
+			i++
+		case '"':
+			return i + 1
+		}
+	}
+	return -1
+}
+
+func skipJSONSpace(s string, i int) int {
+	for i < len(s) && (s[i] == ' ' || s[i] == '\n' || s[i] == '\r' || s[i] == '\t') {
+		i++
+	}
+	return i
+}
+
+func boundedJSONDepth(raw []byte) bool {
+	s := string(raw)
+	depth := 0
+	for i := 0; i < len(s); i++ {
+		switch s[i] {
+		case '"':
+			i = jsonStringEnd(s, i) - 1 // The decoder already validated the string.
+		case '{', '[':
+			depth++
+			if depth > maxRedactDepth {
+				return false
+			}
+		case '}', ']':
+			depth--
+		}
+	}
+	return true
 }

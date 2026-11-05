@@ -7,6 +7,7 @@
 | Guide | Description | Status |
 |-------|-------------|--------|
 | [Security Boundaries](./security-boundaries.md) | Credential minting gates and automation authorization principals | Active |
+| [Agent output redaction](./agent-output-redaction.md) | Structured credentials, native token formats and redaction before preview/transport | Active |
 | [Daemon process descriptors](./daemon-process-descriptors.md) | Linux background/self-update CLOEXEC isolation and real pipe EOF contract | Active |
 | [Database test isolation](./database-test-isolation.md) | Explicit test databases, TestMain guards, compile-only commands and bounded audit | Active |
 | [Collaboration foundation](./collaboration-foundation.md) | Authority, creation, human workflow and pre-v2 execution history | Foundation |

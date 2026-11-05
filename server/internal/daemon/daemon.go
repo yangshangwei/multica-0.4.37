@@ -8739,7 +8739,9 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 						}
 					}
 					s := msgSeq.Add(1)
-					output := toolOutputPreview(msg.Output)
+					// Redact the complete result before truncation can split a
+					// credential, JSON value or private-key block.
+					output := toolOutputPreview(redact.Text(msg.Output))
 					toolName := msg.Tool
 					if toolName == "" && msg.CallID != "" {
 						mu.Lock()

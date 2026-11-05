@@ -7,6 +7,7 @@ import (
 	"strings"
 	"sync/atomic"
 	"testing"
+	"unicode/utf8"
 
 	"github.com/multica-ai/multica/server/pkg/agent"
 )
@@ -85,6 +86,42 @@ func TestExecuteAndDrain_ToolOutputUTF8Boundary(t *testing.T) {
 	want := strings.Repeat("中", 2730)
 	if got := reported[0].Output; got != want {
 		t.Fatalf("reported output differs from the complete-rune prefix: got %d bytes, want %d", len(got), len(want))
+	}
+}
+
+func TestExecuteAndDrain_ToolOutputRedactedBeforePreview(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct{ name, output, leak, marker string }{
+		{"json", `{"password":"synthetic-private-output","ok":true}`, "synthetic-private-output", "[REDACTED CREDENTIAL]"},
+		{"json crosses preview", strings.Repeat("x", 8096) + ` {"password":"` + strings.Repeat("private-output-value", 80) + `","ok":true}`, "private-output", "[REDACTED CREDENTIAL]"},
+		{"task token crosses preview", strings.Repeat("x", 8160) + " " + "mat_" + strings.Repeat("a0", 20), "mat_a0a0", "[REDACTED MULTICA TOKEN]"},
+		{"pem crosses preview", strings.Repeat("x", 8096) + "\n-----BEGIN PRIVATE KEY-----\n" + strings.Repeat("private-output-value", 80) + "\n-----END PRIVATE KEY-----", "private-output", "[REDACTED PRIVATE KEY]"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			d, rec := newTranscriptRecorder(t)
+			messages := make(chan agent.Message, 1)
+			messages <- agent.Message{Type: agent.MessageToolResult, Tool: "bash", Output: tt.output}
+			close(messages)
+			results := make(chan agent.Result, 1)
+			results <- agent.Result{Status: "completed"}
+			close(results)
+			backend := sessionBackend{session: &agent.Session{Messages: messages, Result: results}}
+			if _, _, err := d.executeAndDrain(context.Background(), backend, "p", agent.ExecOptions{},
+				slog.Default(), "task-redacted-preview", "", new(atomic.Int32)); err != nil {
+				t.Fatalf("executeAndDrain: %v", err)
+			}
+			reported := rec.snapshot()
+			if len(reported) != 1 || reported[0].Type != "tool_result" || reported[0].Tool != "bash" {
+				t.Fatalf("expected one bash tool_result, got %+v", reported)
+			}
+			output := reported[0].Output
+			if strings.Contains(output, tt.leak) || !strings.Contains(output, tt.marker) {
+				t.Fatal("the wire preview must contain redaction, not secret bytes")
+			}
+			if len(output) > 8192 || !utf8.ValidString(output) {
+				t.Fatal("redaction must preserve the preview byte and UTF8 budgets")
+			}
+		})
 	}
 }
 
