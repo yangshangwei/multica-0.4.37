@@ -1,0 +1,119 @@
+{
+  "recorded_at": "2026-11-05T07:26:54.780736+00:00",
+  "state": "read_only_prepared_window_and_final_bindings_pending",
+  "execution_head": "4a90c8d5315c90e5ae63a07c866209e0adcd9fc7",
+  "execution_status": [],
+  "accepted_product_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "accepted_product_source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+  "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+  "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+  "helper": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/runtime_entry.py",
+  "helper_sha256": "2220c3211f39544a187694ba205902b3e8e0080f21ce946e678d78a36f49f27c",
+  "prior_public": [
+    {
+      "label": "RK1-E0a-t1",
+      "status": "finished",
+      "verdict": "pass",
+      "measured_launches": 1,
+      "sha256": "5b0b221f0401db1424494864778e173daf9b229cdc007255467200c1a68db0ba"
+    },
+    {
+      "label": "RK1-H1-t1",
+      "status": "finished",
+      "verdict": "pass",
+      "measured_launches": 1,
+      "sha256": "28ab93f865aba6d2b8acb51d2fc35b214492b9db5a71b3dd3120e208fed8dbf9"
+    },
+    {
+      "label": "RK1-H1-t2",
+      "status": "finished",
+      "verdict": "pass",
+      "measured_launches": 1,
+      "sha256": "7963fba183a752098e28a9de01cfbae995bf56af2ee945c37554dedba9c3c129"
+    },
+    {
+      "label": "RK1-H1-t3",
+      "status": "finished",
+      "verdict": "pass",
+      "measured_launches": 1,
+      "sha256": "2f575d44f93683dc05670fb3c1641fff74e3468de9141b15d38c1616642e4008"
+    }
+  ],
+  "prior_invocations": [
+    {
+      "scenario": "RK1-E0a",
+      "sha256": "eb49cd73bfea5c789fb77d912bc1fe49142825d8f31ad48751d2df627e30f780",
+      "exit_code": 0,
+      "stop_state": {
+        "triggered": false,
+        "incomplete_or_blocking_trials": [],
+        "missing_requested_trials": [],
+        "unexpected_trials": []
+      },
+      "consumed_after": 1
+    },
+    {
+      "scenario": "RK1-H1",
+      "sha256": "c584e7c60f4050e4344de0f71f1261db41d012477d578636b1950e6c602b2626",
+      "exit_code": 0,
+      "stop_state": {
+        "triggered": false,
+        "incomplete_or_blocking_trials": [],
+        "missing_requested_trials": [],
+        "unexpected_trials": []
+      },
+      "consumed_after": 4
+    }
+  ],
+  "runtime_cap": 25,
+  "consumed_before": 4,
+  "remaining_before": 21,
+  "scenario": "RK1-H2",
+  "start_trial": 1,
+  "expected_labels": [
+    "RK1-H2-t1",
+    "RK1-H2-t2",
+    "RK1-H2-t3"
+  ],
+  "expected_paid_starts": 3,
+  "expected_fake_seed_starts": 6,
+  "expected_total_physical_starts": 9,
+  "expected_CLI_captures": 10,
+  "launcher_go_timeout_minutes": 26,
+  "remaining_if_all_three_start": 18,
+  "consumed_if_all_three_start": 7,
+  "helper_mode_suffix": [
+    "--scenario",
+    "RK1-H2",
+    "--start-trial",
+    "1"
+  ],
+  "original_check_only_argv": [
+    "python3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py",
+    "RK1-H2",
+    "1",
+    "--check-only"
+  ],
+  "original_actual_argv": [
+    "python3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py",
+    "RK1-H2",
+    "1"
+  ],
+  "readers_scope": "Underlying real squad/input authorization and bound handoff are exercised; no separate H2 reader-matrix scoring assertion. Do not claim complete reader-matrix acceptance from H2.",
+  "H2b_separate": true,
+  "results_causes_over_32_not_measured": true,
+  "next_steps": [
+    "root receives explicit core/other-owner release and model window",
+    "refresh full operator binding and commit reviewed registration/addendum in execution checkout",
+    "root allocate/migrate/verify fresh DB764 and private temp/config/false permit",
+    "helper describe; exactplan/source/operator/privateCLIreview",
+    "root permit build; bind actual upfrontCLI/vcsmetadata",
+    "root permit check-only; verify source/operator/launchbudget",
+    "root permit one H2 invocation, passive capture all9perrunCLIcopies; no review/model messages during sharedwindow",
+    "root independentreview actual3trials, rawaccounting/operatorchange; releasewindow; noautomaticH2b"
+  ],
+  "Go_DB_build_tests_Provider_executed": false,
+  "runnable_or_permits_changed": false
+}
