@@ -21,14 +21,17 @@
   "children": [
     "11-05-agent-log-redaction",
     "11-05-agent-ci-test-integrity",
-    "11-05-squad-handoff-contract"
+    "11-05-squad-handoff-contract",
+    "11-05-agent-task-least-privilege",
+    "11-05-squad-delegation-receipts",
+    "11-05-agent-critical-path-ci"
   ],
   "parent": null,
   "relatedFiles": [],
-  "notes": "M0 first P1 fixes fast-forward merged locally into codex/cross-workspace-collaboration at 48aa99745; M1-M3 remain planned. Read next-session-prompt.md, design.md and implement.md.",
+  "notes": "M0 integrated; M1-A1 planning in isolated worktree codex/agent-rnd-m1-20261105. Parent remains in_progress until M1–M3 accepted.",
   "meta": {
     "m0_status": "merged_locally",
-    "m1_status": "planned",
+    "m1_status": "in_progress",
     "m2_status": "planned",
     "m3_status": "planned",
     "m0_merge_commit": "48aa997452cbc912e4052e44794386eafd023a25",

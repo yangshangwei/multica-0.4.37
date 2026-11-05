@@ -20,3 +20,11 @@
 - Parent branch/worktree now point to the integration checkout. M1–M3 remain planned; `next-session-prompt.md` is the continuation entry. No remote push or deployment performed.
 
 - Post-merge checks: redact77 named pass0fail, workflow5/5, wrapperPASS; all3 archived independently reviewed source manifests match merged files. Actual product paths have no working-tree diff. Evidence: merge-checks.json.
+
+## 2026-11-05 M1 continuation
+- Current integration baseline `5aef9c19a`; M0 commits verified ancestors. Shared checkout contains parallel task/spec/journal artifacts; product source left untouched.
+- Isolated worktree `/Volumes/artisan/code/2026/mc-agent-rnd-m1-20261105`, branch `codex/agent-rnd-m1-20261105`.
+- Created M1-A1 `11-05-agent-task-least-privilege` and M1-C1 `11-05-squad-delegation-receipts`; both independently scoped and awaiting plan review before implementation.
+- M1-A1 proposed project-bound reporter/current-issue reviewer API, current-issue comments only; new template versions preserve old instances. Scope question offered, recommendation stated; no authority expansion or automatic acceptance. Existing dispatch_eligible must persist suppression through completion replay; no shell sandbox claim.
+- Task-owned PG17/pgvector container allocated with localhost ephemeral port, 40 max connections, migrations successful. No shared test database borrowed.
+- M1 stage remains incomplete. M2/M3 planned and blocked on earlier acceptance; no paid model, remote push, production, or publication.
