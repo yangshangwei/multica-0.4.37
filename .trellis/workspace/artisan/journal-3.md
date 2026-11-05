@@ -81,3 +81,42 @@ Archived task: .trellis/tasks/archive/2026-11/11-02-collaboration-detail-optimiz
 ### Next Steps
 
 - 先整合已验证修复并运行托管CI；按M1推进capability、证据门禁、关键路径smoke与有效委派
+
+
+## Session 131: M1 task scope, delegation receipts and critical-path CI
+<!-- trellis-session: v=2 fp=9778937a5fa6649b -->
+
+**Date**: 2026-11-06
+**Task**: M1 task scope, delegation receipts and critical-path CI
+**Branch**: `codex/agent-rnd-m1-20261105`
+
+### Summary
+
+Delivered three independently accepted M1 children in isolated worktree; parent remains incomplete through M1–M3.
+
+### Main Changes
+
+- New reporter/reviewer role versions receive frozen API capabilities and inert comments; retained old instance behavior.
+- CLI and leader consume immediate real delegation receipts; fixed malformed duplicate reporting.
+- Critical-path PR smoke enforces isolated production Web and exact four-test inventory.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `f09cd96b8` | Prevent saved comments from masquerading as successful delegation |
+| `cd95c8e40` | Keep reporter and reviewer runs within their authorized task scope |
+| `5b7bfad9c` | Make critical agent journeys fail closed in pull request verification |
+
+### Testing
+
+- [OK] Independent A1 handler-race38/router10/auth-middleware8/service4; migration765 rollback, role/docs, build/vet/sqlc.
+- [OK] Independent D1 CLI70/handler10/execenv4/skills28; CI contracts72 and production-Web4/4 first attempt, source/config match, cleanup0.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Continue M1 controlled execution, current-artifact delivery gates and durable receipts before M2/M3; preserve dirty integration checkout.

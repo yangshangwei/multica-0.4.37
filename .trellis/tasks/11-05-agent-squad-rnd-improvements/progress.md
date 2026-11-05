@@ -28,3 +28,14 @@
 - M1-A1 proposed project-bound reporter/current-issue reviewer API, current-issue comments only; new template versions preserve old instances. Scope question offered, recommendation stated; no authority expansion or automatic acceptance. Existing dispatch_eligible must persist suppression through completion replay; no shell sandbox claim.
 - Task-owned PG17/pgvector container allocated with localhost ephemeral port, 40 max connections, migrations successful. No shared test database borrowed.
 - M1 stage remains incomplete. M2/M3 planned and blocked on earlier acceptance; no paid model, remote push, production, or publication.
+
+- M1-C1 immediate delegation receipt consumption independently accepted and locally committed as `f09cd96b8`: CLI70/handler10/execenv4/skills28 named pass, no skips; build/vet pass. Reviewer fixed malformed duplicate target counting and leader-only evaluation guidance. Durable receipts remain open.
+- M1-A1 real-router title-write red now green (403 and unchanged title); migration765 rollback fence tested against concurrent mint, retained scope and empty private schema. Implementation/security review continues.
+
+- M1-A1 independently accepted and locally committed as `cd95c8e40`: final checker handler-race38/router10/auth-middleware8/service4; role/docs and real765 rollback fences pass. Review found/fixed out-of-scope live source attachment delta and wildcard CDN grant. This is API/tool-grant scope, not host sandbox.
+- M1-C2 pre-run contracts72 pass after independent reviewer fixed swallowed source-identity failures; production Web four-path acceptance starts only after frozen staged source identity.
+
+- 2026-11-06: M1-C2 committed `5b7bfad9c` after independent72 contract checks and actual production-Web4/4 first-attempt pass; final identity matched, cleanup0, sanitized exports contain no private DB/signing credentials. Restored only expected Next-generated declaration afterward. Owned PostgreSQL container stopped after all verification; databases/evidence retained.
+- Original shared checkout remains at `5aef9c19a`; no original product changes, no remote push or deployment. Local integration of the isolated branch remains a separate step requiring preservation of its dirty specs/journal.
+
+- Recorded this isolated journal entry as131 to avoid conflicting with the shared checkout’s uncommitted119–130 history. Do not copy/rewrite that parallel history on integration. Three accepted children archived; parent in_progress.

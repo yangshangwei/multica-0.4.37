@@ -45,3 +45,15 @@ On2026-11-05 the user authorized local merge into `codex/cross-workspace-collabo
 Parallel working changes were preserved:15 unrelated tracked files retain exact bytes;4 overlapping spec/journal files retain both contributions;91 task/report files matched incoming content. Product changes required no conflict resolution. Remote push, hosted CI and deployment remain unexecuted.
 
 Resume through `next-session-prompt.md`. Start M1 planning and execution from the latest target branch after checking its dirty state; M2 and M3 remain dependent future milestones. Existing archived M0 evidence stays authoritative for the exact source hashes it records.
+
+## M1 continuation delivery (2026-11-05)
+
+Work is on `codex/agent-rnd-m1-20261105` in `/Volumes/artisan/code/2026/mc-agent-rnd-m1-20261105`, based on integrated `5aef9c19a`; shared integration checkout remains untouched.
+
+| Child | Actual status | Evidence / limits |
+| --- | --- | --- |
+| M1-C1 immediate delegation receipt consumption | Independently accepted, local commit `f09cd96b8` | CLI70/handler10/execenv4/skill28, build/vet; full response preserved, warning/leader exact-target checks; durable receipt recovery and real-model compliance not proved |
+| M1-A1 reporter/reviewer task API scope | Independently accepted, local commit `cd95c8e40` | Checker handler race38/router10/auth-middleware8/service4, migration765 rollback; live source delta and CDN bypass fixed; host shell sandbox remains separate |
+| M1-C2 critical-path PR smoke | Independently accepted, local commit `5b7bfad9c` |72 contracts; four actual production-Web paths passed first attempt,0skip/retry; source/config unchanged; owned services stopped; hosted CI remains untested |
+
+M1 is not accepted as a complete milestone. Controlled high-risk execution, current-artifact delivery evidence gates and durable delegation receipts remain required. M2 deterministic snapshots/budgets/scheduling and M3 NFR/evaluation/supply-chain/template governance remain planned. No paid model, production, remote push or publication ran.

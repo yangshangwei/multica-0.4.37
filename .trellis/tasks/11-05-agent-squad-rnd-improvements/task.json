@@ -28,7 +28,7 @@
   ],
   "parent": null,
   "relatedFiles": [],
-  "notes": "M0 integrated; M1-A1 planning in isolated worktree codex/agent-rnd-m1-20261105. Parent remains in_progress until M1–M3 accepted.",
+  "notes": "M0 integrated; three M1 children independently accepted in isolated local branch. M1 controlled executor, delivery evidence gates and durable receipts remain; M2/M3 not accepted.",
   "meta": {
     "m0_status": "merged_locally",
     "m1_status": "in_progress",
@@ -37,6 +37,13 @@
     "m0_merge_commit": "48aa997452cbc912e4052e44794386eafd023a25",
     "m0_source_branch": "codex/agent-rnd-p1-20261105",
     "next_milestone": "M1",
-    "integration_status": "local_only"
+    "integration_status": "local_only",
+    "m1_accepted_children": [
+      "agent-task-least-privilege",
+      "squad-delegation-receipts",
+      "agent-critical-path-ci"
+    ],
+    "m1_branch": "codex/agent-rnd-m1-20261105",
+    "m1_worktree": "/Volumes/artisan/code/2026/mc-agent-rnd-m1-20261105"
   }
 }
