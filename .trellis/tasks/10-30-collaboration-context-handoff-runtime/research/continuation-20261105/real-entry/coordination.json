@@ -8,23 +8,24 @@
     "knowledge registered15 complete sequence"
   ],
   "knowledge_agrees": true,
-  "core_ready": false,
-  "closure_fake_ready": false,
+  "core_ready": true,
+  "closure_fake_ready": true,
   "runtime_entry_ready": false,
   "warp_claude": {
-    "pid": 68552,
-    "parent": 67516,
-    "interactive_Warp": true,
-    "established_connections": 3,
-    "inference_activity": "unknown",
-    "user_clarification": "User explicitly closed Warp Claude session",
-    "process_absent_on_recheck": true
+    "user_confirmed_closed": true,
+    "current_claude_processes": 0
   },
   "runtime_calls": 0,
   "runtime_cap": 25,
   "new_main_knowledge_product_applied_to_runtime": false,
-  "updated_at": "2026-11-05T02:59:16.062476+00:00",
+  "updated_at": "2026-11-05T03:37:07.555926+00:00",
   "core_status": "Explicitly not ready: controlled acceptance has30\u201360min remaining before natural boundary",
   "runtime_entry_preparation": "helper and7controls independently reviewed; pendingwindow/finalbinding/DB/build",
-  "model_window_acquired": false
+  "model_window_acquired": true,
+  "current_window": {
+    "start": "2026-11-05T03:34:30Z",
+    "expires": "2026-11-05T03:46:30Z",
+    "hold_through_actual12min": "requested_pending"
+  },
+  "database_recovered": true
 }
