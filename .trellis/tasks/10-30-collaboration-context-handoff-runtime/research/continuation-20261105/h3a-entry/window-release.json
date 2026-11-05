@@ -1,0 +1,41 @@
+{
+  "at": "2026-11-05T13:01:40.492844+00:00",
+  "state": "RELEASED",
+  "scenario": "RK1-H3a",
+  "first_started": "2026-11-05T12:50:58.234878Z",
+  "last_finished": "2026-11-05T13:00:33.042441Z",
+  "helper_finished": "2026-11-05T13:00:33.360932+00:00",
+  "original_exit": 1,
+  "helper_review_ready": false,
+  "trials": [
+    {
+      "label": "RK1-H3a-t1",
+      "status": "finished",
+      "verdict": "pass",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    },
+    {
+      "label": "RK1-H3a-t2",
+      "status": "incomplete",
+      "verdict": "measured:provider_result_missing",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    }
+  ],
+  "new_paid": 2,
+  "fake_seeds": 0,
+  "total_paid": 12,
+  "remaining": 13,
+  "all_permits_false": true,
+  "next_scenario": false,
+  "active_test_browser_provider_processes": [],
+  "owned_database": "multica_rk1_20261105_real_h3a_a729",
+  "owned_DB_connections_excluding_probe": 0,
+  "DB_retained": true,
+  "remaining_work": "readonly failure investigation; no retry"
+}
