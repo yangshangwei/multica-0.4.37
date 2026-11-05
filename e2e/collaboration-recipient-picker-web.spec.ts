@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { test, expect, type Page, type Request, type Route } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
 
-const apiUrl = process.env.COLLABORATION_E2E_API_URL;
+const apiUrl = process.env.COLLABORATION_E2E_API_URL ?? process.env.NEXT_PUBLIC_API_URL;
 
 async function authenticate(page: Page, token: string) {
   await page.addInitScript((value) => {
