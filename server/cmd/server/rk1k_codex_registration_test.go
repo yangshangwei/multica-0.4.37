@@ -60,7 +60,7 @@ func rk1kLoadCodexRegistration(path, digest string) (*rk1kCodexRegistration, err
 		return nil, refuse
 	}
 	var r rk1kCodexRegistration
-	if json.Unmarshal(raw, &r) != nil || r.SchemaVersion != 1 || !r.Authorized || r.Provider != "codex" || r.Cap != 15 || r.Model == "" || r.Version != "0.165.0" || time.Now().After(r.ExpiresAt) {
+	if json.Unmarshal(raw, &r) != nil || r.SchemaVersion != 1 || !r.Authorized || r.Provider != "codex" || r.Cap != 15 || r.Model == "" || (r.Version != "0.165.0" && r.Version != "0.166.0") || time.Now().After(r.ExpiresAt) {
 		return nil, refuse
 	}
 	if !filepath.IsAbs(r.Executable) || !filepath.IsAbs(r.ConfigPath) || !filepath.IsAbs(r.Ledger) || !filepath.IsAbs(r.Output) || !strings.HasPrefix(r.Database, rk1kDatabasePrefix) {
@@ -94,6 +94,35 @@ func rk1kLoadCodexRegistration(path, digest string) (*rk1kCodexRegistration, err
 	}
 	r.RegistrationPath, r.RegistrationSHA256 = path, digest
 	return &r, nil
+}
+
+// Metadata probes must report the registered executable version, without
+// starting it or discovering credentials. Fake-only fixtures retain 0.165.0.
+type rk1kCodexVersionBinding struct {
+	Registration string `json:"registration"`
+	SHA256       string `json:"registration_sha256"`
+}
+
+func rk1kCodexReportedVersion(dir string) (string, error) {
+	raw, err := os.ReadFile(filepath.Join(dir, "codex-version-binding.json"))
+	if errors.Is(err, os.ErrNotExist) {
+		if os.Getenv("MULTICA_RUN_REAL_AGENT_SMOKE") == "1" {
+			return "", errors.New("real Codex version binding is missing")
+		}
+		return rk1kCodexFakeVersion, nil
+	}
+	if err != nil {
+		return "", err
+	}
+	var binding rk1kCodexVersionBinding
+	if json.Unmarshal(raw, &binding) != nil {
+		return "", errors.New("invalid Codex version binding")
+	}
+	r, err := rk1kLoadCodexRegistration(binding.Registration, binding.SHA256)
+	if err != nil {
+		return "", err
+	}
+	return r.Version, nil
 }
 
 type rk1kCodexLedger struct {

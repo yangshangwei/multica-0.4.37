@@ -20,6 +20,7 @@ import (
 )
 
 const rk1kCodexProviderName = "rk1k-codex-provider"
+const rk1kCodexFakeVersion = "0.165.0"
 
 type rk1kCodexWire struct {
 	ID     json.RawMessage `json:"id"`
@@ -197,7 +198,11 @@ func init() {
 
 func rk1kCodexProviderMain(dir string) int {
 	if slices.Contains(os.Args[1:], "--version") {
-		fmt.Println("codex-cli 0.165.0")
+		version, err := rk1kCodexReportedVersion(dir)
+		if err != nil {
+			return 41
+		}
+		fmt.Println("codex-cli " + version)
 		return 0
 	}
 	if len(os.Args) < 2 || os.Args[1] != "app-server" {

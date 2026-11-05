@@ -146,7 +146,7 @@ func newRK1KnowledgeFixture(t *testing.T, dir string, crossSource bool) *rk1kFix
 	}
 	env := &rk1Env{version: rk1kFakeVersion, model: "rk1k-requested-model", wrapper: wrapper, cli: cliPath}
 	if provider == "codex" {
-		env.version = "0.165.0"
+		env.version = rk1kCodexFakeVersion
 		configHome := filepath.Join(home, ".codex")
 		if err := os.MkdirAll(configHome, 0700); err != nil {
 			t.Fatal(err)
@@ -154,6 +154,11 @@ func newRK1KnowledgeFixture(t *testing.T, dir string, crossSource bool) *rk1kFix
 		t.Setenv("CODEX_HOME", configHome)
 		if rk1kActiveReal != nil {
 			env.version, env.model, env.real = rk1kActiveReal.Version, rk1kActiveReal.Model, rk1kActiveReal.Executable
+			if err := rk1WriteJSON(filepath.Join(plans, "codex-version-binding.json"), rk1kCodexVersionBinding{
+				Registration: rk1kActiveReal.RegistrationPath, SHA256: rk1kActiveReal.RegistrationSHA256,
+			}); err != nil {
+				t.Fatal(err)
+			}
 			raw, err := os.ReadFile(rk1kActiveReal.ConfigPath)
 			if err != nil {
 				t.Fatal("registered Codex configuration unavailable")
