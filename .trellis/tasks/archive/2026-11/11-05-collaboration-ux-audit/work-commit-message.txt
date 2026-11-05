@@ -1,0 +1,14 @@
+fix(collaboration): keep cross-workspace actions visible and recoverable
+
+Expose failed context, file and destination reads without losing original
+requests. Keep recipient choices tied to the current search, reveal opened
+workflow forms, and clarify loaded lists, field errors and localized history.
+Compact the narrow header while preserving the established shared UI.
+
+Constraint: Preserve protected query authority and exact original-request recovery
+Rejected: Replace the collaboration UI | Existing business model and visual identity are coherent
+Confidence: high
+Scope-risk: moderate
+Directive: Keep stale recipient rows nonselectable and retained recovery visible through disclosures
+Tested: 312 Views tests; Views/Web/Desktop types; lint; production build; 54 browser captures; independent review
+Not-tested: Installed Electron Main, real AI providers, physical touch and spoken assistive technology
