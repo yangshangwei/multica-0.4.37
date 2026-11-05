@@ -1,0 +1,28 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "-timeout=120s",
+    "./cmd/multica",
+    "-run",
+    "^Test(IssueCommentDelegationReceipts|RunIssueComment(Add|Update)|IssueCommentUpdate)"
+  ],
+  "exit": 1,
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "tests": {
+    "pass": [],
+    "fail": [],
+    "skip": []
+  },
+  "log_sha256": "1c87391235d27667df7e3daa1e8b0b991f8a2c68f3b6f3f3fcfc154dc55917c5",
+  "classification": "parallel_dependency_compile_failure",
+  "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-cli-green-01.jsonl"
+}

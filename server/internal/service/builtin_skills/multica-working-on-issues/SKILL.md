@@ -278,13 +278,13 @@ conflict returns an error without retrying: read the newest body, merge your
 change into it, then use its revision. Merely resending with the newer number
 would overwrite another editor's work.
 
-For dispatch-eligible comments on formal issues, changing the body is a new
-action: the server cancels in-flight runs triggered
-by the old comment and re-evaluates triggers under the editor's current
-invocation permissions. Read `trigger_outcomes` in the JSON response; a saved
-comment does not guarantee that every mentioned agent started. Existing
-attachments are preserved. This command cannot attach new files; use
-`multica issue comment add <issue-id> --attachment <path>` for those.
+Changing a dispatch-eligible comment cancels its old in-flight runs and
+re-evaluates triggers under the editor's current invocation permissions. Use
+`--output json`; match every intended target's type/UUID in `trigger_outcomes`.
+`queued`/`coalesced`/`deferred` confirm admission, not completion; blocked, missing or
+unknown receipts leave delegation unconfirmed. The CLI warns without failing a
+saved write. Do not blindly repost; comment reads cannot recover that receipt.
+Existing attachments stay; attach new files with `issue comment add --attachment`.
 
 ## Metadata: durable custom state
 

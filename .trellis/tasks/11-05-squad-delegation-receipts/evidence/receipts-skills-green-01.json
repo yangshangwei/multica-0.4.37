@@ -1,0 +1,49 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "-timeout=120s",
+    "./internal/service",
+    "-run",
+    "^TestBuiltinSkills(ConformToTemplate|FrontmatterIsStrictYAML)$"
+  ],
+  "exit": 0,
+  "counts": {
+    "pass": 20,
+    "fail": 0,
+    "skip": 0
+  },
+  "tests": {
+    "pass": [
+      "TestBuiltinSkillsConformToTemplate/multica-autopilots",
+      "TestBuiltinSkillsConformToTemplate/multica-creating-agents",
+      "TestBuiltinSkillsConformToTemplate/multica-mentioning",
+      "TestBuiltinSkillsConformToTemplate/multica-onboarding",
+      "TestBuiltinSkillsConformToTemplate/multica-projects-and-resources",
+      "TestBuiltinSkillsConformToTemplate/multica-runtimes-and-repos",
+      "TestBuiltinSkillsConformToTemplate/multica-skill-importing",
+      "TestBuiltinSkillsConformToTemplate/multica-squads",
+      "TestBuiltinSkillsConformToTemplate/multica-working-on-issues",
+      "TestBuiltinSkillsConformToTemplate",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-autopilots",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-creating-agents",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-mentioning",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-onboarding",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-projects-and-resources",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-runtimes-and-repos",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-skill-importing",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-squads",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-working-on-issues",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "log_sha256": "dbf33e90ce54fecf9c0382e7b1aa3bc2a90bc5430572074765b7daf02e1451f2",
+  "classification": "pass",
+  "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-skills-green-01.jsonl"
+}

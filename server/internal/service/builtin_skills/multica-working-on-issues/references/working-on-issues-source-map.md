@@ -126,6 +126,7 @@ default `table` shows `NUMBER STATE TITLE URL`.
 | Cobra route, positive revision requirement, conflict retry guidance and side-effect help | `server/cmd/multica/cmd_issue.go:282` (`issueCommentUpdateCmd`, `init`) |
 | Input sources share existing escape, byte decoding and workdir guards | `server/cmd/multica/cmd_issue.go:45` (`resolveTextFlag`, `ensureFileFlagWithinWorkdir`) |
 | PUT sends only content and expected_revision; JSON stdout and success stderr; API errors return without retry | `server/cmd/multica/cmd_issue.go:2112` (`runIssueCommentUpdate`) |
+| Comment add/update warn for blocked or unconfirmed immediate delegation outcomes without changing full JSON or successful-write exit semantics; later reads cannot reconstruct these write-only receipts | `server/cmd/multica/cmd_comment_trigger_outcomes.go` (`warnCommentTriggerOutcomes`); `cmd_comment_trigger_outcomes_test.go`; `server/internal/handler/comment.go` (`CommentResponse.TriggerOutcomes`) |
 | Workspace-scoped comment lookup, author/admin permission, optional attachment replacement and strict revision checks | `server/internal/handler/comment.go:3181` (`UpdateComment`) |
 | Conditional content write and cancellation commit together; re-trigger uses the editing action's authority | `server/internal/handler/comment.go:3280` (`sourceTaskID`, `strictContentEdit`, `retriggerEditedComment`) |
 | Conflict response is HTTP 409 with expected/actual revision | `server/internal/handler/handler.go:641` (`writeRevisionConflict`) |

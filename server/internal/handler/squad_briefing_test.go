@@ -13,6 +13,34 @@ import (
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
+func TestSquadOperatingProtocolChecksDelegationReceipts(t *testing.T) {
+	for _, ownsStatus := range []bool{true, false} {
+		compact := strings.Join(strings.Fields(squadOperatingProtocolFor(ownsStatus)), " ")
+		for _, want := range []string{
+			"--output json",
+			"trigger_outcomes",
+			"target_type",
+			"target_id",
+			"exact UUID from the live roster",
+			"queued",
+			"coalesced",
+			"deferred",
+			"not proof that work started or completed",
+			"blocked, missing, malformed, unknown, or contradictory",
+			"record `failed`",
+			"handled subset",
+			"Do not repost",
+			"first check whether the comment was saved",
+			"Reading a saved comment cannot recover its original dispatch receipt",
+			"receipt checked and evaluation recorded",
+		} {
+			if !strings.Contains(compact, want) {
+				t.Errorf("owns_status=%v: missing receipt contract %q", ownsStatus, want)
+			}
+		}
+	}
+}
+
 // TestSquadOperatingProtocolRecordsAgainstTheTurnsIssue locks the recording
 // contract the protocol teaches (MUL-6622 / GH #7487): record against the issue
 // this turn runs on — squad assignment of that issue is irrelevant — and, when

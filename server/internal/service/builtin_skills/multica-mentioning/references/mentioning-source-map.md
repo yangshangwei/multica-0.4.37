@@ -87,6 +87,15 @@ a pointer.
 | Negative regression test proves another comment's pending task still dedupes the preview | `server/internal/handler/comment_trigger_preview_test.go:267-290` |
 | Edit-submit regression test proves `suppress_agent_ids` filters update-triggered tasks | `server/internal/handler/comment_trigger_preview_test.go:292-316` |
 
+## Immediate delegation receipts
+
+| Contract | Source |
+| --- | --- |
+| Create/edit responses carry per-explicit-target `target_type`, `target_id`, `status`, `reason_code`; saved comment reads do not recover those outcomes | `server/internal/handler/comment.go` (`CommentTriggerOutcome`, `commentTriggerOutcomes`, `CreateComment`, `UpdateComment`) |
+| CLI warns for blocked, malformed, unknown and contradictory outcomes without changing saved-write exit semantics or JSON; absent array remains compatible with old servers | `server/cmd/multica/cmd_comment_trigger_outcomes.go` (`warnCommentTriggerOutcomes`); `cmd_issue.go` (`runIssueCommentAdd`, `runIssueCommentUpdate`) |
+| Leader matches every live-roster target, treats admission separately from completion, records partial/uncertain delegation as failed with the handled subset, and does not blindly repost | `server/internal/handler/squad_briefing.go` (`squadOperatingProtocolHeader`) |
+| Fake HTTP tests cover add/update JSON and table output, malformed receipts, exact single write and uncertain-response behavior; protocol tests cover owner/guest composition | `server/cmd/multica/cmd_comment_trigger_outcomes_test.go`; `server/internal/handler/squad_briefing_test.go` (`TestSquadOperatingProtocolChecksDelegationReceipts`) |
+
 ## Guards and outcomes for a parsed mention
 
 A mention that parses is never silently dropped: every guard below either

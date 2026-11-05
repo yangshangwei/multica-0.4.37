@@ -793,7 +793,8 @@ func writeMentions(b *strings.Builder) {
 	// client unfurls into the same chip) a project reference stays dead text.
 	b.WriteString("- `[Project Name](mention://project/<project-id>)` — clickable link (no side effect)\n")
 	b.WriteString("- `[@Name](mention://member/<user-id>)` — **notifies a human**\n")
-	b.WriteString("- `[@Name](mention://agent/<agent-id>)` — **enqueues a new run for that agent**\n\n")
+	b.WriteString("- `[@Name](mention://agent/<agent-id>)` — **requests work from that agent**\n")
+	b.WriteString("Read `trigger_outcomes` in the comment write's JSON response and match each intended target's type and UUID. `queued/coalesced/deferred` confirm admission or coverage, not proof of completion; blocked, missing or unknown outcomes do not confirm delegation. Do not repost a saved comment merely because no new run appeared.\n\n")
 	// No prescriptive default here (MUL-6417): the mention syntax hides its
 	// semantics — it reads like a free social gesture but is a spawn/notify
 	// operation — so what this paragraph must supply is the facts that

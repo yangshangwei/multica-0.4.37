@@ -54,15 +54,15 @@ backend's own roster formatter uses `user_id` for member mentions. Match by
 display name. If the name is ambiguous or absent, do not guess — say so in your
 comment instead of emitting a broken link.
 
-## Step 2 — the four types and exactly what each enqueues
+## Step 2 — the four types and their dispatch behavior
 
 Format: `[@Name](mention://<type>/<uuid>)`. The `<type>` and the id source must
 match, or the link resolves to the wrong entity (or to nothing).
 
 | To…                  | type     | uuid from       | What the backend does                                    |
 | -------------------- | -------- | --------------- | -------------------------------------------------------- |
-| trigger an agent     | `agent`  | agent.id        | enqueues a run for that agent (`EnqueueTaskForMention`)  |
-| hand work to a squad | `squad`  | squad.id        | resolves the squad's `leader_id` and enqueues a run for the LEADER agent |
+| trigger an agent     | `agent`  | agent.id        | requests work for that agent, subject to admission and pending-task coverage |
+| hand work to a squad | `squad`  | squad.id        | resolves the squad's `leader_id` and requests work for the LEADER agent |
 | link a person        | `member` | member.user_id  | renders a link; enqueues NOTHING — no agent run          |
 | reference an issue   | `issue`  | issue.id        | renders a link; enqueues NOTHING — always safe           |
 
@@ -122,13 +122,25 @@ evaluated BEFORE the `@all` short-circuit.
 
 ## What does NOT happen (so the result doesn't surprise you)
 
-None of these start a fresh run, and none produce an error response — but they
-are three different things, and the response tells you which. A mention that
-never parsed is a truly silent no-op. One that parsed and was refused comes back
-in `trigger_outcomes` as `status: "blocked"` with a `reason_code`. One whose
-target is already busy comes back `coalesced` or `deferred`: no second run, but
-your comment IS folded into the task that is already running, so it still gets
-read. Read that array after posting — it is the only place any of this shows up.
+A saved comment is not proof of successful delegation. Request `--output json`
+and match every intended `(target_type, target_id)` from the live roster against
+`trigger_outcomes`; squad receipts use the squad UUID, not its leader's UUID.
+`queued`, `coalesced` and `deferred` confirm admission or input coverage, not that
+the target started, finished, or passed review. `blocked` means refusal; missing,
+malformed, unknown or contradictory duplicate entries leave the target
+unconfirmed. A mention that never parsed has no receipt at all.
+
+The CLI warns on stderr about blocked or unconfirmed returned outcomes while
+preserving the saved comment's successful exit and full stdout JSON. Older
+servers can omit the array without a CLI warning; the leader must still check
+its expected targets. On a squad leader's delegation-only turn, record partial or
+unconfirmed delegation as `failed`, with the handled subset and unresolved targets
+in the activity reason, without another comment. Other agents do not call the
+leader-only squad activity endpoint.
+Do not repost a saved comment or blindly retry a lost response. After response
+loss, first check whether the comment was saved. That read proves only that it
+exists; it cannot recover the original dispatch receipt. Leave uncertainty for
+an authorized follow-up.
 
 - **A name where a UUID belongs.** `mention://member/Alice` is dead. The id
   group accepts only hex+dashes or `all`; the non-hex letters in a typical name

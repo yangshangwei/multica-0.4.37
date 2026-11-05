@@ -37,6 +37,7 @@
 | [Managed Installations](./managed-installations.md) | Signed enrollment, scoped runtime authority, recovery and provenance | Active |
 | [Creator Recommendations](./creator-recommendations.md) | Human-only, evidence-grounded LLM advice and invocation boundaries | Active |
 | [Resource publishing](./resource-publishing.md) | Managed uploads, atomic catalog revisions, authorization and replay | Active |
+| [Squad delegation receipts](./squad-delegation-receipts.md) | Immediate CLI/leader receipt consumption, uncertainty and partial admission | Implemented; durable receipts separate |
 | [Built-in Template Registries](./builtin-templates.md) | Role/squad/autopilot provenance, security routing, status ownership and server-decided content | Active |
 | [Project execution squads](./project-execution-squad.md) | Project setup, authority, atomic materialization and UI recovery contracts | Active |
 | [Local directory snapshots](./local-directory-snapshots.md) | Git index timestamps, private-index fallback and user-work preservation | Active |

@@ -1,0 +1,40 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "-timeout=180s",
+    "./internal/handler",
+    "-run",
+    "^Test(SquadOperatingProtocol|BuildSquadLeaderBriefing)"
+  ],
+  "database": "rnd_m1_receipts_review01",
+  "exit": 0,
+  "counts": {
+    "pass": 10,
+    "fail": 0,
+    "skip": 0
+  },
+  "tests": {
+    "pass": [
+      "TestSquadOperatingProtocolChecksDelegationReceipts",
+      "TestSquadOperatingProtocolRecordsAgainstTheTurnsIssue",
+      "TestSquadOperatingProtocolOwnsParentStatus",
+      "TestSquadOperatingProtocolScopesParentStatusOwnership",
+      "TestSquadOperatingProtocolWarnsAgainstDualTrigger",
+      "TestBuildSquadLeaderBriefing_FullSquad",
+      "TestBuildSquadLeaderBriefing_MemberSkillsInRoster",
+      "TestBuildSquadLeaderBriefing_OnlyLeader",
+      "TestBuildSquadLeaderBriefing_SkipsArchivedAgent",
+      "TestBuildSquadLeaderBriefing_MentionsRoundTrip"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "log_sha256": "a5a1e285b938357b09b72d31c561e2f90c2914ed3e9116739b4a06f15fef019b",
+  "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-independent-handler-01.jsonl",
+  "classification": "independent_review_pass"
+}

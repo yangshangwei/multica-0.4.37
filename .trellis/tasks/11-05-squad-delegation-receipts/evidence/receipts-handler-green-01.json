@@ -1,0 +1,29 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "-timeout=180s",
+    "./internal/handler",
+    "-run",
+    "^Test(SquadOperatingProtocol|BuildSquadLeaderBriefing)"
+  ],
+  "database": "rnd_m1_receipts_green01",
+  "exit": 1,
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "tests": {
+    "pass": [],
+    "fail": [],
+    "skip": []
+  },
+  "log_sha256": "bd1cf95f1e41c58f8cdba9e15f78b97b1de9513685329a57381f0ba0c3cc0b8f",
+  "classification": "parallel_dependency_compile_failure",
+  "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-handler-green-01.jsonl"
+}
