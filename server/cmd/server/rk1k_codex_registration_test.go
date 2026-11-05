@@ -15,24 +15,32 @@ import (
 )
 
 type rk1kCodexRegistration struct {
-	SchemaVersion      int               `json:"schema_version"`
-	Authorized         bool              `json:"authorized"`
-	Provider           string            `json:"provider"`
-	Executable         string            `json:"executable"`
-	ExecutableSHA256   string            `json:"executable_sha256"`
-	Version            string            `json:"version"`
-	Model              string            `json:"model"`
-	ConfigPath         string            `json:"config_path"`
-	ConfigSHA256       string            `json:"config_sha256"`
-	TestBinarySHA256   string            `json:"test_binary_sha256"`
-	SourceFiles        map[string]string `json:"source_files"`
-	Cap                int               `json:"physical_start_cap"`
-	Ledger             string            `json:"ledger"`
-	Output             string            `json:"output"`
-	Database           string            `json:"database"`
-	ExpiresAt          time.Time         `json:"expires_at"`
-	RegistrationPath   string            `json:"-"`
-	RegistrationSHA256 string            `json:"-"`
+	SchemaVersion           int               `json:"schema_version"`
+	Authorized              bool              `json:"authorized"`
+	Provider                string            `json:"provider"`
+	Executable              string            `json:"executable"`
+	ExecutableSHA256        string            `json:"executable_sha256"`
+	Version                 string            `json:"version"`
+	Model                   string            `json:"model"`
+	ConfigPath              string            `json:"config_path"`
+	ConfigSHA256            string            `json:"config_sha256"`
+	TestBinarySHA256        string            `json:"test_binary_sha256"`
+	SourceFiles             map[string]string `json:"source_files"`
+	Cap                     int               `json:"physical_start_cap"`
+	Mode                    string            `json:"mode,omitempty"`
+	AttemptLimit            int               `json:"attempt_limit,omitempty"`
+	PriorLedger             string            `json:"prior_ledger,omitempty"`
+	PriorLedgerSHA256       string            `json:"prior_ledger_sha256,omitempty"`
+	PriorActualStarts       int               `json:"prior_actual_starts,omitempty"`
+	PriorDebits             int               `json:"prior_debits,omitempty"`
+	PriorRegistration       string            `json:"prior_registration,omitempty"`
+	PriorRegistrationSHA256 string            `json:"prior_registration_sha256,omitempty"`
+	Ledger                  string            `json:"ledger"`
+	Output                  string            `json:"output"`
+	Database                string            `json:"database"`
+	ExpiresAt               time.Time         `json:"expires_at"`
+	RegistrationPath        string            `json:"-"`
+	RegistrationSHA256      string            `json:"-"`
 }
 
 var rk1kActiveReal *rk1kCodexRegistration
@@ -47,6 +55,10 @@ func rk1kFileHash(path string) (string, error) {
 }
 
 func rk1kLoadCodexRegistration(path, digest string) (*rk1kCodexRegistration, error) {
+	return rk1kLoadCodexRegistrationMode(path, digest, "")
+}
+
+func rk1kLoadCodexRegistrationMode(path, digest, entryMode string) (*rk1kCodexRegistration, error) {
 	refuse := errors.New("Codex knowledge registration is absent, changed, expired or unauthorized")
 	if !filepath.IsAbs(path) || len(digest) != 64 {
 		return nil, refuse
@@ -64,6 +76,12 @@ func rk1kLoadCodexRegistration(path, digest string) (*rk1kCodexRegistration, err
 		return nil, refuse
 	}
 	if !filepath.IsAbs(r.Executable) || !filepath.IsAbs(r.ConfigPath) || !filepath.IsAbs(r.Ledger) || !filepath.IsAbs(r.Output) || !strings.HasPrefix(r.Database, rk1kDatabasePrefix) {
+		return nil, refuse
+	}
+	if entryMode != "" && !rk1kCodexEntryMode(r.Mode, entryMode) {
+		return nil, refuse
+	}
+	if err := rk1kValidateRetryHistory(&r); err != nil {
 		return nil, refuse
 	}
 	for path, want := range map[string]string{r.Executable: r.ExecutableSHA256, r.ConfigPath: r.ConfigSHA256} {
@@ -126,9 +144,14 @@ func rk1kCodexReportedVersion(dir string) (string, error) {
 }
 
 type rk1kCodexLedger struct {
-	Cap     int              `json:"cap"`
-	Starts  []rk1kCodexStart `json:"starts"`
-	Stopped bool             `json:"stopped"`
+	Cap               int              `json:"cap"`
+	Mode              string           `json:"mode,omitempty"`
+	AttemptLimit      int              `json:"attempt_limit,omitempty"`
+	PriorLedgerSHA256 string           `json:"prior_ledger_sha256,omitempty"`
+	PriorActualStarts int              `json:"prior_actual_starts,omitempty"`
+	PriorDebits       int              `json:"prior_debits,omitempty"`
+	Starts            []rk1kCodexStart `json:"starts"`
+	Stopped           bool             `json:"stopped"`
 }
 type rk1kCodexStart struct {
 	Sequence        int          `json:"sequence"`
@@ -178,8 +201,14 @@ func rk1kReserveCodex(plan rk1Plan, id rk1kIdentity, launch string) (*rk1kCodexR
 }
 
 func rk1kReserveCodexLedger(r *rk1kCodexRegistration, id rk1kIdentity, launch string) (*rk1kCodexReservation, error) {
+	if err := rk1kValidateRetryHistory(r); err != nil {
+		return nil, err
+	}
 	reservation := &rk1kCodexReservation{path: r.Ledger, model: r.Model}
 	err := rk1kWithCodexLedger(r.Ledger, func(l *rk1kCodexLedger) error {
+		if err := rk1kValidateLedgerMode(r, l, id, launch); err != nil {
+			return err
+		}
 		if l.Stopped || len(l.Starts) >= l.Cap || (len(l.Starts) > 0 && !l.Starts[len(l.Starts)-1].Complete) {
 			return errors.New("Codex ledger exhausted or previous execution incomplete")
 		}

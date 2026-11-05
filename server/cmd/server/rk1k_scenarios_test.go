@@ -421,6 +421,19 @@ func TestRK1KnowledgeFakeProof(t *testing.T) {
 	rk1kRunProof(t)
 }
 
+// rk1kRunE0b is shared by the full series and the independently authorized
+// single retry. Producers, execution, and acceptance assertions stay identical.
+func rk1kRunE0b(t *testing.T, out string) rk1kSample {
+	t.Helper()
+	f := newRK1KnowledgeFixture(t, filepath.Join(out, "E0b"), false)
+	f.h.TaskService.KnowledgeContextEnabled, f.svc.KnowledgeContextEnabled = false, false
+	chat := f.chat(f.base.ownerToken)
+	id := f.chatMessage(f.base.ownerToken, chat)
+	sample := f.executeOrdinary("E0b", "chat", f.claimed(id), uuid.NewString(), "", nil, true)
+	rk1kRequireSample(t, sample)
+	return sample
+}
+
 func rk1kRunProof(t *testing.T) {
 	rk1kRequireDatabase(t)
 	out := os.Getenv("RK1K_FAKE_PROOF_OUT")
@@ -429,13 +442,7 @@ func rk1kRunProof(t *testing.T) {
 	}
 	var samples []rk1kSample
 	if !t.Run("E0b", func(t *testing.T) {
-		f := newRK1KnowledgeFixture(t, filepath.Join(out, "E0b"), false)
-		f.h.TaskService.KnowledgeContextEnabled, f.svc.KnowledgeContextEnabled = false, false
-		chat := f.chat(f.base.ownerToken)
-		id := f.chatMessage(f.base.ownerToken, chat)
-		sample := f.executeOrdinary("E0b", "chat", f.claimed(id), uuid.NewString(), "", nil, true)
-		rk1kRequireSample(t, sample)
-		samples = append(samples, sample)
+		samples = append(samples, rk1kRunE0b(t, out))
 	}) {
 		t.FailNow()
 	}

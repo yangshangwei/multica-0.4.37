@@ -39,7 +39,7 @@ func rk1kRealAdmission() error {
 	if os.Getenv("MULTICA_RUN_REAL_AGENT_SMOKE") != "1" {
 		return errors.New("real knowledge authorization required")
 	}
-	_, err := rk1kLoadCodexRegistration(os.Getenv("RK1K_CODEX_REGISTRATION"), os.Getenv("RK1K_CODEX_REGISTRATION_SHA256"))
+	_, err := rk1kLoadCodexRegistrationMode(os.Getenv("RK1K_CODEX_REGISTRATION"), os.Getenv("RK1K_CODEX_REGISTRATION_SHA256"), "full")
 	return err
 }
 
@@ -51,7 +51,7 @@ func TestRK1KnowledgeRealModel(t *testing.T) {
 	if err := rk1kRealAdmission(); err != nil {
 		t.Fatal(err)
 	}
-	registration, err := rk1kLoadCodexRegistration(os.Getenv("RK1K_CODEX_REGISTRATION"), os.Getenv("RK1K_CODEX_REGISTRATION_SHA256"))
+	registration, err := rk1kLoadCodexRegistrationMode(os.Getenv("RK1K_CODEX_REGISTRATION"), os.Getenv("RK1K_CODEX_REGISTRATION_SHA256"), "full")
 	if err != nil {
 		t.Fatal(err)
 	}
