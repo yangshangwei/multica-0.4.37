@@ -1,0 +1,16 @@
+{
+  "kind": "Read-only source text and manifest corroboration; no product test execution",
+  "checks": {
+    "preview_rr": true,
+    "apply_rc": true,
+    "bounded_three_attempts": true,
+    "running_count_hash_exclusion": true,
+    "source_current_required": true,
+    "current_target_rejected": true,
+    "canonical_sql_equivalence_test_exists": true,
+    "original_performance_failure_preserved": true,
+    "source_hashes_still_match": true
+  },
+  "runtime": "NOT_RUN",
+  "database": "NOT_CONNECTED"
+}

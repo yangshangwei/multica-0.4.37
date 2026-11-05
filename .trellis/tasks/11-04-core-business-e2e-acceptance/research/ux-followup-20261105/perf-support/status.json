@@ -1,0 +1,16 @@
+{
+  "scope": "read-only P95 semantics/reuse support explicitly delegated by core owner",
+  "state": "complete_read_only_review",
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "core_owner": "01a1a731-b1e5-7b11-b83e-55efca5293d6",
+  "product_or_test_changes": false,
+  "db_test_build_browser_provider_executed": false,
+  "original_p95_ms": 2155.025,
+  "unchanged_threshold_ms": 2000,
+  "performance_gate": "FAIL retained; no optimization implemented",
+  "first_conditional_candidate": "Canonical active-task ordered read transport after complete authority and reference locks; measure phase cost first",
+  "deferred_candidate": "Participation read batching requires own source-before-target validation/error/lock design",
+  "next_owner_action": "Measure current-candidate closure phase cost in an explicitly owned diagnostic window; only then choose a narrowly scoped product change",
+  "created_at": "2026-11-05T10:14:06.823171+00:00",
+  "independent_review": "PASS with static-only limits"
+}
