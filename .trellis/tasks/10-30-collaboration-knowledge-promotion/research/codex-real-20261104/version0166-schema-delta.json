@@ -1,0 +1,4307 @@
+[
+  {
+    "path": "ThreadStartResponse/definitions/CodexErrorInfo/anyOf",
+    "before": [
+      {
+        "enum": [
+          "contextWindowExceeded",
+          "sessionBudgetExceeded",
+          "usageLimitExceeded",
+          "rateLimitExceeded",
+          "flexUnavailable",
+          "serverOverloaded",
+          "modelNotFound",
+          "cyberPolicy",
+          "misalignmentPolicyViolation",
+          "tooManyDenials",
+          "internalServerError",
+          "unauthorized",
+          "badRequest",
+          "threadRollbackFailed",
+          "sandboxError",
+          "other"
+        ],
+        "type": "string"
+      },
+      {
+        "additionalProperties": false,
+        "properties": {
+          "httpConnectionFailed": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "httpConnectionFailed"
+        ],
+        "title": "HttpConnectionFailedCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "Failed to connect to the response SSE stream.",
+        "properties": {
+          "responseStreamConnectionFailed": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "responseStreamConnectionFailed"
+        ],
+        "title": "ResponseStreamConnectionFailedCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "The response SSE stream disconnected in the middle of a turn before completion.",
+        "properties": {
+          "responseStreamDisconnected": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "responseStreamDisconnected"
+        ],
+        "title": "ResponseStreamDisconnectedCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "Reached the retry limit for responses.",
+        "properties": {
+          "responseTooManyFailedAttempts": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "responseTooManyFailedAttempts"
+        ],
+        "title": "ResponseTooManyFailedAttemptsCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "Returned when `turn/start` or `turn/steer` is submitted while the current active turn cannot accept same-turn steering, for example `/review` or manual `/compact`.",
+        "properties": {
+          "activeTurnNotSteerable": {
+            "properties": {
+              "turnKind": {
+                "$ref": "#/definitions/NonSteerableTurnKind"
+              }
+            },
+            "required": [
+              "turnKind"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "activeTurnNotSteerable"
+        ],
+        "title": "ActiveTurnNotSteerableCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "type": [
+          "string",
+          "object"
+        ]
+      }
+    ],
+    "after": [
+      {
+        "enum": [
+          "contextWindowExceeded",
+          "sessionBudgetExceeded",
+          "usageLimitExceeded",
+          "rateLimitExceeded",
+          "flexUnavailable",
+          "serverOverloaded",
+          "modelNotFound",
+          "policyCapacityUnavailable",
+          "cyberPolicy",
+          "misalignmentPolicyViolation",
+          "tooManyDenials",
+          "internalServerError",
+          "unauthorized",
+          "badRequest",
+          "threadRollbackFailed",
+          "sandboxError",
+          "other"
+        ],
+        "type": "string"
+      },
+      {
+        "additionalProperties": false,
+        "properties": {
+          "httpConnectionFailed": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "httpConnectionFailed"
+        ],
+        "title": "HttpConnectionFailedCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "Failed to connect to the response SSE stream.",
+        "properties": {
+          "responseStreamConnectionFailed": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "responseStreamConnectionFailed"
+        ],
+        "title": "ResponseStreamConnectionFailedCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "The response SSE stream disconnected in the middle of a turn before completion.",
+        "properties": {
+          "responseStreamDisconnected": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "responseStreamDisconnected"
+        ],
+        "title": "ResponseStreamDisconnectedCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "Reached the retry limit for responses.",
+        "properties": {
+          "responseTooManyFailedAttempts": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "responseTooManyFailedAttempts"
+        ],
+        "title": "ResponseTooManyFailedAttemptsCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "Returned when `turn/start` or `turn/steer` is submitted while the current active turn cannot accept same-turn steering, for example `/review` or manual `/compact`.",
+        "properties": {
+          "activeTurnNotSteerable": {
+            "properties": {
+              "turnKind": {
+                "$ref": "#/definitions/NonSteerableTurnKind"
+              }
+            },
+            "required": [
+              "turnKind"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "activeTurnNotSteerable"
+        ],
+        "title": "ActiveTurnNotSteerableCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "type": [
+          "string",
+          "object"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "ThreadStartResponse/definitions/ThreadItem/description",
+    "kind": "added",
+    "value": "A thread item and its recorded lifecycle times. The payload stays flat on the wire."
+  },
+  {
+    "path": "ThreadStartResponse/definitions/ThreadItem/oneOf",
+    "before": [
+      {
+        "properties": {
+          "clientId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "content": {
+            "items": {
+              "$ref": "#/definitions/UserInput"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "userMessage"
+            ],
+            "title": "UserMessageThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "content",
+          "id",
+          "type"
+        ],
+        "title": "UserMessageThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "fragments": {
+            "items": {
+              "$ref": "#/definitions/HookPromptFragment"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "hookPrompt"
+            ],
+            "title": "HookPromptThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "fragments",
+          "id",
+          "type"
+        ],
+        "title": "HookPromptThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "delivery": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/AgentMessageDelivery"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "id": {
+            "type": "string"
+          },
+          "memoryCitation": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/MemoryCitation"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "phase": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/MessagePhase"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "questions": {
+            "default": null,
+            "items": {
+              "$ref": "#/definitions/AsyncUserInputQuestion"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "agentMessage"
+            ],
+            "title": "AgentMessageThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "type"
+        ],
+        "title": "AgentMessageThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "output": {
+            "$ref": "#/definitions/FunctionCallOutputBody"
+          },
+          "type": {
+            "enum": [
+              "functionCallOutput"
+            ],
+            "title": "FunctionCallOutputThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "output",
+          "type"
+        ],
+        "title": "FunctionCallOutputThreadItem",
+        "type": "object"
+      },
+      {
+        "description": "EXPERIMENTAL - proposed plan item content. The completed plan item is authoritative and may not match the concatenation of `PlanDelta` text.",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "plan"
+            ],
+            "title": "PlanThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "type"
+        ],
+        "title": "PlanThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "content": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "summary": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": {
+            "enum": [
+              "reasoning"
+            ],
+            "title": "ReasoningThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "ReasoningThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "aggregatedOutput": {
+            "description": "The command's output, aggregated from stdout and stderr.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "command": {
+            "description": "The command to be executed.",
+            "type": "string"
+          },
+          "commandActions": {
+            "description": "A best-effort parsing of the command to understand the action(s) it will perform. This returns a list of CommandAction objects because a single shell command may be composed of many commands piped together.",
+            "items": {
+              "$ref": "#/definitions/CommandAction"
+            },
+            "type": "array"
+          },
+          "cwd": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/LegacyAppPathString"
+              }
+            ],
+            "description": "The command's working directory."
+          },
+          "durationMs": {
+            "description": "The duration of the command execution in milliseconds.",
+            "format": "int64",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "exitCode": {
+            "description": "The command's exit code.",
+            "format": "int32",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "pluginId": {
+            "default": null,
+            "description": "Trusted first-party plugin id when this command resolves to one plugin script.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "processId": {
+            "description": "Identifier for the underlying PTY process (when available).",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "scriptPath": {
+            "default": null,
+            "description": "Safe plugin-relative path when this command resolves to one plugin script.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/CommandExecutionSource"
+              }
+            ],
+            "default": "agent"
+          },
+          "status": {
+            "$ref": "#/definitions/CommandExecutionStatus"
+          },
+          "type": {
+            "enum": [
+              "commandExecution"
+            ],
+            "title": "CommandExecutionThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "command",
+          "commandActions",
+          "cwd",
+          "id",
+          "status",
+          "type"
+        ],
+        "title": "CommandExecutionThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "changes": {
+            "items": {
+              "$ref": "#/definitions/FileUpdateChange"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/definitions/PatchApplyStatus"
+          },
+          "type": {
+            "enum": [
+              "fileChange"
+            ],
+            "title": "FileChangeThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "changes",
+          "id",
+          "status",
+          "type"
+        ],
+        "title": "FileChangeThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "appContext": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpToolCallAppContext"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "arguments": true,
+          "durationMs": {
+            "description": "The duration of the MCP tool call in milliseconds.",
+            "format": "int64",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpToolCallError"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "mcpAppResourceUri": {
+            "description": "Legacy compatibility field; prefer `mcpAppUi.resourceUri` when available.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "mcpAppUi": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpAppUi"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Presentation captured from the invoked descriptor; absent in older history."
+          },
+          "pluginId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "readOnlyHint": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpToolCallResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "server": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/definitions/McpToolCallStatus"
+          },
+          "tool": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "mcpToolCall"
+            ],
+            "title": "McpToolCallThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "arguments",
+          "id",
+          "server",
+          "status",
+          "tool",
+          "type"
+        ],
+        "title": "McpToolCallThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "arguments": true,
+          "contentItems": {
+            "items": {
+              "$ref": "#/definitions/DynamicToolCallOutputContentItem"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "durationMs": {
+            "description": "The duration of the dynamic tool call in milliseconds.",
+            "format": "int64",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "$ref": "#/definitions/DynamicToolCallStatus"
+          },
+          "success": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "tool": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "dynamicToolCall"
+            ],
+            "title": "DynamicToolCallThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "arguments",
+          "id",
+          "status",
+          "tool",
+          "type"
+        ],
+        "title": "DynamicToolCallThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "agentsStates": {
+            "additionalProperties": {
+              "$ref": "#/definitions/CollabAgentState"
+            },
+            "description": "Last known status of the target agents, when available.",
+            "type": "object"
+          },
+          "id": {
+            "description": "Unique identifier for this collab tool call.",
+            "type": "string"
+          },
+          "model": {
+            "description": "Model requested for the spawned agent, when applicable.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "prompt": {
+            "description": "Prompt text sent as part of the collab tool call, when available.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reasoningEffort": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ReasoningEffort"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Reasoning effort requested for the spawned agent, when applicable."
+          },
+          "receiverThreadIds": {
+            "description": "Thread ID of the receiving agent, when applicable. In case of spawn operation, this corresponds to the newly spawned agent.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "senderThreadId": {
+            "description": "Thread ID of the agent issuing the collab request.",
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/CollabAgentToolCallStatus"
+              }
+            ],
+            "description": "Current status of the collab tool call."
+          },
+          "tool": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/CollabAgentTool"
+              }
+            ],
+            "description": "Name of the collab tool that was invoked."
+          },
+          "type": {
+            "enum": [
+              "collabAgentToolCall"
+            ],
+            "title": "CollabAgentToolCallThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "agentsStates",
+          "id",
+          "receiverThreadIds",
+          "senderThreadId",
+          "status",
+          "tool",
+          "type"
+        ],
+        "title": "CollabAgentToolCallThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "agentPath": {
+            "type": "string"
+          },
+          "agentThreadId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/definitions/SubAgentActivityKind"
+          },
+          "model": {
+            "description": "Resolved model at sub-agent creation; absent from older records and other activities.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reasoningEffort": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ReasoningEffort"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Resolved reasoning effort at sub-agent creation, when known."
+          },
+          "type": {
+            "enum": [
+              "subAgentActivity"
+            ],
+            "title": "SubAgentActivityThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "agentPath",
+          "agentThreadId",
+          "id",
+          "kind",
+          "type"
+        ],
+        "title": "SubAgentActivityThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "action": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/WebSearchAction"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          },
+          "results": {
+            "default": null,
+            "description": "Structured search results returned out-of-band by standalone web search.\n\nThese stay as opaque JSON at the extension/app-server boundary so new result fields and result types can pass through without a Codex release.",
+            "items": true,
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "type": {
+            "enum": [
+              "webSearch"
+            ],
+            "title": "WebSearchThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "query",
+          "type"
+        ],
+        "title": "WebSearchThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "path": {
+            "$ref": "#/definitions/LegacyAppPathString"
+          },
+          "type": {
+            "enum": [
+              "imageView"
+            ],
+            "title": "ImageViewThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "path",
+          "type"
+        ],
+        "title": "ImageViewThreadItem",
+        "type": "object"
+      },
+      {
+        "description": "Display item emitted by the interruptible `clock.sleep` tool.",
+        "properties": {
+          "durationMs": {
+            "format": "uint64",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "sleep"
+            ],
+            "title": "SleepThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "durationMs",
+          "id",
+          "type"
+        ],
+        "title": "SleepThreadItem",
+        "type": "object"
+      },
+      {
+        "anyOf": [
+          {
+            "properties": {
+              "fileId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "fileId"
+            ],
+            "title": "FileIdThreadItem",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "result": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "result"
+            ],
+            "title": "ResultThreadItem",
+            "type": "object"
+          }
+        ],
+        "description": "Either inline generated-image data or its durable attachment-store identity.\n\n`File` must remain first so rollouts written during the migration, which contain both an empty `result` and a `fileId`, retain the file reference when deserialized.",
+        "properties": {
+          "failure": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ImageGenerationFailure"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "id": {
+            "type": "string"
+          },
+          "inputImages": {
+            "description": "Observed local inputs for a completed generation, absent on older items.",
+            "items": {
+              "$ref": "#/definitions/ImageGenerationInputImage"
+            },
+            "type": "array"
+          },
+          "revisedPrompt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "savedPath": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/AbsolutePathBuf"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "transparentBackground": {
+            "default": null,
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "type": {
+            "enum": [
+              "imageGeneration"
+            ],
+            "title": "ImageGenerationThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "type"
+        ],
+        "title": "ImageGenerationThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "review": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "enteredReviewMode"
+            ],
+            "title": "EnteredReviewModeThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "review",
+          "type"
+        ],
+        "title": "EnteredReviewModeThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "review": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "exitedReviewMode"
+            ],
+            "title": "ExitedReviewModeThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "review",
+          "type"
+        ],
+        "title": "ExitedReviewModeThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "contextCompaction"
+            ],
+            "title": "ContextCompactionThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "ContextCompactionThreadItem",
+        "type": "object"
+      }
+    ],
+    "after": [
+      {
+        "properties": {
+          "clientId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "content": {
+            "items": {
+              "$ref": "#/definitions/UserInput"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "userMessage"
+            ],
+            "title": "UserMessageThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "content",
+          "id",
+          "type"
+        ],
+        "title": "UserMessageThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "fragments": {
+            "items": {
+              "$ref": "#/definitions/HookPromptFragment"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "hookPrompt"
+            ],
+            "title": "HookPromptThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "fragments",
+          "id",
+          "type"
+        ],
+        "title": "HookPromptThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "delivery": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/AgentMessageDelivery"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "id": {
+            "type": "string"
+          },
+          "memoryCitation": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/MemoryCitation"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "phase": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/MessagePhase"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "questions": {
+            "default": null,
+            "items": {
+              "$ref": "#/definitions/AsyncUserInputQuestion"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "agentMessage"
+            ],
+            "title": "AgentMessageThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "type"
+        ],
+        "title": "AgentMessageThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "output": {
+            "$ref": "#/definitions/FunctionCallOutputBody"
+          },
+          "type": {
+            "enum": [
+              "functionCallOutput"
+            ],
+            "title": "FunctionCallOutputThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "output",
+          "type"
+        ],
+        "title": "FunctionCallOutputThreadItem",
+        "type": "object"
+      },
+      {
+        "description": "EXPERIMENTAL - proposed plan item content. The completed plan item is authoritative and may not match the concatenation of `PlanDelta` text.",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "plan"
+            ],
+            "title": "PlanThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "type"
+        ],
+        "title": "PlanThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "content": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "summary": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": {
+            "enum": [
+              "reasoning"
+            ],
+            "title": "ReasoningThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "ReasoningThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "aggregatedOutput": {
+            "description": "The command's output, aggregated from stdout and stderr.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "command": {
+            "description": "The command to be executed.",
+            "type": "string"
+          },
+          "commandActions": {
+            "description": "A best-effort parsing of the command to understand the action(s) it will perform. This returns a list of CommandAction objects because a single shell command may be composed of many commands piped together.",
+            "items": {
+              "$ref": "#/definitions/CommandAction"
+            },
+            "type": "array"
+          },
+          "cwd": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/LegacyAppPathString"
+              }
+            ],
+            "description": "The command's working directory."
+          },
+          "durationMs": {
+            "description": "The duration of the command execution in milliseconds.",
+            "format": "int64",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "exitCode": {
+            "description": "The command's exit code.",
+            "format": "int32",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "pluginId": {
+            "default": null,
+            "description": "Trusted first-party plugin id when this command resolves to one plugin script.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "processId": {
+            "description": "Identifier for the underlying PTY process (when available).",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "scriptPath": {
+            "default": null,
+            "description": "Safe plugin-relative path when this command resolves to one plugin script.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/CommandExecutionSource"
+              }
+            ],
+            "default": "agent"
+          },
+          "status": {
+            "$ref": "#/definitions/CommandExecutionStatus"
+          },
+          "type": {
+            "enum": [
+              "commandExecution"
+            ],
+            "title": "CommandExecutionThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "command",
+          "commandActions",
+          "cwd",
+          "id",
+          "status",
+          "type"
+        ],
+        "title": "CommandExecutionThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "changes": {
+            "items": {
+              "$ref": "#/definitions/FileUpdateChange"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/definitions/PatchApplyStatus"
+          },
+          "type": {
+            "enum": [
+              "fileChange"
+            ],
+            "title": "FileChangeThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "changes",
+          "id",
+          "status",
+          "type"
+        ],
+        "title": "FileChangeThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "appContext": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpToolCallAppContext"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "arguments": true,
+          "durationMs": {
+            "description": "The duration of the MCP tool call in milliseconds.",
+            "format": "int64",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpToolCallError"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "mcpAppResourceUri": {
+            "description": "Legacy compatibility field; prefer `mcpAppUi.resourceUri` when available.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "mcpAppUi": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpAppUi"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Presentation captured from the invoked descriptor; absent in older history."
+          },
+          "pluginId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "readOnlyHint": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpToolCallResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "server": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/definitions/McpToolCallStatus"
+          },
+          "tool": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "mcpToolCall"
+            ],
+            "title": "McpToolCallThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "arguments",
+          "id",
+          "server",
+          "status",
+          "tool",
+          "type"
+        ],
+        "title": "McpToolCallThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "arguments": true,
+          "contentItems": {
+            "items": {
+              "$ref": "#/definitions/DynamicToolCallOutputContentItem"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "durationMs": {
+            "description": "The duration of the dynamic tool call in milliseconds.",
+            "format": "int64",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "$ref": "#/definitions/DynamicToolCallStatus"
+          },
+          "success": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "tool": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "dynamicToolCall"
+            ],
+            "title": "DynamicToolCallThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "arguments",
+          "id",
+          "status",
+          "tool",
+          "type"
+        ],
+        "title": "DynamicToolCallThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "agentsStates": {
+            "additionalProperties": {
+              "$ref": "#/definitions/CollabAgentState"
+            },
+            "description": "Last known status of the target agents, when available.",
+            "type": "object"
+          },
+          "id": {
+            "description": "Unique identifier for this collab tool call.",
+            "type": "string"
+          },
+          "model": {
+            "description": "Model requested for the spawned agent, when applicable.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "prompt": {
+            "description": "Prompt text sent as part of the collab tool call, when available.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reasoningEffort": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ReasoningEffort"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Reasoning effort requested for the spawned agent, when applicable."
+          },
+          "receiverThreadIds": {
+            "description": "Thread ID of the receiving agent, when applicable. In case of spawn operation, this corresponds to the newly spawned agent.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "senderThreadId": {
+            "description": "Thread ID of the agent issuing the collab request.",
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/CollabAgentToolCallStatus"
+              }
+            ],
+            "description": "Current status of the collab tool call."
+          },
+          "tool": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/CollabAgentTool"
+              }
+            ],
+            "description": "Name of the collab tool that was invoked."
+          },
+          "type": {
+            "enum": [
+              "collabAgentToolCall"
+            ],
+            "title": "CollabAgentToolCallThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "agentsStates",
+          "id",
+          "receiverThreadIds",
+          "senderThreadId",
+          "status",
+          "tool",
+          "type"
+        ],
+        "title": "CollabAgentToolCallThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "agentPath": {
+            "type": "string"
+          },
+          "agentThreadId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/definitions/SubAgentActivityKind"
+          },
+          "model": {
+            "description": "Resolved model at sub-agent creation; absent from older records and other activities.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reasoningEffort": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ReasoningEffort"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Resolved reasoning effort at sub-agent creation, when known."
+          },
+          "type": {
+            "enum": [
+              "subAgentActivity"
+            ],
+            "title": "SubAgentActivityThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "agentPath",
+          "agentThreadId",
+          "id",
+          "kind",
+          "type"
+        ],
+        "title": "SubAgentActivityThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "action": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/WebSearchAction"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          },
+          "results": {
+            "default": null,
+            "description": "Structured search results returned out-of-band by standalone web search.\n\nThese stay as opaque JSON at the extension/app-server boundary so new result fields and result types can pass through without a Codex release.",
+            "items": true,
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "type": {
+            "enum": [
+              "webSearch"
+            ],
+            "title": "WebSearchThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "query",
+          "type"
+        ],
+        "title": "WebSearchThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "path": {
+            "$ref": "#/definitions/LegacyAppPathString"
+          },
+          "type": {
+            "enum": [
+              "imageView"
+            ],
+            "title": "ImageViewThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "path",
+          "type"
+        ],
+        "title": "ImageViewThreadItem",
+        "type": "object"
+      },
+      {
+        "description": "Display item emitted by the interruptible `clock.sleep` tool.",
+        "properties": {
+          "durationMs": {
+            "format": "uint64",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "sleep"
+            ],
+            "title": "SleepThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "durationMs",
+          "id",
+          "type"
+        ],
+        "title": "SleepThreadItem",
+        "type": "object"
+      },
+      {
+        "anyOf": [
+          {
+            "properties": {
+              "fileId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "fileId"
+            ],
+            "title": "FileIdThreadItem",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "result": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "result"
+            ],
+            "title": "ResultThreadItem",
+            "type": "object"
+          }
+        ],
+        "description": "Either inline generated-image data or its durable attachment-store identity.\n\n`File` must remain first so rollouts written during the migration, which contain both an empty `result` and a `fileId`, retain the file reference when deserialized.",
+        "properties": {
+          "failure": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ImageGenerationFailure"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "generationId": {
+            "default": null,
+            "description": "Image generation identifier for the generated image, when provided by the image backend.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "inputImages": {
+            "description": "Observed local inputs for a completed generation, absent on older items.",
+            "items": {
+              "$ref": "#/definitions/ImageGenerationInputImage"
+            },
+            "type": "array"
+          },
+          "revisedPrompt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "savedPath": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/AbsolutePathBuf"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "transparentBackground": {
+            "default": null,
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "type": {
+            "enum": [
+              "imageGeneration"
+            ],
+            "title": "ImageGenerationThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "type"
+        ],
+        "title": "ImageGenerationThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "review": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "enteredReviewMode"
+            ],
+            "title": "EnteredReviewModeThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "review",
+          "type"
+        ],
+        "title": "EnteredReviewModeThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "review": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "exitedReviewMode"
+            ],
+            "title": "ExitedReviewModeThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "review",
+          "type"
+        ],
+        "title": "ExitedReviewModeThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "contextCompaction"
+            ],
+            "title": "ContextCompactionThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "ContextCompactionThreadItem",
+        "type": "object"
+      }
+    ]
+  },
+  {
+    "path": "ThreadStartResponse/definitions/ThreadItem/properties",
+    "kind": "added",
+    "value": {
+      "completedAtMs": {
+        "default": null,
+        "description": "Unix timestamp in milliseconds when the item completed, if recorded.",
+        "format": "int64",
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "startedAtMs": {
+        "default": null,
+        "description": "Unix timestamp in milliseconds when the item started, if recorded.",
+        "format": "int64",
+        "type": [
+          "integer",
+          "null"
+        ]
+      }
+    }
+  },
+  {
+    "path": "ThreadStartResponse/definitions/ThreadItem/type",
+    "kind": "added",
+    "value": "object"
+  },
+  {
+    "path": "ThreadResumeResponse/definitions/CodexErrorInfo/anyOf",
+    "before": [
+      {
+        "enum": [
+          "contextWindowExceeded",
+          "sessionBudgetExceeded",
+          "usageLimitExceeded",
+          "rateLimitExceeded",
+          "flexUnavailable",
+          "serverOverloaded",
+          "modelNotFound",
+          "cyberPolicy",
+          "misalignmentPolicyViolation",
+          "tooManyDenials",
+          "internalServerError",
+          "unauthorized",
+          "badRequest",
+          "threadRollbackFailed",
+          "sandboxError",
+          "other"
+        ],
+        "type": "string"
+      },
+      {
+        "additionalProperties": false,
+        "properties": {
+          "httpConnectionFailed": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "httpConnectionFailed"
+        ],
+        "title": "HttpConnectionFailedCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "Failed to connect to the response SSE stream.",
+        "properties": {
+          "responseStreamConnectionFailed": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "responseStreamConnectionFailed"
+        ],
+        "title": "ResponseStreamConnectionFailedCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "The response SSE stream disconnected in the middle of a turn before completion.",
+        "properties": {
+          "responseStreamDisconnected": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "responseStreamDisconnected"
+        ],
+        "title": "ResponseStreamDisconnectedCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "Reached the retry limit for responses.",
+        "properties": {
+          "responseTooManyFailedAttempts": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "responseTooManyFailedAttempts"
+        ],
+        "title": "ResponseTooManyFailedAttemptsCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "Returned when `turn/start` or `turn/steer` is submitted while the current active turn cannot accept same-turn steering, for example `/review` or manual `/compact`.",
+        "properties": {
+          "activeTurnNotSteerable": {
+            "properties": {
+              "turnKind": {
+                "$ref": "#/definitions/NonSteerableTurnKind"
+              }
+            },
+            "required": [
+              "turnKind"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "activeTurnNotSteerable"
+        ],
+        "title": "ActiveTurnNotSteerableCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "type": [
+          "string",
+          "object"
+        ]
+      }
+    ],
+    "after": [
+      {
+        "enum": [
+          "contextWindowExceeded",
+          "sessionBudgetExceeded",
+          "usageLimitExceeded",
+          "rateLimitExceeded",
+          "flexUnavailable",
+          "serverOverloaded",
+          "modelNotFound",
+          "policyCapacityUnavailable",
+          "cyberPolicy",
+          "misalignmentPolicyViolation",
+          "tooManyDenials",
+          "internalServerError",
+          "unauthorized",
+          "badRequest",
+          "threadRollbackFailed",
+          "sandboxError",
+          "other"
+        ],
+        "type": "string"
+      },
+      {
+        "additionalProperties": false,
+        "properties": {
+          "httpConnectionFailed": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "httpConnectionFailed"
+        ],
+        "title": "HttpConnectionFailedCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "Failed to connect to the response SSE stream.",
+        "properties": {
+          "responseStreamConnectionFailed": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "responseStreamConnectionFailed"
+        ],
+        "title": "ResponseStreamConnectionFailedCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "The response SSE stream disconnected in the middle of a turn before completion.",
+        "properties": {
+          "responseStreamDisconnected": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "responseStreamDisconnected"
+        ],
+        "title": "ResponseStreamDisconnectedCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "Reached the retry limit for responses.",
+        "properties": {
+          "responseTooManyFailedAttempts": {
+            "properties": {
+              "httpStatusCode": {
+                "format": "uint16",
+                "minimum": 0.0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "responseTooManyFailedAttempts"
+        ],
+        "title": "ResponseTooManyFailedAttemptsCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "Returned when `turn/start` or `turn/steer` is submitted while the current active turn cannot accept same-turn steering, for example `/review` or manual `/compact`.",
+        "properties": {
+          "activeTurnNotSteerable": {
+            "properties": {
+              "turnKind": {
+                "$ref": "#/definitions/NonSteerableTurnKind"
+              }
+            },
+            "required": [
+              "turnKind"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "activeTurnNotSteerable"
+        ],
+        "title": "ActiveTurnNotSteerableCodexErrorInfo",
+        "type": "object"
+      },
+      {
+        "type": [
+          "string",
+          "object"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "ThreadResumeResponse/definitions/ThreadItem/description",
+    "kind": "added",
+    "value": "A thread item and its recorded lifecycle times. The payload stays flat on the wire."
+  },
+  {
+    "path": "ThreadResumeResponse/definitions/ThreadItem/oneOf",
+    "before": [
+      {
+        "properties": {
+          "clientId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "content": {
+            "items": {
+              "$ref": "#/definitions/UserInput"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "userMessage"
+            ],
+            "title": "UserMessageThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "content",
+          "id",
+          "type"
+        ],
+        "title": "UserMessageThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "fragments": {
+            "items": {
+              "$ref": "#/definitions/HookPromptFragment"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "hookPrompt"
+            ],
+            "title": "HookPromptThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "fragments",
+          "id",
+          "type"
+        ],
+        "title": "HookPromptThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "delivery": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/AgentMessageDelivery"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "id": {
+            "type": "string"
+          },
+          "memoryCitation": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/MemoryCitation"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "phase": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/MessagePhase"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "questions": {
+            "default": null,
+            "items": {
+              "$ref": "#/definitions/AsyncUserInputQuestion"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "agentMessage"
+            ],
+            "title": "AgentMessageThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "type"
+        ],
+        "title": "AgentMessageThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "output": {
+            "$ref": "#/definitions/FunctionCallOutputBody"
+          },
+          "type": {
+            "enum": [
+              "functionCallOutput"
+            ],
+            "title": "FunctionCallOutputThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "output",
+          "type"
+        ],
+        "title": "FunctionCallOutputThreadItem",
+        "type": "object"
+      },
+      {
+        "description": "EXPERIMENTAL - proposed plan item content. The completed plan item is authoritative and may not match the concatenation of `PlanDelta` text.",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "plan"
+            ],
+            "title": "PlanThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "type"
+        ],
+        "title": "PlanThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "content": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "summary": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": {
+            "enum": [
+              "reasoning"
+            ],
+            "title": "ReasoningThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "ReasoningThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "aggregatedOutput": {
+            "description": "The command's output, aggregated from stdout and stderr.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "command": {
+            "description": "The command to be executed.",
+            "type": "string"
+          },
+          "commandActions": {
+            "description": "A best-effort parsing of the command to understand the action(s) it will perform. This returns a list of CommandAction objects because a single shell command may be composed of many commands piped together.",
+            "items": {
+              "$ref": "#/definitions/CommandAction"
+            },
+            "type": "array"
+          },
+          "cwd": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/LegacyAppPathString"
+              }
+            ],
+            "description": "The command's working directory."
+          },
+          "durationMs": {
+            "description": "The duration of the command execution in milliseconds.",
+            "format": "int64",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "exitCode": {
+            "description": "The command's exit code.",
+            "format": "int32",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "pluginId": {
+            "default": null,
+            "description": "Trusted first-party plugin id when this command resolves to one plugin script.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "processId": {
+            "description": "Identifier for the underlying PTY process (when available).",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "scriptPath": {
+            "default": null,
+            "description": "Safe plugin-relative path when this command resolves to one plugin script.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/CommandExecutionSource"
+              }
+            ],
+            "default": "agent"
+          },
+          "status": {
+            "$ref": "#/definitions/CommandExecutionStatus"
+          },
+          "type": {
+            "enum": [
+              "commandExecution"
+            ],
+            "title": "CommandExecutionThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "command",
+          "commandActions",
+          "cwd",
+          "id",
+          "status",
+          "type"
+        ],
+        "title": "CommandExecutionThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "changes": {
+            "items": {
+              "$ref": "#/definitions/FileUpdateChange"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/definitions/PatchApplyStatus"
+          },
+          "type": {
+            "enum": [
+              "fileChange"
+            ],
+            "title": "FileChangeThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "changes",
+          "id",
+          "status",
+          "type"
+        ],
+        "title": "FileChangeThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "appContext": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpToolCallAppContext"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "arguments": true,
+          "durationMs": {
+            "description": "The duration of the MCP tool call in milliseconds.",
+            "format": "int64",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpToolCallError"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "mcpAppResourceUri": {
+            "description": "Legacy compatibility field; prefer `mcpAppUi.resourceUri` when available.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "mcpAppUi": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpAppUi"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Presentation captured from the invoked descriptor; absent in older history."
+          },
+          "pluginId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "readOnlyHint": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpToolCallResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "server": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/definitions/McpToolCallStatus"
+          },
+          "tool": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "mcpToolCall"
+            ],
+            "title": "McpToolCallThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "arguments",
+          "id",
+          "server",
+          "status",
+          "tool",
+          "type"
+        ],
+        "title": "McpToolCallThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "arguments": true,
+          "contentItems": {
+            "items": {
+              "$ref": "#/definitions/DynamicToolCallOutputContentItem"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "durationMs": {
+            "description": "The duration of the dynamic tool call in milliseconds.",
+            "format": "int64",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "$ref": "#/definitions/DynamicToolCallStatus"
+          },
+          "success": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "tool": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "dynamicToolCall"
+            ],
+            "title": "DynamicToolCallThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "arguments",
+          "id",
+          "status",
+          "tool",
+          "type"
+        ],
+        "title": "DynamicToolCallThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "agentsStates": {
+            "additionalProperties": {
+              "$ref": "#/definitions/CollabAgentState"
+            },
+            "description": "Last known status of the target agents, when available.",
+            "type": "object"
+          },
+          "id": {
+            "description": "Unique identifier for this collab tool call.",
+            "type": "string"
+          },
+          "model": {
+            "description": "Model requested for the spawned agent, when applicable.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "prompt": {
+            "description": "Prompt text sent as part of the collab tool call, when available.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reasoningEffort": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ReasoningEffort"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Reasoning effort requested for the spawned agent, when applicable."
+          },
+          "receiverThreadIds": {
+            "description": "Thread ID of the receiving agent, when applicable. In case of spawn operation, this corresponds to the newly spawned agent.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "senderThreadId": {
+            "description": "Thread ID of the agent issuing the collab request.",
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/CollabAgentToolCallStatus"
+              }
+            ],
+            "description": "Current status of the collab tool call."
+          },
+          "tool": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/CollabAgentTool"
+              }
+            ],
+            "description": "Name of the collab tool that was invoked."
+          },
+          "type": {
+            "enum": [
+              "collabAgentToolCall"
+            ],
+            "title": "CollabAgentToolCallThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "agentsStates",
+          "id",
+          "receiverThreadIds",
+          "senderThreadId",
+          "status",
+          "tool",
+          "type"
+        ],
+        "title": "CollabAgentToolCallThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "agentPath": {
+            "type": "string"
+          },
+          "agentThreadId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/definitions/SubAgentActivityKind"
+          },
+          "model": {
+            "description": "Resolved model at sub-agent creation; absent from older records and other activities.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reasoningEffort": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ReasoningEffort"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Resolved reasoning effort at sub-agent creation, when known."
+          },
+          "type": {
+            "enum": [
+              "subAgentActivity"
+            ],
+            "title": "SubAgentActivityThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "agentPath",
+          "agentThreadId",
+          "id",
+          "kind",
+          "type"
+        ],
+        "title": "SubAgentActivityThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "action": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/WebSearchAction"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          },
+          "results": {
+            "default": null,
+            "description": "Structured search results returned out-of-band by standalone web search.\n\nThese stay as opaque JSON at the extension/app-server boundary so new result fields and result types can pass through without a Codex release.",
+            "items": true,
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "type": {
+            "enum": [
+              "webSearch"
+            ],
+            "title": "WebSearchThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "query",
+          "type"
+        ],
+        "title": "WebSearchThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "path": {
+            "$ref": "#/definitions/LegacyAppPathString"
+          },
+          "type": {
+            "enum": [
+              "imageView"
+            ],
+            "title": "ImageViewThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "path",
+          "type"
+        ],
+        "title": "ImageViewThreadItem",
+        "type": "object"
+      },
+      {
+        "description": "Display item emitted by the interruptible `clock.sleep` tool.",
+        "properties": {
+          "durationMs": {
+            "format": "uint64",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "sleep"
+            ],
+            "title": "SleepThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "durationMs",
+          "id",
+          "type"
+        ],
+        "title": "SleepThreadItem",
+        "type": "object"
+      },
+      {
+        "anyOf": [
+          {
+            "properties": {
+              "fileId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "fileId"
+            ],
+            "title": "FileIdThreadItem",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "result": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "result"
+            ],
+            "title": "ResultThreadItem",
+            "type": "object"
+          }
+        ],
+        "description": "Either inline generated-image data or its durable attachment-store identity.\n\n`File` must remain first so rollouts written during the migration, which contain both an empty `result` and a `fileId`, retain the file reference when deserialized.",
+        "properties": {
+          "failure": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ImageGenerationFailure"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "id": {
+            "type": "string"
+          },
+          "inputImages": {
+            "description": "Observed local inputs for a completed generation, absent on older items.",
+            "items": {
+              "$ref": "#/definitions/ImageGenerationInputImage"
+            },
+            "type": "array"
+          },
+          "revisedPrompt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "savedPath": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/AbsolutePathBuf"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "transparentBackground": {
+            "default": null,
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "type": {
+            "enum": [
+              "imageGeneration"
+            ],
+            "title": "ImageGenerationThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "type"
+        ],
+        "title": "ImageGenerationThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "review": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "enteredReviewMode"
+            ],
+            "title": "EnteredReviewModeThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "review",
+          "type"
+        ],
+        "title": "EnteredReviewModeThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "review": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "exitedReviewMode"
+            ],
+            "title": "ExitedReviewModeThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "review",
+          "type"
+        ],
+        "title": "ExitedReviewModeThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "contextCompaction"
+            ],
+            "title": "ContextCompactionThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "ContextCompactionThreadItem",
+        "type": "object"
+      }
+    ],
+    "after": [
+      {
+        "properties": {
+          "clientId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "content": {
+            "items": {
+              "$ref": "#/definitions/UserInput"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "userMessage"
+            ],
+            "title": "UserMessageThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "content",
+          "id",
+          "type"
+        ],
+        "title": "UserMessageThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "fragments": {
+            "items": {
+              "$ref": "#/definitions/HookPromptFragment"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "hookPrompt"
+            ],
+            "title": "HookPromptThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "fragments",
+          "id",
+          "type"
+        ],
+        "title": "HookPromptThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "delivery": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/AgentMessageDelivery"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "id": {
+            "type": "string"
+          },
+          "memoryCitation": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/MemoryCitation"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "phase": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/MessagePhase"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "questions": {
+            "default": null,
+            "items": {
+              "$ref": "#/definitions/AsyncUserInputQuestion"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "agentMessage"
+            ],
+            "title": "AgentMessageThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "type"
+        ],
+        "title": "AgentMessageThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "output": {
+            "$ref": "#/definitions/FunctionCallOutputBody"
+          },
+          "type": {
+            "enum": [
+              "functionCallOutput"
+            ],
+            "title": "FunctionCallOutputThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "output",
+          "type"
+        ],
+        "title": "FunctionCallOutputThreadItem",
+        "type": "object"
+      },
+      {
+        "description": "EXPERIMENTAL - proposed plan item content. The completed plan item is authoritative and may not match the concatenation of `PlanDelta` text.",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "plan"
+            ],
+            "title": "PlanThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "type"
+        ],
+        "title": "PlanThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "content": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "summary": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": {
+            "enum": [
+              "reasoning"
+            ],
+            "title": "ReasoningThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "ReasoningThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "aggregatedOutput": {
+            "description": "The command's output, aggregated from stdout and stderr.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "command": {
+            "description": "The command to be executed.",
+            "type": "string"
+          },
+          "commandActions": {
+            "description": "A best-effort parsing of the command to understand the action(s) it will perform. This returns a list of CommandAction objects because a single shell command may be composed of many commands piped together.",
+            "items": {
+              "$ref": "#/definitions/CommandAction"
+            },
+            "type": "array"
+          },
+          "cwd": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/LegacyAppPathString"
+              }
+            ],
+            "description": "The command's working directory."
+          },
+          "durationMs": {
+            "description": "The duration of the command execution in milliseconds.",
+            "format": "int64",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "exitCode": {
+            "description": "The command's exit code.",
+            "format": "int32",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "pluginId": {
+            "default": null,
+            "description": "Trusted first-party plugin id when this command resolves to one plugin script.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "processId": {
+            "description": "Identifier for the underlying PTY process (when available).",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "scriptPath": {
+            "default": null,
+            "description": "Safe plugin-relative path when this command resolves to one plugin script.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/CommandExecutionSource"
+              }
+            ],
+            "default": "agent"
+          },
+          "status": {
+            "$ref": "#/definitions/CommandExecutionStatus"
+          },
+          "type": {
+            "enum": [
+              "commandExecution"
+            ],
+            "title": "CommandExecutionThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "command",
+          "commandActions",
+          "cwd",
+          "id",
+          "status",
+          "type"
+        ],
+        "title": "CommandExecutionThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "changes": {
+            "items": {
+              "$ref": "#/definitions/FileUpdateChange"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/definitions/PatchApplyStatus"
+          },
+          "type": {
+            "enum": [
+              "fileChange"
+            ],
+            "title": "FileChangeThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "changes",
+          "id",
+          "status",
+          "type"
+        ],
+        "title": "FileChangeThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "appContext": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpToolCallAppContext"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "arguments": true,
+          "durationMs": {
+            "description": "The duration of the MCP tool call in milliseconds.",
+            "format": "int64",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpToolCallError"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "mcpAppResourceUri": {
+            "description": "Legacy compatibility field; prefer `mcpAppUi.resourceUri` when available.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "mcpAppUi": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpAppUi"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Presentation captured from the invoked descriptor; absent in older history."
+          },
+          "pluginId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "readOnlyHint": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/McpToolCallResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "server": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/definitions/McpToolCallStatus"
+          },
+          "tool": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "mcpToolCall"
+            ],
+            "title": "McpToolCallThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "arguments",
+          "id",
+          "server",
+          "status",
+          "tool",
+          "type"
+        ],
+        "title": "McpToolCallThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "arguments": true,
+          "contentItems": {
+            "items": {
+              "$ref": "#/definitions/DynamicToolCallOutputContentItem"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "durationMs": {
+            "description": "The duration of the dynamic tool call in milliseconds.",
+            "format": "int64",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "$ref": "#/definitions/DynamicToolCallStatus"
+          },
+          "success": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "tool": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "dynamicToolCall"
+            ],
+            "title": "DynamicToolCallThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "arguments",
+          "id",
+          "status",
+          "tool",
+          "type"
+        ],
+        "title": "DynamicToolCallThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "agentsStates": {
+            "additionalProperties": {
+              "$ref": "#/definitions/CollabAgentState"
+            },
+            "description": "Last known status of the target agents, when available.",
+            "type": "object"
+          },
+          "id": {
+            "description": "Unique identifier for this collab tool call.",
+            "type": "string"
+          },
+          "model": {
+            "description": "Model requested for the spawned agent, when applicable.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "prompt": {
+            "description": "Prompt text sent as part of the collab tool call, when available.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reasoningEffort": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ReasoningEffort"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Reasoning effort requested for the spawned agent, when applicable."
+          },
+          "receiverThreadIds": {
+            "description": "Thread ID of the receiving agent, when applicable. In case of spawn operation, this corresponds to the newly spawned agent.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "senderThreadId": {
+            "description": "Thread ID of the agent issuing the collab request.",
+            "type": "string"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/CollabAgentToolCallStatus"
+              }
+            ],
+            "description": "Current status of the collab tool call."
+          },
+          "tool": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/CollabAgentTool"
+              }
+            ],
+            "description": "Name of the collab tool that was invoked."
+          },
+          "type": {
+            "enum": [
+              "collabAgentToolCall"
+            ],
+            "title": "CollabAgentToolCallThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "agentsStates",
+          "id",
+          "receiverThreadIds",
+          "senderThreadId",
+          "status",
+          "tool",
+          "type"
+        ],
+        "title": "CollabAgentToolCallThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "agentPath": {
+            "type": "string"
+          },
+          "agentThreadId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/definitions/SubAgentActivityKind"
+          },
+          "model": {
+            "description": "Resolved model at sub-agent creation; absent from older records and other activities.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reasoningEffort": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ReasoningEffort"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Resolved reasoning effort at sub-agent creation, when known."
+          },
+          "type": {
+            "enum": [
+              "subAgentActivity"
+            ],
+            "title": "SubAgentActivityThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "agentPath",
+          "agentThreadId",
+          "id",
+          "kind",
+          "type"
+        ],
+        "title": "SubAgentActivityThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "action": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/WebSearchAction"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          },
+          "results": {
+            "default": null,
+            "description": "Structured search results returned out-of-band by standalone web search.\n\nThese stay as opaque JSON at the extension/app-server boundary so new result fields and result types can pass through without a Codex release.",
+            "items": true,
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "type": {
+            "enum": [
+              "webSearch"
+            ],
+            "title": "WebSearchThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "query",
+          "type"
+        ],
+        "title": "WebSearchThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "path": {
+            "$ref": "#/definitions/LegacyAppPathString"
+          },
+          "type": {
+            "enum": [
+              "imageView"
+            ],
+            "title": "ImageViewThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "path",
+          "type"
+        ],
+        "title": "ImageViewThreadItem",
+        "type": "object"
+      },
+      {
+        "description": "Display item emitted by the interruptible `clock.sleep` tool.",
+        "properties": {
+          "durationMs": {
+            "format": "uint64",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "sleep"
+            ],
+            "title": "SleepThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "durationMs",
+          "id",
+          "type"
+        ],
+        "title": "SleepThreadItem",
+        "type": "object"
+      },
+      {
+        "anyOf": [
+          {
+            "properties": {
+              "fileId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "fileId"
+            ],
+            "title": "FileIdThreadItem",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "result": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "result"
+            ],
+            "title": "ResultThreadItem",
+            "type": "object"
+          }
+        ],
+        "description": "Either inline generated-image data or its durable attachment-store identity.\n\n`File` must remain first so rollouts written during the migration, which contain both an empty `result` and a `fileId`, retain the file reference when deserialized.",
+        "properties": {
+          "failure": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ImageGenerationFailure"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "generationId": {
+            "default": null,
+            "description": "Image generation identifier for the generated image, when provided by the image backend.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "inputImages": {
+            "description": "Observed local inputs for a completed generation, absent on older items.",
+            "items": {
+              "$ref": "#/definitions/ImageGenerationInputImage"
+            },
+            "type": "array"
+          },
+          "revisedPrompt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "savedPath": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/AbsolutePathBuf"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "transparentBackground": {
+            "default": null,
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "type": {
+            "enum": [
+              "imageGeneration"
+            ],
+            "title": "ImageGenerationThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "type"
+        ],
+        "title": "ImageGenerationThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "review": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "enteredReviewMode"
+            ],
+            "title": "EnteredReviewModeThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "review",
+          "type"
+        ],
+        "title": "EnteredReviewModeThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "review": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "exitedReviewMode"
+            ],
+            "title": "ExitedReviewModeThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "review",
+          "type"
+        ],
+        "title": "ExitedReviewModeThreadItem",
+        "type": "object"
+      },
+      {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "contextCompaction"
+            ],
+            "title": "ContextCompactionThreadItemType",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "ContextCompactionThreadItem",
+        "type": "object"
+      }
+    ]
+  },
+  {
+    "path": "ThreadResumeResponse/definitions/ThreadItem/properties",
+    "kind": "added",
+    "value": {
+      "completedAtMs": {
+        "default": null,
+        "description": "Unix timestamp in milliseconds when the item completed, if recorded.",
+        "format": "int64",
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "startedAtMs": {
+        "default": null,
+        "description": "Unix timestamp in milliseconds when the item started, if recorded.",
+        "format": "int64",
+        "type": [
+          "integer",
+          "null"
+        ]
+      }
+    }
+  },
+  {
+    "path": "ThreadResumeResponse/definitions/ThreadItem/type",
+    "kind": "added",
+    "value": "object"
+  },
+  {
+    "path": "TurnStartParams/definitions/AdditionalContextEntry/properties/name",
+    "kind": "added",
+    "value": {
+      "description": "Optional name for untrusted context, used to label its tool output.",
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+]

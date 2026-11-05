@@ -2,9 +2,9 @@
   "main": "/Volumes/artisan/code/2026/multica-0.4.37",
   "worktree": "/Volumes/artisan/code/2026/mc-knowledge-codex-20261104",
   "task": ".trellis/tasks/10-30-collaboration-knowledge-promotion",
-  "real_calls": 0,
+  "real_calls": 1,
   "real_cap": 15,
-  "phase": "explicit_queue_waiting_quote_fake_then_runtime_E0a",
+  "phase": "real_first_E0b_failed_gateway403_stopped",
   "normal01": "failed_setup_duplicate_codex_runtime; 29_controls_pass; no_provider_starts",
   "normal2_environment": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/knowledge-codex-20261104/rk1k_normal2-environment.json",
   "race_environment": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/knowledge-codex-20261104/rk1k_race-environment.json",
@@ -18,16 +18,12 @@
     "spec/commit/integration/session finish"
   ],
   "shared_window": {
-    "coordinator": "01a1a729-99ac-7ab2-a312-6478d946d58a",
-    "sequence": [
-      "original_quote_only_fake",
-      "runtime_E0a_max12min",
-      "knowledge_full15_max90min"
-    ],
-    "runtime_first_race": "exit0_62pass",
-    "no_new_heavy_execution": true
+    "state": "released_to_UX",
+    "at": "2026-11-05T05:42Z",
+    "owned_processes": 0,
+    "owned_database_connections": 0
   },
-  "updated_at": "2026-11-04T16:55:49.893238+00:00",
+  "updated_at": "2026-11-05T04:21:07.514669+00:00",
   "final_fake": {
     "normal": "45pass15+3/0",
     "race": "45pass15+3/0",
@@ -37,5 +33,14 @@
   "real_registration_authorized": false,
   "cross_thread_transport": "restored",
   "code_commit": "88f1cc8d4d809ed175d29a96ee2c99cd012bc36a",
-  "evidence_commit": "c6aabb27a"
+  "evidence_commit": "c6aabb27a",
+  "next_action": "external gateway/account access policy unblock then reviewed remaining-series registration; no automatic retry",
+  "new_findings": {
+    "installed_codex": "0.166.0",
+    "old_native_hash_valid": false,
+    "old_registration_expired": true,
+    "source_and_config_unchanged": true,
+    "real_calls": 0
+  },
+  "remaining": 14
 }

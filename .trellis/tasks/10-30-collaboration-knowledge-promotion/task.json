@@ -23,7 +23,7 @@
   ],
   "parent": "10-30-collaboration-context-handoff",
   "relatedFiles": [],
-  "notes": "Codex产品适配已本地集成88f1cc8d4，最终fake normal/race各45通过及独立准入通过；真实0/15。共享core重型序列继续且跨会话接口502，尚无独占移交，真实入口关闭。",
+  "notes": "Codex0.166补丁已集成c1eb952fa，完整fake normal/race各53pass。真实E0b首轮1次物理启动遇网关403官方客户端限制，自动停止，剩14未启动，执行许可关闭，自有资源已释放。",
   "meta": {
     "permission_decision": "approved",
     "approval_session": "01a18a36-e482-7840-9900-3ff8174b4ce7",
@@ -75,9 +75,9 @@
     "main_merge_commit": "8cb04e3295474073b4b991bc4883ef3901c14f01",
     "evidence_commit": "93093d2e95e1affafbb40ddcd944ac5d58fc451c",
     "progress_file": "progress.md",
-    "progress_phase": "codex_product_integrated_fake_accepted; real_window_pending",
+    "progress_phase": "codex0166_fake_verified; real_E0b_external403_stopped",
     "progress_baseline": "084ea3c98",
-    "next_action": "Await core natural/safe boundary and coordinate runtime E0a then knowledge fixed15 series",
+    "next_action": "Gateway must permit truthful Multica app-server integration, or user selects an allowed account/endpoint; preserve first failed slot and re-register remaining14 after external change",
     "post_merge_supplements": {
       "joint_fault_commit": "65cd0599b",
       "joint_report": "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-joint-current/README.md",
@@ -143,7 +143,7 @@
     "knowledge_framework_latest_dynamic": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/runs/rk1k-normal-v16-02/tests.jsonl",
     "knowledge_framework_current_source_record": ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/source-sync-result.json",
     "knowledge_budget_allocated": 15,
-    "knowledge_real_calls": 0,
+    "knowledge_real_calls": 1,
     "audit_closure_independent_of_knowledge_real_and_release": true,
     "shared_v13_state": "complete_failed; final_identity_audit_pass",
     "shared_v13_process_id": 73567,
@@ -393,6 +393,15 @@
     "codex_final_fake_race": "45pass0fail0skip15+3/0",
     "codex_verification": "verification-codex-2026-11-05.md",
     "codex_real_admission_review": "research/codex-real-20261104/real-admission-final-review.md",
-    "codex_current_blocker": "Core owner explicitly retains shared heavy window for30–60min; priority question pending, no real launches"
+    "codex_current_blocker": "Actual gateway403: This account only allows Codex official clients; first E0b incomplete; no later scenarios",
+    "codex_installed_version": "0.166.0",
+    "codex_version_patch_review": "research/codex-real-20261104/version0166-review.md",
+    "codex_version_patch_commit": "079d6cc28",
+    "codex_version_main_integration": "c1eb952fa",
+    "codex_real_remaining": 14,
+    "codex_real_result": "research/codex-real-20261104/real-v166-01-result-pointer.json",
+    "codex_real_result_review": "research/codex-real-20261104/version0166-real-result-review.md",
+    "codex_real_verification": "verification-codex-real-2026-11-05.md",
+    "codex_gateway_unblock_request": "research/codex-real-20261104/gateway-unblock-request.md"
   }
 }
