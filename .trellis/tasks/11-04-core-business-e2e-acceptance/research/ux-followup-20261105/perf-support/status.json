@@ -1,16 +1,19 @@
 {
   "scope": "read-only P95 semantics/reuse support explicitly delegated by core owner",
-  "state": "complete_read_only_review",
+  "state": "complete_performance_deviation_accepted_by_user",
   "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
   "core_owner": "01a1a731-b1e5-7b11-b83e-55efca5293d6",
   "product_or_test_changes": false,
   "db_test_build_browser_provider_executed": false,
   "original_p95_ms": 2155.025,
   "unchanged_threshold_ms": 2000,
-  "performance_gate": "FAIL retained; no optimization implemented",
+  "performance_gate": "Original test FAIL retained; current measured2155.025ms accepted by user, not blocking this acceptance",
   "first_conditional_candidate": "Canonical active-task ordered read transport after complete authority and reference locks; measure phase cost first",
   "deferred_candidate": "Participation read batching requires own source-before-target validation/error/lock design",
-  "next_owner_action": "Measure current-candidate closure phase cost in an explicitly owned diagnostic window; only then choose a narrowly scoped product change",
+  "next_owner_action": "Stop further work solely to meet2000ms for this recorded run; preserve evidence and continue Linux/other applicable gates.",
   "created_at": "2026-11-05T10:14:06.823171+00:00",
-  "independent_review": "PASS with static-only limits"
+  "independent_review": "PASS with static-only limits",
+  "acceptance_disposition": "ACCEPTED_BY_USER",
+  "blocks_current_acceptance": false,
+  "decision_file": ".trellis/tasks/11-04-core-business-e2e-acceptance/research/ux-followup-20261105/perf-support/performance-acceptance-decision.json"
 }

@@ -1,0 +1,26 @@
+{
+  "recorded_at": "2026-11-05T10:41:30.359444+00:00",
+  "decision": "accepted_performance_exception",
+  "user_statement": "这个2155可以接受",
+  "source_thread": "01a1a7a6-02dc-7722-a9d6-7d05385edb2d",
+  "task": ".trellis/tasks/11-04-core-business-e2e-acceptance",
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "test": "TestIterationI1P95",
+  "measured_p95_ms": 2155.025,
+  "original_threshold_ms": 2000,
+  "original_test_result": "FAIL",
+  "acceptance_disposition": "ACCEPTED_BY_USER",
+  "blocks_current_acceptance": false,
+  "scope": "This recorded candidate/run and measured iteration-closure result only; no new general performance threshold",
+  "further_performance_optimization_required": false,
+  "further_diagnostic_or_gate_rerun_required": false,
+  "evidence_file": ".trellis/tasks/11-04-core-business-e2e-acceptance/research/performance-result.json",
+  "evidence_sha256": "5324a80b43f128ac5456e19364cd4eda9ccc9d3783b173c03f03898017edcf6d",
+  "unchanged": [
+    "Original samples and failing test outcome",
+    "2000ms automated test assertion",
+    "Unrelated Linux/platform acceptance results",
+    "Future-candidate performance evaluation"
+  ],
+  "coordination": "Core owner notified to remove this acceptance blocker and safely finish any already-started diagnostic; do not interrupt unrelated work."
+}
