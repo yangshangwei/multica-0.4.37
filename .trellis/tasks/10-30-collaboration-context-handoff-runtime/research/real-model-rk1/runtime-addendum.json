@@ -4,14 +4,13 @@
   "decided_at": "2026-11-01T04:26:26Z",
   "decision_source": "User answers in session multica-0-4-37-87 on 2026-11-01: fix product gaps 2 and 3 before testing and narrow H1; allocate the full 19-launch runtime set",
   "research": "../real-model-runtime-framework-research.md (7a90f3d78)",
-  "status": "runtime_budget_approved25_consumed0; deterministic_current_normal_race_and_password7_passed; final_registration_and_model_window_pending",
+  "status": "E0a_rawpass_consumed1_remaining24; postrun_configuration_binding_open; furtherlaunches_stopped",
   "not_runnable_reasons": [
-    "current-source deterministic normal02/race03 and fullpassword7 accepted; reviewed committed execution binding including regenerated CLI artifact remains pending",
-    "operator configuration plugin-tree fingerprint is changing; prepared binding is not live-stable and exact launcher admission recheck remains required",
-    "exclusive model window is not confirmed and native task-message gateway is returning502; runtime25 approved/unused; original8 stopped independently"
+    "E0a raw framework finished/pass and launcherexit0; post-run operator plugin-tree binding changed so full evidence acceptance remains open",
+    "No repeat E0a or later scenarios until independent disposition; model window released, no next window granted"
   ],
   "runtime_call_cap": 25,
-  "runtime_consumed": 0,
+  "runtime_consumed": 1,
   "cap_scope": "Real Provider launches for the runtime scenarios below only (22 for E0a/H1/H2/H3a/H3b/H5/H6 as listed, plus 3 for H2b). Not transferable to or from the original E0-E6 series. Knowledge scenarios K1-K3 and ordinary-task E0b are not covered by this cap.",
   "runtime_scenarios": [
     {
@@ -100,7 +99,7 @@
       "correction": "From 96cedf485 until ac2a24f8f the smoke authorizer rejected knowledge_version=1 on the claim with HTTP 403, so the smoke could not pass at those HEADs and proved nothing there; the registered claim that the query is accepted holds only from ac2a24f8f. Confirmed independently by session multica-0-4-37-0b."
     }
   ],
-  "updated_at": "2026-11-04T16:59:10.758678+00:00",
+  "updated_at": "2026-11-05T03:48:03.142854+00:00",
   "decisions": [
     {
       "at": "2026-11-01T10:33:57Z",
@@ -202,5 +201,15 @@
     "real_calls": 0,
     "runtime_cap": 25
   },
-  "operator_binding_status": "PREPARED_NOT_STABLE"
+  "operator_binding_status": "PREPARED_NOT_STABLE",
+  "actual_E0a": {
+    "label": "RK1-E0a-t1",
+    "raw_verdict": "pass",
+    "launcher_exit": 0,
+    "helper_exit": 1,
+    "full_binding_accepted": false,
+    "summary": "../continuation-20261105/real-entry/e0a-result-summary.json",
+    "consumed": 1,
+    "remaining": 24
+  }
 }

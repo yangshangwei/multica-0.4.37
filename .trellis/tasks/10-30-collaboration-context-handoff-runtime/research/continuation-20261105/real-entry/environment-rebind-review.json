@@ -1,0 +1,43 @@
+{
+  "reviewed_at": "2026-11-05T03:39:47.102106+00:00",
+  "reviewer": "/root/acceptance_review",
+  "scope": "Saved parent-environment correction; no build/launcher/database/provider execution",
+  "verdict": "pass-with-notes",
+  "blocking_findings": 0,
+  "first_refusal": {
+    "changed_binding_fields": [
+      "environment_sha256"
+    ],
+    "before_actual_build": true,
+    "evidence_preserved": true
+  },
+  "parent_environment": {
+    "owned_private_regular": true,
+    "file_sha256": "5aa61e4123fbd0503ffa5d945a4028b5e0b85dd00da758e090b2d6c5a2703d24",
+    "reconstructed_effective_env_sha256": "7af1694a1d4dd01f190575d8717afcf857c6b96e44e2e48deca89645f1bbbc3b",
+    "matches_current_permit": true,
+    "contents_published": false
+  },
+  "helper_hash": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
+  "helper_unchanged": true,
+  "current_permits": {
+    "allow_build": true,
+    "allow_check": false,
+    "allow_run": false,
+    "window_expires_at": "2026-11-05T03:50:00+00:00"
+  },
+  "status": "Actual build underway; build result/check result absent at initial review; no run-attempt yet",
+  "conditions": [
+    "Reuse exact saved parent environment for every stage; do not bypass operator/source equality.",
+    "Actual build/check success and root-bound result hashes still required before allow_run.",
+    "Root must persist extended03:50/actual-start+12min until-completion agreement; saved active-window still has prior03:46:30 and should not be treated as current.",
+    "No automatic extra invocation after a failed real attempt."
+  ],
+  "operations": {
+    "Go": 0,
+    "DB": 0,
+    "Provider": 0,
+    "tests": 0,
+    "plugin_scan": 0
+  }
+}
