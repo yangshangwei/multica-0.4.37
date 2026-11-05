@@ -1,0 +1,19 @@
+{
+  "state": "prepared_static_review_pass_runtime_not_run",
+  "owned_test": "e2e/collaboration-recipient-picker-web.spec.ts",
+  "product_commit_under_test": "5a7440952",
+  "original_campaign_untouched": true,
+  "shared_runtime_owner": "01a1a731-b1e5-7b11-b83e-55efca5293d6",
+  "shared_owner_instruction": "Static recipient spec and research only; no heavy build/DB/browser until handoff.",
+  "runtime_started": false,
+  "actual_browser_test_status": "NOT_RUN",
+  "known_prepared_followups": [
+    "Distinct-account search-to-create acceptance",
+    "Real administrative Web+nativeDesktop regression",
+    "Heading-scoped Attachments selector proposal"
+  ],
+  "permission_question_needed": false,
+  "next_action": "Coordinator opens an explicit isolated runtime window; then run the current-UX acceptance batch with zero retries.",
+  "static_review": "PASS",
+  "source_sha256": "4975f7e6198cac880216138b71b0bdfa0099c636f20416e808caae21de0b12a4"
+}

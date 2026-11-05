@@ -1,0 +1,791 @@
+diff --git a/e2e/collaboration-host-installed.spec.ts b/e2e/collaboration-host-installed.spec.ts
+index 96551da2d..65148530a 100644
+--- a/e2e/collaboration-host-installed.spec.ts
++++ b/e2e/collaboration-host-installed.spec.ts
+@@ -159,7 +159,9 @@ test("Packaged full Main controls a real native host run and explicitly resumes
+     const restarted = await native.command<InstalledMainMetadata>("restart", { issueId: issue.id, title: issue.title });
+     expect(restarted.artifactSha256).toBe(boot.artifactSha256);
+     expect(restarted.main.userData).toBe(boot.main.userData);
+-    expect(restarted.native.daemon.state).toBe("stopped");
++    // The controller verifies this managed daemon's exact private profile, PID,
++    // server, deployment and user. Its liveness does not resume the paused AI lane.
++    expect(restarted.native.daemon.state).toBe("running");
+     const restored = await native.command<CollaborationIssue>("read", { path: `/api/collaboration/issues/${issue.id}` });
+     expect(restored.execution?.protocol_version).toBe(6);
+     expect(restored.execution).toEqual(paused.execution);
+diff --git a/e2e/collaboration-installed-main.spec.ts b/e2e/collaboration-installed-main.spec.ts
+index 78af971ca..4eb0ef65b 100644
+--- a/e2e/collaboration-installed-main.spec.ts
++++ b/e2e/collaboration-installed-main.spec.ts
+@@ -1,11 +1,13 @@
+ import { randomUUID } from "node:crypto";
+ import { test, expect, type Frame, type Page, type Request } from "@playwright/test";
+ import type { CollaborationCommentInput, CollaborationCommentReceipt, CollaborationCommandHistory,
+-  CollaborationControlInput, CollaborationControlReceipt, CollaborationIssue, CollaborationOperation, CollaborationStatusOptions, CollaborationWorkbench } from "@multica/core/collaboration";
++  CollaborationControlInput, CollaborationControlReceipt, CollaborationIssue, CollaborationOperation, CollaborationWorkbench } from "@multica/core/collaboration";
+ import { TestApiClient } from "./fixtures";
+ import { authenticateControlWeb, controlAccountPath, seedCollaborationControlJourney } from "./fixtures/collaboration-control-journey";
+ import { dockerTaskURL, InstalledMainClient, type InstalledMainMetadata, type InstalledMainWrite } from "./fixtures/collaboration-installed-main";
+ import { selectCollaborationRecipient } from "./fixtures/collaboration-offline-handoff";
++import { directedFormThroughUI } from "./fixtures/collaboration-handoff-chain";
++import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
+ 
+ // The local runner handles secrets outside Playwright tracing. This actual
+ // installed Main evidence supplements the canonical service/renderer journeys;
+@@ -52,7 +54,9 @@ async function refreshWebIssue(page: Page, issueId: string) {
+ async function webOperation(page: Page, issueId: string, action: "invite" | "transfer", userId: string, name: string, note = "") {
+   const baseline = await refreshWebIssue(page, issueId);
+   const label = action === "invite" ? "Add participant" : "Transfer";
+-  await page.getByRole("button", { name: label, exact: true }).click();
++  const actionButton = page.getByRole("button", { name: label, exact: true });
++  if (!await actionButton.isVisible()) await revealCollaborationDisclosure(page, "More actions");
++  await actionButton.click();
+   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: label, exact: true }) });
+   await selectCollaborationRecipient(page, form, { id: userId, name });
+   await expect(form.getByText(`Selected account: ${name}`, { exact: true })).toBeVisible();
+@@ -96,43 +100,8 @@ interface DirectedWrite extends InstalledMainWrite<CollaborationOperation, Recor
+ }
+ 
+ async function webInformationForm(page: Page, issueId: string, action: DirectedAction, note: string,
+-  recipient?: { id: string; name: string }): Promise<DirectedWrite> {
+-  const baseline = await refreshWebIssue(page, issueId);
+-  expect(baseline.capabilities[action]).toBe(true);
+-  const label = { request_information: "Request information", return_information: "Return information", submit_acceptance: "Submit for acceptance" }[action];
+-  const optionsPending = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/collaboration/issues/${issueId}/status-options`
+-    && new URL(response.url()).searchParams.get("action") === action && response.request().method() === "GET");
+-  await page.getByRole("button", { name: label, exact: true }).click();
+-  const form = page.locator("form").filter({ has: page.getByRole("heading", { name: label, exact: true }) });
+-  const optionsResponse = await optionsPending;
+-  expect(optionsResponse.status()).toBe(200);
+-  const options: CollaborationStatusOptions = await optionsResponse.json();
+-  expect(options.action).toBe(action);
+-  expect(options.options).toHaveLength(1);
+-  if (action === "request_information") {
+-    if (!recipient) throw new Error("Request information needs the exact participant recipient");
+-    await selectCollaborationRecipient(page, form, recipient);
+-    await expect(form.getByText(`Selected account: ${recipient.name}`, { exact: true })).toBeVisible();
+-  }
+-  const select = form.getByLabel("Status", { exact: true });
+-  await expect(select.locator("option")).toHaveCount(1);
+-  await select.selectOption(options.default_status);
+-  await form.getByLabel("Note", { exact: true }).fill(note);
+-  const endpoint = `/api/collaboration/issues/${issueId}/${action === "request_information" ? "handoffs" : action === "return_information" ? "information-returns" : "acceptance-submissions"}`;
+-  const pending = page.waitForResponse((response) => new URL(response.url()).pathname === endpoint && response.request().method() === "POST");
+-  await form.getByRole("button", { name: "Confirm", exact: true }).click();
+-  const response = await pending;
+-  expect(response.status()).toBe(200);
+-  const receipt: CollaborationOperation = await response.json();
+-  const input: Record<string, unknown> = response.request().postDataJSON();
+-  const requestId = response.request().headers()["idempotency-key"]!;
+-  expect(requestId).toMatch(/^[0-9a-f-]{36}$/i);
+-  expect(input).toMatchObject({ expected_collaboration_revision: baseline.collaboration_revision, expected_lifecycle_epoch: baseline.lifecycle_epoch,
+-    expected_participant_epoch: baseline.write_context!.participant_epoch, expected_account_epoch: baseline.write_context!.account_epoch,
+-    expected_status: options.default_status, status_options_version: options.status_options_version, note });
+-  if (action === "return_information") expect(input.information_request_id).toBe(baseline.current_information_request!.id);
+-  await expect(form).toHaveCount(0);
+-  return { receipt, input, requestId, baseline, selectedStatus: options.default_status, resultText: "Action confirmed." };
++  recipient?: { id: string; name: string }, basis?: string): Promise<DirectedWrite> {
++  return { ...await directedFormThroughUI(page, issueId, action, note, recipient, basis), resultText: "Action confirmed." };
+ }
+ 
+ test("installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume", async ({ page }, testInfo) => {
+@@ -210,6 +179,12 @@ test("installed Linux full Main and production Web hand off the same issue, pres
+       expect(after.status).toBe(outcome.selectedStatus);
+       expect(outcome.input.expected_collaboration_revision).toBe(outcome.baseline.collaboration_revision);
+       expect((await native.command<CollaborationIssue>("read", { path: root })).handler.user_id).toBe(handlerId);
++      if (action === "submit_acceptance") {
++        const submission = after.delivery!.current!;
++        expect(submission).toMatchObject({ author_user_id: user.id, result: outcome.input.note, basis: outcome.input.basis,
++          evidence_state: "available", decision: null });
++        expect(outcome.receipt.delivery_confirmation).toEqual({ submission_id: submission.id, attachment_ids: [] });
++      }
+       if (action === "request_information") expect(after.current_information_request?.recipient.user_id).toBe(handlerId);
+       else expect(after.current_information_request).toBeNull();
+       workflowWrites.push({ client, action, outcome, after });
+@@ -220,7 +195,7 @@ test("installed Linux full Main and production Web hand off the same issue, pres
+     const returnedByWeb = await webInformationForm(page, fixture.issueId, "return_information", "Web creator returns the requested information");
+     await checkDirected("web", "return_information", returnedByWeb, user.id);
+     const acceptanceByNative = await native.command<DirectedWrite>("workflow", { issueId: fixture.issueId, action: "submit_acceptance",
+-      note: "Installed handler submits for creator acceptance" });
++      note: "Installed handler submits for creator acceptance", basis: "Confirmed the creator returned the requested information and the same task identity remains." });
+     await checkDirected("electron", "submit_acceptance", acceptanceByNative, fixture.creatorId);
+     const requestedByWeb = await webInformationForm(page, fixture.issueId, "request_information", "Web creator requests information from the installed participant", { id: user.id, name });
+     await checkDirected("web", "request_information", requestedByWeb, user.id);
+@@ -240,7 +215,8 @@ test("installed Linux full Main and production Web hand off the same issue, pres
+       await handlerContext.addInitScript(() => { localStorage.setItem("multica-locale", "en"); localStorage.setItem("multica:chat:isOpen", "false"); });
+       const handlerWeb = await handlerContext.newPage();
+       await handlerWeb.goto(new URL(controlAccountPath(fixture), webURL).href);
+-      const acceptanceByWeb = await webInformationForm(handlerWeb, fixture.issueId, "submit_acceptance", "Same installed handler submits acceptance from Web");
++      const acceptanceByWeb = await webInformationForm(handlerWeb, fixture.issueId, "submit_acceptance", "Same installed handler submits acceptance from Web", undefined,
++        "Confirmed the installed participant returned information and the same user explicitly submits the revised result.");
+       await checkDirected("web", "submit_acceptance", acceptanceByWeb, fixture.creatorId);
+     } finally { await handlerContext.close(); }
+     const workflowFinished = await readWeb();
+@@ -360,7 +336,8 @@ test("installed Linux full Main and production Web hand off the same issue, pres
+     expect(restarted.main.packaged).toBe(true);
+     expect(restarted.artifactSha256).toBe(boot.artifactSha256);
+     expect(restarted.main.userData).toBe(boot.main.userData);
+-    expect(restarted.native.daemon.state).toBe("stopped");
++    // Managed credential reconciliation may launch the verified Desktop-owned daemon after login.
++    expect(restarted.native.daemon.state).toBe("running");
+     expect(restarted.tabs?.accountTabs).toHaveLength(1);
+     expect(sharedFacts(await readNative())).toEqual(sharedFacts(afterTransferBack));
+     expect(await native.command("read", { path: `${root}/commands?limit=100` })).toEqual(priorHistory);
+diff --git a/e2e/collaboration-leave-web.spec.ts b/e2e/collaboration-leave-web.spec.ts
+index f7ff24f3e..b0d4487ac 100644
+--- a/e2e/collaboration-leave-web.spec.ts
++++ b/e2e/collaboration-leave-web.spec.ts
+@@ -1,4 +1,5 @@
+ import { test, expect } from "@playwright/test";
++import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
+ import type { CollaborationParticipants, CollaborationResources, CollaborationWorkbench } from "@multica/core/collaboration";
+ import { clickControl, controlEnvironmentReady, panelFor, seedCollaborationControlJourney, targetRow } from "./fixtures/collaboration-control-journey";
+ import {
+@@ -44,9 +45,11 @@ test("Web Leave issue refuses creator and handler; an owner's departure revokes
+     const handler = await openGapSession(browser, fixture, "handler", webUrl);
+     sessions.push(handler);
+     for (const session of [creator, handler]) {
++      if (!await session.page.getByRole("button", { name: "Transfer", exact: true }).isVisible()) await revealCollaborationDisclosure(session.page, "More actions");
+       await expect(session.page.getByRole("button", { name: "Transfer", exact: true })).toBeVisible();
+       await expect(session.page.getByRole("button", { name: "Leave issue", exact: true })).toHaveCount(0);
+     }
++    if (!await owner.page.getByRole("button", { name: "Leave issue", exact: true }).isVisible()) await revealCollaborationDisclosure(owner.page, "More actions");
+     await expect(owner.page.getByRole("button", { name: "Leave issue", exact: true })).toBeVisible();
+     const participantsBefore = await fixture.creator.requestJSON<CollaborationParticipants>(`${root}/participants`);
+     const beforeRefusals = await readGapIssue(fixture);
+diff --git a/e2e/collaboration-terminal-reopen-web.spec.ts b/e2e/collaboration-terminal-reopen-web.spec.ts
+index 1a1c6173d..2eaa3f1e5 100644
+--- a/e2e/collaboration-terminal-reopen-web.spec.ts
++++ b/e2e/collaboration-terminal-reopen-web.spec.ts
+@@ -1,8 +1,9 @@
+ import { test, expect } from "@playwright/test";
++import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
+ import { clickControl, controlEnvironmentReady, panelFor, seedCollaborationControlJourney, targetRow } from "./fixtures/collaboration-control-journey";
+ import {
+   commentThroughUI, gapControlBody, gapWorkflowObservations, lifecycleThroughUI, mentionNames, openGapSession, queuedInput, rawGapRequest,
+-  readGapHistory, readGapIssue, reloadGapPage, showGapHistory, type GapSession,
++  readGapHistory, readGapIssue, reloadGapPage, showGapHistory, submitResultThroughUI, type GapSession,
+ } from "./fixtures/collaboration-control-gaps";
+ 
+ test.use({ actionTimeout: 15_000, screenshot: "only-on-failure", trace: "retain-on-failure" });
+@@ -39,8 +40,17 @@ test("Web closed issue refuses @agent and Resume, only the creator reopens, and
+ 
+     // Close through the creator's UI (AC57): waiting inputs are cancelled; the
+     // permitted run is asked to stop but its termination stays unconfirmed.
++    const submissionAuthor = await openGapSession(browser, fixture, "handler", webUrl);
++    sessions.push(submissionAuthor);
++    const submitted = await submitResultThroughUI(submissionAuthor.page, fixture.issueId,
++      "The handler submits the observed task state for creator acceptance.",
++      "The original A input remains in flight and the later A/B inputs are still waiting before acceptance.");
++    const afterSubmission = await readGapIssue(fixture);
++    expect(afterSubmission.execution).toEqual(live.execution);
++    expect(afterSubmission.session).toEqual(live.session);
++    expect(afterSubmission.delivery!.current!.id).toBe(submitted.submissionId);
+     await reloadGapPage(page, fixture.issueId, fixture.title);
+-    const completed = await lifecycleThroughUI(page, fixture.issueId, "complete");
++    const completed = await lifecycleThroughUI(page, fixture.issueId, "complete", submitted.submissionId);
+     const closed = await readGapIssue(fixture);
+     expect(closed).toMatchObject({ status_category: "done", session: { queue_state: "closed" } });
+     expect(closed.execution.runs).toEqual([expect.objectContaining({ id: pending.runId, forced_disposition: "stopped", proof_state: "unknown", progress_state: "ending", settled_at: null })]);
+@@ -85,7 +95,10 @@ test("Web closed issue refuses @agent and Resume, only the creator reopens, and
+     const handler = await openGapSession(browser, fixture, "handler", webUrl);
+     sessions.push(handler);
+     await expect(panelFor(handler.page).getByRole("button", { name: "Stop all", exact: true })).toBeEnabled();
++    const handlerActions = handler.page.locator("details > summary:visible").filter({ hasText: /^More actions$/ });
++    if (await handlerActions.count() > 0) await revealCollaborationDisclosure(handler.page, "More actions");
+     await expect(handler.page.getByRole("button", { name: "Reopen issue", exact: true })).toHaveCount(0);
++    if (!await page.getByRole("button", { name: "Reopen issue", exact: true }).isVisible()) await revealCollaborationDisclosure(page, "More actions");
+     await expect(page.getByRole("button", { name: "Reopen issue", exact: true })).toBeVisible();
+     expect((await rawGapRequest(fixture, "handler", "GET", `${root}/status-options?action=reopen`)).status).toBe(403);
+     const creatorOptions = await fixture.creator.requestJSON<{ default_status: string; status_options_version: string }>(`${root}/status-options?action=reopen`);
+@@ -123,7 +136,8 @@ test("Web closed issue refuses @agent and Resume, only the creator reopens, and
+     await reloadGapPage(page, fixture.issueId, fixture.title);
+     await expect(panelFor(page).locator(":scope > p").filter({ hasText: /^Paused$/ })).toBeVisible();
+     await expect(page.getByRole("button", { name: "Reopen issue", exact: true })).toHaveCount(0);
+-    await expect(page.getByRole("button", { name: "Complete issue", exact: true })).toBeVisible();
++    if (!await page.getByRole("button", { name: "Record result and complete", exact: true }).isVisible()) await revealCollaborationDisclosure(page, "More actions");
++    await expect(page.getByRole("button", { name: "Record result and complete", exact: true })).toBeVisible();
+     for (const input of [a2, b1]) await showGapHistory(page, input.commandId, input.marker, "Cancelled", "The collaboration was completed");
+ 
+     // 5. Resume all after reopen: the unconfirmed run still holds lane A (R17).
+diff --git a/e2e/fixtures/collaboration-control-gaps.ts b/e2e/fixtures/collaboration-control-gaps.ts
+index d4da81e14..53fc72f1c 100644
+--- a/e2e/fixtures/collaboration-control-gaps.ts
++++ b/e2e/fixtures/collaboration-control-gaps.ts
+@@ -1,4 +1,5 @@
+ import { randomUUID } from "node:crypto";
++import { revealCollaborationDisclosure } from "./collaboration-disclosures";
+ import { expect, type Browser, type Page } from "@playwright/test";
+ import type {
+   CollaborationCommandHistory, CollaborationCommentReceipt, CollaborationIssue, CollaborationMentionTargets,
+@@ -132,19 +133,54 @@ export async function mentionNames(client: TestApiClient, issueId: string) {
+   } };
+ }
+ 
++/** Submit real result evidence before exercising the creator's acceptance. */
++export async function submitResultThroughUI(page: Page, issueId: string, result: string, basis: string) {
++  const action = page.getByRole("button", { name: "Submit result", exact: true });
++  if (!await action.isVisible()) await revealCollaborationDisclosure(page, "More actions");
++  const optionsPending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/status-options`
++    && new URL(response.url()).searchParams.get("action") === "submit_acceptance" && response.request().method() === "GET");
++  await action.click();
++  const optionsResponse = await optionsPending;
++  expect(optionsResponse.status()).toBe(200);
++  const options: { default_status: string; status_options_version: string } = await optionsResponse.json();
++  const form = page.getByRole("form", { name: "Submit result", exact: true });
++  await form.getByLabel("Result", { exact: true }).fill(result);
++  await form.getByLabel("Basis", { exact: true }).fill(basis);
++  await form.getByLabel("Status", { exact: true }).selectOption(options.default_status);
++  const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/acceptance-submissions`
++    && response.request().method() === "POST");
++  await form.getByRole("button", { name: "Submit result", exact: true }).click();
++  const response = await pending;
++  expect(response.status()).toBe(200);
++  const input = response.request().postDataJSON();
++  expect(input).toMatchObject({ note: result, basis, attachment_ids: [], expected_status: options.default_status,
++    status_options_version: options.status_options_version });
++  const receipt: CollaborationOperation = await response.json();
++  expect(receipt.code).toBe("acceptance_submitted");
++  const submissionId = receipt.delivery_confirmation?.submission_id;
++  expect(submissionId).toMatch(/^[0-9a-f-]{36}$/i);
++  expect(receipt.delivery_confirmation?.attachment_ids).toEqual([]);
++  await expect(form).toHaveCount(0);
++  return { submissionId: submissionId!, receipt, input };
++}
++
+ /** Complete, cancel or reopen through the shared workflow form. */
+-export async function lifecycleThroughUI(page: Page, issueId: string, action: "complete" | "cancel" | "reopen") {
+-  const label = { complete: "Complete issue", cancel: "Cancel issue", reopen: "Reopen issue" }[action];
++export async function lifecycleThroughUI(page: Page, issueId: string, action: "complete" | "cancel" | "reopen", submissionId?: string) {
++  if (action === "complete" && !submissionId) throw new Error("Acceptance must identify the exact submitted result");
++  const label = { complete: "Accept and complete", cancel: "Cancel issue", reopen: "Reopen issue" }[action];
++  const actionButton = page.getByRole("button", { name: label, exact: true });
++  if (!await actionButton.isVisible()) await revealCollaborationDisclosure(page, "More actions");
+   const optionsPending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/status-options`
+     && new URL(response.url()).searchParams.get("action") === action && response.request().method() === "GET");
+-  await page.getByRole("button", { name: label, exact: true }).click();
++  await actionButton.click();
+   const optionsResponse = await optionsPending;
+   expect(optionsResponse.status()).toBe(200);
+   const options: { default_status: string; status_options_version: string; options: { key: string; category: string }[] } = await optionsResponse.json();
+   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: label, exact: true }) });
++  if (submissionId) await expect(form.locator(`[data-submission-id="${submissionId}"]`)).toHaveCount(1);
+   await form.getByLabel("Status", { exact: true }).selectOption(options.default_status);
+   const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/lifecycle` && response.request().method() === "POST");
+-  await form.getByRole("button", { name: "Confirm", exact: true }).click();
++  await form.getByRole("button", { name: action === "complete" ? "Accept and complete" : "Confirm", exact: true }).click();
+   const response = await pending;
+   expect(response.status()).toBe(200);
+   const receipt: CollaborationOperation = await response.json();
+@@ -153,11 +189,17 @@ export async function lifecycleThroughUI(page: Page, issueId: string, action: "c
+   if (!requestId) throw new Error("The lifecycle form omitted its original request key");
+   const input: Record<string, unknown> = response.request().postDataJSON();
+   expect(input).toMatchObject({ action, status: options.default_status, status_options_version: options.status_options_version });
++  if (submissionId) {
++    expect(input.submission_id).toBe(submissionId);
++    expect(receipt.delivery_confirmation).toEqual({ submission_id: submissionId, attachment_ids: [] });
++  }
+   await expect(form).toHaveCount(0);
+   return { receipt, requestId, input, options };
+ }
+ export async function leaveThroughUI(page: Page, issueId: string) {
+-  await page.getByRole("button", { name: "Leave issue", exact: true }).click();
++  const actionButton = page.getByRole("button", { name: "Leave issue", exact: true });
++  if (!await actionButton.isVisible()) await revealCollaborationDisclosure(page, "More actions");
++  await actionButton.click();
+   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Leave issue", exact: true }) });
+   const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/leave` && response.request().method() === "POST");
+   await form.getByRole("button", { name: "Confirm", exact: true }).click();
+@@ -170,7 +212,9 @@ export async function leaveThroughUI(page: Page, issueId: string) {
+ }
+ 
+ export async function inviteThroughUI(page: Page, issueId: string, target: { id: string; name: string }) {
+-  await page.getByRole("button", { name: "Add participant", exact: true }).click();
++  const actionButton = page.getByRole("button", { name: "Add participant", exact: true });
++  if (!await actionButton.isVisible()) await revealCollaborationDisclosure(page, "More actions");
++  await actionButton.click();
+   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Add participant", exact: true }) });
+   await selectHandoffRecipient(page, form, target);
+   const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/participants` && response.request().method() === "POST");
+diff --git a/e2e/fixtures/collaboration-detail-journey.ts b/e2e/fixtures/collaboration-detail-journey.ts
+index e7d02b642..1c2bd22b5 100644
+--- a/e2e/fixtures/collaboration-detail-journey.ts
++++ b/e2e/fixtures/collaboration-detail-journey.ts
+@@ -20,7 +20,6 @@ import { selectHandoffRecipient } from "./collaboration-offline-handoff";
+ import { chooseView } from "./collaboration-source-surface";
+ import { deepLink, nativeScreenshot, openDesktop, selectDesktopWorkspace, type NativeHarness } from "./collaboration-native";
+ 
+-const task = ".trellis/tasks/11-02-collaboration-detail-optimization";
+ const checkout = realpathSync(resolve(import.meta.dirname, "../.."));
+ const issuePath = (id: string) => `/api/collaboration/issues/${id}`;
+ const accountPath = (id: string) => collaborationAccountPath({ view: "participating", issueId: id });
+@@ -113,11 +112,25 @@ function assertListener(url: string, expected: number): void {
+ export async function detailJourneyProvenance(): Promise<DetailJourneyProvenance> {
+   const filename = process.env.COLLABORATION_DETAIL_PROVENANCE_FILE;
+   if (!filename || !isAbsolute(filename)) throw new Error("Explicit detail journey runtime provenance is required");
++  const task = process.env.COLLABORATION_DETAIL_TASK;
++  const allocationFilename = process.env.COLLABORATION_DETAIL_ALLOCATION_FILE;
++  if (!task || !/^\.trellis\/tasks\/[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(task)
++    || !allocationFilename || !isAbsolute(allocationFilename)) {
++    throw new Error("Explicit current detail journey task and allocation are required");
++  }
+   const raw = object(JSON.parse(readFileSync(filename, "utf8")));
+   if (raw.runtime_permitted !== true || raw.task !== task || realpathSync(textField(raw, "source_root")) !== checkout) {
+     throw new Error("Detail journey runtime permit does not match this task and checkout");
+   }
+-  const allocation = object(JSON.parse(readFileSync(join(checkout, task, "research/continuation-20261103/application-preparation.json"), "utf8")));
++  const allocationBytes = readFileSync(allocationFilename);
++  if (realpathSync(textField(raw, "allocation_file")) !== realpathSync(allocationFilename)
++    || raw.allocation_sha256 !== sha256(allocationBytes)) {
++    throw new Error("Detail journey allocation differs from the permitted record");
++  }
++  const allocation = object(JSON.parse(allocationBytes.toString("utf8")));
++  if (allocation.task !== task || realpathSync(textField(allocation, "source_root")) !== checkout) {
++    throw new Error("Detail journey allocation does not belong to this task and checkout");
++  }
+   const apiUrl = origin(textField(raw, "api_url"));
+   const webUrl = origin(textField(raw, "production_web_url"));
+   const rendererUrl = origin(textField(raw, "renderer_url"));
+diff --git a/e2e/fixtures/collaboration-installed-main.mjs b/e2e/fixtures/collaboration-installed-main.mjs
+index a58ec9fc5..9ea9b2ed2 100644
+--- a/e2e/fixtures/collaboration-installed-main.mjs
++++ b/e2e/fixtures/collaboration-installed-main.mjs
+@@ -1,8 +1,8 @@
+ import assert from "node:assert/strict";
+ import { createHash } from "node:crypto";
+ import { spawnSync } from "node:child_process";
+-import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
+-import { homedir } from "node:os";
++import { accessSync, closeSync, constants, existsSync, mkdirSync, openSync, readFileSync, readSync, realpathSync, statSync, writeFileSync } from "node:fs";
++import { homedir, tmpdir } from "node:os";
+ import path from "node:path";
+ import process from "node:process";
+ import { createInterface } from "node:readline";
+@@ -27,12 +27,15 @@ const errors = [];
+ const responses = [];
+ const accountRequests = [];
+ const writes = [];
++const mainErrorCodes = [];
+ let app;
+ let page;
+ let apiUrl;
+ let appUrl;
+ let executionViewVersion;
+ let installation;
++let authenticatedUserId;
++let managedDeploymentId;
+ 
+ function scrub(value) {
+   let text = typeof value === "string" ? value : JSON.stringify(value);
+@@ -185,6 +188,126 @@ async function cliAvailable() {
+   });
+ }
+ 
++async function workflowButton(label) {
++  const button = page.getByRole("button", { name: label, exact: true });
++  if (!await button.isVisible()) {
++    const summary = page.locator("details > summary:visible").filter({ hasText: /^More actions$/ });
++    await expect(summary).toBeVisible();
++    const disclosure = summary.locator("..");
++    if (await disclosure.getAttribute("open") === null) await summary.click();
++    await expect(disclosure).toHaveAttribute("open", "");
++  }
++  await button.click();
++}
++
++function verifyOwnedManagedDaemon(main, status) {
++  const profile = `desktop-${new URL(apiUrl).host.replace(/:/g, "-").toLowerCase()}`;
++  const directory = path.join(main.home, ".multica", "profiles", profile);
++  assert.equal(status.profile, profile);
++  assert.equal(status.serverUrl, apiUrl);
++  assert(Number.isSafeInteger(status.pid) && status.pid > 0);
++  assert.equal(Number(readFileSync(path.join(directory, "daemon.pid"), "utf8").trim()), status.pid);
++  const config = JSON.parse(readFileSync(path.join(directory, "config.json"), "utf8"));
++  assert.equal(config.server_url, apiUrl);
++  assert.equal(config.management_deployment_id, managedDeploymentId);
++  assert.equal(readFileSync(path.join(directory, ".desktop-user-id"), "utf8").trim(), authenticatedUserId);
++  process.kill(status.pid, 0);
++}
++
++async function stopOwnedManagedDaemon() {
++  if (!app || !authenticatedUserId || !managedDeploymentId) return;
++  const status = await page.evaluate(() => window.daemonAPI.getStatus());
++  if (status.state === "stopped") return;
++  assert.equal(status.state, "running", "Uncertain daemon ownership requires coordinator cleanup");
++  const main = await app.evaluate(({ app }) => ({ home: app.getPath("home") }));
++  verifyOwnedManagedDaemon(main, status);
++  const stopped = await page.evaluate(() => window.daemonAPI.stop());
++  assert.equal(stopped.success, true, "The verified task-owned daemon must stop during fixture cleanup");
++  await expect.poll(() => page.evaluate(() => window.daemonAPI.getStatus()), { timeout: 30_000 }).toMatchObject({ state: "stopped" });
++}
++
++// Diagnostic projections deliberately omit raw log text, credentials and signed proofs.
++const diagnosticCodes = new Set(["challenge_expired", "challenge_time_window", "challenge_scope_mismatch", "challenge_invalid",
++  "cli_unavailable", "cli_download_failed", "cli_checksum_failed", "cli_extract_failed", "cli_install_failed", "cli_validation_failed",
++  "request_failed", "operation_failed", "EACCES", "EPERM", "ENOENT", "ENOEXEC", "EROFS", "EADDRINUSE", "ECONNREFUSED", "ETIMEDOUT"]);
++function safeErrorCode(error) { return diagnosticCodes.has(error?.code) ? error.code : "unclassified"; }
++function recordMainErrorCodes(chunk) {
++  const text = Buffer.isBuffer(chunk) ? chunk.subarray(-8192).toString("utf8") : String(chunk).slice(-8192);
++  for (const code of text.match(/\b[A-Za-z_]+\b/g) ?? []) {
++    if (diagnosticCodes.has(code)) mainErrorCodes.push(code);
++  }
++  for (const [marker, code] of [["managed installation setup failed", "managed_setup_failed"], ["failed to mint PAT", "pat_mint_failed"],
++    ["CLI auto-install failed", "cli_auto_install_failed"], ["restart after credential change failed", "credential_restart_failed"]]) {
++    if (text.includes(marker)) mainErrorCodes.push(code);
++  }
++  mainErrorCodes.splice(0, Math.max(0, mainErrorCodes.length - 20));
++}
++function directoryDiagnostic(directory) {
++  try {
++    const info = statSync(directory);
++    let writableAccess = false;
++    try { accessSync(directory, constants.W_OK); writableAccess = true; } catch { /* Report access only; never write a probe file. */ }
++    return { directory: info.isDirectory(), mode: (info.mode & 0o777).toString(8), uid: info.uid, writableAccess };
++  } catch (error) { return { unavailable: true, code: safeErrorCode(error) }; }
++}
++function diagnosticFile(file, root, limit = 65536) {
++  if (!existsSync(file)) return { exists: false };
++  const resolved = realpathSync(file);
++  if (!resolved.startsWith(realpathSync(root) + path.sep)) return { exists: true, outside_expected_home: true };
++  const info = statSync(resolved);
++  const summary = { exists: true, bytes: info.size, mode: (info.mode & 0o777).toString(8), uid: info.uid };
++  if (!info.isFile()) return { ...summary, regular: false };
++  const fd = openSync(resolved, "r");
++  try {
++    const bytes = Buffer.alloc(Math.min(info.size, limit));
++    const read = readSync(fd, bytes, 0, bytes.length, Math.max(0, info.size - limit));
++    return { ...summary, text: bytes.subarray(0, read).toString("utf8"), truncated: info.size > limit };
++  } finally { closeSync(fd); }
++}
++async function daemonFailureDiagnostic(main, expectedState) {
++  const profile = `desktop-${new URL(apiUrl).host.replace(/:/g, "-").toLowerCase()}`;
++  const directory = path.join(main.home, ".multica", "profiles", profile);
++  const raw = await page.evaluate(async ({ server, user, codes }) => {
++    const daemon = await window.daemonAPI.getStatus();
++    const metadata = await window.daemonAPI.getInstallationMetadata();
++    const states = ["running", "stopped", "starting", "stopping", "installing_cli", "cli_not_found", "recovery_paused", "auth_expired"];
++    const stages = ["cli_setup", "registration", "binding", "credentials", "restart"];
++    const diagnostic = (value) => value ? { code: codes.includes(value.code) ? value.code : "unknown",
++      stage: stages.includes(value.stage) ? value.stage : "unknown", httpStatus: Number.isInteger(value.httpStatus) ? value.httpStatus : null } : null;
++    return { state: states.includes(daemon.state) ? daemon.state : "unknown", pid: Number.isSafeInteger(daemon.pid) ? daemon.pid : null,
++      profileMatches: daemon.profile === `desktop-${new URL(server).host.replace(/:/g, "-").toLowerCase()}`,
++      serverMatches: daemon.serverUrl === server, diagnostics: { cli: diagnostic(daemon.diagnostics?.cli), connection: diagnostic(daemon.diagnostics?.connection) },
++      installation: { present: metadata !== null && metadata !== undefined, serverMatches: metadata?.serverUrl === server, userMatches: metadata?.userId === user },
++      autoStart: (await window.daemonAPI.getPrefs()).autoStart };
++  }, { server: apiUrl, user: authenticatedUserId ?? null, codes: [...diagnosticCodes] });
++  const files = {};
++  for (const name of ["config.json", ".desktop-user-id", "daemon.pid", "daemon.err.log", "daemon.log"]) {
++    try {
++      const { text, ...facts } = diagnosticFile(path.join(directory, name), main.home);
++      files[name] = facts;
++      if (text === undefined) continue;
++      if (name === "config.json" && !facts.truncated) {
++        const value = JSON.parse(text);
++        Object.assign(files[name], { serverMatches: value.server_url === apiUrl, deploymentMatches: value.management_deployment_id === managedDeploymentId,
++          deploymentPresent: typeof value.management_deployment_id === "string", credentialPresent: typeof value.token === "string" && value.token.length > 0 });
++      } else if (name === ".desktop-user-id") files[name].userMatches = text.trim() === authenticatedUserId;
++      else if (name === "daemon.pid") files[name].pid = /^\d+$/.test(text.trim()) ? Number(text.trim()) : null;
++      else if (name.endsWith(".log")) {
++        files[name].tail_sha256 = sha256Text(text);
++        files[name].errorCodes = [...new Set((text.match(/\b[A-Za-z_]+\b/g) ?? []).filter(code => diagnosticCodes.has(code)))].slice(-20);
++        files[name].markers = ["no agent runtimes could be registered", "not logged in", "permission denied", "read-only file system", "exec format error", "address already in use", "no such file or directory", "daemon-managed task"]
++          .filter(marker => text.toLowerCase().includes(marker));
++      }
++    } catch (error) { files[name] = { diagnostic_read_failed: true, code: safeErrorCode(error) }; }
++  }
++  const cli = statSync(bundledCliPath);
++  return { expectedState, actual: raw, expectedProfile: profile, authenticated: Boolean(authenticatedUserId), managedDeploymentAdvertised: Boolean(managedDeploymentId),
++    platform: main.platform, controllerUid: process.getuid?.() ?? null, profileFiles: files,
++    home: directoryDiagnostic(main.home), temporaryDirectory: directoryDiagnostic(tmpdir()),
++    bundledCLI: { mode: (cli.mode & 0o777).toString(8), uid: cli.uid, bytes: cli.size }, mainErrorCodes: [...mainErrorCodes] };
++}
++function sha256Text(value) { return createHash("sha256").update(value).digest("hex"); }
++
+ async function metadata() {
+   const main = await app.evaluate(({ app }) => ({
+     packaged: app.isPackaged, appPath: app.getAppPath(), name: app.getName(), version: app.getVersion(),
+@@ -219,8 +342,19 @@ async function metadata() {
+   assert.equal(native.config.config.appUrl, appUrl);
+   assert.equal(native.preferences.autoStart, false);
+   assert.equal(native.updater.automaticUpdates, false);
+-  await expect.poll(() => page.evaluate(() => window.daemonAPI.getStatus()), { timeout: 30_000 }).toMatchObject({ state: "stopped" });
+-  native.daemon = await page.evaluate(() => window.daemonAPI.getStatus());
++  const expectedDaemonState = authenticatedUserId && managedDeploymentId ? "running" : "stopped";
++  try {
++    await expect.poll(() => page.evaluate(() => window.daemonAPI.getStatus()), { timeout: 30_000 }).toMatchObject({ state: expectedDaemonState });
++    native.daemon = await page.evaluate(() => window.daemonAPI.getStatus());
++    if (expectedDaemonState === "running") verifyOwnedManagedDaemon(main, native.daemon);
++  } catch (error) {
++    let timer;
++    const diagnostic = await Promise.race([
++      daemonFailureDiagnostic(main, expectedDaemonState).catch((failure) => ({ capture_failed: true, code: safeErrorCode(failure) })),
++      new Promise((resolve) => { timer = setTimeout(() => resolve({ capture_timed_out: true }), 3000); }),
++    ]).finally(() => clearTimeout(timer));
++    throw new Error(`${error instanceof Error ? error.message : "Daemon state assertion failed"}\nInstalled daemon diagnostic: ${JSON.stringify(diagnostic)}`);
++  }
+   assert.equal(native.cliInstalled, true);
+   const tabs = await page.evaluate(() => {
+     const state = JSON.parse(localStorage.getItem("multica_tabs") ?? "null")?.state;
+@@ -236,6 +370,7 @@ async function launch() {
+   app = await electron.launch({ executablePath: executable, args: nativeMode ? [] : ["--no-sandbox"],
+     ...(nativeMode ? { env: { ...process.env, MULTICA_PACKAGED_ACCEPTANCE: "1", MULTICA_PACKAGED_ACCEPTANCE_HOME: process.env.MULTICA_PACKAGED_ACCEPTANCE_HOME } } : {}),
+     timeout: 60_000 });
++  app.process().stderr?.on("data", recordMainErrorCodes);
+   page = await app.firstWindow({ timeout: 45_000 });
+   page.setDefaultTimeout(20_000);
+   page.on("pageerror", (error) => errors.push(scrub(error.message)));
+@@ -263,7 +398,12 @@ async function launch() {
+   await page.reload();
+   await expect.poll(() => new URL(page.url()).pathname).toBe(`${packagePath}/out/renderer/index.html`);
+   await expect.poll(() => page.evaluate(() => typeof window.daemonAPI?.getPrefs)).toBe("function");
+-  await expect.poll(() => page.evaluate(() => window.daemonAPI.getStatus().then((status) => status.state)), { timeout: 90_000 }).toBe("stopped");
++  const expectedDaemonState = authenticatedUserId && managedDeploymentId ? "running" : "stopped";
++  await expect.poll(() => page.evaluate(() => window.daemonAPI.getStatus().then((status) => status.state)), { timeout: 90_000 }).toBe(expectedDaemonState);
++  if (expectedDaemonState === "running") {
++    const main = await app.evaluate(({ app }) => ({ home: app.getPath("home") }));
++    verifyOwnedManagedDaemon(main, await page.evaluate(() => window.daemonAPI.getStatus()));
++  }
+   await expect.poll(cliAvailable, { timeout: 90_000 }).toBe(true);
+ }
+ 
+@@ -303,6 +443,13 @@ async function dispatch(message) {
+       assert(existsSync(executable) && existsSync(packagePath), "Mount the current electron-builder directory package");
+       apiUrl = taskEndpoint(message.apiUrl, "apiUrl");
+       appUrl = taskEndpoint(message.appUrl, "appUrl");
++      const configResponse = await fetch(`${apiUrl}/api/config`);
++      assert.equal(configResponse.status, 200);
++      const publicConfig = await configResponse.json();
++      if (publicConfig.managed_installation_supported === true) {
++        assert.match(publicConfig.deployment_id, /^[0-9a-f-]{36}$/i);
++        managedDeploymentId = publicConfig.deployment_id;
++      }
+       const home = nativeMode ? process.env.MULTICA_PACKAGED_ACCEPTANCE_HOME : "/root";
+       const userData = nativeMode ? path.join(home, ".config", "Multica") : "/root/.config/Multica";
+       createProfileFile(path.join(home, ".multica", "desktop.json"), { schemaVersion: 1, apiUrl, appUrl,
+@@ -333,6 +480,7 @@ async function dispatch(message) {
+       const data = await response.json();
+       secrets.add(data.token);
+       assert.equal(data.user.id, message.userId);
++      authenticatedUserId = message.userId;
+       await expect(username).toHaveCount(0);
+       await expect(page.getByRole("heading", { name: "Collaboration", exact: true })).toBeVisible({ timeout: 45_000 });
+       return { status: response.status(), userId: data.user.id, actualPasswordForm: true };
+@@ -441,7 +589,7 @@ async function dispatch(message) {
+     }
+     case "handoff": {
+       const baseline = await refreshIssue(message.issueId);
+-      await page.getByRole("button", { name: "Transfer", exact: true }).click();
++      await workflowButton("Transfer");
+       const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Transfer", exact: true }) });
+       await selectCollaborationRecipient(page, form, { id: message.recipientId, name: message.recipientName });
+       await form.getByLabel("Note", { exact: true }).fill(message.note);
+@@ -455,13 +603,13 @@ async function dispatch(message) {
+     }
+     case "workflow": {
+       const label = { request_information: "Request information", return_information: "Return information",
+-        submit_acceptance: "Submit for acceptance" }[message.action];
++        submit_acceptance: "Submit result" }[message.action];
+       assert(label, "Only the named human workflow branches are available");
+       const baseline = await refreshIssue(message.issueId);
+       assert.equal(baseline.capabilities[message.action], true);
+       const optionsPending = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/collaboration/issues/${message.issueId}/status-options`
+         && new URL(response.url()).searchParams.get("action") === message.action && response.request().method() === "GET");
+-      await page.getByRole("button", { name: label, exact: true }).click();
++      await workflowButton(label);
+       const form = page.locator("form").filter({ has: page.getByRole("heading", { name: label, exact: true }) });
+       const optionsResponse = await optionsPending;
+       assert.equal(optionsResponse.status(), 200);
+@@ -477,16 +625,28 @@ async function dispatch(message) {
+       assert(selectedStatus, "The directed workflow must expose its prescribed status");
+       assert.equal(selectedStatus, options.default_status);
+       await select.selectOption(selectedStatus);
+-      await form.getByLabel("Note", { exact: true }).fill(message.note);
++      if (message.action === "submit_acceptance") {
++        assert(typeof message.basis === "string" && message.basis.trim(), "Result submission needs an explicit basis");
++        await form.getByLabel("Result", { exact: true }).fill(message.note);
++        await form.getByLabel("Basis", { exact: true }).fill(message.basis);
++      } else {
++        await form.getByLabel("Note", { exact: true }).fill(message.note);
++      }
+       const requestPath = `/api/collaboration/issues/${message.issueId}/${message.action === "request_information" ? "handoffs"
+         : message.action === "return_information" ? "information-returns" : "acceptance-submissions"}`;
+       const pending = page.waitForResponse((response) => new URL(response.url()).pathname === requestPath && response.request().method() === "POST");
+-      await form.getByRole("button", { name: "Confirm", exact: true }).click();
++      await form.getByRole("button", { name: message.action === "submit_acceptance" ? "Submit result" : "Confirm", exact: true }).click();
+       const outcome = await originalResponse(pending, 200, baseline);
+       assert.equal(outcome.input.expected_collaboration_revision, baseline.collaboration_revision);
+       assert.equal(outcome.input.expected_status, selectedStatus);
+       assert.equal(outcome.input.status_options_version, options.status_options_version);
+       if (message.action === "return_information") assert.equal(outcome.input.information_request_id, baseline.current_information_request.id);
++      if (message.action === "submit_acceptance") {
++        assert.equal(outcome.input.note, message.note);
++        assert.equal(outcome.input.basis, message.basis);
++        assert.deepEqual(outcome.input.attachment_ids, []);
++        assert.match(outcome.receipt.delivery_confirmation.submission_id, /^[0-9a-f-]{36}$/i);
++      }
+       await expect(form).toHaveCount(0);
+       return { ...outcome, selectedStatus, baseline };
+     }
+@@ -513,7 +673,7 @@ async function dispatch(message) {
+     }
+     case "status": return metadata();
+     case "close": {
+-      if (app) await app.close();
++      try { await stopOwnedManagedDaemon(); } finally { if (app) await app.close(); }
+       app = undefined;
+       return { closed: true, errors: [...errors], accountRequests: [...accountRequests], responses: [...responses] };
+     }
+@@ -533,4 +693,6 @@ for await (const line of input) {
+     reply(message?.id ?? null, undefined, scrub(error instanceof Error ? error.stack ?? error.message : String(error)));
+   }
+ }
+-if (app) await app.close().catch(() => undefined);
++if (app) {
++  try { await stopOwnedManagedDaemon(); } finally { await app.close().catch(() => undefined); }
++}
+diff --git a/e2e/fixtures/collaboration-lane-close-controls.ts b/e2e/fixtures/collaboration-lane-close-controls.ts
+index 8c9f4b8f9..aec0dce2f 100644
+--- a/e2e/fixtures/collaboration-lane-close-controls.ts
++++ b/e2e/fixtures/collaboration-lane-close-controls.ts
+@@ -1,7 +1,8 @@
+ import { randomUUID } from "node:crypto";
++import { lifecycleThroughUI, submitResultThroughUI } from "./collaboration-control-gaps";
+ import { expect, type Locator, type Page } from "@playwright/test";
+ import type {
+-  CollaborationCommandHistory, CollaborationIssue, CollaborationOperation, CollaborationResourceReceipt, CollaborationResources,
++  CollaborationCommandHistory, CollaborationIssue, CollaborationResourceReceipt, CollaborationResources,
+ } from "@multica/core/collaboration";
+ import { assertProviderInput, type SentCrossClientComment } from "./collaboration-cross-client-execution";
+ import {
+@@ -255,24 +256,6 @@ export async function exerciseSameLaneControls(seed: Fixture, creatorPage: Page,
+     scope: "Actual public Web/Electron controls and registration/consent with offline test-owned resources; no process/proof inference. Canonical service/Linux scope evidence is separate." };
+ }
+ 
+-async function closeThroughUI(page: Page, fixture: LifecycleFixture, action: "complete" | "cancel") {
+-  const label = action === "complete" ? "Complete issue" : "Cancel issue";
+-  await page.getByRole("button", { name: label, exact: true }).click();
+-  const form = page.locator("form").filter({ has: page.getByRole("heading", { name: label, exact: true }) });
+-  await form.getByLabel("Status", { exact: true }).selectOption(action === "complete" ? "done" : "cancelled");
+-  const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${lifecycleIssuePath(fixture.issueId)}/lifecycle`
+-    && response.request().method() === "POST");
+-  await form.getByRole("button", { name: "Confirm", exact: true }).click();
+-  const response = await pending;
+-  expect(response.status()).toBe(200);
+-  const receipt: CollaborationOperation = await response.json();
+-  expect(receipt.code).toBe(action === "complete" ? "completed" : "cancelled");
+-  const requestId = response.request().headers()["idempotency-key"];
+-  if (!requestId) throw new Error("Lifecycle close omitted its original request identity");
+-  expect(response.request().postDataJSON()).toMatchObject({ action, status: action === "complete" ? "done" : "cancelled" });
+-  await expect(form).toHaveCount(0);
+-  return { receipt, requestId, input: response.request().postDataJSON() as Record<string, unknown> };
+-}
+ 
+ export async function exerciseLiveClose(seed: Fixture, creatorPage: Page, handlerPage: Page, client: "web" | "electron", action: "complete" | "cancel",
+   controls: { proxy: Awaited<ReturnType<typeof createLifecycleRuntimeTransport>>; daemons: Awaited<ReturnType<typeof startLifecycleDaemons>>; capture: Capture }) {
+@@ -297,8 +280,21 @@ export async function exerciseLiveClose(seed: Fixture, creatorPage: Page, handle
+   for (const visit of [visitA, visitB]) expect(permitted.execution!.runs.find((run) => run.id === visit.input.identity.run_id))
+     .toMatchObject({ proof_state: "unknown", settled_at: null, forced_disposition: null });
+   for (const command of waiting) expect(permitted.execution!.commands.find((item) => item.id === command.commandId)?.state).toBe("waiting");
++  let submissionId: string | undefined;
++  if (action === "complete") {
++    await refreshLifecyclePage(handlerPage, fixture);
++    const result = await submitResultThroughUI(handlerPage, fixture.issueId,
++      "The participant delivers the recorded task state for creator acceptance.",
++      "Both controlled runs remain unsettled and all four waiting inputs remain visible before acceptance.");
++    submissionId = result.submissionId;
++    const submitted = await read();
++    expect(submitted.delivery!.current!.id).toBe(submissionId);
++    expect(submitted.session).toEqual(permitted.session);
++    expect(submitted.execution).toEqual(permitted.execution);
++  }
+   await refreshLifecyclePage(creatorPage, fixture);
+-  const closed = await closeThroughUI(creatorPage, fixture, action);
++  const closed = await lifecycleThroughUI(creatorPage, fixture.issueId, action, submissionId);
++  expect(closed.input.status).toBe(action === "complete" ? "done" : "cancelled");
+   for (const visit of [visitA, visitB]) await controls.proxy.waitForHeldProof(visit.input.identity.run_id);
+   const closing = await read();
+   expect(closing).toMatchObject({ status_category: action === "complete" ? "done" : "cancelled", session: { queue_state: "closed" } });
+diff --git a/e2e/fixtures/collaboration-offline-result-notifications.ts b/e2e/fixtures/collaboration-offline-result-notifications.ts
+index 9a82aa1c2..cb7270a76 100644
+--- a/e2e/fixtures/collaboration-offline-result-notifications.ts
++++ b/e2e/fixtures/collaboration-offline-result-notifications.ts
+@@ -160,7 +160,8 @@ export async function publishOfflineWorkflow(state: OfflineResultFixture) {
+     expect(options.action).toBe(action);
+     const requestId = randomUUID();
+     const input = { ...observations(before), ...fields, expected_status: options.default_status, status_options_version: options.status_options_version,
+-      note: `Offline ${action} fixture`, ...(action === "return_information" ? { information_request_id: before.current_information_request!.id } : {}) };
++      note: `Offline ${action} fixture`, ...(action === "return_information" ? { information_request_id: before.current_information_request!.id } : {}),
++      ...(action === "submit_acceptance" ? { basis: "The requested information was explicitly returned; the handler submits this exact offline result.", attachment_ids: [] } : {}) };
+     const path = `${root}/${action === "request_information" ? "handoffs" : action === "return_information" ? "information-returns" : "acceptance-submissions"}`;
+     const receipt = CollaborationOperationSchema.parse(await actor.client.requestJSON(path, { method: "POST", headers: { "Idempotency-Key": requestId }, body: input }));
+     const kind = action === "request_information" ? "information_requested" : action === "return_information" ? "information_returned" : "acceptance_submitted";
+@@ -168,6 +169,12 @@ export async function publishOfflineWorkflow(state: OfflineResultFixture) {
+     const after = await readIssue(actor.client, fixture.issueId);
+     expect(after.session).toEqual(before.session);
+     expect(after.execution).toEqual(before.execution);
++    if (action === "submit_acceptance") {
++      const submission = after.delivery!.current!;
++      expect(submission).toMatchObject({ author_user_id: actor.id, result: input.note, basis: input.basis,
++        evidence_state: "available", decision: null });
++      expect(receipt.delivery_confirmation).toEqual({ submission_id: submission.id, attachment_ids: [] });
++    }
+     const received = (await notifications(recipient.client, fixture.issueId)).filter((item) => item.kind === kind);
+     expect(received).toHaveLength(1);
+     const notice = received[0]!;
+diff --git a/e2e/fixtures/collaboration-retained-attachments.ts b/e2e/fixtures/collaboration-retained-attachments.ts
+index 7f2f3cc10..0d6fda50b 100644
+--- a/e2e/fixtures/collaboration-retained-attachments.ts
++++ b/e2e/fixtures/collaboration-retained-attachments.ts
+@@ -1,3 +1,4 @@
++import { revealCollaborationDisclosure } from "./collaboration-disclosures";
+ import { createHash, randomUUID } from "node:crypto";
+ import { expect, type Locator, type Page } from "@playwright/test";
+ import type { TestApiClient } from "../fixtures";
+@@ -91,6 +92,11 @@ async function assertIdle(fixture: RetainedAttachmentFixture, actor: TestApiClie
+   return issue;
+ }
+ 
++async function attachmentsPanel(page: Page) {
++  await revealCollaborationDisclosure(page, "Attachments");
++  return page.getByRole("region", { name: "Attachments", exact: true });
++}
++
+ async function preview(session: RetainedSession, container: Locator, file: CollaborationAttachment, bytes: Buffer) {
+   await container.getByRole("button", { name: `Preview ${file.name}`, exact: true }).first().click();
+   const dialog = session.page.getByRole("dialog", { name: file.name, exact: true });
+@@ -159,7 +165,7 @@ export async function exerciseTypedCreation(session: RetainedSession, fixture: R
+   const source = await fixture.owner.requestJSON<{ id: string; assignee_type: string | null; assignee_id: string | null; collaboration: { creator: { user_id: string }; handler: { user_id: string } } }>(`/api/issues/${created.id}`);
+   expect(source).toMatchObject({ id: created.id, collaboration: { creator: { user_id: fixture.ownerId }, handler: { user_id: fixture.creatorId } } });
+   expect(source).toMatchObject({ assignee_type: "member", assignee_id: fixture.creatorId });
+-  await preview(session, page.getByRole("region", { name: "Attachments", exact: true }), file, bytes);
++  await preview(session, await attachmentsPanel(page), file, bytes);
+   const firstDownload = await session.download(page.getByRole("region", { name: "Attachments", exact: true })
+     .getByRole("button", { name: `Download ${file.name}`, exact: true }), file.name, bytes, "typed-creation");
+   await page.reload();
+@@ -168,7 +174,7 @@ export async function exerciseTypedCreation(session: RetainedSession, fixture: R
+   session = await session.restart();
+   await expect(session.page.getByRole("heading", { name: title, exact: true })).toBeVisible();
+   expect((await assertIdle(fixture, fixture.owner, created.id)).execution).toEqual(created.execution);
+-  await preview(session, session.page.getByRole("region", { name: "Attachments", exact: true }), file, bytes);
++  await preview(session, await attachmentsPanel(session.page), file, bytes);
+   return { issue_id: created.id, fixture_issue_id: fixture.issueId, request_id: requestId, creation_actor: fixture.ownerId,
+     handler_id: fixture.creatorId, source_workspace_id: fixture.executionWorkspace.id,
+     typed_agent: { id: fixture.agent.resource_id, catalogue_issue_id: fixture.issueId, target_id: fixture.agent.target_id, owned_by_creator: true },
+@@ -232,7 +238,7 @@ async function displayAndDownload(session: RetainedSession, file: CollaborationA
+     await expect(comment.getByRole("button", { name: `Preview ${file.name}`, exact: true })).toHaveCount(0);
+   }
+   await expect(page.locator(`[id="comment-${deletedId}"]`).getByText("Comment deleted", { exact: true })).toBeVisible();
+-  const panel = page.getByRole("region", { name: "Attachments", exact: true });
++  const panel = await attachmentsPanel(page);
+   await preview(session, panel, file, bytes);
+   const issueDownload = await session.download(panel.getByRole("button", { name: `Download ${file.name}`, exact: true }), file.name, bytes, `${stage}-issue`);
+   const history = await historyContainer(page, removedId);
+@@ -371,7 +377,7 @@ export async function exerciseRetainedAttachments(author: RetainedSession, reade
+   expect((await readFiles(fixture.creator, fixture.issueId)).attachments.find((item) => item.id === file.id)).toEqual(file);
+   await author.page.reload();
+   await expect(author.page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
+-  await preview(author, author.page.getByRole("region", { name: "Attachments", exact: true }), file, bytes);
++  await preview(author, await attachmentsPanel(author.page), file, bytes);
+   const rejoin = await fixture.creator.requestJSON<{ code: string }>(`${root}/participants`, {
+     method: "POST", headers: { "Idempotency-Key": randomUUID() }, body: {
+       ...observations(await readIssue(fixture.creator, fixture.issueId)), target_user_id: fixture.handlerId,

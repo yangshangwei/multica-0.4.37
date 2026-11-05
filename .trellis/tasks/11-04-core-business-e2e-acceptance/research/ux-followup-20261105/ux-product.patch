@@ -1,0 +1,1829 @@
+commit 5a744095279eec613a4c1b5b7d208f9932d47633
+Author:     小工匠 <815150141@qq.com>
+AuthorDate: Thu Nov 5 12:04:20 2026 +0800
+Commit:     小工匠 <815150141@qq.com>
+CommitDate: Thu Nov 5 12:04:20 2026 +0800
+
+    fix(collaboration): keep cross-workspace actions visible and recoverable
+    
+    Expose failed context, file and destination reads without losing original
+    requests. Keep recipient choices tied to the current search, reveal opened
+    workflow forms, and clarify loaded lists, field errors and localized history.
+    Compact the narrow header while preserving the established shared UI.
+    
+    Constraint: Preserve protected query authority and exact original-request recovery
+    Rejected: Replace the collaboration UI | Existing business model and visual identity are coherent
+    Confidence: high
+    Scope-risk: moderate
+    Directive: Keep stale recipient rows nonselectable and retained recovery visible through disclosures
+    Tested: 312 Views tests; Views/Web/Desktop types; lint; production build; 54 browser captures; independent review
+    Not-tested: Installed Electron Main, real AI providers, physical touch and spoken assistive technology
+
+diff --git a/packages/views/admin/collaboration/collaboration-page.test.tsx b/packages/views/admin/collaboration/collaboration-page.test.tsx
+index 4183af6fc..fa7068751 100644
+--- a/packages/views/admin/collaboration/collaboration-page.test.tsx
++++ b/packages/views/admin/collaboration/collaboration-page.test.tsx
+@@ -13,6 +13,7 @@ import { adminCollaborationCandidatesFixture as candidates, adminCollaborationDe
+   adminCollaborationInputFixture as original, adminCollaborationResultFixture as receipt, adminCollaborationTestId as id } from "@multica/core/admin/test-fixtures";
+ import type { AnchorHTMLAttributes } from "react";
+ import en from "../../locales/en/admin.json";
++import { RESOURCES } from "../../test/i18n";
+ import { AdminCollaborationEntry, AdminCollaborationPage } from "./collaboration-page";
+ 
+ vi.mock("../../navigation", () => ({ AppLink: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} /> }));
+@@ -42,8 +43,8 @@ beforeEach(() => {
+     result: { ...receipt.result, requestId: key, status: body.targetStatus, handlerUserId: body.successorUserId ?? receipt.result.previousHandlerUserId } }));
+ });
+ afterEach(() => { cleanup(); client.clear(); vi.restoreAllMocks(); });
+-function content(issueId: string | null = detail.issueId, entry = false) {
+-  return <QueryClientProvider client={client}><I18nProvider locale="en" resources={{ en: { admin: en } }}>
++function content(issueId: string | null = detail.issueId, entry = false, locale: "en" | "zh-Hans" = "en") {
++  return <QueryClientProvider client={client}><I18nProvider locale={locale} resources={RESOURCES}>
+     {entry ? <AdminCollaborationEntry href="/account?view=current&administration=collaboration" /> : <AdminCollaborationPage issueId={issueId} hrefForIssue={hrefForIssue} />}
+   </I18nProvider></QueryClientProvider>;
+ }
+@@ -69,6 +70,20 @@ it("reveals the entry only after current complete super-admin access", async ()
+   await waitFor(() => expect(screen.queryByRole("link")).not.toBeInTheDocument());
+ });
+ 
++it.each(["en", "zh-Hans"] as const)("localizes status in the %s metadata list and detail without ordinary issue reads", async locale => {
++  vi.mocked(api.getAdminCollaborationIssues).mockResolvedValue({ scope: id(2), items: [{ ...detail, status: "in_progress" }], nextCursor: null });
++  vi.mocked(api.getAdminCollaborationIssue).mockResolvedValue({ ...detail, status: "in_progress" });
++  const ordinaryRead = vi.spyOn(api, "getCollaborationIssue");
++  const view = render(content(null, false, locale));
++  const label = locale === "en" ? "In progress" : "进行中";
++  expect(await screen.findByText(label)).toBeVisible();
++  expect(screen.queryByText("in_progress")).not.toBeInTheDocument();
++  view.rerender(content(detail.issueId, false, locale));
++  await screen.findByRole("heading", { name: detail.identifier });
++  expect(screen.getByText(label)).toBeVisible();
++  expect(ordinaryRead).not.toHaveBeenCalled();
++});
++
+ it("self-guards the page against observers without reading any collaboration metadata", async () => {
+   vi.mocked(api.getAdminMe).mockResolvedValue({ ...identity, role: "platform_observer" });
+   render(content());
+diff --git a/packages/views/admin/collaboration/collaboration-page.tsx b/packages/views/admin/collaboration/collaboration-page.tsx
+index 2e42d6e44..300abb92f 100644
+--- a/packages/views/admin/collaboration/collaboration-page.tsx
++++ b/packages/views/admin/collaboration/collaboration-page.tsx
+@@ -6,6 +6,7 @@ import { ApiError, errorCode } from "@multica/core/api";
+ import { Button } from "@multica/ui/components/ui/button";
+ import { useT } from "../../i18n";
+ import { AppLink } from "../../navigation";
++import { useCollaborationLabels } from "../../collaboration/labels";
+ import { adminTouchLinkClass } from "../executions/list-controls";
+ import { AdminCollaborationControls } from "./collaboration-controls";
+ import { AdminCollaborationMemoryControls } from "./collaboration-memory-controls";
+@@ -43,11 +44,12 @@ export function AdminCollaborationPage({ issueId, hrefForIssue }: { issueId?: st
+ 
+ function IssueMetadata({ issue, identifiers = false }: { issue: AdminCollaborationIssue; identifiers?: boolean }) {
+   const { t } = useT("admin");
++  const labels = useCollaborationLabels();
+   const fields = [
+     { label: t($ => $.collaboration.source), value: issue.sourceName || issue.sourceWorkspaceId },
+     { label: t($ => $.collaboration.creator), value: `${issue.creator.name || issue.creator.userId} · ${t($ => $.collaboration.disabled)}` },
+     { label: t($ => $.collaboration.handler), value: `${issue.handler.name || issue.handler.userId} · ${issue.handler.disabled ? t($ => $.collaboration.disabled) : t($ => $.collaboration.enabled)}` },
+-    { label: t($ => $.collaboration.status), value: issue.status },
++    { label: t($ => $.collaboration.status), value: labels.status(issue.status) },
+     { label: t($ => $.collaboration.queue), value: t($ => $.collaboration.queues[issue.queueState]) },
+     { label: t($ => $.collaboration.unsettledRuns), value: issue.unsettledRuns },
+   ];
+diff --git a/packages/views/collaboration/account-picker.test.tsx b/packages/views/collaboration/account-picker.test.tsx
+index 17d1be55e..b07b7af7e 100644
+--- a/packages/views/collaboration/account-picker.test.tsx
++++ b/packages/views/collaboration/account-picker.test.tsx
+@@ -137,6 +137,69 @@ it("exposes navigation without selecting during IME and clears removed or empty
+   expect(replacement).not.toBeInTheDocument();
+ });
+ 
++it.each(["keyboard", "pointer"] as const)("blocks stale %s selection during debounce and while replacement results are pending", async (method) => {
++  let finish!: (response: Response) => void;
++  const fetch = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
++    const query = JSON.parse(String(init?.body)).q;
++    if (query) return new Promise<Response>((resolve) => { finish = resolve; });
++    return new Response(JSON.stringify({ ...page(), recent: [] }));
++  });
++  const onSelect = vi.fn();
++  mount(fetch, { onSelect });
++  const user = userEvent.setup();
++  await user.click(screen.getByRole("button", { name: "Recipient" }));
++  const oldOption = await screen.findByRole("option", { name: /Directory account/ });
++  const input = screen.getByRole("textbox", { name: "Filter options" });
++  const attemptSelection = () => method === "keyboard" ? fireEvent.keyDown(input, { key: "Enter" }) : fireEvent.click(oldOption);
++
++  fireEvent.change(input, { target: { value: "replacement" } });
++  attemptSelection();
++  expect(onSelect).not.toHaveBeenCalled();
++  expect(screen.getByText("Loading accounts...")).toBeVisible();
++  expect(input).not.toHaveAttribute("aria-activedescendant");
++  for (const option of screen.queryAllByRole("option")) expect(option).toBeDisabled();
++
++  await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
++  attemptSelection();
++  expect(onSelect).not.toHaveBeenCalled();
++  expect(screen.getByText("Loading accounts...")).toBeVisible();
++  for (const option of screen.queryAllByRole("option")) expect(option).toBeDisabled();
++
++  await act(async () => finish(new Response(JSON.stringify({ ...page(), recent: [], recipients: [
++    { user_id: exactId, name: "Replacement account", avatar_url: "", external: false },
++  ] }))));
++  const current = await screen.findByRole("option", { name: /Replacement account/ });
++  expect(current).toBeEnabled();
++  expect(screen.queryByText("Loading accounts...")).toBeNull();
++  if (method === "keyboard") await user.keyboard("{ArrowDown}{Enter}");
++  else await user.click(current);
++  expect(onSelect).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ user_id: exactId }));
++});
++
++it("filters pinned accounts during search while preserving the selected identity and server matches", async () => {
++  const selected = { user_id: exactId, name: "Chosen handler", avatar_url: "", external: false };
++  const fetch = vi.fn(async () => new Response(JSON.stringify(page())));
++  mount(fetch, { allowSelf: true, selected });
++  const user = userEvent.setup();
++  const trigger = screen.getByRole("button", { name: "Recipient" });
++  await user.click(trigger);
++  await waitFor(() => expect(screen.getByRole("option", { name: /Assign to me/ })).toBeEnabled());
++  await screen.findByRole("option", { name: /Recent collaborator/ });
++  const input = screen.getByRole("textbox", { name: "Filter options" });
++  await user.type(input, "directory@example.test");
++  await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
++  await waitFor(() => expect(screen.getAllByRole("option")).toHaveLength(1));
++  expect(screen.getByRole("option", { name: /Directory account/ })).toBeEnabled();
++  expect(trigger).toHaveTextContent(selected.name);
++  expect(trigger).toHaveTextContent(exactId);
++
++  fireEvent.change(input, { target: { value: "CHOSEN" } });
++  await waitFor(() => expect(screen.getByRole("option", { name: /Chosen handler/ })).toBeEnabled());
++  expect(screen.queryByRole("option", { name: /Recent collaborator|Assign to me/ })).toBeNull();
++  await user.clear(input);
++  await waitFor(() => expect(screen.getByRole("option", { name: /Assign to me/ })).toBeEnabled());
++});
++
+ it("keeps the active account through append-only paging while footer actions stay outside navigation", async () => {
+   const fetch = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+     const body = JSON.parse(String(init?.body));
+diff --git a/packages/views/collaboration/account-picker.tsx b/packages/views/collaboration/account-picker.tsx
+index 189e59545..cee58c3e6 100644
+--- a/packages/views/collaboration/account-picker.tsx
++++ b/packages/views/collaboration/account-picker.tsx
+@@ -93,14 +93,19 @@ export function CollaborationAccountPicker({
+     enabled: isOpen && scope.userId !== "",
+     placeholderData: keepPreviousData,
+   });
++  const currentQuery = input.trim();
++  const searchPending = currentQuery !== query || search.isPlaceholderData || search.isPending;
+   const exactOptions = context.kind === "issue"
+     ? collaborationRecipientOptions(client, scope, context.issueId, exactRequest)
+     : collaborationCreationRecipientOptions(client, scope, context.sourceWorkspaceId, exactRequest);
+   const exact = useQuery({ ...exactOptions, enabled: isOpen && exactOpen && exactRequest !== "" && exactRequest === exactText.trim() });
+-  const pages = search.data?.pages ?? [];
++  const pages = searchPending ? [] : search.data?.pages ?? [];
+   const firstPage = pages[0];
+   const recent = firstPage?.recent ?? [];
+-  const sections = collaborationRecipientSections({ selected: selectedAccounts, recent, pages, self });
++  const matchesQuery = (account: CollaborationRecipientAccount) => !currentQuery ||
++    account.name.toLowerCase().includes(currentQuery.toLowerCase()) || accountIdentity(account).includes(currentQuery.toLowerCase());
++  const sections = collaborationRecipientSections({ selected: selectedAccounts.filter(matchesQuery), recent: recent.filter(matchesQuery), pages,
++    self: self && matchesQuery(self) ? self : null });
+   const allAccounts = sections.flatMap((section) => section.accounts);
+   const display = selectedAccounts[0] ?? (selfSelected ? self : null);
+   const displayName = display?.name ?? t(($) => $.recipientPicker.choose);
+@@ -110,7 +115,7 @@ export function CollaborationAccountPicker({
+   const exactAllowed = exactAccount !== null && (!membersOnly || exactAccount.external === false);
+   // PropertyPicker compares committed row identity for removals/reorders; keep
+   // this key stable when pagination only appends accounts.
+-  const navigationResetKey = query;
++  const navigationResetKey = currentQuery;
+   const canSelectMore = maxSelected === undefined || selectedAccounts.length < maxSelected;
+ 
+   const pick = (account: CollaborationRecipientAccount) => {
+@@ -128,11 +133,11 @@ export function CollaborationAccountPicker({
+     const isSelf = allowSelf && id === accountIdentity(self!);
+     const isSelected = isSelf ? selfSelected : selectedIds.has(id);
+     const unavailable = membersOnly && account.external !== false;
+-    const blocked = disabled || unavailable || multiple && !isSelected && !canSelectMore;
++    const blocked = disabled || searchPending || unavailable || multiple && !isSelected && !canSelectMore;
+     return <div key={id} data-recipient-row>
+       <PickerItem selected={isSelected} disabled={blocked} optionId={`${listboxId}-${id}`}
+         ariaLabel={`${account.name}, ${t(($) => $.recipientPicker.accountId, { id })}${account.external === true ? `, ${t(($) => $.recipientPicker.external)}` : ""}`}
+-        className={`pointer-coarse:min-h-11 ${isSelected ? "font-medium text-foreground" : ""}`} onClick={() => pick(account)}>
++        className={`pointer-coarse:min-h-11 ${isSelected ? "font-medium text-foreground" : ""}`} onClick={() => { if (!searchPending) pick(account); }}>
+         <span aria-hidden><ActorAvatar name={account.name} initials={initials(account.name)} avatarUrl={account.avatar_url} size="sm" /></span>
+         <span className="min-w-0 flex-1">
+           <span className="flex min-w-0 items-center gap-2">
+@@ -145,15 +150,15 @@ export function CollaborationAccountPicker({
+     </div>;
+   };
+ 
+-  const list = query
+-    ? <div id={listboxId} role="listbox" aria-label={label} aria-multiselectable={multiple || undefined}>{allAccounts.map(renderAccount)}</div>
+-    : <div id={listboxId} role="listbox" aria-label={label} aria-multiselectable={multiple || undefined}>
++  const list = currentQuery
++    ? <div id={listboxId} role="listbox" aria-label={label} aria-busy={searchPending} aria-multiselectable={multiple || undefined}>{allAccounts.map(renderAccount)}</div>
++    : <div id={listboxId} role="listbox" aria-label={label} aria-busy={searchPending} aria-multiselectable={multiple || undefined}>
+       {sections.map((section) => section.accounts.length > 0 && <PickerSection key={section.key} label={t(($) => $.recipientPicker.sections[section.key])}>
+         {section.accounts.map(renderAccount)}
+       </PickerSection>)}
+     </div>;
+ 
+-  const exactFooter = query && <div className="space-y-2">
++  const exactFooter = currentQuery && <div className="space-y-2">
+     {!exactOpen && <button type="button" className="flex min-h-11 w-full items-center gap-2 rounded-md px-2 text-left text-caption text-muted-foreground hover:bg-accent hover:text-foreground" onClick={() => { searchInput.current?.focus(); setExactOpen(true); }}>
+       <Search aria-hidden className="size-4 shrink-0" />{t(($) => $.recipientPicker.exactLookup)}
+     </button>}
+@@ -189,20 +194,20 @@ export function CollaborationAccountPicker({
+         <ChevronDown aria-hidden className="size-4 shrink-0 text-muted-foreground" />
+       </span>}
+       footer={<>
+-        {search.isFetchingNextPage && <p role="status" className="px-2 py-2 text-caption text-muted-foreground"><LoaderCircle aria-hidden className="mr-1 inline size-3.5 animate-spin" />{t(($) => $.recipientPicker.loadingMore)}</p>}
+-        {search.hasNextPage && <button type="button" className="min-h-11 w-full rounded-md px-2 text-left text-caption text-muted-foreground hover:bg-accent hover:text-foreground" disabled={search.isFetchingNextPage} onClick={() => { searchInput.current?.focus(); void search.fetchNextPage(); }}>{t(($) => $.recipientPicker.loadMore)}</button>}
++        {!searchPending && search.isFetchingNextPage && <p role="status" className="px-2 py-2 text-caption text-muted-foreground"><LoaderCircle aria-hidden className="mr-1 inline size-3.5 animate-spin" />{t(($) => $.recipientPicker.loadingMore)}</p>}
++        {!searchPending && search.hasNextPage && <button type="button" className="min-h-11 w-full rounded-md px-2 text-left text-caption text-muted-foreground hover:bg-accent hover:text-foreground" disabled={search.isFetchingNextPage} onClick={() => { searchInput.current?.focus(); void search.fetchNextPage(); }}>{t(($) => $.recipientPicker.loadMore)}</button>}
+         {exactFooter}
+       </>}
+     >
+       {isRelated && <p role="note" className="px-2 py-2 text-caption text-muted-foreground">{t(($) => $.recipientPicker.relatedHint)}</p>}
+       {membersOnly && sourceMember === false && <p role="note" className="px-2 py-2 text-caption text-muted-foreground">{t(($) => $.recipientPicker.membersOnlyHint)}</p>}
+-      {search.isPending && !search.data && <p role="status" className="px-2 py-3 text-caption text-muted-foreground"><LoaderCircle aria-hidden className="mr-1 inline size-3.5 animate-spin" />{t(($) => $.recipientPicker.loading)}</p>}
+-      {search.isError && <CollaborationQueryState error={search.error} retry={() => {
++      {searchPending && <p role="status" className="px-2 py-3 text-caption text-muted-foreground"><LoaderCircle aria-hidden className="mr-1 inline size-3.5 animate-spin" />{t(($) => $.recipientPicker.loading)}</p>}
++      {!searchPending && search.isError && <CollaborationQueryState error={search.error} retry={() => {
+         searchInput.current?.focus();
+         if (search.isFetchNextPageError) void search.fetchNextPage();
+         else void search.refetch();
+       }} />}
+-      {!search.isPending && !search.isError && allAccounts.length === 0 && <p className="px-2 py-3 text-center text-caption text-muted-foreground">{t(($) => $.recipientPicker.empty)}</p>}
++      {!searchPending && !search.isError && allAccounts.length === 0 && <p className="px-2 py-3 text-center text-caption text-muted-foreground">{t(($) => $.recipientPicker.empty)}</p>}
+       {list}
+     </PropertyPicker>
+   </div>;
+diff --git a/packages/views/collaboration/account-workbench-page.test.tsx b/packages/views/collaboration/account-workbench-page.test.tsx
+index 6b48de38d..7f9ff96f9 100644
+--- a/packages/views/collaboration/account-workbench-page.test.tsx
++++ b/packages/views/collaboration/account-workbench-page.test.tsx
+@@ -1,5 +1,5 @@
+ import { afterEach, expect, it, vi } from "vitest";
+-import { screen, waitFor, within } from "@testing-library/react";
++import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
+ import userEvent from "@testing-library/user-event";
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+ import { ApiClient, setApiInstance } from "@multica/core/api";
+@@ -8,6 +8,7 @@ import { adminCollaborationDetailFixture as administrationIssue } from "@multica
+ import { accountPath, parseAccountPath } from "@multica/core/paths";
+ import { NavigationProvider, type NavigationAdapter } from "../navigation";
+ import { renderWithI18n } from "../test/i18n";
++import { ScrollRestorationProvider, type ScrollRestorationAdapter } from "../platform/scroll-restoration";
+ import { AccountWorkbenchPage } from "./account-workbench-page";
+ 
+ const id = "00000000-0000-4000-8000-000000000001";
+@@ -26,12 +27,15 @@ const clients: QueryClient[] = [];
+ afterEach(() => { clients.splice(0).forEach((client) => client.clear()); vi.unstubAllGlobals(); vi.restoreAllMocks(); });
+ vi.mock("../rich-content", () => ({ RichContent: ({ content }: { content: string }) => <p>{content}</p> }));
+ 
+-function mount(view: "current" | "participating" = "current", locale: "en" | "zh-Hans" = "en") {
++function mount(view: "current" | "participating" = "current", locale: "en" | "zh-Hans" = "en", issueId: string | null = id,
++  restoration: ScrollRestorationAdapter = { get: () => undefined }) {
+   setApiInstance(new ApiClient("https://server.example"));
+   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+   clients.push(client);
+   const nav: NavigationAdapter = { push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/account", searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path };
+-  return renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={nav}><AccountWorkbenchPage destination={{ view, issueId: id, commentId: null }} /></NavigationProvider></QueryClientProvider>, { locale });
++  return renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={nav}><ScrollRestorationProvider adapter={restoration}>
++    <AccountWorkbenchPage destination={{ view, issueId, commentId: null }} />
++  </ScrollRestorationProvider></NavigationProvider></QueryClientProvider>, { locale });
+ }
+ 
+ it("opens selected detail independently of an empty current list without workspace requests", async () => {
+@@ -44,11 +48,85 @@ it("opens selected detail independently of an empty current list without workspa
+   mount();
+   expect(await screen.findByRole("heading", { name: "Outside current list" })).toBeInTheDocument();
+   expect(screen.getByText("No issues need your handling.")).toBeInTheDocument();
++  expect(within(screen.getByRole("region", { name: "Collaboration issues" })).getByRole("link", { name: "View participating issues" }))
++    .toHaveAttribute("href", accountPath({ view: "participating", issueId: id }));
+   expect(screen.getByText("This issue is outside the current list. You can continue viewing it here.")).toBeInTheDocument();
+   expect(screen.queryByRole("button", { name: "Resume all" })).toBeNull();
+   expect(fetch.mock.calls.every(([url]) => !String(url).includes("/api/workspaces"))).toBe(true);
+ });
+ 
++it("searches trimmed text across explicitly loaded pages and clears only search while retaining sorting and saved list state", async () => {
++  const first = { ...issue, title: "Zulu task", updated_at: "2026-11-04T10:00:00Z" };
++  const second = { ...first, id: "00000000-0000-4000-8000-000000000002", title: "Alpha task" };
++  const third = { ...first, id: "00000000-0000-4000-8000-000000000003", title: "Beta task" };
++  const fetch = vi.fn(async (url: string) => new Response(JSON.stringify(url.includes("/api/me/workbench")
++    ? new URL(url).searchParams.has("cursor") ? { items: [third], total: 3, next_cursor: null }
++      : { items: [first, second], total: 3, next_cursor: "next-page" }
++    : { items: [], unread_count: 0, next_cursor: null })));
++  vi.stubGlobal("fetch", fetch);
++  const state = new Map([["account-search", "   Beta   "], ["account-sort", "title"]]);
++  const setViewState = vi.fn((key: string, value: string | undefined) => { if (value !== undefined) state.set(key, value); });
++  const restoration = { get: () => ({ top: 72, height: 1000 }), getViewState: (key: string) => state.get(key), setViewState };
++  const view = mount("participating", "en", null, restoration);
++  const list = screen.getByRole("region", { name: "Collaboration issues" });
++  expect(await within(list).findByText("2 of 3 issues loaded")).toBeInTheDocument();
++  expect(within(list).getByText("Matches: 0")).toBeInTheDocument();
++  expect(within(list).getByText("Search covers loaded issues. Load more to include the rest.")).toBeInTheDocument();
++  expect(within(list).getByText("No loaded issues match your search.")).toBeInTheDocument();
++  expect(list.querySelector("[data-tab-scroll-root=account-list]")?.scrollTop).toBe(72);
++  expect(fetch.mock.calls.filter(([url]) => url.includes("workbench"))).toHaveLength(1);
++  await userEvent.click(within(list).getByRole("button", { name: "Load more" }));
++  expect(await within(list).findByRole("link", { name: /Beta task/ })).toBeInTheDocument();
++  expect(within(list).getByText("3 issues")).toBeInTheDocument();
++  expect(within(list).getByText("Matches: 1")).toBeInTheDocument();
++  expect(within(list).queryByText("Search covers loaded issues. Load more to include the rest.")).not.toBeInTheDocument();
++  await userEvent.click(within(list).getByRole("button", { name: "Clear search" }));
++  expect(within(list).getByRole("textbox", { name: "Search loaded issues" })).toHaveValue("");
++  expect(within(list).getByRole("textbox", { name: "Search loaded issues" })).toHaveFocus();
++  expect(within(list).getByRole("combobox", { name: "Sort" })).toHaveValue("title");
++  expect(within(list).getAllByRole("link").map(link => link.textContent)).toEqual([
++    expect.stringContaining("Alpha task"), expect.stringContaining("Beta task"), expect.stringContaining("Zulu task"),
++  ]);
++  expect(setViewState).toHaveBeenCalledExactlyOnceWith("account-search", "", undefined);
++  expect(fetch.mock.calls.filter(([url]) => url.includes("workbench"))).toHaveLength(2);
++  view.unmount();
++  mount("participating", "en", null, restoration);
++  expect(screen.getByRole("textbox", { name: "Search loaded issues" })).toHaveValue("");
++  expect(screen.getByRole("combobox", { name: "Sort" })).toHaveValue("title");
++});
++
++it("keeps the initial count unknown and does not call an incomplete empty page an empty queue", async () => {
++  let resolve!: (response: Response) => void;
++  vi.stubGlobal("fetch", vi.fn((url: string) => url.includes("workbench") ? new Promise<Response>(ready => { resolve = ready; })
++    : Promise.resolve(new Response(JSON.stringify({ items: [], unread_count: 0, next_cursor: null })))));
++  mount("current", "en", null);
++  const list = screen.getByRole("region", { name: "Collaboration issues" });
++  expect(within(list).getByText("Loading collaboration...")).toBeInTheDocument();
++  expect(within(list).queryByText("0 issues")).not.toBeInTheDocument();
++  await act(async () => resolve(new Response(JSON.stringify({ items: [], total: 1, next_cursor: "next-page" }))));
++  expect(await within(list).findByText("0 of 1 issues loaded")).toBeInTheDocument();
++  expect(within(list).queryByText("No issues need your handling.")).not.toBeInTheDocument();
++  expect(within(list).getByRole("button", { name: "Load more" })).toBeEnabled();
++});
++
++it("does not hide selected detail or filter rows for whitespace-only Chinese search", async () => {
++  vi.stubGlobal("fetch", vi.fn(async (url: string) => new Response(JSON.stringify(url.includes("workbench")
++    ? { items: [{ ...issue, title: "已加载任务", updated_at: "2026-11-04T10:00:00Z" }], total: 1, next_cursor: null }
++    : url.includes("/comments?") || url.includes("/activity?") ? { issue_id: id, items: [], next_cursor: null } : issue))));
++  mount("participating", "zh-Hans");
++  const list = screen.getByRole("region", { name: "协作任务" });
++  expect(await screen.findByRole("heading", { name: "Outside current list" })).toBeInTheDocument();
++  const search = within(list).getByRole("textbox", { name: "搜索已加载的任务" });
++  fireEvent.change(search, { target: { value: "不存在" } });
++  expect(within(list).getByText("匹配结果：0")).toBeInTheDocument();
++  expect(screen.getByRole("heading", { name: "Outside current list" })).toBeInTheDocument();
++  fireEvent.change(search, { target: { value: "   " } });
++  expect(within(list).getByRole("link", { name: /已加载任务/ })).toBeInTheDocument();
++  await userEvent.click(within(list).getByRole("button", { name: "清空搜索" }));
++  expect(search).toHaveFocus();
++  expect(search).toHaveValue("");
++});
++
+ it("clears denied detail and keeps the account list usable", async () => {
+   vi.stubGlobal("fetch", vi.fn().mockImplementation(async (url: string) => url.includes("/api/me/workbench")
+     ? new Response(JSON.stringify({ items: [], total: 0, next_cursor: null }))
+@@ -69,17 +147,18 @@ it("provides translated workbench navigation", async () => {
+   expect(screen.getByRole("link", { name: "我参与的" })).toBeInTheDocument();
+ });
+ 
+-it("renders persisted activity with the original actor and before/after values", async () => {
++it.each(["en", "zh-Hans"] as const)("renders persisted activity in %s with the original actor and before/after values", async locale => {
+   vi.stubGlobal("fetch", vi.fn().mockImplementation(async (url: string) => new Response(JSON.stringify(
+     url.includes("workbench") ? { items: [], total: 0, next_cursor: null }
+       : url.includes("/activity?") ? { issue_id: id, next_cursor: null, items: [{ id, issue_id: id, event_seq: "9007199254740993", kind: "issue_edited", actor: { ...account, name: "Original editor" }, created_at: "2026-10-18T00:00:00Z", details_available: true,
+         target: null, handoff: null, comment_id: null, changes: [{ field: "title", before: "Previous title", after: "Updated title" }] }] }
+       : url.includes("/comments?") ? { issue_id: id, items: [], next_cursor: null } : issue,
+   ))));
+-  mount();
++  mount("current", locale);
+   expect(await screen.findByText("Original editor")).toBeInTheDocument();
+   expect(screen.getByText("Previous title")).toBeInTheDocument();
+   expect(screen.getByText("Updated title")).toBeInTheDocument();
++  expect(screen.getByText(new Date("2026-10-18T00:00:00Z").toLocaleString(locale))).toHaveAttribute("datetime", "2026-10-18T00:00:00Z");
+ });
+ 
+ it("keeps account administration on dedicated metadata reads and administration links", async () => {
+diff --git a/packages/views/collaboration/account-workbench-page.tsx b/packages/views/collaboration/account-workbench-page.tsx
+index 78d869b77..1ce79f045 100644
+--- a/packages/views/collaboration/account-workbench-page.tsx
++++ b/packages/views/collaboration/account-workbench-page.tsx
+@@ -1,5 +1,6 @@
+ "use client";
+ import { useEffect, useRef, useState } from "react";
++import { X } from "lucide-react";
+ import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+ import { collaborationWorkbenchOptions, useCollaborationScope } from "@multica/core/collaboration";
+ import { useCollaborationRealtime } from "@multica/core/realtime";
+@@ -37,18 +38,20 @@ function CollaborationWorkbenchPage({ destination, administrationHref }: { desti
+   const scope = useCollaborationScope();
+   useCollaborationRealtime(scope, destination.issueId);
+   return <main className="flex h-full min-h-0 min-w-0 flex-col bg-background text-foreground">
+-    <header className="flex shrink-0 flex-wrap items-center gap-x-8 gap-y-3 px-4 py-4 md:px-6">
+-      <h1 className="text-title font-semibold">{t(($) => $.page.title)}</h1>
+-      <nav aria-label={t(($) => $.page.title)} className="flex min-w-0 flex-wrap gap-2 text-body">
++    <header className="flex shrink-0 flex-wrap items-center gap-x-8 gap-y-2 px-4 py-3 md:gap-y-3 md:px-6 md:py-4">
++      <h1 className="sr-only text-title font-semibold md:not-sr-only">{t(($) => $.page.title)}</h1>
++      <nav aria-label={t(($) => $.page.title)} className="flex w-full min-w-0 flex-wrap gap-2 text-body md:w-auto">
+         {(["current", "participating"] as const).map((view) => <AppLink key={view} href={accountPath({ ...destination, view })}
+           aria-current={destination.view === view ? "page" : undefined}
+-          className="rounded-md px-3 py-2 text-muted-foreground hover:bg-accent hover:text-foreground aria-[current=page]:bg-accent aria-[current=page]:font-semibold aria-[current=page]:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11">
++          className="inline-flex items-center rounded-md px-3 py-2 text-muted-foreground hover:bg-accent hover:text-foreground aria-[current=page]:bg-accent aria-[current=page]:font-semibold aria-[current=page]:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11">
+           {view === "current" ? t(($) => $.page.current) : t(($) => $.page.participating)}
+         </AppLink>)}
+       </nav>
+-      <CollaborationCreationEntry key={`create:${scope.apiScope}:${scope.userId}`} scope={scope} />
+-      {administrationHref && <AdminCollaborationEntry href={administrationHref} />}
+-      <CollaborationNotifications key={`${scope.apiScope}:${scope.userId}`} scope={scope} view={destination.view} />
++      <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-2 md:gap-x-8 [&>button]:h-auto [&>button]:min-h-8 [&>button]:whitespace-normal pointer-coarse:[&>button]:min-h-11">
++        <CollaborationCreationEntry key={`create:${scope.apiScope}:${scope.userId}`} scope={scope} />
++        {administrationHref && <AdminCollaborationEntry href={administrationHref} />}
++        <CollaborationNotifications key={`${scope.apiScope}:${scope.userId}`} scope={scope} view={destination.view} />
++      </div>
+     </header>
+     <WorkbenchBody key={`${scope.apiScope}:${scope.userId}:${accountRouteKey(accountPath(destination))}`} scope={scope} destination={destination} />
+   </main>;
+@@ -62,6 +65,7 @@ function WorkbenchBody({ scope, destination }: { scope: ReturnType<typeof useCol
+   const savedSearch = useRestoredViewState("account-search");
+   const savedSort = useRestoredViewState("account-sort");
+   const [search, setSearch] = useState(savedSearch ?? "");
++  const searchInput = useRef<HTMLInputElement>(null);
+   const [sort, setSort] = useState(savedSort === "title" ? "title" : "updated");
+   const writeView = useViewStateWriter();
+   const restoreList = useRestoredScrollRef("account-list");
+@@ -74,24 +78,39 @@ function WorkbenchBody({ scope, destination }: { scope: ReturnType<typeof useCol
+     listRestored.current = true;
+   }, [list.data, restoreList]);
+   const rows = [...new Map((list.data?.pages.flatMap((page) => page.items) ?? []).map((item) => [item.id, item])).values()];
+-  const visible = rows.filter((item) => `${item.title} ${item.handler.name} ${item.source_workspace.name}`.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
++  const searchTerm = search.trim().toLocaleLowerCase();
++  const visible = rows.filter((item) => `${item.title} ${item.handler.name} ${item.source_workspace.name}`.toLocaleLowerCase().includes(searchTerm))
+     .sort((a, b) => sort === "title" ? a.title.localeCompare(b.title) : b.updated_at.localeCompare(a.updated_at));
++  const total = list.data?.pages[0]?.total;
+   const selectedOutside = list.isSuccess && !list.hasNextPage && destination.issueId !== null && !rows.some((item) => item.id === destination.issueId);
+   return <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-[minmax(16rem,22rem)_minmax(0,1fr)]">
+     <section aria-label={t(($) => $.page.list)} className={`${destination.issueId ? "hidden md:flex" : "flex"} min-h-0 min-w-0 flex-col border-r border-border`}>
+       <div className="space-y-3 px-4 pb-4">
+-        <Input aria-label={t(($) => $.page.search)} placeholder={t(($) => $.page.search)} value={search} onChange={(event) => { setSearch(event.target.value); writeView("account-search", event.target.value); }} className="pointer-coarse:min-h-11" />
++        <div className="flex min-w-0 items-center gap-2">
++          <Input ref={searchInput} aria-label={t(($) => $.page.search)} placeholder={t(($) => $.page.search)} value={search} onChange={(event) => { setSearch(event.target.value); writeView("account-search", event.target.value); }} className="min-w-0 pointer-coarse:min-h-11" />
++          {search !== "" && <Button type="button" size="icon" variant="ghost" aria-label={t(($) => $.page.clearSearch)} title={t(($) => $.page.clearSearch)}
++            className="shrink-0 pointer-coarse:min-h-11 pointer-coarse:min-w-11" onClick={() => { setSearch(""); writeView("account-search", ""); searchInput.current?.focus(); }}><X aria-hidden="true" /></Button>}
++        </div>
+         <div className="flex flex-wrap items-center justify-between gap-2 text-caption text-muted-foreground">
+-          <span className="tabular-nums">{t(($) => $.page.count, { count: list.data?.pages[0]?.total ?? 0 })}</span>
++          <div role="status" className="min-w-0 space-y-1 tabular-nums">
++            {total !== undefined && <p>{list.hasNextPage || rows.length !== total
++              ? t(($) => $.page.loadedCount, { loaded: rows.length, total }) : t(($) => $.page.count, { count: total })}</p>}
++            {total !== undefined && searchTerm !== "" && <p>{t(($) => $.page.matchCount, { count: visible.length })}</p>}
++          </div>
+           <select aria-label={t(($) => $.page.sort)} value={sort} onChange={(event) => { setSort(event.target.value); writeView("account-sort", event.target.value); }} className="min-h-8 max-w-full rounded-md border border-input bg-background px-2 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11">
+             <option value="updated">{t(($) => $.page.updated)}</option><option value="title">{t(($) => $.page.titleSort)}</option>
+           </select>
+         </div>
++        {searchTerm !== "" && list.hasNextPage && <p className="text-caption text-muted-foreground">{t(($) => $.page.partialSearch)}</p>}
+       </div>
+       <div ref={listRoot} data-tab-scroll-root="account-list" className="min-h-0 overflow-y-auto px-2 pb-6">
+         {list.isPending && <p role="status" className="px-2 py-6 text-body text-muted-foreground">{t(($) => $.page.loading)}</p>}
+         {list.error && <CollaborationQueryState error={list.error} retry={() => void list.refetch()} />}
+-        {list.isSuccess && rows.length === 0 && <p className="px-2 py-8 text-body text-muted-foreground">{destination.view === "current" ? t(($) => $.page.emptyCurrent) : t(($) => $.page.emptyParticipating)}</p>}
++        {list.isSuccess && !list.hasNextPage && rows.length === 0 && <div className="space-y-2 px-2 py-8 text-body text-muted-foreground">
++          <p>{destination.view === "current" ? t(($) => $.page.emptyCurrent) : t(($) => $.page.emptyParticipating)}</p>
++          {destination.view === "current" && <AppLink href={accountPath({ ...destination, view: "participating" })}
++            className="inline-flex min-h-11 items-center rounded-md text-foreground underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">{t(($) => $.page.openParticipating)}</AppLink>}
++        </div>}
+         {list.isSuccess && rows.length > 0 && visible.length === 0 && <p className="px-2 py-6 text-body text-muted-foreground">{t(($) => $.page.noMatches)}</p>}
+         <ul className="space-y-1">{visible.map((item) => <li key={item.id}>
+           <AppLink href={accountPath({ view: destination.view, issueId: item.id })} aria-current={item.id === destination.issueId ? "true" : undefined}
+@@ -101,7 +120,7 @@ function WorkbenchBody({ scope, destination }: { scope: ReturnType<typeof useCol
+             <span className="block text-caption text-muted-foreground [overflow-wrap:anywhere]">{item.handler.name}{item.handler.external === true && <span> · {t(($) => $.detail.external)}</span>}</span>
+           </AppLink>
+         </li>)}</ul>
+-        {list.hasNextPage && <Button variant="ghost" className="mt-4 w-full pointer-coarse:min-h-11" disabled={list.isFetchingNextPage} onClick={() => void list.fetchNextPage()}>{t(($) => $.page.more)}</Button>}
++        {list.hasNextPage && <Button variant="ghost" className="mt-4 h-auto min-h-8 w-full whitespace-normal pointer-coarse:min-h-11" disabled={list.isFetchingNextPage} onClick={() => void list.fetchNextPage()}>{list.isFetchingNextPage ? t(($) => $.page.loading) : t(($) => $.page.more)}</Button>}
+       </div>
+     </section>
+     <section ref={restoreDetail} data-tab-scroll-root="account-detail" aria-label={t(($) => $.detail.title)} className={`${destination.issueId ? "flex" : "hidden md:flex"} min-h-0 min-w-0 flex-col overflow-y-auto px-4 pb-10 md:px-8`}>
+diff --git a/packages/views/collaboration/activity.tsx b/packages/views/collaboration/activity.tsx
+index fd656a269..b2345308b 100644
+--- a/packages/views/collaboration/activity.tsx
++++ b/packages/views/collaboration/activity.tsx
+@@ -4,11 +4,12 @@ import { accountPath, type AccountDestination } from "@multica/core/paths";
+ import { Button } from "@multica/ui/components/ui/button";
+ import { AppLink } from "../navigation";
+ import { RichContent } from "../rich-content";
+-import { useT } from "../i18n";
++import { useLocale, useT } from "../i18n";
+ import { CollaborationQueryState } from "./query-state";
+ 
+ export function CollaborationActivity({ scope, destination }: { scope: CollaborationScope; destination: AccountDestination }) {
+   const { t } = useT("collaboration");
++  const locale = useLocale();
+   const client = useQueryClient();
+   const query = useInfiniteQuery(collaborationActivityOptions(client, scope, destination.issueId!));
+   const items = [...new Map((query.data?.pages.flatMap((page) => page.items) ?? []).map((item) => [item.id, item])).values()];
+@@ -21,7 +22,7 @@ export function CollaborationActivity({ scope, destination }: { scope: Collabora
+       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-caption text-muted-foreground">
+         <span className="font-medium text-foreground">{t(($) => $.activity.kinds[item.kind])}</span>
+         <span className="min-w-0 [overflow-wrap:anywhere]">{item.actor?.name ?? t(($) => $.detail.unknownAuthor)}</span>
+-        <time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString()}</time>
++        <time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString(locale)}</time>
+       </div>
+       {!item.details_available && <p className="text-caption text-muted-foreground">{t(($) => $.activity.detailsUnavailable)}</p>}
+       {item.details_available && item.kind === "iteration_changed" && item.note && <p className="text-body whitespace-pre-wrap [overflow-wrap:anywhere]">{item.note}</p>}
+diff --git a/packages/views/collaboration/attachment-panel.test.tsx b/packages/views/collaboration/attachment-panel.test.tsx
+index 4433752e8..2615ee107 100644
+--- a/packages/views/collaboration/attachment-panel.test.tsx
++++ b/packages/views/collaboration/attachment-panel.test.tsx
+@@ -1,13 +1,13 @@
+ import { afterEach, expect, it, vi } from "vitest";
+-import { screen, waitFor } from "@testing-library/react";
++import { act, screen, waitFor, within } from "@testing-library/react";
+ import userEvent from "@testing-library/user-event";
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+ import { ApiClient, setApiInstance } from "@multica/core/api";
+-import { clearCollaborationAccess, collaborationScope, newCollaborationDeliveryForm, parseCollaborationIssue, prepareCollaborationAttachmentDelivery,
++import { clearCollaborationAccess, collaborationKeys, collaborationScope, newCollaborationDeliveryForm, parseCollaborationIssue, prepareCollaborationAttachmentDelivery,
+   readCollaborationDeliveryRecords, saveCollaborationDeliveryRecord, type CollaborationUploadDraft } from "@multica/core/collaboration";
+ import { collaborationIssueFixture } from "@multica/core/collaboration/test-fixtures";
+ import { renderWithI18n } from "../test/i18n";
+-import { CollaborationAttachmentPanel } from "./attachment-panel";
++import { CollaborationAttachmentPanel, CollaborationCommentAttachments } from "./attachment-panel";
+ 
+ // Core delivery-api.test.ts owns capability/path checks. This proves UI cleanup.
+ const actor = "00000000-0000-4000-8000-000000000001";
+@@ -18,6 +18,98 @@ const metadata = { id: fileId, draft_id: fileId, issue_id: actor, intended_issue
+ const client = new QueryClient();
+ afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); vi.restoreAllMocks(); });
+ 
++it("does not request metadata or render a file region when no files are referenced", () => {
++  const api = new ApiClient("https://server.example"); setApiInstance(api);
++  const getFiles = vi.spyOn(api, "getCollaborationAttachments");
++  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentAttachments scope={collaborationScope(actor)} issueId={actor} attachmentIds={[]} /></QueryClientProvider>);
++  expect(screen.queryByRole("region", { name: "Attachments" })).not.toBeInTheDocument();
++  expect(getFiles).not.toHaveBeenCalled();
++});
++
++it("shows referenced-file loading and an initial failure with an explicit metadata retry", async () => {
++  const api = new ApiClient("https://server.example"); setApiInstance(api);
++  let rejectRead!: (reason: Error) => void;
++  const getFiles = vi.spyOn(api, "getCollaborationAttachments")
++    .mockImplementationOnce(() => new Promise((_resolve, reject) => { rejectRead = reject; }))
++    .mockResolvedValue({ issue_id: actor, attachments: [metadata] });
++  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentAttachments scope={collaborationScope(actor)} issueId={actor} attachmentIds={[fileId]} /></QueryClientProvider>);
++  const panel = screen.getByRole("region", { name: "Attachments" });
++  expect(within(panel).getByRole("status")).toHaveTextContent("Loading files...");
++  await act(async () => rejectRead(new TypeError("Offline")));
++  expect(await within(panel).findByRole("alert")).toHaveTextContent("Could not load collaboration. Try again.");
++  expect(screen.queryByText("private.png")).not.toBeInTheDocument();
++  await userEvent.click(within(panel).getByRole("button", { name: "Refresh" }));
++  expect(await within(panel).findByRole("button", { name: "Download private.png" })).toBeVisible();
++  expect(getFiles).toHaveBeenCalledTimes(2);
++});
++
++it("keeps available referenced files and reports missing references without showing unrelated metadata", async () => {
++  const api = new ApiClient("https://server.example"); setApiInstance(api);
++  const missingId = "00000000-0000-4000-8000-000000000003";
++  vi.spyOn(api, "getCollaborationAttachments").mockResolvedValue({ issue_id: actor, attachments: [metadata,
++    { ...metadata, id: "00000000-0000-4000-8000-000000000004", name: "unrelated.txt", content_type: "text/plain" }] });
++  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentAttachments scope={collaborationScope(actor)} issueId={actor} attachmentIds={[fileId, missingId]} /></QueryClientProvider>);
++  expect(await screen.findByRole("button", { name: "Download private.png" })).toBeVisible();
++  expect(screen.getByText("Some referenced files are unavailable.")).toBeVisible();
++  expect(screen.queryByText("unrelated.txt")).not.toBeInTheDocument();
++  expect(screen.queryByText("No files delivered yet.")).not.toBeInTheDocument();
++});
++
++it("hides stale referenced metadata and closes its preview when a refresh fails", async () => {
++  const api = new ApiClient("https://server.example"); setApiInstance(api);
++  const scope = collaborationScope(actor);
++  const getFiles = vi.spyOn(api, "getCollaborationAttachments").mockResolvedValue({ issue_id: actor, attachments: [metadata] });
++  const create = vi.fn(() => "blob:referenced-preview"), revoke = vi.fn();
++  vi.stubGlobal("URL", class extends URL { static createObjectURL = create; static revokeObjectURL = revoke; });
++  vi.stubGlobal("fetch", vi.fn(async () => new Response("bytes", { headers: { "content-type": "image/png" } })));
++  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentAttachments scope={scope} issueId={actor} attachmentIds={[fileId]} /></QueryClientProvider>);
++  await userEvent.click(await screen.findByRole("button", { name: "Preview private.png" }));
++  expect(await screen.findByRole("img", { name: "private.png" })).toHaveAttribute("src", "blob:referenced-preview");
++  getFiles.mockRejectedValueOnce(new TypeError("Offline"));
++  await act(async () => { await client.invalidateQueries({ queryKey: [...collaborationKeys.issue(scope, actor), "attachments"] }); });
++  await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
++  expect(screen.queryByText("private.png")).not.toBeInTheDocument();
++  expect(screen.getByRole("alert")).toHaveTextContent("Could not load collaboration. Try again.");
++  expect(revoke).toHaveBeenCalledWith("blob:referenced-preview");
++});
++
++it("closes a preview when that reference becomes unavailable while another file remains", async () => {
++  const api = new ApiClient("https://server.example"); setApiInstance(api);
++  const scope = collaborationScope(actor);
++  const remaining = { ...metadata, id: "00000000-0000-4000-8000-000000000003", name: "remaining.png" };
++  const getFiles = vi.spyOn(api, "getCollaborationAttachments").mockResolvedValue({ issue_id: actor, attachments: [metadata, remaining] });
++  const create = vi.fn(() => "blob:referenced-preview"), revoke = vi.fn();
++  vi.stubGlobal("URL", class extends URL { static createObjectURL = create; static revokeObjectURL = revoke; });
++  vi.stubGlobal("fetch", vi.fn(async () => new Response("bytes", { headers: { "content-type": "image/png" } })));
++  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentAttachments scope={scope} issueId={actor} attachmentIds={[fileId, remaining.id]} /></QueryClientProvider>);
++  await userEvent.click(await screen.findByRole("button", { name: "Preview private.png" }));
++  expect(await screen.findByRole("img", { name: "private.png" })).toBeVisible();
++  getFiles.mockResolvedValue({ issue_id: actor, attachments: [remaining] });
++  await act(async () => { await client.invalidateQueries({ queryKey: [...collaborationKeys.issue(scope, actor), "attachments"] }); });
++  await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
++  expect(screen.getByRole("button", { name: "Download remaining.png" })).toBeVisible();
++  expect(screen.getByText("Some referenced files are unavailable.")).toBeVisible();
++  expect(screen.queryByText("private.png")).not.toBeInTheDocument();
++  expect(revoke).toHaveBeenCalledWith("blob:referenced-preview");
++});
++
++it("removes referenced private files and their preview after an authoritative denial", async () => {
++  const api = new ApiClient("https://server.example"); setApiInstance(api);
++  const scope = collaborationScope(actor);
++  vi.spyOn(api, "getCollaborationAttachments").mockResolvedValue({ issue_id: actor, attachments: [metadata] });
++  const create = vi.fn(() => "blob:referenced-preview"), revoke = vi.fn();
++  vi.stubGlobal("URL", class extends URL { static createObjectURL = create; static revokeObjectURL = revoke; });
++  vi.stubGlobal("fetch", vi.fn(async () => new Response("bytes", { headers: { "content-type": "image/png" } })));
++  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentAttachments scope={scope} issueId={actor} attachmentIds={[fileId]} /></QueryClientProvider>);
++  await userEvent.click(await screen.findByRole("button", { name: "Preview private.png" }));
++  expect(await screen.findByRole("img", { name: "private.png" })).toHaveAttribute("src", "blob:referenced-preview");
++  act(() => clearCollaborationAccess(client, scope, actor));
++  await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
++  expect(screen.queryByText("private.png")).not.toBeInTheDocument();
++  expect(screen.getByRole("alert")).toHaveTextContent("You no longer have access to this issue.");
++  expect(revoke).toHaveBeenCalledWith("blob:referenced-preview");
++});
++
+ it("closes a private preview and revokes its object URL when issue access is cleared", async () => {
+   setApiInstance(new ApiClient("https://server.example"));
+   const scope = collaborationScope(actor);
+diff --git a/packages/views/collaboration/attachment-panel.tsx b/packages/views/collaboration/attachment-panel.tsx
+index 5b86b0fc6..6e4ca780a 100644
+--- a/packages/views/collaboration/attachment-panel.tsx
++++ b/packages/views/collaboration/attachment-panel.tsx
+@@ -27,7 +27,9 @@ const previewable = (file: CollaborationAttachment) => { const kind = getPreview
+ export function CollaborationAttachmentList({ scope, issueId, files }: { scope: CollaborationScope; issueId: string; files: CollaborationAttachment[] }) {
+   const { t } = useT("collaboration");
+   const client = useQueryClient();
+-  const [preview, setPreview] = useState<CollaborationAttachment | null>(null);
++  const [previewId, setPreviewId] = useState<string | null>(null);
++  const preview = files.find((file) => file.id === previewId) ?? null;
++  useEffect(() => { if (previewId && !preview) setPreviewId(null); }, [previewId, preview]);
+   const download = useMutation({ mutationKey: [...collaborationKeys.issue(scope, issueId), "attachment-download"], retry: false, networkMode: "always",
+     mutationFn: async (file: CollaborationAttachment) => {
+       const capability = await loadCollaborationAttachmentDownload(client, scope, file);
+@@ -36,13 +38,13 @@ export function CollaborationAttachmentList({ scope, issueId, files }: { scope:
+   return <>
+     <ul className="space-y-3">{files.map((file) => <li key={file.id} className="flex min-w-0 flex-wrap items-center justify-between gap-3 rounded-md border border-border p-3">
+       <div className="min-w-0 flex-1 [overflow-wrap:anywhere]"><p className="text-body font-medium">{file.name}</p><p className="text-caption text-muted-foreground">{t(($) => $.attachments.size, { size: file.size_bytes.toLocaleString() })}</p></div>
+-      <div className="flex flex-wrap gap-2">{previewable(file) && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" aria-label={t(($) => $.attachments.preview, { name: file.name })} onClick={() => setPreview(file)}>{t(($) => $.attachments.previewAction)}</Button>}
++      <div className="flex flex-wrap gap-2">{previewable(file) && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" aria-label={t(($) => $.attachments.preview, { name: file.name })} onClick={() => setPreviewId(file.id)}>{t(($) => $.attachments.previewAction)}</Button>}
+         <Button type="button" variant="outline" className="pointer-coarse:min-h-11" aria-label={t(($) => $.attachments.download, { name: file.name })} disabled={download.isPending} onClick={() => download.mutate(file)}>{t(($) => $.attachments.downloadAction)}</Button></div>
+     </li>)}</ul>
+     {download.error && <CollaborationAttachmentFailure error={download.error} />}
+-    <Dialog open={preview !== null} onOpenChange={(open) => { if (!open) setPreview(null); }}>
+-      {preview && <DialogContent className="flex max-h-[90dvh] flex-col overflow-y-auto sm:max-w-4xl" closeLabel={t(($) => $.attachments.close)}>
+-        <DialogTitle className="pr-8 [overflow-wrap:anywhere]">{preview.name}</DialogTitle>
++    <Dialog open={preview !== null} onOpenChange={(open) => { if (!open) setPreviewId(null); }}>
++      {preview && <DialogContent className="flex max-h-[90dvh] flex-col overflow-y-auto sm:max-w-4xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11" closeLabel={t(($) => $.attachments.close)}>
++        <DialogTitle className="pr-8 [overflow-wrap:anywhere] pointer-coarse:pr-11">{preview.name}</DialogTitle>
+         <DialogDescription>{t(($) => $.attachments.size, { size: preview.size_bytes.toLocaleString() })}</DialogDescription>
+         <AttachmentPreview key={preview.id} scope={scope} issueId={issueId} file={preview} />
+       </DialogContent>}
+@@ -131,8 +133,16 @@ function AttachmentDeliveryForm({ scope, issue }: { scope: CollaborationScope; i
+ }
+ 
+ export function CollaborationCommentAttachments({ scope, issueId, attachmentIds }: { scope: CollaborationScope; issueId: string; attachmentIds: string[] }) {
++  const { t } = useT("collaboration");
+   const client = useQueryClient();
+   const query = useQuery({ ...collaborationAttachmentsOptions(client, scope, issueId), enabled: attachmentIds.length > 0 });
+-  if (attachmentIds.length === 0 || !query.data) return null;
+-  return <CollaborationAttachmentList scope={scope} issueId={issueId} files={query.data.attachments.filter((file) => attachmentIds.includes(file.id))} />;
++  if (attachmentIds.length === 0) return null;
++  const files = query.isSuccess ? query.data.attachments.filter((file) => attachmentIds.includes(file.id)) : [];
++  const missing = query.isSuccess && attachmentIds.some((id) => !files.some((file) => file.id === id));
++  return <section aria-label={t(($) => $.attachments.title)} className="min-w-0 space-y-3">
++    {query.isPending && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.attachments.loading)}</p>}
++    {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
++    {missing && <p className="text-caption text-muted-foreground">{t(($) => $.attachments.referencesUnavailable)}</p>}
++    {files.length > 0 && <CollaborationAttachmentList scope={scope} issueId={issueId} files={files} />}
++  </section>;
+ }
+diff --git a/packages/views/collaboration/command-history.test.tsx b/packages/views/collaboration/command-history.test.tsx
+index 731c94362..2adac6baa 100644
+--- a/packages/views/collaboration/command-history.test.tsx
++++ b/packages/views/collaboration/command-history.test.tsx
+@@ -44,6 +44,23 @@ function navigation() {
+     getShareableUrl: (path: string) => `https://server.example${path}` };
+ }
+ 
++it.each(["en", "zh-Hans"] as const)("formats input and cancellation timestamps with the %s app locale", async locale => {
++  const f = setup();
++  vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ ...historyFixture,
++    items: [{ ...original, attachment_ids: [] }] }))));
++  renderWithI18n(<QueryClientProvider client={f.client}><NavigationProvider value={navigation()}>
++    <CollaborationCommandHistory scope={f.scope} issueId={issueId} />
++  </NavigationProvider></QueryClientProvider>, { locale });
++  await userEvent.click(screen.getByRole("button", { name: locale === "en" ? "Command history" : "指令历史" }));
++  const history = await screen.findByRole("region", { name: locale === "en" ? "Command history" : "指令历史" });
++  await within(history).findByText(original.content);
++  const times = [...history.querySelectorAll("time")];
++  expect(times.map(time => time.getAttribute("datetime"))).toEqual([original.created_at, original.cancellation.created_at]);
++  expect(times.map(time => time.textContent)).toEqual([
++    new Date(original.created_at).toLocaleString(locale), new Date(original.cancellation.created_at).toLocaleString(locale),
++  ]);
++});
++
+ // Canonical malformed/provenance/paging/access matrices live in core's
+ // command-history-{schema,queries}.test.ts. This path proves actual Cancel,
+ // Query invalidation, immutable rendering and a fresh mounted shared view.
+diff --git a/packages/views/collaboration/command-history.tsx b/packages/views/collaboration/command-history.tsx
+index 216a080fb..923ae0fb3 100644
+--- a/packages/views/collaboration/command-history.tsx
++++ b/packages/views/collaboration/command-history.tsx
+@@ -4,7 +4,7 @@ import { collaborationCommandHistoryOptions, collaborationIssueAccessDenied, isC
+   type CollaborationCommandHistoryEntry, type CollaborationScope } from "@multica/core/collaboration";
+ import { accountPath } from "@multica/core/paths";
+ import { Button } from "@multica/ui/components/ui/button";
+-import { useT } from "../i18n";
++import { useLocale, useT } from "../i18n";
+ import { AppLink } from "../navigation";
+ import { RichContent } from "../rich-content";
+ import { CollaborationCommentAttachments } from "./attachment-panel";
+@@ -44,6 +44,7 @@ function CommandHistoryRecords({ scope, issueId }: { scope: CollaborationScope;
+ 
+ function CommandHistoryEntry({ item, scope, issueId }: { item: CollaborationCommandHistoryEntry; scope: CollaborationScope; issueId: string }) {
+   const { t } = useT("collaboration");
++  const locale = useLocale();
+   const labels = useCollaborationLabels();
+   const cancellation = item.cancellation;
+   const identifiers = [
+@@ -61,7 +62,7 @@ function CommandHistoryEntry({ item, scope, issueId }: { item: CollaborationComm
+     </div>
+     <div className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1 text-caption text-muted-foreground [overflow-wrap:anywhere]">
+       <span>{t(($) => $.execution.author)}: <span className="font-medium text-foreground">{item.author?.name ?? item.author_user_id}</span></span>
+-      <time dateTime={item.created_at} title={item.created_at}>{new Date(item.created_at).toLocaleString()}</time>
++      <time dateTime={item.created_at} title={item.created_at}>{new Date(item.created_at).toLocaleString(locale)}</time>
+     </div>
+     <p className="text-caption text-muted-foreground [overflow-wrap:anywhere]">{t(($) => $.commandHistory.target)}: {item.target.kind === "squad" ? t(($) => $.execution.squad) : t(($) => $.execution.agent)} {item.target.resource_id}</p>
+     <RichContent resourcePolicy="restricted" content={item.content} />
+@@ -73,7 +74,7 @@ function CommandHistoryEntry({ item, scope, issueId }: { item: CollaborationComm
+         <div><dt>{t(($) => $.commandHistory.reason)}</dt><dd><CommandReason code={item.reason} /></dd></div>
+         <div><dt>{t(($) => $.commandHistory.cancelledBy)}</dt><dd>{cancellation.actor?.name ?? cancellation.actor_user_id ?? t(($) => $.records.notRecorded)}</dd></div>
+         <div><dt>{t(($) => $.commandHistory.cancelledAt)}</dt><dd>{cancellation.created_at === null ? t(($) => $.records.notRecorded)
+-          : <time dateTime={cancellation.created_at} title={cancellation.created_at}>{new Date(cancellation.created_at).toLocaleString()}</time>}</dd></div>
++          : <time dateTime={cancellation.created_at} title={cancellation.created_at}>{new Date(cancellation.created_at).toLocaleString(locale)}</time>}</dd></div>
+       </dl>
+     </div> : item.reason !== null && <p className="text-caption text-muted-foreground [overflow-wrap:anywhere]"><CommandReason code={item.reason} /></p>}
+     {item.comment_id !== null && <AppLink href={accountPath({ view: "participating", issueId, commentId: item.comment_id })}
+diff --git a/packages/views/collaboration/comment-history.tsx b/packages/views/collaboration/comment-history.tsx
+index d7e8e4479..080381e1a 100644
+--- a/packages/views/collaboration/comment-history.tsx
++++ b/packages/views/collaboration/comment-history.tsx
+@@ -2,13 +2,14 @@ import { useId, useState } from "react";
+ import { useQuery, useQueryClient } from "@tanstack/react-query";
+ import { collaborationCommentHistoryOptions, type CollaborationScope } from "@multica/core/collaboration";
+ import { Button } from "@multica/ui/components/ui/button";
+-import { useT } from "../i18n";
++import { useLocale, useT } from "../i18n";
+ import { RichContent } from "../rich-content";
+ import { CollaborationQueryState } from "./query-state";
+ import { CollaborationCommentAttachments } from "./attachment-panel";
+ 
+ export function CollaborationCommentHistory({ scope, issueId, commentId }: { scope: CollaborationScope; issueId: string; commentId: string }) {
+   const { t } = useT("collaboration");
++  const locale = useLocale();
+   const [open, setOpen] = useState(false);
+   const region = useId();
+   const client = useQueryClient();
+@@ -20,7 +21,7 @@ export function CollaborationCommentHistory({ scope, issueId, commentId }: { sco
+       {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
+       {query.isSuccess && query.data.items.length === 0 && <p className="text-caption text-muted-foreground">{t(($) => $.activity.empty)}</p>}
+       {query.data?.items.map((item) => <div key={item.event_id} className="min-w-0 space-y-3">
+-        <p className="text-caption text-muted-foreground [overflow-wrap:anywhere]">{item.actor?.name ?? t(($) => $.detail.unknownAuthor)} · <time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString()}</time></p>
++        <p className="text-caption text-muted-foreground [overflow-wrap:anywhere]">{item.actor?.name ?? t(($) => $.detail.unknownAuthor)} · <time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString(locale)}</time></p>
+         {item.before !== null && <div className="space-y-1"><p className="text-caption text-muted-foreground">{t(($) => $.activity.before)}</p><RichContent resourcePolicy="restricted" content={item.before} /><CollaborationCommentAttachments scope={scope} issueId={issueId} attachmentIds={item.before_attachment_ids ?? []} /></div>}
+         <div className="space-y-1"><p className="text-caption text-muted-foreground">{t(($) => $.activity.after)}</p>{item.kind === "comment_deleted" ? <p className="text-body">{t(($) => $.detail.deleted)}</p> : <RichContent resourcePolicy="restricted" content={item.after} />}<CollaborationCommentAttachments scope={scope} issueId={issueId} attachmentIds={item.after_attachment_ids ?? []} /></div>
+       </div>)}
+diff --git a/packages/views/collaboration/comment-list.test.tsx b/packages/views/collaboration/comment-list.test.tsx
+index 038c838d4..f126c851b 100644
+--- a/packages/views/collaboration/comment-list.test.tsx
++++ b/packages/views/collaboration/comment-list.test.tsx
+@@ -21,6 +21,20 @@ const comment = parseCollaborationComment({ id: commentId, issue_id: actor, auth
+   comment_revision: "9007199254740993", attachment_ids: [], created_at: timestamp, updated_at: timestamp, deleted_at: null, resolved_at: null, resolved_by: null, can_edit: true, can_resolve: true, reactions: [{ emoji: "👍", count: 2, viewer_reacted: true }] })!;
+ afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); });
+ 
++it.each(["en", "zh-Hans"] as const)("uses the %s app locale for comment and history timestamps while preserving ISO values", async locale => {
++  setApiInstance(new ApiClient("https://comments.example"));
++  const editedAt = "2026-10-20T13:24:00Z";
++  vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ issue_id: actor, comment_id: commentId, items: [{
++    event_id: eventId, event_seq: "1", kind: "comment_edited", actor: issue.creator, created_at: editedAt,
++    comment_revision: comment.comment_revision, before: "Earlier comment", after: comment.content,
++  }] }))));
++  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentList scope={collaborationScope(actor)} issue={issue}
++    comments={[comment]} onReply={vi.fn()} /></QueryClientProvider>, { locale });
++  expect(screen.getByText(new Date(timestamp).toLocaleString(locale))).toHaveAttribute("datetime", timestamp);
++  await userEvent.click(screen.getByRole("button", { name: locale === "en" ? "Comment history" : "评论历史" }));
++  expect(await screen.findByText(new Date(editedAt).toLocaleString(locale))).toHaveAttribute("datetime", editedAt);
++});
++
+ it("loads a placeholder through the human detail route before exposing editing", async () => {
+   setApiInstance(new ApiClient("https://comments.example"));
+   const fetch = vi.fn(async (url: string) => new Response(JSON.stringify(url.includes("attachments") ? { issue_id: actor, attachments: [] } : comment)));
+diff --git a/packages/views/collaboration/comment-list.tsx b/packages/views/collaboration/comment-list.tsx
+index 802c8049f..9d3aa6565 100644
+--- a/packages/views/collaboration/comment-list.tsx
++++ b/packages/views/collaboration/comment-list.tsx
+@@ -8,7 +8,7 @@ import { Button } from "@multica/ui/components/ui/button";
+ import { Checkbox } from "@multica/ui/components/ui/checkbox";
+ import { Textarea } from "@multica/ui/components/ui/textarea";
+ import { Avatar, AvatarFallback, AvatarImage } from "@multica/ui/components/ui/avatar";
+-import { useT } from "../i18n";
++import { useLocale, useT } from "../i18n";
+ import { AppLink } from "../navigation";
+ import { RichContent } from "../rich-content";
+ import { CollaborationCommentHistory } from "./comment-history";
+@@ -63,6 +63,7 @@ function CommentItem({ scope, issue, commentId, comment, onReply, onPrepareResul
+ 
+ function CommentCard({ scope, issue, comment, onReply, onPrepareResult, onLoadContent, contentLoading, contentError, contentStale }: CommentProps) {
+   const { t } = useT("collaboration");
++  const locale = useLocale();
+   const labels = useCollaborationLabels();
+   const client = useQueryClient();
+   const fieldId = useId();
+@@ -109,7 +110,7 @@ function CommentCard({ scope, issue, comment, onReply, onPrepareResult, onLoadCo
+       <Avatar className="size-6"><AvatarImage src={comment.author?.avatar_url || undefined} alt="" /><AvatarFallback>{author.slice(0, 1)}</AvatarFallback></Avatar>
+       <span className="font-medium text-foreground [overflow-wrap:anywhere]">{author}</span>
+       {comment.author?.external === true && <span>{t(($) => $.detail.external)}</span>}
+-      <time dateTime={comment.created_at}>{new Date(comment.created_at).toLocaleString()}</time>
++      <time dateTime={comment.created_at}>{new Date(comment.created_at).toLocaleString(locale)}</time>
+       {comment.resolved_at !== null && <span>{comment.resolved_by ? t(($) => $.commentActions.resolvedBy, { name: comment.resolved_by.name }) : t(($) => $.detail.resolved)}</span>}
+     </div>
+     {comment.author_authority && <details className="min-w-0 text-caption text-muted-foreground">
+diff --git a/packages/views/collaboration/focus.test.tsx b/packages/views/collaboration/focus.test.tsx
+index 19f1aa010..a1873e8c2 100644
+--- a/packages/views/collaboration/focus.test.tsx
++++ b/packages/views/collaboration/focus.test.tsx
+@@ -1,6 +1,8 @@
+ import { afterEach, expect, it } from "vitest";
+-import { waitFor } from "@testing-library/react";
+-import { recoverFocus } from "./focus";
++import { StrictMode, useState } from "react";
++import { render, screen, waitFor } from "@testing-library/react";
++import userEvent from "@testing-library/user-event";
++import { recoverFocus, useOpenedForm } from "./focus";
+ 
+ afterEach(() => { document.body.innerHTML = ""; });
+ 
+@@ -42,3 +44,21 @@ it("leaves focus that is still on a live control alone", async () => {
+   await new Promise((resolve) => setTimeout(resolve, 50));
+   expect(document.activeElement).toBe(current);
+ });
++
++it("keeps the default form opener through StrictMode effect replay", async () => {
++  function Form({ close }: { close: () => void }) {
++    const ref = useOpenedForm<HTMLFormElement>();
++    return <form ref={ref} tabIndex={-1} aria-label="Inline form"><button type="button" onClick={close}>Close form</button></form>;
++  }
++  function Journey() {
++    const [open, setOpen] = useState(false);
++    return <><button onClick={() => setOpen(true)}>Open form</button>{open && <Form close={() => setOpen(false)} />}</>;
++  }
++  render(<StrictMode><Journey /></StrictMode>);
++  const user = userEvent.setup();
++  const opener = screen.getByRole("button", { name: "Open form" });
++  await user.click(opener);
++  expect(screen.getByRole("form", { name: "Inline form" })).toHaveFocus();
++  await user.click(screen.getByRole("button", { name: "Close form" }));
++  await waitFor(() => expect(opener).toHaveFocus());
++});
+diff --git a/packages/views/collaboration/focus.ts b/packages/views/collaboration/focus.ts
+index bd55efaa3..8db9d2a58 100644
+--- a/packages/views/collaboration/focus.ts
++++ b/packages/views/collaboration/focus.ts
+@@ -27,13 +27,30 @@ export function recoverFocus(...targets: FocusTarget[]) {
+ /**
+  * For inline forms opened by a button: focus the form when it mounts and
+  * return focus to the opener when it closes, unless focus already moved on.
++ * A new opening identity deliberately reveals an already-mounted form again.
+  */
+-export function useOpenedForm<T extends HTMLElement>() {
++export function useOpenedForm<T extends HTMLElement>({ opening, reveal = false }: { opening?: unknown; reveal?: boolean } = {}) {
+   const ref = useRef<T>(null);
+-  const [opener] = useState(() => typeof document === "undefined" ? null : document.activeElement as HTMLElement | null);
++  const [initialOpener] = useState(() => typeof document === "undefined" ? null : document.activeElement as HTMLElement | null);
++  const opened = useRef({ identity: opening, opener: initialOpener });
+   useEffect(() => {
+-    ref.current?.focus();
+-    return () => recoverFocus(() => opener);
+-  }, [opener]);
++    if (opened.current.identity !== opening) {
++      opened.current = { identity: opening, opener: document.activeElement instanceof HTMLElement ? document.activeElement : null };
++    }
++    const opener = opened.current.opener;
++    const target = ref.current;
++    if (reveal && target) {
++      for (let ancestor = target.parentElement; ancestor; ancestor = ancestor.parentElement) {
++        if (ancestor instanceof HTMLDetailsElement) ancestor.open = true;
++      }
++      target.scrollIntoView({ block: "nearest" });
++    }
++    target?.focus({ preventScroll: reveal });
++    return () => recoverFocus(() => {
++      if (opened.current.identity !== opening) return null;
++      if (reveal && opener?.isConnected) opener.scrollIntoView({ block: "nearest" });
++      return opener;
++    });
++  }, [opening, reveal]);
+   return ref;
+ }
+diff --git a/packages/views/collaboration/knowledge-panel.test.tsx b/packages/views/collaboration/knowledge-panel.test.tsx
+index beeafd5bd..f89f5ad39 100644
+--- a/packages/views/collaboration/knowledge-panel.test.tsx
++++ b/packages/views/collaboration/knowledge-panel.test.tsx
+@@ -5,6 +5,8 @@ import { act, cleanup, fireEvent, screen, waitFor, within } from "@testing-libra
+ import userEvent from "@testing-library/user-event";
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+ import { ApiClient, ApiError, setApiInstance } from "@multica/core/api";
++import { projectKeys } from "@multica/core/projects/queries";
++import type { Project, Workspace } from "@multica/core/types";
+ import * as collaboration from "@multica/core/collaboration";
+ import { collaborationKnowledgeKeys, collaborationScope, parseCollaborationComment, parseCollaborationComments, parseCollaborationIssue,
+   parseCollaborationKnowledgeCandidates, parseCollaborationKnowledgeDetail, parseCollaborationKnowledgeTargetList, CollaborationExecutionSchema, parseCollaborationRunRecords, readPendingKnowledgeOperations, expireKnowledgeProjections,
+@@ -23,6 +25,11 @@ const baseIssue = parseCollaborationIssue(collaborationIssueFixture)!;
+ const projectId = "00000000-0000-4000-8000-000000000099";
+ const issue = { ...baseIssue, source_structure: { issue_revision: "1", project: { id: projectId, name: "Lawful current project" }, parent_issue: null, iteration: null, stage: null } };
+ const commentId = "00000000-0000-4000-8000-000000000098";
++const otherWorkspace: Workspace = { id: "00000000-0000-4000-8000-000000000090", name: "Visible destination workspace", slug: "knowledge-destination",
++  description: null, context: null, settings: {}, repos: [], issue_prefix: "KD", avatar_url: null, created_at: "2026-11-01T00:00:00Z", updated_at: "2026-11-01T00:00:00Z" };
++const otherProject: Project = { id: "00000000-0000-4000-8000-000000000091", workspace_id: otherWorkspace.id, title: "Visible destination project",
++  description: null, icon: null, status: "in_progress", priority: "none", lead_type: null, lead_id: null, start_date: null, due_date: null,
++  created_at: "2026-11-01T00:00:00Z", updated_at: "2026-11-01T00:00:00Z", issue_count: 0, done_count: 0, resource_count: 0 };
+ let api: ApiClient, client: QueryClient, scope: CollaborationScope;
+ let candidate: CollaborationKnowledgeCandidate;
+ let historyTruncated = false;
+@@ -160,6 +167,86 @@ async function fillProposal() {
+   await userEvent.click(await screen.findByRole("checkbox", { name: /Comment.*Version 3/ }));
+ }
+ 
++async function openOtherDestination() {
++  mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
++  await userEvent.click(screen.getByRole("combobox", { name: "Destination" }));
++  await userEvent.click(await screen.findByRole("option", { name: "Another visible destination" }));
++  return screen.getByRole("form", { name: "Propose knowledge" });
++}
++
++it("announces workspace loading and permits local retry to an empty catalog while preserving the proposal", async () => {
++  let rejectRead!: (error: Error) => void;
++  const workspaces = vi.spyOn(api, "listWorkspaces").mockImplementationOnce(() => new Promise((_resolve, reject) => { rejectRead = reject; })).mockResolvedValue([]);
++  const projects = vi.spyOn(api, "listProjects");
++  const form = await openOtherDestination();
++  expect(within(form).getByText("Loading workspaces...")).toHaveAttribute("role", "status");
++  await act(async () => rejectRead(new TypeError("Offline")));
++  expect(await within(form).findByText("Could not load workspaces. Refresh to try again.")).toBeVisible();
++  await userEvent.click(within(form).getByRole("button", { name: "Refresh" }));
++  expect(await within(form).findByText("No visible workspaces are available.")).toBeVisible();
++  expect(within(form).getByRole("textbox", { name: "Summary" })).toHaveValue("Human conclusion");
++  expect(within(form).getByRole("textbox", { name: "Conclusion (Markdown)" })).toHaveValue("A new explicitly written conclusion");
++  expect(within(form).getByRole("checkbox", { name: /Comment.*Version 3/ })).toBeChecked();
++  expect(workspaces).toHaveBeenCalledTimes(2); expect(projects).not.toHaveBeenCalled();
++});
++
++it("locally retries a failed selected project, retaining proposal fields and requiring an available target before submit", async () => {
++  vi.spyOn(api, "listWorkspaces").mockResolvedValue([otherWorkspace]);
++  let finishRead!: () => void;
++  const projects = vi.spyOn(api, "listProjects").mockImplementationOnce(() => new Promise((resolve) => {
++    finishRead = () => resolve({ projects: [otherProject], total: 1 });
++  })).mockResolvedValue({ projects: [otherProject], total: 1 });
++  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => ({ ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id }));
++  const form = await openOtherDestination();
++  await userEvent.click(within(form).getByRole("combobox", { name: "Workspace" }));
++  await userEvent.click(await screen.findByRole("option", { name: otherWorkspace.name }));
++  expect(within(form).getByText("Loading projects...")).toHaveAttribute("role", "status");
++  await act(async () => finishRead());
++  await userEvent.click(within(form).getByRole("combobox", { name: "Project" }));
++  await userEvent.click(await screen.findByRole("option", { name: otherProject.title }));
++  projects.mockRejectedValueOnce(new TypeError("Offline"));
++  await act(async () => { await client.invalidateQueries({ queryKey: projectKeys.list(otherWorkspace.id) }); });
++  expect(await within(form).findByText("Could not load projects. Refresh to try again.")).toBeVisible();
++  expect(within(form).getByRole("combobox", { name: "Project" })).not.toHaveTextContent(otherProject.title);
++  await userEvent.click(within(form).getByRole("button", { name: "Submit candidate" }));
++  expect(send).not.toHaveBeenCalled();
++  await userEvent.click(within(form).getByRole("button", { name: "Refresh" }));
++  await waitFor(() => expect(within(form).getByRole("combobox", { name: "Project" })).toHaveTextContent(otherProject.title));
++  expect(within(form).getByRole("textbox", { name: "Summary" })).toHaveValue("Human conclusion");
++  expect(within(form).getByRole("textbox", { name: "Conclusion (Markdown)" })).toHaveValue("A new explicitly written conclusion");
++  expect(within(form).getByRole("checkbox", { name: /Comment.*Version 3/ })).toBeChecked();
++  expect(send).not.toHaveBeenCalled();
++  await userEvent.click(within(form).getByRole("button", { name: "Submit candidate" }));
++  await waitFor(() => expect(send).toHaveBeenCalledOnce());
++  expect(send.mock.calls[0]![1].target).toEqual({ kind: "project", workspace_id: otherWorkspace.id, project_id: otherProject.id });
++  expect(projects).toHaveBeenCalledTimes(3);
++});
++
++it("does not submit a removed destination after resolving sources or silently retarget it to the workspace", async () => {
++  vi.spyOn(api, "listWorkspaces").mockResolvedValue([otherWorkspace]);
++  const projects = vi.spyOn(api, "listProjects").mockResolvedValue({ projects: [otherProject], total: 1 });
++  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => ({ ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id }));
++  const form = await openOtherDestination();
++  await userEvent.click(within(form).getByRole("combobox", { name: "Workspace" }));
++  await userEvent.click(await screen.findByRole("option", { name: otherWorkspace.name }));
++  await userEvent.click(within(form).getByRole("combobox", { name: "Project" }));
++  await userEvent.click(await screen.findByRole("option", { name: otherProject.title }));
++  const comment = await api.getCollaborationComment(issue.id, commentId);
++  let release!: () => void;
++  vi.mocked(api.getCollaborationComment).mockImplementationOnce(() => new Promise((resolve) => { release = () => resolve(comment); }));
++  await userEvent.click(within(form).getByRole("button", { name: "Submit candidate" }));
++  await waitFor(() => expect(release).toBeDefined());
++  projects.mockResolvedValue({ projects: [], total: 0 });
++  await act(async () => { await client.invalidateQueries({ queryKey: projectKeys.list(otherWorkspace.id) }); });
++  expect(await within(form).findByText("No visible projects in this workspace.")).toBeVisible();
++  expect(within(form).getByRole("combobox", { name: "Project" })).toHaveTextContent("Choose a project");
++  await act(async () => release());
++  await within(form).findByRole("button", { name: "Submit candidate" });
++  expect(send).not.toHaveBeenCalled();
++  expect(within(form).getByRole("textbox", { name: "Summary" })).toHaveValue("Human conclusion");
++  expect(within(form).getAllByText("This destination is unavailable. Choose an available workspace or project.").length).toBeGreaterThan(0);
++});
++
+ it("lets an external handler propose from comments to the lawful current project without a private catalog", async () => {
+   const workspaces = vi.spyOn(api, "listWorkspaces"); const projects = vi.spyOn(api, "listProjects");
+   const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => ({ ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id }));
+diff --git a/packages/views/collaboration/knowledge-proposal.tsx b/packages/views/collaboration/knowledge-proposal.tsx
+index 831c134e3..8797e63b9 100644
+--- a/packages/views/collaboration/knowledge-proposal.tsx
++++ b/packages/views/collaboration/knowledge-proposal.tsx
+@@ -29,18 +29,34 @@ function OtherTarget({ disabled, onChange }: { disabled: boolean; onChange: (tar
+   const { t } = useT("collaboration");
+   const workspaces = useQuery(workspaceListOptions());
+   const [workspaceId, setWorkspaceId] = useState("");
+-  const visible = workspaces.data?.some((workspace) => workspace.id === workspaceId) === true && !workspaces.error;
++  const visible = workspaces.isSuccess && workspaces.data.some((workspace) => workspace.id === workspaceId);
+   const projects = useQuery({ ...projectListOptions(workspaceId), enabled: visible });
+   const [projectId, setProjectId] = useState("");
+-  useEffect(() => { if (workspaceId && !visible) onChange(null); }, [workspaceId, visible, onChange]);
++  const projectVisible = visible && projects.isSuccess && projects.data.some((project) => project.id === projectId);
++  const unavailable = workspaceId !== "" && workspaces.isSuccess && !visible || visible && projectId !== "" && projects.isSuccess && !projectVisible;
++  useEffect(() => {
++    if (!visible || projectId && !projectVisible) onChange(null);
++    else onChange(projectId ? { kind: "project", workspace_id: workspaceId, project_id: projectId } : { kind: "workspace", workspace_id: workspaceId });
++  }, [workspaceId, visible, projectId, projectVisible, onChange]);
+   return <div className="space-y-3">
+-    <KnowledgeSelect label={t(($) => $.knowledge.workspace)} value={visible ? workspaceId : ""} disabled={disabled}
+-      items={[{ value: "", label: t(($) => $.knowledge.chooseWorkspace) }, ...(!workspaces.error ? workspaces.data ?? [] : []).map((workspace) => ({ value: workspace.id, label: workspace.name }))]}
+-      onChange={(value) => { setWorkspaceId(value); setProjectId(""); onChange(value ? { kind: "workspace", workspace_id: value } : null); }} />
+-    {visible && <KnowledgeSelect label={t(($) => $.knowledge.project)} value={projectId} disabled={disabled}
+-      items={[{ value: "", label: t(($) => $.knowledge.workspaceTarget) }, ...(!projects.error ? projects.data ?? [] : []).map((project) => ({ value: project.id, label: project.title }))]}
+-      onChange={(value) => { setProjectId(value); onChange(value ? { kind: "project", workspace_id: workspaceId, project_id: value } : { kind: "workspace", workspace_id: workspaceId }); }} />}
+-    {(workspaces.error || projects.error) && <p role="alert" className="text-caption">{t(($) => $.knowledge.loadError)}</p>}
++    <KnowledgeSelect label={t(($) => $.knowledge.workspace)} value={visible ? workspaceId : ""} disabled={disabled || !workspaces.isSuccess}
++      items={[{ value: "", label: t(($) => $.knowledge.chooseWorkspace) }, ...(workspaces.isSuccess ? workspaces.data : []).map((workspace) => ({ value: workspace.id, label: workspace.name }))]}
++      onChange={(value) => { setWorkspaceId(value); setProjectId(""); }} />
++    {workspaces.isPending && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.knowledge.workspacesLoading)}</p>}
++    {workspaces.isError && <div role="alert" className="space-y-2 text-caption"><p>{t(($) => $.knowledge.workspacesLoadError)}</p>
++      <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={workspaces.isFetching} onClick={() => void workspaces.refetch()}>{t(($) => $.knowledge.refresh)}</Button></div>}
++    {workspaces.isSuccess && workspaces.data.length === 0 && <p className="text-caption text-muted-foreground">{t(($) => $.knowledge.workspacesEmpty)}</p>}
++    {visible && <>
++      <KnowledgeSelect label={t(($) => $.knowledge.project)} value={projectId && !projectVisible ? "unavailable" : projectId} disabled={disabled || !projects.isSuccess}
++        items={[...(projectId && !projectVisible ? [{ value: "unavailable", label: t(($) => $.knowledge.chooseProject) }] : []),
++          { value: "", label: t(($) => $.knowledge.workspaceTarget) }, ...(projects.isSuccess ? projects.data : []).map((project) => ({ value: project.id, label: project.title }))]}
++        onChange={(value) => { if (value !== "unavailable") setProjectId(value); }} />
++      {projects.isPending && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.knowledge.projectsLoading)}</p>}
++      {projects.isError && <div role="alert" className="space-y-2 text-caption"><p>{t(($) => $.knowledge.projectsLoadError)}</p>
++        <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={projects.isFetching} onClick={() => void projects.refetch()}>{t(($) => $.knowledge.refresh)}</Button></div>}
++      {projects.isSuccess && projects.data.length === 0 && <p className="text-caption text-muted-foreground">{t(($) => $.knowledge.projectsEmpty)}</p>}
++    </>}
++    {unavailable && <p role="alert" className="text-caption">{t(($) => $.knowledge.targetUnavailable)}</p>}
+   </div>;
+ }
+ 
+@@ -57,12 +73,14 @@ export function KnowledgeProposalForm({ scope, issue, view, refreshView, mode, l
+   const [surfaces, setSurfaces] = useState<CollaborationKnowledgeProposal["applicability"]["surfaces"]>(["issue", "collaboration"]);
+   const [destination, setDestination] = useState("workspace"), [otherTarget, setOtherTarget] = useState<CollaborationKnowledgeTarget | null>(null);
+   const [building, setBuilding] = useState(false), [error, setError] = useState<string | null>(null);
+-  const submitting = useRef(false); const alive = useRef({ scope, view }); alive.current = { scope, view };
++  const submitting = useRef(false);
+   const project = issue.source_structure?.project;
+   const projectChanged = destination !== "workspace" && destination !== "other" && destination !== project?.id;
+   const target = mode.target ?? (destination === "other" ? otherTarget : destination === "workspace"
+     ? { kind: "workspace" as const, workspace_id: issue.source_workspace.id }
+     : project && destination === project.id ? { kind: "project" as const, workspace_id: issue.source_workspace.id, project_id: project.id } : null);
++  const targetIdentity = JSON.stringify(target);
++  const alive = useRef({ scope, view, targetIdentity }); alive.current = { scope, view, targetIdentity };
+   const disabled = locked || building;
+   // Limits count UTF-8 bytes like the schema and server; DOM maxLength counts UTF-16 units and truncates paste silently.
+   const summaryOver = collaborationTextByteLength(summary) > KNOWLEDGE_SUMMARY_MAX_BYTES;
+@@ -70,7 +88,7 @@ export function KnowledgeProposalForm({ scope, issue, view, refreshView, mode, l
+   const evidenceOver = collaborationTextByteLength(evidence) > KNOWLEDGE_REFERENCE_MAX_BYTES;
+   const overLimit = summaryOver || contentOver || evidenceOver;
+   // A refreshing (erased) list does not block submit; only a current, explicit non-grant or a field over its limit does.
+-  const blocked = disabled || overLimit || view !== undefined && view.capabilities.can_propose !== true;
++  const blocked = disabled || overLimit || !target || view !== undefined && view.capabilities.can_propose !== true;
+   return <form aria-label={t(($) => $.knowledge.propose)} className="min-w-0 space-y-5" onSubmit={(event) => {
+     event.preventDefault(); if (blocked || submitting.current) return;
+     if (!target || !summary.trim() || !content.trim() || !surfaces.length || !selected.length || expiry && (!Number.isFinite(Date.parse(expiry)) || Date.parse(expiry) <= Date.now())) { setError(t(($) => $.knowledge.invalid)); return; }
+@@ -82,6 +100,7 @@ export function KnowledgeProposalForm({ scope, issue, view, refreshView, mode, l
+       // Prepare only from a current authorized list; never reuse a grant a refresh erased.
+       const current = alive.current.view ?? await awaitRefreshedView(refreshView);
+       if (alive.current.scope !== scope || current?.capabilities.can_propose !== true) { setError(t(($) => $.knowledge.proposalUnavailable)); return; }
++      if (alive.current.targetIdentity !== targetIdentity) { setError(t(($) => $.knowledge.targetUnavailable)); return; }
+       let intent: KnowledgeIntent;
+       try {
+         intent = prepareKnowledgeProposal(scope, current, { target, summary, content, sources,
+@@ -94,7 +113,7 @@ export function KnowledgeProposalForm({ scope, issue, view, refreshView, mode, l
+   }}>
+     {(mode.supersedesId || mode.derivedId) && <p className="text-caption text-muted-foreground">{t(($) => $.knowledge.blankRevision)}</p>}
+     <div className="space-y-2"><label htmlFor={`${id}-summary`} className="text-body font-medium">{t(($) => $.knowledge.summary)}</label>
+-      <Input id={`${id}-summary`} autoFocus value={summary} onChange={(event) => setSummary(event.target.value)} disabled={disabled} required
++      <Input id={`${id}-summary`} autoFocus value={summary} onChange={(event) => setSummary(event.target.value)} disabled={disabled} required className="pointer-coarse:min-h-11"
+         aria-invalid={summaryOver || undefined} aria-describedby={summaryOver ? `${id}-summary-limit` : undefined} />
+       <KnowledgeByteLimit id={`${id}-summary-limit`} value={summary} max={KNOWLEDGE_SUMMARY_MAX_BYTES} /></div>
+     <div className="space-y-2"><label htmlFor={`${id}-content`} className="text-body font-medium">{t(($) => $.knowledge.content)}</label>
+@@ -130,9 +149,9 @@ export function KnowledgeProposalForm({ scope, issue, view, refreshView, mode, l
+       </label>)}</div>
+     </fieldset>
+     <div className="space-y-2"><label htmlFor={`${id}-expiry`} className="text-body font-medium">{t(($) => $.knowledge.expires)}</label>
+-      <Input id={`${id}-expiry`} type="datetime-local" value={expiry} onChange={(event) => setExpiry(event.target.value)} disabled={disabled} /></div>
++      <Input id={`${id}-expiry`} type="datetime-local" value={expiry} onChange={(event) => setExpiry(event.target.value)} disabled={disabled} className="pointer-coarse:min-h-11" /></div>
+     {error && <p role="alert" className="text-body text-destructive">{error}</p>}
+     <div className="flex flex-wrap gap-2"><Button type="submit" className="pointer-coarse:min-h-11" disabled={blocked}>{disabled ? t(($) => $.knowledge.submitting) : t(($) => $.knowledge.submit)}</Button>
+-      <Button type="button" variant="outline" disabled={disabled} onClick={onCancel}>{t(($) => $.knowledge.cancel)}</Button></div>
++      <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={disabled} onClick={onCancel}>{t(($) => $.knowledge.cancel)}</Button></div>
+   </form>;
+ }
+diff --git a/packages/views/collaboration/knowledge-review.tsx b/packages/views/collaboration/knowledge-review.tsx
+index 1c96f38e6..dfc7d1a00 100644
+--- a/packages/views/collaboration/knowledge-review.tsx
++++ b/packages/views/collaboration/knowledge-review.tsx
+@@ -69,7 +69,7 @@ export function KnowledgeReview({ scope, candidateId, issue, canPropose, locked,
+         {candidate.evidence.length > 0 && <div className="space-y-2"><h5 className="text-caption font-medium">{t(($) => $.knowledge.verification)}</h5><ul className="space-y-2 text-body">{candidate.evidence.map((evidence, index) => <li key={index} className="[overflow-wrap:anywhere]">
+           <span className="text-caption text-muted-foreground">{t(($) => $.knowledge.evidenceKinds[evidence.kind])} · {t(($) => $.knowledge[evidence.verification])}</span> · {evidence.kind === "run_record" ? evidence.record_id : evidence.reference}
+         </li>)}</ul></div>}
+-        <details className="text-caption"><summary className="cursor-pointer text-muted-foreground">{t(($) => $.knowledge.digest)}</summary><code className="mt-2 block break-all">{candidate.content_sha256}</code></details>
++        <details className="text-caption"><summary className="cursor-pointer text-muted-foreground pointer-coarse:min-h-11 pointer-coarse:py-3">{t(($) => $.knowledge.digest)}</summary><code className="mt-2 block break-all">{candidate.content_sha256}</code></details>
+         {canPropose && issue?.id === candidate.source_issue_id && <div className="flex flex-wrap gap-2">
+           <Button type="button" variant="outline" disabled={locked} onClick={() => onProposal({ target: candidate.target, supersedesId: candidate.candidate_id })}>{t(($) => $.knowledge.correct)}</Button>
+           {candidate.state === "approved" && candidate.target.kind === "project" && <Button type="button" variant="outline" disabled={locked} onClick={() => onProposal({ target: { kind: "workspace", workspace_id: candidate.target.workspace_id }, derivedId: candidate.candidate_id })}>{t(($) => $.knowledge.derive)}</Button>}
+@@ -77,7 +77,7 @@ export function KnowledgeReview({ scope, candidateId, issue, canPropose, locked,
+       </>}
+     </>}
+     {decisionKey !== null && <KnowledgeDecision key={decisionKey} scope={scope} candidate={identity === decisionKey ? candidate : undefined} locked={locked} onSubmit={onSubmit} />}
+-    {candidate && candidate.availability !== "restricted" && <details className="space-y-3"><summary className="cursor-pointer text-body font-medium">{t(($) => $.knowledge.history)}</summary>
++    {candidate && candidate.availability !== "restricted" && <details className="space-y-3"><summary className="cursor-pointer text-body font-medium pointer-coarse:min-h-11 pointer-coarse:py-3">{t(($) => $.knowledge.history)}</summary>
+       <ul className="space-y-2">{query.data?.value.history.map((version) => <li key={version.candidate_id}><Button type="button" variant="ghost" size="sm" onClick={() => onSelect(version.candidate_id)}>{version.availability === "restricted" ? t(($) => $.knowledge.restricted) : t(($) => $.knowledge.version, { version: version.version })} · {t(($) => $.knowledge.states[version.state])}</Button></li>)}</ul>
+       {query.data?.value.history_truncated === true && <p className="text-caption text-muted-foreground">{t(($) => $.knowledge.historyTruncated)}</p>}
+     </details>}
+diff --git a/packages/views/collaboration/memory-panel.test.tsx b/packages/views/collaboration/memory-panel.test.tsx
+index 8e1bd1899..4dbda3ea0 100644
+--- a/packages/views/collaboration/memory-panel.test.tsx
++++ b/packages/views/collaboration/memory-panel.test.tsx
+@@ -4,8 +4,8 @@ import { act, fireEvent, screen, waitFor, within } from "@testing-library/react"
+ import userEvent from "@testing-library/user-event";
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+ import { ApiClient, ApiError, setApiInstance } from "@multica/core/api";
+-import { collaborationMemoryKeys, collaborationScope, parseCollaborationIssue, parseCollaborationMemory, parseCollaborationMemoryVersions,
+-  readCollaborationDrafts, type CollaborationMemoryReceipt } from "@multica/core/collaboration";
++import { CollaborationUnavailableError, collaborationMemoryKeys, collaborationScope, parseCollaborationIssue, parseCollaborationMemory, parseCollaborationMemoryVersions,
++  prepareCollaborationMemoryChange, readCollaborationDrafts, saveCollaborationDraft, type CollaborationMemoryReceipt } from "@multica/core/collaboration";
+ import { collaborationIssueFixture } from "@multica/core/collaboration/test-fixtures";
+ import { renderWithI18n } from "../test/i18n";
+ import { CollaborationMemoryPanel } from "./memory-panel";
+@@ -43,6 +43,70 @@ function receipt(requestId: string, version: string | null, code = "memory_updat
+     current_version: version ?? "2", code, status, max_bytes: 131072, ...(status === 200 ? { bytes: 8, event_seq: "3" } : {}) };
+ }
+ 
++it("keeps a named loading region, reports an initial read failure and refreshes explicitly", async () => {
++  let rejectRead!: (reason: Error) => void;
++  vi.mocked(api.getCollaborationMemory).mockImplementationOnce(() => new Promise((_resolve, reject) => { rejectRead = reject; }));
++  const update = vi.spyOn(api, "updateCollaborationMemory");
++  mount();
++  const panel = screen.getByRole("region", { name: "Shared context" });
++  expect(within(panel).getByRole("status")).toHaveTextContent("Loading shared context...");
++  await act(async () => rejectRead(new TypeError("Offline")));
++  expect(await within(panel).findByRole("alert")).toHaveTextContent("Could not load collaboration. Try again.");
++  expect(screen.queryByRole("button", { name: "Edit shared context" })).not.toBeInTheDocument();
++  await userEvent.click(within(panel).getByRole("button", { name: "Refresh" }));
++  expect(await within(panel).findByText("Initial decision")).toBeVisible();
++  expect(api.getCollaborationMemory).toHaveBeenCalledTimes(2);
++  expect(update).not.toHaveBeenCalled();
++});
++
++it.each(["unsupported response", "unavailable response"])("reports an %s without inventing empty shared context", async (kind) => {
++  if (kind === "unsupported response") vi.mocked(api.getCollaborationMemory).mockResolvedValue(null);
++  else vi.mocked(api.getCollaborationMemory).mockRejectedValue(new CollaborationUnavailableError());
++  mount();
++  expect(await screen.findByRole("alert")).toHaveTextContent("This collaboration response is unavailable. Refresh to check again.");
++  expect(screen.getByRole("region", { name: "Shared context" })).toBeVisible();
++  expect(screen.getByRole("button", { name: "Refresh" })).toBeEnabled();
++  expect(screen.queryByText(/No shared context yet/)).not.toBeInTheDocument();
++  expect(screen.queryByRole("button", { name: "Edit shared context" })).not.toBeInTheDocument();
++  expect(screen.queryByRole("button", { name: "Version history" })).not.toBeInTheDocument();
++});
++
++it("hides stale shared context after a failed refresh and preserves the editor for a successful retry", async () => {
++  mount();
++  await userEvent.click(await screen.findByRole("button", { name: "Edit shared context" }));
++  fireEvent.change(screen.getByRole("textbox", { name: "Shared context (Markdown)" }), { target: { value: "Unsent draft" } });
++  vi.mocked(api.getCollaborationMemory).mockRejectedValueOnce(new TypeError("Offline"));
++  await act(async () => { await client.invalidateQueries({ queryKey: collaborationMemoryKeys.root(scope, issue.id) }); });
++  expect(await screen.findByRole("alert")).toHaveTextContent("Could not load collaboration. Try again.");
++  expect(screen.queryByText("Initial decision")).not.toBeInTheDocument();
++  expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
++  expect(screen.queryByText("v1")).not.toBeInTheDocument();
++  await userEvent.click(screen.getByRole("button", { name: "Refresh" }));
++  expect(await screen.findByRole("textbox", { name: "Shared context (Markdown)" })).toHaveValue("Unsent draft");
++});
++
++it("reveals original recovery through enclosing disclosures while the current read fails", async () => {
++  const requestId = "00000000-0000-4000-8000-000000000003";
++  const draft = prepareCollaborationMemoryChange(scope, memory(), requestId, { action: "update", baseVersion: "1", content: "Original request text" });
++  saveCollaborationDraft(draft);
++  vi.mocked(api.getCollaborationMemory).mockRejectedValue(new TypeError("Offline"));
++  vi.mocked(api.getCollaborationMemoryOperation).mockResolvedValue(receipt(requestId, "2"));
++  const update = vi.spyOn(api, "updateCollaborationMemory");
++  renderWithI18n(<QueryClientProvider client={client}><details><summary>Auxiliary context</summary><details><summary>Context disclosure</summary>
++    <CollaborationMemoryPanel scope={scope} issue={issue} />
++  </details></details></QueryClientProvider>);
++  expect(await screen.findByRole("button", { name: "Check original result" })).toBeVisible();
++  expect(screen.getByText("Auxiliary context", { selector: "summary" }).closest("details")).toHaveAttribute("open");
++  expect(screen.getByText("Context disclosure", { selector: "summary" }).closest("details")).toHaveAttribute("open");
++  expect(api.getCollaborationMemoryOperation).not.toHaveBeenCalled();
++  expect(update).not.toHaveBeenCalled();
++  await userEvent.click(screen.getByRole("button", { name: "Check original result" }));
++  await waitFor(() => expect(api.getCollaborationMemoryOperation).toHaveBeenCalledWith(issue.id, requestId));
++  expect(await screen.findByText("Shared context saved as v2.")).toBeVisible();
++  expect(readCollaborationDrafts({ ...scope, issueId: issue.id })).toEqual([]);
++  expect(update).not.toHaveBeenCalled();
++});
++
+ it("does not refocus a shared-context anchor on resume but focuses a fresh open", async () => {
+   const view = (resume: boolean, navigationKey: number) => <QueryClientProvider client={client}><CollaborationMemoryPanel scope={scope} issue={issue}
+     destination={{ view: "current", issueId: issue.id, commentId: null, anchor: "memory" }} isScopeResume={resume} navigationKey={navigationKey} /></QueryClientProvider>;
+diff --git a/packages/views/collaboration/memory-panel.tsx b/packages/views/collaboration/memory-panel.tsx
+index 8fe61d7c0..ccb111740 100644
+--- a/packages/views/collaboration/memory-panel.tsx
++++ b/packages/views/collaboration/memory-panel.tsx
+@@ -65,7 +65,7 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
+   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
+   const [reason, setReason] = useState("");
+   const [feedback, setFeedback] = useState<string | null>(null);
+-  const memory = memoryQuery.data;
++  const memory = memoryQuery.isError ? undefined : memoryQuery.data;
+   const denied = collaborationIssueAccessDenied(client, scope, issue.id) || isCollaborationDenied(memoryQuery.error);
+   const historyQuery = useInfiniteQuery({ ...collaborationMemoryVersionsOptions(client, scope, issue.id), enabled: !!memory && historyOpen && !denied });
+   const selectedQuery = useQuery({ ...collaborationMemoryVersionOptions(client, scope, issue.id, selectedVersion ?? "1"), enabled: !!memory && selectedVersion !== null && !denied });
+@@ -85,6 +85,7 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
+     },
+   });
+   const locked = send.isPending || drafts.memory.length > 0 || drafts.error;
++  const attention = drafts.memory.length > 0 || drafts.error;
+   const resetSend = send.reset;
+   const memoryVersion = memory?.version;
+   const stale = editor !== null && (editor.baseVersion !== memory?.version || send.data?.code === "stale_memory_version");
+@@ -135,16 +136,22 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
+     if (isScopeResume || destination?.anchor !== "memory" || memoryVersion === undefined) return;
+     root.current?.scrollIntoView?.({ block: "start" }); root.current?.focus({ preventScroll: true });
+   }, [destination?.anchor, memoryVersion, isScopeResume, navigationKey]);
++  useEffect(() => {
++    if (!attention || !root.current) return;
++    for (let ancestor = root.current.parentElement; ancestor; ancestor = ancestor.parentElement) {
++      if (ancestor instanceof HTMLDetailsElement) ancestor.open = true;
++    }
++  }, [attention]);
+ 
+   if (denied) return <CollaborationQueryState denied error={memoryQuery.error} />;
+-  if (memoryQuery.isPending) return <section id="memory" tabIndex={-1} className="min-w-0 space-y-3"><h3 className="text-body font-semibold">{t(($) => $.memory.title)}</h3><p role="status" className="text-body text-muted-foreground">{t(($) => $.memory.loading)}</p></section>;
+-  if (!memory || memoryQuery.error instanceof CollaborationUnavailableError) return null;
+   const historyItems = [...new Map((historyQuery.data?.pages.flatMap(page => page.items) ?? []).map(item => [item.version, item])).values()];
+   const selected = !selectedQuery.isError ? selectedQuery.data : undefined;
+   const pendingUpdate = drafts.memory.map(parseCollaborationMemoryDraft).find(payload => payload.action === "memory_update");
+   return <section ref={root} id="memory" tabIndex={-1} aria-labelledby={`${fieldId}-title`} className="min-w-0 space-y-5 rounded-md border border-border p-4 outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-5">
+     <div className="space-y-2"><h3 id={`${fieldId}-title`} className="text-body font-semibold">{t(($) => $.memory.title)}</h3><p className="max-w-prose text-caption text-muted-foreground">{t(($) => $.memory.description)}</p></div>
+-    {memoryQuery.isError && <CollaborationQueryState error={memoryQuery.error} retry={() => void memoryQuery.refetch()} />}
++    {memoryQuery.isPending && <p role="status" className="text-body text-muted-foreground">{t(($) => $.memory.loading)}</p>}
++    {!memoryQuery.isPending && !memory && <CollaborationQueryState error={memoryQuery.error ?? new CollaborationUnavailableError()} retry={() => void memoryQuery.refetch()} />}
++    {memory && <>
+     <div className="flex min-w-0 flex-wrap items-center justify-between gap-3">
+       <p className="text-caption text-muted-foreground">{t(($) => $.memory.versionLabel, { version: memory.version })} · {t(($) => $.memory.bytes, { used: bytes, max: memory.max_bytes })}</p>
+       {canEdit && !editor && drafts.memory.length === 0 && <Button ref={editButton} type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => { send.reset(); setFeedback(null); setEditor({ baseVersion: memory.version, content: memory.content }); recoverFocus(() => editorField.current); }}>{t(($) => $.memory.edit)}</Button>}
+@@ -165,17 +172,18 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
+       {memory.content ? <div className="space-y-2"><div id={`${fieldId}-content`} className={`min-w-0 overflow-auto rounded-md bg-muted/30 p-3 ${expanded ? "" : "max-h-64"}`}><RichContent content={memory.content} resourcePolicy="restricted" /></div><Button type="button" variant="ghost" size="sm" className="pointer-coarse:min-h-11" aria-expanded={expanded} aria-controls={`${fieldId}-content`} onClick={() => setExpanded(!expanded)}>{expanded ? t(($) => $.memory.collapse) : t(($) => $.memory.expand)}</Button></div> : <p className="text-body text-muted-foreground">{t(($) => $.memory.empty)}</p>}
+       <MemoryAttribution author={memory.author} createdAt={memory.created_at} issueId={issue.id} />
+       {memory.restored_from_version !== null && <p className="text-caption text-muted-foreground">{t(($) => $.memory.restoredFrom, { version: memory.restored_from_version })}</p>}
+-      {pendingUpdate?.action === "memory_update" && <Textarea aria-label={t(($) => $.memory.editLabel)} value={pendingUpdate.input.content} readOnly className="min-h-32 font-mono" />}
+     </>}
+     {closed && <p className="text-caption text-muted-foreground">{t(($) => $.memory.closed)}</p>}
++    </>}
++    {pendingUpdate?.action === "memory_update" && (!memory || !editor) && <Textarea aria-label={t(($) => $.memory.editLabel)} value={pendingUpdate.input.content} readOnly className="min-h-32 font-mono" />}
+     {drafts.error && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
+     {send.isPending && <p role="status">{t(($) => $.workflow.pending)}</p>}
+-    {feedback && !(stale && feedback === t(($) => $.memory.conflict)) && <p key={feedbackRole} role={feedbackRole} className="text-body">{feedback}</p>}
++    {feedback && !(memory && stale && feedback === t(($) => $.memory.conflict)) && <p key={feedbackRole} role={feedbackRole} className="text-body">{feedback}</p>}
+     {drafts.memory.map(draft => { const payload = parseCollaborationMemoryDraft(draft); return <div key={draft.requestId} className="space-y-2">
+       <p role="status">{payload.action === "memory_update" ? t(($) => $.memory.pendingUpdate) : payload.action === "memory_restore" ? t(($) => $.memory.pendingRestore, { version: payload.version }) : t(($) => $.memory.pendingPurge, { version: payload.version })}</p>
+       <div className="flex flex-wrap gap-2"><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={send.isPending || drafts.error} onClick={() => send.mutate({ draft, recovery: true })}>{t(($) => $.workflow.recover)}</Button><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={send.isPending || drafts.error} onClick={() => send.mutate({ draft, recovery: false })}>{t(($) => $.workflow.retryOriginal)}</Button></div>
+     </div>; })}
+-    <Collapsible open={historyOpen} onOpenChange={setHistoryOpen} className="space-y-3 border-t border-border pt-4">
++    {memory && <><Collapsible open={historyOpen} onOpenChange={setHistoryOpen} className="space-y-3 border-t border-border pt-4">
+       <CollapsibleTrigger render={<Button type="button" variant="ghost" className="pointer-coarse:min-h-11" />}>{t(($) => $.memory.history)}</CollapsibleTrigger>
+       <CollapsibleContent className="space-y-3">
+         {historyQuery.isPending && <p role="status" className="text-caption">{t(($) => $.memory.loading)}</p>}
+@@ -186,8 +194,8 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
+       </CollapsibleContent>
+     </Collapsible>
+     <Dialog open={selectedVersion !== null} onOpenChange={open => { if (!open) setSelectedVersion(null); }}>
+-      <DialogContent closeLabel={t(($) => $.memory.close)} finalFocus={() => root.current} className="max-h-[85dvh] overflow-y-auto sm:max-w-2xl">
+-        <DialogTitle>{t(($) => $.memory.viewTitle, { version: selectedVersion ?? "" })}</DialogTitle>
++      <DialogContent closeLabel={t(($) => $.memory.close)} finalFocus={() => root.current} className="max-h-[85dvh] overflow-y-auto sm:max-w-2xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11">
++        <DialogTitle className="pointer-coarse:pr-11">{t(($) => $.memory.viewTitle, { version: selectedVersion ?? "" })}</DialogTitle>
+         <DialogDescription>{selected?.purged ? t(($) => $.memory.viewPurged) : t(($) => $.memory.description)}</DialogDescription>
+         {selectedQuery.isPending && <p role="status">{t(($) => $.memory.loading)}</p>}
+         {selectedQuery.isError && <CollaborationQueryState error={selectedQuery.error} retry={() => void selectedQuery.refetch()} />}
+@@ -207,7 +215,7 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
+           submit(confirmation.action === "restore" ? { action: "restore", version: confirmation.version } : { action: "purge", version: confirmation.version, reason }, confirmation.snapshot);
+         }}>{confirmation?.action === "restore" ? t(($) => $.memory.restoreConfirm) : t(($) => $.memory.purgeConfirm)}</AlertDialogAction></AlertDialogFooter>
+       </AlertDialogContent>
+-    </AlertDialog>
++    </AlertDialog></>}
+   </section>;
+ }
+ 
+@@ -218,7 +226,7 @@ function MemoryHistoryRow({ item, issueId, currentVersion, canEdit, canPurge, on
+   const { t } = useT("collaboration");
+   const historical = item.version !== currentVersion;
+   return <li className="flex min-w-0 flex-wrap items-start justify-between gap-3 rounded-md border border-border p-3">
+-    <div className="min-w-0 space-y-2"><Button type="button" variant="link" className="h-auto p-0" aria-label={t(($) => $.memory.view, { version: item.version })} onClick={onView}>{t(($) => $.memory.versionLabel, { version: item.version })}</Button>
++    <div className="min-w-0 space-y-2"><Button type="button" variant="link" className="h-auto p-0 pointer-coarse:min-h-11 pointer-coarse:min-w-11" aria-label={t(($) => $.memory.view, { version: item.version })} onClick={onView}>{t(($) => $.memory.versionLabel, { version: item.version })}</Button>
+       {!historical && <span className="ml-2 text-caption font-medium">{t(($) => $.memory.current)}</span>}{item.purged && <span className="ml-2 text-caption text-muted-foreground">{t(($) => $.memory.purgedMarker)}</span>}
+       <p className="text-caption text-muted-foreground">{t(($) => $.memory.versionBytes, { used: Math.ceil(item.bytes / 1024) })}</p>
+       <MemoryAttribution author={item.author} createdAt={item.created_at} issueId={issueId} />
+diff --git a/packages/views/collaboration/notifications.tsx b/packages/views/collaboration/notifications.tsx
+index f44852aed..937164def 100644
+--- a/packages/views/collaboration/notifications.tsx
++++ b/packages/views/collaboration/notifications.tsx
+@@ -1,4 +1,5 @@
+ import { useRef, useState } from "react";
++import { Bell } from "lucide-react";
+ import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+ import { collaborationNotificationsOptions, useUpdateCollaborationNotification, type CollaborationScope } from "@multica/core/collaboration";
+ import { accountPath, type AccountView } from "@multica/core/paths";
+@@ -21,6 +22,9 @@ export function CollaborationNotifications({ scope, view }: { scope: Collaborati
+   const change = (id: string, action: "read" | "archive") => void update.mutateAsync({ id, action }).catch(() => undefined)
+     .then(() => query.refetch({ cancelRefetch: false })).then(() => recoverFocus(() => list.current));
+   const items = [...new Map((query.data?.pages.flatMap((page) => page.items) ?? []).map((item) => [item.id, item])).values()];
++  const unreadCount = query.data?.pages[0]?.unread_count;
++  const triggerLabel = unreadCount === undefined ? t(($) => $.page.notifications)
++    : `${t(($) => $.page.notifications)} ${t(($) => $.page.unread, { count: unreadCount })}`;
+   const notificationLabel = (kind: string) => {
+     switch (kind) {
+       case "ai_completed": return t(($) => $.notifications.aiCompleted);
+@@ -37,7 +41,11 @@ export function CollaborationNotifications({ scope, view }: { scope: Collaborati
+     }
+   };
+   return <div className="ml-auto min-w-0"><Popover open={open} onOpenChange={(next) => { if (next) navigating.current = false; setOpen(next); }}>
+-    <PopoverTrigger render={<Button variant="ghost" className="pointer-coarse:min-h-11" />}>{t(($) => $.page.notifications)}{query.data && <span className="ml-2 tabular-nums">{t(($) => $.page.unread, { count: query.data.pages[0]?.unread_count ?? 0 })}</span>}</PopoverTrigger>
++    <PopoverTrigger render={<Button variant="ghost" aria-label={triggerLabel} title={triggerLabel} className="min-w-11 pointer-coarse:min-h-11" />}>
++      <Bell aria-hidden="true" className="size-4 md:hidden" /><span className="hidden md:inline">{t(($) => $.page.notifications)}</span>
++      {unreadCount !== undefined && <><span aria-hidden="true" className="tabular-nums md:hidden">{unreadCount}</span>
++        <span className="hidden tabular-nums md:inline">{t(($) => $.page.unread, { count: unreadCount })}</span></>}
++    </PopoverTrigger>
+     <PopoverContent align="end" finalFocus={() => !navigating.current} className="max-h-[70vh] w-96 max-w-[calc(100vw-2rem)] min-w-0 overflow-y-auto p-4">
+       <PopoverTitle>{t(($) => $.page.notifications)}</PopoverTitle>
+       {query.isPending && <p role="status">{t(($) => $.page.loading)}</p>}
+diff --git a/packages/views/collaboration/source-bridge.tsx b/packages/views/collaboration/source-bridge.tsx
+index a0edf30ff..13a76e2c6 100644
+--- a/packages/views/collaboration/source-bridge.tsx
++++ b/packages/views/collaboration/source-bridge.tsx
+@@ -51,8 +51,8 @@ export function SourceCollaborationActionDialog({ action, close }: { action: Sou
+   const scope = useCollaborationScope();
+   const { t } = useT("collaboration");
+   return <Dialog open={action !== null} onOpenChange={(open) => { if (!open) close(); }}>
+-    <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl" closeLabel={t(($) => $.creation.close)}>
+-      <DialogTitle>{t(($) => $.workflow.title)}</DialogTitle>
++    <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11" closeLabel={t(($) => $.creation.close)}>
++      <DialogTitle className="pr-12">{t(($) => $.workflow.title)}</DialogTitle>
+       <DialogDescription>{action?.action === "lifecycle" ? t(($) => $.source.lifecycle) : t(($) => $.source.workflow)}</DialogDescription>
+       {scope && action && <SourceAction key={`${scope.apiScope}:${scope.userId}:${action.issueId}:${action.action}:${action.status ?? ""}`} scope={scope} action={action} />}
+     </DialogContent>
+diff --git a/packages/views/collaboration/source-filter.tsx b/packages/views/collaboration/source-filter.tsx
+index ccded60e9..4a9870094 100644
+--- a/packages/views/collaboration/source-filter.tsx
++++ b/packages/views/collaboration/source-filter.tsx
+@@ -11,7 +11,7 @@ export function SourceCollaborationFilter() {
+   const baseline = useViewBaseline();
+   return <Button type="button" variant="outline" size="sm" aria-label={t(($) => $.source.externalFilter)} aria-pressed={selected}
+     disabled={baseline?.raw.externalCollaborators === true} onClick={toggle}
+-    className="h-8 w-8 gap-1 px-0 text-muted-foreground aria-pressed:bg-accent dark:aria-pressed:bg-accent aria-pressed:font-semibold aria-pressed:text-foreground md:h-7 md:w-auto md:px-2.5">
++    className="h-8 w-8 gap-1 px-0 text-muted-foreground aria-pressed:bg-accent dark:aria-pressed:bg-accent aria-pressed:font-semibold aria-pressed:text-foreground md:h-7 md:w-auto md:px-2.5 pointer-coarse:min-h-11 pointer-coarse:min-w-11">
+     <Users className="size-3.5" /><span className="hidden md:inline">{t(($) => $.source.externalFilter)}</span>
+   </Button>;
+ }
+diff --git a/packages/views/collaboration/workflow.test.tsx b/packages/views/collaboration/workflow.test.tsx
+index cb6270b59..fa10b9776 100644
+--- a/packages/views/collaboration/workflow.test.tsx
++++ b/packages/views/collaboration/workflow.test.tsx
+@@ -1,9 +1,10 @@
+ import { expect, it, vi } from "vitest";
+-import { act, screen, waitFor, within } from "@testing-library/react";
++import { useState } from "react";
++import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
+ import userEvent from "@testing-library/user-event";
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+ import { ApiClient, setApiInstance } from "@multica/core/api";
+-import { collaborationScope, parseCollaborationIssue, readCollaborationDrafts } from "@multica/core/collaboration";
++import { collaborationScope, parseCollaborationComment, parseCollaborationIssue, readCollaborationDrafts, type CollaborationComment } from "@multica/core/collaboration";
+ import { renderWithI18n } from "../test/i18n";
+ import { CollaborationWorkflow } from "./workflow";
+ import { afterEach } from "vitest";
+@@ -14,7 +15,7 @@ const id = "00000000-0000-4000-8000-000000000001";
+ const recipientId = "00000000-0000-4000-8000-000000000002";
+ vi.mock("@multica/core/auth", () => ({ useAuthStore: { getState: () => ({ user: { id: "00000000-0000-4000-8000-000000000001" } }) } }));
+ const client = new QueryClient();
+-afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); });
++afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); vi.restoreAllMocks(); });
+ const account = { user_id: id, name: "Creator", avatar_url: "", external: true };
+ const caps = { reference: true, read: true, comment: true, control_ai: true, submit_command: true, invite: true, transfer: true, remove_participants: true, leave: false, edit: true, edit_source_structure: false, reorder: false, change_status: true, complete: true, cancel: true, reopen: false, resolve_thread: true, react: true };
+ const issue = parseCollaborationIssue({ id, title: "Transfer me", description: "Body", status: "todo", status_category: "todo", priority: "none", source_workspace: { id, name: "Source", identifier: "SRC-1" }, creator: account, handler: account,
+@@ -25,6 +26,55 @@ const submission = { id: submissionId, issue_id: id, event_seq: "8", lifecycle_e
+   author: { ...account, user_id: recipientId, name: "Result author" }, created_at: "2026-11-03T00:00:00Z", result: "Delivered outcome",
+   basis: "Verified against the requested checks", attachment_ids: [], source_comment_id: null, evidence_state: "available" as const, decision: null };
+ 
++it("reveals explicit comment preparation, focuses the result heading, and returns to its latest opener without submitting", async () => {
++  setApiInstance(new ApiClient("https://server.example"));
++  const source = { ...issue, ai_policy: "manual" as const, delivery: { current: null, latest: null, has_history: false } };
++  const comment = parseCollaborationComment({ id: recipientId, issue_id: id, author_type: "member", author: account, content: "Prepared result", type: "comment", parent_id: null,
++    comment_revision: "1", attachment_ids: [], created_at: "2026-11-03T00:00:00Z", updated_at: "2026-11-03T00:00:00Z", deleted_at: null, resolved_at: null, resolved_by: null,
++    can_edit: true, can_resolve: true, reactions: [] })!;
++  const fetch = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>(async () => new Response(JSON.stringify({ action: "complete", status_options_version: "a".repeat(64), default_status: "done", options: [{ key: "done", name: "Done", category: "done" }] })));
++  vi.stubGlobal("fetch", fetch);
++  const scroll = vi.spyOn(HTMLElement.prototype, "scrollIntoView");
++  function Journey({ revision }: { revision: string }) {
++    const [prepared, setPrepared] = useState<CollaborationComment | null>(null);
++    return <QueryClientProvider client={client}><section data-tab-scroll-root="account-detail">
++      <details><summary>Workflow</summary><details><summary>Actions</summary>
++        <CollaborationWorkflow scope={collaborationScope(id)} issue={{ ...source, collaboration_revision: revision }} resultFromComment={prepared} onResultPrepared={() => setPrepared(null)} />
++      </details></details>
++      <button onClick={() => setPrepared(comment)}>Use in result</button>
++      <button onClick={() => setPrepared({ ...comment, content: "Another result" })}>Use updated comment</button>
++    </section></QueryClientProvider>;
++  }
++  const { rerender } = renderWithI18n(<Journey revision={issue.collaboration_revision} />);
++  const user = userEvent.setup();
++  const opener = screen.getByRole("button", { name: "Use in result" });
++  await user.click(opener);
++  const form = await screen.findByRole("form", { name: "Record result and complete" });
++  const heading = within(form).getByRole("heading", { name: "Record result and complete" });
++  expect(heading).toHaveFocus();
++  for (const disclosure of document.querySelectorAll("details")) {
++    if (disclosure.contains(form)) expect(disclosure.open).toBe(true);
++  }
++  expect(scroll.mock.contexts).toContain(heading);
++  expect(within(form).getByLabelText("Result")).toHaveValue("Prepared result");
++  expect(within(form).getByLabelText("Basis")).toHaveValue("");
++  expect(within(form).getByRole("button", { name: "Record result and complete" })).toBeDisabled();
++  scroll.mockClear();
++  await user.type(within(form).getByLabelText("Basis"), "My retained basis");
++  rerender(<Journey revision="9007199254740994" />);
++  expect(within(form).getByLabelText("Basis")).toHaveFocus();
++  expect(scroll).not.toHaveBeenCalled();
++
++  const nextOpener = screen.getByRole("button", { name: "Use updated comment" });
++  await user.click(nextOpener);
++  expect(heading).toHaveFocus();
++  expect(within(form).getByLabelText("Result")).toHaveValue("Another result");
++  await user.click(within(form).getByRole("button", { name: "Close" }));
++  await waitFor(() => expect(nextOpener).toHaveFocus());
++  expect(scroll.mock.contexts).toContain(nextOpener);
++  expect(fetch.mock.calls.every(([, init]) => !init || init.method !== "POST")).toBe(true);
++});
++
+ // Server/Core own the permission, identity and lifecycle matrices. These tests
+ // verify the human forms send their explicit result and selected decision.
+ it("requires a result and basis for text-only delivery and preserves the input across dismissal", async () => {
+@@ -42,12 +92,15 @@ it("requires a result and basis for text-only delivery and preserves the input a
+   expect(permissions).toHaveTextContent("Submit result");
+   expect(permissions).not.toHaveTextContent("Accept and complete");
+   const user = userEvent.setup();
+-  await user.click(screen.getByRole("button", { name: /Submit (result|for acceptance)/ }));
++  const opener = screen.getByRole("button", { name: /Submit (result|for acceptance)/ });
++  await user.click(opener);
++  expect(screen.getByRole("heading", { name: "Submit result" })).toHaveFocus();
+   await user.type(await screen.findByLabelText("Result"), "A text-only result");
+   const form = screen.getByRole("form", { name: "Submit result" });
+   expect(within(form).getByRole("button", { name: "Submit result" })).toBeDisabled();
+   await user.type(screen.getByLabelText("Basis"), "Checked the requested behavior");
+   await user.click(within(form).getByRole("button", { name: "Close" }));
++  await waitFor(() => expect(opener).toHaveFocus());
+   await user.click(screen.getByRole("button", { name: "Submit result" }));
+   expect(screen.getByLabelText("Result")).toHaveValue("A text-only result");
+   expect(screen.getByLabelText("Basis")).toHaveValue("Checked the requested behavior");
+@@ -102,6 +155,66 @@ it("returns the exact result with a reason and defaults to its actual author", a
+   expect(JSON.parse(String(write?.[1]?.body))).toMatchObject({ submission_id: submissionId, target_user_id: recipientId, note: "Cover the missing case" });
+ });
+ 
++it("explains an oversized revision reason, preserves it, and clears the error after correction", async () => {
++  setApiInstance(new ApiClient("https://server.example"));
++  const source = { ...issue, status: "in_review", status_category: "in_review" as const, ai_policy: "manual" as const,
++    delivery: { current: submission, latest: submission, has_history: true }, capabilities: { ...issue.capabilities, return_acceptance: true } };
++  const fetch = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>(async () => new Response(JSON.stringify({ action: "return_acceptance", status_options_version: "a".repeat(64), default_status: "in_progress", options: [{ key: "in_progress", name: "In progress", category: "in_progress" }] })));
++  vi.stubGlobal("fetch", fetch);
++  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={source} /></QueryClientProvider>);
++  await userEvent.click(screen.getByRole("button", { name: "Return for revision" }));
++  const form = screen.getByRole("form", { name: "Return for revision" });
++  const reason = within(form).getByLabelText("Revision reason");
++  const tooLong = "界".repeat(21846);
++  fireEvent.change(reason, { target: { value: tooLong } });
++  expect(reason).toHaveValue(tooLong);
++  expect(reason).toHaveAttribute("aria-invalid", "true");
++  expect(reason).toHaveAccessibleDescription(/65536-byte limit/);
++  expect(within(form).getByRole("alert")).toHaveTextContent(/Shorten it/);
++  expect(within(form).getByRole("button", { name: "Return for revision" })).toBeDisabled();
++  fireEvent.submit(form);
++  expect(fetch.mock.calls.every(([, init]) => !init || init.method !== "POST")).toBe(true);
++  fireEvent.change(reason, { target: { value: "Cover the missing case" } });
++  expect(reason).not.toHaveAttribute("aria-invalid");
++  expect(reason).not.toHaveAttribute("aria-describedby");
++  expect(within(form).queryByRole("alert")).toBeNull();
++  await waitFor(() => expect(within(form).getByRole("button", { name: "Return for revision" })).toBeEnabled());
++});
++
++it("associates result byte errors only with the overflowing field and preserves both values", async () => {
++  setApiInstance(new ApiClient("https://server.example"));
++  const source = { ...issue, ai_policy: "manual" as const, delivery: { current: null, latest: null, has_history: false } };
++  const fetch = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>(async () => new Response(JSON.stringify({ action: "complete", status_options_version: "a".repeat(64), default_status: "done", options: [{ key: "done", name: "Done", category: "done" }] })));
++  vi.stubGlobal("fetch", fetch);
++  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={source} /></QueryClientProvider>);
++  await userEvent.click(screen.getByRole("button", { name: "Record result and complete" }));
++  const form = screen.getByRole("form", { name: "Record result and complete" });
++  const result = within(form).getByLabelText("Result");
++  const basis = within(form).getByLabelText("Basis");
++  const tooLong = "😀".repeat(16385);
++  fireEvent.change(result, { target: { value: tooLong } });
++  fireEvent.change(basis, { target: { value: "Checked the requested result" } });
++  expect(result).toHaveValue(tooLong);
++  expect(result).toHaveAttribute("aria-invalid", "true");
++  expect(result).toHaveAccessibleDescription(/64 KiB/);
++  expect(basis).not.toHaveAttribute("aria-invalid");
++  expect(basis).not.toHaveAccessibleDescription(/64 KiB/);
++  expect(within(form).getByRole("button", { name: "Record result and complete" })).toBeDisabled();
++  fireEvent.change(result, { target: { value: "Finished the requested work" } });
++  fireEvent.change(basis, { target: { value: tooLong } });
++  expect(basis).toHaveValue(tooLong);
++  expect(basis).toHaveAttribute("aria-invalid", "true");
++  expect(basis).toHaveAccessibleDescription(/64 KiB/);
++  expect(result).not.toHaveAttribute("aria-invalid");
++  expect(result).not.toHaveAccessibleDescription(/64 KiB/);
++  fireEvent.submit(form);
++  expect(fetch.mock.calls.every(([, init]) => !init || init.method !== "POST")).toBe(true);
++  fireEvent.change(basis, { target: { value: "Checked the requested result" } });
++  expect(basis).not.toHaveAttribute("aria-invalid");
++  expect(within(form).queryByRole("alert")).toBeNull();
++  await waitFor(() => expect(within(form).getByRole("button", { name: "Record result and complete" })).toBeEnabled());
++});
++
+ it("records a self-handled result and completes without a transfer form", async () => {
+   setApiInstance(new ApiClient("https://server.example"));
+   const source = { ...issue, ai_policy: "manual" as const, delivery: { current: null, latest: null, has_history: false } };
+diff --git a/packages/views/collaboration/workflow.tsx b/packages/views/collaboration/workflow.tsx
+index 471ede083..3859999d5 100644
+--- a/packages/views/collaboration/workflow.tsx
++++ b/packages/views/collaboration/workflow.tsx
+@@ -16,7 +16,7 @@ import { CollaborationParticipants } from "./participants";
+ import { CollaborationAttachmentPicker } from "./attachment-picker";
+ import { CollaborationSubmissionRecord } from "./delivery-panel";
+ import type { IssuePropertyValue } from "@multica/core/types";
+-import { recoverFocus } from "./focus";
++import { recoverFocus, useOpenedForm } from "./focus";
+ import { CollaborationIterationInput, CollaborationLabelInput, CollaborationPropertyInputs, CollaborationSourceInputs, type CollaborationSourceSelection } from "./field-inputs";
+ 
+ type ActionName = CollaborationAction["action"];
+@@ -30,12 +30,16 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
+   const labels = useCollaborationLabels();
+   const client = useQueryClient();
+   const state = deriveCollaborationDetailState(issue, scope.userId);
+-  const [selected, setSelected] = useState<ActionName | null>(initialAction ?? null);
++  const [selection, setSelection] = useState<{ action: ActionName } | null>(() => initialAction ? { action: initialAction } : null);
++  const selected = selection?.action;
+   const [restored, setRestored] = useState<CollaborationAction | null>(null);
+   const submitting = useRef(false);
+-  const trigger = useRef<HTMLButtonElement | null>(null);
++  const trigger = useRef<HTMLElement | null>(null);
+   const section = useRef<HTMLElement>(null);
+-  const dismiss = () => { setSelected(null); recoverFocus(() => trigger.current, () => section.current); };
++  const dismiss = () => { setSelection(null); recoverFocus(() => {
++    if (trigger.current?.isConnected) trigger.current.scrollIntoView({ block: "nearest" });
++    return trigger.current;
++  }, () => section.current); };
+   const drafts = useCollaborationPendingDrafts({ ...scope, issueId: issue.id });
+   const apply = useMutation({ mutationKey: [...collaborationKeys.issue(scope, issue.id), "human-action"], retry: false, networkMode: "always",
+     mutationFn: ({ draft, recovery }: { draft: CollaborationDraft; recovery: boolean }) => executeCollaborationAction(client, scope, draft, recovery),
+@@ -44,7 +48,7 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
+       if (recovery) {
+         const original = parseCollaborationActionDraft(draft);
+         if (original.action !== "remove") {
+-          setRestored(original); setSelected(original.action);
++          setRestored(original); setSelection({ action: original.action });
+         }
+       }
+     } });
+@@ -69,11 +73,14 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
+     preparedSelection.current = resultFromComment ?? null;
+     if (!resultFromComment || resultFromComment.issue_id !== issue.id || locked) return;
+     const action = state.canSelfComplete ? "complete" : "submit_acceptance";
+-    if (available.includes(action)) { resetApply(); setRestored(null); setSelected(action); }
++    if (available.includes(action)) {
++      trigger.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
++      resetApply(); setRestored(null); setSelection({ action });
++    }
+   }, [resultFromComment, issue.id, locked, state.canSelfComplete, available, resetApply]);
+   const actionLabel = (action: ActionName, isPrimary = false) => action === "complete" ? state.canAccept ? t(($) => $.delivery.accept) : t(($) => $.delivery.selfComplete)
+     : action === "change_status" && isPrimary && ["backlog", "todo"].includes(issue.status_category) ? t(($) => $.delivery.start) : labels.action(action);
+-  function select(action: ActionName, button: HTMLButtonElement) { trigger.current = button; apply.reset(); setRestored(null); setSelected(action); }
++  function select(action: ActionName, button: HTMLButtonElement) { trigger.current = button; apply.reset(); setRestored(null); setSelection({ action }); }
+   return <section ref={section} tabIndex={-1} aria-label={t(($) => $.workflow.title)} className="space-y-4 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring">
+     <div className="flex min-w-0 flex-wrap items-start gap-2">
+       {primary && <Button className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11" disabled={locked} onClick={(event) => select(primary, event.currentTarget)}>{actionLabel(primary, true)}</Button>}
+@@ -95,7 +102,7 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
+     {apply.data && <p role="status" className="text-body">{successful.has(apply.data.code) && (apply.data.status === undefined || apply.data.status < 400) ? t(($) => $.workflow.success) : t(($) => $.workflow.refused)}</p>}
+     {!apply.isPending && drafts.actions.length > 0 && <div className="space-y-3"><p role="status" className="text-body">{t(($) => $.workflow.unknown)}</p>{drafts.actions.map((draft) =>
+       <Button key={draft.requestId} variant="outline" disabled={apply.isPending} className="pointer-coarse:min-h-11" onClick={() => apply.mutate({ draft, recovery: true })}>{t(($) => $.workflow.recover)}</Button>)}</div>}
+-    {selected && issue.write_context && available.includes(selected) && <WorkflowForm key={`${selected}:${restored?.requestId ?? "new"}`} scope={scope} issue={issue} action={selected} restoredAction={restored?.action === selected ? restored : undefined} initialStatus={selected === "change_status" ? initialStatus : undefined} startWork={startingWork} resultFromComment={resultFromComment} onResultPrepared={onResultPrepared} locked={locked} close={dismiss} submit={async (intent, baseline) => {
++    {selected && issue.write_context && available.includes(selected) && <WorkflowForm key={`${selected}:${restored?.requestId ?? "new"}`} opening={selection} scope={scope} issue={issue} action={selected} restoredAction={restored?.action === selected ? restored : undefined} initialStatus={selected === "change_status" ? initialStatus : undefined} startWork={startingWork} resultFromComment={resultFromComment} onResultPrepared={onResultPrepared} locked={locked} close={dismiss} submit={async (intent, baseline) => {
+       if (submitting.current) return;
+       submitting.current = true;
+       try {
+@@ -108,8 +115,9 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
+   </section>;
+ }
+ 
+-function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, locked, submit, close, startWork = false, resultFromComment, onResultPrepared }: {
++function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAction, locked, submit, close, startWork = false, resultFromComment, onResultPrepared }: {
+   scope: CollaborationScope; issue: CollaborationIssue; action: ActionName; initialStatus?: string; restoredAction?: CollaborationAction; locked: boolean;
++  opening: unknown;
+   submit: (intent: CollaborationActionIntent, baseline: CollaborationIssue) => Promise<void>; close: () => void;
+   startWork?: boolean; resultFromComment?: CollaborationComment | null; onResultPrepared?: () => void;
+ }) {
+@@ -117,6 +125,7 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
+   const labels = useCollaborationLabels();
+   const client = useQueryClient();
+   const fieldId = useId();
++  const heading = useOpenedForm<HTMLHeadingElement>({ opening, reveal: true });
+   // A recovered rejection retains the original observations. Accepting a new
+   // baseline is a separate, explicit action and never submits automatically.
+   const [baseline, setBaseline] = useState<CollaborationIssue>(() => restoredAction ? { ...issue,
+@@ -144,7 +153,7 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
+   const [uploading, setUploading] = useState(false);
+   const [referencesOpen, setReferencesOpen] = useState(false);
+   const [preparationBlocked, setPreparationBlocked] = useState(false);
+-  const preparedComment = useRef<string | null>(null);
++  const preparedComment = useRef<CollaborationComment | null>(null);
+   const baselineState = deriveCollaborationDetailState(baseline, scope.userId);
+   const deciding = action === "return_acceptance" || action === "complete" && submissionId !== null;
+   const submitted = [baseline.delivery?.current, baseline.delivery?.latest].find((value) => value?.id === submissionId) ?? null;
+@@ -154,8 +163,9 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
+   const selectedFilesKnown = result.form.selectedAttachmentIds.every((id) => [...(draftFiles.data?.attachments ?? []), ...(references.data?.attachments ?? [])].some((file) => file.id === id));
+   const resultLocked = locked || uploading || result.uploads.length > 0 || Boolean(result.error);
+   useEffect(() => {
+-    if (!needsResult || !resultFromComment || resultFromComment.issue_id !== issue.id || preparedComment.current === resultFromComment.id) return;
+-    preparedComment.current = resultFromComment.id;
++    if (preparedComment.current === resultFromComment) return;
++    preparedComment.current = resultFromComment ?? null;
++    if (!needsResult || !resultFromComment || resultFromComment.issue_id !== issue.id) return;
+     setPreparationBlocked(resultLocked);
+     if (!resultLocked) result.update({ content: resultFromComment.content, basis: "", sourceCommentId: resultFromComment.id, selectedAttachmentIds: resultFromComment.attachment_ids });
+     onResultPrepared?.();
+@@ -198,10 +208,12 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
+   const informationRequest = action === "return_information" && baseline.current_information_request?.id === informationRequestId ? baseline.current_information_request : null;
+   const needsCompletedConfirmation = baseline.status_category === "done" && iterationId !== null && iterationId !== baseline.source_structure?.iteration?.id;
+   const iterationReady = action !== "change_iteration" || sourceOptions?.iterations_enabled === true && (!iterationId || iterationRevision !== undefined && sourceOptions.iterations.some((item) => item.id === iterationId)) && (!baseline.source_structure?.iteration || baseline.source_structure.iteration.id === iterationId || iterationReason.trim() !== "") && (!needsCompletedConfirmation || allowCompleted);
+-  const resultTooLong = needsResult && (!collaborationCommentWithinByteLimit(result.form.content) || !collaborationCommentWithinByteLimit(result.form.basis ?? ""));
+-  const resultReady = !needsResult || !resultLocked && selectedFilesKnown && result.form.content.trim() !== "" && (result.form.basis ?? "").trim() !== "" && !resultTooLong;
++  const resultTooLong = needsResult && !collaborationCommentWithinByteLimit(result.form.content);
++  const basisTooLong = needsResult && !collaborationCommentWithinByteLimit(result.form.basis ?? "");
++  const reasonTooLong = action === "return_acceptance" && !collaborationCommentWithinByteLimit(note);
++  const resultReady = !needsResult || !resultLocked && selectedFilesKnown && result.form.content.trim() !== "" && (result.form.basis ?? "").trim() !== "" && !resultTooLong && !basisTooLong;
+   const decisionReady = !deciding || submitted !== null && submissionId === issue.delivery?.current?.id && !staleBaseline &&
+-    (action === "return_acceptance" ? note.trim() !== "" && collaborationCommentWithinByteLimit(note) : baselineState.canAccept);
++    (action === "return_acceptance" ? note.trim() !== "" && !reasonTooLong : baselineState.canAccept);
+   const completionReady = action !== "complete" || (deciding ? baselineState.canAccept : baselineState.canSelfComplete);
+   const informationReady = action !== "return_information" || informationRequest !== null && informationRequestId === issue.current_information_request?.id;
+   const policyReady = action !== "change_ai_policy" || aiPolicy === "manual" || aiPolicy === "assisted";
+@@ -235,7 +247,7 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
+     }
+   }
+   return <form aria-label={formLabel} onSubmit={(event) => { if (event.target !== event.currentTarget) return; event.preventDefault(); if (ready) void submit(intent(), baseline); }} className="min-w-0 space-y-4 rounded-lg border border-border p-4">
+-    <h3 className="text-body font-semibold">{formLabel}</h3>
++    <h3 ref={heading} tabIndex={-1} className="rounded-sm text-body font-semibold outline-none focus-visible:ring-2 focus-visible:ring-faint-foreground">{formLabel}</h3>
+     <fieldset disabled={locked} className="min-w-0 space-y-4">
+       {deciding && (submitted ? <CollaborationSubmissionRecord scope={scope} issueId={issue.id} submission={submitted} /> : <p className="text-body text-muted-foreground">{t(($) => $.delivery.unavailable)}</p>)}
+       {informationRequest && <div id={`${fieldId}-request`} className="min-w-0 space-y-2 rounded-md bg-muted/30 p-3 [overflow-wrap:anywhere]">
+@@ -252,16 +264,23 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
+       {needsStatus && <div className="space-y-2"><label htmlFor={`${fieldId}-status`} className="text-body">{t(($) => $.detail.status)}</label><select id={`${fieldId}-status`} value={chosenStatus} onChange={(event) => setStatus(event.target.value)} className="block min-h-11 max-w-full rounded-md border border-input bg-background px-3 text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+         {chosenStatus && options.data && !options.data.options.some((item) => item.key === chosenStatus) && <option value={chosenStatus}>{t(($) => $.fields.unavailableSelection, { value: chosenStatus })}</option>}
+         {(options.data?.options ?? []).map((option) => <option key={option.key} value={option.key}>{option.name}</option>)}</select>{options.error && <CollaborationQueryState error={options.error} />}</div>}
+-      {["transfer", "request_information", "return_information", "return_acceptance"].includes(action) && <div className="space-y-2"><label htmlFor={`${fieldId}-note`} className="text-body">{action === "return_acceptance" ? t(($) => $.delivery.revisionReason) : t(($) => $.workflow.note)}</label><Textarea id={`${fieldId}-note`} required={action === "return_acceptance"} aria-describedby={informationRequest ? `${fieldId}-request` : undefined} value={note} onChange={(event) => setNote(event.target.value)} /></div>}
++      {["transfer", "request_information", "return_information", "return_acceptance"].includes(action) && <div className="space-y-2"><label htmlFor={`${fieldId}-note`} className="text-body">{action === "return_acceptance" ? t(($) => $.delivery.revisionReason) : t(($) => $.workflow.note)}</label>
++        <Textarea id={`${fieldId}-note`} required={action === "return_acceptance"} aria-invalid={reasonTooLong || undefined}
++          aria-describedby={[informationRequest ? `${fieldId}-request` : "", reasonTooLong ? `${fieldId}-note-limit` : ""].filter(Boolean).join(" ") || undefined} value={note} onChange={(event) => setNote(event.target.value)} />
++        {reasonTooLong && <p id={`${fieldId}-note-limit`} role="alert" className="text-caption text-destructive">{t(($) => $.memory.tooLong, { max: 65_536 })}</p>}
++      </div>}
+       {needsResult && <>
+         <p id={`${fieldId}-result-hint`} className="text-caption text-muted-foreground">{t(($) => $.delivery.hint)}</p>
+         <div className="space-y-2"><label htmlFor={`${fieldId}-result`} className="text-body">{t(($) => $.delivery.result)}</label>
+-          <Textarea id={`${fieldId}-result`} value={result.form.content} required disabled={resultLocked} aria-describedby={`${fieldId}-result-hint`} aria-invalid={resultTooLong || undefined}
+-            onChange={(event) => result.update({ content: event.target.value })} className="min-h-28" /></div>
++          <Textarea id={`${fieldId}-result`} value={result.form.content} required disabled={resultLocked} aria-describedby={`${fieldId}-result-hint${resultTooLong ? ` ${fieldId}-result-limit` : ""}`} aria-invalid={resultTooLong || undefined}
++            onChange={(event) => result.update({ content: event.target.value })} className="min-h-28" />
++          {resultTooLong && <p id={`${fieldId}-result-limit`} role="alert" className="text-caption text-destructive">{t(($) => $.delivery.tooLong)}</p>}
++        </div>
+         <div className="space-y-2"><label htmlFor={`${fieldId}-basis`} className="text-body">{t(($) => $.delivery.basis)}</label>
+-          <Textarea id={`${fieldId}-basis`} value={result.form.basis ?? ""} required disabled={resultLocked} aria-invalid={resultTooLong || undefined}
+-            onChange={(event) => result.update({ basis: event.target.value })} className="min-h-24" /></div>
+-        {resultTooLong && <p role="alert" className="text-caption text-destructive">{t(($) => $.delivery.tooLong)}</p>}
++          <Textarea id={`${fieldId}-basis`} value={result.form.basis ?? ""} required disabled={resultLocked} aria-invalid={basisTooLong || undefined} aria-describedby={basisTooLong ? `${fieldId}-basis-limit` : undefined}
++            onChange={(event) => result.update({ basis: event.target.value })} className="min-h-24" />
++          {basisTooLong && <p id={`${fieldId}-basis-limit`} role="alert" className="text-caption text-destructive">{t(($) => $.delivery.tooLong)}</p>}
++        </div>
+         {preparationBlocked && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.delivery.preparationBlocked)}</p>}
+         <CollaborationAttachmentPicker scope={scope} form={result.form} update={result.update} uploads={result.uploads} onBusyChange={setUploading}
+           disabled={locked || Boolean(result.error)} />
+diff --git a/packages/views/locales/en/collaboration.json b/packages/views/locales/en/collaboration.json
+index 821bea096..873413e77 100644
+--- a/packages/views/locales/en/collaboration.json
++++ b/packages/views/locales/en/collaboration.json
+@@ -199,7 +199,11 @@
+     "read": "Mark read",
+     "archive": "Archive",
+     "notificationUnavailable": "Issue unavailable",
+-    "unread": "{{count}} unread"
++    "unread": "{{count}} unread",
++    "loadedCount": "{{loaded}} of {{total}} issues loaded",
++    "matchCount": "Matches: {{count}}",
++    "clearSearch": "Clear search",
++    "partialSearch": "Search covers loaded issues. Load more to include the rest."
+   },
+   "detail": {
+     "title": "Issue detail",
+@@ -620,7 +624,8 @@
+     "retryDelivery": "Retry original delivery",
+     "retained": "Delivered files remain on this issue when a comment or its file reference is removed.",
+     "previewAction": "Preview",
+-    "downloadAction": "Download"
++    "downloadAction": "Download",
++    "referencesUnavailable": "Some referenced files are unavailable."
+   },
+   "commandHistory": {
+     "title": "Command history",
+@@ -914,7 +919,15 @@
+     "decisionBy": "Latest decision by",
+     "decisionAt": "Latest decision at",
+     "recoveryReadError": "Local recovery entries could not be read.",
+-    "versionLabel": "Version"
++    "versionLabel": "Version",
++    "workspacesLoading": "Loading workspaces...",
++    "workspacesEmpty": "No visible workspaces are available.",
++    "workspacesLoadError": "Could not load workspaces. Refresh to try again.",
++    "projectsLoading": "Loading projects...",
++    "projectsEmpty": "No visible projects in this workspace.",
++    "projectsLoadError": "Could not load projects. Refresh to try again.",
++    "targetUnavailable": "This destination is unavailable. Choose an available workspace or project.",
++    "chooseProject": "Choose a project"
+   },
+   "delivery": {
+     "title": "Delivered result",
+diff --git a/packages/views/locales/zh-Hans/collaboration.json b/packages/views/locales/zh-Hans/collaboration.json
+index af3d7a4d3..7b692a74c 100644
+--- a/packages/views/locales/zh-Hans/collaboration.json
++++ b/packages/views/locales/zh-Hans/collaboration.json
+@@ -199,7 +199,11 @@
+     "read": "标为已读",
+     "archive": "归档",
+     "notificationUnavailable": "任务不可用",
+-    "unread": "{{count}} 条未读"
++    "unread": "{{count}} 条未读",
++    "loadedCount": "已加载 {{loaded}} / {{total}} 个任务",
++    "matchCount": "匹配结果：{{count}}",
++    "clearSearch": "清空搜索",
++    "partialSearch": "仅搜索已加载的任务，加载更多以纳入其余任务。"
+   },
+   "detail": {
+     "title": "任务详情",
+@@ -620,7 +624,8 @@
+     "retryDelivery": "重试原始交付",
+     "retained": "删除评论或移除其中的附件引用后，已交付文件仍保留在本任务中。",
+     "previewAction": "预览",
+-    "downloadAction": "下载"
++    "downloadAction": "下载",
++    "referencesUnavailable": "部分引用文件不可用。"
+   },
+   "commandHistory": {
+     "title": "指令历史",
+@@ -913,7 +918,15 @@
+     "decisionBy": "最近决定人",
+     "decisionAt": "最近决定时间",
+     "recoveryReadError": "无法读取本地恢复记录。",
+-    "versionLabel": "版本"
++    "versionLabel": "版本",
++    "workspacesLoading": "正在加载空间…",
++    "workspacesEmpty": "暂无可见空间。",
++    "workspacesLoadError": "无法加载空间，请刷新重试。",
++    "projectsLoading": "正在加载项目…",
++    "projectsEmpty": "此空间暂无可见项目。",
++    "projectsLoadError": "无法加载项目，请刷新重试。",
++    "targetUnavailable": "此目标位置不可用，请选择可用的空间或项目。",
++    "chooseProject": "选择项目"
+   },
+   "delivery": {
+     "title": "交付结果",
