@@ -234,7 +234,7 @@ func TestRK1KnowledgeCodexPhysicalBudget(t *testing.T) {
 }
 
 func TestRK1KnowledgeCodexRegistrationIntegrity(t *testing.T) {
-	for _, change := range []string{"valid", "unauthorized", "expired", "wrong_provider", "wrong_cap", "source", "config", "binary", "executable", "registration"} {
+	for _, change := range []string{"valid", "version_0166", "version_unreviewed", "version_patch", "version_suffix", "version_blank", "unauthorized", "expired", "wrong_provider", "wrong_cap", "source", "config", "binary", "executable", "registration"} {
 		t.Run(change, func(t *testing.T) {
 			dir := t.TempDir()
 			source := filepath.Join(dir, "source.go")
@@ -258,6 +258,16 @@ func TestRK1KnowledgeCodexRegistrationIntegrity(t *testing.T) {
 			}
 			r := rk1kCodexRegistration{SchemaVersion: 1, Authorized: true, Provider: "codex", Executable: executable, ExecutableSHA256: hash(executable), Version: "0.165.0", Model: "test-model", ConfigPath: config, ConfigSHA256: hash(config), TestBinarySHA256: hash(self), SourceFiles: map[string]string{source: hash(source)}, Cap: 15, Ledger: filepath.Join(dir, "ledger.json"), Output: filepath.Join(dir, "out"), Database: "multica_rk1k_control", ExpiresAt: time.Now().Add(time.Hour)}
 			switch change {
+			case "version_0166":
+				r.Version = "0.166.0"
+			case "version_unreviewed":
+				r.Version = "0.167.0"
+			case "version_patch":
+				r.Version = "0.166.1"
+			case "version_suffix":
+				r.Version = "0.166.0-dev"
+			case "version_blank":
+				r.Version = ""
 			case "unauthorized":
 				r.Authorized = false
 			case "expired":
@@ -291,11 +301,50 @@ func TestRK1KnowledgeCodexRegistrationIntegrity(t *testing.T) {
 				}
 			}
 			_, err = rk1kLoadCodexRegistration(path, digest)
-			if (err == nil) != (change == "valid") {
+			valid := change == "valid" || change == "version_0166"
+			if (err == nil) != valid {
 				t.Fatalf("registration %s: error=%v", change, err)
+			}
+			binding := filepath.Join(dir, "codex-version-binding.json")
+			if err := rk1WriteJSON(binding, rk1kCodexVersionBinding{Registration: path, SHA256: digest}); err != nil {
+				t.Fatal(err)
+			}
+			reported, err := rk1kCodexReportedVersion(dir)
+			if valid && (err != nil || reported != r.Version) || !valid && err == nil {
+				t.Fatalf("version metadata %s: version=%q error=%v", change, reported, err)
 			}
 		})
 	}
+	t.Run("fake_version_unchanged", func(t *testing.T) {
+		t.Setenv("MULTICA_RUN_REAL_AGENT_SMOKE", "")
+		version, err := rk1kCodexReportedVersion(t.TempDir())
+		if err != nil || version != "0.165.0" {
+			t.Fatalf("historical fake version changed: %q %v", version, err)
+		}
+	})
+	t.Run("missing_real_version_binding", func(t *testing.T) {
+		t.Setenv("MULTICA_RUN_REAL_AGENT_SMOKE", "1")
+		dir := t.TempDir()
+		path := filepath.Join(dir, "codex-version-binding.json")
+		if err := rk1WriteJSON(path, rk1kCodexVersionBinding{}); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.Remove(path); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := rk1kCodexReportedVersion(dir); err == nil {
+			t.Fatal("deleted real version binding silently became fake version")
+		}
+	})
+	t.Run("invalid_version_binding", func(t *testing.T) {
+		dir := t.TempDir()
+		if err := os.WriteFile(filepath.Join(dir, "codex-version-binding.json"), []byte("not JSON"), 0600); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := rk1kCodexReportedVersion(dir); err == nil {
+			t.Fatal("broken real version metadata silently became fake version")
+		}
+	})
 }
 
 func TestRK1KnowledgeCodexSampleAcknowledgment(t *testing.T) {
