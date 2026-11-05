@@ -37,3 +37,11 @@ Independent review additionally exercised 1,000 valid JSON samples and six bound
 - `.trellis/tasks/archive/2026-11/11-05-agent-log-redaction/verification.md` and `independent-review.md`.
 - `.trellis/tasks/archive/2026-11/11-05-agent-ci-test-integrity/verification.md` and `independent-review.md`.
 - `.trellis/tasks/archive/2026-11/11-05-squad-handoff-contract/verification.md` and `independent-review.md`.
+
+## Local integration and next session
+
+On2026-11-05 the user authorized local merge into `codex/cross-workspace-collaboration`. That branch fast-forwarded to `48aa997452cbc912e4052e44794386eafd023a25`, incorporating the three repair commits plus roadmap/evidence and task bookkeeping. The historical isolated-branch notes above describe implementation-time state; the current parent task points to the integrated checkout.
+
+Parallel working changes were preserved:15 unrelated tracked files retain exact bytes;4 overlapping spec/journal files retain both contributions;91 task/report files matched incoming content. Product changes required no conflict resolution. Remote push, hosted CI and deployment remain unexecuted.
+
+Resume through `next-session-prompt.md`. Start M1 planning and execution from the latest target branch after checking its dirty state; M2 and M3 remain dependent future milestones. Existing archived M0 evidence stays authoritative for the exact source hashes it records.

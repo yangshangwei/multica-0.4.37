@@ -12,9 +12,9 @@
   "assignee": "artisan",
   "createdAt": "2026-11-05",
   "completedAt": null,
-  "branch": "codex/agent-rnd-p1-20261105",
+  "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
-  "worktree_path": "/Volumes/artisan/code/2026/mc-agent-rnd-p1-20261105",
+  "worktree_path": "/Volumes/artisan/code/2026/multica-0.4.37",
   "commit": null,
   "pr_url": null,
   "subtasks": [],
@@ -25,11 +25,15 @@
   ],
   "parent": null,
   "relatedFiles": [],
-  "notes": "M0 first P1 fixes complete on isolated branch; M1-M3 remain planned. See delivery.md for commits and validation limits.",
+  "notes": "M0 first P1 fixes fast-forward merged locally into codex/cross-workspace-collaboration at 48aa99745; M1-M3 remain planned. Read next-session-prompt.md, design.md and implement.md.",
   "meta": {
-    "m0_status": "verified",
+    "m0_status": "merged_locally",
     "m1_status": "planned",
     "m2_status": "planned",
-    "m3_status": "planned"
+    "m3_status": "planned",
+    "m0_merge_commit": "48aa997452cbc912e4052e44794386eafd023a25",
+    "m0_source_branch": "codex/agent-rnd-p1-20261105",
+    "next_milestone": "M1",
+    "integration_status": "local_only"
   }
 }

@@ -13,3 +13,10 @@
 - Final first batch: redaction77 (also race),daemon37,provider16,execenv22,service61; workflow5 and offline DB matrix13 pass. Scoped validation only.
 
 - All three M0 child tasks archived under `.trellis/tasks/archive/2026-11/`; M1–M3 remain active roadmap. Code remains on the isolated branch, not merged/deployed.
+
+- 2026-11-05: User requested local merge to `codex/cross-workspace-collaboration` and a new-session prompt for M1–M3. Fast-forwarded `f1d35b66a` to `48aa99745`; all five source commits are ancestors.
+- Preserved15 unrelated dirty tracked files byte-for-byte, reconciled4 overlapping spec/journal files, and verified91 already-present untracked task artifacts exactly matched incoming bytes. Local WIP remains unstaged.
+- Journal entry from this worktree was renumbered to130 to preserve existing119–129; original pre-merge files are retained in the private merge backup. No other task history was committed by this merge operation.
+- Parent branch/worktree now point to the integration checkout. M1–M3 remain planned; `next-session-prompt.md` is the continuation entry. No remote push or deployment performed.
+
+- Post-merge checks: redact77 named pass0fail, workflow5/5, wrapperPASS; all3 archived independently reviewed source manifests match merged files. Actual product paths have no working-tree diff. Evidence: merge-checks.json.

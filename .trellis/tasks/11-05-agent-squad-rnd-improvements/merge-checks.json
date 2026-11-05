@@ -1,0 +1,41 @@
+[
+  {
+    "argv": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-json",
+      "-p",
+      "2",
+      "./pkg/redact",
+      "-count=1"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "5c34b0e1d7f39c74adec3e5ffde844bfd639035410f3781fa9c9f0366ee26966",
+    "stderr": "",
+    "passed_named_tests": 77,
+    "failed_named_tests": 0
+  },
+  {
+    "argv": [
+      "node",
+      "--test",
+      "scripts/changelog-workflow.test.mjs"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "31e93a243cb2946250f6ece2a373a03e18d75004a0c13ce128526e7b0c1348a3",
+    "stderr": "",
+    "output": "TAP version 13\n# Subtest: release verification prepares its declared database before running required tests\nok 1 - release verification prepares its declared database before running required tests\n  ---\n  duration_ms: 0.457542\n  type: 'test'\n  ...\n# Subtest: backend CI runs the offline database and release regressions when their inputs change\nok 2 - backend CI runs the offline database and release regressions when their inputs change\n  ---\n  duration_ms: 0.651125\n  type: 'test'\n  ...\n# Subtest: repository-wide serialization starts before discovery and never cancels an active release\nok 3 - repository-wide serialization starts before discovery and never cancels an active release\n  ---\n  duration_ms: 0.090375\n  type: 'test'\n  ...\n# Subtest: fork publication requires verified backend/frontend manifests but no upstream-only job\nok 4 - fork publication requires verified backend/frontend manifests but no upstream-only job\n  ---\n  duration_ms: 0.266708\n  type: 'test'\n  ...\n# Subtest: one generated artifact reaches every consuming build before compilation\nok 5 - one generated artifact reaches every consuming build before compilation\n  ---\n  duration_ms: 0.487\n  type: 'test'\n  ...\n1..5\n# tests 5\n# suites 0\n# pass 5\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 41.368625\n"
+  },
+  {
+    "argv": [
+      "bash",
+      "scripts/test-go.test.sh"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "a01cbecf6343b7c02ca46a5116b40b28bcb6c0d6d53858ae111829b15066a43d",
+    "stderr": "",
+    "output": "test-go.test.sh: PASS\n"
+  }
+]
