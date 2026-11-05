@@ -2,8 +2,11 @@
   "series": "RK1",
   "scope": "runtime scenarios of runtime-addendum.json, including RK1-H2b (budgeted 2026-11-01T10:33:57Z)",
   "registered_by_session": "claude multica-0-4-37-35",
-  "runnable": true,
-  "not_runnable_reasons": [],
+  "runnable": false,
+  "not_runnable_reasons": [
+    "H1original3of3 independentlyaccepted and specificoperator delta dispositioned; preserve full manifests/differences and old E0a limitation",
+    "H2 exact current fulloperator/source/CLI/newDB binding and exclusive window pending; no automatic next scenario"
+  ],
   "framework_files": "server/cmd/server/rk1_*_test.go (build tag agentintegration, !windows)",
   "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
   "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
@@ -84,7 +87,7 @@
     "current final639 fake normal/race passed; independent result review remains unavailable after gateway429",
     "user currently permits local preparation only; exclusive serial gateway window and applicable execution authority required before paid execution"
   ],
-  "maintained_at": "2026-11-05T06:21:00.601697+00:00",
+  "maintained_at": "2026-11-05T07:24:04.246029+00:00",
   "authorization_reference": "../continuation-20261102/coordinator/authorization-recall.md",
   "selected_candidate_preparation": "../continuation-20261105/paid-binding-preflight.json",
   "historical_gate_reasons_before_20261104": [
@@ -227,7 +230,7 @@
     },
     "selected_candidate_preparation": "../continuation-20261102/coordinator/v10/binding-preparation.json"
   },
-  "operator_binding_status": "H1 current actualenv; strictprechecks and perfileobservations",
+  "operator_binding_status": "H1delta reviewed; H2freshbinding required",
   "real_entry_preparation": {
     "helper_commit": "86541bb37",
     "helper_sha256": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
@@ -272,5 +275,15 @@
     "sha256": "2220c3211f39544a187694ba205902b3e8e0080f21ce946e678d78a36f49f27c",
     "controls": 11,
     "next_scenario_authorized": false
+  },
+  "actual_H1": {
+    "summary": "../continuation-20261105/h1-entry/result-summary.json",
+    "raw_trials": "3finished/pass",
+    "consumed_total": 4,
+    "remaining": 21,
+    "helper_review_ready": true,
+    "independent_review": "../continuation-20261105/h1-entry/independent-review.json",
+    "accepted": true,
+    "disposition": "../continuation-20261105/h1-entry/disposition.json"
   }
 }

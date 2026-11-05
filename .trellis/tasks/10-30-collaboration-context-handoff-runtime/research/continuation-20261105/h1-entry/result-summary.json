@@ -1,0 +1,76 @@
+{
+  "recorded_at": "2026-11-05T07:17:24.408017+00:00",
+  "scenario": "RK1-H1",
+  "original_exit": 0,
+  "helper_review_ready": true,
+  "trials": [
+    {
+      "label": "RK1-H1-t1",
+      "status": "finished",
+      "verdict": "pass",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    },
+    {
+      "label": "RK1-H1-t2",
+      "status": "finished",
+      "verdict": "pass",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    },
+    {
+      "label": "RK1-H1-t3",
+      "status": "finished",
+      "verdict": "pass",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    }
+  ],
+  "new_paid_starts": 3,
+  "fake_seed_starts": 3,
+  "total_paid_starts": 4,
+  "remaining": 21,
+  "source_stable": true,
+  "capture_hashes_match_upfront": true,
+  "final_status_allowed": true,
+  "operator_changes": {
+    "~/.claude/plugins/": {
+      "before": "91deb2c67550be5d1d1b366dde25543a78fec36ec719e7d9adcd29f3e3d87660",
+      "after": "ba5687bb8bf3302c8779b7aeef8ced2582fbb16dc181b0f96c8aa40dcba51b92"
+    }
+  },
+  "plugin_changed_paths_count": 120,
+  "operator_delta_disposition": "accepted_specific_cleanup_and_usage_observation; no observed selected-plugin code/selection mutation; no whole-tree/continuous stability claim",
+  "original_E0a_preserved": true,
+  "next_scenario_authorized": false,
+  "public_results": [
+    {
+      "label": "RK1-H1-t1",
+      "sha256": "28ab93f865aba6d2b8acb51d2fc35b214492b9db5a71b3dd3120e208fed8dbf9",
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H1-t1.json"
+    },
+    {
+      "label": "RK1-H1-t2",
+      "sha256": "7963fba183a752098e28a9de01cfbae995bf56af2ee945c37554dedba9c3c129",
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H1-t2.json"
+    },
+    {
+      "label": "RK1-H1-t3",
+      "sha256": "2f575d44f93683dc05670fb3c1641fff74e3468de9141b15d38c1616642e4008",
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H1-t3.json"
+    }
+  ],
+  "private_result": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H1-from-1/run-result.json",
+  "private_result_sha256": "51aa10d637798f2dc858be6d4253426826f3a7f8b405e2763ef7e20dd9fcbbc2",
+  "independent_review": "independent-review.json",
+  "window_release": "window-release.json",
+  "independent_checks_passed": 201,
+  "independent_checks_failed": 0,
+  "registered_H1_accepted": true
+}

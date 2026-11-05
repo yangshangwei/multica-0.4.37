@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-05T07:24:04.246029+00:00",
+  "owner": "root",
+  "H1_registered_result": "accepted_three_of_three",
+  "review": "independent-review.json",
+  "checks_passed": 201,
+  "specific_plugin_delta": "118 removals (83files/7unreferencedoldversionroots+35tempGitmetadata),2metadatachanges",
+  "evidence": "installedregistry content hash unchanged/no removed-root refs; allthreeactualinitpluginlists identical;1970 loadedpluginleaves unchanged; selectedmetadata snapshots resolve usageUUID and sweep timestamp",
+  "scope_limits": [
+    "No assertion of writer identity",
+    "No continuous attestation or unchanged fulltree",
+    "Do not generalize to later plugin changes"
+  ],
+  "original_stop_state_unchanged": true,
+  "paid_total": 4,
+  "paid_remaining": 21,
+  "no_sample_replacement": true,
+  "H2_runnable": false,
+  "H2_requirements": [
+    "exactcurrentfulloperatorbinding",
+    "source/helper/CLI/newDBfacts",
+    "explicitcoordinatedwindow"
+  ]
+}
