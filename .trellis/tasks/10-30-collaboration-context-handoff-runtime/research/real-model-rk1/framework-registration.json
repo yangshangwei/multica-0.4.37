@@ -2,8 +2,11 @@
   "series": "RK1",
   "scope": "runtime scenarios of runtime-addendum.json, including RK1-H2b (budgeted 2026-11-01T10:33:57Z)",
   "registered_by_session": "claude multica-0-4-37-35",
-  "runnable": true,
-  "not_runnable_reasons": [],
+  "runnable": false,
+  "not_runnable_reasons": [
+    "E0a raw framework finished/pass and launcherexit0; post-run operator plugin-tree binding changed so full evidence acceptance remains open",
+    "No repeat E0a or later scenarios until independent disposition; model window released, no next window granted"
+  ],
   "framework_files": "server/cmd/server/rk1_*_test.go (build tag agentintegration, !windows)",
   "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
   "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
@@ -84,7 +87,7 @@
     "current final639 fake normal/race passed; independent result review remains unavailable after gateway429",
     "user currently permits local preparation only; exclusive serial gateway window and applicable execution authority required before paid execution"
   ],
-  "maintained_at": "2026-11-05T03:36:06.461469+00:00",
+  "maintained_at": "2026-11-05T03:48:03.142854+00:00",
   "authorization_reference": "../continuation-20261102/coordinator/authorization-recall.md",
   "selected_candidate_preparation": "../continuation-20261105/paid-binding-preflight.json",
   "historical_gate_reasons_before_20261104": [
@@ -227,7 +230,7 @@
     },
     "selected_candidate_preparation": "../continuation-20261102/coordinator/v10/binding-preparation.json"
   },
-  "operator_binding_status": "CURRENT_ACTUAL_ENV; enforced every stage",
+  "operator_binding_status": "POST_RUN_PLUGIN_TREE_CHANGED",
   "real_entry_preparation": {
     "helper_commit": "86541bb37",
     "helper_sha256": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
@@ -248,5 +251,15 @@
     "outer_timeout_minutes": 12,
     "expires_at": "2026-11-05T03:46:30+00:00",
     "recorded_at": "2026-11-05T03:36:06.461469+00:00"
+  },
+  "actual_E0a": {
+    "label": "RK1-E0a-t1",
+    "raw_verdict": "pass",
+    "launcher_exit": 0,
+    "helper_exit": 1,
+    "full_binding_accepted": false,
+    "summary": "../continuation-20261105/real-entry/e0a-result-summary.json",
+    "consumed": 1,
+    "remaining": 24
   }
 }
