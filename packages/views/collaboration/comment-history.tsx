@@ -2,13 +2,14 @@ import { useId, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationCommentHistoryOptions, type CollaborationScope } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
-import { useT } from "../i18n";
+import { useLocale, useT } from "../i18n";
 import { RichContent } from "../rich-content";
 import { CollaborationQueryState } from "./query-state";
 import { CollaborationCommentAttachments } from "./attachment-panel";
 
 export function CollaborationCommentHistory({ scope, issueId, commentId }: { scope: CollaborationScope; issueId: string; commentId: string }) {
   const { t } = useT("collaboration");
+  const locale = useLocale();
   const [open, setOpen] = useState(false);
   const region = useId();
   const client = useQueryClient();
@@ -20,7 +21,7 @@ export function CollaborationCommentHistory({ scope, issueId, commentId }: { sco
       {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
       {query.isSuccess && query.data.items.length === 0 && <p className="text-caption text-muted-foreground">{t(($) => $.activity.empty)}</p>}
       {query.data?.items.map((item) => <div key={item.event_id} className="min-w-0 space-y-3">
-        <p className="text-caption text-muted-foreground [overflow-wrap:anywhere]">{item.actor?.name ?? t(($) => $.detail.unknownAuthor)} · <time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString()}</time></p>
+        <p className="text-caption text-muted-foreground [overflow-wrap:anywhere]">{item.actor?.name ?? t(($) => $.detail.unknownAuthor)} · <time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString(locale)}</time></p>
         {item.before !== null && <div className="space-y-1"><p className="text-caption text-muted-foreground">{t(($) => $.activity.before)}</p><RichContent resourcePolicy="restricted" content={item.before} /><CollaborationCommentAttachments scope={scope} issueId={issueId} attachmentIds={item.before_attachment_ids ?? []} /></div>}
         <div className="space-y-1"><p className="text-caption text-muted-foreground">{t(($) => $.activity.after)}</p>{item.kind === "comment_deleted" ? <p className="text-body">{t(($) => $.detail.deleted)}</p> : <RichContent resourcePolicy="restricted" content={item.after} />}<CollaborationCommentAttachments scope={scope} issueId={issueId} attachmentIds={item.after_attachment_ids ?? []} /></div>
       </div>)}

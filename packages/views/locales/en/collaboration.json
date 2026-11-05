@@ -199,7 +199,11 @@
     "read": "Mark read",
     "archive": "Archive",
     "notificationUnavailable": "Issue unavailable",
-    "unread": "{{count}} unread"
+    "unread": "{{count}} unread",
+    "loadedCount": "{{loaded}} of {{total}} issues loaded",
+    "matchCount": "Matches: {{count}}",
+    "clearSearch": "Clear search",
+    "partialSearch": "Search covers loaded issues. Load more to include the rest."
   },
   "detail": {
     "title": "Issue detail",
@@ -620,7 +624,8 @@
     "retryDelivery": "Retry original delivery",
     "retained": "Delivered files remain on this issue when a comment or its file reference is removed.",
     "previewAction": "Preview",
-    "downloadAction": "Download"
+    "downloadAction": "Download",
+    "referencesUnavailable": "Some referenced files are unavailable."
   },
   "commandHistory": {
     "title": "Command history",
@@ -914,7 +919,15 @@
     "decisionBy": "Latest decision by",
     "decisionAt": "Latest decision at",
     "recoveryReadError": "Local recovery entries could not be read.",
-    "versionLabel": "Version"
+    "versionLabel": "Version",
+    "workspacesLoading": "Loading workspaces...",
+    "workspacesEmpty": "No visible workspaces are available.",
+    "workspacesLoadError": "Could not load workspaces. Refresh to try again.",
+    "projectsLoading": "Loading projects...",
+    "projectsEmpty": "No visible projects in this workspace.",
+    "projectsLoadError": "Could not load projects. Refresh to try again.",
+    "targetUnavailable": "This destination is unavailable. Choose an available workspace or project.",
+    "chooseProject": "Choose a project"
   },
   "delivery": {
     "title": "Delivered result",

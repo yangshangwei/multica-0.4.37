@@ -51,8 +51,8 @@ export function SourceCollaborationActionDialog({ action, close }: { action: Sou
   const scope = useCollaborationScope();
   const { t } = useT("collaboration");
   return <Dialog open={action !== null} onOpenChange={(open) => { if (!open) close(); }}>
-    <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl" closeLabel={t(($) => $.creation.close)}>
-      <DialogTitle>{t(($) => $.workflow.title)}</DialogTitle>
+    <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11" closeLabel={t(($) => $.creation.close)}>
+      <DialogTitle className="pr-12">{t(($) => $.workflow.title)}</DialogTitle>
       <DialogDescription>{action?.action === "lifecycle" ? t(($) => $.source.lifecycle) : t(($) => $.source.workflow)}</DialogDescription>
       {scope && action && <SourceAction key={`${scope.apiScope}:${scope.userId}:${action.issueId}:${action.action}:${action.status ?? ""}`} scope={scope} action={action} />}
     </DialogContent>

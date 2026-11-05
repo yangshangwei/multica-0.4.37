@@ -27,7 +27,9 @@ const previewable = (file: CollaborationAttachment) => { const kind = getPreview
 export function CollaborationAttachmentList({ scope, issueId, files }: { scope: CollaborationScope; issueId: string; files: CollaborationAttachment[] }) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
-  const [preview, setPreview] = useState<CollaborationAttachment | null>(null);
+  const [previewId, setPreviewId] = useState<string | null>(null);
+  const preview = files.find((file) => file.id === previewId) ?? null;
+  useEffect(() => { if (previewId && !preview) setPreviewId(null); }, [previewId, preview]);
   const download = useMutation({ mutationKey: [...collaborationKeys.issue(scope, issueId), "attachment-download"], retry: false, networkMode: "always",
     mutationFn: async (file: CollaborationAttachment) => {
       const capability = await loadCollaborationAttachmentDownload(client, scope, file);
@@ -36,13 +38,13 @@ export function CollaborationAttachmentList({ scope, issueId, files }: { scope: 
   return <>
     <ul className="space-y-3">{files.map((file) => <li key={file.id} className="flex min-w-0 flex-wrap items-center justify-between gap-3 rounded-md border border-border p-3">
       <div className="min-w-0 flex-1 [overflow-wrap:anywhere]"><p className="text-body font-medium">{file.name}</p><p className="text-caption text-muted-foreground">{t(($) => $.attachments.size, { size: file.size_bytes.toLocaleString() })}</p></div>
-      <div className="flex flex-wrap gap-2">{previewable(file) && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" aria-label={t(($) => $.attachments.preview, { name: file.name })} onClick={() => setPreview(file)}>{t(($) => $.attachments.previewAction)}</Button>}
+      <div className="flex flex-wrap gap-2">{previewable(file) && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" aria-label={t(($) => $.attachments.preview, { name: file.name })} onClick={() => setPreviewId(file.id)}>{t(($) => $.attachments.previewAction)}</Button>}
         <Button type="button" variant="outline" className="pointer-coarse:min-h-11" aria-label={t(($) => $.attachments.download, { name: file.name })} disabled={download.isPending} onClick={() => download.mutate(file)}>{t(($) => $.attachments.downloadAction)}</Button></div>
     </li>)}</ul>
     {download.error && <CollaborationAttachmentFailure error={download.error} />}
-    <Dialog open={preview !== null} onOpenChange={(open) => { if (!open) setPreview(null); }}>
-      {preview && <DialogContent className="flex max-h-[90dvh] flex-col overflow-y-auto sm:max-w-4xl" closeLabel={t(($) => $.attachments.close)}>
-        <DialogTitle className="pr-8 [overflow-wrap:anywhere]">{preview.name}</DialogTitle>
+    <Dialog open={preview !== null} onOpenChange={(open) => { if (!open) setPreviewId(null); }}>
+      {preview && <DialogContent className="flex max-h-[90dvh] flex-col overflow-y-auto sm:max-w-4xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11" closeLabel={t(($) => $.attachments.close)}>
+        <DialogTitle className="pr-8 [overflow-wrap:anywhere] pointer-coarse:pr-11">{preview.name}</DialogTitle>
         <DialogDescription>{t(($) => $.attachments.size, { size: preview.size_bytes.toLocaleString() })}</DialogDescription>
         <AttachmentPreview key={preview.id} scope={scope} issueId={issueId} file={preview} />
       </DialogContent>}
@@ -131,8 +133,16 @@ function AttachmentDeliveryForm({ scope, issue }: { scope: CollaborationScope; i
 }
 
 export function CollaborationCommentAttachments({ scope, issueId, attachmentIds }: { scope: CollaborationScope; issueId: string; attachmentIds: string[] }) {
+  const { t } = useT("collaboration");
   const client = useQueryClient();
   const query = useQuery({ ...collaborationAttachmentsOptions(client, scope, issueId), enabled: attachmentIds.length > 0 });
-  if (attachmentIds.length === 0 || !query.data) return null;
-  return <CollaborationAttachmentList scope={scope} issueId={issueId} files={query.data.attachments.filter((file) => attachmentIds.includes(file.id))} />;
+  if (attachmentIds.length === 0) return null;
+  const files = query.isSuccess ? query.data.attachments.filter((file) => attachmentIds.includes(file.id)) : [];
+  const missing = query.isSuccess && attachmentIds.some((id) => !files.some((file) => file.id === id));
+  return <section aria-label={t(($) => $.attachments.title)} className="min-w-0 space-y-3">
+    {query.isPending && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.attachments.loading)}</p>}
+    {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
+    {missing && <p className="text-caption text-muted-foreground">{t(($) => $.attachments.referencesUnavailable)}</p>}
+    {files.length > 0 && <CollaborationAttachmentList scope={scope} issueId={issueId} files={files} />}
+  </section>;
 }

@@ -4,7 +4,7 @@ import { collaborationCommandHistoryOptions, collaborationIssueAccessDenied, isC
   type CollaborationCommandHistoryEntry, type CollaborationScope } from "@multica/core/collaboration";
 import { accountPath } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
-import { useT } from "../i18n";
+import { useLocale, useT } from "../i18n";
 import { AppLink } from "../navigation";
 import { RichContent } from "../rich-content";
 import { CollaborationCommentAttachments } from "./attachment-panel";
@@ -44,6 +44,7 @@ function CommandHistoryRecords({ scope, issueId }: { scope: CollaborationScope; 
 
 function CommandHistoryEntry({ item, scope, issueId }: { item: CollaborationCommandHistoryEntry; scope: CollaborationScope; issueId: string }) {
   const { t } = useT("collaboration");
+  const locale = useLocale();
   const labels = useCollaborationLabels();
   const cancellation = item.cancellation;
   const identifiers = [
@@ -61,7 +62,7 @@ function CommandHistoryEntry({ item, scope, issueId }: { item: CollaborationComm
     </div>
     <div className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1 text-caption text-muted-foreground [overflow-wrap:anywhere]">
       <span>{t(($) => $.execution.author)}: <span className="font-medium text-foreground">{item.author?.name ?? item.author_user_id}</span></span>
-      <time dateTime={item.created_at} title={item.created_at}>{new Date(item.created_at).toLocaleString()}</time>
+      <time dateTime={item.created_at} title={item.created_at}>{new Date(item.created_at).toLocaleString(locale)}</time>
     </div>
     <p className="text-caption text-muted-foreground [overflow-wrap:anywhere]">{t(($) => $.commandHistory.target)}: {item.target.kind === "squad" ? t(($) => $.execution.squad) : t(($) => $.execution.agent)} {item.target.resource_id}</p>
     <RichContent resourcePolicy="restricted" content={item.content} />
@@ -73,7 +74,7 @@ function CommandHistoryEntry({ item, scope, issueId }: { item: CollaborationComm
         <div><dt>{t(($) => $.commandHistory.reason)}</dt><dd><CommandReason code={item.reason} /></dd></div>
         <div><dt>{t(($) => $.commandHistory.cancelledBy)}</dt><dd>{cancellation.actor?.name ?? cancellation.actor_user_id ?? t(($) => $.records.notRecorded)}</dd></div>
         <div><dt>{t(($) => $.commandHistory.cancelledAt)}</dt><dd>{cancellation.created_at === null ? t(($) => $.records.notRecorded)
-          : <time dateTime={cancellation.created_at} title={cancellation.created_at}>{new Date(cancellation.created_at).toLocaleString()}</time>}</dd></div>
+          : <time dateTime={cancellation.created_at} title={cancellation.created_at}>{new Date(cancellation.created_at).toLocaleString(locale)}</time>}</dd></div>
       </dl>
     </div> : item.reason !== null && <p className="text-caption text-muted-foreground [overflow-wrap:anywhere]"><CommandReason code={item.reason} /></p>}
     {item.comment_id !== null && <AppLink href={accountPath({ view: "participating", issueId, commentId: item.comment_id })}

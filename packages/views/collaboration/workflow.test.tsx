@@ -1,9 +1,10 @@
 import { expect, it, vi } from "vitest";
-import { act, screen, waitFor, within } from "@testing-library/react";
+import { useState } from "react";
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
-import { collaborationScope, parseCollaborationIssue, readCollaborationDrafts } from "@multica/core/collaboration";
+import { collaborationScope, parseCollaborationComment, parseCollaborationIssue, readCollaborationDrafts, type CollaborationComment } from "@multica/core/collaboration";
 import { renderWithI18n } from "../test/i18n";
 import { CollaborationWorkflow } from "./workflow";
 import { afterEach } from "vitest";
@@ -14,7 +15,7 @@ const id = "00000000-0000-4000-8000-000000000001";
 const recipientId = "00000000-0000-4000-8000-000000000002";
 vi.mock("@multica/core/auth", () => ({ useAuthStore: { getState: () => ({ user: { id: "00000000-0000-4000-8000-000000000001" } }) } }));
 const client = new QueryClient();
-afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); });
+afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 const account = { user_id: id, name: "Creator", avatar_url: "", external: true };
 const caps = { reference: true, read: true, comment: true, control_ai: true, submit_command: true, invite: true, transfer: true, remove_participants: true, leave: false, edit: true, edit_source_structure: false, reorder: false, change_status: true, complete: true, cancel: true, reopen: false, resolve_thread: true, react: true };
 const issue = parseCollaborationIssue({ id, title: "Transfer me", description: "Body", status: "todo", status_category: "todo", priority: "none", source_workspace: { id, name: "Source", identifier: "SRC-1" }, creator: account, handler: account,
@@ -24,6 +25,55 @@ const submissionId = "00000000-0000-4000-8000-000000000009";
 const submission = { id: submissionId, issue_id: id, event_seq: "8", lifecycle_epoch: "1", author_user_id: recipientId,
   author: { ...account, user_id: recipientId, name: "Result author" }, created_at: "2026-11-03T00:00:00Z", result: "Delivered outcome",
   basis: "Verified against the requested checks", attachment_ids: [], source_comment_id: null, evidence_state: "available" as const, decision: null };
+
+it("reveals explicit comment preparation, focuses the result heading, and returns to its latest opener without submitting", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const source = { ...issue, ai_policy: "manual" as const, delivery: { current: null, latest: null, has_history: false } };
+  const comment = parseCollaborationComment({ id: recipientId, issue_id: id, author_type: "member", author: account, content: "Prepared result", type: "comment", parent_id: null,
+    comment_revision: "1", attachment_ids: [], created_at: "2026-11-03T00:00:00Z", updated_at: "2026-11-03T00:00:00Z", deleted_at: null, resolved_at: null, resolved_by: null,
+    can_edit: true, can_resolve: true, reactions: [] })!;
+  const fetch = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>(async () => new Response(JSON.stringify({ action: "complete", status_options_version: "a".repeat(64), default_status: "done", options: [{ key: "done", name: "Done", category: "done" }] })));
+  vi.stubGlobal("fetch", fetch);
+  const scroll = vi.spyOn(HTMLElement.prototype, "scrollIntoView");
+  function Journey({ revision }: { revision: string }) {
+    const [prepared, setPrepared] = useState<CollaborationComment | null>(null);
+    return <QueryClientProvider client={client}><section data-tab-scroll-root="account-detail">
+      <details><summary>Workflow</summary><details><summary>Actions</summary>
+        <CollaborationWorkflow scope={collaborationScope(id)} issue={{ ...source, collaboration_revision: revision }} resultFromComment={prepared} onResultPrepared={() => setPrepared(null)} />
+      </details></details>
+      <button onClick={() => setPrepared(comment)}>Use in result</button>
+      <button onClick={() => setPrepared({ ...comment, content: "Another result" })}>Use updated comment</button>
+    </section></QueryClientProvider>;
+  }
+  const { rerender } = renderWithI18n(<Journey revision={issue.collaboration_revision} />);
+  const user = userEvent.setup();
+  const opener = screen.getByRole("button", { name: "Use in result" });
+  await user.click(opener);
+  const form = await screen.findByRole("form", { name: "Record result and complete" });
+  const heading = within(form).getByRole("heading", { name: "Record result and complete" });
+  expect(heading).toHaveFocus();
+  for (const disclosure of document.querySelectorAll("details")) {
+    if (disclosure.contains(form)) expect(disclosure.open).toBe(true);
+  }
+  expect(scroll.mock.contexts).toContain(heading);
+  expect(within(form).getByLabelText("Result")).toHaveValue("Prepared result");
+  expect(within(form).getByLabelText("Basis")).toHaveValue("");
+  expect(within(form).getByRole("button", { name: "Record result and complete" })).toBeDisabled();
+  scroll.mockClear();
+  await user.type(within(form).getByLabelText("Basis"), "My retained basis");
+  rerender(<Journey revision="9007199254740994" />);
+  expect(within(form).getByLabelText("Basis")).toHaveFocus();
+  expect(scroll).not.toHaveBeenCalled();
+
+  const nextOpener = screen.getByRole("button", { name: "Use updated comment" });
+  await user.click(nextOpener);
+  expect(heading).toHaveFocus();
+  expect(within(form).getByLabelText("Result")).toHaveValue("Another result");
+  await user.click(within(form).getByRole("button", { name: "Close" }));
+  await waitFor(() => expect(nextOpener).toHaveFocus());
+  expect(scroll.mock.contexts).toContain(nextOpener);
+  expect(fetch.mock.calls.every(([, init]) => !init || init.method !== "POST")).toBe(true);
+});
 
 // Server/Core own the permission, identity and lifecycle matrices. These tests
 // verify the human forms send their explicit result and selected decision.
@@ -42,12 +92,15 @@ it("requires a result and basis for text-only delivery and preserves the input a
   expect(permissions).toHaveTextContent("Submit result");
   expect(permissions).not.toHaveTextContent("Accept and complete");
   const user = userEvent.setup();
-  await user.click(screen.getByRole("button", { name: /Submit (result|for acceptance)/ }));
+  const opener = screen.getByRole("button", { name: /Submit (result|for acceptance)/ });
+  await user.click(opener);
+  expect(screen.getByRole("heading", { name: "Submit result" })).toHaveFocus();
   await user.type(await screen.findByLabelText("Result"), "A text-only result");
   const form = screen.getByRole("form", { name: "Submit result" });
   expect(within(form).getByRole("button", { name: "Submit result" })).toBeDisabled();
   await user.type(screen.getByLabelText("Basis"), "Checked the requested behavior");
   await user.click(within(form).getByRole("button", { name: "Close" }));
+  await waitFor(() => expect(opener).toHaveFocus());
   await user.click(screen.getByRole("button", { name: "Submit result" }));
   expect(screen.getByLabelText("Result")).toHaveValue("A text-only result");
   expect(screen.getByLabelText("Basis")).toHaveValue("Checked the requested behavior");
@@ -100,6 +153,66 @@ it("returns the exact result with a reason and defaults to its actual author", a
   expect(await screen.findByText("Action confirmed.")).toBeInTheDocument();
   const write = fetch.mock.calls.find(([url]) => new URL(url).pathname.endsWith("acceptance-returns"));
   expect(JSON.parse(String(write?.[1]?.body))).toMatchObject({ submission_id: submissionId, target_user_id: recipientId, note: "Cover the missing case" });
+});
+
+it("explains an oversized revision reason, preserves it, and clears the error after correction", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const source = { ...issue, status: "in_review", status_category: "in_review" as const, ai_policy: "manual" as const,
+    delivery: { current: submission, latest: submission, has_history: true }, capabilities: { ...issue.capabilities, return_acceptance: true } };
+  const fetch = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>(async () => new Response(JSON.stringify({ action: "return_acceptance", status_options_version: "a".repeat(64), default_status: "in_progress", options: [{ key: "in_progress", name: "In progress", category: "in_progress" }] })));
+  vi.stubGlobal("fetch", fetch);
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={source} /></QueryClientProvider>);
+  await userEvent.click(screen.getByRole("button", { name: "Return for revision" }));
+  const form = screen.getByRole("form", { name: "Return for revision" });
+  const reason = within(form).getByLabelText("Revision reason");
+  const tooLong = "界".repeat(21846);
+  fireEvent.change(reason, { target: { value: tooLong } });
+  expect(reason).toHaveValue(tooLong);
+  expect(reason).toHaveAttribute("aria-invalid", "true");
+  expect(reason).toHaveAccessibleDescription(/65536-byte limit/);
+  expect(within(form).getByRole("alert")).toHaveTextContent(/Shorten it/);
+  expect(within(form).getByRole("button", { name: "Return for revision" })).toBeDisabled();
+  fireEvent.submit(form);
+  expect(fetch.mock.calls.every(([, init]) => !init || init.method !== "POST")).toBe(true);
+  fireEvent.change(reason, { target: { value: "Cover the missing case" } });
+  expect(reason).not.toHaveAttribute("aria-invalid");
+  expect(reason).not.toHaveAttribute("aria-describedby");
+  expect(within(form).queryByRole("alert")).toBeNull();
+  await waitFor(() => expect(within(form).getByRole("button", { name: "Return for revision" })).toBeEnabled());
+});
+
+it("associates result byte errors only with the overflowing field and preserves both values", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const source = { ...issue, ai_policy: "manual" as const, delivery: { current: null, latest: null, has_history: false } };
+  const fetch = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>(async () => new Response(JSON.stringify({ action: "complete", status_options_version: "a".repeat(64), default_status: "done", options: [{ key: "done", name: "Done", category: "done" }] })));
+  vi.stubGlobal("fetch", fetch);
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={source} /></QueryClientProvider>);
+  await userEvent.click(screen.getByRole("button", { name: "Record result and complete" }));
+  const form = screen.getByRole("form", { name: "Record result and complete" });
+  const result = within(form).getByLabelText("Result");
+  const basis = within(form).getByLabelText("Basis");
+  const tooLong = "😀".repeat(16385);
+  fireEvent.change(result, { target: { value: tooLong } });
+  fireEvent.change(basis, { target: { value: "Checked the requested result" } });
+  expect(result).toHaveValue(tooLong);
+  expect(result).toHaveAttribute("aria-invalid", "true");
+  expect(result).toHaveAccessibleDescription(/64 KiB/);
+  expect(basis).not.toHaveAttribute("aria-invalid");
+  expect(basis).not.toHaveAccessibleDescription(/64 KiB/);
+  expect(within(form).getByRole("button", { name: "Record result and complete" })).toBeDisabled();
+  fireEvent.change(result, { target: { value: "Finished the requested work" } });
+  fireEvent.change(basis, { target: { value: tooLong } });
+  expect(basis).toHaveValue(tooLong);
+  expect(basis).toHaveAttribute("aria-invalid", "true");
+  expect(basis).toHaveAccessibleDescription(/64 KiB/);
+  expect(result).not.toHaveAttribute("aria-invalid");
+  expect(result).not.toHaveAccessibleDescription(/64 KiB/);
+  fireEvent.submit(form);
+  expect(fetch.mock.calls.every(([, init]) => !init || init.method !== "POST")).toBe(true);
+  fireEvent.change(basis, { target: { value: "Checked the requested result" } });
+  expect(basis).not.toHaveAttribute("aria-invalid");
+  expect(within(form).queryByRole("alert")).toBeNull();
+  await waitFor(() => expect(within(form).getByRole("button", { name: "Record result and complete" })).toBeEnabled());
 });
 
 it("records a self-handled result and completes without a transfer form", async () => {

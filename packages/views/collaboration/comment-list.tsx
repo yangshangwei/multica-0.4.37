@@ -8,7 +8,7 @@ import { Button } from "@multica/ui/components/ui/button";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import { Textarea } from "@multica/ui/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@multica/ui/components/ui/avatar";
-import { useT } from "../i18n";
+import { useLocale, useT } from "../i18n";
 import { AppLink } from "../navigation";
 import { RichContent } from "../rich-content";
 import { CollaborationCommentHistory } from "./comment-history";
@@ -63,6 +63,7 @@ function CommentItem({ scope, issue, commentId, comment, onReply, onPrepareResul
 
 function CommentCard({ scope, issue, comment, onReply, onPrepareResult, onLoadContent, contentLoading, contentError, contentStale }: CommentProps) {
   const { t } = useT("collaboration");
+  const locale = useLocale();
   const labels = useCollaborationLabels();
   const client = useQueryClient();
   const fieldId = useId();
@@ -109,7 +110,7 @@ function CommentCard({ scope, issue, comment, onReply, onPrepareResult, onLoadCo
       <Avatar className="size-6"><AvatarImage src={comment.author?.avatar_url || undefined} alt="" /><AvatarFallback>{author.slice(0, 1)}</AvatarFallback></Avatar>
       <span className="font-medium text-foreground [overflow-wrap:anywhere]">{author}</span>
       {comment.author?.external === true && <span>{t(($) => $.detail.external)}</span>}
-      <time dateTime={comment.created_at}>{new Date(comment.created_at).toLocaleString()}</time>
+      <time dateTime={comment.created_at}>{new Date(comment.created_at).toLocaleString(locale)}</time>
       {comment.resolved_at !== null && <span>{comment.resolved_by ? t(($) => $.commentActions.resolvedBy, { name: comment.resolved_by.name }) : t(($) => $.detail.resolved)}</span>}
     </div>
     {comment.author_authority && <details className="min-w-0 text-caption text-muted-foreground">

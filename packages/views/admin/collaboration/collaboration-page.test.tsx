@@ -13,6 +13,7 @@ import { adminCollaborationCandidatesFixture as candidates, adminCollaborationDe
   adminCollaborationInputFixture as original, adminCollaborationResultFixture as receipt, adminCollaborationTestId as id } from "@multica/core/admin/test-fixtures";
 import type { AnchorHTMLAttributes } from "react";
 import en from "../../locales/en/admin.json";
+import { RESOURCES } from "../../test/i18n";
 import { AdminCollaborationEntry, AdminCollaborationPage } from "./collaboration-page";
 
 vi.mock("../../navigation", () => ({ AppLink: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} /> }));
@@ -42,8 +43,8 @@ beforeEach(() => {
     result: { ...receipt.result, requestId: key, status: body.targetStatus, handlerUserId: body.successorUserId ?? receipt.result.previousHandlerUserId } }));
 });
 afterEach(() => { cleanup(); client.clear(); vi.restoreAllMocks(); });
-function content(issueId: string | null = detail.issueId, entry = false) {
-  return <QueryClientProvider client={client}><I18nProvider locale="en" resources={{ en: { admin: en } }}>
+function content(issueId: string | null = detail.issueId, entry = false, locale: "en" | "zh-Hans" = "en") {
+  return <QueryClientProvider client={client}><I18nProvider locale={locale} resources={RESOURCES}>
     {entry ? <AdminCollaborationEntry href="/account?view=current&administration=collaboration" /> : <AdminCollaborationPage issueId={issueId} hrefForIssue={hrefForIssue} />}
   </I18nProvider></QueryClientProvider>;
 }
@@ -67,6 +68,20 @@ it("reveals the entry only after current complete super-admin access", async () 
   expect(await screen.findByRole("link", { name: "Manage collaborations" })).toHaveAttribute("href", "/account?view=current&administration=collaboration");
   await act(async () => { client.setQueryData(adminKeys.me({ apiScope: adminApiScope(), userId: user.id, organizationId: null }), { ...identity, role: "platform_observer" }); });
   await waitFor(() => expect(screen.queryByRole("link")).not.toBeInTheDocument());
+});
+
+it.each(["en", "zh-Hans"] as const)("localizes status in the %s metadata list and detail without ordinary issue reads", async locale => {
+  vi.mocked(api.getAdminCollaborationIssues).mockResolvedValue({ scope: id(2), items: [{ ...detail, status: "in_progress" }], nextCursor: null });
+  vi.mocked(api.getAdminCollaborationIssue).mockResolvedValue({ ...detail, status: "in_progress" });
+  const ordinaryRead = vi.spyOn(api, "getCollaborationIssue");
+  const view = render(content(null, false, locale));
+  const label = locale === "en" ? "In progress" : "进行中";
+  expect(await screen.findByText(label)).toBeVisible();
+  expect(screen.queryByText("in_progress")).not.toBeInTheDocument();
+  view.rerender(content(detail.issueId, false, locale));
+  await screen.findByRole("heading", { name: detail.identifier });
+  expect(screen.getByText(label)).toBeVisible();
+  expect(ordinaryRead).not.toHaveBeenCalled();
 });
 
 it("self-guards the page against observers without reading any collaboration metadata", async () => {

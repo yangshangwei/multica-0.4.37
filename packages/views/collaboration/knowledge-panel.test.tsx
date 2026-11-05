@@ -5,6 +5,8 @@ import { act, cleanup, fireEvent, screen, waitFor, within } from "@testing-libra
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, ApiError, setApiInstance } from "@multica/core/api";
+import { projectKeys } from "@multica/core/projects/queries";
+import type { Project, Workspace } from "@multica/core/types";
 import * as collaboration from "@multica/core/collaboration";
 import { collaborationKnowledgeKeys, collaborationScope, parseCollaborationComment, parseCollaborationComments, parseCollaborationIssue,
   parseCollaborationKnowledgeCandidates, parseCollaborationKnowledgeDetail, parseCollaborationKnowledgeTargetList, CollaborationExecutionSchema, parseCollaborationRunRecords, readPendingKnowledgeOperations, expireKnowledgeProjections,
@@ -23,6 +25,11 @@ const baseIssue = parseCollaborationIssue(collaborationIssueFixture)!;
 const projectId = "00000000-0000-4000-8000-000000000099";
 const issue = { ...baseIssue, source_structure: { issue_revision: "1", project: { id: projectId, name: "Lawful current project" }, parent_issue: null, iteration: null, stage: null } };
 const commentId = "00000000-0000-4000-8000-000000000098";
+const otherWorkspace: Workspace = { id: "00000000-0000-4000-8000-000000000090", name: "Visible destination workspace", slug: "knowledge-destination",
+  description: null, context: null, settings: {}, repos: [], issue_prefix: "KD", avatar_url: null, created_at: "2026-11-01T00:00:00Z", updated_at: "2026-11-01T00:00:00Z" };
+const otherProject: Project = { id: "00000000-0000-4000-8000-000000000091", workspace_id: otherWorkspace.id, title: "Visible destination project",
+  description: null, icon: null, status: "in_progress", priority: "none", lead_type: null, lead_id: null, start_date: null, due_date: null,
+  created_at: "2026-11-01T00:00:00Z", updated_at: "2026-11-01T00:00:00Z", issue_count: 0, done_count: 0, resource_count: 0 };
 let api: ApiClient, client: QueryClient, scope: CollaborationScope;
 let candidate: CollaborationKnowledgeCandidate;
 let historyTruncated = false;
@@ -159,6 +166,86 @@ async function fillProposal() {
   await userEvent.click(await screen.findByRole("option", { name: "Comment" }));
   await userEvent.click(await screen.findByRole("checkbox", { name: /Comment.*Version 3/ }));
 }
+
+async function openOtherDestination() {
+  mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  await userEvent.click(screen.getByRole("combobox", { name: "Destination" }));
+  await userEvent.click(await screen.findByRole("option", { name: "Another visible destination" }));
+  return screen.getByRole("form", { name: "Propose knowledge" });
+}
+
+it("announces workspace loading and permits local retry to an empty catalog while preserving the proposal", async () => {
+  let rejectRead!: (error: Error) => void;
+  const workspaces = vi.spyOn(api, "listWorkspaces").mockImplementationOnce(() => new Promise((_resolve, reject) => { rejectRead = reject; })).mockResolvedValue([]);
+  const projects = vi.spyOn(api, "listProjects");
+  const form = await openOtherDestination();
+  expect(within(form).getByText("Loading workspaces...")).toHaveAttribute("role", "status");
+  await act(async () => rejectRead(new TypeError("Offline")));
+  expect(await within(form).findByText("Could not load workspaces. Refresh to try again.")).toBeVisible();
+  await userEvent.click(within(form).getByRole("button", { name: "Refresh" }));
+  expect(await within(form).findByText("No visible workspaces are available.")).toBeVisible();
+  expect(within(form).getByRole("textbox", { name: "Summary" })).toHaveValue("Human conclusion");
+  expect(within(form).getByRole("textbox", { name: "Conclusion (Markdown)" })).toHaveValue("A new explicitly written conclusion");
+  expect(within(form).getByRole("checkbox", { name: /Comment.*Version 3/ })).toBeChecked();
+  expect(workspaces).toHaveBeenCalledTimes(2); expect(projects).not.toHaveBeenCalled();
+});
+
+it("locally retries a failed selected project, retaining proposal fields and requiring an available target before submit", async () => {
+  vi.spyOn(api, "listWorkspaces").mockResolvedValue([otherWorkspace]);
+  let finishRead!: () => void;
+  const projects = vi.spyOn(api, "listProjects").mockImplementationOnce(() => new Promise((resolve) => {
+    finishRead = () => resolve({ projects: [otherProject], total: 1 });
+  })).mockResolvedValue({ projects: [otherProject], total: 1 });
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => ({ ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id }));
+  const form = await openOtherDestination();
+  await userEvent.click(within(form).getByRole("combobox", { name: "Workspace" }));
+  await userEvent.click(await screen.findByRole("option", { name: otherWorkspace.name }));
+  expect(within(form).getByText("Loading projects...")).toHaveAttribute("role", "status");
+  await act(async () => finishRead());
+  await userEvent.click(within(form).getByRole("combobox", { name: "Project" }));
+  await userEvent.click(await screen.findByRole("option", { name: otherProject.title }));
+  projects.mockRejectedValueOnce(new TypeError("Offline"));
+  await act(async () => { await client.invalidateQueries({ queryKey: projectKeys.list(otherWorkspace.id) }); });
+  expect(await within(form).findByText("Could not load projects. Refresh to try again.")).toBeVisible();
+  expect(within(form).getByRole("combobox", { name: "Project" })).not.toHaveTextContent(otherProject.title);
+  await userEvent.click(within(form).getByRole("button", { name: "Submit candidate" }));
+  expect(send).not.toHaveBeenCalled();
+  await userEvent.click(within(form).getByRole("button", { name: "Refresh" }));
+  await waitFor(() => expect(within(form).getByRole("combobox", { name: "Project" })).toHaveTextContent(otherProject.title));
+  expect(within(form).getByRole("textbox", { name: "Summary" })).toHaveValue("Human conclusion");
+  expect(within(form).getByRole("textbox", { name: "Conclusion (Markdown)" })).toHaveValue("A new explicitly written conclusion");
+  expect(within(form).getByRole("checkbox", { name: /Comment.*Version 3/ })).toBeChecked();
+  expect(send).not.toHaveBeenCalled();
+  await userEvent.click(within(form).getByRole("button", { name: "Submit candidate" }));
+  await waitFor(() => expect(send).toHaveBeenCalledOnce());
+  expect(send.mock.calls[0]![1].target).toEqual({ kind: "project", workspace_id: otherWorkspace.id, project_id: otherProject.id });
+  expect(projects).toHaveBeenCalledTimes(3);
+});
+
+it("does not submit a removed destination after resolving sources or silently retarget it to the workspace", async () => {
+  vi.spyOn(api, "listWorkspaces").mockResolvedValue([otherWorkspace]);
+  const projects = vi.spyOn(api, "listProjects").mockResolvedValue({ projects: [otherProject], total: 1 });
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => ({ ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id }));
+  const form = await openOtherDestination();
+  await userEvent.click(within(form).getByRole("combobox", { name: "Workspace" }));
+  await userEvent.click(await screen.findByRole("option", { name: otherWorkspace.name }));
+  await userEvent.click(within(form).getByRole("combobox", { name: "Project" }));
+  await userEvent.click(await screen.findByRole("option", { name: otherProject.title }));
+  const comment = await api.getCollaborationComment(issue.id, commentId);
+  let release!: () => void;
+  vi.mocked(api.getCollaborationComment).mockImplementationOnce(() => new Promise((resolve) => { release = () => resolve(comment); }));
+  await userEvent.click(within(form).getByRole("button", { name: "Submit candidate" }));
+  await waitFor(() => expect(release).toBeDefined());
+  projects.mockResolvedValue({ projects: [], total: 0 });
+  await act(async () => { await client.invalidateQueries({ queryKey: projectKeys.list(otherWorkspace.id) }); });
+  expect(await within(form).findByText("No visible projects in this workspace.")).toBeVisible();
+  expect(within(form).getByRole("combobox", { name: "Project" })).toHaveTextContent("Choose a project");
+  await act(async () => release());
+  await within(form).findByRole("button", { name: "Submit candidate" });
+  expect(send).not.toHaveBeenCalled();
+  expect(within(form).getByRole("textbox", { name: "Summary" })).toHaveValue("Human conclusion");
+  expect(within(form).getAllByText("This destination is unavailable. Choose an available workspace or project.").length).toBeGreaterThan(0);
+});
 
 it("lets an external handler propose from comments to the lawful current project without a private catalog", async () => {
   const workspaces = vi.spyOn(api, "listWorkspaces"); const projects = vi.spyOn(api, "listProjects");

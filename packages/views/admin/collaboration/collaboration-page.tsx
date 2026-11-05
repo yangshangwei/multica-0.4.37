@@ -6,6 +6,7 @@ import { ApiError, errorCode } from "@multica/core/api";
 import { Button } from "@multica/ui/components/ui/button";
 import { useT } from "../../i18n";
 import { AppLink } from "../../navigation";
+import { useCollaborationLabels } from "../../collaboration/labels";
 import { adminTouchLinkClass } from "../executions/list-controls";
 import { AdminCollaborationControls } from "./collaboration-controls";
 import { AdminCollaborationMemoryControls } from "./collaboration-memory-controls";
@@ -43,11 +44,12 @@ export function AdminCollaborationPage({ issueId, hrefForIssue }: { issueId?: st
 
 function IssueMetadata({ issue, identifiers = false }: { issue: AdminCollaborationIssue; identifiers?: boolean }) {
   const { t } = useT("admin");
+  const labels = useCollaborationLabels();
   const fields = [
     { label: t($ => $.collaboration.source), value: issue.sourceName || issue.sourceWorkspaceId },
     { label: t($ => $.collaboration.creator), value: `${issue.creator.name || issue.creator.userId} · ${t($ => $.collaboration.disabled)}` },
     { label: t($ => $.collaboration.handler), value: `${issue.handler.name || issue.handler.userId} · ${issue.handler.disabled ? t($ => $.collaboration.disabled) : t($ => $.collaboration.enabled)}` },
-    { label: t($ => $.collaboration.status), value: issue.status },
+    { label: t($ => $.collaboration.status), value: labels.status(issue.status) },
     { label: t($ => $.collaboration.queue), value: t($ => $.collaboration.queues[issue.queueState]) },
     { label: t($ => $.collaboration.unsettledRuns), value: issue.unsettledRuns },
   ];

@@ -4,11 +4,12 @@ import { accountPath, type AccountDestination } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
 import { AppLink } from "../navigation";
 import { RichContent } from "../rich-content";
-import { useT } from "../i18n";
+import { useLocale, useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
 
 export function CollaborationActivity({ scope, destination }: { scope: CollaborationScope; destination: AccountDestination }) {
   const { t } = useT("collaboration");
+  const locale = useLocale();
   const client = useQueryClient();
   const query = useInfiniteQuery(collaborationActivityOptions(client, scope, destination.issueId!));
   const items = [...new Map((query.data?.pages.flatMap((page) => page.items) ?? []).map((item) => [item.id, item])).values()];
@@ -21,7 +22,7 @@ export function CollaborationActivity({ scope, destination }: { scope: Collabora
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-caption text-muted-foreground">
         <span className="font-medium text-foreground">{t(($) => $.activity.kinds[item.kind])}</span>
         <span className="min-w-0 [overflow-wrap:anywhere]">{item.actor?.name ?? t(($) => $.detail.unknownAuthor)}</span>
-        <time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString()}</time>
+        <time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString(locale)}</time>
       </div>
       {!item.details_available && <p className="text-caption text-muted-foreground">{t(($) => $.activity.detailsUnavailable)}</p>}
       {item.details_available && item.kind === "iteration_changed" && item.note && <p className="text-body whitespace-pre-wrap [overflow-wrap:anywhere]">{item.note}</p>}

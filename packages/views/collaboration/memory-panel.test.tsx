@@ -4,8 +4,8 @@ import { act, fireEvent, screen, waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, ApiError, setApiInstance } from "@multica/core/api";
-import { collaborationMemoryKeys, collaborationScope, parseCollaborationIssue, parseCollaborationMemory, parseCollaborationMemoryVersions,
-  readCollaborationDrafts, type CollaborationMemoryReceipt } from "@multica/core/collaboration";
+import { CollaborationUnavailableError, collaborationMemoryKeys, collaborationScope, parseCollaborationIssue, parseCollaborationMemory, parseCollaborationMemoryVersions,
+  prepareCollaborationMemoryChange, readCollaborationDrafts, saveCollaborationDraft, type CollaborationMemoryReceipt } from "@multica/core/collaboration";
 import { collaborationIssueFixture } from "@multica/core/collaboration/test-fixtures";
 import { renderWithI18n } from "../test/i18n";
 import { CollaborationMemoryPanel } from "./memory-panel";
@@ -42,6 +42,70 @@ function receipt(requestId: string, version: string | null, code = "memory_updat
   return { request_id: requestId, action: "memory_update", protocol_version: 1, issue_id: issue.id, version,
     current_version: version ?? "2", code, status, max_bytes: 131072, ...(status === 200 ? { bytes: 8, event_seq: "3" } : {}) };
 }
+
+it("keeps a named loading region, reports an initial read failure and refreshes explicitly", async () => {
+  let rejectRead!: (reason: Error) => void;
+  vi.mocked(api.getCollaborationMemory).mockImplementationOnce(() => new Promise((_resolve, reject) => { rejectRead = reject; }));
+  const update = vi.spyOn(api, "updateCollaborationMemory");
+  mount();
+  const panel = screen.getByRole("region", { name: "Shared context" });
+  expect(within(panel).getByRole("status")).toHaveTextContent("Loading shared context...");
+  await act(async () => rejectRead(new TypeError("Offline")));
+  expect(await within(panel).findByRole("alert")).toHaveTextContent("Could not load collaboration. Try again.");
+  expect(screen.queryByRole("button", { name: "Edit shared context" })).not.toBeInTheDocument();
+  await userEvent.click(within(panel).getByRole("button", { name: "Refresh" }));
+  expect(await within(panel).findByText("Initial decision")).toBeVisible();
+  expect(api.getCollaborationMemory).toHaveBeenCalledTimes(2);
+  expect(update).not.toHaveBeenCalled();
+});
+
+it.each(["unsupported response", "unavailable response"])("reports an %s without inventing empty shared context", async (kind) => {
+  if (kind === "unsupported response") vi.mocked(api.getCollaborationMemory).mockResolvedValue(null);
+  else vi.mocked(api.getCollaborationMemory).mockRejectedValue(new CollaborationUnavailableError());
+  mount();
+  expect(await screen.findByRole("alert")).toHaveTextContent("This collaboration response is unavailable. Refresh to check again.");
+  expect(screen.getByRole("region", { name: "Shared context" })).toBeVisible();
+  expect(screen.getByRole("button", { name: "Refresh" })).toBeEnabled();
+  expect(screen.queryByText(/No shared context yet/)).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Edit shared context" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Version history" })).not.toBeInTheDocument();
+});
+
+it("hides stale shared context after a failed refresh and preserves the editor for a successful retry", async () => {
+  mount();
+  await userEvent.click(await screen.findByRole("button", { name: "Edit shared context" }));
+  fireEvent.change(screen.getByRole("textbox", { name: "Shared context (Markdown)" }), { target: { value: "Unsent draft" } });
+  vi.mocked(api.getCollaborationMemory).mockRejectedValueOnce(new TypeError("Offline"));
+  await act(async () => { await client.invalidateQueries({ queryKey: collaborationMemoryKeys.root(scope, issue.id) }); });
+  expect(await screen.findByRole("alert")).toHaveTextContent("Could not load collaboration. Try again.");
+  expect(screen.queryByText("Initial decision")).not.toBeInTheDocument();
+  expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+  expect(screen.queryByText("v1")).not.toBeInTheDocument();
+  await userEvent.click(screen.getByRole("button", { name: "Refresh" }));
+  expect(await screen.findByRole("textbox", { name: "Shared context (Markdown)" })).toHaveValue("Unsent draft");
+});
+
+it("reveals original recovery through enclosing disclosures while the current read fails", async () => {
+  const requestId = "00000000-0000-4000-8000-000000000003";
+  const draft = prepareCollaborationMemoryChange(scope, memory(), requestId, { action: "update", baseVersion: "1", content: "Original request text" });
+  saveCollaborationDraft(draft);
+  vi.mocked(api.getCollaborationMemory).mockRejectedValue(new TypeError("Offline"));
+  vi.mocked(api.getCollaborationMemoryOperation).mockResolvedValue(receipt(requestId, "2"));
+  const update = vi.spyOn(api, "updateCollaborationMemory");
+  renderWithI18n(<QueryClientProvider client={client}><details><summary>Auxiliary context</summary><details><summary>Context disclosure</summary>
+    <CollaborationMemoryPanel scope={scope} issue={issue} />
+  </details></details></QueryClientProvider>);
+  expect(await screen.findByRole("button", { name: "Check original result" })).toBeVisible();
+  expect(screen.getByText("Auxiliary context", { selector: "summary" }).closest("details")).toHaveAttribute("open");
+  expect(screen.getByText("Context disclosure", { selector: "summary" }).closest("details")).toHaveAttribute("open");
+  expect(api.getCollaborationMemoryOperation).not.toHaveBeenCalled();
+  expect(update).not.toHaveBeenCalled();
+  await userEvent.click(screen.getByRole("button", { name: "Check original result" }));
+  await waitFor(() => expect(api.getCollaborationMemoryOperation).toHaveBeenCalledWith(issue.id, requestId));
+  expect(await screen.findByText("Shared context saved as v2.")).toBeVisible();
+  expect(readCollaborationDrafts({ ...scope, issueId: issue.id })).toEqual([]);
+  expect(update).not.toHaveBeenCalled();
+});
 
 it("does not refocus a shared-context anchor on resume but focuses a fresh open", async () => {
   const view = (resume: boolean, navigationKey: number) => <QueryClientProvider client={client}><CollaborationMemoryPanel scope={scope} issue={issue}

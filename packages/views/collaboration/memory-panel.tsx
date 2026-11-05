@@ -65,7 +65,7 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
   const [reason, setReason] = useState("");
   const [feedback, setFeedback] = useState<string | null>(null);
-  const memory = memoryQuery.data;
+  const memory = memoryQuery.isError ? undefined : memoryQuery.data;
   const denied = collaborationIssueAccessDenied(client, scope, issue.id) || isCollaborationDenied(memoryQuery.error);
   const historyQuery = useInfiniteQuery({ ...collaborationMemoryVersionsOptions(client, scope, issue.id), enabled: !!memory && historyOpen && !denied });
   const selectedQuery = useQuery({ ...collaborationMemoryVersionOptions(client, scope, issue.id, selectedVersion ?? "1"), enabled: !!memory && selectedVersion !== null && !denied });
@@ -85,6 +85,7 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
     },
   });
   const locked = send.isPending || drafts.memory.length > 0 || drafts.error;
+  const attention = drafts.memory.length > 0 || drafts.error;
   const resetSend = send.reset;
   const memoryVersion = memory?.version;
   const stale = editor !== null && (editor.baseVersion !== memory?.version || send.data?.code === "stale_memory_version");
@@ -135,16 +136,22 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
     if (isScopeResume || destination?.anchor !== "memory" || memoryVersion === undefined) return;
     root.current?.scrollIntoView?.({ block: "start" }); root.current?.focus({ preventScroll: true });
   }, [destination?.anchor, memoryVersion, isScopeResume, navigationKey]);
+  useEffect(() => {
+    if (!attention || !root.current) return;
+    for (let ancestor = root.current.parentElement; ancestor; ancestor = ancestor.parentElement) {
+      if (ancestor instanceof HTMLDetailsElement) ancestor.open = true;
+    }
+  }, [attention]);
 
   if (denied) return <CollaborationQueryState denied error={memoryQuery.error} />;
-  if (memoryQuery.isPending) return <section id="memory" tabIndex={-1} className="min-w-0 space-y-3"><h3 className="text-body font-semibold">{t(($) => $.memory.title)}</h3><p role="status" className="text-body text-muted-foreground">{t(($) => $.memory.loading)}</p></section>;
-  if (!memory || memoryQuery.error instanceof CollaborationUnavailableError) return null;
   const historyItems = [...new Map((historyQuery.data?.pages.flatMap(page => page.items) ?? []).map(item => [item.version, item])).values()];
   const selected = !selectedQuery.isError ? selectedQuery.data : undefined;
   const pendingUpdate = drafts.memory.map(parseCollaborationMemoryDraft).find(payload => payload.action === "memory_update");
   return <section ref={root} id="memory" tabIndex={-1} aria-labelledby={`${fieldId}-title`} className="min-w-0 space-y-5 rounded-md border border-border p-4 outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-5">
     <div className="space-y-2"><h3 id={`${fieldId}-title`} className="text-body font-semibold">{t(($) => $.memory.title)}</h3><p className="max-w-prose text-caption text-muted-foreground">{t(($) => $.memory.description)}</p></div>
-    {memoryQuery.isError && <CollaborationQueryState error={memoryQuery.error} retry={() => void memoryQuery.refetch()} />}
+    {memoryQuery.isPending && <p role="status" className="text-body text-muted-foreground">{t(($) => $.memory.loading)}</p>}
+    {!memoryQuery.isPending && !memory && <CollaborationQueryState error={memoryQuery.error ?? new CollaborationUnavailableError()} retry={() => void memoryQuery.refetch()} />}
+    {memory && <>
     <div className="flex min-w-0 flex-wrap items-center justify-between gap-3">
       <p className="text-caption text-muted-foreground">{t(($) => $.memory.versionLabel, { version: memory.version })} · {t(($) => $.memory.bytes, { used: bytes, max: memory.max_bytes })}</p>
       {canEdit && !editor && drafts.memory.length === 0 && <Button ref={editButton} type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={locked} onClick={() => { send.reset(); setFeedback(null); setEditor({ baseVersion: memory.version, content: memory.content }); recoverFocus(() => editorField.current); }}>{t(($) => $.memory.edit)}</Button>}
@@ -165,17 +172,18 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
       {memory.content ? <div className="space-y-2"><div id={`${fieldId}-content`} className={`min-w-0 overflow-auto rounded-md bg-muted/30 p-3 ${expanded ? "" : "max-h-64"}`}><RichContent content={memory.content} resourcePolicy="restricted" /></div><Button type="button" variant="ghost" size="sm" className="pointer-coarse:min-h-11" aria-expanded={expanded} aria-controls={`${fieldId}-content`} onClick={() => setExpanded(!expanded)}>{expanded ? t(($) => $.memory.collapse) : t(($) => $.memory.expand)}</Button></div> : <p className="text-body text-muted-foreground">{t(($) => $.memory.empty)}</p>}
       <MemoryAttribution author={memory.author} createdAt={memory.created_at} issueId={issue.id} />
       {memory.restored_from_version !== null && <p className="text-caption text-muted-foreground">{t(($) => $.memory.restoredFrom, { version: memory.restored_from_version })}</p>}
-      {pendingUpdate?.action === "memory_update" && <Textarea aria-label={t(($) => $.memory.editLabel)} value={pendingUpdate.input.content} readOnly className="min-h-32 font-mono" />}
     </>}
     {closed && <p className="text-caption text-muted-foreground">{t(($) => $.memory.closed)}</p>}
+    </>}
+    {pendingUpdate?.action === "memory_update" && (!memory || !editor) && <Textarea aria-label={t(($) => $.memory.editLabel)} value={pendingUpdate.input.content} readOnly className="min-h-32 font-mono" />}
     {drafts.error && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
     {send.isPending && <p role="status">{t(($) => $.workflow.pending)}</p>}
-    {feedback && !(stale && feedback === t(($) => $.memory.conflict)) && <p key={feedbackRole} role={feedbackRole} className="text-body">{feedback}</p>}
+    {feedback && !(memory && stale && feedback === t(($) => $.memory.conflict)) && <p key={feedbackRole} role={feedbackRole} className="text-body">{feedback}</p>}
     {drafts.memory.map(draft => { const payload = parseCollaborationMemoryDraft(draft); return <div key={draft.requestId} className="space-y-2">
       <p role="status">{payload.action === "memory_update" ? t(($) => $.memory.pendingUpdate) : payload.action === "memory_restore" ? t(($) => $.memory.pendingRestore, { version: payload.version }) : t(($) => $.memory.pendingPurge, { version: payload.version })}</p>
       <div className="flex flex-wrap gap-2"><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={send.isPending || drafts.error} onClick={() => send.mutate({ draft, recovery: true })}>{t(($) => $.workflow.recover)}</Button><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={send.isPending || drafts.error} onClick={() => send.mutate({ draft, recovery: false })}>{t(($) => $.workflow.retryOriginal)}</Button></div>
     </div>; })}
-    <Collapsible open={historyOpen} onOpenChange={setHistoryOpen} className="space-y-3 border-t border-border pt-4">
+    {memory && <><Collapsible open={historyOpen} onOpenChange={setHistoryOpen} className="space-y-3 border-t border-border pt-4">
       <CollapsibleTrigger render={<Button type="button" variant="ghost" className="pointer-coarse:min-h-11" />}>{t(($) => $.memory.history)}</CollapsibleTrigger>
       <CollapsibleContent className="space-y-3">
         {historyQuery.isPending && <p role="status" className="text-caption">{t(($) => $.memory.loading)}</p>}
@@ -186,8 +194,8 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
       </CollapsibleContent>
     </Collapsible>
     <Dialog open={selectedVersion !== null} onOpenChange={open => { if (!open) setSelectedVersion(null); }}>
-      <DialogContent closeLabel={t(($) => $.memory.close)} finalFocus={() => root.current} className="max-h-[85dvh] overflow-y-auto sm:max-w-2xl">
-        <DialogTitle>{t(($) => $.memory.viewTitle, { version: selectedVersion ?? "" })}</DialogTitle>
+      <DialogContent closeLabel={t(($) => $.memory.close)} finalFocus={() => root.current} className="max-h-[85dvh] overflow-y-auto sm:max-w-2xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11">
+        <DialogTitle className="pointer-coarse:pr-11">{t(($) => $.memory.viewTitle, { version: selectedVersion ?? "" })}</DialogTitle>
         <DialogDescription>{selected?.purged ? t(($) => $.memory.viewPurged) : t(($) => $.memory.description)}</DialogDescription>
         {selectedQuery.isPending && <p role="status">{t(($) => $.memory.loading)}</p>}
         {selectedQuery.isError && <CollaborationQueryState error={selectedQuery.error} retry={() => void selectedQuery.refetch()} />}
@@ -207,7 +215,7 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
           submit(confirmation.action === "restore" ? { action: "restore", version: confirmation.version } : { action: "purge", version: confirmation.version, reason }, confirmation.snapshot);
         }}>{confirmation?.action === "restore" ? t(($) => $.memory.restoreConfirm) : t(($) => $.memory.purgeConfirm)}</AlertDialogAction></AlertDialogFooter>
       </AlertDialogContent>
-    </AlertDialog>
+    </AlertDialog></>}
   </section>;
 }
 
@@ -218,7 +226,7 @@ function MemoryHistoryRow({ item, issueId, currentVersion, canEdit, canPurge, on
   const { t } = useT("collaboration");
   const historical = item.version !== currentVersion;
   return <li className="flex min-w-0 flex-wrap items-start justify-between gap-3 rounded-md border border-border p-3">
-    <div className="min-w-0 space-y-2"><Button type="button" variant="link" className="h-auto p-0" aria-label={t(($) => $.memory.view, { version: item.version })} onClick={onView}>{t(($) => $.memory.versionLabel, { version: item.version })}</Button>
+    <div className="min-w-0 space-y-2"><Button type="button" variant="link" className="h-auto p-0 pointer-coarse:min-h-11 pointer-coarse:min-w-11" aria-label={t(($) => $.memory.view, { version: item.version })} onClick={onView}>{t(($) => $.memory.versionLabel, { version: item.version })}</Button>
       {!historical && <span className="ml-2 text-caption font-medium">{t(($) => $.memory.current)}</span>}{item.purged && <span className="ml-2 text-caption text-muted-foreground">{t(($) => $.memory.purgedMarker)}</span>}
       <p className="text-caption text-muted-foreground">{t(($) => $.memory.versionBytes, { used: Math.ceil(item.bytes / 1024) })}</p>
       <MemoryAttribution author={item.author} createdAt={item.created_at} issueId={issueId} />

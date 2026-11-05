@@ -21,6 +21,20 @@ const comment = parseCollaborationComment({ id: commentId, issue_id: actor, auth
   comment_revision: "9007199254740993", attachment_ids: [], created_at: timestamp, updated_at: timestamp, deleted_at: null, resolved_at: null, resolved_by: null, can_edit: true, can_resolve: true, reactions: [{ emoji: "👍", count: 2, viewer_reacted: true }] })!;
 afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); });
 
+it.each(["en", "zh-Hans"] as const)("uses the %s app locale for comment and history timestamps while preserving ISO values", async locale => {
+  setApiInstance(new ApiClient("https://comments.example"));
+  const editedAt = "2026-10-20T13:24:00Z";
+  vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ issue_id: actor, comment_id: commentId, items: [{
+    event_id: eventId, event_seq: "1", kind: "comment_edited", actor: issue.creator, created_at: editedAt,
+    comment_revision: comment.comment_revision, before: "Earlier comment", after: comment.content,
+  }] }))));
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentList scope={collaborationScope(actor)} issue={issue}
+    comments={[comment]} onReply={vi.fn()} /></QueryClientProvider>, { locale });
+  expect(screen.getByText(new Date(timestamp).toLocaleString(locale))).toHaveAttribute("datetime", timestamp);
+  await userEvent.click(screen.getByRole("button", { name: locale === "en" ? "Comment history" : "评论历史" }));
+  expect(await screen.findByText(new Date(editedAt).toLocaleString(locale))).toHaveAttribute("datetime", editedAt);
+});
+
 it("loads a placeholder through the human detail route before exposing editing", async () => {
   setApiInstance(new ApiClient("https://comments.example"));
   const fetch = vi.fn(async (url: string) => new Response(JSON.stringify(url.includes("attachments") ? { issue_id: actor, attachments: [] } : comment)));

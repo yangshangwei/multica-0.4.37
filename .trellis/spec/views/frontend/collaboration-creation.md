@@ -92,3 +92,14 @@ const locked = scopedCreationIsPending || hasContentfulUnconfirmedIntent;
 
 See [original-intent contracts](../../core/frontend/collaboration-workbench.md)
 and [shared navigation/IME contracts](./quick-create-actor-picker.md).
+
+## Recipient search commitment
+
+The account picker must not publish an option while the trimmed input differs
+from the debounced query or while Query is presenting the previous query's
+placeholder data. A typed search filters locally pinned self/selected/recent
+accounts too; the empty query retains the self/recent browse shortcuts. Keep
+same-query authorized cached rows available on background refresh errors.
+Keyboard Enter, pointer selection and pagination share this ownership rule;
+IME composition, exact lookup and full account identity labels remain intact.
+`account-picker.test.tsx` owns delayed-search and keyboard/pointer regressions.

@@ -199,7 +199,11 @@
     "read": "标为已读",
     "archive": "归档",
     "notificationUnavailable": "任务不可用",
-    "unread": "{{count}} 条未读"
+    "unread": "{{count}} 条未读",
+    "loadedCount": "已加载 {{loaded}} / {{total}} 个任务",
+    "matchCount": "匹配结果：{{count}}",
+    "clearSearch": "清空搜索",
+    "partialSearch": "仅搜索已加载的任务，加载更多以纳入其余任务。"
   },
   "detail": {
     "title": "任务详情",
@@ -620,7 +624,8 @@
     "retryDelivery": "重试原始交付",
     "retained": "删除评论或移除其中的附件引用后，已交付文件仍保留在本任务中。",
     "previewAction": "预览",
-    "downloadAction": "下载"
+    "downloadAction": "下载",
+    "referencesUnavailable": "部分引用文件不可用。"
   },
   "commandHistory": {
     "title": "指令历史",
@@ -913,7 +918,15 @@
     "decisionBy": "最近决定人",
     "decisionAt": "最近决定时间",
     "recoveryReadError": "无法读取本地恢复记录。",
-    "versionLabel": "版本"
+    "versionLabel": "版本",
+    "workspacesLoading": "正在加载空间…",
+    "workspacesEmpty": "暂无可见空间。",
+    "workspacesLoadError": "无法加载空间，请刷新重试。",
+    "projectsLoading": "正在加载项目…",
+    "projectsEmpty": "此空间暂无可见项目。",
+    "projectsLoadError": "无法加载项目，请刷新重试。",
+    "targetUnavailable": "此目标位置不可用，请选择可用的空间或项目。",
+    "chooseProject": "选择项目"
   },
   "delivery": {
     "title": "交付结果",

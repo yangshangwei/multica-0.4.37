@@ -183,3 +183,15 @@ the server responds.
 
 Correct: open current full detail, require review of its exact tuple, await the
 matching receipt, and let current authorized Query reads determine visible state.
+
+## Other destination directory recovery
+
+`OtherTarget` keeps workspace and project loading, empty and failure states
+separate and provides a local retry for each failed query. Retain the human
+proposal text and chosen IDs while retrying, but publish no effective project
+target unless its workspace and project still occur in successful directory
+reads. Removed or failed selections must not silently become a workspace target.
+Recheck effective target identity after asynchronous source/list preparation
+before submitting. Direct source workspace/project shortcuts remain independent
+of directory availability. `knowledge-panel.test.tsx` covers failed directory
+retry, preserved proposal text and removal of an observed project.

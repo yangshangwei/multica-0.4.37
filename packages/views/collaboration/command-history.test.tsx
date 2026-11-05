@@ -44,6 +44,23 @@ function navigation() {
     getShareableUrl: (path: string) => `https://server.example${path}` };
 }
 
+it.each(["en", "zh-Hans"] as const)("formats input and cancellation timestamps with the %s app locale", async locale => {
+  const f = setup();
+  vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ ...historyFixture,
+    items: [{ ...original, attachment_ids: [] }] }))));
+  renderWithI18n(<QueryClientProvider client={f.client}><NavigationProvider value={navigation()}>
+    <CollaborationCommandHistory scope={f.scope} issueId={issueId} />
+  </NavigationProvider></QueryClientProvider>, { locale });
+  await userEvent.click(screen.getByRole("button", { name: locale === "en" ? "Command history" : "指令历史" }));
+  const history = await screen.findByRole("region", { name: locale === "en" ? "Command history" : "指令历史" });
+  await within(history).findByText(original.content);
+  const times = [...history.querySelectorAll("time")];
+  expect(times.map(time => time.getAttribute("datetime"))).toEqual([original.created_at, original.cancellation.created_at]);
+  expect(times.map(time => time.textContent)).toEqual([
+    new Date(original.created_at).toLocaleString(locale), new Date(original.cancellation.created_at).toLocaleString(locale),
+  ]);
+});
+
 // Canonical malformed/provenance/paging/access matrices live in core's
 // command-history-{schema,queries}.test.ts. This path proves actual Cancel,
 // Query invalidation, immutable rendering and a fresh mounted shared view.

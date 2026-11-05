@@ -81,6 +81,31 @@ focuses the target. Scope resume restores tab scroll without consuming a fresh
 anchor; Server/viewer/issue changes remount scoped forms. Navigation goes through
 the shared adapter in both clients.
 
+### Recovery visibility and intentional form focus
+
+A missing initial memory response is not an empty document. Keep the named
+`memory` region mounted through loading, unavailable and failed reads, with a
+protected-query retry. Render retained memory-request recovery independently
+of current memory content; denial still removes protected data. Open all
+ancestor disclosures when a retained operation needs attention.
+
+`CollaborationCommentAttachments` must distinguish no attachment references
+(no query/UI) from pending/failed metadata and partially missing references.
+Use protected query retry and a factual missing-file notice. Active previews
+must derive from currently supplied metadata so removed files cannot retain a
+stale open preview. Never use workspace attachment APIs as a fallback.
+
+Intentional workflow form opening, including preparing a result from a comment,
+moves focus into the named form and reveals it in its actual scroll container.
+Closing returns focus to its actual opener when focus would otherwise be lost.
+Do not repeat this on a refetch or a keystroke, and do not automatically submit
+prepared content. Associate byte-limit errors with each affected reason/result/
+basis field; an unrelated field must not become invalid.
+
+Workbench search/sort apply to loaded rows. Show loaded/total and match context,
+retain explicit pagination, and let Clear search restore the list without
+changing the selected issue. History/comment timestamps use `useLocale()`.
+
 ## 4. Validation & Error Matrix
 
 | Condition | UI result |

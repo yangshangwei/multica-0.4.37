@@ -69,7 +69,7 @@ export function KnowledgeReview({ scope, candidateId, issue, canPropose, locked,
         {candidate.evidence.length > 0 && <div className="space-y-2"><h5 className="text-caption font-medium">{t(($) => $.knowledge.verification)}</h5><ul className="space-y-2 text-body">{candidate.evidence.map((evidence, index) => <li key={index} className="[overflow-wrap:anywhere]">
           <span className="text-caption text-muted-foreground">{t(($) => $.knowledge.evidenceKinds[evidence.kind])} · {t(($) => $.knowledge[evidence.verification])}</span> · {evidence.kind === "run_record" ? evidence.record_id : evidence.reference}
         </li>)}</ul></div>}
-        <details className="text-caption"><summary className="cursor-pointer text-muted-foreground">{t(($) => $.knowledge.digest)}</summary><code className="mt-2 block break-all">{candidate.content_sha256}</code></details>
+        <details className="text-caption"><summary className="cursor-pointer text-muted-foreground pointer-coarse:min-h-11 pointer-coarse:py-3">{t(($) => $.knowledge.digest)}</summary><code className="mt-2 block break-all">{candidate.content_sha256}</code></details>
         {canPropose && issue?.id === candidate.source_issue_id && <div className="flex flex-wrap gap-2">
           <Button type="button" variant="outline" disabled={locked} onClick={() => onProposal({ target: candidate.target, supersedesId: candidate.candidate_id })}>{t(($) => $.knowledge.correct)}</Button>
           {candidate.state === "approved" && candidate.target.kind === "project" && <Button type="button" variant="outline" disabled={locked} onClick={() => onProposal({ target: { kind: "workspace", workspace_id: candidate.target.workspace_id }, derivedId: candidate.candidate_id })}>{t(($) => $.knowledge.derive)}</Button>}
@@ -77,7 +77,7 @@ export function KnowledgeReview({ scope, candidateId, issue, canPropose, locked,
       </>}
     </>}
     {decisionKey !== null && <KnowledgeDecision key={decisionKey} scope={scope} candidate={identity === decisionKey ? candidate : undefined} locked={locked} onSubmit={onSubmit} />}
-    {candidate && candidate.availability !== "restricted" && <details className="space-y-3"><summary className="cursor-pointer text-body font-medium">{t(($) => $.knowledge.history)}</summary>
+    {candidate && candidate.availability !== "restricted" && <details className="space-y-3"><summary className="cursor-pointer text-body font-medium pointer-coarse:min-h-11 pointer-coarse:py-3">{t(($) => $.knowledge.history)}</summary>
       <ul className="space-y-2">{query.data?.value.history.map((version) => <li key={version.candidate_id}><Button type="button" variant="ghost" size="sm" onClick={() => onSelect(version.candidate_id)}>{version.availability === "restricted" ? t(($) => $.knowledge.restricted) : t(($) => $.knowledge.version, { version: version.version })} · {t(($) => $.knowledge.states[version.state])}</Button></li>)}</ul>
       {query.data?.value.history_truncated === true && <p className="text-caption text-muted-foreground">{t(($) => $.knowledge.historyTruncated)}</p>}
     </details>}

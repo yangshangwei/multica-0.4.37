@@ -137,6 +137,69 @@ it("exposes navigation without selecting during IME and clears removed or empty 
   expect(replacement).not.toBeInTheDocument();
 });
 
+it.each(["keyboard", "pointer"] as const)("blocks stale %s selection during debounce and while replacement results are pending", async (method) => {
+  let finish!: (response: Response) => void;
+  const fetch = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+    const query = JSON.parse(String(init?.body)).q;
+    if (query) return new Promise<Response>((resolve) => { finish = resolve; });
+    return new Response(JSON.stringify({ ...page(), recent: [] }));
+  });
+  const onSelect = vi.fn();
+  mount(fetch, { onSelect });
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Recipient" }));
+  const oldOption = await screen.findByRole("option", { name: /Directory account/ });
+  const input = screen.getByRole("textbox", { name: "Filter options" });
+  const attemptSelection = () => method === "keyboard" ? fireEvent.keyDown(input, { key: "Enter" }) : fireEvent.click(oldOption);
+
+  fireEvent.change(input, { target: { value: "replacement" } });
+  attemptSelection();
+  expect(onSelect).not.toHaveBeenCalled();
+  expect(screen.getByText("Loading accounts...")).toBeVisible();
+  expect(input).not.toHaveAttribute("aria-activedescendant");
+  for (const option of screen.queryAllByRole("option")) expect(option).toBeDisabled();
+
+  await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+  attemptSelection();
+  expect(onSelect).not.toHaveBeenCalled();
+  expect(screen.getByText("Loading accounts...")).toBeVisible();
+  for (const option of screen.queryAllByRole("option")) expect(option).toBeDisabled();
+
+  await act(async () => finish(new Response(JSON.stringify({ ...page(), recent: [], recipients: [
+    { user_id: exactId, name: "Replacement account", avatar_url: "", external: false },
+  ] }))));
+  const current = await screen.findByRole("option", { name: /Replacement account/ });
+  expect(current).toBeEnabled();
+  expect(screen.queryByText("Loading accounts...")).toBeNull();
+  if (method === "keyboard") await user.keyboard("{ArrowDown}{Enter}");
+  else await user.click(current);
+  expect(onSelect).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ user_id: exactId }));
+});
+
+it("filters pinned accounts during search while preserving the selected identity and server matches", async () => {
+  const selected = { user_id: exactId, name: "Chosen handler", avatar_url: "", external: false };
+  const fetch = vi.fn(async () => new Response(JSON.stringify(page())));
+  mount(fetch, { allowSelf: true, selected });
+  const user = userEvent.setup();
+  const trigger = screen.getByRole("button", { name: "Recipient" });
+  await user.click(trigger);
+  await waitFor(() => expect(screen.getByRole("option", { name: /Assign to me/ })).toBeEnabled());
+  await screen.findByRole("option", { name: /Recent collaborator/ });
+  const input = screen.getByRole("textbox", { name: "Filter options" });
+  await user.type(input, "directory@example.test");
+  await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+  await waitFor(() => expect(screen.getAllByRole("option")).toHaveLength(1));
+  expect(screen.getByRole("option", { name: /Directory account/ })).toBeEnabled();
+  expect(trigger).toHaveTextContent(selected.name);
+  expect(trigger).toHaveTextContent(exactId);
+
+  fireEvent.change(input, { target: { value: "CHOSEN" } });
+  await waitFor(() => expect(screen.getByRole("option", { name: /Chosen handler/ })).toBeEnabled());
+  expect(screen.queryByRole("option", { name: /Recent collaborator|Assign to me/ })).toBeNull();
+  await user.clear(input);
+  await waitFor(() => expect(screen.getByRole("option", { name: /Assign to me/ })).toBeEnabled());
+});
+
 it("keeps the active account through append-only paging while footer actions stay outside navigation", async () => {
   const fetch = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
     const body = JSON.parse(String(init?.body));

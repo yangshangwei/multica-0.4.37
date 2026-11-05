@@ -16,7 +16,7 @@ import { CollaborationParticipants } from "./participants";
 import { CollaborationAttachmentPicker } from "./attachment-picker";
 import { CollaborationSubmissionRecord } from "./delivery-panel";
 import type { IssuePropertyValue } from "@multica/core/types";
-import { recoverFocus } from "./focus";
+import { recoverFocus, useOpenedForm } from "./focus";
 import { CollaborationIterationInput, CollaborationLabelInput, CollaborationPropertyInputs, CollaborationSourceInputs, type CollaborationSourceSelection } from "./field-inputs";
 
 type ActionName = CollaborationAction["action"];
@@ -30,12 +30,16 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
   const labels = useCollaborationLabels();
   const client = useQueryClient();
   const state = deriveCollaborationDetailState(issue, scope.userId);
-  const [selected, setSelected] = useState<ActionName | null>(initialAction ?? null);
+  const [selection, setSelection] = useState<{ action: ActionName } | null>(() => initialAction ? { action: initialAction } : null);
+  const selected = selection?.action;
   const [restored, setRestored] = useState<CollaborationAction | null>(null);
   const submitting = useRef(false);
-  const trigger = useRef<HTMLButtonElement | null>(null);
+  const trigger = useRef<HTMLElement | null>(null);
   const section = useRef<HTMLElement>(null);
-  const dismiss = () => { setSelected(null); recoverFocus(() => trigger.current, () => section.current); };
+  const dismiss = () => { setSelection(null); recoverFocus(() => {
+    if (trigger.current?.isConnected) trigger.current.scrollIntoView({ block: "nearest" });
+    return trigger.current;
+  }, () => section.current); };
   const drafts = useCollaborationPendingDrafts({ ...scope, issueId: issue.id });
   const apply = useMutation({ mutationKey: [...collaborationKeys.issue(scope, issue.id), "human-action"], retry: false, networkMode: "always",
     mutationFn: ({ draft, recovery }: { draft: CollaborationDraft; recovery: boolean }) => executeCollaborationAction(client, scope, draft, recovery),
@@ -44,7 +48,7 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
       if (recovery) {
         const original = parseCollaborationActionDraft(draft);
         if (original.action !== "remove") {
-          setRestored(original); setSelected(original.action);
+          setRestored(original); setSelection({ action: original.action });
         }
       }
     } });
@@ -69,11 +73,14 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
     preparedSelection.current = resultFromComment ?? null;
     if (!resultFromComment || resultFromComment.issue_id !== issue.id || locked) return;
     const action = state.canSelfComplete ? "complete" : "submit_acceptance";
-    if (available.includes(action)) { resetApply(); setRestored(null); setSelected(action); }
+    if (available.includes(action)) {
+      trigger.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      resetApply(); setRestored(null); setSelection({ action });
+    }
   }, [resultFromComment, issue.id, locked, state.canSelfComplete, available, resetApply]);
   const actionLabel = (action: ActionName, isPrimary = false) => action === "complete" ? state.canAccept ? t(($) => $.delivery.accept) : t(($) => $.delivery.selfComplete)
     : action === "change_status" && isPrimary && ["backlog", "todo"].includes(issue.status_category) ? t(($) => $.delivery.start) : labels.action(action);
-  function select(action: ActionName, button: HTMLButtonElement) { trigger.current = button; apply.reset(); setRestored(null); setSelected(action); }
+  function select(action: ActionName, button: HTMLButtonElement) { trigger.current = button; apply.reset(); setRestored(null); setSelection({ action }); }
   return <section ref={section} tabIndex={-1} aria-label={t(($) => $.workflow.title)} className="space-y-4 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring">
     <div className="flex min-w-0 flex-wrap items-start gap-2">
       {primary && <Button className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11" disabled={locked} onClick={(event) => select(primary, event.currentTarget)}>{actionLabel(primary, true)}</Button>}
@@ -95,7 +102,7 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
     {apply.data && <p role="status" className="text-body">{successful.has(apply.data.code) && (apply.data.status === undefined || apply.data.status < 400) ? t(($) => $.workflow.success) : t(($) => $.workflow.refused)}</p>}
     {!apply.isPending && drafts.actions.length > 0 && <div className="space-y-3"><p role="status" className="text-body">{t(($) => $.workflow.unknown)}</p>{drafts.actions.map((draft) =>
       <Button key={draft.requestId} variant="outline" disabled={apply.isPending} className="pointer-coarse:min-h-11" onClick={() => apply.mutate({ draft, recovery: true })}>{t(($) => $.workflow.recover)}</Button>)}</div>}
-    {selected && issue.write_context && available.includes(selected) && <WorkflowForm key={`${selected}:${restored?.requestId ?? "new"}`} scope={scope} issue={issue} action={selected} restoredAction={restored?.action === selected ? restored : undefined} initialStatus={selected === "change_status" ? initialStatus : undefined} startWork={startingWork} resultFromComment={resultFromComment} onResultPrepared={onResultPrepared} locked={locked} close={dismiss} submit={async (intent, baseline) => {
+    {selected && issue.write_context && available.includes(selected) && <WorkflowForm key={`${selected}:${restored?.requestId ?? "new"}`} opening={selection} scope={scope} issue={issue} action={selected} restoredAction={restored?.action === selected ? restored : undefined} initialStatus={selected === "change_status" ? initialStatus : undefined} startWork={startingWork} resultFromComment={resultFromComment} onResultPrepared={onResultPrepared} locked={locked} close={dismiss} submit={async (intent, baseline) => {
       if (submitting.current) return;
       submitting.current = true;
       try {
@@ -108,8 +115,9 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
   </section>;
 }
 
-function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, locked, submit, close, startWork = false, resultFromComment, onResultPrepared }: {
+function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAction, locked, submit, close, startWork = false, resultFromComment, onResultPrepared }: {
   scope: CollaborationScope; issue: CollaborationIssue; action: ActionName; initialStatus?: string; restoredAction?: CollaborationAction; locked: boolean;
+  opening: unknown;
   submit: (intent: CollaborationActionIntent, baseline: CollaborationIssue) => Promise<void>; close: () => void;
   startWork?: boolean; resultFromComment?: CollaborationComment | null; onResultPrepared?: () => void;
 }) {
@@ -117,6 +125,7 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
   const labels = useCollaborationLabels();
   const client = useQueryClient();
   const fieldId = useId();
+  const heading = useOpenedForm<HTMLHeadingElement>({ opening, reveal: true });
   // A recovered rejection retains the original observations. Accepting a new
   // baseline is a separate, explicit action and never submits automatically.
   const [baseline, setBaseline] = useState<CollaborationIssue>(() => restoredAction ? { ...issue,
@@ -144,7 +153,7 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
   const [uploading, setUploading] = useState(false);
   const [referencesOpen, setReferencesOpen] = useState(false);
   const [preparationBlocked, setPreparationBlocked] = useState(false);
-  const preparedComment = useRef<string | null>(null);
+  const preparedComment = useRef<CollaborationComment | null>(null);
   const baselineState = deriveCollaborationDetailState(baseline, scope.userId);
   const deciding = action === "return_acceptance" || action === "complete" && submissionId !== null;
   const submitted = [baseline.delivery?.current, baseline.delivery?.latest].find((value) => value?.id === submissionId) ?? null;
@@ -154,8 +163,9 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
   const selectedFilesKnown = result.form.selectedAttachmentIds.every((id) => [...(draftFiles.data?.attachments ?? []), ...(references.data?.attachments ?? [])].some((file) => file.id === id));
   const resultLocked = locked || uploading || result.uploads.length > 0 || Boolean(result.error);
   useEffect(() => {
-    if (!needsResult || !resultFromComment || resultFromComment.issue_id !== issue.id || preparedComment.current === resultFromComment.id) return;
-    preparedComment.current = resultFromComment.id;
+    if (preparedComment.current === resultFromComment) return;
+    preparedComment.current = resultFromComment ?? null;
+    if (!needsResult || !resultFromComment || resultFromComment.issue_id !== issue.id) return;
     setPreparationBlocked(resultLocked);
     if (!resultLocked) result.update({ content: resultFromComment.content, basis: "", sourceCommentId: resultFromComment.id, selectedAttachmentIds: resultFromComment.attachment_ids });
     onResultPrepared?.();
@@ -198,10 +208,12 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
   const informationRequest = action === "return_information" && baseline.current_information_request?.id === informationRequestId ? baseline.current_information_request : null;
   const needsCompletedConfirmation = baseline.status_category === "done" && iterationId !== null && iterationId !== baseline.source_structure?.iteration?.id;
   const iterationReady = action !== "change_iteration" || sourceOptions?.iterations_enabled === true && (!iterationId || iterationRevision !== undefined && sourceOptions.iterations.some((item) => item.id === iterationId)) && (!baseline.source_structure?.iteration || baseline.source_structure.iteration.id === iterationId || iterationReason.trim() !== "") && (!needsCompletedConfirmation || allowCompleted);
-  const resultTooLong = needsResult && (!collaborationCommentWithinByteLimit(result.form.content) || !collaborationCommentWithinByteLimit(result.form.basis ?? ""));
-  const resultReady = !needsResult || !resultLocked && selectedFilesKnown && result.form.content.trim() !== "" && (result.form.basis ?? "").trim() !== "" && !resultTooLong;
+  const resultTooLong = needsResult && !collaborationCommentWithinByteLimit(result.form.content);
+  const basisTooLong = needsResult && !collaborationCommentWithinByteLimit(result.form.basis ?? "");
+  const reasonTooLong = action === "return_acceptance" && !collaborationCommentWithinByteLimit(note);
+  const resultReady = !needsResult || !resultLocked && selectedFilesKnown && result.form.content.trim() !== "" && (result.form.basis ?? "").trim() !== "" && !resultTooLong && !basisTooLong;
   const decisionReady = !deciding || submitted !== null && submissionId === issue.delivery?.current?.id && !staleBaseline &&
-    (action === "return_acceptance" ? note.trim() !== "" && collaborationCommentWithinByteLimit(note) : baselineState.canAccept);
+    (action === "return_acceptance" ? note.trim() !== "" && !reasonTooLong : baselineState.canAccept);
   const completionReady = action !== "complete" || (deciding ? baselineState.canAccept : baselineState.canSelfComplete);
   const informationReady = action !== "return_information" || informationRequest !== null && informationRequestId === issue.current_information_request?.id;
   const policyReady = action !== "change_ai_policy" || aiPolicy === "manual" || aiPolicy === "assisted";
@@ -235,7 +247,7 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
     }
   }
   return <form aria-label={formLabel} onSubmit={(event) => { if (event.target !== event.currentTarget) return; event.preventDefault(); if (ready) void submit(intent(), baseline); }} className="min-w-0 space-y-4 rounded-lg border border-border p-4">
-    <h3 className="text-body font-semibold">{formLabel}</h3>
+    <h3 ref={heading} tabIndex={-1} className="rounded-sm text-body font-semibold outline-none focus-visible:ring-2 focus-visible:ring-faint-foreground">{formLabel}</h3>
     <fieldset disabled={locked} className="min-w-0 space-y-4">
       {deciding && (submitted ? <CollaborationSubmissionRecord scope={scope} issueId={issue.id} submission={submitted} /> : <p className="text-body text-muted-foreground">{t(($) => $.delivery.unavailable)}</p>)}
       {informationRequest && <div id={`${fieldId}-request`} className="min-w-0 space-y-2 rounded-md bg-muted/30 p-3 [overflow-wrap:anywhere]">
@@ -252,16 +264,23 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
       {needsStatus && <div className="space-y-2"><label htmlFor={`${fieldId}-status`} className="text-body">{t(($) => $.detail.status)}</label><select id={`${fieldId}-status`} value={chosenStatus} onChange={(event) => setStatus(event.target.value)} className="block min-h-11 max-w-full rounded-md border border-input bg-background px-3 text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
         {chosenStatus && options.data && !options.data.options.some((item) => item.key === chosenStatus) && <option value={chosenStatus}>{t(($) => $.fields.unavailableSelection, { value: chosenStatus })}</option>}
         {(options.data?.options ?? []).map((option) => <option key={option.key} value={option.key}>{option.name}</option>)}</select>{options.error && <CollaborationQueryState error={options.error} />}</div>}
-      {["transfer", "request_information", "return_information", "return_acceptance"].includes(action) && <div className="space-y-2"><label htmlFor={`${fieldId}-note`} className="text-body">{action === "return_acceptance" ? t(($) => $.delivery.revisionReason) : t(($) => $.workflow.note)}</label><Textarea id={`${fieldId}-note`} required={action === "return_acceptance"} aria-describedby={informationRequest ? `${fieldId}-request` : undefined} value={note} onChange={(event) => setNote(event.target.value)} /></div>}
+      {["transfer", "request_information", "return_information", "return_acceptance"].includes(action) && <div className="space-y-2"><label htmlFor={`${fieldId}-note`} className="text-body">{action === "return_acceptance" ? t(($) => $.delivery.revisionReason) : t(($) => $.workflow.note)}</label>
+        <Textarea id={`${fieldId}-note`} required={action === "return_acceptance"} aria-invalid={reasonTooLong || undefined}
+          aria-describedby={[informationRequest ? `${fieldId}-request` : "", reasonTooLong ? `${fieldId}-note-limit` : ""].filter(Boolean).join(" ") || undefined} value={note} onChange={(event) => setNote(event.target.value)} />
+        {reasonTooLong && <p id={`${fieldId}-note-limit`} role="alert" className="text-caption text-destructive">{t(($) => $.memory.tooLong, { max: 65_536 })}</p>}
+      </div>}
       {needsResult && <>
         <p id={`${fieldId}-result-hint`} className="text-caption text-muted-foreground">{t(($) => $.delivery.hint)}</p>
         <div className="space-y-2"><label htmlFor={`${fieldId}-result`} className="text-body">{t(($) => $.delivery.result)}</label>
-          <Textarea id={`${fieldId}-result`} value={result.form.content} required disabled={resultLocked} aria-describedby={`${fieldId}-result-hint`} aria-invalid={resultTooLong || undefined}
-            onChange={(event) => result.update({ content: event.target.value })} className="min-h-28" /></div>
+          <Textarea id={`${fieldId}-result`} value={result.form.content} required disabled={resultLocked} aria-describedby={`${fieldId}-result-hint${resultTooLong ? ` ${fieldId}-result-limit` : ""}`} aria-invalid={resultTooLong || undefined}
+            onChange={(event) => result.update({ content: event.target.value })} className="min-h-28" />
+          {resultTooLong && <p id={`${fieldId}-result-limit`} role="alert" className="text-caption text-destructive">{t(($) => $.delivery.tooLong)}</p>}
+        </div>
         <div className="space-y-2"><label htmlFor={`${fieldId}-basis`} className="text-body">{t(($) => $.delivery.basis)}</label>
-          <Textarea id={`${fieldId}-basis`} value={result.form.basis ?? ""} required disabled={resultLocked} aria-invalid={resultTooLong || undefined}
-            onChange={(event) => result.update({ basis: event.target.value })} className="min-h-24" /></div>
-        {resultTooLong && <p role="alert" className="text-caption text-destructive">{t(($) => $.delivery.tooLong)}</p>}
+          <Textarea id={`${fieldId}-basis`} value={result.form.basis ?? ""} required disabled={resultLocked} aria-invalid={basisTooLong || undefined} aria-describedby={basisTooLong ? `${fieldId}-basis-limit` : undefined}
+            onChange={(event) => result.update({ basis: event.target.value })} className="min-h-24" />
+          {basisTooLong && <p id={`${fieldId}-basis-limit`} role="alert" className="text-caption text-destructive">{t(($) => $.delivery.tooLong)}</p>}
+        </div>
         {preparationBlocked && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.delivery.preparationBlocked)}</p>}
         <CollaborationAttachmentPicker scope={scope} form={result.form} update={result.update} uploads={result.uploads} onBusyChange={setUploading}
           disabled={locked || Boolean(result.error)} />
