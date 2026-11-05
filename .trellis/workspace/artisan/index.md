@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-3.md`
-- **Total Sessions**: 120
-- **Last Active**: 2026-11-03
+- **Total Sessions**: 121
+- **Last Active**: 2026-11-05
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-3.md` | ~44 | Active |
+| `journal-3.md` | ~83 | Active |
 | `journal-2.md` | ~1796 | Archived |
 | `journal-1.md` | ~2037 | Archived |
 <!-- @@@/auto:active-documents -->
@@ -31,6 +31,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 121 | 2026-11-05 | 智能体研发体系首批 P1 修复与后续路线 | `1cd9c1e60`, `5975edae9`, `028e93bb0`, `457a7de03` | `codex/agent-rnd-p1-20261105` |
 | 120 | 2026-11-03 | 协作详情交付闭环与双端验收完成 | `cfccf883458daef58117ffc82139d13a0b850ff0`, `1d70602f0fc9e0d28e651f41da3025203419a9eb` | `codex/cross-workspace-collaboration` |
 | 113 | 2026-11-02 | Collaboration quiet fake and current platform proofs | `4085e5b38`, `64a9994ec` | `codex/cross-workspace-collaboration` |
 | 112 | 2026-11-01 | 联合验收在最终合并版本上补验 | `65cd0599b` | `codex/cross-workspace-collaboration` |

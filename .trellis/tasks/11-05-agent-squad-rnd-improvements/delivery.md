@@ -31,3 +31,9 @@ Independent review additionally exercised 1,000 valid JSON samples and six bound
 - `1cd9c1e60c744b8c82b56297bfe06c4ab23a8cc8` — fix(security): prevent credentials from surviving structured execution logs
 - `5975edae9f42d92c30deaae734f11e6f43cc5dbf` — fix(ci): require working database setup before accepting test results
 - `028e93bb04035960784a339e6789395adba92eeb` — fix(squads): align delivery guidance with acceptance and review requirements
+
+## Retained child evidence
+
+- `.trellis/tasks/archive/2026-11/11-05-agent-log-redaction/verification.md` and `independent-review.md`.
+- `.trellis/tasks/archive/2026-11/11-05-agent-ci-test-integrity/verification.md` and `independent-review.md`.
+- `.trellis/tasks/archive/2026-11/11-05-squad-handoff-contract/verification.md` and `independent-review.md`.

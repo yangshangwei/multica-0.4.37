@@ -11,3 +11,5 @@
 - First implementation scope excludes automatic stage advancement; fixes existing contract wording, keeps manual/integration acceptance.
 
 - Final first batch: redaction77 (also race),daemon37,provider16,execenv22,service61; workflow5 and offline DB matrix13 pass. Scoped validation only.
+
+- All three M0 child tasks archived under `.trellis/tasks/archive/2026-11/`; M1–M3 remain active roadmap. Code remains on the isolated branch, not merged/deployed.
