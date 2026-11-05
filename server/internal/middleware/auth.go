@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/util"
@@ -68,6 +69,7 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 			// to convince a downstream handler that its request came
 			// from a non-task-token path.
 			r.Header.Del("X-Actor-Source")
+			r = r.WithContext(auth.WithVerifiedTaskToken(r.Context(), db.TaskToken{}))
 			r = r.WithContext(auth.WithAuthenticatedPrincipal(r.Context(), auth.AuthenticatedPrincipal{}))
 			if auth.PasswordMode() {
 				if s, ok := passwordAuthenticate(w, r, queries); ok {
@@ -117,6 +119,10 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 				hash := auth.HashToken(tokenString)
 				tt, err := queries.GetTaskTokenByHash(r.Context(), hash)
 				if err != nil {
+					if !errors.Is(err, pgx.ErrNoRows) {
+						writeError(w, http.StatusServiceUnavailable, "task authentication unavailable")
+						return
+					}
 					slog.Warn("auth: invalid task token", "path", r.URL.Path, "error", err)
 					http.Error(w, `{"error":"invalid token"}`, http.StatusUnauthorized)
 					return
@@ -136,6 +142,7 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 				// client tried to send.
 				r.Header.Set("X-Actor-Source", "task_token")
 				r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{UserID: userID, Kind: auth.CredentialTask})
+				r = r.WithContext(auth.WithVerifiedTaskToken(r.Context(), tt))
 				next.ServeHTTP(w, r)
 				return
 			}

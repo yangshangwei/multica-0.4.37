@@ -493,7 +493,7 @@ func (q *Queries) LockTaskKnowledgeTask(ctx context.Context, id pgtype.UUID) (Ag
 }
 
 const lockTaskKnowledgeTaskCredential = `-- name: LockTaskKnowledgeTaskCredential :one
-SELECT id, token_hash, task_id, agent_id, workspace_id, user_id, expires_at, created_at, auth_version, installation_binding_id, installation_binding_epoch FROM task_token WHERE token_hash=$1 FOR SHARE NOWAIT
+SELECT id, token_hash, task_id, agent_id, workspace_id, user_id, expires_at, created_at, auth_version, installation_binding_id, installation_binding_epoch, api_capability FROM task_token WHERE token_hash=$1 FOR SHARE NOWAIT
 `
 
 func (q *Queries) LockTaskKnowledgeTaskCredential(ctx context.Context, tokenHash string) (TaskToken, error) {
@@ -511,6 +511,7 @@ func (q *Queries) LockTaskKnowledgeTaskCredential(ctx context.Context, tokenHash
 		&i.AuthVersion,
 		&i.InstallationBindingID,
 		&i.InstallationBindingEpoch,
+		&i.ApiCapability,
 	)
 	return i, err
 }

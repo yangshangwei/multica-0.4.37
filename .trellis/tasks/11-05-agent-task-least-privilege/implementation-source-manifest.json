@@ -1,0 +1,146 @@
+{
+  "owner": "least_privilege_implement",
+  "scope": "M1-A1 API, claim and durable suppression product changes; role/doc helper and reviewer files separately owned",
+  "files": [
+    {
+      "path": "server/cmd/server/router.go",
+      "sha256": "225be1baef422586ed49f4ac7c71fad057fc9548b3ce75b4e51dd87a0e7c809a"
+    },
+    {
+      "path": "server/cmd/server/task_capability_test.go",
+      "sha256": "28700d5a4e98c4038d40e775fba5b6143bd8e910e0cc88e3d076c06b1fc0506c"
+    },
+    {
+      "path": "server/internal/auth/task_capability.go",
+      "sha256": "67ca0f6a87fb8e590fd7f37cc80f56e3c342c118fd60c9e455c247cb6050ab31"
+    },
+    {
+      "path": "server/internal/auth/task_capability_test.go",
+      "sha256": "1bf22b252b70e4c3b4668411686030892033cc122eaf45a6122b3ef4d92189ff"
+    },
+    {
+      "path": "server/internal/handler/activity.go",
+      "sha256": "c70f4038e52876de4deb384faeae5b10abcdd8f9e2e7169988eea34a8faf25dc"
+    },
+    {
+      "path": "server/internal/handler/agent.go",
+      "sha256": "fe379f7b47f49010deb815139b3a7d9ef743fd382c7d7f67211605656f9f40bf"
+    },
+    {
+      "path": "server/internal/handler/agent_access.go",
+      "sha256": "1d4c77b71dab9c737b4d9f4e8449d76f1c96dd9d7f81aa235c65ca262756e460"
+    },
+    {
+      "path": "server/internal/handler/agent_template_test.go",
+      "sha256": "aaea59c0d5cddce9175808a139f76ac8f220144f307235b7d7be59914b2fd0eb"
+    },
+    {
+      "path": "server/internal/handler/comment.go",
+      "sha256": "bf189042657696a1bdad20646ae48061187eb81ca99dc91f7d5a4104a22a2ace"
+    },
+    {
+      "path": "server/internal/handler/daemon.go",
+      "sha256": "4dee93a21397ffe56860c3d87ea5201edb52efb4c4b1f8b0ad11adad9e24dfa1"
+    },
+    {
+      "path": "server/internal/handler/handler.go",
+      "sha256": "9118f1fc54c7b50de3ff750cb876dd188e3f1b0776fa75e1a9e1475bebad8238"
+    },
+    {
+      "path": "server/internal/handler/issue.go",
+      "sha256": "1ce6f00555db89ce8ec9d0f02e4aade1870a7a030562351de61872e9da95feb8"
+    },
+    {
+      "path": "server/internal/handler/plugin_agent_hook.go",
+      "sha256": "2236ab65a09f918d064ec56b564deb806f17a9478ceddfaf1dd60ba86e6b75d0"
+    },
+    {
+      "path": "server/internal/handler/plugin_mcp.go",
+      "sha256": "e0642e246d2f7ab9a7d34651405221fd78f55cee2f8bec0c3c09eee7000d94c8"
+    },
+    {
+      "path": "server/internal/handler/source_context.go",
+      "sha256": "5dd8a4b04f3c3f10533bbf92d2f9f0015992fde74ba4d5f87b3c027740596bb2"
+    },
+    {
+      "path": "server/internal/handler/task_capability.go",
+      "sha256": "3033e3c23ea2841aaf6c0087abfcaddce08d28f490173140ab114e756fb38d42"
+    },
+    {
+      "path": "server/internal/handler/task_capability_test.go",
+      "sha256": "66349bdc4e87460c0fd602a84b681f462671eb92002c850c83b5e8c886e1b252"
+    },
+    {
+      "path": "server/internal/middleware/auth.go",
+      "sha256": "3c16d6bce359fb4573c80a6d2df955c2f01fff1eba4e24b95b31862dd4447926"
+    },
+    {
+      "path": "server/internal/middleware/password_auth.go",
+      "sha256": "8756a3ad22424fcdd1497db3ac90812009da4ec81a44f9840a5fde2a0b692446"
+    },
+    {
+      "path": "server/internal/middleware/cloudfront.go",
+      "sha256": "1604c7e5e62125e4d2561d9b9a38f99a44bcc36ee1872e53feb62af1cdd5046a"
+    },
+    {
+      "path": "server/internal/middleware/cloudfront_test.go",
+      "sha256": "2757630782d6bca4fdfff39fbc08e00ca21fb124e2496bd35f641aa7e9185c6a"
+    },
+    {
+      "path": "server/internal/middleware/task_capability_auth_test.go",
+      "sha256": "f3d6ba48344afedb71689c352bb8d94d5404ef3110c59e1fabece39cdd733198"
+    },
+    {
+      "path": "server/internal/migrations/task_capability_rollback_test.go",
+      "sha256": "d307489e8c098b9c4231f597ec70d67a31899d706a556c9cc654861258ca4d59"
+    },
+    {
+      "path": "server/internal/service/task.go",
+      "sha256": "fda2224fcba4e108fd32f8ead96328fc24cc366329bcd8514e94d0ea343e019b"
+    },
+    {
+      "path": "server/internal/service/task_capability.go",
+      "sha256": "f7b0c6ee885d73850290abea42e53c82fc79cced27054e94f9b228547ad7c30b"
+    },
+    {
+      "path": "server/internal/service/task_capability_test.go",
+      "sha256": "d2acd8bc5c4ba33ec1c087c7672f4efdcc26d34c881e9747f233d7b061c32838"
+    },
+    {
+      "path": "server/migrations/765_task_api_capability.up.sql",
+      "sha256": "f06fb1d77734a490ec3ef3ab8170dfcb312aa76e21ddb79ac0700b6daf478f42"
+    },
+    {
+      "path": "server/migrations/765_task_api_capability.down.sql",
+      "sha256": "489eaedadb56980b95df095d11988526a265250738e59ba1c8217966b82640cc"
+    },
+    {
+      "path": "server/pkg/db/generated/comment.sql.go",
+      "sha256": "097e8e4ccf388caf1e42a145974db6397a071c4084bec641f00a68f3b328551c"
+    },
+    {
+      "path": "server/pkg/db/generated/models.go",
+      "sha256": "cea827779042b1c79622ffa3c6b307ee11eea84785a622aa31c1755d803fef2e"
+    },
+    {
+      "path": "server/pkg/db/generated/task_knowledge.sql.go",
+      "sha256": "65102e989202d1dbc7ca4b81ba7bc9845db34cb24f567c43b90611b27d40b7bb"
+    },
+    {
+      "path": "server/pkg/db/generated/task_token.sql.go",
+      "sha256": "9ad60b9be3f9287f49db21efc40a83a1f0da7d762af7fcf00e1c1071285b3a46"
+    },
+    {
+      "path": "server/pkg/db/queries/comment.sql",
+      "sha256": "013f71d0296a3cea82a6ec8c75fece05a663c7e40d1cf918602ec4df1f5404e8"
+    },
+    {
+      "path": "server/pkg/db/queries/task_token.sql",
+      "sha256": "7ce1e5654ded18ec5e2734b776f49a5d4fb2f9539abf97e3c24c5f1f4102b0aa"
+    },
+    {
+      "path": "server/sqlc.yaml",
+      "sha256": "2ff845a3d00b0314d3fa245ced52c5f919ec265fa480231851716e6070c18c42"
+    }
+  ]
+}

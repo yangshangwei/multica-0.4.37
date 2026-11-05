@@ -1,0 +1,33 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "./internal/docs",
+    "-run",
+    "^(TestEmbeddedBundle|TestLookupsRejectAnythingOutsideManifest|TestResourceContentReturnsCopy|TestLoadBundle.*)$"
+  ],
+  "exit": 0,
+  "tests": {
+    "pass": [
+      "TestEmbeddedBundle",
+      "TestLookupsRejectAnythingOutsideManifest",
+      "TestResourceContentReturnsCopy",
+      "TestLoadBundleValidatesManifestAndResources/malformed_manifest",
+      "TestLoadBundleValidatesManifestAndResources/unknown_manifest_field",
+      "TestLoadBundleValidatesManifestAndResources/traversal_page_slug",
+      "TestLoadBundleValidatesManifestAndResources/backslash_page_slug",
+      "TestLoadBundleValidatesManifestAndResources/missing_page",
+      "TestLoadBundleValidatesManifestAndResources/page_identity_mismatch",
+      "TestLoadBundleValidatesManifestAndResources/traversal_asset_path",
+      "TestLoadBundleValidatesManifestAndResources/unlisted_asset_does_not_satisfy_listed_asset",
+      "TestLoadBundleValidatesManifestAndResources",
+      "TestLoadBundleUsesManifestAsWhitelist"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

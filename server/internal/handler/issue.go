@@ -1107,6 +1107,9 @@ func (h *Handler) QueryIssues(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
+	if h.taskCapabilityRead(w, r, (*Handler).ListIssues) {
+		return
+	}
 	ctx := r.Context()
 	machine := collaborationMachineRequest(r)
 	referenceColumn := "false"
@@ -2340,6 +2343,9 @@ ORDER BY
 }
 
 func (h *Handler) GetIssue(w http.ResponseWriter, r *http.Request) {
+	if h.taskCapabilityRead(w, r, (*Handler).GetIssue) {
+		return
+	}
 	id := chi.URLParam(r, "id")
 	issue, ok := h.loadIssueForUser(w, r, id)
 	if !ok {

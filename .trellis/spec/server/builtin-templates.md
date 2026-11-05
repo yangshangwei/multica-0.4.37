@@ -70,13 +70,21 @@ or human to save; Technical Writer is Contributor and edits documentation only
 on an isolated branch. Only Feature Delivery and Discovery leads default to
 requirement clarification; other leads use their existing routing instructions.
 
-Progress Reporter uses Contributor only so a
-successfully delivered report can move its own assigned report issue to
-`in_review`; its instructions keep business issues and repository files
-read-only. Its sole default role skill is `multica-progress-report`.
-Contributor is an existing permission level, not a
-report-only API sandbox; never claim the role's narrower instructions add a
-new server-enforced boundary.
+Progress Reporter v1 uses Contributor so a delivered report may move its own
+report issue to `in_review`; this is a legacy role/prompt boundary. From v2,
+server-created Reporter provenance adds a frozen task API capability: read the
+report's current project (no project means current issue only), comment on the
+current report, and do not change business status. Code/Security Reviewer v2 and
+Migration Reviewer v3 similarly allow current-issue reads/comments only. The
+existing autonomy level remains an independent ceiling, not an escape from the
+capability. Fresh role skills agree; saved role/skill instances are not rewritten.
+
+Restricted comments do not auto-wake a leader or act as acceptance. The claim's
+authoritative capability briefing takes precedence over generic workflow or saved
+skill prose. A human or existing authorized coordinator continues the issue.
+These server restrictions cover Multica APIs and platform-issued tool grants;
+they are not a daemon-host filesystem/shell sandbox. Ordinary API scope does not
+claim that historical/user-supplied prompt content was filtered by the server.
 
 Diagnostician brings the listed roster to fourteen roles and the role-skill catalog
 to fifteen entries. It uses Contributor and only
@@ -638,7 +646,7 @@ CAS/replay, audit recovery, catalog snapshot and compatibility contracts.
 
 1. **Scope:** ordinary issue turns, child stage barriers and Review Gate routing; this is separate from account collaboration state machines.
 2. **Signatures:** `writeWorkflowIssue`, `notifyParentOfChildDone`, `isTerminalChildStatus`, `CompleteTask`; review-gate-lead template version 3, review-gate squad version 3.
-3. **Contract:** an agent delivers an assigned issue/sub-issue to `in_review`. Human acceptance or an existing authorized integration produces `done`; `done/cancelled` alone close the ordinary child stage barrier. Completing an execution does not change the issue. Same-issue member result comments use the existing leader wake route; they are not child-stage acceptance.
+3. **Contract:** an agent with status-write authority delivers an assigned issue/sub-issue to `in_review`; restricted reporter/reviewer task capabilities deliver a comment and leave status to an authorized actor. Human acceptance or an existing authorized integration produces `done`; `done/cancelled` alone close the ordinary child stage barrier. Completing an execution does not change the issue. Unrestricted same-issue member result comments use the existing leader wake route; restricted comments retain durable non-dispatch eligibility. Neither is child-stage acceptance.
 4. **Matrix:** child→in_review waits; child→done/cancelled checks its parent stage; dispatch leaves the parent in progress; unknown required specialist evidence cannot pass review. Guest/Agent Identity status prohibitions remain authoritative.
 5. **Cases:** good is a delivered child visibly awaiting acceptance; base is existing same-issue worker return; bad is telling a child that in_review automatically advances the next stage or bypassing acceptance with a new parent trigger.
 6. **Tests:** generated assignment/comment/leader briefs state the same distinction. Review Gate leader and squad must independently cover all six actual review seats, with conditions and missing-evidence behavior. Keep skill line budgets, source maps, bilingual summaries and generated Chinese docs synchronized.

@@ -211,7 +211,7 @@ WITH touched_issue AS (
     RETURNING issue.id, issue.workspace_id, issue.revision, issue.admission_status
 ), inserted_comment AS (
     INSERT INTO comment (issue_id, workspace_id, author_type, author_id, content, type, parent_id, source_task_id, quick_action_id, via_plugin_id, id, dispatch_eligible)
-    SELECT ti.id, ti.workspace_id, $3, $4, $5, $6, $7, $8, $9, $10, COALESCE($11::uuid, gen_random_uuid()), ti.admission_status IN ('not_required', 'accepted')
+    SELECT ti.id, ti.workspace_id, $3, $4, $5, $6, $7, $8, $9, $10, COALESCE($11::uuid, gen_random_uuid()), ti.admission_status IN ('not_required', 'accepted') AND NOT COALESCE($12::boolean, false)
     FROM touched_issue ti
     RETURNING id, issue_id, author_type, author_id, content, type, created_at, updated_at, parent_id, workspace_id, resolved_at, resolved_by_type, resolved_by_id, source_task_id, quick_action_id, via_plugin_id, revision, dispatch_eligible, deleted_at
 )
@@ -221,17 +221,18 @@ JOIN touched_issue ON touched_issue.id = inserted_comment.issue_id
 `
 
 type CreateCommentParams struct {
-	IssueID       pgtype.UUID `json:"issue_id"`
-	WorkspaceID   pgtype.UUID `json:"workspace_id"`
-	AuthorType    string      `json:"author_type"`
-	AuthorID      pgtype.UUID `json:"author_id"`
-	Content       string      `json:"content"`
-	Type          string      `json:"type"`
-	ParentID      pgtype.UUID `json:"parent_id"`
-	SourceTaskID  pgtype.UUID `json:"source_task_id"`
-	QuickActionID pgtype.UUID `json:"quick_action_id"`
-	ViaPluginID   pgtype.UUID `json:"via_plugin_id"`
-	ID            pgtype.UUID `json:"id"`
+	IssueID          pgtype.UUID `json:"issue_id"`
+	WorkspaceID      pgtype.UUID `json:"workspace_id"`
+	AuthorType       string      `json:"author_type"`
+	AuthorID         pgtype.UUID `json:"author_id"`
+	Content          string      `json:"content"`
+	Type             string      `json:"type"`
+	ParentID         pgtype.UUID `json:"parent_id"`
+	SourceTaskID     pgtype.UUID `json:"source_task_id"`
+	QuickActionID    pgtype.UUID `json:"quick_action_id"`
+	ViaPluginID      pgtype.UUID `json:"via_plugin_id"`
+	ID               pgtype.UUID `json:"id"`
+	SuppressDispatch pgtype.Bool `json:"suppress_dispatch"`
 }
 
 type CreateCommentRow struct {
@@ -286,6 +287,7 @@ func (q *Queries) CreateComment(ctx context.Context, arg CreateCommentParams) (C
 		arg.QuickActionID,
 		arg.ViaPluginID,
 		arg.ID,
+		arg.SuppressDispatch,
 	)
 	var i CreateCommentRow
 	err := row.Scan(

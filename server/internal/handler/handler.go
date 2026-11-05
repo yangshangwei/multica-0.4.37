@@ -1145,6 +1145,9 @@ func (h *Handler) loadIssueForUserWithCollaborationUpdate(w http.ResponseWriter,
 		if !checkedUpdate && h.rejectLegacyCollaborationAccess(w, r, issue) {
 			return db.Issue{}, false
 		}
+		if !requireTaskCapabilityIssue(w, r, issue) {
+			return db.Issue{}, false
+		}
 		return issue, true
 	}
 
@@ -1169,6 +1172,9 @@ func (h *Handler) loadIssueForUserWithCollaborationUpdate(w http.ResponseWriter,
 		return db.Issue{}, false
 	}
 	if !checkedUpdate && h.rejectLegacyCollaborationAccess(w, r, issue) {
+		return db.Issue{}, false
+	}
+	if !requireTaskCapabilityIssue(w, r, issue) {
 		return db.Issue{}, false
 	}
 	return issue, true

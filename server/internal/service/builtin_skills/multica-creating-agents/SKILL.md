@@ -155,11 +155,22 @@ What the template create does that the ordinary one does not:
 - sets `autonomy_level` from the template.
 
 The listed `progress-reporter` role supports both daily and weekly progress
-reporting. It supplies `multica-progress-report`, uses concurrency one, and has
-Contributor authority so it can move its assigned report issue to `in_review`
-after successfully posting the report. Its narrower instructions keep business
-issues and repository files read-only. It is an ordinary role template, not a
-second system agent or a new permission level.
+reporting. Template v2 supplies `multica-progress-report` v5 and keeps the normal
+concurrency default of six and Contributor autonomy. Its task capability limits
+Multica reads to the current report issue's project; without a project, only
+that report issue is readable. It may add comments only to that report issue,
+never change status (including `in_review` or `done`) or delegate through a
+comment. A published report does not automatically wake a squad leader or
+complete the autopilot's business lifecycle; a human or another already
+authorized actor handles the next step.
+
+Code Reviewer v2, Security Reviewer v2 and Migration Reviewer v3 similarly read
+only their current issue, comments and activity and deliver a new review comment
+on that issue. Changing a display name, instructions or autonomy does not widen
+this capability. Existing agents and saved skills are not upgraded automatically;
+the claim-time capability briefing takes precedence over reused skills. These
+are Multica API restrictions, not a sandbox for the daemon host or ambient
+credentials.
 
 The listed `diagnostician` role supplies only `multica-debugging`, uses
 concurrency one, and has Contributor authority. It reproduces an observed

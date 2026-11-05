@@ -35,6 +35,9 @@ func (h *Handler) InvokeAgentPluginHook(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	if !h.requireTaskCapabilityTools(w, r, task) {
+		return
+	}
 	var req invokeAgentHookRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")

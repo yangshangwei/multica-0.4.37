@@ -1,0 +1,33 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "-timeout=180s",
+    "./internal/handler",
+    "-run",
+    "^TestTaskCapabilityReviewSourceContextDoesNotReadOutsideScope$"
+  ],
+  "database": "rnd_m1_handler_review01",
+  "exit": 1,
+  "counts": {
+    "pass": 1,
+    "fail": 3,
+    "skip": 0
+  },
+  "tests": {
+    "pass": [
+      "TestTaskCapabilityReviewSourceContextDoesNotReadOutsideScope/reporter_same_project"
+    ],
+    "fail": [
+      "TestTaskCapabilityReviewSourceContextDoesNotReadOutsideScope/reviewer_other_issue",
+      "TestTaskCapabilityReviewSourceContextDoesNotReadOutsideScope/reporter_other_project",
+      "TestTaskCapabilityReviewSourceContextDoesNotReadOutsideScope"
+    ],
+    "skip": []
+  },
+  "log_sha256": "c48f4f2895518a873a8bd91ff7b7a3f3b260677ff20c6258ae134369a7eb7c8d"
+}

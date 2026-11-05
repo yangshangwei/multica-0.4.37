@@ -1,0 +1,70 @@
+diff --git a/server/internal/handler/source_context.go b/server/internal/handler/source_context.go
+index 96b68b1c3..19370eb12 100755
+--- a/server/internal/handler/source_context.go
++++ b/server/internal/handler/source_context.go
+@@ -15,6 +15,7 @@ import (
+ 	"github.com/go-chi/chi/v5"
+ 	"github.com/jackc/pgx/v5"
+ 	"github.com/jackc/pgx/v5/pgtype"
++	"github.com/multica-ai/multica/server/internal/auth"
+ 	"github.com/multica-ai/multica/server/internal/logger"
+ 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
+ 	"github.com/multica-ai/multica/server/internal/service"
+@@ -241,13 +242,56 @@ func (h *Handler) issueSourceContextDetail(ctx context.Context, issue db.Issue)
+ 		CapturedAt: timestampToString(row.CapturedAt), DisplayState: "unchanged",
+ 		SourceIssueState: "unchanged", CommentThreadState: "unchanged", AnchorCommentState: "unavailable", ChangeReasons: []string{},
+ 		ChangeDetails: sourceContextChangeDetails{ChangedCommentIDs: []string{}, DescriptionAttachmentChanges: []sourceContextDescriptionAttachmentChange{}},
+-		Snapshot:      captured, SourceAuthorState: h.resolveSourceContextAuthors(ctx, issue.WorkspaceID, captured.CommentThread),
++		Snapshot:      captured,
++	}
++
++	// Captured user-supplied context stays readable. Its live source is a
++	// separate resource: do not turn this allowed issue read into a query for
++	// new comments, attachments, names or changes outside the task scope.
++	liveSourceAllowed := func(id pgtype.UUID) (bool, error) {
++		token, scoped := auth.VerifiedTaskTokenFromContext(ctx)
++		if !scoped || len(token.ApiCapability) == 0 {
++			return true, nil
++		}
++		capability, err := auth.ParseTaskCapability(token.ApiCapability)
++		if err != nil {
++			return false, auth.ErrTaskCapability
++		}
++		source, err := h.Queries.GetIssueInWorkspace(ctx, db.GetIssueInWorkspaceParams{ID: id, WorkspaceID: issue.WorkspaceID})
++		if errors.Is(err, pgx.ErrNoRows) {
++			return false, nil
++		}
++		if err != nil {
++			return false, err
++		}
++		return capability.AllowsIssue(source, false), nil
++	}
++	unavailable := func() *sourceContextDetailResponse {
++		response.DisplayState = "unavailable"
++		response.SourceIssueState = "unavailable"
++		response.CommentThreadState = "unavailable"
++		response.AnchorCommentState = "unavailable"
++		return response
++	}
++	if allowed, err := liveSourceAllowed(row.SourceIssueID); err != nil {
++		return nil, err
++	} else if !allowed {
++		return unavailable(), nil
+ 	}
+ 
+ 	anchor, anchorErr := h.Queries.GetCommentInWorkspace(ctx, db.GetCommentInWorkspaceParams{
+ 		ID: row.AnchorCommentID, WorkspaceID: issue.WorkspaceID,
+ 	})
+ 	anchorExists := anchorErr == nil && anchor.Type == "comment"
++	if anchorExists {
++		if allowed, err := liveSourceAllowed(anchor.IssueID); err != nil {
++			return nil, err
++		} else if !allowed {
++			return unavailable(), nil
++		}
++	}
++	response.SourceAuthorState = h.resolveSourceContextAuthors(ctx, issue.WorkspaceID, captured.CommentThread)
++
+ 	if anchorExists {
+ 		response.AnchorCommentState = "available"
+ 		response.CurrentSource = &sourceContextCurrentSource{

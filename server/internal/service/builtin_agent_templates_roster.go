@@ -104,7 +104,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "code-reviewer",
-		Version:            1,
+		Version:            2,
 		Listed:             true,
 		DefaultName:        "Code Reviewer",
 		AvatarEmoji:        "🔬",
@@ -122,7 +122,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "security-reviewer",
-		Version:            1,
+		Version:            2,
 		Listed:             true,
 		DefaultName:        "Security Reviewer",
 		AvatarEmoji:        "🛡️",
@@ -176,7 +176,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "progress-reporter",
-		Version:            1,
+		Version:            2,
 		Listed:             true,
 		DefaultName:        "Progress Reporter",
 		AvatarEmoji:        "📊",
@@ -248,7 +248,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "migration-reviewer",
-		Version:            2,
+		Version:            3,
 		Listed:             true,
 		DefaultName:        "Migration Reviewer",
 		AvatarEmoji:        "🗃️",

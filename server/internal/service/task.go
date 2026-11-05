@@ -3741,6 +3741,10 @@ func (s *TaskService) FinalizeTaskClaim(
 	knowledge *protocol.TaskKnowledgeClaimDescriptor,
 	daemonTokens ...db.CreateDaemonTokenParams,
 ) ([]pgtype.UUID, error) {
+	if len(token.ApiCapability) > 0 && s.TxStarter == nil {
+		return nil, errors.New("task capability mint requires a transaction")
+	}
+
 	if len(daemonTokens) > 1 {
 		return nil, fmt.Errorf("finalize task claim: expected at most one daemon token, got %d", len(daemonTokens))
 	}
@@ -3755,6 +3759,7 @@ func (s *TaskService) FinalizeTaskClaim(
 	token.InstallationBindingID = pgtype.UUID{}
 	token.InstallationBindingEpoch = pgtype.Int8{}
 	receipt := task.DeliveredCommentIds
+	currentTask := task
 	err := s.runInTx(ctx, func(qtx *db.Queries) error {
 		if auth.PasswordMode() {
 			session, err := auth.LockPasswordSession(ctx, qtx)
@@ -3802,6 +3807,7 @@ func (s *TaskService) FinalizeTaskClaim(
 			if current.Status != "dispatched" || current.RuntimeID != task.RuntimeID || current.IssueID != task.IssueID || !bytes.Equal(current.Context, task.Context) || !current.DispatchedAt.Time.Equal(task.DispatchedAt.Time) || current.ClaimGeneration != task.ClaimGeneration || token.TaskID != current.ID || token.AgentID != current.AgentID || token.WorkspaceID != runtime.WorkspaceID {
 				return ErrManagedRuntimeSource
 			}
+			currentTask = current
 			if err := s.finalizeTaskKnowledgeClaim(ctx, qtx, current, knowledge); err != nil {
 				return err
 			}
@@ -3819,6 +3825,9 @@ func (s *TaskService) FinalizeTaskClaim(
 			return &admission.Blocked{IssueID: task.IssueID}
 		}
 		if err := ValidateManagedTaskBinding(ctx, task); err != nil {
+			return err
+		}
+		if err := finalizeTaskCapability(ctx, qtx, currentTask, &token, len(daemonTokens)); err != nil {
 			return err
 		}
 		if _, err := qtx.CreateTaskToken(ctx, token); err != nil {
@@ -6038,10 +6047,19 @@ func delegatedFailureRecoveryContent(failed, source db.AgentTaskQueue) string {
 // recovery tasks themselves, terminal/backlog source issues, unavailable
 // source agents, and self-delegation must never start a recovery loop.
 func loadDelegatedFailureRecoveryTarget(ctx context.Context, q *db.Queries, failed db.AgentTaskQueue) (*delegatedFailureRecoveryTarget, error) {
+
 	if failed.Status != "failed" || !failed.DelegatedFromTaskID.Valid || failed.AutopilotRunID.Valid ||
 		(failed.TriggerEvidenceKind.Valid && failed.TriggerEvidenceKind.String == string(attribution.EvidenceDelegatedFailure)) {
 		return nil, nil
 	}
+	restricted, policyErr := RestrictedAgentResult(ctx, q, util.UUIDToString(failed.AgentID))
+	if policyErr != nil {
+		return nil, policyErr
+	}
+	if restricted {
+		return nil, nil
+	}
+
 	hasRetry, err := q.HasRetryTaskForParent(ctx, failed.ID)
 	if err != nil {
 		return nil, fmt.Errorf("check retry child: %w", err)
@@ -7269,6 +7287,10 @@ func (s *TaskService) createAgentComment(ctx context.Context, issueID, agentID p
 	if content == "" {
 		return
 	}
+	restricted, policyErr := RestrictedAgentResult(ctx, s.Queries, util.UUIDToString(agentID))
+	if policyErr != nil {
+		return
+	}
 	// Look up issue to get workspace ID for mention expansion and broadcasting.
 	issue, err := s.Queries.GetIssue(ctx, issueID)
 	if err != nil {
@@ -7287,21 +7309,24 @@ func (s *TaskService) createAgentComment(ctx context.Context, issueID, agentID p
 		}
 	}
 	created, err := s.Queries.CreateComment(ctx, db.CreateCommentParams{
-		ID:           dbid.NewV7(),
-		IssueID:      issueID,
-		WorkspaceID:  issue.WorkspaceID,
-		AuthorType:   "agent",
-		AuthorID:     agentID,
-		Content:      content,
-		Type:         commentType,
-		ParentID:     parentID,
-		SourceTaskID: sourceTaskID,
+		ID:               dbid.NewV7(),
+		IssueID:          issueID,
+		WorkspaceID:      issue.WorkspaceID,
+		AuthorType:       "agent",
+		AuthorID:         agentID,
+		Content:          content,
+		Type:             commentType,
+		ParentID:         parentID,
+		SourceTaskID:     sourceTaskID,
+		SuppressDispatch: pgtype.Bool{Bool: restricted, Valid: true},
 	})
 	if err != nil {
 		return
 	}
 	comment := created.Comment()
-	s.CancelDeferredEscalationsForIssueAgent(ctx, issueID, agentID)
+	if !restricted {
+		s.CancelDeferredEscalationsForIssueAgent(ctx, issueID, agentID)
+	}
 	commentFields := commentEventFields(comment)
 	commentFields["revision"] = comment.Revision
 	s.Bus.Publish(events.Event{
@@ -7317,7 +7342,9 @@ func (s *TaskService) createAgentComment(ctx context.Context, issueID, agentID p
 			"suppress_execution": !created.DispatchEligible,
 		},
 	})
-	s.AutoUnresolveThreadOnReply(ctx, rootComment, util.UUIDToString(issue.WorkspaceID), "agent", util.UUIDToString(agentID))
+	if !restricted {
+		s.AutoUnresolveThreadOnReply(ctx, rootComment, util.UUIDToString(issue.WorkspaceID), "agent", util.UUIDToString(agentID))
+	}
 }
 
 // AutoUnresolveThreadOnReply clears resolved_at on the thread root when a

@@ -1,0 +1,63 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "-timeout=180s",
+    "-race",
+    "./internal/handler",
+    "-run",
+    "^TestTaskCapability"
+  ],
+  "database": "rnd_m1_handler_review01",
+  "exit": 0,
+  "counts": {
+    "pass": 34,
+    "fail": 0,
+    "skip": 0
+  },
+  "tests": {
+    "pass": [
+      "TestTaskCapabilityClaimAndResourceMatrix/code-reviewer",
+      "TestTaskCapabilityClaimAndResourceMatrix/progress-reporter",
+      "TestTaskCapabilityClaimAndResourceMatrix/security-reviewer",
+      "TestTaskCapabilityClaimAndResourceMatrix/migration-reviewer",
+      "TestTaskCapabilityClaimAndResourceMatrix",
+      "TestTaskCapabilityRevocationAndMalformedPolicy/terminal",
+      "TestTaskCapabilityRevocationAndMalformedPolicy/old_generation",
+      "TestTaskCapabilityRevocationAndMalformedPolicy/moved_project",
+      "TestTaskCapabilityRevocationAndMalformedPolicy/revoked_token",
+      "TestTaskCapabilityRevocationAndMalformedPolicy/expired",
+      "TestTaskCapabilityRevocationAndMalformedPolicy/unknown_policy",
+      "TestTaskCapabilityRevocationAndMalformedPolicy/missing_policy",
+      "TestTaskCapabilityRevocationAndMalformedPolicy",
+      "TestTaskCapabilityCommentsStayInertAfterTokenCleanup",
+      "TestTaskCapabilityCompletionCommentStaysInert",
+      "TestTaskCapabilityPasswordAuthentication",
+      "TestTaskCapabilityLegacyRoleUnchanged",
+      "TestTaskCapabilityCurrentOriginatorAuthority/membership",
+      "TestTaskCapabilityCurrentOriginatorAuthority/disabled",
+      "TestTaskCapabilityCurrentOriginatorAuthority/invoke",
+      "TestTaskCapabilityCurrentOriginatorAuthority",
+      "TestTaskCapabilityCommentDoesNotMutateThreadOrEscalation",
+      "TestTaskCapabilityUnsupportedToolsAndNonIssueClaims/mcp/batch_false",
+      "TestTaskCapabilityUnsupportedToolsAndNonIssueClaims/mcp/batch_true",
+      "TestTaskCapabilityUnsupportedToolsAndNonIssueClaims/non_issue/batch_false",
+      "TestTaskCapabilityUnsupportedToolsAndNonIssueClaims/non_issue/batch_true",
+      "TestTaskCapabilityUnsupportedToolsAndNonIssueClaims",
+      "TestTaskCapabilityFinalizationRejectsChangedScopeAndBrokerCredential/broker",
+      "TestTaskCapabilityFinalizationRejectsChangedScopeAndBrokerCredential/project_move",
+      "TestTaskCapabilityFinalizationRejectsChangedScopeAndBrokerCredential",
+      "TestTaskCapabilityReadSnapshotAndWriteRecheck",
+      "TestTaskCapabilityNoProjectReporterCannotListWorkspace",
+      "TestTaskCapabilityDaemonToolEndpointsCannotBypass",
+      "TestTaskCapabilityConcurrentMoveCannotWriteComment"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "log_sha256": "557025f11928a377d342453667353134f4a805d669e0259de8616993bd27a237"
+}

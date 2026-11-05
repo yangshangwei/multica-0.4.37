@@ -2360,6 +2360,7 @@ type TaskToken struct {
 	AuthVersion              int64              `json:"auth_version"`
 	InstallationBindingID    pgtype.UUID        `json:"installation_binding_id"`
 	InstallationBindingEpoch pgtype.Int8        `json:"installation_binding_epoch"`
+	ApiCapability            []byte             `json:"-"`
 }
 
 type TaskUsage struct {

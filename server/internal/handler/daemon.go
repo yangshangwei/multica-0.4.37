@@ -1909,13 +1909,14 @@ func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
 		// the exact claim is requeued and omitted from this batch.
 		commentBackedTask := task.TriggerCommentID.Valid || len(task.CoalescedCommentIds) > 0
 		receipt, ferr := h.TaskService.FinalizeTaskClaim(r.Context(), task, db.CreateTaskTokenParams{
-			ID:          dbid.NewV7(),
-			TokenHash:   auth.HashToken(tokenStr),
-			TaskID:      task.ID,
-			AgentID:     task.AgentID,
-			WorkspaceID: parseUUID(resp.WorkspaceID),
-			UserID:      rt.OwnerID,
-			ExpiresAt:   pgtype.Timestamptz{Time: time.Now().Add(24 * time.Hour), Valid: true},
+			ID:            dbid.NewV7(),
+			TokenHash:     auth.HashToken(tokenStr),
+			ApiCapability: resp.taskCapability,
+			TaskID:        task.ID,
+			AgentID:       task.AgentID,
+			WorkspaceID:   parseUUID(resp.WorkspaceID),
+			UserID:        rt.OwnerID,
+			ExpiresAt:     pgtype.Timestamptz{Time: time.Now().Add(24 * time.Hour), Valid: true},
 		}, deliveredCommentIDs, commentBackedTask, resp.KnowledgeContext, daemonTokens...)
 		if ferr != nil {
 			if failure := h.settleKnowledgeFinalizeRefusal(r.Context(), &task, ferr); failure != nil {
@@ -2206,11 +2207,13 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 	// not — because its absence is what tells an upgraded daemon it is talking
 	// to a server too old to have answered the question (MUL-5811).
 	resp.LeaderRoleResolved = true
+	var capabilityToolError error
 	// Agent-trigger plugin hooks, as tools. A failure here degrades to no
 	// tools rather than failing the claim: a plugin that cannot be listed must
 	// not stop an agent from working on the issue.
 	if h.PluginService != nil && h.pluginsV1Enabled(r.Context()) {
 		if tools, toolErr := h.PluginService.AgentHookTools(r.Context(), parseUUID(runtimeWorkspaceID)); toolErr != nil {
+			capabilityToolError = toolErr
 			slog.Warn("plugins: could not list agent hook tools", "workspace_id", runtimeWorkspaceID, "error", toolErr)
 		} else {
 			resp.PluginHookTools = tools
@@ -2220,6 +2223,7 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 		// that went missing or whose schema drifted refuses at startup without
 		// any new enforcement code.
 		if connections, connErr := h.PluginService.AgentMCPConnections(r.Context(), parseUUID(runtimeWorkspaceID)); connErr != nil {
+			capabilityToolError = connErr
 			slog.Warn("plugins: could not list agent MCP connections", "workspace_id", runtimeWorkspaceID, "error", connErr)
 		} else if len(connections) > 0 {
 			resp.RemoteMCPConnections = append(resp.RemoteMCPConnections, connections...)
@@ -2300,6 +2304,14 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 			"error_runtime_access_denied", http.StatusForbidden, "private runtime does not permit task agent",
 		)
 	}
+	restrictedProfile := auth.TaskCapabilityProfile(agent.TemplateKey, agent.TemplateVersion)
+	if restrictedProfile != "" {
+		if !task.IssueID.Valid || !task.OriginatorUserID.Valid {
+			return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, h.failClaimedTaskBeforeLaunch(r.Context(), task,
+				"This role requires an issue task with an authorizing human.", taskfailure.ReasonInvalidTaskIdentity, "error_task_capability", http.StatusForbidden, "task capability requires an attributed issue task")
+		}
+		knowledge = nil
+	}
 	useSkillRefs := requestHasClientCapability(r, protocol.DaemonCapabilitySkillBundlesV1)
 	var customEnv map[string]string
 	if agent.CustomEnv != nil {
@@ -2325,6 +2337,7 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 	// including a failed read — leave the agent config untouched: a broken
 	// shared entry must never take away servers the agent runs with today.
 	if bound, err := h.Queries.ListEnabledAgentMcpServers(r.Context(), agent.ID); err != nil {
+		capabilityToolError = err
 		slog.Warn("daemon claim: load agent mcp servers failed; using agent mcp_config",
 			"task_id", uuidToString(task.ID), "agent_id", uuidToString(agent.ID), "error", err)
 	} else if len(bound) > 0 {
@@ -2333,6 +2346,7 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 			bindings = append(bindings, WorkspaceMcpBinding{Name: server.Name, Config: json.RawMessage(server.Config)})
 		}
 		if resolved, err := ResolveAgentMcpConfig(bindings, mcpConfig); err != nil {
+			capabilityToolError = err
 			slog.Warn("daemon claim: resolve agent mcp servers failed; falling back to agent mcp_config",
 				"task_id", uuidToString(task.ID), "agent_id", uuidToString(agent.ID), "error", err)
 		} else {
@@ -2359,6 +2373,13 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 	var runtimeConfig json.RawMessage
 	if rc := bytes.TrimSpace(agent.RuntimeConfig); len(rc) > 0 && !bytes.Equal(rc, []byte("{}")) && !bytes.Equal(rc, []byte("null")) {
 		runtimeConfig = json.RawMessage(agent.RuntimeConfig)
+	}
+	if restrictedProfile != "" && capabilityToolError != nil {
+		return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, &claimBuildFailure{outcome: "error_task_capability_tools", status: http.StatusServiceUnavailable, message: "task capability tool configuration unavailable"}
+	}
+	if restrictedProfile != "" && (taskCapabilityHasTools(mcpConfig) || taskCapabilityHasTools(task.RuntimeMcpOverlay) || len(resp.PluginHookTools) > 0 || len(resp.RemoteMCPConnections) > 0 || len(resp.ConnectedApps) > 0) {
+		return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, h.failClaimedTaskBeforeLaunch(r.Context(), task,
+			"External MCP and plugin tools are unavailable for this restricted role. Remove these tools or choose a different role.", taskfailure.ReasonInvalidTaskIdentity, "error_task_capability_tools", http.StatusForbidden, "task capability does not support configured external tools")
 	}
 	resp.Agent = &TaskAgentData{
 		ID:                    uuidToString(agent.ID),
@@ -3270,6 +3291,10 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 	if failure := h.rejectClaimOnWorkspaceMismatch(r.Context(), task, resp.WorkspaceID, runtimeID, runtimeWorkspaceID, hasQuickCreate); failure != nil {
 		return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, failure
 	}
+	if restrictedProfile != "" {
+		resp.PriorSessionID = ""
+		resp.PriorWorkDir = ""
+	}
 	claim, prior, knowledgeErr := h.TaskService.BuildTaskKnowledgeClaim(r.Context(), *task, knowledge, resp.PriorSessionID)
 	if knowledgeErr != nil {
 		code, requeue := knowledgeClaimErrorDisposition(knowledgeErr)
@@ -3436,6 +3461,21 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 		}
 	}
 
+	if restrictedProfile != "" {
+		capability, err := auth.CurrentTaskCapability(r.Context(), h.Queries, *task, agent, uuidToString(runtime.OwnerID), runtimeWorkspaceID)
+		if err != nil || capability.ProjectID != resp.ProjectID || capability.IssueID != resp.IssueID {
+			if err != nil && !errors.Is(err, auth.ErrTaskCapability) && !errors.Is(err, pgx.ErrNoRows) {
+				return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, &claimBuildFailure{outcome: "error_task_capability", status: http.StatusServiceUnavailable, message: "task capability authorization unavailable"}
+			}
+			return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, h.failClaimedTaskBeforeLaunch(r.Context(), task,
+				"The authorizing person's task permissions changed. Request a new assignment.", taskfailure.ReasonInvalidTaskIdentity, "error_task_capability", http.StatusForbidden, "task capability authorization changed")
+		}
+		resp.taskCapability, _ = json.Marshal(capability)
+		resp.PriorSessionID = ""
+		resp.PriorWorkDir = ""
+		resp.ActiveSiblingRuns = nil
+		resp.Agent.Instructions += "\n\n" + taskCapabilityBriefing(capability)
+	}
 	return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, nil
 }
 
@@ -3621,13 +3661,14 @@ func (h *Handler) ClaimTaskByRuntime(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	receipt, ferr := h.TaskService.FinalizeTaskClaim(r.Context(), *task, db.CreateTaskTokenParams{
-		ID:          dbid.NewV7(),
-		TokenHash:   auth.HashToken(tokenStr),
-		TaskID:      task.ID,
-		AgentID:     task.AgentID,
-		WorkspaceID: parseUUID(resp.WorkspaceID),
-		UserID:      runtime.OwnerID,
-		ExpiresAt:   pgtype.Timestamptz{Time: time.Now().Add(24 * time.Hour), Valid: true},
+		ID:            dbid.NewV7(),
+		TokenHash:     auth.HashToken(tokenStr),
+		ApiCapability: resp.taskCapability,
+		TaskID:        task.ID,
+		AgentID:       task.AgentID,
+		WorkspaceID:   parseUUID(resp.WorkspaceID),
+		UserID:        runtime.OwnerID,
+		ExpiresAt:     pgtype.Timestamptz{Time: time.Now().Add(24 * time.Hour), Valid: true},
 	}, deliveredCommentIDs, commentBackedTask, resp.KnowledgeContext, daemonTokens...)
 	if ferr != nil {
 		if failure := h.settleKnowledgeFinalizeRefusal(r.Context(), task, ferr); failure != nil {

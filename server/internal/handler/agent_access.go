@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
@@ -123,25 +124,7 @@ func invokeAgentDecision(ctx context.Context, queries *db.Queries, agent db.Agen
 // loadedInvocationDecision shares the existing invoke rules with batch callers.
 // Membership and principal attribution must be established by the caller.
 func loadedInvocationDecision(agent db.Agent, targets []db.AgentInvocationTarget, effectiveUser string, isWorkspaceMember, workspaceBroad bool) bool {
-	if effectiveUser != "" && uuidToString(agent.OwnerID) == effectiveUser {
-		return true
-	}
-	if agent.PermissionMode != "public_to" {
-		return false
-	}
-	for _, target := range targets {
-		switch target.TargetType {
-		case "workspace":
-			if isWorkspaceMember || workspaceBroad {
-				return true
-			}
-		case "member":
-			if effectiveUser != "" && uuidToString(target.TargetID) == effectiveUser {
-				return true
-			}
-		}
-	}
-	return false
+	return auth.AgentInvocationAllowed(agent, targets, effectiveUser, isWorkspaceMember, workspaceBroad)
 }
 
 // canAccessPrivateAgent gates the VIEW surfaces (list/detail navigation, chat

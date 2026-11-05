@@ -12,6 +12,8 @@ import (
 	"time"
 
 	"github.com/multica-ai/multica/server/internal/auth"
+	"github.com/multica-ai/multica/server/internal/util"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
 // testSigner sets up env vars and creates a CloudFrontSigner with a throwaway RSA key.
@@ -99,5 +101,20 @@ func TestRefreshCloudFrontCookies_SkipsWhenCookiePresent(t *testing.T) {
 
 	if len(rec.Result().Cookies()) != 0 {
 		t.Error("should not refresh cookies when CloudFront-Policy is already present")
+	}
+}
+
+func TestRefreshCloudFrontCookies_RestrictedTaskCannotMintWildcard(t *testing.T) {
+	signer := testSigner(t)
+	handler := RefreshCloudFrontCookies(signer)(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(200) }))
+	req := httptest.NewRequest(http.MethodGet, "/api/issues", nil)
+	req = req.WithContext(auth.WithVerifiedTaskToken(req.Context(), db.TaskToken{ID: util.MustParseUUID("00000000-0000-4000-8000-000000000001"), ApiCapability: []byte(`{"version":1}`)}))
+	rec := httptest.NewRecorder()
+	handler.ServeHTTP(rec, req)
+	if rec.Code != 200 {
+		t.Fatal("protected read was not forwarded")
+	}
+	if len(rec.Result().Cookies()) != 0 {
+		t.Fatal("restricted task obtained a wildcard CDN credential")
 	}
 }

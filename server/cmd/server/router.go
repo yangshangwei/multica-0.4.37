@@ -1620,6 +1620,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// /v1 prevents the Public API from accepting session cookies.
 	r.Group(func(r chi.Router) {
 		r.Use(middleware.Auth(queries, patCache, cloudPATVerifier))
+		r.Use(h.TaskCapabilityGuard)
 		r.Use(handler.RequireHumanActor)
 		r.Route(pluginBridgePrefix, func(r chi.Router) {
 			registerPluginActionRoutes(r, h)
@@ -1632,6 +1633,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	r.Group(func(r chi.Router) {
 		r.Use(handler.PlatformAdminNoStore)
 		r.Use(middleware.Auth(queries, patCache, cloudPATVerifier))
+		r.Use(h.TaskCapabilityGuard)
 		r.Use(middleware.InstallationMetadata(queries))
 		r.Use(middleware.RefreshCloudFrontCookies(cfSigner))
 

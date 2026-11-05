@@ -271,8 +271,8 @@ func TestAgentRoleTemplate_ProgressReporterDefaults(t *testing.T) {
 	if !ok {
 		t.Fatal("progress-reporter template missing from the roster")
 	}
-	if !template.Listed || template.Version != 1 || template.MaxConcurrentTasks != 6 {
-		t.Errorf("reporter defaults = listed:%t version:%d concurrency:%d, want true, 1, 6", template.Listed, template.Version, template.MaxConcurrentTasks)
+	if !template.Listed || template.Version != 2 || template.MaxConcurrentTasks != 6 {
+		t.Errorf("reporter defaults = listed:%t version:%d concurrency:%d, want true, 2, 6", template.Listed, template.Version, template.MaxConcurrentTasks)
 	}
 	if template.DefaultName != "Progress Reporter" || template.Title("zh") != "进展报告员" {
 		t.Errorf("reporter names = %q / %q, want Progress Reporter / 进展报告员", template.DefaultName, template.Title("zh"))
@@ -311,8 +311,8 @@ func TestProgressReporter_EvidenceAndCloseoutContract(t *testing.T) {
 	if !ok {
 		t.Fatal("multica-progress-report skill missing from the registry")
 	}
-	if skill.Version != 4 {
-		t.Errorf("progress report skill version = %d, want 4 after preserving read-only evidence follow-up", skill.Version)
+	if skill.Version != 5 {
+		t.Errorf("progress report skill version = %d, want 5 after restricting delivery to comments", skill.Version)
 	}
 	for name, body := range map[string]string{"role": role.Instructions(), "skill": skill.Content} {
 		t.Run(name, func(t *testing.T) {
@@ -325,6 +325,52 @@ func TestProgressReporter_EvidenceAndCloseoutContract(t *testing.T) {
 			} {
 				if !strings.Contains(body, contract) {
 					t.Errorf("missing reporting contract %q", contract)
+				}
+			}
+		})
+	}
+}
+
+// These defaults must teach the same boundary as the task capability. Otherwise
+// a fresh role repeatedly attempts denied writes or mistakes a comment for a
+// dispatched follow-up. Saved workspace copies are not changed by this registry.
+func TestReadOnlyRoleTemplates_CapabilityDeliveryContract(t *testing.T) {
+	cases := []struct {
+		key          string
+		roleVersion  int32
+		skillVersion int32
+		scope        []string
+	}{
+		{"progress-reporter", 2, 5, []string{"当前报告任务所属项目", "未关联项目", "仅当前报告任务"}},
+		{"code-reviewer", 2, 2, []string{"仅当前任务", "评论和活动"}},
+		{"security-reviewer", 2, 4, []string{"仅当前任务", "评论和活动"}},
+		{"migration-reviewer", 3, 2, []string{"仅当前任务", "评论和活动"}},
+	}
+	for _, tc := range cases {
+		t.Run(tc.key, func(t *testing.T) {
+			role, ok := AgentRoleTemplateByKey(tc.key)
+			if !ok || len(role.RoleSkills) != 1 {
+				t.Fatalf("missing role or unique default skill: %s", tc.key)
+			}
+			skill, ok := RoleSkillTemplateByName(role.RoleSkills[0])
+			if !ok {
+				t.Fatalf("missing role skill %s", role.RoleSkills[0])
+			}
+			if role.Version != tc.roleVersion || skill.Version != tc.skillVersion {
+				t.Errorf("role/skill versions = %d/%d, want %d/%d for the comment-only policy", role.Version, skill.Version, tc.roleVersion, tc.skillVersion)
+			}
+			for name, body := range map[string]string{"role": role.Instructions(), "skill": skill.Content} {
+				for _, contract := range append(tc.scope, "不修改任务状态", "in_review", "done", "不自动唤醒", "当前任务", "评论") {
+					if !strings.Contains(body, contract) {
+						t.Errorf("%s is missing capability contract %q", name, contract)
+					}
+				}
+				if tc.key == "progress-reporter" {
+					for _, retired := range []string{"才可将当前报告任务设为", "仅更新当前报告任务为", "只允许当前报告任务的评论与 `in_review` 收尾"} {
+						if strings.Contains(body, retired) {
+							t.Errorf("%s still authorizes retired status writes: %q", name, retired)
+						}
+					}
 				}
 			}
 		})
@@ -366,8 +412,8 @@ func TestGovernanceSkills_FailureExampleContracts(t *testing.T) {
 	}{
 		"multica-architecture-decision-record": {6, []string{"失败样例", "旧客户端", "兼容窗口", "hold"}},
 		"multica-release-check":                {4, []string{"失败样例", "备份", "恢复演练", "RPO", "hold"}},
-		"multica-security-review":              {3, []string{"失败样例", "信任边界", "供应链", "hold"}},
-		"multica-progress-report":              {4, []string{"失败样例", "baseline", "观察窗口", "unknown", "补证建议", "报告员不自行创建业务任务"}},
+		"multica-security-review":              {4, []string{"失败样例", "信任边界", "供应链", "hold"}},
+		"multica-progress-report":              {5, []string{"失败样例", "baseline", "观察窗口", "unknown", "补证建议", "报告员不自行创建业务任务"}},
 		"multica-reliability-engineering":      {2, []string{"失败样例", "恢复演练", "unknown"}},
 	}
 	for skillName, want := range cases {
@@ -379,7 +425,7 @@ func TestGovernanceSkills_FailureExampleContracts(t *testing.T) {
 			// The failure-example rule is a material behavior change; the release
 			// version identifies newly materialized skills; existing copies stay intact.
 			if skill.Version != want.version {
-				t.Errorf("%s version = %d, want %d after the failure-example rule", skillName, skill.Version, want.version)
+				t.Errorf("%s version = %d, want %d for the current release", skillName, skill.Version, want.version)
 			}
 			for _, marker := range want.keywords {
 				if !strings.Contains(skill.Content, marker) {

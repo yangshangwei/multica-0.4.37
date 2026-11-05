@@ -17,6 +17,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/admission"
+	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/logger"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/service"
@@ -393,6 +394,9 @@ const (
 // that means threads are listed oldest-active first and the freshest thread
 // sits at the tail, closest to "now" in an agent prompt.
 func (h *Handler) ListComments(w http.ResponseWriter, r *http.Request) {
+	if h.taskCapabilityRead(w, r, (*Handler).ListComments) {
+		return
+	}
 	issueID := chi.URLParam(r, "id")
 	issue, ok := h.loadIssueForUser(w, r, issueID)
 	if !ok {
@@ -1747,6 +1751,13 @@ func (h *Handler) CreateComment(w http.ResponseWriter, r *http.Request) {
 		parentComment = &parent
 	}
 
+	capabilityToken, hasTaskToken := auth.VerifiedTaskTokenFromContext(r.Context())
+	restricted := hasTaskToken && len(capabilityToken.ApiCapability) > 0
+	if restricted && len(req.AttachmentIDs) > 0 {
+		writeTaskCapabilityError(w, auth.ErrTaskCapability)
+		return
+	}
+
 	attachmentIDs, ok := parseUUIDSliceOrBadRequest(w, req.AttachmentIDs, "attachment_ids")
 	if !ok {
 		return
@@ -1860,7 +1871,7 @@ func (h *Handler) CreateComment(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	created, err := h.Queries.CreateComment(r.Context(), db.CreateCommentParams{
+	params := db.CreateCommentParams{
 		ID:           dbid.NewV7(),
 		IssueID:      issue.ID,
 		WorkspaceID:  issue.WorkspaceID,
@@ -1870,7 +1881,18 @@ func (h *Handler) CreateComment(w http.ResponseWriter, r *http.Request) {
 		Type:         req.Type,
 		ParentID:     parentID,
 		SourceTaskID: sourceTaskID,
-	})
+	}
+	var created db.CreateCommentRow
+	var err error
+	if restricted {
+		created, err = h.createCapabilityComment(r.Context(), capabilityToken, params)
+		if err != nil {
+			writeTaskCapabilityError(w, err)
+			return
+		}
+	} else {
+		created, err = h.Queries.CreateComment(r.Context(), params)
+	}
 	if err != nil {
 		slog.Warn("create comment failed", append(logger.RequestAttrs(r), "error", err, "issue_id", issueID)...)
 		writeError(w, http.StatusInternalServerError, "failed to create comment: "+err.Error())
@@ -1902,8 +1924,10 @@ func (h *Handler) CreateComment(w http.ResponseWriter, r *http.Request) {
 	// so the reply is visible regardless of the unresolve outcome. Shared with
 	// the agent task path (TaskService.createAgentComment) — both reply paths
 	// must keep the resolved root in sync.
-	h.TaskService.AutoUnresolveThreadOnReply(r.Context(), rootComment, uuidToString(issue.WorkspaceID), authorType, authorID)
-	if authorType == "agent" {
+	if !restricted {
+		h.TaskService.AutoUnresolveThreadOnReply(r.Context(), rootComment, uuidToString(issue.WorkspaceID), authorType, authorID)
+	}
+	if authorType == "agent" && !restricted {
 		h.TaskService.CancelDeferredEscalationsForIssueAgent(r.Context(), issue.ID, comment.AuthorID)
 	}
 
@@ -1911,7 +1935,15 @@ func (h *Handler) CreateComment(w http.ResponseWriter, r *http.Request) {
 	// The comment is already saved; a blocked mention must not fail the whole
 	// request. Surface the per-target outcomes so the client can show partial
 	// success instead of a silent no-op (MUL-4525 §2).
-	resp.TriggerOutcomes = h.triggerTasksForComment(r.Context(), issue, comment, parentComment, authorType, authorID, originatorUserID, suppressAgentIDs)
+	if restricted {
+		for _, mention := range util.ParseMentions(comment.Content) {
+			if mention.Type == "agent" || mention.Type == "squad" {
+				resp.TriggerOutcomes = append(resp.TriggerOutcomes, CommentTriggerOutcome{TargetType: mention.Type, TargetID: mention.ID, Status: DispatchBlocked, ReasonCode: ReasonInvocationNotAllowed})
+			}
+		}
+	} else {
+		resp.TriggerOutcomes = h.triggerTasksForComment(r.Context(), issue, comment, parentComment, authorType, authorID, originatorUserID, suppressAgentIDs)
+	}
 
 	writeJSON(w, http.StatusCreated, resp)
 }

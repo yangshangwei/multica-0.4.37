@@ -17,3 +17,5 @@ sql:
             go_struct_tag: 'json:"-"'
           - column: "*.knowledge_context_version"
             go_struct_tag: 'json:"-"'
+          - column: "*.api_capability"
+            go_struct_tag: 'json:"-"'

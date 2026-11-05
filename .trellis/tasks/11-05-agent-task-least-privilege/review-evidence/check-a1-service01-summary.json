@@ -1,0 +1,32 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "-timeout=180s",
+    "./internal/service",
+    "-run",
+    "^(TestTaskCapabilityFailureCannotWakeCoordinator|TestFailTaskFinalDelegatedFailureWakesCoordinatorOnce|TestTriagePendingCommentNeverDispatchesAfterAcceptance|TestEventBridgeMapsInternalEventsToThePublishedVocabulary)$"
+  ],
+  "database": "rnd_m1_service_review01",
+  "exit": 0,
+  "counts": {
+    "pass": 4,
+    "fail": 0,
+    "skip": 0
+  },
+  "tests": {
+    "pass": [
+      "TestFailTaskFinalDelegatedFailureWakesCoordinatorOnce",
+      "TestEventBridgeMapsInternalEventsToThePublishedVocabulary",
+      "TestTaskCapabilityFailureCannotWakeCoordinator",
+      "TestTriagePendingCommentNeverDispatchesAfterAcceptance"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "log_sha256": "4c23f1594c468b73d998bf174e085ec6cb88f913c22ccab249dd6ba2e7ec0d1c"
+}

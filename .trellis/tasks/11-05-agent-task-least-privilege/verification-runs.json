@@ -1,0 +1,417 @@
+{
+  "scope": "M1-A1 targeted evidence; counts overlap and must not be summed",
+  "baseline": "5aef9c19ad3e764d09cff939edfded53f8c513bd",
+  "environment": "task-owned PG17/pgvector; Go1.27.0 darwin arm64; GOMAXPROCS2/go-p1; private per-run HOME",
+  "runs": [
+    {
+      "command": [
+        "go",
+        "test",
+        "-p",
+        "1",
+        "-json",
+        "-count=1",
+        "-timeout=180s",
+        "-race",
+        "./internal/handler",
+        "-run",
+        "^(TestTaskCapabilityDaemonToolEndpointsCannotBypass|TestTaskCapabilityConcurrentMoveCannotWriteComment)$"
+      ],
+      "database": "rnd_m1_handler_green01",
+      "exit": 0,
+      "counts": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestTaskCapabilityDaemonToolEndpointsCannotBypass",
+          "TestTaskCapabilityConcurrentMoveCannotWriteComment"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "log_sha256": "821d4819d09078640f274bb626835d2ead1bc711fd6dbd24c8392602c6baa6c6",
+      "summary_path": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/capability-handler-extra01-summary.json",
+      "summary_sha256": "44d0a880c44f31f2d75b1e7756b4a019cbf368c16b8dc8064ae338da48ab6af7"
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-p",
+        "1",
+        "-json",
+        "-count=1",
+        "-timeout=180s",
+        "./internal/handler",
+        "-run",
+        "^TestTaskCapability"
+      ],
+      "database": "rnd_m1_handler_green01",
+      "exit": 0,
+      "counts": {
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestTaskCapabilityClaimAndResourceMatrix/code-reviewer",
+          "TestTaskCapabilityClaimAndResourceMatrix/progress-reporter",
+          "TestTaskCapabilityClaimAndResourceMatrix/security-reviewer",
+          "TestTaskCapabilityClaimAndResourceMatrix/migration-reviewer",
+          "TestTaskCapabilityClaimAndResourceMatrix",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/terminal",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/old_generation",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/moved_project",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/revoked_token",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/expired",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/unknown_policy",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/missing_policy",
+          "TestTaskCapabilityRevocationAndMalformedPolicy",
+          "TestTaskCapabilityCommentsStayInertAfterTokenCleanup",
+          "TestTaskCapabilityCompletionCommentStaysInert",
+          "TestTaskCapabilityPasswordAuthentication",
+          "TestTaskCapabilityLegacyRoleUnchanged"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "log_sha256": "16e73e5201bbe0f9b8e0dc78e4bf1523f7ea30da4d823eea4d47eed2598926f9",
+      "summary_path": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/capability-handler-green01-summary.json",
+      "summary_sha256": "7e4886be0a04971970faa9e9c29c363c3f3964340bc25fb9e92996f8be3e75d4"
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-p",
+        "1",
+        "-json",
+        "-count=1",
+        "-timeout=180s",
+        "./internal/handler",
+        "-run",
+        "^TestTaskCapability"
+      ],
+      "database": "rnd_m1_handler_green01",
+      "exit": 1,
+      "counts": {
+        "pass": 31,
+        "fail": 1,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestTaskCapabilityClaimAndResourceMatrix/code-reviewer",
+          "TestTaskCapabilityClaimAndResourceMatrix/progress-reporter",
+          "TestTaskCapabilityClaimAndResourceMatrix/security-reviewer",
+          "TestTaskCapabilityClaimAndResourceMatrix/migration-reviewer",
+          "TestTaskCapabilityClaimAndResourceMatrix",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/terminal",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/old_generation",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/moved_project",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/revoked_token",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/expired",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/unknown_policy",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/missing_policy",
+          "TestTaskCapabilityRevocationAndMalformedPolicy",
+          "TestTaskCapabilityCommentsStayInertAfterTokenCleanup",
+          "TestTaskCapabilityCompletionCommentStaysInert",
+          "TestTaskCapabilityPasswordAuthentication",
+          "TestTaskCapabilityLegacyRoleUnchanged",
+          "TestTaskCapabilityCurrentOriginatorAuthority/membership",
+          "TestTaskCapabilityCurrentOriginatorAuthority/disabled",
+          "TestTaskCapabilityCurrentOriginatorAuthority/invoke",
+          "TestTaskCapabilityCurrentOriginatorAuthority",
+          "TestTaskCapabilityUnsupportedToolsAndNonIssueClaims/mcp/batch_false",
+          "TestTaskCapabilityUnsupportedToolsAndNonIssueClaims/mcp/batch_true",
+          "TestTaskCapabilityUnsupportedToolsAndNonIssueClaims/non_issue/batch_false",
+          "TestTaskCapabilityUnsupportedToolsAndNonIssueClaims/non_issue/batch_true",
+          "TestTaskCapabilityUnsupportedToolsAndNonIssueClaims",
+          "TestTaskCapabilityFinalizationRejectsChangedScopeAndBrokerCredential/broker",
+          "TestTaskCapabilityFinalizationRejectsChangedScopeAndBrokerCredential/project_move",
+          "TestTaskCapabilityFinalizationRejectsChangedScopeAndBrokerCredential",
+          "TestTaskCapabilityReadSnapshotAndWriteRecheck",
+          "TestTaskCapabilityNoProjectReporterCannotListWorkspace"
+        ],
+        "fail": [
+          "TestTaskCapabilityCommentDoesNotMutateThreadOrEscalation"
+        ],
+        "skip": []
+      },
+      "log_sha256": "390ae988a69d25c1124ef718f3387b281582a49a2e0b4e0e4768ac2f16212418",
+      "summary_path": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/capability-handler-green02-summary.json",
+      "summary_sha256": "3ed09705f69765cbe9554ed5f832c3856e68d1681977936c10c9abc879a98a8f"
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-p",
+        "1",
+        "-json",
+        "-count=1",
+        "-timeout=180s",
+        "./internal/handler",
+        "-run",
+        "^(TestTaskCapability|TestCreateAgentFromTemplate_ObserverRevisions|TestCreateAgentFromTemplate_ProgressReporter)"
+      ],
+      "database": "rnd_m1_handler_green01",
+      "exit": 0,
+      "counts": {
+        "pass": 37,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestCreateAgentFromTemplate_ObserverRevisionsPreserveWorkspaceCopies/migration-reviewer",
+          "TestCreateAgentFromTemplate_ObserverRevisionsPreserveWorkspaceCopies/architect",
+          "TestCreateAgentFromTemplate_ObserverRevisionsPreserveWorkspaceCopies",
+          "TestCreateAgentFromTemplate_ProgressReporterUsesServerDefaults",
+          "TestCreateAgentFromTemplate_ProgressReporterPreservesWorkspaceCopies",
+          "TestTaskCapabilityClaimAndResourceMatrix/code-reviewer",
+          "TestTaskCapabilityClaimAndResourceMatrix/progress-reporter",
+          "TestTaskCapabilityClaimAndResourceMatrix/security-reviewer",
+          "TestTaskCapabilityClaimAndResourceMatrix/migration-reviewer",
+          "TestTaskCapabilityClaimAndResourceMatrix",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/terminal",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/old_generation",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/moved_project",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/revoked_token",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/expired",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/unknown_policy",
+          "TestTaskCapabilityRevocationAndMalformedPolicy/missing_policy",
+          "TestTaskCapabilityRevocationAndMalformedPolicy",
+          "TestTaskCapabilityCommentsStayInertAfterTokenCleanup",
+          "TestTaskCapabilityCompletionCommentStaysInert",
+          "TestTaskCapabilityPasswordAuthentication",
+          "TestTaskCapabilityLegacyRoleUnchanged",
+          "TestTaskCapabilityCurrentOriginatorAuthority/membership",
+          "TestTaskCapabilityCurrentOriginatorAuthority/disabled",
+          "TestTaskCapabilityCurrentOriginatorAuthority/invoke",
+          "TestTaskCapabilityCurrentOriginatorAuthority",
+          "TestTaskCapabilityCommentDoesNotMutateThreadOrEscalation",
+          "TestTaskCapabilityUnsupportedToolsAndNonIssueClaims/mcp/batch_false",
+          "TestTaskCapabilityUnsupportedToolsAndNonIssueClaims/mcp/batch_true",
+          "TestTaskCapabilityUnsupportedToolsAndNonIssueClaims/non_issue/batch_false",
+          "TestTaskCapabilityUnsupportedToolsAndNonIssueClaims/non_issue/batch_true",
+          "TestTaskCapabilityUnsupportedToolsAndNonIssueClaims",
+          "TestTaskCapabilityFinalizationRejectsChangedScopeAndBrokerCredential/broker",
+          "TestTaskCapabilityFinalizationRejectsChangedScopeAndBrokerCredential/project_move",
+          "TestTaskCapabilityFinalizationRejectsChangedScopeAndBrokerCredential",
+          "TestTaskCapabilityReadSnapshotAndWriteRecheck",
+          "TestTaskCapabilityNoProjectReporterCannotListWorkspace"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "log_sha256": "38000919befcb52963469e09a728809123976667928d03ce193dd499b4386c43",
+      "summary_path": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/capability-handler-green03-summary.json",
+      "summary_sha256": "8103fbac952cff9c22725e62272652a9c69552dc1b752fdc1e9a763f30a1d366"
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-p",
+        "1",
+        "-json",
+        "-count=1",
+        "-timeout=180s",
+        "-race",
+        "./internal/handler",
+        "-run",
+        "^(TestTaskCapabilityReadSnapshotAndWriteRecheck|TestTaskCapabilityCurrentOriginatorAuthority|TestTaskCapabilityCommentsStayInertAfterTokenCleanup|TestTaskCapabilityFinalizationRejectsChangedScopeAndBrokerCredential)$"
+      ],
+      "database": "rnd_m1_handler_green01",
+      "exit": 0,
+      "counts": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestTaskCapabilityCommentsStayInertAfterTokenCleanup",
+          "TestTaskCapabilityCurrentOriginatorAuthority/membership",
+          "TestTaskCapabilityCurrentOriginatorAuthority/disabled",
+          "TestTaskCapabilityCurrentOriginatorAuthority/invoke",
+          "TestTaskCapabilityCurrentOriginatorAuthority",
+          "TestTaskCapabilityFinalizationRejectsChangedScopeAndBrokerCredential/broker",
+          "TestTaskCapabilityFinalizationRejectsChangedScopeAndBrokerCredential/project_move",
+          "TestTaskCapabilityFinalizationRejectsChangedScopeAndBrokerCredential",
+          "TestTaskCapabilityReadSnapshotAndWriteRecheck"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "log_sha256": "ffe327d11126901f7805e1da74e26036d985e269073bff6493dd48e5b1d743ad",
+      "summary_path": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/capability-handler-race01-summary.json",
+      "summary_sha256": "2b6467423c4c25084db052ae1250dbe8913cc9819507965c08672bb1d5738548"
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-p",
+        "1",
+        "-json",
+        "-count=1",
+        "-timeout=180s",
+        "./internal/migrations",
+        "-run",
+        "^TestTaskCapability"
+      ],
+      "database": "rnd_m1_migrations01",
+      "exit": 0,
+      "counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestTaskCapabilityRollbackFence"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "log_sha256": "3869edc350896f64bc1897f710031dde21d2a3af354c326fa68ecfb45c418766",
+      "summary_path": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/capability-migrations-green01-summary.json",
+      "summary_sha256": "3e4afcef5cf1cae4cf45903ffd5c98264dc4a020906dac128e04c30650c30239"
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-p",
+        "1",
+        "-json",
+        "-count=1",
+        "-timeout=180s",
+        "./cmd/server",
+        "-run",
+        "^TestTaskCapabilityReviewerCannotRewriteIssue$"
+      ],
+      "database": "rnd_m1_router_green01",
+      "exit": 0,
+      "counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestTaskCapabilityReviewerCannotRewriteIssue"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "log_sha256": "bbdc771d43c151383ab1620f7d36dcde320c15f6d36c30aae8ade0b58b1af019",
+      "summary_path": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/capability-router-green01-summary.json",
+      "summary_sha256": "ec1d8f8318795fc6cebae393021133ca5b619aa34ae5c53cf387ce6ec32f3f73"
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-p",
+        "1",
+        "-json",
+        "-count=1",
+        "-timeout=180s",
+        "./cmd/server",
+        "-run",
+        "^TestTaskCapabilityReviewerCannotRewriteIssue$"
+      ],
+      "database": "rnd_m1_router_red",
+      "exit": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [],
+        "fail": [
+          "TestTaskCapabilityReviewerCannotRewriteIssue"
+        ],
+        "skip": []
+      },
+      "log_sha256": "7c8a82f75b72fd5efbe636e6ee33a29d379b1162649e2cd6ca7cb1b7bebe1717",
+      "summary_path": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/capability-router-red01-summary.json",
+      "summary_sha256": "00ede078446b6f8102ec21b1217a5ff98a2de6bfdc2002692f914af87c7f14be"
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-p",
+        "1",
+        "-json",
+        "-count=1",
+        "-timeout=180s",
+        "./internal/service",
+        "-run",
+        "^(TestTaskCapability|TestFailTaskFinalDelegatedFailureWakesCoordinatorOnce|TestTriageTextAndDecisionEventsCannotTriggerPlugins|TestFinalizeTaskClaimFailureRollsBackTokenThenRequeue)$"
+      ],
+      "database": "rnd_m1_service_green01",
+      "exit": 0,
+      "counts": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestFailTaskFinalDelegatedFailureWakesCoordinatorOnce",
+          "TestFinalizeTaskClaimFailureRollsBackTokenThenRequeue",
+          "TestTriageTextAndDecisionEventsCannotTriggerPlugins"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "log_sha256": "da8325a5751b2f4fbe4093fb697755319f253353b698f10015576a7bb12ed118",
+      "summary_path": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/capability-service-green01-summary.json",
+      "summary_sha256": "379fb452735a776228e78ae202bc49dc23a56be7f04cf4000b173401f0357d17"
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-p",
+        "1",
+        "-json",
+        "-count=1",
+        "-timeout=180s",
+        "./internal/service",
+        "-run",
+        "^(TestTaskCapabilityFailureCannotWakeCoordinator|TestFailTaskFinalDelegatedFailureWakesCoordinatorOnce|TestTriageTextAndDecisionEventsCannotTriggerPlugins|TestFinalizeTaskClaimFailureRollsBackTokenThenRequeue)$"
+      ],
+      "database": "rnd_m1_service_green01",
+      "exit": 0,
+      "counts": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestFailTaskFinalDelegatedFailureWakesCoordinatorOnce",
+          "TestTaskCapabilityFailureCannotWakeCoordinator",
+          "TestFinalizeTaskClaimFailureRollsBackTokenThenRequeue",
+          "TestTriageTextAndDecisionEventsCannotTriggerPlugins"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "log_sha256": "a0983163dcbe59e4b5af56714255ba1a3c61784d8a12ff17ab1a9e6e908580e2",
+      "summary_path": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/capability-service-green02-summary.json",
+      "summary_sha256": "341d5e613f9a35cbbda7c8831ef3059475673204fffaf76615e5e87f1eb41cde"
+    }
+  ]
+}

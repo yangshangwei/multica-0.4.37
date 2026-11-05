@@ -17,6 +17,12 @@ func RefreshCloudFrontCookies(signer *auth.CloudFrontSigner) func(http.Handler) 
 			return next
 		}
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// A wildcard CDN cookie would turn a scoped issue read into access
+			// to unrelated storage. Resource-specific signed URLs remain valid.
+			if token, ok := auth.VerifiedTaskTokenFromContext(r.Context()); ok && len(token.ApiCapability) > 0 {
+				next.ServeHTTP(w, r)
+				return
+			}
 			if _, err := r.Cookie("CloudFront-Policy"); err != nil {
 				ttl := auth.AuthTokenTTL()
 				for _, cookie := range signer.SignedCookies(time.Now().Add(ttl)) {

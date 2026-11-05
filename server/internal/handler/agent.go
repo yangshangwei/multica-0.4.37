@@ -376,6 +376,7 @@ type TaskIssueStatusData struct {
 }
 
 type AgentTaskResponse struct {
+	taskCapability       []byte                              // Server-only expected scope; checked again by claim finalization.
 	ExecutionFence       *service.AdminCancellationWireFence `json:"execution_fence,omitempty"`
 	ID                   string                              `json:"id"`
 	AgentID              string                              `json:"agent_id"`
