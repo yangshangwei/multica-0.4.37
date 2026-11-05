@@ -1,0 +1,1274 @@
+{
+  "reviewed_at": "2026-11-05T12:04:39.379596+00:00",
+  "reviewer": "/root/acceptance_review",
+  "scope": "Actual original H2 three-trial behavior/lifecycle, CLI artifacts and saved operator delta only",
+  "verdict": "changes-required",
+  "checks_passed": 262,
+  "checks_failed": [
+    {
+      "name": "RK1-H2-t1:seed_member:HTTP_success",
+      "passed": false
+    },
+    {
+      "name": "RK1-H2-t3:measured:HTTP_success",
+      "passed": false
+    }
+  ],
+  "trials": [
+    {
+      "label": "RK1-H2-t1",
+      "verdict": "pass",
+      "member_run": "084ceff0-e7c1-4ae5-b2a9-9eecc7c65ebe",
+      "continuation_run": "5ce52103-e0fd-474f-8307-6efa77e5893f",
+      "wake_kind": "proof",
+      "wake_run": "084ceff0-e7c1-4ae5-b2a9-9eecc7c65ebe",
+      "source_truncated": false,
+      "started_at": "2026-11-05T11:53:20.167961Z",
+      "finished_at": "2026-11-05T11:55:50.002816Z"
+    },
+    {
+      "label": "RK1-H2-t2",
+      "verdict": "pass",
+      "member_run": "b6975824-ade3-48ec-bc39-90eb2d6d068f",
+      "continuation_run": "28605d30-d8af-47b6-bbba-643713121a63",
+      "wake_kind": "proof",
+      "wake_run": "b6975824-ade3-48ec-bc39-90eb2d6d068f",
+      "source_truncated": false,
+      "started_at": "2026-11-05T11:55:50.142487Z",
+      "finished_at": "2026-11-05T11:57:56.515132Z"
+    },
+    {
+      "label": "RK1-H2-t3",
+      "verdict": "pass",
+      "member_run": "d341f074-d410-4d5d-9d7d-11c185246a97",
+      "continuation_run": "06665a90-7081-4211-a681-3d7511c5f68b",
+      "wake_kind": "proof",
+      "wake_run": "d341f074-d410-4d5d-9d7d-11c185246a97",
+      "source_truncated": false,
+      "started_at": "2026-11-05T11:57:56.628409Z",
+      "finished_at": "2026-11-05T12:00:28.668022Z"
+    }
+  ],
+  "source": {
+    "head": "fbd0e04afcd6c31794e5cd8db3b2e6979885f4c3",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "source_file_count": 7990,
+    "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+    "framework_file_count": 17,
+    "product_dirty_paths": []
+  },
+  "CLI_sha256": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+  "physical_starts": {
+    "new_paid": 3,
+    "fake_seeds": 6,
+    "cumulative_paid": 7,
+    "remaining": 18
+  },
+  "original_stop_triggered": false,
+  "helper_review_ready": true,
+  "operator_delta": {
+    "before": "ba5687bb8bf3302c8779b7aeef8ced2582fbb16dc181b0f96c8aa40dcba51b92",
+    "after": "3abdc4664960b40751b006320fcd79b7bcc179112b2d4a88cbec3e2d63e5ea74",
+    "changed_files": 3,
+    "added": 0,
+    "removed": 0,
+    "marketplaces": "Two lastUpdated timestamps only; source/install mappings unchanged.",
+    "directory_catalog": {
+      "lastSeen": 3605,
+      "fetchedAt": 1,
+      "changed_catalog_entries": 8,
+      "reviewed_commit_changes": 8,
+      "release_version_changes": 4,
+      "summary_changes": 2,
+      "names": [
+        "HarborRank SEO",
+        "monday CRM",
+        "KMJ CodeBridge",
+        "Cloud FinOps by OptimNow",
+        "ScaleSKUs",
+        "Fin3000",
+        "Odyssey365",
+        "Famulor Assistants & History"
+      ],
+      "selected_or_installed_match": false
+    },
+    "builtin_store": "usage-rows-queued UUID changed; identical fixed suffix; raw UUID omitted",
+    "loaded_plugin_reports_identical": true,
+    "loaded_plugin_leaves_unchanged": 1970,
+    "installed_registry_unchanged": true,
+    "assessment": "Metadata/catalog refresh includes real catalog version/commit changes, not timestamps alone. No changed selected/loaded plugin code or installed selection is observed; catalog data must still be reported and fully rebound before next invocation.",
+    "limits": "No writer attribution or continuous/intermediate-loaded-byte guarantee; full tree is changed, not stable."
+  },
+  "coverage_limits": [
+    "H2 code is in the bound nontruncated member source; no H2b handoff-source fetch requirement.",
+    "No complete reader-matrix or results/causes pagination beyond32 claim.",
+    "Seeded delegation/member processes are fake, measured continuations are real."
+  ],
+  "recommendation": "Accept original H2 three-of-three. Root may disposition the specific saved catalog/usage delta; before H2b require full current operator rebind, exact committed source/CLI/DB and new model window. No automatic next scenario.",
+  "next_scenario_authorized": false,
+  "checks": [
+    {
+      "name": "one_original_invocation",
+      "passed": true
+    },
+    {
+      "name": "invocation_hash",
+      "passed": true
+    },
+    {
+      "name": "actual_original_and_helper_success",
+      "passed": true
+    },
+    {
+      "name": "original_stop_false",
+      "passed": true
+    },
+    {
+      "name": "original_command",
+      "passed": true
+    },
+    {
+      "name": "same_admission_binding",
+      "passed": true
+    },
+    {
+      "name": "actual_build_check_success",
+      "passed": true
+    },
+    {
+      "name": "permit_artifact_hashes",
+      "passed": true
+    },
+    {
+      "name": "within_window",
+      "passed": true
+    },
+    {
+      "name": "closed_current_permits",
+      "passed": true
+    },
+    {
+      "name": "no_automatic_next_or_retry",
+      "passed": true
+    },
+    {
+      "name": "ten_actual_captures",
+      "passed": true
+    },
+    {
+      "name": "actual_CLI_hashes",
+      "passed": true
+    },
+    {
+      "name": "actual_CLI_sizes_and_privacy",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:public_copy",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:exact_finished_real_trial",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:trace_sequence",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:trace_published_after_completion",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:exact_roles",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:fake_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:seed_business_writes",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_leader:HTTP_success",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:fake_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:seed_business_writes",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:seed_member:HTTP_success",
+      "passed": false
+    },
+    {
+      "name": "RK1-H2-t1:measured:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:real_provider",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:observed_provider_model",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:no_business_write",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:public_answer_raw",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:measured:HTTP_success",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:real_mention_creates_member",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:member_immutable_parent_assignment",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:delegation_text_authority",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:member_result_matches_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:continuation_envelope_shape",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:independent_strict_answer",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:no_other_member_code",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:criteria_projection",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t1:observed_input_readers_include_three_runs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:public_copy",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:exact_finished_real_trial",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:trace_sequence",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:trace_published_after_completion",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:exact_roles",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:fake_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:seed_business_writes",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_leader:HTTP_success",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:fake_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:seed_business_writes",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:seed_member:HTTP_success",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:real_provider",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:observed_provider_model",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:no_business_write",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:public_answer_raw",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:measured:HTTP_success",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:real_mention_creates_member",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:member_immutable_parent_assignment",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:delegation_text_authority",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:member_result_matches_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:continuation_envelope_shape",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:independent_strict_answer",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:no_other_member_code",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:criteria_projection",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t2:observed_input_readers_include_three_runs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:public_copy",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:exact_finished_real_trial",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:trace_sequence",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:trace_published_after_completion",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:exact_roles",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:fake_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:seed_business_writes",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_leader:HTTP_success",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:fake_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:seed_business_writes",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:seed_member:HTTP_success",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:real_provider",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:observed_provider_model",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:no_business_write",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:public_answer_raw",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:measured:HTTP_success",
+      "passed": false
+    },
+    {
+      "name": "RK1-H2-t3:real_mention_creates_member",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:member_immutable_parent_assignment",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:delegation_text_authority",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:member_result_matches_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:continuation_envelope_shape",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:independent_strict_answer",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:no_other_member_code",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:criteria_projection",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2-t3:observed_input_readers_include_three_runs",
+      "passed": true
+    },
+    {
+      "name": "all_nine_prepared_CLI_copies",
+      "passed": true
+    },
+    {
+      "name": "measured_seed_counts",
+      "passed": true
+    },
+    {
+      "name": "cumulative_budget",
+      "passed": true
+    },
+    {
+      "name": "public_private_accounting",
+      "passed": true
+    },
+    {
+      "name": "full_plugin_digests",
+      "passed": true
+    },
+    {
+      "name": "three_exact_plugin_changes",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:before:known_marketplaces.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:after:known_marketplaces.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:before:plugin-directory-cache-v2.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:after:plugin-directory-cache-v2.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:before:store/cc-plugin-agents-md_builtin-b049b47b3618.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:after:store/cc-plugin-agents-md_builtin-b049b47b3618.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:before:store/cc-plugin-diff_builtin-3903e77c01b1.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:after:store/cc-plugin-diff_builtin-3903e77c01b1.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:before:oh-my-claudecode/.usage-cache-anthropic.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:after:oh-my-claudecode/.usage-cache-anthropic.json",
+      "passed": true
+    },
+    {
+      "name": "marketplace_timestamps_only",
+      "passed": true
+    },
+    {
+      "name": "catalog_exact_semantic_delta",
+      "passed": true
+    },
+    {
+      "name": "eight_listing_identity_fields_unchanged",
+      "passed": true
+    },
+    {
+      "name": "store_queue_identifier_only",
+      "passed": true
+    },
+    {
+      "name": "remaining_selected_metadata_identical",
+      "passed": true
+    },
+    {
+      "name": "all_reported_loaded_plugins_identical",
+      "passed": true
+    },
+    {
+      "name": "all_loaded_plugin_code_unchanged",
+      "passed": true
+    },
+    {
+      "name": "installed_registry_unchanged",
+      "passed": true
+    },
+    {
+      "name": "changed_catalog_entries_not_selected",
+      "passed": true
+    },
+    {
+      "name": "operator_only_plugin_delta",
+      "passed": true
+    },
+    {
+      "name": "source_framework_unchanged",
+      "passed": true
+    },
+    {
+      "name": "immutable_binding_fields_equal",
+      "passed": true
+    },
+    {
+      "name": "only_expected_public_additions",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:helper_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:config_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:registration_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:addendum_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:launcher_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:provider_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:go_sha256",
+      "passed": true
+    },
+    {
+      "name": "prior_public_unchanged:RK1-E0a-t1",
+      "passed": true
+    },
+    {
+      "name": "prior_public_unchanged:RK1-H1-t1",
+      "passed": true
+    },
+    {
+      "name": "prior_public_unchanged:RK1-H1-t2",
+      "passed": true
+    },
+    {
+      "name": "prior_public_unchanged:RK1-H1-t3",
+      "passed": true
+    }
+  ],
+  "hashes": {
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/run-result.json": "4fb7bcd564080b1fb73ff19bace488b0453095d1c35f45d5d03cb722c99c8044",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/build-result.json": "754ebbeae188c5e0a349c4a65926a8fcdd5ac98c5cf123c9e2e1c951b9c74994",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/check-result.json": "b961ccda5722bcfcf8554b009d6fb109ea3747ee2e41d775687bae1b1c56b81c",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/permit-used-run.json": "8108430b9ea943729458544a2240b506fc7910d5baae5d89b3baf666feae8681",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/permit.json": "6e1d408bf7b2177311debc95755a0ed663861f3fd1386aa23b338bd9b2eb2175",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/run-attempt.json": "0f99b98aa717ab37f3d402f4068c0c769edc90c231185fcf6bc2aa3bc90f3ab0",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/captures.json": "43a80184235c8c0b1868651d4eaedc84bfd043236f48d1aada3e6ac81196f3af",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/invocation-20261105T115307Z.json": "1f17d06133a750d677f9976be41a12a338b0f38bd844c39edea0d7f663302c08",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/upfront-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/captures/capture-000-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/captures/capture-001-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/captures/capture-002-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/captures/capture-003-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/captures/capture-004-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/captures/capture-005-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/captures/capture-006-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/captures/capture-007-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/captures/capture-008-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/captures/capture-009-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2-t1.json": "f1a4ce9102ffae32f7282ab402c66f2753bdafb0b2cc97095e18e814a1885d55",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/public.json": "f1a4ce9102ffae32f7282ab402c66f2753bdafb0b2cc97095e18e814a1885d55",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/trace.jsonl": "c23eaba4d6be86413faa227dedbf14b33c102576ccc2a73e03d182882136db95",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/provider/f790800c-195c-440d-b764-a20972ecc634/launch-1/launch.json": "ad764cdeae30f10f5556dd3eb875c17bec0bead8bd3fc6f5b76256c366d96cfd",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/provider/f790800c-195c-440d-b764-a20972ecc634.json": "ac21755496af77a9609d39d3f0bc9249dcf4c42e427e868477375084905afb23",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/provider/f790800c-195c-440d-b764-a20972ecc634/launch-1/stdin-first.jsonl": "3448c8a5553fb7e0f71a0b99ca9b1b3e6293421df46001fa4f21630158982a09",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/provider/f790800c-195c-440d-b764-a20972ecc634/launch-1/stdout.jsonl": "1e49722313b28895bf9ddba474de61d7c88434bd98715d5bdc6753de7b33cf11",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/ledger/f790800c-195c-440d-b764-a20972ecc634/0b17668a499175ea16cf152fd7fb209f77eb097d6d1708eac4f10cd4da70d288.json": "6b910f48446341bd7b9bd8671f00ffb29664b9e2440d546c8d377a73dc3da653",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/provider/084ceff0-e7c1-4ae5-b2a9-9eecc7c65ebe/launch-1/launch.json": "259cb732a3ecdb373af612d1abea6f9a1e0193a1ea5cc927a469580b6e892928",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/provider/084ceff0-e7c1-4ae5-b2a9-9eecc7c65ebe.json": "601f58132dd34b73aeb351af6f326b8cb2bec0eb48c76d2b949f582a5c55a174",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/provider/084ceff0-e7c1-4ae5-b2a9-9eecc7c65ebe/launch-1/stdin-first.jsonl": "df4e1875b4032d5a6be7611ece9500c3a7a12200033fa3739652883bb6cdc386",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/provider/084ceff0-e7c1-4ae5-b2a9-9eecc7c65ebe/launch-1/stdout.jsonl": "6c4f6e5deb1a71b5f5d35dc34e46cea80ef00541e710a060df6602a8782be852",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/ledger/084ceff0-e7c1-4ae5-b2a9-9eecc7c65ebe/5c41cafa88fe99943710cab415d3a935f7f2ca2b31e293d4036d898b8d8fcd68.json": "1a25e58d20bf9ceaad72e104c6686a0b8167c1cc1485773802758a40d0dca04a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/provider/5ce52103-e0fd-474f-8307-6efa77e5893f/launch-1/launch.json": "59369e10f2f21eadc8dab0be3e4902572196eaee4c500cc2b39322c7b236761a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/provider/5ce52103-e0fd-474f-8307-6efa77e5893f.json": "72fd38d3f3c1dbb0cb75fa6cb49a7854bcb66e0a8e19a8c46c5dc950a68e1ae4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/provider/5ce52103-e0fd-474f-8307-6efa77e5893f/launch-1/stdin-first.jsonl": "4ac37cf6b9b2069b7d033422bbbbf082ce8732bf146d28dbf2708e835ed5db03",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/provider/5ce52103-e0fd-474f-8307-6efa77e5893f/launch-1/stdout.jsonl": "ec9a04414315fd5e148018500190afd29e473bf4046efe3680d5b62661c495fe",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t1/ledger/5ce52103-e0fd-474f-8307-6efa77e5893f/e954994afda9e5d9cb21348ec35df8dd00cad83be5cfbf55507efc40cae5ff6d.json": "4bc7499a35a6ef74f535eafc23ca7938932c337d05a765e672d83f9849fbf54f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2-t2.json": "f820e5486141649e86949fa7e47324f9235ee947830994cb24839a7a43539956",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/public.json": "f820e5486141649e86949fa7e47324f9235ee947830994cb24839a7a43539956",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/trace.jsonl": "08a2d9ac0907b3234a07dbf05d18fc72e2fd8d916edeef5e34b8c7604ff530c7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/provider/be243a52-be84-47f9-9aef-104a5290ef20/launch-1/launch.json": "4054df36c4545d6d859e6812a6eb4557cb8bd4db838dad6932542cf46cb22fc5",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/provider/be243a52-be84-47f9-9aef-104a5290ef20.json": "9190f20209f73b66f6011da4415b562056b903f40794eec98b1f9b7af18cfb7a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/provider/be243a52-be84-47f9-9aef-104a5290ef20/launch-1/stdin-first.jsonl": "f568b1d917688cc2225be2b157703a458b93f3ff370ed10c3c2bfd6a45e06d05",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/provider/be243a52-be84-47f9-9aef-104a5290ef20/launch-1/stdout.jsonl": "c755b175d4f4a85f6d6e4554230b59c11c339b5d0f5a24574916e6ad6bf78f62",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/ledger/be243a52-be84-47f9-9aef-104a5290ef20/465d6a303f59c8281b51ad70c5d73ef1b0fc20b4744eb2a5d3b91529a4b1373e.json": "1fa61625a91e3adcd2867e44f01433824af1b8425bdd71cc59908ba0cccee8f1",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/provider/b6975824-ade3-48ec-bc39-90eb2d6d068f/launch-1/launch.json": "55feb0f57d341a005bb479617c84dfe9b1d55a0b57e7d57ea5ef13f144fa24c1",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/provider/b6975824-ade3-48ec-bc39-90eb2d6d068f.json": "ee59964e47a80d6a8e1585825677481d16a01c4ce5a8845ed2491b17486f43f4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/provider/b6975824-ade3-48ec-bc39-90eb2d6d068f/launch-1/stdin-first.jsonl": "18b6756cb86f310935080ae378861beb6fd48bf9d60946d9dc5986baed57c9a4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/provider/b6975824-ade3-48ec-bc39-90eb2d6d068f/launch-1/stdout.jsonl": "d953bb1ed7e8b995065dbcc9cdbadc35374d286e14a3a9a5ab2d9323c365b0b4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/ledger/b6975824-ade3-48ec-bc39-90eb2d6d068f/088493c94c134ada7b664defc2d18ecfc39fe3279e3f661c7039e914edbe7aa0.json": "a0bdfe86530423eddc9496d0f7dab97f49ba1441da3e7a93e880728c13dce428",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/provider/28605d30-d8af-47b6-bbba-643713121a63/launch-1/launch.json": "c42dae98bf74aa1508a1f7f25605671ffe96726699e5a11043ce7db0667ba7fd",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/provider/28605d30-d8af-47b6-bbba-643713121a63.json": "72fd38d3f3c1dbb0cb75fa6cb49a7854bcb66e0a8e19a8c46c5dc950a68e1ae4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/provider/28605d30-d8af-47b6-bbba-643713121a63/launch-1/stdin-first.jsonl": "c355665036a4be2f01550362cab1c75db1701d2e9e071b954a258748c6ad1f03",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/provider/28605d30-d8af-47b6-bbba-643713121a63/launch-1/stdout.jsonl": "578896596d64f3f7fe879b89aed01bd32e92a16b9bbf89f744aee953096cb447",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t2/ledger/28605d30-d8af-47b6-bbba-643713121a63/224481a5c05a7822220c716b694fb3ea78323f2b6759e47b1c103bab0d1de62b.json": "05638ab6d8bc9329930ce93389826b4f51ebba397b1917eccae524a8344b735f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2-t3.json": "9422623b33c342fcee96a9f91004fab7d235499796ab0f3aa879b436d4a00476",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/public.json": "9422623b33c342fcee96a9f91004fab7d235499796ab0f3aa879b436d4a00476",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/trace.jsonl": "e8acbe03a8725509bb59a01d4459706c57a5d4457cdc12692344720699980681",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/provider/5a4fd9e6-97a0-4fe0-924c-14cea912794e/launch-1/launch.json": "f5a0ccf7171cb4622908743a259853a04be9397cd5c885ad19f5c75b35641307",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/provider/5a4fd9e6-97a0-4fe0-924c-14cea912794e.json": "c5985480b2afd6bdfaab0f1c7652c3c2ec7982941740f299686a682d30c9885d",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/provider/5a4fd9e6-97a0-4fe0-924c-14cea912794e/launch-1/stdin-first.jsonl": "dbec1eb2f4f618ab8385116775eba0bdae7776c7e4832e0daf61a30cf13f1f3c",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/provider/5a4fd9e6-97a0-4fe0-924c-14cea912794e/launch-1/stdout.jsonl": "a1e1ca20e09e3ffcd0684f0518a1942550769949a019addc2839d6dd4be9c07b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/ledger/5a4fd9e6-97a0-4fe0-924c-14cea912794e/465ed258de54218cbe505ab7e973492c476ddf6b058fc81b59a7d011f0399ff2.json": "956cbd837d5745cd1612d90184b7526dc6686adebec83eeb39011bd346f9d2ef",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/provider/d341f074-d410-4d5d-9d7d-11c185246a97/launch-1/launch.json": "3a3d9f9ca3bd2233b4919d8caace2a176e28f553e06dc7b6c654d0e0298109f8",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/provider/d341f074-d410-4d5d-9d7d-11c185246a97.json": "1b74c384526b7fcddf8589cb90c56aaed26dfe312aa66649b78270e4c6eb9c25",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/provider/d341f074-d410-4d5d-9d7d-11c185246a97/launch-1/stdin-first.jsonl": "49cd258ca7c6cd3c0c8d4231e80e69b03cff03c4085e3828041cae043b8806dc",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/provider/d341f074-d410-4d5d-9d7d-11c185246a97/launch-1/stdout.jsonl": "43803c643e4db9f869a4509c55c585a21aeb3427ac2caf9279ed6352402dd7c4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/ledger/d341f074-d410-4d5d-9d7d-11c185246a97/9abb9d82ce673ef2edf16b8661356d769475d6de84f404f1a2e4b06368cf20f1.json": "3a71f2878c90f7bc954bbfb8d7fb80bc39316672bac7ab323ac0e26b9c8ee97b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/provider/06665a90-7081-4211-a681-3d7511c5f68b/launch-1/launch.json": "eafbab0daaeb6f11b3e4bf17387ac986107f3089403254ca0a2ec7fba69cfcef",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/provider/06665a90-7081-4211-a681-3d7511c5f68b.json": "72fd38d3f3c1dbb0cb75fa6cb49a7854bcb66e0a8e19a8c46c5dc950a68e1ae4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/provider/06665a90-7081-4211-a681-3d7511c5f68b/launch-1/stdin-first.jsonl": "ba92ae8230bcb6b42425e8fc3e5ab5b08592e48da9494db645ea7d3f913698a2",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/provider/06665a90-7081-4211-a681-3d7511c5f68b/launch-1/stdout.jsonl": "92fad3749e43030ab2d381b62c0a523b5fcd1aad238fc2c282fc63fd48792cb9",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2/RK1-H2-t3/ledger/06665a90-7081-4211-a681-3d7511c5f68b/ff4d8d4e4c1b2996b34e00fd5d8215a943bd25adaaf37143495087073f2de736.json": "bf07c0b7965d31db94228aa9cf6545ebe4f94804e2e700d64861265e84b3e810",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/run-plugins-before.json": "ca2dcb7a9db3535e41a566a9eed1ece0dde4d37a8424fc6af24d825c6c81b60b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/plugins-after.json": "393d41d2a338fa9de4037341ccc7be3e87abe21239908f5bfaa19732f516a817",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/run-plugins-before.metadata/known_marketplaces.json": "8a586379ff2f0eb2dd6e489bd13bb96fc5b74b806792e7eb07f863781e9af09f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/plugins-after.metadata/known_marketplaces.json": "1f2598e31969d280ec3a5911c3d7391e17fe693869ffa853040f9142313f680d",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/run-plugins-before.metadata/plugin-directory-cache-v2.json": "2699fea16087f653d294d508d063c35bd8f2afcacd5ea4bc6051b5c0d21e9926",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/plugins-after.metadata/plugin-directory-cache-v2.json": "1c708b89cca563f341aee0a40b98c152e313d501e9b2ce98eefc06791b38f4cf",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/run-plugins-before.metadata/store/cc-plugin-agents-md_builtin-b049b47b3618.json": "1bea4309fcd8a965760f1bbce2d2133c9ac89fdf96501a38b744d52935a062e7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/plugins-after.metadata/store/cc-plugin-agents-md_builtin-b049b47b3618.json": "f8d62c633d90e42db40c9d461e9da3931d9369ed13d24dc9d4f00d83cb9b553b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/run-plugins-before.metadata/store/cc-plugin-diff_builtin-3903e77c01b1.json": "5a2fc6413dff90d13059cad2773a368ab8b8fce00bd63e2f5056a12ed4cc802f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/plugins-after.metadata/store/cc-plugin-diff_builtin-3903e77c01b1.json": "5a2fc6413dff90d13059cad2773a368ab8b8fce00bd63e2f5056a12ed4cc802f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/run-plugins-before.metadata/oh-my-claudecode/.usage-cache-anthropic.json": "bf95c67de9d6e56214d4be617f664166422e0d5459d93c48b25f160eaff2d6b1",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/plugins-after.metadata/oh-my-claudecode/.usage-cache-anthropic.json": "bf95c67de9d6e56214d4be617f664166422e0d5459d93c48b25f160eaff2d6b1",
+    "/Users/artisan/.claude/plugins/installed_plugins.json": "6f4cfb608719381bdbac3d2bd1404c75b50123cda32af5bf133b664c3784e0a0",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/runtime_entry.py": "2220c3211f39544a187694ba205902b3e8e0080f21ce946e678d78a36f49f27c",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/config.json": "2ad1828acc5de435da3ac13f428dad4401359cdb3bf12be9c3794a06b4a1e7e6",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-registration.json": "1f1061d86073b83cde3b2e3eab40b4b016c241264613254c7fa6ccf4c5af4eff",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json": "4d904087332e69054032491950b9eddfde8c23d5b03fb9ca2c15d59eef0c7350",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+    "/Users/artisan/.local/share/claude/versions/2.1.318": "677a2ea7bf576cedd20e191d973914ed8a41796f53a63b1923381ddc4d5b5e7d",
+    "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/h2-entry/preparation.json": "57684f62a599b3bc0e0c0a83dd21ccfec6079f7fdc3e291150137bca4f7e1851",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-E0a-t1.json": "5b0b221f0401db1424494864778e173daf9b229cdc007255467200c1a68db0ba",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H1-t1.json": "28ab93f865aba6d2b8acb51d2fc35b214492b9db5a71b3dd3120e208fed8dbf9",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H1-t2.json": "7963fba183a752098e28a9de01cfbae995bf56af2ee945c37554dedba9c3c129",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H1-t3.json": "2f575d44f93683dc05670fb3c1641fff74e3468de9141b15d38c1616642e4008"
+  },
+  "operations": {
+    "tests": 0,
+    "Go": 0,
+    "database": 0,
+    "model": 0,
+    "full_plugin_scan": 0
+  }
+}

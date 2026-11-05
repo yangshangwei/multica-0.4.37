@@ -2,8 +2,11 @@
   "series": "RK1",
   "scope": "runtime scenarios of runtime-addendum.json, including RK1-H2b (budgeted 2026-11-01T10:33:57Z)",
   "registered_by_session": "claude multica-0-4-37-35",
-  "runnable": true,
-  "not_runnable_reasons": [],
+  "runnable": false,
+  "not_runnable_reasons": [
+    "H2original3of3 independentlyaccepted273checks and specificpoll/catalog observations dispositioned; preserveallrawdata",
+    "H2b current fullconfiguration/source/CLI/newDB binding pending; noautomaticfollowup"
+  ],
   "framework_files": "server/cmd/server/rk1_*_test.go (build tag agentintegration, !windows)",
   "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
   "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
@@ -84,7 +87,7 @@
     "current final639 fake normal/race passed; independent result review remains unavailable after gateway429",
     "user currently permits local preparation only; exclusive serial gateway window and applicable execution authority required before paid execution"
   ],
-  "maintained_at": "2026-11-05T11:48:37.575836+00:00",
+  "maintained_at": "2026-11-05T12:06:37.602682+00:00",
   "authorization_reference": "../continuation-20261102/coordinator/authorization-recall.md",
   "selected_candidate_preparation": "../continuation-20261105/paid-binding-preflight.json",
   "historical_gate_reasons_before_20261104": [
@@ -227,7 +230,7 @@
     },
     "selected_candidate_preparation": "../continuation-20261102/coordinator/v10/binding-preparation.json"
   },
-  "operator_binding_status": "H2actualenv checked at admission; postmanifest observation",
+  "operator_binding_status": "H2postdelta captured; independentreviewpending",
   "real_entry_preparation": {
     "helper_commit": "86541bb37",
     "helper_sha256": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
@@ -301,5 +304,14 @@
     },
     "database_created": true,
     "window_granted": true
+  },
+  "actual_H2": {
+    "summary": "../continuation-20261105/h2-entry/result-summary.json",
+    "raw_trials": "3finished/pass",
+    "consumed_total": 7,
+    "remaining": 18,
+    "independent_review": "../continuation-20261105/h2-entry/independent-review.json",
+    "accepted": true,
+    "disposition": "../continuation-20261105/h2-entry/disposition.json"
   }
 }
