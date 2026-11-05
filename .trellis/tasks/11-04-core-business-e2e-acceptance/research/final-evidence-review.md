@@ -1,46 +1,15 @@
-# 独立验收证据审阅
+# Final evidence closure
 
-**证据审阅可交付，完整验收未通过。** 快照时间：2026-11-05T05:34:46.871680+00:00。被测产品为 `1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc`，当前根分支其他提交不属于此候选。本审阅只读取原始结果、源码和构件，未启动产品测试、浏览器或数据库操作；对私有统计器执行了纯解析验证。
+**Evidence review PASS with limits; core functional acceptance PASS with the user-accepted performance exception.**
 
-## 已核实的结果
+441 unique browser cases have complete framework and post-run audit evidence:440 at base1a32, and the final Linux packaged Main at base1a32 plus the exact FD-boundary fix. The original base result remainsFAIL; this is a version-aware multi-run result, not a clean single full run.
 
-| 范围 | 独立核对结果 |
-| --- | --- |
-| 浏览器库存 | **440验收PASS／1FAIL，共441唯一身份**；框架结果与后置审计没有未对齐项，未知ID0。原完整轮仍354PASS／3FAIL／84SKIP、exit1。所有实际结果无自动重试事件或预期失败声明。 |
-| 非Mobile | 原始各包日志合计13,244唯一用例／1,069文件，首次13,243PASS／1超时FAIL；唯一一次原失败文件11／11复验PASS，根因未证明。静态15任务、UI exports通过，31warnings。 |
-| Mobile | 196PASS／28文件、3类wrapper检查及typecheck/lint通过；7warnings。未证明实际iOS界面。 |
-| 默认Go | 82包逐包原始JSON重算为10,393PASS／20SKIP；73包有具名测试、9包无具名测试，10,413预期身份齐全，vet退出0。多段执行，不是单次完整全绿。 |
-| 默认Go精确补测后 | wire1、Linux9顶层及性能3逐身份替换原skip，最新10,405PASS／1性能FAIL／7SKIP；原默认包数据不改。 |
-| 知识与协议 | knowledge23唯一用例普通/竞态46顶层PASS事件；真实wire导出1和7类TSschema通过。前三组Git内HOME/TMP局限及ordinary-race父receipt未收尾保留。 |
-| 实际Linux测试二进制 | 10顶层＋3子例PASS，无skip；不是原生桌面会话验收。 |
-| 性能 | **2PASS／1FAIL**。去除5warmup、30测量后重算结转P95=**2155.025ms>2000ms**；禁用和分诊通过。原命令exit1，没有改阈值或重跑。 |
-| Linux DEB | 原始127条记录包含95断言、27命令；新装、移除、重装、purge通过。无GUI启动，不证明旧版升级。 |
+Independent reviews: raw campaign originally reviewed in `pre-fd-fix-evidence-review.json`; Linux real pipe RED/GREEN reviewed in commitb43659907; exactfixedpackage and originalMain closure reviewed in15da8bd8f. SourceROOTpatchmatchesverifiedcandidate, integrated76836fa8d.
 
-## 尚未关闭的验收失败
+The fixed package changes only its bundledCLI (SHA8ad7a9ac...), all84nonCLI entries/hash/mode/symlink targets unchanged. Maincase47.268sPASS/0skip/0retry, restart.close52.387ms and launch/refresh/metadata complete. Six directedwrites, two exactrevisionreturns and ten control receipts retained.
 
-1. **迭代结转性能门失败。** 当前超标155.025ms（7.75%），没有修复或充分根因证据。诊断成功、主机共享或架构局限均不能改变FAIL。
-2. **Linux完整Main最后一个业务用例失败。** 原缺机器标识、缺发现CLI及待验收成果错误Transfer均已分别保留并按当前合同适配；最新r6最终记录为`Installed Main close exceeded30000ms`。finally错误可能覆盖更早命令异常，不能未经原始时间线核验就声称所有业务断言通过、只剩清理。
+OriginalP95testFAIL2155.025>2000 remains unchanged; userdecision877664072 accepts only thatcandidate/run. No general thresholdchange or performancePASSclaim.
 
-## 源码、产物与清理
+OwnedAPI/Web/renderer/Redisportsclosed, noownedcontainers,160coreprefixDBconnections0. Earlier161DBcleanup useddifferentallocatedsetincludingknowledgeDBs; do not equatecounts. Rawsecrets/privateevidence notcommitted.
 
-最终8,203文件清单检查仅15个E2E测试文件改变，产品文件未改变；32个workspace链接未漂移。Mac可执行文件／ASAR／CLI及Linux可执行文件／ASAR／CLI／DEB共7项哈希保持。API18784、Web13704、renderer5878、Redis60284端口均已关闭；自有测试容器清单为空。161个分配数据库保留用于复现，连接均为0。
-
-原仓库`.cursor/mcp.json`观测哈希仍为`fb40aae928dc3a6ec111763e3d52cd76ce83c03dd78c792d7285ccb21eb7a606`。Git内HOME/TMP导致execenv原655PASS／5FAIL，Git外新库660PASS；没有完整前置文件内容证明，未猜测删除或恢复。
-
-共享PostgreSQL在Rosetta下退出133导致503和UI后置审计中断；恢复后的752迁移和开关事实不证明崩溃前事务完整性。受影响用例的新库复验与原轮失败分别保留。
-
-## 审阅修复与代码复核
-
-私有reconcile保留框架status，新增audit_status／acceptance_status；中断后置审计不再自动成为验收PASS。补齐详情一级结果路径、未知ID时唯一文件＋完整标题＋project映射，5项纯解析验证通过。详情2项和AC33完整补验证据均已通过，原中断未追认。
-
-详情运行器、机器标识夹具、发现专用CLI及待验收成果返工适配静态审阅通过，具体SHA见JSON。发现CLI仅`--version`成功，真实执行写固定marker后exit97；只在隔离容器内使用，后置断言禁止其执行任务。完整Main的证明范围仍是实际应用＋受控发现／协议流程，不能升级为模型或agent执行质量证据。
-
-## 未测边界及报告要求
-
-- 真实商业模型由本任务用户明确延期，本任务0调用；其他会话的调用不计入本任务。
-- iOS实际UI、Windows安装/UI、Linux原生桌面、旧版升级、macOS自动更新及正式签名公证、真实外部SMTP/VCS/消息渠道没有完整证据。
-- 默认Go剩7个未补条件是Webhook数据库错误占位、公开skill导入、HTTP MCP无recipe、两个Windows行为、pg_bigm及CLI未知字段占位。
-- 前端一次超时、桌面选择器/任务分配无改动复验通过的稳定性局限仍保留。
-- 最终`report.md`已使用最新Linuxr6阶段，说明close异常与首因丢失、restart仅为推断；多轮补跑、构建、容器和安装生命周期均未汇总为单轮全绿。
-
-审阅结论是证据与范围可交付，**不批准完整功能/性能/平台验收为通过**。
+Platform/upgrade/trust/externalintegration and real-provider limits remain as `conditional-matrix.csv`; this doesnotestablish fullrelease readiness.
