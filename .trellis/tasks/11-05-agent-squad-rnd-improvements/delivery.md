@@ -57,3 +57,9 @@ Work is on `codex/agent-rnd-m1-20261105` in `/Volumes/artisan/code/2026/mc-agent
 | M1-C2 critical-path PR smoke | Independently accepted, local commit `5b7bfad9c` |72 contracts; four actual production-Web paths passed first attempt,0skip/retry; source/config unchanged; owned services stopped; hosted CI remains untested |
 
 M1 is not accepted as a complete milestone. Controlled high-risk execution, current-artifact delivery evidence gates and durable delegation receipts remain required. M2 deterministic snapshots/budgets/scheduling and M3 NFR/evaluation/supply-chain/template governance remain planned. No paid model, production, remote push or publication ran.
+
+## Additional targeted testing — 2026-11-06
+
+User explicitly authorized codex exec. New production-router29 and compiled CLI→real API20 checks passed with independent review. The new regression file covers filter intersections/pagination, distinct runtime-owner revocation/rebind, and mutable role text versus immutable provenance; production implementation did not change.
+
+Three bounded real Codex processes ran against synthetic actual claims. Reporter and reviewer completed with correct guided role behavior. Leader correctly persisted one queued/blocked delegation and failed evaluation, but exceeded180s and lacked a final response: two complete passes, one timeout. This is a retained failed process result, not full model reliability or prompt-injection robustness. No retry beyond3 calls. See `11-06-agent-m1-targeted-validation/verification.md` (active or archive) and its independent evidence.

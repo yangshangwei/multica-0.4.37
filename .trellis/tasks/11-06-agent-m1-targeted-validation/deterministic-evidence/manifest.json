@@ -1,0 +1,126 @@
+{
+  "base_head": "6405240dd38807c6b0ddd40a958463d04f270bed",
+  "source_files": {
+    "server/cmd/server/task_capability_targeted_test.go": "596832722600e39a72617d9a283ac7846a109991fa29857ddcff582e28f14536"
+  },
+  "raw_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx",
+  "runs": {
+    "targeted-router01": {
+      "command": [
+        "go",
+        "test",
+        "-p",
+        "1",
+        "-json",
+        "-count=1",
+        "-timeout=180s",
+        "./cmd/server",
+        "-run",
+        "^TestTaskCapabilityTargeted"
+      ],
+      "database": "rnd_m1_targeted_router01",
+      "exit": 0,
+      "counts": {
+        "pass": 29,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestTaskCapabilityTargetedReporterListWindows/ordinary",
+          "TestTaskCapabilityTargetedReporterListWindows/open_only",
+          "TestTaskCapabilityTargetedReporterListWindows/union_includes_foreign_and_no_project",
+          "TestTaskCapabilityTargetedReporterListWindows/foreign_union_cannot_replace_intersection",
+          "TestTaskCapabilityTargetedReporterListWindows/open_only_ignores_union_without_widening",
+          "TestTaskCapabilityTargetedReporterListWindows/case_alias_cannot_override_exact_filter",
+          "TestTaskCapabilityTargetedReporterListWindows/encoded_query_key",
+          "TestTaskCapabilityTargetedReporterListWindows/encoded_uuid_hyphen",
+          "TestTaskCapabilityTargetedReporterListWindows/pagination_covers_only_the_project",
+          "TestTaskCapabilityTargetedReporterListWindows/duplicate_project",
+          "TestTaskCapabilityTargetedReporterListWindows/encoded_duplicate_project",
+          "TestTaskCapabilityTargetedReporterListWindows/duplicate_unrelated_parameter",
+          "TestTaskCapabilityTargetedReporterListWindows/case_alias_without_exact_filter",
+          "TestTaskCapabilityTargetedReporterListWindows/union_without_exact_filter",
+          "TestTaskCapabilityTargetedReporterListWindows/malformed_filter",
+          "TestTaskCapabilityTargetedReporterListWindows/malformed_escape",
+          "TestTaskCapabilityTargetedReporterListWindows/semicolon_query",
+          "TestTaskCapabilityTargetedReporterListWindows/encoded_issue_separator",
+          "TestTaskCapabilityTargetedReporterListWindows/encoded_issue_uuid",
+          "TestTaskCapabilityTargetedReporterListWindows/encoded_collection_name",
+          "TestTaskCapabilityTargetedReporterListWindows",
+          "TestTaskCapabilityTargetedRuntimeOwnerAuthority/membership_removed",
+          "TestTaskCapabilityTargetedRuntimeOwnerAuthority/account_disabled",
+          "TestTaskCapabilityTargetedRuntimeOwnerAuthority/runtime_rebound",
+          "TestTaskCapabilityTargetedRuntimeOwnerAuthority",
+          "TestTaskCapabilityTargetedMutableRoleTextCannotChangeScope/protected",
+          "TestTaskCapabilityTargetedMutableRoleTextCannotChangeScope/old_version",
+          "TestTaskCapabilityTargetedMutableRoleTextCannotChangeScope/custom",
+          "TestTaskCapabilityTargetedMutableRoleTextCannotChangeScope"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "log_sha256": "223dee3f7a9b08a465299ab4638b0646ea9801c1eebbc45ace89bf13bda12bdd"
+    },
+    "static": [
+      {
+        "check": "vet",
+        "command": [
+          "go",
+          "vet",
+          "-p",
+          "1",
+          "./cmd/server"
+        ],
+        "exit": 0,
+        "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/targeted-vet01.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_empty": true
+      },
+      {
+        "check": "format",
+        "command": [
+          "gofmt",
+          "-l",
+          "server/cmd/server/task_capability_targeted_test.go"
+        ],
+        "exit": 0,
+        "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/targeted-format01.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_empty": true
+      },
+      {
+        "check": "whitespace",
+        "command": [
+          "git",
+          "diff",
+          "--check",
+          "--",
+          "server/cmd/server/task_capability_targeted_test.go"
+        ],
+        "exit": 0,
+        "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/targeted-whitespace01.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_empty": true
+      }
+    ],
+    "build": {
+      "command": [
+        "go",
+        "build",
+        "-p",
+        "1",
+        "-o",
+        "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/targeted-server-build",
+        "./cmd/server"
+      ],
+      "exit": 0,
+      "log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/targeted-build01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "limits": [
+    "New router tests directly seed synthetic token bindings; minting is covered by prior claim tests and separate actual CLI/claim lane.",
+    "No model, production, new dependency, database allocation/migration, full suite or new race run."
+  ]
+}

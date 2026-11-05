@@ -1,0 +1,32 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "-timeout=180s",
+    "./cmd/server",
+    "-run",
+    "^TestTaskCapabilityTargetedMutableRoleTextCannotChangeScope$"
+  ],
+  "database": "rnd_m1_targeted_review01",
+  "exit": 0,
+  "counts": {
+    "pass": 4,
+    "fail": 0,
+    "skip": 0
+  },
+  "tests": {
+    "pass": [
+      "TestTaskCapabilityTargetedMutableRoleTextCannotChangeScope/protected",
+      "TestTaskCapabilityTargetedMutableRoleTextCannotChangeScope/old_version",
+      "TestTaskCapabilityTargetedMutableRoleTextCannotChangeScope/custom",
+      "TestTaskCapabilityTargetedMutableRoleTextCannotChangeScope"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "log_sha256": "4fd5b9e11354fd573246e0261d70d78937033d7ee07de5c55188f7bdadfa6391"
+}

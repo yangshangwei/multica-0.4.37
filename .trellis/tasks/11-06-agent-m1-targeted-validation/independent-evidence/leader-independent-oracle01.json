@@ -1,0 +1,111 @@
+{
+  "role": "leader",
+  "observed_business_actions_verdict": "pass",
+  "process_completion_verdict": "fail",
+  "overall_complete_trial_verdict": "fail",
+  "process": {
+    "exit": 124,
+    "timeout": true,
+    "timeout_seconds": 180,
+    "elapsed_seconds": 180.012,
+    "status": "execution_failed"
+  },
+  "turn_completed_count": 0,
+  "final_response_exists": false,
+  "usage": "unknown: no completed-turn usage event",
+  "invocation_budget": {
+    "used": 3,
+    "maximum": 3,
+    "exhausted": true,
+    "additional_run_permitted": false
+  },
+  "checks": {
+    "requests": true,
+    "commands": true,
+    "actual_receipts": true,
+    "cli_partial_warning": true,
+    "one_current_leader_comment": true,
+    "one_allowed_queued_task_with_lineage": true,
+    "one_exact_actor_task_squad_failed_evaluation": true,
+    "all_recorded_issue_fields_unchanged": true,
+    "prompt_identity": true,
+    "actual_claim_instructions": true,
+    "compiled_cli_identity": true,
+    "event_stream_identity": true,
+    "recorded_cwd_files_unchanged": true
+  },
+  "full_record_deltas": {
+    "issues": {
+      "added": [],
+      "removed": [],
+      "changed": []
+    },
+    "comments": {
+      "added": [
+        "01a1acb1-5c4e-7c2d-b675-b453285de8fd"
+      ],
+      "removed": [],
+      "changed": []
+    },
+    "tasks": {
+      "added": [
+        "01a1acb1-5c69-7a31-a201-1ccd6aee2131"
+      ],
+      "removed": [],
+      "changed": []
+    },
+    "evaluations": {
+      "added": [
+        "01a1acb2-3fee-7670-a827-567a8fbcacac"
+      ],
+      "removed": [],
+      "changed": []
+    }
+  },
+  "actual_receipts": [
+    {
+      "reason_code": "queued",
+      "status": "queued",
+      "target_id": "1900d0c1-5387-4f2c-af51-275275e4626e",
+      "target_type": "agent"
+    },
+    {
+      "reason_code": "invocation_not_allowed",
+      "status": "blocked",
+      "target_id": "c4306dff-ab78-4dbd-b2a3-14d0e779ea33",
+      "target_type": "agent"
+    }
+  ],
+  "evaluation_reason": "Partial admission: agent Allowed Synthetic Worker (1900d0c1-5387-4f2c-af51-275275e4626e) handled with queued receipt; agent Private Synthetic Worker (c4306dff-ab78-4dbd-b2a3-14d0e779ea33) blocked with invocation_not_allowed. Queued confirms admission only, not work started or completed. Saved comment not retried; in_progress preserved.",
+  "request_offsets_seconds": [
+    43.164,
+    106.709,
+    164.954
+  ],
+  "seconds_from_evaluation_response_to_forced_stop": 15.058,
+  "snapshot_scope": {
+    "issues": "selected business fields across synthetic workspace",
+    "comments_tasks_evaluations": "current leader issue only"
+  },
+  "limitations": [
+    "Guided partial-receipt sample: task request explicitly prescribed both workers and partial-failed behavior.",
+    "No turn.completed/final response; committed API actions do not convert timeout into completed-model success.",
+    "No supplied evidence attributes final15 seconds to a Multica bug, model stall or provider transport; cause remains unknown.",
+    "Only captured fields are compared; final cwd equality is not a host sandbox or transient-write guarantee.",
+    "Queued worker task was not claimed or executed; admission is not worker completion.",
+    "No leader final usage telemetry; unknown consumption must not be reported as zero cost."
+  ],
+  "evidence_hashes": {
+    "leader-before-state.json": "c8008d2d7c41e7fc50deeb174d72f2d06626ba7aa80e004ebece72345351523e",
+    "leader-after-state.json": "c96d478cc56d8f6ca4508d8d31df8e7236682586f1d93f33bbbb42f0c4101fbb",
+    "leader-codex-events.jsonl": "abcbe08e622ca824e3a1377ae9e7e80d9ecf4f4b691290e953fd39b47f4aea7c",
+    "leader-codex-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "leader-prompt.md": "aeec904562cf86e4c8b2993846553842426966e84c439f0f8c2b9fa6509effa5",
+    "leader-oracle.py": "e653e2b9a834250b8ef07de78607997c3a10232728ca1a2688eeef3f927ab58e",
+    "leader-oracle.json": "3ed5991c3a7f2046ead618df5d8e056b567262ca59fb57182689a5f580e4e20c",
+    "prepare-leader-fixture.py": "24e7f760da84c1d7af1e7c7530ec7655e44ca25ee6449f6f80af75699c0c3794",
+    "model-trials.json": "2178d48272b59a4b85da64b218083e0f5d1934147f7d626c8ee9054e789e34fa",
+    "run-codex-trial.py": "82cf31d3afd96a774dd82fea54f48d72bafef1189dc1ec464d5f4040fbafd51f"
+  },
+  "independent_oracle_sha256": "18202877b5dd213b99d9763b3ce10ecd184e7683759da3ccc4b3bd38ec3a7bc3"
+}

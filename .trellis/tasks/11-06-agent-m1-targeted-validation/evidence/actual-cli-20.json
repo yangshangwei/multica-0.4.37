@@ -1,0 +1,610 @@
+{
+  "passed": 20,
+  "failed": 0,
+  "cli_sha256": "d078fef1e06c4395a5413dc7b024cfb7591db786fa4042e38ca2122748f2d2fd",
+  "source_head": "6405240dd38807c6b0ddd40a958463d04f270bed",
+  "cases": [
+    {
+      "name": "reporter-uuid-get",
+      "role": "reporter",
+      "args": [
+        "issue",
+        "get",
+        "01a1ac9a-2e11-75b8-99ca-507b30a97cfa",
+        "--output",
+        "json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 76,
+      "requests": [
+        {
+          "time": 1793898260.424386,
+          "role": "reporter",
+          "method": "GET",
+          "path": "/api/issues/01a1ac9a-2e11-75b8-99ca-507b30a97cfa",
+          "status": 200,
+          "elapsed_ms": 16,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "e1d410aa8f149ace56d2142330ddb96aa3de8ed1d6c1f9cdfab5e0436c621e9e"
+        }
+      ],
+      "stdout_sha256": "84a05af000081fea74bc352c8336301c8bbdf7805c32b95ad2c1d82d0bfb6c47",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verdict": "pass"
+    },
+    {
+      "name": "reporter-key-get",
+      "role": "reporter",
+      "args": [
+        "issue",
+        "get",
+        "M129-6",
+        "--output",
+        "json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 29,
+      "requests": [
+        {
+          "time": 1793898260.447105,
+          "role": "reporter",
+          "method": "GET",
+          "path": "/api/issues/M129-6",
+          "status": 200,
+          "elapsed_ms": 11,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "e1d410aa8f149ace56d2142330ddb96aa3de8ed1d6c1f9cdfab5e0436c621e9e"
+        },
+        {
+          "time": 1793898260.455728,
+          "role": "reporter",
+          "method": "GET",
+          "path": "/api/issues/01a1ac9a-2e11-75b8-99ca-507b30a97cfa",
+          "status": 200,
+          "elapsed_ms": 8,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "e1d410aa8f149ace56d2142330ddb96aa3de8ed1d6c1f9cdfab5e0436c621e9e"
+        }
+      ],
+      "stdout_sha256": "84a05af000081fea74bc352c8336301c8bbdf7805c32b95ad2c1d82d0bfb6c47",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verdict": "pass"
+    },
+    {
+      "name": "reporter-comments",
+      "role": "reporter",
+      "args": [
+        "issue",
+        "comment",
+        "list",
+        "01a1ac9a-2e11-75b8-99ca-507b30a97cfa",
+        "--output",
+        "json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 19,
+      "requests": [
+        {
+          "time": 1793898260.4755661,
+          "role": "reporter",
+          "method": "GET",
+          "path": "/api/issues/01a1ac9a-2e11-75b8-99ca-507b30a97cfa/comments?fold=true",
+          "status": 200,
+          "elapsed_ms": 9,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "ab6d9cff2b54a5a49df7238e031507ff03d873c0a21643512f6d8b911982c610"
+        }
+      ],
+      "stdout_sha256": "8df88f9a2e06a22882c35a38c42194ad6e3ea2264fb8de0039e5e20e6c30148f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verdict": "pass"
+    },
+    {
+      "name": "reporter-timeline",
+      "role": "reporter",
+      "args": [
+        "issue",
+        "timeline",
+        "01a1ac9a-2e11-75b8-99ca-507b30a97cfa",
+        "--output",
+        "json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 18,
+      "requests": [
+        {
+          "time": 1793898260.495092,
+          "role": "reporter",
+          "method": "GET",
+          "path": "/api/issues/01a1ac9a-2e11-75b8-99ca-507b30a97cfa/timeline",
+          "status": 200,
+          "elapsed_ms": 8,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "6713dcb277dc9c37b9f0969e2f86214adb92d7dcd46da0877a75af634f3a315b"
+        }
+      ],
+      "stdout_sha256": "32b3c54f2e8f9ca057f212dca34e810a152af99cffc66fbe2038acd978e08066",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verdict": "pass"
+    },
+    {
+      "name": "reporter-project-list",
+      "role": "reporter",
+      "args": [
+        "issue",
+        "list",
+        "--project",
+        "eb8e16cc-0089-4702-97aa-54259e29b8f5",
+        "--output",
+        "json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 32,
+      "requests": [
+        {
+          "time": 1793898260.584928,
+          "role": "reporter",
+          "method": "GET",
+          "path": "/api/issues?limit=50&project_id=eb8e16cc-0089-4702-97aa-54259e29b8f5&workspace_id=fd2d2b54-b4f1-4f5d-9d74-838a119a7df7",
+          "status": 200,
+          "elapsed_ms": 21,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "df712a37a9d46139ba7d825502ddaf32c9aeb43337168058190e9c9c6dca8e3b"
+        }
+      ],
+      "stdout_sha256": "34cc8029d48179b88a1dab1721c6a54e8d21072559e5d05ad94587039197a86f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verdict": "pass"
+    },
+    {
+      "name": "reporter-project-page",
+      "role": "reporter",
+      "args": [
+        "issue",
+        "list",
+        "--project",
+        "eb8e16cc-0089-4702-97aa-54259e29b8f5",
+        "--limit",
+        "1",
+        "--offset",
+        "1",
+        "--output",
+        "json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 22,
+      "requests": [
+        {
+          "time": 1793898260.608497,
+          "role": "reporter",
+          "method": "GET",
+          "path": "/api/issues?limit=1&offset=1&project_id=eb8e16cc-0089-4702-97aa-54259e29b8f5&workspace_id=fd2d2b54-b4f1-4f5d-9d74-838a119a7df7",
+          "status": 200,
+          "elapsed_ms": 11,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "6233cf0fca72abaa0445acaf1f8c6f827da2e9aa50ff5d333d0039c78a02b1f1"
+        }
+      ],
+      "stdout_sha256": "995db7bc5b526d8a24ccc14f6414bdc11e243e7166bdb0bff32a5dbd2fe063f8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verdict": "pass"
+    },
+    {
+      "name": "reporter-short-project-denied",
+      "role": "reporter",
+      "args": [
+        "issue",
+        "list",
+        "--project",
+        "eb8e16cc",
+        "--output",
+        "json"
+      ],
+      "exit": 3,
+      "elapsed_ms": 12,
+      "requests": [
+        {
+          "time": 1793898260.62253,
+          "role": "reporter",
+          "method": "GET",
+          "path": "/api/projects?workspace_id=fd2d2b54-b4f1-4f5d-9d74-838a119a7df7",
+          "status": 403,
+          "elapsed_ms": 3,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "6046b1ba5764ac37f8127697c1b05d0c6487fb00287c6c92dc67b955cd1ea9db"
+        }
+      ],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a831cc86d6e194db412dde3952577462770cb59ba99f516364922ebca0a4631d",
+      "verdict": "pass"
+    },
+    {
+      "name": "reporter-outside-read-denied",
+      "role": "reporter",
+      "args": [
+        "issue",
+        "get",
+        "01a1ac9a-2ddd-773f-b3a5-2574274f8ad3",
+        "--output",
+        "json"
+      ],
+      "exit": 3,
+      "elapsed_ms": 18,
+      "requests": [
+        {
+          "time": 1793898260.641881,
+          "role": "reporter",
+          "method": "GET",
+          "path": "/api/issues/01a1ac9a-2ddd-773f-b3a5-2574274f8ad3",
+          "status": 403,
+          "elapsed_ms": 8,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "6046b1ba5764ac37f8127697c1b05d0c6487fb00287c6c92dc67b955cd1ea9db"
+        }
+      ],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a831cc86d6e194db412dde3952577462770cb59ba99f516364922ebca0a4631d",
+      "verdict": "pass"
+    },
+    {
+      "name": "reporter-write-denied",
+      "role": "reporter",
+      "args": [
+        "issue",
+        "update",
+        "01a1ac9a-2e11-75b8-99ca-507b30a97cfa",
+        "--title",
+        "FORBIDDEN CLI MUTATION",
+        "--output",
+        "json"
+      ],
+      "exit": 3,
+      "elapsed_ms": 12,
+      "requests": [
+        {
+          "time": 1793898260.655002,
+          "role": "reporter",
+          "method": "PUT",
+          "path": "/api/issues/01a1ac9a-2e11-75b8-99ca-507b30a97cfa",
+          "status": 403,
+          "elapsed_ms": 2,
+          "request_body_sha256": "29912b5b656020797b0b5d617fba536f4bd187a5ce35458d5904633edf2ecedb",
+          "response_sha256": "6046b1ba5764ac37f8127697c1b05d0c6487fb00287c6c92dc67b955cd1ea9db"
+        }
+      ],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a831cc86d6e194db412dde3952577462770cb59ba99f516364922ebca0a4631d",
+      "verdict": "pass"
+    },
+    {
+      "name": "reporter-comment-add",
+      "role": "reporter",
+      "args": [
+        "issue",
+        "comment",
+        "add",
+        "01a1ac9a-2e11-75b8-99ca-507b30a97cfa",
+        "--content",
+        "Deterministic reporter CLI delivery 1793898260656336000",
+        "--output",
+        "json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 43,
+      "requests": [
+        {
+          "time": 1793898260.6995788,
+          "role": "reporter",
+          "method": "POST",
+          "path": "/api/issues/01a1ac9a-2e11-75b8-99ca-507b30a97cfa/comments",
+          "status": 201,
+          "elapsed_ms": 34,
+          "request_body_sha256": "16b092a2b2a95aed18692ecc2785ff8b02e15b78b9d7a4993ad0851e4649b691",
+          "response_sha256": "2baa588ae5f2bccdc4886b1081874d2633f14dfb7ee718d3fad17a850d4c9262"
+        }
+      ],
+      "stdout_sha256": "8e7deef22251e2e8581c795005024acea9523f419040ca4f258625fd0648c6ab",
+      "stderr_sha256": "cb220c22b31866b337952007caadcc01391d56a8e72675327bbf78d25da181f8",
+      "verdict": "pass"
+    },
+    {
+      "name": "reporter-comment-readback",
+      "role": "reporter",
+      "args": [
+        "issue",
+        "comment",
+        "list",
+        "01a1ac9a-2e11-75b8-99ca-507b30a97cfa",
+        "--output",
+        "json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 21,
+      "requests": [
+        {
+          "time": 1793898260.771064,
+          "role": "reporter",
+          "method": "GET",
+          "path": "/api/issues/01a1ac9a-2e11-75b8-99ca-507b30a97cfa/comments?fold=true",
+          "status": 200,
+          "elapsed_ms": 11,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "c0fae7676f8d491d36734337a6fc9e44112b279383e3d7b00d6f098eb782d93b"
+        }
+      ],
+      "stdout_sha256": "115bc0236ec4257a56efb15408699d922cdd0024fba866cb16a148793049a11f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verdict": "pass"
+    },
+    {
+      "name": "reviewer-uuid-get",
+      "role": "reviewer",
+      "args": [
+        "issue",
+        "get",
+        "01a1ac9a-2e7b-7d98-842c-c31899ee7bed",
+        "--output",
+        "json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 25,
+      "requests": [
+        {
+          "time": 1793898260.922616,
+          "role": "reviewer",
+          "method": "GET",
+          "path": "/api/issues/01a1ac9a-2e7b-7d98-842c-c31899ee7bed",
+          "status": 200,
+          "elapsed_ms": 15,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "ada6511d45245921355bee4f989293651789b1c8037dddaebae442cf78b940d1"
+        }
+      ],
+      "stdout_sha256": "d22ffbcab608404a9fe8d537db30ab91c6be00492627a87753eb46ac5ddf8fda",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verdict": "pass"
+    },
+    {
+      "name": "reviewer-key-get",
+      "role": "reviewer",
+      "args": [
+        "issue",
+        "get",
+        "M129-7",
+        "--output",
+        "json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 29,
+      "requests": [
+        {
+          "time": 1793898260.94324,
+          "role": "reviewer",
+          "method": "GET",
+          "path": "/api/issues/M129-7",
+          "status": 200,
+          "elapsed_ms": 9,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "ada6511d45245921355bee4f989293651789b1c8037dddaebae442cf78b940d1"
+        },
+        {
+          "time": 1793898260.952648,
+          "role": "reviewer",
+          "method": "GET",
+          "path": "/api/issues/01a1ac9a-2e7b-7d98-842c-c31899ee7bed",
+          "status": 200,
+          "elapsed_ms": 9,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "ada6511d45245921355bee4f989293651789b1c8037dddaebae442cf78b940d1"
+        }
+      ],
+      "stdout_sha256": "d22ffbcab608404a9fe8d537db30ab91c6be00492627a87753eb46ac5ddf8fda",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verdict": "pass"
+    },
+    {
+      "name": "reviewer-comments",
+      "role": "reviewer",
+      "args": [
+        "issue",
+        "comment",
+        "list",
+        "01a1ac9a-2e7b-7d98-842c-c31899ee7bed",
+        "--output",
+        "json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 18,
+      "requests": [
+        {
+          "time": 1793898260.972116,
+          "role": "reviewer",
+          "method": "GET",
+          "path": "/api/issues/01a1ac9a-2e7b-7d98-842c-c31899ee7bed/comments?fold=true",
+          "status": 200,
+          "elapsed_ms": 8,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "1c6b66da410743f5ab517d9548dc25c83310b6b56f46169e96d3165b847aae2f"
+        }
+      ],
+      "stdout_sha256": "2d13f44eb1e7dd1b97eb9a741b97fc7f4c4814e03d1f603b79f6fb92b563b2a0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verdict": "pass"
+    },
+    {
+      "name": "reviewer-timeline",
+      "role": "reviewer",
+      "args": [
+        "issue",
+        "timeline",
+        "01a1ac9a-2e7b-7d98-842c-c31899ee7bed",
+        "--output",
+        "json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 19,
+      "requests": [
+        {
+          "time": 1793898260.992722,
+          "role": "reviewer",
+          "method": "GET",
+          "path": "/api/issues/01a1ac9a-2e7b-7d98-842c-c31899ee7bed/timeline",
+          "status": 200,
+          "elapsed_ms": 9,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "2af317a311442846242e54e7e15c4b36fb30dc70848c9ec238976b1e89b9ccc2"
+        }
+      ],
+      "stdout_sha256": "a72cf4699677f9e32f49d492193a8d988c6c81d7bd92accd26305354ae4229ba",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verdict": "pass"
+    },
+    {
+      "name": "reviewer-project-list-denied",
+      "role": "reviewer",
+      "args": [
+        "issue",
+        "list",
+        "--project",
+        "eb8e16cc-0089-4702-97aa-54259e29b8f5",
+        "--output",
+        "json"
+      ],
+      "exit": 3,
+      "elapsed_ms": 12,
+      "requests": [
+        {
+          "time": 1793898261.006128,
+          "role": "reviewer",
+          "method": "GET",
+          "path": "/api/issues?limit=50&project_id=eb8e16cc-0089-4702-97aa-54259e29b8f5&workspace_id=fd2d2b54-b4f1-4f5d-9d74-838a119a7df7",
+          "status": 403,
+          "elapsed_ms": 2,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "6046b1ba5764ac37f8127697c1b05d0c6487fb00287c6c92dc67b955cd1ea9db"
+        }
+      ],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a831cc86d6e194db412dde3952577462770cb59ba99f516364922ebca0a4631d",
+      "verdict": "pass"
+    },
+    {
+      "name": "reviewer-outside-read-denied",
+      "role": "reviewer",
+      "args": [
+        "issue",
+        "get",
+        "01a1ac9a-2ddd-773f-b3a5-2574274f8ad3",
+        "--output",
+        "json"
+      ],
+      "exit": 3,
+      "elapsed_ms": 16,
+      "requests": [
+        {
+          "time": 1793898261.023062,
+          "role": "reviewer",
+          "method": "GET",
+          "path": "/api/issues/01a1ac9a-2ddd-773f-b3a5-2574274f8ad3",
+          "status": 403,
+          "elapsed_ms": 6,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "6046b1ba5764ac37f8127697c1b05d0c6487fb00287c6c92dc67b955cd1ea9db"
+        }
+      ],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a831cc86d6e194db412dde3952577462770cb59ba99f516364922ebca0a4631d",
+      "verdict": "pass"
+    },
+    {
+      "name": "reviewer-write-denied",
+      "role": "reviewer",
+      "args": [
+        "issue",
+        "update",
+        "01a1ac9a-2e7b-7d98-842c-c31899ee7bed",
+        "--title",
+        "FORBIDDEN CLI MUTATION",
+        "--output",
+        "json"
+      ],
+      "exit": 3,
+      "elapsed_ms": 11,
+      "requests": [
+        {
+          "time": 1793898261.035896,
+          "role": "reviewer",
+          "method": "PUT",
+          "path": "/api/issues/01a1ac9a-2e7b-7d98-842c-c31899ee7bed",
+          "status": 403,
+          "elapsed_ms": 2,
+          "request_body_sha256": "29912b5b656020797b0b5d617fba536f4bd187a5ce35458d5904633edf2ecedb",
+          "response_sha256": "6046b1ba5764ac37f8127697c1b05d0c6487fb00287c6c92dc67b955cd1ea9db"
+        }
+      ],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a831cc86d6e194db412dde3952577462770cb59ba99f516364922ebca0a4631d",
+      "verdict": "pass"
+    },
+    {
+      "name": "reviewer-comment-add",
+      "role": "reviewer",
+      "args": [
+        "issue",
+        "comment",
+        "add",
+        "01a1ac9a-2e7b-7d98-842c-c31899ee7bed",
+        "--content",
+        "Deterministic reviewer CLI delivery 1793898261037198000",
+        "--output",
+        "json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 31,
+      "requests": [
+        {
+          "time": 1793898261.0683808,
+          "role": "reviewer",
+          "method": "POST",
+          "path": "/api/issues/01a1ac9a-2e7b-7d98-842c-c31899ee7bed/comments",
+          "status": 201,
+          "elapsed_ms": 22,
+          "request_body_sha256": "66898fb8011cd0249c472c0e3798d60853ac7969a1e320b585b12a01ce5b6cef",
+          "response_sha256": "51f183595c73ca62cd124a67b5cbe77f6c446ad1476a8bf826dae7a9f0b11f6e"
+        }
+      ],
+      "stdout_sha256": "5b774bc0332c51d18311878fc7d4399cca8813d14ee66c5a113c85de7a75d09c",
+      "stderr_sha256": "403d5bec8c9a2e22578d6e6f58983fe9d31572da11cdc68a66dea77643a991ac",
+      "verdict": "pass"
+    },
+    {
+      "name": "reviewer-comment-readback",
+      "role": "reviewer",
+      "args": [
+        "issue",
+        "comment",
+        "list",
+        "01a1ac9a-2e7b-7d98-842c-c31899ee7bed",
+        "--output",
+        "json"
+      ],
+      "exit": 0,
+      "elapsed_ms": 20,
+      "requests": [
+        {
+          "time": 1793898261.1400478,
+          "role": "reviewer",
+          "method": "GET",
+          "path": "/api/issues/01a1ac9a-2e7b-7d98-842c-c31899ee7bed/comments?fold=true",
+          "status": 200,
+          "elapsed_ms": 10,
+          "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "response_sha256": "bf44ab8b760cd2c5ae2fb5b8586290b1c922c45607e1bfc9b95f77657e4128d4"
+        }
+      ],
+      "stdout_sha256": "f13d992d8078eba4eeb2b69a7d5070db836a545c3d8d330d4ad124cc157d0f29",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verdict": "pass"
+    }
+  ]
+}

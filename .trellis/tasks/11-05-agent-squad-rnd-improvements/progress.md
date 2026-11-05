@@ -39,3 +39,7 @@
 - Original shared checkout remains at `5aef9c19a`; no original product changes, no remote push or deployment. Local integration of the isolated branch remains a separate step requiring preservation of its dirty specs/journal.
 
 - Recorded this isolated journal entry as131 to avoid conflicting with the shared checkout’s uncommitted119–130 history. Do not copy/rewrite that parallel history on integration. Three accepted children archived; parent in_progress.
+
+- 2026-11-06 additional targeted validation authorized including codex exec. New full-router29 cases and actual compiled CLI/API20 cases pass; independent reviewer strengthened persisted-name assertion and the file-only model oracle. No production code changed.
+- Real guided Codex samples: reporter165.622s exit0 and reviewer45.256s exit0, independent scope/action/semantic checks pass. Leader committed correct single mixed delegation+failed evaluation but hit180s timeout(exit124) without final response; complete-trial verdict FAIL. No fourth trial or raised timeout; no root cause inferred. Full observed maps/trace/usage and failed finalization retained.
+- Fresh served/test DBs kept separate; test credentials revoked, owned API/proxies/PG stopped and data/logs retained. Parent M1–M3 remains in_progress; hosted/model-wide/NFR claims remain open.

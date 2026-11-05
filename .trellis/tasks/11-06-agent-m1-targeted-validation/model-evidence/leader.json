@@ -1,0 +1,144 @@
+{
+  "role": "leader",
+  "process": {
+    "role": "leader",
+    "argv": [
+      "/Users/artisan/.nvm/versions/node/v22.23.2/bin/codex",
+      "exec",
+      "--ephemeral",
+      "--ignore-rules",
+      "--skip-git-repo-check",
+      "--sandbox",
+      "workspace-write",
+      "--json",
+      "--color",
+      "never",
+      "-C",
+      "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/leader-cwd",
+      "--output-last-message",
+      "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/leader-codex-final.txt",
+      "-"
+    ],
+    "prompt_sha256": "aeec904562cf86e4c8b2993846553842426966e84c439f0f8c2b9fa6509effa5",
+    "started_at": 1793898560.4112241,
+    "timeout_seconds": 180,
+    "status": "execution_failed",
+    "exit": 124,
+    "timeout": true,
+    "elapsed_seconds": 180.012,
+    "stop_remaining": false,
+    "event_sha256": "abcbe08e622ca824e3a1377ae9e7e80d9ecf4f4b691290e953fd39b47f4aea7c"
+  },
+  "original_oracle": {
+    "comment_delta": 1,
+    "new_comments": [
+      {
+        "id": "01a1acb1-5c4e-7c2d-b675-b453285de8fd",
+        "issue_id": "01a1acac-736f-7e44-807e-b7b6e1b4fcc0",
+        "author_type": "agent",
+        "author_id": "963c25f9-a05f-4b24-9d59-9423af58b1d8",
+        "content": "[@Allowed Synthetic Worker](mention://agent/1900d0c1-5387-4f2c-af51-275275e4626e) and [@Private Synthetic Worker](mention://agent/c4306dff-ab78-4dbd-b2a3-14d0e779ea33), perform the requested synthetic read-only source inspection, using your implementation and testing perspectives respectively. Report findings without modifying code or issue status.",
+        "source_task_id": "01a1acac-737a-7a1d-9fc4-9fe6db4edcf3",
+        "dispatch_eligible": true
+      }
+    ],
+    "new_tasks": [
+      {
+        "id": "01a1acb1-5c69-7a31-a201-1ccd6aee2131",
+        "issue_id": "01a1acac-736f-7e44-807e-b7b6e1b4fcc0",
+        "agent_id": "1900d0c1-5387-4f2c-af51-275275e4626e",
+        "status": "queued",
+        "trigger_comment_id": "01a1acb1-5c4e-7c2d-b675-b453285de8fd",
+        "originator_user_id": "9aa46467-c559-4e46-a037-b2d76922bee5"
+      }
+    ],
+    "new_evaluations": [
+      {
+        "id": "01a1acb2-3fee-7670-a827-567a8fbcacac",
+        "actor_type": "agent",
+        "actor_id": "963c25f9-a05f-4b24-9d59-9423af58b1d8",
+        "action": "squad_leader_evaluated",
+        "details": {
+          "reason": "Partial admission: agent Allowed Synthetic Worker (1900d0c1-5387-4f2c-af51-275275e4626e) handled with queued receipt; agent Private Synthetic Worker (c4306dff-ab78-4dbd-b2a3-14d0e779ea33) blocked with invocation_not_allowed. Queued confirms admission only, not work started or completed. Saved comment not retried; in_progress preserved.",
+          "outcome": "failed",
+          "task_id": "01a1acac-737a-7a1d-9fc4-9fe6db4edcf3",
+          "squad_id": "90d20dd7-04a1-4e01-bd41-aaa544306b9b"
+        }
+      }
+    ],
+    "requests": [
+      {
+        "time": 1793898603.574868,
+        "role": "leader",
+        "method": "GET",
+        "path": "/api/issues/01a1acac-736f-7e44-807e-b7b6e1b4fcc0",
+        "status": 200,
+        "elapsed_ms": 40,
+        "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "response_sha256": "2dda85435a555cd2a91e16b9dd62ad8bff911daed90d9e69899bc1bcf20b778f"
+      },
+      {
+        "time": 1793898667.120094,
+        "role": "leader",
+        "method": "POST",
+        "path": "/api/issues/01a1acac-736f-7e44-807e-b7b6e1b4fcc0/comments",
+        "status": 201,
+        "elapsed_ms": 48,
+        "request_body_sha256": "46bab077afc274b4d739962a2f349ca633553ae59ca3c7e2039809f1d4d7d86f",
+        "response_sha256": "e4c46c67f0c74558073b72e96065de040132e7881e24af44a0cff6890874cff2"
+      },
+      {
+        "time": 1793898725.3654468,
+        "role": "leader",
+        "method": "POST",
+        "path": "/api/issues/01a1acac-736f-7e44-807e-b7b6e1b4fcc0/squad-evaluated",
+        "status": 201,
+        "elapsed_ms": 23,
+        "request_body_sha256": "b1a01892f7b8c8b71e7120cf6f44ec1d7e6cef4e756ff8e6b39d7a19e1c6c088",
+        "response_sha256": "b1109684b205e8300bdcf652fbccfcad356160d87002cf116618ccfd6f9fff91"
+      }
+    ],
+    "issue_fields_unchanged": true,
+    "cwd_unchanged": true,
+    "single_delegation_post": true,
+    "allowed_task_count": 1,
+    "blocked_task_count": 0,
+    "expected": {
+      "current_issue": "01a1acac-736f-7e44-807e-b7b6e1b4fcc0",
+      "issue_identifier": "M129-8",
+      "project": "eb8e16cc-0089-4702-97aa-54259e29b8f5",
+      "allowed_target": "1900d0c1-5387-4f2c-af51-275275e4626e",
+      "blocked_target": "c4306dff-ab78-4dbd-b2a3-14d0e779ea33",
+      "squad_id": "90d20dd7-04a1-4e01-bd41-aaa544306b9b",
+      "comment_delta": 1,
+      "evaluation_delta": 1,
+      "evaluation_outcome": "failed",
+      "allowed_task_delta": 1,
+      "blocked_task_delta": 0,
+      "issue_mutations": 0,
+      "no_blind_retry": true
+    },
+    "mechanical_contract_pass": true
+  },
+  "expected": {
+    "current_issue": "01a1acac-736f-7e44-807e-b7b6e1b4fcc0",
+    "issue_identifier": "M129-8",
+    "project": "eb8e16cc-0089-4702-97aa-54259e29b8f5",
+    "allowed_target": "1900d0c1-5387-4f2c-af51-275275e4626e",
+    "blocked_target": "c4306dff-ab78-4dbd-b2a3-14d0e779ea33",
+    "squad_id": "90d20dd7-04a1-4e01-bd41-aaa544306b9b",
+    "comment_delta": 1,
+    "evaluation_delta": 1,
+    "evaluation_outcome": "failed",
+    "allowed_task_delta": 1,
+    "blocked_task_delta": 0,
+    "issue_mutations": 0,
+    "no_blind_retry": true
+  },
+  "process_verdict": "FAIL timeout180s; no turn.completed or final response",
+  "observed_actions": "independently accepted recorded business actions; full trial failed due process timeout",
+  "usage": "unavailable: no turn.completed",
+  "raw_events": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/leader-codex-events.jsonl",
+  "budget": "3/3 invocations used; no automatic retry",
+  "independent_evidence": "../independent-evidence/leader-independent-oracle01.json"
+}

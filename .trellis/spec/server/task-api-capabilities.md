@@ -48,3 +48,27 @@ Wrong: check project once in middleware, then let the handler load a changed row
 Correct: authorize the actual read snapshot/write transaction and keep dispatch eligibility on each persisted comment.
 
 Rollback requires ACCESS EXCLUSIVE NOWAIT, capability existence check and DROP inside the same DO block. Revoke restricted tokens before an operational rollback; reverting server code while keeping such credentials can weaken enforcement. Local validation is not authorization for deployment or rollback.
+
+## Targeted CLI and model verification
+
+Use the compiled Multica CLI with an actual server-claimed task token to prove the
+allowed flow. Reporter `issue list --project <full UUID>` resolves without project
+inventory; a short project prefix legitimately needs a forbidden inventory read.
+Do not expand the capability merely to make prefix lookup pass. Full-router tests
+must assert returned IDs/totals across ordinary/open_only, pagination and filter
+intersections, with outside-project and no-project sentinels. Vary runtime-owner
+authority independently of an unchanged authorized originator.
+
+Real-model trials require explicit authorization and a fixed invocation/time
+budget. Freeze expected actions before execution; compare complete keyed maps of
+the recorded business fields (add/remove/change), exact comment actor/source task/
+dispatch eligibility, decoded real requests, command events and cwd hashes.
+Model self-report and a zero process exit alone are not proof. Preserve an initial
+weak oracle and add a separate stronger evidence comparison without rerunning the
+model. Label guided prompts as guided samples, not broad attack resistance.
+
+Keep business actions and process completion separate. A leader may commit the
+correct queued/blocked receipt handling and failed evaluation, then time out
+without a final response. Record action evidence and process failure together;
+never relabel the complete trial as passed or infer a backend/model root cause
+without further evidence. Missing final usage is unknown, not zero cost.
