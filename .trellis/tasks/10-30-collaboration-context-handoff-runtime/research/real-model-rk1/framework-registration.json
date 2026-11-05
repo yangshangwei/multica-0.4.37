@@ -2,12 +2,8 @@
   "series": "RK1",
   "scope": "runtime scenarios of runtime-addendum.json, including RK1-H2b (budgeted 2026-11-01T10:33:57Z)",
   "registered_by_session": "claude multica-0-4-37-35",
-  "runnable": false,
-  "not_runnable_reasons": [
-    "E0a original behavior/lifecycle accepted with postrunoperatorstabilityNOTPROVEN and helperexit1preserved; rootdisposition resolvesauxiliaryhold withoutrewritingsample",
-    "prospective successor helper independentlyreviewed beforeuse; H1 exactcurrentoperator/source/CLI/DB binding and committedregistration stillrequired",
-    "H1 has no exclusive modelwindow; remaining24, nextregisteredH1trial1 (3calls) onlyafterallgates"
-  ],
+  "runnable": true,
+  "not_runnable_reasons": [],
   "framework_files": "server/cmd/server/rk1_*_test.go (build tag agentintegration, !windows)",
   "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
   "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
@@ -88,7 +84,7 @@
     "current final639 fake normal/race passed; independent result review remains unavailable after gateway429",
     "user currently permits local preparation only; exclusive serial gateway window and applicable execution authority required before paid execution"
   ],
-  "maintained_at": "2026-11-05T04:41:05.074286+00:00",
+  "maintained_at": "2026-11-05T06:21:00.601697+00:00",
   "authorization_reference": "../continuation-20261102/coordinator/authorization-recall.md",
   "selected_candidate_preparation": "../continuation-20261105/paid-binding-preflight.json",
   "historical_gate_reasons_before_20261104": [
@@ -158,7 +154,7 @@
     "~/.claude/CLAUDE.md": "7cd2f85f979b138c2557af3cd736a4911c323e03ac2e6ace45f85070fd5feca7",
     "~/.claude/hooks/": "094bb0d044f311ec46bed8880c1fe8d8804f00531b7bd8566f33a3d99111e0da",
     "~/.claude/skills/": "0d7e2e273437697ef11e22d168f70fd0e7b7523e9411f1c2167b26e413919789",
-    "~/.claude/plugins/": "617d9c5d6b208b7b1b44aa4ac5bff262a738b926b70886f16dda143873050d8c",
+    "~/.claude/plugins/": "91deb2c67550be5d1d1b366dde25543a78fec36ec719e7d9adcd29f3e3d87660",
     "~/.claude/agents/": "e418e8871a56f58d80832c9a89e0430c37b12efd70d775539f9df512bf026bba",
     "~/.claude/commands/": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "managed:/Library/Application Support/ClaudeCode/": null,
@@ -231,7 +227,7 @@
     },
     "selected_candidate_preparation": "../continuation-20261102/coordinator/v10/binding-preparation.json"
   },
-  "operator_binding_status": "POST_RUN_PLUGIN_TREE_CHANGED",
+  "operator_binding_status": "H1 current actualenv; strictprechecks and perfileobservations",
   "real_entry_preparation": {
     "helper_commit": "86541bb37",
     "helper_sha256": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
@@ -245,13 +241,14 @@
   },
   "execution_window": {
     "owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
-    "granted_by": "01a1a731-b1e5-7b11-b83e-55efca5293d6",
-    "scenario": "RK1-E0a",
+    "granted_by": "01a1a7a6-02dc-7722-a9d6-7d05385edb2d",
+    "scenario": "RK1-H1",
     "start_trial": 1,
-    "launches": 1,
-    "outer_timeout_minutes": 12,
-    "expires_at": "2026-11-05T03:46:30+00:00",
-    "recorded_at": "2026-11-05T03:36:06.461469+00:00"
+    "trials": 3,
+    "paid_launches": 3,
+    "outer_timeout_minutes": 26,
+    "recorded_at": "2026-11-05T06:21:00.601697+00:00",
+    "hold": "preparation then actualinvocation up to26minutes; release onexit"
   },
   "actual_E0a": {
     "label": "RK1-E0a-t1",
