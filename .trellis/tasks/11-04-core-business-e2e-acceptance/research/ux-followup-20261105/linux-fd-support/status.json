@@ -1,14 +1,15 @@
 {
-  "state": "static_review_pass_runtime_pending",
+  "state": "focused_linux_regression_evidence_pass_original_workflow_pending",
   "implementation_owner": "core/linux_daemon_fd_fix",
   "implementation_checkout": "/Volumes/artisan/code/2026/mc-core-fd-fix-20261105",
   "support_scope": "Independent read-only descriptor/launch/error/test review",
   "source_edit_performed": false,
   "runtime_checks_performed": false,
   "independent_review_pending": false,
-  "remaining_acceptance": "Owner's real Linux noop-control failure, repaired regression, package identity and original full Main workflow",
+  "remaining_acceptance": "Core owner rebuilds fixedCLI/package variant and runs original Linux fullMain workflow; no full-flow pass claimed",
   "performance": "User accepted recorded2155.025ms; no further optimization or gate rerun",
-  "review": "static-review.md",
+  "review": "runtime-evidence-review.md",
   "production_findings": "No blocking finding",
-  "fixture_note": "PID publication failure afterchildStart should register immediate cleanup; relayedtoowner"
+  "fixture_note": "Prior PIDpublication failure cleanup gap closed by owner; finaltesthash3b01449",
+  "reviewed_external_runtime_results": "REDFAIL0.82/GREENPASS0.06/finalcleanupGREENPASS0.07; exactsource/binaryhashes verified"
 }
