@@ -2,7 +2,7 @@
   "recorded_at": "2026-11-04T17:03:41.495547+00:00",
   "owner": "01a1a72d-4d12-7b22-9470-cd0d318509c1",
   "task": "collaboration-knowledge-promotion",
-  "state": "ACQUIRED_REAL_KNOWLEDGE15_WINDOW",
+  "state": "RELEASED_KNOWLEDGE_NO_FURTHER_EXECUTION",
   "user_authorization": "local Codex up to15 starts and full product support accepted in this thread",
   "runtime_release": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/window-release.json",
   "runtime_release_sha256": "13ef81eac3e5d2c15f798d4958dfd292ab62a8b1d77013d6b03f0ce299f6fde2",
@@ -16,7 +16,7 @@
   ],
   "scope": "knowledge Codex real15 serial, max90m, stop first incomplete; runtime25 unchanged",
   "transport": "native task messages502; shared durable release used as explicit release evidence",
-  "real_calls": 0,
+  "real_calls": 2,
   "blocking_process": {
     "pid": 76168,
     "parent": 76110,
@@ -47,7 +47,7 @@
       ]
     }
   ],
-  "updated_at": "2026-11-05T04:44:55.952882+00:00",
+  "updated_at": "2026-11-05T06:20:08.053093+00:00",
   "requested_sequence": [
     "original_quote_only_fake",
     "runtime_E0a_max12min",
@@ -101,5 +101,7 @@
   "fake_race": "53pass0fail0skip15+3/0",
   "announced_at": "2026-11-05T05:39:14.831471+00:00",
   "max_minutes": 90,
-  "authority": "core explicit READY grants after finite fake preparation ability to announce authorized knowledge15; UX/runtime notified"
+  "authority": "core explicit READY grants after finite fake preparation ability to announce authorized knowledge15; UX/runtime notified",
+  "remaining": 13,
+  "next_window": "UX5case passed and resources0; UX explicitly released to runtimeH1"
 }

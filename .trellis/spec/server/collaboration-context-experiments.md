@@ -225,3 +225,29 @@ framework files, model, budget or scoring rule was changed by this disposition.
    authorization, delivered input, native thread/turn identity, termination and
    an independently scored model result. Product enablement and platform release
    remain separate from this bounded series.
+
+## Explicit single E0b retry
+
+1. **Scope:** use only for an explicitly authorized new E0b attempt after an
+   incomplete full-series baseline. Preserve the original stopped ledger.
+2. **Signatures:** `TestRK1KnowledgeRealE0bRetry` requires registration
+   `mode=e0b_retry`, `attempt_limit=1`, prior registration/ledger paths and hashes,
+   `prior_actual_starts=1`, `prior_debits=1`, and global cap15. Full and retry
+   entries reject one another's registration before execution.
+3. **Contract:** share the original `rk1kRunE0b` producer and all assertions.
+   The historical full ledger must prove one actual incomplete E0b start and
+   remain unchanged; the new ledger records only the retry and cannot start a
+   second process even after success. Report prior1+new1=total2, remaining13.
+4. **Errors:** absent/changed history, mismatched debit/account/program binding,
+   full/retry mode confusion, extra attempt or invalid sample refuses. A retry
+   registration never resets historical consumption or bypasses a prior stop.
+5. **Cases:** a fresh dedicated database and new numbered output can record one
+   authorized retry. Success is E0b-only, not full knowledge acceptance; failure
+   remains incomplete/failed with no automatic K1-K3.
+6. **Verification:** focused normal/race cover prior hash corruption and missing
+   history, exact debit, second-attempt denial, both entry-mode directions and
+   an actual one-sample fake E0b using the original helper. Bind source, binary,
+   config, native executable and unchanged prior evidence before real execution.
+7. **Wrong / correct:** filtering the full-series subtests breaks its15+3 summary
+   and does not impose a one-process budget. Use the separate registered entry
+   with the one-attempt ledger and independently reviewed sample instead.
