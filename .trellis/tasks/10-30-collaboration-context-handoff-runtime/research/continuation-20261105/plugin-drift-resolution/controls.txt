@@ -1,0 +1,17 @@
+{"exit_code": 1, "review_ready": false, "retry_allowed": false}
+test_absent_or_unreadable_inventory_refuses (__main__.SuccessorControls.test_absent_or_unreadable_inventory_refuses) ... ok
+test_actual_recorder_keeps_canary_and_budget_when_post_binding_raises (__main__.SuccessorControls.test_actual_recorder_keeps_canary_and_budget_when_post_binding_raises) ... ok
+test_admission_drift_refused (__main__.SuccessorControls.test_admission_drift_refused) ... ok
+test_canary_and_duplicate_labels_never_complete (__main__.SuccessorControls.test_canary_and_duplicate_labels_never_complete) ... ok
+test_h1_three_measured_starts_with_three_seed_copies (__main__.SuccessorControls.test_h1_three_measured_starts_with_three_seed_copies) ... ok
+test_h6_pairs_and_partial_invocation_do_not_free_budget (__main__.SuccessorControls.test_h6_pairs_and_partial_invocation_do_not_free_budget) ... ok
+test_inventory_matches_original_and_tracks_link_identity_without_following (__main__.SuccessorControls.test_inventory_matches_original_and_tracks_link_identity_without_following) ... ok
+test_post_drift_is_observed_without_changing_failed_trial (__main__.SuccessorControls.test_post_drift_is_observed_without_changing_failed_trial) ... ok
+test_selected_metadata_bytes_match_inventory_and_drift_refuses (__main__.SuccessorControls.test_selected_metadata_bytes_match_inventory_and_drift_refuses) ... ok
+test_unreadable_subdirectory_refuses_instead_of_omitting (__main__.SuccessorControls.test_unreadable_subdirectory_refuses_instead_of_omitting) ... ok
+test_unregistered_or_exhausted_scenario_refused (__main__.SuccessorControls.test_unregistered_or_exhausted_scenario_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.007s
+
+OK
