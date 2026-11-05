@@ -1,0 +1,112 @@
+{
+  "reviewed_at": "2026-11-04T17:34:43.624211+00:00",
+  "reviewer": "/root/acceptance_review",
+  "scope": "Frozen-source/configuration and E0a capture helper preparation; no launch authorization",
+  "static_verdict": "pass-with-notes",
+  "blocking_helper_findings_open": 0,
+  "execution_readiness": "BLOCKED_PENDING_ACTUAL_PREREQUISITES",
+  "frozen_source": {
+    "execution_head": "a2225552782eb6bcfda4542903d545c41a98677e",
+    "tested_product_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "git_product_diff_empty": true,
+    "git_execution_status_clean": true,
+    "registered_source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "new_main_88f_knowledge_change_applied": false,
+    "scope": "Frozen accepted runtime experiment; not acceptance of current main knowledge changes"
+  },
+  "provider": {
+    "registered_path": "/Users/artisan/.local/bin/claude",
+    "prepared_installation_version": "2.1.318",
+    "sha256": "677a2ea7bf576cedd20e191d973914ed8a41796f53a63b1923381ddc4d5b5e7d",
+    "requested_model": "claude-opus-5-5",
+    "separate_original_baseline": "2.1.316/c58f79874; original E5 failure and remaining8 stop unchanged",
+    "installed_version_or_model_probe_performed_by_reviewer": false
+  },
+  "operator_inventory": {
+    "file_count": 61947,
+    "initial_at": "2026-11-04T17:23:33.076044+00:00",
+    "recheck_at": "2026-11-04T17:27:44.413642+00:00",
+    "initial_tree_hash": "b9942cf349f7109090dd3c01e0b1724fed795733faae080bb0a42d0637013ac0",
+    "registered_plugin_hash": "1497906a9f34dd1d40af590dc95a3f697970caffdb70b76c8b57add84fac772c",
+    "content_change_count": 0,
+    "removed_count": 0,
+    "conclusion": "No captured drift during this interval, but inventory tree differs from registered hash. Earlier drift path/cause cannot be determined from changes[]/removed[].",
+    "tree_contents": "Mixed plugin caches/marketplace code and Git metadata; no basis to exclude any category.",
+    "admission_rule": "Unmodified launcher requires exact full operator_facts under final actual env; retain all included paths and freeze current values. Do not edit user configuration or relax hashing."
+  },
+  "helper": {
+    "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/e0a_entry.py",
+    "sha256": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
+    "private_copy_equal": true,
+    "controls_result": "7 credential-free controls passed in executor retained report; reviewer did not rerun",
+    "controls_hash_match": true,
+    "reviewed_contracts": [
+      "false permit blocks build/check/run before command execution",
+      "describe performs fingerprint/metadata reads only",
+      "genuine operator HOME/settings preserved; task/server/session state removed",
+      "exact source/framework/launcher/provider/operator/config/helper/env/git/python hashes bound",
+      "whole checkout clean VCS required; before/after builds compared",
+      "original launcher E0a1 only; no automatic scenarios or model switching",
+      "exclusive attempt/process/result files prevent same-label retries",
+      "new external owned temp root; two narrowly scoped observed artifact patterns",
+      "two cheap stable stat observations then one full read for unchanged binaries",
+      "regular owned non-symlink stable file capture; private copies never executed",
+      "per-run CLI observed path derived from saved launch cwd/run ID",
+      "upfront/nested/per-run CLI bytes and Go metadata compared",
+      "observer is post-file observation, not guaranteed pre-Provider interception",
+      "review_ready is recorder integrity only; root must review actual verdict/lifecycle/stop/accounting"
+    ]
+  },
+  "current_false_permit": {
+    "allow_build": false,
+    "allow_check": false,
+    "allow_run": false,
+    "window_id": null,
+    "window_expires_at": null,
+    "binding": null,
+    "build_result_sha256": null,
+    "check_result_sha256": null
+  },
+  "registration_runnable": false,
+  "outstanding_actual_blockers": [
+    "Core execution window is not released to runtime; knowledge window is queued",
+    "Foreign interactive Warp Claude PID68552 activity is unknown; no exclusive model window established",
+    "Exact final operator binding and enabled registration not yet reviewed/committed in execution checkout",
+    "Fresh paid DB allocation/live identity, upfront CLI build/capture readiness and unchanged launcher check-only not executed"
+  ],
+  "privacy": {
+    "sensitive_pattern_matches": [],
+    "inventory": "Only aggregate/hash observations enter report; full path inventory stays private",
+    "controls": "Dummy test credentials only; no genuine credentials displayed"
+  },
+  "source_references": [
+    "rk1_entry_test.go:223,265",
+    "host_preparation.go:32,131,296",
+    "rk1_run_test.go:81",
+    "pinned Go1.26.6 testing.go:1431"
+  ],
+  "reviewed_hashes": {
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/e0a_entry.py": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/test_observer.py": "74fa55aa5fe067583fb20b90c8a18e06b6bb436a2493fc6b4d05a3e6663457b6",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/permit-template.json": "919ae53509d367b892f5e7f01d820266fbf1eaa31169418e0952945986073ef2",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/verification.json": "18f4eedbd7fa3a67d02527516baaf5c8549f2b331a408046f18ae1a71125711a",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/README.md": "2744b5ddac94e5bc312ac7a6fa4173f02e896d1b1a0fb31586c70a427b270946",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/observer-controls.txt": "40ab63086100c1a862c1078fbd36bf34ce4e5bcdec0c8b6ff94e923834b7b413",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/operator-stability-observation.json": "0b56a864ed7ae1e1a33b9ebdfde0f6dc98e40186af0e081519947a84bc2ef6ce",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/coordination.json": "28b3fbadb24f29a8a65e4f7ce8d1391290dacca5d1ab76f43195ebe1632dada0"
+  },
+  "private_input_hashes": {
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/operator-inventory-initial.json": "71fa208010b90575659838757c3683ba2da1f53ba357ca97b41ca47d92b3bd61",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/operator-drift.json": "3af6292fe05dee5db1eef7ece45440b7ae11e383ff9ae13926df486a2f9616b9",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/permit.json": "919ae53509d367b892f5e7f01d820266fbf1eaa31169418e0952945986073ef2"
+  },
+  "operations": {
+    "tests": 0,
+    "Go_builds": 0,
+    "database": 0,
+    "provider_or_version_probes": 0,
+    "operator_config_edits": 0,
+    "new_plugin_tree_scans": 0
+  },
+  "paid_entry_opened": false
+}
