@@ -79,22 +79,21 @@ async function openDiscoveryStaffing(page: Page, fixture: LocalizedFixture, loca
     return url.pathname === "/api/squads/templates" && url.searchParams.get("language") === language;
   });
   await page.goto(`/${fixture.slug}/squads`);
-  await page.locator("header").getByRole("button", { name: locale === "zh-Hans" ? "新建AI小队" : "New Squad", exact: true }).click();
-  const chooser = page.getByRole("dialog", {
-    name: locale === "zh-Hans" ? "新建AI小队" : "New Squad", exact: true,
-  });
-  await chooser.getByRole("button", {
+  await page.locator("header").getByRole("link", { name: locale === "zh-Hans" ? "新建AI小队" : "New Squad", exact: true }).click();
+  await expect(page).toHaveURL(`/${fixture.slug}/squads/new`);
+  await page.getByRole("link", {
     name: locale === "zh-Hans" ? /^从模板创建/ : /^Create from template/,
   }).click();
+  await expect(page).toHaveURL(`/${fixture.slug}/squads/new/template`);
   expect((await catalog).status()).toBe(200);
-  const dialog = page.getByRole("dialog");
   const name = locale === "zh-Hans" ? "需求预研小队" : "Discovery Squad";
-  await dialog.getByRole("button", { name: new RegExp(name) }).click();
-  await expect(dialog.locator("#staff-squad-name")).toHaveValue(name);
+  await page.getByRole("button", { name: new RegExp(name) }).click();
+  const nameInput = page.getByRole("textbox", { name: locale === "zh-Hans" ? "AI小队名称" : "Squad name", exact: true });
+  await expect(nameInput).toHaveValue(name);
   // Empty means use the server's localized default, not an explicit copy of
   // the picker label. This exercises the actual browser request boundary.
-  await dialog.locator("#staff-squad-name").fill("");
-  return dialog.getByRole("button", { name: locale === "zh-Hans" ? "创建AI小队" : "Create squad", exact: true });
+  await nameInput.fill("");
+  return page.getByRole("button", { name: locale === "zh-Hans" ? "创建AI小队" : "Create squad", exact: true });
 }
 
 async function createDiscoverySquad(page: Page, fixture: LocalizedFixture, locale: "en" | "zh-Hans") {
@@ -447,7 +446,8 @@ test("a localized name collision leaves no partial squad and does not block Engl
   await create.click();
   const response = await pending;
   expect(response.status()).toBe(409);
-  await expect(page.getByRole("dialog").getByText(/an agent named "产品分析师" already exists/)).toBeVisible();
+  await expect(page).toHaveURL(`/${localized.slug}/squads/new/template`);
+  await expect(page.getByRole("alert").filter({ hasText: /an agent named "产品分析师" already exists/ })).toBeVisible();
   expect(await api.requestJSON("/api/squads")).toEqual([]);
   expect((await api.requestJSON<Agent[]>("/api/agents")).map((agent) => agent.id)).toEqual([existing.id]);
   expect((await api.requestJSON<{ id: string }[]>("/api/skills")).map((skill) => skill.id).sort()).toEqual(beforeSkills.map((skill) => skill.id).sort());

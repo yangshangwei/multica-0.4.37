@@ -52,6 +52,7 @@ export type TabLabelKey =
   | "runtime"
   | "attachment"
   | "create_agent"
+  | "create_squad"
   | "unknown";
 
 /** How a tab's title should be produced. */
@@ -233,8 +234,8 @@ export function resolveTabPresentation(
     }
     case "flow":
       return {
-        visual: { kind: "icon", icon: "Bot" },
-        title: { kind: "tab", tabKey: "create_agent" },
+        visual: { kind: "icon", icon: subject.flow === "create-squad" ? "Users" : "Bot" },
+        title: { kind: "tab", tabKey: subject.flow === "create-squad" ? "create_squad" : "create_agent" },
       };
     case "unknown":
       return {

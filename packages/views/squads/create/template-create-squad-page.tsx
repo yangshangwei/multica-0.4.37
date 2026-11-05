@@ -2,7 +2,7 @@
 
 import { ActorAvatar } from "@multica/ui/components/common/actor-avatar";
 
-import { SquadAvatar } from "../common/squad-avatar";
+import { SquadAvatar } from "../../common/squad-avatar";
 
 import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -17,39 +17,34 @@ import {
   memberListOptions,
   workspaceKeys,
 } from "@multica/core/workspace/queries";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@multica/ui/components/ui/dialog";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { Label } from "@multica/ui/components/ui/label";
 import { cn } from "@multica/ui/lib/utils";
-import { useNavigation } from "../navigation";
-import { useT } from "../i18n";
-import { RuntimePicker } from "../agents/components/runtime-picker";
+import { useBackOrReplace, useNavigation } from "../../navigation";
+import { CreationPageShell } from "../../common/create-page-shell";
+import { useT } from "../../i18n";
+import { RuntimePicker } from "../../agents/components/runtime-picker";
 import {
   templateLanguageFor,
   useSquadTemplates,
-} from "../agents/create/use-role-templates";
-import { AutonomyBadge } from "../agents/create/template-create-agent-page";
-import { useLocale } from "../i18n";
+} from "../../agents/create/use-role-templates";
+import { AutonomyBadge } from "../../agents/create/template-create-agent-page";
+import { useLocale } from "../../i18n";
 
 /**
  * Staffing a squad from a built-in template.
  *
  * One request does the whole thing on the backend, in a transaction, so this
- * modal has exactly one submit and no partial state to reconcile. What it must
+ * page has exactly one submit and no partial state to reconcile. What it must
  * communicate is the part a person cannot see from the result alone: an agent
  * that already exists for a role is REUSED, edits and all, rather than
  * recreated — so the success toast reports created and reused separately.
  */
-export function StaffSquadTemplateModal({ onClose }: { onClose: () => void }) {
+export function TemplateCreateSquadPage() {
   const { t } = useT("modals");
+  const { t: tSquads } = useT("squads");
+  const backOrReplace = useBackOrReplace();
   const locale = useLocale();
   const wsId = useWorkspaceId();
   const paths = useWorkspacePaths();
@@ -125,7 +120,6 @@ export function StaffSquadTemplateModal({ onClose }: { onClose: () => void }) {
               created: staffed.created_agent_ids.length,
             }),
       );
-      onClose();
       if (staffed.squad.id) navigation.push(paths.squadDetail(staffed.squad.id));
     } catch (caught) {
       setError(
@@ -138,16 +132,18 @@ export function StaffSquadTemplateModal({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <Dialog open onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>{t(($) => $.squad_templates.title)}</DialogTitle>
-          <DialogDescription>
+    <CreationPageShell
+      title={t(($) => $.squad_templates.title)}
+      step={tSquads(($) => $.page.template_button)}
+      onBack={() => backOrReplace(paths.newSquad())}
+      backLabel={tSquads(($) => $.create_chooser.back)}
+      backDisabled={creating}
+    >
+      <main className="min-h-0 flex-1 overflow-y-auto">
+        <div className="mx-auto w-full max-w-4xl space-y-6 px-5 py-8 sm:px-8">
+          <p className="text-body text-muted-foreground">
             {t(($) => $.squad_templates.description)}
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="max-h-[60vh] space-y-4 overflow-y-auto">
+          </p>
           {isError ? (
             <p className="text-body text-muted-foreground">
               {t(($) => $.squad_templates.load_failed)}
@@ -238,7 +234,7 @@ export function StaffSquadTemplateModal({ onClose }: { onClose: () => void }) {
 
               <div className="space-y-1.5">
                 <Label>{t(($) => $.squad_templates.access_label)}</Label>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   {[false, true].map((value) => (
                     <Button
                       key={String(value)}
@@ -261,25 +257,29 @@ export function StaffSquadTemplateModal({ onClose }: { onClose: () => void }) {
           ) : null}
 
           {error ? (
-            <p className="text-caption text-destructive">{error}</p>
+            <p role="alert" className="text-body text-destructive">{error}</p>
           ) : null}
         </div>
 
-        <DialogFooter>
-          <Button variant="ghost" onClick={onClose} disabled={creating}>
-            {t(($) => $.common.cancel)}
-          </Button>
-          <Button
-            onClick={() => void create()}
-            disabled={!template || !effectiveRuntimeId || creating}
-          >
-            {creating
-              ? t(($) => $.squad_templates.creating)
-              : t(($) => $.squad_templates.create)}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      </main>
+      <footer className="pe-chat-launcher flex shrink-0 flex-wrap items-center justify-end gap-2 border-t bg-background py-3 pl-5">
+        <Button
+          variant="ghost"
+          onClick={() => backOrReplace(paths.newSquad())}
+          disabled={creating}
+        >
+          {t(($) => $.common.cancel)}
+        </Button>
+        <Button
+          onClick={() => void create()}
+          disabled={!template || !effectiveRuntimeId || creating}
+        >
+          {creating
+            ? t(($) => $.squad_templates.creating)
+            : t(($) => $.squad_templates.create)}
+        </Button>
+      </footer>
+    </CreationPageShell>
   );
 }
 

@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { paths, isGlobalPath } from "./paths";
 
@@ -42,6 +43,13 @@ describe("paths.workspace(slug)", () => {
 
   it("URL-encodes special characters in ids", () => {
     expect(ws.issueDetail("id with space")).toBe("/acme/issues/id%20with%20space");
+  });
+
+  it("builds squad creation destinations within the current workspace", () => {
+    const squadWorkspace = paths.workspace("team space");
+    expect(squadWorkspace.newSquad()).toBe("/team%20space/squads/new");
+    expect(squadWorkspace.newSquadManual()).toBe("/team%20space/squads/new/manual");
+    expect(squadWorkspace.newSquadTemplate()).toBe("/team%20space/squads/new/template");
   });
 
   it("builds workspace-scoped marketplace destinations", () => {

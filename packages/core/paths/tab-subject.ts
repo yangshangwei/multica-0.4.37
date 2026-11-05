@@ -45,7 +45,7 @@ export type TabSubject =
   /** The Chat container; `sessionId` is the `?session=` selection or null. */
   | { kind: "chat"; sessionId: string | null }
   /** A creation flow that has not produced a resource yet. */
-  | { kind: "flow"; flow: "create-agent" }
+  | { kind: "flow"; flow: "create-agent" | "create-squad" }
   /** An unrecognized URL. Never impersonate a real page. */
   | { kind: "unknown" };
 
@@ -96,6 +96,7 @@ export function parseTabSubject(url: string): TabSubject {
       // No members collection route exists; only `/members/:id`.
       return id ? { kind: "actor", actorType: "member", id } : { kind: "unknown" };
     case "squads":
+      if (id === "new") return { kind: "flow", flow: "create-squad" };
       return id
         ? { kind: "actor", actorType: "squad", id }
         : { kind: "page", page: "squads" };

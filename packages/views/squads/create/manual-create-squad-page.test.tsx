@@ -2,18 +2,10 @@
 
 import type { ReactNode } from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { I18nProvider } from "@multica/core/i18n/react";
+import { act, screen, fireEvent, waitFor } from "@testing-library/react";
+import { NavigationProvider } from "../../navigation";
+import { renderWithI18n } from "../../test/i18n";
 import type { Agent, MemberWithUser, Squad } from "@multica/core/types";
-import enCommon from "../locales/en/common.json";
-import enModals from "../locales/en/modals.json";
-import enAgents from "../locales/en/agents.json";
-import enIssues from "../locales/en/issues.json";
-
-const TEST_RESOURCES = {
-  en: { common: enCommon, modals: enModals, agents: enAgents, issues: enIssues },
-};
-
 const ME = "user-me";
 const OTHER = "user-other";
 
@@ -24,6 +16,9 @@ const mocks = vi.hoisted(() => ({
   createSquad: vi.fn(),
   addSquadMember: vi.fn(),
   navigationPush: vi.fn(),
+  navigationReplace: vi.fn(),
+  navigationBack: vi.fn(),
+  canGoBack: false,
   toastSuccess: vi.fn(),
   toastError: vi.fn(),
   toastWarning: vi.fn(),
@@ -68,6 +63,7 @@ vi.mock("@multica/core/hooks", () => ({
 
 vi.mock("@multica/core/paths", () => ({
   useWorkspacePaths: () => ({
+    newSquad: () => "/test-ws/squads/new",
     squadDetail: (id: string) => `/test-ws/squads/${id}`,
   }),
 }));
@@ -76,17 +72,13 @@ vi.mock("@multica/core/utils", () => ({
   isImeComposing: () => false,
 }));
 
-vi.mock("../navigation", () => ({
-  useNavigation: () => ({ push: mocks.navigationPush }),
-}));
-
-vi.mock("../common/actor-avatar", () => ({
+vi.mock("../../common/actor-avatar", () => ({
   ActorAvatar: ({ actorId }: { actorId: string }) => (
     <span data-testid={`avatar-${actorId}`} />
   ),
 }));
 
-vi.mock("../common/avatar-upload-control", () => ({
+vi.mock("../../common/avatar-upload-control", () => ({
   AvatarUploadControl: ({
     value,
     onUploaded,
@@ -105,7 +97,7 @@ vi.mock("../common/avatar-upload-control", () => ({
   ),
 }));
 
-vi.mock("../agents/components/char-counter", () => ({
+vi.mock("../../agents/components/char-counter", () => ({
   CharCounter: ({ length, max }: { length: number; max: number }) => (
     <span data-testid="char-counter">
       {length}/{max}
@@ -141,27 +133,21 @@ vi.mock("@multica/ui/components/ui/popover", () => ({
   PopoverContent: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 }));
 
-vi.mock("@multica/ui/components/ui/dialog", () => ({
-  Dialog: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  DialogContent: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  DialogHeader: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  DialogTitle: ({ children }: { children: ReactNode }) => <h2>{children}</h2>,
-  DialogDescription: ({ children }: { children: ReactNode }) => <p>{children}</p>,
-}));
-
 vi.mock("@multica/ui/components/ui/button", () => ({
   Button: ({
     children,
     disabled,
     onClick,
     type = "button",
+    "aria-label": ariaLabel,
   }: {
     children: ReactNode;
     disabled?: boolean;
     onClick?: () => void;
     type?: "button" | "submit" | "reset";
+    "aria-label"?: string;
   }) => (
-    <button type={type} disabled={disabled} onClick={onClick}>
+    <button type={type} disabled={disabled} onClick={onClick} aria-label={ariaLabel}>
       {children}
     </button>
   ),
@@ -174,12 +160,12 @@ vi.mock("@multica/ui/components/ui/input", () => ({
 }));
 
 vi.mock("@multica/ui/components/ui/label", () => ({
-  Label: ({ children, className }: { children: ReactNode; className?: string }) => (
-    <label className={className}>{children}</label>
+  Label: (props: React.LabelHTMLAttributes<HTMLLabelElement>) => (
+    <label {...props} />
   ),
 }));
 
-vi.mock("../editor/extensions/pinyin-match", () => ({
+vi.mock("../../editor/extensions/pinyin-match", () => ({
   matchesPinyin: () => false,
 }));
 
@@ -191,7 +177,7 @@ vi.mock("sonner", () => ({
   },
 }));
 
-import { CreateSquadModal } from "./create-squad";
+import { ManualCreateSquadPage } from "./manual-create-squad-page";
 
 function makeAgent(overrides: Partial<Agent> & { id: string; name: string; owner_id: string | null }): Agent {
   return {
@@ -249,7 +235,7 @@ function makeSquad(overrides: Partial<Squad> = {}): Squad {
   };
 }
 
-// "Create Squad" is both the dialog title and the submit button label. Always
+// "Create Squad" is both the page title and the submit button label. Always
 // pick by role so tests don't depend on DOM order between the two.
 function getSubmitButton(): HTMLButtonElement {
   const btn = screen
@@ -273,14 +259,21 @@ function lastMatch(label: string): HTMLElement {
   return matches[matches.length - 1]!;
 }
 
-function renderModal() {
-  const onClose = vi.fn();
-  render(
-    <I18nProvider locale="en" resources={TEST_RESOURCES}>
-      <CreateSquadModal onClose={onClose} />
-    </I18nProvider>,
+function renderPage() {
+  return renderWithI18n(
+    <NavigationProvider value={{
+      push: mocks.navigationPush,
+      replace: mocks.navigationReplace,
+      back: mocks.navigationBack,
+      canGoBack: () => mocks.canGoBack,
+      pathname: "/test-ws/squads/new/manual",
+      searchParams: new URLSearchParams(),
+      hash: "",
+      getShareableUrl: (path) => path,
+    }}>
+      <ManualCreateSquadPage />
+    </NavigationProvider>,
   );
-  return { onClose };
 }
 
 const myAgent = makeAgent({ id: "agent-mine-1", name: "MineAgentOne", owner_id: ME });
@@ -288,15 +281,16 @@ const myAgent2 = makeAgent({ id: "agent-mine-2", name: "MineAgentTwo", owner_id:
 const otherAgent = makeAgent({ id: "agent-other-1", name: "OtherAgentOne", owner_id: OTHER });
 const wsMember = makeMember(OTHER, "Workspace Pal");
 
-describe("CreateSquadModal", () => {
+describe("ManualCreateSquadPage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mocks.canGoBack = false;
     mocks.agents = [otherAgent, myAgent, myAgent2];
     mocks.members = [wsMember];
   });
 
   it("binds the name and description inputs in the identity row", () => {
-    renderModal();
+    renderPage();
     const name = screen.getByPlaceholderText(/e\.g\. Frontend Team/i) as HTMLInputElement;
     fireEvent.change(name, { target: { value: "Platform Team" } });
     expect(name.value).toBe("Platform Team");
@@ -309,7 +303,7 @@ describe("CreateSquadModal", () => {
   });
 
   it("renders the leader picker with 'My Agents' before 'Workspace Agents'", () => {
-    renderModal();
+    renderPage();
     // The leader group headers come from the LeaderPicker — agent name "MineAgentOne"
     // appears under the My Agents section, "OtherAgentOne" under Workspace Agents.
     const myGroupLabels = screen.getAllByText("My Agents");
@@ -328,7 +322,7 @@ describe("CreateSquadModal", () => {
   });
 
   it("auto-clears an additional-members entry when the same agent is picked as leader", async () => {
-    renderModal();
+    renderPage();
     // Find the "MineAgentTwo" row inside the additional-members picker (the
     // leader picker also has it; clicking either toggles its respective
     // state). We pick it as an additional member via the second occurrence,
@@ -361,7 +355,7 @@ describe("CreateSquadModal", () => {
   });
 
   it("removes a member promoted to leader from selectedMembers so switching leader away does not resurrect it", async () => {
-    renderModal();
+    renderPage();
     // 1. Add MineAgentTwo as an additional member.
     fireEvent.click(lastMatch("MineAgentTwo"));
     await waitFor(() => {
@@ -397,7 +391,7 @@ describe("CreateSquadModal", () => {
   });
 
   it("on success with no additional members fires exactly one success toast and navigates", async () => {
-    renderModal();
+    renderPage();
     fireEvent.change(screen.getByPlaceholderText(/e\.g\. Frontend Team/i), {
       target: { value: "Solo Squad" },
     });
@@ -421,11 +415,14 @@ describe("CreateSquadModal", () => {
     });
     expect(mocks.addSquadMember).not.toHaveBeenCalled();
     expect(mocks.toastWarning).not.toHaveBeenCalled();
-    expect(mocks.navigationPush).toHaveBeenCalledWith("/test-ws/squads/sq-1");
+    expect(mocks.navigationPush).toHaveBeenCalledExactlyOnceWith("/test-ws/squads/sq-1");
+    expect(mocks.navigationReplace).not.toHaveBeenCalled();
+    expect(mocks.navigationBack).not.toHaveBeenCalled();
+    expect(mocks.invalidate).toHaveBeenCalledWith({ queryKey: ["squads", "ws-1"] });
   });
 
   it("on success with partial member failure shows success + warning toasts and still navigates", async () => {
-    renderModal();
+    renderPage();
     fireEvent.change(screen.getByPlaceholderText(/e\.g\. Frontend Team/i), {
       target: { value: "Mixed Squad" },
     });
@@ -453,11 +450,11 @@ describe("CreateSquadModal", () => {
       expect(mocks.toastSuccess).toHaveBeenCalledTimes(1);
     });
     expect(mocks.toastWarning).toHaveBeenCalledTimes(1);
-    expect(mocks.navigationPush).toHaveBeenCalledWith("/test-ws/squads/sq-2");
+    expect(mocks.navigationPush).toHaveBeenCalledExactlyOnceWith("/test-ws/squads/sq-2");
   });
 
   it("on createSquad failure shows an error toast, does not navigate, and re-enables submit", async () => {
-    renderModal();
+    renderPage();
     fireEvent.change(screen.getByPlaceholderText(/e\.g\. Frontend Team/i), {
       target: { value: "Boom Squad" },
     });
@@ -476,4 +473,49 @@ describe("CreateSquadModal", () => {
     const button = getSubmitButton();
     expect(button.disabled).toBe(false);
   });
+
+  it("renders a page with labelled identity fields", () => {
+    renderPage();
+    expect(screen.getByRole("heading", { name: "Create Squad", level: 1 })).toBeVisible();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Name" })).toBeVisible();
+    expect(screen.getByRole("textbox", { name: "Description" })).toBeVisible();
+  });
+
+  it.each(["Cancel", "Go back"])("%s returns a direct-link visit to the chooser", (name) => {
+    renderPage();
+    fireEvent.click(screen.getByRole("button", { name }));
+    expect(mocks.navigationReplace).toHaveBeenCalledExactlyOnceWith("/test-ws/squads/new");
+    expect(mocks.navigationPush).not.toHaveBeenCalled();
+    expect(mocks.navigationBack).not.toHaveBeenCalled();
+    expect(mocks.createSquad).not.toHaveBeenCalled();
+  });
+
+  it("uses the existing history for the return action", () => {
+    mocks.canGoBack = true;
+    renderPage();
+    fireEvent.click(screen.getByRole("button", { name: "Go back" }));
+    expect(mocks.navigationBack).toHaveBeenCalledTimes(1);
+    expect(mocks.navigationReplace).not.toHaveBeenCalled();
+  });
+
+  it("awaits creation and disables both return actions before navigating once", async () => {
+    let complete!: (squad: Squad) => void;
+    mocks.createSquad.mockReturnValueOnce(new Promise<Squad>((resolve) => { complete = resolve; }));
+    renderPage();
+    fireEvent.change(screen.getByRole("textbox", { name: "Name" }), {
+      target: { value: "Pending Squad" },
+    });
+    fireEvent.click(firstMatch("MineAgentOne"));
+    fireEvent.click(getSubmitButton());
+    expect(screen.getByRole("button", { name: "Creating..." })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Go back" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled();
+    expect(mocks.navigationPush).not.toHaveBeenCalled();
+    await act(async () => { complete(makeSquad({ id: "pending-squad" })); });
+    expect(mocks.navigationPush).toHaveBeenCalledExactlyOnceWith("/test-ws/squads/pending-squad");
+    expect(mocks.navigationReplace).not.toHaveBeenCalled();
+    expect(mocks.navigationBack).not.toHaveBeenCalled();
+  });
+
 });

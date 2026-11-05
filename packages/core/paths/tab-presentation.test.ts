@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { parseTabSubject } from "./tab-subject";
 import {
@@ -214,6 +215,13 @@ describe("resolveTabPresentation — flow and unknown", () => {
     expect(present("/acme/agents/new")).toEqual({
       visual: { kind: "icon", icon: "Bot" },
       title: { kind: "tab", tabKey: "create_agent" },
+    });
+  });
+
+  it("squad creation uses its flow label rather than a pending squad identity", () => {
+    expect(present("/acme/squads/new/manual", { actorName: "Unrelated squad" })).toEqual({
+      visual: { kind: "icon", icon: "Users" },
+      title: { kind: "tab", tabKey: "create_squad" },
     });
   });
 

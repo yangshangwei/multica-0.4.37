@@ -32,7 +32,13 @@ import {
   ManualCreateAgentPage,
   TemplateCreateAgentPage,
 } from "@multica/views/agents";
-import { SquadsPage, SquadDetailPage as SquadDetailPageView } from "@multica/views/squads/components";
+import {
+  ChooseCreateSquadMethodPage,
+  ManualCreateSquadPage,
+  SquadDetailPage as SquadDetailPageView,
+  SquadsPage,
+  TemplateCreateSquadPage,
+} from "@multica/views/squads";
 import { TriagePage } from "@multica/views/triage";
 import { InboxPage } from "@multica/views/inbox";
 import { ChatPage } from "@multica/views/chat";
@@ -233,6 +239,21 @@ export const appRoutes: RouteObject[] = [
             handle: { title: "Member" },
           },
           { path: "squads", element: <SquadsPage />, handle: { title: "Squads" } },
+          {
+            path: "squads/new",
+            element: <ChooseCreateSquadMethodPage />,
+            handle: { title: "Create Squad" },
+          },
+          {
+            path: "squads/new/manual",
+            element: <ManualCreateSquadPage />,
+            handle: { title: "Create Squad" },
+          },
+          {
+            path: "squads/new/template",
+            element: <TemplateCreateSquadPage />,
+            handle: { title: "Create Squad" },
+          },
           {
             path: "squads/:id",
             element: <SquadDetailPageView />,

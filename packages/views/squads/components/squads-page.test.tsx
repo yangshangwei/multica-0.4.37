@@ -16,7 +16,6 @@ const mocks = vi.hoisted(() => ({
   templates: [] as SquadTemplate[],
   templatesError: false,
   refetchTemplates: vi.fn(),
-  openModal: vi.fn(),
   viewState: {
     scope: "all", sortField: "name", sortDirection: "asc", hiddenColumns: [],
     filters: { leaders: [] as string[], creators: [] as string[] },
@@ -49,10 +48,6 @@ vi.mock("@multica/core/paths", async (importOriginal) => {
     useCurrentWorkspace: () => ({ id: "ws-1", slug: "acme" }),
     useWorkspacePaths: () => actual.paths.workspace("acme"),
   };
-});
-vi.mock("@multica/core/modals", () => {
-  const state = { open: mocks.openModal };
-  return { useModalStore: Object.assign((selector: (value: typeof state) => unknown) => selector(state), { getState: () => state }) };
 });
 vi.mock("@multica/core/squads/stores", () => ({
   useSquadsViewStore: Object.assign((selector: (state: typeof mocks.viewState) => unknown) => selector(mocks.viewState), { getState: () => mocks.viewState }),
@@ -148,30 +143,33 @@ describe("SquadsPage discovery and management", () => {
     expect(navigation.replace).toHaveBeenCalledWith("/acme/squads?context=project");
   });
 
-  it("offers template and custom creation in a dismissible chooser", async () => {
+  it("opens the creation page from the header without displaying a dialog", async () => {
     const user = userEvent.setup();
     mocks.squads = [SQUAD];
-    renderPage();
-    const trigger = screen.getByRole("button", { name: "New Squad" });
-    trigger.focus();
+    const navigation = adapter();
+    renderPage(navigation);
+    const link = screen.getByRole("link", { name: "New Squad" });
+    expect(link).toHaveAttribute("href", "/acme/squads/new");
+    link.focus();
     await user.keyboard("{Enter}");
-    const chooser = screen.getByRole("dialog", { name: "New Squad" });
-    expect(chooser).toHaveAccessibleDescription("Choose how to create your squad.");
-    expect(within(chooser).getByRole("button", { name: /Create from template/ })).toBeVisible();
-    expect(within(chooser).getByRole("button", { name: /Create custom squad/ })).toBeVisible();
-    await user.keyboard("{Escape}");
+    expect(navigation.push).toHaveBeenCalledExactlyOnceWith("/acme/squads/new");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    expect(trigger).toHaveFocus();
-    expect(mocks.openModal).not.toHaveBeenCalled();
+  });
 
-    await user.click(trigger);
-    await user.click(screen.getByRole("button", { name: /Create from template/ }));
-    expect(mocks.openModal).toHaveBeenCalledWith("staff-squad-template");
-    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    await user.click(trigger);
-    await user.click(screen.getByRole("button", { name: /Create custom squad/ }));
-    expect(mocks.openModal).toHaveBeenCalledWith("create-squad");
-    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  it("links directly to both creation methods from an empty directory", async () => {
+    const user = userEvent.setup();
+    const navigation = adapter();
+    renderPage(navigation);
+    for (const [name, href] of [
+      ["Create from template", "/acme/squads/new/template"],
+      ["Create custom squad", "/acme/squads/new/manual"],
+    ]) {
+      const link = screen.getByRole("link", { name });
+      expect(link).toHaveAttribute("href", href);
+      await user.click(link);
+      expect(navigation.push).toHaveBeenCalledExactlyOnceWith(href);
+      vi.mocked(navigation.push).mockClear();
+    }
   });
 
   it("provides a native squad link and only navigates once for keyboard and pointer activation", async () => {
@@ -323,7 +321,7 @@ describe("SquadsPage discovery and management", () => {
   it("keeps empty-state creation available and never counts templates as saved squads", () => {
     renderPage();
     expect(screen.getByText("No squads yet. Create one to get started.")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Create from template" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Create from template" })).toBeInTheDocument();
     expect(within(screen.getByRole("heading", { level: 1 }).parentElement!).queryByText("1")).not.toBeInTheDocument();
   });
 

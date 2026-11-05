@@ -95,10 +95,12 @@ test("squad discovery keeps keyboard navigation, saved choices and project setup
       await templateTab.click();
       await expect(templateTab).toHaveAttribute("aria-selected", "true");
     }
-    await page.getByRole("button", { name: "New Squad", exact: true }).click();
-    await expect(page.getByRole("button", { name: /Create from template/ })).toBeVisible();
-    await expect(page.getByRole("button", { name: /Create custom squad/ })).toBeVisible();
-    await page.keyboard.press("Escape");
+    await page.getByRole("link", { name: "New Squad", exact: true }).click();
+    await expect(page).toHaveURL(`/${workspace.slug}/squads/new`);
+    await expect(page.getByRole("link", { name: /Create from template/ })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Create custom squad/ })).toBeVisible();
+    await page.getByRole("button", { name: "Go back", exact: true }).click();
+    await expect(page).toHaveURL(`/${workspace.slug}/squads?view=templates`);
     for (const [locale, label] of [["zh-Hans", "模板"], ["en", "Templates"]]) {
       await api.requestJSON("/api/me", { method: "PATCH", body: { language: locale } });
       await page.context().addCookies([{ name: "multica-locale", value: locale, url: new URL(page.url()).origin }]);

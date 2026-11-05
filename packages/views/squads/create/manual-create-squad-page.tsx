@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown, UserPlus, X } from "lucide-react";
 import { api } from "@multica/core/api";
@@ -16,13 +16,6 @@ import { AGENT_DESCRIPTION_MAX_LENGTH } from "@multica/core/agents";
 import { isImeComposing } from "@multica/core/utils";
 import type { Agent, MemberWithUser } from "@multica/core/types";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@multica/ui/components/ui/dialog";
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -32,17 +25,18 @@ import { Input } from "@multica/ui/components/ui/input";
 import { Label } from "@multica/ui/components/ui/label";
 import { toast } from "sonner";
 
-import { useNavigation } from "../navigation";
-import { ActorAvatar } from "../common/actor-avatar";
-import { AvatarUploadControl } from "../common/avatar-upload-control";
-import { CharCounter } from "../agents/components/char-counter";
+import { useBackOrReplace, useNavigation } from "../../navigation";
+import { CreationPageShell } from "../../common/create-page-shell";
+import { ActorAvatar } from "../../common/actor-avatar";
+import { AvatarUploadControl } from "../../common/avatar-upload-control";
+import { CharCounter } from "../../agents/components/char-counter";
 import {
   PickerEmpty,
   PickerItem,
   PickerSection,
-} from "../issues/components/pickers/property-picker";
-import { matchesPinyin } from "../editor/extensions/pinyin-match";
-import { useT } from "../i18n";
+} from "../../issues/components/pickers/property-picker";
+import { matchesPinyin } from "../../editor/extensions/pinyin-match";
+import { useT } from "../../i18n";
 
 type SelectedMember = {
   type: "agent" | "member";
@@ -53,8 +47,11 @@ type SelectedMember = {
 // How many chips we show inline before collapsing the tail into "+N".
 const CHIP_DISPLAY_LIMIT = 3;
 
-export function CreateSquadModal({ onClose }: { onClose: () => void }) {
+export function ManualCreateSquadPage() {
   const { t } = useT("modals");
+  const { t: tSquads } = useT("squads");
+  const fieldId = useId();
+  const backOrReplace = useBackOrReplace();
   const router = useNavigation();
   const wsPaths = useWorkspacePaths();
   const wsId = useWorkspaceId();
@@ -127,7 +124,6 @@ export function CreateSquadModal({ onClose }: { onClose: () => void }) {
         });
       }
 
-      onClose();
       toast.success(t(($) => $.create_squad.toast_created));
       router.push(wsPaths.squadDetail(squad.id));
     } catch (err) {
@@ -141,21 +137,19 @@ export function CreateSquadModal({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <Dialog open onOpenChange={(v) => { if (!v) onClose(); }}>
-      <DialogContent className="p-0 gap-0 flex flex-col overflow-hidden !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 !w-full !max-w-2xl !h-[85vh]">
-        <DialogHeader className="border-b px-5 py-3 space-y-0">
-          <DialogTitle className="text-title-sm font-semibold">
-            {t(($) => $.create_squad.title)}
-          </DialogTitle>
-          <DialogDescription className="mt-1 text-caption">
+    <CreationPageShell
+      title={t(($) => $.create_squad.title)}
+      step={tSquads(($) => $.page.custom_button)}
+      onBack={() => backOrReplace(wsPaths.newSquad())}
+      backLabel={tSquads(($) => $.create_chooser.back)}
+      backDisabled={creating}
+    >
+      <main className="min-h-0 flex-1 overflow-y-auto">
+        <div className="mx-auto w-full max-w-4xl px-5 py-8 sm:px-8">
+          <p className="mb-6 text-body text-muted-foreground">
             {t(($) => $.create_squad.description)}
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="flex-1 overflow-y-auto p-5">
-          <div className="space-y-4 min-w-0">
-            {/* Identity row mirrors CreateAgentDialog so the two creates read
-                as siblings — avatar (left) + name/description stack (right). */}
+          </p>
+          <div className="min-w-0 space-y-6">
             <div className="flex items-start gap-4">
               <AvatarUploadControl
                 variant="squad"
@@ -167,10 +161,11 @@ export function CreateSquadModal({ onClose }: { onClose: () => void }) {
               />
               <div className="flex-1 min-w-0 space-y-3">
                 <div>
-                  <Label className="text-caption text-muted-foreground">
+                  <Label htmlFor={`${fieldId}-name`} className="text-caption text-muted-foreground">
                     {t(($) => $.create_squad.name_label)}
                   </Label>
                   <Input
+                    id={`${fieldId}-name`}
                     autoFocus
                     type="text"
                     value={name}
@@ -185,10 +180,11 @@ export function CreateSquadModal({ onClose }: { onClose: () => void }) {
                 </div>
 
                 <div>
-                  <Label className="text-caption text-muted-foreground">
+                  <Label htmlFor={`${fieldId}-description`} className="text-caption text-muted-foreground">
                     {t(($) => $.create_squad.description_label)}
                   </Label>
                   <Input
+                    id={`${fieldId}-description`}
                     type="text"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
@@ -224,21 +220,22 @@ export function CreateSquadModal({ onClose }: { onClose: () => void }) {
           </div>
         </div>
 
-        {/* Inline footer — see CreateAgentDialog: shadcn DialogFooter applies
-            negative margins assuming a padded DialogContent. Our content is
-            p-0, so a plain bordered row is the right call. */}
-        <div className="flex items-center justify-end gap-2 border-t bg-background px-5 py-3">
-          <Button variant="ghost" onClick={onClose}>
-            {t(($) => $.create_squad.cancel)}
-          </Button>
-          <Button onClick={() => void handleSubmit()} disabled={!canSubmit}>
-            {creating
-              ? t(($) => $.create_squad.submitting)
-              : t(($) => $.create_squad.submit)}
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+      </main>
+      <footer className="pe-chat-launcher flex shrink-0 flex-wrap items-center justify-end gap-2 border-t bg-background py-3 pl-5">
+        <Button
+          variant="ghost"
+          onClick={() => backOrReplace(wsPaths.newSquad())}
+          disabled={creating}
+        >
+          {t(($) => $.create_squad.cancel)}
+        </Button>
+        <Button onClick={() => void handleSubmit()} disabled={!canSubmit}>
+          {creating
+            ? t(($) => $.create_squad.submitting)
+            : t(($) => $.create_squad.submit)}
+        </Button>
+      </footer>
+    </CreationPageShell>
   );
 }
 
@@ -478,9 +475,11 @@ function AdditionalMembersPicker({
             nesting interactive content. Base UI injects click/keyboard/ARIA
             wiring into the rendered element. */}
         <PopoverTrigger
+          nativeButton={false}
           render={
             <div
               role="combobox"
+              aria-label={t(($) => $.create_squad.members_label)}
               aria-haspopup="listbox"
               aria-expanded={open}
               aria-controls="squad-member-listbox"

@@ -29,7 +29,6 @@ import {
 import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
 import { useAuthStore } from "@multica/core/auth";
 import { api } from "@multica/core/api";
-import { useModalStore } from "@multica/core/modals";
 import {
   useSquadsViewStore,
   SQUAD_SCOPES,
@@ -102,7 +101,6 @@ import {
 import { useT } from "../../i18n";
 import { PAGE_TOOLBAR } from "../../layout/page-header";
 import { BuiltinSquadCatalog } from "./builtin-squad-catalog";
-import { CreateSquadChooser } from "./create-squad-chooser";
 
 // Reveal secondary columns as the container grows. Including 44px touch
 // actions, the tiers need 664px / 820px / 936px and fit @2xl / @4xl / @5xl.
@@ -935,7 +933,16 @@ export function SquadsPage() {
         icon={Users}
         title={t(($) => $.page.title)}
         count={squads.length}
-        actions={<CreateSquadChooser />}
+        actions={
+          <Button
+            size="sm"
+            className="pointer-coarse:min-h-11"
+            render={<AppLink href={p.newSquad()} />}
+          >
+            <Plus className="size-3.5" aria-hidden="true" />
+            {t(($) => $.page.new_button)}
+          </Button>
+        }
       />
 
       <Tabs
@@ -976,9 +983,7 @@ export function SquadsPage() {
                   <Button
                     size="sm"
                     className="pointer-coarse:min-h-11"
-                    onClick={() =>
-                      useModalStore.getState().open("staff-squad-template")
-                    }
+                    render={<AppLink href={p.newSquadTemplate()} />}
                   >
                     <Sparkles aria-hidden="true" className="size-3.5" />
                     {t(($) => $.page.template_button)}
@@ -987,7 +992,7 @@ export function SquadsPage() {
                     size="sm"
                     className="pointer-coarse:min-h-11"
                     variant="outline"
-                    onClick={() => useModalStore.getState().open("create-squad")}
+                    render={<AppLink href={p.newSquadManual()} />}
                   >
                     <Plus aria-hidden="true" className="size-3.5" />
                     {t(($) => $.page.custom_button)}

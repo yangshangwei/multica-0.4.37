@@ -181,10 +181,12 @@ test("squad audit: browser interactions, responsive layout and performance", asy
     await page.keyboard.press("Escape");
     await expect(rowActions).toBeFocused();
     await expect(page).toHaveURL(new RegExp(`/${workspace.slug}/squads$`));
-    await page.getByRole("button", { name: "New Squad", exact: true }).click();
-    await expect(page.getByRole("dialog")).toBeVisible();
-    await expect(page.getByRole("button", { name: /Create custom squad/ })).toBeVisible();
-    await page.keyboard.press("Escape");
+    await page.getByRole("link", { name: "New Squad", exact: true }).click();
+    await expect(page).toHaveURL(`/${workspace.slug}/squads/new`);
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await expect(page.getByRole("link", { name: /Create custom squad/ })).toBeVisible();
+    await page.getByRole("button", { name: "Go back", exact: true }).click();
+    await expect(page).toHaveURL(`/${workspace.slug}/squads`);
 
     const layouts = [];
     for (const width of [1440, 1024, 900, 768, 390, 320]) {
@@ -203,12 +205,16 @@ test("squad audit: browser interactions, responsive layout and performance", asy
     await page.setViewportSize({ width: 390, height: 844 });
     expect(await page.evaluate(() => matchMedia("(pointer: coarse)").matches)).toBe(true);
     const touchTargets = [];
-    for (const name of ["Filter", "Display", "New Squad"]) {
+    for (const name of ["Filter", "Display"]) {
       const bounds = await page.getByRole("button", { name, exact: true }).boundingBox();
       expect(bounds?.height).toBeGreaterThanOrEqual(44);
       expect(bounds?.width).toBeGreaterThanOrEqual(44);
       touchTargets.push({ name, bounds });
     }
+    const newSquadBounds = await page.getByRole("link", { name: "New Squad", exact: true }).boundingBox();
+    expect(newSquadBounds?.height).toBeGreaterThanOrEqual(44);
+    expect(newSquadBounds?.width).toBeGreaterThanOrEqual(44);
+    touchTargets.push({ name: "New Squad", bounds: newSquadBounds });
     const actionBounds = await rowActions.boundingBox();
     expect(actionBounds?.height).toBeGreaterThanOrEqual(44);
     expect(actionBounds?.width).toBeGreaterThanOrEqual(44);

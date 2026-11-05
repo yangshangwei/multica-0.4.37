@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { parseTabSubject, tabSubjectKey, type TabSubject } from "./tab-subject";
 
@@ -40,6 +41,9 @@ describe("parseTabSubject", () => {
     ["/acme/squads/sq1", { kind: "actor", actorType: "squad", id: "sq1" }],
     // Flow — /new must win over the actor detail pattern
     ["/acme/agents/new", { kind: "flow", flow: "create-agent" }],
+    ["/acme/squads/new", { kind: "flow", flow: "create-squad" }],
+    ["/acme/squads/new/manual", { kind: "flow", flow: "create-squad" }],
+    ["/acme/squads/new/template?from=list#roles", { kind: "flow", flow: "create-squad" }],
     // Runtime machine vs nested runtime
     ["/acme/runtimes/machine-1", { kind: "machine", machineId: "machine-1" }],
     [
@@ -97,6 +101,7 @@ describe("tabSubjectKey", () => {
     expect(
       tabSubjectKey({ kind: "actor", actorType: "member", id: "m1" }),
     ).toBe("actor:member:m1");
+    expect(tabSubjectKey({ kind: "flow", flow: "create-squad" })).toBe("flow:create-squad");
   });
 
   it("distinguishes archived inbox and the attachment filename", () => {
