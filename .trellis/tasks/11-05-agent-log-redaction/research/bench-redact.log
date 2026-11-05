@@ -1,0 +1,9 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/multica-ai/multica/server/pkg/redact
+cpu: Apple M4
+BenchmarkText/8KiBText-2         	      33	   3341083 ns/op	   2.45 MB/s	  248120 B/op	      47 allocs/op
+BenchmarkText/300KiBText-2       	       4	  28939594 ns/op	  10.62 MB/s	 9372884 B/op	      79 allocs/op
+BenchmarkText/JSON-2             	      67	   1642937 ns/op	   3.41 MB/s	  270890 B/op	    1358 allocs/op
+PASS
+ok  	github.com/multica-ai/multica/server/pkg/redact	0.534s

@@ -1,0 +1,58 @@
+[
+  {
+    "name": "independent-redact-final",
+    "argv": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-json",
+      "-p",
+      "1",
+      "./pkg/redact",
+      "-count=1"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.715,
+    "named_pass": 77,
+    "failed": 0,
+    "skipped": 0
+  },
+  {
+    "name": "independent-redact-race-final",
+    "argv": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "-json",
+      "-p",
+      "1",
+      "./pkg/redact",
+      "-count=1"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 27.005,
+    "named_pass": 77,
+    "failed": 0,
+    "skipped": 0
+  },
+  {
+    "name": "independent-redact-vet-final",
+    "argv": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "-p",
+      "1",
+      "./pkg/redact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.317,
+    "named_pass": 0,
+    "failed": 0,
+    "skipped": 0
+  }
+]

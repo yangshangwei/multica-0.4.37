@@ -1,0 +1,80 @@
+[
+  {
+    "name": "green-redact",
+    "cmd": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-json",
+      "-p",
+      "1",
+      "./pkg/redact",
+      "-count=1"
+    ],
+    "exit": 0,
+    "seconds": 1.866,
+    "counts": {
+      "run": 74,
+      "pass_": 74,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  {
+    "name": "green-daemon",
+    "cmd": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-json",
+      "-p",
+      "1",
+      "./internal/daemon",
+      "-run",
+      "^(TestToolOutputPreview.*|TestExecuteAndDrain_ToolOutput.*|TestExecuteAndDrain_RedactsNestedToolInputBeforeSending)$",
+      "-count=1",
+      "-timeout=2m"
+    ],
+    "exit": 0,
+    "seconds": 15.806,
+    "counts": {
+      "run": 37,
+      "pass_": 37,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  {
+    "name": "green-agent",
+    "cmd": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-json",
+      "-p",
+      "1",
+      "./pkg/agent",
+      "-run",
+      "^(TestCodexPatchApply.*|TestCodexRawItemMCPToolCall.*)$",
+      "-count=1",
+      "-timeout=2m"
+    ],
+    "exit": 1,
+    "seconds": 3.384,
+    "counts": {
+      "run": 16,
+      "pass_": 15,
+      "fail": 1,
+      "skip": 0
+    }
+  }
+]

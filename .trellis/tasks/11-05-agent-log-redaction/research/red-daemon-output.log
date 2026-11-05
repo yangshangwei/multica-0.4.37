@@ -1,0 +1,16 @@
+2026/11/05 21:45:17 INFO tool_result observed seq=1 tool=bash call_id=""
+2026/11/05 21:45:17 INFO tool_result observed seq=1 tool=bash call_id=""
+2026/11/05 21:45:17 INFO tool_result observed seq=1 tool=bash call_id=""
+2026/11/05 21:45:17 INFO tool_result observed seq=1 tool=bash call_id=""
+--- FAIL: TestExecuteAndDrain_ToolOutputRedactedBeforePreview (0.00s)
+    --- FAIL: TestExecuteAndDrain_ToolOutputRedactedBeforePreview/json (0.00s)
+        tool_output_preview_test.go:119: the wire preview must contain redaction, not secret bytes
+    --- FAIL: TestExecuteAndDrain_ToolOutputRedactedBeforePreview/json_crosses_preview (0.00s)
+        tool_output_preview_test.go:119: the wire preview must contain redaction, not secret bytes
+    --- FAIL: TestExecuteAndDrain_ToolOutputRedactedBeforePreview/task_token_crosses_preview (0.00s)
+        tool_output_preview_test.go:119: the wire preview must contain redaction, not secret bytes
+    --- FAIL: TestExecuteAndDrain_ToolOutputRedactedBeforePreview/pem_crosses_preview (0.00s)
+        tool_output_preview_test.go:119: the wire preview must contain redaction, not secret bytes
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon	0.588s
+FAIL

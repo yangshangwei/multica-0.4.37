@@ -1,0 +1,84 @@
+--- FAIL: TestRedactMulticaTokens (0.00s)
+    redact_test.go:576: mul_ credential was not redacted
+--- FAIL: TestTextRedactsInvalidOrOversizedSensitiveJSON (0.00s)
+    redact_test.go:552: invalid or oversized sensitive value retained: {"password":"synthetic-secret
+--- FAIL: TestTextRedactsJSONMembersWithoutReformatting (0.00s)
+    --- FAIL: TestTextRedactsJSONMembersWithoutReformatting/format (0.00s)
+        redact_test.go:532: unexpected redaction:
+             got: result: {
+              "password" : "private phrase", "count":9007199254740993
+            }
+            
+            want: result: {
+              "password" : "[REDACTED CREDENTIAL]", "count":9007199254740993
+            }
+    --- FAIL: TestTextRedactsJSONMembersWithoutReformatting/escapes (0.00s)
+        redact_test.go:532: unexpected redaction:
+             got: {"apiKey":"private\"phrase\\tail","ok":true}
+            want: {"apiKey":"[REDACTED CREDENTIAL]","ok":true}
+    --- FAIL: TestTextRedactsJSONMembersWithoutReformatting/escaped_key_and_duplicate (0.00s)
+        redact_test.go:532: unexpected redaction:
+             got: {"\u0070assword":"first","password":"second","password":null}
+            want: {"\u0070assword":"[REDACTED CREDENTIAL]","password":"[REDACTED CREDENTIAL]","password":null}
+    --- FAIL: TestTextRedactsJSONMembersWithoutReformatting/nested (0.00s)
+        redact_test.go:532: unexpected redaction:
+             got: {"items":[{"clientSecret":"value","Authorization":"Basic opaque"}],"count":2}
+            want: {"items":[{"clientSecret":"[REDACTED CREDENTIAL]","Authorization":"[REDACTED CREDENTIAL]"}],"count":2}
+    --- FAIL: TestTextRedactsJSONMembersWithoutReformatting/composite (0.00s)
+        redact_test.go:532: unexpected redaction:
+             got: {"password":{"wrapped":["private"]},"api_key":["value"],"ok":true}
+            want: {"password":"[REDACTED CREDENTIAL]","api_key":"[REDACTED CREDENTIAL]","ok":true}
+    --- FAIL: TestTextRedactsJSONMembersWithoutReformatting/scalar (0.00s)
+        redact_test.go:532: unexpected redaction:
+             got: {"password":123456,"client_secret":false,"token":true}
+            want: {"password":"[REDACTED CREDENTIAL]","client_secret":"[REDACTED CREDENTIAL]","token":"[REDACTED CREDENTIAL]"}
+    --- FAIL: TestTextRedactsJSONMembersWithoutReformatting/adjacent_records (0.00s)
+        redact_test.go:532: unexpected redaction:
+             got: {"password":"one"} {"TOKEN":"two"}
+            want: {"password":"[REDACTED CREDENTIAL]"} {"TOKEN":"[REDACTED CREDENTIAL]"}
+--- FAIL: TestInputMapSensitiveFields (0.00s)
+    --- FAIL: TestInputMapSensitiveFields/password (0.00s)
+        redact_test.go:486: sensitive password value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/Passwd (0.00s)
+        redact_test.go:486: sensitive Passwd value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/passphrase (0.00s)
+        redact_test.go:486: sensitive passphrase value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/api_key (0.00s)
+        redact_test.go:486: sensitive api_key value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/apiKey (0.00s)
+        redact_test.go:486: sensitive apiKey value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/APIKey (0.00s)
+        redact_test.go:486: sensitive APIKey value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/api-secret (0.00s)
+        redact_test.go:486: sensitive api-secret value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/secret (0.00s)
+        redact_test.go:486: sensitive secret value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/secretKey (0.00s)
+        redact_test.go:486: sensitive secretKey value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/access_token (0.00s)
+        redact_test.go:486: sensitive access_token value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/authToken (0.00s)
+        redact_test.go:486: sensitive authToken value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/refresh-token (0.00s)
+        redact_test.go:486: sensitive refresh-token value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/TOKEN (0.00s)
+        redact_test.go:486: sensitive TOKEN value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/private_key (0.00s)
+        redact_test.go:486: sensitive private_key value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/clientSecret (0.00s)
+        redact_test.go:486: sensitive clientSecret value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/Authorization (0.00s)
+        redact_test.go:486: sensitive Authorization value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/Proxy-Authorization (0.00s)
+        redact_test.go:486: sensitive Proxy-Authorization value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/GITHUB_TOKEN (0.00s)
+        redact_test.go:486: sensitive GITHUB_TOKEN value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/DB_PASSWORD (0.00s)
+        redact_test.go:486: sensitive DB_PASSWORD value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/DATABASE_URL (0.00s)
+        redact_test.go:486: sensitive DATABASE_URL value of type string was retained
+    --- FAIL: TestInputMapSensitiveFields/service-api-key (0.00s)
+        redact_test.go:486: sensitive service-api-key value of type string was retained
+FAIL
+FAIL	github.com/multica-ai/multica/server/pkg/redact	0.412s
+FAIL

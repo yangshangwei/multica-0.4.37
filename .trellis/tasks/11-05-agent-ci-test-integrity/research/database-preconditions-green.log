@@ -1,0 +1,89 @@
+TAP version 13
+# Subtest: database test entry points reject invalid configuration before fixture setup
+    # Subtest: handler: absent
+    ok 1 - handler: absent
+      ---
+      duration_ms: 985.790792
+      type: 'test'
+      ...
+    # Subtest: handler: whitespace
+    ok 2 - handler: whitespace
+      ---
+      duration_ms: 17.015458
+      type: 'test'
+      ...
+    # Subtest: handler: malformed
+    ok 3 - handler: malformed
+      ---
+      duration_ms: 16.087791
+      type: 'test'
+      ...
+    # Subtest: handler: unreachable
+    ok 4 - handler: unreachable
+      ---
+      duration_ms: 16.06025
+      type: 'test'
+      ...
+    # Subtest: router: absent
+    ok 5 - router: absent
+      ---
+      duration_ms: 1017.137
+      type: 'test'
+      ...
+    # Subtest: router: whitespace
+    ok 6 - router: whitespace
+      ---
+      duration_ms: 17.392
+      type: 'test'
+      ...
+    # Subtest: router: malformed
+    ok 7 - router: malformed
+      ---
+      duration_ms: 16.269583
+      type: 'test'
+      ...
+    # Subtest: router: unreachable
+    ok 8 - router: unreachable
+      ---
+      duration_ms: 16.40525
+      type: 'test'
+      ...
+    # Subtest: testutil: absent
+    ok 9 - testutil: absent
+      ---
+      duration_ms: 481.146917
+      type: 'test'
+      ...
+    # Subtest: testutil: whitespace
+    ok 10 - testutil: whitespace
+      ---
+      duration_ms: 6.876042
+      type: 'test'
+      ...
+    # Subtest: testutil: malformed
+    ok 11 - testutil: malformed
+      ---
+      duration_ms: 6.450541
+      type: 'test'
+      ...
+    # Subtest: testutil: unreachable
+    ok 12 - testutil: unreachable
+      ---
+      duration_ms: 6.873666
+      type: 'test'
+      ...
+    1..12
+ok 1 - database test entry points reject invalid configuration before fixture setup
+  ---
+  duration_ms: 36608.54225
+  type: 'test'
+  ...
+1..1
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 36650.111625

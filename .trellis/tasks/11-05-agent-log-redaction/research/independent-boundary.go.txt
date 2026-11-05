@@ -1,0 +1,30 @@
+package main
+import (
+ "encoding/json"
+ "fmt"
+ "strings"
+ "github.com/multica-ai/multica/server/pkg/redact"
+)
+func main(){
+ type check struct{name,input string; secrets []string}
+ samples:=[]check{
+  {"quoted diagnostic then JSON", "diagnostic \"unfinished fragment: {\"password\":\"synthetic-only-value\",\"ok\":true}",[]string{"synthetic-only-value"}},
+  {"newline values", "{\"password\":\"synthetic\\nonly\",\"token_count\":12}",[]string{"synthetic\\nonly"}},
+  {"escaped underscore key",`{"api\u005fkey":"synthetic-only-value"}`,[]string{"synthetic-only-value"}},
+  {"escaped slash key",`{"proxy\u002dauthorization":"synthetic-only-value"}`,[]string{"synthetic-only-value"}},
+  {"two adjacent tokens", "mat_"+strings.Repeat("b",40)+","+"mpi_"+strings.Repeat("a",42)+"-",[]string{"mat_","mpi_"}},
+  {"embedded fragment", `log password follows: "password":"synthetic-only-value"`,[]string{"synthetic-only-value"}},
+ }
+ for _,s:=range samples{
+  got:=redact.Text(s.input)
+  for _,secret:=range s.secrets { if strings.Contains(got,secret) {panic(s.name+": uncovered sensitive value")} }
+  if redact.Text(got)!=got {panic(s.name+": not idempotent")}
+ }
+ plain:=[]string{
+  `{"message":"before \\"password\\" after","count":0}`, 
+  `{"message":"password","other":"not a credential","token_count":13}`, 
+  `{"public_key":"plain-public-value","token_type":"bearer","token_id":"id-only"}`, 
+ }
+ for _,s:=range plain { if json.Valid([]byte(s)) && redact.Text(s)!=s {panic("ordinary JSON changed")} }
+ fmt.Printf("boundary_samples=%d pass; normal_samples=%d checked\n",len(samples),len(plain))
+}

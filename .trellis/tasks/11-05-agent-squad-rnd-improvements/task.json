@@ -1,0 +1,35 @@
+{
+  "id": "agent-squad-rnd-improvements",
+  "name": "agent-squad-rnd-improvements",
+  "title": "智能体与 AI小队研发体系优化",
+  "description": "依据 2026-11-05 审计分阶段增强交付可信度、权限、安全、CI、汇报与非功能保障；本轮交付首批 P1 修复。",
+  "status": "in_progress",
+  "dev_type": "backend",
+  "scope": "agent-rnd-p1",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-05",
+  "completedAt": null,
+  "branch": "codex/agent-rnd-p1-20261105",
+  "base_branch": "main",
+  "worktree_path": "/Volumes/artisan/code/2026/mc-agent-rnd-p1-20261105",
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "11-05-agent-log-redaction",
+    "11-05-agent-ci-test-integrity",
+    "11-05-squad-handoff-contract"
+  ],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "M0 first P1 fixes complete on isolated branch; M1-M3 remain planned. See delivery.md for commits and validation limits.",
+  "meta": {
+    "m0_status": "verified",
+    "m1_status": "planned",
+    "m2_status": "planned",
+    "m3_status": "planned"
+  }
+}

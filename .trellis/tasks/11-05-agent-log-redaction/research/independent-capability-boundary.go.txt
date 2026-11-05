@@ -1,0 +1,9 @@
+package main
+import("fmt";"regexp";"strings";"github.com/multica-ai/multica/server/pkg/redact")
+func main(){
+ token:="mcb_"+strings.Repeat("a",64)
+ old:=regexp.MustCompile(`\b(?:mcb|mct)_[a-f0-9]{64}\b`)
+ for _,input:=range []string{"value-"+token,token+"-suffix"}{
+  fmt.Printf("old_masks=%t current_masks=%t\n",!strings.Contains(old.ReplaceAllString(input,"[MASKED]"),token),!strings.Contains(redact.Text(input),token))
+ }
+}

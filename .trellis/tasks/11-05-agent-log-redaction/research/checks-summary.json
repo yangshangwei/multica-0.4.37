@@ -1,0 +1,53 @@
+[
+  {
+    "name": "green-redact-race",
+    "cmd": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "-json",
+      "-p",
+      "1",
+      "./pkg/redact",
+      "-count=1"
+    ],
+    "exit": 0,
+    "seconds": 27.557
+  },
+  {
+    "name": "vet-redact",
+    "cmd": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "-p",
+      "1",
+      "./pkg/redact"
+    ],
+    "exit": 0,
+    "seconds": 0.481
+  },
+  {
+    "name": "bench-redact",
+    "cmd": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-p",
+      "1",
+      "./pkg/redact",
+      "-run",
+      "^$",
+      "-bench",
+      "^BenchmarkText$",
+      "-benchtime=100ms",
+      "-count=1"
+    ],
+    "exit": 0,
+    "seconds": 1.199
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "id": "agent-log-redaction",
+  "name": "agent-log-redaction",
+  "title": "智能体日志结构化凭据脱敏",
+  "description": "修复结构化敏感字段、JSON 文本和本产品任务令牌脱敏遗漏，保持普通诊断字段可用。",
+  "status": "in_progress",
+  "dev_type": "backend",
+  "scope": "agent-rnd-p1",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-05",
+  "completedAt": null,
+  "branch": "codex/agent-rnd-p1-20261105",
+  "base_branch": "main",
+  "worktree_path": "/Volumes/artisan/code/2026/mc-agent-rnd-p1-20261105",
+  "commit": "1cd9c1e60c744b8c82b56297bfe06c4ab23a8cc8",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "11-05-agent-squad-rnd-improvements",
+  "relatedFiles": [],
+  "notes": "First P1 implementation and independent scoped verification complete; retained on isolated branch. Hosted/deployed integration is a declared follow-up.",
+  "meta": {
+    "implementation_status": "verified",
+    "integration_status": "isolated_branch"
+  }
+}

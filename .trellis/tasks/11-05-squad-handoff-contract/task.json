@@ -1,0 +1,29 @@
+{
+  "id": "squad-handoff-contract",
+  "name": "squad-handoff-contract",
+  "title": "小队阶段交接与指令一致性",
+  "description": "保留人工验收边界，修正 in_review 阶段信号说明，统一合并门禁队长与小队适用审查。",
+  "status": "in_progress",
+  "dev_type": "backend",
+  "scope": "agent-rnd-p1",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-05",
+  "completedAt": null,
+  "branch": "codex/agent-rnd-p1-20261105",
+  "base_branch": "main",
+  "worktree_path": "/Volumes/artisan/code/2026/mc-agent-rnd-p1-20261105",
+  "commit": "028e93bb04035960784a339e6789395adba92eeb",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "11-05-agent-squad-rnd-improvements",
+  "relatedFiles": [],
+  "notes": "First P1 implementation and independent scoped verification complete; retained on isolated branch. Hosted/deployed integration is a declared follow-up.",
+  "meta": {
+    "implementation_status": "verified",
+    "integration_status": "isolated_branch"
+  }
+}
