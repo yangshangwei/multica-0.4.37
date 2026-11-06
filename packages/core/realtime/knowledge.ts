@@ -25,6 +25,8 @@ export function bindKnowledgeRealtime(client: QueryClient, scope: CollaborationS
   let binding = transports.get(transport.subscribe);
   if (!binding) {
     let active = true;
+    // A replacement connection owns disconnect/teardown erasure even while old consumers drain.
+    const isCurrentTransport = () => Array.from(transports.keys()).at(-1) === transport.subscribe;
     const clear = (refetch = true) => { if (active && isCollaborationScopeCurrent(scope)) expireKnowledgeProjections(client, scope, refetch); };
     const unsubscribe = [
       transport.subscribe("collaboration:knowledge_changed", (data) => { if (CollaborationKnowledgeHintSchema.safeParse(data).success) clear(); }),
@@ -33,9 +35,9 @@ export function bindKnowledgeRealtime(client: QueryClient, scope: CollaborationS
       transport.subscribe("collaboration:source_access_changed", (data) => { if (CollaborationSourceAccessHintSchema.safeParse(data).success) clear(); }),
       transport.subscribe("collaboration:workbench_changed", (data) => { if (isCollaborationInvalidation(data)) clear(); }),
       transport.onAuthenticated(() => clear()),
-      transport.onDisconnected(() => { if (active) expireKnowledgeProjections(client, scope, false); }),
+      transport.onDisconnected(() => { if (active && isCurrentTransport()) expireKnowledgeProjections(client, scope, false); }),
     ];
-    binding = { count: 0, dispose: () => { active = false; for (const dispose of unsubscribe) dispose(); expireKnowledgeProjections(client, scope, false); } };
+    binding = { count: 0, dispose: () => { active = false; for (const dispose of unsubscribe) dispose(); if (isCurrentTransport()) expireKnowledgeProjections(client, scope, false); } };
     transports.set(transport.subscribe, binding);
   }
   binding.count++;

@@ -60,6 +60,7 @@ function KnowledgeCollection({ scope, issue, target, query, page, setPage, sourc
   });
   const locked = mutation.isPending || intent !== null;
   const current = query.data;
+  const loadFailed = query.error !== null || !query.isFetching;
   const recoveryAttention = pending.length > 0 || storageError || cleanupFailed || feedback?.failed === true;
   useEffect(() => {
     if (!recoveryAttention) return;
@@ -162,8 +163,8 @@ function KnowledgeCollection({ scope, issue, target, query, page, setPage, sourc
       </div>)}
       {pending.some(dismissable) && <p id={`${id}-dismiss-hint`} className="max-w-prose text-caption text-muted-foreground">{t(($) => $.knowledge.dismissHint)}</p>}
     </div>}
-    {!current && <div className="space-y-3"><p role={query.error ? "alert" : "status"} className="text-body text-muted-foreground">{query.error instanceof CollaborationUnavailableError ? t(($) => $.knowledge.unavailable) : query.error ? t(($) => $.knowledge.loadError) : t(($) => $.knowledge.loading)}</p>
-      {query.error && <Button type="button" variant="outline" onClick={() => { setPage({}); void query.refetch(); }}>{t(($) => $.knowledge.refresh)}</Button>}</div>}
+    {!current && <div className="space-y-3"><p role={loadFailed ? "alert" : "status"} className="text-body text-muted-foreground">{query.error instanceof CollaborationUnavailableError ? t(($) => $.knowledge.unavailable) : loadFailed ? t(($) => $.knowledge.loadError) : t(($) => $.knowledge.loading)}</p>
+      {loadFailed && <Button type="button" variant="outline" onClick={() => { setPage({}); void query.refetch(); }}>{t(($) => $.knowledge.refresh)}</Button>}</div>}
     {current && <>
       {current.value.items.length === 0 && <p className="text-body text-muted-foreground">{issue ? t(($) => $.knowledge.empty) : t(($) => $.knowledge.targetEmpty)}</p>}
       <ul className="space-y-2">{current.value.items.map((candidate) => <li key={candidate.candidate_id}>

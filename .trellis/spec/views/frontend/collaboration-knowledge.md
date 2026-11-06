@@ -80,6 +80,14 @@ Available source links use existing memory-version/comment/run account anchors.
 Malformed or unsupported reads show explicit scoped failure/unavailability rather
 than an empty collection. Base editors never receive a merged knowledge string.
 
+An erased projection with no active request is recoverable, even when Query has
+no error (`status:pending`, `fetchStatus:idle` or `paused`). Both source lists and
+review panels show the existing load-error message and Refresh action in this
+state; only an active fetch shows loading. Refresh reads current authorization
+and never restores the erased payload. A paused offline read still waits for
+reconnection. Cover disconnect-style erasure and manual recovery in the real
+panel tests, including the exact-version confirmation controls.
+
 ### Field limits
 
 Summary, conclusion, evidence note and decision reason count UTF-8 bytes against

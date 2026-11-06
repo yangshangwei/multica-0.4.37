@@ -74,6 +74,82 @@ function receipt(requestId: string, action: CollaborationKnowledgeReceipt["actio
     state: action === "approve" ? "approved" : action === "reject" ? "rejected" : action === "withdraw" ? "withdrawn" : "pending", target_knowledge_revision: "1" };
 }
 
+it("recovers after rapid candidate switches overlap authorization refreshes", async () => {
+  const first = candidate;
+  const second = { ...first, candidate_id: "00000000-0000-4000-8000-000000000092",
+    lineage_id: "00000000-0000-4000-8000-000000000092", summary: "Second candidate", content: "Second conclusion" };
+  const row = (value: CollaborationKnowledgeCandidate) => Object.fromEntries(Object.entries(value).filter(([key]) => key !== "content"));
+  vi.mocked(api.getCollaborationKnowledgeCandidates).mockImplementation(async () => parseCollaborationKnowledgeCandidates({
+    ...lease(), issue_id: issue.id, items: [row(first), row(second)], next_cursor: null, capabilities: { can_propose: true },
+  }));
+  const requests: { id: string; signal?: AbortSignal; resolve: () => void }[] = [];
+  vi.mocked(api.getCollaborationKnowledgeCandidate).mockImplementation((id, options) => new Promise((resolve, reject) => {
+    const signal = options?.signal;
+    signal?.addEventListener("abort", () => reject(new DOMException("Aborted", "AbortError")), { once: true });
+    requests.push({ id, signal, resolve: () => resolve(parseCollaborationKnowledgeDetail({
+      ...lease(), candidate: id === first.candidate_id ? first : second, history: [], history_truncated: false,
+    })) });
+  }));
+  mount(); await userEvent.click(await screen.findByRole("button", { name: /PRIVATE SUMMARY/ }));
+  await waitFor(() => expect(requests).toHaveLength(1));
+  await userEvent.click(screen.getByRole("button", { name: /Second candidate/ }));
+  await waitFor(() => expect(requests).toHaveLength(2));
+  expect(requests[0]!.signal?.aborted).toBe(true);
+  await userEvent.click(screen.getByRole("button", { name: /PRIVATE SUMMARY/ }));
+  await waitFor(() => expect(requests).toHaveLength(3));
+  expect(requests[1]!.signal?.aborted).toBe(true);
+  act(() => { expireKnowledgeProjections(client, scope); expireKnowledgeProjections(client, scope); });
+  await waitFor(() => expect(requests).toHaveLength(4));
+  await act(async () => { for (const request of requests) request.resolve(); });
+  await screen.findByText("PRIVATE BODY");
+  expect(screen.getByRole("button", { name: /Second candidate/ })).toBeInTheDocument();
+  expect(screen.queryAllByText("Loading knowledge…")).toHaveLength(0);
+  await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
+  expect(screen.getByRole("button", { name: "Approve exact version" })).toBeEnabled();
+});
+
+it("reloads the list and opens a newly submitted candidate for confirmation", async () => {
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => {
+    candidate = { ...knowledgeCandidateFixture, source_issue_id: issue.id, source_workspace_id: issue.source_workspace.id,
+      candidate_id: input.candidate_id, lineage_id: input.candidate_id, version: "1", target: input.target,
+      summary: input.summary, content: input.content, sources: input.sources, applicability: input.applicability,
+      evidence: input.evidence, expires_at: input.expires_at };
+    return { ...receipt(input.request_id, "propose"), candidate_id: input.candidate_id };
+  });
+  mount(); await openReview();
+  await userEvent.click(screen.getByRole("button", { name: "Propose knowledge" })); await fillProposal();
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await screen.findByText("Candidate proposed. It is not active until approved.");
+  await screen.findByRole("button", { name: /Human conclusion/ });
+  await screen.findByRole("checkbox", { name: /I reviewed/ });
+  expect(send).toHaveBeenCalledOnce();
+  expect(screen.queryByText("Loading knowledge…")).not.toBeInTheDocument();
+  await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
+  expect(screen.getByRole("button", { name: "Approve exact version" })).toBeEnabled();
+});
+
+it("offers recovery for erased idle queries and restores the list and exact review", async () => {
+  mount(); await openReview();
+  await act(async () => { expireKnowledgeProjections(client, scope, false); });
+  await waitFor(() => expect(screen.queryByText("PRIVATE BODY")).not.toBeInTheDocument());
+  expect(screen.queryByRole("checkbox", { name: /I reviewed/ })).not.toBeInTheDocument();
+  expect(screen.queryAllByText("Loading knowledge…")).toHaveLength(0);
+  const review = screen.getByRole("region", { name: "Review candidate" });
+  const refresh = screen.getAllByRole("button", { name: "Refresh" });
+  expect(refresh).toHaveLength(2);
+  await userEvent.click(refresh.find((button) => !review.contains(button))!);
+  await screen.findByRole("button", { name: /PRIVATE SUMMARY/ });
+  let finish!: () => void;
+  vi.mocked(api.getCollaborationKnowledgeCandidate).mockImplementationOnce(() => new Promise((resolve) => { finish = () => resolve(detail()); }));
+  await userEvent.click(within(review).getByRole("button", { name: "Refresh" }));
+  await within(review).findByText("Loading knowledge…");
+  expect(within(review).queryByRole("button", { name: "Refresh" })).not.toBeInTheDocument();
+  await act(async () => finish());
+  await screen.findByText("PRIVATE BODY");
+  await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
+  expect(screen.getByRole("button", { name: "Approve exact version" })).toBeEnabled();
+});
+
 it("requires keyboard confirmation of the displayed version and awaits the exact approval receipt", async () => {
   let finish!: (value: CollaborationKnowledgeReceipt) => void;
   const send = vi.spyOn(api, "approveCollaborationKnowledge").mockImplementation(() => new Promise((resolve) => { finish = resolve; }));

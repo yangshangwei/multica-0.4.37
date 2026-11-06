@@ -1,9 +1,9 @@
 // @vitest-environment node
 import { afterEach, expect, it, vi } from "vitest";
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient, QueryObserver } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "../api";
 import { collaborationScope } from "../collaboration/access";
-import { collaborationKnowledgeKeys } from "../collaboration/knowledge-queries";
+import { collaborationKnowledgeCandidateOptions, collaborationKnowledgeKeys } from "../collaboration/knowledge-queries";
 import { knowledgeDetailFixture, knowledgeIds } from "../collaboration/knowledge-test-fixtures";
 import { bindKnowledgeRealtime } from "./knowledge";
 import type { WSEventType } from "../types/events";
@@ -12,7 +12,7 @@ vi.mock("../auth", () => ({ useAuthStore: { getState: () => ({ user: { id: "0000
 const cleanups: (() => void)[] = [];
 afterEach(() => { cleanups.splice(0).reverse().forEach((dispose) => dispose()); vi.restoreAllMocks(); });
 function setup() {
-  setApiInstance(new ApiClient("https://server.example"));
+  const api = new ApiClient("https://server.example"); setApiInstance(api);
   const client = new QueryClient({ defaultOptions: { queries: { gcTime: Infinity } } });
   cleanups.push(() => client.clear());
   const scope = collaborationScope(knowledgeIds.actor), key = collaborationKnowledgeKeys.candidate(scope, knowledgeIds.candidate);
@@ -21,8 +21,8 @@ function setup() {
   const transport = { subscribe: vi.fn((event: WSEventType, callback: (value: unknown) => void) => { handlers.set(event, callback); return () => { handlers.delete(event); }; }),
     onAuthenticated: vi.fn((callback: () => void) => { authenticated = callback; return () => {}; }),
     onDisconnected: vi.fn((callback: () => void) => { disconnected = callback; return () => {}; }) };
-  cleanups.push(bindKnowledgeRealtime(client, scope, transport));
-  return { client, scope, key, transport, handlers, set: () => client.setQueryData(key, knowledgeDetailFixture),
+  const dispose = bindKnowledgeRealtime(client, scope, transport); cleanups.push(dispose);
+  return { api, client, scope, key, transport, handlers, dispose, set: () => client.setQueryData(key, knowledgeDetailFixture),
     emit: (event: WSEventType, value: unknown) => handlers.get(event)?.(value), reconnect: () => authenticated(), disconnect: () => disconnected() };
 }
 
@@ -59,4 +59,30 @@ it("does not let an obsolete socket callback affect a new server/viewer scope", 
   setApiInstance(new ApiClient("https://new.example"));
   f.emit("collaboration:knowledge_changed", { target_kind: "workspace", target_id: knowledgeIds.workspace, knowledge_revision: "4" });
   expect(f.client.getQueryData(f.key)).toBeDefined();
+});
+
+it("keeps replacement connection projections when the old same-scope transport closes", async () => {
+  const f = setup();
+  let disconnected = () => {};
+  const replacement = { subscribe: vi.fn(() => () => {}), onAuthenticated: vi.fn(() => () => {}),
+    onDisconnected: (callback: () => void) => { disconnected = callback; return () => {}; } };
+  const dispose = bindKnowledgeRealtime(f.client, f.scope, replacement); cleanups.push(dispose);
+  const read = vi.spyOn(f.api, "getCollaborationKnowledgeCandidate").mockResolvedValue(knowledgeDetailFixture);
+  const options = collaborationKnowledgeCandidateOptions(f.client, f.scope, knowledgeIds.candidate);
+  const observer = new QueryObserver(f.client, options); cleanups.push(observer.subscribe(() => {}));
+  await f.client.fetchQuery(options);
+  const projection = f.client.getQueryData(options.queryKey);
+  expect(projection?.value.candidate.availability).toBe("available");
+  f.disconnect();
+  expect(f.client.getQueryData(options.queryKey)).toBe(projection);
+  expect(read).toHaveBeenCalledOnce();
+  disconnected();
+  expect(f.client.getQueryData(options.queryKey)).toBeUndefined();
+  await f.client.fetchQuery(options);
+  const refreshed = f.client.getQueryData(options.queryKey);
+  expect(refreshed).toBeDefined();
+  f.dispose();
+  expect(f.client.getQueryData(options.queryKey)).toBe(refreshed);
+  dispose();
+  expect(f.client.getQueryData(options.queryKey)).toBeUndefined();
 });

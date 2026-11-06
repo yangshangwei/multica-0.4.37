@@ -88,6 +88,13 @@ may arrive out of order and never synthesize state. Target-only hooks require no
 source subscription. A stale socket close cannot clear a replacement connection's
 data. A lease is a bounded display rule, not runtime authorization.
 
+When transport bindings overlap for the same QueryClient/viewer, only the newest
+binding owns disconnect and disposal erasure. An older binding must unsubscribe
+without clearing the replacement's projection. The current binding's disconnect
+and final disposal still erase private data. Realtime tests must load a mounted
+query through its normal read, overlap transports, and check both stale cleanup
+and current-connection erasure.
+
 ### Exact sources and write recovery
 
 The source builder hashes exact decoded UTF-8 text without trimming. Memory uses

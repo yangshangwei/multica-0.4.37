@@ -21,6 +21,7 @@ export function KnowledgeReview({ scope, candidateId, issue, canPropose, locked,
   useEffect(() => { root.current?.focus(); }, [candidateId]);
   const query = useCollaborationKnowledgeCandidate(scope, candidateId);
   const candidate = query.data?.value.candidate;
+  const loadFailed = query.error !== null || !query.isFetching;
   const actorLabel = (userId: string) => issue?.creator.user_id === userId && issue.creator.name.trim() ? issue.creator.name
     : issue?.handler.user_id === userId && issue.handler.name.trim() ? issue.handler.name : userId;
   const decisionRepeatsApproval = candidate?.availability !== "restricted" && candidate?.decision !== null && candidate?.decision !== undefined &&
@@ -32,8 +33,8 @@ export function KnowledgeReview({ scope, candidateId, issue, canPropose, locked,
   if (identity !== null && identity !== decisionKey) setDecisionKey(identity);
   return <section ref={root} tabIndex={-1} aria-label={t(($) => $.knowledge.review)} className="min-w-0 space-y-4 border-t border-border pt-5 outline-none focus-visible:ring-2 focus-visible:ring-ring">
     <div className="flex flex-wrap items-center justify-between gap-3"><h4 className="text-body font-semibold">{t(($) => $.knowledge.review)}</h4><Button type="button" variant="ghost" size="sm" disabled={locked} onClick={onClose}>{t(($) => $.knowledge.close)}</Button></div>
-    {!candidate && <div role={query.error ? "alert" : "status"} className="space-y-2 text-body"><p>{query.error ? t(($) => $.knowledge.loadError) : t(($) => $.knowledge.loading)}</p>
-      {query.error && <Button type="button" variant="outline" onClick={() => void query.refetch()}>{t(($) => $.knowledge.refresh)}</Button>}</div>}
+    {!candidate && <div role={loadFailed ? "alert" : "status"} className="space-y-2 text-body"><p>{loadFailed ? t(($) => $.knowledge.loadError) : t(($) => $.knowledge.loading)}</p>
+      {loadFailed && <Button type="button" variant="outline" onClick={() => void query.refetch()}>{t(($) => $.knowledge.refresh)}</Button>}</div>}
     {candidate && <>
       <KnowledgeState candidate={candidate} />
       {candidate.availability === "restricted" ? <p className="text-body">{t(($) => $.knowledge.restricted)}</p> : <>
