@@ -1,0 +1,51 @@
+{
+  "base": "5aef9c19ad3e764d09cff939edfded53f8c513bd",
+  "integrated_source": "a6552a03533c2fc11f940b849c3da4e0a3db8878",
+  "branch": "codex/cross-workspace-collaboration",
+  "source_branch": "codex/agent-rnd-m1-20261105",
+  "backup": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-local-merge-m7xuzhc_",
+  "unchanged_dirty_tracked": 16,
+  "unchanged_untracked": 8756,
+  "reconciled_files": [
+    ".trellis/spec/server/index.md",
+    ".trellis/workspace/artisan/index.md",
+    ".trellis/workspace/artisan/journal-3.md"
+  ],
+  "source_verification": {
+    "source_manifests": [
+      {
+        "manifest": ".trellis/tasks/archive/2026-11/11-05-squad-delegation-receipts/evidence/manifest.json",
+        "matched_files": 11,
+        "later_documented_changes": []
+      },
+      {
+        "manifest": ".trellis/tasks/archive/2026-11/11-05-agent-task-least-privilege/review-evidence/review-source-manifest.json",
+        "matched_files": 28,
+        "later_documented_changes": [
+          {
+            "file": ".trellis/spec/server/task-api-capabilities.md",
+            "reason": "Accepted targeted-test commit467b857ac appended CLI/model verification contracts after A1 review",
+            "matches_later_commit": true
+          }
+        ]
+      },
+      {
+        "manifest": ".trellis/tasks/archive/2026-11/11-05-agent-critical-path-ci/evidence/independent-manifest.json",
+        "matched_files": 8,
+        "later_documented_changes": []
+      }
+    ],
+    "all_work_commits_ancestors": true,
+    "initial_check": "A1 historical manifest differs only in spec subsequently updated by accepted467b857ac; later bytes verified, no product mismatch"
+  },
+  "post_merge_tests": {
+    "command": "node --test scripts/check-agent-critical-path.test.mjs scripts/agent-critical-path.test.mjs scripts/agent-critical-path-workflow.test.mjs",
+    "pass": 72,
+    "fail": 0,
+    "skip": 0,
+    "log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-local-merge-m7xuzhc_/post-merge-contracts.log",
+    "sha256": "3cce7cc8a90e7e549213307906f0f0e91f7b957efaa0a5adfaa4a2dd1f8bd3ec"
+  },
+  "remote_push": false,
+  "parent_status": "in_progress"
+}

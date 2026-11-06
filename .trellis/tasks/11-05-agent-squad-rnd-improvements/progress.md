@@ -43,3 +43,10 @@
 - 2026-11-06 additional targeted validation authorized including codex exec. New full-router29 cases and actual compiled CLI/API20 cases pass; independent reviewer strengthened persisted-name assertion and the file-only model oracle. No production code changed.
 - Real guided Codex samples: reporter165.622s exit0 and reviewer45.256s exit0, independent scope/action/semantic checks pass. Leader committed correct single mixed delegation+failed evaluation but hit180s timeout(exit124) without final response; complete-trial verdict FAIL. No fourth trial or raised timeout; no root cause inferred. Full observed maps/trace/usage and failed finalization retained.
 - Fresh served/test DBs kept separate; test credentials revoked, owned API/proxies/PG stopped and data/logs retained. Parent M1–M3 remains in_progress; hosted/model-wide/NFR claims remain open.
+
+## 2026-11-06 local M1 integration
+User asked whether the commits were on the integration branch, then instructed continuation. Fast-forwarded `codex/cross-workspace-collaboration` from `5aef9c19a` to `a6552a035`, incorporating all7 M1 planning/implementation/testing/evidence commits. All4 product/test commits are ancestors.
+
+Preserved16 nonoverlapping dirty tracked files and8756 untracked files byte-for-byte/mode-for-mode. Reconciled only server spec index and developer journal index/body, preserving prior119–130 history and adding131–132. Original and merged overlapping files are backed up privately. No unrelated edits staged.
+
+Post-merge CI contracts72/72 pass,0skip. Reviewed product source hashes match retained manifests; the later capability-spec update exactly matches accepted targeted-test commit467b857ac. No DB/browser/real-model rerun because product bytes are unchanged; prior leader180s timeout remains a failed full-trial result. No remote push/deployment. Parent remainsin_progress.

@@ -29,7 +29,7 @@
   ],
   "parent": null,
   "relatedFiles": [],
-  "notes": "M0 integrated; three M1 children independently accepted in isolated local branch. M1 controlled executor, delivery evidence gates and durable receipts remain; M2/M3 not accepted.",
+  "notes": "M0 and accepted M1 increments/testing locally integrated into codex/cross-workspace-collaboration. M1 controlled executor/evidence gates/durable receipts and M2/M3 remain incomplete. Real Codex targeted trials:2complete,1timeout retained.",
   "meta": {
     "m0_status": "merged_locally",
     "m1_status": "in_progress",
@@ -45,6 +45,10 @@
       "agent-critical-path-ci"
     ],
     "m1_branch": "codex/agent-rnd-m1-20261105",
-    "m1_worktree": "/Volumes/artisan/code/2026/mc-agent-rnd-m1-20261105"
+    "m1_worktree": "/Volumes/artisan/code/2026/mc-agent-rnd-m1-20261105",
+    "m1_integration_status": "merged_locally",
+    "m1_integration_head": "a6552a03533c2fc11f940b849c3da4e0a3db8878",
+    "m1_source_branch": "codex/agent-rnd-m1-20261105",
+    "m1_source_worktree": "/Volumes/artisan/code/2026/mc-agent-rnd-m1-20261105"
   }
 }

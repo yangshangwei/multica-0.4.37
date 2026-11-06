@@ -65,3 +65,6 @@ User explicitly authorized codex exec. New production-router29 and compiled CLI�
 Three bounded real Codex processes ran against synthetic actual claims. Reporter and reviewer completed with correct guided role behavior. Leader correctly persisted one queued/blocked delegation and failed evaluation, but exceeded180s and lacked a final response: two complete passes, one timeout. This is a retained failed process result, not full model reliability or prompt-injection robustness. No retry beyond3 calls. See `11-06-agent-m1-targeted-validation/verification.md` (active or archive) and its independent evidence.
 
 Targeted test/code-evidence commit: `467b857ac` on isolated branch `codex/agent-rnd-m1-20261105`. Testing campaign completed with the leader timeout retained as a failed completion result.
+
+## Current integration status — 2026-11-06
+All M1 increment and targeted-test commits are now on local `codex/cross-workspace-collaboration`, fast-forwarded to `a6552a035`. Relevant commits: `f09cd96b8`, `cd95c8e40`, `5b7bfad9c`, `467b857ac`. Source branch remains available. Original shared WIP was preserved; only overlapping spec/journal additions were reconciled. Post-merge72 CI contract tests pass and reviewed source bytes match. No remote push or deployment occurred; M1–M3 parent remains unfinished.

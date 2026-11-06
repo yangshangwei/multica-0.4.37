@@ -1,10 +1,10 @@
-# M1 continuation after 2026-11-06 local acceptance
+# M1 continuation after 2026-11-06 local integration
 
 Continue the authorized M1 → M2 → M3 roadmap. User confirmed reporter reads the current project (no project means current issue), reviewer current issue only; both deliver current-issue comments and do not change status or trigger agents. Parent MUST remain in_progress until all milestones accepted.
 
 ## Worktree and integration
 - Integration target: `codex/cross-workspace-collaboration` at `/Volumes/artisan/code/2026/multica-0.4.37`.
-- Current accepted M1 work lives in isolated `/Volumes/artisan/code/2026/mc-agent-rnd-m1-20261105`, branch `codex/agent-rnd-m1-20261105`, based on integrated M0 `5aef9c19a`.
+- Accepted M1 work and targeted tests are now locally integrated into `codex/cross-workspace-collaboration` through `a6552a035`. Historical source worktree `/Volumes/artisan/code/2026/mc-agent-rnd-m1-20261105` / branch `codex/agent-rnd-m1-20261105` remains available. Use latest target HEAD after inspecting dirty state.
 - Original checkout had19 dirty tracked Trellis spec/task/journal files and additional untracked acceptance artifacts. No product files there were changed. Inspect BOTH branches/status/worktrees before integration. Do not overwrite unrelated work or silently stash it.
 - M0 archived evidence remains authoritative; do not repeat it without a changed dependency/risk.
 
@@ -31,3 +31,5 @@ Keep new source contracts in server/task-api-capabilities.md, server/squad-deleg
 
 ## Latest targeted-test result
 The user later requested focused tests and explicitly allowed codex exec. Child11-06-agent-m1-targeted-validation records29 new full-router cases,20 actual compiled CLI/API passes and3 real guided Codex trials. Reporter/reviewer complete pass; leader business actions correct but180s process timeout with no final response. Do not call this3/3 or retry using this exhausted3-call campaign. New default Go regressions remain fake/DB-only; real-model runs are explicit private harness operations. Follow-up diagnosing the leader post-action timeout needs its own bounded real-execution plan if requested; no production root cause was demonstrated. Cleanup stopped owned resources and revoked test tokens.
+
+Local integration preserved16 unrelated dirty tracked files,8756 untracked files and reconciled3spec/journal overlaps. Post-merge72script contracts passed and reviewed source bytes match. No remote push. See local-integration-20261106.json for backup/evidence pointers.
