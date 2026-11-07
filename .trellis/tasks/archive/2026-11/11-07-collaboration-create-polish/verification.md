@@ -52,3 +52,7 @@ This supersedes the initial visual-only boundary for that focused behavior. The 
 - Independent Trellis check reports no remaining in-scope finding.
 
 The first parallel unit batch hit resource timeouts; affected files passed serially. The following serial full run exposed the real deferred-focus ordering issue; it was not dismissed as resource noise. After user approval, the guarded callback and deterministic regression were reviewed and included, and the final full suite is green.
+
+## Final test-only addition
+
+A further concurrent test in the user-approved focus area arrived during commit preparation: closing before the initial animation frame restores the opener. Product bytes still match the final browser build exactly; only the non-bundled test file changed. The final creation-form suite passed25/25 and scoped ESLint passed after this addition. The evidence is349tests from the prior whole-suite run plus this final25-test affected-file run, not a claimed350-test full rerun.
