@@ -1,0 +1,40 @@
+{
+  "recorded_at": "2026-11-02T19:56:51.741762+00:00",
+  "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "product_source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+  "review_sha256": "72d162db17b143658fa6d213d7022ab8b26f5a42b983bb9539aa1f1c589520e1",
+  "reference_hashes_verified": 16,
+  "postgres_readonly": {
+    "database": "postgres",
+    "max_connections": 100,
+    "connections": 58,
+    "active": 1
+  },
+  "API_pool": {
+    "max": 10,
+    "min": 1
+  },
+  "renderer": {
+    "URL": "http://127.0.0.1:19845/",
+    "pid": 57788,
+    "command_sha256": "590ff259869e0b56d12e6767b032ad85f6d199938d5795075bc11a622520307d",
+    "index_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+    "matches_staged_and_installed": true,
+    "reused_same_source_existing_owned_helper": true
+  },
+  "Redis": {
+    "container": "multica-fix-closure-20261102-r4",
+    "id": "9f84d2240700fd46f6241fc332eedfead5e8ebbef5a00fccae03ab33bc9ff58a",
+    "port": 16422,
+    "running": true,
+    "manual_flush_performed": false,
+    "business_DB0_not_reset_by_root": true,
+    "existing_logical_test_DB_resets_remain_test_owned": true
+  },
+  "overlapping_complete_checks": [],
+  "source_seed_name": "collab_joint_seed_c3db64b24_20261102",
+  "source_seed_not_recreated": true,
+  "fresh_check_database_allocation": "existing reviewed check.sh creates new task API/Go and per-package clones through maintenance; business default/retained failed DBs excluded",
+  "ready_for_selected_v10": true,
+  "real_provider_allowed": false
+}

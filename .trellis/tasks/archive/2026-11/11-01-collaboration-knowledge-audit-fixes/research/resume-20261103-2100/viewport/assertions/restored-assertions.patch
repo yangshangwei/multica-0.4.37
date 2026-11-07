@@ -1,0 +1,91 @@
+--- before/e2e/collaboration-workbench-web.spec.ts
++++ after/e2e/collaboration-workbench-web.spec.ts
+@@ -238,6 +238,7 @@
+     const beforeCompletion = await creator.requestJSON<CollaborationIssue>(`/api/collaboration/issues/${issue.id}`);
+     expect(beforeCompletion).toMatchObject({ status_category: "in_review", handler: { user_id: creatorAccount.id } });
+     const submission = beforeCompletion.delivery!.current!;
++    expect(submission.id).toMatch(/^[0-9a-f-]{36}$/i);
+     expect(submission).toMatchObject({ author_user_id: handlerAccount.id, result: resultText, basis: basisText, decision: null, evidence_state: "available" });
+     expect(await deliveryResponse.json()).toMatchObject({ code: "acceptance_submitted", delivery_confirmation: { submission_id: submission.id, attachment_ids: [] } });
+     await expect(delivery).toHaveCount(0);
+@@ -292,6 +293,8 @@
+     await expect(form).toBeVisible();
+     await expect(status).toHaveValue("done");
+     await expect(form.locator(`[data-submission-id="${submission.id}"]`)).toHaveCount(1);
++    await expect(form.getByText(resultText, { exact: true })).toBeVisible();
++    await expect(form.getByText(basisText, { exact: true })).toBeVisible();
+     const useCurrent = form.getByRole("button", { name: "Keep input and use current version", exact: true });
+     await expect(useCurrent).toBeEnabled();
+     expect(lifecyclePosts).toHaveLength(1);
+@@ -302,6 +305,8 @@
+     await expect(useCurrent).toHaveCount(0);
+     await expect(status).toHaveValue("done");
+     await expect(form.locator(`[data-submission-id="${submission.id}"]`)).toHaveCount(1);
++    await expect(form.getByText(resultText, { exact: true })).toBeVisible();
++    await expect(form.getByText(basisText, { exact: true })).toBeVisible();
+     expect(lifecyclePosts).toHaveLength(1);
+     const completed = page.waitForResponse((response) => new URL(response.url()).pathname === lifecycle && response.request().method() === "POST");
+     await form.getByRole("button", { name: "Accept and complete", exact: true }).click();
+--- before/e2e/collaboration-memory-web.spec.ts
++++ after/e2e/collaboration-memory-web.spec.ts
+@@ -90,6 +90,7 @@
+     const pending = await fixture.creator.client.requestJSON<CollaborationIssue>(fixture.root);
+     expect(pending).toMatchObject({ status_category: "in_review", handler: { user_id: fixture.creator.id } });
+     const submission = pending.delivery!.current!;
++    expect(submission.id).toMatch(/^[0-9a-f-]{36}$/i);
+     expect(submission).toMatchObject({ author_user_id: fixture.participant.id, result: resultText, basis: basisText, evidence_state: "available", decision: null });
+     expect(await submissionResponse.json()).toMatchObject({ code: "acceptance_submitted", delivery_confirmation: { submission_id: submission.id, attachment_ids: [] } });
+     await expect(delivery).toHaveCount(0);
+@@ -104,6 +105,7 @@
+     expect(completionResponse.status()).toBe(200);
+     expect(completionResponse.request().postDataJSON()).toMatchObject({ action: "complete", submission_id: submission.id });
+     expect(await completionResponse.json()).toMatchObject({ code: "completed", delivery_confirmation: { submission_id: submission.id, attachment_ids: [] } });
++    await expect(completion).toHaveCount(0);
+     expect(await fixture.creator.client.requestJSON<CollaborationIssue>(fixture.root)).toMatchObject({ status_category: "done", handler: { user_id: fixture.creator.id },
+       delivery: { current: null, latest: { id: submission.id, decision: { kind: "accepted", submission_id: submission.id, actor_user_id: fixture.creator.id } } } });
+     await revealCollaborationDisclosure(page, "More actions");
+--- before/e2e/fixtures/collaboration-mention-journeys.ts
++++ after/e2e/fixtures/collaboration-mention-journeys.ts
+@@ -389,10 +389,26 @@
+   await expect(selectedA).toHaveCount(0);
+   await expect(composerFor(page).getByRole("button", { name: "Send comment", exact: true })).toBeEnabled();
+   await expect(composerFor(page).getByLabel("Add comment", { exact: true })).toHaveValue(content);
+-  assertPreview(await previewComment(page, fixture, "Send comment"), fixture, targets, [fixture.agentA.targetId]);
+-  expect(await readJourneyState(fixture)).toEqual(before);
+-  await expect(selectedA).not.toBeChecked();
+-  await expect(composerFor(page).getByText("AI trigger suppressed", { exact: true })).toBeVisible();
++  const commentPosts: Request[] = [];
++  const observe = (request: Request) => {
++    if (new URL(request.url()).pathname === `${issuePath(fixture)}/comments` && request.method() === "POST") commentPosts.push(request);
++  };
++  page.on("request", observe);
++  try {
++    assertPreview(await previewComment(page, fixture, "Send comment"), fixture, targets, [fixture.agentA.targetId]);
++    await expect(composerFor(page).getByText("Review the AI targets and their impact, then confirm by sending the comment.", { exact: true })).toBeVisible();
++    await expect(selectedA).not.toBeChecked();
++    await expect(composerFor(page).getByLabel("Add comment", { exact: true })).toHaveValue(content);
++    expect(commentPosts).toHaveLength(0);
++    expect(await readJourneyState(fixture)).toEqual(before);
++    // Manual Preview rechecks suppression without publishing the retained draft.
++    assertPreview(await previewComment(page, fixture), fixture, targets, [fixture.agentA.targetId]);
++    await expect(selectedA).not.toBeChecked();
++    await expect(composerFor(page).getByText("AI trigger suppressed", { exact: true })).toBeVisible();
++    await expect(composerFor(page).getByLabel("Add comment", { exact: true })).toHaveValue(content);
++    expect(commentPosts).toHaveLength(0);
++    expect(await readJourneyState(fixture)).toEqual(before);
++  } finally { page.off("request", observe); }
+   await selectedA.click();
+   const preview = await previewComment(page, fixture);
+   assertPreview(preview, fixture, targets);
+--- before/e2e/collaboration-preview-web.spec.ts
++++ after/e2e/collaboration-preview-web.spec.ts
+@@ -82,8 +82,7 @@
+   await expect(suppressed).not.toBeChecked();
+   await expect(chineseComposer.getByText("请核对 AI 对象及影响，再发送评论确认。", { exact: true })).toBeVisible();
+   expect(commentPosts).toBe(0);
+-  expect((await fixture.creator.requestJSON<CollaborationComments>(`${root}/comments`)).items.map((item) => item.id))
+-    .toEqual(commentsBefore.items.map((item) => item.id));
++  expect((await fixture.creator.requestJSON<CollaborationComments>(`${root}/comments`)).items).toEqual(commentsBefore.items);
+   expect((await fixture.creator.requestJSON<CollaborationIssue>(root)).execution).toEqual(executionBeforeRefresh);
+   const response = chinesePage.waitForResponse((item) => item.url().endsWith(`${root}/comments`) && item.request().method() === "POST");
+   await chineseComposer.getByRole("button", { name: "发送评论", exact: true }).click();

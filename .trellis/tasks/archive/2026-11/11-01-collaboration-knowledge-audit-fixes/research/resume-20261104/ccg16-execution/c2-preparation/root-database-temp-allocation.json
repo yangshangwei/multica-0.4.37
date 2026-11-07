@@ -1,0 +1,37 @@
+{
+  "recorded_at": "2026-11-04T05:31:27.320078+00:00",
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "seed_witness": {
+    "db": "multica_closure_v16_seed_01a1a3c9",
+    "issue": 0,
+    "tasks": 0,
+    "latest": "764_collaboration_ai_policy"
+  },
+  "C1normal_and_race_accepted": true,
+  "scope": "Root actual fresh OFF/ON DB and Git-free temp only; no deployment/test/model started",
+  "allocations": [
+    {
+      "lane": "off",
+      "database": "multica_ccg2_v16_off_a3c9",
+      "fresh_migrated": true,
+      "identity": "multica_ccg2_v16_off_a3c9|764_collaboration_ai_policy",
+      "temp": "/private/tmp/multica-ccg-v16-off-twbq7og6",
+      "Git_free": true,
+      "mode": "0700"
+    },
+    {
+      "lane": "on",
+      "database": "multica_ccg2_v16_on_a3c9",
+      "fresh_migrated": true,
+      "identity": "multica_ccg2_v16_on_a3c9|764_collaboration_ai_policy",
+      "temp": "/private/tmp/multica-ccg-v16-on-6fs2lm6r",
+      "Git_free": true,
+      "mode": "0700"
+    }
+  ],
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "private_allocation_file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/c2-root-allocation-private.json",
+  "private_allocation_sha256": "408edca07c65d6501320378610ef767326afeac5bede1d44d4e4fc7dadc3547f"
+}

@@ -1,0 +1,29 @@
+{
+  "recorded_at": "2026-11-03T11:42:06.451874+00:00",
+  "base_candidate": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "target": "e2e/settings-preferences.spec.ts",
+  "source_sha256": "b9b6041c93db6e669f23eb22df1cd1fe07a9f0e575c0c256db7b0c2a774391a4",
+  "proposed_sha256": "5f54eed9f0a5ae7ccd84dba20bf940bf7b835aeaeb152ec69385c9cb194cd1f7",
+  "historical_source_commit": "304f74dd3",
+  "original_repair_commit": "118fc53ea",
+  "patch_sha256": "376bba157aad8bf3aa9dbfb5695eb32d86e57bcb39c2e4a7fa1071bb2386c6d5",
+  "git_apply_check": 0,
+  "applied": false,
+  "tests_run": false,
+  "restores_exact_historical_file": true,
+  "five_product_files_unchanged": {
+    "packages/views/modals/create-issue.tsx": "16f154a27dc64ecd435b40d560a076546b7c90c27f0571e95d2f75b90b676b70",
+    "packages/views/modals/create-issue-dialog.tsx": "15ca7d2fd4819c0f151ab4dbf180f44e377e9706245d6041433b2152da98e6c3",
+    "packages/views/modals/quick-create-issue.tsx": "66684c1c87245a89b7b0eedf4efa606f5afeae0fb4d08c02f7b08efdaf7b4624",
+    "packages/ui/components/ui/dialog.tsx": "35a8ac18ba129e7d90fe11e74fa2dfb5dc483d28424f39592e660884b99973cf",
+    "packages/ui/components/ui/dropdown-menu.tsx": "124266f0e2f76b6d15cc6d6c1fc45e1d78e7b79dd7929a72d916bf5811e6e267"
+  },
+  "diagnosis": "../preferences-diagnosis/diagnosis.json",
+  "preserved": [
+    "test timeout60s",
+    "ordinary pointer clicks",
+    "overflow menu flow",
+    "priority preference persistence",
+    "created issue priority/API assertions"
+  ]
+}

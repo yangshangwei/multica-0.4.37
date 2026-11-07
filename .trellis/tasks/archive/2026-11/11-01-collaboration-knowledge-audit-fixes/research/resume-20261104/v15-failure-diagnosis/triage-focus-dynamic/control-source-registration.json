@@ -1,0 +1,29 @@
+{
+  "controls": [
+    {
+      "mode": "redirect",
+      "spec": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/.omx/private/triage-focus-tests/redirect/triage-duplicate-picker.spec.ts",
+      "fixture": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/.omx/private/triage-focus-tests/redirect/fixtures/triage-duplicate-picker.ts",
+      "fixture_sha256": "5190bdbf8a4eb3c5d30b631d53dd85cdf7bdadd33bdfcebc4dea8774e61f8d58",
+      "config": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/.omx/private/triage-focus-tests/redirect/playwright.config.ts",
+      "config_sha256": "abc4d3104c41ed24b1637233476b51d9ea0ff18c14f709d3e45599f9f2a93a41",
+      "original_assertions_kept": 52,
+      "control_scope": "real BaseUI queued focus callback and actual Playwright server insertText seam; fake-free production modal; no value clearing"
+    },
+    {
+      "mode": "await-initial",
+      "spec": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/.omx/private/triage-focus-tests/await-initial/triage-duplicate-picker.spec.ts",
+      "fixture": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/.omx/private/triage-focus-tests/await-initial/fixtures/triage-duplicate-picker.ts",
+      "fixture_sha256": "542be75eb1f2d01d8c9e1cc5fc643329b16670bffc521479cd88318b917b0494",
+      "config": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/.omx/private/triage-focus-tests/await-initial/playwright.config.ts",
+      "config_sha256": "5a594514d57918c8c65ea0c80c2ed290f2e1a1ed2fb751e4f0a6c3619c5aa931",
+      "original_assertions_kept": 52,
+      "control_scope": "real BaseUI queued focus callback and actual Playwright server insertText seam; fake-free production modal; no value clearing"
+    }
+  ],
+  "server_input_module": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/node_modules/playwright-core/lib/server/input.js",
+  "server_input_sha256": "9bab3cbf128c2338d3eee76996ea9cd7044d27cd9b0c6bf7b1786669354e9d1a",
+  "hook_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/.omx/private/triage-focus-tests/playwright-insertText-control.cjs",
+  "hook_sha256": "cde9e26e312a9a960a484292e72179b9f6333c4e97aa128fa8fbbf8652ac8646",
+  "original_installed_SDK_or_production_source_changed": false
+}

@@ -1,0 +1,91 @@
+{
+  "go_binary_sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+  "commands": [
+    {
+      "label": "default",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/bin/go",
+        "list",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/plain-go-list-oracle/module/first",
+      "environment": {
+        "PATH": "/opt/homebrew/bin:/usr/bin:/bin",
+        "HOME": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/plain-go-list-oracle/home",
+        "TMPDIR": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/plain-go-list-oracle/tmp",
+        "GOCACHE": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/plain-go-list-oracle/cache",
+        "GOMODCACHE": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/plain-go-list-oracle/modcache",
+        "GOPATH": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/plain-go-list-oracle/gopath",
+        "GOPROXY": "off",
+        "GOSUMDB": "off",
+        "GOTOOLCHAIN": "local",
+        "GOVCS": "off",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0,
+      "seconds": 0.026,
+      "stdout": "example/first\n",
+      "stderr": "",
+      "expected_import_path": "example/first",
+      "real_go_tests_or_testmain": 0,
+      "real_sql_connections": 0
+    },
+    {
+      "label": "alternate-modfile",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/bin/go",
+        "list",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-modfile",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/plain-go-list-oracle/module/alternate.mod",
+        "."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/plain-go-list-oracle/module/first",
+      "environment": {
+        "PATH": "/opt/homebrew/bin:/usr/bin:/bin",
+        "HOME": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/plain-go-list-oracle/home",
+        "TMPDIR": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/plain-go-list-oracle/tmp",
+        "GOCACHE": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/plain-go-list-oracle/cache",
+        "GOMODCACHE": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/plain-go-list-oracle/modcache",
+        "GOPATH": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/plain-go-list-oracle/gopath",
+        "GOPROXY": "off",
+        "GOSUMDB": "off",
+        "GOTOOLCHAIN": "local",
+        "GOVCS": "off",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0,
+      "seconds": 0.015,
+      "stdout": "alternate/first\n",
+      "stderr": "",
+      "expected_import_path": "alternate/first",
+      "real_go_tests_or_testmain": 0,
+      "real_sql_connections": 0
+    }
+  ],
+  "fixture_sources_before": {
+    "plain-go-list-oracle/module/go.mod": "0c7a339129e40163ad4c1563d59ba5058d3d8cf325db0a9d3dc84de450e022ee",
+    "plain-go-list-oracle/module/alternate.mod": "9336fbbb991e9a26028a2b2c100b63835824494be9ec0b166a0b5092990d3b36",
+    "plain-go-list-oracle/module/first/fixture.go": "513adb14178d483c37630210a6ce886878b6d71ffe71720b3567b7e22784b4ed"
+  },
+  "fixture_sources_after": {
+    "plain-go-list-oracle/module/go.mod": "0c7a339129e40163ad4c1563d59ba5058d3d8cf325db0a9d3dc84de450e022ee",
+    "plain-go-list-oracle/module/alternate.mod": "9336fbbb991e9a26028a2b2c100b63835824494be9ec0b166a0b5092990d3b36",
+    "plain-go-list-oracle/module/first/fixture.go": "513adb14178d483c37630210a6ce886878b6d71ffe71720b3567b7e22784b4ed"
+  },
+  "network_denied": true,
+  "actual_plain_go_list_calls": 2,
+  "actual_go_tests_or_testmain": 0,
+  "actual_sql_connections": 0,
+  "actual_provider_services_or_installed_agent_cli_calls": 0,
+  "claim": "The same task-owned source resolves to a different canonical import path when actual -modfile is supplied"
+}

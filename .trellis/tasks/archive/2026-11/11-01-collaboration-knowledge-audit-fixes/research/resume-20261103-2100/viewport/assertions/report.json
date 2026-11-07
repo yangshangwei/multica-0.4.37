@@ -1,0 +1,288 @@
+{
+  "recorded_at": "2026-11-03T13:31:38.409239+00:00",
+  "verdict": "ready_for_independent_review",
+  "scope": "five test-file lost assertion restoration; all earlier successful UI/API/epoch/viewport changes retained",
+  "candidate_head": "85ef5d205",
+  "product_source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+  "source_id": "78d1995008c95abc1dd7ec3036fb3a36b37bfe358a91137ba5531f85301e1e88",
+  "changed_files": {
+    "e2e/collaboration-workbench-web.spec.ts": {
+      "before_sha256": "90c8e1e60fd0cb897cf7428bbf8edbdb06bc4546f1c1b9e67a578dd8c67ce007",
+      "main_reference_sha256": "a8311313c502c74afe4df709d66cf16630bb3ac7396c912c3e4a7501a6fb1377",
+      "after_sha256": "c3a902fe29e90df772ff65c66e23aba86c54cb1cb2bcb7b0d0a8acc8e31dd742"
+    },
+    "e2e/collaboration-memory-web.spec.ts": {
+      "before_sha256": "f2613925854c343a768e5458d9103921b5db43e684db46372ccd757d687c784a",
+      "main_reference_sha256": "62c26fe70f60418a836abf3741c0ed8f08e21b163fa61c0a846c0f0964ae5943",
+      "after_sha256": "48ad9875f6d849ecfc50d115d9b656c63b03aa4d14f164a4fd215bf83bc00c0e"
+    },
+    "e2e/fixtures/collaboration-mention-journeys.ts": {
+      "before_sha256": "ef347d2137d78ab1d2ddc3d7bb28ff393a5b5bd6ae3195bc9f7bec60d82bcc91",
+      "main_reference_sha256": "44738e30f08d31e691b58dadcac98cbfdd67b5ab8be9c021c7ed9d07ea5973ef",
+      "after_sha256": "1fe5fef06293779712f655fd9fb36aaca8027f75d8ed8bff40ee85b556781bdc"
+    },
+    "e2e/collaboration-preview-web.spec.ts": {
+      "before_sha256": "321c051a4de1c815f05f9ac7b12a780564e066774530752abeb2722e5181dd29",
+      "main_reference_sha256": "ae65f83b009bdbc0684c6ee4795eba59190c1594da7fa663435a79d8dd267995",
+      "after_sha256": "a53e53b8fc8ded1b342106f940c12e8ff53b5f347ba1fe642d0fb436b7273072"
+    },
+    "e2e/collaboration-boundaries-web.spec.ts": {
+      "before_sha256": "aea75d2300b18b58d8e0c8bb57853d5b74ad8ca498128d86958e447b3823dbf3",
+      "main_reference_sha256": "d81d1fcac8d8eeb542da8af4c8c1a1fb71cea8085e75633b4f1e75c17fd5964d",
+      "after_sha256": "8dff851fee66b7b7df826d7ec4c5e3f2c41e4c1fb44b25d9d1d6523ccef5e7c7"
+    }
+  },
+  "controls_restored": {
+    "workbench": [
+      "submission UUID shape",
+      "visible exact result/basis after409",
+      "visible exact result/basis after explicit use-current"
+    ],
+    "memory": [
+      "submission UUID shape",
+      "completion form dismissal"
+    ],
+    "mention": [
+      "fresh Send preview confirmation",
+      "retained draft and unchecked suppression selection",
+      "continuous0commentPOST observer through confirmation and manual Preview",
+      "manual Preview suppressed target/state and full unchanged journey state"
+    ],
+    "preview": [
+      "all comment object fields/order/authority compared, normalizing only per-read evaluated_at",
+      "before/after evaluated_at ISO,finite parse and paired nondecreasing",
+      "retained execution equality and0POST guard"
+    ],
+    "boundaries": [
+      "submission UUID shape"
+    ]
+  },
+  "retained_failure": {
+    "run": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-directed17",
+    "exit_code": 1,
+    "stats": {
+      "startTime": "2026-11-03T13:24:02.680Z",
+      "duration": 89878.405,
+      "expected": 16,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "reason": "Full comment deep equality differed only in author_authority.evaluated_at; production collaborationCommentAuthorities computes time.Now().UTC() per read. Corrected comparison keeps all other fields exact and validates both timestamps.",
+    "production_source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/service/collaboration_comments_recall.go",
+    "production_source_sha256": "5ffa0c1784063a5e07eb8feb5a624b2995a1530e83b653c993011120fbe25ad8"
+  },
+  "final_run": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-final17",
+    "exit_code": 0,
+    "stats": {
+      "startTime": "2026-11-03T13:28:30.055Z",
+      "duration": 88180.59,
+      "expected": 17,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "source_unchanged": true,
+    "old_round1_unchanged": true
+  },
+  "prior_viewport_all_evidence_unchanged": true,
+  "typecheck": {
+    "typescript_version": "5.9.3",
+    "root_files": [
+      "e2e/collaboration-boundaries-web.spec.ts",
+      "e2e/collaboration-workbench-web.spec.ts",
+      "e2e/collaboration-memory-web.spec.ts",
+      "e2e/fixtures/collaboration-mention-journeys.ts",
+      "e2e/collaboration-preview-web.spec.ts",
+      "e2e/collaboration-preparation-records-web.spec.ts",
+      "e2e/settings-preferences.spec.ts"
+    ],
+    "method": "strict TypeScript noEmit over final seven-file E2E overlay and imports",
+    "diagnostics": [],
+    "exit_code": 0
+  },
+  "git_diff_check": "exit0",
+  "Provider_calls": 0,
+  "product_modified": false,
+  "wholecheck_accepted": false,
+  "no_commits": true,
+  "remaining": [
+    "Independent final patch and evidence review",
+    "Root successor freeze/build/clearance and unique complete verification"
+  ],
+  "artifacts": {
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-final17/run.log": {
+      "sha256": "69a1c307817a7ec91f5f92c70d81e18c3c548ff91afb2d09bd74b0f67218f333",
+      "bytes": 3146
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-final17/results.json": {
+      "sha256": "340d77859b1cd482357cbce93b3f925f28e066a4edcc4d322ac4ab28f4f04bf1",
+      "bytes": 72187
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-final17/result.json": {
+      "sha256": "af10b63c022653c0abc739bcd4e3da9616695f97c6c09035a8de063916e62292",
+      "bytes": 15659
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-final17/source-before.json": {
+      "sha256": "380c3dbd6cc99ae78a59be4ed58fc3c2ddb7ec537ba5e9b6befc31efcc59e46e",
+      "bytes": 5413887
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-final17/source-after.json": {
+      "sha256": "380c3dbd6cc99ae78a59be4ed58fc3c2ddb7ec537ba5e9b6befc31efcc59e46e",
+      "bytes": 5413887
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-directed17/run.log": {
+      "sha256": "66345f2ef04c4e5773fc8782dc0eb94f74e6bb97b69723d44156e02d38a35094",
+      "bytes": 7609
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-directed17/results.json": {
+      "sha256": "c5ec71a8a16af6947ecf772539d6b7e137062deb1fbdd4f477b77d304977e937",
+      "bytes": 80482
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-directed17/result.json": {
+      "sha256": "6611e0e8871d2ed990bd49838016f79f8f2e8c9842efee56e3caf10297e51ab2",
+      "bytes": 15666
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-directed17/source-before.json": {
+      "sha256": "90b47c5237f93667571992f9cca84b3ddf526f665660ddfc1e08919994f0e427",
+      "bytes": 5413887
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-directed17/source-after.json": {
+      "sha256": "90b47c5237f93667571992f9cca84b3ddf526f665660ddfc1e08919994f0e427",
+      "bytes": 5413887
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/after.json": {
+      "sha256": "e561bcf18f24fe525763811dd93adc3d123eba83b9ea8f53b774d941310e0876",
+      "bytes": 1305
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/before.json": {
+      "sha256": "07b4a2b16beddd46bce27b8193e900c9e56b66f15e9fd2b772f7464b1ed4513d",
+      "bytes": 953
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-boundaries-web.spec.ts.before": {
+      "sha256": "aea75d2300b18b58d8e0c8bb57853d5b74ad8ca498128d86958e447b3823dbf3",
+      "bytes": 46415
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-boundaries-web.spec.ts.final": {
+      "sha256": "8dff851fee66b7b7df826d7ec4c5e3f2c41e4c1fb44b25d9d1d6523ccef5e7c7",
+      "bytes": 46468
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-boundaries-web.spec.ts.main-reference": {
+      "sha256": "d81d1fcac8d8eeb542da8af4c8c1a1fb71cea8085e75633b4f1e75c17fd5964d",
+      "bytes": 46244
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-memory-web.spec.ts.after": {
+      "sha256": "48ad9875f6d849ecfc50d115d9b656c63b03aa4d14f164a4fd215bf83bc00c0e",
+      "bytes": 13814
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-memory-web.spec.ts.before": {
+      "sha256": "f2613925854c343a768e5458d9103921b5db43e684db46372ccd757d687c784a",
+      "bytes": 13714
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-memory-web.spec.ts.final": {
+      "sha256": "48ad9875f6d849ecfc50d115d9b656c63b03aa4d14f164a4fd215bf83bc00c0e",
+      "bytes": 13814
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-memory-web.spec.ts.main-reference": {
+      "sha256": "62c26fe70f60418a836abf3741c0ed8f08e21b163fa61c0a846c0f0964ae5943",
+      "bytes": 12510
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-mention-journeys.ts.after": {
+      "sha256": "1fe5fef06293779712f655fd9fb36aaca8027f75d8ed8bff40ee85b556781bdc",
+      "bytes": 41498
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-mention-journeys.ts.before": {
+      "sha256": "ef347d2137d78ab1d2ddc3d7bb28ff393a5b5bd6ae3195bc9f7bec60d82bcc91",
+      "bytes": 40448
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-mention-journeys.ts.final": {
+      "sha256": "1fe5fef06293779712f655fd9fb36aaca8027f75d8ed8bff40ee85b556781bdc",
+      "bytes": 41498
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-mention-journeys.ts.main-reference": {
+      "sha256": "44738e30f08d31e691b58dadcac98cbfdd67b5ab8be9c021c7ed9d07ea5973ef",
+      "bytes": 41151
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-preview-web.spec.ts.after": {
+      "sha256": "2a841a65e2b75d5367030fd82ade4a125621df48922f94d0c24a748209310d12",
+      "bytes": 7603
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-preview-web.spec.ts.before": {
+      "sha256": "321c051a4de1c815f05f9ac7b12a780564e066774530752abeb2722e5181dd29",
+      "bytes": 7654
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-preview-web.spec.ts.final": {
+      "sha256": "a53e53b8fc8ded1b342106f940c12e8ff53b5f347ba1fe642d0fb436b7273072",
+      "bytes": 8481
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-preview-web.spec.ts.main-reference": {
+      "sha256": "ae65f83b009bdbc0684c6ee4795eba59190c1594da7fa663435a79d8dd267995",
+      "bytes": 7545
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-workbench-web.spec.ts.after": {
+      "sha256": "c3a902fe29e90df772ff65c66e23aba86c54cb1cb2bcb7b0d0a8acc8e31dd742",
+      "bytes": 25279
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-workbench-web.spec.ts.before": {
+      "sha256": "90c8e1e60fd0cb897cf7428bbf8edbdb06bc4546f1c1b9e67a578dd8c67ce007",
+      "bytes": 24918
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-workbench-web.spec.ts.final": {
+      "sha256": "c3a902fe29e90df772ff65c66e23aba86c54cb1cb2bcb7b0d0a8acc8e31dd742",
+      "bytes": 25279
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/collaboration-workbench-web.spec.ts.main-reference": {
+      "sha256": "a8311313c502c74afe4df709d66cf16630bb3ac7396c912c3e4a7501a6fb1377",
+      "bytes": 24387
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/evaluated-at-original-failure.json": {
+      "sha256": "e28a2e3622c3b5450d78ad4ec584f0c09a59179456dd40b9503e402ec95163c1",
+      "bytes": 4681
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/final.json": {
+      "sha256": "907ee7c6709be2965695afd9d8ec4f9d3593a49165b008d4c2d0687a4cc56f82",
+      "bytes": 1631
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/final17-inventory.json": {
+      "sha256": "56c6be61dce9e19be967b01ad36eb7dc3d251c0c019e2976467c36addcd255be",
+      "bytes": 4945
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/plan.md": {
+      "sha256": "c2d6e60fbec6f7784214d9e605e80d6655d5bc266dc6bfaccc40a7f84c82c956",
+      "bytes": 715
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/restored-assertions-final.patch": {
+      "sha256": "5fb1caa9bd5599fbd080fcd80f2732b2284d7479ac3cc1a58500f6c25dfd2724",
+      "bytes": 8540
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/restored-assertions.patch": {
+      "sha256": "0df8c0290b8cad386d8022295d0e46a9d2683538fa7cd16c8a2d737349715b2e",
+      "bytes": 6878
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/typecheck-final.json": {
+      "sha256": "e9d5ea081da00c4489525a742dda9ff9d07f6fcf5836c4febb57b9acae366fa8",
+      "bytes": 518
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/typecheck-five-files-final.json": {
+      "sha256": "e9d5ea081da00c4489525a742dda9ff9d07f6fcf5836c4febb57b9acae366fa8",
+      "bytes": 518
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/run-assertions.py": {
+      "sha256": "9eb1eda094abe2356239cfff20d9b1f4ac86149461bd9ca60a07287e092e33bf",
+      "bytes": 7572
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/run-assertions-final.py": {
+      "sha256": "6c894d4f9d237b57b5d8a70b79933e87bb81b309ef145be9036205929e6eb139",
+      "bytes": 7616
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/static-check-assertions.cjs": {
+      "sha256": "30dfc6c6931f09c7f0f1149ef88fedc2fb214304df88078d2d87e23182e34cce",
+      "bytes": 1663
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/static-check-assertions-final.cjs": {
+      "sha256": "780a09975325e86974fff8c43bb5d6a15a064385ad7fb0da2b813fb98a7e283c",
+      "bytes": 1674
+    }
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "scope": "Four actual complete V16 browser terminals; no targeted rerun or synthesized pass",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "report": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/makecheck-playwright-results-v9.json",
+    "sha256": "8f7c2b55fa3c5f8cefa6625b9dbb88d73bb468f5b91336cd70bde4a472994bfc"
+  },
+  "source": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/triage-duplicate-picker.ts",
+      "sha256": "0cbc13c518022a2af413da1f09b3801e8b0f4a6c7264bbf395544a301a69c029"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/triage-duplicate-picker.spec.ts",
+      "sha256": "336fc073a206d90d0dde2da411ec5076f09c5d3a7bd0f5f012509f58e2554cd1"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/triage-duplicate-picker-desktop.spec.ts",
+      "sha256": "d291025d8d3bad35ef9eb1d7e2eef68e77d00700c768ad2dc8bd97f35437c7e8"
+    }
+  ],
+  "freeze": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-candidate-freeze/freeze.json",
+    "sha256": "33ee3e18d19c632cdfb48e55ad01870763a2d0ea77cb4193fb76eb9ba0e39df6"
+  },
+  "all52_prior_assertions_retained": true,
+  "actual_cases": [
+    {
+      "current": {
+        "spec_id": "bdfad659a63831abbad5-b1a6cae3748cc7498a4b",
+        "file": "triage-duplicate-picker-desktop.spec.ts",
+        "line": 5,
+        "title": "Native duplicate picker browses all formal tasks and confirms the chosen target (en)",
+        "project": "chromium",
+        "repeatEachIndex": null,
+        "expected_status": "passed",
+        "report_status": "expected",
+        "terminal": "passed",
+        "attempt_statuses": [
+          "passed"
+        ],
+        "retry_count": 0,
+        "annotations": []
+      },
+      "prior_v15_terminal": "passed"
+    },
+    {
+      "current": {
+        "spec_id": "bdfad659a63831abbad5-0bc1a1ec66314db02364",
+        "file": "triage-duplicate-picker-desktop.spec.ts",
+        "line": 5,
+        "title": "Native duplicate picker browses all formal tasks and confirms the chosen target (zh-Hans)",
+        "project": "chromium",
+        "repeatEachIndex": null,
+        "expected_status": "passed",
+        "report_status": "expected",
+        "terminal": "passed",
+        "attempt_statuses": [
+          "passed"
+        ],
+        "retry_count": 0,
+        "annotations": []
+      },
+      "prior_v15_terminal": "passed"
+    },
+    {
+      "current": {
+        "spec_id": "7e854b2f15c7ccd1df81-3d45549dced8ce6a42a9",
+        "file": "triage-duplicate-picker.spec.ts",
+        "line": 6,
+        "title": "Web duplicate picker browses all formal tasks and confirms the chosen target (en)",
+        "project": "chromium",
+        "repeatEachIndex": null,
+        "expected_status": "passed",
+        "report_status": "expected",
+        "terminal": "passed",
+        "attempt_statuses": [
+          "passed"
+        ],
+        "retry_count": 0,
+        "annotations": []
+      },
+      "prior_v15_terminal": "failed"
+    },
+    {
+      "current": {
+        "spec_id": "7e854b2f15c7ccd1df81-81f9895dfb84cc87cd63",
+        "file": "triage-duplicate-picker.spec.ts",
+        "line": 6,
+        "title": "Web duplicate picker browses all formal tasks and confirms the chosen target (zh-Hans)",
+        "project": "chromium",
+        "repeatEachIndex": null,
+        "expected_status": "passed",
+        "report_status": "expected",
+        "terminal": "passed",
+        "attempt_statuses": [
+          "passed"
+        ],
+        "retry_count": 0,
+        "annotations": []
+      },
+      "prior_v15_terminal": "passed"
+    }
+  ],
+  "pass": 4,
+  "retry": 0,
+  "historical_failed_v15": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/final-v15-actual-01/actual-failed-browser-case.json",
+    "sha256": "da4e778d25af586f9b6f7591577d2461719650ced5e69c7920105310713e8bb0"
+  }
+}

@@ -1,0 +1,21 @@
+# Execution coordinator: 01a1a186-9a5c-7b00-96f8-0430b47edb4c; template only, no execution authorization.
+from pathlib import Path
+import json, subprocess, hashlib, os, sys
+from datetime import datetime, timezone
+ROOT=Path('/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103')
+OUT=ROOT/'.omx/private/final-check-v14'
+HERE=Path(__file__).resolve().parent
+name=sys.argv[1]
+paths={'launcher':OUT/'fake-preflight-v14-provenance.py','adapter-env':OUT/'adapter-env-preflight-v14.py','final-audit':HERE/'final-state-audit-v14/final_state_audit_test.py'}
+source=paths[name]
+PYTHON='/opt/homebrew/opt/python@3.14/bin/python3.14'
+env={'PATH':'/Users/artisan/.nvm/versions/node/v22.23.2/bin:/opt/homebrew/opt/python@3.14/bin:/usr/bin:/bin:/usr/sbin:/sbin','HOME':str(OUT/'private-preflight-home'),'PYTHONDONTWRITEBYTECODE':'1','LC_ALL':'C','CHECK_LAUNCHER_SOURCE':str(OUT/'run-make-check-v14-provenance.py')}
+(OUT/'private-preflight-home').mkdir(mode=0o700,exist_ok=True)
+command=['/usr/bin/sandbox-exec','-f',str(OUT/'private-preflight-offline.sb'),PYTHON,str(source)]
+record={'name':name,'candidate_sha':'PENDING_ROOT_APPROVED_COMMIT_SHA','started_at':datetime.now(timezone.utc).isoformat(),'command':command,'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'scope':'private fake subprocess and filesystem controls; no repository suites/database/Provider','network':'denied'}
+log=HERE/(name+'-private-preflight.log')
+with log.open('x') as sink:result=subprocess.run(command,cwd=ROOT,env=env,stdout=sink,stderr=subprocess.STDOUT)
+record.update(exit_code=result.returncode,finished_at=datetime.now(timezone.utc).isoformat(),log_path=str(log),log_sha256=hashlib.sha256(log.read_bytes()).hexdigest())
+with (HERE/(name+'-private-preflight.json')).open('x') as f:json.dump(record,f,indent=2);f.write('\n')
+print(json.dumps(record))
+raise SystemExit(result.returncode)

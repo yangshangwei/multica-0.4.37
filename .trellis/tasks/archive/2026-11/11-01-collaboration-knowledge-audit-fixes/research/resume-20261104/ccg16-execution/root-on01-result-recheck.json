@@ -1,0 +1,77 @@
+{
+  "recorded_at": "2026-11-04T08:16:29.042684+00:00",
+  "reviewer": "/root",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "state": "ON01_actual_root_rechecked; independent_raw_review_pending",
+  "named_terminal": [
+    "deployed knowledge startup flag controls one actual Host input and its authorization events"
+  ],
+  "one_attempt_zero_skip_fail_flaky": true,
+  "actual_input": {
+    "prompt_sha256": "306d2da74e8abb98f5bea4145be35b9278d2f157cbcc1d0b30f6c07c788e0f19",
+    "section_present": true,
+    "contributions": [
+      {
+        "candidate_id": "0fe2d8ae-12a1-4aa5-84bb-9c1c89e0ab69",
+        "version": "1",
+        "source_issue_id": "01a1a59e-b86f-7981-8a70-b30f247d15d5",
+        "content_sha256": "dc17fa76e2126bbd90385a35f2d293ec52f5154ee07ee1044c815bff50b13854"
+      }
+    ],
+    "no_session_persistence": true
+  },
+  "approved": {
+    "candidate_id": "0fe2d8ae-12a1-4aa5-84bb-9c1c89e0ab69",
+    "version": "1",
+    "content_sha256": "dc17fa76e2126bbd90385a35f2d293ec52f5154ee07ee1044c815bff50b13854",
+    "source_issue_id": "01a1a59e-b86f-7981-8a70-b30f247d15d5",
+    "target_workspace_id": "a8a8d4e4-a1bd-46de-9e71-225733928370",
+    "proposed_by_user_id": "510bc8f3-c932-4147-a179-98adaad8a224"
+  },
+  "knowledge_events": {
+    "knowledge_claim": 1,
+    "knowledge_preparation": 1,
+    "knowledge_authorization": 1
+  },
+  "run": {
+    "id": "1851de4f-e9a3-4935-bb31-4627fe4edf77",
+    "progress_state": "settled",
+    "proof_state": "host_exit_observed",
+    "business_outcome": "success",
+    "launch_count": "1"
+  },
+  "source_and_binary_sha256": {
+    "source": {
+      "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+      "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+      "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e"
+    },
+    "binary": {
+      "COLLABORATION_HOST_DAEMON": "2b36f0de335919fbc1d36247d9573b13b776e8a1e85e78c0e7117e8e05ed7847",
+      "COLLABORATION_HOST_PROVIDER": "133c116fddf461e69b6f154c1d83123055d59934981e69deb85a45b9fe942061",
+      "COLLABORATION_HOST_CLI": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac"
+    }
+  },
+  "real_provider_calls": 0,
+  "knowledge_budget": 0,
+  "production_default_enabled": false,
+  "evidence": {
+    "started.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-on-v16-01/started.json",
+      "sha256": "128190a9a73463920e90873e7b031cb273e3d97ef121ffd6e1bfb87ea6666789"
+    },
+    "result.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-on-v16-01/result.json",
+      "sha256": "6aa58a5fe4829f2023661cb6767e42abbfbbbd6573fc0ea9076628df6cf33a37"
+    },
+    "results.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-on-v16-01/results.json",
+      "sha256": "1dfb9490264c17b0058ff39a5abd6426edc1fb206a9e29f884d95efdafbb77d4"
+    },
+    "output.log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-on-v16-01/output.log",
+      "sha256": "f6bb8d359e433c508efd4585a449b41cdcf60d6c65e5b3aa79cac6c1cbe1f852"
+    }
+  },
+  "next": "Release only owned ON services; independent four-gate/#7 final; no more CCG runs"
+}

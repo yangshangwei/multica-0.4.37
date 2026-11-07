@@ -1,0 +1,668 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-04T04:05:51.749170+00:00",
+  "reviewer": "/root/knowledge6_source_review",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "scope": "independent read-only CCG16 static readiness while actual V16 browser execution runs; no execution permission",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "ready_to_execute": false,
+  "task7_closable_now": false,
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "candidate_delta_from_D415": {
+    "files": [
+      "e2e/fixtures/triage-duplicate-picker.ts"
+    ],
+    "insertions": 2,
+    "kind": "Two added focus/reason-value assertions only; no selected CCG source change"
+  },
+  "handoff": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/review-hash-binding/handoff.json",
+    "sha256": "47ffbf7598bca2405f90f012de58e8db35461cd4fc88d14dbd99e8be933ff698"
+  },
+  "source_inputs_sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+  "manifest_provenance": {
+    "initial_manifest": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/prepared-manifest.json",
+      "sha256": "1f5115505a1319e81c137b5047b68df4a442b87f7c0ba1498c6c508b397bb362",
+      "scope": "historical initial preparation; review hash/current artifact refs pending then"
+    },
+    "current_binding_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/review-hash-binding/binding.json",
+    "current_binding_sha256": "593d94907d6b0e1cad3a5cfa1a3f21f6f84e98d09231a3632f7c0c698db6c948",
+    "changed_rows": 5,
+    "unchanged_rows": 8,
+    "interpretation": "Initial13 plus actual5 reviewed hash rebind and unchanged8; initial manifest remains historical"
+  },
+  "files": [
+    {
+      "relative": "binary-binding.json.template",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binary-binding.json.template",
+      "sha256": "72c22dabd687cdbd2b1f752dd734ad6ebe988412c70b0ab02738066ecce911b8",
+      "expected_sha256": "72c22dabd687cdbd2b1f752dd734ad6ebe988412c70b0ab02738066ecce911b8",
+      "matches": true,
+      "mode": 384,
+      "mode_matches": true,
+      "not_redirected": true,
+      "revision": "initial_preparation_unchanged",
+      "donor": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/binary-binding.json.template",
+      "donor_sha256": "a11213b6e38a30868627f27a5f666b294b56ea763bd23affb1b3e2945d6cd58b",
+      "donor_matches": true
+    },
+    {
+      "relative": "ccg-admission-template.py.txt",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/ccg-admission-template.py.txt",
+      "sha256": "4aa6d2344a16f8cb3eced82c76fc08996b955b894b12a1593bddea362c02239c",
+      "expected_sha256": "4aa6d2344a16f8cb3eced82c76fc08996b955b894b12a1593bddea362c02239c",
+      "matches": true,
+      "mode": 384,
+      "mode_matches": true,
+      "not_redirected": true,
+      "revision": "initial_preparation_unchanged",
+      "donor": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/ccg-admission-template.py.txt",
+      "donor_sha256": "13d12159d6241e0210ad6e24ad2c1ba95ab9c1e09adf80a88c4cafcfa0b1ad4a",
+      "donor_matches": true,
+      "constants_only_exact_inverse": true
+    },
+    {
+      "relative": "deployments/off/deployment-proof.json.template",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/off/deployment-proof.json.template",
+      "sha256": "af716f03d806a1673cef4196c265ec0077d7476e8d0c0ef68b60f81b66d33d77",
+      "expected_sha256": "af716f03d806a1673cef4196c265ec0077d7476e8d0c0ef68b60f81b66d33d77",
+      "matches": true,
+      "mode": 384,
+      "mode_matches": true,
+      "not_redirected": true,
+      "revision": "initial_preparation_unchanged",
+      "donor": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/deployments/off/deployment-proof.json.template",
+      "donor_sha256": "59bfd0922f8d4f88e1cb4153a78e21015dca2ba7b7ec6bc81e6c142853f9e08a",
+      "donor_matches": true
+    },
+    {
+      "relative": "deployments/off/source-values.json.template",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/off/source-values.json.template",
+      "sha256": "0f3c3151ae1846106082a332321054a1745a0914937b3a4a691d91d4939fe962",
+      "expected_sha256": "0f3c3151ae1846106082a332321054a1745a0914937b3a4a691d91d4939fe962",
+      "matches": true,
+      "mode": 384,
+      "mode_matches": true,
+      "not_redirected": true,
+      "revision": "initial_preparation_unchanged",
+      "donor": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/deployments/off/source-values.json.template",
+      "donor_sha256": "9a117fdb52ddff38b702ba508e5532972bc52736d5224d6c45ff40509909037b",
+      "donor_matches": true
+    },
+    {
+      "relative": "deployments/on/deployment-proof.json.template",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/on/deployment-proof.json.template",
+      "sha256": "88b1da9c508ae3cf493e4c0dfe4c46bb1c1c7103c5ce2e8dae8a2914102556b2",
+      "expected_sha256": "88b1da9c508ae3cf493e4c0dfe4c46bb1c1c7103c5ce2e8dae8a2914102556b2",
+      "matches": true,
+      "mode": 384,
+      "mode_matches": true,
+      "not_redirected": true,
+      "revision": "initial_preparation_unchanged",
+      "donor": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/deployments/on/deployment-proof.json.template",
+      "donor_sha256": "55b193811d967c9ccc54c7e80edd47e102a86f8402f5731b95f91673ec453ed8",
+      "donor_matches": true
+    },
+    {
+      "relative": "deployments/on/source-values.json.template",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/on/source-values.json.template",
+      "sha256": "fa594a074fb93c5c2aa0141108f909ee001c4947a5798fc6fc177f345c242806",
+      "expected_sha256": "fa594a074fb93c5c2aa0141108f909ee001c4947a5798fc6fc177f345c242806",
+      "matches": true,
+      "mode": 384,
+      "mode_matches": true,
+      "not_redirected": true,
+      "revision": "initial_preparation_unchanged",
+      "donor": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/deployments/on/source-values.json.template",
+      "donor_sha256": "fde93f47645e7dec92c37a22d7bde6952d341ce15ce0209516f432f1dd133b9e",
+      "donor_matches": true
+    },
+    {
+      "relative": "permissions/ccg1-normal.json.template",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg1-normal.json.template",
+      "sha256": "49cf0a914c0c584969a80a52808a87ea8872264c5efa4573d9e725e48929ce1a",
+      "expected_sha256": "49cf0a914c0c584969a80a52808a87ea8872264c5efa4573d9e725e48929ce1a",
+      "matches": true,
+      "mode": 384,
+      "mode_matches": true,
+      "not_redirected": true,
+      "revision": "actual_review_hash_binding",
+      "donor": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/permissions/ccg1-normal.json.template",
+      "donor_sha256": "904c64115b484043502ff1706151d54ed0f4e5afb4440fb0ce15ecfcfb90dabf",
+      "donor_matches": true
+    },
+    {
+      "relative": "permissions/ccg1-race.json.template",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg1-race.json.template",
+      "sha256": "be2c06d02c1e3bfd31fb17fba76cf1d50a8c3ae086c5849ffd7f0c70a0084226",
+      "expected_sha256": "be2c06d02c1e3bfd31fb17fba76cf1d50a8c3ae086c5849ffd7f0c70a0084226",
+      "matches": true,
+      "mode": 384,
+      "mode_matches": true,
+      "not_redirected": true,
+      "revision": "actual_review_hash_binding",
+      "donor": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/permissions/ccg1-race.json.template",
+      "donor_sha256": "084cb7cc8e3bbab3d4d9f7e5f9e88d9b3230b46054c3816d2662871012887358",
+      "donor_matches": true
+    },
+    {
+      "relative": "permissions/ccg2-off.json.template",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-off.json.template",
+      "sha256": "18e190be0c0541a3e609f0a3a4bae06bcd48d96cd063b67d119afa032875403d",
+      "expected_sha256": "18e190be0c0541a3e609f0a3a4bae06bcd48d96cd063b67d119afa032875403d",
+      "matches": true,
+      "mode": 384,
+      "mode_matches": true,
+      "not_redirected": true,
+      "revision": "actual_review_hash_binding",
+      "donor": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/permissions/ccg2-off.json.template",
+      "donor_sha256": "25c4d3520089f572380f8bb6d8fe1a97246c8dd5dd8bdf24c7c62c760827974b",
+      "donor_matches": true
+    },
+    {
+      "relative": "permissions/ccg2-on.json.template",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-on.json.template",
+      "sha256": "72370fd7e7c4870c51449f0eba4743f77cff19a4bc6be4d4e035cae7216f4e5a",
+      "expected_sha256": "72370fd7e7c4870c51449f0eba4743f77cff19a4bc6be4d4e035cae7216f4e5a",
+      "matches": true,
+      "mode": 384,
+      "mode_matches": true,
+      "not_redirected": true,
+      "revision": "actual_review_hash_binding",
+      "donor": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/permissions/ccg2-on.json.template",
+      "donor_sha256": "691b1b319f5020f5a4d835482f03e94eb97b6f60de1ae45d4d5839606c6f0b1d",
+      "donor_matches": true
+    },
+    {
+      "relative": "run-ccg1.py",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/run-ccg1.py",
+      "sha256": "4b29de6c452da8f1171b343113297710d055caf5c6aacf41a4ac1794837d2d39",
+      "expected_sha256": "4b29de6c452da8f1171b343113297710d055caf5c6aacf41a4ac1794837d2d39",
+      "matches": true,
+      "mode": 384,
+      "mode_matches": true,
+      "not_redirected": true,
+      "revision": "initial_preparation_unchanged",
+      "donor": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/run-ccg1.py",
+      "donor_sha256": "9e6fed508d0ca3dfd3ba98d52cffe4542dfb0f83810c1f9b866eb13bfd9fea02",
+      "donor_matches": true,
+      "constants_only_exact_inverse": true
+    },
+    {
+      "relative": "run-ccg2.py",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/run-ccg2.py",
+      "sha256": "a6d070263badb138855b1caaaa45d8ea22cfdaebf66e33c09f1e2378748fab3e",
+      "expected_sha256": "a6d070263badb138855b1caaaa45d8ea22cfdaebf66e33c09f1e2378748fab3e",
+      "matches": true,
+      "mode": 384,
+      "mode_matches": true,
+      "not_redirected": true,
+      "revision": "initial_preparation_unchanged",
+      "donor": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/run-ccg2.py",
+      "donor_sha256": "ef7f02daca8f2ef9b6f95bfae8e2f5934059976680d189629643979c99cb76b9",
+      "donor_matches": true,
+      "constants_only_exact_inverse": true
+    },
+    {
+      "relative": "source-inputs.json",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/source-inputs.json",
+      "sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+      "expected_sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+      "matches": true,
+      "mode": 384,
+      "mode_matches": true,
+      "not_redirected": true,
+      "revision": "actual_review_hash_binding",
+      "donor": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/source-inputs.json",
+      "donor_sha256": "90dc201a2b340c76329b1ccd8697e9bd0f7baf087ebfcde5075f558547da2eb9",
+      "donor_matches": true
+    }
+  ],
+  "protected_CCG15_count": 13,
+  "protected_CCG15_matches": true,
+  "source11": [
+    {
+      "path": "server/cmd/server/collaboration_knowledge_correction_composite_test.go",
+      "sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+      "matches": true
+    },
+    {
+      "path": "server/cmd/server/collaboration_knowledge_host_composite_test.go",
+      "sha256": "d866d3f888a1ed48b015a04bb844170a1b5cd8c53ee662f104f0508b23fac3f6",
+      "matches": true
+    },
+    {
+      "path": "server/internal/daemon/collaboration_host_router_test.go",
+      "sha256": "1939ea098c47210f62512a138b35d944add6f3b4f02b5f2e0fd9a5dabaab130f",
+      "matches": true
+    },
+    {
+      "path": "e2e/collaboration-knowledge-deployed.spec.ts",
+      "sha256": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+      "matches": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-provider.go",
+      "sha256": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+      "matches": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-provider_test.go",
+      "sha256": "10af5c9122d610dd966fd78ea8eed48ec6fe93ba263025cb17cbee9c0853a600",
+      "matches": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-runtime.ts",
+      "sha256": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e",
+      "matches": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-knowledge.ts",
+      "sha256": "7a3f68f8a7213dbc40de3e7a8bf02222fb39d27411a0244b8ae2ea6ea89b1960",
+      "matches": true
+    },
+    {
+      "path": "scripts/go-test-with-agent-cli-guard.sh",
+      "sha256": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+      "matches": true
+    },
+    {
+      "path": "scripts/dev-env.sh",
+      "sha256": "6fb4a38c75ffe51c4e1a60712f52887263ee2a21ab205432c3bc90fdf25e001e",
+      "matches": true
+    },
+    {
+      "path": "server/internal/auth/password_config.go",
+      "sha256": "390625cc9961a791adfd24e0fdccffba0607053d9f6271717f889b2d2d885103",
+      "matches": true
+    }
+  ],
+  "tools4": {
+    "node": {
+      "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+      "matches": true
+    },
+    "pnpm": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+      "sha256": "b276da51dc8ca5b0d3ee3371695b50fc8b3244b281b091c63a3f082a88dadeb9",
+      "matches": true
+    },
+    "go": {
+      "path": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+      "matches": true
+    },
+    "psql": {
+      "path": "/opt/homebrew/opt/libpq/bin/psql",
+      "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07",
+      "matches": true
+    }
+  },
+  "actual_prelaunch_refs": {
+    "audit_module": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-state-audit-v16/final_state_audit.py",
+      "sha256": "2bf50f6e244f4c5f3b1c2022ae67663d8888047098145f8a1ea30fb4d28eb318",
+      "state": "actual_V16_independent_prelaunch_review_bound; final_result_pending",
+      "matches": true
+    },
+    "audit_review": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/independent-review/review.json",
+      "sha256": "d2766b57bc41f72a08651f5028258f881f2763dc9036dd94526aebb685b9ee52",
+      "state": "actual_V16_prelaunch_admission_review_bound; complete_result_pending",
+      "matches": true
+    },
+    "environment_parser": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/run-make-check-v16-provenance.py",
+      "sha256": "52c2f0a40fab9dcaabbc20267c106cdffc503d126853e9a3290da280350deaca",
+      "state": "actual_V16_independent_prelaunch_review_bound; final_result_pending",
+      "matches": true
+    }
+  },
+  "prelaunch_review_scope": "Independent ACTUAL materialized V16 execution admission. No full make, final complete-run audit, source/resource/cache mutation, model or clearance execution performed by reviewer.",
+  "prelaunch_review_metadata": {
+    "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+    "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "verdict": "pass-with-notes",
+    "blocking_findings_open": 0,
+    "launcher_sha256": "52c2f0a40fab9dcaabbc20267c106cdffc503d126853e9a3290da280350deaca",
+    "final_auditor_sha256": "2bf50f6e244f4c5f3b1c2022ae67663d8888047098145f8a1ea30fb4d28eb318",
+    "source_identities": {
+      "canonical_product": {
+        "source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+        "file_count": 7984,
+        "purpose": "Tracked production roots only; no E2E/task docs"
+      },
+      "development_HEAD_overlay": {
+        "source_id": "080e49210a53a763213651be5d76b343186613d1673cafdfc6519645c4690364",
+        "purpose": "Actual HEAD plus normalized developer overlay identity for runtime"
+      },
+      "all_tracked_snapshot": {
+        "sha256": "8d2ed44c0df575439ad4c35f44244581cc41b7edcb97d39f52099e9a44d5aa5e",
+        "file_count": 17536,
+        "purpose": "Every tracked content/mode, including tests/docs"
+      }
+    },
+    "cli": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/multica",
+      "sha256": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac",
+      "bytes": 29314610,
+      "version": "v0.6.7-469-geda0d68fb",
+      "version_observation": "multica v0.6.7-469-geda0d68fb (commit: eda0d68fb, built: 2026-11-04T02:41:50Z)\ngo: go1.26.6, os/arch: darwin/arm64\n",
+      "build_record_sha256": "c2a2e2b6077b3ca3fd4d5ccd8392027ff29c5ec7eab82e185d05c1b48597c355"
+    }
+  },
+  "actual_current_CLI": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/multica",
+    "sha256": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac",
+    "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "build_record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/candidate-setup/cli-build-v16.json",
+    "build_record_sha256": "c2a2e2b6077b3ca3fd4d5ccd8392027ff29c5ec7eab82e185d05c1b48597c355",
+    "build_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "existing_version_observation": "multica v0.6.7-469-geda0d68fb (commit: eda0d68fb, built: 2026-11-04T02:41:50Z)\ngo: go1.26.6, os/arch: darwin/arm64\n",
+    "verified_read_only_without_execution": true,
+    "destination_CCG_copy_pending": true,
+    "binary_matches": true,
+    "record_matches": true,
+    "actual_metadata_fields": {
+      "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "source_head_after": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "exit_code": 0,
+      "binary_sha256": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "version_probe_exit": 0,
+      "version_probe_stdout": "multica v0.6.7-469-geda0d68fb (commit: eda0d68fb, built: 2026-11-04T02:41:50Z)\ngo: go1.26.6, os/arch: darwin/arm64\n"
+    },
+    "actual_metadata_shape": "flat CLI build record; exit_code and binary_sha256"
+  },
+  "actual_current_migrator": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/migrate",
+    "sha256": "060c3a17ba03e9837092884a6fc789c067830629692d4ddec6f309c40f26a379",
+    "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "build_migration_record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/seed-migration-result.json",
+    "build_migration_record_sha256": "220f6c7cf6f228539abe17445ef70d45c1d3f57c960b396d6c96f809ef77a70a",
+    "build_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scope": "actual current V16 tool build and V16 seed migration only; CCG fresh DBs unallocated",
+    "verified_read_only_without_execution": true,
+    "binary_matches": true,
+    "record_matches": true,
+    "actual_metadata_fields": {
+      "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "build_exit": 0,
+      "migration_exit": 0,
+      "migrate_binary_sha256": "060c3a17ba03e9837092884a6fc789c067830629692d4ddec6f309c40f26a379",
+      "build_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "migration_log_sha256": "3bc3a550fd8aa5f143be740b783f604b5ec1c4ae0e8f69152b103b2bf3ab4e63"
+    },
+    "actual_metadata_shape": "flat seed-migration record; build_exit/migration_exit/migrate_binary_sha256; no generic exit_code inferred"
+  },
+  "false_permission_templates": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg1-normal.json.template",
+      "sha256": "49cf0a914c0c584969a80a52808a87ea8872264c5efa4573d9e725e48929ce1a",
+      "gate": "ccg1-normal",
+      "flags_false": true,
+      "allocations_null": true,
+      "runner_matches": true,
+      "source_inputs_matches": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg1-race.json.template",
+      "sha256": "be2c06d02c1e3bfd31fb17fba76cf1d50a8c3ae086c5849ffd7f0c70a0084226",
+      "gate": "ccg1-race",
+      "flags_false": true,
+      "allocations_null": true,
+      "runner_matches": true,
+      "source_inputs_matches": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-off.json.template",
+      "sha256": "18e190be0c0541a3e609f0a3a4bae06bcd48d96cd063b67d119afa032875403d",
+      "gate": "ccg2-off",
+      "flags_false": true,
+      "allocations_null": true,
+      "runner_matches": true,
+      "source_inputs_matches": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-on.json.template",
+      "sha256": "72370fd7e7c4870c51449f0eba4743f77cff19a4bc6be4d4e035cae7216f4e5a",
+      "gate": "ccg2-on",
+      "flags_false": true,
+      "allocations_null": true,
+      "runner_matches": true,
+      "source_inputs_matches": true
+    }
+  ],
+  "actual_permissions": 0,
+  "existing_control_provenance": {
+    "execution_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/controls-execution.json",
+    "execution_sha256": "4a2d58a2531a59c99d75d0eb22fd48d6840cdb050f3530885e9b24642e13cda2",
+    "exit_code": 0,
+    "source_matches": true,
+    "profile_matches": true,
+    "log_matches": true,
+    "initial_manifest_matches": true,
+    "initial_source_input_sha256": "089935913d6c0bccca30cdde842fc6a64293244e71be2f33ff1e8cf73caa99fb",
+    "current_source_input_sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+    "scope": "Actual ten early refusals before review-hash binding; unchanged runner guards and retained false template flags; downstream hash-only rebind not reached by refusals",
+    "cases": [
+      {
+        "runner": "run-ccg1.py",
+        "case": "ccg1-normal.json.template",
+        "expected": "Later root execution permission is required",
+        "observed": "Later root execution permission is required",
+        "subprocess_network_runtime_writes": 0
+      },
+      {
+        "runner": "run-ccg1.py",
+        "case": "ccg1-race.json.template",
+        "expected": "Later root execution permission is required",
+        "observed": "Later root execution permission is required",
+        "subprocess_network_runtime_writes": 0
+      },
+      {
+        "runner": "run-ccg1.py",
+        "case": "invalid label",
+        "expected": "Invalid private result label",
+        "observed": "Invalid private result label",
+        "subprocess_network_runtime_writes": 0
+      },
+      {
+        "runner": "run-ccg1.py",
+        "case": "foreign permit",
+        "expected": "Permit outside owned directory",
+        "observed": "Permit outside owned directory",
+        "subprocess_network_runtime_writes": 0
+      },
+      {
+        "runner": "run-ccg1.py",
+        "case": "redirected permit",
+        "expected": "Permit must not be redirected",
+        "observed": "Permit must not be redirected",
+        "subprocess_network_runtime_writes": 0
+      },
+      {
+        "runner": "run-ccg2.py",
+        "case": "ccg2-off.json.template",
+        "expected": "Later root execution permission is required",
+        "observed": "Later root execution permission is required",
+        "subprocess_network_runtime_writes": 0
+      },
+      {
+        "runner": "run-ccg2.py",
+        "case": "ccg2-on.json.template",
+        "expected": "Later root execution permission is required",
+        "observed": "Later root execution permission is required",
+        "subprocess_network_runtime_writes": 0
+      },
+      {
+        "runner": "run-ccg2.py",
+        "case": "invalid label",
+        "expected": "Invalid private result label",
+        "observed": "Invalid private result label",
+        "subprocess_network_runtime_writes": 0
+      },
+      {
+        "runner": "run-ccg2.py",
+        "case": "foreign permit",
+        "expected": "Permit outside owned directory",
+        "observed": "Permit outside owned directory",
+        "subprocess_network_runtime_writes": 0
+      },
+      {
+        "runner": "run-ccg2.py",
+        "case": "redirected permit",
+        "expected": "Permit must not be redirected",
+        "observed": "Permit must not be redirected",
+        "subprocess_network_runtime_writes": 0
+      }
+    ],
+    "cases_count": 10,
+    "cases_match": true,
+    "rerun_by_reviewer": false
+  },
+  "current_AST_JSON_parses": [
+    {
+      "file": "binary-binding.json.template",
+      "kind": "JSON"
+    },
+    {
+      "file": "ccg-admission-template.py.txt",
+      "kind": "Python AST"
+    },
+    {
+      "file": "deployments/off/deployment-proof.json.template",
+      "kind": "JSON"
+    },
+    {
+      "file": "deployments/off/source-values.json.template",
+      "kind": "JSON"
+    },
+    {
+      "file": "deployments/on/deployment-proof.json.template",
+      "kind": "JSON"
+    },
+    {
+      "file": "deployments/on/source-values.json.template",
+      "kind": "JSON"
+    },
+    {
+      "file": "permissions/ccg1-normal.json.template",
+      "kind": "JSON"
+    },
+    {
+      "file": "permissions/ccg1-race.json.template",
+      "kind": "JSON"
+    },
+    {
+      "file": "permissions/ccg2-off.json.template",
+      "kind": "JSON"
+    },
+    {
+      "file": "permissions/ccg2-on.json.template",
+      "kind": "JSON"
+    },
+    {
+      "file": "run-ccg1.py",
+      "kind": "Python AST"
+    },
+    {
+      "file": "run-ccg2.py",
+      "kind": "Python AST"
+    },
+    {
+      "file": "source-inputs.json",
+      "kind": "JSON"
+    }
+  ],
+  "live_only_root_witness": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/root-live-ownership-browser-stage-v16.json",
+    "sha256": "f88b6c7d3ac89b9ebad1daa4aa47550bc9a57c82249d801dd33e254dd4c05a70",
+    "scope": "Root independent live V16 API/Web/database/renderer/Redis identity during actual browser stage; final exit/auditor pending",
+    "status": "pass",
+    "make_exit_known": false,
+    "resource_ownership_sha256": "510ed31219209da5129229de4bcfc99530e011fced5940a79d40934bcc0a6e5a",
+    "nested_resource_labels": [
+      "api",
+      "web",
+      "database",
+      "renderer",
+      "redis"
+    ],
+    "wholecheck_or_CCG_readiness_inferred": false
+  },
+  "actual_shared_record_observation": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/make-check-v16.json",
+    "sha256_at_read": "6819711ee4cca0bc24cc0b6e0a614d8aabedc5bef0e14d398f4bb6797058e016",
+    "state": "running",
+    "exit_code": null,
+    "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "wholecheck_graded_here": false,
+    "stage_counts_reported_by_root_only": {
+      "static_pass": 15,
+      "TS_pass": 13244,
+      "Go_packages": 82,
+      "Go_named_pass": 20963,
+      "Go_named_skip": 22
+    }
+  },
+  "deployment_template_checks": {
+    "OFF_knowledge": "false",
+    "ON_knowledge": "true",
+    "only_template_difference_is_knowledge_flag": true,
+    "password_mode": "password",
+    "managed": "true",
+    "limiter": "single",
+    "model_settings_empty": true,
+    "CORS_equal": true,
+    "DSH_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/missing-test-owned-dsh",
+    "DSH_currently_absent": true,
+    "actual_runtime_identities_pending": true,
+    "forbidden_shared_renderer_origins": [
+      "http://127.0.0.1:55132",
+      "http://localhost:55132",
+      "http://127.0.0.1:61276",
+      "http://localhost:61276",
+      "http://127.0.0.1:58268",
+      "http://localhost:58268"
+    ]
+  },
+  "CCG1_required_database_prefix": "multica_knowledge_host_composite_20261101_",
+  "preserved_contracts": {
+    "runner_changes": "candidate/private/temp constants only",
+    "actual_full_admission": "actual completed run exit0 plus registered final auditor statuspass/wholecheckpass, root named-inventory/live ownership/release and fresh DB/temp",
+    "CCG1": "Exact knowledgeintegration one-test normal/race; 2 physical inputs, human v2 pending/approval/correction, v1 absent from next stdin, withdrawal409 and0 third process, retained original exposure/receipts; each1run1pass0fail0skip",
+    "CCG2": "Exact one-test OFF/ON,1worker0retry; same-current-source fake binaries/CLI, independent production deploy startup/PID/API/WS/CORS/renderer, exact input/contribution/persistence/events/native Host proof,0 model calls",
+    "Turbo_JSON": "Canonical five-package docs/core/views/web/desktop argv only gets JSON reporter; actual package-prefixed leaf output is separately graded by root, no synthetic result"
+  },
+  "materialization_checklist": [
+    "Complete sole V16 make0/final registered audit/named inventories and individual skips/live ownership; record resource release",
+    "Recheck current refs and root hash-bound permissions, unique labels/new owner0700 Git-free /private/tmp/multica-ccg-v16-* temp/cache fields; retain false templates",
+    "Allocate separate CCG1 normal/race literal-prefix databases and verify same-URL migration764; exact composite command/physical facts",
+    "Compile source-current default fake daemon/provider, copy audited V16 CLI; bind actual exit0/build/copy/executable hashes",
+    "Allocate distinct OFF/ON databases/UUIDs/JWTs/ports/registry/profile/workspaces/productionAPIWeb/renderer and actual env/proof hashes; fixedCORS/singlelimiter/missingDSH/emptymodel policy",
+    "Independent actual binding review before four new ready permissions; serial normal/race/OFF/ON; final four raw-result/source review before #7 closure"
+  ],
+  "verification": {
+    "hashes_modes_AST_JSON": "pass",
+    "existing10controls_evidence": "hash verified; no reruns",
+    "live_and_binary_ops_repeated": false,
+    "product_lint_typecheck_tests": "not run in read-only readiness assignment",
+    "source_preparedinput_permission_DB_runtime_build_browser_model_commit_mutations": 0,
+    "written_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/independent-review"
+  },
+  "real_gate": {
+    "knowledge_allocated": 0,
+    "knowledge_calls": 0,
+    "production_default_enabled": false,
+    "real_provider_allowed": false,
+    "other_budget_transfer": false
+  },
+  "report_md_sha256": "d650bccfddabe22cadcf2b958d9a1fc9325de0d7e8d02e8b76d0c258f8902f16"
+}

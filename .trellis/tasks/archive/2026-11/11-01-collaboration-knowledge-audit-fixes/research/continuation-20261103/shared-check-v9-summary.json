@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-02T19:50:56.661367+00:00",
+  "actual_result": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/shared-check-v9-result.json",
+  "actual_result_sha256": "a2dee0aef851ed8a8597c92b8ba0070809b21975e79954182d823bcbd31784bc",
+  "state": "failed_not_accepted",
+  "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "started_at": "2026-11-02T15:36:09.037397+00:00",
+  "finished_at": "2026-11-02T16:59:09.951147+00:00",
+  "whole_command_exit_code": 2,
+  "full_check_pass": false,
+  "source_run": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.json",
+  "source_run_sha256": "75f2bfdfbb4180c2d5b9f065242b8e58a6cc3e17664505c1e75ec7f938e85c0f",
+  "source_log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.log",
+  "source_log_sha256": "6e45211aacc9bf32e41a633913ab82cb1ee10106e789fadff9f0907ffa894f6b",
+  "static": {
+    "successful_tasks": 15,
+    "total_tasks": 15,
+    "existing_warnings_do_not_mean_zero_warnings": true
+  },
+  "typescript": {
+    "named_passes": 13082,
+    "packages": [
+      {
+        "package": "@multica/core",
+        "pass": 4340
+      },
+      {
+        "package": "@multica/docs",
+        "pass": 62
+      },
+      {
+        "package": "@multica/views",
+        "pass": 7118
+      },
+      {
+        "package": "@multica/desktop",
+        "pass": 1272
+      },
+      {
+        "package": "@multica/web",
+        "pass": 290
+      }
+    ]
+  },
+  "go": {
+    "packages_completed": 82,
+    "named_event_counts": {
+      "run": 20874,
+      "pass": 20852,
+      "fail": 0,
+      "skip": 22
+    },
+    "all82_record_counts_and_log_hashes_match": true,
+    "race_flag_present_all_packages": true
+  },
+  "browser": {
+    "stats": {
+      "startTime": "2026-11-02T16:28:06.201Z",
+      "duration": 1860038.142,
+      "expected": 334,
+      "skipped": 89,
+      "unexpected": 16,
+      "flaky": 0
+    },
+    "scheduled_identities": 439,
+    "workers": 1,
+    "retries": 0,
+    "failures": [
+      {
+        "file": "e2e/capability-market.spec.ts",
+        "line": 5,
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/capability-market.spec.ts",
+        "line": 107,
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/capability-market.spec.ts",
+        "line": 219,
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/collaboration-memory-web.spec.ts",
+        "line": 7,
+        "classification": "history control was not opened before original Purge v2 click; two-line harness addition preserves original assertions",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/localized-template-defaults.spec.ts",
+        "line": 203,
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/mcp-market.spec.ts",
+        "line": 71,
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/mcp-market.spec.ts",
+        "line": 144,
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/mcp-market.spec.ts",
+        "line": 188,
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/mcp-market.spec.ts",
+        "line": 400,
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/mcp-market.spec.ts",
+        "line": 433,
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/missing-user-session.spec.ts",
+        "line": 5,
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/settings-preferences.spec.ts",
+        "line": 107,
+        "classification": "original priority menu item became unstable/detached; natural dialog/title readiness and menu visibility added",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/skill-market.spec.ts",
+        "line": 88,
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/skill-template-creation.spec.ts",
+        "line": 112,
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/workspace-access-branches.spec.ts",
+        "line": 87,
+        "classification": "original Accept & Join did not reach expected workspace issues URL within 5 seconds; unchanged scenario passed a directed replay",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/workspace-defaults.spec.ts",
+        "line": 113,
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "targeted_replay_status": "passed"
+      }
+    ]
+  },
+  "original16_targeted_coverage": true,
+  "whole_failure_preserved": true,
+  "review": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/shared-verification-review.json",
+  "v10_observed_state": "prepared-not-run; exact independent executable review in progress",
+  "CCG2_note": "v9 deployed probes skipped; prior exact-source independently verified CCG2 OFF/ON remains reusable after current binding review; do not count skipped probe as new pass"
+}

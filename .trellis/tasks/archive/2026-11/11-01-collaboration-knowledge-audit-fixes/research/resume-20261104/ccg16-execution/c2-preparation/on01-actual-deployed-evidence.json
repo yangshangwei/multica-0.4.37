@@ -1,0 +1,177 @@
+{
+  "scope": "deployed environment -> public API -> actual test-owned Host input",
+  "expected_knowledge_enabled": true,
+  "real_provider_calls": 0,
+  "excludes": [
+    "real model understanding",
+    "human approval UI",
+    "correction/withdrawal composite",
+    "installer and different-account journey"
+  ],
+  "environment": {
+    "api": "http://127.0.0.1:18295",
+    "deployment_id": "c0f80b7e-52d5-40e6-a041-6f491de4f7b4",
+    "auth_mode": "password",
+    "api_health": {
+      "status": "ok",
+      "pid": 67212,
+      "commit": "eda0d68fb",
+      "started_at": "2026-11-04T08:00:03Z"
+    },
+    "database": "multica_ccg2_v16_on_a3c9",
+    "native_os": "darwin",
+    "native_arch": "arm64"
+  },
+  "approved": {
+    "candidate_id": "0fe2d8ae-12a1-4aa5-84bb-9c1c89e0ab69",
+    "version": "1",
+    "content_sha256": "dc17fa76e2126bbd90385a35f2d293ec52f5154ee07ee1044c815bff50b13854",
+    "source_issue_id": "01a1a59e-b86f-7981-8a70-b30f247d15d5",
+    "target_workspace_id": "a8a8d4e4-a1bd-46de-9e71-225733928370",
+    "proposed_by_user_id": "510bc8f3-c932-4147-a179-98adaad8a224"
+  },
+  "accepted_input": {
+    "command_id": "b5aa5a08-e19b-459f-a4ed-e8098f1b2739",
+    "batch_id": "f15cc66c-91a7-4909-8712-5958850b6878",
+    "author_user_id": "510bc8f3-c932-4147-a179-98adaad8a224",
+    "content_sha256": "2b9bf123617e0cf913615b8b86b6a126dd95199dc3d0030f93d91f7463da080a"
+  },
+  "actual_input": {
+    "prompt_sha256": "306d2da74e8abb98f5bea4145be35b9278d2f157cbcc1d0b30f6c07c788e0f19",
+    "section_present": true,
+    "contributions": [
+      {
+        "candidate_id": "0fe2d8ae-12a1-4aa5-84bb-9c1c89e0ab69",
+        "version": "1",
+        "source_issue_id": "01a1a59e-b86f-7981-8a70-b30f247d15d5",
+        "content_sha256": "dc17fa76e2126bbd90385a35f2d293ec52f5154ee07ee1044c815bff50b13854"
+      }
+    ],
+    "no_session_persistence": true
+  },
+  "run": {
+    "id": "1851de4f-e9a3-4935-bb31-4627fe4edf77",
+    "progress_state": "settled",
+    "proof_state": "host_exit_observed",
+    "business_outcome": "success",
+    "launch_count": "1"
+  },
+  "knowledge_events": {
+    "knowledge_claim": 1,
+    "knowledge_preparation": 1,
+    "knowledge_authorization": 1
+  },
+  "binary_sha256": {
+    "COLLABORATION_HOST_DAEMON": "2b36f0de335919fbc1d36247d9573b13b776e8a1e85e78c0e7117e8e05ed7847",
+    "COLLABORATION_HOST_PROVIDER": "133c116fddf461e69b6f154c1d83123055d59934981e69deb85a45b9fe942061",
+    "COLLABORATION_HOST_CLI": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac"
+  },
+  "source_sha256": {
+    "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+    "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+    "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e"
+  },
+  "daemon": {
+    "exit_code": 0,
+    "messages": [
+      {
+        "arch": "arm64",
+        "execution_mode": "host_process_supervision_v1",
+        "max_concurrent_tasks": 1,
+        "os": "darwin",
+        "preparation_version": 2,
+        "protocol_version": 3,
+        "ready": true,
+        "runtime_config_epoch": "2"
+      },
+      {
+        "active_tasks": 0,
+        "available_slots": 1,
+        "claims": 1,
+        "http": [
+          {
+            "operation": "claim",
+            "run_id": "1851de4f-e9a3-4935-bb31-4627fe4edf77",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "status": 200
+          },
+          {
+            "operation": "permit",
+            "run_id": "1851de4f-e9a3-4935-bb31-4627fe4edf77",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "attempt_seq": "1",
+            "launch_hash": "16ae1d22ccaf13b0b5871c03786973d3416ae5bbfa7144b5450524fc2fdb02f7",
+            "status": 200
+          },
+          {
+            "operation": "permit",
+            "run_id": "1851de4f-e9a3-4935-bb31-4627fe4edf77",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "attempt_seq": "1",
+            "launch_hash": "16ae1d22ccaf13b0b5871c03786973d3416ae5bbfa7144b5450524fc2fdb02f7",
+            "status": 200
+          },
+          {
+            "operation": "termination",
+            "run_id": "1851de4f-e9a3-4935-bb31-4627fe4edf77",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "attempt_seq": "1",
+            "launch_hash": "16ae1d22ccaf13b0b5871c03786973d3416ae5bbfa7144b5450524fc2fdb02f7",
+            "kind": "managed_launch_ended",
+            "status": 200
+          },
+          {
+            "operation": "proof",
+            "run_id": "1851de4f-e9a3-4935-bb31-4627fe4edf77",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "launch_hash": "16ae1d22ccaf13b0b5871c03786973d3416ae5bbfa7144b5450524fc2fdb02f7",
+            "state": "host_exit_observed",
+            "status": 200
+          }
+        ],
+        "invalid_capacity": false
+      }
+    ],
+    "ledger": [
+      {
+        "version": 2,
+        "run_id": "1851de4f-e9a3-4935-bb31-4627fe4edf77",
+        "issue_id": "01a1a59e-b86f-7981-8a70-b30f247d15d5",
+        "phase": "proof_acknowledged",
+        "session_key": "e1cd94fb306a4b6339ea074686382a6148ff97898fb99ba7556ccf542909d0c9",
+        "namespace_present": false,
+        "sealed": true,
+        "proof_state": "host_exit_observed",
+        "cleanup": {
+          "state": "tracked_scope_complete",
+          "scope": "process_group",
+          "attempted": true
+        },
+        "launches": [
+          {
+            "attempt_seq": "1",
+            "kind": "provider",
+            "phase": "attempt_reaped",
+            "process_observed": true,
+            "scope": "process_group",
+            "terminal_accepted": true,
+            "authorized": true,
+            "terminal_kind": "managed_launch_ended",
+            "cleanup": {
+              "state": "tracked_scope_complete",
+              "scope": "process_group",
+              "attempted": true
+            }
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "stderr": ""
+  }
+}

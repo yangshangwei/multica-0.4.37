@@ -1,0 +1,97 @@
+{
+  "observed_at": "2026-11-03T15:04:58.486982+00:00",
+  "api_pid": 74970,
+  "actual_DATABASE_URL_observed": true,
+  "actual_DATABASE_URL_matches_registered": true,
+  "actual_process_connection_identity_nonsecret": {
+    "host": "127.0.0.1",
+    "port": 5432,
+    "database": "multica_check_20261103141424_39386_api",
+    "user": "multica"
+  },
+  "registered_env_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/dev-registry-v14/envs/check-20261103141424-39386/check.env",
+  "registered_env_sha256": "e2754c0b439b3c01a75d792ec3e0e3d659231fdb63b42b75ea696ec3e4078ee5",
+  "actual_binary_path": "/private/tmp/multica-final-check-v14-8062y7c6/go-build131490875/b001/exe/server",
+  "actual_binary_within_registered_build_temp": true,
+  "actual_binary_sha256": "551d4ba84a932db55a820da4312f6ca55ce4a315dac81454afbf720cde94df98",
+  "actual_api_connections_observation": {
+    "query_exit": 0,
+    "observation": "p74970\nf6\nn127.0.0.1:56038->127.0.0.1:5432\nf7\nn127.0.0.1:56037->127.0.0.1:5432\nf8\nn127.0.0.1:56039->127.0.0.1:55131\nf9\nn127.0.0.1:56040->127.0.0.1:55131\nf10\nn127.0.0.1:56041->127.0.0.1:55131\nf11\nn127.0.0.1:56042->127.0.0.1:55131\nf12\nn127.0.0.1:56043->127.0.0.1:55131\nf13\nn127.0.0.1:56044->127.0.0.1:55131\nf14\nn127.0.0.1:56045->127.0.0.1:55131\nf15\nn127.0.0.1:56046->127.0.0.1:55131\nf16\nn127.0.0.1:56047->127.0.0.1:55131\nf17\nn127.0.0.1:56048->127.0.0.1:55131\nf18\nn127.0.0.1:56049->127.0.0.1:5432\nf19\nn127.0.0.1:56050->127.0.0.1:5432\nf20\nn127.0.0.1:56051->127.0.0.1:5432\nf21\nn127.0.0.1:56052->127.0.0.1:5432\nf22\nn127.0.0.1:56053->127.0.0.1:5432\nf23\nn127.0.0.1:56054->127.0.0.1:5432\nf24\nn127.0.0.1:56055->127.0.0.1:5432\nf25\nn127.0.0.1:56056->127.0.0.1:5432\nf26\nn*:18974"
+  },
+  "actual_same_DB_pool_observation": [
+    {
+      "pid": 18611,
+      "application_name": "",
+      "client_addr": "172.20.0.1/32",
+      "client_port": 58092,
+      "state": "idle"
+    },
+    {
+      "pid": 18601,
+      "application_name": "",
+      "client_addr": "172.20.0.1/32",
+      "client_port": 58000,
+      "state": "idle"
+    },
+    {
+      "pid": 18609,
+      "application_name": "",
+      "client_addr": "172.20.0.1/32",
+      "client_port": 58074,
+      "state": "idle"
+    },
+    {
+      "pid": 18608,
+      "application_name": "",
+      "client_addr": "172.20.0.1/32",
+      "client_port": 58062,
+      "state": "idle"
+    },
+    {
+      "pid": 18602,
+      "application_name": "",
+      "client_addr": "172.20.0.1/32",
+      "client_port": 58014,
+      "state": "idle"
+    },
+    {
+      "pid": 18606,
+      "application_name": "",
+      "client_addr": "172.20.0.1/32",
+      "client_port": 58046,
+      "state": "idle"
+    },
+    {
+      "pid": 18604,
+      "application_name": "",
+      "client_addr": "172.20.0.1/32",
+      "client_port": 58028,
+      "state": "idle"
+    },
+    {
+      "pid": 18610,
+      "application_name": "",
+      "client_addr": "172.20.0.1/32",
+      "client_port": 58088,
+      "state": "idle"
+    },
+    {
+      "pid": 18605,
+      "application_name": "",
+      "client_addr": "172.20.0.1/32",
+      "client_port": 58016,
+      "state": "idle"
+    },
+    {
+      "pid": 18607,
+      "application_name": "",
+      "client_addr": "172.20.0.1/32",
+      "client_port": 58030,
+      "state": "idle"
+    }
+  ],
+  "source_snapshot": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/v14-live-proof/snapshot-150243077797.json",
+  "read_only": true,
+  "raw_credentials_recorded": false,
+  "no_new_tests_or_resources": true
+}

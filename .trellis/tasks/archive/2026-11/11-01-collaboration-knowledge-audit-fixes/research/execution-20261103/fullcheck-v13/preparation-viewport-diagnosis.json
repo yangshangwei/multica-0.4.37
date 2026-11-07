@@ -1,0 +1,39 @@
+{
+  "recorded_at": "2026-11-03T11:32:12.260661+00:00",
+  "method": "bounded offline trace/screenshot/source analysis; no browser replay or source writes",
+  "diagnostic_skill": "superpowers:systematic-debugging",
+  "failure": "collaboration-preparation-records-web.spec.ts:29 toBeInViewport ratio1 received0",
+  "capture_stage": "legacy/wide",
+  "viewport": {
+    "width": 1280,
+    "height": 1000
+  },
+  "run_id": "0e7487fa-6c40-438d-94d5-098c8d0e741e",
+  "not_unexpanded": true,
+  "evidence": [
+    "Legacy records are rendered with aria-expanded=true; Not recorded, No business result recorded and Termination unconfirmed assertions passed before capture.",
+    "Trace call187 same-document goto changed the hash from prepared run to legacy run. after@call187 captures HTML scrollTop220 and detail scrollTop6715.",
+    "Manual capture moves only the account-detail root. before@call203 and after@call205 capture HTML scrollTop220 unchanged and detail scrollTop7258.",
+    "call203 completes two requestAnimationFrame callbacks; call205 repeatedly receives viewport ratio0.",
+    "Failure screenshot shows the outer page scrolled and the selected legacy preparation section above the viewport; later handoff/usage content is visible."
+  ],
+  "source_correction": "The current spec uses root.scrollTop += elementRect.top - rootRect.top - 12, then2RAF. It does not call native scrollIntoView to adjust every scroll ancestor.",
+  "classification": "Observed capture coordinate mismatch with retained outer document scroll; not a missing disclosure. Offline evidence does not establish whether the user-facing deep-link position before the capture was incorrect.",
+  "remaining_diagnostic": "On a fresh authorized directed replay, record window/document scroll and detail/target client rects before navigation, after the native hash jump, before capture and after capture. Check user-visible deep-link target without test scrolling, then whether adjusting the outer ancestor fixes capture while keeping ratio1. Do not delete the viewport assertion or assume product correctness.",
+  "trace": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-preparation--d3e76--across-refresh-and-viewers-chromium/trace.zip",
+    "sha256": "a8626cfe1ab02abf070ead538108a2db45615adce5286d7374855684dbffe465"
+  },
+  "snapshot_facts": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/preparation-scroll-snapshots.json",
+    "sha256": "62d87f636f9a7034102b139801433173e5cb584a0d0b43822d8edb7a6b09bda3"
+  },
+  "source_sha256": {
+    "e2e/collaboration-preparation-records-web.spec.ts": "12d92bc59a2ca10a42441157332aa6c8dd00699af4be0737e2d612e17b652da3",
+    "e2e/fixtures/collaboration-preparation-records.ts": "da962e1bef8d935d2b7c393ba6403324daea2c689729fa14ff28710da6321f8b",
+    "packages/views/collaboration/collaboration-detail.tsx": "3ba249181df0461f124cd3d8670d00e90154c0c055321afda6b6746c2695f6e6",
+    "packages/views/collaboration/execution-panel.tsx": "6e2e2278df74656c52acb1655007337d548396a988f3e4f889b4f10429f384f0",
+    "packages/views/collaboration/run-records.tsx": "8453df243b24c976b84a075a11c7a0fff08b3f84e0b99d8bf79c8293333d5ce8"
+  },
+  "geometry_limit": "No target/root boundingBox was persisted: the assertion fails before the spec calls boundingBox. Numeric facts are the original recorded scroll offsets, viewport and intersection ratio, not inferred rectangles."
+}

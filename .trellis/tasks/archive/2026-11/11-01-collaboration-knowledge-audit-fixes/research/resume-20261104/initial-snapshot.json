@@ -1,0 +1,80 @@
+{
+  "recorded_at": "2026-11-03T23:43:18.481846+00:00",
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "authority": "User requested recheck, update existing tasks, and continue approved ordered plan. Existing #6/#7 are in_progress; no new task is created.",
+  "mode": "resume_existing_tasks_single_complete_executor",
+  "active_checks": [],
+  "old_claims_preserved": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-resume-coordinator-claim.json",
+      "sha256": "ecfc7351d439d0c5e083daeb0d41c3b6a510e5f247443b9381dc2243c768939a"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/execution-claim.json",
+      "sha256": "a007771ca37eb21df3e8a051c1424fad4e0f198292fbc7c564a6a50a819d9895",
+      "recorded_wrapper_pid": 39356,
+      "current_pid_command": ""
+    }
+  ],
+  "main": {
+    "head": "084ea3c987fa4ab8418a2ae5b3b7a20c096c36d8",
+    "status_path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/knowledge-resume-20261104-55640c5f6143/main-status.txt",
+    "diff_path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/knowledge-resume-20261104-55640c5f6143/main-dirty.diff",
+    "diff_sha256": "42245ea81786a443ec02b73b5c4dfbbd37ccea402b48c35af65a9e3f3dc039df"
+  },
+  "worktrees": {
+    "candidate": {
+      "root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+      "head": "d0b132fff0c477eb2d744933e13db730240231aa",
+      "status": " M apps/web/next-env.d.ts\n M e2e/fixtures/collaboration-native.ts\n M e2e/fixtures/collaboration-records.ts\n",
+      "dirty_source_sha256": {
+        "apps/web/next-env.d.ts": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+        "e2e/fixtures/collaboration-native.ts": "b4038d1ba4eeb3e47c3d9730326d2dcb7f41af07e929bd84013712a5775373f1",
+        "e2e/fixtures/collaboration-records.ts": "752090f080a3eb2600f3d0609b9b19bfde29c011d12a94a6ceb86ddb90cb666a"
+      }
+    },
+    "knowledge": {
+      "root": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103",
+      "head": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+      "status": "?? .trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-20261103/\n?? server/cmd/server/rk1k_entry_test.go\n?? server/cmd/server/rk1k_evidence_test.go\n?? server/cmd/server/rk1k_fixture_test.go\n?? server/cmd/server/rk1k_provider_test.go\n?? server/cmd/server/rk1k_scenarios_test.go\n?? server/internal/daemon/rk1k_driver_agentintegration.go\n",
+      "six_sha256": {
+        "server/cmd/server/rk1k_entry_test.go": "e58fff97a4654f32363b9cbb5be1e5562100354747a79a091747ec1dbb2e4844",
+        "server/cmd/server/rk1k_evidence_test.go": "198402547160cfe530faf9175efe802ee19370eed4ab62bdc6dec8290b3b7717",
+        "server/cmd/server/rk1k_fixture_test.go": "9e31682c037385888be41579cc489f71c2c4e28797ab7bc7d8b596917578a084",
+        "server/cmd/server/rk1k_provider_test.go": "114439c31ac397e3195ae23e806487f3c02df1cae9bd422d90b73db66f879924",
+        "server/cmd/server/rk1k_scenarios_test.go": "7cd1780f910bc350dadf607aeb8c0f8451eb926da95556241ca5baaeb9289217",
+        "server/internal/daemon/rk1k_driver_agentintegration.go": "b0ed3e55972f3f8208bfde741d73ae419d83acca316ee0e109eed8e643f002e0"
+      }
+    }
+  },
+  "v14": {
+    "result_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/make-check-v14.json",
+    "result_sha256": "fc479c764bf1092026603b7e685ae9a996bda8dca63a15afcbe34e6f7c23bd85",
+    "exit": 2,
+    "state": "completed_failed_identity_pass_retained"
+  },
+  "latest_directed17": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/v15-native-capture/stability-fix/playwright-results.json",
+    "sha256": "d5fbf5625318fa3cb25379727d21f85dbfd88d7deead306e10c7459f9905b2fb",
+    "stats": {
+      "startTime": "2026-11-03T17:02:52.380Z",
+      "duration": 123840.693,
+      "expected": 17,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "exit": 0
+  },
+  "shared_gate": {
+    "accepted": false,
+    "next": "Review exact retained two-file fixture delta; freeze; materialize/build/bind final candidate; single complete v15 with TS leaf JSON; independent final audit and skip inventory"
+  },
+  "knowledge": {
+    "allocated": 0,
+    "consumed": 0,
+    "real_entry_runnable": false,
+    "production_default_enabled": false,
+    "other_budget_transfers": false
+  }
+}

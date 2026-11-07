@@ -1,0 +1,61 @@
+{
+  "reviewed_at": "2026-11-04T08:12:10.552986+00:00",
+  "scope": "Preliminary supplement only; final ON acceptance still awaited",
+  "CCG2_OFF02": {
+    "result": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/result.json",
+      "sha256": "7ce251ea2e611178d356aa54358360b693fa779fcc3317b200f388590e19775a"
+    },
+    "independent_review": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/ccg2-off02-result-review/review.json",
+      "sha256": "2bfc55ec3ca4c11a8f416e3da3bd96fca4fc595144da7958467825bf3124d77e"
+    },
+    "accepted": true,
+    "measured_fake_launches": 1,
+    "knowledge_events": {
+      "knowledge_claim": 0,
+      "knowledge_preparation": 0,
+      "knowledge_authorization": 0
+    },
+    "knowledge_section": false,
+    "real_provider_calls": 0
+  },
+  "CCG2_ON": "Root prepared/bound live environment and false permit; no actual ON result delivered; pending",
+  "integration_plan": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-integration-preservation-plan.json",
+    "sha256": "07a6f3f7a4a66c4274c0ce83a6a9c052da94fad8cee8e0327ac4f55a7a8b74c7"
+  },
+  "integration_overlap_count": 24,
+  "incoming_paths": 29,
+  "Root_integration_not_executed_at_record": true,
+  "main_five_preservation_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/main-five-overlap-review.json",
+    "sha256": "45d2dc196120b93e4eebbfff2b9a75d28055584d4dceabd6aadd3476106a02c1"
+  },
+  "supplemental_browser_cache_spec": {
+    "file": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/e2e-run-environment.md",
+      "sha256": "e2db9884f66eea8ad274282b5750693350b9e0fb1c2287de3fe6110357ef0cfa"
+    },
+    "section_sha256": "9af74b4c7ce151bf8164e6c08dff6683759306a0177941ecb5c04988278ea7db",
+    "section_start_line": 102,
+    "explicit_child_environment_only": true,
+    "current_owned_cache_bytes_and_marker_resource_identities_required": true,
+    "recorder_preflight_not_browser_acceptance": true,
+    "historical_failure_not_relabelled": true,
+    "runner": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/run-ccg2-browser-bound.py",
+      "sha256": "95206bf27c50b16acd2a087fcbbb925671a1b1ee55ad3952a000b4c400789b79"
+    }
+  },
+  "task7_closable_now": false,
+  "final_pending": [
+    "ON actual source/account/config/binary-bound result",
+    "ON independent final result review",
+    "Root final accepted-source integration/archive operational handoff"
+  ],
+  "collector_tests_auditors_sources_tasks_permissions_or_archive_operations": 0,
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "production_default_enabled": false
+}

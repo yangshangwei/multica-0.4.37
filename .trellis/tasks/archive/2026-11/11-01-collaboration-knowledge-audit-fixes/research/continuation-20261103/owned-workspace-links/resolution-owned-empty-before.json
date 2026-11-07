@@ -1,0 +1,5039 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-02T21:41:55.244Z",
+  "root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+  "phase": "owned-empty-before",
+  "mode": "read-only resolve/stat/hash; no application modules executed",
+  "command": [
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-workspace-links/probe-resolution.mjs",
+    "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+    "owned-empty-before",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-workspace-links/resolution-owned-empty-before.json"
+  ],
+  "node": {
+    "version": "v22.23.2",
+    "platform": "darwin",
+    "arch": "arm64",
+    "binary": {
+      "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "realpath": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "device": 16777231,
+      "inode": 105491546,
+      "symlink": false,
+      "link": null,
+      "owned": false,
+      "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572"
+    }
+  },
+  "directories": [
+    {
+      "consumer": ".",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules",
+      "absent": true,
+      "error_code": "ENOENT"
+    },
+    {
+      "consumer": "apps/desktop",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules",
+      "absent": true,
+      "error_code": "ENOENT"
+    },
+    {
+      "consumer": "apps/docs",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules",
+      "absent": true,
+      "error_code": "ENOENT"
+    },
+    {
+      "consumer": "apps/mobile",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules",
+      "absent": true,
+      "error_code": "ENOENT"
+    },
+    {
+      "consumer": "apps/web",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules",
+      "absent": true,
+      "error_code": "ENOENT"
+    },
+    {
+      "consumer": "packages/core",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules",
+      "absent": true,
+      "error_code": "ENOENT"
+    },
+    {
+      "consumer": "packages/eslint-config",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/node_modules",
+      "absent": true,
+      "error_code": "ENOENT"
+    },
+    {
+      "consumer": "packages/plugin-sdk",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk/node_modules",
+      "absent": true,
+      "error_code": "ENOENT"
+    },
+    {
+      "consumer": "packages/tsconfig",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig/node_modules",
+      "absent": true,
+      "error_code": "ENOENT"
+    },
+    {
+      "consumer": "packages/ui",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules",
+      "absent": true,
+      "error_code": "ENOENT"
+    },
+    {
+      "consumer": "packages/views",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules",
+      "absent": true,
+      "error_code": "ENOENT"
+    }
+  ],
+  "declared_workspace_links": [
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/core",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@multica/core",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/ui",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@multica/ui",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/views",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@multica/views",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/eslint-config",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@multica/eslint-config",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/tsconfig",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@multica/tsconfig",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "@multica/ui",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/@multica/ui",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@multica/core",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@multica/core",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@multica/core",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@multica/core",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@multica/ui",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@multica/ui",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@multica/views",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@multica/views",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@multica/eslint-config",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@multica/eslint-config",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "packages/core",
+      "name": "@multica/eslint-config",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/@multica/eslint-config",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "packages/core",
+      "name": "@multica/tsconfig",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/@multica/tsconfig",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "packages/plugin-sdk",
+      "name": "@multica/eslint-config",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk/node_modules/@multica/eslint-config",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "packages/plugin-sdk",
+      "name": "@multica/tsconfig",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk/node_modules/@multica/tsconfig",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@multica/eslint-config",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@multica/eslint-config",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@multica/tsconfig",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@multica/tsconfig",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/core",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@multica/core",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/ui",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@multica/ui",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/eslint-config",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@multica/eslint-config",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/plugin-sdk",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@multica/plugin-sdk",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/tsconfig",
+      "specifier": "workspace:*",
+      "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@multica/tsconfig",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "matches_expected": false
+    }
+  ],
+  "workspace_exports": [
+    {
+      "consumer": ".",
+      "name": "@multica/core",
+      "specifier": "@multica/core/auth",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/core/auth'"
+    },
+    {
+      "consumer": ".",
+      "name": "@multica/views",
+      "specifier": "@multica/views/auth",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/views/auth'"
+    },
+    {
+      "consumer": ".",
+      "name": "@multica/ui",
+      "specifier": "@multica/ui/lib/utils",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/ui/lib/utils'"
+    },
+    {
+      "consumer": ".",
+      "name": "@multica/tsconfig",
+      "specifier": "@multica/tsconfig/react-library.json",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/tsconfig/react-library.json'"
+    },
+    {
+      "consumer": ".",
+      "name": "@multica/eslint-config",
+      "specifier": "@multica/eslint-config/base",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/eslint-config/base'"
+    },
+    {
+      "consumer": ".",
+      "name": "@multica/plugin-sdk",
+      "specifier": "@multica/plugin-sdk",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/plugin-sdk'"
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/core",
+      "specifier": "@multica/core/auth",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/core/auth'"
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/views",
+      "specifier": "@multica/views/auth",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/views/auth'"
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/ui",
+      "specifier": "@multica/ui/lib/utils",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/ui/lib/utils'"
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/tsconfig",
+      "specifier": "@multica/tsconfig/react-library.json",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/tsconfig/react-library.json'"
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/eslint-config",
+      "specifier": "@multica/eslint-config/base",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/eslint-config/base'"
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/plugin-sdk",
+      "specifier": "@multica/plugin-sdk",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/plugin-sdk'"
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "@multica/core",
+      "specifier": "@multica/core/auth",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/core/auth'"
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "@multica/views",
+      "specifier": "@multica/views/auth",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/views/auth'"
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "@multica/ui",
+      "specifier": "@multica/ui/lib/utils",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/ui/lib/utils'"
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "@multica/tsconfig",
+      "specifier": "@multica/tsconfig/react-library.json",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/tsconfig/react-library.json'"
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "@multica/eslint-config",
+      "specifier": "@multica/eslint-config/base",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/eslint-config/base'"
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "@multica/plugin-sdk",
+      "specifier": "@multica/plugin-sdk",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/plugin-sdk'"
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@multica/core",
+      "specifier": "@multica/core/auth",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/core/auth'"
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@multica/views",
+      "specifier": "@multica/views/auth",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/views/auth'"
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@multica/ui",
+      "specifier": "@multica/ui/lib/utils",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/ui/lib/utils'"
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@multica/tsconfig",
+      "specifier": "@multica/tsconfig/react-library.json",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/tsconfig/react-library.json'"
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@multica/eslint-config",
+      "specifier": "@multica/eslint-config/base",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/eslint-config/base'"
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@multica/plugin-sdk",
+      "specifier": "@multica/plugin-sdk",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/plugin-sdk'"
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@multica/core",
+      "specifier": "@multica/core/auth",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/core/auth'"
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@multica/views",
+      "specifier": "@multica/views/auth",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/views/auth'"
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@multica/ui",
+      "specifier": "@multica/ui/lib/utils",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/ui/lib/utils'"
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@multica/tsconfig",
+      "specifier": "@multica/tsconfig/react-library.json",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/tsconfig/react-library.json'"
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@multica/eslint-config",
+      "specifier": "@multica/eslint-config/base",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/eslint-config/base'"
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@multica/plugin-sdk",
+      "specifier": "@multica/plugin-sdk",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/plugin-sdk'"
+    },
+    {
+      "consumer": "packages/core",
+      "name": "@multica/core",
+      "specifier": "@multica/core/auth",
+      "declared": false,
+      "result": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+        "device": 16777244,
+        "inode": 39590398,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "@multica/views",
+      "specifier": "@multica/views/auth",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/views/auth'"
+    },
+    {
+      "consumer": "packages/core",
+      "name": "@multica/ui",
+      "specifier": "@multica/ui/lib/utils",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/ui/lib/utils'"
+    },
+    {
+      "consumer": "packages/core",
+      "name": "@multica/tsconfig",
+      "specifier": "@multica/tsconfig/react-library.json",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/tsconfig/react-library.json'"
+    },
+    {
+      "consumer": "packages/core",
+      "name": "@multica/eslint-config",
+      "specifier": "@multica/eslint-config/base",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/eslint-config/base'"
+    },
+    {
+      "consumer": "packages/core",
+      "name": "@multica/plugin-sdk",
+      "specifier": "@multica/plugin-sdk",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/plugin-sdk'"
+    },
+    {
+      "consumer": "packages/eslint-config",
+      "name": "@multica/core",
+      "specifier": "@multica/core/auth",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/core/auth'"
+    },
+    {
+      "consumer": "packages/eslint-config",
+      "name": "@multica/views",
+      "specifier": "@multica/views/auth",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/views/auth'"
+    },
+    {
+      "consumer": "packages/eslint-config",
+      "name": "@multica/ui",
+      "specifier": "@multica/ui/lib/utils",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/ui/lib/utils'"
+    },
+    {
+      "consumer": "packages/eslint-config",
+      "name": "@multica/tsconfig",
+      "specifier": "@multica/tsconfig/react-library.json",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/tsconfig/react-library.json'"
+    },
+    {
+      "consumer": "packages/eslint-config",
+      "name": "@multica/eslint-config",
+      "specifier": "@multica/eslint-config/base",
+      "declared": false,
+      "result": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/base.js",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/base.js",
+        "device": 16777244,
+        "inode": 39591096,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": "e01db5d145559b2f4d340da68e191d6be42ce7b39eda40e269a8a620730e0884"
+      }
+    },
+    {
+      "consumer": "packages/eslint-config",
+      "name": "@multica/plugin-sdk",
+      "specifier": "@multica/plugin-sdk",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/plugin-sdk'"
+    },
+    {
+      "consumer": "packages/plugin-sdk",
+      "name": "@multica/core",
+      "specifier": "@multica/core/auth",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/core/auth'"
+    },
+    {
+      "consumer": "packages/plugin-sdk",
+      "name": "@multica/views",
+      "specifier": "@multica/views/auth",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/views/auth'"
+    },
+    {
+      "consumer": "packages/plugin-sdk",
+      "name": "@multica/ui",
+      "specifier": "@multica/ui/lib/utils",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/ui/lib/utils'"
+    },
+    {
+      "consumer": "packages/plugin-sdk",
+      "name": "@multica/tsconfig",
+      "specifier": "@multica/tsconfig/react-library.json",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/tsconfig/react-library.json'"
+    },
+    {
+      "consumer": "packages/plugin-sdk",
+      "name": "@multica/eslint-config",
+      "specifier": "@multica/eslint-config/base",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/eslint-config/base'"
+    },
+    {
+      "consumer": "packages/plugin-sdk",
+      "name": "@multica/plugin-sdk",
+      "specifier": "@multica/plugin-sdk",
+      "declared": false,
+      "result": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk/index.ts",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk/index.ts",
+        "device": 16777244,
+        "inode": 39591103,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": "56b880efbdda2712b41966581b960680261b447230016509d06cae08d7f59ec3"
+      }
+    },
+    {
+      "consumer": "packages/tsconfig",
+      "name": "@multica/core",
+      "specifier": "@multica/core/auth",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/core/auth'"
+    },
+    {
+      "consumer": "packages/tsconfig",
+      "name": "@multica/views",
+      "specifier": "@multica/views/auth",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/views/auth'"
+    },
+    {
+      "consumer": "packages/tsconfig",
+      "name": "@multica/ui",
+      "specifier": "@multica/ui/lib/utils",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/ui/lib/utils'"
+    },
+    {
+      "consumer": "packages/tsconfig",
+      "name": "@multica/tsconfig",
+      "specifier": "@multica/tsconfig/react-library.json",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/tsconfig/react-library.json'"
+    },
+    {
+      "consumer": "packages/tsconfig",
+      "name": "@multica/eslint-config",
+      "specifier": "@multica/eslint-config/base",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/eslint-config/base'"
+    },
+    {
+      "consumer": "packages/tsconfig",
+      "name": "@multica/plugin-sdk",
+      "specifier": "@multica/plugin-sdk",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/plugin-sdk'"
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@multica/core",
+      "specifier": "@multica/core/auth",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/core/auth'"
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@multica/views",
+      "specifier": "@multica/views/auth",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/views/auth'"
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@multica/ui",
+      "specifier": "@multica/ui/lib/utils",
+      "declared": false,
+      "result": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/lib/utils.ts",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/lib/utils.ts",
+        "device": 16777244,
+        "inode": 39591185,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": "72fd459207eb0d29448cac11329ad74b08d96ccff3c4ecae219c2ff61e796aae"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@multica/tsconfig",
+      "specifier": "@multica/tsconfig/react-library.json",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/tsconfig/react-library.json'"
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@multica/eslint-config",
+      "specifier": "@multica/eslint-config/base",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/eslint-config/base'"
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@multica/plugin-sdk",
+      "specifier": "@multica/plugin-sdk",
+      "declared": false,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/plugin-sdk'"
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/core",
+      "specifier": "@multica/core/auth",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/core/auth'"
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/views",
+      "specifier": "@multica/views/auth",
+      "declared": false,
+      "result": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/auth/index.ts",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/auth/index.ts",
+        "device": 16777244,
+        "inode": 39591444,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": "7eff739c2ad0f8eb976839b72a48ba9668458a5ac56d4c5371faf61867ce8955"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/ui",
+      "specifier": "@multica/ui/lib/utils",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/ui/lib/utils'"
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/tsconfig",
+      "specifier": "@multica/tsconfig/react-library.json",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/tsconfig/react-library.json'"
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/eslint-config",
+      "specifier": "@multica/eslint-config/base",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/eslint-config/base'"
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/plugin-sdk",
+      "specifier": "@multica/plugin-sdk",
+      "declared": true,
+      "error_code": "MODULE_NOT_FOUND",
+      "error": "Cannot find module '@multica/plugin-sdk'"
+    }
+  ],
+  "external_direct_dependencies": [
+    {
+      "consumer": ".",
+      "name": "@playwright/test",
+      "specifier": "^1.58.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/@playwright/test/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/@playwright/test",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": ".",
+      "name": "@types/node",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/@types/node/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/@types/node",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": ".",
+      "name": "@types/pg",
+      "specifier": "^8.20.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/@types/pg/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/@types/pg",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": ".",
+      "name": "knip",
+      "specifier": "^6.32.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/knip/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/knip",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": ".",
+      "name": "pg",
+      "specifier": "^8.20.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/pg/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/pg",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": ".",
+      "name": "turbo",
+      "specifier": "^2.5.4",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/turbo/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/turbo",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": ".",
+      "name": "typescript",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/typescript/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/typescript",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@dnd-kit/core",
+      "specifier": "^6.3.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@dnd-kit/core/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@dnd-kit/core",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@dnd-kit/modifiers",
+      "specifier": "^9.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@dnd-kit/modifiers/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@dnd-kit/modifiers",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@dnd-kit/sortable",
+      "specifier": "^10.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@dnd-kit/sortable/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@dnd-kit/sortable",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@dnd-kit/utilities",
+      "specifier": "^3.2.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@dnd-kit/utilities/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@dnd-kit/utilities",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@electron-toolkit/preload",
+      "specifier": "^3.0.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@electron-toolkit/preload/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@electron-toolkit/preload",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@electron-toolkit/utils",
+      "specifier": "^4.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@electron-toolkit/utils/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@electron-toolkit/utils",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@fontsource-variable/geist-mono",
+      "specifier": "^5.3.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@fontsource-variable/geist-mono/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@fontsource-variable/geist-mono",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@fontsource-variable/inter",
+      "specifier": "^5.2.5",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@fontsource-variable/inter/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@fontsource-variable/inter",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@fontsource-variable/source-serif-4",
+      "specifier": "^5.2.9",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@fontsource-variable/source-serif-4/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@fontsource-variable/source-serif-4",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@tanstack/react-query",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@tanstack/react-query/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@tanstack/react-query",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "electron-updater",
+      "specifier": "^6.8.3",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/electron-updater/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/electron-updater",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "fix-path",
+      "specifier": "^5.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/fix-path/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/fix-path",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "lucide-react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/lucide-react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/lucide-react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "motion",
+      "specifier": "^12.38.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/motion/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/motion",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "react-dom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/react-dom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/react-dom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "react-router-dom",
+      "specifier": "^7.6.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/react-router-dom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/react-router-dom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "shadcn",
+      "specifier": "^4.1.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/shadcn/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/shadcn",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "sonner",
+      "specifier": "^2.0.7",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/sonner/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/sonner",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "tw-animate-css",
+      "specifier": "^1.4.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/tw-animate-css/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/tw-animate-css",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "zustand",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/zustand/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/zustand",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@electron-toolkit/tsconfig",
+      "specifier": "^2.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@electron-toolkit/tsconfig/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@electron-toolkit/tsconfig",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@tailwindcss/vite",
+      "specifier": "^4",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@tailwindcss/vite/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@tailwindcss/vite",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@testing-library/jest-dom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@testing-library/jest-dom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@testing-library/jest-dom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@testing-library/react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@testing-library/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@testing-library/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@types/node",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@types/node/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@types/node",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@types/react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@types/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@types/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@types/react-dom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@types/react-dom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@types/react-dom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@vitejs/plugin-react",
+      "specifier": "^5.1.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@vitejs/plugin-react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@vitejs/plugin-react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "electron",
+      "specifier": "^39.2.6",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/electron/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/electron",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "electron-builder",
+      "specifier": "^26.0.12",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/electron-builder/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/electron-builder",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "electron-vite",
+      "specifier": "^5.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/electron-vite/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/electron-vite",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "globals",
+      "specifier": "^16.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/globals/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/globals",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "jsdom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/jsdom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/jsdom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "tailwindcss",
+      "specifier": "^4",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/tailwindcss/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/tailwindcss",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "typescript",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/typescript/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/typescript",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "vitest",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/vitest/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/vitest",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "fumadocs-core",
+      "specifier": "^15.5.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/fumadocs-core/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/fumadocs-core",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "fumadocs-mdx",
+      "specifier": "^12.0.3",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/fumadocs-mdx/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/fumadocs-mdx",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "fumadocs-ui",
+      "specifier": "^15.5.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/fumadocs-ui/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/fumadocs-ui",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "github-slugger",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/github-slugger/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/github-slugger",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "lucide-react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/lucide-react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/lucide-react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "mermaid",
+      "specifier": "^11.14.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/mermaid/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/mermaid",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "next",
+      "specifier": "^15.5.16",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/next/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/next",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "next-themes",
+      "specifier": "^0.4.6",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/next-themes/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/next-themes",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "react-dom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/react-dom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/react-dom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "@tailwindcss/postcss",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/@tailwindcss/postcss/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/@tailwindcss/postcss",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "@types/react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/@types/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/@types/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "@types/react-dom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/@types/react-dom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/@types/react-dom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "tailwindcss",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/tailwindcss/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/tailwindcss",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "typescript",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/typescript/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/typescript",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "vitest",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/vitest/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/vitest",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@expo/vector-icons",
+      "specifier": "^14.1.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@expo/vector-icons/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@expo/vector-icons",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@react-native-community/datetimepicker",
+      "specifier": "8.6.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@react-native-community/datetimepicker/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@react-native-community/datetimepicker",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@react-native-community/netinfo",
+      "specifier": "11.5.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@react-native-community/netinfo/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@react-native-community/netinfo",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@react-native-segmented-control/segmented-control",
+      "specifier": "2.5.7",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@react-native-segmented-control/segmented-control/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@react-native-segmented-control/segmented-control",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@react-navigation/elements",
+      "specifier": "^2.9.17",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@react-navigation/elements/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@react-navigation/elements",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@react-navigation/native",
+      "specifier": "^7.1.6",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@react-navigation/native/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@react-navigation/native",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@rn-primitives/avatar",
+      "specifier": "^1.4.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/avatar/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/avatar",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@rn-primitives/collapsible",
+      "specifier": "^1.4.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/collapsible/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/collapsible",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@rn-primitives/dropdown-menu",
+      "specifier": "^1.4.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/dropdown-menu/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/dropdown-menu",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@rn-primitives/portal",
+      "specifier": "^1.4.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/portal/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/portal",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@rn-primitives/radio-group",
+      "specifier": "^1.4.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/radio-group/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/radio-group",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@rn-primitives/separator",
+      "specifier": "^1.4.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/separator/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/separator",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@rn-primitives/slot",
+      "specifier": "^1.4.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/slot/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/slot",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@rn-primitives/switch",
+      "specifier": "^1.4.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/switch/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/switch",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@rn-primitives/tabs",
+      "specifier": "^1.4.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/tabs/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@rn-primitives/tabs",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@shikijs/core",
+      "specifier": "^4.0.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@shikijs/core/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@shikijs/core",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@shikijs/langs",
+      "specifier": "^4.0.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@shikijs/langs/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@shikijs/langs",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@shikijs/themes",
+      "specifier": "^4.0.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@shikijs/themes/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@shikijs/themes",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@shopify/flash-list",
+      "specifier": "2.0.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@shopify/flash-list/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@shopify/flash-list",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@tanstack/react-query",
+      "specifier": "^5.96.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@tanstack/react-query/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@tanstack/react-query",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "class-variance-authority",
+      "specifier": "^0.7.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/class-variance-authority/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/class-variance-authority",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "clsx",
+      "specifier": "^2.1.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/clsx/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/clsx",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "expo",
+      "specifier": "~55.0.23",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "expo-build-properties",
+      "specifier": "~55.0.13",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-build-properties/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-build-properties",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "expo-clipboard",
+      "specifier": "~55.0.13",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-clipboard/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-clipboard",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "expo-constants",
+      "specifier": "~55.0.16",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-constants/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-constants",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "expo-dev-client",
+      "specifier": "^55.0.32",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-dev-client/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-dev-client",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "expo-document-picker",
+      "specifier": "~55.0.13",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-document-picker/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-document-picker",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "expo-haptics",
+      "specifier": "~55.0.14",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-haptics/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-haptics",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "expo-image",
+      "specifier": "^55.0.10",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-image/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-image",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "expo-image-picker",
+      "specifier": "~55.0.20",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-image-picker/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-image-picker",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "expo-linking",
+      "specifier": "~55.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-linking/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-linking",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "expo-router",
+      "specifier": "~55.0.14",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-router/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-router",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "expo-secure-store",
+      "specifier": "~55.0.13",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-secure-store/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-secure-store",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "expo-status-bar",
+      "specifier": "~55.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-status-bar/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-status-bar",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "expo-system-ui",
+      "specifier": "~55.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-system-ui/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/expo-system-ui",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "input-otp-native",
+      "specifier": "^0.5.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/input-otp-native/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/input-otp-native",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "marked",
+      "specifier": "^18.0.3",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/marked/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/marked",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "nativewind",
+      "specifier": "^4.1.23",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/nativewind/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/nativewind",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "react",
+      "specifier": "19.2.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "react-dom",
+      "specifier": "19.2.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-dom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-dom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "react-native",
+      "specifier": "0.83.6",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "react-native-enriched-markdown",
+      "specifier": "^0.5.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-enriched-markdown/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-enriched-markdown",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "react-native-gesture-handler",
+      "specifier": "~2.30.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-gesture-handler/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-gesture-handler",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "react-native-image-viewing",
+      "specifier": "^0.2.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-image-viewing/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-image-viewing",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "react-native-keyboard-controller",
+      "specifier": "1.20.7",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-keyboard-controller/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-keyboard-controller",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "react-native-reanimated",
+      "specifier": "~4.2.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-reanimated/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-reanimated",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "react-native-safe-area-context",
+      "specifier": "~5.6.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-safe-area-context/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-safe-area-context",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "react-native-screens",
+      "specifier": "~4.23.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-screens/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-screens",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "react-native-shiki-engine",
+      "specifier": "^0.3.10",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-shiki-engine/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-shiki-engine",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "react-native-svg",
+      "specifier": "15.15.3",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-svg/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-svg",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "react-native-web",
+      "specifier": "~0.21.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-web/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-web",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "react-native-worklets",
+      "specifier": "0.7.4",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-worklets/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react-native-worklets",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "rn-emoji-keyboard",
+      "specifier": "^1.7.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/rn-emoji-keyboard/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/rn-emoji-keyboard",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "tailwind-merge",
+      "specifier": "^2.5.4",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/tailwind-merge/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/tailwind-merge",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "tailwindcss",
+      "specifier": "^3.4.17",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/tailwindcss/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/tailwindcss",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "tailwindcss-animate",
+      "specifier": "^1.0.7",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/tailwindcss-animate/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/tailwindcss-animate",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "zod",
+      "specifier": "^4.1.5",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/zod/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/zod",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "zustand",
+      "specifier": "^5.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/zustand/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/zustand",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@babel/core",
+      "specifier": "^7.25.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@babel/core/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@babel/core",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@types/react",
+      "specifier": "~19.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@types/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@types/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "cross-env",
+      "specifier": "^7.0.3",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/cross-env/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/cross-env",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "dotenv-cli",
+      "specifier": "^7.4.4",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/dotenv-cli/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/dotenv-cli",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "eslint-config-expo",
+      "specifier": "~55.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/eslint-config-expo/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/eslint-config-expo",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "typescript",
+      "specifier": "~5.9.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/typescript/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/typescript",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "vitest",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/vitest/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/vitest",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@tanstack/react-query",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@tanstack/react-query/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@tanstack/react-query",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "dotenv",
+      "specifier": "^17.4.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/dotenv/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/dotenv",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "fumadocs-core",
+      "specifier": "^15.5.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/fumadocs-core/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/fumadocs-core",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "fumadocs-mdx",
+      "specifier": "^12.0.3",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/fumadocs-mdx/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/fumadocs-mdx",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "lucide-react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/lucide-react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/lucide-react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "next",
+      "specifier": "^16.2.5",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/next/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/next",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "react-dom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/react-dom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/react-dom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "shadcn",
+      "specifier": "^4.1.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/shadcn/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/shadcn",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "tw-animate-css",
+      "specifier": "^1.4.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/tw-animate-css/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/tw-animate-css",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "zod",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/zod/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/zod",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@tailwindcss/postcss",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@tailwindcss/postcss/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@tailwindcss/postcss",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "postcss",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/postcss/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/postcss",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@testing-library/jest-dom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@testing-library/jest-dom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@testing-library/jest-dom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@testing-library/react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@testing-library/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@testing-library/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@testing-library/user-event",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@testing-library/user-event/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@testing-library/user-event",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@types/react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@types/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@types/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@types/react-dom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@types/react-dom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@types/react-dom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@vitejs/plugin-react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@vitejs/plugin-react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@vitejs/plugin-react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "jsdom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/jsdom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/jsdom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "tailwindcss",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/tailwindcss/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/tailwindcss",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "typescript",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/typescript/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/typescript",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "apps/web",
+      "name": "vitest",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/vitest/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/vitest",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "@formatjs/intl-localematcher",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/@formatjs/intl-localematcher/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/@formatjs/intl-localematcher",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "@tanstack/react-query",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/@tanstack/react-query/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/@tanstack/react-query",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "i18next",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/i18next/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/i18next",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "posthog-js",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/posthog-js/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/posthog-js",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "react-i18next",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/react-i18next/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/react-i18next",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "yaml",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/yaml/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/yaml",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "zod",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/zod/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/zod",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "zustand",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/zustand/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/zustand",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "@testing-library/react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/@testing-library/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/@testing-library/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "@types/react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/@types/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/@types/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "jsdom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/jsdom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/jsdom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "react-dom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/react-dom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/react-dom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "typescript",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/typescript/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/typescript",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/core",
+      "name": "vitest",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/vitest/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/vitest",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/eslint-config",
+      "name": "@eslint/js",
+      "specifier": "^9.28.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/node_modules/@eslint/js/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/node_modules/@eslint/js",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/eslint-config",
+      "name": "typescript-eslint",
+      "specifier": "^8.35.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/node_modules/typescript-eslint/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/node_modules/typescript-eslint",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/eslint-config",
+      "name": "eslint-plugin-import-x",
+      "specifier": "^4.12.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/node_modules/eslint-plugin-import-x/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/node_modules/eslint-plugin-import-x",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/eslint-config",
+      "name": "eslint-plugin-react",
+      "specifier": "^7.37.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/node_modules/eslint-plugin-react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/node_modules/eslint-plugin-react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/eslint-config",
+      "name": "eslint-plugin-react-hooks",
+      "specifier": "^5.2.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/node_modules/eslint-plugin-react-hooks/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/node_modules/eslint-plugin-react-hooks",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/eslint-config",
+      "name": "@next/eslint-plugin-next",
+      "specifier": "^16.2.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/node_modules/@next/eslint-plugin-next/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/node_modules/@next/eslint-plugin-next",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/plugin-sdk",
+      "name": "typescript",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk/node_modules/typescript/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk/node_modules/typescript",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@base-ui/react",
+      "specifier": "^1.3.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@base-ui/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@base-ui/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@emoji-mart/data",
+      "specifier": "^1.2.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@emoji-mart/data/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@emoji-mart/data",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@number-flow/react",
+      "specifier": "^0.6.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@number-flow/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@number-flow/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@tanstack/react-table",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@tanstack/react-table/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@tanstack/react-table",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@tanstack/react-virtual",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@tanstack/react-virtual/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@tanstack/react-virtual",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "class-variance-authority",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/class-variance-authority/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/class-variance-authority",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "clsx",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/clsx/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/clsx",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "cmdk",
+      "specifier": "^1.1.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/cmdk/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/cmdk",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "emoji-mart",
+      "specifier": "^5.6.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/emoji-mart/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/emoji-mart",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "input-otp",
+      "specifier": "^1.4.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/input-otp/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/input-otp",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "linkify-it",
+      "specifier": "^5.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/linkify-it/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/linkify-it",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "katex",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/katex/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/katex",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "lucide-react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/lucide-react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/lucide-react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "next-themes",
+      "specifier": "^0.4.6",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/next-themes/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/next-themes",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "react-day-picker",
+      "specifier": "^9.14.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/react-day-picker/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/react-day-picker",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "react-markdown",
+      "specifier": "^10.1.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/react-markdown/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/react-markdown",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "react-resizable-panels",
+      "specifier": "^4.7.5",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/react-resizable-panels/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/react-resizable-panels",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "recharts",
+      "specifier": "3.8.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/recharts/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/recharts",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "rehype-katex",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/rehype-katex/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/rehype-katex",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "rehype-raw",
+      "specifier": "^7.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/rehype-raw/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/rehype-raw",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "rehype-sanitize",
+      "specifier": "^6.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/rehype-sanitize/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/rehype-sanitize",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "remark-breaks",
+      "specifier": "^4.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/remark-breaks/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/remark-breaks",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "remark-gfm",
+      "specifier": "^4.0.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/remark-gfm/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/remark-gfm",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "remark-math",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/remark-math/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/remark-math",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "shiki",
+      "specifier": "^3.21.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/shiki/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/shiki",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "sonner",
+      "specifier": "^2.0.7",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/sonner/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/sonner",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "tailwind-merge",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/tailwind-merge/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/tailwind-merge",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "unicode-animations",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/unicode-animations/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/unicode-animations",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@types/linkify-it",
+      "specifier": "^5.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@types/linkify-it/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@types/linkify-it",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@types/react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@types/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@types/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@types/react-dom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@types/react-dom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@types/react-dom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "typescript",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/typescript/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/typescript",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@base-ui/react",
+      "specifier": "^1.3.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@base-ui/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@base-ui/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@dnd-kit/core",
+      "specifier": "^6.3.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@dnd-kit/core/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@dnd-kit/core",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@dnd-kit/modifiers",
+      "specifier": "^9.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@dnd-kit/modifiers/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@dnd-kit/modifiers",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@dnd-kit/sortable",
+      "specifier": "^10.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@dnd-kit/sortable/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@dnd-kit/sortable",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@dnd-kit/utilities",
+      "specifier": "^3.2.2",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@dnd-kit/utilities/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@dnd-kit/utilities",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@floating-ui/dom",
+      "specifier": "^1.7.6",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@floating-ui/dom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@floating-ui/dom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tanstack/react-virtual",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tanstack/react-virtual/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tanstack/react-virtual",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/core",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/core/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/core",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/extension-code-block-lowlight",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-code-block-lowlight/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-code-block-lowlight",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/extension-document",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-document/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-document",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/extension-highlight",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-highlight/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-highlight",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/extension-image",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-image/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-image",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/extension-link",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-link/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-link",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/extension-list",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-list/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-list",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/extension-mention",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-mention/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-mention",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/extension-paragraph",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-paragraph/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-paragraph",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/extension-placeholder",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-placeholder/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-placeholder",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/extension-table",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-table/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-table",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/extension-table-cell",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-table-cell/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-table-cell",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/extension-table-header",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-table-header/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-table-header",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/extension-table-row",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-table-row/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-table-row",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/extension-text",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-text/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-text",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/extension-typography",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-typography/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/extension-typography",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/markdown",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/markdown/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/markdown",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/pm",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/pm/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/pm",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/react",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/starter-kit",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/starter-kit/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/starter-kit",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@tiptap/suggestion",
+      "specifier": "3.27.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/suggestion/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@tiptap/suggestion",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "cmdk",
+      "specifier": "^1.1.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/cmdk/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/cmdk",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "github-slugger",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/github-slugger/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/github-slugger",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "hast-util-to-html",
+      "specifier": "^9.0.5",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/hast-util-to-html/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/hast-util-to-html",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "katex",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/katex/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/katex",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "lowlight",
+      "specifier": "^3.3.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/lowlight/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/lowlight",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "mdast-util-from-markdown",
+      "specifier": "^2.0.3",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/mdast-util-from-markdown/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/mdast-util-from-markdown",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "mermaid",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/mermaid/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/mermaid",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "motion",
+      "specifier": "^12.38.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/motion/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/motion",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "pinyin-pro",
+      "specifier": "3.26.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/pinyin-pro/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/pinyin-pro",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "react-easy-crop",
+      "specifier": "^6.2.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/react-easy-crop/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/react-easy-crop",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "react-markdown",
+      "specifier": "^10.1.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/react-markdown/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/react-markdown",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "react-qr-code",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/react-qr-code/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/react-qr-code",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "react-resizable-panels",
+      "specifier": "^4.7.5",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/react-resizable-panels/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/react-resizable-panels",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "react-virtuoso",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/react-virtuoso/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/react-virtuoso",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "recharts",
+      "specifier": "3.8.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/recharts/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/recharts",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "rehype-katex",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/rehype-katex/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/rehype-katex",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "rehype-raw",
+      "specifier": "^7.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/rehype-raw/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/rehype-raw",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "rehype-sanitize",
+      "specifier": "^6.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/rehype-sanitize/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/rehype-sanitize",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "remark-breaks",
+      "specifier": "^4.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/remark-breaks/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/remark-breaks",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "remark-cjk-friendly",
+      "specifier": "^2.3.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/remark-cjk-friendly/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/remark-cjk-friendly",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "remark-directive",
+      "specifier": "^4.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/remark-directive/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/remark-directive",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "remark-gfm",
+      "specifier": "^4.0.1",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/remark-gfm/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/remark-gfm",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "remark-math",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/remark-math/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/remark-math",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "sonner",
+      "specifier": "^2.0.7",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/sonner/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/sonner",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "unist-util-visit",
+      "specifier": "^5.1.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/unist-util-visit/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/unist-util-visit",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@testing-library/jest-dom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@testing-library/jest-dom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@testing-library/jest-dom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@testing-library/react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@testing-library/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@testing-library/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@testing-library/user-event",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@testing-library/user-event/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@testing-library/user-event",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@types/hast",
+      "specifier": "^3.0.4",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@types/hast/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@types/hast",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@types/mdast",
+      "specifier": "^4.0.4",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@types/mdast/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@types/mdast",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@types/react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@types/react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@types/react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@types/react-dom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@types/react-dom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@types/react-dom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@typescript-eslint/parser",
+      "specifier": "^8.35.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@typescript-eslint/parser/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@typescript-eslint/parser",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@vitejs/plugin-react",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@vitejs/plugin-react/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@vitejs/plugin-react",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "eslint",
+      "specifier": "^9.0.0",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/eslint/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/eslint",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "eslint-plugin-i18next",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/eslint-plugin-i18next/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/eslint-plugin-i18next",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "jsdom",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/jsdom/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/jsdom",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "typescript",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/typescript/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/typescript",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    },
+    {
+      "consumer": "packages/views",
+      "name": "vitest",
+      "specifier": "catalog:",
+      "package": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/vitest/package.json",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      "link": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/vitest",
+        "absent": true,
+        "error_code": "ENOENT"
+      }
+    }
+  ],
+  "auth_graph": [
+    {
+      "from": "apps/web/components/web-providers.tsx",
+      "specifier": "@multica/core/auth",
+      "error_code": "MODULE_NOT_FOUND"
+    },
+    {
+      "from": "packages/core/platform/core-provider.tsx",
+      "specifier": "@multica/core/auth",
+      "result": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+        "device": 16777244,
+        "inode": 39590398,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152"
+      }
+    },
+    {
+      "from": "packages/views/auth/password-form.tsx",
+      "specifier": "@multica/core/auth",
+      "error_code": "MODULE_NOT_FOUND"
+    },
+    {
+      "from": "packages/core/platform/core-provider.tsx",
+      "specifier": "../auth/index.ts",
+      "note": "explicit extension for a Node read-only probe of the bundler's relative ../auth import",
+      "result": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+        "device": 16777244,
+        "inode": 39590398,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152"
+      }
+    }
+  ],
+  "direct_auth": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+    "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+    "device": 16777244,
+    "inode": 39590398,
+    "symlink": false,
+    "link": null,
+    "owned": true,
+    "sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152"
+  },
+  "declared_link_mismatches": 22,
+  "declared_export_failures": 22,
+  "resolved_workspace_exports_outside_root": 0
+}

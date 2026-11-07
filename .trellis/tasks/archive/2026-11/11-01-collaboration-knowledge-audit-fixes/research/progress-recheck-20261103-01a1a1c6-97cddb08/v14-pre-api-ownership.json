@@ -1,0 +1,30 @@
+{
+  "observed_at": "2026-11-03T14:38:01.931005+00:00",
+  "phase": "Go race; API/Web launch and its migration not reached",
+  "manifest": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/dev-registry-v14/envs/check-20261103141424-39386/manifest.env",
+  "manifest_sha256": "2e7d1fa88494d2b9fa96b829e8a925f6edd0e113a8d380f3b6b28d0bc783b150",
+  "declared_checkout": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "declared_api_port": "18974",
+  "declared_web_port": "13894",
+  "declared_web_mode": "production",
+  "declared_database": "multica_check_20261103141424_39386_api",
+  "psql_path": "/opt/homebrew/opt/libpq/bin/psql",
+  "psql_sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07",
+  "database_probe_exit": 0,
+  "actual_database_user_migration_table": "multica_check_20261103141424_39386_api|multica|",
+  "read_only": true,
+  "runtime_process_and_schema_identity_pending_until_phase4": true,
+  "shared_run_accepted": false,
+  "earlier_primary_probe_failures": [
+    {
+      "stage": "Tool lookup",
+      "result": "psql absent from main PATH; assertion stopped before DB access; pinned run tool exists and matches hash"
+    },
+    {
+      "stage": "Premature max migration query",
+      "exit_code": 1,
+      "error": "relation schema_migrations does not exist",
+      "cause": "Registered fresh API database remains unmigrated before phase4; no product test was run or changed"
+    }
+  ]
+}

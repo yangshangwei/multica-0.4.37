@@ -1,0 +1,33 @@
+{
+  "recorded_at": "2026-11-04T08:22:09.068739+00:00",
+  "reviewer": "/root",
+  "scope": "readonly original owned ON PIDs/listeners after sole executor release; no stop commands",
+  "observations": [
+    {
+      "pid": 67212,
+      "port": 18295,
+      "pid_absent": true,
+      "listener_absent": true
+    },
+    {
+      "pid": 67517,
+      "port": 13215,
+      "pid_absent": true,
+      "listener_absent": true
+    },
+    {
+      "pid": 67409,
+      "port": 49338,
+      "pid_absent": true,
+      "listener_absent": true
+    }
+  ],
+  "executor_release_result": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/on-release-result.json",
+    "sha256": "41773d599cae15ff72339041a57c5bb342175da4327376d5258264715bb23e4a"
+  },
+  "all_original_inputs_retained": true,
+  "knowledge_allocated": 0,
+  "real_calls": 0,
+  "production_default_enabled": false
+}

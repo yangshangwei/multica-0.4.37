@@ -1,0 +1,46 @@
+{
+  "observed_at": "2026-11-03T10:55:46.301456+00:00",
+  "observer": "root",
+  "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "registry": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/dev-registry-v13/envs/check-20261103100106-73574",
+  "running_record_sha256": "290c503dd305032910041899bef2b636fce878b4e5073a4f5dcfa9ac1a1d5648",
+  "api": {
+    "origin": "http://127.0.0.1:18974",
+    "health": {
+      "status": "ok",
+      "pid": 2041,
+      "commit": "85ef5d205",
+      "started_at": "2026-11-03T10:52:39Z"
+    },
+    "record": {
+      "component": "api",
+      "mode": "development",
+      "build_id": "",
+      "command": "go run -ldflags '-X main.commit=85ef5d205' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server)",
+      "source_id": "c77e3cab13a324e3041cbc9633b4d107e51700d817e7347fd972fe9dca4929fb",
+      "configuration_id": "6f989a13527b841bf03767e357821a83ef54bf9964c959d7e2c750c3fc25441f",
+      "commit": "85ef5d205",
+      "launcher_pid": 1987,
+      "started_at": "2026-11-03T10:52:32Z",
+      "listener_pid": 2041
+    },
+    "actual_listener_command": "/private/tmp/multica-final-check-v13-fed2n321/go-build2656010767/b001/exe/server",
+    "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+    "actual_environment_selected": {
+      "MULTICA_KNOWLEDGE_CONTEXT_ENABLED": "false",
+      "MULTICA_AUTH_MODE": "legacy",
+      "DATABASE_MAX_CONNS": "10",
+      "DATABASE_MIN_CONNS": "1"
+    }
+  },
+  "database": {
+    "name": "multica_check_20261103100106_73574_api",
+    "actual_current_database": "multica_check_20261103100106_73574_api",
+    "actual_max_migration_name": "764_collaboration_ai_policy",
+    "actual_max_migration_number": 764,
+    "read_only_query_exit": 0
+  },
+  "scope": "Actual live API process and database; no source/state/DB mutation",
+  "source_id_matches_frozen_binding": true,
+  "prior_observer_attempt": "Read-only query succeeded but assertion expected bare 764; corrected to actual named migration, not a product/test failure"
+}

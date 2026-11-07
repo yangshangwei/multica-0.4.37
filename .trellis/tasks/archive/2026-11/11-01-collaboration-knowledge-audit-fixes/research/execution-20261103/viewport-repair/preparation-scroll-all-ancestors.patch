@@ -1,0 +1,12 @@
+--- a/e2e/collaboration-preparation-records-web.spec.ts
++++ b/e2e/collaboration-preparation-records-web.spec.ts
+@@ -23,7 +23,8 @@
+       await focus.evaluate((element) => {
+         const root = element.closest<HTMLElement>('[data-tab-scroll-root="account-detail"]');
+         if (!root) throw new Error("Preparation screenshot requires its actual account detail scroll root");
+-        root.scrollTop += element.getBoundingClientRect().top - root.getBoundingClientRect().top - 12;
++        // A same-document hash jump can also scroll the outer document.
++        element.scrollIntoView({ block: "start", inline: "nearest", behavior: "instant" });
+       });
+       await current.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+       await expect(focus).toBeInViewport({ ratio: 1 });

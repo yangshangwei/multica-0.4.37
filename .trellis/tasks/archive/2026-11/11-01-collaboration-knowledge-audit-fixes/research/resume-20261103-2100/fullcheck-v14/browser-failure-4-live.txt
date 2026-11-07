@@ -1,0 +1,35 @@
+
+  4) [chromium] › e2e/collaboration-preparation-records-desktop.spec.ts:8:1 › Desktop reads synthetic preparation with native 200 percent captures and unchanged proof 
+
+    Error: Command failed: go run -mod=readonly /private/tmp/multica-final-check-v14-8062y7c6/multica-preparation-seal-iijtsm/main.go
+    panic: synthetic preparation protocol validation failed
+
+    goroutine 1 [running]:
+    main.main.func1(...)
+    	/private/tmp/multica-final-check-v14-8062y7c6/multica-preparation-seal-iijtsm/main.go:18
+    main.main()
+    	/private/tmp/multica-final-check-v14-8062y7c6/multica-preparation-seal-iijtsm/main.go:22 +0x4d4
+    exit status 2
+
+
+       at fixtures/collaboration-preparation-records.ts:96
+
+      94 |     const source = join(directory, "main.go");
+      95 |     writeFileSync(source, preparationSealer, { mode: 0o600 });
+    > 96 |     const output = execFileSync("go", ["run", "-mod=readonly", source], {
+         |                    ^
+      97 |       cwd: resolve(import.meta.dirname, "../../server"), input: JSON.stringify({ manifest, inputs, observations, result }),
+      98 |       env: { ...Object.fromEntries(["PATH", "HOME", "TMPDIR", "GOPATH", "GOCACHE", "GOMODCACHE"].flatMap((key) => process.env[key] ? [[key, process.env[key]]] : [])), GOTOOLCHAIN: "go1.26.6" },
+      99 |       encoding: "utf8", timeout: 60_000, maxBuffer: 1 << 20,
+        at sealPreparation (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-preparation-records.ts:96:20)
+        at seedCollaborationPreparationRecords (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-preparation-records.ts:168:18)
+        at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-preparation-records-desktop.spec.ts:14:19
+
+
+(node:77613) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:77613) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+

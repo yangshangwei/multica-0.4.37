@@ -1,0 +1,311 @@
+{
+  "observed_at": "2026-11-03T14:27:33.808114+00:00",
+  "candidate_sha": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "make_state": "running",
+  "make_exit": null,
+  "stage": [
+    "3",
+    "Script regressions and isolated Go tests"
+  ],
+  "static": {
+    "pass": 15,
+    "total": 15
+  },
+  "TS": {
+    "@multica/core": {
+      "passed": 4455
+    },
+    "@multica/docs": {
+      "passed": 62
+    },
+    "@multica/views": {
+      "passed": 7165
+    },
+    "@multica/web": {
+      "passed": 290
+    },
+    "@multica/desktop": {
+      "passed": 1272
+    }
+  },
+  "Go_packages": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+      "database": "ccheck_20261103142414456860_bb940f8eb38e",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 11,
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "started_at": "2026-11-03T14:24:14.843921+00:00",
+      "finished_at": "2026-11-03T14:24:20.384666+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+      "database": "ccheck_20261103142420384899_07eb79fa72b8",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 2,
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "started_at": "2026-11-03T14:24:20.649904+00:00",
+      "finished_at": "2026-11-03T14:24:21.063131+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+      "database": "ccheck_20261103142421063304_f47ea76e9369",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "started_at": "2026-11-03T14:24:21.362353+00:00",
+      "finished_at": "2026-11-03T14:24:21.583678+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "database": "ccheck_20261103142421583865_f9a6f66e94fe",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 71,
+        "pass": 70,
+        "fail": 0,
+        "skip": 1
+      },
+      "started_at": "2026-11-03T14:24:21.881707+00:00",
+      "finished_at": "2026-11-03T14:24:40.526307+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/multica",
+      "database": "ccheck_20261103142440526499_b0ca13f2a1d5",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 1074,
+        "pass": 1074,
+        "fail": 0,
+        "skip": 0
+      },
+      "started_at": "2026-11-03T14:24:40.748653+00:00",
+      "finished_at": "2026-11-03T14:24:48.232868+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "database": "ccheck_20261103142448233116_6f87875654d8",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 741,
+        "pass": 735,
+        "fail": 0,
+        "skip": 6
+      },
+      "started_at": "2026-11-03T14:24:48.610961+00:00",
+      "finished_at": "2026-11-03T14:26:17.219729+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/admission",
+      "database": "ccheck_20261103142617219999_7427887f8751",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "started_at": "2026-11-03T14:26:17.462856+00:00",
+      "finished_at": "2026-11-03T14:26:18.139906+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/agentconfig",
+      "database": "ccheck_20261103142618140093_e243b33d7b90",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "started_at": "2026-11-03T14:26:18.351006+00:00",
+      "finished_at": "2026-11-03T14:26:18.415753+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/analytics",
+      "database": "ccheck_20261103142618415974_a33d11aa74fd",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 8,
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "started_at": "2026-11-03T14:26:18.615336+00:00",
+      "finished_at": "2026-11-03T14:26:18.943350+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attribution",
+      "database": "ccheck_20261103142618943519_8ec97853df30",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 31,
+        "pass": 31,
+        "fail": 0,
+        "skip": 0
+      },
+      "started_at": "2026-11-03T14:26:19.146799+00:00",
+      "finished_at": "2026-11-03T14:26:19.286462+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attributionbackfill",
+      "database": "ccheck_20261103142619286627_d642fc7111ff",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 4,
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "started_at": "2026-11-03T14:26:19.479605+00:00",
+      "finished_at": "2026-11-03T14:26:22.796581+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/auth",
+      "database": "ccheck_20261103142622796822_d4b8dc307441",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 113,
+        "pass": 112,
+        "fail": 0,
+        "skip": 1
+      },
+      "started_at": "2026-11-03T14:26:23.023455+00:00",
+      "finished_at": "2026-11-03T14:26:29.480593+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/changelog",
+      "database": "ccheck_20261103142629480868_cc1252fad4dc",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 56,
+        "pass": 56,
+        "fail": 0,
+        "skip": 0
+      },
+      "started_at": "2026-11-03T14:26:29.749213+00:00",
+      "finished_at": "2026-11-03T14:26:31.646784+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/channelmedia",
+      "database": "ccheck_20261103142631646941_4b76585c3aa4",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 3,
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "started_at": "2026-11-03T14:26:31.893539+00:00",
+      "finished_at": "2026-11-03T14:26:32.016858+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+      "database": "ccheck_20261103142632017025_b8d431c478e1",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "started_at": "2026-11-03T14:26:32.205366+00:00",
+      "finished_at": "2026-11-03T14:26:32.340425+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chattitle",
+      "database": "ccheck_20261103142632340600_f26ab7ece539",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "started_at": "2026-11-03T14:26:32.529479+00:00",
+      "finished_at": "2026-11-03T14:26:32.582731+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "database": "ccheck_20261103142632582902_248934fbfb73",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 326,
+        "pass": 325,
+        "fail": 0,
+        "skip": 1
+      },
+      "started_at": "2026-11-03T14:26:32.762405+00:00",
+      "finished_at": "2026-11-03T14:26:37.241840+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cloudruntime",
+      "database": "ccheck_20261103142637242175_cffe407cfbfc",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 3,
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "started_at": "2026-11-03T14:26:37.455739+00:00",
+      "finished_at": "2026-11-03T14:26:37.590689+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/collaboration",
+      "database": "ccheck_20261103142637590865_472bb8236d85",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 11,
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "started_at": "2026-11-03T14:26:37.788968+00:00",
+      "finished_at": "2026-11-03T14:26:38.210535+00:00"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "database": "ccheck_20261103142638210715_7a21f045e560",
+      "state": "running",
+      "exit_code": null,
+      "counts": null,
+      "started_at": "2026-11-03T14:26:38.448838+00:00",
+      "finished_at": null
+    }
+  ],
+  "scope": "Partial observation of the existing sole run; not acceptance or fresh re-execution. Raw final hashes/inventory still pending.",
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0
+}

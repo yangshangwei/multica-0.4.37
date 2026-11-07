@@ -1,0 +1,21 @@
+--- /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/execution/execute-once.py.in
++++ /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-execution/execute-once.py
+@@ -29,15 +29,15 @@
+ 
+ 
+ clearance_path = OUT / 'independent-review-clearance-v16.json'
+-assert digest(clearance_path) == 'PENDING_ROOT_CLEARANCE_SHA256'
++assert digest(clearance_path) == '82f5b3219251e65f81c73540d28ece2a2f99b9c3ae87833df09948472da12143'
+ clearance = json.loads(clearance_path.read_text())
+-assert clearance['candidate_sha'] == 'PENDING_ROOT_FINAL_SHA'
++assert clearance['candidate_sha'] == 'eda0d68fb07852b714f3092aa02ca0523d3ad312'
+ assert clearance['coordinator'] == '01a1a3c9-2459-7de1-8244-55640c5f6143'
+ assert clearance['executor'] == '/root/shared_executor'
+ assert clearance['verdict'] in ('pass', 'pass-with-notes') and clearance['blocking_findings_open'] == 0
+ assert clearance['knowledge_budget_allocated'] == clearance['knowledge_real_calls'] == 0
+ assert clearance['real_provider_allowed'] is False
+-assert digest(clearance['review_path']) == 'PENDING_ROOT_INDEPENDENT_REVIEW_SHA256'
++assert digest(clearance['review_path']) == 'd2766b57bc41f72a08651f5028258f881f2763dc9036dd94526aebb685b9ee52'
+ assert digest(clearance['root_live_confirmation_path']) == clearance['root_live_confirmation_sha256']
+ for name in ('check-source-v16.safe.env', 'full-check-home-v16', 'go-packages-v16', 'dev-registry-v16', 'profiles-v16', 'workspaces-v16'):
+     assert not (OUT / name).exists() and not (OUT / name).is_symlink(), 'Complete execution paths must be fresh'

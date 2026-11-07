@@ -1,0 +1,45 @@
+Captured 2026-11-03T11:21:31.310006+00:00 from running v13.
+
+  9) [chromium] › e2e/collaboration-workbench-web.spec.ts:165:1 › Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry 
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Complete issue', exact: true })
+
+
+      218 |       await expect(view.getByRole("heading", { name: issue.title, exact: true })).toBeVisible();
+      219 |     }
+    > 220 |     await page.getByRole("button", { name: "Complete issue", exact: true }).click();
+          |                                                                             ^
+      221 |     const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Complete issue", exact: true }) });
+      222 |     const status = form.getByLabel("Status", { exact: true });
+      223 |     await status.selectOption("done");
+        at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-workbench-web.spec.ts:220:77
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-workbench-we-66297-es-input-for-explicit-retry-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-workbench-we-66297-es-input-for-explicit-retry-chromium/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/collaboration-workbench-we-66297-es-input-for-explicit-retry-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/collaboration-workbench-we-66297-es-input-for-explicit-retry-chromium/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/collaboration-workbench-we-66297-es-input-for-explicit-retry-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:6726) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:6726) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+

@@ -1,0 +1,49 @@
+{
+  "status": "pass",
+  "recorded_at": "2026-11-04T06:02:13.516269+00:00",
+  "reviewer": "/root",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "lane": "off",
+  "scope": "Root readonly actual OFF deployment identity before sole probe; test gate notrun",
+  "source_environment_sha256": "e0a6a47cc30e26b36c2b3e7dbf2a219481401362c73a1e0323ecbabc17ba15a1",
+  "deployment_proof_sha256": "3fc506a0c4275afe6037626e8da96cec5c33f1547e020115bd692ee0c1ef193a",
+  "binary_binding_sha256": "bc3863a5bfec55b1a2955c65643b03717fb6ec339458c6e90ed90abdd8612f60",
+  "identities": {
+    "api": {
+      "pid": 51638,
+      "origin": "http://127.0.0.1:18231",
+      "process": "51638 51602 51602 /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/go-build-cache/e2/e2ded241a09cabe58a03855af76bedfaa95f70879c266b36b83480798177651f-d/server",
+      "cwd": "p51638\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server",
+      "ownership_verified": true
+    },
+    "web": {
+      "pid": 51913,
+      "origin": "http://127.0.0.1:13151",
+      "process": "51913 51891 51891 next-server (v16.2.6)",
+      "cwd": "p51913\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web",
+      "ownership_verified": true,
+      "runtime_config": {
+        "apiBaseUrl": "http://127.0.0.1:18231",
+        "wsUrl": "ws://127.0.0.1:18231/ws"
+      }
+    },
+    "renderer": {
+      "pid": 51848,
+      "origin": "http://127.0.0.1:60377",
+      "process": "51848     1 51848 /opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B -m http.server 60377 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+      "cwd": "p51848\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+      "ownership_verified": true
+    }
+  },
+  "database": {
+    "database": "multica_ccg2_v16_off_a3c9",
+    "latest": "764_collaboration_ai_policy",
+    "issue_rows": 0,
+    "task_rows": 0,
+    "cluster_connections": 34
+  },
+  "knowledge_enabled": false,
+  "real_calls": 0,
+  "budget": 0,
+  "production_default_enabled": false
+}

@@ -1,0 +1,54 @@
+{
+  "state": "verified_serving",
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "-m",
+    "http.server",
+    "60377",
+    "--bind",
+    "127.0.0.1",
+    "--directory",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer"
+  ],
+  "pid": 51848,
+  "pgid": 51848,
+  "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "origin": "http://127.0.0.1:60377",
+  "started_at": "2026-11-04T05:45:09.988138+00:00",
+  "artifact_binding_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/candidate-setup/artifact-bindings-v16.json",
+  "artifact_binding_sha256": "e80641a6a0a58fb422b33ee75905dfebd217fb6b234603dd73cabe50e935a59f",
+  "installed_desktop_files_verified": 495,
+  "installed_artifacts": [
+    {
+      "category": "renderer",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+      "file_count": 493,
+      "manifest_sha256": "9aa4005ae02a03a8d1245355ee056952fa1807ebfeec2b939cb6b63364a67f10",
+      "all_bytes_sizes_modes_verified": true
+    },
+    {
+      "category": "preload",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/preload",
+      "file_count": 1,
+      "manifest_sha256": "eb6f5654d511b3b23a8856597deeabf4277c8a21afffcce04c8703ad6b4c128e",
+      "all_bytes_sizes_modes_verified": true
+    },
+    {
+      "category": "main",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/main",
+      "file_count": 1,
+      "manifest_sha256": "7e4cfb3a45cb26761edb8b73b3f2cd2fe433d2d25e67010ea22156d4287a0360",
+      "all_bytes_sizes_modes_verified": true
+    }
+  ],
+  "index_sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+  "artifact_writes": 0,
+  "browser_probe_started": false,
+  "ON_started": false,
+  "real_Provider_calls": 0,
+  "index_HTTP_sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+  "ownership_verified": true,
+  "verification_at": "2026-11-04T05:45:10.248389+00:00"
+}

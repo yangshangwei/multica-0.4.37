@@ -1,0 +1,127 @@
+{
+  "recorded_at": "2026-11-03T11:47:11.916292+00:00",
+  "minimum_unique_cases": 16,
+  "actual_original_failures": 13,
+  "related_controls": 3,
+  "cases": [
+    {
+      "file": "e2e/collaboration-boundaries-web.spec.ts",
+      "name": "Gap 5: a source workspace holding a collaboration issue cannot be deleted, open or completed, and nothing is cleaned up",
+      "original_status": "unexpected",
+      "required_reason": "actual v13 failure"
+    },
+    {
+      "file": "e2e/collaboration-boundaries-web.spec.ts",
+      "name": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+      "original_status": "unexpected",
+      "required_reason": "actual v13 failure"
+    },
+    {
+      "file": "e2e/collaboration-boundaries-web.spec.ts",
+      "name": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+      "original_status": "unexpected",
+      "required_reason": "actual v13 failure"
+    },
+    {
+      "file": "e2e/collaboration-memory-web.spec.ts",
+      "name": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+      "original_status": "unexpected",
+      "required_reason": "actual v13 failure"
+    },
+    {
+      "file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "name": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "original_status": "unexpected",
+      "required_reason": "actual v13 failure"
+    },
+    {
+      "file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "name": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+      "original_status": "unexpected",
+      "required_reason": "actual v13 failure"
+    },
+    {
+      "file": "e2e/collaboration-mention-journeys-web.spec.ts",
+      "name": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "original_status": "unexpected",
+      "required_reason": "actual v13 failure"
+    },
+    {
+      "file": "e2e/collaboration-mention-journeys-web.spec.ts",
+      "name": "Web offline mentions survive a fresh context and edits notify only newly added people",
+      "original_status": "unexpected",
+      "required_reason": "actual v13 failure"
+    },
+    {
+      "file": "e2e/collaboration-preparation-records-web.spec.ts",
+      "name": "Web reads synthetic frozen preparation without inferring termination across refresh and viewers",
+      "original_status": "unexpected",
+      "required_reason": "actual v13 failure"
+    },
+    {
+      "file": "e2e/collaboration-preview-web.spec.ts",
+      "name": "trigger preview explains shared and later batches before a suppressed target is sent",
+      "original_status": "unexpected",
+      "required_reason": "actual v13 failure"
+    },
+    {
+      "file": "e2e/collaboration-workbench-web.spec.ts",
+      "name": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+      "original_status": "unexpected",
+      "required_reason": "actual v13 failure"
+    },
+    {
+      "file": "e2e/collaboration-workbench-web.spec.ts",
+      "name": "Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry",
+      "original_status": "unexpected",
+      "required_reason": "actual v13 failure"
+    },
+    {
+      "file": "e2e/settings-preferences.spec.ts",
+      "name": "hidden manual issue fields persist and remain usable through the overflow menu",
+      "original_status": "unexpected",
+      "required_reason": "actual v13 failure"
+    },
+    {
+      "file": "e2e/collaboration-mention-journeys-web.spec.ts",
+      "name": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "original_status": "expected",
+      "required_reason": "shared mention preview positive control"
+    },
+    {
+      "file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "name": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "original_status": "expected",
+      "required_reason": "shared mention preview positive control"
+    },
+    {
+      "file": "e2e/collaboration-memory-web.spec.ts",
+      "name": "shared context recovers a lost save response with its original request after reload",
+      "original_status": "expected",
+      "required_reason": "same memory file original-key recovery preservation"
+    }
+  ],
+  "required_outcome": "All16 actual pass with no unexpected skips/retries; retain individual title/result/source/provenance. This is a directed gate, not successor whole acceptance.",
+  "original_v13_result": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/makecheck-playwright-results-v9.json",
+  "original_v13_result_sha256": "237af0f7cfdc08e8de5ee1a926511ddf1df61a85f1488502280ed5989536a4e5",
+  "prospective_file_scope_command": [
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-boundaries-web.spec.ts",
+    "e2e/collaboration-memory-web.spec.ts",
+    "e2e/collaboration-mention-journeys-desktop.spec.ts",
+    "e2e/collaboration-mention-journeys-web.spec.ts",
+    "e2e/collaboration-preparation-records-web.spec.ts",
+    "e2e/collaboration-preview-web.spec.ts",
+    "e2e/collaboration-workbench-web.spec.ts",
+    "e2e/settings-preferences.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=line,json"
+  ],
+  "file_scope_inventory_count": 17,
+  "file_scope_extra_control": "settings-preferences: grouped settings remain reachable from the sidebar and floating chat survives navigation and reload",
+  "not_executed": true
+}

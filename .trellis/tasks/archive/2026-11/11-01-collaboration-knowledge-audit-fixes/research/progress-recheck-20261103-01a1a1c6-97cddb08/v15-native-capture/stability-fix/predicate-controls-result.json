@@ -1,0 +1,118 @@
+{
+  "sourcePath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-native.ts",
+  "sourceSha256": "b4038d1ba4eeb3e47c3d9730326d2dcb7f41af07e929bd84013712a5775373f1",
+  "cases": [
+    {
+      "name": "same actual frame",
+      "expected": {
+        "layout": true,
+        "part": true
+      },
+      "observed": {
+        "layout": true,
+        "part": true
+      }
+    },
+    {
+      "name": "planned next-tile vertical scroll remains globally legal",
+      "expected": {
+        "layout": true,
+        "part": false
+      },
+      "observed": {
+        "layout": true,
+        "part": false
+      }
+    },
+    {
+      "name": "below-target content growth does not freeze whole scrollHeight",
+      "expected": {
+        "layout": true,
+        "part": true
+      },
+      "observed": {
+        "layout": true,
+        "part": true
+      }
+    },
+    {
+      "name": "changed target height refuses frozen layout",
+      "expected": {
+        "layout": false,
+        "part": false
+      },
+      "observed": {
+        "layout": false,
+        "part": false
+      }
+    },
+    {
+      "name": "changed target horizontal position refuses frozen layout",
+      "expected": {
+        "layout": false,
+        "part": false
+      },
+      "observed": {
+        "layout": false,
+        "part": false
+      }
+    },
+    {
+      "name": "changed root vertical position refuses frozen layout",
+      "expected": {
+        "layout": false,
+        "part": false
+      },
+      "observed": {
+        "layout": false,
+        "part": false
+      }
+    },
+    {
+      "name": "changed viewport integer height refuses frozen layout",
+      "expected": {
+        "layout": false,
+        "part": false
+      },
+      "observed": {
+        "layout": false,
+        "part": false
+      }
+    },
+    {
+      "name": "changed root clientHeight refuses frozen layout",
+      "expected": {
+        "layout": false,
+        "part": false
+      },
+      "observed": {
+        "layout": false,
+        "part": false
+      }
+    },
+    {
+      "name": "post-capture actual scroll movement refuses part",
+      "expected": {
+        "layout": true,
+        "part": false
+      },
+      "observed": {
+        "layout": true,
+        "part": false
+      }
+    },
+    {
+      "name": "existing one-pixel geometry precision remains allowed",
+      "expected": {
+        "layout": true,
+        "part": true
+      },
+      "observed": {
+        "layout": true,
+        "part": true
+      }
+    }
+  ],
+  "count": 10,
+  "scope": "Actual private predicates extracted from current source, checked against declared snapshot drift/allowed scrolling contract; no UI, DB, service, Provider, or duplicate E2E execution"
+}

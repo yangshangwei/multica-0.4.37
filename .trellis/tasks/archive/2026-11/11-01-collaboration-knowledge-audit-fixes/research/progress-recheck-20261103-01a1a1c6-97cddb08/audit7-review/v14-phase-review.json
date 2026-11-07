@@ -1,0 +1,2209 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-03T15:21:05.469107+00:00",
+  "reviewer": "01a1a1ca-762e-7b33-9740-26f3ab49212e",
+  "scope": "Completed static/TS/Go phases only, not whole acceptance; no test/build/service/DB commands.",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "candidate_sha": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "state_at_observation": "running",
+  "wholecheck_accepted": false,
+  "v13_original_whole_exit": 2,
+  "frozen_binding_checks": {
+    "candidate": true,
+    "binding_digest": true,
+    "clearance_digest": true,
+    "launcher": true,
+    "go_adapter": true,
+    "pnpm_adapter": true,
+    "source_env": true,
+    "development_id": true,
+    "canonical_product_id": true,
+    "resource_record_digest": true
+  },
+  "tools": [
+    {
+      "name": "node",
+      "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+      "matches": true
+    },
+    {
+      "name": "pnpm",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+      "sha256": "b276da51dc8ca5b0d3ee3371695b50fc8b3244b281b091c63a3f082a88dadeb9",
+      "matches": true,
+      "bundle_sha256": "930fe74c335e95a8f9f6786f115f00c37ae82493ba7bdbddaddd9e06de542f43",
+      "bundle_matches": true
+    },
+    {
+      "name": "go",
+      "path": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+      "matches": true,
+      "sdk_members": {
+        "VERSION": {
+          "sha256": "19a1647c6e8fcfdd9b4ecc10d4c83303d4211738d01daed0a822558d96896c54",
+          "matches": true
+        },
+        "bin/go": {
+          "sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+          "matches": true
+        },
+        "pkg/tool/darwin_arm64/compile": {
+          "sha256": "a55d3fd03c97324e4be76e637282c37d6da9ed85aef12f2a2e18f4aa4a67601d",
+          "matches": true
+        },
+        "pkg/tool/darwin_arm64/link": {
+          "sha256": "f7c7456fd23e3d335e375f621eb71c8dac10a95f52bceec05d644bcb5d38cca2",
+          "matches": true
+        },
+        "pkg/tool/darwin_arm64/asm": {
+          "sha256": "833b7000abefed75b0b440c3abd76cfc26c9fb8d956b1f1f3a0333fecace0e3a",
+          "matches": true
+        }
+      }
+    },
+    {
+      "name": "psql",
+      "path": "/opt/homebrew/opt/libpq/bin/psql",
+      "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07",
+      "matches": true
+    }
+  ],
+  "source_snapshot": {
+    "tracked_file_count": 17536,
+    "mismatches": [
+      {
+        "path": "apps/web/next-env.d.ts",
+        "expected": "7ad303e40d4fddf44f156129e397511953a71481c5cfd86b1862649aaaf240cc",
+        "actual": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"
+      }
+    ],
+    "mode_mismatches": [],
+    "declared_Next_import_only_verified": true,
+    "unexpected_mismatches": [],
+    "qualification": "Current phase-time snapshot; actual final auditor remains required after complete Make."
+  },
+  "source_log_observation": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/make-check-v14.log",
+    "bytes_observed": 27038927,
+    "prefix_sha256_at_observation": "aed4535603ee5771c780aea18293f9e21d1275c22e53ff7ec9881711454cefc8",
+    "immutable_completed_phase_copies": {
+      "1": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/audit7-review/v14-phase-1.raw.log",
+      "2": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/audit7-review/v14-phase-2.raw.log",
+      "3": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/audit7-review/v14-phase-3.raw.log"
+    },
+    "whole_log_is_still_mutable": true
+  },
+  "static": {
+    "actual_tasks": [
+      {
+        "package": "@multica/desktop",
+        "task": "lint",
+        "turbo_hash": "b92a8e83d7418356",
+        "raw": "@multica/desktop:lint: cache bypass, force executing b92a8e83d7418356",
+        "terminal_evidence": "All 15 actual tasks completed successful in this same forced run; not per-test leaves."
+      },
+      {
+        "package": "@multica/plugin-sdk",
+        "task": "lint",
+        "turbo_hash": "a344e9e2ffb012b0",
+        "raw": "@multica/plugin-sdk:lint: cache bypass, force executing a344e9e2ffb012b0",
+        "terminal_evidence": "All 15 actual tasks completed successful in this same forced run; not per-test leaves."
+      },
+      {
+        "package": "@multica/core",
+        "task": "lint",
+        "turbo_hash": "20fd7872d8d59577",
+        "raw": "@multica/core:lint: cache bypass, force executing 20fd7872d8d59577",
+        "terminal_evidence": "All 15 actual tasks completed successful in this same forced run; not per-test leaves."
+      },
+      {
+        "package": "@multica/ui",
+        "task": "lint",
+        "turbo_hash": "90d02b087f3f74ab",
+        "raw": "@multica/ui:lint: cache bypass, force executing 90d02b087f3f74ab",
+        "terminal_evidence": "All 15 actual tasks completed successful in this same forced run; not per-test leaves."
+      },
+      {
+        "package": "@multica/web",
+        "task": "mdx",
+        "turbo_hash": "3d6aa4ef48bae6de",
+        "raw": "@multica/web:mdx: cache bypass, force executing 3d6aa4ef48bae6de",
+        "terminal_evidence": "All 15 actual tasks completed successful in this same forced run; not per-test leaves."
+      },
+      {
+        "package": "@multica/docs",
+        "task": "mdx",
+        "turbo_hash": "e21138fad7fc1bb6",
+        "raw": "@multica/docs:mdx: cache bypass, force executing e21138fad7fc1bb6",
+        "terminal_evidence": "All 15 actual tasks completed successful in this same forced run; not per-test leaves."
+      },
+      {
+        "package": "@multica/views",
+        "task": "lint",
+        "turbo_hash": "64613bac6d687fe9",
+        "raw": "@multica/views:lint: cache bypass, force executing 64613bac6d687fe9",
+        "terminal_evidence": "All 15 actual tasks completed successful in this same forced run; not per-test leaves."
+      },
+      {
+        "package": "@multica/web",
+        "task": "lint",
+        "turbo_hash": "fa94fcdf68193b4b",
+        "raw": "@multica/web:lint: cache bypass, force executing fa94fcdf68193b4b",
+        "terminal_evidence": "All 15 actual tasks completed successful in this same forced run; not per-test leaves."
+      },
+      {
+        "package": "@multica/plugin-sdk",
+        "task": "typecheck",
+        "turbo_hash": "ec62ff0ba132db6e",
+        "raw": "@multica/plugin-sdk:typecheck: cache bypass, force executing ec62ff0ba132db6e",
+        "terminal_evidence": "All 15 actual tasks completed successful in this same forced run; not per-test leaves."
+      },
+      {
+        "package": "@multica/core",
+        "task": "typecheck",
+        "turbo_hash": "edc40eabd36dd278",
+        "raw": "@multica/core:typecheck: cache bypass, force executing edc40eabd36dd278",
+        "terminal_evidence": "All 15 actual tasks completed successful in this same forced run; not per-test leaves."
+      },
+      {
+        "package": "@multica/ui",
+        "task": "typecheck",
+        "turbo_hash": "b433c575e6ae44d9",
+        "raw": "@multica/ui:typecheck: cache bypass, force executing b433c575e6ae44d9",
+        "terminal_evidence": "All 15 actual tasks completed successful in this same forced run; not per-test leaves."
+      },
+      {
+        "package": "@multica/views",
+        "task": "typecheck",
+        "turbo_hash": "2860aa934faca743",
+        "raw": "@multica/views:typecheck: cache bypass, force executing 2860aa934faca743",
+        "terminal_evidence": "All 15 actual tasks completed successful in this same forced run; not per-test leaves."
+      },
+      {
+        "package": "@multica/docs",
+        "task": "typecheck",
+        "turbo_hash": "2206e9e22aac11c7",
+        "raw": "@multica/docs:typecheck: cache bypass, force executing 2206e9e22aac11c7",
+        "terminal_evidence": "All 15 actual tasks completed successful in this same forced run; not per-test leaves."
+      },
+      {
+        "package": "@multica/desktop",
+        "task": "typecheck",
+        "turbo_hash": "19cf307ef58101a3",
+        "raw": "@multica/desktop:typecheck: cache bypass, force executing 19cf307ef58101a3",
+        "terminal_evidence": "All 15 actual tasks completed successful in this same forced run; not per-test leaves."
+      },
+      {
+        "package": "@multica/web",
+        "task": "typecheck",
+        "turbo_hash": "2580c9adb12e6c79",
+        "raw": "@multica/web:typecheck: cache bypass, force executing 2580c9adb12e6c79",
+        "terminal_evidence": "All 15 actual tasks completed successful in this same forced run; not per-test leaves."
+      }
+    ],
+    "count": 15,
+    "all_successful_summary": true,
+    "extra_ui_exports": {
+      "command": "pnpm check:ui-exports",
+      "evidence": "scripts/check.sh runs this after Turbo under set -e; actual run reached phase2.",
+      "literal_stdout": [
+        "> multica@0.2.0 check:ui-exports /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+        "> node scripts/check-ui-wildcard-exports.mjs",
+        "packages/ui wildcard exports clean (62 files under components/ui, components/common, markdown, hooks)."
+      ]
+    }
+  },
+  "TS": {
+    "reported_pass": 13244,
+    "file_count": 1069,
+    "file_inventory_complete": true,
+    "leaf_inventory_complete": false,
+    "inventory": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/audit7-review/v14-ts-file-inventory.json",
+    "reporter_gap": "Default stdout reports every file and aggregate cases; caches contain file duration/failed only. A limited slow-test subset is not a complete qualified leaf inventory."
+  },
+  "Go": {
+    "counts": {
+      "run": 20985,
+      "pass": 20963,
+      "fail": 0,
+      "skip": 22
+    },
+    "inventory_complete": true,
+    "inventory": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/audit7-review/v14-go-inventory.json",
+    "skip_review": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/audit7-review/v14-go-skip-review.json",
+    "vet": {
+      "command": "go vet -p 2 ./...",
+      "source": "scripts/check.sh:160",
+      "scope": "Actual source-bound phase3 command under fail-fast shell, reached phase4; stdout empty.",
+      "passed_by_phase_transition": true,
+      "standalone_go_build_full_invocation": false,
+      "Go_compile_scope": "All 82 actual go test -race package invocations compiled the current package/test source; 9 contain no tests."
+    },
+    "script_results": [
+      {
+        "name": "test-go.test.sh: PASS",
+        "scope": "Actual script-level/printed control pass only; no unprinted leaf cases invented."
+      },
+      {
+        "name": "✓ dev-env.sh registry behaviour verified",
+        "scope": "Actual script-level/printed control pass only; no unprinted leaf cases invented."
+      },
+      {
+        "name": "native-collaboration: PASS",
+        "scope": "Actual script-level/printed control pass only; no unprinted leaf cases invented."
+      },
+      {
+        "name": "native-changelog: PASS",
+        "scope": "Actual script-level/printed control pass only; no unprinted leaf cases invented."
+      },
+      {
+        "name": "native-distinct: PASS",
+        "scope": "Actual script-level/printed control pass only; no unprinted leaf cases invented."
+      },
+      {
+        "name": "native-duplicate: PASS",
+        "scope": "Actual script-level/printed control pass only; no unprinted leaf cases invented."
+      },
+      {
+        "name": "native-shared-renderer: PASS",
+        "scope": "Actual script-level/printed control pass only; no unprinted leaf cases invented."
+      },
+      {
+        "name": "native-ipv6: PASS",
+        "scope": "Actual script-level/printed control pass only; no unprinted leaf cases invented."
+      },
+      {
+        "name": "native-remote: PASS",
+        "scope": "Actual script-level/printed control pass only; no unprinted leaf cases invented."
+      },
+      {
+        "name": "native-credential: PASS",
+        "scope": "Actual script-level/printed control pass only; no unprinted leaf cases invented."
+      },
+      {
+        "name": "native-malformed: PASS",
+        "scope": "Actual script-level/printed control pass only; no unprinted leaf cases invented."
+      },
+      {
+        "name": "native-protocol: PASS",
+        "scope": "Actual script-level/printed control pass only; no unprinted leaf cases invented."
+      },
+      {
+        "name": "native-zero-port: PASS",
+        "scope": "Actual script-level/printed control pass only; no unprinted leaf cases invented."
+      },
+      {
+        "name": "check.test.sh: PASS",
+        "scope": "Actual script-level/printed control pass only; no unprinted leaf cases invented."
+      }
+    ],
+    "affected_package_results": [
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/migrate",
+        "metadata": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142421583865_f9a6f66e94fe.json",
+        "metadata_sha256": "baa520dc0158696d8cfdb0f6df3ec2f107c605b893d5be281ca7b69c3a250e9f",
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142421583865_f9a6f66e94fe.jsonl",
+        "raw_sha256": "cff2ad1429ccd19b646c0e83c97f795637885976992c6113d95d20af1f276c6b",
+        "recorded_raw_sha256_matches": true,
+        "named_counts": {
+          "run": 71,
+          "pass": 70,
+          "fail": 0,
+          "skip": 1
+        },
+        "recorded_counts_matches": true,
+        "state": "complete",
+        "exit_code": 0,
+        "compiled_without_tests": false,
+        "package_terminals": [
+          "pass"
+        ],
+        "command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/cmd/migrate"
+        ],
+        "database": "ccheck_20261103142421583865_f9a6f66e94fe",
+        "template": "multica_check_20261103141424_39386_go",
+        "recorded_allocation_policy_matches": true,
+        "allocation_scope": "Actual unique package allocation records and hash-pinned adapter verify clone/current_database before child startup; this reviewer executes no SQL and does not duplicate root live witnesses.",
+        "started_at": "2026-11-03T14:24:21.881707+00:00",
+        "finished_at": "2026-11-03T14:24:40.526307+00:00"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "metadata": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.json",
+        "metadata_sha256": "33c18195d93d3a1e8e6dcd5ca71a8101fa6e7b702270ded06d13c304f9704631",
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl",
+        "raw_sha256": "48846562f2bad6f2ce4e06b8afba871b88399d23a6f9a886d68a9afc262a1897",
+        "recorded_raw_sha256_matches": true,
+        "named_counts": {
+          "run": 741,
+          "pass": 735,
+          "fail": 0,
+          "skip": 6
+        },
+        "recorded_counts_matches": true,
+        "state": "complete",
+        "exit_code": 0,
+        "compiled_without_tests": false,
+        "package_terminals": [
+          "pass"
+        ],
+        "command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/cmd/server"
+        ],
+        "database": "ccheck_20261103142448233116_6f87875654d8",
+        "template": "multica_check_20261103141424_39386_go",
+        "recorded_allocation_policy_matches": true,
+        "allocation_scope": "Actual unique package allocation records and hash-pinned adapter verify clone/current_database before child startup; this reviewer executes no SQL and does not duplicate root live witnesses.",
+        "started_at": "2026-11-03T14:24:48.610961+00:00",
+        "finished_at": "2026-11-03T14:26:17.219729+00:00"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon",
+        "metadata": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142638210715_7a21f045e560.json",
+        "metadata_sha256": "86b385ddbb9bae0526fb1f6587286805cfa94269f27a965bebaf3dfe0073f85a",
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142638210715_7a21f045e560.jsonl",
+        "raw_sha256": "f586d65c1c77081f3011a769eda3944b8a8cfe0c0022b59fca5fdc003492100c",
+        "recorded_raw_sha256_matches": true,
+        "named_counts": {
+          "run": 1716,
+          "pass": 1714,
+          "fail": 0,
+          "skip": 2
+        },
+        "recorded_counts_matches": true,
+        "state": "complete",
+        "exit_code": 0,
+        "compiled_without_tests": false,
+        "package_terminals": [
+          "pass"
+        ],
+        "command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/daemon"
+        ],
+        "database": "ccheck_20261103142638210715_7a21f045e560",
+        "template": "multica_check_20261103141424_39386_go",
+        "recorded_allocation_policy_matches": true,
+        "allocation_scope": "Actual unique package allocation records and hash-pinned adapter verify clone/current_database before child startup; this reviewer executes no SQL and does not duplicate root live witnesses.",
+        "started_at": "2026-11-03T14:26:38.448838+00:00",
+        "finished_at": "2026-11-03T14:27:42.809184+00:00"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+        "metadata": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142742809429_e304ab6e77ff.json",
+        "metadata_sha256": "67cedfef72f9c544438e59a66602609daeb5614591556667dae9ff787e79014a",
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142742809429_e304ab6e77ff.jsonl",
+        "raw_sha256": "3dd33affd377742319354b0d3cbbdf09c1b17f585f387ac6aa99f2796008142d",
+        "recorded_raw_sha256_matches": true,
+        "named_counts": {
+          "run": 348,
+          "pass": 348,
+          "fail": 0,
+          "skip": 0
+        },
+        "recorded_counts_matches": true,
+        "state": "complete",
+        "exit_code": 0,
+        "compiled_without_tests": false,
+        "package_terminals": [
+          "pass"
+        ],
+        "command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/daemon/collaborationrun"
+        ],
+        "database": "ccheck_20261103142742809429_e304ab6e77ff",
+        "template": "multica_check_20261103141424_39386_go",
+        "recorded_allocation_policy_matches": true,
+        "allocation_scope": "Actual unique package allocation records and hash-pinned adapter verify clone/current_database before child startup; this reviewer executes no SQL and does not duplicate root live witnesses.",
+        "started_at": "2026-11-03T14:27:43.025903+00:00",
+        "finished_at": "2026-11-03T14:29:21.666180+00:00"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "metadata": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143047061309_199d57419d78.json",
+        "metadata_sha256": "0feea534d1842f4b65291e3ce5d306f257923fe017d5532344675992cc382b73",
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143047061309_199d57419d78.jsonl",
+        "raw_sha256": "9612417363a11a34c6753565cbce80965adb860697ab9f19163acdcdf8ce21bb",
+        "recorded_raw_sha256_matches": true,
+        "named_counts": {
+          "run": 5349,
+          "pass": 5342,
+          "fail": 0,
+          "skip": 7
+        },
+        "recorded_counts_matches": true,
+        "state": "complete",
+        "exit_code": 0,
+        "compiled_without_tests": false,
+        "package_terminals": [
+          "pass"
+        ],
+        "command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/handler"
+        ],
+        "database": "ccheck_20261103143047061309_199d57419d78",
+        "template": "multica_check_20261103141424_39386_go",
+        "recorded_allocation_policy_matches": true,
+        "allocation_scope": "Actual unique package allocation records and hash-pinned adapter verify clone/current_database before child startup; this reviewer executes no SQL and does not duplicate root live witnesses.",
+        "started_at": "2026-11-03T14:30:47.250606+00:00",
+        "finished_at": "2026-11-03T14:35:38.971544+00:00"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/migrations",
+        "metadata": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143747720134_33c023a139ab.json",
+        "metadata_sha256": "7ab308fee7f5be0f14ebd7a72998d17c7e133031fc537c852110901ed3a7b335",
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143747720134_33c023a139ab.jsonl",
+        "raw_sha256": "55f745da205c99df4e6a37a293885f230db6be983768bec2be778f4f2dadbbaf",
+        "recorded_raw_sha256_matches": true,
+        "named_counts": {
+          "run": 540,
+          "pass": 540,
+          "fail": 0,
+          "skip": 0
+        },
+        "recorded_counts_matches": true,
+        "state": "complete",
+        "exit_code": 0,
+        "compiled_without_tests": false,
+        "package_terminals": [
+          "pass"
+        ],
+        "command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/migrations"
+        ],
+        "database": "ccheck_20261103143747720134_33c023a139ab",
+        "template": "multica_check_20261103141424_39386_go",
+        "recorded_allocation_policy_matches": true,
+        "allocation_scope": "Actual unique package allocation records and hash-pinned adapter verify clone/current_database before child startup; this reviewer executes no SQL and does not duplicate root live witnesses.",
+        "started_at": "2026-11-03T14:37:47.952199+00:00",
+        "finished_at": "2026-11-03T14:38:25.010295+00:00"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/realtime",
+        "metadata": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143826155566_08997a7fa7fe.json",
+        "metadata_sha256": "4ba553f9fca2a74d2716386b7bf3fba2ca2ddd8605280ec7fb5f2141cab0ad3f",
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143826155566_08997a7fa7fe.jsonl",
+        "raw_sha256": "a06bd5b0bbc58d49f4186a72e601519503c15b5044ed81f85d7ffb1c2e057570",
+        "recorded_raw_sha256_matches": true,
+        "named_counts": {
+          "run": 87,
+          "pass": 87,
+          "fail": 0,
+          "skip": 0
+        },
+        "recorded_counts_matches": true,
+        "state": "complete",
+        "exit_code": 0,
+        "compiled_without_tests": false,
+        "package_terminals": [
+          "pass"
+        ],
+        "command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/realtime"
+        ],
+        "database": "ccheck_20261103143826155566_08997a7fa7fe",
+        "template": "multica_check_20261103141424_39386_go",
+        "recorded_allocation_policy_matches": true,
+        "allocation_scope": "Actual unique package allocation records and hash-pinned adapter verify clone/current_database before child startup; this reviewer executes no SQL and does not duplicate root live witnesses.",
+        "started_at": "2026-11-03T14:38:26.393504+00:00",
+        "finished_at": "2026-11-03T14:38:31.636541+00:00"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "metadata": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143839963014_986dfe9cbf73.json",
+        "metadata_sha256": "0ab5ad65102f0a8c5e1f2c891efbf81fa5a52b2ce403e55de1596cfd127a5b49",
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143839963014_986dfe9cbf73.jsonl",
+        "raw_sha256": "7f48831a43b725880efec631b9a2007e7ee9101c0b05cd042f2bc6f753ff2af5",
+        "recorded_raw_sha256_matches": true,
+        "named_counts": {
+          "run": 3430,
+          "pass": 3430,
+          "fail": 0,
+          "skip": 0
+        },
+        "recorded_counts_matches": true,
+        "state": "complete",
+        "exit_code": 0,
+        "compiled_without_tests": false,
+        "package_terminals": [
+          "pass"
+        ],
+        "command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/service"
+        ],
+        "database": "ccheck_20261103143839963014_986dfe9cbf73",
+        "template": "multica_check_20261103141424_39386_go",
+        "recorded_allocation_policy_matches": true,
+        "allocation_scope": "Actual unique package allocation records and hash-pinned adapter verify clone/current_database before child startup; this reviewer executes no SQL and does not duplicate root live witnesses.",
+        "started_at": "2026-11-03T14:38:40.268863+00:00",
+        "finished_at": "2026-11-03T14:57:15.083431+00:00"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/protocol",
+        "metadata": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145743426254_b2f76499e952.json",
+        "metadata_sha256": "9fcb46aec1782291d195313dc0795a860443e25c42a3c7c231b9fef1bed1b75d",
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145743426254_b2f76499e952.jsonl",
+        "raw_sha256": "87ef98114a8b46819dbb28a43ccfaffb94c9206d641fe3bd5090e69a1b8d9299",
+        "recorded_raw_sha256_matches": true,
+        "named_counts": {
+          "run": 390,
+          "pass": 390,
+          "fail": 0,
+          "skip": 0
+        },
+        "recorded_counts_matches": true,
+        "state": "complete",
+        "exit_code": 0,
+        "compiled_without_tests": false,
+        "package_terminals": [
+          "pass"
+        ],
+        "command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/protocol"
+        ],
+        "database": "ccheck_20261103145743426254_b2f76499e952",
+        "template": "multica_check_20261103141424_39386_go",
+        "recorded_allocation_policy_matches": true,
+        "allocation_scope": "Actual unique package allocation records and hash-pinned adapter verify clone/current_database before child startup; this reviewer executes no SQL and does not duplicate root live witnesses.",
+        "started_at": "2026-11-03T14:57:43.648055+00:00",
+        "finished_at": "2026-11-03T14:57:43.799475+00:00"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "metadata": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145747640958_56802910400e.json",
+        "metadata_sha256": "cce27295a2f03892d64078f4f96e11f914bb740701a555d886aa0360208f8b20",
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145747640958_56802910400e.jsonl",
+        "raw_sha256": "20165c548edc147700c4992ceb13d5db8fbdbf04f942f716adf8c5b48b4d02ec",
+        "recorded_raw_sha256_matches": true,
+        "named_counts": {
+          "run": 1955,
+          "pass": 1951,
+          "fail": 0,
+          "skip": 4
+        },
+        "recorded_counts_matches": true,
+        "state": "complete",
+        "exit_code": 0,
+        "compiled_without_tests": false,
+        "package_terminals": [
+          "pass"
+        ],
+        "command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/agent"
+        ],
+        "database": "ccheck_20261103145747640958_56802910400e",
+        "template": "multica_check_20261103141424_39386_go",
+        "recorded_allocation_policy_matches": true,
+        "allocation_scope": "Actual unique package allocation records and hash-pinned adapter verify clone/current_database before child startup; this reviewer executes no SQL and does not duplicate root live witnesses.",
+        "started_at": "2026-11-03T14:57:47.850901+00:00",
+        "finished_at": "2026-11-03T15:02:07.600330+00:00"
+      }
+    ],
+    "observed_mode": "Current complete default package selection with -race; no distinct current non-race full invocation",
+    "race_selection_review": {
+      "race_or_not_race_build_tags": [],
+      "race_conditional_code_hits": [],
+      "all_build_tag_scope_rows": [
+        {
+          "path": "server/internal/service/mcp_template_dir_other.go",
+          "line": 1,
+          "tag": "//go:build !unix"
+        },
+        {
+          "path": "server/internal/service/mcp_template_dir_unix.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/internal/service/mcp_template_dir_unix_test.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/internal/service/resource_lock_other.go",
+          "line": 1,
+          "tag": "//go:build !unix && !windows"
+        },
+        {
+          "path": "server/internal/service/resource_lock_unix.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/internal/service/resource_lock_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/canonical_path.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/internal/daemon/canonical_path_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/internal/daemon/canonical_path_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/controller_linux.go",
+          "line": 1,
+          "tag": "//go:build linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/controller_linux_test.go",
+          "line": 1,
+          "tag": "//go:build linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/controller_other_test.go",
+          "line": 1,
+          "tag": "//go:build !linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/controller_unsupported.go",
+          "line": 1,
+          "tag": "//go:build !linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/host_agentintegration_authorizer_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/host_agentintegration_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/host_context_experiment_evidence_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/host_context_experiment_fixture_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/host_context_experiment_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/ledger_unix.go",
+          "line": 1,
+          "tag": "//go:build linux || darwin"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/ledger_unsupported.go",
+          "line": 1,
+          "tag": "//go:build !linux && !darwin && !windows"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/ledger_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/ledger_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/preparation_git_linux_test.go",
+          "line": 1,
+          "tag": "//go:build linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/preparation_linux.go",
+          "line": 1,
+          "tag": "//go:build linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/preparation_linux_test.go",
+          "line": 1,
+          "tag": "//go:build linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/preparation_recovery_linux_test.go",
+          "line": 1,
+          "tag": "//go:build linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/provider_bundle_unix.go",
+          "line": 1,
+          "tag": "//go:build linux || darwin"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/provider_bundle_unsupported.go",
+          "line": 1,
+          "tag": "//go:build !linux && !darwin"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/runner_linux_test.go",
+          "line": 1,
+          "tag": "//go:build linux"
+        },
+        {
+          "path": "server/internal/daemon/config_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/execenv/codex_home_link.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/internal/daemon/execenv/codex_home_link_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/execenv/codex_user_skills_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/execenv/envlock_unix.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/internal/daemon/execenv/envlock_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/execenv/isolation_unix.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/internal/daemon/execenv/isolation_unix_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/internal/daemon/execenv/isolation_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/execenv/isolation_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/execenv/openclaw_process_tree_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/internal/daemon/execenv/openclaw_real_integration_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/internal/daemon/execenv/openclaw_shim_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/execenv/task_temp_unix_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/internal/daemon/execenv/task_temp_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/gc_junction_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/knowledge_server_integration_test.go",
+          "line": 1,
+          "tag": "//go:build knowledgeintegration"
+        },
+        {
+          "path": "server/internal/daemon/managed_identity_acl_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/managed_identity_owner_unix.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/internal/daemon/managed_identity_owner_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/managed_lock_unix.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/internal/daemon/managed_lock_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/managed_lock_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/pi_busy_retry_unix_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/internal/daemon/processtree/controller_unix.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/internal/daemon/processtree/controller_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/processtree/run_unix_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/internal/daemon/repocache/cache_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/runtime_launch_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/cmd/server/collaboration_knowledge_correction_composite_test.go",
+          "line": 1,
+          "tag": "//go:build knowledgeintegration"
+        },
+        {
+          "path": "server/cmd/server/collaboration_knowledge_host_composite_test.go",
+          "line": 1,
+          "tag": "//go:build knowledgeintegration"
+        },
+        {
+          "path": "server/cmd/server/platform_admin_credentials_publish_unsupported.go",
+          "line": 1,
+          "tag": "//go:build !linux && !darwin && !windows"
+        },
+        {
+          "path": "server/cmd/server/platform_admin_credentials_unix.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_entry_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_evidence_contract_unit_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_evidence_fault_proof_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_evidence_format_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_evidence_publication_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_fake_helpers_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_fake_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_fixture_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_lifecycle_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_observe_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_provider_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_run_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_scenarios_handoff_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_scenarios_recall_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_trace_barrier_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_trace_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/cmd/server/rk1_trial_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration && !windows"
+        },
+        {
+          "path": "server/pkg/agent/acp_effort_unix_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/acp_terminal_other_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/acp_terminal_shell_other.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/acp_terminal_shell_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/acp_terminal_shell_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/acp_terminal_status_other.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/acp_terminal_status_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/claude_cancel_unix_test.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/pkg/agent/codearts_cancel_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/codearts_integration_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/pkg/agent/codebuddy_discovery_fallback_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/codex_cleanup_unix_test.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/pkg/agent/copilot_invocation_other.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/copilot_invocation_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/copilot_invocation_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/cursor_execute_unix_test.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/pkg/agent/cursor_integration_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/pkg/agent/cursor_invocation_other.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/cursor_invocation_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/cursor_invocation_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/cursor_stdin_unix_test.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/pkg/agent/cursor_stdin_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/cursor_stream_fixture_unix_test.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/pkg/agent/dim_integration_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/pkg/agent/dim_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/dsh_integration_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/pkg/agent/exec_fixture_unix_test.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/pkg/agent/exec_fixture_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/exec_format_other.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/grok_integration_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/pkg/agent/hermes_effort_execute_unix_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/hermes_integration_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/pkg/agent/hermes_model_discovery_unix_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/hermes_tool_visibility_execute_unix_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/kimi_integration_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/pkg/agent/launch_instance_darwin.go",
+          "line": 1,
+          "tag": "//go:build darwin"
+        },
+        {
+          "path": "server/pkg/agent/launch_instance_linux.go",
+          "line": 1,
+          "tag": "//go:build linux"
+        },
+        {
+          "path": "server/pkg/agent/launch_instance_other.go",
+          "line": 1,
+          "tag": "//go:build !linux && !darwin && !windows"
+        },
+        {
+          "path": "server/pkg/agent/launch_instance_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/launch_lifecycle_unix_test.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/pkg/agent/launch_lifecycle_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/launch_process_unix_test.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/pkg/agent/mcode_cancel_unix_test.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/pkg/agent/mcode_integration_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/pkg/agent/openclaw_stdout_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/opencode_cancel_unix_test.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/pkg/agent/opencode_stdin_unix_test.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/pkg/agent/opencode_stdin_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/pi_invocation_other.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/pi_invocation_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/pi_invocation_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/pi_session_lock_unix.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/pi_session_lock_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/pi_stdin_unix_test.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/pkg/agent/pi_stdin_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/proc_other.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/proc_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/proc_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/qwen_invocation_other.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/qwen_invocation_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/qwen_invocation_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/qwen_stdin_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/qwenpaw_integration_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/pkg/agent/real_agent_smoke_integration_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/pkg/agent/reasonix_effort_execute_unix_test.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/pkg/agent/reasonix_execute_unix_test.go",
+          "line": 1,
+          "tag": "//go:build unix"
+        },
+        {
+          "path": "server/pkg/agent/run_collect_lifecycle_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/run_collect_quiet_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/run_collect_test.go",
+          "line": 1,
+          "tag": "//go:build !windows"
+        },
+        {
+          "path": "server/pkg/agent/run_collect_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/pkg/agent/traecli_integration_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/controller_linux.go",
+          "line": 1,
+          "tag": "//go:build linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/controller_linux_test.go",
+          "line": 1,
+          "tag": "//go:build linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/controller_other_test.go",
+          "line": 1,
+          "tag": "//go:build !linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/controller_unsupported.go",
+          "line": 1,
+          "tag": "//go:build !linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/host_agentintegration_authorizer_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/host_agentintegration_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/host_context_experiment_evidence_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/host_context_experiment_fixture_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/host_context_experiment_test.go",
+          "line": 1,
+          "tag": "//go:build agentintegration"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/ledger_unix.go",
+          "line": 1,
+          "tag": "//go:build linux || darwin"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/ledger_unsupported.go",
+          "line": 1,
+          "tag": "//go:build !linux && !darwin && !windows"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/ledger_windows.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/ledger_windows_test.go",
+          "line": 1,
+          "tag": "//go:build windows"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/preparation_git_linux_test.go",
+          "line": 1,
+          "tag": "//go:build linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/preparation_linux.go",
+          "line": 1,
+          "tag": "//go:build linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/preparation_linux_test.go",
+          "line": 1,
+          "tag": "//go:build linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/preparation_recovery_linux_test.go",
+          "line": 1,
+          "tag": "//go:build linux"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/provider_bundle_unix.go",
+          "line": 1,
+          "tag": "//go:build linux || darwin"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/provider_bundle_unsupported.go",
+          "line": 1,
+          "tag": "//go:build !linux && !darwin"
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/runner_linux_test.go",
+          "line": 1,
+          "tag": "//go:build linux"
+        }
+      ],
+      "race_conditioned_named_skips": [],
+      "default_set_omission_found": false,
+      "qualification": "No race/!race tags or runtime race omission found. Mode distinction does not create a new normal full-suite requirement. knowledgeintegration, agentintegration and platform tags remain separately registered gates."
+    }
+  },
+  "canonical_21_dispositions": [
+    {
+      "id": "H1",
+      "regression": {
+        "path": "server/internal/service/task_knowledge_invocation_test.go",
+        "line": 33,
+        "name": "TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim",
+        "retained_final639_terminal": "pass"
+      },
+      "actual_current_Go_named_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "test": "TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim",
+          "action": "pass",
+          "time": "2026-11-03T22:56:26.796215+08:00",
+          "elapsed": 0.68,
+          "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143839963014_986dfe9cbf73.jsonl",
+          "raw_sha256": "7f48831a43b725880efec631b9a2007e7ee9101c0b05cd042f2bc6f753ff2af5",
+          "raw_line": 14335
+        }
+      ],
+      "actual_current_TS_file_terminal": null,
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "H2",
+      "regression": {
+        "path": "server/internal/daemon/knowledge_context_claim_test.go",
+        "line": 346,
+        "name": "TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration",
+        "retained_final639_terminal": "pass"
+      },
+      "actual_current_Go_named_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon",
+          "test": "TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration",
+          "action": "pass",
+          "time": "2026-11-03T22:27:16.970406+08:00",
+          "elapsed": 0.2,
+          "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142638210715_7a21f045e560.jsonl",
+          "raw_sha256": "f586d65c1c77081f3011a769eda3944b8a8cfe0c0022b59fca5fdc003492100c",
+          "raw_line": 2423
+        }
+      ],
+      "actual_current_TS_file_terminal": null,
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "H3",
+      "regression": {
+        "path": "server/internal/service/task_knowledge_history_growth_test.go",
+        "line": 47,
+        "name": "TestKnowledgeResumeReadsCompleteLongSessionHistory",
+        "retained_final639_terminal": "pass"
+      },
+      "actual_current_Go_named_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "test": "TestKnowledgeResumeReadsCompleteLongSessionHistory",
+          "action": "pass",
+          "time": "2026-11-03T22:56:14.102466+08:00",
+          "elapsed": 1.16,
+          "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143839963014_986dfe9cbf73.jsonl",
+          "raw_sha256": "7f48831a43b725880efec631b9a2007e7ee9101c0b05cd042f2bc6f753ff2af5",
+          "raw_line": 14181
+        }
+      ],
+      "actual_current_TS_file_terminal": null,
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "M1",
+      "regression": {
+        "path": "server/internal/handler/daemon_knowledge_test.go",
+        "line": 342,
+        "name": "TestKnowledgeClaimTransientHistoryErrorRequeuesTask",
+        "retained_final639_terminal": "pass"
+      },
+      "actual_current_Go_named_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "test": "TestKnowledgeClaimTransientHistoryErrorRequeuesTask",
+          "action": "pass",
+          "time": "2026-11-03T22:33:27.499462+08:00",
+          "elapsed": 0.36,
+          "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143047061309_199d57419d78.jsonl",
+          "raw_sha256": "9612417363a11a34c6753565cbce80965adb860697ab9f19163acdcdf8ce21bb",
+          "raw_line": 7990
+        }
+      ],
+      "actual_current_TS_file_terminal": null,
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "M2",
+      "regression": {
+        "path": "server/internal/service/task_knowledge_concurrency_test.go",
+        "line": 297,
+        "name": "TestKnowledgePreparationWaitsOutSiblingNamespaceHolder",
+        "retained_final639_terminal": "pass"
+      },
+      "actual_current_Go_named_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "test": "TestKnowledgePreparationWaitsOutSiblingNamespaceHolder",
+          "action": "pass",
+          "time": "2026-11-03T22:56:08.814348+08:00",
+          "elapsed": 2.05,
+          "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143839963014_986dfe9cbf73.jsonl",
+          "raw_sha256": "7f48831a43b725880efec631b9a2007e7ee9101c0b05cd042f2bc6f753ff2af5",
+          "raw_line": 14129
+        }
+      ],
+      "actual_current_TS_file_terminal": null,
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "M3",
+      "regression": {
+        "path": "server/internal/service/task_knowledge_history_growth_test.go",
+        "line": 175,
+        "name": "TestKnowledgeRuntimeHistoryIsIndexDriven",
+        "retained_final639_terminal": "pass"
+      },
+      "actual_current_Go_named_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "test": "TestKnowledgeRuntimeHistoryIsIndexDriven",
+          "action": "pass",
+          "time": "2026-11-03T22:56:20.088365+08:00",
+          "elapsed": 0.28,
+          "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143839963014_986dfe9cbf73.jsonl",
+          "raw_sha256": "7f48831a43b725880efec631b9a2007e7ee9101c0b05cd042f2bc6f753ff2af5",
+          "raw_line": 14224
+        }
+      ],
+      "actual_current_TS_file_terminal": null,
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "M4",
+      "regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 112,
+        "name": "keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "actual_current_Go_named_terminals": [],
+      "actual_current_TS_file_terminal": {
+        "package": "@multica/views",
+        "file": "collaboration/knowledge-panel.test.tsx",
+        "tests_reported": 34,
+        "duration_output": "5038ms",
+        "terminal": "file_pass",
+        "raw": "@multica/views:test:  ✓ collaboration/knowledge-panel.test.tsx (34 tests) 5038ms"
+      },
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "M5",
+      "regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 354,
+        "name": "a review decision leaves an open proposal draft intact and only the panel's own proposal closes it",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "actual_current_Go_named_terminals": [],
+      "actual_current_TS_file_terminal": {
+        "package": "@multica/views",
+        "file": "collaboration/knowledge-panel.test.tsx",
+        "tests_reported": 34,
+        "duration_output": "5038ms",
+        "terminal": "file_pass",
+        "raw": "@multica/views:test:  ✓ collaboration/knowledge-panel.test.tsx (34 tests) 5038ms"
+      },
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "L1",
+      "regression": {
+        "path": "server/internal/service/collaboration_knowledge_concurrency_test.go",
+        "line": 408,
+        "name": "TestKnowledgeApprovalExpiryUsesDatabaseClockNotApplicationClock",
+        "retained_final639_terminal": "pass"
+      },
+      "actual_current_Go_named_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "test": "TestKnowledgeApprovalExpiryUsesDatabaseClockNotApplicationClock",
+          "action": "pass",
+          "time": "2026-11-03T22:46:31.748338+08:00",
+          "elapsed": 1.83,
+          "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143839963014_986dfe9cbf73.jsonl",
+          "raw_sha256": "7f48831a43b725880efec631b9a2007e7ee9101c0b05cd042f2bc6f753ff2af5",
+          "raw_line": 5167
+        }
+      ],
+      "actual_current_TS_file_terminal": null,
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "L2",
+      "regression": {
+        "path": "server/internal/service/collaboration_knowledge_authority_test.go",
+        "line": 186,
+        "name": "TestKnowledgeProposalExpiryCheckViolationIsInvalidRequest",
+        "retained_final639_terminal": "pass"
+      },
+      "actual_current_Go_named_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "test": "TestKnowledgeProposalExpiryCheckViolationIsInvalidRequest",
+          "action": "pass",
+          "time": "2026-11-03T22:46:27.200857+08:00",
+          "elapsed": 0.19,
+          "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143839963014_986dfe9cbf73.jsonl",
+          "raw_sha256": "7f48831a43b725880efec631b9a2007e7ee9101c0b05cd042f2bc6f753ff2af5",
+          "raw_line": 5111
+        }
+      ],
+      "actual_current_TS_file_terminal": null,
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "L3",
+      "regression": {
+        "path": "server/internal/realtime/collaboration_knowledge_test.go",
+        "line": 130,
+        "name": "TestKnowledgeSlowFinalSendAuthorizationDoesNotSpendWriteBudget",
+        "retained_final639_terminal": "pass"
+      },
+      "actual_current_Go_named_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/realtime",
+          "test": "TestKnowledgeSlowFinalSendAuthorizationDoesNotSpendWriteBudget",
+          "action": "pass",
+          "time": "2026-11-03T22:38:29.544068+08:00",
+          "elapsed": 0.6,
+          "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143826155566_08997a7fa7fe.jsonl",
+          "raw_sha256": "a06bd5b0bbc58d49f4186a72e601519503c15b5044ed81f85d7ffb1c2e057570",
+          "raw_line": 87
+        }
+      ],
+      "actual_current_TS_file_terminal": null,
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "L4",
+      "regression": {
+        "path": "server/internal/service/collaboration_knowledge_invalidation_test.go",
+        "line": 704,
+        "name": "TestKnowledgeTimedOutHintDoesNotBlockLaterHints",
+        "retained_final639_terminal": "pass"
+      },
+      "actual_current_Go_named_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "test": "TestKnowledgeTimedOutHintDoesNotBlockLaterHints",
+          "action": "pass",
+          "time": "2026-11-03T22:46:58.71484+08:00",
+          "elapsed": 0.84,
+          "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143839963014_986dfe9cbf73.jsonl",
+          "raw_sha256": "7f48831a43b725880efec631b9a2007e7ee9101c0b05cd042f2bc6f753ff2af5",
+          "raw_line": 5447
+        }
+      ],
+      "actual_current_TS_file_terminal": null,
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "L5",
+      "regression": {
+        "path": "server/internal/service/collaboration_knowledge_credentials_test.go",
+        "line": 142,
+        "name": "TestKnowledgePATWriteWaitsOutLastUsedUpdate",
+        "retained_final639_terminal": "pass"
+      },
+      "actual_current_Go_named_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "test": "TestKnowledgePATWriteWaitsOutLastUsedUpdate",
+          "action": "pass",
+          "time": "2026-11-03T22:46:35.440548+08:00",
+          "elapsed": 0.32,
+          "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143839963014_986dfe9cbf73.jsonl",
+          "raw_sha256": "7f48831a43b725880efec631b9a2007e7ee9101c0b05cd042f2bc6f753ff2af5",
+          "raw_line": 5215
+        }
+      ],
+      "actual_current_TS_file_terminal": null,
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "L6",
+      "regression": {
+        "path": "server/internal/daemon/knowledge_context_claim_test.go",
+        "line": 719,
+        "name": "TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask",
+        "retained_final639_terminal": "pass"
+      },
+      "actual_current_Go_named_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon",
+          "test": "TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask",
+          "action": "pass",
+          "time": "2026-11-03T22:27:19.55891+08:00",
+          "elapsed": 0.05,
+          "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142638210715_7a21f045e560.jsonl",
+          "raw_sha256": "f586d65c1c77081f3011a769eda3944b8a8cfe0c0022b59fca5fdc003492100c",
+          "raw_line": 2515
+        }
+      ],
+      "actual_current_TS_file_terminal": null,
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "L7",
+      "regression": {
+        "path": "server/pkg/agent/knowledge_launch_test.go",
+        "line": 772,
+        "name": "TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated",
+        "retained_final639_terminal": "pass"
+      },
+      "actual_current_Go_named_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/agent",
+          "test": "TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated",
+          "action": "pass",
+          "time": "2026-11-03T22:59:28.259271+08:00",
+          "elapsed": 0,
+          "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145747640958_56802910400e.jsonl",
+          "raw_sha256": "20165c548edc147700c4992ceb13d5db8fbdbf04f942f716adf8c5b48b4d02ec",
+          "raw_line": 3857
+        }
+      ],
+      "actual_current_TS_file_terminal": null,
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "L8",
+      "regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 491,
+        "name": "submit waits for a refreshing source list instead of reporting a changed source",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "actual_current_Go_named_terminals": [],
+      "actual_current_TS_file_terminal": {
+        "package": "@multica/views",
+        "file": "collaboration/knowledge-panel.test.tsx",
+        "tests_reported": 34,
+        "duration_output": "5038ms",
+        "terminal": "file_pass",
+        "raw": "@multica/views:test:  ✓ collaboration/knowledge-panel.test.tsx (34 tests) 5038ms"
+      },
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "L9",
+      "regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 532,
+        "name": "attributes over-byte summary, conclusion and evidence to the field instead of a source failure",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "actual_current_Go_named_terminals": [],
+      "actual_current_TS_file_terminal": {
+        "package": "@multica/views",
+        "file": "collaboration/knowledge-panel.test.tsx",
+        "tests_reported": 34,
+        "duration_output": "5038ms",
+        "terminal": "file_pass",
+        "raw": "@multica/views:test:  ✓ collaboration/knowledge-panel.test.tsx (34 tests) 5038ms"
+      },
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "L10",
+      "regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 221,
+        "name": "restarts at the first page when a later page loses its authorization boundary",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "actual_current_Go_named_terminals": [],
+      "actual_current_TS_file_terminal": {
+        "package": "@multica/views",
+        "file": "collaboration/knowledge-panel.test.tsx",
+        "tests_reported": 34,
+        "duration_output": "5038ms",
+        "terminal": "file_pass",
+        "raw": "@multica/views:test:  ✓ collaboration/knowledge-panel.test.tsx (34 tests) 5038ms"
+      },
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "L11",
+      "regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 211,
+        "name": "stops interval polling an unavailable knowledge interface until an explicit refresh",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "actual_current_Go_named_terminals": [],
+      "actual_current_TS_file_terminal": {
+        "package": "@multica/views",
+        "file": "collaboration/knowledge-panel.test.tsx",
+        "tests_reported": 34,
+        "duration_output": "5038ms",
+        "terminal": "file_pass",
+        "raw": "@multica/views:test:  ✓ collaboration/knowledge-panel.test.tsx (34 tests) 5038ms"
+      },
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "L12",
+      "regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 390,
+        "name": "lets a human remove a stored identity only after a check finds no result, without any request",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "actual_current_Go_named_terminals": [],
+      "actual_current_TS_file_terminal": {
+        "package": "@multica/views",
+        "file": "collaboration/knowledge-panel.test.tsx",
+        "tests_reported": 34,
+        "duration_output": "5038ms",
+        "terminal": "file_pass",
+        "raw": "@multica/views:test:  ✓ collaboration/knowledge-panel.test.tsx (34 tests) 5038ms"
+      },
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    },
+    {
+      "id": "L13",
+      "regression": {
+        "path": "packages/views/locales/parity.test.ts",
+        "line": 73,
+        "name": "collaboration: zh-Hans covers every EN key",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane",
+        "source_template": "${ns}: ${locale} covers every EN key"
+      },
+      "actual_current_Go_named_terminals": [],
+      "actual_current_TS_file_terminal": {
+        "package": "@multica/views",
+        "file": "locales/parity.test.ts",
+        "tests_reported": 66,
+        "duration_output": "15ms",
+        "terminal": "file_pass",
+        "raw": "@multica/views:test:  ✓ locales/parity.test.ts (66 tests) 15ms"
+      },
+      "current_TS_leaf_terminal_claimed": false,
+      "historical_ID_red_green_and_accepted_exceptions": "Preserved in original review.json; current full-file pass is observed and no leaf terminal is fabricated."
+    }
+  ],
+  "L7_three_current_named_passes": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "test": "TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit",
+      "action": "pass",
+      "time": "2026-11-03T22:27:19.587801+08:00",
+      "elapsed": 0.02,
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142638210715_7a21f045e560.jsonl",
+      "raw_sha256": "f586d65c1c77081f3011a769eda3944b8a8cfe0c0022b59fca5fdc003492100c",
+      "raw_line": 2551
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated",
+      "action": "pass",
+      "time": "2026-11-03T22:59:28.259271+08:00",
+      "elapsed": 0,
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145747640958_56802910400e.jsonl",
+      "raw_sha256": "20165c548edc147700c4992ceb13d5db8fbdbf04f942f716adf8c5b48b4d02ec",
+      "raw_line": 3857
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestHostLifecycleStartedFailureStillWaitsAndBlocksFallback",
+      "action": "pass",
+      "time": "2026-11-03T22:59:30.3293+08:00",
+      "elapsed": 0,
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145747640958_56802910400e.jsonl",
+      "raw_sha256": "20165c548edc147700c4992ceb13d5db8fbdbf04f942f716adf8c5b48b4d02ec",
+      "raw_line": 3905
+    }
+  ],
+  "contract_readback": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/prd.md",
+      "sha256": "e07c3059b6971fb124739f2ed08bda4e86c508acb0012569d8e18966f43eded1",
+      "relevant_lines": [
+        {
+          "line": 13,
+          "text": "迁移 lint/fresh/upgrade/reapply、sqlc 无漂移、Go/TS/前端/相关 e2e 通过并带版本证据；E0 用正式 smoke，E1–E6 按预登记运行或明确环境阻塞；问题映射表完整。"
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/implement.md",
+      "sha256": "6bede1d0fe216b561e5d9c74b90c507814b2463838d8337675ea65123609e0b1",
+      "relevant_lines": [
+        {
+          "line": 22,
+          "text": "- [x] 核对干净的 final4 候选、当前实际执行归属和验证配置，保留其他任务的未提交修改。"
+        },
+        {
+          "line": 23,
+          "text": "- [x] 独立复核私有验证适配器/启动器和 RKI6 当前fake结果；原v5问题经v6修复、真实Go环境失败经v9修复，final-v9独立复核0阻塞，86fake及7项原断言通过。历史changes-required和失败保留。"
+        },
+        {
+          "line": 24,
+          "text": "- [ ] 在单一冻结候选的隔离环境重新运行完整 `make check`，保存原始 JSON/日志，不拼接定向通过结果。"
+        },
+        {
+          "line": 58,
+          "text": "基线 `4c833e737` 已合入下述原计划第 1–5 项及第 6 项的 Go/TS 检查；历史证据保留，不将旧检查冒充新 HEAD 的完整验收。独立实施目录为 `/Volumes/artisan/code/2026/mc-context-resume-20261031`。"
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/verification-continue-2026-11-02.md",
+      "sha256": "b8e0a16440f8139d1101bae9bbc14acf2179d47ff034207326ecbed550219cdd",
+      "relevant_lines": [
+        {
+          "line": 16,
+          "text": "| 私有验证入口 | v6的83项fake/6文件语法及交叉复核，v9的86项fake/6文件语法独立复核，原技能catalog7/7实际红绿 | final-v9 pass-with-notes，0阻塞 |"
+        },
+        {
+          "line": 19,
+          "text": "| TypeScript | core4340、docs62、views7118、desktop1272、web290 | 13,082pass，0fail |"
+        },
+        {
+          "line": 20,
+          "text": "| Go/race、build/vet、migration具名测试 | v6失败保留；v9 cmd/server完整包735pass/0fail/6skip，其余包继续 | v9执行中，不能提前计整套通过 |"
+        },
+        {
+          "line": 26,
+          "text": "完整检查实际开始时间2026-11-02 14:47 UTC，15:02 UTC以exit2结束，make PID91222。命令为私有审定启动器调用仓库 `make check`；原记录和日志：`/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v6.json` / `.log`。本次及历史第三轮exit2/47个失败分别保留，不能相互重标。"
+        },
+        {
+          "line": 30,
+          "text": "新v9完整run于2026-11-02 15:36 UTC实际启动，make PID20588；原记录/日志`make-check-v9.json` / `.log`及`go-packages-v9/`均在final4私有目录，新registry/HOME/配置和证据文件不覆盖v6。15项静态任务、13,082项TS再次通过，Go阶段进行中。"
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/execution-plan.md",
+      "sha256": "ddaa077b5b2d0466f1018b6099ebe2eba377b1415993e82869658b7f28a6defd",
+      "relevant_lines": [
+        {
+          "line": 16,
+          "text": "4. Run original full `make check`, retaining all raw evidence. After it finishes run the reviewed actual final filesystem audit. Both plus complete named inventory must pass for deterministic acceptance."
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/docs/plans/2026-11-03-collaboration-fix-closure.md",
+      "sha256": "ff370a62a834cf0ada06bf7e9d0d47e9ea475c80bd6b68b17366274b11674a8e",
+      "relevant_lines": [
+        {
+          "line": 17,
+          "text": "- [x] 发现后续依赖隔离和 v11 准备记录：候选 `/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103`，HEAD `304f74dd3ba4ddea862c94917c5bb0770355a351`；新记录需以实际读取的最新 provenance 版本为准。"
+        },
+        {
+          "line": 23,
+          "text": "Files: 候选 `.omx/private/final-check-v11/` 下的版本化启动器、绑定及新执行证据；本任务 `research/continue-20261103/`。"
+        },
+        {
+          "line": 28,
+          "text": "- [ ] 由主会话通过审定启动器执行仓库原始 `make check`，每个 Go 包使用新迁移克隆，Web 为 production；保存日志、所有具名结果、原 Playwright JSON 和最终退出码。"
+        },
+        {
+          "line": 29,
+          "text": "- [ ] 完整 Make 结束后实际运行审定 `final_state_audit.py --output <新报告>`，核对原始整套 exit0、审计 status=pass 和完整具名 inventory 三者；私有16项回归或初始检查不替代这个最终门。"
+        },
+        {
+          "line": 60,
+          "text": "完整命令的原始退出码、具名 inventory 与来源绑定共同证明确定性门。准备、fake、源码路径检查和定向回放分别记录，不能替代完整运行。计划随新证据更新，既有失败文件保持原样。"
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/prd.md",
+      "sha256": "502e9d5d6ba04398c04980337c252ad62b1c833f8ee833a4f72ecd41dda15d5c",
+      "relevant_lines": [
+        {
+          "line": 22,
+          "text": "| M2 | 中 | prepare/authorize 对 installation 命名空间用 try-lock，与 claim/finalize 的阻塞锁冲突，返回 `knowledge_busy` 后任务终止 | `service/task_knowledge_prepare.go:270`、`daemon/knowledge_context.go:144` |"
+        },
+        {
+          "line": 51,
+          "text": "| AC1 | 每个已复现的产品缺陷 ID 都有具名回归：在 `6aed33aad` 的对应未修复产品代码上失败，修复后通过，保留实际红绿输出。L13 用 locale parity 和术语核对代替。L7 经设计及独立分道复核未复现，以正确进程终止行为的具名测试处置，保留原审计主张；不能计为已复现并修复的产品缺陷。 |"
+        },
+        {
+          "line": 58,
+          "text": "| AC8 | Go：受影响包的 build、vet 通过；所有 DB-backed 包各用一份独立克隆库，测试全绿；改动过的并发路径加 `-race`。TS：core、views 的 typecheck、lint 和 vitest 全绿。 |"
+        },
+        {
+          "line": 61,
+          "text": "L7 的已接受处置依据为 `design.md` §“Started 回调失败后的 Terminated”、`research/launch-independent-review/review.json` 和原 `research/evidence/L7-takeover-green.jsonl`。`TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated`、`TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit` 证明实际进程退出、匹配原进程/attempt 的 Terminated 恰好一次、无再次授权/启动；既有 `TestHostLifecycleStartedFailureStillWaitsAndBlocksFallback` 保留 Host 路径。同一最终源码的三个具名通过记录见 [关闭条件核对](research/continuation-20261102/knowledge-closure-readiness.md)。不要求伪造 L7 的失败基线，也不改写任何历史失败样本。"
+        }
+      ]
+    }
+  ],
+  "inventory_contract_observation": "Original PRD/implement/verification-continue expressly use versioned TS results, static15, TS aggregate and per-Go-package/per-E2E actual results; later plans require complete named inventory without explicitly defining TS leaf level. This report does not redefine or relax that requirement: current TS file inventory is complete, leaf inventory is absent.",
+  "minimum_if_TS_leaf_inventory_required": "After sole complete-run finish/resource release, record supplementary current-source five-package Vitest executions with JSON reporter/outputFile in task-owned new paths. Keep those supplementary observations separate from original v14; never manufacture original leaf terminals or launch another make check. This reviewer performs none.",
+  "remaining_actual_gates": [
+    "Sole v14 final Make exit0",
+    "Actual hash-bound final identity audit pass",
+    "Final browser/named/individual-skip inventory and root live resource proof",
+    "Final coordinator disposition of inventory level and any required separate supplementary observation",
+    "Current CCG1 normal/race and CCG2 OFF/ON after shared run release",
+    "Independent #7 final review; #6 model/platform/release remain independent"
+  ],
+  "operations": {
+    "tests": false,
+    "builds": false,
+    "lint_typecheck_execution": false,
+    "services": false,
+    "DB_SQL": false,
+    "claim_or_source_edits": false,
+    "task_metadata_edits": false,
+    "provider_calls": 0,
+    "knowledge_budget_allocated": 0,
+    "production_knowledge_default": false,
+    "write_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/audit7-review"
+  },
+  "old_review_files_preserved": {
+    "review.json": "142cfe4bef55f5478c9450ce704eb564de5d3452ae513d7c6835ea517c99df26",
+    "review.md": "56d7684b855c9d1dc064f21664cec88494b6779ed684d6836d7c302c9aeb6d30",
+    "recheck.py": "cac99a8803339318eebb12a595cad442146815e7f22d191031b28cd0a6fd750c"
+  },
+  "run_snapshot": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/audit7-review/v14-run-at-phase-review.json"
+}

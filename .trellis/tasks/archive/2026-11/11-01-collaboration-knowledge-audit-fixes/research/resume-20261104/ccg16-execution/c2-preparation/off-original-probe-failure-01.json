@@ -1,0 +1,88 @@
+{
+  "state": "OFF_original_probe_failed_preserved",
+  "recorded_at": "2026-11-04T06:20:16.336094+00:00",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "original_label": "ccg2-off-v16-01",
+  "exit_code": 1,
+  "accepted": false,
+  "named_case": "deployed knowledge startup flag controls one actual Host input and its authorization events",
+  "stats": {
+    "startTime": "2026-11-04T06:15:52.798Z",
+    "duration": 918.865,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "failure_class": "Playwright browser executable missing in fresh private HOME",
+  "missing_executable": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-01/home/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+  "missing_executable_still_absent": true,
+  "failure_before_test_body": true,
+  "deployed_knowledge_evidence_present": false,
+  "retry": 0,
+  "files": {
+    "started.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-01/started.json",
+      "sha256": "90ae9483322e8374e52eeec29553309c1c18b597099c223e9b22d4502b1ede99",
+      "bytes": 3341
+    },
+    "result.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-01/result.json",
+      "sha256": "1e198c8177e4650e620af16a959ba53924b7356dda969ffa318558e950d7a5a2",
+      "bytes": 3790
+    },
+    "results.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-01/results.json",
+      "sha256": "64746297003c500ff61272acdb6328cc5c33410bb985ca8aaa9ef190f72cd80f",
+      "bytes": 6875
+    },
+    "output.log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-01/output.log",
+      "sha256": "3c6ea7eb61ddc1282adc5a9cc740cca13b19fa064fdc2ed53d80a27c68ca20c1",
+      "bytes": 1835
+    }
+  },
+  "live_OFF_resources": {
+    "api": {
+      "expected_pid": 51638,
+      "port": 18231,
+      "actual_listener_pid": "51638",
+      "preserved_live": true
+    },
+    "web": {
+      "expected_pid": 51913,
+      "port": 13151,
+      "actual_listener_pid": "51913",
+      "preserved_live": true
+    },
+    "renderer": {
+      "expected_pid": 51848,
+      "port": 60377,
+      "actual_listener_pid": "51848",
+      "preserved_live": true
+    }
+  },
+  "unchanged_source_inputs_sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+  "unchanged_runner_sha256": "a6d070263badb138855b1caaaa45d8ea22cfdaebf66e33c09f1e2378748fab3e",
+  "source_environment_sha256": "e0a6a47cc30e26b36c2b3e7dbf2a219481401362c73a1e0323ecbabc17ba15a1",
+  "existing_browser_cache_candidates_readonly": [
+    {
+      "path": "/Users/artisan/Library/Caches/ms-playwright/chromium-1208",
+      "exists": true,
+      "source_unmodified": true
+    },
+    {
+      "path": "/Users/artisan/Library/Caches/ms-playwright/chromium_headless_shell-1208",
+      "exists": true,
+      "source_unmodified": true
+    }
+  ],
+  "browser_install_download_or_cache_mutation": false,
+  "OFF_cleanup_executed": false,
+  "ON_preparation_executed": false,
+  "ON_database_connected": false,
+  "standalone_auditor_rerun": false,
+  "knowledge_allocated": 0,
+  "real_Provider_calls": 0,
+  "next_scope_recommendation": "Root may bind reviewed existing browser cache in a separately reviewed successor; preserve this failed run and use a new label and permission. No browser installation or selective retry."
+}

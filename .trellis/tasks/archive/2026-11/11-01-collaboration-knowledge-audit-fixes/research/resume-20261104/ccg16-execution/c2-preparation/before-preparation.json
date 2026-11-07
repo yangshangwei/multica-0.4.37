@@ -1,0 +1,66 @@
+{
+  "recorded_at": "2026-11-04T05:39:17.612646+00:00",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "tracked_dirty": [
+    " M apps/web/next-env.d.ts"
+  ],
+  "protected_files": {
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/source-inputs.json": {
+      "sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/run-ccg2.py": {
+      "sha256": "a6d070263badb138855b1caaaa45d8ea22cfdaebf66e33c09f1e2378748fab3e",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/run-ccg1.py": {
+      "sha256": "4b29de6c452da8f1171b343113297710d055caf5c6aacf41a4ac1794837d2d39",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binary-binding.json.template": {
+      "sha256": "72c22dabd687cdbd2b1f752dd734ad6ebe988412c70b0ab02738066ecce911b8",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-off.json.template": {
+      "sha256": "18e190be0c0541a3e609f0a3a4bae06bcd48d96cd063b67d119afa032875403d",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-on.json.template": {
+      "sha256": "72370fd7e7c4870c51449f0eba4743f77cff19a4bc6be4d4e035cae7216f4e5a",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/off/source-values.json.template": {
+      "sha256": "0f3c3151ae1846106082a332321054a1745a0914937b3a4a691d91d4939fe962",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/off/deployment-proof.json.template": {
+      "sha256": "af716f03d806a1673cef4196c265ec0077d7476e8d0c0ef68b60f81b66d33d77",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/c2-root-allocation-private.json": {
+      "sha256": "408edca07c65d6501320378610ef767326afeac5bede1d44d4e4fc7dadc3547f",
+      "mode": 384
+    }
+  },
+  "sources": {
+    "server/internal/daemon/collaboration_host_router_test.go": "1939ea098c47210f62512a138b35d944add6f3b4f02b5f2e0fd9a5dabaab130f",
+    "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a"
+  },
+  "resolved_tools": {
+    "psql": "/opt/homebrew/opt/libpq/bin/psql",
+    "pg_isready": "/opt/homebrew/opt/libpq/bin/pg_isready",
+    "docker": "/usr/local/bin/docker",
+    "git": "/opt/homebrew/bin/git",
+    "bash": "/bin/bash",
+    "node": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "go": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go"
+  },
+  "tool_PATH": "/Users/artisan/.nvm/versions/node/v22.23.2/bin:/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin:/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin:/opt/homebrew/opt/libpq/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+  "cache_paths": {
+    "GOCACHE": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/go-build-cache",
+    "GOPATH": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/go-path",
+    "GOMODCACHE": "/Users/artisan/go/pkg/mod"
+  },
+  "root_allocation_report_sha256": "57edeab994f93bad0022e634f41e409889c3ffa252017bdad55a2b01065d3e44",
+  "real_Provider_calls": 0
+}

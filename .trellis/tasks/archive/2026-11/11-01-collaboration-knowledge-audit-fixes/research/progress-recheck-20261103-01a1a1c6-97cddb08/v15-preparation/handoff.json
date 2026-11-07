@@ -1,0 +1,38 @@
+{
+  "recorded_at": "2026-11-03T16:07:21.028165+00:00",
+  "state": "prepared_not_frozen_not_runnable",
+  "operative_files": 22,
+  "historical_reference": [
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/v15-preparation/historical-input-prepare-current-resources-v14.txt",
+      "sha256": "b90b3511f21df106fcb7b46089067a0b2475903fce5453bc4f2d3d2e0d3c6f8d",
+      "reason": "Retained failed mixed materializer/URI allocation path as historical reference; use Root materialization plus successful explicit endpoint allocator."
+    }
+  ],
+  "new_guards": [
+    "canonical nonzero deployment UUID before first subprocess",
+    "exact canonical Turbo test JSON reporter only"
+  ],
+  "root_deployment_uuid": "725f8e4c-8979-4fc2-b105-36a6ce89a2e5",
+  "Go_adapter_sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+  "pending_fields": [
+    "PENDING_ROOT_FINAL_SHA",
+    "PENDING_ROOT_RENDERER_PORT",
+    "PENDING_ROOT_REDIS_PORT",
+    "PENDING_ROOT_PRIVATE_JWT_SECRET",
+    "PENDING_ROOT_DATABASE_URL",
+    "PENDING_ROOT_BUILD_TEMP_DIRECTORY"
+  ],
+  "checks": "AST + generator/template parity + donor hash comparisons only",
+  "private_controls_executed": 0,
+  "product_tests_executed": 0,
+  "builds_or_database_or_service_or_Provider_operations": 0,
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "handoff_files": {
+    "prepared-template-manifest.json": "a7dac56436998325680bf019ba1fa82e337f8eaf9b7feaec3a16f978a9f607f1",
+    "static-preparation-verification.json": "17a07169219ba94351af7fe230972d76db7254fd6bf27c660697de72e17c1bd7",
+    "PREPARATION.md": "4d3d5f81a41b81c4c97d153893a67c4bbc2d1538e6daee417029d176f75fc214",
+    "prepare-v15.py": "c9303db634a861215d2cd38605b210149e32ca34020237841ac28fe61a77f572"
+  }
+}

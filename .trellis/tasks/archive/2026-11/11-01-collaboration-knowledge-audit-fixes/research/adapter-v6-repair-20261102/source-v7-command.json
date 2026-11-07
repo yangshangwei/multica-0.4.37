@@ -1,0 +1,30 @@
+{
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/check-source.py",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102",
+  "environment": {
+    "PATH": "/opt/homebrew/bin:/usr/bin:/bin",
+    "TMPDIR": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_code": 0,
+  "seconds": 0.08,
+  "log": "source-v7.log",
+  "tests_run": null,
+  "adapter_sha256": {
+    "go": "eafed32e38ea69de0f73272df5c9cc817ec0741726b54fc19d27466742f57076",
+    "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "test_or_check_source_sha256": "62f3b98f0ce9f7227601bf6d74a3dc25c1e1a89fecc77dac0176815802ba3926",
+  "network_policy": "deny network*",
+  "actual_go_tests": 0,
+  "actual_sql_connections": 0
+}

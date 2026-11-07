@@ -1,0 +1,37 @@
+{
+  "recorded_at": "2026-11-04T01:24:19.883336+00:00",
+  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "case": "Web duplicate picker browses all formal tasks and confirms the chosen target (en)",
+  "location": "e2e/fixtures/triage-duplicate-picker.ts:111",
+  "error": "Expected blank Duplicate target task combobox; received the text filled into the reason textarea; 5s toHaveValue timeout",
+  "scope": "Actual current full-run failure; no rerun, no source change, cause pending independent analysis",
+  "artifact_refs": [
+    {
+      "original_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/triage-duplicate-picker-We-a2833-firms-the-chosen-target-en--chromium/failure.png",
+      "preserved_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/first-browser-failure/artifacts/failure.png",
+      "sha256": "16fa39bee15002784eb03b7c4e7c8c28c4199cb110d79702eb142b00bc8f8682"
+    },
+    {
+      "original_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/triage-duplicate-picker-We-a2833-firms-the-chosen-target-en--chromium/error-context.md",
+      "preserved_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/first-browser-failure/artifacts/error-context.md",
+      "sha256": "c197d90098d12bb8a02800d68c1711460b73cfe6b7ac2d44989c57d667b5e456"
+    },
+    {
+      "original_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/triage-duplicate-picker-We-a2833-firms-the-chosen-target-en--chromium/attachments/failure-052712409c79249ce5ca2ceb19471932d3345797.png",
+      "preserved_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/first-browser-failure/artifacts/attachments/failure-052712409c79249ce5ca2ceb19471932d3345797.png",
+      "sha256": "16fa39bee15002784eb03b7c4e7c8c28c4199cb110d79702eb142b00bc8f8682"
+    },
+    {
+      "source": "e2e/triage-duplicate-picker.spec.ts",
+      "preserved_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/first-browser-failure/triage-duplicate-picker.spec.ts",
+      "sha256": "336fc073a206d90d0dde2da411ec5076f09c5d3a7bd0f5f012509f58e2554cd1"
+    },
+    {
+      "source": "e2e/fixtures/triage-duplicate-picker.ts",
+      "preserved_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/first-browser-failure/triage-duplicate-picker.ts",
+      "sha256": "ce2ca701dfd62299b63e5bfc65d79eefca306e7816bd0671dd2a74cd0c78192e"
+    }
+  ],
+  "full_run_still_running": true,
+  "knowledge_calls": 0
+}

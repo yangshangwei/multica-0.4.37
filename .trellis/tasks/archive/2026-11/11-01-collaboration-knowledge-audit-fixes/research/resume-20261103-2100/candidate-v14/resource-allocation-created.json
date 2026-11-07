@@ -1,0 +1,46 @@
+{
+  "recorded_at": "2026-11-03T13:48:19.147714+00:00",
+  "coordinator": "01a1a186-9a5c-7b00-96f8-0430b47edb4c",
+  "candidate_sha": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "source_env_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/check-source-v14.env",
+  "source_env_sha256": "da26b06efe361d0a51f3a6e474db84764bf19095f0e151c8b32b7c3970bba771",
+  "database": "multica_closure_v14_seed_01a1a186",
+  "postgres_endpoint": {
+    "host": "127.0.0.1",
+    "port": 5432
+  },
+  "postgres_identity": {
+    "database": "postgres",
+    "server_addr": "172.20.0.2",
+    "server_port": 5432,
+    "server_version": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "max_connections": "100",
+    "connections": 20
+  },
+  "database_state": "created_empty",
+  "redis_port": 55131,
+  "renderer_port": 55132,
+  "redis_name": "multica-v14-01a1a186-redis",
+  "redis_image": "redis:7-alpine",
+  "renderer_url": "http://127.0.0.1:55132/",
+  "renderer_started": false,
+  "future_registry": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/dev-registry-v14",
+  "registry_created": false,
+  "allocation": {
+    "recorded_at": "2026-11-03T13:45:46.583316+00:00",
+    "directory": "/private/tmp/multica-final-check-v14-8062y7c6",
+    "mode": "0700",
+    "git_root_absent": true,
+    "scope": "v14 private build/fullcheck temp; no complete run yet",
+    "allocated_by": "01a1a186-9a5c-7b00-96f8-0430b47edb4c",
+    "previous_allocation_retained": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/retained-before-build-temp-allocation-v14.json"
+  },
+  "previous_failed_preflight": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/resource-preflight-failure-01.json",
+  "previous_failure_boundary": "absent Unix socket; read-only connection failed before CREATE; no DB reached",
+  "script_sha256": "996eb3e78d8ce8567dc6bd78737bb8f6da5dadd37fdd3eff3139b81e02a65305",
+  "real_provider_allowed": false,
+  "knowledge_default": false,
+  "database_create_exit": 0,
+  "actual_database": "multica_closure_v14_seed_01a1a186"
+}

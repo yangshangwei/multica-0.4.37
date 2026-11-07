@@ -1,0 +1,746 @@
+[
+  {
+    "id": "6e126002765c26c65f32-72051070d351cc025e2c",
+    "project": "chromium",
+    "file": "collaboration-boundaries-web.spec.ts",
+    "line": 163,
+    "column": 1,
+    "title": "Gap 5: a source workspace holding a collaboration issue cannot be deleted, open or completed, and nothing is cleaned up",
+    "suite": [
+      "collaboration-boundaries-web.spec.ts"
+    ],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 667,
+    "errors": [
+      "Error: expect(received).toMatchObject(expected)\n\n- Expected  - 1\n+ Received  + 1\n\n  Object {\n-   \"code\": \"completed\",\n+   \"code\": \"delivery_required\",\n  }\n\n  184 |   const completed = await write(creator, `${root(issueId)}/lifecycle`, { ...observed(await readIssue(creator, issueId)), action: \"complete\",\n  185 |     status: options.default_status, status_options_version: options.status_options_version });\n> 186 |   expect(completed.body).toMatchObject({ code: \"completed\" });\n      |                          ^\n  187 |   const left = await write(peer, `${root(issueId)}/leave`, observed(await readIssue(peer, issueId)));\n  188 |   expect(left.body).toMatchObject({ code: \"participant_left\" });\n  189 |   expect(await readIssue(creator, issueId)).toMatchObject({ status_category: \"done\", session: { queue_state: \"closed\" } });\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-boundaries-web.spec.ts:186:26"
+    ],
+    "attachments": [
+      {
+        "name": "trace",
+        "content_type": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-58084-d-and-nothing-is-cleaned-up-chromium/trace.zip",
+        "exists": true,
+        "sha256": "078b1e32f27255f210508ab34c18107ffa6c9f98751bf9349deebb2271dd25fa"
+      }
+    ]
+  },
+  {
+    "id": "6e126002765c26c65f32-f3f66911ac00e604b913",
+    "project": "chromium",
+    "file": "collaboration-boundaries-web.spec.ts",
+    "line": 273,
+    "column": 1,
+    "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+    "suite": [
+      "collaboration-boundaries-web.spec.ts"
+    ],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "timedOut",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 240089,
+    "errors": [
+      "Test timeout of 240000ms exceeded.",
+      "Error: browserContext.close: Target page, context or browser has been closed\n\n  402 |     await pages.member!.page.screenshot({ path: test.info().outputPath(\"source-member-agent-refused.png\"), animations: \"disabled\" });\n  403 |   } finally {\n> 404 |     for (const side of Object.values(pages)) await side.context.close();\n      |                                              ^\n  405 |   }\n  406 | });\n  407 |\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-boundaries-web.spec.ts:404:46"
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/test-failed-4.png",
+        "exists": true,
+        "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+      },
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/test-failed-2.png",
+        "exists": true,
+        "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+      },
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/test-failed-3.png",
+        "exists": true,
+        "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+      },
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/test-failed-1.png",
+        "exists": true,
+        "sha256": "952b741aa6b716545ea1ca91d9f5572f2d0f9b8e0eb07c66167cf4888f3e7fba"
+      },
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/test-failed-5.png",
+        "exists": true,
+        "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+      },
+      {
+        "name": "error-context",
+        "content_type": "text/markdown",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/error-context.md",
+        "exists": true,
+        "sha256": "f02565a63f618ff8d7c7d05d00e9829a6b88545821e60d07238e3bdfba210795"
+      },
+      {
+        "name": "trace",
+        "content_type": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/trace.zip",
+        "exists": true,
+        "sha256": "46b670cd403f143beac7b177666f3e9e3cba2cb039a87264a5abf14634a52c51"
+      }
+    ]
+  },
+  {
+    "id": "6e126002765c26c65f32-9d52924653599de8bd73",
+    "project": "chromium",
+    "file": "collaboration-boundaries-web.spec.ts",
+    "line": 425,
+    "column": 1,
+    "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+    "suite": [
+      "collaboration-boundaries-web.spec.ts"
+    ],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "timedOut",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 240144,
+    "errors": [
+      "Test timeout of 240000ms exceeded.",
+      "Error: browserContext.close: Test ended.\nBrowser logs:\n\n[pid=5462][err] [1103/191409.293449:INFO:CONSOLE:1] \"%c11:14:09.293 [api] color:#2196F3 → GET /api/me/workbench [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.295768:INFO:CONSOLE:1] \"%c11:14:09.295 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/memory [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.297821:INFO:CONSOLE:1] \"%c11:14:09.297 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/knowledge-candidates [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.298936:INFO:CONSOLE:1] \"%c11:14:09.298 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/commands [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.303787:INFO:CONSOLE:1] \"%c11:14:09.303 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/comments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.305575:INFO:CONSOLE:1] \"%c11:14:09.305 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/attachments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.305831:INFO:CONSOLE:1] \"%c11:14:09.305 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/mention-targets [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.306071:INFO:CONSOLE:1] \"%c11:14:09.306 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/reactions [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.307155:INFO:CONSOLE:1] \"%c11:14:09.307 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/activity [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.309754:INFO:CONSOLE:1] \"%c11:14:09.309 [api] color:#2196F3 ← 200 /api/me/collaboration-notifications [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.313363:INFO:CONSOLE:1] \"%c11:14:09.313 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/memory [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.313779:INFO:CONSOLE:1] \"%c11:14:09.313 [api] color:#2196F3 ← 200 /api/me/workbench [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.315647:INFO:CONSOLE:1] \"%c11:14:09.315 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/knowledge-candidates [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.316755:INFO:CONSOLE:1] \"%c11:14:09.316 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/commands [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.318519:INFO:CONSOLE:1] \"%c11:14:09.318 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/comments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.326689:INFO:CONSOLE:1] \"%c11:14:09.326 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1 [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191409.337370:INFO:CONSOLE:1] \"%c11:14:09.337 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1 [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.308609:INFO:CONSOLE:1] \"%c11:14:24.308 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/attachments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.309742:INFO:CONSOLE:1] \"%c11:14:24.309 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/mention-targets [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.310624:INFO:CONSOLE:1] \"%c11:14:24.310 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/reactions [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.311509:INFO:CONSOLE:1] \"%c11:14:24.311 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/activity [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.312558:INFO:CONSOLE:1] \"%c11:14:24.312 [api] color:#2196F3 → GET /api/me/collaboration-notifications [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.314858:INFO:CONSOLE:1] \"%c11:14:24.314 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/memory [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.315866:INFO:CONSOLE:1] \"%c11:14:24.315 [api] color:#2196F3 → GET /api/me/workbench [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.317638:INFO:CONSOLE:1] \"%c11:14:24.317 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/knowledge-candidates [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.319941:INFO:CONSOLE:1] \"%c11:14:24.319 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/commands [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.321838:INFO:CONSOLE:1] \"%c11:14:24.321 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/comments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.323968:INFO:CONSOLE:1] \"%c11:14:24.323 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/reactions [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.324183:INFO:CONSOLE:1] \"%c11:14:24.324 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/attachments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.324426:INFO:CONSOLE:1] \"%c11:14:24.324 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/activity [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.324546:INFO:CONSOLE:1] \"%c11:14:24.324 [api] color:#2196F3 ← 200 /api/me/collaboration-notifications [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.324945:INFO:CONSOLE:1] \"%c11:14:24.324 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/mention-targets [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.325139:INFO:CONSOLE:1] \"%c11:14:24.325 [api] color:#2196F3 ← 200 /api/me/workbench [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.332839:INFO:CONSOLE:1] \"%c11:14:24.332 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/memory [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.333442:INFO:CONSOLE:1] \"%c11:14:24.333 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/knowledge-candidates [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.334795:INFO:CONSOLE:1] \"%c11:14:24.334 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/commands [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.338900:INFO:CONSOLE:1] \"%c11:14:24.338 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1 [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.342868:INFO:CONSOLE:1] \"%c11:14:24.342 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/comments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191424.348171:INFO:CONSOLE:1] \"%c11:14:24.348 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1 [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.328606:INFO:CONSOLE:1] \"%c11:14:39.328 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/reactions [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.329494:INFO:CONSOLE:1] \"%c11:14:39.329 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/attachments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.330145:INFO:CONSOLE:1] \"%c11:14:39.330 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/activity [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.330748:INFO:CONSOLE:1] \"%c11:14:39.330 [api] color:#2196F3 → GET /api/me/collaboration-notifications [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.331294:INFO:CONSOLE:1] \"%c11:14:39.331 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/mention-targets [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.331778:INFO:CONSOLE:1] \"%c11:14:39.331 [api] color:#2196F3 → GET /api/me/workbench [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.334991:INFO:CONSOLE:1] \"%c11:14:39.334 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/memory [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.337483:INFO:CONSOLE:1] \"%c11:14:39.337 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/knowledge-candidates [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.338589:INFO:CONSOLE:1] \"%c11:14:39.338 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/commands [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.343547:INFO:CONSOLE:1] \"%c11:14:39.343 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/comments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.349241:INFO:CONSOLE:1] \"%c11:14:39.349 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1 [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.358524:INFO:CONSOLE:1] \"%c11:14:39.358 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/attachments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.358689:INFO:CONSOLE:1] \"%c11:14:39.358 [api] color:#2196F3 ← 200 /api/me/workbench [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.362870:INFO:CONSOLE:1] \"%c11:14:39.362 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/reactions [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.363833:INFO:CONSOLE:1] \"%c11:14:39.363 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/mention-targets [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.364309:INFO:CONSOLE:1] \"%c11:14:39.364 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/activity [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.366102:INFO:CONSOLE:1] \"%c11:14:39.366 [api] color:#2196F3 ← 200 /api/me/collaboration-notifications [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.368776:INFO:CONSOLE:1] \"%c11:14:39.368 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/commands [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.369443:INFO:CONSOLE:1] \"%c11:14:39.369 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/knowledge-candidates [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.370509:INFO:CONSOLE:1] \"%c11:14:39.370 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/memory [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.371758:INFO:CONSOLE:1] \"%c11:14:39.371 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/comments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191439.384271:INFO:CONSOLE:1] \"%c11:14:39.384 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1 [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.362756:INFO:CONSOLE:1] \"%c11:14:54.362 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/attachments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.363274:INFO:CONSOLE:1] \"%c11:14:54.363 [api] color:#2196F3 → GET /api/me/workbench [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.363470:INFO:CONSOLE:1] \"%c11:14:54.363 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/reactions [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.364913:INFO:CONSOLE:1] \"%c11:14:54.364 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/mention-targets [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.365167:INFO:CONSOLE:1] \"%c11:14:54.365 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/activity [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.367991:INFO:CONSOLE:1] \"%c11:14:54.367 [api] color:#2196F3 → GET /api/me/collaboration-notifications [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.369789:INFO:CONSOLE:1] \"%c11:14:54.369 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/commands [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.370590:INFO:CONSOLE:1] \"%c11:14:54.370 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/knowledge-candidates [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.372541:INFO:CONSOLE:1] \"%c11:14:54.372 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/memory [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.372914:INFO:CONSOLE:1] \"%c11:14:54.372 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/comments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.373052:INFO:CONSOLE:1] \"%c11:14:54.372 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/attachments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.373854:INFO:CONSOLE:1] \"%c11:14:54.373 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/reactions [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.376622:INFO:CONSOLE:1] \"%c11:14:54.376 [api] color:#2196F3 ← 200 /api/me/workbench [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.376827:INFO:CONSOLE:1] \"%c11:14:54.376 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/activity [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.377485:INFO:CONSOLE:1] \"%c11:14:54.377 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/mention-targets [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.377684:INFO:CONSOLE:1] \"%c11:14:54.377 [api] color:#2196F3 ← 200 /api/me/collaboration-notifications [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.380389:INFO:CONSOLE:1] \"%c11:14:54.380 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/knowledge-candidates [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.382207:INFO:CONSOLE:1] \"%c11:14:54.382 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/memory [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.382658:INFO:CONSOLE:1] \"%c11:14:54.382 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/commands [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.385068:INFO:CONSOLE:1] \"%c11:14:54.385 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/comments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.385283:INFO:CONSOLE:1] \"%c11:14:54.385 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1 [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191454.392314:INFO:CONSOLE:1] \"%c11:14:54.392 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1 [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.377386:INFO:CONSOLE:1] \"%c11:15:09.376 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/attachments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.378748:INFO:CONSOLE:1] \"%c11:15:09.378 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/reactions [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.379907:INFO:CONSOLE:1] \"%c11:15:09.379 [api] color:#2196F3 → GET /api/me/workbench [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.380807:INFO:CONSOLE:1] \"%c11:15:09.380 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/activity [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.381426:INFO:CONSOLE:1] \"%c11:15:09.381 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/mention-targets [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.382079:INFO:CONSOLE:1] \"%c11:15:09.381 [api] color:#2196F3 → GET /api/me/collaboration-notifications [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.383580:INFO:CONSOLE:1] \"%c11:15:09.383 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/knowledge-candidates [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.385608:INFO:CONSOLE:1] \"%c11:15:09.385 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/memory [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.388080:INFO:CONSOLE:1] \"%c11:15:09.387 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/commands [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.389205:INFO:CONSOLE:1] \"%c11:15:09.389 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/comments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.395856:INFO:CONSOLE:1] \"%c11:15:09.395 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1 [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.401044:INFO:CONSOLE:1] \"%c11:15:09.400 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/reactions [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.403920:INFO:CONSOLE:1] \"%c11:15:09.403 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/attachments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.407514:INFO:CONSOLE:1] \"%c11:15:09.407 [api] color:#2196F3 ← 200 /api/me/workbench [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.407681:INFO:CONSOLE:1] \"%c11:15:09.407 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/mention-targets [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.410657:INFO:CONSOLE:1] \"%c11:15:09.410 [api] color:#2196F3 ← 200 /api/me/collaboration-notifications [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.411179:INFO:CONSOLE:1] \"%c11:15:09.411 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/activity [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.415750:INFO:CONSOLE:1] \"%c11:15:09.415 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/knowledge-candidates [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.415934:INFO:CONSOLE:1] \"%c11:15:09.415 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/memory [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.422829:INFO:CONSOLE:1] \"%c11:15:09.422 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/comments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.423313:INFO:CONSOLE:1] \"%c11:15:09.423 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/commands [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191509.432712:INFO:CONSOLE:1] \"%c11:15:09.432 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1 [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.404054:INFO:CONSOLE:1] \"%c11:15:24.403 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/reactions [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.405664:INFO:CONSOLE:1] \"%c11:15:24.405 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/attachments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.409442:INFO:CONSOLE:1] \"%c11:15:24.409 [api] color:#2196F3 → GET /api/me/workbench [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.409607:INFO:CONSOLE:1] \"%c11:15:24.409 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/mention-targets [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.410829:INFO:CONSOLE:1] \"%c11:15:24.410 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/attachments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.411270:INFO:CONSOLE:1] \"%c11:15:24.411 [api] color:#2196F3 → GET /api/me/collaboration-notifications [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.411941:INFO:CONSOLE:1] \"%c11:15:24.411 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/reactions [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.412082:INFO:CONSOLE:1] \"%c11:15:24.412 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/activity [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.417945:INFO:CONSOLE:1] \"%c11:15:24.417 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/knowledge-candidates [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.418193:INFO:CONSOLE:1] \"%c11:15:24.418 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/memory [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.418766:INFO:CONSOLE:1] \"%c11:15:24.418 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/mention-targets [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.420181:INFO:CONSOLE:1] \"%c11:15:24.420 [api] color:#2196F3 ← 200 /api/me/collaboration-notifications [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.421400:INFO:CONSOLE:1] \"%c11:15:24.421 [api] color:#2196F3 ← 200 /api/me/workbench [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.422361:INFO:CONSOLE:1] \"%c11:15:24.422 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/activity [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.423378:INFO:CONSOLE:1] \"%c11:15:24.423 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/memory [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.423543:INFO:CONSOLE:1] \"%c11:15:24.423 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/comments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.423860:INFO:CONSOLE:1] \"%c11:15:24.423 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/commands [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.425223:INFO:CONSOLE:1] \"%c11:15:24.425 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/knowledge-candidates [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.428172:INFO:CONSOLE:1] \"%c11:15:24.428 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/commands [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.429622:INFO:CONSOLE:1] \"%c11:15:24.429 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/comments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.434180:INFO:CONSOLE:1] \"%c11:15:24.434 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1 [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191524.441204:INFO:CONSOLE:1] \"%c11:15:24.441 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1 [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.414396:INFO:CONSOLE:1] \"%c11:15:39.414 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/attachments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.415308:INFO:CONSOLE:1] \"%c11:15:39.415 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/reactions [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.421364:INFO:CONSOLE:1] \"%c11:15:39.421 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/mention-targets [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.422360:INFO:CONSOLE:1] \"%c11:15:39.422 [api] color:#2196F3 → GET /api/me/collaboration-notifications [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.423188:INFO:CONSOLE:1] \"%c11:15:39.423 [api] color:#2196F3 → GET /api/me/workbench [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.423987:INFO:CONSOLE:1] \"%c11:15:39.423 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/activity [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.424802:INFO:CONSOLE:1] \"%c11:15:39.424 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/memory [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.428470:INFO:CONSOLE:1] \"%c11:15:39.428 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/knowledge-candidates [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.430782:INFO:CONSOLE:1] \"%c11:15:39.430 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/commands [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.432069:INFO:CONSOLE:1] \"%c11:15:39.431 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/comments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.434843:INFO:CONSOLE:1] \"%c11:15:39.434 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/attachments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.435282:INFO:CONSOLE:1] \"%c11:15:39.435 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/reactions [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.439601:INFO:CONSOLE:1] \"%c11:15:39.439 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/mention-targets [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.442002:INFO:CONSOLE:1] \"%c11:15:39.441 [api] color:#2196F3 ← 200 /api/me/workbench [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.442452:INFO:CONSOLE:1] \"%c11:15:39.442 [api] color:#2196F3 → GET /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1 [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.445165:INFO:CONSOLE:1] \"%c11:15:39.445 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/activity [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.445738:INFO:CONSOLE:1] \"%c11:15:39.445 [api] color:#2196F3 ← 200 /api/me/collaboration-notifications [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.447672:INFO:CONSOLE:1] \"%c11:15:39.447 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/memory [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.451485:INFO:CONSOLE:1] \"%c11:15:39.451 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/knowledge-candidates [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.458793:INFO:CONSOLE:1] \"%c11:15:39.458 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/comments [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.458935:INFO:CONSOLE:1] \"%c11:15:39.458 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1/commands [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462][err] [1103/191539.466527:INFO:CONSOLE:1] \"%c11:15:39.466 [api] color:#2196F3 ← 200 /api/collaboration/issues/01a1a11b-c264-7075-b5f8-e81fea53f3d1 [object Object]\", source: http://localhost:13894/_next/static/chunks/75054-6f55353d3c156c5f.js (1)\n[pid=5462] <gracefully close start>\n\n  580 |     expect((await readIssue(creator, issueId)).execution?.commands.length ?? 0).toBe(commandsBefore);\n  581 |   } finally {\n> 582 |     for (const side of [handlerSide, creatorSide, peerSide, memberSide]) await side.context.close();\n      |                                                                          ^\n  583 |   }\n  584 | });\n  585 |\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-boundaries-web.spec.ts:582:74"
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-210d6-eacts-without-notifications-chromium/test-failed-2.png",
+        "exists": true,
+        "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+      },
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-210d6-eacts-without-notifications-chromium/test-failed-3.png",
+        "exists": true,
+        "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+      },
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-210d6-eacts-without-notifications-chromium/test-failed-1.png",
+        "exists": true,
+        "sha256": "791a61a29f99cd5d0360f7449999ad7290cbe77a9bc6fdec5726b0d7e9f6103e"
+      },
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-210d6-eacts-without-notifications-chromium/test-failed-4.png",
+        "exists": true,
+        "sha256": "b2c67d4745d1e02309a52e80e930e5b5da6a926805fcb9bd554a3f318ece97b2"
+      },
+      {
+        "name": "error-context",
+        "content_type": "text/markdown",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-210d6-eacts-without-notifications-chromium/error-context.md",
+        "exists": true,
+        "sha256": "ce6dc8314c4d19e4d0727eb7a0425d993ec5f4aab5b37dec2b7acf525756b68a"
+      },
+      {
+        "name": "trace",
+        "content_type": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-210d6-eacts-without-notifications-chromium/trace.zip",
+        "exists": true,
+        "sha256": "e65580ebffc7d330062e92c842052d8bc32ec34fabcdfa10c81bcf126e938ad2"
+      }
+    ]
+  },
+  {
+    "id": "dcd11c08b0fd8fcf1cf6-b4f252a185d9bd67c4c0",
+    "project": "chromium",
+    "file": "collaboration-memory-web.spec.ts",
+    "line": 7,
+    "column": 1,
+    "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+    "suite": [
+      "collaboration-memory-web.spec.ts"
+    ],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 17385,
+    "errors": [
+      "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Complete issue', exact: true })\n\n\n  74 |     const history = await fixture.creator.client.requestJSON<{ items: { version: string }[] }>(`${fixture.root}/memory/versions`);\n  75 |     expect(history.items.map(item => item.version)).toEqual([\"4\", \"3\", \"2\", \"1\"]);\n> 76 |     await page.getByRole(\"button\", { name: \"Complete issue\", exact: true }).click();\n     |                                                                             ^\n  77 |     const completion = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: \"Complete issue\", exact: true }) });\n  78 |     await expect(completion.getByRole(\"button\", { name: \"Confirm\", exact: true })).toBeEnabled();\n  79 |     await completion.getByRole(\"button\", { name: \"Confirm\", exact: true }).click();\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-memory-web.spec.ts:76:77"
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/test-failed-1.png",
+        "exists": true,
+        "sha256": "da99b3ad53f7af1d9c57ed2192650882d2d11892dfb80d5892aebec28530b5c7"
+      },
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/test-failed-2.png",
+        "exists": true,
+        "sha256": "37bbf5dfa5e74653735e274d0ee990de0928ca21e1fd4593b492262ce80c244f"
+      },
+      {
+        "name": "error-context",
+        "content_type": "text/markdown",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/error-context.md",
+        "exists": true,
+        "sha256": "1838bfe101e70a97417cb18f96fa0c5cc921daea2d639dc9f468855fabfa15a1"
+      }
+    ]
+  },
+  {
+    "id": "e1244c64bf212413b472-40cb2a40180050917361",
+    "project": "chromium",
+    "file": "collaboration-mention-journeys-desktop.spec.ts",
+    "line": 102,
+    "column": 1,
+    "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+    "suite": [
+      "collaboration-mention-journeys-desktop.spec.ts"
+    ],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 10051,
+    "errors": [
+      "Error: expect(locator).toBeDisabled() failed\n\nLocator:  getByRole('form', { name: 'Comments', exact: true }).getByRole('button', { name: 'Send comment', exact: true })\nExpected: disabled\nReceived: enabled\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeDisabled\" with timeout 5000ms\n  - waiting for getByRole('form', { name: 'Comments', exact: true }).getByRole('button', { name: 'Send comment', exact: true })\n    9 × locator resolved to <button tabindex=\"0\" type=\"submit\" data-slot=\"button\" class=\"group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-body font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructiv…>Send comment</button>\n      - unexpected value \"enabled\"\n\n\n   at fixtures/collaboration-mention-journeys.ts:378\n\n  376 |   // Changing suppression retires this preview; inspect the next preview's state.\n  377 |   await selectedA.click();\n> 378 |   await expect(composerFor(page).getByRole(\"button\", { name: \"Send comment\", exact: true })).toBeDisabled();\n      |                                                                                              ^\n  379 |   await expect(composerFor(page).getByLabel(\"Add comment\", { exact: true })).toHaveValue(content);\n  380 |   assertPreview(await previewComment(page, fixture), fixture, targets, [fixture.agentA.targetId]);\n  381 |   await expect(selectedA).not.toBeChecked();\n    at exercisePartialMentionRefusal (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-mention-journeys.ts:378:94)\n    at withNativeJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-desktop.spec.ts:74:22)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-desktop.spec.ts:103:3"
+    ],
+    "attachments": [
+      {
+        "name": "desktop-mention-failure-0",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-7b292-y-replay-stays-deduplicated-chromium/attachments/desktop-mention-failure-0-01b25ffcc4ee5b754780f0085c3666c7cff85a4d.png",
+        "exists": true,
+        "sha256": "759728d93423d9b5e07a63c259411f3441776ff7dec411d15e82bd3cf0cf1ffe"
+      },
+      {
+        "name": "desktop-mention-responses-0",
+        "content_type": "application/json",
+        "inline_body_sha256": "76f9f254aae7320b9a0a080504067b7813d1d5944769e62c435187661b47489b"
+      },
+      {
+        "name": "desktop-mention-page-0",
+        "content_type": "text/plain",
+        "inline_body_sha256": "f9cb2a3124e2d672c46d97244f2727c4c60b2a33ae433bb07b3a945d97a84988"
+      },
+      {
+        "name": "desktop-mention-failure-1",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-7b292-y-replay-stays-deduplicated-chromium/attachments/desktop-mention-failure-1-d2f713a16ff9fe8e2251bb0fbb5b66bfd2b341dd.png",
+        "exists": true,
+        "sha256": "81ce5aaf063de349f5ea5f00c3d639dd71dce2d86911404c98678e05c5b5e04d"
+      },
+      {
+        "name": "desktop-mention-responses-1",
+        "content_type": "application/json",
+        "inline_body_sha256": "7a6ee82ab235a9d85717c7feb602fab0856f4e859c9badea33770e39167c7eb8"
+      },
+      {
+        "name": "desktop-mention-page-1",
+        "content_type": "text/plain",
+        "inline_body_sha256": "e87fb8cb6736f7b81699fd490474894f3f5901a21ae9fff17a065a1bdfb6ad3b"
+      },
+      {
+        "name": "desktop-mention-capture-geometry",
+        "content_type": "application/json",
+        "inline_body_sha256": "0efe8c9a1a45511fe53ad47b02b82b32f480d1819874e6fb6d37c54cf9a2f5ea"
+      },
+      {
+        "name": "trace",
+        "content_type": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-7b292-y-replay-stays-deduplicated-chromium/trace.zip",
+        "exists": true,
+        "sha256": "91bb26a793101ec0dbc83defc774a131d296a2248757a96c2cf2a0585ed10f91"
+      }
+    ]
+  },
+  {
+    "id": "e1244c64bf212413b472-f56f261bd296c36c7784",
+    "project": "chromium",
+    "file": "collaboration-mention-journeys-desktop.spec.ts",
+    "line": 107,
+    "column": 1,
+    "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+    "suite": [
+      "collaboration-mention-journeys-desktop.spec.ts"
+    ],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 39038,
+    "errors": [
+      "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Edit issue', exact: true })\n\n\n   at fixtures/collaboration-mention-journeys.ts:492\n\n  490 | }\n  491 | async function editBody(page: Page, fixture: CollaborationMentionJourney, description: string) {\n> 492 |   await page.getByRole(\"button\", { name: \"Edit issue\", exact: true }).click();\n      |                                                                       ^\n  493 |   const form = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: \"Edit issue\", exact: true }) });\n  494 |   await form.getByLabel(\"Description\", { exact: true }).fill(description);\n  495 |   const responsePending = page.waitForResponse((response) => new URL(response.url()).pathname === issuePath(fixture) && response.request().method() === \"PATCH\");\n    at editBody (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-mention-journeys.ts:492:71)\n    at exerciseDurableMentionNotifications (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-mention-journeys.ts:561:9)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-desktop.spec.ts:116:22\n    at withNativeJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-desktop.spec.ts:74:22)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-desktop.spec.ts:108:3"
+    ],
+    "attachments": [
+      {
+        "name": "desktop-mention-failure-0",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-fc623-ify-only-newly-added-people-chromium/attachments/desktop-mention-failure-0-ad4d4fa69d6e149e7c96a1f215eeee054696eee5.png",
+        "exists": true,
+        "sha256": "52ebe4974b17f59fb51c3d3c33d1a557acca0b3a6713f36f1bad16f969e25bc8"
+      },
+      {
+        "name": "desktop-mention-responses-0",
+        "content_type": "application/json",
+        "inline_body_sha256": "e28aecad00e24e327775b5f3ae8a6dd3dc9ddc31bd94ed916aee604efc83a4e7"
+      },
+      {
+        "name": "desktop-mention-page-0",
+        "content_type": "text/plain",
+        "inline_body_sha256": "6fdba859319eb3ec903eef371ea90f6d3ad4c760a280631fa301e862facf74db"
+      },
+      {
+        "name": "desktop-mention-failure-1",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-fc623-ify-only-newly-added-people-chromium/attachments/desktop-mention-failure-1-56d9b89b7c7e9f94fc2464197448ccf339e0ae3e.png",
+        "exists": true,
+        "sha256": "b6131090a9be5089965c9d1ace9cde80bbe29a602a524ac8b1331ee6f5a4c91d"
+      },
+      {
+        "name": "desktop-mention-responses-1",
+        "content_type": "application/json",
+        "inline_body_sha256": "b0ab0c0ea276d92fe3c400f73cc76119b901c547b2b47a098fd4b5126f299cc7"
+      },
+      {
+        "name": "desktop-mention-page-1",
+        "content_type": "text/plain",
+        "inline_body_sha256": "a51fd20fb73ac6308b6e64a561c738047a6543ff916f4041702a7ca7fd7290dc"
+      },
+      {
+        "name": "desktop-mention-capture-geometry",
+        "content_type": "application/json",
+        "inline_body_sha256": "6185c84a3f42a2e1150822f6a1deab931fd4cb9767a5342fb42d8f5b16e43aa1"
+      },
+      {
+        "name": "trace",
+        "content_type": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-fc623-ify-only-newly-added-people-chromium/trace.zip",
+        "exists": true,
+        "sha256": "daf26b3912881a97123c970b8530ed9144a87276639935ce3d91b362506bdadc"
+      }
+    ]
+  },
+  {
+    "id": "a2c6b754d21b70f11df3-64a32e62b06c28657aa8",
+    "project": "chromium",
+    "file": "collaboration-mention-journeys-web.spec.ts",
+    "line": 46,
+    "column": 3,
+    "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+    "suite": [
+      "collaboration-mention-journeys-web.spec.ts"
+    ],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 7146,
+    "errors": [
+      "Error: expect(locator).toBeDisabled() failed\n\nLocator:  getByRole('form', { name: 'Comments', exact: true }).getByRole('button', { name: 'Send comment', exact: true })\nExpected: disabled\nReceived: enabled\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeDisabled\" with timeout 5000ms\n  - waiting for getByRole('form', { name: 'Comments', exact: true }).getByRole('button', { name: 'Send comment', exact: true })\n    9 × locator resolved to <button tabindex=\"0\" type=\"submit\" data-slot=\"button\" class=\"group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-body font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructiv…>Send comment</button>\n      - unexpected value \"enabled\"\n\n\n   at fixtures/collaboration-mention-journeys.ts:378\n\n  376 |   // Changing suppression retires this preview; inspect the next preview's state.\n  377 |   await selectedA.click();\n> 378 |   await expect(composerFor(page).getByRole(\"button\", { name: \"Send comment\", exact: true })).toBeDisabled();\n      |                                                                                              ^\n  379 |   await expect(composerFor(page).getByLabel(\"Add comment\", { exact: true })).toHaveValue(content);\n  380 |   assertPreview(await previewComment(page, fixture), fixture, targets, [fixture.agentA.targetId]);\n  381 |   await expect(selectedA).not.toBeChecked();\n    at exercisePartialMentionRefusal (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-mention-journeys.ts:378:94)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-web.spec.ts:55:24"
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-d3535-y-replay-stays-deduplicated-chromium/test-failed-1.png",
+        "exists": true,
+        "sha256": "5be2023ddd46ff2f19b06667afaafe519adfc395d274df58dc80a61eb49326eb"
+      },
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-d3535-y-replay-stays-deduplicated-chromium/test-failed-2.png",
+        "exists": true,
+        "sha256": "27abb4affaed83ae85739b62b71e5e860d2e6ee7b4fa91c915f5a3c26227b944"
+      },
+      {
+        "name": "error-context",
+        "content_type": "text/markdown",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-d3535-y-replay-stays-deduplicated-chromium/error-context.md",
+        "exists": true,
+        "sha256": "dde24a29cc01fa06e2f78485504aa3048fa1fd5a0944754f252dd095ea6dcccb"
+      },
+      {
+        "name": "trace",
+        "content_type": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-d3535-y-replay-stays-deduplicated-chromium/trace.zip",
+        "exists": true,
+        "sha256": "369b2f0701cb87345d144fb0da03e0d35dbe471a9c2160499b1dee19621985ac"
+      }
+    ]
+  },
+  {
+    "id": "a2c6b754d21b70f11df3-24073f543fb2f4024711",
+    "project": "chromium",
+    "file": "collaboration-mention-journeys-web.spec.ts",
+    "line": 65,
+    "column": 1,
+    "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+    "suite": [
+      "collaboration-mention-journeys-web.spec.ts"
+    ],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 20714,
+    "errors": [
+      "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Edit issue', exact: true })\n\n\n   at fixtures/collaboration-mention-journeys.ts:492\n\n  490 | }\n  491 | async function editBody(page: Page, fixture: CollaborationMentionJourney, description: string) {\n> 492 |   await page.getByRole(\"button\", { name: \"Edit issue\", exact: true }).click();\n      |                                                                       ^\n  493 |   const form = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: \"Edit issue\", exact: true }) });\n  494 |   await form.getByLabel(\"Description\", { exact: true }).fill(description);\n  495 |   const responsePending = page.waitForResponse((response) => new URL(response.url()).pathname === issuePath(fixture) && response.request().method() === \"PATCH\");\n    at editBody (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-mention-journeys.ts:492:71)\n    at exerciseDurableMentionNotifications (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-mention-journeys.ts:561:9)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-web.spec.ts:93:22"
+    ],
+    "attachments": [
+      {
+        "name": "durable-mention-comment-geometry",
+        "content_type": "application/json",
+        "inline_body_sha256": "33d5fdc23919acddfc0df822600aa54ba8e27042cea47e9524a52b45aaf3812c"
+      },
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-cf0df-ify-only-newly-added-people-chromium/test-failed-1.png",
+        "exists": true,
+        "sha256": "e8728f3ba26a7709c395f95ee79a4f8f75f27db3ed10df9abbd9adafe4fe4741"
+      },
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-cf0df-ify-only-newly-added-people-chromium/test-failed-2.png",
+        "exists": true,
+        "sha256": "e5e770220233d8408c72add9a087a8aab2ebbaf26625bf86aa367f3d633064bd"
+      },
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-cf0df-ify-only-newly-added-people-chromium/test-failed-3.png",
+        "exists": true,
+        "sha256": "f5b7526e59d109f4b54a87d9b06abddb7b9aa2611ff314397e0545d98c4f58d3"
+      },
+      {
+        "name": "error-context",
+        "content_type": "text/markdown",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-cf0df-ify-only-newly-added-people-chromium/error-context.md",
+        "exists": true,
+        "sha256": "fa8a138f5e599fc17c36d71bb3990da8732a3887fbaf73169dfc3b16cdbed527"
+      },
+      {
+        "name": "trace",
+        "content_type": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-cf0df-ify-only-newly-added-people-chromium/trace.zip",
+        "exists": true,
+        "sha256": "e92969d5cd760b4d2fb71e49eb2fbd551795ac0d092da24fbe3b1fb8cf811d29"
+      }
+    ]
+  },
+  {
+    "id": "a51aed25ed03c8fdf991-8eebfabe4531dc636537",
+    "project": "chromium",
+    "file": "collaboration-preparation-records-web.spec.ts",
+    "line": 7,
+    "column": 1,
+    "title": "Web reads synthetic frozen preparation without inferring termination across refresh and viewers",
+    "suite": [
+      "collaboration-preparation-records-web.spec.ts"
+    ],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 9209,
+    "errors": [
+      "Error: expect(locator).toBeInViewport() failed\n\nLocator:  locator('[id=\"run-0e7487fa-6c40-438d-94d5-098c8d0e741e\"]').getByRole('region', { name: 'Run records', exact: true }).getByRole('region', { name: 'Run preparation', exact: true })\nExpected: in viewport\nReceived: viewport ratio 0\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeInViewport\" with timeout 5000ms\n  - waiting for locator('[id=\"run-0e7487fa-6c40-438d-94d5-098c8d0e741e\"]').getByRole('region', { name: 'Run records', exact: true }).getByRole('region', { name: 'Run preparation', exact: true })\n    9 × locator resolved to <section class=\"min-w-0 space-y-3\" aria-label=\"Run preparation\">…</section>\n      - unexpected value \"viewport ratio 0\"\n\n\n  27 |       });\n  28 |       await current.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));\n> 29 |       await expect(focus).toBeInViewport({ ratio: 1 });\n     |                           ^\n  30 |       const geometry = await focus.boundingBox();\n  31 |       expect(geometry).not.toBeNull();\n  32 |       expect(geometry!.x).toBeGreaterThanOrEqual(0);\n    at Object.capture (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-preparation-records-web.spec.ts:29:27)\n    at exercisePreparationRecords (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-preparation-records.ts:357:3)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-preparation-records-web.spec.ts:47:22"
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-preparation--d3e76--across-refresh-and-viewers-chromium/test-failed-1.png",
+        "exists": true,
+        "sha256": "a8d949bcfdbfa62bd773dcca2e5dc0313185dbbff11b9600e4d79ce0ac331481"
+      },
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-preparation--d3e76--across-refresh-and-viewers-chromium/test-failed-2.png",
+        "exists": true,
+        "sha256": "34db4c3a1a87811c61fa7f6c45500b38964a24b074dd8e6aa898d99a8df91bf9"
+      },
+      {
+        "name": "error-context",
+        "content_type": "text/markdown",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-preparation--d3e76--across-refresh-and-viewers-chromium/error-context.md",
+        "exists": true,
+        "sha256": "a23cb0873540db2427b673556a0140787f70ecf3ffce18aece3fdb136ac12ae9"
+      },
+      {
+        "name": "trace",
+        "content_type": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-preparation--d3e76--across-refresh-and-viewers-chromium/trace.zip",
+        "exists": true,
+        "sha256": "a8626cfe1ab02abf070ead538108a2db45615adce5286d7374855684dbffe465"
+      }
+    ]
+  },
+  {
+    "id": "6a3286d9ccab8513fbec-e93b6369b5b4939e29a8",
+    "project": "chromium",
+    "file": "collaboration-preview-web.spec.ts",
+    "line": 8,
+    "column": 1,
+    "title": "trigger preview explains shared and later batches before a suppressed target is sent",
+    "suite": [
+      "collaboration-preview-web.spec.ts"
+    ],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 7925,
+    "errors": [
+      "Error: expect(locator).toBeDisabled() failed\n\nLocator:  getByRole('form', { name: '评论', exact: true }).getByRole('button', { name: '发送评论', exact: true })\nExpected: disabled\nReceived: enabled\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeDisabled\" with timeout 5000ms\n  - waiting for getByRole('form', { name: '评论', exact: true }).getByRole('button', { name: '发送评论', exact: true })\n    9 × locator resolved to <button tabindex=\"0\" type=\"submit\" data-slot=\"button\" class=\"group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-body font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructiv…>发送评论</button>\n      - unexpected value \"enabled\"\n\n\n  62 |   await suppressed.press(\"Space\");\n  63 |   await expect(chineseGrouping).toBeHidden();\n> 64 |   await expect(chineseComposer.getByRole(\"button\", { name: \"发送评论\", exact: true })).toBeDisabled();\n     |                                                                                    ^\n  65 |   await expect(chineseComposer.getByLabel(\"添加评论\", { exact: true })).toHaveValue(original);\n  66 |   await chineseComposer.getByRole(\"button\", { name: \"预览发送\", exact: true }).click();\n  67 |   await expect(chineseGrouping.getByText(buildSquad.name, { exact: false })).toHaveCount(0);\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-preview-web.spec.ts:64:84"
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-preview-web--9c86c-a-suppressed-target-is-sent-chromium/test-failed-1.png",
+        "exists": true,
+        "sha256": "25a7c600ff2f5e5201bf5590a8ccbbdc4184863249332b00c3342e96b7c88321"
+      },
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-preview-web--9c86c-a-suppressed-target-is-sent-chromium/test-failed-2.png",
+        "exists": true,
+        "sha256": "ea078e9a8b6b6c055e6134168eb6006276c83580a8964508c8ac0ce2c464b6c7"
+      },
+      {
+        "name": "error-context",
+        "content_type": "text/markdown",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-preview-web--9c86c-a-suppressed-target-is-sent-chromium/error-context.md",
+        "exists": true,
+        "sha256": "eb7a245ac579642afd10f27588a2fbdfb19468f5ce20fbc329634b2f28e0adfb"
+      },
+      {
+        "name": "trace",
+        "content_type": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-preview-web--9c86c-a-suppressed-target-is-sent-chromium/trace.zip",
+        "exists": true,
+        "sha256": "7c3bc37608736248dab0801d35756f6d9ee7e473cf9618f9d7c01010fe033141"
+      }
+    ]
+  },
+  {
+    "id": "50c10161bcd66db5d006-c7c60ee75e2b879089ce",
+    "project": "chromium",
+    "file": "collaboration-workbench-web.spec.ts",
+    "line": 24,
+    "column": 1,
+    "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+    "suite": [
+      "collaboration-workbench-web.spec.ts"
+    ],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 17983,
+    "errors": [
+      "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Transfer', exact: true })\n\n\n  125 |   await expect(page.getByText(\"Comment confirmed.\")).toBeVisible();\n  126 |\n> 127 |   await page.getByRole(\"button\", { name: \"Transfer\", exact: true }).click();\n      |                                                                     ^\n  128 |   const transfer = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: \"Transfer\", exact: true }) });\n  129 |   await selectHandoffRecipient(page, transfer, { id: recipientAccount.id, name: \"Browser recipient\" });\n  130 |   await transfer.getByLabel(\"Note\", { exact: true }).fill(\"Browser handoff note\");\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-workbench-web.spec.ts:127:69"
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-workbench-we-140e7-tion-handoff-and-revocation-chromium/test-failed-1.png",
+        "exists": true,
+        "sha256": "6eaa1b61c429ab3a22103c553ec2726babf551678b41cc4f43db9197dbad4862"
+      },
+      {
+        "name": "error-context",
+        "content_type": "text/markdown",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-workbench-we-140e7-tion-handoff-and-revocation-chromium/error-context.md",
+        "exists": true,
+        "sha256": "01cbef15fabeeeae64cfc9e51b1ae34e27cb535c9cfdd1f4cac42a3056f59eb2"
+      },
+      {
+        "name": "trace",
+        "content_type": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-workbench-we-140e7-tion-handoff-and-revocation-chromium/trace.zip",
+        "exists": true,
+        "sha256": "f5b0e8a5202f6b9c06ad58e73eea11a9d26f0d60edddaaf38fab06cbc3b92dd3"
+      }
+    ]
+  },
+  {
+    "id": "50c10161bcd66db5d006-4bde6a94628c286e6905",
+    "project": "chromium",
+    "file": "collaboration-workbench-web.spec.ts",
+    "line": 165,
+    "column": 1,
+    "title": "Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry",
+    "suite": [
+      "collaboration-workbench-web.spec.ts"
+    ],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 16490,
+    "errors": [
+      "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Complete issue', exact: true })\n\n\n  218 |       await expect(view.getByRole(\"heading\", { name: issue.title, exact: true })).toBeVisible();\n  219 |     }\n> 220 |     await page.getByRole(\"button\", { name: \"Complete issue\", exact: true }).click();\n      |                                                                             ^\n  221 |     const form = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: \"Complete issue\", exact: true }) });\n  222 |     const status = form.getByLabel(\"Status\", { exact: true });\n  223 |     await status.selectOption(\"done\");\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-workbench-web.spec.ts:220:77"
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-workbench-we-66297-es-input-for-explicit-retry-chromium/test-failed-1.png",
+        "exists": true,
+        "sha256": "c146b01d5f9ceb384ea4ac755af1aba45e144ef6294a6e73122643fc207abcaa"
+      },
+      {
+        "name": "screenshot",
+        "content_type": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-workbench-we-66297-es-input-for-explicit-retry-chromium/test-failed-2.png",
+        "exists": true,
+        "sha256": "58cffaddd655a7f6456bf83692fe0f22fa8f6d2cb1d8ddda360146173235ab7d"
+      },
+      {
+        "name": "error-context",
+        "content_type": "text/markdown",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-workbench-we-66297-es-input-for-explicit-retry-chromium/error-context.md",
+        "exists": true,
+        "sha256": "04136b8a63e2c76fa4aa1106119e93cfefae0e74783bd0a6a129d82a14e94848"
+      },
+      {
+        "name": "trace",
+        "content_type": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-workbench-we-66297-es-input-for-explicit-retry-chromium/trace.zip",
+        "exists": true,
+        "sha256": "6404509c70d94e077f201ed0aecbc77a9829626260289c7b7b526720804c7d99"
+      }
+    ]
+  },
+  {
+    "id": "4f6b07a2ab779aaf77a5-891c4208eb564765af37",
+    "project": "chromium",
+    "file": "settings-preferences.spec.ts",
+    "line": 107,
+    "column": 1,
+    "title": "hidden manual issue fields persist and remain usable through the overflow menu",
+    "suite": [
+      "settings-preferences.spec.ts"
+    ],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "timedOut",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 60616,
+    "errors": [
+      "Test timeout of 60000ms exceeded.",
+      "Error: locator.click: Test timeout of 60000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Set priority...', exact: true })\n    - locator resolved to <div tabindex=\"-1\" role=\"menuitem\" id=\"base-ui-_r_b2_\" data-variant=\"default\" data-slot=\"dropdown-menu-item\" class=\"group/dropdown-menu-item relative flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-body outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-inset:pl-7 data-[variant=destructive]:text-destructive-foreground data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive-foreground dark:data-[variant=destr…>…</div>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not stable\n    - retrying click action\n    - waiting 20ms\n    - waiting for element to be visible, enabled and stable\n  - element was detached from the DOM, retrying\n\n\n  134 |   await expect(dialog.getByRole(\"button\", { name: \"No priority\", exact: true })).toHaveCount(0);\n  135 |   await dialog.getByRole(\"button\", { name: \"More options\", exact: true }).click();\n> 136 |   await page.getByRole(\"menuitem\", { name: \"Set priority...\", exact: true }).click();\n      |                                                                              ^\n  137 |   await page.getByRole(\"button\", { name: \"High\", exact: true }).click();\n  138 |   await expect(dialog.getByRole(\"button\", { name: \"High\", exact: true })).toBeVisible();\n  139 |   const title = \"Priority selected through the hidden-field menu\";\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/settings-preferences.spec.ts:136:78"
+    ],
+    "attachments": [
+      {
+        "name": "preferences-failure",
+        "content_type": "image/png",
+        "inline_body_sha256": "fc3c2f83df04e4cca99e8cb583bdf84e34a5af1e17d0bfb5f4f87cb03cc3b4b7"
+      },
+      {
+        "name": "error-context",
+        "content_type": "text/markdown",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/settings-preferences-hidde-af0f8-e-through-the-overflow-menu-chromium/error-context.md",
+        "exists": true,
+        "sha256": "01257b3f96d6235d39fe4b9a410a5a5a62796655b46216b1f5dc517d3f3ec1c1"
+      },
+      {
+        "name": "trace",
+        "content_type": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/settings-preferences-hidde-af0f8-e-through-the-overflow-menu-chromium/trace.zip",
+        "exists": true,
+        "sha256": "91cb1c3a0a439dc0cf58ddcce36a79989662aab77d2e29de44a0e09a2f637ec5"
+      }
+    ]
+  }
+]

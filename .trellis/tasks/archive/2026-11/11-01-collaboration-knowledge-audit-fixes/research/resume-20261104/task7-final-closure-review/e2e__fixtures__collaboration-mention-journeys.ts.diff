@@ -1,0 +1,83 @@
+--- retained-main/e2e/fixtures/collaboration-mention-journeys.ts
++++ tested-eda0/e2e/fixtures/collaboration-mention-journeys.ts
+@@ -218,16 +218,26 @@
+   for (const target of targets) expect(content).toContain(`mention://${target.kind}/${target.resourceId}`);
+   return content;
+ }
+-async function previewComment(page: Page, fixture: CollaborationMentionJourney) {
+-  const responsePending = page.waitForResponse((response) => new URL(response.url()).pathname === `${issuePath(fixture)}/comments/trigger-preview`
+-    && response.request().method() === "POST");
+-  await composerFor(page).getByRole("button", { name: "Preview delivery", exact: true }).click();
+-  const response = await responsePending;
+-  expect(response.status()).toBe(200);
+-  const preview: CollaborationTriggerPreview = await response.json();
+-  expect(preview.issue_id).toBe(fixture.issueId);
+-  await expect(composerFor(page).getByRole("button", { name: "Send comment", exact: true })).toBeEnabled();
+-  return preview;
++async function previewComment(page: Page, fixture: CollaborationMentionJourney,
++  buttonName: "Preview delivery" | "Send comment" = "Preview delivery") {
++  const commentPath = `${issuePath(fixture)}/comments`;
++  let commentPosts = 0;
++  const observeWrite = (request: Request) => {
++    if (new URL(request.url()).pathname === commentPath && request.method() === "POST") commentPosts += 1;
++  };
++  page.on("request", observeWrite);
++  try {
++    const responsePending = page.waitForResponse((response) => new URL(response.url()).pathname === `${commentPath}/trigger-preview`
++      && response.request().method() === "POST");
++    await composerFor(page).getByRole("button", { name: buttonName, exact: true }).click();
++    const response = await responsePending;
++    expect(response.status()).toBe(200);
++    const preview: CollaborationTriggerPreview = await response.json();
++    expect(preview.issue_id).toBe(fixture.issueId);
++    await expect(composerFor(page).getByRole("button", { name: "Send comment", exact: true })).toBeEnabled();
++    expect(commentPosts).toBe(0);
++    return preview;
++  } finally { page.off("request", observeWrite); }
+ }
+ function assertPreview(preview: CollaborationTriggerPreview, fixture: CollaborationMentionJourney, targets: MentionTarget[], suppressed: string[] = []) {
+   expect(preview.targets).toHaveLength(targets.length);
+@@ -374,11 +384,10 @@
+   assertPreview(await previewComment(page, fixture), fixture, targets);
+   const selectedA = composerFor(page).getByRole("checkbox", { name: new RegExp(fixture.agentA.name) });
+   await expect(selectedA).toBeChecked();
+-  // Changing suppression retires this preview; inspect the next preview's state.
++  // Suppression retires the preview. Send obtains fresh impact confirmation without publishing.
+   await selectedA.click();
+   await expect(selectedA).toHaveCount(0);
+-  const send = composerFor(page).getByRole("button", { name: "Send comment", exact: true });
+-  await expect(send).toBeEnabled();
++  await expect(composerFor(page).getByRole("button", { name: "Send comment", exact: true })).toBeEnabled();
+   await expect(composerFor(page).getByLabel("Add comment", { exact: true })).toHaveValue(content);
+   const commentPosts: Request[] = [];
+   const observe = (request: Request) => {
+@@ -386,21 +395,20 @@
+   };
+   page.on("request", observe);
+   try {
+-    const freshPreviewResponse = page.waitForResponse(response => new URL(response.url()).pathname === `${issuePath(fixture)}/comments/trigger-preview` && response.request().method() === "POST");
+-    await send.click();
+-    const freshPreview = await freshPreviewResponse;
+-    expect(freshPreview.status()).toBe(200);
+-    assertPreview(await freshPreview.json(), fixture, targets, [fixture.agentA.targetId]);
++    assertPreview(await previewComment(page, fixture, "Send comment"), fixture, targets, [fixture.agentA.targetId]);
+     await expect(composerFor(page).getByText("Review the AI targets and their impact, then confirm by sending the comment.", { exact: true })).toBeVisible();
+     await expect(selectedA).not.toBeChecked();
+     await expect(composerFor(page).getByLabel("Add comment", { exact: true })).toHaveValue(content);
+     expect(commentPosts).toHaveLength(0);
+     expect(await readJourneyState(fixture)).toEqual(before);
++    // Manual Preview rechecks suppression without publishing the retained draft.
++    assertPreview(await previewComment(page, fixture), fixture, targets, [fixture.agentA.targetId]);
++    await expect(selectedA).not.toBeChecked();
++    await expect(composerFor(page).getByText("AI trigger suppressed", { exact: true })).toBeVisible();
++    await expect(composerFor(page).getByLabel("Add comment", { exact: true })).toHaveValue(content);
++    expect(commentPosts).toHaveLength(0);
++    expect(await readJourneyState(fixture)).toEqual(before);
+   } finally { page.off("request", observe); }
+-  // Manual Preview still rechecks the selected target state without publishing.
+-  assertPreview(await previewComment(page, fixture), fixture, targets, [fixture.agentA.targetId]);
+-  await expect(selectedA).not.toBeChecked();
+-  await expect(composerFor(page).getByText("AI trigger suppressed", { exact: true })).toBeVisible();
+   await selectedA.click();
+   const preview = await previewComment(page, fixture);
+   assertPreview(preview, fixture, targets);

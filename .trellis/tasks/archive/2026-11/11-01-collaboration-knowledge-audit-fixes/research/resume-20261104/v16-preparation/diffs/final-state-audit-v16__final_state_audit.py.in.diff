@@ -1,0 +1,69 @@
+--- /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/final-state-audit-v15/final_state_audit.py
++++ /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-state-audit-v16/final_state_audit.py.in
+@@ -1,6 +1,6 @@
+ # Execution coordinator: 01a1a3c9-2459-7de1-8244-55640c5f6143; template only, no execution authorization.
+ #!/usr/bin/env python3
+-"""Read-only final v15 identities; this is not whole-check acceptance."""
++"""Read-only final v16 identities; this is not whole-check acceptance."""
+ import argparse
+ import datetime
+ import hashlib
+@@ -32,10 +32,10 @@
+ 
+ def audit(root, review):
+     root = Path(root).resolve()
+-    out = root / ".omx/private/final-check-v15"
+-    launcher = out / "run-make-check-v15-provenance.py"
+-    clearance = json.loads((out / "independent-review-clearance-v15.json").read_text())
+-    run_path = out / "make-check-v15.json"
++    out = root / ".omx/private/final-check-v16"
++    launcher = out / "run-make-check-v16-provenance.py"
++    clearance = json.loads((out / "independent-review-clearance-v16.json").read_text())
++    run_path = out / "make-check-v16.json"
+     run = json.loads(run_path.read_text())
+     require(run.get("state") == "complete" and type(run.get("exit_code")) is int,
+             "Final-state audit requires a complete run")
+@@ -47,7 +47,7 @@
+     for key in ("candidate_sha", "launcher_sha256", "adapter_sha256", "source_env_sha256", "bindings_sha256"):
+         require(clearance.get(key) == review[key], "Execution clearance differs from independent review: " + key)
+     require(digest(launcher) == review["launcher_sha256"], "Registered launcher changed")
+-    module = types.ModuleType("registered_v15_final_audit")
++    module = types.ModuleType("registered_v16_final_audit")
+     module.__file__ = str(launcher)
+     exec(compile(launcher.read_bytes(), str(launcher), "exec"), module.__dict__)
+     require(module.EXPECTED_ROOT == root and module.EXPECTED_CANDIDATE_SHA == review["candidate_sha"],
+@@ -57,11 +57,11 @@
+     status = subprocess.check_output(["git", "status", "--porcelain", "--untracked-files=all"], cwd=root, text=True)
+     require(all(line == " M " + NEXT_PATH for line in status.splitlines()),
+             "Unregistered final source changes are present")
+-    source = out / "check-source-v15.env"
++    source = out / "check-source-v16.env"
+     require(digest(source) == review["source_env_sha256"], "Registered source environment changed")
+     adapters = {name: digest(module.ADAPTERS / name) for name in ("go", "pnpm")}
+     require(adapters == review["adapter_sha256"], "Registered adapter changed")
+-    binding_path = out / "owned-bindings-v15-provenance.json"
++    binding_path = out / "owned-bindings-v16-provenance.json"
+     require(digest(binding_path) == review["bindings_sha256"], "Registered bindings changed")
+     registered = json.loads(binding_path.read_text())
+     rows = [row for row in registered["source"]["tracked_files"] if row["path"] == NEXT_PATH]
+@@ -90,9 +90,9 @@
+     # Every registered source, tool, graph and artifact guard runs unchanged.
+     module.file_hash = final_hash
+     binding = module.verify_owned_bindings(root, out, clearance, module.parse_generated_environment(source.read_text()))
+-    require(digest(out / "check-source-v15.safe.env") == run.get("effective_env_sha256"),
++    require(digest(out / "check-source-v16.safe.env") == run.get("effective_env_sha256"),
+             "Canonical execution environment changed")
+-    require(digest(out / "make-check-v15.log") == run.get("log_sha256"), "Complete run log changed")
++    require(digest(out / "make-check-v16.log") == run.get("log_sha256"), "Complete run log changed")
+     expected = {
+         "candidate_root": str(root), "candidate_sha": review["candidate_sha"],
+         "launcher_sha256": review["launcher_sha256"], "adapter_sha256": adapters,
+@@ -115,7 +115,7 @@
+         "source_env_sha256": digest(source), "adapter_sha256": adapters,
+         "run_sha256": digest(run_path), "wholecheck_exit_code": run["exit_code"],
+         "wholecheck_passed": run["exit_code"] == 0,
+-        "clearance_sha256": digest(out / "independent-review-clearance-v15.json"),
++        "clearance_sha256": digest(out / "independent-review-clearance-v16.json"),
+         "resource_ownership_sha256": clearance["resource_ownership_sha256"],
+         "tracked_file_count": len(binding["source"]["tracked_files"]),
+         "workspace_edges": len(binding["workspace"]["edges"]),

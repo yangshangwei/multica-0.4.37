@@ -1,0 +1,86 @@
+{
+  "state": "templates_only_not_runnable",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "donor_candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "candidate_sha": null,
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "manifest": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/prepared-template-manifest.json",
+    "sha256": "3849f09ce1ca21f9857352276c7beca47b104c1caf10d516a010219485fe335d"
+  },
+  "static_validation": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/static-validation.json",
+    "sha256": "fbd873f2edafc3b576944188f9e8e2162bece4fd4dc336eea8180d1b1ad4ca6d",
+    "templates": 26,
+    "python_AST_compile_only": 18,
+    "control_definitions": 69,
+    "controls_executed": 0
+  },
+  "final_auditor": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-state-audit-v16/final_state_audit.py",
+    "sha256": null,
+    "template_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-state-audit-v16/final_state_audit.py.in",
+    "template_sha256": "2bf50f6e244f4c5f3b1c2022ae67663d8888047098145f8a1ea30fb4d28eb318",
+    "default_review_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/independent-review/review.json",
+    "scope": "descriptive handoff metadata matching actual review shape; not a new clearance layer"
+  },
+  "flat_clearance": {
+    "template_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/independent-review-clearance-v16.json.template",
+    "template_sha256": "766667ef3ad20cc936e2e26de2c75aabeef5194da25fb05af47a2ac59bd4af7b",
+    "final_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/independent-review-clearance-v16.json",
+    "issued": false,
+    "schema_fields_unchanged": true
+  },
+  "sole_execution": {
+    "template_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/execution/execute-once.py.in",
+    "template_sha256": "04de0eb0e508b8917911e1a4ddf1b40367fa616d695a36a65b65e583c078f51d",
+    "final_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-execution/execute-once.py",
+    "materialization_phase": "after_independent_review_and_root_clearance",
+    "pending_fields": [
+      "PENDING_ROOT_CLEARANCE_SHA256",
+      "PENDING_ROOT_FINAL_SHA",
+      "PENDING_ROOT_INDEPENDENT_REVIEW_SHA256"
+    ],
+    "started": false
+  },
+  "cache_seeding": {
+    "template_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/seed-warm-go-cache.py.in",
+    "template_sha256": "2f94d7909b2e6eaa44b9b889c89a77065fbf2fc459454309f76647b05892d839",
+    "final_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/seed-warm-go-cache.py",
+    "method": "Darwin fclonefileat COW only; no normal-copy fallback/source writes/symlink/hardlink",
+    "execution_verified": false,
+    "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/go-build-cache",
+    "destination": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-build-cache",
+    "SDK_reference": "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/clonefile.h"
+  },
+  "seed_database_proposal": "multica_closure_v16_seed_01a1a3c9",
+  "Redis_name_proposal": "multica-v16-01a1a3c9-redis",
+  "temp_prefix": "/private/tmp/multica-final-check-v16-",
+  "pending_root_fields": [
+    "PENDING_ROOT_BUILD_TEMP_DIRECTORY",
+    "PENDING_ROOT_CLEARANCE_SHA256",
+    "PENDING_ROOT_DATABASE_URL",
+    "PENDING_ROOT_DEPLOYMENT_UUID",
+    "PENDING_ROOT_FINAL_SHA",
+    "PENDING_ROOT_INDEPENDENT_REVIEW_SHA256",
+    "PENDING_ROOT_POSTGRES_PASSWORD",
+    "PENDING_ROOT_PRIVATE_JWT_SECRET",
+    "PENDING_ROOT_REDIS_PORT",
+    "PENDING_ROOT_RENDERER_PORT"
+  ],
+  "Go_adapter_sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+  "legacy_v9_reporting_basenames_retained": true,
+  "protected_v15_count": 33,
+  "protected_CCG15_count": 13,
+  "README": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/README.md",
+    "sha256": "8323996c9cd5716ad96f198d99093fc92aaeb3f182a8579be9f1d59089f5b099"
+  },
+  "Root_boundary_references": [
+    "V15 install-staged-desktop.py and release-owned-runtimes.py retain historical PIDs; Root binds actual V15 release before V16 installation"
+  ],
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "production_default_enabled": false,
+  "control_build_DB_service_process_Model_operations": 0
+}

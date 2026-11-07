@@ -1,0 +1,40 @@
+--- /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/start-renderer.py
++++ /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/start-renderer.py.in
+@@ -10,14 +10,14 @@
+ 
+ HERE = Path(__file__).resolve().parent
+ ROOT = Path('/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103')
+-OUT = ROOT / '.omx/private/final-check-v15'
++OUT = ROOT / '.omx/private/final-check-v16'
+ PYTHON = '/opt/homebrew/opt/python@3.14/bin/python3.14'
+ 
+ def digest(path):
+     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+ 
+ allocation = json.loads((HERE / 'resource-allocation-redis.json').read_text())
+-install = json.loads((HERE.parent / 'desktop-v15-install.json').read_text())
++install = json.loads((HERE.parent / 'desktop-v16-install.json').read_text())
+ ready = json.loads((HERE / 'staged-desktop-ready.json').read_text())
+ assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip() == allocation['candidate_sha']
+ assert not subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT, text=True).strip()
+@@ -27,17 +27,17 @@
+ port = allocation['renderer_port']
+ with socket.socket() as sock:
+     sock.bind(('127.0.0.1', port))
+-home = OUT / 'renderer-home-v15'
++home = OUT / 'renderer-home-v16'
+ home.mkdir(mode=0o700)
+ env = {'PATH': '/usr/bin:/bin', 'HOME': str(home), 'LC_ALL': 'C', 'PYTHONDONTWRITEBYTECODE': '1'}
+ cmd = [PYTHON, '-u', '-m', 'http.server', str(port), '--bind', '127.0.0.1', '--directory', str(renderer)]
+-with (OUT / 'renderer-v15.log').open('x') as log:
++with (OUT / 'renderer-v16.log').open('x') as log:
+     child = subprocess.Popen(cmd, cwd=ROOT, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+     record = {'recorded_at': datetime.now(timezone.utc).isoformat(), 'candidate_sha': allocation['candidate_sha'],
+               'candidate_root': str(ROOT), 'coordinator': allocation['coordinator'], 'pid': child.pid,
+               'process_group': os.getpgid(child.pid), 'command': cmd, 'cwd': str(ROOT), 'url': allocation['renderer_url'],
+               'renderer_directory': str(renderer), 'index_sha256': digest(renderer / 'index.html'),
+-              'install_record_sha256': digest(HERE.parent / 'desktop-v15-install.json'),
++              'install_record_sha256': digest(HERE.parent / 'desktop-v16-install.json'),
+               'allocation_sha256': digest(HERE / 'resource-allocation-redis.json'), 'script_sha256': digest(__file__),
+               'model_or_database_environment_forwarded': False, 'state': 'starting'}
+     with (HERE / 'renderer-starting.json').open('x') as target:

@@ -1,0 +1,48 @@
+{
+  "recorded_at": "2026-11-03T10:54:40.412024+00:00",
+  "registry": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/dev-registry-v13/envs/check-20261103100106-73574",
+  "API_port": 18974,
+  "Web_port": 13894,
+  "database": "multica_check_20261103100106_73574_api",
+  "scope": "actual startup record and process snapshots, no HTTP/SQL queries",
+  "components": {
+    "api": {
+      "record_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/dev-registry-v13/envs/check-20261103100106-73574/api.running.json",
+      "record_sha256": "290c503dd305032910041899bef2b636fce878b4e5073a4f5dcfa9ac1a1d5648",
+      "record": {
+        "component": "api",
+        "mode": "development",
+        "build_id": "",
+        "command": "go run -ldflags '-X main.commit=85ef5d205' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server)",
+        "source_id": "c77e3cab13a324e3041cbc9633b4d107e51700d817e7347fd972fe9dca4929fb",
+        "configuration_id": "6f989a13527b841bf03767e357821a83ef54bf9964c959d7e2c750c3fc25441f",
+        "commit": "85ef5d205",
+        "launcher_pid": 1987,
+        "started_at": "2026-11-03T10:52:32Z",
+        "listener_pid": 2041
+      },
+      "launcher_pid_ps": "1987     1 S    02:08 /Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go run -ldflags -X main.commit=85ef5d205 ./cmd/server",
+      "listener_pid_ps": "2041  1987 S    02:02 /private/tmp/multica-final-check-v13-fed2n321/go-build2656010767/b001/exe/server",
+      "listener_cwd": "p2041\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server"
+    },
+    "web": {
+      "record_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/dev-registry-v13/envs/check-20261103100106-73574/web.running.json",
+      "record_sha256": "cd25cf819e49bab23aa41a07ad7205cbae0e904861eb4234a12e754179468518",
+      "record": {
+        "component": "web",
+        "mode": "production",
+        "build_id": "QbgtzO5rtV_yQgK1AKq42",
+        "command": "pnpm --filter @multica/web exec next start --port 13894",
+        "source_id": "c77e3cab13a324e3041cbc9633b4d107e51700d817e7347fd972fe9dca4929fb",
+        "configuration_id": "e7d76b7401903d9818670c228bd538d848744a517f6634ffb0a13f1b214623d6",
+        "commit": "85ef5d205",
+        "launcher_pid": 2439,
+        "started_at": "2026-11-03T10:53:49Z",
+        "listener_pid": 2458
+      },
+      "launcher_pid_ps": "2439     1 S    00:51 node /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs --dir /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103 --filter @multica/web exec next start --port 13894",
+      "listener_pid_ps": "2458  2439 S    00:51 next-server (v16.2.6)",
+      "listener_cwd": "p2458\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web"
+    }
+  }
+}

@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/closure_inventory",
+  "reviewed_at": "2026-11-03T14:07:12.928561+00:00",
+  "active_task": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "scope": "Independent exact-byte prelaunch review of finalV14. No fullcheck result or task7closure claimed.",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "launcher_sha256": "7bdc66bcab9b31bf3ec570fd005d0fd59e89d9efe0ec08a2ed170ce0e0eb480c",
+  "adapter_sha256": {
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+  },
+  "source_env_sha256": "da26b06efe361d0a51f3a6e474db84764bf19095f0e151c8b32b7c3970bba771",
+  "bindings_sha256": "c86aaae47ff62a177dd0cf469396cd26e6db647c0c3cffd4fdf7befd40030cfa",
+  "resource_ownership_sha256": "d0f55a636a37197ec053ac3fb0fd95661641d656d38fd0904ae7e0980cc21173",
+  "final_auditor": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/final-state-audit-v14/final_state_audit.py",
+    "sha256": "9dfa39822223d8487d569cbe619b7ee4039277aec3a211bdfaa3148f1076484e"
+  },
+  "final_auditor_sha256": "9dfa39822223d8487d569cbe619b7ee4039277aec3a211bdfaa3148f1076484e",
+  "source_identities": {
+    "canonical_product": {
+      "source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+      "file_count": 7984,
+      "purpose": "Tracked runtime production roots; excludes E2E and task documentation."
+    },
+    "development_HEAD_overlay": {
+      "source_id": "26c01e6174e12fdf99c1a586271a0b0ac66c02f515070d16e42a8a26be05babc",
+      "purpose": "Actual candidate HEAD and normalized development overlay identity required by run dev_environment_source_id."
+    },
+    "all_tracked_snapshot": {
+      "sha256": "62499df8c3673e4b176af0adb990c85b9ba7f954f8d627f619d266ede6010c76",
+      "file_count": 17536,
+      "purpose": "Every tracked file content/mode, including E2E and docs."
+    }
+  },
+  "actual_binding_verification": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/independent-review/actual-binding-verification.json",
+    "sha256": "379efaab4a784a71ed8f40c03e120134fe837a22f672988f20198eb9ec2d1110"
+  },
+  "tracked_files_verified": 17536,
+  "product_files_verified": 7984,
+  "workspace": {
+    "edges": 22,
+    "exports": 66,
+    "current_physical_paths_and_actual_exports_verified": true
+  },
+  "cli": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/multica",
+    "sha256": "ad532d8d34ea3ee8e6707e88b49207959dec7452733b83b6d631f59e83b13c2f",
+    "bytes": 29314610,
+    "version": "v0.6.7-467-gd0b132fff",
+    "version_observation": "multica v0.6.7-467-gd0b132fff (commit: d0b132fff, built: 2026-11-03T13:47:32Z)\ngo: go1.26.6, os/arch: darwin/arm64\n",
+    "build_record_sha256": "99a426822170b176c7f241107b3c4677b8d1a9b915180daeb6632dd2811c2b50"
+  },
+  "desktop": [
+    {
+      "name": "renderer",
+      "files": 493,
+      "installed_and_staged_equal": true
+    },
+    {
+      "name": "preload",
+      "files": 1,
+      "installed_and_staged_equal": true
+    },
+    {
+      "name": "main",
+      "files": 1,
+      "installed_and_staged_equal": true
+    }
+  ],
+  "build_records": {
+    "cli": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/candidate-setup/cli-build-v14.json",
+      "sha256": "99a426822170b176c7f241107b3c4677b8d1a9b915180daeb6632dd2811c2b50"
+    },
+    "desktop": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/candidate-setup/desktop-build-v14.json",
+      "sha256": "072308ab5b888c39d6cfd1b97e7d98733a5ec86e12126973c6e973521aafe1dc"
+    }
+  },
+  "root_resource_confirmation": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/root-resource-confirmation.json",
+    "sha256": "a334dd9a64c7215a375d3acb3975804d60321ab52e7363f34725d6aa43639abb"
+  },
+  "resource_proof": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/resource-ownership-v14.json",
+    "sha256": "d0f55a636a37197ec053ac3fb0fd95661641d656d38fd0904ae7e0980cc21173"
+  },
+  "root_live_scope": "Root captured actual rendererPID/cwd/HTTPbytes, RedisID/labels/PONG and actualseedDB764 with0activefullchecks. This reviewer validates exact signed-in-session record bytes and binding, without recontactingAPI/DB/services.",
+  "independent_private_controls": [
+    {
+      "name": "launcher",
+      "tests": 45,
+      "exit_code": 0,
+      "log": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/independent-review/launcher-independent-control.log",
+        "sha256": "0191976b310e18c60f4e0f80bf58d375c4d7d91ec035429f75bcaba9425f6c05"
+      },
+      "execution": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/independent-review/launcher-execution.json",
+        "sha256": "a5a75fb1dc61663fed52c98ac09d494468aa778fcd62786ab9de9329eb4ed9db"
+      },
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/fake-preflight-v14-provenance.py",
+      "source_sha256": "0cecb616996eb81dc3111dd3f616368e6c551b36e672bd4f62f5a2ddc7ee2e7c",
+      "source_unchanged": true,
+      "case_names": [
+        "test_actual_graph_mismatch_refuses_before_make",
+        "test_backtick_substitution_is_not_executed",
+        "test_blocking_review_cannot_launch",
+        "test_build_temp_git_root_refuses_before_make",
+        "test_candidate_mismatch_is_refused_before_make",
+        "test_catalog_path_mismatch_refuses_before_make",
+        "test_changed_cli_refuses_before_make",
+        "test_changed_pinned_node_refuses_before_make",
+        "test_changed_pinned_pnpm_bundle_refuses_before_make",
+        "test_changed_renderer_refuses_before_make",
+        "test_changed_rollout_gate_refuses_before_make",
+        "test_command_substitution_is_not_executed",
+        "test_credentialed_renderer_is_refused_before_make",
+        "test_escaped_normalized_braced_make_function_is_refused",
+        "test_escaped_normalized_parenthesized_make_function_is_refused",
+        "test_existing_dsh_refuses_before_make",
+        "test_existing_execution_directory_refuses_before_make",
+        "test_foreign_workspace_link_refuses_before_make",
+        "test_generated_quoted_escaped_empty_and_duplicate_values_are_data",
+        "test_launcher_child_gets_private_home_and_explicit_actual_caches",
+        "test_matching_own_tools_and_provider_env_scrub",
+        "test_matching_review_preserves_api_pool_and_dynamic_renderer",
+        "test_missing_catalog_refuses_before_make",
+        "test_missing_resource_ownership_refuses_before_make",
+        "test_missing_review_cannot_launch",
+        "test_modified_tracked_source_refuses_before_make",
+        "test_new_v14_process_paths_and_record_are_bound",
+        "test_non_loopback_renderer_is_refused_before_make",
+        "test_normalized_ascii_control_is_refused",
+        "test_normalized_dollar_reference_is_refused",
+        "test_normalized_tab_is_refused",
+        "test_quoted_normalized_braced_make_function_is_refused",
+        "test_repeated_launch_preserves_previous_evidence",
+        "test_repository_env_copy_preserves_enforced_pool_and_removed_context",
+        "test_root_resource_proof_rejects_unowned_redis",
+        "test_run_record_separates_product_overlay_and_tracked_identities",
+        "test_shared_writable_catalog_refuses_before_make",
+        "test_shell_metacharacters_stay_literal_in_canonical_configuration",
+        "test_symlinked_catalog_refuses_before_make",
+        "test_tampered_go_adapter_is_refused_before_make",
+        "test_tampered_launcher_is_refused_before_make",
+        "test_tampered_pnpm_adapter_is_refused_before_make",
+        "test_tampered_source_config_is_refused_before_make",
+        "test_wrong_canonical_product_digest_refuses_before_make",
+        "test_wrong_canonical_product_roots_refuses_before_make"
+      ],
+      "fixture_roots_within_reviewer_scope": true
+    },
+    {
+      "name": "adapter-env",
+      "tests": 5,
+      "exit_code": 0,
+      "log": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/independent-review/adapter-env-independent-control.log",
+        "sha256": "478115a937d83d52a4fde2fe72d218db1d3fa34f37aa07e9cba8310d0d52b9cb"
+      },
+      "execution": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/independent-review/adapter-env-execution.json",
+        "sha256": "225dcd96f09358d40737d3a757e1a00a1bf745ba9f1d4d807cd70386fe02f381"
+      },
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/adapter-env-preflight-v14.py",
+      "source_sha256": "a4c4b3ed6ce2736d046b91b0c00fd502eea4957711b288ddc0685a42a759a63b",
+      "source_unchanged": true,
+      "case_names": [
+        "test_go_compile_forwarding_preserves_api_configuration_without_sql",
+        "test_non_test_metadata_uses_exact_cached_go",
+        "test_non_test_metadata_uses_exact_own_pnpm_and_node",
+        "test_outer_go_test_removes_api_publication_and_pool_only_in_child",
+        "test_playwright_wiring_delegates_only_to_selected_fake_pnpm"
+      ],
+      "fixture_roots_within_reviewer_scope": true
+    },
+    {
+      "name": "final-audit",
+      "tests": 16,
+      "exit_code": 0,
+      "log": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/independent-review/final-audit-independent-control.log",
+        "sha256": "fb6648c3877ff09cf0c12efc542c789edce8209f6736103bad21eccd12241a14"
+      },
+      "execution": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/independent-review/final-audit-execution.json",
+        "sha256": "4d4c1a19b56403f9a152f4c5cfcfc3028eff0805fbe0872811b5b8a7e06d93f2"
+      },
+      "source": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/final-state-audit-v14/final_state_audit_test.py",
+      "source_sha256": "3bc36196bafa295109df55e6a044f85a99f61950bb04b9bfeb363b6d5721d843",
+      "source_unchanged": true,
+      "case_names": [
+        "test_canonical_execution_environment_mutation_is_rejected",
+        "test_changed_desktop_artifact_is_rejected",
+        "test_changed_development_environment_source_identity_is_rejected",
+        "test_clean_final_state_passes_identity_audit",
+        "test_completed_run_log_mutation_is_rejected",
+        "test_exact_generated_import_is_recorded_without_writing_source",
+        "test_existing_report_is_never_overwritten",
+        "test_failed_whole_command_remains_failed_after_identity_pass",
+        "test_foreign_workspace_link_is_rejected",
+        "test_generated_import_plus_extra_declaration_is_rejected",
+        "test_generated_import_with_changed_file_mode_is_rejected",
+        "test_incomplete_run_is_rejected",
+        "test_missing_review_retains_a_failure_report",
+        "test_next_declaration_symlink_is_rejected",
+        "test_pinned_tool_mutation_is_rejected",
+        "test_unrelated_tracked_mutation_is_rejected_even_if_git_status_is_clean"
+      ],
+      "fixture_roots_within_reviewer_scope": true
+    }
+  ],
+  "independent_private_control_count": 66,
+  "author66_evidence_preserved": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/launcher-private-preflight.json",
+      "sha256": "fb98679d05f6c032ec2f116d098d63a37e103a11b7b2313b21e6d3f86fe2d89b",
+      "unchanged": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/launcher-private-preflight.log",
+      "sha256": "1345c841f6c5909982cd2b5ef32cde45666b06041415c45af6ca33eac1835774",
+      "unchanged": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/adapter-env-private-preflight.json",
+      "sha256": "70a0fd69c263693cb40d21afdc1e708c2bce73bdbd6f1705310850682bb6bc16",
+      "unchanged": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/adapter-env-private-preflight.log",
+      "sha256": "8c5695523953a9e86583a69ab1aeab3bab4b8be71fb4568109b28807e9064857",
+      "unchanged": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/final-audit-private-preflight.json",
+      "sha256": "252bc06734aac363d8407e92d3481a03a4aae7f103bf3e219f7dfb0fb3f576de",
+      "unchanged": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/final-audit-private-preflight.log",
+      "sha256": "7790e357c4b7ca7875619c41ff11e49e5ec0a06c97c635154043c81b5f97596b",
+      "unchanged": true
+    }
+  ],
+  "RKI6_retained_result_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/independent-review/rki6-retained-scope.json",
+    "sha256": "2a5ef50023fe92579964f026a9646eee6177c49652ad88a615d75301e7df5405"
+  },
+  "RKI6_scope": "Actual final639 fake/stand-in normal/race evidence only. The seventeen framework files still match; later product policy/router/lock changes mean this does not establish full d0b132fff runtime acceptance. No new model or RK1 run performed.",
+  "contract_review": {
+    "environment": "Parsed as data; normalized dollar/control values refuse before Make; realMake include/export probes retain harmless markers absent. API-only pool/publication settings are removed only for actualoutertests; recursivefixture fields preserved.",
+    "Go": "PinnedGo andpsql; mode1requires exactmigratedmake_go template, creates timestamp+packagehashedcloneperpackage and recordsidentity/command/log/counts; mode0requires matchingallocation plus exactsinglecanonicalpackage and refuses overlays/modfiles. Realcompileonly avoidsTestMain; value-position -c and arguments boundaries do not bypass admission.",
+    "workspace": "All22candidatephysicalworkspaceedges and66Nodeexports are verified, plus ownpnpm SDK andGo toolchainmembers. Equalfiles in anothercheckout do not qualify.",
+    "artifacts": "CLI builtatcurrentSHA and495installedDesktopfiles equalstagedsourceboundbuild; rendererorigin/indexhashboundtorootresourceproof.",
+    "final_audit": "Requires completedrun, matchingclearance/review/source/config/adapters/tools/workspace/artifacts/runlog plus developer/product/trackedIDs; only exactbyte-proven Nextdev->production importrewrite normalizes withoutwriting source. Failedmake maypassidentityaudit butwholecheckremainsfalse.",
+    "inventory": "One normal fullmake entry invokes raceGo perpackage andalldefaultTS/PW withworkers1/retries0. Executednamedpass/fail/skip andcompileonly packages stayseparate. Explicit skipsmustbereviewedafteractualrun; CCGdeployed remainsaseparategate.",
+    "database_retention": "The canonical check script drops its temporary migrated Go template at cleanup, without forcing connections; per-package cloned test databases and API database/evidence remain for diagnosis."
+  },
+  "notes": [
+    {
+      "id": "V14-N1",
+      "blocking": false,
+      "note": "Prelaunch pass is not makecheck success. Actualfinalaudit andcomplete namedinventory plusrootliveAPI/DBproof are mandatory aftertheoneauthorizedrun."
+    },
+    {
+      "id": "V14-N2",
+      "blocking": false,
+      "note": "RKI6 retainedfake evidence remains historical639scope; nofullcurrentproductequivalence orrealmodelacceptance."
+    },
+    {
+      "id": "V14-N3",
+      "blocking": false,
+      "note": "Private pnpm output filenames retain v9 suffix but live under uniquev14parentdirectory; nooldresult is overwritten. Execution/helper comments still mention templateonly; actualentry requiresrootclearance andfreshstate."
+    }
+  ],
+  "verification": {
+    "candidate_clean": "pass",
+    "actual_source_tool_workspace_artifact_hashes": "pass",
+    "private_controls": "66pass,0fail;networkdenied;newreviewertemp/logsonly",
+    "lint_typecheck": "Noadditionalproductlint/typecheckduringprelaunchreview; finalE2E strictTS previously passed and the newly committedcandidate mustrun fullstaticgate.",
+    "fullcheck": "notstarted",
+    "actual_final_audit": "notrunnablebeforecompletedrun;16independentcontrols passed",
+    "Provider_calls": 0,
+    "source_or_script_mutations": false,
+    "DB_API_access_by_reviewer": false,
+    "task7_closed": false
+  },
+  "next": "Root creates exacthash-boundindependent-review-clearance-v14.json. A separatefollowupmustauthorizethesolefullchecker; then actualmakecheck,finalauditor,namedinventory,androotlivechecks."
+}

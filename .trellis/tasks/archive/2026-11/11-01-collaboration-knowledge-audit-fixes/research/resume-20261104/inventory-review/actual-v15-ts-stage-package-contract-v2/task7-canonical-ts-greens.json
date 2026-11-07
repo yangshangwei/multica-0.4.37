@@ -1,0 +1,164 @@
+{
+  "scope": "Actual named current v15 TS canonical #7 greens only; wholecheck remains unaccepted",
+  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "TS_summary_sha256": "6d195f36153f7cd95e8d5e8b19feec7422833f3fd198afd7468d210f3f1787bd",
+  "canonical_green_count": 8,
+  "canonical_greens": [
+    {
+      "id": "M4",
+      "actual_leaf": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+        "file_index": 32,
+        "assertion_index": 2,
+        "ancestorTitles": [],
+        "fullName": "keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision",
+        "status": "passed",
+        "title": "keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision",
+        "duration": 129.64787499999989,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 3,
+        "raw_report_sha256": "e936103a0817b963f225e9c1ff45ce8ce0559d0d711308aa2201a643a90735af"
+      }
+    },
+    {
+      "id": "M5",
+      "actual_leaf": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+        "file_index": 32,
+        "assertion_index": 20,
+        "ancestorTitles": [],
+        "fullName": "a review decision leaves an open proposal draft intact and only the panel's own proposal closes it",
+        "status": "passed",
+        "title": "a review decision leaves an open proposal draft intact and only the panel's own proposal closes it",
+        "duration": 266.73354100000006,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 3,
+        "raw_report_sha256": "e936103a0817b963f225e9c1ff45ce8ce0559d0d711308aa2201a643a90735af"
+      }
+    },
+    {
+      "id": "L8",
+      "actual_leaf": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+        "file_index": 32,
+        "assertion_index": 27,
+        "ancestorTitles": [],
+        "fullName": "submit waits for a refreshing source list instead of reporting a changed source",
+        "status": "passed",
+        "title": "submit waits for a refreshing source list instead of reporting a changed source",
+        "duration": 236.6837919999998,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 3,
+        "raw_report_sha256": "e936103a0817b963f225e9c1ff45ce8ce0559d0d711308aa2201a643a90735af"
+      }
+    },
+    {
+      "id": "L9",
+      "actual_leaf": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+        "file_index": 32,
+        "assertion_index": 30,
+        "ancestorTitles": [],
+        "fullName": "attributes over-byte summary, conclusion and evidence to the field instead of a source failure",
+        "status": "passed",
+        "title": "attributes over-byte summary, conclusion and evidence to the field instead of a source failure",
+        "duration": 285.6256250000006,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 3,
+        "raw_report_sha256": "e936103a0817b963f225e9c1ff45ce8ce0559d0d711308aa2201a643a90735af"
+      }
+    },
+    {
+      "id": "L10",
+      "actual_leaf": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+        "file_index": 32,
+        "assertion_index": 11,
+        "ancestorTitles": [],
+        "fullName": "restarts at the first page when a later page loses its authorization boundary",
+        "status": "passed",
+        "title": "restarts at the first page when a later page loses its authorization boundary",
+        "duration": 28.58312500000011,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 3,
+        "raw_report_sha256": "e936103a0817b963f225e9c1ff45ce8ce0559d0d711308aa2201a643a90735af"
+      }
+    },
+    {
+      "id": "L11",
+      "actual_leaf": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+        "file_index": 32,
+        "assertion_index": 10,
+        "ancestorTitles": [],
+        "fullName": "stops interval polling an unavailable knowledge interface until an explicit refresh",
+        "status": "passed",
+        "title": "stops interval polling an unavailable knowledge interface until an explicit refresh",
+        "duration": 9.59775000000036,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 3,
+        "raw_report_sha256": "e936103a0817b963f225e9c1ff45ce8ce0559d0d711308aa2201a643a90735af"
+      }
+    },
+    {
+      "id": "L12",
+      "actual_leaf": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+        "file_index": 32,
+        "assertion_index": 24,
+        "ancestorTitles": [],
+        "fullName": "lets a human remove a stored identity only after a check finds no result, without any request",
+        "status": "passed",
+        "title": "lets a human remove a stored identity only after a check finds no result, without any request",
+        "duration": 110.45716700000048,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 3,
+        "raw_report_sha256": "e936103a0817b963f225e9c1ff45ce8ce0559d0d711308aa2201a643a90735af"
+      }
+    },
+    {
+      "id": "L13",
+      "actual_leaf": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/locales/parity.test.ts",
+        "file_index": 114,
+        "assertion_index": 3,
+        "ancestorTitles": [
+          "locale bundle parity"
+        ],
+        "fullName": "locale bundle parity collaboration: zh-Hans covers every EN key",
+        "status": "passed",
+        "title": "collaboration: zh-Hans covers every EN key",
+        "duration": 0.740667000000002,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 3,
+        "raw_report_sha256": "e936103a0817b963f225e9c1ff45ce8ce0559d0d711308aa2201a643a90735af"
+      }
+    }
+  ],
+  "wholecheck_accepted": false,
+  "source_or_runtime_changes": 0
+}

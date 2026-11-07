@@ -1,0 +1,13 @@
+# Owned dependency layout repair
+
+Scope: the ignored dependency/private-artifact layout of `/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103`, pinned at `304f74dd3ba4ddea862c94917c5bb0770355a351`, and this new evidence directory. No tracked candidate files, donor files, existing evidence, dependencies, services, database state or Git state may be changed.
+
+1. Capture candidate/source/configuration hashes and read-only resolution probes for the empty candidate and retained v10. Distinguish exported-package resolution from a direct source entry in the same checkout; retain the actual mismatched realpaths and device/inode identities.
+2. Use the retained Corepack pnpm 10.28.2 package. Copy it and the lock-selected pnpm v10 content/index files into candidate-private storage using APFS clones or ordinary copies, never hard links or donor node_modules directory symlinks. Do not copy the store's projects directory.
+3. Run that copied executable with `install --offline --frozen-lockfile --ignore-scripts --package-import-method=copy --side-effects-cache=false`. Route all pnpm state/cache/store/temp outputs into the candidate. Preserve any failed install output. If a required package is absent, report its exact identity and investigate retained local bytes without downloading.
+4. Check every declared internal workspace dependency and representative exports from every relevant consumer. Require canonical realpaths inside the candidate, independent physical node_modules directories and no donor-tree symlink destinations. Compare installed external versions and package-file integrity against the frozen lock and retained store, and representative package/tool hashes against the donors.
+5. Record source/configuration hashes again, exact runtime/tool versions, installation/probe commands and exits, and any ignored native dependency artifact restoration separately. Hand the result to the coordinator for its own SSR and complete-check window.
+
+The ten missing architecture-unqualified store indexes found during inspection are optional WASI fallback packages (`@emnapi/*`, `@napi-rs/wasm-runtime`, `@tybys/wasm-util`). Foreign-platform native indexes are also absent. These facts do not by themselves prove a native Darwin arm64 installation failure; the frozen offline install decides which are required. No package version or optional-dependency policy will be changed.
+
+Verification in this lane is filesystem identity, resolution and integrity only. Lint, typecheck, repository tests, production Next build, SSR/service execution and Provider execution are reserved to the coordinator and are not claimed here.

@@ -1,0 +1,57 @@
+Captured 2026-11-03T11:18:25.132943+00:00 from running v13; not final inventory.
+
+  4) [chromium] › e2e/collaboration-mention-journeys-web.spec.ts:46:3 › Web owner revocation after preview refuses only A and original-key replay stays deduplicated 
+
+    Error: expect(locator).toBeDisabled() failed
+
+    Locator:  getByRole('form', { name: 'Comments', exact: true }).getByRole('button', { name: 'Send comment', exact: true })
+    Expected: disabled
+    Received: enabled
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeDisabled" with timeout 5000ms
+      - waiting for getByRole('form', { name: 'Comments', exact: true }).getByRole('button', { name: 'Send comment', exact: true })
+        9 × locator resolved to <button tabindex="0" type="submit" data-slot="button" class="group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-body font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructiv…>Send comment</button>
+          - unexpected value "enabled"
+
+
+       at fixtures/collaboration-mention-journeys.ts:378
+
+      376 |   // Changing suppression retires this preview; inspect the next preview's state.
+      377 |   await selectedA.click();
+    > 378 |   await expect(composerFor(page).getByRole("button", { name: "Send comment", exact: true })).toBeDisabled();
+          |                                                                                              ^
+      379 |   await expect(composerFor(page).getByLabel("Add comment", { exact: true })).toHaveValue(content);
+      380 |   assertPreview(await previewComment(page, fixture), fixture, targets, [fixture.agentA.targetId]);
+      381 |   await expect(selectedA).not.toBeChecked();
+        at exercisePartialMentionRefusal (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-mention-journeys.ts:378:94)
+        at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-web.spec.ts:55:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-mention-jour-d3535-y-replay-stays-deduplicated-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-mention-jour-d3535-y-replay-stays-deduplicated-chromium/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/collaboration-mention-jour-d3535-y-replay-stays-deduplicated-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/collaboration-mention-jour-d3535-y-replay-stays-deduplicated-chromium/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/collaboration-mention-jour-d3535-y-replay-stays-deduplicated-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:6266) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:6266) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+

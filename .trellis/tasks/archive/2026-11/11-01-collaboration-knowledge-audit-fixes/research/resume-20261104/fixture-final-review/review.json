@@ -1,0 +1,888 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-03T23:49:04.976691+00:00",
+  "reviewer": "/root/fixture_final_review",
+  "reviewer_thread": "01a1a3cc-7283-7543-9715-6aa7060d55b9",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "scope": "Exact retained two-file fixture delta against d0b132fff; static review and narrow compile/source-extracted controls only. Root owns source freeze, runtime identity audit and the complete run.",
+  "baseline_candidate": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "current_head": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "new_product_blockers": 0,
+  "code_modified": false,
+  "sources": {
+    "e2e/fixtures/collaboration-native.ts": {
+      "sha256": "b4038d1ba4eeb3e47c3d9730326d2dcb7f41af07e929bd84013712a5775373f1",
+      "recorded_run_sha256": "b4038d1ba4eeb3e47c3d9730326d2dcb7f41af07e929bd84013712a5775373f1",
+      "mode": "0o644"
+    },
+    "e2e/fixtures/collaboration-records.ts": {
+      "sha256": "752090f080a3eb2600f3d0609b9b19bfde29c011d12a94a6ceb86ddb90cb666a",
+      "recorded_run_sha256": "752090f080a3eb2600f3d0609b9b19bfde29c011d12a94a6ceb86ddb90cb666a",
+      "mode": "0o644"
+    }
+  },
+  "assertion_preservation": {
+    "all_seven_original_native_expect_lines_preserved": true,
+    "original_lines": [
+      "expect(dimensions.availableHeight).toBeGreaterThan(100);",
+      "expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);",
+      "expect(geometry.focus.x).toBeGreaterThanOrEqual(geometry.root.x);",
+      "expect(geometry.focus.right).toBeLessThanOrEqual(geometry.root.right);",
+      "expect(geometry.visibleStart).toBeLessThanOrEqual(coveredThrough + 1);",
+      "expect(geometry.visibleEnd).toBeGreaterThan(geometry.visibleStart);",
+      "expect(coveredThrough).toBeGreaterThanOrEqual(dimensions.focusHeight - 1);"
+    ],
+    "original_scroll_expression_preserved": true,
+    "actual_native_compositor_kept": true,
+    "submenu_original_items_and_callers_preserved": true,
+    "new_behavior": "hover opens the Base UI Relations submenu, wait for its exact actionable item, then click; native capture obtains two frame-spanning stable layout measurements, freezes offsets once, and refuses per-part/post-compositor drift with durable geometry without relaxing coverage"
+  },
+  "latest_directed": {
+    "raw_report": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/v15-native-capture/stability-fix/playwright-results.json",
+    "raw_report_sha256": "d5fbf5625318fa3cb25379727d21f85dbfd88d7deead306e10c7459f9905b2fb",
+    "raw_log": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/v15-native-capture/stability-fix/playwright-stdout.log",
+    "raw_log_sha256": "2c7e5b3e81ae78f3aa49e3c90d9636a1b493191be2e85ded337adfc169ec8c55",
+    "execution_start_sha256": "77cf744789e34c5bcb8e7ab577f2c6fd3ef6d85fecbc7bd6474eef947a2b1cf0",
+    "execution_exit_sha256": "b2c3fadfc7ebcba3985457b5c19c25eba3010a7310f1561429aaafd05930f6a1",
+    "source_snapshot_sha256": "685dac2ec58b16421f59c9b2c1ff3b9b76f6d9334b3f7d3a3e4431ac6267e888",
+    "exit_code": 0,
+    "passed": 17,
+    "failed": 0,
+    "skipped": 0,
+    "retries": 0,
+    "terminals": [
+      {
+        "file": "collaboration-account-desktop.spec.ts",
+        "title": "Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-account-desktop.spec.ts",
+        "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-account-desktop.spec.ts",
+        "title": "Desktop resource owners authorize, withdraw and commit a held configuration switch",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-boundaries-web.spec.ts",
+        "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-command-history-web.spec.ts",
+        "title": "cancelled waiting commands retain original content after comment changes, refresh and another account reads",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-mention-journeys-desktop.spec.ts",
+        "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-mention-journeys-desktop.spec.ts",
+        "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-mention-journeys-desktop.spec.ts",
+        "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-mention-journeys-web.spec.ts",
+        "title": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-mention-journeys-web.spec.ts",
+        "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-mention-journeys-web.spec.ts",
+        "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-preparation-records-desktop.spec.ts",
+        "title": "Desktop reads synthetic preparation with native 200 percent captures and unchanged proof",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-preparation-records-web.spec.ts",
+        "title": "Web reads synthetic frozen preparation without inferring termination across refresh and viewers",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-preview-web.spec.ts",
+        "title": "trigger preview explains shared and later batches before a suppressed target is sent",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-records-web.spec.ts",
+        "title": "Web shares ordinary child references and retained run records through account notification links",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-resource-offers-web.spec.ts",
+        "title": "a private owner offers a resource to an external organizer and independently authorizes it",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-resources-web.spec.ts",
+        "title": "resource owners register, authorize, withdraw and switch while participant management preserves authority",
+        "project": "chromium",
+        "status": "expected",
+        "expected_status": "passed",
+        "actual": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      }
+    ]
+  },
+  "geometry": {
+    "count": 26,
+    "parts": 29,
+    "all_frozen_and_post_capture_checks_true": true,
+    "all_original_final_coverage_checks_satisfied": true,
+    "records": [
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-adoption-200-percent-geometry.json",
+        "sha256": "464f3741beace803f295a8f13ebd140ce3909f1e0227938a11b7b2314cb779df",
+        "stage": "adoption",
+        "size": "200-percent",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 238,
+        "covered_through": 238,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-adoption-200-percent.png",
+            "sha256": "8862594bca92bef8dc4235bd14ac4f9ceddb97666a0d590954a96ffc450910c0",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-adoption-wide-geometry.json",
+        "sha256": "2420676cc514c477b20c06172c34944f1612642c5164d09ed8e84522fe2a9cf9",
+        "stage": "adoption",
+        "size": "wide",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 222,
+        "covered_through": 222,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-adoption-wide.png",
+            "sha256": "4808008a172a46603d738cda0499fb9f7ce9f123d201347f9c3dff1b970dd647",
+            "dimensions": [
+              2760,
+              2240
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-authorized-200-percent-geometry.json",
+        "sha256": "d2d8d25ca5989f104cdd951a80df9e1b82c2fd9edc8d4d9515d72ff7305f979f",
+        "stage": "authorized",
+        "size": "200-percent",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 178,
+        "covered_through": 178,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-authorized-200-percent.png",
+            "sha256": "3b9f5f4a55840f796dd868fea3f7ae055f44f9d96c87e31ea2424ad7ca94d47a",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-authorized-wide-geometry.json",
+        "sha256": "263989dbea6ca98e13f7c77f8b7cdd15fd57793c227abe085192525af99d095c",
+        "stage": "authorized",
+        "size": "wide",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 160,
+        "covered_through": 160,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-authorized-wide.png",
+            "sha256": "b4111fc1628cfb39d3cee43606160beb871b0e385ea41dee32a7e88d6378a1dc",
+            "dimensions": [
+              2760,
+              2240
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-cancelled-200-percent-geometry.json",
+        "sha256": "1da1b0d17e87ae5347fcf5a33a628b869130f443f56550bc021c91594f496099",
+        "stage": "cancelled",
+        "size": "200-percent",
+        "sample_count": 2,
+        "parts": 2,
+        "initial_height": 378.75,
+        "covered_through": 378.75,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-cancelled-200-percent-part-1.png",
+            "sha256": "8a3da35667a8a02b48148a8afa6b3a71b8d53dc04ed70bcd9959341f90eb3117",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          },
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-cancelled-200-percent-part-2.png",
+            "sha256": "dcfe3abb53ec64310a5b81aafd97a3f9dd2ddd431476d5cefd7adae531c99e83",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-cancelled-wide-geometry.json",
+        "sha256": "297c13f407f4b3f6915aee9718b502593448b1d5c253b0034667fc34568eb9a3",
+        "stage": "cancelled",
+        "size": "wide",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 326.75,
+        "covered_through": 326.75,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-cancelled-wide.png",
+            "sha256": "1f7b15510bf544e6c0e309fef39eb79436ca952d0b65224a763bb7550b1cae7d",
+            "dimensions": [
+              2760,
+              2240
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-deleted-200-percent-geometry.json",
+        "sha256": "16916101a543922cf604c0390c319ab2bd4f5b913b32bf9e203faf84ffbc59b2",
+        "stage": "deleted",
+        "size": "200-percent",
+        "sample_count": 2,
+        "parts": 2,
+        "initial_height": 378.75,
+        "covered_through": 378.75,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-deleted-200-percent-part-1.png",
+            "sha256": "4f5759e153afcb10c226974c1e8e95e06284e4074558090829b4b9a2212e41f0",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          },
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-deleted-200-percent-part-2.png",
+            "sha256": "101f71005ec767bd7200f12e3214de8b836dd08a78e4b7047cd46eaf541e67f2",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-deleted-wide-geometry.json",
+        "sha256": "c77b94e020d67686126a704120f5705fa78396f75306d30ab84d92b88c66e4f1",
+        "stage": "deleted",
+        "size": "wide",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 326.75,
+        "covered_through": 326.75,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-deleted-wide.png",
+            "sha256": "ce0a3735185f6d2976292dbaef1dbd85a6f4a8899c1ee52ccf15108a1493ff6c",
+            "dimensions": [
+              2760,
+              2240
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-supplier-200-percent-geometry.json",
+        "sha256": "09483ba8e650d8070c17b0878ebc381c39fc3f7fafaac34659957b80bd05f152",
+        "stage": "supplier",
+        "size": "200-percent",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 338,
+        "covered_through": 338,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-supplier-200-percent.png",
+            "sha256": "404348c5c8addfc5557484284ac381fb8adf6a7d1357c6236e30271f75a3b2eb",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-supplier-wide-geometry.json",
+        "sha256": "f7a5a63c36a79401218de38df49b705536d6053dd92f6b0a0d258e41b6e0a0d0",
+        "stage": "supplier",
+        "size": "wide",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 338,
+        "covered_through": 338,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-supplier-wide.png",
+            "sha256": "162095a50af41575a4001feec2fce92fc5ed22aac4dcac1d6039c72b2a0427d1",
+            "dimensions": [
+              2760,
+              2240
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-withdrawn-200-percent-geometry.json",
+        "sha256": "98b225ce73b7c4dd8468c7d38b0b2fe353bc42c7759ec663cd4368af2b3f2011",
+        "stage": "withdrawn",
+        "size": "200-percent",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 306,
+        "covered_through": 306,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-withdrawn-200-percent.png",
+            "sha256": "c8431258a7f1a7e9794c818c4968bcb7fb06289bf6790d680dfb69fb17d7b8e0",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-withdrawn-wide-geometry.json",
+        "sha256": "d54f7e5b2070b89377e138cebb8563198c1442437fcee2b2780bf36317fefabb",
+        "stage": "withdrawn",
+        "size": "wide",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 306,
+        "covered_through": 306,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-withdrawn-wide.png",
+            "sha256": "a7c10d0be7027f92f9e429a06004639ceac3dd3f2dc4d86f0499860b4578abdf",
+            "dimensions": [
+              2760,
+              2240
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-7b292-y-replay-stays-deduplicated-chromium/desktop-partial-mention-refusal-200-percent-geometry.json",
+        "sha256": "1322fdcef17ea580675fdc699342de8601000ff845368d81343b7ca0d907ce56",
+        "stage": "partial-mention-refusal",
+        "size": "200-percent",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 104,
+        "covered_through": 104,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-7b292-y-replay-stays-deduplicated-chromium/desktop-partial-mention-refusal-200-percent.png",
+            "sha256": "b96e5629a81ef9f34317b060485bc93dbc89c7d1ab366877258ba79c82e395e4",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-7b292-y-replay-stays-deduplicated-chromium/desktop-partial-mention-refusal-wide-geometry.json",
+        "sha256": "810e7e1df61c33fffdc87d251d6ba45390faa919684796c3b2c5d4ee619e71b1",
+        "stage": "partial-mention-refusal",
+        "size": "wide",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 72,
+        "covered_through": 72,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-7b292-y-replay-stays-deduplicated-chromium/desktop-partial-mention-refusal-wide.png",
+            "sha256": "86b7165aabffc15b5ddb4faa45f2a1cc96d4a0218d69999d9c9cbb0e3837129d",
+            "dimensions": [
+              2760,
+              2240
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-7b292-y-replay-stays-deduplicated-chromium/desktop-unavailable-mention-preview-200-percent-geometry.json",
+        "sha256": "5124df273ffd069fcf6e2f46fd6bfb1151c60700eab2e73ef046d85ad4b146f7",
+        "stage": "unavailable-mention-preview",
+        "size": "200-percent",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 100,
+        "covered_through": 100,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-7b292-y-replay-stays-deduplicated-chromium/desktop-unavailable-mention-preview-200-percent.png",
+            "sha256": "f9e92e8139d0e201720a77a1e49be121da63b6a9a8c84bb0c876d975b69ba6d8",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-7b292-y-replay-stays-deduplicated-chromium/desktop-unavailable-mention-preview-wide-geometry.json",
+        "sha256": "c6f4e4a89a492680add7847787995fe590238a38a45e10800310d6fba8b5a69e",
+        "stage": "unavailable-mention-preview",
+        "size": "wide",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 100,
+        "covered_through": 100,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-7b292-y-replay-stays-deduplicated-chromium/desktop-unavailable-mention-preview-wide.png",
+            "sha256": "1df43ea402eeeb3b547b0c914ae35a8a0067dcbc6c14d902dd67446c108b6f91",
+            "dimensions": [
+              2760,
+              2240
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-9c5dc--queued-target-associations-chromium/desktop-mixed-mention-preview-200-percent-geometry.json",
+        "sha256": "d5a1032ac11b0a515a10d3461dbec6f81b19a623119e623eafa2541a1df47620",
+        "stage": "mixed-mention-preview",
+        "size": "200-percent",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 156,
+        "covered_through": 156,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-9c5dc--queued-target-associations-chromium/desktop-mixed-mention-preview-200-percent.png",
+            "sha256": "aba3c3f1a9b5c03dedead7ac23ccd37257c2e8c4f522c9c84002f1ceb9c24ef9",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-9c5dc--queued-target-associations-chromium/desktop-mixed-mention-preview-wide-geometry.json",
+        "sha256": "3c4bf2d6e2100d4d655dc599ec68c37e4e52386efb48a3b5f41e18748d00190e",
+        "stage": "mixed-mention-preview",
+        "size": "wide",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 156,
+        "covered_through": 156,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-9c5dc--queued-target-associations-chromium/desktop-mixed-mention-preview-wide.png",
+            "sha256": "1cd8592c468c35968459cc062cdee7613899f0c7ea02a396efc822607790854e",
+            "dimensions": [
+              2760,
+              2240
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-fc623-ify-only-newly-added-people-chromium/desktop-durable-mention-body-200-percent-geometry.json",
+        "sha256": "a8ed777bc7cd780a2dd543254afd97725bb8cefe644ea48782d13518dc647415",
+        "stage": "durable-mention-body",
+        "size": "200-percent",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 161.5,
+        "covered_through": 161.5,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-fc623-ify-only-newly-added-people-chromium/desktop-durable-mention-body-200-percent.png",
+            "sha256": "5b4476112c1528cac760ce5fc606fe542415803e49379bb52e7bc60be08f39d2",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-fc623-ify-only-newly-added-people-chromium/desktop-durable-mention-body-wide-geometry.json",
+        "sha256": "be3acbe9afffc7cd97794bc060c7fc3f8c98fa36ab6e3e7d6ebc5a179fa264ba",
+        "stage": "durable-mention-body",
+        "size": "wide",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 138.75,
+        "covered_through": 138.75,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-fc623-ify-only-newly-added-people-chromium/desktop-durable-mention-body-wide.png",
+            "sha256": "06c764a48c8686d4d5e90885d64fb82dbe512a1329905cfe941656370e185be8",
+            "dimensions": [
+              2760,
+              2240
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-fc623-ify-only-newly-added-people-chromium/desktop-durable-mention-comment-200-percent-geometry.json",
+        "sha256": "2cd41983ee984ea75b945efda21e6adc99970827014f78176a2b761a62ae4fd2",
+        "stage": "durable-mention-comment",
+        "size": "200-percent",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 257.5,
+        "covered_through": 257.5,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-fc623-ify-only-newly-added-people-chromium/desktop-durable-mention-comment-200-percent.png",
+            "sha256": "66a0cf02e1dd4214619e94284c6009be2f90939717a7c1bd995fae684326eb50",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-fc623-ify-only-newly-added-people-chromium/desktop-durable-mention-comment-wide-geometry.json",
+        "sha256": "646bc7bde4a49b99d888f6601f6b41824db2496766ab79b0b212e9b6e92240de",
+        "stage": "durable-mention-comment",
+        "size": "wide",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 234.75,
+        "covered_through": 234.75,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-mention-jour-fc623-ify-only-newly-added-people-chromium/desktop-durable-mention-comment-wide.png",
+            "sha256": "d735b6016d822f1efa57a59af2e6b4a1e76ff4d7b5ae224bc0c571334a8f3b3d",
+            "dimensions": [
+              2760,
+              2240
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-preparation--07f22-aptures-and-unchanged-proof-chromium/desktop-preparation-legacy-200-percent-geometry.json",
+        "sha256": "e1da96ddfec27346f44f9e2b0a716b060dfa623e8851a8f9ece32faf9ce05aa0",
+        "stage": "preparation-legacy",
+        "size": "200-percent",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 48,
+        "covered_through": 48,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-preparation--07f22-aptures-and-unchanged-proof-chromium/desktop-preparation-legacy-200-percent.png",
+            "sha256": "09fe7b3835e830fba550b2765c9c22aede6703c7570d0c3b857b6e2697095b9a",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-preparation--07f22-aptures-and-unchanged-proof-chromium/desktop-preparation-legacy-wide-geometry.json",
+        "sha256": "99a8d09e10bdb9ac5ecc280fcb7bf82c4ec828acede93be78c67bb9c1807bd10",
+        "stage": "preparation-legacy",
+        "size": "wide",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 48,
+        "covered_through": 48,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-preparation--07f22-aptures-and-unchanged-proof-chromium/desktop-preparation-legacy-wide.png",
+            "sha256": "6c4a5d011d4c4e50190872de39f4d8a3a81bc340382034c8f8be96128b95b753",
+            "dimensions": [
+              2760,
+              2240
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-preparation--07f22-aptures-and-unchanged-proof-chromium/desktop-preparation-prepared-200-percent-geometry.json",
+        "sha256": "1b10e83ac5196dfde2e0dd8ea5b9f7f0a44c93ebf12fd8deea97970b59201237",
+        "stage": "preparation-prepared",
+        "size": "200-percent",
+        "sample_count": 2,
+        "parts": 2,
+        "initial_height": 444,
+        "covered_through": 444,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-preparation--07f22-aptures-and-unchanged-proof-chromium/desktop-preparation-prepared-200-percent-part-1.png",
+            "sha256": "5d4ea2ff115bb0a5e47c62566bde86deda3ad34a17d7242082538e118cc2e5b0",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          },
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-preparation--07f22-aptures-and-unchanged-proof-chromium/desktop-preparation-prepared-200-percent-part-2.png",
+            "sha256": "b0a81e2727591b36d10a03a9ed0bc21abb7b37fd3e556f07e71eec78327513d3",
+            "dimensions": [
+              1800,
+              2400
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-preparation--07f22-aptures-and-unchanged-proof-chromium/desktop-preparation-prepared-wide-geometry.json",
+        "sha256": "b1a853ea096f7489f9dc1a9207f7be3956f53d208c1d3ea47a44d53b492eeb5e",
+        "stage": "preparation-prepared",
+        "size": "wide",
+        "sample_count": 2,
+        "parts": 1,
+        "initial_height": 312,
+        "covered_through": 312,
+        "pngs": [
+          {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17/collaboration-preparation--07f22-aptures-and-unchanged-proof-chromium/desktop-preparation-prepared-wide.png",
+            "sha256": "2ef9fdb78a3b3649253352685eb5445aec00bff078922b20bb6a856fe830e8fc",
+            "dimensions": [
+              2760,
+              2240
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "independent_verification": {
+    "typecheck": {
+      "exit_code": 0,
+      "mode": "strict noEmit, noIncremental, both fixtures and import trees",
+      "config": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/fixture-final-review/typecheck-config.json",
+      "config_sha256": "36e12fd399523607cb5aef61d2054e9fe4a6da2ad1181dc3cf3fb9a7afde027d"
+    },
+    "predicate_controls": {
+      "exit_code": 0,
+      "passed": 10,
+      "result": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/fixture-final-review/predicate-controls-result.json",
+      "result_sha256": "7e0eff4d5157747feccfbf3b0b3a36308db10a68e70627558bfbbe0956a694e1",
+      "source_sha256": "b4038d1ba4eeb3e47c3d9730326d2dcb7f41af07e929bd84013712a5775373f1"
+    },
+    "lint": {
+      "status": "not_covered_by_canonical_config",
+      "command": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+        "--dir",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views",
+        "exec",
+        "eslint",
+        "--no-cache",
+        "../../e2e/fixtures/collaboration-native.ts",
+        "../../e2e/fixtures/collaboration-records.ts"
+      ],
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 2,
+      "files_linted": 0,
+      "observed": "Both files: File ignored because outside of base path",
+      "reason": "Canonical workspace ESLint config does not lint root E2E fixtures; invocation exit0 must not be interpreted as fixture lint passing."
+    }
+  },
+  "notes": [
+    {
+      "id": "CAPTURE-OLD-CAUSE",
+      "blocking": false,
+      "text": "Old directed capture initial height274 versus observed coverage238 did not retain enough geometry to prove height drift versus clipping/clamping. Subsequent one-case diagnostic passes with unchanged old assertions; this review approves bounded stabilization/evidence hardening, not a claimed reproduction or definitive old root cause."
+    },
+    {
+      "id": "COMPLETE-GATE",
+      "blocking": false,
+      "text": "The 17-case result is targeted evidence. It does not establish shared make exit0, final identity audit, complete TS/Go/browser inventories, CCG gates, or task7 closure."
+    }
+  ],
+  "operations": {
+    "source_edits": 0,
+    "package_or_browser_tests": 0,
+    "database_or_service_operations": 0,
+    "Provider_calls": 0,
+    "knowledge_budget_allocated": 0,
+    "production_knowledge_default": false,
+    "write_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/fixture-final-review",
+    "narrow_canonical_lint_invocations": 1
+  }
+}

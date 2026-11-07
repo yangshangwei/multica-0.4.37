@@ -1,0 +1,71 @@
+--- /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/prove-current-resources.py
++++ /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/prove-current-resources.py.in
+@@ -13,10 +13,10 @@
+ 
+ 
+ ROOT = Path('/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103')
+-OUT = ROOT / '.omx/private/final-check-v15'
++OUT = ROOT / '.omx/private/final-check-v16'
+ HERE = Path(__file__).resolve().parent
+ OWNER = '01a1a3c9-2459-7de1-8244-55640c5f6143'
+-EXPECTED = 'd41573e3a4eb3bd6c36feed3f0d542a0e066ee0f'
++EXPECTED = 'PENDING_ROOT_FINAL_SHA'
+ 
+ 
+ def digest(path):
+@@ -30,11 +30,11 @@
+ 
+ assert checked(['git', 'rev-parse', 'HEAD'], cwd=ROOT).stdout.strip() == EXPECTED
+ assert not checked(['git', 'status', '--porcelain'], cwd=ROOT).stdout.strip()
+-launcher = types.ModuleType('v15_resource_data_parser')
+-launcher.__file__ = str(OUT / 'run-make-check-v15-provenance.py')
++launcher = types.ModuleType('v16_resource_data_parser')
++launcher.__file__ = str(OUT / 'run-make-check-v16-provenance.py')
+ exec(compile(Path(launcher.__file__).read_bytes(), launcher.__file__, 'exec'), launcher.__dict__)
+-values = launcher.parse_generated_environment((OUT / 'check-source-v15.env').read_text())
+-assert launcher.deployment_uuid(values) == '725f8e4c-8979-4fc2-b105-36a6ce89a2e5'
++values = launcher.parse_generated_environment((OUT / 'check-source-v16.env').read_text())
++assert launcher.deployment_uuid(values) == 'PENDING_ROOT_DEPLOYMENT_UUID'
+ allocation = json.loads((HERE / 'resource-allocation-redis.json').read_text())
+ migration = json.loads((HERE / 'seed-migration-result.json').read_text())
+ ready = json.loads((HERE / 'renderer-ready.json').read_text())
+@@ -58,7 +58,7 @@
+     sock.sendall(b'*1\r\n$4\r\nPING\r\n')
+     assert sock.recv(128) == b'+PONG\r\n'
+ url = urlsplit(values['DATABASE_URL'])
+-assert url.path == '/' + allocation['database'] == '/multica_closure_v15_seed_01a1a3c9'
++assert url.path == '/' + allocation['database'] == '/multica_closure_v16_seed_01a1a3c9'
+ pg_env = {'PATH': '/usr/bin:/bin', 'HOME': str(OUT / 'metadata-home-not-created'),
+           'PGHOST': url.hostname, 'PGPORT': str(url.port), 'PGUSER': unquote(url.username),
+           'PGPASSWORD': unquote(url.password), 'PGDATABASE': allocation['database'],
+@@ -79,16 +79,16 @@
+     if re.search(r'(^|/)(make|gmake)\s+.*\bcheck\b|(^|/)go\s+test\b|rk1k[^\s]*\.test|run-make-check-v\d+-provenance\.py$', command):
+         checks.append(line.strip())
+ assert not checks, 'Another full/Go/RK1K execution is live'
+-fresh = [OUT / name for name in ('full-check-home-v15', 'go-packages-v15', 'dev-registry-v15',
+-                                 'profiles-v15', 'workspaces-v15', 'metadata-home-not-created',
+-                                 'make-check-v15.json', 'make-check-v15.log', 'check-source-v15.safe.env')]
++fresh = [OUT / name for name in ('full-check-home-v16', 'go-packages-v16', 'dev-registry-v16',
++                                 'profiles-v16', 'workspaces-v16', 'metadata-home-not-created',
++                                 'make-check-v16.json', 'make-check-v16.log', 'check-source-v16.safe.env')]
+ assert all(not path.exists() and not path.is_symlink() for path in fresh)
+ record = {'recorded_at': datetime.now(timezone.utc).isoformat(), 'coordinator': OWNER,
+           'executor': '/root/shared_executor', 'candidate_root': str(ROOT), 'candidate_sha': EXPECTED,
+           'exclusive_window_verified': True, 'active_complete_or_rk1k_checks': checks,
+           'future_execution_paths_absent': [str(path) for path in fresh],
+-          'source_env_sha256': digest(OUT / 'check-source-v15.env'),
+-          'owned_bindings_sha256': digest(OUT / 'owned-bindings-v15-provenance.json'),
++          'source_env_sha256': digest(OUT / 'check-source-v16.env'),
++          'owned_bindings_sha256': digest(OUT / 'owned-bindings-v16-provenance.json'),
+           'renderer': {'ownership_verified': True, 'url': ready['url'], 'pid': ready['pid'],
+                        'process_group': ready['process_group'], 'index_sha256': renderer_hash,
+                        'process': process, 'cwd': cwd, 'ready_record_sha256': digest(HERE / 'renderer-ready.json')},
+@@ -102,7 +102,7 @@
+           'retired_runtime_release_sha256': digest(HERE / 'retired-runtime-release-after.json'),
+           'knowledge_budget_allocated': 0, 'knowledge_calls': 0, 'real_provider_allowed': False,
+           'knowledge_default': False, 'complete_check_started': False}
+-descriptor = os.open(OUT / 'resource-ownership-v15.json', os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
++descriptor = os.open(OUT / 'resource-ownership-v16.json', os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+ with os.fdopen(descriptor, 'w') as target:
+     json.dump(record, target, indent=2)
+     target.write('\n')

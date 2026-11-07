@@ -1,0 +1,25 @@
+{
+  "recorded_at": "2026-11-03T11:31:37.869440+00:00",
+  "state": "proposed_patch_only_needs_contract_review_and_actual_redgreen",
+  "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-workbench-web.spec.ts",
+  "source_sha256": "767ae9c4d8331184a41d640fa89ded564a7d37e0023932021e27f288f29f2a73",
+  "proposed_copy": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/workbench-repair/collaboration-workbench-web.proposed.spec.ts",
+  "proposed_sha256": "90c8e1e60fd0cb897cf7428bbf8edbdb06bc4546f1c1b9e67a578dd8c67ce007",
+  "patch": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/workbench-repair/workbench-contract-repair.patch",
+  "patch_sha256": "6ed74e8732f94e92dca1bfc334114759218911f46dcf0e0cb2fa4f94e348f14a",
+  "changed_files_if_later_applied": [
+    "e2e/collaboration-workbench-web.spec.ts"
+  ],
+  "tracked_source_written": false,
+  "tests_or_services_or_DB_or_Provider_operations": 0,
+  "required_review_decision": "Old concurrent generic handoff is incompatible with an already-open lawful external acceptance form. Use preceding actual UI result/submission handoff plus concurrent former-handler UI leave; preserve exact stale completion and explicit retry semantics.",
+  "syntax_record": "syntax.json",
+  "git_apply_check": "passed_without_applying",
+  "diagnosis_sha256": "a20f5b0100140efa31f324ebc11cf5aa143192dc41a17cb68052029fc17349cf",
+  "raw_failure_artifacts": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/browser-failure-8-live.txt": "5284b273a702960c370bb407d8ae9b58fe871dc73cac3bab64895711c16e01d7",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/browser-failure-9-live.txt": "ebfb33dadae64270fde7e6eb98a1a8277fa110254e72995e8114616d0f90a30a"
+  },
+  "preserved_assertion_check": "original cancel identity/account isolation/409stale/fresh key/exact2POST/zeroGET/zeroAI assertions retained"
+}

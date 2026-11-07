@@ -1,0 +1,254 @@
+{
+  "source_sha256": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+  "red_named_methods": 27,
+  "red_failed_assertions_or_subtests": 55,
+  "red_errors": 0,
+  "failed_method_count": 24,
+  "red_observations": 74,
+  "green_named_methods": 27,
+  "green_observations": 80,
+  "actual_executable_and_sql_calls": 0,
+  "representative_red_findings": {
+    "test_other_canonical_and_relative_packages_refuse": {
+      "test": "__main__.PackageBindingTests.test_other_canonical_and_relative_packages_refuse",
+      "argv": [
+        "test",
+        "example/second"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-50kpf1z7/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "example/second"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    "test_multiple_selectors_refuse_even_if_they_resolve_to_one_owner": {
+      "test": "__main__.PackageBindingTests.test_multiple_selectors_refuse_even_if_they_resolve_to_one_owner",
+      "argv": [
+        "test",
+        "example/first",
+        "example/second"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-lj39pvfv/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "example/first",
+            "example/second"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    "test_wildcard_selectors_never_use_the_parent_clone": {
+      "test": "__main__.PackageBindingTests.test_wildcard_selectors_never_use_the_parent_clone",
+      "argv": [
+        "test",
+        "./..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-wod3v809/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "./..."
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    "test_changed_C_and_C_equals_default_package_refuse": {
+      "test": "__main__.PackageBindingTests.test_changed_C_and_C_equals_default_package_refuse",
+      "argv": [
+        "-C",
+        "second",
+        "test"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-8j451ciy/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "-C",
+            "second",
+            "test"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    "test_missing_empty_and_malformed_package_identities_refuse_before_calls": {
+      "test": "__main__.PackageBindingTests.test_missing_empty_and_malformed_package_identities_refuse_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-nebydumg/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    "test_mode1_requires_nonblank_explicit_go_psql_and_evidence_before_any_call": {
+      "test": "__main__.PackageBindingTests.test_mode1_requires_nonblank_explicit_go_psql_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-t_be5rw6/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "returned",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "sql",
+          "database_name": "multica_check_fixture_go",
+          "statement": "SELECT current_database()"
+        },
+        {
+          "kind": "list",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-t_be5rw6/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-t_be5rw6/module",
+          "selectors": [
+            "example/first"
+          ]
+        },
+        {
+          "kind": "sql",
+          "database_name": "postgres",
+          "statement": "CREATE DATABASE \"ccheck_20261102131421100933_fac3fb5ac146\" TEMPLATE \"multica_check_fixture_go\""
+        },
+        {
+          "kind": "sql",
+          "database_name": "ccheck_20261102131421100933_fac3fb5ac146",
+          "statement": "SELECT current_database()"
+        },
+        {
+          "kind": "test",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-json",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102131421100933_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "{\"Action\": \"run\", \"Test\": \"TestFakeFixture\"}\n{\"Action\": \"pass\", \"Test\": \"TestFakeFixture\"}\n{\"Action\": \"pass\", \"Package\": \"example/first\"}\n",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    }
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "started_at": "2026-11-03T09:46:49.212372+00:00",
+  "phase": "desktop",
+  "launcher_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate/candidate-setup/build-current-v13.py",
+  "launcher_sha256": "c5b18eda5f26064b8c7cac9f019ada773576e8517c569a8a9215c61d3d158d64",
+  "environment": {
+    "PATH": "/Users/artisan/.nvm/versions/node/v22.23.2/bin:/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin:/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/node_modules/.bin:/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "HOME": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/build-home-desktop",
+    "TMPDIR": "/private/tmp/multica-final-check-v13-fed2n321/desktop-build",
+    "LC_ALL": "C",
+    "CI": "1",
+    "GOCACHE": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/go-build-cache",
+    "GOMODCACHE": "/Users/artisan/go/pkg/mod",
+    "GOPATH": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/go-path",
+    "GOROOT": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64",
+    "GOTOOLCHAIN": "local",
+    "GOENV": "off",
+    "GOPROXY": "off",
+    "GOSUMDB": "off",
+    "GOWORK": "off",
+    "GOMAXPROCS": "2",
+    "GOFLAGS": "-p=1 -mod=readonly",
+    "CGO_ENABLED": "0",
+    "GOTELEMETRY": "off",
+    "GIT_OPTIONAL_LOCKS": "0",
+    "NEXT_TELEMETRY_DISABLED": "1",
+    "COREPACK_ENABLE_NETWORK": "0",
+    "PNPM_DISABLE_SELF_UPDATE_CHECK": "1",
+    "NPM_CONFIG_USERCONFIG": "/dev/null",
+    "NPM_CONFIG_GLOBALCONFIG": "/dev/null",
+    "NPM_CONFIG_CACHE": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/node-cache",
+    "NODE_OPTIONS": "--max-old-space-size=4096"
+  },
+  "profile_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/desktop-build-offline.sb",
+  "profile_sha256": "2c9a996b4dced9f52255ad8c2aefb4d7daf3c0424cda61cfbee811de22beabbd",
+  "Go_version": "go version go1.26.6 darwin/arm64",
+  "Go_binary_sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+  "Node_binary_sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+  "network": "denied by sandbox",
+  "write_scope": [
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13",
+    "/private/tmp/multica-final-check-v13-fed2n321"
+  ],
+  "real_agent_model_environment_forwarded": false,
+  "output": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/artifacts-build",
+  "config_source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/electron.vite.config.ts",
+  "config_copy": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/electron.vite.config.cts",
+  "config_source_sha256": "af76a1be148e5ff45ce6061d6781e76888cd0314c2c8a0e23a5eb8f7251f49c4",
+  "config_copy_sha256": "af76a1be148e5ff45ce6061d6781e76888cd0314c2c8a0e23a5eb8f7251f49c4",
+  "electron_vite_cli": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/node_modules/electron-vite/bin/electron-vite.js",
+  "electron_vite_cli_sha256": "ad30ff88bd2f1e47bd97ce2de24d55897b5177ac791bb63e0ebba885cc72c444",
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/desktop-build-offline.sb",
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/node_modules/electron-vite/bin/electron-vite.js",
+    "build",
+    "--config",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/electron.vite.config.cts",
+    "--outDir",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/artifacts-build"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop",
+  "finished_at": "2026-11-03T09:46:52.108410+00:00",
+  "exit_code": 0,
+  "log_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate/candidate-setup/desktop-build-v13.log",
+  "log_sha256": "a1348110148709491fcc56a6aeaecda5d18ec77eccd5c9ce34d9a4eabeca630e",
+  "required_files": {
+    "main/index.js": {
+      "sha256": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678",
+      "bytes": 223261
+    },
+    "preload/index.js": {
+      "sha256": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5",
+      "bytes": 18876
+    },
+    "renderer/index.html": {
+      "sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+      "bytes": 1256
+    }
+  },
+  "source_head_after": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "source_status_after": ""
+}

@@ -1,0 +1,31 @@
+{
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-pnpm-reporting-test.py"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102",
+  "environment": {
+    "PATH": "/opt/homebrew/bin:/usr/bin:/bin",
+    "TMPDIR": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "CHECK_PNPM_EVIDENCE": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/pnpm-v7.json"
+  },
+  "exit_code": 0,
+  "seconds": 0.086,
+  "log": "pnpm-v7.log",
+  "tests_run": 5,
+  "failure_count": 0,
+  "error_count": 0,
+  "adapter_sha256": {
+    "go": "c987ea45cf75e4fa2fe5858a6bc5d82bb1f30ac289162015ebe544dab8b6382f",
+    "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "network_policy": "deny network*",
+  "real_go_tests": 0,
+  "real_sql_connections": 0,
+  "real_pnpm_browser_agent_cli_calls": 0
+}

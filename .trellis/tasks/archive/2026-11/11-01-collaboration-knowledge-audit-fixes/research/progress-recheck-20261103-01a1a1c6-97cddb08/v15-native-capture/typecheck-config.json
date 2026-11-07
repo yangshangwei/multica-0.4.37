@@ -1,0 +1,23 @@
+{
+  "extends": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig/base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+    "incremental": false,
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "types": [
+      "node"
+    ],
+    "typeRoots": [
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/@types"
+    ]
+  },
+  "files": [
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-native.ts"
+  ]
+}

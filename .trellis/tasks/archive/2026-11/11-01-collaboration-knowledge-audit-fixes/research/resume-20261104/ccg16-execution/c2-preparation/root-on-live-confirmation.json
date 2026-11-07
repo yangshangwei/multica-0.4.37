@@ -1,0 +1,65 @@
+{
+  "status": "pass",
+  "recorded_at": "2026-11-04T08:06:26.326612+00:00",
+  "reviewer": "/root",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "lane": "on",
+  "scope": "Root actual readonly ON deployment identity before one probe; no acceptance executed",
+  "handoff_sha256": "2413143d645c717436cd655d2ee379b74eca563edf242c67de34cf1b72d7f5c1",
+  "false_permit_sha256": "a8e44bbdb300d16cd2a2ef7c6033de33914b119a1a1602bedd3d66aaab66f503",
+  "source_environment_sha256": "f69987226394d14629f0ab7e3186b6a6e08b98258fe972ecdb392351c562bd00",
+  "deployment_proof_sha256": "4f70b06e906db26168869b3821075000b70caca9830594c2748010316bf4d8ae",
+  "binary_binding_sha256": "bc3863a5bfec55b1a2955c65643b03717fb6ec339458c6e90ed90abdd8612f60",
+  "browser_binding": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/browser-cache-binding-v16.json",
+    "sha256": "d63a5a379f3d2f4ab0687da4d617897f832179af88d9e257a20e1fdcff2aea13"
+  },
+  "identities": {
+    "api": {
+      "pid": 67212,
+      "port": 18295,
+      "process": "67212 67173 67173 /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/go-build-cache/e2/e2ded241a09cabe58a03855af76bedfaa95f70879c266b36b83480798177651f-d/server",
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server",
+      "ownership_verified": true,
+      "origin": "http://127.0.0.1:18295"
+    },
+    "web": {
+      "pid": 67517,
+      "port": 13215,
+      "process": "67517 67496 67496 next-server (v16.2.6)",
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web",
+      "ownership_verified": true,
+      "origin": "http://127.0.0.1:13215"
+    },
+    "renderer": {
+      "pid": 67409,
+      "port": 49338,
+      "process": "67409     1 67409 /opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B -m http.server 49338 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+      "ownership_verified": true,
+      "origin": "http://127.0.0.1:49338"
+    }
+  },
+  "API_health": {
+    "status": "ok",
+    "pid": 67212,
+    "commit": "eda0d68fb",
+    "started_at": "2026-11-04T08:00:03Z"
+  },
+  "database": {
+    "database": "multica_ccg2_v16_on_a3c9",
+    "latest": "764_collaboration_ai_policy",
+    "issue_rows": 0,
+    "task_rows": 0,
+    "cluster_connections": 30
+  },
+  "actual_API_knowledge_enabled": true,
+  "scope_of_true_flag": "isolated_fake_ON_acceptance_only",
+  "password_managed_signup": true,
+  "actual_single_limiter": true,
+  "production_default_enabled": false,
+  "knowledge_budget": 0,
+  "knowledge_calls": 0,
+  "real_provider_allowed": false,
+  "no_model_or_auditor_CLI_execution": true
+}

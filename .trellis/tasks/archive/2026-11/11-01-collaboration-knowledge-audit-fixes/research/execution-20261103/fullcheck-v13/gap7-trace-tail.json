@@ -1,0 +1,267 @@
+[
+  {
+    "trace": "test.trace",
+    "errors": [],
+    "last_events": [
+      {
+        "type": "before",
+        "callId": "hook@98",
+        "startTime": 1078810.105,
+        "class": "Test",
+        "method": "hook"
+      },
+      {
+        "type": "before",
+        "callId": "fixture@99",
+        "startTime": 1078810.213,
+        "class": "Test",
+        "method": "fixture"
+      },
+      {
+        "type": "after",
+        "callId": "fixture@99",
+        "endTime": 1078832.355
+      },
+      {
+        "type": "before",
+        "callId": "fixture@102",
+        "startTime": 1078832.592,
+        "class": "Test",
+        "method": "fixture"
+      },
+      {
+        "type": "after",
+        "callId": "fixture@102",
+        "endTime": 1078832.6
+      },
+      {
+        "type": "before",
+        "callId": "fixture@103",
+        "startTime": 1078832.65,
+        "class": "Test",
+        "method": "fixture"
+      },
+      {
+        "type": "after",
+        "callId": "fixture@103",
+        "endTime": 1078832.659
+      },
+      {
+        "type": "before",
+        "callId": "fixture@107",
+        "startTime": 1078832.853,
+        "class": "Test",
+        "method": "fixture"
+      },
+      {
+        "type": "after",
+        "callId": "fixture@107",
+        "endTime": 1078832.858
+      },
+      {
+        "type": "after",
+        "callId": "hook@98",
+        "endTime": 1078832.907
+      }
+    ]
+  },
+  {
+    "trace": "4-trace.trace",
+    "errors": [],
+    "last_events": [
+      {
+        "type": "before",
+        "callId": "call@42",
+        "startTime": 839284.51,
+        "class": "BrowserContext",
+        "method": "newPage"
+      },
+      {
+        "type": "after",
+        "callId": "call@42",
+        "endTime": 839311.002
+      },
+      {
+        "type": "before",
+        "callId": "call@44",
+        "startTime": 839312.308,
+        "class": "Page",
+        "method": "addInitScript",
+        "params": {}
+      },
+      {
+        "type": "after",
+        "callId": "call@44",
+        "endTime": 839312.626
+      }
+    ]
+  },
+  {
+    "trace": "3-trace.trace",
+    "errors": [],
+    "last_events": [
+      {
+        "type": "before",
+        "callId": "call@33",
+        "startTime": 839257.562,
+        "class": "BrowserContext",
+        "method": "newPage"
+      },
+      {
+        "type": "after",
+        "callId": "call@33",
+        "endTime": 839281.605
+      },
+      {
+        "type": "before",
+        "callId": "call@35",
+        "startTime": 839282.377,
+        "class": "Page",
+        "method": "addInitScript",
+        "params": {}
+      },
+      {
+        "type": "after",
+        "callId": "call@35",
+        "endTime": 839282.534
+      }
+    ]
+  },
+  {
+    "trace": "2-trace.trace",
+    "errors": [],
+    "last_events": [
+      {
+        "type": "before",
+        "callId": "call@24",
+        "startTime": 839226.146,
+        "class": "BrowserContext",
+        "method": "newPage"
+      },
+      {
+        "type": "after",
+        "callId": "call@24",
+        "endTime": 839252.367
+      },
+      {
+        "type": "before",
+        "callId": "call@26",
+        "startTime": 839253.251,
+        "class": "Page",
+        "method": "addInitScript",
+        "params": {}
+      },
+      {
+        "type": "after",
+        "callId": "call@26",
+        "endTime": 839253.448
+      }
+    ]
+  },
+  {
+    "trace": "1-trace.trace",
+    "errors": [],
+    "last_events": [
+      {
+        "type": "before",
+        "callId": "call@15",
+        "startTime": 839191.601,
+        "class": "BrowserContext",
+        "method": "newPage"
+      },
+      {
+        "type": "after",
+        "callId": "call@15",
+        "endTime": 839220.978
+      },
+      {
+        "type": "before",
+        "callId": "call@17",
+        "startTime": 839222.182,
+        "class": "Page",
+        "method": "addInitScript",
+        "params": {}
+      },
+      {
+        "type": "after",
+        "callId": "call@17",
+        "endTime": 839222.673
+      }
+    ]
+  },
+  {
+    "trace": "0-trace.trace",
+    "errors": [],
+    "last_events": [
+      {
+        "type": "before",
+        "callId": "call@6",
+        "startTime": 839151.593,
+        "class": "BrowserContext",
+        "method": "newPage"
+      },
+      {
+        "type": "after",
+        "callId": "call@6",
+        "endTime": 839183.762
+      },
+      {
+        "type": "before",
+        "callId": "call@8",
+        "startTime": 839187.969,
+        "class": "Page",
+        "method": "addInitScript",
+        "params": {}
+      },
+      {
+        "type": "after",
+        "callId": "call@8",
+        "endTime": 839188.507
+      },
+      {
+        "type": "before",
+        "callId": "call@46",
+        "startTime": 839486.097,
+        "class": "Frame",
+        "method": "goto",
+        "params": {
+          "timeout": 0
+        }
+      },
+      {
+        "type": "after",
+        "callId": "call@46",
+        "endTime": 839823.053
+      },
+      {
+        "type": "before",
+        "callId": "call@48",
+        "startTime": 839832.168,
+        "class": "Frame",
+        "method": "expect",
+        "params": {
+          "selector": "internal:role=heading[name=\"Boundary collaboration ff2bc27e\"s]",
+          "expression": "to.be.visible",
+          "isNot": false,
+          "timeout": 30000
+        }
+      },
+      {
+        "type": "after",
+        "callId": "call@48",
+        "endTime": 839977.461
+      },
+      {
+        "type": "before",
+        "callId": "call@50",
+        "startTime": 839981.254,
+        "class": "Frame",
+        "method": "click",
+        "params": {
+          "selector": "internal:role=button[name=\"Manage AI resources\"s]",
+          "timeout": 0
+        }
+      }
+    ]
+  }
+]

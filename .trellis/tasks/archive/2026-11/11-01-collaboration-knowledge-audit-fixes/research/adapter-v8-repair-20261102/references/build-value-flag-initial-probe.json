@@ -1,0 +1,57 @@
+{
+  "reviewer": "/root/adapter_v5_review",
+  "wrapper_sha256": "eafed32e38ea69de0f73272df5c9cc817ec0741726b54fc19d27466742f57076",
+  "method": "Exact final v7 with all exec/run/Popen boundaries mocked and empty environment",
+  "observations": [
+    {
+      "args": [
+        "test",
+        "-installsuffix",
+        "-c",
+        "example/first"
+      ],
+      "terminal": "would_exec_go",
+      "exit_code": null,
+      "calls": [
+        {
+          "kind": "exec",
+          "path": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-installsuffix",
+            "-c",
+            "example/first"
+          ]
+        }
+      ],
+      "stderr": "",
+      "real_Go_or_SQL": 0
+    },
+    {
+      "args": [
+        "test",
+        "-gccgoflags",
+        "-c",
+        "example/first"
+      ],
+      "terminal": "would_exec_go",
+      "exit_code": null,
+      "calls": [
+        {
+          "kind": "exec",
+          "path": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-gccgoflags",
+            "-c",
+            "example/first"
+          ]
+        }
+      ],
+      "stderr": "",
+      "real_Go_or_SQL": 0
+    }
+  ]
+}

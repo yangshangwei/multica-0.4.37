@@ -1,0 +1,66 @@
+{
+  "recorded_at": "2026-11-03T09:37:24.464203+00:00",
+  "owner": "01a1a0a5-47d8-7f90-bc95-15d004c13bd9",
+  "task": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "previous_owner": "01a19ff3-faaf-71c1-b068-8571f0e940f1",
+  "authority": "user explicitly requested execution of approved recommendation in same existing tasks",
+  "reason": "prior owner systemError; no active complete check/knowledge fake process; retained v12 prep and three+25 directed results",
+  "candidate": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "head": "b6c74033f1913e46418ec1b119da33236dcba805",
+  "preserved_dirty_source": [
+    {
+      "path": "apps/web/next-env.d.ts",
+      "sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"
+    },
+    {
+      "path": "e2e/collaboration-account-desktop.spec.ts",
+      "sha256": "0e20376018ab0225ea81a637ffc67fdafa4dd73f84a71dad25321e5524b4c328"
+    },
+    {
+      "path": "e2e/collaboration-delivery-web.spec.ts",
+      "sha256": "2abe357d3dda931edae450548183a9501d00daec98c124c28227f23b4342f110"
+    },
+    {
+      "path": "e2e/collaboration-editing-web.spec.ts",
+      "sha256": "fa0aace8ffd19da4dc32eee5c01324df711e4089b79d5472649f54f71a4e3963"
+    },
+    {
+      "path": "e2e/collaboration-knowledge.spec.ts",
+      "sha256": "5da7bfe9e0d7b3755e079b01eda7f6a71fcf0a8ee2f6559b57c75589937be4cb"
+    },
+    {
+      "path": "e2e/collaboration-records-web.spec.ts",
+      "sha256": "5a3e3dc51da3a45d20b0e5b6befe01a329464fc02fdb57ff9f73f221f797a6a5"
+    },
+    {
+      "path": "e2e/collaboration-resources-web.spec.ts",
+      "sha256": "faa9bd82e145f6c473ca8365fb2408ab080fa6fd12126d132a14ac93df5994bf"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-editing.ts",
+      "sha256": "085b5af7434d93e3c6efe659c51f7c83bff7ac5c9712a1413e480e4d0e92c58d"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-knowledge.ts",
+      "sha256": "7a3f68f8a7213dbc40de3e7a8bf02222fb39d27411a0244b8ae2ea6ea89b1960"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-resource-offers.ts",
+      "sha256": "73f6005d8830877bec3b7c7710417ac6cd39fd6eb70dd17d18d3129136add4c4"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-disclosures.ts",
+      "sha256": "87b156d9da50daa7af35dab40130fe03579cfb9ef6c1a10e15b6f2a88499bb32"
+    }
+  ],
+  "observed_processes": [
+    "34878     1 Ss      01:40:15 /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python",
+    "36242     1 S       01:37:55 node",
+    "44536 44510 S       01:12:15 /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/go-build-cache/2c/2c2c66e383722a86dc932c2d41eb9c339403f65f21f49d4b5d7548ab38f048a5-d/server"
+  ],
+  "next_run_label": "v13",
+  "complete_check_started": false,
+  "old_workflow_resumed": false,
+  "real_provider_calls": 0,
+  "knowledge_budget": 0
+}

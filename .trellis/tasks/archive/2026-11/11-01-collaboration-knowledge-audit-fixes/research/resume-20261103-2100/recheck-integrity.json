@@ -1,0 +1,134 @@
+{
+  "recorded_at": "2026-11-03T13:13:26.549749+00:00",
+  "prior_result_integrity": [
+    {
+      "artifact": "run",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/make-check-v13.json",
+      "sha256": "28a7509eba24869e21597f1cf548d5f02cfbb24535adbe0f1152a3ba6c42d75d",
+      "matches": true
+    },
+    {
+      "artifact": "log",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/make-check-v13.log",
+      "sha256": "3eb025bbe0da5a7b175a1da2edb2be5886d8493d5c7a5b37b9a39ac48f39d5a4",
+      "matches": true
+    },
+    {
+      "artifact": "Go_inventory",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/go-inventory.json",
+      "sha256": "b18cad8f184e9fdc50d673d4dda4a013039e42a822355e87a05ad27c4d0911c0",
+      "matches": true
+    },
+    {
+      "artifact": "Playwright_inventory",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/playwright-inventory.json",
+      "sha256": "d914006b1879b118350360af3fc5eb5bb1130a41cd2d827d9ec5fa42034bc3f7",
+      "matches": true
+    },
+    {
+      "artifact": "browser_failures",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/browser-failures.json",
+      "sha256": "ea85f1e9bc5f0a27496166deab05d312c6cb89da9d6fb9e47843a4a2746368b1",
+      "matches": true
+    },
+    {
+      "artifact": "final_identity_audit",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate/final-state-audit-v13/post-make-v13.json",
+      "sha256": "adc2306d3d4b4a82918048806a4ed09a11af558a7a9923db7c5442104558a385",
+      "matches": true
+    }
+  ],
+  "all_hashes_match": true,
+  "observed_records": {
+    "research/execution-20261103/sqlc/sqlc-resume-01.json": "06e7b68c5b5157a3bc91bf467e9387cd7f463d51f3d3e0b09d3a421ea1f67ae7",
+    "research/execution-20261103/fullcheck-v13/result-summary.json": "dd7857a884493c0beefc3eea68df064cf9fc8a343b4ee6625c5a1d7bc71ce483",
+    "research/execution-20261103/failure-repair-verification/directed-round1-result.json": "ef10e6bc9d6afbba971339b5a5b60d7e14ce6bf05fd09820f75faef7fc7f687d",
+    "research/execution-20261103/failure-repair-review/review.json": "c9c3229ed8e47860aee3b432bfe74481ab421a4aaaabc34fa072e8430a9a8f9e",
+    "research/execution-20261103/final-candidate-v14/handoff.json": "f4982fecd2a780646297c9df064aa785a90b82a11c9ab2fba1aee7e444582382"
+  },
+  "integration_20_file_comparison": [
+    {
+      "path": "e2e/collaboration-account-desktop.spec.ts",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "e2e/collaboration-delivery-web.spec.ts",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "e2e/collaboration-editing-web.spec.ts",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "e2e/collaboration-installed-main.spec.ts",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "e2e/collaboration-knowledge.spec.ts",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "e2e/collaboration-memory-web.spec.ts",
+      "main_equals_candidate": false
+    },
+    {
+      "path": "e2e/collaboration-records-web.spec.ts",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "e2e/collaboration-resources-web.spec.ts",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-disclosures.ts",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-editing.ts",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-installed-main.mjs",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-knowledge.ts",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-recipient-picker.mjs",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-resource-offers.ts",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "packages/views/collaboration/field-editing.test.tsx",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "packages/views/collaboration/field-inputs.test.tsx",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "packages/views/collaboration/field-inputs.tsx",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "main_equals_candidate": true
+    },
+    {
+      "path": "server/internal/handler/daemon_test.go",
+      "main_equals_candidate": true
+    }
+  ],
+  "new_test_runs_by_root": 0,
+  "knowledge_budget_allocated": 0,
+  "knowledge_calls": 0
+}

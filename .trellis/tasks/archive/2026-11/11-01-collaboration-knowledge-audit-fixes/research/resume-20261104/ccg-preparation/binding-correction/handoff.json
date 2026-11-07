@@ -1,0 +1,71 @@
+{
+  "recorded_at": "2026-11-04T00:04:48.905986+00:00",
+  "state": "static_preparation_complete_execution_pending",
+  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "root_owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "private_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15",
+  "source_inputs_sha256": "60737f92d90398501f7e66ecc7abb88257cf7d0b97468e1a56a5c511c014bd1a",
+  "audit_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/independent-review/review.json",
+    "sha256": null,
+    "state": "pending_v15_independent_final_identity_review"
+  },
+  "audit_module": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/final-state-audit-v15/final_state_audit.py",
+    "sha256": "d4201c363b2fa8f147915c67e73947fd1b715077ef06754a80688b201a2c6fd8",
+    "state": "materialized_bytes_only_pending_independent_review"
+  },
+  "environment_parser": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/run-make-check-v15-provenance.py",
+    "sha256": "10ee286f89ae1072c3384abeb88b86cac078ecbadba2cfb6b0a07201d107180d",
+    "state": "materialized_bytes_only_pending_independent_review"
+  },
+  "forbidden_renderer_origins": [
+    "http://127.0.0.1:55132",
+    "http://localhost:55132",
+    "http://127.0.0.1:61276",
+    "http://localhost:61276"
+  ],
+  "prepared_files": 13,
+  "protected_v14_files": 13,
+  "current_source_files": 11,
+  "pinned_tools": 4,
+  "static_python_compile": 3,
+  "static_json_parse": 10,
+  "actual_early_refusal_controls_passed": 10,
+  "control_exit": 0,
+  "actual_permissions_created": 0,
+  "root_permissions_all_false": true,
+  "audit_review_pending": true,
+  "current_artifacts": {
+    "prepared-manifest.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg-preparation/binding-correction/prepared-manifest.json",
+      "sha256": "be4f9031d08a6a6d324ce3300ce2849b08ac0d8fc518e69b2f36e2c079d7832f"
+    },
+    "static-verification.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg-preparation/binding-correction/static-verification.json",
+      "sha256": "f645c2d126ca7d53dc20b530c36ed4b5a1eed7cc2b66a56435292c38e863ed92"
+    },
+    "static-controls-execution.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg-preparation/binding-correction/static-controls-execution.json",
+      "sha256": "47ded2b4e78515e08b66b1d9c3d9c1aa97fa550e98f3bfd58d56e3986ba7960d"
+    },
+    "HANDOFF.md": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg-preparation/binding-correction/HANDOFF.md",
+      "sha256": "b5e77e0f8d68ea783631f46e366a22371319cd92bd949136275c2bd25cbfa747"
+    },
+    "before-manifest.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg-preparation/binding-correction/before-manifest.json",
+      "sha256": "764345ce8ce0578174f460505a815e715ecc055e97da5e184776a302f5d28ac7"
+    }
+  },
+  "previous_handoff": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg-preparation/handoff.json",
+    "sha256": "c7149c3497d8558318bf0a5f4cd42946b420c7f005396e6e2adfbd71101fb1ef",
+    "state": "historical_initial_planned_path"
+  },
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false,
+  "build_db_service_browser_product_test_operations": 0
+}

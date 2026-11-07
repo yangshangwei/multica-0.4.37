@@ -1,0 +1,63 @@
+{
+  "recorded_at": "2026-11-04T00:00:25.996764+00:00",
+  "coordinator": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "source_env_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/check-source-v15.env",
+  "source_env_sha256": "0a463c24cbacf74b2d42e956bddbdddade7fa19fee5713e1ce37dea44ace8805",
+  "database": "multica_closure_v15_seed_01a1a3c9",
+  "postgres_endpoint": {
+    "host": "127.0.0.1",
+    "port": 5432
+  },
+  "postgres_identity": {
+    "database": "postgres",
+    "server_addr": "172.20.0.2",
+    "server_port": 5432,
+    "server_version": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "max_connections": "100",
+    "connections": 24
+  },
+  "database_state": "allocation_ready_not_created",
+  "redis_port": 61277,
+  "renderer_port": 61276,
+  "redis_name": "multica-v15-01a1a3c9-redis",
+  "redis_image": "redis:7-alpine",
+  "renderer_url": "http://127.0.0.1:61276/",
+  "renderer_started": false,
+  "future_registry": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/dev-registry-v15",
+  "registry_created": false,
+  "allocation": {
+    "recorded_at": "2026-11-03T23:56:30.329411+00:00",
+    "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+    "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+    "directory": "/private/tmp/multica-final-check-v15-c0j20n8u",
+    "mode": "0700",
+    "uid": 501,
+    "git_root_absent": true,
+    "git_probe_exit_code": 128,
+    "free_bytes": 25255927808,
+    "children": [
+      "cli-build",
+      "desktop-build"
+    ],
+    "fresh_execution_paths_absent": [
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/full-check-home-v15",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/go-packages-v15",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/dev-registry-v15",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/profiles-v15",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/workspaces-v15",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/metadata-home-not-created"
+    ],
+    "node_modules_link": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/node_modules",
+      "target": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules"
+    },
+    "real_provider_allowed": false,
+    "knowledge_budget_allocated": 0,
+    "knowledge_calls": 0
+  },
+  "script_sha256": "b399ea9a162791c177796a4cf011613fbcc77657be429be95a7320e5e7b50e35",
+  "real_provider_allowed": false,
+  "knowledge_default": false
+}

@@ -1,0 +1,42 @@
+{
+  "issued_at": "2026-11-04T07:48:51.145045+00:00",
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "executor": "/root/shared_executor",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "gate": "ccg2-off",
+  "scope": "Exactly one original fake-only OFF02 browser probe with reviewed cache binding; zero retries",
+  "review_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-browser-bound-admission-review/review.json",
+  "review_sha256": "ad864ad4569711b1a3982d4447e4b7b7c4ad3e568d6322d2b34ae6a03c131040",
+  "permit_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-off-v16-02.json",
+  "permit_sha256": "53e8154374b24b65048d9caa3fcfb5371e86305028c35c9502a6ccb949aa4b24",
+  "before_permit_sha256": "bb546f9ffe3c497373cea272372f83402723d40bf2d587e0d77a4f767908a69b",
+  "browser_binding": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/browser-cache-binding-v16.json",
+    "sha256": "d63a5a379f3d2f4ab0687da4d617897f832179af88d9e257a20e1fdcff2aea13"
+  },
+  "root_actual_health": {
+    "status": "ok",
+    "pid": 51638,
+    "commit": "eda0d68fb",
+    "started_at": "2026-11-04T05:44:19Z"
+  },
+  "root_actual_db": [
+    "multica_ccg2_v16_off_a3c9|764_collaboration_ai_policy",
+    "0",
+    "0"
+  ],
+  "root_owned_pids": {
+    "api": 51638,
+    "web": 51913,
+    "renderer": 51848
+  },
+  "historical_OFF01_retained": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-01/result.json",
+    "sha256": "1e198c8177e4650e620af16a959ba53924b7356dda969ffa318558e950d7a5a2"
+  },
+  "real_provider_allowed": false,
+  "knowledge_budget": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false,
+  "no_repeated_final_auditor_CLI": true
+}

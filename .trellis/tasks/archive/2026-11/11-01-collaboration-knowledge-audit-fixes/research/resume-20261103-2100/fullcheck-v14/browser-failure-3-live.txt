@@ -1,0 +1,25 @@
+  3) [chromium] › e2e/collaboration-account-desktop.spec.ts:583:1 › Desktop resource owners authorize, withdraw and commit a held configuration switch 
+
+    error: invalid input syntax for type uuid: "collaboration-closure-v14-01a1a186"
+
+       at fixtures/collaboration-resources.ts:70
+
+      68 |     await db.query("BEGIN");
+      69 |     await db.query("UPDATE agent_runtime SET status='offline', custom_name='Resource journey machine' WHERE id=$1 AND owner_id=$2", [runtime.id, owner.id]);
+    > 70 |     await db.query("INSERT INTO collaboration_runtime_enrollment (deployment_id,owner_user_id,execution_workspace_id,runtime_id,installation_id,public_key) VALUES ($1,$2,$3,$4,$5,$6)",
+         |     ^
+      71 |       [deploymentId, owner.id, workspace.id, runtime.id, randomUUID(), randomBytes(32)]);
+      72 |     await db.query('UPDATE "user" SET disabled_at=now() WHERE id=$1', [disabledAccount.id]);
+      73 |     await db.query("COMMIT");
+        at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/client.js:631:17
+        at seedCollaborationResourceJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resources.ts:70:5)
+        at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-account-desktop.spec.ts:586:20
+
+
+(node:77351) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:77351) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+

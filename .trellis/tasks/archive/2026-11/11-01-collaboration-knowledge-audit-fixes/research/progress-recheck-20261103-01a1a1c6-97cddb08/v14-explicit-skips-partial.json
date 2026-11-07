@@ -1,0 +1,135 @@
+{
+  "observed_at": "2026-11-03T14:28:15.227804+00:00",
+  "partial": true,
+  "named_skips": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "test": "TestCLIConfig_UnknownFieldsArePreserved",
+      "observed_terminal": "skip",
+      "output_context": [
+        "config_test.go:265: documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder"
+      ],
+      "source_log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142632582902_248934fbfb73.jsonl",
+      "individually_accepted": false,
+      "scope": "Named explicit skip observed in current run; final reason review and required substitute gates pending"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+      "observed_terminal": "skip",
+      "output_context": [
+        "collaboration_test.go:189: requires real Linux kernel containment"
+      ],
+      "source_log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142638210715_7a21f045e560.jsonl",
+      "individually_accepted": false,
+      "scope": "Named explicit skip observed in current run; final reason review and required substitute gates pending"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "test": "TestIsDriveRoot",
+      "observed_terminal": "skip",
+      "output_context": [
+        "local_directory_test.go:383: windows-only behaviour"
+      ],
+      "source_log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142638210715_7a21f045e560.jsonl",
+      "individually_accepted": false,
+      "scope": "Named explicit skip observed in current run; final reason review and required substitute gates pending"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/auth",
+      "test": "TestPasswordLimiterSharedAtomicAdmission",
+      "observed_terminal": "skip",
+      "output_context": [
+        "password_limiter_integration_test.go:20: MULTICA_TEST_REDIS_URL not configured"
+      ],
+      "source_log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142622796822_d4b8dc307441.jsonl",
+      "individually_accepted": false,
+      "scope": "Named explicit skip observed in current run; final reason review and required substitute gates pending"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCommentContentBigramRequirementMatchesRealPGBigm",
+      "observed_terminal": "skip",
+      "output_context": [
+        "migrate_comment_search_index_strategy_test.go:156: Postgres does not provide pg_bigm; install it to run the real-opclass integration test"
+      ],
+      "source_log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142421583865_f9a6f66e94fe.jsonl",
+      "individually_accepted": false,
+      "scope": "Named explicit skip observed in current run; final reason review and required substitute gates pending"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+      "observed_terminal": "skip",
+      "output_context": [
+        "collaboration_daemon_cli_routes_test.go:27: requires explicit Linux namespace integration environment"
+      ],
+      "source_log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl",
+      "individually_accepted": false,
+      "scope": "Named explicit skip observed in current run; final reason review and required substitute gates pending"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationPartialResumeRoutesLinux",
+      "observed_terminal": "skip",
+      "output_context": [
+        "collaboration_hold_routes_test.go:155: requires explicit Linux namespace integration environment"
+      ],
+      "source_log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl",
+      "individually_accepted": false,
+      "scope": "Named explicit skip observed in current run; final reason review and required substitute gates pending"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationSingleAgentRuntimeRoutesLinux",
+      "observed_terminal": "skip",
+      "output_context": [
+        "collaboration_single_agent_routes_test.go:418: requires explicit Linux namespace integration environment"
+      ],
+      "source_log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl",
+      "individually_accepted": false,
+      "scope": "Named explicit skip observed in current run; final reason review and required substitute gates pending"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+      "observed_terminal": "skip",
+      "output_context": [
+        "collaboration_single_agent_routes_test.go:585: requires explicit Linux namespace integration environment"
+      ],
+      "source_log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl",
+      "individually_accepted": false,
+      "scope": "Named explicit skip observed in current run; final reason review and required substitute gates pending"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+      "observed_terminal": "skip",
+      "output_context": [
+        "collaboration_single_agent_routes_test.go:688: requires explicit Linux namespace integration environment"
+      ],
+      "source_log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl",
+      "individually_accepted": false,
+      "scope": "Named explicit skip observed in current run; final reason review and required substitute gates pending"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationSquadCapacityOneRoutesLinux",
+      "observed_terminal": "skip",
+      "output_context": [
+        "collaboration_squad_routes_test.go:173: requires explicit Linux namespace integration environment"
+      ],
+      "source_log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl",
+      "individually_accepted": false,
+      "scope": "Named explicit skip observed in current run; final reason review and required substitute gates pending"
+    }
+  ],
+  "stable_completed_raw_hashes": {
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142632582902_248934fbfb73.jsonl": "3cae6896d809bc071bf5adfc93c8faecb7f417db784e44d000d235d61bb12722",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142638210715_7a21f045e560.jsonl": "f586d65c1c77081f3011a769eda3944b8a8cfe0c0022b59fca5fdc003492100c",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142622796822_d4b8dc307441.jsonl": "6b593072bf0eccce5d94ea1dd2eb65d60604ca5f20afc2813884af093fc7b2b6",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142421583865_f9a6f66e94fe.jsonl": "cff2ad1429ccd19b646c0e83c97f795637885976992c6113d95d20af1f276c6b",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl": "48846562f2bad6f2ce4e06b8afba871b88399d23a6f9a886d68a9afc262a1897"
+  },
+  "whole_run_accepted": false
+}

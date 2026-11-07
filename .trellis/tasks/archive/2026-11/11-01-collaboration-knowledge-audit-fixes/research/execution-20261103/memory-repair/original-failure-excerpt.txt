@@ -1,0 +1,34 @@
+[1A[2K  13) [chromium] › e2e/collaboration-memory-web.spec.ts:7:1 › shared context keeps concurrent edits, restores versions, and permits historical purge after closure 
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('button', { name: 'Complete issue', exact: true })[22m
+
+
+      74 |     const history = await fixture.creator.client.requestJSON<{ items: { version: string }[] }>(`${fixture.root}/memory/versions`);
+      75 |     expect(history.items.map(item => item.version)).toEqual(["4", "3", "2", "1"]);
+    > 76 |     await page.getByRole("button", { name: "Complete issue", exact: true }).click();
+         |                                                                             ^
+      77 |     const completion = page.locator("form").filter({ has: page.getByRole("heading", { name: "Complete issue", exact: true }) });
+      78 |     await expect(completion.getByRole("button", { name: "Confirm", exact: true })).toBeEnabled();
+      79 |     await completion.getByRole("button", { name: "Confirm", exact: true }).click();
+        at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-memory-web.spec.ts:76:77
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/error-context.md
+
+
+[1A[2K(node:8515) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:8515) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+

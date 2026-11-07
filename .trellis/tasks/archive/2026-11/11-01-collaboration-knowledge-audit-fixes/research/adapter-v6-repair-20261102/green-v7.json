@@ -1,0 +1,2626 @@
+{
+  "wrapper": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+  "wrapper_sha256": "c987ea45cf75e4fa2fe5858a6bc5d82bb1f30ac289162015ebe544dab8b6382f",
+  "tests_run": 27,
+  "failure_count": 0,
+  "error_count": 0,
+  "failure_test_ids": [],
+  "observations": [
+    {
+      "test": "__main__.PackageBindingTests.test_canonical_selector_resolves_before_forwarding",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-pehp2hf8/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-pehp2hf8/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-pehp2hf8/module",
+          "selectors": [
+            "example/first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_changed_C_and_C_equals_default_package_refuse",
+      "argv": [
+        "-C",
+        "second",
+        "test"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-_pw1orzx/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "-C",
+            "second",
+            "list",
+            "."
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-_pw1orzx/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-_pw1orzx/module/second",
+          "selectors": [
+            "."
+          ]
+        }
+      ],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test package selection does not match its allocation\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_changed_C_and_C_equals_default_package_refuse",
+      "argv": [
+        "-C=second",
+        "test"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-_pw1orzx/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "-C=second",
+            "list",
+            "."
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-_pw1orzx/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-_pw1orzx/module/second",
+          "selectors": [
+            "."
+          ]
+        }
+      ],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test package selection does not match its allocation\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_default_selector_after_args_boundary_is_not_compile_only",
+      "argv": [
+        "test",
+        "-args",
+        "-c"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-8_u2dbqg/module/first",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "."
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-8_u2dbqg/module/first",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-8_u2dbqg/module/first",
+          "selectors": [
+            "."
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-args",
+            "-c"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_default_selector_after_args_boundary_is_not_compile_only",
+      "argv": [
+        "test",
+        "--",
+        "-c"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-8_u2dbqg/module/first",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "."
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-8_u2dbqg/module/first",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-8_u2dbqg/module/first",
+          "selectors": [
+            "."
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "--",
+            "-c"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_default_selector_in_another_directory_refuses",
+      "argv": [
+        "test"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-vt6lv7ey/module/second",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "."
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-vt6lv7ey/module/second",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-vt6lv7ey/module/second",
+          "selectors": [
+            "."
+          ]
+        }
+      ],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test package selection does not match its allocation\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_default_selector_uses_the_current_package",
+      "argv": [
+        "test",
+        "-race",
+        "-count",
+        "1"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-7q3qdnr4/module/first",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "."
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-7q3qdnr4/module/first",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-7q3qdnr4/module/first",
+          "selectors": [
+            "."
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-race",
+            "-count",
+            "1"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_empty_multiple_and_different_list_results_refuse",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-3jd6nrq6/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-3jd6nrq6/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-3jd6nrq6/module",
+          "selectors": [
+            "example/first"
+          ]
+        }
+      ],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test package selection does not match its allocation\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_empty_multiple_and_different_list_results_refuse",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-3jd6nrq6/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-3jd6nrq6/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-3jd6nrq6/module",
+          "selectors": [
+            "example/first"
+          ]
+        }
+      ],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test package selection does not match its allocation\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_empty_multiple_and_different_list_results_refuse",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-3jd6nrq6/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-3jd6nrq6/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-3jd6nrq6/module",
+          "selectors": [
+            "example/first"
+          ]
+        }
+      ],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test package selection does not match its allocation\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_equals_value_flags_and_test_arguments_remain_exact",
+      "argv": [
+        "test",
+        "-run=example/second",
+        "example/first",
+        "-args",
+        "example/second",
+        "-c",
+        "-C",
+        "second"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-cuihvpui/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-cuihvpui/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-cuihvpui/module",
+          "selectors": [
+            "example/first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-run=example/second",
+            "example/first",
+            "-args",
+            "example/second",
+            "-c",
+            "-C",
+            "second"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_equals_value_flags_and_test_arguments_remain_exact",
+      "argv": [
+        "test",
+        "-run=example/second",
+        "example/first",
+        "--",
+        "example/second",
+        "-c",
+        "-C",
+        "second"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-cuihvpui/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-cuihvpui/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-cuihvpui/module",
+          "selectors": [
+            "example/first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-run=example/second",
+            "example/first",
+            "--",
+            "example/second",
+            "-c",
+            "-C",
+            "second"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_explicit_dot_is_permitted_in_owner_directory",
+      "argv": [
+        "test",
+        "."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-kztxkktr/module/first",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "."
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-kztxkktr/module/first",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-kztxkktr/module/first",
+          "selectors": [
+            "."
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "."
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_flag_values_and_false_compile_override_require_package_binding",
+      "argv": [
+        "test",
+        "-run",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-csb3iwww/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-csb3iwww/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-csb3iwww/module",
+          "selectors": [
+            "example/first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-run",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_flag_values_and_false_compile_override_require_package_binding",
+      "argv": [
+        "test",
+        "-c",
+        "-c=false",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-csb3iwww/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-csb3iwww/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-csb3iwww/module",
+          "selectors": [
+            "example/first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-c",
+            "-c=false",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_flag_values_and_false_compile_override_require_package_binding",
+      "argv": [
+        "test",
+        "-list",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-csb3iwww/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-csb3iwww/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-csb3iwww/module",
+          "selectors": [
+            "example/first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-list",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_list_failure_refuses_before_test_execution",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-t2_jvt45/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-t2_jvt45/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-t2_jvt45/module",
+          "selectors": [
+            "example/first"
+          ]
+        }
+      ],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test package selection does not match its allocation\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_inherited_pool_overrides_are_removed_for_permitted_recursive_tests",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-wrrpf96m/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-wrrpf96m/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-wrrpf96m/module",
+          "selectors": [
+            "example/first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_leading_C_and_C_equals_keep_identical_list_and_test_semantics",
+      "argv": [
+        "-C",
+        "first",
+        "test"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-spnq2tb5/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "-C",
+            "first",
+            "list",
+            "."
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-spnq2tb5/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-spnq2tb5/module/first",
+          "selectors": [
+            "."
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "-C",
+            "first",
+            "test"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_leading_C_and_C_equals_keep_identical_list_and_test_semantics",
+      "argv": [
+        "-C=first",
+        "test"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-spnq2tb5/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "-C=first",
+            "list",
+            "."
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-spnq2tb5/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-spnq2tb5/module/first",
+          "selectors": [
+            "."
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "-C=first",
+            "test"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_missing_empty_and_malformed_package_identities_refuse_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-41ltgabq/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_missing_empty_and_malformed_package_identities_refuse_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-41ltgabq/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": null
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_missing_empty_and_malformed_package_identities_refuse_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-41ltgabq/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": ""
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_missing_empty_and_malformed_package_identities_refuse_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-41ltgabq/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": " \t"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_missing_empty_and_malformed_package_identities_refuse_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-41ltgabq/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": 0
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_missing_empty_and_malformed_package_identities_refuse_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-41ltgabq/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": []
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_missing_empty_and_malformed_package_identities_refuse_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-41ltgabq/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": {}
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode0_requires_nonblank_explicit_go_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-f5bmnpg8/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test execution requires its allocation record\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode0_requires_nonblank_explicit_go_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-f5bmnpg8/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test execution requires its allocation record\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode0_requires_nonblank_explicit_go_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-f5bmnpg8/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test execution requires its allocation record\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode0_requires_nonblank_explicit_go_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-f5bmnpg8/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test execution requires its allocation record\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode0_requires_nonblank_explicit_go_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-f5bmnpg8/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test execution requires its allocation record\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode0_requires_nonblank_explicit_go_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-f5bmnpg8/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test execution requires its allocation record\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode1_keeps_fresh_per_package_allocation_and_original_check_flags",
+      "argv": [
+        "-C",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-k1zhfmvk/module",
+        "test",
+        "-race",
+        "-timeout=40m",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "./..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-k1zhfmvk/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "returned",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "sql",
+          "database_name": "multica_check_fixture_go",
+          "statement": "SELECT current_database()"
+        },
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "-C",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-k1zhfmvk/module",
+            "list",
+            "./..."
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-k1zhfmvk/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-k1zhfmvk/module",
+          "selectors": [
+            "./..."
+          ]
+        },
+        {
+          "kind": "sql",
+          "database_name": "postgres",
+          "statement": "CREATE DATABASE \"ccheck_20261102131627526678_fac3fb5ac146\" TEMPLATE \"multica_check_fixture_go\""
+        },
+        {
+          "kind": "sql",
+          "database_name": "ccheck_20261102131627526678_fac3fb5ac146",
+          "statement": "SELECT current_database()"
+        },
+        {
+          "kind": "test",
+          "argv": [
+            "/fixture/fake-go",
+            "-C",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-k1zhfmvk/module",
+            "test",
+            "-race",
+            "-timeout=40m",
+            "-p",
+            "1",
+            "-parallel",
+            "2",
+            "-json",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102131627526678_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        },
+        {
+          "kind": "sql",
+          "database_name": "postgres",
+          "statement": "CREATE DATABASE \"ccheck_20261102131627527133_486ac80ceccf\" TEMPLATE \"multica_check_fixture_go\""
+        },
+        {
+          "kind": "sql",
+          "database_name": "ccheck_20261102131627527133_486ac80ceccf",
+          "statement": "SELECT current_database()"
+        },
+        {
+          "kind": "test",
+          "argv": [
+            "/fixture/fake-go",
+            "-C",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-k1zhfmvk/module",
+            "test",
+            "-race",
+            "-timeout=40m",
+            "-p",
+            "1",
+            "-parallel",
+            "2",
+            "-json",
+            "example/second"
+          ],
+          "database_name": "ccheck_20261102131627527133_486ac80ceccf",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "{\"Action\": \"run\", \"Test\": \"TestFakeFixture\"}\n{\"Action\": \"pass\", \"Test\": \"TestFakeFixture\"}\n{\"Action\": \"pass\", \"Package\": \"example/first\"}\n{\"Action\": \"run\", \"Test\": \"TestFakeFixture\"}\n{\"Action\": \"pass\", \"Test\": \"TestFakeFixture\"}\n{\"Action\": \"pass\", \"Package\": \"example/second\"}\n",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode1_requires_nonblank_explicit_go_psql_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-gj91xrsx/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires explicit Go, SQL and evidence context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode1_requires_nonblank_explicit_go_psql_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-gj91xrsx/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires explicit Go, SQL and evidence context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode1_requires_nonblank_explicit_go_psql_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-gj91xrsx/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires explicit Go, SQL and evidence context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode1_requires_nonblank_explicit_go_psql_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-gj91xrsx/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires explicit Go, SQL and evidence context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode1_requires_nonblank_explicit_go_psql_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-gj91xrsx/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires explicit Go, SQL and evidence context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode1_requires_nonblank_explicit_go_psql_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-gj91xrsx/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires explicit Go, SQL and evidence context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode1_requires_nonblank_explicit_go_psql_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-gj91xrsx/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires explicit Go, SQL and evidence context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode1_requires_nonblank_explicit_go_psql_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-gj91xrsx/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires explicit Go, SQL and evidence context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_mode1_requires_nonblank_explicit_go_psql_and_evidence_before_any_call",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-gj91xrsx/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires explicit Go, SQL and evidence context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_multiple_selectors_refuse_even_if_they_resolve_to_one_owner",
+      "argv": [
+        "test",
+        "example/first",
+        "example/second"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-s4qtjnil/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test execution requires exactly its allocated package\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_multiple_selectors_refuse_even_if_they_resolve_to_one_owner",
+      "argv": [
+        "test",
+        "example/first",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-s4qtjnil/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test execution requires exactly its allocated package\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_multiple_selectors_refuse_even_if_they_resolve_to_one_owner",
+      "argv": [
+        "test",
+        "example/first",
+        "./first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-s4qtjnil/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test execution requires exactly its allocated package\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_noncanonical_allocation_package_refuses_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-y3lh0wxh/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "."
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_noncanonical_allocation_package_refuses_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-y3lh0wxh/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "./first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_noncanonical_allocation_package_refuses_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-y3lh0wxh/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "../first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_noncanonical_allocation_package_refuses_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-y3lh0wxh/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "/example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_noncanonical_allocation_package_refuses_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-y3lh0wxh/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/..."
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_noncanonical_allocation_package_refuses_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-y3lh0wxh/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example//first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_noncanonical_allocation_package_refuses_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-y3lh0wxh/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/../first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_noncanonical_allocation_package_refuses_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-y3lh0wxh/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first\n"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_noncanonical_allocation_package_refuses_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-y3lh0wxh/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": " example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_noncanonical_allocation_package_refuses_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-y3lh0wxh/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "-example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_noncanonical_allocation_package_refuses_before_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-y3lh0wxh/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first:tmp"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test allocation requires a canonical package identity\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_other_canonical_and_relative_packages_refuse",
+      "argv": [
+        "test",
+        "example/second"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-a0mzh31z/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/second"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-a0mzh31z/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-a0mzh31z/module",
+          "selectors": [
+            "example/second"
+          ]
+        }
+      ],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test package selection does not match its allocation\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_other_canonical_and_relative_packages_refuse",
+      "argv": [
+        "test",
+        "./second"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-a0mzh31z/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "./second"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-a0mzh31z/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-a0mzh31z/module",
+          "selectors": [
+            "./second"
+          ]
+        }
+      ],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test package selection does not match its allocation\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_real_compile_flags_forward_without_isolation_context",
+      "argv": [
+        "test",
+        "-run",
+        "TestFixture",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-6u3ral3s/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-run",
+            "TestFixture",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_real_compile_flags_forward_without_isolation_context",
+      "argv": [
+        "test",
+        "-run",
+        "TestFixture",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-6u3ral3s/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-run",
+            "TestFixture",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_real_compile_flags_forward_without_isolation_context",
+      "argv": [
+        "test",
+        "-run",
+        "TestFixture",
+        "-c=1",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-6u3ral3s/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-run",
+            "TestFixture",
+            "-c=1",
+            "example/first"
+          ],
+          "database_name": "",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_real_compile_flags_forward_without_isolation_context",
+      "argv": [
+        "test",
+        "-run",
+        "TestFixture",
+        "-c=T",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-6u3ral3s/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-run",
+            "TestFixture",
+            "-c=T",
+            "example/first"
+          ],
+          "database_name": "",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_relative_selector_compares_canonical_import_path",
+      "argv": [
+        "test",
+        "./first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-b3fn94eu/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "./first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-b3fn94eu/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-b3fn94eu/module",
+          "selectors": [
+            "./first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "./first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_relative_selector_under_C_is_resolved_by_go_list",
+      "argv": [
+        "-C",
+        "second",
+        "test",
+        "../first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-hwfvg9kz/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "-C",
+            "second",
+            "list",
+            "../first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-hwfvg9kz/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-hwfvg9kz/module/second",
+          "selectors": [
+            "../first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "-C",
+            "second",
+            "test",
+            "../first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_stripped_non_test_forwarding_keeps_fallback_and_pool_configuration",
+      "argv": [
+        "version"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-vul46rq0/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "version"
+          ],
+          "database_name": "",
+          "mode": "",
+          "pool_max": "10",
+          "pool_min": "1"
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_stripped_non_test_forwarding_keeps_fallback_and_pool_configuration",
+      "argv": [
+        "build",
+        "./..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-vul46rq0/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "build",
+            "./..."
+          ],
+          "database_name": "",
+          "mode": "",
+          "pool_max": "10",
+          "pool_min": "1"
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_stripped_non_test_forwarding_keeps_fallback_and_pool_configuration",
+      "argv": [
+        "run",
+        "./fixture.go"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-vul46rq0/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "run",
+            "./fixture.go"
+          ],
+          "database_name": "",
+          "mode": "",
+          "pool_max": "10",
+          "pool_min": "1"
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_stripped_non_test_forwarding_keeps_fallback_and_pool_configuration",
+      "argv": [
+        "-C=first",
+        "version"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-vul46rq0/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "-C=first",
+            "version"
+          ],
+          "database_name": "",
+          "mode": "",
+          "pool_max": "10",
+          "pool_min": "1"
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_unmarked_test_commands_refuse_before_all_calls",
+      "argv": [
+        "test",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-n8euppi2/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_unmarked_test_commands_refuse_before_all_calls",
+      "argv": [
+        "-C=first",
+        "test"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-n8euppi2/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_unmarked_test_commands_refuse_before_all_calls",
+      "argv": [
+        "test",
+        "-args",
+        "-c"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-n8euppi2/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_unmarked_test_commands_refuse_before_all_calls",
+      "argv": [
+        "test",
+        "--",
+        "-c"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-n8euppi2/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_unmarked_test_commands_refuse_before_all_calls",
+      "argv": [
+        "test",
+        "-run",
+        "-c"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-n8euppi2/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_unmarked_test_commands_refuse_before_all_calls",
+      "argv": [
+        "test",
+        "-c",
+        "-c=false"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-n8euppi2/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_value_flags_do_not_become_package_selectors",
+      "argv": [
+        "test",
+        "-timeout",
+        "40m",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-run",
+        "example/second",
+        "-skip",
+        "example/second",
+        "-count",
+        "1",
+        "-tags",
+        "fixture",
+        "-cpu",
+        "2",
+        "-coverprofile",
+        "coverage.out",
+        "-coverpkg",
+        "example/second",
+        "-vet",
+        "off",
+        "-o",
+        "output",
+        "-overlay",
+        "overlay.json",
+        "-ldflags",
+        "-s -w",
+        "-gcflags",
+        "all=-l",
+        "-asmflags",
+        "all=-v",
+        "-toolexec",
+        "fake-tool",
+        "-modfile",
+        "go.mod",
+        "-mod",
+        "readonly",
+        "-pkgdir",
+        "packages",
+        "-exec",
+        "fake-exec",
+        "-list",
+        "TestFixture",
+        "./first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-v0bwzvzy/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "./first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-v0bwzvzy/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-v0bwzvzy/module",
+          "selectors": [
+            "./first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-timeout",
+            "40m",
+            "-p",
+            "1",
+            "-parallel",
+            "2",
+            "-run",
+            "example/second",
+            "-skip",
+            "example/second",
+            "-count",
+            "1",
+            "-tags",
+            "fixture",
+            "-cpu",
+            "2",
+            "-coverprofile",
+            "coverage.out",
+            "-coverpkg",
+            "example/second",
+            "-vet",
+            "off",
+            "-o",
+            "output",
+            "-overlay",
+            "overlay.json",
+            "-ldflags",
+            "-s -w",
+            "-gcflags",
+            "all=-l",
+            "-asmflags",
+            "all=-v",
+            "-toolexec",
+            "fake-tool",
+            "-modfile",
+            "go.mod",
+            "-mod",
+            "readonly",
+            "-pkgdir",
+            "packages",
+            "-exec",
+            "fake-exec",
+            "-list",
+            "TestFixture",
+            "./first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_wildcard_refuses_even_when_list_would_return_only_owner",
+      "argv": [
+        "test",
+        "./..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-3dg3e3qq/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test execution requires exactly its allocated package\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_wildcard_selectors_never_use_the_parent_clone",
+      "argv": [
+        "test",
+        "./..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-_hqq5iqx/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test execution requires exactly its allocated package\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_wildcard_selectors_never_use_the_parent_clone",
+      "argv": [
+        "test",
+        "example/..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-_hqq5iqx/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test execution requires exactly its allocated package\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_wildcard_selectors_never_use_the_parent_clone",
+      "argv": [
+        "test",
+        "./first/..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-_hqq5iqx/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: recursive test execution requires exactly its allocated package\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    }
+  ],
+  "method": "Exact wrapper with execv/execve/execvpe/run/Popen mocked; no real executable or SQL calls"
+}

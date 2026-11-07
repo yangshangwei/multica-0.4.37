@@ -1,0 +1,33 @@
+{
+  "recorded_at": "2026-11-04T02:48:17.448775+00:00",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "coordinator": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "pid": 5896,
+  "process_group": 5896,
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-u",
+    "-m",
+    "http.server",
+    "58268",
+    "--bind",
+    "127.0.0.1",
+    "--directory",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "url": "http://127.0.0.1:58268/",
+  "renderer_directory": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+  "index_sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+  "install_record_sha256": "0d9754b6b7cba4ce1a7c7bb976fd13b72529de106d5bacc468a5b258c8e20e97",
+  "allocation_sha256": "d79df2c535f6fa927362abf3f35307c23450cee739f0b6d780bbfdc5a7db042e",
+  "script_sha256": "2a24f458b32cf8efbd30519fd718d068f4a3af5249a0e00ee20b8814b5c1046c",
+  "model_or_database_environment_forwarded": false,
+  "state": "serving",
+  "http_index_sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+  "ownership_verified": true,
+  "process_observation": "5896  5893  5896 /opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -u -m http.server 58268 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+  "cwd_observation": "p5896\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "listener_observation": "COMMAND  PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME\nPython  5896 artisan    3u  IPv4 0xd0ede9bbf7616723      0t0  TCP 127.0.0.1:58268 (LISTEN)"
+}

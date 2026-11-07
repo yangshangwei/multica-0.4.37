@@ -1,0 +1,58 @@
+{
+  "scope": "Final v2 collector correction/provenance; TS-only acceptance and no whole-run acceptance.",
+  "exact_packages": [
+    "@multica/core",
+    "@multica/docs",
+    "@multica/views",
+    "@multica/web",
+    "@multica/desktop"
+  ],
+  "collector_sha256": "6acef959f12c095776aa9f8f8812c5d12273a2c22f01db404eee9f6f986b62aa",
+  "actual_TS_named_pass": 13244,
+  "actual_TS_files": 1069,
+  "parser_controls_passed": 14,
+  "actual_v14_missing_JSON_rejection": "pass; expected exit1, zero named TS leaves",
+  "all_original_bytes_and_reports_preserved": true,
+  "refs": [
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/collect.py",
+      "sha256": "6acef959f12c095776aa9f8f8812c5d12273a2c22f01db404eee9f6f986b62aa"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/README.md",
+      "sha256": "9236282eb0b20b9aabc0e074985a21512406d6a09133ea39922117c73a5d223e"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/parser-controls-v2.py",
+      "sha256": "7e3d598a6a3c75590ad74975ed31fa75287efdc791bf6752d6c66889e83864fa"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/extract-ts-phase-v2.py",
+      "sha256": "60d35726ad4c82e2c3ae757de6034db7a331224141218256a9f77d34adf7537e"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/package-contract-repair-v2.json",
+      "sha256": "92c44419a2b2c8fa3d7315b71f504ec841caf73dd96dec7adc631cc60199cfca"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/actual-v15-ts-stage-package-contract-v2/summary.json",
+      "sha256": "6d195f36153f7cd95e8d5e8b19feec7422833f3fd198afd7468d210f3f1787bd"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/actual-v15-ts-stage-package-contract-v2/task7-canonical-ts-greens.json",
+      "sha256": "0c902cb14425839df44d5bdcdbce02c7e22143859a47802c1f2a012e193b7421"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/synthetic-parser-controls-package-contract-v2-final/result.json",
+      "sha256": "2200002d96022162d366c802dab73dbae86c3498acf779fe0909ab2b0a4eb9af"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/historical-v14-missing-ts-control-package-contract-v2/summary.json",
+      "sha256": "b53e8a67fc1061800b5014091609888a56865fb83d153352fb37cbc21ddeb008"
+    }
+  ],
+  "wholecheck_accepted": false,
+  "product_test_runs_or_services_started": 0,
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0
+}

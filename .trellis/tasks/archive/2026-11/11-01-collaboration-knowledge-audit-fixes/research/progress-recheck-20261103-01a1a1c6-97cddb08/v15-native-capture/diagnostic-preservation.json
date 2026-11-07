@@ -1,0 +1,21 @@
+{
+  "source_before_sha256": "88b19f3fcc107997d5b4a1ab8364de3ba4a4930bacbda3c25fa97d60463c3095",
+  "source_after_sha256": "3c40711ae581da991a99347ac8eea322f025c63f0e41e8ad7d8112d61433e982",
+  "original_assertion_lines": [
+    "await expect(trigger).toBeVisible();",
+    "await expect.poll(() => page.evaluate(() => innerWidth)).toBe(width / zoom);",
+    "expect(dimensions.availableHeight).toBeGreaterThan(100);",
+    "expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);",
+    "expect(geometry.focus.x).toBeGreaterThanOrEqual(geometry.root.x);",
+    "expect(geometry.focus.right).toBeLessThanOrEqual(geometry.root.right);",
+    "expect(geometry.visibleStart).toBeLessThanOrEqual(coveredThrough + 1);",
+    "expect(geometry.visibleEnd).toBeGreaterThan(geometry.visibleStart);",
+    "expect(coveredThrough).toBeGreaterThanOrEqual(dimensions.focusHeight - 1);"
+  ],
+  "original_assertions_identical": true,
+  "original_scroll_expression_identical": true,
+  "zoom_size_tuple_unchanged": "wide1380x1120zoom1;200-percent900x1200zoom2",
+  "diff_check_exit": 0,
+  "typecheck_exit": 0,
+  "scope": "Observations only before original assertions; no algorithm correction, CSS, sleeps or default change"
+}

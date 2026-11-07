@@ -1,0 +1,170 @@
+{
+  "recorded_at": "2026-11-04T01:31:41.971834+00:00",
+  "coordinator": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "executor": "/root/shared_executor",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "state": "complete_failed_identity_audit_pass",
+  "make_exit": 2,
+  "launcher_exit": 2,
+  "registered_final_audit_exit": 0,
+  "registered_final_audit_status": "pass",
+  "wholecheck_accepted": false,
+  "complete_launcher_invocations": 1,
+  "registered_final_auditor_invocations": 1,
+  "static_tasks_passed": 15,
+  "TS_reporters": [
+    {
+      "package": "@multica/core",
+      "raw_object_sha256": "dbd80a07a603a5503271182ae3d1662c9c7e3405eb39132fec554dfefe43f297",
+      "files": 331,
+      "numTotalTests": 4455,
+      "numPassedTests": 4455,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "success": true
+    },
+    {
+      "package": "@multica/docs",
+      "raw_object_sha256": "0c897916e82e7aeec9e473eae593aa680c262f630e156b1bcc339f7d4feb7201",
+      "files": 9,
+      "numTotalTests": 62,
+      "numPassedTests": 62,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "success": true
+    },
+    {
+      "package": "@multica/views",
+      "raw_object_sha256": "e936103a0817b963f225e9c1ff45ce8ce0559d0d711308aa2201a643a90735af",
+      "files": 593,
+      "numTotalTests": 7165,
+      "numPassedTests": 7165,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "success": true
+    },
+    {
+      "package": "@multica/web",
+      "raw_object_sha256": "c3ebb40449ede5a4b70a4dd0d165b878a032ab2635d0986d1132426288ce6150",
+      "files": 34,
+      "numTotalTests": 290,
+      "numPassedTests": 290,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "success": true
+    },
+    {
+      "package": "@multica/desktop",
+      "raw_object_sha256": "62d162fc49dbf8c34ce642c56a309eb742dff3b07baff03d28026b6a1a78b8f7",
+      "files": 102,
+      "numTotalTests": 1272,
+      "numPassedTests": 1272,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "success": true
+    }
+  ],
+  "TS_files": 1069,
+  "TS_pass": 13244,
+  "Go": {
+    "directory": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/go-packages-v15",
+    "package_records": 82,
+    "completed": 82,
+    "named_pass": 20963,
+    "named_fail": 0,
+    "named_skip": 22,
+    "observation_scope": "actual package-record aggregate; independent final inventory remains Root checker gate"
+  },
+  "browser_reported": {
+    "startTime": "2026-11-04T01:08:26.756Z",
+    "duration": 1116105.2740000002,
+    "expected": 349,
+    "skipped": 91,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "browser_case_count": 441,
+  "known_failure": "Web duplicate picker browses all formal tasks and confirms the chosen target (en); reason text reached target combobox, so blank-search assertion failed",
+  "source_status": " M apps/web/next-env.d.ts\n",
+  "only_registered_Next_generated_rewrite": {
+    "path": "apps/web/next-env.d.ts",
+    "generated_rewrite": true,
+    "raw_sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+    "normalized_sha256": "7ad303e40d4fddf44f156129e397511953a71481c5cfd86b1862649aaaf240cc"
+  },
+  "owned_API_Web_released": true,
+  "package_databases_retained": true,
+  "API_seed_and_failed_data_retained": true,
+  "test_artifacts_retained": {
+    "test-results": {
+      "original": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results",
+      "retained": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/retained-test-artifacts/test-results",
+      "file_count": 872,
+      "bytes": 129397468,
+      "manifest_sha256": "5ef7f7bbb18fd04caa19ff429ed33a4e8a47bbf83359ea6b30fe3f04b42a8b40"
+    }
+  },
+  "live_observations_directory": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/live-proof",
+  "references": {
+    "run": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/make-check-v15.json",
+      "sha256": "768cf7c2218d6bba3feaf139884f5d458806c2801fd33ded1946f12eec5e2a69"
+    },
+    "raw_log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/make-check-v15.log",
+      "sha256": "90bfea3ae1232bc395455819d252712e9ae26d6981f1a50baf387905ddfdbb60"
+    },
+    "browser": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/makecheck-playwright-results-v9.json",
+      "sha256": "e68164f8e28c5c2a3ff44b36208bb888cc262a5363c275c86d0d9389ed4dd763"
+    },
+    "final_audit": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/final-state-audit-v15/post-make-v15.json",
+      "sha256": "47fd0892ff7e894d67a56c67022a0631ee0324442b1a2d055870658a53f2ac3b"
+    },
+    "wrapper_finished": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/execution-finished.json",
+      "sha256": "7823e7f99402e510f2a28966bb81ac628d3b2e03fa72d600382daefacfbfdcf7"
+    },
+    "execution_claim": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/execution-claim.json",
+      "sha256": "da7539ab2796b8cb7cc7632696b3e4cb4dcfc099253c369dab16b4f866b9cb6f"
+    },
+    "launch": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/launch.json",
+      "sha256": "659475099836e638d844c4b5ba50930b1d330d109c449f2df06ac9d777dd0985"
+    },
+    "TS_phase": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/TS-phase-observation.json",
+      "sha256": "79c15cc48894bfef7a63abdebfff3f254556f321b8dcfa37ba59a91d51e70d97"
+    },
+    "cleanup_source": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/final-cleanup-source-observation.json",
+      "sha256": "bd190a6e785c576aedd889d218d14c7f6201794652c40e7347b4db669368c000"
+    },
+    "artifact_retention": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/test-artifact-retention.json",
+      "sha256": "70160f88f99cdd2d31966cf2cadf50139a8cb624a9af234ee36ecc88d79d3a7e"
+    },
+    "first_failure": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/first-browser-failure/record.json",
+      "sha256": "2a3ed28bdaebc0b937113a135bd628411a44d7a90d60cb3a9054fbe1377fa37b"
+    },
+    "completion_witness": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/live-proof/completion-witness.json",
+      "sha256": "dca2f2af372976c24e26945a59a67e2cbc1da50a3a897ca7b830c4ca6fef3f12"
+    }
+  },
+  "inputs_or_source_changed_by_executor_during_execution": false,
+  "additional_tests_diagnostics_CCG_framework_started": false,
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "production_knowledge_default": false,
+  "next": "Root independent actual inventory/live review and triage cause review; a new numbered candidate/window before another complete run; no CCG or task7 closure on v15"
+}

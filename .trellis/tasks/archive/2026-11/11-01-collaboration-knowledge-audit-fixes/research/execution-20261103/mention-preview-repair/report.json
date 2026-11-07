@@ -1,0 +1,149 @@
+{
+  "recorded_at": "2026-11-03T11:35:36.717811+00:00",
+  "state": "prepared_for_independent_review; patch_not_applied; runtime_validation_pending",
+  "agent": "/root/mention_preview_repair",
+  "active_task": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "selected_patch": "repair-v2.patch",
+  "patch_sha256": "6981b1d79d61369bff53ee8e10754b3e89a814010579cff168b22b96a53f8940",
+  "changed_source_files": [
+    "e2e/fixtures/collaboration-mention-journeys.ts",
+    "e2e/collaboration-preview-web.spec.ts"
+  ],
+  "source_binding": "source-binding-v2.json",
+  "root_cause": [
+    {
+      "id": "MP1",
+      "actual_failures": [
+        4,
+        7,
+        10
+      ],
+      "classification": "E2E contract drift; disabled-until-preview expectation superseded by validated Send/preflight behavior",
+      "sources": [
+        "packages/views/collaboration/comment-composer.tsx:82",
+        "packages/views/collaboration/comment-composer.tsx:91",
+        "packages/views/collaboration/comment-composer.tsx:140",
+        "packages/views/collaboration/comment-composer.tsx:149",
+        ".trellis/spec/views/frontend/collaboration-detail.md:54",
+        "packages/views/collaboration/comment-composer.test.tsx:122"
+      ],
+      "repair": "After suppression, require retired preview, enabled Send, actual fresh trigger-preview and zero comment POST/business-state change; retain second explicit confirmation and all outcome invariants."
+    },
+    {
+      "id": "MP2",
+      "actual_failures": [
+        5
+      ],
+      "classification": "E2E discovery drift after current secondary actions moved under More actions",
+      "sources": [
+        "e2e/fixtures/collaboration-editing.ts:135",
+        ".trellis/spec/views/frontend/collaboration-detail.md:27"
+      ],
+      "repair": "Reuse revealCollaborationEditingAction for Edit issue; retain actual PATCH, description and notification-delta assertions."
+    }
+  ],
+  "preserved_invariants": [
+    "Exact source issue and original request identity",
+    "Per-target refusal after actual owner grant revocation",
+    "Only B queued when A becomes unavailable",
+    "Original-key replay returns identical receipt without duplicate comment/commands/notifications",
+    "Suppressed target is retained in actual final receipt",
+    "No comment POST on refreshed AI impact; no comments or execution state change before explicit confirmation",
+    "Exactly one browser comment POST after explicit confirmation in Chinese flow",
+    "Fresh human context/profile sees durable located notification; edit notifies only newly added people",
+    "Human status/handler/participants unchanged; outsider remains excluded; no daemon/provider/run start",
+    "Existing timeout/retry/skip controls and capture geometry retained"
+  ],
+  "red_evidence": {
+    "4": {
+      "original_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/browser-failure-4-live.txt",
+      "retained_copy": "red-evidence/browser-failure-4-live.txt",
+      "sha256": "0fe8df1ecd245db6690fab7e5346b95c3bc5861c56b7ef442423161448e9613c"
+    },
+    "5": {
+      "original_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/browser-failure-5-live.txt",
+      "retained_copy": "red-evidence/browser-failure-5-live.txt",
+      "sha256": "fbb0af1ad0989f82a754b1cdc3955d0d474aaca97edbf20b3a2190b24bb344e3"
+    },
+    "7": {
+      "original_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/browser-failure-7-live.txt",
+      "retained_copy": "red-evidence/browser-failure-7-live.txt",
+      "sha256": "995ffb604aece764ca454d3567c74d7f37d0f22c528e0d710bb9ca65bc7e6093"
+    },
+    "10": {
+      "original_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/browser-failure-10-live.txt",
+      "retained_copy": "red-evidence/browser-failure-10-live.txt",
+      "sha256": "4c2465895a0caeea229120bda362027099497ecc5760311bc8466c51fc8c43bc"
+    }
+  },
+  "validation": {
+    "typescript_syntax": "syntax-check-v2.json; 2 files, zero parse diagnostics, no typecheck",
+    "patch_roundtrip": "patch-check-v2.json; isolated scratch applied hashes match; whitespace error checks pass",
+    "historical_static_probe": "patch-check-first-attempt.json retains an ineffective git no-op discovered by hash assertion; candidate source never changed",
+    "candidate_source_hashes_after": {
+      "e2e/fixtures/collaboration-mention-journeys.ts": "0a2b14cb1ebebe159e274a67b9306ab291067257c7557494cb211ccbf5e47697",
+      "e2e/collaboration-preview-web.spec.ts": "4ea82836095e23f1f4b0569265b44a8d98cd1335e7d4b3ba0f5ecee4d9019efb"
+    },
+    "runtime_tests_run": false,
+    "lint_typecheck_run": false,
+    "db_api_web_go_playwright_provider_operations": 0
+  },
+  "required_directed_cases": [
+    {
+      "file": "e2e/collaboration-mention-journeys-web.spec.ts",
+      "name": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "purpose": "Shared preview helper positive control"
+    },
+    {
+      "file": "e2e/collaboration-mention-journeys-web.spec.ts",
+      "name": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "purpose": "Actual failure4; fresh preview without POST, revocation and original-key invariants"
+    },
+    {
+      "file": "e2e/collaboration-mention-journeys-web.spec.ts",
+      "name": "Web offline mentions survive a fresh context and edits notify only newly added people",
+      "purpose": "Actual failure5; visible editing discovery and unchanged notification/identity assertions"
+    },
+    {
+      "file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "name": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "purpose": "Shared helper native positive control"
+    },
+    {
+      "file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "name": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "purpose": "Actual failure10; same helper without platform duplication"
+    },
+    {
+      "file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "name": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+      "purpose": "Shared editing helper native scope"
+    },
+    {
+      "file": "e2e/collaboration-preview-web.spec.ts",
+      "name": "trigger preview explains shared and later batches before a suppressed target is sent",
+      "purpose": "Actual failure7; Chinese grouping, suppression and explicit confirmation"
+    }
+  ],
+  "prospective_directed_command": [
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-mention-journeys-web.spec.ts",
+    "e2e/collaboration-mention-journeys-desktop.spec.ts",
+    "e2e/collaboration-preview-web.spec.ts",
+    "--workers=1",
+    "--retries=0"
+  ],
+  "required_next": [
+    "Independent exact-patch review",
+    "Root applies selected patch only after v13 fullrun and finalaudit are preserved, with source-before hashes verified",
+    "Run seven declared Web/native cases in task-owned production environment, keep original v13 failures distinct",
+    "Integrate with other independently owned repairs and freeze a new complete candidate; no closure on static or directed results alone"
+  ],
+  "source_or_product_modified": false,
+  "provider_calls": 0
+}

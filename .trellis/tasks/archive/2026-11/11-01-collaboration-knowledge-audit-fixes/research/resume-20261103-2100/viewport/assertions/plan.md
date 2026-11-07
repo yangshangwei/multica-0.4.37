@@ -1,0 +1,3 @@
+# Restore independently identified lost assertions
+
+Compare candidate to the unchanged main reference. Add UUID format checks for workbench/memory submission IDs; result and basis visibility after stale refusal and explicit current-version adoption; memory completion form dismissal; English fresh Send preview confirmation/draft/suppression/zero writes followed by manual Preview with unchanged state; full comment object equality in Chinese suppressed preview. Keep all current UI disclosure adaptations, authority epochs, exact-delivery checks, preview helper observers and viewport fix. Only these four test files change. Run full17 once with source-bound identity checks and repeat the existing no-emit check.

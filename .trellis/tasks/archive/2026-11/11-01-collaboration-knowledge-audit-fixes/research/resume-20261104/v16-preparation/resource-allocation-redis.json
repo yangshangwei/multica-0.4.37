@@ -1,0 +1,100 @@
+{
+  "recorded_at": "2026-11-04T02:46:15.463514+00:00",
+  "coordinator": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "source_env_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/check-source-v16.env",
+  "source_env_sha256": "29ed7dc3997e4a98c8777a8bc720da1a75ce56eb189ed5afdf70ef9ee555ffd0",
+  "database": "multica_closure_v16_seed_01a1a3c9",
+  "postgres_endpoint": {
+    "host": "127.0.0.1",
+    "port": 5432
+  },
+  "postgres_identity": {
+    "database": "postgres",
+    "server_addr": "172.20.0.2",
+    "server_port": 5432,
+    "server_version": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "max_connections": "100",
+    "connections": 30
+  },
+  "database_state": "created_empty",
+  "redis_port": 58269,
+  "renderer_port": 58268,
+  "redis_name": "multica-v16-01a1a3c9-redis",
+  "redis_image": "redis:7-alpine",
+  "renderer_url": "http://127.0.0.1:58268/",
+  "renderer_started": false,
+  "future_registry": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/dev-registry-v16",
+  "registry_created": false,
+  "allocation": {
+    "recorded_at": "2026-11-04T02:38:58.854982+00:00",
+    "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+    "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "directory": "/private/tmp/multica-final-check-v16-gpuoybuq",
+    "uid": 501,
+    "mode": "0700",
+    "git_root_absent": true,
+    "free_bytes": 22898069504,
+    "children": [
+      "cli-build",
+      "desktop-build"
+    ],
+    "fresh_paths_absent": [
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/full-check-home-v16",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/dev-registry-v16",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/profiles-v16",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/workspaces-v16",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/metadata-home-not-created",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-build-cache"
+    ],
+    "COW_GOCACHE_pending_absent": true,
+    "knowledge_budget_allocated": 0,
+    "knowledge_calls": 0
+  },
+  "script_sha256": "dcea3a8f45a3c6be442b4d8cea19dba2f7bbc40485d500631755078e063a426c",
+  "real_provider_allowed": false,
+  "knowledge_default": false,
+  "database_create_exit": 0,
+  "actual_database": "multica_closure_v16_seed_01a1a3c9",
+  "redis_image_id": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+  "redis_started": true,
+  "redis_container_id": "b619c546fcc72eb3180512d1568a6b39388fc1fead041e8ca9d484a0853f54be",
+  "redis_command": [
+    "/usr/local/bin/docker",
+    "run",
+    "--pull=never",
+    "-d",
+    "--name",
+    "multica-v16-01a1a3c9-redis",
+    "--label",
+    "multica.task.owner=01a1a3c9-2459-7de1-8244-55640c5f6143",
+    "--label",
+    "multica.candidate=eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "-p",
+    "127.0.0.1:58269:6379",
+    "redis:7-alpine",
+    "redis-server",
+    "--save",
+    "",
+    "--appendonly",
+    "no"
+  ],
+  "redis_ping": "PONG",
+  "redis_port_binding": [
+    {
+      "HostIp": "127.0.0.1",
+      "HostPort": "58269"
+    }
+  ],
+  "redis_inspection": {
+    "image_id": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+    "pid": 54747,
+    "started_at": "2026-11-04T02:46:16.050277761Z",
+    "labels": {
+      "multica.candidate": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "multica.task.owner": "01a1a3c9-2459-7de1-8244-55640c5f6143"
+    }
+  }
+}

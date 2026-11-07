@@ -1,0 +1,1974 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-03T09:55:50.574552+00:00",
+  "reviewer": "native trellis-check /root/knowledge_framework_audit",
+  "scope": "Independent read-only #7 AC1-AC9/21 dispositions and historical source reconciliation; no closure claim",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "comparison_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "candidate_status_at_read": [],
+  "audit_merge_is_ancestor": true,
+  "legacy_readiness": {
+    "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261102/knowledge-closure-readiness.json",
+    "exists": true,
+    "sha256": "189bb720f79bc433f0df9199c9e90c71beb50d6f655225db3d3bec0c0d3ee33c"
+  },
+  "independent_reviews": [
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-independent-review/review.json",
+      "exists": true,
+      "sha256": "1392c85dd4921e24e0113a6b7d12ce967b2635d23b2653b4a926530ed71f2979",
+      "expected_sha256": "1392c85dd4921e24e0113a6b7d12ce967b2635d23b2653b4a926530ed71f2979",
+      "hash_match": true,
+      "name": "claim-independent-review",
+      "verdict": "pass-with-notes",
+      "audits": [
+        "H1",
+        "H1-followup",
+        "M1",
+        "H3",
+        "M3",
+        "managed-settings-followup"
+      ],
+      "blocking_findings": []
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-security-review/review.json",
+      "exists": true,
+      "sha256": "37b800389b5cff7d6eb2a7fc73eff0f65d7fc208957dffb49108efaccb3a0d03",
+      "expected_sha256": "37b800389b5cff7d6eb2a7fc73eff0f65d7fc208957dffb49108efaccb3a0d03",
+      "hash_match": true,
+      "name": "claim-security-review",
+      "verdict": "pass-with-notes",
+      "audits": [],
+      "blocking_findings": []
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-test-review/review.json",
+      "exists": true,
+      "sha256": "8f157d51ce5fff3290c9cd37314d55de805aed4c21d804e067f470a7ca782b19",
+      "expected_sha256": "8f157d51ce5fff3290c9cd37314d55de805aed4c21d804e067f470a7ca782b19",
+      "hash_match": true,
+      "name": "claim-test-review",
+      "verdict": "pass-with-notes",
+      "audits": [],
+      "blocking_findings": []
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/launch-independent-review/review.json",
+      "exists": true,
+      "sha256": "d23065aba2ad593687d74928c49d09d9799765e3b80f4aaee659a7f63ae1c798",
+      "expected_sha256": "d23065aba2ad593687d74928c49d09d9799765e3b80f4aaee659a7f63ae1c798",
+      "hash_match": true,
+      "name": "launch-independent-review",
+      "verdict": "pass-with-notes",
+      "audits": [
+        "H2",
+        "M2",
+        "L6",
+        "L7",
+        "seven_H2_acceptance_mutants"
+      ],
+      "blocking_findings": []
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/review.json",
+      "exists": true,
+      "sha256": "21bc41f87450ec9cf9a39383991a4e198ef09c3be1618e0061336ee13513f020",
+      "expected_sha256": "21bc41f87450ec9cf9a39383991a4e198ef09c3be1618e0061336ee13513f020",
+      "hash_match": true,
+      "name": "write-independent-review",
+      "verdict": "pass-with-notes",
+      "audits": [
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "L5",
+        "nonexpiry_NoRows_followup"
+      ],
+      "blocking_findings": []
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json",
+      "exists": true,
+      "sha256": "94c42344cf20a4e85b27f2e31bb0efa68af0d62c50d0e16991faf2538912bc92",
+      "expected_sha256": "94c42344cf20a4e85b27f2e31bb0efa68af0d62c50d0e16991faf2538912bc92",
+      "hash_match": true,
+      "name": "web-independent-review",
+      "verdict": "pass-with-notes",
+      "audits": [
+        "M4",
+        "M5",
+        "L8",
+        "L9",
+        "L10",
+        "L11",
+        "L12",
+        "L13"
+      ],
+      "blocking_findings": []
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/review.json",
+      "exists": true,
+      "sha256": "79de55a3f3725cf1fb15f18dd6822127da16bfd1238613b0f6b7e67b6f768e99",
+      "expected_sha256": "79de55a3f3725cf1fb15f18dd6822127da16bfd1238613b0f6b7e67b6f768e99",
+      "hash_match": true,
+      "name": "integration-independent-review",
+      "verdict": "pass-with-notes",
+      "audits": [],
+      "blocking_findings": []
+    }
+  ],
+  "followup_reviews": [
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/CT1-root-recheck-r2.json",
+      "exists": true,
+      "sha256": "389c6202e76ae7e9c001716dd150e92a768c94dca5494390581a68b96087c3b7",
+      "expected_sha256": "389c6202e76ae7e9c001716dd150e92a768c94dca5494390581a68b96087c3b7",
+      "hash_match": true,
+      "verdict": "pass",
+      "scope": "32 lines in canonical service test; no production SQL or Go behavior changed"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/iw1-recheck.json",
+      "exists": true,
+      "sha256": "e8bcf2c988e0efd80c8a054bffea042dcc1785ca49f0f25a39cd0153b0b95807",
+      "expected_sha256": "e8bcf2c988e0efd80c8a054bffea042dcc1785ca49f0f25a39cd0153b0b95807",
+      "hash_match": true,
+      "verdict": "pass",
+      "scope": "IW-1 delta only"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/migration-fixture-recheck.json",
+      "exists": true,
+      "sha256": "806aed5823a40af1a6e5d0c801cced85e685608b9b434b12c7e81723746715e1",
+      "expected_sha256": "806aed5823a40af1a6e5d0c801cced85e685608b9b434b12c7e81723746715e1",
+      "hash_match": true,
+      "verdict": "pass",
+      "scope": "migration test fixture delta only"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/skill-entry-recheck.json",
+      "exists": true,
+      "sha256": "142bf9af42b94ec3fc4648df5be6786e96f4842de472376cf412bd538eae113a",
+      "expected_sha256": "142bf9af42b94ec3fc4648df5be6786e96f4842de472376cf412bd538eae113a",
+      "hash_match": true,
+      "verdict": "pass",
+      "scope": "built-in skill entry wording/progressive disclosure delta"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/plan-recheck.json",
+      "exists": true,
+      "sha256": "2a086e9804ffa5702c10c4b0da8d4dd1a6ba5f25b0afe7d11ef103417f1307d5",
+      "expected_sha256": "2a086e9804ffa5702c10c4b0da8d4dd1a6ba5f25b0afe7d11ef103417f1307d5",
+      "hash_match": true,
+      "verdict": "pass-with-notes",
+      "scope": "test-only history index eligibility/probe delta"
+    }
+  ],
+  "audit_dispositions": [
+    {
+      "id": "H1",
+      "disposition": "repaired",
+      "behavior": "safe invocation remains ordinary; unsafe session selectors refuse; managed settings precede trailing value arguments",
+      "canonical_regression": {
+        "path": "server/internal/service/task_knowledge_invocation_test.go",
+        "line": 33,
+        "name": "TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim",
+        "retained_final639_terminal": "pass"
+      },
+      "canonical_source": {
+        "path": "server/internal/service/task_knowledge_invocation_test.go",
+        "old_sha256": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+        "candidate_sha256": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Time": "2026-11-02T04:40:09.297196+08:00",
+          "Elapsed": 0.76
+        }
+      ],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-independent-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-security-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-test-review/review.json"
+      ],
+      "commits_or_followups": "4cf4d45a2 /6f7a601ce /30edf3e36",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/H1-red.txt",
+          "exists": true,
+          "sha256": "c495627f83b78f628db23dc69e88bc5d8f1c2f09eb2c118282d14d773afc20e9",
+          "expected_sha256": "c495627f83b78f628db23dc69e88bc5d8f1c2f09eb2c118282d14d773afc20e9",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/H1-green.txt",
+          "exists": true,
+          "sha256": "211083d521c32ae0ee3d84fb26e7a706804f03c73b33d47e67897cd397c8c9a9",
+          "expected_sha256": "211083d521c32ae0ee3d84fb26e7a706804f03c73b33d47e67897cd397c8c9a9",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "H2",
+      "disposition": "repaired",
+      "behavior": "unreachable prior workdir rebinds an untouched preparation to a fresh generation; stale bindings refuse",
+      "canonical_regression": {
+        "path": "server/internal/daemon/knowledge_context_claim_test.go",
+        "line": 346,
+        "name": "TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration",
+        "retained_final639_terminal": "pass"
+      },
+      "canonical_source": {
+        "path": "server/internal/daemon/knowledge_context_claim_test.go",
+        "old_sha256": "38951e241b67c21500a0324c82b7ac0046a3bd9055ed1e1693d75d4c103274a1",
+        "candidate_sha256": "38951e241b67c21500a0324c82b7ac0046a3bd9055ed1e1693d75d4c103274a1",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/daemon",
+          "Time": "2026-11-02T04:11:08.56418+08:00",
+          "Elapsed": 0.17
+        }
+      ],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/launch-independent-review/review.json"
+      ],
+      "commits_or_followups": "680ad868f /f00c94962; seven acceptance mutants",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/H2-red.txt",
+          "exists": true,
+          "sha256": "803aa3282a0322b8e227b0f1ec9be7e3e5d5186981acbace07f5dec017a9180e",
+          "expected_sha256": "803aa3282a0322b8e227b0f1ec9be7e3e5d5186981acbace07f5dec017a9180e",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/H2-green.txt",
+          "exists": true,
+          "sha256": "d6aa8d0d4250853c5ab8514ae03aee2e71c54535061424ac584ea3bde21f5981",
+          "expected_sha256": "d6aa8d0d4250853c5ab8514ae03aee2e71c54535061424ac584ea3bde21f5981",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "H3",
+      "disposition": "repaired",
+      "behavior": "complete keyset/session and namespace history; deep exposure/corruption still refuses",
+      "canonical_regression": {
+        "path": "server/internal/service/task_knowledge_history_growth_test.go",
+        "line": 47,
+        "name": "TestKnowledgeResumeReadsCompleteLongSessionHistory",
+        "retained_final639_terminal": "pass"
+      },
+      "canonical_source": {
+        "path": "server/internal/service/task_knowledge_history_growth_test.go",
+        "old_sha256": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+        "candidate_sha256": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Time": "2026-11-02T04:39:56.003266+08:00",
+          "Elapsed": 1.36
+        }
+      ],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-independent-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-security-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-test-review/review.json"
+      ],
+      "commits_or_followups": "94e790d2d; CT1 5c3549001",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/H3-M3-red.txt",
+          "exists": true,
+          "sha256": "3f8574e1e0cac70bdeb9911cb143a3b846bac8f889590514554218c4b5a64770",
+          "expected_sha256": "3f8574e1e0cac70bdeb9911cb143a3b846bac8f889590514554218c4b5a64770",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/H3-M3-green.txt",
+          "exists": true,
+          "sha256": "0b7757a35a0e174c09cedcbe4b29c9743177f8320be4850f7622e150535b3f06",
+          "expected_sha256": "0b7757a35a0e174c09cedcbe4b29c9743177f8320be4850f7622e150535b3f06",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "M1",
+      "disposition": "repaired",
+      "behavior": "transient claim errors requeue; domain/finalize refusals settle without retry loops",
+      "canonical_regression": {
+        "path": "server/internal/handler/daemon_knowledge_test.go",
+        "line": 342,
+        "name": "TestKnowledgeClaimTransientHistoryErrorRequeuesTask",
+        "retained_final639_terminal": "pass"
+      },
+      "canonical_source": {
+        "path": "server/internal/handler/daemon_knowledge_test.go",
+        "old_sha256": "da395290c7d6820e29d7cbb06c6c5214ce36091f48efe1c37e8860fc850bd4cc",
+        "candidate_sha256": "da395290c7d6820e29d7cbb06c6c5214ce36091f48efe1c37e8860fc850bd4cc",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Time": "2026-11-02T04:17:50.85815+08:00",
+          "Elapsed": 0.34
+        }
+      ],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-independent-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-security-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-test-review/review.json"
+      ],
+      "commits_or_followups": "2dd633df4 /3110295d0",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M1-red.txt",
+          "exists": true,
+          "sha256": "24cbf173096764665d96b9024e2b2e072c73f708297aabbe9243c2a85ca5f9a3",
+          "expected_sha256": "24cbf173096764665d96b9024e2b2e072c73f708297aabbe9243c2a85ca5f9a3",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M1-green.txt",
+          "exists": true,
+          "sha256": "4d4e9da2f7b990a03e07c7001d5240bb22e9877b2c3fecced3191d2569b88e96",
+          "expected_sha256": "4d4e9da2f7b990a03e07c7001d5240bb22e9877b2c3fecced3191d2569b88e96",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "M2",
+      "disposition": "repaired",
+      "behavior": "retry whole namespace transaction up to1.5s without holding locks; exhaustion retains terminal busy",
+      "canonical_regression": {
+        "path": "server/internal/service/task_knowledge_concurrency_test.go",
+        "line": 297,
+        "name": "TestKnowledgePreparationWaitsOutSiblingNamespaceHolder",
+        "retained_final639_terminal": "pass"
+      },
+      "canonical_source": {
+        "path": "server/internal/service/task_knowledge_concurrency_test.go",
+        "old_sha256": "bad900ed90cd982539e1f25fbc9e7ea62baecda2d40bf10721aeaa18b3851ba8",
+        "candidate_sha256": "bad900ed90cd982539e1f25fbc9e7ea62baecda2d40bf10721aeaa18b3851ba8",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Time": "2026-11-02T04:39:50.69105+08:00",
+          "Elapsed": 1.33
+        }
+      ],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/launch-independent-review/review.json"
+      ],
+      "commits_or_followups": "launch f00c94962",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M2-red.txt",
+          "exists": true,
+          "sha256": "f7ae89607cf2eae4470f4f12f1e0abc41326e587b91bd57585be112a97349f0e",
+          "expected_sha256": "f7ae89607cf2eae4470f4f12f1e0abc41326e587b91bd57585be112a97349f0e",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M2-green.txt",
+          "exists": true,
+          "sha256": "4de2097bbc20ac2749ba37d985304903d9e200cd9025309dba56ad4edda69628",
+          "expected_sha256": "4de2097bbc20ac2749ba37d985304903d9e200cd9025309dba56ad4edda69628",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "M3",
+      "disposition": "repaired",
+      "behavior": "three concurrent metadata history indexes and complete namespace key lookup; catalog/negative control corrected",
+      "canonical_regression": {
+        "path": "server/internal/service/task_knowledge_history_growth_test.go",
+        "line": 175,
+        "name": "TestKnowledgeRuntimeHistoryIsIndexDriven",
+        "retained_final639_terminal": "pass"
+      },
+      "canonical_source": {
+        "path": "server/internal/service/task_knowledge_history_growth_test.go",
+        "old_sha256": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+        "candidate_sha256": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Time": "2026-11-02T04:40:02.466852+08:00",
+          "Elapsed": 0.24
+        }
+      ],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-independent-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-security-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-test-review/review.json"
+      ],
+      "commits_or_followups": "94e790d2d; plan 742abb217",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M3-red.txt",
+          "exists": true,
+          "sha256": "7ad9375c8c021b53c7f5f766aa31159bc93872630b731b92777728ff84d1b0a1",
+          "expected_sha256": "7ad9375c8c021b53c7f5f766aa31159bc93872630b731b92777728ff84d1b0a1",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/H3-M3-green.txt",
+          "exists": true,
+          "sha256": "0b7757a35a0e174c09cedcbe4b29c9743177f8320be4850f7622e150535b3f06",
+          "expected_sha256": "0b7757a35a0e174c09cedcbe4b29c9743177f8320be4850f7622e150535b3f06",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "M4",
+      "disposition": "repaired",
+      "behavior": "decision input survives unchanged refresh; identity changes reset it while private body is erased",
+      "canonical_regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 112,
+        "name": "keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "canonical_source": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "old_sha256": "2ba69ef2ebbfef204576d4419edcdbf469d7f58a13e94bb80e0c3ac53a5937d8",
+        "candidate_sha256": "d252bcf1e49515cba3108b1528f49ba4bf92ab9f3eccdba30540b2849d2eb6dd",
+        "unchanged_from_final64": false,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "commits_or_followups": "500781f4c",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M4-red.txt",
+          "exists": true,
+          "sha256": "2caaa0b76179b00e888aa391702ebc7058e728e4a4d79193103cc2c89ac83528",
+          "expected_sha256": "2caaa0b76179b00e888aa391702ebc7058e728e4a4d79193103cc2c89ac83528",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M4-green.txt",
+          "exists": true,
+          "sha256": "79d477b0a6c41ba1aeb11b30beb80bd18fa44e5ad5b0dde0d85c67926ba4c258",
+          "expected_sha256": "79d477b0a6c41ba1aeb11b30beb80bd18fa44e5ad5b0dde0d85c67926ba4c258",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "M5",
+      "disposition": "repaired",
+      "behavior": "only own proposal completion closes its draft; recovery and unrelated decisions preserve new drafts",
+      "canonical_regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 354,
+        "name": "a review decision leaves an open proposal draft intact and only the panel's own proposal closes it",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "canonical_source": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "old_sha256": "2ba69ef2ebbfef204576d4419edcdbf469d7f58a13e94bb80e0c3ac53a5937d8",
+        "candidate_sha256": "d252bcf1e49515cba3108b1528f49ba4bf92ab9f3eccdba30540b2849d2eb6dd",
+        "unchanged_from_final64": false,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "commits_or_followups": "2e28c2c98; own-loss/page followups in ed0026525",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M5-red.txt",
+          "exists": true,
+          "sha256": "6d4033503d5d50b43468620823e43b28d9dc5877ae72c967212f6ce1d92a10c0",
+          "expected_sha256": "6d4033503d5d50b43468620823e43b28d9dc5877ae72c967212f6ce1d92a10c0",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M5-green.txt",
+          "exists": true,
+          "sha256": "062f64de849f4e524ab03eb95152a42f28e32f9b36aa119f6e545d5e31710ee4",
+          "expected_sha256": "062f64de849f4e524ab03eb95152a42f28e32f9b36aa119f6e545d5e31710ee4",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "L1",
+      "disposition": "repaired",
+      "behavior": "DB clock expiry returns sealed409; non-expiry NoRows is not synthesized as expiry retry",
+      "canonical_regression": {
+        "path": "server/internal/service/collaboration_knowledge_concurrency_test.go",
+        "line": 408,
+        "name": "TestKnowledgeApprovalExpiryUsesDatabaseClockNotApplicationClock",
+        "retained_final639_terminal": "pass"
+      },
+      "canonical_source": {
+        "path": "server/internal/service/collaboration_knowledge_concurrency_test.go",
+        "old_sha256": "e498a4f8e26faddab1738ba602bf6e38615ae29ff9a419121953c4dc037736e7",
+        "candidate_sha256": "e498a4f8e26faddab1738ba602bf6e38615ae29ff9a419121953c4dc037736e7",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Time": "2026-11-02T04:30:45.531999+08:00",
+          "Elapsed": 1.81
+        }
+      ],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/review.json"
+      ],
+      "commits_or_followups": "0cf5f7918; d4bc37a86; IW1 464540191",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L1-red.txt",
+          "exists": true,
+          "sha256": "16216540f9744bc9c082cc2d1bf7f8a2bbca4711c43dd114d07ccef272f5d801",
+          "expected_sha256": "16216540f9744bc9c082cc2d1bf7f8a2bbca4711c43dd114d07ccef272f5d801",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L1-green.txt",
+          "exists": true,
+          "sha256": "e4f1b54a92fdbcb7a8a0316ea726a9056413ccfa8c67ae4f9610995546efe15f",
+          "expected_sha256": "e4f1b54a92fdbcb7a8a0316ea726a9056413ccfa8c67ae4f9610995546efe15f",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "L2",
+      "disposition": "repaired",
+      "behavior": "expiry CHECK violation is invalid request; unrelated database defects retain server-error semantics",
+      "canonical_regression": {
+        "path": "server/internal/service/collaboration_knowledge_authority_test.go",
+        "line": 186,
+        "name": "TestKnowledgeProposalExpiryCheckViolationIsInvalidRequest",
+        "retained_final639_terminal": "pass"
+      },
+      "canonical_source": {
+        "path": "server/internal/service/collaboration_knowledge_authority_test.go",
+        "old_sha256": "6e7a671bb4b5024acaeb160043ac37d0b0e4363ad6554c2312b6a55f304b0eb0",
+        "candidate_sha256": "6e7a671bb4b5024acaeb160043ac37d0b0e4363ad6554c2312b6a55f304b0eb0",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Time": "2026-11-02T04:30:40.950871+08:00",
+          "Elapsed": 0.22
+        }
+      ],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/review.json"
+      ],
+      "commits_or_followups": "3aee019aa",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L2-red.txt",
+          "exists": true,
+          "sha256": "c9d2183aed7c62921f561bdb872351f45f78f12758f5e70d4f8e95210f52d598",
+          "expected_sha256": "c9d2183aed7c62921f561bdb872351f45f78f12758f5e70d4f8e95210f52d598",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L2-green.txt",
+          "exists": true,
+          "sha256": "c323ca50d1a22821f62cafcfe9c39afd928d98a79efc5136d79a8875d9aeb11e",
+          "expected_sha256": "c323ca50d1a22821f62cafcfe9c39afd928d98a79efc5136d79a8875d9aeb11e",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "L3",
+      "disposition": "repaired",
+      "behavior": "final-send authorization runs before each write deadline",
+      "canonical_regression": {
+        "path": "server/internal/realtime/collaboration_knowledge_test.go",
+        "line": 130,
+        "name": "TestKnowledgeSlowFinalSendAuthorizationDoesNotSpendWriteBudget",
+        "retained_final639_terminal": "pass"
+      },
+      "canonical_source": {
+        "path": "server/internal/realtime/collaboration_knowledge_test.go",
+        "old_sha256": "77f2b39121630c3bd849bef6fc99f496e6ea938cd3b13245b813841119157a31",
+        "candidate_sha256": "77f2b39121630c3bd849bef6fc99f496e6ea938cd3b13245b813841119157a31",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/realtime",
+          "Time": "2026-11-02T04:23:01.871828+08:00",
+          "Elapsed": 0.6
+        }
+      ],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/review.json"
+      ],
+      "commits_or_followups": "931446b23",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L3-red.txt",
+          "exists": true,
+          "sha256": "e42384422f55d179f8c2d1e6ed3bd4c3c7ff5cd1a83d2724649012a129b1ad3d",
+          "expected_sha256": "e42384422f55d179f8c2d1e6ed3bd4c3c7ff5cd1a83d2724649012a129b1ad3d",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L3-green.txt",
+          "exists": true,
+          "sha256": "15d9e9c4403c9e09675c4990926a1b37e982218eea99de245d257e3f234c9758",
+          "expected_sha256": "15d9e9c4403c9e09675c4990926a1b37e982218eea99de245d257e3f234c9758",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "L4",
+      "disposition": "repaired",
+      "behavior": "timeout attempts are recorded and later hints progress under bounded consecutive failures",
+      "canonical_regression": {
+        "path": "server/internal/service/collaboration_knowledge_invalidation_test.go",
+        "line": 704,
+        "name": "TestKnowledgeTimedOutHintDoesNotBlockLaterHints",
+        "retained_final639_terminal": "pass"
+      },
+      "canonical_source": {
+        "path": "server/internal/service/collaboration_knowledge_invalidation_test.go",
+        "old_sha256": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+        "candidate_sha256": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Time": "2026-11-02T04:31:13.102686+08:00",
+          "Elapsed": 0.84
+        }
+      ],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/review.json"
+      ],
+      "commits_or_followups": "write lane through d4bc37a86",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L4-red.txt",
+          "exists": true,
+          "sha256": "7e725fed2a1714c221332d54b562cae59014a0bc598a3224c6310b207fdb31f7",
+          "expected_sha256": "7e725fed2a1714c221332d54b562cae59014a0bc598a3224c6310b207fdb31f7",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L4-green.txt",
+          "exists": true,
+          "sha256": "c44172c2813a5f4445ce4ce860db51958b0ad3cf1b39b6682a6f680f6dbfcffb",
+          "expected_sha256": "c44172c2813a5f4445ce4ce860db51958b0ad3cf1b39b6682a6f680f6dbfcffb",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "L5",
+      "disposition": "repaired",
+      "behavior": "PAT last-used contention waits briefly while revoke/write serialization remains",
+      "canonical_regression": {
+        "path": "server/internal/service/collaboration_knowledge_credentials_test.go",
+        "line": 142,
+        "name": "TestKnowledgePATWriteWaitsOutLastUsedUpdate",
+        "retained_final639_terminal": "pass"
+      },
+      "canonical_source": {
+        "path": "server/internal/service/collaboration_knowledge_credentials_test.go",
+        "old_sha256": "da14d70c472f9fbd9840a9573ca03211e2be57e6debeb49459b1144262bd93dd",
+        "candidate_sha256": "da14d70c472f9fbd9840a9573ca03211e2be57e6debeb49459b1144262bd93dd",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Time": "2026-11-02T04:30:49.261045+08:00",
+          "Elapsed": 0.3
+        }
+      ],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/review.json"
+      ],
+      "commits_or_followups": "ac6546772",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L5-red.txt",
+          "exists": true,
+          "sha256": "52f5a3cc995b599ca79363352f3015301e5f2ed5296256f9fec74af413251cdf",
+          "expected_sha256": "52f5a3cc995b599ca79363352f3015301e5f2ed5296256f9fec74af413251cdf",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L5-takeover-green.jsonl",
+          "exists": true,
+          "sha256": "f8aff1a4f4a8f5e4545e1953a4d6702346196549bdfd819a106f4835e3ceab1c",
+          "expected_sha256": "f8aff1a4f4a8f5e4545e1953a4d6702346196549bdfd819a106f4835e3ceab1c",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "L6",
+      "disposition": "repaired",
+      "behavior": "descriptor decode failure refuses only that task; siblings and strict ledger versioning remain",
+      "canonical_regression": {
+        "path": "server/internal/daemon/knowledge_context_claim_test.go",
+        "line": 719,
+        "name": "TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask",
+        "retained_final639_terminal": "pass"
+      },
+      "canonical_source": {
+        "path": "server/internal/daemon/knowledge_context_claim_test.go",
+        "old_sha256": "38951e241b67c21500a0324c82b7ac0046a3bd9055ed1e1693d75d4c103274a1",
+        "candidate_sha256": "38951e241b67c21500a0324c82b7ac0046a3bd9055ed1e1693d75d4c103274a1",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/daemon",
+          "Time": "2026-11-02T04:11:11.04544+08:00",
+          "Elapsed": 0.05
+        }
+      ],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/launch-independent-review/review.json"
+      ],
+      "commits_or_followups": "launch f00c94962",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L6-red.txt",
+          "exists": true,
+          "sha256": "994344c9ede976c4aa1317970dd211267398942bb85c8b2ea270878861484bff",
+          "expected_sha256": "994344c9ede976c4aa1317970dd211267398942bb85c8b2ea270878861484bff",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L6-green.txt",
+          "exists": true,
+          "sha256": "13cd451a91b04dd98080abd2dc176e91a0c1784091d121d393ee579149de8da0",
+          "expected_sha256": "13cd451a91b04dd98080abd2dc176e91a0c1784091d121d393ee579149de8da0",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "L7",
+      "disposition": "not_reproduced_test_covered",
+      "behavior": "not reproduced; existing correct Started-failure cleanup is locked by actual process/daemon tests",
+      "canonical_regression": {
+        "path": "server/pkg/agent/knowledge_launch_test.go",
+        "line": 772,
+        "name": "TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated",
+        "retained_final639_terminal": "pass"
+      },
+      "canonical_source": {
+        "path": "server/pkg/agent/knowledge_launch_test.go",
+        "old_sha256": "b890b56259806b63670176331f607773c343053ad9fa45569246393238be6f3d",
+        "candidate_sha256": "b890b56259806b63670176331f607773c343053ad9fa45569246393238be6f3d",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/pkg/agent",
+          "Time": "2026-11-02T04:43:54.080354+08:00",
+          "Elapsed": 0
+        }
+      ],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/launch-independent-review/review.json"
+      ],
+      "commits_or_followups": "test-only L7 takeover; no claimed product repair",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L7-takeover-green.jsonl",
+          "exists": true,
+          "sha256": "54ecd106a30226d8a208e56e7afa132649dab15da3353c10a359b9bf4235126c",
+          "expected_sha256": "54ecd106a30226d8a208e56e7afa132649dab15da3353c10a359b9bf4235126c",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "L8",
+      "disposition": "repaired",
+      "behavior": "refresh waits for the source grant; source/authority/validation errors preserve draft and stay distinct",
+      "canonical_regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 491,
+        "name": "submit waits for a refreshing source list instead of reporting a changed source",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "canonical_source": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "old_sha256": "2ba69ef2ebbfef204576d4419edcdbf469d7f58a13e94bb80e0c3ac53a5937d8",
+        "candidate_sha256": "d252bcf1e49515cba3108b1528f49ba4bf92ab9f3eccdba30540b2849d2eb6dd",
+        "unchanged_from_final64": false,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "commits_or_followups": "a5e8941b7; M5-L8 followups ed0026525",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L8-red.txt",
+          "exists": true,
+          "sha256": "cf92bf66d3405f0d32c9ce64bf15fc4ffd0b848557961357210f16cc2a85986d",
+          "expected_sha256": "cf92bf66d3405f0d32c9ce64bf15fc4ffd0b848557961357210f16cc2a85986d",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L8-green.txt",
+          "exists": true,
+          "sha256": "9e9ecc5c4f3203c7c5c1af59d28cb7ddb3a8513e168c49613ddec0fcd4f9a7c7",
+          "expected_sha256": "9e9ecc5c4f3203c7c5c1af59d28cb7ddb3a8513e168c49613ddec0fcd4f9a7c7",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "L9",
+      "disposition": "repaired",
+      "behavior": "UTF-8 byte limits give field errors for proposal and decision reason",
+      "canonical_regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 532,
+        "name": "attributes over-byte summary, conclusion and evidence to the field instead of a source failure",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "canonical_source": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "old_sha256": "2ba69ef2ebbfef204576d4419edcdbf469d7f58a13e94bb80e0c3ac53a5937d8",
+        "candidate_sha256": "d252bcf1e49515cba3108b1528f49ba4bf92ab9f3eccdba30540b2849d2eb6dd",
+        "unchanged_from_final64": false,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "commits_or_followups": "60ca94822",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L9-red.txt",
+          "exists": true,
+          "sha256": "0a225c0fd57784e05301a7bf41910d8826a072b9376e2857178079f01f037fa1",
+          "expected_sha256": "0a225c0fd57784e05301a7bf41910d8826a072b9376e2857178079f01f037fa1",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L9-green.txt",
+          "exists": true,
+          "sha256": "f96d0702890b0a349cf36bc3b15511e2c624b7cf3ccf3ddd5ee0b2828a965cd7",
+          "expected_sha256": "f96d0702890b0a349cf36bc3b15511e2c624b7cf3ccf3ddd5ee0b2828a965cd7",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "L10",
+      "disposition": "repaired",
+      "behavior": "expired later-page authorization resets to page1 rather than recurring generic errors",
+      "canonical_regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 221,
+        "name": "restarts at the first page when a later page loses its authorization boundary",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "canonical_source": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "old_sha256": "2ba69ef2ebbfef204576d4419edcdbf469d7f58a13e94bb80e0c3ac53a5937d8",
+        "candidate_sha256": "d252bcf1e49515cba3108b1528f49ba4bf92ab9f3eccdba30540b2849d2eb6dd",
+        "unchanged_from_final64": false,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "commits_or_followups": "web ed0026525",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L10-L11-red.txt",
+          "exists": true,
+          "sha256": "977d11da76a07a30d3ebcaec31379be6c17c268048bb645538e2f74a7be0877d",
+          "expected_sha256": "977d11da76a07a30d3ebcaec31379be6c17c268048bb645538e2f74a7be0877d",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L10-L11-green.txt",
+          "exists": true,
+          "sha256": "e2f71f7c16306d0b63079db1255cb34410bfebe44fe81dbadb5714f8f6109a26",
+          "expected_sha256": "e2f71f7c16306d0b63079db1255cb34410bfebe44fe81dbadb5714f8f6109a26",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "L11",
+      "disposition": "repaired",
+      "behavior": "unavailable interface stops interval polling until explicit refresh",
+      "canonical_regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 211,
+        "name": "stops interval polling an unavailable knowledge interface until an explicit refresh",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "canonical_source": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "old_sha256": "2ba69ef2ebbfef204576d4419edcdbf469d7f58a13e94bb80e0c3ac53a5937d8",
+        "candidate_sha256": "d252bcf1e49515cba3108b1528f49ba4bf92ab9f3eccdba30540b2849d2eb6dd",
+        "unchanged_from_final64": false,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "commits_or_followups": "web ed0026525",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L10-L11-red.txt",
+          "exists": true,
+          "sha256": "977d11da76a07a30d3ebcaec31379be6c17c268048bb645538e2f74a7be0877d",
+          "expected_sha256": "977d11da76a07a30d3ebcaec31379be6c17c268048bb645538e2f74a7be0877d",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L10-L11-green.txt",
+          "exists": true,
+          "sha256": "e2f71f7c16306d0b63079db1255cb34410bfebe44fe81dbadb5714f8f6109a26",
+          "expected_sha256": "e2f71f7c16306d0b63079db1255cb34410bfebe44fe81dbadb5714f8f6109a26",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "L12",
+      "disposition": "repaired",
+      "behavior": "same-source recovery works beyond loaded page; foreign recovery stays outside; dismissal is local only",
+      "canonical_regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 390,
+        "name": "recovering a request from the same source opens it even when it is outside the loaded list page",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "canonical_source": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "old_sha256": "2ba69ef2ebbfef204576d4419edcdbf469d7f58a13e94bb80e0c3ac53a5937d8",
+        "candidate_sha256": "d252bcf1e49515cba3108b1528f49ba4bf92ab9f3eccdba30540b2849d2eb6dd",
+        "unchanged_from_final64": false,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "commits_or_followups": "web ed0026525; core actions dismissal",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L12-red.txt",
+          "exists": true,
+          "sha256": "b866ec7247b1abb4da522a8b7e0068af2cd9a924918489cb93c15782481e581b",
+          "expected_sha256": "b866ec7247b1abb4da522a8b7e0068af2cd9a924918489cb93c15782481e581b",
+          "hash_match": true
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L12-green.txt",
+          "exists": true,
+          "sha256": "0b2b4339db99b8d569aa260198c3a98d17328737b27f4ba43bd17c2e695825f5",
+          "expected_sha256": "0b2b4339db99b8d569aa260198c3a98d17328737b27f4ba43bd17c2e695825f5",
+          "hash_match": true
+        }
+      ]
+    },
+    {
+      "id": "L13",
+      "disposition": "terminology_repair",
+      "behavior": "workspace/issue terminology aligned; locale key parity preserved",
+      "canonical_regression": {
+        "path": "packages/views/locales/parity.test.ts",
+        "line": 73,
+        "name": "locale namespace key parity and knowledge terminology",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "canonical_source": {
+        "path": "packages/views/locales/parity.test.ts",
+        "old_sha256": "aa963486b84539b8ec61945cd435866fde0c5244d9a3dc3ef7114377ddd78420",
+        "candidate_sha256": "aa963486b84539b8ec61945cd435866fde0c5244d9a3dc3ef7114377ddd78420",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      "historical_default_race_terminals": [],
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "commits_or_followups": "web ed0026525",
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L10-L13-green.txt",
+          "exists": true,
+          "sha256": "e05f8171124f687f3d0563aedd449c29f17897386d286dbbfe701ed90d3b1dd9",
+          "expected_sha256": "e05f8171124f687f3d0563aedd449c29f17897386d286dbbfe701ed90d3b1dd9",
+          "hash_match": true
+        }
+      ]
+    }
+  ],
+  "source_comparisons": [
+    {
+      "path": "server/internal/service/task_knowledge.go",
+      "old_sha256": "cb566995f0c504bf956c8873f61c0593597923c89f20dc9d6e766124ece2870b",
+      "candidate_sha256": "cb566995f0c504bf956c8873f61c0593597923c89f20dc9d6e766124ece2870b",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/service/task_knowledge_prepare.go",
+      "old_sha256": "756823abb5b2a55d6cba2ae037cbfd87bde741ee6da1493972d86c90b1d301ed",
+      "candidate_sha256": "756823abb5b2a55d6cba2ae037cbfd87bde741ee6da1493972d86c90b1d301ed",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/service/task_knowledge_observe.go",
+      "old_sha256": "3b7c77ec4823ccd30a73189c0d9fbf1b1c2ba7b2c19b49ed6bc6e5630460ebf4",
+      "candidate_sha256": "3b7c77ec4823ccd30a73189c0d9fbf1b1c2ba7b2c19b49ed6bc6e5630460ebf4",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/service/task.go",
+      "old_sha256": "933bf52d6f637c1203650952c9d6be07a69399b54ea883c5dca5f00ce815fa8d",
+      "candidate_sha256": "933bf52d6f637c1203650952c9d6be07a69399b54ea883c5dca5f00ce815fa8d",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/handler/daemon.go",
+      "old_sha256": "f3dabdca68069b967dd8b4b460804c4dfaed1d967369156e9425944f050b0593",
+      "candidate_sha256": "f3dabdca68069b967dd8b4b460804c4dfaed1d967369156e9425944f050b0593",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/daemon/daemon.go",
+      "old_sha256": "c1f51b2ab7b26f6f560db9e0dd5061407496f234c34c85922cda4f4d8fd65d97",
+      "candidate_sha256": "c1f51b2ab7b26f6f560db9e0dd5061407496f234c34c85922cda4f4d8fd65d97",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/daemon/knowledge_context.go",
+      "old_sha256": "b01525aaa6ea2a60253e61eaac8ba62ecc34467cb7a6c9cae7733936999725fc",
+      "candidate_sha256": "b01525aaa6ea2a60253e61eaac8ba62ecc34467cb7a6c9cae7733936999725fc",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/pkg/agent/launch_lifecycle.go",
+      "old_sha256": "15431e2e4329ba12a4f3da09114c1d892862fe4e798b124391bf21a25fb326be",
+      "candidate_sha256": "15431e2e4329ba12a4f3da09114c1d892862fe4e798b124391bf21a25fb326be",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/pkg/agent/knowledge_launch_test.go",
+      "old_sha256": "b890b56259806b63670176331f607773c343053ad9fa45569246393238be6f3d",
+      "candidate_sha256": "b890b56259806b63670176331f607773c343053ad9fa45569246393238be6f3d",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/pkg/agent/launch_lifecycle_test.go",
+      "old_sha256": "5ee5ea93c430e101e07447ae750765ba1526f7c55f24ff1ce2274d371b01eb69",
+      "candidate_sha256": "5ee5ea93c430e101e07447ae750765ba1526f7c55f24ff1ce2274d371b01eb69",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/pkg/protocol/task_knowledge.go",
+      "old_sha256": "b53ad04e93185cdf6bb35b8f8a9efc09dd8b21936a3c7bc21a7ed706db67b424",
+      "candidate_sha256": "b53ad04e93185cdf6bb35b8f8a9efc09dd8b21936a3c7bc21a7ed706db67b424",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/realtime/hub.go",
+      "old_sha256": "0dc30f465fd4a3a83e8dc230bfd2230c6538a2b96843ea6250a8e06372cb72dc",
+      "candidate_sha256": "0dc30f465fd4a3a83e8dc230bfd2230c6538a2b96843ea6250a8e06372cb72dc",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/realtime/collaboration.go",
+      "old_sha256": "01cff978aff5a1cd61bcadc95736ec786038bcebdeb8f6dafbedf6e73a6d8bf5",
+      "candidate_sha256": "01cff978aff5a1cd61bcadc95736ec786038bcebdeb8f6dafbedf6e73a6d8bf5",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge.go",
+      "old_sha256": "a8b9766d340ccd0ed17f1c2f30a3f527597541c3a065f4344250ef5b63e914b6",
+      "candidate_sha256": "a8b9766d340ccd0ed17f1c2f30a3f527597541c3a065f4344250ef5b63e914b6",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_credentials.go",
+      "old_sha256": "7bd97758175b4e411a156cd7c29591ec9a5f04874c45eb614ea6e6f20aaf273f",
+      "candidate_sha256": "7bd97758175b4e411a156cd7c29591ec9a5f04874c45eb614ea6e6f20aaf273f",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_invalidation.go",
+      "old_sha256": "75502bea9e4c30a015930fda350e45f9869719d83cbebe52376209a76c445cd9",
+      "candidate_sha256": "75502bea9e4c30a015930fda350e45f9869719d83cbebe52376209a76c445cd9",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/pkg/db/queries/task_knowledge.sql",
+      "old_sha256": "b81310e58a007854f91bae89309c7afa36ba8ffe87eb8dd1b68146f49a4248c3",
+      "candidate_sha256": "b81310e58a007854f91bae89309c7afa36ba8ffe87eb8dd1b68146f49a4248c3",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_knowledge_service.sql",
+      "old_sha256": "c85605952b6b6202b55aaf04b3c00137dbd25ba4626fd8d072da240eed5c29cb",
+      "candidate_sha256": "c85605952b6b6202b55aaf04b3c00137dbd25ba4626fd8d072da240eed5c29cb",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/pkg/db/generated/task_knowledge.sql.go",
+      "old_sha256": "5212789d55f677588306bb5de9d185dc175333e2b8699fbd54896c0047d64f17",
+      "candidate_sha256": "5212789d55f677588306bb5de9d185dc175333e2b8699fbd54896c0047d64f17",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-cache.ts",
+      "old_sha256": "2eeeb421a7cbffeccfbfa54b5773f6b2c6316064b68fba407a1915529f75263b",
+      "candidate_sha256": "2eeeb421a7cbffeccfbfa54b5773f6b2c6316064b68fba407a1915529f75263b",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-lease.ts",
+      "old_sha256": "67a78d8880e120b52c253707b4fd7953be7b9d1d1127625d337eff50cec51730",
+      "candidate_sha256": "67a78d8880e120b52c253707b4fd7953be7b9d1d1127625d337eff50cec51730",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-actions.ts",
+      "old_sha256": "3e5e92fbd51c218e34dd87f10f0a645354dc7b97bbd22b5337bcd7dd6250bb23",
+      "candidate_sha256": "3e5e92fbd51c218e34dd87f10f0a645354dc7b97bbd22b5337bcd7dd6250bb23",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-recovery.ts",
+      "old_sha256": "dca107ab6ba525f25e56e9c113a5353eaf5d8f061154a8e48282f3762c806d89",
+      "candidate_sha256": "dca107ab6ba525f25e56e9c113a5353eaf5d8f061154a8e48282f3762c806d89",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-queries.ts",
+      "old_sha256": "12d090cbc5209fb4ce1d510a9fc2414bd70727e579245cf2ba27707fb9fd41e9",
+      "candidate_sha256": "12d090cbc5209fb4ce1d510a9fc2414bd70727e579245cf2ba27707fb9fd41e9",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "packages/views/collaboration/knowledge-panel.tsx",
+      "old_sha256": "a715581220c16e2045543e971b2dfc4ffb210b314ecf79f7efc63dd32966cb67",
+      "candidate_sha256": "ae493596d090ec1ffc7134b9247e2b58dabf2c8aa9e8c4028164795e9e5be735",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "packages/views/collaboration/knowledge-review.tsx",
+      "old_sha256": "7925ae0462fc003efa3ce31a7ddb3b24f4d0657eea6e21930a4be047b7f51b94",
+      "candidate_sha256": "7925ae0462fc003efa3ce31a7ddb3b24f4d0657eea6e21930a4be047b7f51b94",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "packages/views/collaboration/knowledge-proposal.tsx",
+      "old_sha256": "c593f1be704cfe383bd99feb418e133f4b5bd413cb4bf685ba1e7d86ee9a98e8",
+      "candidate_sha256": "c593f1be704cfe383bd99feb418e133f4b5bd413cb4bf685ba1e7d86ee9a98e8",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/cmd/server/collaboration_knowledge_correction_composite_test.go",
+      "old_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+      "candidate_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/cmd/server/collaboration_knowledge_host_composite_test.go",
+      "old_sha256": "d866d3f888a1ed48b015a04bb844170a1b5cd8c53ee662f104f0508b23fac3f6",
+      "candidate_sha256": "d866d3f888a1ed48b015a04bb844170a1b5cd8c53ee662f104f0508b23fac3f6",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/daemon/knowledge_server_integration_test.go",
+      "old_sha256": "0e74b9e4fe420c7780ef800d022e66f1c187871f2ac8d25eb8c0261db10656f2",
+      "candidate_sha256": "0e74b9e4fe420c7780ef800d022e66f1c187871f2ac8d25eb8c0261db10656f2",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "old_sha256": "6c7cf270ebb23176c6604ed13bc49f17712ad72d1005df6adf77f43b209ecac9",
+      "candidate_sha256": "57f90b8fdcb2cc83a4a26c131092629ac402d72e6e93241a05f5d09b1bf09bc8",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime.go",
+      "old_sha256": "d517f5531a133010c36bbda89ca0d5432e9d3bcfe0e423e5113104aff6573d8f",
+      "candidate_sha256": "3db09f2e93be3c22215da1c87130b9306b484c57a8eb1fc0c26a1c8cbb2ca47b",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/service/collaboration_authority.go",
+      "old_sha256": "1fdd45b3d04f9c75eba44e0b52a6b6d2596623070666e5d23c40477c2e5cb302",
+      "candidate_sha256": "e067d0f593f6a9482423c641413b08f6eed66bb552dc94020d94800f1f89c52e",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/service/collaboration_queue.go",
+      "old_sha256": "f47c777ea4869a792624e0cf9d37908a4c573e8582144813a3b33878ddc7044f",
+      "candidate_sha256": "6fd21ce5d824e0a41951cfa3de83ba2fb2db46cc4366cdea74b45c2931ccd34b",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/service/collaboration_batches.go",
+      "old_sha256": "5ce1d33180d1abdd5ff11de3d0890fa0fbc43ba6ffef809c0070528262889409",
+      "candidate_sha256": "098ee6f0a6ff05dd778ead3e3545077133c0e184503943b6f35448339aacdfd7",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/service/collaboration_control.go",
+      "old_sha256": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+      "candidate_sha256": "b2006df16d203429136e74a8f024feb5fcd489fe438f37d8affcd5528c698e2a",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/service/collaboration_mentions.go",
+      "old_sha256": "55f74f4de9b5d6b22ccca0664442ff51bbf6786fd14b622f3de686ef2bccfd8a",
+      "candidate_sha256": "a20b671c1541c93f808881950e387302c5af1e33269c7f98b034fb5d93c2add1",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/collaboration/access.go",
+      "old_sha256": "a168ab81a233633fc6cdb5771c52fff2176157e0a30ef58d815370a64635778c",
+      "candidate_sha256": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_knowledge_service.sql.go",
+      "old_sha256": "91463bca4e146d3e7d6bc0c8b48d15b312eb221a06ecb1bbec6790bb82e42a48",
+      "candidate_sha256": "ca38da913fad927991cfc7f791aa30e0390697b82384fbb657a0513aa8960c6d",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+      "old_sha256": "479c5e3eaf3a7e7a5b707061892d8494f3c0646328002fdd8e71c93a984555fa",
+      "candidate_sha256": "d9ed068b308783b0b5cd9375b86a1e1c592b9abcbd3dd260a5ecf79ae2b9fbfe",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+      "old_sha256": "796f561d23690aaed3c1c402663863278e6e7652ea5d9d531fd8abca387963e2",
+      "candidate_sha256": "851d009653677ec358af379e38df156f0d0e9bd5768d9af773b02a29f4a0d5cb",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-knowledge.md",
+      "old_sha256": "4ff0a7158b56c354a43b2681609b820a3b1e285c0807b009b68f6536eaafacf2",
+      "candidate_sha256": "4ff0a7158b56c354a43b2681609b820a3b1e285c0807b009b68f6536eaafacf2",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-knowledge-execution.md",
+      "old_sha256": "98c6852e345edf8c7d2fa2bd81a45106bb7e75fd7d0ed799ec4591aa93ca6499",
+      "candidate_sha256": "98c6852e345edf8c7d2fa2bd81a45106bb7e75fd7d0ed799ec4591aa93ca6499",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": ".trellis/spec/views/frontend/collaboration-knowledge.md",
+      "old_sha256": "82aa61230b3c40a5507160fc3628cbc615453495c12cc1ade3c7fdf8270f7ffd",
+      "candidate_sha256": "21ff3e8d3ee6ba6d594223268b8a420d6efd8f8aa83831406323f872cd8dc8c6",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/migrations/761_collaboration_knowledge_agent_history.down.sql",
+      "old_sha256": "21cbcb5b9bb6534f8ab52c78493796e92aea9199493472c723148e9652356f53",
+      "candidate_sha256": "21cbcb5b9bb6534f8ab52c78493796e92aea9199493472c723148e9652356f53",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/migrations/761_collaboration_knowledge_agent_history.up.sql",
+      "old_sha256": "53237dd02cbb329ecb0b53485b819fee5289503a71d0fd4ea543f7c31b141551",
+      "candidate_sha256": "53237dd02cbb329ecb0b53485b819fee5289503a71d0fd4ea543f7c31b141551",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/migrations/762_collaboration_knowledge_runtime_history.down.sql",
+      "old_sha256": "e1daae50033e9a9a3adf3fe59ecd141b2a4867e4ee7218b55a13495265a27a25",
+      "candidate_sha256": "e1daae50033e9a9a3adf3fe59ecd141b2a4867e4ee7218b55a13495265a27a25",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/migrations/762_collaboration_knowledge_runtime_history.up.sql",
+      "old_sha256": "20ed5a00c54f4cb3074602fb5bb3b8d86e98c2dbc42ac00bab3753208ef71021",
+      "candidate_sha256": "20ed5a00c54f4cb3074602fb5bb3b8d86e98c2dbc42ac00bab3753208ef71021",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/migrations/763_collaboration_knowledge_delivery_history.down.sql",
+      "old_sha256": "97864fbf166804dddb650e1da40258dda1dd136e525a4d18d207d448f6ecad9f",
+      "candidate_sha256": "97864fbf166804dddb650e1da40258dda1dd136e525a4d18d207d448f6ecad9f",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    {
+      "path": "server/migrations/763_collaboration_knowledge_delivery_history.up.sql",
+      "old_sha256": "f7fa8bc2b96b04ea5d02328ba76bcd7b2a99052c18d46b7a5a9fab4cf1c6a429",
+      "candidate_sha256": "f7fa8bc2b96b04ea5d02328ba76bcd7b2a99052c18d46b7a5a9fab4cf1c6a429",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    }
+  ],
+  "locale_knowledge_subtrees": [
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "knowledge_subtree_unchanged": true
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "knowledge_subtree_unchanged": true
+    }
+  ],
+  "historical_default_go": {
+    "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "metadata": {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/attempt-3-Go-complete.json",
+      "exists": true,
+      "sha256": "6fcd0eab0dde97a24837ae3e7fa046f69b68117dd0124d9348985adba62c40b8"
+    },
+    "raw": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/final-candidate/Go-stages-completed-prefix.log",
+      "exists": true,
+      "sha256": "f97b3d0a62c1d596f4418deee84ab8b60c1adec8a5e14ff8c93087ce260e4da9",
+      "expected_sha256": "f97b3d0a62c1d596f4418deee84ab8b60c1adec8a5e14ff8c93087ce260e4da9",
+      "hash_match": true
+    },
+    "observed_counts": {
+      "pass": 20852,
+      "fail": 0,
+      "skip": 22
+    },
+    "package_count": 82,
+    "compile_only_packages": 9,
+    "all_package_databases_unique": true,
+    "all_executed_packages_used_race": true,
+    "L7_exact_test_terminals": {
+      "TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/pkg/agent",
+          "Time": "2026-11-02T04:43:54.080354+08:00",
+          "Elapsed": 0
+        }
+      ],
+      "TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/daemon",
+          "Time": "2026-11-02T04:11:11.081626+08:00",
+          "Elapsed": 0.02
+        }
+      ],
+      "TestHostLifecycleStartedFailureStillWaitsAndBlocksFallback": [
+        {
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/pkg/agent",
+          "Time": "2026-11-02T04:43:56.160913+08:00",
+          "Elapsed": 0
+        }
+      ]
+    },
+    "explicit_skips": [
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/migrate",
+        "test": "TestCommentContentBigramRequirementMatchesRealPGBigm",
+        "reason_output": [
+          "=== RUN   TestCommentContentBigramRequirementMatchesRealPGBigm",
+          "migrate_comment_search_index_strategy_test.go:156: Postgres does not provide pg_bigm; install it to run the real-opclass integration test",
+          "--- SKIP: TestCommentContentBigramRequirementMatchesRealPGBigm (0.05s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+        "reason_output": [
+          "=== RUN   TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+          "collaboration_daemon_cli_routes_test.go:27: requires explicit Linux namespace integration environment",
+          "--- SKIP: TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationPartialResumeRoutesLinux",
+        "reason_output": [
+          "=== RUN   TestCollaborationPartialResumeRoutesLinux",
+          "collaboration_hold_routes_test.go:155: requires explicit Linux namespace integration environment",
+          "--- SKIP: TestCollaborationPartialResumeRoutesLinux (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationSingleAgentRuntimeRoutesLinux",
+        "reason_output": [
+          "=== RUN   TestCollaborationSingleAgentRuntimeRoutesLinux",
+          "collaboration_single_agent_routes_test.go:418: requires explicit Linux namespace integration environment",
+          "--- SKIP: TestCollaborationSingleAgentRuntimeRoutesLinux (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+        "reason_output": [
+          "=== RUN   TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+          "collaboration_single_agent_routes_test.go:585: requires explicit Linux namespace integration environment",
+          "--- SKIP: TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+        "reason_output": [
+          "=== RUN   TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+          "collaboration_single_agent_routes_test.go:688: requires explicit Linux namespace integration environment",
+          "--- SKIP: TestCollaborationRuntimeProofSurvivesOwnerDisableLinux (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationSquadCapacityOneRoutesLinux",
+        "reason_output": [
+          "=== RUN   TestCollaborationSquadCapacityOneRoutesLinux",
+          "collaboration_squad_routes_test.go:173: requires explicit Linux namespace integration environment",
+          "--- SKIP: TestCollaborationSquadCapacityOneRoutesLinux (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestPasswordLimiterSharedAtomicAdmission",
+        "reason_output": [
+          "=== RUN   TestPasswordLimiterSharedAtomicAdmission",
+          "password_limiter_integration_test.go:20: MULTICA_TEST_REDIS_URL not configured",
+          "--- SKIP: TestPasswordLimiterSharedAtomicAdmission (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/cli",
+        "test": "TestCLIConfig_UnknownFieldsArePreserved",
+        "reason_output": [
+          "=== RUN   TestCLIConfig_UnknownFieldsArePreserved",
+          "config_test.go:265: documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder",
+          "--- SKIP: TestCLIConfig_UnknownFieldsArePreserved (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon",
+        "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+        "reason_output": [
+          "=== RUN   TestCollaborationBatchPollerSlotsAndRunnerLinux",
+          "collaboration_test.go:189: requires real Linux kernel containment",
+          "--- SKIP: TestCollaborationBatchPollerSlotsAndRunnerLinux (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon",
+        "test": "TestIsDriveRoot",
+        "reason_output": [
+          "=== RUN   TestIsDriveRoot",
+          "local_directory_test.go:383: windows-only behaviour",
+          "--- SKIP: TestIsDriveRoot (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+        "reason_output": [
+          "=== RUN   TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+          "autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant",
+          "--- SKIP: TestWebhookHandler_DBErrorOnTokenLookupReturns500 (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestIterationI1P95",
+        "reason_output": [
+          "=== RUN   TestIterationI1P95",
+          "iteration_i1_p95_test.go:25: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL",
+          "--- SKIP: TestIterationI1P95 (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestIterationI1DisableP95",
+        "reason_output": [
+          "=== RUN   TestIterationI1DisableP95",
+          "iteration_i1_p95_test.go:160: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL",
+          "--- SKIP: TestIterationI1DisableP95 (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+        "reason_output": [
+          "=== RUN   TestFetchFromSkillsSh_AnthropicPptxIntegration",
+          "skill_test.go:989: set MULTICA_RUN_SKILLS_SH_INTEGRATION=1 to run live GitHub integration test",
+          "--- SKIP: TestFetchFromSkillsSh_AnthropicPptxIntegration (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestTriageQueueScaleBaseline",
+        "reason_output": [
+          "=== RUN   TestTriageQueueScaleBaseline",
+          "triage_performance_test.go:20: set MULTICA_TRIAGE_PERF=1 to measure 10k formal/2k pending",
+          "--- SKIP: TestTriageQueueScaleBaseline (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestTriageWireFixtures",
+        "reason_output": [
+          "=== RUN   TestTriageWireFixtures",
+          "triage_test.go:566: wire fixture export requested only by cross-package verification",
+          "--- SKIP: TestTriageWireFixtures (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestMcpMarketPublicHTTPRecipeLifecycle",
+        "reason_output": [
+          "=== RUN   TestMcpMarketPublicHTTPRecipeLifecycle",
+          "workspace_mcp_template_test.go:228: the catalog ships no HTTP recipes",
+          "--- SKIP: TestMcpMarketPublicHTTPRecipeLifecycle (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+        "reason_output": [
+          "=== RUN   TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+          "acp_terminal_test.go:89: Windows cmd.exe code-page behavior only applies on Windows",
+          "--- SKIP: TestACPManagedTerminalPreservesWindowsUnicodeShellOutput (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+        "reason_output": [
+          "=== RUN   TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+          "codex_test.go:3198: Linux signal/reap semantics regression",
+          "--- SKIP: TestCodexExecuteRetriesAfterSignaledProcessIsReaped (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "test": "TestPiExecuteAttachesStdinPipe",
+        "reason_output": [
+          "=== PAUSE TestPiExecuteAttachesStdinPipe",
+          "=== CONT  TestPiExecuteAttachesStdinPipe",
+          "pi_test.go:226: stdin fd inspection relies on /proc/self/fd/0",
+          "--- SKIP: TestPiExecuteAttachesStdinPipe (0.00s)"
+        ]
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+        "reason_output": [
+          "=== PAUSE TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+          "=== CONT  TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+          "claude_test.go:756: root-only preflight assertion",
+          "--- SKIP: TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors (0.00s)"
+        ]
+      }
+    ],
+    "qualification": "Retained prior race evidence only; historical full make check stayed failed. No new whole-candidate pass is inferred."
+  },
+  "historical_composites": [
+    {
+      "family": "ordinary",
+      "mode": "normal",
+      "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestKnowledgeServerDaemonComposite",
+        "-p=1",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=5m"
+      ],
+      "database": "multica_knowledge_composite_20261101_f3_1102_normal",
+      "exit_code": 0,
+      "counts": {
+        "run": 27,
+        "pass": 27,
+        "fail": 0,
+        "skip": 0
+      },
+      "raw": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/knowledge-final-gates/ordinary-normal/tests.jsonl",
+        "exists": true,
+        "sha256": "d05906999e45f71faf99062efcd3a4daaa2ba4e0802b913128fceb5222c34339",
+        "expected_sha256": "d05906999e45f71faf99062efcd3a4daaa2ba4e0802b913128fceb5222c34339",
+        "hash_match": true
+      },
+      "observed_counts": {
+        "run": 27,
+        "pass": 27,
+        "fail": 0,
+        "skip": 0
+      },
+      "counts_match": true
+    },
+    {
+      "family": "ordinary",
+      "mode": "race",
+      "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestKnowledgeServerDaemonComposite",
+        "-p=1",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=5m",
+        "-race"
+      ],
+      "database": "multica_knowledge_composite_20261101_f3_1102_race",
+      "exit_code": 0,
+      "counts": {
+        "run": 27,
+        "pass": 27,
+        "fail": 0,
+        "skip": 0
+      },
+      "raw": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/knowledge-final-gates/ordinary-race/tests.jsonl",
+        "exists": true,
+        "sha256": "5bf31de93999e755bb396b527bb9f4a2014a85675a6b60dd55d64c679f821db9",
+        "expected_sha256": "5bf31de93999e755bb396b527bb9f4a2014a85675a6b60dd55d64c679f821db9",
+        "hash_match": true
+      },
+      "observed_counts": {
+        "run": 27,
+        "pass": 27,
+        "fail": 0,
+        "skip": 0
+      },
+      "counts_match": true
+    },
+    {
+      "family": "host",
+      "mode": "normal",
+      "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./cmd/server",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestCollaborationKnowledgeHostComposite",
+        "-p=1",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=5m"
+      ],
+      "database": "multica_knowledge_host_composite_20261101_f3_1102_normal",
+      "exit_code": 0,
+      "counts": {
+        "run": 17,
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "raw": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/knowledge-final-gates/host-normal/tests.jsonl",
+        "exists": true,
+        "sha256": "168d794726e0c442992fcb7b99e0c71ed4f1856d02275d09593eece4867708f0",
+        "expected_sha256": "168d794726e0c442992fcb7b99e0c71ed4f1856d02275d09593eece4867708f0",
+        "hash_match": true
+      },
+      "observed_counts": {
+        "run": 17,
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "counts_match": true
+    },
+    {
+      "family": "host",
+      "mode": "race",
+      "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./cmd/server",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestCollaborationKnowledgeHostComposite",
+        "-p=1",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=5m",
+        "-race"
+      ],
+      "database": "multica_knowledge_host_composite_20261101_f3_1102_race",
+      "exit_code": 0,
+      "counts": {
+        "run": 17,
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "raw": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/knowledge-final-gates/host-race/tests.jsonl",
+        "exists": true,
+        "sha256": "3ed04a5fd0de45360d3b3f55c1f29247c765228426c5265a06ff64dec9969e97",
+        "expected_sha256": "3ed04a5fd0de45360d3b3f55c1f29247c765228426c5265a06ff64dec9969e97",
+        "hash_match": true
+      },
+      "observed_counts": {
+        "run": 17,
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "counts_match": true
+    }
+  ],
+  "CCG1": {
+    "test_source": {
+      "path": "server/cmd/server/collaboration_knowledge_correction_composite_test.go",
+      "old_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+      "candidate_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true
+    },
+    "review": {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff/research/knowledge-crosschain-correction-20261102/independent-review/review.json",
+      "exists": true,
+      "sha256": "592969bbd1cc06039d14224b1808a60379d3bd06c3e096bf9e1d8672ee5a2604",
+      "expected_sha256": "592969bbd1cc06039d14224b1808a60379d3bd06c3e096bf9e1d8672ee5a2604",
+      "hash_match": true
+    },
+    "historical_normal_race_pass": true,
+    "current_whole_chain_rebound": false,
+    "reason": "Current runtime/queue/target input admission adds AI policy checks; target authorization additionally locks issue_collaboration. Migration764 and generated scans alter the real DB-backed chain. Unchanged CCG1 test bytes do not rebind the old complete execution."
+  },
+  "CCG2": {
+    "harness_sources": [
+      {
+        "path": "e2e/fixtures/collaboration-host-provider.go",
+        "old_sha256": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+        "candidate_sha256": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      {
+        "path": "e2e/fixtures/collaboration-host-provider_test.go",
+        "old_sha256": "10af5c9122d610dd966fd78ea8eed48ec6fe93ba263025cb17cbee9c0853a600",
+        "candidate_sha256": "10af5c9122d610dd966fd78ea8eed48ec6fe93ba263025cb17cbee9c0853a600",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      {
+        "path": "e2e/fixtures/collaboration-host-runtime.ts",
+        "old_sha256": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e",
+        "candidate_sha256": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      },
+      {
+        "path": "e2e/collaboration-knowledge-deployed.spec.ts",
+        "old_sha256": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+        "candidate_sha256": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+        "unchanged_from_final64": true,
+        "worktree_matches_candidate": true
+      }
+    ],
+    "review": {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff/research/knowledge-deployed-probe-20261102/independent-review/review.json",
+      "exists": true,
+      "sha256": "e442d8b24c93e0c2f9281760fd7f7dcb83d180cc7ea6e60d802c5c0b46a64272",
+      "expected_sha256": "e442d8b24c93e0c2f9281760fd7f7dcb83d180cc7ea6e60d802c5c0b46a64272",
+      "hash_match": true
+    },
+    "original_results": {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff/research/knowledge-deployed-probe-20261102/root-deployed-results.json",
+      "exists": true,
+      "sha256": "4b741252a8a98745515d760577626ae6aea9e83715a5e31dc460e3d7c7881f1e",
+      "expected_sha256": "4b741252a8a98745515d760577626ae6aea9e83715a5e31dc460e3d7c7881f1e",
+      "hash_match": true
+    },
+    "historical_OFF_ON_pass": true,
+    "current_whole_chain_rebound": false,
+    "reason": "Four main harness files remain byte-identical, but policy-dependent admission, deployed schema/API and current detail UI are different. Old OFF/ON startup observations stay valid only for their original deployments."
+  },
+  "sqlc": {
+    "record": {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/sqlc/sqlc-resume-01.json",
+      "exists": true,
+      "sha256": "06e7b68c5b5157a3bc91bf467e9387cd7f463d51f3d3e0b09d3a421ea1f67ae7"
+    },
+    "exit_code": 0,
+    "source_commit": "b6c74033f1913e46418ec1b119da33236dcba805",
+    "generated_files": 130,
+    "inputs_unchanged_in_run": true,
+    "generated_unchanged_in_run": true,
+    "log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/sqlc-resume-20261103-01/raw.log",
+      "exists": true,
+      "sha256": "a38fa5b6e34605fee85cebdb7a25acd0c8998acb4c50978d9d5c5e1c637802ab",
+      "expected_sha256": "a38fa5b6e34605fee85cebdb7a25acd0c8998acb4c50978d9d5c5e1c637802ab",
+      "hash_match": true
+    },
+    "server_delta_to_candidate": []
+  },
+  "operations": {
+    "tests_run": false,
+    "database_operations": false,
+    "service_operations": false,
+    "provider_calls": 0,
+    "source_edits": false,
+    "metadata_edits": false,
+    "old_evidence_edits": false,
+    "write_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/knowledge-gate-rebind"
+  }
+}

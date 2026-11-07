@@ -1,0 +1,88 @@
+{
+  "recorded_at": "2026-11-03T15:23:42.550828+00:00",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "state": "complete_failed",
+  "raw_run_state": "complete",
+  "started_at": "2026-11-03T14:14:24.140405+00:00",
+  "finished_at": "2026-11-03T15:22:18.571353+00:00",
+  "make_exit_code": 2,
+  "launcher_exit_code": 2,
+  "static_tasks_pass": 15,
+  "TS_pass": 13244,
+  "TS_package_pass": {
+    "@multica/core": {
+      "passed": 4455
+    },
+    "@multica/docs": {
+      "passed": 62
+    },
+    "@multica/views": {
+      "passed": 7165
+    },
+    "@multica/web": {
+      "passed": 290
+    },
+    "@multica/desktop": {
+      "passed": 1272
+    }
+  },
+  "Go": {
+    "packages": 82,
+    "named_counts": {
+      "run": 20985,
+      "pass": 20963,
+      "fail": 0,
+      "skip": 22
+    },
+    "unrun_packages": [],
+    "all_race": true,
+    "compile_only": 9
+  },
+  "Playwright": {
+    "total": 441,
+    "explicit_skipped": 91,
+    "passed": 334,
+    "failed": 16,
+    "unrun": 0,
+    "knowledge_pass": 8
+  },
+  "final_identity_audit": {
+    "status": "pass",
+    "exit_code": 0,
+    "record": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/final-state-audit-v14/post-make-v14.json",
+      "sha256": "d4179f5860d96c386d9a41828a92024466fd6fd20876b354cff2bf88f0a2d15a"
+    },
+    "scope": "Filesystem identity only; root separately owns actual API/database/process proof."
+  },
+  "inventory_complete": true,
+  "wholecheck_machine_conditions_met": false,
+  "root_live_identity_approval_required": true,
+  "task7_closed": false,
+  "provider_calls": 0,
+  "reruns": 0,
+  "artifacts": {
+    "run": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/make-check-v14.json",
+      "sha256": "fc479c764bf1092026603b7e685ae9a996bda8dca63a15afcbe34e6f7c23bd85"
+    },
+    "log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/make-check-v14.log",
+      "sha256": "d20bc6177a221d3c4921592548ff99e5be567e74977d8223c1eda2c18435f557"
+    },
+    "Go_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/fullcheck-v14/go-inventory.json",
+      "sha256": "167bcae697349646cb37543f16e5b3403e6f53dd9380a1008295a6780ca23975"
+    },
+    "TS_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/fullcheck-v14/typescript-inventory.json",
+      "sha256": "afb063d26e15477ab6749071e35ad31714717dc184cebda8d69d0c96b1a5a9c4"
+    },
+    "PW_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/fullcheck-v14/playwright-inventory.json",
+      "sha256": "91a267554f68a36b1c7102be2274ac41dea68ad7c2f32c1aa4903e432922ce69"
+    }
+  },
+  "remaining": "Root verifies actual live identity and skips; current CCG1 normal/race and CCG2 OFF/ON then independent task7 closure remain separate."
+}

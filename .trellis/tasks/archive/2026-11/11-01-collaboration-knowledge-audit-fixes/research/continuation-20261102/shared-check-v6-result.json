@@ -1,0 +1,116 @@
+{
+  "recorded_at": "2026-11-02T15:30:13.790231+00:00",
+  "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "owner": "01a19c0d-cce1-73e3-99ee-2c3c9e9239ba",
+  "source_record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v6.json",
+  "actual_state": "failed_not_accepted",
+  "make_exit_code": 2,
+  "started_at": "2026-11-02T14:47:28.083133+00:00",
+  "finished_at": "2026-11-02T15:02:20.157158+00:00",
+  "log_sha256": "56a055f3a8f85ea608489946a566f37e0f8980d8578326be6227b3f9b926dae6",
+  "static_tasks_passed": 15,
+  "typescript_named_passed": 13082,
+  "script_regressions": "test-go/dev-env/check all passed",
+  "go_packages_reached": 6,
+  "go_named_events": {
+    "pass": 1889,
+    "fail": 3,
+    "skip": 7
+  },
+  "failed_top_level_tests": [
+    "TestSkillTemplateCatalog_RouterAndWorkspaceGates",
+    "TestSkillTemplateCopy_OrdinaryCreatePreservesSourceAndBindings"
+  ],
+  "failed_child_test": "TestSkillTemplateCatalog_RouterAndWorkspaceGates/member",
+  "observed_status": 503,
+  "observed_error_code": "resource_store_unavailable",
+  "go_packages": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+      "database": "ccheck_20261102145937619236_bb940f8eb38e",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 11,
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "f5a8daeffbd212278fbc769909f29cd3c009e2651d8daf31460e669bddb37971"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+      "database": "ccheck_20261102145947549926_07eb79fa72b8",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 2,
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "34231f8f53bedc6d52890de6a9aa6a2d78714f4ec7b530a3f7c9805ad901232f"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+      "database": "ccheck_20261102145950778085_f47ea76e9369",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "86e9dd2e434bb84f754162e97f4e00b3cb40ffbd2aa4105c53c21cb50ae6bed4"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "database": "ccheck_20261102145951600159_f9a6f66e94fe",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 71,
+        "pass": 70,
+        "fail": 0,
+        "skip": 1
+      },
+      "log_sha256": "9dd8dacede755a724c498eb1c15cf7487d6faa7a88508d13c4ca3f0e73ddefb7"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/multica",
+      "database": "ccheck_20261102150011946087_b0ca13f2a1d5",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 1074,
+        "pass": 1074,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "c91f7b6857adf489313e3d4eb80dfef9df5152bb2631631fe1f377760733044a"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "database": "ccheck_20261102150032344544_6f87875654d8",
+      "state": "complete",
+      "exit_code": 1,
+      "counts": {
+        "run": 741,
+        "pass": 732,
+        "fail": 3,
+        "skip": 6
+      },
+      "log_sha256": "23ce268807229f2f25fb719c0496b13393d461f9c53b7e96dbe952b1697cadb7"
+    }
+  ],
+  "not_reached": [
+    "remaining Go packages",
+    "API startup",
+    "production Web",
+    "Playwright"
+  ],
+  "disposition": "shared owner prepares only outer ordinary-Go child PUB_DIR isolation; keeps API configuration/test-owned recursive overrides and original failed DB/log",
+  "knowledge_Provider_calls": 0,
+  "own_duplicate_run": false
+}

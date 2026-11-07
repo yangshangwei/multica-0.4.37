@@ -1,0 +1,125 @@
+{
+  "started_at": "2026-11-03T17:02:51.725238+00:00",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+    "--dir",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-account-desktop.spec.ts",
+    "e2e/collaboration-boundaries-web.spec.ts",
+    "e2e/collaboration-command-history-web.spec.ts",
+    "e2e/collaboration-mention-journeys-desktop.spec.ts",
+    "e2e/collaboration-mention-journeys-web.spec.ts",
+    "e2e/collaboration-preparation-records-desktop.spec.ts",
+    "e2e/collaboration-preparation-records-web.spec.ts",
+    "e2e/collaboration-preview-web.spec.ts",
+    "e2e/collaboration-records-web.spec.ts",
+    "e2e/collaboration-resource-offers-web.spec.ts",
+    "e2e/collaboration-resources-web.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--grep",
+    "(?:^| )(Desktop\\ offers\\ private\\ resources,\\ sends\\ all\\ plus\\ AI\\ mentions\\ and\\ preserves\\ cancelled\\ command\\ history|Desktop\\ child\\ links,\\ recorded\\ pages\\ and\\ result\\ notifications\\ survive\\ popouts\\ and\\ restart|Desktop\\ resource\\ owners\\ authorize,\\ withdraw\\ and\\ commit\\ a\\ held\\ configuration\\ switch|Gap\\ 7:\\ hidden\\ manager\\ actions\\ POSTed\\ by\\ the\\ wrong\\ role\\ are\\ refused\\ and\\ change\\ nothing;\\ a\\ non\\-participant's\\ @agent\\ never\\ queues|cancelled\\ waiting\\ commands\\ retain\\ original\\ content\\ after\\ comment\\ changes,\\ refresh\\ and\\ another\\ account\\ reads|Desktop\\ mixed\\ H\\+A\\+B\\+S\\ mentions\\ retain\\ one\\ comment\\ and\\ exact\\ queued\\ target\\ associations|Desktop\\ owner\\ revocation\\ after\\ preview\\ refuses\\ only\\ A\\ and\\ original\\-key\\ replay\\ stays\\ deduplicated|Desktop\\ offline\\ mentions\\ survive\\ a\\ fresh\\ profile\\ and\\ edits\\ notify\\ only\\ newly\\ added\\ people|Web\\ mixed\\ H\\+A\\+B\\+S\\ mentions\\ retain\\ one\\ comment\\ and\\ exact\\ queued\\ target\\ associations|Web\\ owner\\ revocation\\ after\\ preview\\ refuses\\ only\\ A\\ and\\ original\\-key\\ replay\\ stays\\ deduplicated|Web\\ offline\\ mentions\\ survive\\ a\\ fresh\\ context\\ and\\ edits\\ notify\\ only\\ newly\\ added\\ people|Desktop\\ reads\\ synthetic\\ preparation\\ with\\ native\\ 200\\ percent\\ captures\\ and\\ unchanged\\ proof|Web\\ reads\\ synthetic\\ frozen\\ preparation\\ without\\ inferring\\ termination\\ across\\ refresh\\ and\\ viewers|trigger\\ preview\\ explains\\ shared\\ and\\ later\\ batches\\ before\\ a\\ suppressed\\ target\\ is\\ sent|a\\ private\\ owner\\ offers\\ a\\ resource\\ to\\ an\\ external\\ organizer\\ and\\ independently\\ authorizes\\ it|resource\\ owners\\ register,\\ authorize,\\ withdraw\\ and\\ switch\\ while\\ participant\\ management\\ preserves\\ authority|Web\\ shares\\ ordinary\\ child\\ references\\ and\\ retained\\ run\\ records\\ through\\ account\\ notification\\ links)$",
+    "--reporter=line,json",
+    "--output=/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-stability17"
+  ],
+  "pid": 4852,
+  "selection": [
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",
+      "id": "d830fff7a787071ac252-cce5cce322a1d9534728"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "id": "d830fff7a787071ac252-2802bec50cf95487730b"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop resource owners authorize, withdraw and commit a held configuration switch",
+      "id": "d830fff7a787071ac252-eac673a2b556e5572224"
+    },
+    {
+      "file": "collaboration-boundaries-web.spec.ts",
+      "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+      "id": "6e126002765c26c65f32-f3f66911ac00e604b913"
+    },
+    {
+      "file": "collaboration-command-history-web.spec.ts",
+      "title": "cancelled waiting commands retain original content after comment changes, refresh and another account reads",
+      "id": "dc6e451f347c4093ecd2-a28eb97dd4e993efe152"
+    },
+    {
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "id": "e1244c64bf212413b472-21e1aed1c8d6c522f803"
+    },
+    {
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "id": "e1244c64bf212413b472-40cb2a40180050917361"
+    },
+    {
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+      "id": "e1244c64bf212413b472-f56f261bd296c36c7784"
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "title": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "id": "a2c6b754d21b70f11df3-e4beab049273f7979057"
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "id": "a2c6b754d21b70f11df3-64a32e62b06c28657aa8"
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+      "id": "a2c6b754d21b70f11df3-24073f543fb2f4024711"
+    },
+    {
+      "file": "collaboration-preparation-records-desktop.spec.ts",
+      "title": "Desktop reads synthetic preparation with native 200 percent captures and unchanged proof",
+      "id": "cde037303ed86892b546-c487173c2ca4fe36791b"
+    },
+    {
+      "file": "collaboration-preparation-records-web.spec.ts",
+      "title": "Web reads synthetic frozen preparation without inferring termination across refresh and viewers",
+      "id": "a51aed25ed03c8fdf991-8eebfabe4531dc636537"
+    },
+    {
+      "file": "collaboration-preview-web.spec.ts",
+      "title": "trigger preview explains shared and later batches before a suppressed target is sent",
+      "id": "6a3286d9ccab8513fbec-e93b6369b5b4939e29a8"
+    },
+    {
+      "file": "collaboration-resource-offers-web.spec.ts",
+      "title": "a private owner offers a resource to an external organizer and independently authorizes it",
+      "id": "c78071dd87551f1b6349-e8466e8ab1e2b5c666b4"
+    },
+    {
+      "file": "collaboration-resources-web.spec.ts",
+      "title": "resource owners register, authorize, withdraw and switch while participant management preserves authority",
+      "id": "217ddf7a66d97257e3f4-2fc69945ab2d775c7b1e"
+    },
+    {
+      "file": "collaboration-records-web.spec.ts",
+      "title": "Web shares ordinary child references and retained run records through account notification links",
+      "id": null
+    }
+  ],
+  "selected": 17,
+  "source_before_sha256": "685dac2ec58b16421f59c9b2c1ff3b9b76f6d9334b3f7d3a3e4431ac6267e888",
+  "live_proof_sha256": "9fb1ece8ea39f32b3a3e2dbf5c3d0e88092f63c73a3154d0fc7e79852204b252",
+  "parent_authority": "Root accepted independent stability protocol recommendation and authorized one complete17 on this successful diagnostic DB",
+  "scope": "ONE exact17 directed run; no retries/fullcheck/CCG/model"
+}

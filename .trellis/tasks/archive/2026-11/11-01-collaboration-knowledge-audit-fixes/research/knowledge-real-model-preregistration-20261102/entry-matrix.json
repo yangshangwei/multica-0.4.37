@@ -1,0 +1,764 @@
+{
+  "title": "Research: Knowledge real-model entry matrix and finite schedules",
+  "query": "Preregister source-supported K1/K2/K3/E0b producer, consumer, call and evidence contracts for a future isolated knowledge framework.",
+  "scope": "internal; research proposal only",
+  "date": "2026-11-02",
+  "proposal_only": true,
+  "authority": {
+    "knowledge_allocated_calls": 0,
+    "knowledge_consumed_calls": 0,
+    "runnable": false,
+    "paid_source_id": "",
+    "provider_access_performed": false,
+    "budget_transfer_allowed": false,
+    "original_ledger": "remaining14, separate owner",
+    "runtime_ledger": "cap25, runtime-only",
+    "shared_complete_check_owner": "01a19c0d-cce1-73e3-99ee-2c3c9e9239ba",
+    "excluded_resources": [
+      "final4 worktree",
+      "Redis16422",
+      "renderer19845"
+    ]
+  },
+  "count": {
+    "K1": 4,
+    "K2": 2,
+    "K3": 8,
+    "knowledge_proposed_total": 14,
+    "E0b_separate": 1,
+    "proposed_total_including_E0b": 15,
+    "registered_knowledge_dispatch_entries_current": 0,
+    "K3_product_entries_supported": 8,
+    "K3_new_framework_wired_entries_current": 0,
+    "K3_count_condition": "All eight producer/role rows require named fake-first execution and independent review before a real allocation can use N=8.",
+    "K3_fake_seed_starts": 3,
+    "K3_paid_seed_starts": 0,
+    "scope_note": "Eight producer/role samples; five applicability surfaces; two knowledge transport families; no claim of eight unique APIs or browser journeys."
+  },
+  "source_snapshot": {
+    "method": "Read-only file bytes; no git/Go/test/DB/Provider operation; final paid source must be frozen again.",
+    "runtime_framework_files": 17,
+    "runtime_framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+    "source_file_sha256": {
+      "server/internal/service/task_knowledge.go": "cb566995f0c504bf956c8873f61c0593597923c89f20dc9d6e766124ece2870b",
+      "server/internal/service/task_knowledge_prepare.go": "756823abb5b2a55d6cba2ae037cbfd87bde741ee6da1493972d86c90b1d301ed",
+      "server/internal/service/collaboration_knowledge_resolve.go": "5d4d7f586e102edfa8970e9c3399b12f073fd01f008e7aa4691c2adf296890d0",
+      "server/internal/service/collaboration_knowledge_runtime.go": "00fb39276f84eb9121fa798c2dfc02b03f05db1b22a90ab7508d7247e093a002",
+      "server/internal/service/collaboration_comments_create.go": "6ddcfefb7770ce10af250cbc19a7e75c7e9184db1f21f3481fa4053599fce1d4",
+      "server/internal/service/collaboration_squad.go": "a2f790d7afcf6c678292832ebe9ff15d8db2a5759455c1fedc2288a31b880c71",
+      "server/internal/daemon/knowledge_context.go": "b01525aaa6ea2a60253e61eaac8ba62ecc34467cb7a6c9cae7733936999725fc",
+      "server/internal/daemon/knowledge_server_integration_test.go": "0e74b9e4fe420c7780ef800d022e66f1c187871f2ac8d25eb8c0261db10656f2",
+      "server/cmd/server/router.go": "6c7cf270ebb23176c6604ed13bc49f17712ad72d1005df6adf77f43b209ecac9",
+      "server/cmd/server/rk1_fixture_test.go": "c257225e01c00a92dc266226347a3ffa016ac79db18c592dff6d293c6294994b",
+      "server/cmd/server/rk1_provider_test.go": "02050fc42ba6aeb02f4d7695ce76f4ee7a4402f07048cc2326dcde5d7b3e4f05",
+      "server/cmd/server/rk1_entry_test.go": "0e7bd9887edc6be00c020fc861aab6c26cfbe494fb1dcd30b1a53f857541d0e3",
+      "server/cmd/server/rk1_scenarios_recall_test.go": "644797d7325ab91c9ac6f306a86bf426bbbf6375009673118f1fe3f7706a7cda",
+      "server/internal/handler/issue.go": "a8845c68f9dbbc7a4153022c337cac3791e5014b3608f3b9f3aa757fb72be317",
+      "server/internal/handler/comment.go": "11e5fa8b343072c351847734e3188d09dc173a75f0ffc07e2cb5397c35df285f",
+      "server/internal/handler/chat.go": "85af116f9bd655d01144cba890865afc5f8ed4abc179b13eb576de417d85fa86",
+      "server/internal/handler/autopilot.go": "0b16f85001c3caa049500da3f7e2be95656c9f03a797b55d3fdb270e22e79c92",
+      "server/internal/service/task.go": "933bf52d6f637c1203650952c9d6be07a69399b54ea883c5dca5f00ce815fa8d",
+      "server/internal/service/autopilot.go": "1701c3e887bc8a4f687d6e6d2cccc2e5f4ad2affd1784fdaf50e365414ebf1fd",
+      "packages/core/api/client.ts": "b9f5c78eb9749d44924f3dc7dadc718864e2d0369f64fe6ecd3ef8b94bb3fca6",
+      "packages/views/modals/quick-create-issue.tsx": "66684c1c87245a89b7b0eedf4efa606f5afeae0fb4d08c02f7b08efdaf7b4624"
+    }
+  },
+  "common_setup": {
+    "people": {
+      "A": "Fixture human source creator/current handler and target owner/admin; local Claude runtime/agent owner for K1/K3.",
+      "B": "Fixture human member/current reader of source, normal invocation grantee and producer/input author for positive K3 ordinary paths."
+    },
+    "source": "Retained collaboration issue S in W, exact memory version1/hash with inert review anchor; no decisive policy in base/handoff/fake prefix.",
+    "target": "Workspace W and selected project P in W, independently approved human candidate; actual consumer context selects those target IDs.",
+    "agent": "Built-in claude/local, no custom profile/launch prefix/unsafe selector; agent owned by A, explicit public_to member invocation grant for B; MDT runtime authority belongs to runtime owner.",
+    "consumers": "Genuine HTTP/service-created task/run rows; no producer supplied KnowledgeConsumerFacts or AccountableUserID authority fallback.",
+    "human_proposal": "POST /api/collaboration/issues/{S}/knowledge-candidates, client-selected candidate_id/request_id, protocol1, immutable source/target/body/hash/applicability/expiry.",
+    "human_approval": "POST /api/collaboration/knowledge-candidates/{candidateId}/approve, human source Read plus target role, exact expected_state_revision/version/content_sha256 and fresh original request UUID.",
+    "auxiliary_calls": "Chat title/quick-action model generators remain unset; no additional model/health/automatic replay calls.",
+    "real_materials": "Full fixed text/codes/UUIDs/hashes and rubric must be frozen after local proof; fake answer plans never reach real-child environment/stdin."
+  },
+  "transport_families": {
+    "ordinary": {
+      "claim": [
+        "POST /api/daemon/runtimes/{runtimeId}/tasks/claim",
+        "POST /api/daemon/tasks/claim (fake transport control only)"
+      ],
+      "prepare": "POST /api/daemon/tasks/{taskId}/knowledge-context/prepare",
+      "authorize": "POST /api/daemon/tasks/{taskId}/knowledge-context/authorize",
+      "observe": "POST /api/daemon/tasks/{taskId}/knowledge-context/observations",
+      "credential": "Current scoped MDT; claim is source-free; ordinary business environment/task token is preserved.",
+      "consumer_function": "TaskService.taskKnowledgeFacts -> ResolveApprovedKnowledge; exact history -> RevalidateKnowledgeManifest",
+      "session": "provider/runtime/agent/configuration/scope/generation/native; ordinary persistence enabled, native observed and canonical ACK before pointer publication.",
+      "source_refs": [
+        "server/cmd/server/router.go:1581",
+        "server/internal/service/task_knowledge.go:197",
+        "server/internal/service/task_knowledge_prepare.go:434",
+        "server/internal/daemon/knowledge_context.go:100",
+        "server/internal/daemon/daemon.go:7913"
+      ]
+    },
+    "collaboration": {
+      "claim": "POST /api/collaboration/runtime/runs/{runId}/claim with negotiated handoff/recording/knowledge version1 and current host preparation/capability identity",
+      "prepare": "POST /api/collaboration/runtime/runs/{runId}/knowledge-context/prepare",
+      "authorize": "POST /api/collaboration/runtime/runs/{runId}/knowledge-context/authorize",
+      "status": "GET /api/collaboration/runtime/runs/{runId}/knowledge-context/status",
+      "credential": "MDT claim/knowledge, refreshed MCB business, MCT termination/proof/status",
+      "consumer_function": "CollaborationService.collaborationKnowledgeFacts -> ResolveApprovedKnowledge; existing Runner/HostExecutor per-process permit",
+      "session": "Actual runId namespace, new cwd/ledger, --no-session-persistence, no reusable native pointer",
+      "source_refs": [
+        "server/cmd/server/router.go:1422",
+        "server/cmd/server/router.go:1430",
+        "server/cmd/server/router.go:1441",
+        "server/internal/service/collaboration_knowledge_runtime.go:82",
+        "server/internal/daemon/collaborationrun/host_knowledge.go:72"
+      ]
+    }
+  },
+  "K1": {
+    "trial": 1,
+    "measured_launches": 4,
+    "fourth_state_policy": "withdrawal",
+    "expires_at": null,
+    "expiry_coverage": "Named fake-first before-disclosure/authorization control only. A real expiry fourth-state alternative must be frozen before calls and replaces this fourth slot, not an added fifth.",
+    "host_target": "Independent direct agent target for each fresh consumer issue C1/C2/C3/C4; not a persisted same-issue result chain.",
+    "calls": [
+      {
+        "ordinal": 1,
+        "label": "RK1-K1-t1-pending",
+        "state": "v1 pending",
+        "namespace": "fresh C1/run/cwd/ledger",
+        "manifest": "empty",
+        "semantic": "POLICY_UNAVAILABLE",
+        "expected_underlying_provider_starts": 1
+      },
+      {
+        "ordinal": 2,
+        "label": "RK1-K1-t1-approved-v1",
+        "state": "Exact human approval of v1",
+        "namespace": "fresh C2/run/cwd/ledger",
+        "manifest": "v1 exact candidate/version/source/hash",
+        "semantic": "v1 canary7% wait90s plus frozen source/code",
+        "expected_underlying_provider_starts": 1
+      },
+      {
+        "ordinal": 3,
+        "label": "RK1-K1-t1-approved-v2",
+        "state": "v2 pending retains approved v1 by registered human target GET; then exact v2 approval atomically supersedes v1",
+        "namespace": "fresh C3/run/cwd/ledger",
+        "manifest": "v2 only",
+        "semantic": "v2 canary11% wait120s plus frozen source/code",
+        "expected_underlying_provider_starts": 1
+      },
+      {
+        "ordinal": 4,
+        "label": "RK1-K1-t1-withdrawn",
+        "state": "Human withdrawal of approved v2 committed before C4 claim/preparation",
+        "namespace": "fresh C4/run/cwd/ledger",
+        "manifest": "empty",
+        "semantic": "POLICY_UNAVAILABLE",
+        "expected_underlying_provider_starts": 1
+      }
+    ],
+    "zero_paid_controls": [
+      "Pending-v2 target projection retains v1",
+      "Withdraw/expiry after committed preparation refuses next authorization without a replacement snapshot",
+      "Original human decision receipt/revision/hash retained"
+    ],
+    "no_contamination": "Each state uses a different consumer collaboration issue so prior lawful result/handoff cannot answer the absence condition.",
+    "source_refs": [
+      ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json",
+      "server/internal/service/collaboration_knowledge_resolve.go:363",
+      "server/cmd/server/collaboration_knowledge_correction_composite_test.go:18",
+      "server/internal/service/collaboration_knowledge_runtime.go:382"
+    ]
+  },
+  "K2": {
+    "trial": 1,
+    "measured_launches": 2,
+    "topology": {
+      "source_workspace": "W_source",
+      "target_workspace": "W_target",
+      "source": "A-created/handled S in W_source",
+      "B_source_role": "Invited participant, no W_source membership, no creator/handler role",
+      "B_target_role": "W_target owner/admin; creator of private Chat and owner of its local Claude runtime/agent",
+      "A_target_visibility": "Normal W_target visibility permits A proposal",
+      "approval_actor": "B with source Read and target approval role"
+    },
+    "steps": [
+      {
+        "id": "decision-original-key",
+        "paid_launches": 0,
+        "action": "Drop one committed B approval response, recover original candidate/request receipt without replacement IDs."
+      },
+      {
+        "id": "fresh",
+        "label": "RK1-K2-t1-fresh",
+        "paid_launches": 1,
+        "action": "T1 valid private Chat, α approved; real prepare/authorize; raw native S1 ACK and pointer/exposure bound to generationG."
+      },
+      {
+        "id": "resume",
+        "label": "RK1-K2-t1-resume",
+        "paid_launches": 1,
+        "action": "Approve distinct β while α remains valid; T2 same Chat selects exact S1/G/configuration; drop one committed T2 preparation response and replay identical request/hash/preparation; actual argv --resume S1; raw ID remains S1; current α+β and complete history union retained."
+      },
+      {
+        "id": "freeze-third",
+        "paid_launches": 0,
+        "action": "Enqueue/finalize T3 while B still reads S; exact S1 claim and committed preparation R3; pause before physical launch authorization."
+      },
+      {
+        "id": "revoke",
+        "paid_launches": 0,
+        "route": "POST /api/collaboration/issues/{S}/participants/{B}/remove",
+        "actor": "A",
+        "action": "Commit removal and verify B source Read lost; target/Chat/runtime/credential/configuration unchanged."
+      },
+      {
+        "id": "refuse",
+        "paid_launches": 0,
+        "route": "POST /api/daemon/tasks/{T3}/knowledge-context/authorize",
+        "expected_http": 409,
+        "expected_code": "knowledge_context_changed",
+        "action": "Resume original binding; cumulative history refuses; zero third starts, original task fence and terminal state, no automatic fresh fallback/requeue/input replay."
+      },
+      {
+        "id": "recovery",
+        "paid_launches": 0,
+        "action": "Same R3 prepare replay refuses without body. B GET original candidate approval operations receipt remains content-free after source-role loss; prior T1/T2 lawful exposure remains."
+      }
+    ],
+    "timing_warning": "Revoke before a supported new claim permits server-selected fresh generation with old native cleared. That is not the above frozen-launch refusal and must not be forced into resume or launch a third paid call.",
+    "later_same_input_physical_refusal": "Fake-only named composite; the real schedule measures a new turn's first-process refusal after two previous native-session turns, not a same-input paid retry experiment.",
+    "source_refs": [
+      "server/internal/service/task_knowledge.go:400",
+      "server/internal/service/task_knowledge.go:463",
+      "server/internal/service/task_knowledge_prepare.go:404",
+      "server/internal/service/task_knowledge_prepare.go:512",
+      "server/internal/daemon/knowledge_server_integration_test.go:683",
+      "server/internal/daemon/knowledge_server_integration_test.go:719"
+    ]
+  },
+  "K3_entries": [
+    {
+      "id": "issue",
+      "ordinal": 1,
+      "product_wired": true,
+      "new_knowledge_framework_wired": false,
+      "measured_paid_launches": 1,
+      "fake_seed_starts": 0,
+      "transport": "ordinary",
+      "applicability_surface": "issue",
+      "scope_kind": "issue",
+      "producer": {
+        "actor": "B",
+        "method": "POST",
+        "route": "/api/issues",
+        "selection": "New active nonbacklog issue in W/P assigned to A's explicitly invocable agent",
+        "functions": [
+          "Handler.CreateIssue",
+          "IssueService.Create",
+          "IssueService.maybeEnqueueOnAssign",
+          "TaskService.EnqueueTaskForIssue"
+        ],
+        "refs": [
+          "server/cmd/server/router.go:2219",
+          "server/internal/handler/issue.go:3187",
+          "server/internal/service/issue.go:368",
+          "server/internal/service/issue.go:860"
+        ]
+      },
+      "trusted_consumer": {
+        "originator": "Actual issue/trigger attribution resolving B",
+        "runtime_owner": "A from current runtime row",
+        "input_authors": "None for assignment-only input",
+        "source_readers": [
+          "A",
+          "B"
+        ],
+        "audience": "workspace W; S also in W",
+        "target": "Actual issue.ProjectID=P plus workspaceW"
+      },
+      "ui": {
+        "client": "ApiClient.createIssue / useCreateIssue",
+        "refs": [
+          "packages/core/api/client.ts:2899",
+          "packages/core/issues/mutations.ts:112"
+        ],
+        "coverage": "Static shared API path only; modal/manual quick-create aliases are not additional paid entries"
+      },
+      "expected_cli": "multica project get P --output json",
+      "evidence": [
+        "Producer returned real issue/task association",
+        "Source-free claim and exact current contribution/input",
+        "New ordinary generation, raw native ID ACK/pointer and task terminal/messages/usage"
+      ]
+    },
+    {
+      "id": "comment",
+      "ordinal": 2,
+      "product_wired": true,
+      "new_knowledge_framework_wired": false,
+      "measured_paid_launches": 1,
+      "fake_seed_starts": 0,
+      "transport": "ordinary",
+      "applicability_surface": "issue",
+      "scope_kind": "issue",
+      "producer": {
+        "actor": "B",
+        "method": "POST",
+        "route": "/api/issues/{I}/comments",
+        "selection": "New active initially unassigned issue I in W/P; explicit agent mention produces exactly one task without an initial assignment launch",
+        "functions": [
+          "Handler.CreateComment",
+          "Handler.triggerTasksForComment",
+          "Handler.enqueueSingleCommentTrigger",
+          "TaskService.EnqueueTaskForMention"
+        ],
+        "refs": [
+          "server/cmd/server/router.go:2233",
+          "server/internal/handler/comment.go:1863",
+          "server/internal/handler/comment.go:1910",
+          "server/internal/handler/comment.go:2568"
+        ]
+      },
+      "trusted_consumer": {
+        "originator": "Actual member comment author B through attribution",
+        "runtime_owner": "A",
+        "input_authors": "Real TriggerCommentID and every coalesced member author",
+        "source_readers": [
+          "A",
+          "B",
+          "all accepted coalesced authors"
+        ],
+        "audience": "workspace W; S also in W",
+        "target": "Actual issue.ProjectID=P plus workspaceW"
+      },
+      "ui": {
+        "client": "ApiClient.createComment / shared issue comment input",
+        "refs": [
+          "packages/core/api/client.ts:3101"
+        ],
+        "coverage": "Different producer from assignment, same issue applicability/session contract; not a new knowledge surface"
+      },
+      "expected_cli": "multica project get P --output json",
+      "evidence": [
+        "Committed member comment and TriggerCommentID",
+        "Accepted/coalesced author set, no AccountableUserID substitution",
+        "New ordinary generation and exact contribution/stdin/terminal evidence"
+      ]
+    },
+    {
+      "id": "chat",
+      "ordinal": 3,
+      "product_wired": true,
+      "new_knowledge_framework_wired": false,
+      "measured_paid_launches": 1,
+      "fake_seed_starts": 0,
+      "transport": "ordinary",
+      "applicability_surface": "chat",
+      "scope_kind": "chat",
+      "producer": {
+        "actor": "B",
+        "method": "POST",
+        "routes": [
+          "/api/chat/sessions",
+          "/api/chat/sessions/{chatId}/messages"
+        ],
+        "selection": "Creator-only direct Chat in W/P using A agent explicitly invocable by B; no channel binding",
+        "functions": [
+          "Handler.CreateChatSession",
+          "Handler.SendChatMessage",
+          "TaskService.SendDirectChatMessage"
+        ],
+        "refs": [
+          "server/cmd/server/router.go:2621",
+          "server/internal/handler/chat.go:40",
+          "server/internal/handler/chat.go:828",
+          "server/internal/handler/chat.go:941"
+        ]
+      },
+      "trusted_consumer": {
+        "originator": "B = session.CreatorID = authenticated sender",
+        "runtime_owner": "A",
+        "input_authors": "No additional comment authors; authenticated Chat creator B owns the accepted direct input",
+        "source_readers": [
+          "A",
+          "B"
+        ],
+        "audience": "private_chat",
+        "target": "Actual chat.ProjectID=P plus workspaceW"
+      },
+      "ui": {
+        "client": "ApiClient.sendChatMessage / useChatController",
+        "refs": [
+          "packages/core/api/client.ts:5432",
+          "packages/views/chat/components/use-chat-controller.ts:581"
+        ],
+        "coverage": "Floating/full-page Chat share this API; no additional native UI journey claimed"
+      },
+      "expected_cli": "multica project get P --output json",
+      "evidence": [
+        "Atomic message/task ownership and creator/agent access",
+        "No auxiliary title/quick-action Provider call",
+        "New Chat native observation, knowledge/fence/task result evidence"
+      ]
+    },
+    {
+      "id": "quick_create",
+      "ordinal": 4,
+      "product_wired": true,
+      "new_knowledge_framework_wired": false,
+      "measured_paid_launches": 1,
+      "fake_seed_starts": 0,
+      "transport": "ordinary",
+      "applicability_surface": "quick_create",
+      "scope_kind": "quick_create",
+      "producer": {
+        "actor": "B",
+        "method": "POST",
+        "route": "/api/issues/quick-create",
+        "selection": "AI quick-create with one agent_id, selected projectP, sufficient existing CLI/autonomy/readiness",
+        "functions": [
+          "Handler.QuickCreateIssue",
+          "TaskService.EnqueueQuickCreateTask",
+          "TaskService.enqueueQuickCreateTask"
+        ],
+        "refs": [
+          "server/cmd/server/router.go:2220",
+          "server/internal/handler/issue.go:2607",
+          "server/internal/handler/issue.go:2802",
+          "server/internal/service/task.go:1648"
+        ]
+      },
+      "trusted_consumer": {
+        "originator": "Requester's real B UUID",
+        "runtime_owner": "A",
+        "input_authors": "None unless actual input supplies them",
+        "source_readers": [
+          "A",
+          "B"
+        ],
+        "audience": "workspace W; S also in W",
+        "target": "Server-built QuickCreateContext.WorkspaceID/ProjectID",
+        "initial_scope": "taskID; no IssueID/ChatSessionID/AutopilotRunID"
+      },
+      "ui": {
+        "client": "ApiClient.quickCreateIssue, AI branch of QuickCreateIssueModal",
+        "refs": [
+          "packages/core/api/client.ts:2922",
+          "packages/views/modals/quick-create-issue.tsx:526"
+        ],
+        "coverage": "Manual branch aliases POST /issues and is not a separate knowledge entry. Comment-anchored /comments/{id}/sub-issues branch is excluded."
+      },
+      "expected_cli": [
+        "multica project get P --output json",
+        "multica issue create --title FROZEN_TITLE --description FROZEN_DESCRIPTION --project P --status backlog --output json (one unassigned inert issue)"
+      ],
+      "evidence": [
+        "Actual 202 task_id and server-built quick_create context",
+        "Initial taskID-bound claim/input; original fence/observation remains valid when CLI links created issue",
+        "Created issue/task link; no second queued assignee launch"
+      ],
+      "prototype_gate": "Existing task-token project read and real quick-create linking/fence semantics must pass fake-first; do not replace a failure with fabricated task fields."
+    },
+    {
+      "id": "autopilot",
+      "ordinal": 5,
+      "product_wired": true,
+      "new_knowledge_framework_wired": false,
+      "measured_paid_launches": 1,
+      "fake_seed_starts": 0,
+      "transport": "ordinary",
+      "applicability_surface": "autopilot",
+      "scope_kind": "autopilot",
+      "producer": {
+        "actor": "B",
+        "method": "POST",
+        "route": "/api/autopilots/{id}/trigger",
+        "headers": {
+          "Idempotency-Key": "frozen original UUID"
+        },
+        "selection": "Active run_only autopilot in W/P, assigned agentA; B has current write/invoke authority",
+        "functions": [
+          "Handler.TriggerAutopilot",
+          "AutopilotService.DispatchAutopilotManualWithKey",
+          "AutopilotService.dispatchRunOnlyOnce"
+        ],
+        "refs": [
+          "server/cmd/server/router.go:2396",
+          "server/internal/handler/autopilot.go:2465",
+          "server/internal/handler/autopilot.go:2501",
+          "server/internal/service/autopilot.go:1045",
+          "server/internal/service/autopilot.go:1177"
+        ]
+      },
+      "trusted_consumer": {
+        "originator": "Manual clicker B via DirectHumanRun, not creator/rule publisher",
+        "runtime_owner": "A",
+        "input_authors": "No synthetic creator author added",
+        "source_readers": [
+          "A",
+          "B"
+        ],
+        "audience": "workspace W; S also in W",
+        "target": "Actual run.AutopilotID -> autopilot.WorkspaceID/ProjectID",
+        "scope_id": "Actual AutopilotRunID"
+      },
+      "ui": {
+        "client": "useTriggerAutopilot -> ApiClient.triggerAutopilot",
+        "refs": [
+          "packages/core/autopilots/mutations.ts:129",
+          "packages/core/api/client.ts:6453"
+        ],
+        "coverage": "Run-now branch only; schedule/webhook/create-issue variants unmeasured"
+      },
+      "expected_cli": "multica project get P --output json",
+      "evidence": [
+        "Manual trigger original key/run/task association",
+        "Actual B originator and A owner",
+        "AutopilotRunID scope, current knowledge input and native/task result"
+      ]
+    },
+    {
+      "id": "collaboration_root",
+      "ordinal": 6,
+      "product_wired": true,
+      "new_knowledge_framework_wired": false,
+      "measured_paid_launches": 1,
+      "fake_seed_starts": 0,
+      "transport": "collaboration",
+      "applicability_surface": "collaboration",
+      "role": "leader",
+      "producer": {
+        "actors": [
+          "A",
+          "B"
+        ],
+        "method": "POST",
+        "routes": [
+          "/api/collaboration/issues/{C}/targets",
+          "/api/collaboration/issues/{C}/targets/{targetId}/consents",
+          "/api/collaboration/issues/{C}/comments",
+          "/api/collaboration/issues/{C}/control"
+        ],
+        "selection": "Actual registered squad target with frozen leader/member resources, owner consent and current epochs; human explicit squad mention; execution_view_version6 and target_versions; resume control",
+        "functions": [
+          "Handler.RegisterCollaborationTarget",
+          "Handler.ConsentCollaborationTarget",
+          "Handler.CreateCollaborationComment",
+          "CollaborationService.CreateComment",
+          "CollaborationService.AppendCollaborationInputInTx",
+          "CollaborationService.ResumeQueue"
+        ],
+        "refs": [
+          "server/cmd/server/router.go:1700",
+          "server/cmd/server/router.go:1712",
+          "server/cmd/server/router.go:1721",
+          "server/cmd/server/router.go:1726",
+          "server/internal/handler/collaboration_comments_create.go:22",
+          "server/internal/service/collaboration_comments_create.go:98"
+        ]
+      },
+      "trusted_consumer": {
+        "originator": "First actual PromptSnapshot human author, not invented run initiator",
+        "runtime_owner": "A from frozen ResourceOwnerUserID/current runtime",
+        "input_authors": [
+          "A",
+          "B from accepted original inputs"
+        ],
+        "source_readers": "Every input author, resource owner and actual consumer audience",
+        "audience": "Current collaboration C in W; all its people read S",
+        "target": "Actual C.WorkspaceID/ProjectID"
+      },
+      "ui": {
+        "client": "createCollaborationComment / shared composer/resource actions",
+        "refs": [
+          "packages/core/api/client.ts:1287",
+          "packages/core/collaboration/comment.ts:36",
+          "packages/core/collaboration/resource-schema.ts:143"
+        ],
+        "coverage": "No POST /commands submission route. Old rk1Fixture.submit is a direct service seam, not this UI HTTP producer."
+      },
+      "expected_cli": "Current run-scoped collaboration context/handoff read",
+      "evidence": [
+        "Real comment receipt contains command/channel/batch linkage",
+        "Claim/handoff role leader and frozen owner/authors",
+        "Unique run knowledge namespace, persistence flag, permit/start/outcome/termination/proof/record-seal"
+      ]
+    },
+    {
+      "id": "collaboration_member",
+      "ordinal": 7,
+      "product_wired": true,
+      "new_knowledge_framework_wired": false,
+      "measured_paid_launches": 1,
+      "fake_seed_starts": 1,
+      "transport": "collaboration",
+      "applicability_surface": "collaboration",
+      "role": "member",
+      "producer": {
+        "actor": "Actual root business MCB credential; human original input authors remain A/B",
+        "method": "POST",
+        "route": "/api/collaboration/runtime/runs/{root}/comments",
+        "selection": "One explicit mention of the frozen member; actual root fake prefix has valid process/termination/proof",
+        "functions": [
+          "Handler.CreateCollaborationRuntimeComment",
+          "CollaborationService.CreateRuntimeComment",
+          "collaborationRuntimeState.createDerivedRun"
+        ],
+        "refs": [
+          "server/cmd/server/router.go:1422",
+          "server/internal/service/collaboration_squad.go:220",
+          "server/internal/service/collaboration_squad.go:275",
+          "server/cmd/server/rk1_scenarios_handoff_test.go:98"
+        ]
+      },
+      "trusted_consumer": {
+        "originator": "Actual first original human author",
+        "runtime_owner": "A from member frozen resource",
+        "input_authors": "Actual original A/B input snapshot; root agent comment is delegation data, not a new human principal",
+        "source_readers": "All original authors, resource owner and actual audience",
+        "audience": "Current collaboration C in W, all readers read S",
+        "target": "Actual C.WorkspaceID/ProjectID"
+      },
+      "setup": "One labelled test-owned fake root seed, no decisive policy in its stdout/delegation. Real member claim only after capacity release.",
+      "expected_cli": "Run-scoped collaboration context/handoff read; admitted delegation source and ParentRunID=root",
+      "evidence": [
+        "Delegation replay preserves member identity",
+        "Role member, parent root, accepted readers and current owner",
+        "Fresh knowledge namespace, actual approved input and physical/lifecycle/proof/record evidence"
+      ],
+      "scope_note": "One real member sample after a fake root prefix; any automatically queued continuation is explicitly unmeasured and stopped without an extra Provider process."
+    },
+    {
+      "id": "collaboration_continuation",
+      "ordinal": 8,
+      "product_wired": true,
+      "new_knowledge_framework_wired": false,
+      "measured_paid_launches": 1,
+      "fake_seed_starts": 2,
+      "transport": "collaboration",
+      "applicability_surface": "collaboration",
+      "role": "continuation",
+      "producer": {
+        "actor": "Actual member business comments and termination/proof",
+        "routes": [
+          "POST /api/collaboration/runtime/runs/{member}/comments (registered seed if used)",
+          "Existing runtime termination/proof endpoints",
+          "Runtime list then POST /api/collaboration/runtime/runs/{continuation}/claim"
+        ],
+        "selection": "Real recorded member wake/proof causes create a new frozen-leader continuation; no independent human continuation-launch route",
+        "functions": [
+          "CollaborationService.CreateRuntimeComment",
+          "CollaborationService.AcceptRuntimeProof",
+          "collaborationRuntimeState.queueContinuation",
+          "collaborationRuntimeState.createDerivedRun"
+        ],
+        "refs": [
+          "server/internal/service/collaboration_squad.go:286",
+          "server/internal/service/collaboration_squad.go:363",
+          "server/internal/service/collaboration_runtime_capabilities.go:607",
+          "server/internal/service/collaboration_knowledge_squad_runtime_test.go:239",
+          "server/cmd/server/rk1_scenarios_handoff_test.go:102"
+        ]
+      },
+      "trusted_consumer": {
+        "originator": "Actual first original human author",
+        "runtime_owner": "A from frozen leader resource",
+        "input_authors": "Original A/B accepted snapshot preserved through wake",
+        "source_readers": "All original authors, owner and actual audience",
+        "audience": "Current C in W; all readers read S",
+        "target": "Actual C.WorkspaceID/ProjectID"
+      },
+      "setup": "Two labelled test-owned fake seed processes root/member, actual proof/readers/wake; no decisive policy in seed output.",
+      "expected_cli": "Current run-scoped collaboration context/handoff read; exact reader and wake cause source IDs",
+      "evidence": [
+        "New role continuation/run namespace, not reused root/member ID",
+        "Actual wake causes/readers/accepted authors",
+        "Approved exact knowledge input; permit/start/outcome/termination/proof/record-seal and settled capacity"
+      ],
+      "scope_note": "One real continuation sample after a fake prefix; same collaboration knowledge API family as root/member."
+    }
+  ],
+  "E0b": {
+    "id": "RK1-E0b",
+    "trials": 1,
+    "proposed_launches": 1,
+    "allocated_launches": 0,
+    "separate_from_knowledge_K1_K3": true,
+    "separate_from_runtime_25": true,
+    "scope": "One ordinary direct-Chat or issue task with empty knowledge set, actual negotiated ordinary argv and raw native session observation/ACK/fence/terminal evidence.",
+    "session": "Fresh scope, no host --no-session-persistence or explicit user selector; do not reuse its native namespace as the K2 sample.",
+    "prerequisite": "Actual permitted CLI version/account and formal E0 ancestry must be recorded before relying on native behavior; not an extra health request or replacement for E0.",
+    "current_framework_wired": false
+  },
+  "assertions": {
+    "input": [
+      "Source-free finalized claim",
+      "Committed exact sorted candidate/source/version/hash manifest",
+      "Private actual first frame/argv/cwd/options fingerprint, knowledge section eligibility and absence controls",
+      "No decisive facts in base/sidecar/handoff/fake answer env"
+    ],
+    "semantic": [
+      "Only recorded material may support the verdict",
+      "Unavailable states must not invent approved policy",
+      "Exact approved current version/source/code and corrected facts",
+      "HTTP result available versus CLI-returned versus Provider-visible output are separately recorded"
+    ],
+    "ordinary": [
+      "Native raw system/result ID, original attempt and canonical ACK before pointer",
+      "Complete all-status exposure history and original fence",
+      "Current task terminal state/messages/usage; no counterfeit Host proof or collaboration run"
+    ],
+    "host": [
+      "Actual role/resource owner/original authors/current audience",
+      "Handoff ID/readers/parent/wake links",
+      "Unique run namespace and persistence flag",
+      "Per-process permit/start/termination/proof/outcome/checkpoint/seal/ledger fields"
+    ],
+    "count": [
+      "Exact real child process starts versus wrapper/fake seed starts",
+      "Refusals zero new starts",
+      "Incomplete starts consumed and first-incomplete stops later calls",
+      "No additional health/model/automatic business-input replay"
+    ],
+    "publication": [
+      "Private durable raw bodies/stdout/logs/ledger; credentials removed from publishable evidence",
+      "Write/sync/close and SHA-256 checks before sample classification",
+      "Requested model separate from observed model or explicit unavailable"
+    ]
+  },
+  "future_owned_code_files": [
+    "server/cmd/server/rk1k_fixture_test.go",
+    "server/cmd/server/rk1k_provider_test.go",
+    "server/cmd/server/rk1k_scenarios_test.go",
+    "server/cmd/server/rk1k_evidence_test.go",
+    "server/cmd/server/rk1k_entry_test.go",
+    "server/internal/daemon/rk1k_driver_agentintegration.go"
+  ],
+  "future_validation": {
+    "run_here": false,
+    "normal": "env -u MULTICA_RUN_REAL_AGENT_SMOKE DATABASE_URL=\"$TASK_KNOWLEDGE_NORMAL_DB_URL\" go -C server test -tags=agentintegration ./cmd/server -run '^TestRK1KnowledgeFakeProof$' -count=1 -parallel=1 -v",
+    "race": "env -u MULTICA_RUN_REAL_AGENT_SMOKE DATABASE_URL=\"$TASK_KNOWLEDGE_RACE_DB_URL\" go -C server test -tags=agentintegration ./cmd/server -run '^TestRK1KnowledgeFakeProof$' -count=1 -parallel=1 -race -v",
+    "guard": "env -u MULTICA_RUN_REAL_AGENT_SMOKE DATABASE_URL=\"$TASK_KNOWLEDGE_GUARD_DB_URL\" go -C server test -tags=agentintegration ./cmd/server -run '^TestRK1Knowledge(EntryGuard|WrapperGuard|EvidenceFaults)$' -count=1 -parallel=1 -v",
+    "isolation": "Fresh separately allocated migrated DB per normal/race/guard; current cmd/server TestMain requires explicit DB even before a real-entry body skip; no final4 or runtime database use.",
+    "negative_controls": [
+      "Complete wrong answer remains valid failure",
+      "Missing native/changed native/noncanonical ACK fail closed",
+      "Expired/revoked exact manifest zero start",
+      "Lost response same original keys and bounds",
+      "Missing stdout/write/sync/close/proof/seal stops next numbered hop",
+      "Real pass-through tested with only an owned stand-in; no ambient account/CLI discovery"
+    ]
+  },
+  "caveats": [
+    "Future code/tests/launcher are proposals, not implemented/passing evidence.",
+    "K3 eight samples do not cover UI journeys or eight independent API contracts.",
+    "K1 real fourth state chooses withdrawal; expiry real observation absent.",
+    "K2 current-claim freshness versus frozen-launch refusal must not be conflated.",
+    "Comment-anchored AI quick-create, manual UI aliases, schedule/webhook/create-issue autopilot, channel Chat, WS/batch, fully real squad prefixes and parent platform/account/release matrices are separate.",
+    "Thin tagged daemon bridge, task-token CLI read, real quick-create link/fence, exact revocation and all evidence counters require fake-first proof.",
+    "No authorization/budget/source/runnable/status/registration was changed."
+  ]
+}

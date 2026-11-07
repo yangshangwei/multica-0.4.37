@@ -1,0 +1,84 @@
+diff --git a/e2e/fixtures/collaboration-native.ts b/e2e/fixtures/collaboration-native.ts
+index 8123d76e7..caa32ed9c 100644
+--- a/e2e/fixtures/collaboration-native.ts
++++ b/e2e/fixtures/collaboration-native.ts
+@@ -85,7 +85,17 @@ export async function captureNativeSection(app: ElectronApplication, page: Page,
+       const window = await app.browserWindow(page);
+       try {
+         for (const [size, width, height, zoom] of [["wide", 1380, 1120, 1], ["200-percent", 900, 1200, 2]] as const) {
+-          await window.evaluate((target, value) => { target.webContents.setZoomFactor(value.zoom); target.setContentSize(value.width, value.height); }, { width, height, zoom });
++          const native = await window.evaluate((target, value) => {
++            target.webContents.setZoomFactor(value.zoom); target.setContentSize(value.width, value.height);
++            return { zoomFactor: target.webContents.getZoomFactor(), bounds: target.getBounds(),
++              contentBounds: target.getContentBounds(), contentSize: target.getContentSize() };
++          }, { width, height, zoom });
++          const observations: Record<string, unknown>[] = [];
++          const diagnostic: Record<string, unknown> = { stage, size, width, height, zoom, native, observations };
++          const diagnosticPath = outputPath(`desktop-${stage}-${size}-geometry.json`);
++          const persistDiagnostic = () => writeFileSync(diagnosticPath,
++            `${JSON.stringify(diagnostic, null, 2)}\n`, { mode: 0o600 });
++          persistDiagnostic();
+           await expect.poll(() => page.evaluate(() => innerWidth)).toBe(width / zoom);
+           await page.evaluate(async () => {
+             await document.fonts.ready;
+@@ -94,8 +104,15 @@ export async function captureNativeSection(app: ElectronApplication, page: Page,
+           const dimensions = await focus.evaluate((element, selector) => {
+             const root = element.closest<HTMLElement>(selector);
+             if (!root) throw new Error("Native capture requires the actual account detail scroll root");
+-            return { focusHeight: element.getBoundingClientRect().height, availableHeight: root.clientHeight - 24 };
++            const box = element.getBoundingClientRect();
++            return { focusHeight: box.height, availableHeight: root.clientHeight - 24,
++              focus: box.toJSON(), root: root.getBoundingClientRect().toJSON(),
++              viewport: { width: innerWidth, height: innerHeight, devicePixelRatio },
++              scroll: { top: root.scrollTop, clientHeight: root.clientHeight, scrollHeight: root.scrollHeight,
++                maxScroll: Math.max(0, root.scrollHeight - root.clientHeight) } };
+           }, rootSelector);
++          diagnostic.initial = dimensions;
++          persistDiagnostic();
+           // macOS bounds native windows to the display. At 200% long sections
+           // need overlapping captures; prove complete scroll coverage instead
+           // of pretending the whole section fits in one compositor frame.
+@@ -104,19 +121,30 @@ export async function captureNativeSection(app: ElectronApplication, page: Page,
+           const offsets = [0];
+           for (let offset = dimensions.availableHeight; offset < last; offset += dimensions.availableHeight) offsets.push(offset);
+           if (last > 0) offsets.push(last);
++          diagnostic.offsets = offsets;
+           let coveredThrough = 0;
+           for (const [part, offset] of offsets.entries()) {
+-            await focus.evaluate((element, { position, selector }) => {
++            const scrollRequest = await focus.evaluate((element, { position, selector }) => {
+               const root = element.closest<HTMLElement>(selector)!;
++              const before = root.scrollTop;
++              const delta = element.getBoundingClientRect().top - root.getBoundingClientRect().top - 12 + position;
+               root.scrollTop += element.getBoundingClientRect().top - root.getBoundingClientRect().top - 12 + position;
++              return { before, requestedTop: before + delta, immediateTop: root.scrollTop, requestedOffset: position };
+             }, { position: offset, selector: rootSelector });
+             await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+             const geometry = await focus.evaluate((element, selector) => {
+               const box = element.getBoundingClientRect();
+-              const root = element.closest<HTMLElement>(selector)!.getBoundingClientRect();
++              const scrollRoot = element.closest<HTMLElement>(selector)!;
++              const root = scrollRoot.getBoundingClientRect();
+               return { viewport: { width: innerWidth, height: innerHeight }, focus: box.toJSON(), root: root.toJSON(),
+-                visibleStart: Math.max(0, root.top - box.top), visibleEnd: Math.min(box.height, root.bottom - box.top) };
++                visibleStart: Math.max(0, root.top - box.top), visibleEnd: Math.min(box.height, root.bottom - box.top),
++                scroll: { top: scrollRoot.scrollTop, clientHeight: scrollRoot.clientHeight, scrollHeight: scrollRoot.scrollHeight,
++                  maxScroll: Math.max(0, scrollRoot.scrollHeight - scrollRoot.clientHeight) },
++                currentFocusHeight: box.height, achievedOffset: root.top + 12 - box.top };
+             }, rootSelector);
++            observations.push({ part, offset, recordedAt: new Date().toISOString(), scrollRequest,
++              coveredThroughBefore: coveredThrough, ...geometry });
++            persistDiagnostic();
+             expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+             expect(geometry.focus.x).toBeGreaterThanOrEqual(geometry.root.x);
+             expect(geometry.focus.right).toBeLessThanOrEqual(geometry.root.right);
+@@ -126,6 +154,9 @@ export async function captureNativeSection(app: ElectronApplication, page: Page,
+             const name = `desktop-${stage}-${size}${offsets.length > 1 ? `-part-${part + 1}` : ""}.png`;
+             await nativeScreenshot(app, page, outputPath(name));
+             captures.push({ name, width, height, zoom, ...geometry });
++            diagnostic.coveredThrough = coveredThrough;
++            diagnostic.lastCapture = name;
++            persistDiagnostic();
+           }
+           expect(coveredThrough).toBeGreaterThanOrEqual(dimensions.focusHeight - 1);
+         }

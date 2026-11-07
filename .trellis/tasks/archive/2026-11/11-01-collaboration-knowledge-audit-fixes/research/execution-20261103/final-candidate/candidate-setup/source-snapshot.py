@@ -1,0 +1,88 @@
+from pathlib import Path
+import hashlib
+import json
+import os
+import stat
+import subprocess
+import sys
+from datetime import datetime, timezone
+
+ROOT = Path('/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103')
+EVIDENCE = Path('/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate/candidate-setup')
+SHARED = Path('/Volumes/artisan/code/2026/multica-0.4.37')
+
+def git(root, *args):
+    result = subprocess.run(['git', *args], cwd=root, text=True, capture_output=True, check=True)
+    return result.stdout.strip()
+
+def digest(path):
+    return hashlib.file_digest(path.open('rb'), 'sha256').hexdigest()
+
+def identity(path):
+    result = {'path': str(path), 'exists': path.exists(), 'symlink': path.is_symlink()}
+    if path.is_symlink():
+        result['link'] = os.readlink(path)
+    if path.exists():
+        info = path.stat()
+        result.update(realpath=str(path.resolve()), device=info.st_dev, inode=info.st_ino,
+                      mode=oct(stat.S_IMODE(info.st_mode)), size=info.st_size)
+        if path.is_file():
+            result['sha256'] = digest(path)
+    return result
+
+def capture():
+    paths = subprocess.run(['git', 'ls-files', '-z'], cwd=ROOT, capture_output=True, check=True).stdout.split(b'\0')
+    entries = []
+    for raw in paths:
+        if not raw:
+            continue
+        name = os.fsdecode(raw)
+        path = ROOT / name
+        info = path.lstat()
+        checksum = hashlib.sha256(os.readlink(path).encode()).hexdigest() if path.is_symlink() else digest(path)
+        entries.append({'path': name, 'sha256': checksum, 'mode': stat.S_IMODE(info.st_mode)})
+    combined = hashlib.sha256(json.dumps(entries, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+    donors = []
+    for name in ['mc-collaboration-e2e-repair-20261103', 'mc-collaboration-final4-20261102', 'mc-collaboration-final3-20261102']:
+        root = ROOT.parent / name
+        artifacts = ['pnpm-lock.yaml', 'pnpm-workspace.yaml', '.npmrc', 'node_modules/.modules.yaml',
+                     'node_modules/.pnpm/lock.yaml', 'packages/core/auth/index.ts',
+                     'packages/core/platform/core-provider.tsx', 'apps/web/components/web-providers.tsx']
+        if 'e2e-repair' in name:
+            artifacts += ['.omx/private/final-check-v10/make-check-v10.json',
+                          '.omx/private/final-check-v10/make-check-v10.log',
+                          '.omx/private/final-check-v10/makecheck-playwright-results-v9.json',
+                          'apps/web/.next/server/app/login/page_client-reference-manifest.js']
+        if 'final4' in name:
+            artifacts += ['.omx/private/final-candidate/make-check-v9.json',
+                          '.omx/private/final-candidate/make-check-v9.log']
+        donors.append({'root': identity(root), 'head': git(root, 'rev-parse', 'HEAD'),
+                       'protected_artifacts': [identity(root / name) for name in artifacts]})
+    guards = ['package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', '.npmrc', 'playwright.config.ts',
+              'packages/core/auth/index.ts', 'packages/core/platform/core-provider.tsx',
+              'scripts/test-agent-cli-guard.sh', 'scripts/agent-cli-command-names.txt',
+              'scripts/check.sh', 'apps/web/components/web-providers.tsx', 'apps/web/next.config.ts']
+    return {
+        'schema_version': 1, 'recorded_at': datetime.now(timezone.utc).isoformat(),
+        'command': [sys.executable, *sys.argv], 'root': identity(ROOT),
+        'candidate_head': git(ROOT, 'rev-parse', 'HEAD'),
+        'candidate_branch': git(ROOT, 'branch', '--show-current'),
+        'candidate_status': git(ROOT, 'status', '--porcelain=v1'),
+        'shared_checkout_head': git(SHARED, 'rev-parse', 'HEAD'),
+        'tracked_file_count': len(entries), 'tracked_source_fingerprint': combined,
+        'tracked_files': entries, 'guards': [identity(ROOT / name) for name in guards],
+        'protected_donors': donors,
+        'node': identity(Path('/Users/artisan/.nvm/versions/node/v22.23.2/bin/node')),
+        'cached_pnpm_bin': identity(Path('/Users/artisan/.cache/node/corepack/v1/pnpm/10.28.2/bin/pnpm.cjs')),
+        'cached_pnpm_bundle': identity(Path('/Users/artisan/.cache/node/corepack/v1/pnpm/10.28.2/dist/pnpm.cjs')),
+    }
+
+output = Path(sys.argv[1])
+if output.parent.resolve() != EVIDENCE.resolve():
+    raise SystemExit('Evidence output outside assigned directory')
+record = capture()
+with output.open('x') as file:
+    json.dump(record, file, indent=2)
+    file.write('\n')
+print(json.dumps({key: record[key] for key in ['candidate_head', 'candidate_branch', 'candidate_status',
+                 'shared_checkout_head', 'tracked_file_count', 'tracked_source_fingerprint']}, indent=2))

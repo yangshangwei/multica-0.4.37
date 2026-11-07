@@ -1,0 +1,322 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation [ref=e4]:
+        - button [ref=e5]: Workspaces
+        - button [ref=e6]: Collaboration
+    - generic [ref=e8]:
+      - generic [ref=e11]:
+        - generic [ref=e12]:
+          - list [ref=e13]:
+            - listitem [ref=e14]:
+              - button [ref=e15]:
+                - generic [ref=e17]: P
+                - generic [ref=e18]: P1 browser acceptance
+                - img [ref=e19]
+          - list [ref=e21]:
+            - listitem [ref=e22]:
+              - button [ref=e23]:
+                - img [ref=e24]
+                - generic [ref=e27]: Search...
+                - generic:
+                  - generic:
+                    - img
+                  - generic: K
+            - listitem [ref=e28]:
+              - button [ref=e29]:
+                - img [ref=e31]
+                - generic [ref=e34]: New Issue
+                - generic:
+                  - generic: C
+        - generic [ref=e35]:
+          - list [ref=e38]:
+            - listitem [ref=e39]:
+              - link [ref=e40] [cursor=pointer]:
+                - /url: /p1-09a0c306-25c/inbox
+                - img [ref=e41]
+                - generic [ref=e44]: Inbox
+            - listitem [ref=e45]:
+              - link [ref=e46] [cursor=pointer]:
+                - /url: /p1-09a0c306-25c/my-issues
+                - img [ref=e47]
+                - generic [ref=e51]: My Issues
+            - listitem [ref=e52]:
+              - link [ref=e53] [cursor=pointer]:
+                - /url: /p1-09a0c306-25c/chat
+                - img [ref=e54]
+                - generic [ref=e56]: Chat
+          - generic [ref=e57]:
+            - generic [ref=e58]: Work
+            - list [ref=e60]:
+              - listitem [ref=e61]:
+                - link [ref=e62] [cursor=pointer]:
+                  - /url: /p1-09a0c306-25c/issues
+                  - img [ref=e63]
+                  - generic [ref=e66]: Workspace issues
+              - listitem [ref=e67]:
+                - link [ref=e68] [cursor=pointer]:
+                  - /url: /p1-09a0c306-25c/projects
+                  - img [ref=e69]
+                  - generic [ref=e71]: Projects
+              - listitem [ref=e72]:
+                - link [ref=e73] [cursor=pointer]:
+                  - /url: /p1-09a0c306-25c/iterations
+                  - img [ref=e74]
+                  - generic [ref=e76]: Iterations
+              - listitem [ref=e77]:
+                - link [ref=e78] [cursor=pointer]:
+                  - /url: /p1-09a0c306-25c/triage
+                  - img [ref=e79]
+                  - generic [ref=e82]: Triage
+                  - generic [ref=e83]: "2"
+          - generic [ref=e84]:
+            - generic [ref=e85]: AI Team
+            - list [ref=e87]:
+              - listitem [ref=e88]:
+                - link [ref=e89] [cursor=pointer]:
+                  - /url: /p1-09a0c306-25c/agents
+                  - img [ref=e90]
+                  - generic [ref=e93]: Agents
+              - listitem [ref=e94]:
+                - link [ref=e95] [cursor=pointer]:
+                  - /url: /p1-09a0c306-25c/squads
+                  - img [ref=e96]
+                  - generic [ref=e101]: Squads
+              - listitem [ref=e102]:
+                - link [ref=e103] [cursor=pointer]:
+                  - /url: /p1-09a0c306-25c/autopilots
+                  - img [ref=e104]
+                  - generic [ref=e106]: Autopilot
+          - generic [ref=e107]:
+            - generic [ref=e108]: Resources & connections
+            - list [ref=e110]:
+              - listitem [ref=e111]:
+                - link [ref=e112] [cursor=pointer]:
+                  - /url: /p1-09a0c306-25c/skills
+                  - img [ref=e113]
+                  - generic [ref=e115]: Skills
+              - listitem [ref=e116]:
+                - link [ref=e117] [cursor=pointer]:
+                  - /url: /p1-09a0c306-25c/mcp
+                  - img [ref=e118]
+                  - generic [ref=e121]: MCP
+              - listitem [ref=e122]:
+                - link [ref=e123] [cursor=pointer]:
+                  - /url: /p1-09a0c306-25c/marketplace
+                  - img [ref=e124]
+                  - generic [ref=e128]: Capability market
+              - listitem [ref=e129]:
+                - link [ref=e130] [cursor=pointer]:
+                  - /url: /p1-09a0c306-25c/runtimes
+                  - img [ref=e131]
+                  - generic [ref=e133]: Runtimes
+        - generic [ref=e134]:
+          - list [ref=e135]:
+            - listitem [ref=e136]:
+              - link [ref=e137] [cursor=pointer]:
+                - /url: /p1-09a0c306-25c/usage
+                - img [ref=e138]
+                - generic [ref=e140]: Analytics
+            - listitem [ref=e141]:
+              - link [ref=e142] [cursor=pointer]:
+                - /url: /p1-09a0c306-25c/settings
+                - img [ref=e143]
+                - generic [ref=e146]: Settings
+          - button [ref=e148] [cursor=pointer]:
+            - img [ref=e149]
+        - button [ref=e152]
+      - main [ref=e153]:
+        - generic [ref=e154]:
+          - generic [ref=e155]:
+            - heading [level=1] [ref=e156]: Triage
+            - button [ref=e157]:
+              - img
+              - generic [ref=e158]: Import CSV
+            - button [ref=e159]:
+              - img
+              - generic [ref=e160]: Create pending task
+          - tablist [ref=e161]:
+            - tab [selected] [ref=e162]:
+              - text: Ready
+              - generic [ref=e163]: "2"
+            - tab [ref=e164]:
+              - text: All pending
+              - generic [ref=e165]: "2"
+            - tab [ref=e166]:
+              - text: Snoozed
+              - generic [ref=e167]: "0"
+            - tab [ref=e168]: History
+          - tabpanel [ref=e169]:
+            - generic [ref=e170]:
+              - region [ref=e173]:
+                - generic [ref=e174]:
+                  - textbox [ref=e175]:
+                    - /placeholder: Search title or identifier
+                  - generic [ref=e176]:
+                    - button [ref=e177]:
+                      - img
+                      - text: Filters
+                    - generic [ref=e178]:
+                      - combobox [ref=e179]:
+                        - generic [ref=e180]: Oldest first
+                        - img: ▼
+                      - textbox [ref=e181]: oldest
+                - generic [ref=e182]:
+                  - generic [ref=e183]:
+                    - generic [ref=e184]:
+                      - checkbox [ref=e185]
+                      - checkbox [ref=e186]
+                    - button [ref=e187]:
+                      - generic [ref=e188]: Unreviewed intake must be excluded
+                      - generic [ref=e189]: P109-36 · Manual · 11/4/2026
+                  - generic [ref=e190]:
+                    - generic [ref=e191]:
+                      - checkbox [ref=e192]
+                      - checkbox [ref=e193]
+                    - button [pressed] [ref=e194]:
+                      - generic [ref=e195]: Customer reports the same upload failure
+                      - generic [ref=e196]: P109-37 · Manual · 11/4/2026
+                - generic [ref=e197]:
+                  - generic [ref=e198]: 2 results
+                  - generic [ref=e199]:
+                    - button [disabled]: Previous page
+                    - button [disabled]: Next page
+              - generic [ref=e202]:
+                - generic [ref=e204]:
+                  - generic [ref=e207]:
+                    - generic [ref=e208]:
+                      - link [ref=e210] [cursor=pointer]:
+                        - /url: /p1-09a0c306-25c/issues/01a1a425-471d-758d-b47c-0d40dba70ce5
+                        - generic [ref=e211]: P109-37
+                      - generic [ref=e212]:
+                        - button [ref=e213]:
+                          - img
+                        - button [ref=e214]:
+                          - img
+                        - button [ref=e215]:
+                          - img
+                    - generic [ref=e217]:
+                      - button [ref=e218]: Customer reports the same upload failure
+                      - generic [ref=e220]:
+                        - generic [ref=e221]:
+                          - generic [ref=e222]: Pending review
+                          - generic [ref=e223]: Round 1 · Manual
+                          - button [ref=e224]:
+                            - text: "Reviewer: Unassigned"
+                            - img
+                        - group [ref=e225]:
+                          - generic [ref=e226] [cursor=pointer]: History
+                      - generic [ref=e227]:
+                        - textbox [ref=e230]:
+                          - paragraph [ref=e231]: Add description...
+                        - generic [ref=e232]:
+                          - button [ref=e234]:
+                            - img [ref=e235]
+                          - button [ref=e238]:
+                            - img
+                      - generic [ref=e241]:
+                        - heading [level=2] [ref=e243]: Activity
+                        - generic [ref=e244]:
+                          - button [ref=e245]: Unsubscribe
+                          - button [ref=e246] [cursor=pointer]:
+                            - link [ref=e249]:
+                              - generic [ref=e250]: PP
+                      - generic [ref=e252]:
+                        - button [ref=e253]:
+                          - paragraph [ref=e255]: Leave a comment...
+                        - generic [ref=e256]:
+                          - button [ref=e257]:
+                            - img
+                          - button [disabled]:
+                            - img
+                  - generic:
+                    - generic:
+                      - button:
+                        - text: Properties
+                        - img
+                      - generic:
+                        - generic:
+                          - generic: Pending review
+                        - generic:
+                          - generic: Unassigned
+                        - generic:
+                          - button [disabled]:
+                            - img
+                        - generic:
+                          - button:
+                            - img
+                            - generic: Add property
+                      - button:
+                        - text: Pull requests
+                        - img
+                      - generic:
+                        - paragraph: No linked pull requests yet. Reference this issue's identifier in a PR's branch name, title, or body to auto-link it.
+                      - button:
+                        - text: Details
+                        - img
+                      - generic:
+                        - generic:
+                          - generic:
+                            - link:
+                              - generic: PP
+                        - generic:
+                          - generic: Nov 4
+                        - generic:
+                          - generic: Nov 4
+                - generic [ref=e259]:
+                  - generic [ref=e260]:
+                    - button [ref=e261]: Mark duplicate
+                    - button [ref=e262]: Reject
+                    - button [ref=e263]: Snooze
+                  - generic [ref=e264]:
+                    - button [ref=e265]: Accept
+                    - button [ref=e266]:
+                      - img
+        - dialog:
+          - generic:
+            - generic:
+              - heading [level=3]: Chat with your agents
+              - paragraph: Ask for a summary, plan your day, or hand off a quick task.
+          - generic:
+            - generic:
+              - img
+              - generic: You need an agent to start chatting.
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - textbox [disabled]:
+                      - paragraph: Create an agent to start chatting
+        - button [ref=e267]:
+          - img [ref=e268]
+  - region "Notifications alt+T"
+  - alert [ref=e270]
+  - dialog "Mark duplicate" [ref=e274]:
+    - generic [ref=e275]:
+      - heading "Mark duplicate" [level=2] [ref=e276]
+      - paragraph [ref=e277]: P109-37 · Customer reports the same upload failure
+    - paragraph [ref=e278]: Choose a formal task in this workspace, including completed tasks. Comments and attachments stay on this submission.
+    - generic [ref=e279]:
+      - generic [ref=e280]: Duplicate target task
+      - generic [ref=e281]:
+        - generic [ref=e282]: Duplicate target task
+        - group [ref=e284]:
+          - combobox "Duplicate target task" [expanded] [active] [ref=e285]: Same upload failure; retain the customer's additional context
+          - group [ref=e286]:
+            - img [ref=e287]
+        - listbox "Eligible tasks" [ref=e290]:
+          - status [ref=e292]: No matching tasks.
+    - generic [ref=e293]:
+      - generic [ref=e294]: Reason
+      - textbox "Reason" [ref=e295]
+    - generic [ref=e296]:
+      - button "Cancel" [ref=e297]
+      - button "Mark duplicate" [ref=e298]
+    - button "Close" [ref=e299]:
+      - img
+      - generic [ref=e300]: Close
+```

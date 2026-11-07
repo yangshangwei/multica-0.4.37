@@ -1,0 +1,67 @@
+{
+  "state": "prepared_pending_v15_shared_result_final_identity_and_later_root_permission",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "full_run_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/make-check-v15.json",
+  "audit_module": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/final-state-audit-v15/final_state_audit.py",
+    "sha256": "d4201c363b2fa8f147915c67e73947fd1b715077ef06754a80688b201a2c6fd8",
+    "state": "materialized_bytes_only_pending_independent_review"
+  },
+  "audit_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/final-state-audit-v15/review.json",
+    "sha256": null,
+    "state": "pending_v15_independent_final_identity_review"
+  },
+  "tools": {
+    "node": {
+      "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572"
+    },
+    "pnpm": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+      "sha256": "b276da51dc8ca5b0d3ee3371695b50fc8b3244b281b091c63a3f082a88dadeb9"
+    },
+    "go": {
+      "path": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412"
+    },
+    "psql": {
+      "path": "/opt/homebrew/opt/libpq/bin/psql",
+      "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07"
+    }
+  },
+  "goroot": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64",
+  "source_sha256": {
+    "server/cmd/server/collaboration_knowledge_correction_composite_test.go": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+    "server/cmd/server/collaboration_knowledge_host_composite_test.go": "d866d3f888a1ed48b015a04bb844170a1b5cd8c53ee662f104f0508b23fac3f6",
+    "server/internal/daemon/collaboration_host_router_test.go": "1939ea098c47210f62512a138b35d944add6f3b4f02b5f2e0fd9a5dabaab130f",
+    "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+    "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+    "e2e/fixtures/collaboration-host-provider_test.go": "10af5c9122d610dd966fd78ea8eed48ec6fe93ba263025cb17cbee9c0853a600",
+    "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e",
+    "e2e/fixtures/collaboration-knowledge.ts": "7a3f68f8a7213dbc40de3e7a8bf02222fb39d27411a0244b8ae2ea6ea89b1960",
+    "scripts/go-test-with-agent-cli-guard.sh": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+    "scripts/dev-env.sh": "6fb4a38c75ffe51c4e1a60712f52887263ee2a21ab205432c3bc90fdf25e001e",
+    "server/internal/auth/password_config.go": "390625cc9961a791adfd24e0fdccffba0607053d9f6271717f889b2d2d885103"
+  },
+  "knowledge_default_enabled": false,
+  "real_provider_allowed": false,
+  "environment_parser": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/run-make-check-v15-provenance.py",
+    "sha256": "10ee286f89ae1072c3384abeb88b86cac078ecbadba2cfb6b0a07201d107180d",
+    "state": "materialized_bytes_only_pending_independent_review"
+  },
+  "forbidden_renderer_origins": [
+    "http://127.0.0.1:55132",
+    "http://localhost:55132",
+    "http://127.0.0.1:61276",
+    "http://localhost:61276"
+  ],
+  "coordinator": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "pending_bindings": [
+    "audit_review.path_and_sha256",
+    "actual_full_result_and_independent_final_identity",
+    "four_actual_permission_resource_and_freshness_fields"
+  ]
+}

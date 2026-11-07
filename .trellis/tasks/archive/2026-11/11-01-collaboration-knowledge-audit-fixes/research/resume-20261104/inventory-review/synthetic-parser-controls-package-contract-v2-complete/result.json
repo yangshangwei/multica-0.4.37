@@ -1,0 +1,60 @@
+{
+  "scope": "Synthetic parser-only controls. No product tests, packages, services, databases or Provider invoked. No result here is real acceptance.",
+  "collector_sha256": "6acef959f12c095776aa9f8f8812c5d12273a2c22f01db404eee9f6f986b62aa",
+  "controls": [
+    {
+      "name": "exact package set follows frozen scripts; docs is selected and UI has no test script",
+      "pass": true
+    },
+    {
+      "name": "five full JSON reports preserve named skips/todos and distinguish files from nested suites",
+      "pass": true
+    },
+    {
+      "name": "canonical command transformation markers never become leaf reports",
+      "pass": true
+    },
+    {
+      "name": "truncated JSON cannot become a complete report",
+      "pass": true
+    },
+    {
+      "name": "identical log repeats retain occurrences without double-counting one logical report",
+      "pass": true
+    },
+    {
+      "name": "aggregate counts must equal actual assertionResults",
+      "pass": true
+    },
+    {
+      "name": "running/queued leaves remain incomplete even with matching aggregate counts",
+      "pass": true
+    },
+    {
+      "name": "missing one of five package reporters blocks complete inventory",
+      "pass": true
+    },
+    {
+      "name": "distinct same-package reports cannot be selected or merged",
+      "pass": true
+    },
+    {
+      "name": "reject unexpected reporter outside exact package set: @multica/ui",
+      "pass": true
+    },
+    {
+      "name": "reject unexpected reporter outside exact package set: @foreign/extra",
+      "pass": true
+    },
+    {
+      "name": "reject unexpected reporter outside exact package set: foreign-extra",
+      "pass": true
+    },
+    {
+      "name": "missing docs blocks completeness; UI cannot substitute",
+      "pass": true
+    }
+  ],
+  "count": 13,
+  "all_passed": true
+}

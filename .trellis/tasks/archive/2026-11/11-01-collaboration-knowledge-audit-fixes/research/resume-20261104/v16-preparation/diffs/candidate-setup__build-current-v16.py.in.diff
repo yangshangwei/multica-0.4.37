@@ -1,0 +1,47 @@
+--- /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/candidate-setup/build-current-v15.py
++++ /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/candidate-setup/build-current-v16.py.in
+@@ -8,13 +8,13 @@
+ import sys
+ 
+ ROOT = Path('/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103')
+-OUT = ROOT / '.omx/private/final-check-v15'
+-EVIDENCE = Path('/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/candidate-setup')
++OUT = ROOT / '.omx/private/final-check-v16'
++EVIDENCE = Path('/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/candidate-setup')
+ GO_ROOT = Path('/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64')
+ GO = GO_ROOT / 'bin/go'
+ NODE = Path('/Users/artisan/.nvm/versions/node/v22.23.2/bin/node')
+-EXPECTED = 'd41573e3a4eb3bd6c36feed3f0d542a0e066ee0f'
+-allocation = json.loads((OUT / 'build-temp-allocation-v15.json').read_text())
++EXPECTED = 'PENDING_ROOT_FINAL_SHA'
++allocation = json.loads((OUT / 'build-temp-allocation-v16.json').read_text())
+ TEMP = Path(allocation['directory'])
+ phase = sys.argv[1]
+ if phase not in ['cli', 'desktop']:
+@@ -29,7 +29,7 @@
+ 
+ if git('rev-parse', 'HEAD') != EXPECTED or git('status', '--porcelain'):
+     raise SystemExit('Build candidate drift')
+-if (EVIDENCE / f'{phase}-build-v15.json').exists():
++if (EVIDENCE / f'{phase}-build-v16.json').exists():
+     raise SystemExit('Preserve previous build evidence')
+ environment = {
+     'PATH': f'{NODE.parent}:{GO.parent}:{ROOT / "apps/desktop/node_modules/.bin"}:{ROOT / "node_modules/.bin"}:/usr/bin:/bin:/usr/sbin:/sbin',
+@@ -94,7 +94,7 @@
+ 
+ metadata.update(command=command, cwd=str(cwd))
+ print(json.dumps({'phase': phase, 'command': command, 'cwd': str(cwd), 'source_sha': EXPECTED}, indent=2), flush=True)
+-log_path = EVIDENCE / f'{phase}-build-v15.log'
++log_path = EVIDENCE / f'{phase}-build-v16.log'
+ with log_path.open('x') as log:
+     result = subprocess.run(command, cwd=cwd, env=environment, stdout=log, stderr=subprocess.STDOUT)
+ metadata.update(finished_at=datetime.now(timezone.utc).isoformat(), exit_code=result.returncode,
+@@ -116,7 +116,7 @@
+                                   for name in ['main/index.js', 'preload/index.js', 'renderer/index.html']}
+ metadata['source_head_after'] = git('rev-parse', 'HEAD')
+ metadata['source_status_after'] = git('status', '--porcelain')
+-with (EVIDENCE / f'{phase}-build-v15.json').open('x') as file:
++with (EVIDENCE / f'{phase}-build-v16.json').open('x') as file:
+     json.dump(metadata, file, indent=2)
+     file.write('\n')
+ print(json.dumps({key: metadata[key] for key in ['phase', 'exit_code', 'output', 'log_sha256', 'source_status_after']}, indent=2), flush=True)

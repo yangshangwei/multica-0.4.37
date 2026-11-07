@@ -1,0 +1,200 @@
+{
+  "verdict": "ready_for_independent_review",
+  "candidate_head": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "changed_file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-preparation-records-web.spec.ts",
+  "source_sha256": "92b47ff47942218e53207b850e6331d3c0d5f7d1d0f36f11a074013a0036c8ff",
+  "root_cause": "Native block:start aligns fractional top=-0.25px with clipping edge0. Actual section height312 and intersection height311.75 produce ratio0.9991987347602844. Native centering scrolls all ancestors and leaves genuine viewport margin.",
+  "product_source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+  "product_modified": false,
+  "red": {
+    "label": "viewport-diagnostic1",
+    "exit_code": 1,
+    "stats": {
+      "startTime": "2026-11-03T13:14:22.540Z",
+      "duration": 9468.512,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    }
+  },
+  "hypothesis_green": {
+    "label": "viewport-diagnostic2",
+    "exit_code": 0,
+    "stats": {
+      "startTime": "2026-11-03T13:15:31.372Z",
+      "duration": 5730.733,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "prepared_and_legacy_wide_narrow_ratios": [
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  "final_directed": {
+    "label": "viewport-directed17",
+    "exit_code": 0,
+    "stats": {
+      "startTime": "2026-11-03T13:17:02.025Z",
+      "duration": 90652.101,
+      "expected": 17,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "source_unchanged": true,
+    "old_round1_unchanged": true
+  },
+  "typecheck": {
+    "typescript_version": "5.9.3",
+    "root_files": [
+      "e2e/collaboration-boundaries-web.spec.ts",
+      "e2e/collaboration-workbench-web.spec.ts",
+      "e2e/collaboration-memory-web.spec.ts",
+      "e2e/fixtures/collaboration-mention-journeys.ts",
+      "e2e/collaboration-preview-web.spec.ts",
+      "e2e/collaboration-preparation-records-web.spec.ts",
+      "e2e/settings-preferences.spec.ts"
+    ],
+    "method": "strict TypeScript noEmit over final seven-file E2E overlay and imports",
+    "diagnostics": [],
+    "exit_code": 0
+  },
+  "private_typecheck_setup_failure": "Initial standalone compiler used ES2022 default lib and rejected existing String.isWellFormed. Raw diagnostic retained; rerun uses repository ESNext+DOM libs. Product/source untouched.",
+  "git_diff_check": "exit0",
+  "unchanged_assertions": [
+    "ratio1",
+    "geometry x>=0 and right<=viewport width",
+    "no horizontal page overflow",
+    "wide1280x1000/narrow390x844",
+    "PNG dimensions match viewport",
+    "prepared/legacy/refreshed/multiple-viewer semantic assertions",
+    "180s test,15s action and5s expectation budgets"
+  ],
+  "Provider_calls": 0,
+  "wholecheck_accepted": false,
+  "no_commits": true,
+  "followups": [
+    "Independent review final viewport patch and complete directed17 result",
+    "Root freezes successor and runs newly bound complete check; directed success is not full acceptance"
+  ],
+  "artifacts": {
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/viewport-diagnostic1/run.log": {
+      "sha256": "38a244c2309c7829ee29321a29d0d10273f3d740916b595648f3ce32d672f13e",
+      "bytes": 4666
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/viewport-diagnostic1/results.json": {
+      "sha256": "8621c4c09a98b50d0d88004cc854f757df56c4a5f8007ace212ed57c783b2089",
+      "bytes": 24631
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/viewport-diagnostic1/result.json": {
+      "sha256": "381fffca8f46f915133b78e1daf5879680c5c751b342dde2134299c77b4c00f8",
+      "bytes": 15227
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/viewport-diagnostic1/source-before.json": {
+      "sha256": "11f89991dee4dbc57d810740f55c47e8f8da37f00d52ec6c130b4e9630eba93c",
+      "bytes": 5413887
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/viewport-diagnostic1/source-after.json": {
+      "sha256": "11f89991dee4dbc57d810740f55c47e8f8da37f00d52ec6c130b4e9630eba93c",
+      "bytes": 5413887
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/viewport-diagnostic2/run.log": {
+      "sha256": "5b1dfc19ed804d4cbd5483cf2cba6ae39f8ff27fceb41c1fe26dc6fe5bb8bd98",
+      "bytes": 241
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/viewport-diagnostic2/results.json": {
+      "sha256": "c3eb9ba45a5630bf661ea477a589d1a35a9be24f1ff5aa90863965c67f9952dd",
+      "bytes": 63248
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/viewport-diagnostic2/result.json": {
+      "sha256": "64d71a32a96301261da568efa4e20befa430c336652a14af6d5bab71a590f302",
+      "bytes": 15227
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/viewport-diagnostic2/source-before.json": {
+      "sha256": "bab2b972d70ade53c5e8a959b20f51975a8c700b5cceefd2f84fdd2b371779f5",
+      "bytes": 5413887
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/viewport-diagnostic2/source-after.json": {
+      "sha256": "bab2b972d70ade53c5e8a959b20f51975a8c700b5cceefd2f84fdd2b371779f5",
+      "bytes": 5413887
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/viewport-directed17/run.log": {
+      "sha256": "f61ab7a7304a15df6b1cb34be4b61cfdb5957c7a46198d99ebe70ea66b34d367",
+      "bytes": 3146
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/viewport-directed17/results.json": {
+      "sha256": "6d67abf6798546e4bb851107402bfc8cfe3e5fdb1c68a97cff6ba581468cb5fd",
+      "bytes": 72185
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/viewport-directed17/result.json": {
+      "sha256": "256739c038ba32699bb0f4f59f95f2fc22cf1725ce1d03dcc95d33f278c0b856",
+      "bytes": 15563
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/viewport-directed17/source-before.json": {
+      "sha256": "2578dd5a6d668553a54ee94ffa578e8f8eca0d63bed38b03fdbfa6af85fac84a",
+      "bytes": 5413887
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/viewport-directed17/source-after.json": {
+      "sha256": "2578dd5a6d668553a54ee94ffa578e8f8eca0d63bed38b03fdbfa6af85fac84a",
+      "bytes": 5413887
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/source-before.ts": {
+      "sha256": "6ff9e181295b93079bfd16d618c2fac2b5ba2295591631b30b997d06112a9fec",
+      "bytes": 3965
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/source-final.ts": {
+      "sha256": "92b47ff47942218e53207b850e6331d3c0d5f7d1d0f36f11a074013a0036c8ff",
+      "bytes": 3989
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/viewport-center.patch": {
+      "sha256": "ed73cdb4428ec0849f6962247887dab139f43df3d19b8d63c7a3ed9e7b3c543f",
+      "bytes": 951
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/viewport-diagnostic-prepared-wide.json": {
+      "sha256": "2297778145049b77a02953568523e4fb67179be5ba66b1432c1482fcd1cd91f9",
+      "bytes": 10290
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/center-viewport-diagnostic-prepared-wide.json": {
+      "sha256": "26d49a2cd5ea2a8dd1bc9c3ead34c446b6917fa66c7ccb4870352befd26e0fd6",
+      "bytes": 10267
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/center-viewport-diagnostic-prepared-narrow.json": {
+      "sha256": "27d520e68ebfb386620a11d8d963b0c8acf5c93a638915b564a9b2d718fe7f9e",
+      "bytes": 10190
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/center-viewport-diagnostic-legacy-wide.json": {
+      "sha256": "31e1508c9a837ea378e9241ca9fab79b94d770bc42337d8075e53fd929aed892",
+      "bytes": 10223
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/center-viewport-diagnostic-legacy-narrow.json": {
+      "sha256": "60d9f43573cf2435e3fba34aa67604bdeebef2328ad5e89fb75f1675bb58bc9b",
+      "bytes": 10180
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/typecheck-final.json": {
+      "sha256": "7e6c207bfb5533babf2d27ddde3a3f2285701449f978973e68873c8a51b3cd63",
+      "bytes": 798
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/typecheck-final-esnext.json": {
+      "sha256": "e9d5ea081da00c4489525a742dda9ff9d07f6fcf5836c4febb57b9acae366fa8",
+      "bytes": 518
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/directed17-inventory.json": {
+      "sha256": "873cd7ac02f114818b959420707ff57d0fd88bf92b779d7cf59cd8e84e6b81e9",
+      "bytes": 5388
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/run.py": {
+      "sha256": "e01fbd0a4b77343fd0dff6c6fda5f0282f8a7514a8449a2ea5a29335f7322e63",
+      "bytes": 6793
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/static-check.cjs": {
+      "sha256": "9b2f530e59e07eae8188704ca32247653867a640d2a62b535cbc7366ea188654",
+      "bytes": 1659
+    }
+  }
+}

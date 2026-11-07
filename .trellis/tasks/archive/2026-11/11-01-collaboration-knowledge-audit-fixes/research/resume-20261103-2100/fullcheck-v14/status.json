@@ -1,0 +1,82 @@
+{
+  "observed_at": "2026-11-03T15:22:52.882736+00:00",
+  "state": "complete",
+  "make_pid": 39379,
+  "launcher_pid": 39363,
+  "wholecheck_accepted": false,
+  "make_exit": 2,
+  "stage": [
+    "6",
+    "Playwright (one worker, zero retries)"
+  ],
+  "log_bytes": 27047905,
+  "tail": [
+    "    Dropping isolated Go database multica_check_20261103141424_39386_go",
+    "\u2717 Checks FAILED (exit 1).",
+    "make: *** [check] Error 1"
+  ],
+  "Go": {
+    "allocated": 82,
+    "completed": 82,
+    "failed_packages": [],
+    "current_packages": [],
+    "completed_named_counts": {
+      "pass": 20963,
+      "fail": 0,
+      "skip": 22
+    },
+    "running_named_failures": [],
+    "running_package_observed_terminal_counts": {
+      "pass": 0,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "make_process_alive": false,
+  "launcher_process_alive": false,
+  "TS_completed_package_summaries": {
+    "@multica/core": {
+      "passed": 4455
+    },
+    "@multica/docs": {
+      "passed": 62
+    },
+    "@multica/views": {
+      "passed": 7165
+    },
+    "@multica/web": {
+      "passed": 290
+    },
+    "@multica/desktop": {
+      "passed": 1272
+    }
+  },
+  "static_tasks": {
+    "passed": 15,
+    "total": 15
+  },
+  "Playwright": {
+    "observed_case_index": 441,
+    "discovered_total": 441,
+    "observed_failure_reports": [
+      "  1) [chromium] \u203a e2e/collaboration-account-desktop.spec.ts:277:1 \u203a Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history ",
+      "  2) [chromium] \u203a e2e/collaboration-account-desktop.spec.ts:402:1 \u203a Desktop child links, recorded pages and result notifications survive popouts and restart ",
+      "  3) [chromium] \u203a e2e/collaboration-account-desktop.spec.ts:583:1 \u203a Desktop resource owners authorize, withdraw and commit a held configuration switch ",
+      "\n  4) [chromium] \u203a e2e/collaboration-preparation-records-desktop.spec.ts:8:1 \u203a Desktop reads synthetic preparation with native 200 percent captures and unchanged proof ",
+      "  5) [chromium] \u203a e2e/collaboration-boundaries-web.spec.ts:291:1 \u203a Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues ",
+      "  6) [chromium] \u203a e2e/collaboration-command-history-web.spec.ts:8:1 \u203a cancelled waiting commands retain original content after comment changes, refresh and another account reads ",
+      "  7) [chromium] \u203a e2e/collaboration-mention-journeys-web.spec.ts:46:3 \u203a Web mixed H+A+B+S mentions retain one comment and exact queued target associations ",
+      "  8) [chromium] \u203a e2e/collaboration-mention-journeys-web.spec.ts:46:3 \u203a Web owner revocation after preview refuses only A and original-key replay stays deduplicated ",
+      "  9) [chromium] \u203a e2e/collaboration-mention-journeys-web.spec.ts:65:1 \u203a Web offline mentions survive a fresh context and edits notify only newly added people ",
+      "\n  10) [chromium] \u203a e2e/collaboration-preparation-records-web.spec.ts:7:1 \u203a Web reads synthetic frozen preparation without inferring termination across refresh and viewers ",
+      "  11) [chromium] \u203a e2e/collaboration-preview-web.spec.ts:8:1 \u203a trigger preview explains shared and later batches before a suppressed target is sent ",
+      "  12) [chromium] \u203a e2e/collaboration-resource-offers-web.spec.ts:7:1 \u203a a private owner offers a resource to an external organizer and independently authorizes it ",
+      "  13) [chromium] \u203a e2e/collaboration-resources-web.spec.ts:7:1 \u203a resource owners register, authorize, withdraw and switch while participant management preserves authority ",
+      "  14) [chromium] \u203a e2e/collaboration-mention-journeys-desktop.spec.ts:97:1 \u203a Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations ",
+      "  15) [chromium] \u203a e2e/collaboration-mention-journeys-desktop.spec.ts:102:1 \u203a Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated ",
+      "  16) [chromium] \u203a e2e/collaboration-mention-journeys-desktop.spec.ts:107:1 \u203a Desktop offline mentions survive a fresh profile and edits notify only newly added people "
+    ],
+    "scope": "Reporter schedule position only; not a passed count"
+  },
+  "scope": "Current run only. Phase counts do not constitute wholecheck acceptance; final audit and complete inventory required."
+}

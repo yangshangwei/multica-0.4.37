@@ -1,0 +1,221 @@
+{
+  "recorded_at": "2026-11-04T02:53:19.254892+00:00",
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "executor": "/root/shared_executor",
+  "state": "actual_preparation_complete_awaiting_independent_admission",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "candidate_clean": true,
+  "tracked_file_count": 17536,
+  "tracked_source_fingerprint": "8d2ed44c0df575439ad4c35f44244581cc41b7edcb97d39f52099e9a44d5aa5e",
+  "canonical_product_source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+  "product_file_count": 7984,
+  "development_HEAD_overlay_source_id": "080e49210a53a763213651be5d76b343186613d1673cafdfc6519645c4690364",
+  "workspace_edges": 22,
+  "workspace_exports": 66,
+  "cli_sha256": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac",
+  "desktop_counts": {
+    "renderer": 493,
+    "preload": 1,
+    "main": 1
+  },
+  "actual_controls": {
+    "pass": 69,
+    "fail": 0,
+    "skip": 0,
+    "groups": [
+      46,
+      7,
+      16
+    ]
+  },
+  "COW_cache": {
+    "successful_clones": 10290,
+    "source_unchanged": true,
+    "distinct_inode_no_source_writes": true,
+    "normal_copy_fallbacks": 0,
+    "fingerprint": "ff7e162a164d170b326849fbff58bb2b70127e9e2dde0c71e7f98134711ec296"
+  },
+  "resources": {
+    "recorded_at": "2026-11-04T02:48:57.421796+00:00",
+    "coordinator": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+    "executor": "/root/shared_executor",
+    "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+    "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "exclusive_window_verified": true,
+    "active_complete_or_rk1k_checks": [],
+    "future_execution_paths_absent": [
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/full-check-home-v16",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/dev-registry-v16",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/profiles-v16",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/workspaces-v16",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/metadata-home-not-created",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/make-check-v16.json",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/make-check-v16.log",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/check-source-v16.safe.env"
+    ],
+    "source_env_sha256": "29ed7dc3997e4a98c8777a8bc720da1a75ce56eb189ed5afdf70ef9ee555ffd0",
+    "owned_bindings_sha256": "7fad8eedfcfaef3440facf4c26cafd06a78ce7aae9f2251b3620e200922311f0",
+    "renderer": {
+      "ownership_verified": true,
+      "url": "http://127.0.0.1:58268/",
+      "pid": 5896,
+      "process_group": 5896,
+      "index_sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+      "process": "5896     1  5896 Wed Nov  4 10:48:17 2026     /opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -u -m http.server 58268 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+      "cwd": "p5896\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103\n",
+      "ready_record_sha256": "010eca795a9a3ac9122a2ccfad3e3ffa60db1ac05e924b1cbc49eaeef8c75a52"
+    },
+    "redis": {
+      "ownership_verified": true,
+      "port": 58269,
+      "container_id": "b619c546fcc72eb3180512d1568a6b39388fc1fead041e8ca9d484a0853f54be",
+      "image_id": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "labels": {
+        "multica.candidate": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+        "multica.task.owner": "01a1a3c9-2459-7de1-8244-55640c5f6143"
+      },
+      "port_binding": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "58269"
+        }
+      ],
+      "ping": "PONG"
+    },
+    "seed_database": {
+      "ownership_verified": true,
+      "name": "multica_closure_v16_seed_01a1a3c9",
+      "witness": {
+        "database": "multica_closure_v16_seed_01a1a3c9",
+        "server_addr": "172.20.0.2",
+        "server_port": 5432,
+        "latest_migration": "764_collaboration_ai_policy",
+        "migration_count": 752,
+        "max_connections": "100",
+        "connections": 30
+      },
+      "allocation_record_sha256": "d79df2c535f6fa927362abf3f35307c23450cee739f0b6d780bbfdc5a7db042e",
+      "migration_record_sha256": "220f6c7cf6f228539abe17445ef70d45c1d3f57c960b396d6c96f809ef77a70a"
+    },
+    "retired_runtime_release_sha256": "3b5847b6b1392b92ed1eea0eab249f342480688ed409664945c5cde0c68122f0",
+    "knowledge_budget_allocated": 0,
+    "knowledge_calls": 0,
+    "real_provider_allowed": false,
+    "knowledge_default": false,
+    "complete_check_started": false
+  },
+  "protected_v15_CCG15_hashes_unchanged": true,
+  "protected_hash_count": 46,
+  "core_materialized": 24,
+  "deferred_wrapper_and_clearance": [
+    {
+      "template": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/execution/execute-once.py.in",
+      "final_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-execution/execute-once.py",
+      "reason": "unissued review/clearance execution phase"
+    },
+    {
+      "template": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/independent-review-clearance-v16.json.template",
+      "final_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/independent-review-clearance-v16.json",
+      "reason": "unissued review/clearance execution phase"
+    }
+  ],
+  "fullcheck_started": false,
+  "clearance_issued": false,
+  "references": {
+    "materialization.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/materialization.json",
+      "sha256": "afb7622eb46e57d6cf59f4a38b73773ac04c90e2caeae8b5512295809ce52096"
+    },
+    "cache-seeding-before.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/cache-seeding-before.json",
+      "sha256": "9bac60be6f76cd2fd3adf44a4b5ea103339689cc2fe4b15c6d7cc99d32326a3f"
+    },
+    "cache-seeding-result.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/cache-seeding-result.json",
+      "sha256": "0aa997a11c2d8a6d754a0587aadb5f046e7b8b385e9b8088666ec7ace74c00a8"
+    },
+    "retired-runtime-release-after.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/retired-runtime-release-after.json",
+      "sha256": "3b5847b6b1392b92ed1eea0eab249f342480688ed409664945c5cde0c68122f0"
+    },
+    "candidate-setup/source-before.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/candidate-setup/source-before.json",
+      "sha256": "35799dc05f0e19c06e5daed322bf702a33fe60b244ec21afd6701eb1411f488a"
+    },
+    "candidate-setup/source-after-preparation.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/candidate-setup/source-after-preparation.json",
+      "sha256": "2963ec430b0c976ff468c61b0c6fd44e46cccfbc1cff5b9f0a34bc624b68c189"
+    },
+    "candidate-setup/cli-build-v16.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/candidate-setup/cli-build-v16.json",
+      "sha256": "c2a2e2b6077b3ca3fd4d5ccd8392027ff29c5ec7eab82e185d05c1b48597c355"
+    },
+    "candidate-setup/desktop-build-v16.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/candidate-setup/desktop-build-v16.json",
+      "sha256": "38979b1663b4d3889cfb81ea1adcc2845c4d518b124e582bed29b319f80affce"
+    },
+    "candidate-setup/artifact-bindings-v16.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/candidate-setup/artifact-bindings-v16.json",
+      "sha256": "e80641a6a0a58fb422b33ee75905dfebd217fb6b234603dd73cabe50e935a59f"
+    },
+    "seed-migration-result.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/seed-migration-result.json",
+      "sha256": "220f6c7cf6f228539abe17445ef70d45c1d3f57c960b396d6c96f809ef77a70a"
+    },
+    "resource-allocation-redis.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/resource-allocation-redis.json",
+      "sha256": "d79df2c535f6fa927362abf3f35307c23450cee739f0b6d780bbfdc5a7db042e"
+    },
+    "renderer-ready.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/renderer-ready.json",
+      "sha256": "010eca795a9a3ac9122a2ccfad3e3ffa60db1ac05e924b1cbc49eaeef8c75a52"
+    },
+    "private-control-inventory.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/private-control-inventory.json",
+      "sha256": "de3b2566a679d620272990e1e2d6b0607e77e3669d505a96afeb14226c8e6991"
+    },
+    "owned-bindings-v16-provenance.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/owned-bindings-v16-provenance.json",
+      "sha256": "7fad8eedfcfaef3440facf4c26cafd06a78ce7aae9f2251b3620e200922311f0"
+    },
+    "resource-ownership-v16.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/resource-ownership-v16.json",
+      "sha256": "510ed31219209da5129229de4bcfc99530e011fced5940a79d40934bcc0a6e5a"
+    },
+    "run-make-check-v16-provenance.py": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/run-make-check-v16-provenance.py",
+      "sha256": "52c2f0a40fab9dcaabbc20267c106cdffc503d126853e9a3290da280350deaca"
+    },
+    "check-source-v16.env": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/check-source-v16.env",
+      "sha256": "29ed7dc3997e4a98c8777a8bc720da1a75ce56eb189ed5afdf70ef9ee555ffd0"
+    },
+    "check-bin/go": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/check-bin/go",
+      "sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce"
+    },
+    "check-bin/pnpm": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/check-bin/pnpm",
+      "sha256": "1a2a07f1423ef7518a8b120da58402837c88878efc632aa207fe705ebaa341de"
+    },
+    "build-temp-allocation-v16.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/build-temp-allocation-v16.json",
+      "sha256": "149858afd9f4851ed0c55e869f7c6c914369aaed3abed94097bd7a2f79d2004a"
+    },
+    "final_auditor": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-state-audit-v16/final_state_audit.py",
+      "sha256": "2bf50f6e244f4c5f3b1c2022ae67663d8888047098145f8a1ea30fb4d28eb318"
+    },
+    "install": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/desktop-v16-install.json",
+      "sha256": "0d9754b6b7cba4ce1a7c7bb976fd13b72529de106d5bacc468a5b258c8e20e97"
+    }
+  },
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "production_knowledge_default": false,
+  "unresolved_issues": [],
+  "root_next": "Independent exact materialized/source/tool/artifact/cache/resource review and Root current live confirmation; then flat clearance and sole wrapper materialization/execution"
+}

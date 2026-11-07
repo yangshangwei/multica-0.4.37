@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-02T22:59:44.319883+00:00",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "scope": "current-candidate build/artifact/private-launcher preparation and offline fake preflight; no actual verification run clearance",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+  "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "candidate_clean": true,
+  "source_fingerprint": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+  "checkout_source_id": "3f9788baf2ad3d922df86c4817b7fe0f3183e1a5c6c0e40d43fc76cd4f2c1d88",
+  "production_repair_files": [
+    "packages/views/collaboration/account-picker.tsx",
+    "packages/views/collaboration/creation-form.tsx",
+    "packages/views/collaboration/field-inputs.tsx",
+    "packages/views/collaboration/form-styles.ts",
+    "packages/views/collaboration/labels.ts",
+    "packages/views/collaboration/workflow.tsx",
+    "packages/views/issues/components/pickers/property-picker.tsx",
+    "packages/views/locales/en/collaboration.json",
+    "packages/views/locales/zh-Hans/collaboration.json",
+    "server/internal/service/collaboration_source_fields.go",
+    "server/pkg/db/generated/collaboration_source_fields.sql.go",
+    "server/pkg/db/queries/collaboration_source_fields.sql"
+  ],
+  "production_repair_file_count": 12,
+  "preserved_assertion_e2e_delta": {
+    "files": [
+      "e2e/collaboration-memory-web.spec.ts",
+      "e2e/settings-preferences.spec.ts"
+    ],
+    "patch_id": "3a28b3fc5a05aa7c39e9c6e310d1cc5427441f8a",
+    "equals_original118fc_patch": true
+  },
+  "private_launcher": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11.py",
+    "sha256": "b2d17a742c45134640a070e980937b9f0ce4f724611c7e5c0fb6f2f0a333ffd2"
+  },
+  "source_env": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-source-v11.env",
+    "sha256": "999decf083adf9cea0271cef37834fe6528104d4ca63f8e69c90afacd01ecd8f",
+    "database_source_values_unchanged": true,
+    "data_only_parser_unchanged_AST": true,
+    "normalized_dollar_and_control_values_refused": true
+  },
+  "owned_bindings": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/owned-bindings-v11.json",
+    "sha256": "ccc11e4d7e79a19c964b75d4b2c3354268a4bf28fa7ad153c23aa0a95b30b6ba"
+  },
+  "adapters": {
+    "go": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/go",
+      "sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+      "identical_to_v9": true
+    },
+    "pnpm": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/pnpm",
+      "sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+      "identical_to_v9": true
+    }
+  },
+  "cli": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/multica",
+    "sha256": "c008c02377c4c52665000a0620a5a7b3f90f4d10d54d53e1d74bce97dccc6197",
+    "bytes": 29314610,
+    "version_observation": "multica v0.6.7-460-g304f74dd3 (commit: 304f74dd3, built: 2026-11-02T22:35:30Z)\ngo: go1.26.6, os/arch: darwin/arm64\n",
+    "command": [
+      "/usr/bin/sandbox-exec",
+      "-f",
+      "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/cli-build-offline.sb",
+      "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "build",
+      "-p=1",
+      "-mod=readonly",
+      "-ldflags",
+      "-X main.version=v0.6.7-460-g304f74dd3 -X main.commit=304f74dd3 -X main.date=2026-11-02T22:35:30Z",
+      "-o",
+      "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/multica",
+      "./cmd/multica"
+    ],
+    "go_version": "go version go1.26.6 darwin/arm64",
+    "source_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351"
+  },
+  "desktop": {
+    "renderer": {
+      "installed_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/renderer",
+      "staged_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/artifacts/renderer",
+      "file_count": 493,
+      "manifest_sha256": "bc46754412b91fac5f6649b7b37ad537e067bb9ab6fa6f0c4012cb0fced91d18",
+      "key_file_sha256": "9d92714285456d587bb8bcd3ecf2897ad015cf7f63d76f75fea9a541536ae0eb"
+    },
+    "preload": {
+      "installed_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/preload",
+      "staged_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/artifacts/preload",
+      "file_count": 1,
+      "manifest_sha256": "eb6f5654d511b3b23a8856597deeabf4277c8a21afffcce04c8703ad6b4c128e",
+      "key_file_sha256": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5"
+    },
+    "main": {
+      "installed_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/main",
+      "staged_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/artifacts/main",
+      "file_count": 1,
+      "manifest_sha256": "7e4cfb3a45cb26761edb8b73b3f2cd2fe433d2d25e67010ea22156d4287a0360",
+      "key_file_sha256": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678"
+    }
+  },
+  "build_config": {
+    "source": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/electron.vite.config.ts",
+    "copy": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/.cache/final-check-v11/electron.vite.config.cts",
+    "source_sha256": "af76a1be148e5ff45ce6061d6781e76888cd0314c2c8a0e23a5eb8f7251f49c4",
+    "copy_sha256": "af76a1be148e5ff45ce6061d6781e76888cd0314c2c8a0e23a5eb8f7251f49c4",
+    "same_bytes": true,
+    "reason": "supported CJS config copy in ignored cache avoids unignored tool timestamp file; same current desktop cwd and locked dependencies"
+  },
+  "node": {
+    "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+    "version": "v22.23.2"
+  },
+  "pnpm": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+    "sha256": "b276da51dc8ca5b0d3ee3371695b50fc8b3244b281b091c63a3f082a88dadeb9",
+    "version": "10.28.2",
+    "bundle_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/dist/pnpm.cjs",
+    "bundle_sha256": "930fe74c335e95a8f9f6786f115f00c37ae82493ba7bdbddaddd9e06de542f43"
+  },
+  "go": {
+    "path": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+    "sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+    "version": "go1.26.6",
+    "goroot": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64",
+    "members": {
+      "VERSION": "19a1647c6e8fcfdd9b4ecc10d4c83303d4211738d01daed0a822558d96896c54",
+      "bin/go": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+      "pkg/tool/darwin_arm64/compile": "a55d3fd03c97324e4be76e637282c37d6da9ed85aef12f2a2e18f4aa4a67601d",
+      "pkg/tool/darwin_arm64/link": "f7c7456fd23e3d335e375f621eb71c8dac10a95f52bceec05d644bcb5d38cca2",
+      "pkg/tool/darwin_arm64/asm": "833b7000abefed75b0b440c3abd76cfc26c9fb8d956b1f1f3a0333fecace0e3a"
+    }
+  },
+  "psql_metadata_only": {
+    "path": "/opt/homebrew/opt/libpq/bin/psql",
+    "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07"
+  },
+  "workspace_graph": {
+    "proof_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-candidate-preparation/workspace-resolution-after-build.json",
+    "proof_sha256": "0cc7dec361fa5bb08f59586c6d99c6fd5831874374f705b96c4bfdedf918faae",
+    "owned_exports": 66,
+    "foreign_exports": 0,
+    "auth_paths_share_one_source_identity": true,
+    "declared_workspace_edges": 22,
+    "source_backed_expectations_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/workspace-identity-expectations.json",
+    "source_backed_expectations_sha256": "579f69cdd7c561a9d65c20fa21cde1443092696fcef860c8a315ce9ba7daf49d"
+  },
+  "fake_preflight": {
+    "cases": 42,
+    "exit_code": 0,
+    "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/fake-preflight-v11.py",
+    "source_sha256": "fcc6fb2693ca19d4355116080ab66e974623a7e9696c64f72a53c2a71ddbeaad",
+    "log_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-candidate-preparation/fake-preflight-v11.log",
+    "log_sha256": "a7b097df04e8dc5b915714bc28df92dd03b551dbe3375d6c9fe231458c4e075e",
+    "network_denied": true,
+    "actual_repository_make_tests_SQL_services": false
+  },
+  "adapter_environment_delta": {
+    "cases": 5,
+    "exit_code": 0,
+    "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/adapter-env-preflight-v11.py",
+    "source_sha256": "004fbbc7820da02c54d6b619dbec458c1379337821812f81063bd92694e99536",
+    "log_sha256": "113295e6dc91da955d1e2795b79f22954c6baca7ad1acc119657e519c803dc12",
+    "actual_metadata_probes_only": [
+      "cached Go version",
+      "own pnpm --version"
+    ],
+    "ordinary_go_child_publication_and_pool_separation": "pass with synthetic executables only",
+    "Playwright_wiring": "pass with synthetic executable and guard only"
+  },
+  "build_temp": {
+    "directory": "/private/tmp/multica-final-check-v11-6phaqd3s",
+    "mode": "0700",
+    "owner_uid": 501,
+    "git_root_absent": true,
+    "keep_for_evidence": true,
+    "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+    "allocation_phase": "preparation-only",
+    "allocated_at": "2026-11-02T22:32:44.566670+00:00"
+  },
+  "api_pool": {
+    "max": 10,
+    "min": 1
+  },
+  "planned_renderer_url": "http://127.0.0.1:19846/",
+  "renderer19846_availability": "read-only lsof found no listener at preparation; root owns startup and current recheck",
+  "old_renderer19845_and_Redis16422": "preserved; no connect/stop/flush",
+  "root_before_run_requirements": {
+    "independent_clearance_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/independent-review-clearance-v11.json",
+    "additional_hash_fields": [
+      "bindings_sha256",
+      "resource_ownership_sha256"
+    ],
+    "resource_ownership_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/resource-ownership-v11.json",
+    "resource_fields": [
+      "candidate_sha",
+      "candidate_root",
+      "exclusive_window_verified=true",
+      "renderer.ownership_verified=true",
+      "renderer.url matches19846",
+      "renderer.index_sha256 matches current build",
+      "redis.ownership_verified=true",
+      "redis.port=16422",
+      "redis.container_id identifies the same dedicated task Redis"
+    ],
+    "root_independent_review_and_live_resource_proof_pending": true
+  },
+  "preservation": {
+    "actual_bindings_validation": "passed source/tool/workspace/CLI/desktop checks, then required root ownership proof as expected",
+    "expected_refusal": "Root-owned renderer/Redis/exclusive-window proof is required",
+    "actual_source_tools_artifacts_checked": true,
+    "no_actual_clearance_or_safe_env_or_run_created": true,
+    "absent_execution_paths": [
+      "independent-review-clearance-v11.json",
+      "resource-ownership-v11.json",
+      "check-source-v11.safe.env",
+      "make-check-v11.json",
+      "make-check-v11.log",
+      "full-check-home-v11",
+      "go-packages-v11",
+      "dev-registry-v11",
+      "profiles-v11",
+      "workspaces-v11"
+    ],
+    "all_tracked_source_bytes_and_modes_unchanged": true,
+    "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+    "source_fingerprint": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+    "preserved_donor_artifacts": [
+      "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/pnpm-lock.yaml",
+      "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/pnpm-workspace.yaml",
+      "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.npmrc",
+      "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/node_modules/.modules.yaml",
+      "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/node_modules/.pnpm/lock.yaml",
+      "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/packages/core/auth/index.ts",
+      "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/packages/core/platform/core-provider.tsx",
+      "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/components/web-providers.tsx",
+      "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+      "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.log",
+      "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/makecheck-playwright-results-v9.json",
+      "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/.next/server/app/login/page_client-reference-manifest.js",
+      "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/pnpm-lock.yaml",
+      "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/pnpm-workspace.yaml",
+      "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.npmrc",
+      "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/node_modules/.modules.yaml",
+      "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/node_modules/.pnpm/lock.yaml",
+      "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/core/auth/index.ts",
+      "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/core/platform/core-provider.tsx",
+      "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/apps/web/components/web-providers.tsx",
+      "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.json",
+      "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.log",
+      "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/pnpm-lock.yaml",
+      "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/pnpm-workspace.yaml",
+      "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.npmrc",
+      "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.modules.yaml",
+      "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/lock.yaml",
+      "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/auth/index.ts",
+      "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/platform/core-provider.tsx",
+      "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/web/components/web-providers.tsx"
+    ],
+    "v10_inputs_byte_identical": true,
+    "v9_adapters_byte_identical": true,
+    "syntax": "pass",
+    "production_Next_build_absent": true
+  },
+  "verification": {
+    "CLI_build": "pass",
+    "desktop_build": "pass",
+    "offline_fake_checks": "47/47 pass",
+    "actual_source_artifact_binding_validation": "pass until expected missing root ownership proof",
+    "syntax": "pass",
+    "lint": "not run; root owns repository gate",
+    "typecheck": "not run; root owns repository gate",
+    "repository_tests": "not run; root owns repository gate",
+    "production_Next_SSR_API_Web_PW": "not run; root owns subsequent windows"
+  },
+  "actual_clearance_safe_env_run_or_execution_dirs_created": false,
+  "source_seed_or_databases_allocated_or_recreated": false,
+  "source_or_dependencies_or_lock_or_Git_changed": false,
+  "real_agent_model_account_network_push_release_actions": false
+}

@@ -1,0 +1,312 @@
+{
+  "total": 69,
+  "pass": 69,
+  "fail": 0,
+  "skip": 0,
+  "suites": [
+    {
+      "suite": "launcher",
+      "count": 46,
+      "tests": [
+        {
+          "name": "__main__.LauncherEntryTests.test_actual_graph_mismatch_refuses_before_make.test_actual_graph_mismatch_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_backtick_substitution_is_not_executed.test_backtick_substitution_is_not_executed",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_blocking_review_cannot_launch.test_blocking_review_cannot_launch",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_build_temp_git_root_refuses_before_make.test_build_temp_git_root_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_candidate_mismatch_is_refused_before_make.test_candidate_mismatch_is_refused_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_catalog_path_mismatch_refuses_before_make.test_catalog_path_mismatch_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_changed_cli_refuses_before_make.test_changed_cli_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_changed_pinned_node_refuses_before_make.test_changed_pinned_node_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_changed_pinned_pnpm_bundle_refuses_before_make.test_changed_pinned_pnpm_bundle_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_changed_renderer_refuses_before_make.test_changed_renderer_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_changed_rollout_gate_refuses_before_make.test_changed_rollout_gate_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_command_substitution_is_not_executed.test_command_substitution_is_not_executed",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_credentialed_renderer_is_refused_before_make.test_credentialed_renderer_is_refused_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_escaped_normalized_braced_make_function_is_refused.test_escaped_normalized_braced_make_function_is_refused",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_escaped_normalized_parenthesized_make_function_is_refused.test_escaped_normalized_parenthesized_make_function_is_refused",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_existing_dsh_refuses_before_make.test_existing_dsh_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_existing_execution_directory_refuses_before_make.test_existing_execution_directory_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_foreign_workspace_link_refuses_before_make.test_foreign_workspace_link_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_generated_quoted_escaped_empty_and_duplicate_values_are_data.test_generated_quoted_escaped_empty_and_duplicate_values_are_data",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_invalid_deployment_uuid_refuses_before_any_subprocess.test_invalid_deployment_uuid_refuses_before_any_subprocess",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_launcher_child_gets_private_home_and_explicit_actual_caches.test_launcher_child_gets_private_home_and_explicit_actual_caches",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_matching_own_tools_and_provider_env_scrub.test_matching_own_tools_and_provider_env_scrub",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_matching_review_preserves_api_pool_and_dynamic_renderer.test_matching_review_preserves_api_pool_and_dynamic_renderer",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_missing_catalog_refuses_before_make.test_missing_catalog_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_missing_resource_ownership_refuses_before_make.test_missing_resource_ownership_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_missing_review_cannot_launch.test_missing_review_cannot_launch",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_modified_tracked_source_refuses_before_make.test_modified_tracked_source_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_new_v16_process_paths_and_record_are_bound.test_new_v16_process_paths_and_record_are_bound",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_non_loopback_renderer_is_refused_before_make.test_non_loopback_renderer_is_refused_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_normalized_ascii_control_is_refused.test_normalized_ascii_control_is_refused",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_normalized_dollar_reference_is_refused.test_normalized_dollar_reference_is_refused",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_normalized_tab_is_refused.test_normalized_tab_is_refused",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_quoted_normalized_braced_make_function_is_refused.test_quoted_normalized_braced_make_function_is_refused",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_repeated_launch_preserves_previous_evidence.test_repeated_launch_preserves_previous_evidence",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_repository_env_copy_preserves_enforced_pool_and_removed_context.test_repository_env_copy_preserves_enforced_pool_and_removed_context",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_root_resource_proof_rejects_unowned_redis.test_root_resource_proof_rejects_unowned_redis",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_run_record_separates_product_overlay_and_tracked_identities.test_run_record_separates_product_overlay_and_tracked_identities",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_shared_writable_catalog_refuses_before_make.test_shared_writable_catalog_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_shell_metacharacters_stay_literal_in_canonical_configuration.test_shell_metacharacters_stay_literal_in_canonical_configuration",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_symlinked_catalog_refuses_before_make.test_symlinked_catalog_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_tampered_go_adapter_is_refused_before_make.test_tampered_go_adapter_is_refused_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_tampered_launcher_is_refused_before_make.test_tampered_launcher_is_refused_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_tampered_pnpm_adapter_is_refused_before_make.test_tampered_pnpm_adapter_is_refused_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_tampered_source_config_is_refused_before_make.test_tampered_source_config_is_refused_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_wrong_canonical_product_digest_refuses_before_make.test_wrong_canonical_product_digest_refuses_before_make",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.LauncherEntryTests.test_wrong_canonical_product_roots_refuses_before_make.test_wrong_canonical_product_roots_refuses_before_make",
+          "status": "pass"
+        }
+      ],
+      "report_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/launcher-private-preflight.json",
+      "report_sha256": "470ba5446b1af95e67d3db5748c879fd1d61cb5eb732c0c4e1b92843d22c295b",
+      "raw_log_sha256": "747d2117c6bdfc0179e4fa4ebf908dfbe0b24366c467f540e01eb7bacef25450"
+    },
+    {
+      "suite": "adapter-env",
+      "count": 7,
+      "tests": [
+        {
+          "name": "__main__.AdapterEnvironmentTests.test_exact_turbo_test_scope_adds_only_json_reporting.test_exact_turbo_test_scope_adds_only_json_reporting",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.AdapterEnvironmentTests.test_go_compile_forwarding_preserves_api_configuration_without_sql.test_go_compile_forwarding_preserves_api_configuration_without_sql",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.AdapterEnvironmentTests.test_non_test_metadata_uses_exact_cached_go.test_non_test_metadata_uses_exact_cached_go",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.AdapterEnvironmentTests.test_non_test_metadata_uses_exact_own_pnpm_and_node.test_non_test_metadata_uses_exact_own_pnpm_and_node",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.AdapterEnvironmentTests.test_other_turbo_invocation_is_not_rewritten.test_other_turbo_invocation_is_not_rewritten",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.AdapterEnvironmentTests.test_outer_go_test_removes_api_publication_and_pool_only_in_child.test_outer_go_test_removes_api_publication_and_pool_only_in_child",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.AdapterEnvironmentTests.test_playwright_wiring_delegates_only_to_selected_fake_pnpm.test_playwright_wiring_delegates_only_to_selected_fake_pnpm",
+          "status": "pass"
+        }
+      ],
+      "report_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/adapter-env-private-preflight.json",
+      "report_sha256": "67eb6ebd264a086c74c9aa425217e0fe11a4778b2b8e8c25106c5027782784a5",
+      "raw_log_sha256": "33a866f6b6aabe53b2d60bad83cc3fc474092a13c6409ec2d2dfc4bb985e1ba5"
+    },
+    {
+      "suite": "final-audit",
+      "count": 16,
+      "tests": [
+        {
+          "name": "__main__.FinalStateTests.test_canonical_execution_environment_mutation_is_rejected.test_canonical_execution_environment_mutation_is_rejected",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.FinalStateTests.test_changed_desktop_artifact_is_rejected.test_changed_desktop_artifact_is_rejected",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.FinalStateTests.test_changed_development_environment_source_identity_is_rejected.test_changed_development_environment_source_identity_is_rejected",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.FinalStateTests.test_clean_final_state_passes_identity_audit.test_clean_final_state_passes_identity_audit",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.FinalStateTests.test_completed_run_log_mutation_is_rejected.test_completed_run_log_mutation_is_rejected",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.FinalStateTests.test_exact_generated_import_is_recorded_without_writing_source.test_exact_generated_import_is_recorded_without_writing_source",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.FinalStateTests.test_existing_report_is_never_overwritten.test_existing_report_is_never_overwritten",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.FinalStateTests.test_failed_whole_command_remains_failed_after_identity_pass.test_failed_whole_command_remains_failed_after_identity_pass",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.FinalStateTests.test_foreign_workspace_link_is_rejected.test_foreign_workspace_link_is_rejected",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.FinalStateTests.test_generated_import_plus_extra_declaration_is_rejected.test_generated_import_plus_extra_declaration_is_rejected",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.FinalStateTests.test_generated_import_with_changed_file_mode_is_rejected.test_generated_import_with_changed_file_mode_is_rejected",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.FinalStateTests.test_incomplete_run_is_rejected.test_incomplete_run_is_rejected",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.FinalStateTests.test_missing_review_retains_a_failure_report.test_missing_review_retains_a_failure_report",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.FinalStateTests.test_next_declaration_symlink_is_rejected.test_next_declaration_symlink_is_rejected",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.FinalStateTests.test_pinned_tool_mutation_is_rejected.test_pinned_tool_mutation_is_rejected",
+          "status": "pass"
+        },
+        {
+          "name": "__main__.FinalStateTests.test_unrelated_tracked_mutation_is_rejected_even_if_git_status_is_clean.test_unrelated_tracked_mutation_is_rejected_even_if_git_status_is_clean",
+          "status": "pass"
+        }
+      ],
+      "report_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-audit-private-preflight.json",
+      "report_sha256": "95eecd6cd690755ae3958acb5cdfcb59a29b2787935f5a7313528c93cc18beaf",
+      "raw_log_sha256": "22e328b3fd68a307bee1d3e5fc709b36a8b975378a50072d39ea07ddaad71af9"
+    }
+  ],
+  "scope": "offline private control results only, not repository full acceptance"
+}

@@ -1,0 +1,160 @@
+{
+  "state": "ON01_actual_pass_verified",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "recorded_at": "2026-11-04T08:15:12.731770+00:00",
+  "label": "ccg2-on-v16-01",
+  "exit_status": 0,
+  "accepted": true,
+  "stats": {
+    "startTime": "2026-11-04T08:13:22.565Z",
+    "duration": 6541.089999999999,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "named_attempts": [
+    {
+      "title": "deployed knowledge startup flag controls one actual Host input and its authorization events",
+      "status": "passed",
+      "retry": 0
+    }
+  ],
+  "files": {
+    "started.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-on-v16-01/started.json",
+      "sha256": "128190a9a73463920e90873e7b031cb273e3d97ef121ffd6e1bfb87ea6666789",
+      "bytes": 3510
+    },
+    "result.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-on-v16-01/result.json",
+      "sha256": "6aa58a5fe4829f2023661cb6767e42abbfbbbd6573fc0ea9076628df6cf33a37",
+      "bytes": 4060
+    },
+    "results.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-on-v16-01/results.json",
+      "sha256": "1dfb9490264c17b0058ff39a5abd6426edc1fb206a9e29f884d95efdafbb77d4",
+      "bytes": 11532
+    },
+    "output.log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-on-v16-01/output.log",
+      "sha256": "f6bb8d359e433c508efd4585a449b41cdcf60d6c65e5b3aa79cac6c1cbe1f852",
+      "bytes": 233
+    }
+  },
+  "actual_evidence": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/on01-actual-deployed-evidence.json",
+    "sha256": "eb8ebb0a38cc3b6f85096f6ef9c3ac90c99bfd009f158e44f909a0616be347c3",
+    "canonical_observation_sha256": "cfe33f3b8923d790823183cfabe74022131119827ad1c41f6b3000f4214238bb"
+  },
+  "actual_input": {
+    "prompt_sha256": "306d2da74e8abb98f5bea4145be35b9278d2f157cbcc1d0b30f6c07c788e0f19",
+    "section_present": true,
+    "contributions": [
+      {
+        "candidate_id": "0fe2d8ae-12a1-4aa5-84bb-9c1c89e0ab69",
+        "version": "1",
+        "source_issue_id": "01a1a59e-b86f-7981-8a70-b30f247d15d5",
+        "content_sha256": "dc17fa76e2126bbd90385a35f2d293ec52f5154ee07ee1044c815bff50b13854"
+      }
+    ],
+    "no_session_persistence": true
+  },
+  "approved": {
+    "candidate_id": "0fe2d8ae-12a1-4aa5-84bb-9c1c89e0ab69",
+    "version": "1",
+    "content_sha256": "dc17fa76e2126bbd90385a35f2d293ec52f5154ee07ee1044c815bff50b13854",
+    "source_issue_id": "01a1a59e-b86f-7981-8a70-b30f247d15d5",
+    "target_workspace_id": "a8a8d4e4-a1bd-46de-9e71-225733928370",
+    "proposed_by_user_id": "510bc8f3-c932-4147-a179-98adaad8a224"
+  },
+  "knowledge_events": {
+    "knowledge_claim": 1,
+    "knowledge_preparation": 1,
+    "knowledge_authorization": 1
+  },
+  "run": {
+    "id": "1851de4f-e9a3-4935-bb31-4627fe4edf77",
+    "progress_state": "settled",
+    "proof_state": "host_exit_observed",
+    "business_outcome": "success",
+    "launch_count": "1"
+  },
+  "one_physical_provider_launch": {
+    "attempt_seq": "1",
+    "kind": "provider",
+    "phase": "attempt_reaped",
+    "process_observed": true,
+    "scope": "process_group",
+    "terminal_accepted": true,
+    "authorized": true,
+    "terminal_kind": "managed_launch_ended",
+    "cleanup": {
+      "state": "tracked_scope_complete",
+      "scope": "process_group",
+      "attempted": true
+    }
+  },
+  "termination_ledger": {
+    "version": 2,
+    "run_id": "1851de4f-e9a3-4935-bb31-4627fe4edf77",
+    "issue_id": "01a1a59e-b86f-7981-8a70-b30f247d15d5",
+    "phase": "proof_acknowledged",
+    "session_key": "e1cd94fb306a4b6339ea074686382a6148ff97898fb99ba7556ccf542909d0c9",
+    "namespace_present": false,
+    "sealed": true,
+    "proof_state": "host_exit_observed",
+    "cleanup": {
+      "state": "tracked_scope_complete",
+      "scope": "process_group",
+      "attempted": true
+    },
+    "launches": [
+      {
+        "attempt_seq": "1",
+        "kind": "provider",
+        "phase": "attempt_reaped",
+        "process_observed": true,
+        "scope": "process_group",
+        "terminal_accepted": true,
+        "authorized": true,
+        "terminal_kind": "managed_launch_ended",
+        "cleanup": {
+          "state": "tracked_scope_complete",
+          "scope": "process_group",
+          "attempted": true
+        }
+      }
+    ]
+  },
+  "ON_services_preserved": {
+    "api": {
+      "port": 18295,
+      "pid": 67212,
+      "preserved": true
+    },
+    "web": {
+      "port": 13215,
+      "pid": 67517,
+      "preserved": true
+    },
+    "renderer": {
+      "port": 49338,
+      "pid": 67409,
+      "preserved": true
+    }
+  },
+  "protected_originals_unchanged": true,
+  "original_OFF01_setup_failure_kept": true,
+  "OFF02_actual_pass_kept": true,
+  "source_dirty": [
+    " M apps/web/next-env.d.ts"
+  ],
+  "no_source_assertion_deployment_cache_or_database_switch": true,
+  "standalone_auditor_rerun": false,
+  "Root_review_before_release": true,
+  "task6_started": false,
+  "production_default_enabled": false,
+  "knowledge_allocated": 0,
+  "real_Provider_calls": 0
+}

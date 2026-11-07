@@ -1,0 +1,597 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/fixture_final_review",
+  "reviewer_thread": "01a1a3cc-7283-7543-9715-6aa7060d55b9",
+  "reviewed_at": "2026-11-04T03:03:10.371813+00:00",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "scope": "Independent ACTUAL materialized V16 execution admission. No full make, final complete-run audit, source/resource/cache mutation, model or clearance execution performed by reviewer.",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "launcher_sha256": "52c2f0a40fab9dcaabbc20267c106cdffc503d126853e9a3290da280350deaca",
+  "adapter_sha256": {
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "1a2a07f1423ef7518a8b120da58402837c88878efc632aa207fe705ebaa341de"
+  },
+  "source_env_sha256": "29ed7dc3997e4a98c8777a8bc720da1a75ce56eb189ed5afdf70ef9ee555ffd0",
+  "bindings_sha256": "7fad8eedfcfaef3440facf4c26cafd06a78ce7aae9f2251b3620e200922311f0",
+  "resource_ownership_sha256": "510ed31219209da5129229de4bcfc99530e011fced5940a79d40934bcc0a6e5a",
+  "final_auditor_sha256": "2bf50f6e244f4c5f3b1c2022ae67663d8888047098145f8a1ea30fb4d28eb318",
+  "source_identities": {
+    "canonical_product": {
+      "source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+      "file_count": 7984,
+      "purpose": "Tracked production roots only; no E2E/task docs"
+    },
+    "development_HEAD_overlay": {
+      "source_id": "080e49210a53a763213651be5d76b343186613d1673cafdfc6519645c4690364",
+      "purpose": "Actual HEAD plus normalized developer overlay identity for runtime"
+    },
+    "all_tracked_snapshot": {
+      "sha256": "8d2ed44c0df575439ad4c35f44244581cc41b7edcb97d39f52099e9a44d5aa5e",
+      "file_count": 17536,
+      "purpose": "Every tracked content/mode, including tests/docs"
+    }
+  },
+  "root_resource_confirmation": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/root-live-ownership-before-full-v16.json",
+    "sha256": "2fb9b5b656032e3000991cfb144050eefcf19e84f57f7999f61794c9fd3b5b6e",
+    "actual_root_live_recheck": true,
+    "reviewer_live_operations_repeated": false
+  },
+  "final_auditor": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-state-audit-v16/final_state_audit.py",
+    "sha256": "2bf50f6e244f4c5f3b1c2022ae67663d8888047098145f8a1ea30fb4d28eb318",
+    "default_review_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/independent-review/review.json"
+  },
+  "actual_binding_verification": {
+    "verdict": "pass",
+    "actual_verify_owned_bindings_called": true,
+    "clearance_input": "In-memory binding/resource hashes only; no clearance file or launcher.main",
+    "result_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/independent-review/verification.json",
+    "result_sha256": "bcc15efcef67ce4541ec3c70bb6921eae0cc675cdc7c7f25fa7d784deab3ba59",
+    "probe_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/independent-review/verify-preparation.py",
+    "probe_sha256": "11a346a133172903ecc3ba87511c0d3aa10e1ab3ada0eb48b1702a495c1b765e",
+    "read_only_conditions_verified": 1691,
+    "software_test_result_claim": false
+  },
+  "tracked_files_verified": 17536,
+  "product_files_verified": 7984,
+  "workspace": {
+    "edges": 22,
+    "actual_exports": 66,
+    "owning_checkout_graph_matches": true,
+    "shared_auth_has_one_physical_source": true
+  },
+  "cli": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/multica",
+    "sha256": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac",
+    "bytes": 29314610,
+    "version": "v0.6.7-469-geda0d68fb",
+    "version_observation": "multica v0.6.7-469-geda0d68fb (commit: eda0d68fb, built: 2026-11-04T02:41:50Z)\ngo: go1.26.6, os/arch: darwin/arm64\n",
+    "build_record_sha256": "c2a2e2b6077b3ca3fd4d5ccd8392027ff29c5ec7eab82e185d05c1b48597c355"
+  },
+  "desktop": {
+    "counts": {
+      "renderer_installed": 493,
+      "renderer_staged": 493,
+      "preload_installed": 1,
+      "preload_staged": 1,
+      "main_installed": 1,
+      "main_staged": 1
+    },
+    "installed_files": 495,
+    "staged_files": 495,
+    "retained_previous_files": 495,
+    "all_bytes_modes_types_and_inventories_verified": true
+  },
+  "build_records": {
+    "cli": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/candidate-setup/cli-build-v16.json",
+      "sha256": "c2a2e2b6077b3ca3fd4d5ccd8392027ff29c5ec7eab82e185d05c1b48597c355",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "builder_sha256": "3b26cf749943fbda4d6f6d4c7851ffcec73ce963b32c7983c36c254528c3e633",
+      "profile_sha256": "25d083b8f5256f1dba2489decc063f0decf507765a3faf01d10eeabf5b52fe90",
+      "source_head_after": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "source_status_after": ""
+    },
+    "desktop": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/candidate-setup/desktop-build-v16.json",
+      "sha256": "38979b1663b4d3889cfb81ea1adcc2845c4d518b124e582bed29b319f80affce",
+      "exit_code": 0,
+      "log_sha256": "ebf51e11389039148ca56b69e0de486e634ce42f2d67331d2410aea293fec7bb",
+      "builder_sha256": "3b26cf749943fbda4d6f6d4c7851ffcec73ce963b32c7983c36c254528c3e633",
+      "profile_sha256": "25d083b8f5256f1dba2489decc063f0decf507765a3faf01d10eeabf5b52fe90",
+      "source_head_after": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "source_status_after": ""
+    }
+  },
+  "materialization": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/materialization.json",
+    "sha256": "afb7622eb46e57d6cf59f4a38b73773ac04c90e2caeae8b5512295809ce52096",
+    "core_rows_verified": 24,
+    "golden_templates_verified": 26,
+    "protected_V15_files_unchanged": 33,
+    "protected_CCG15_files_unchanged": 13,
+    "deferred_wrapper_and_clearance": [
+      {
+        "template": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/execution/execute-once.py.in",
+        "final_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-execution/execute-once.py",
+        "reason": "unissued review/clearance execution phase"
+      },
+      {
+        "template": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/independent-review-clearance-v16.json.template",
+        "final_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/independent-review-clearance-v16.json",
+        "reason": "unissued review/clearance execution phase"
+      }
+    ],
+    "core_pending_fields": 0,
+    "credential_values_printed": false
+  },
+  "COW_cache": {
+    "result_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/independent-review/cache-verification.json",
+    "result_sha256": "e51746be9ebaf5b14aca5cbc1fb06fc9a842718fc0c6d2496d4ecedf90b815ce",
+    "probe_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/independent-review/cache-readonly-verification.py",
+    "probe_sha256": "b0218acfc8fac74c51c156782723377b5ef24dfc117629afeeeeb93e5df20a46",
+    "recorded_clones_verified": 10290,
+    "source_bytes_independently_rehashed": 2977123026,
+    "source_before_after_and_initial_destination_identical": true,
+    "actual_old_source_content_mode_inode_mtime_unchanged": true,
+    "all_initial_and_current_source_destination_inodes_distinct": true,
+    "no_fallback_or_reviewer_cache_write": true,
+    "source_fingerprint": "ff7e162a164d170b326849fbff58bb2b70127e9e2dde0c71e7f98134711ec296",
+    "destination_at_clone_fingerprint": "ff7e162a164d170b326849fbff58bb2b70127e9e2dde0c71e7f98134711ec296",
+    "destination_current_after_build_fingerprint": "6ab175b92753616833602b7a490fc08051e8aa204c04156145383e4445b79c12",
+    "post_seed_build_changed_members": [
+      "96/96d614468f931397e1518419bc44bf0de28b31dd831a63029e88dc4b5fa078b7-a"
+    ],
+    "post_seed_build_added_members": [
+      "5b/5b2a9b10e605c5fa7402a092ad0bd96f042e58674d2033b66e018e51bc6da550-a",
+      "7e/7e9233476ff9cc487450c6f3d44b5bf54b938d056e647a60ed144e9777d18670-a",
+      "87/87c7f30a189970375eab73d69140795e47894a33126400835906ebbe99c9a8ad-a",
+      "9f/9f59130fc45aff3362502ade3dd7219cfe9546d7b3f6581e2a81a7f004acccdd-a",
+      "fa/fa70ef432b1505a75721eb67e4e094ebd209e6b14a1e2a8efaa5d10ea5334e89-d"
+    ],
+    "post_seed_build_missing_members": [],
+    "scope": "The new task Go cache is writable for the recorded builds; its initial COW snapshot is immutable evidence. Current old donor rehash is unchanged. No seed rerun."
+  },
+  "independent_private_controls": {
+    "action": "Verified existing actual current sources/logs/reports/named terminals; no already-passing control rerun",
+    "inventory_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/private-control-inventory.json",
+    "inventory_sha256": "de3b2566a679d620272990e1e2d6b0607e77e3669d505a96afeb14226c8e6991",
+    "suites": [
+      {
+        "suite": "launcher",
+        "count": 46,
+        "tests": [
+          {
+            "name": "__main__.LauncherEntryTests.test_actual_graph_mismatch_refuses_before_make.test_actual_graph_mismatch_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_backtick_substitution_is_not_executed.test_backtick_substitution_is_not_executed",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_blocking_review_cannot_launch.test_blocking_review_cannot_launch",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_build_temp_git_root_refuses_before_make.test_build_temp_git_root_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_candidate_mismatch_is_refused_before_make.test_candidate_mismatch_is_refused_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_catalog_path_mismatch_refuses_before_make.test_catalog_path_mismatch_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_changed_cli_refuses_before_make.test_changed_cli_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_changed_pinned_node_refuses_before_make.test_changed_pinned_node_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_changed_pinned_pnpm_bundle_refuses_before_make.test_changed_pinned_pnpm_bundle_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_changed_renderer_refuses_before_make.test_changed_renderer_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_changed_rollout_gate_refuses_before_make.test_changed_rollout_gate_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_command_substitution_is_not_executed.test_command_substitution_is_not_executed",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_credentialed_renderer_is_refused_before_make.test_credentialed_renderer_is_refused_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_escaped_normalized_braced_make_function_is_refused.test_escaped_normalized_braced_make_function_is_refused",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_escaped_normalized_parenthesized_make_function_is_refused.test_escaped_normalized_parenthesized_make_function_is_refused",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_existing_dsh_refuses_before_make.test_existing_dsh_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_existing_execution_directory_refuses_before_make.test_existing_execution_directory_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_foreign_workspace_link_refuses_before_make.test_foreign_workspace_link_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_generated_quoted_escaped_empty_and_duplicate_values_are_data.test_generated_quoted_escaped_empty_and_duplicate_values_are_data",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_invalid_deployment_uuid_refuses_before_any_subprocess.test_invalid_deployment_uuid_refuses_before_any_subprocess",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_launcher_child_gets_private_home_and_explicit_actual_caches.test_launcher_child_gets_private_home_and_explicit_actual_caches",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_matching_own_tools_and_provider_env_scrub.test_matching_own_tools_and_provider_env_scrub",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_matching_review_preserves_api_pool_and_dynamic_renderer.test_matching_review_preserves_api_pool_and_dynamic_renderer",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_missing_catalog_refuses_before_make.test_missing_catalog_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_missing_resource_ownership_refuses_before_make.test_missing_resource_ownership_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_missing_review_cannot_launch.test_missing_review_cannot_launch",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_modified_tracked_source_refuses_before_make.test_modified_tracked_source_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_new_v16_process_paths_and_record_are_bound.test_new_v16_process_paths_and_record_are_bound",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_non_loopback_renderer_is_refused_before_make.test_non_loopback_renderer_is_refused_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_normalized_ascii_control_is_refused.test_normalized_ascii_control_is_refused",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_normalized_dollar_reference_is_refused.test_normalized_dollar_reference_is_refused",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_normalized_tab_is_refused.test_normalized_tab_is_refused",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_quoted_normalized_braced_make_function_is_refused.test_quoted_normalized_braced_make_function_is_refused",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_repeated_launch_preserves_previous_evidence.test_repeated_launch_preserves_previous_evidence",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_repository_env_copy_preserves_enforced_pool_and_removed_context.test_repository_env_copy_preserves_enforced_pool_and_removed_context",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_root_resource_proof_rejects_unowned_redis.test_root_resource_proof_rejects_unowned_redis",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_run_record_separates_product_overlay_and_tracked_identities.test_run_record_separates_product_overlay_and_tracked_identities",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_shared_writable_catalog_refuses_before_make.test_shared_writable_catalog_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_shell_metacharacters_stay_literal_in_canonical_configuration.test_shell_metacharacters_stay_literal_in_canonical_configuration",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_symlinked_catalog_refuses_before_make.test_symlinked_catalog_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_tampered_go_adapter_is_refused_before_make.test_tampered_go_adapter_is_refused_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_tampered_launcher_is_refused_before_make.test_tampered_launcher_is_refused_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_tampered_pnpm_adapter_is_refused_before_make.test_tampered_pnpm_adapter_is_refused_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_tampered_source_config_is_refused_before_make.test_tampered_source_config_is_refused_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_wrong_canonical_product_digest_refuses_before_make.test_wrong_canonical_product_digest_refuses_before_make",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.LauncherEntryTests.test_wrong_canonical_product_roots_refuses_before_make.test_wrong_canonical_product_roots_refuses_before_make",
+            "status": "pass"
+          }
+        ],
+        "report_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/launcher-private-preflight.json",
+        "report_sha256": "470ba5446b1af95e67d3db5748c879fd1d61cb5eb732c0c4e1b92843d22c295b",
+        "raw_log_sha256": "747d2117c6bdfc0179e4fa4ebf908dfbe0b24366c467f540e01eb7bacef25450"
+      },
+      {
+        "suite": "adapter-env",
+        "count": 7,
+        "tests": [
+          {
+            "name": "__main__.AdapterEnvironmentTests.test_exact_turbo_test_scope_adds_only_json_reporting.test_exact_turbo_test_scope_adds_only_json_reporting",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.AdapterEnvironmentTests.test_go_compile_forwarding_preserves_api_configuration_without_sql.test_go_compile_forwarding_preserves_api_configuration_without_sql",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.AdapterEnvironmentTests.test_non_test_metadata_uses_exact_cached_go.test_non_test_metadata_uses_exact_cached_go",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.AdapterEnvironmentTests.test_non_test_metadata_uses_exact_own_pnpm_and_node.test_non_test_metadata_uses_exact_own_pnpm_and_node",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.AdapterEnvironmentTests.test_other_turbo_invocation_is_not_rewritten.test_other_turbo_invocation_is_not_rewritten",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.AdapterEnvironmentTests.test_outer_go_test_removes_api_publication_and_pool_only_in_child.test_outer_go_test_removes_api_publication_and_pool_only_in_child",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.AdapterEnvironmentTests.test_playwright_wiring_delegates_only_to_selected_fake_pnpm.test_playwright_wiring_delegates_only_to_selected_fake_pnpm",
+            "status": "pass"
+          }
+        ],
+        "report_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/adapter-env-private-preflight.json",
+        "report_sha256": "67eb6ebd264a086c74c9aa425217e0fe11a4778b2b8e8c25106c5027782784a5",
+        "raw_log_sha256": "33a866f6b6aabe53b2d60bad83cc3fc474092a13c6409ec2d2dfc4bb985e1ba5"
+      },
+      {
+        "suite": "final-audit",
+        "count": 16,
+        "tests": [
+          {
+            "name": "__main__.FinalStateTests.test_canonical_execution_environment_mutation_is_rejected.test_canonical_execution_environment_mutation_is_rejected",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.FinalStateTests.test_changed_desktop_artifact_is_rejected.test_changed_desktop_artifact_is_rejected",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.FinalStateTests.test_changed_development_environment_source_identity_is_rejected.test_changed_development_environment_source_identity_is_rejected",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.FinalStateTests.test_clean_final_state_passes_identity_audit.test_clean_final_state_passes_identity_audit",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.FinalStateTests.test_completed_run_log_mutation_is_rejected.test_completed_run_log_mutation_is_rejected",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.FinalStateTests.test_exact_generated_import_is_recorded_without_writing_source.test_exact_generated_import_is_recorded_without_writing_source",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.FinalStateTests.test_existing_report_is_never_overwritten.test_existing_report_is_never_overwritten",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.FinalStateTests.test_failed_whole_command_remains_failed_after_identity_pass.test_failed_whole_command_remains_failed_after_identity_pass",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.FinalStateTests.test_foreign_workspace_link_is_rejected.test_foreign_workspace_link_is_rejected",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.FinalStateTests.test_generated_import_plus_extra_declaration_is_rejected.test_generated_import_plus_extra_declaration_is_rejected",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.FinalStateTests.test_generated_import_with_changed_file_mode_is_rejected.test_generated_import_with_changed_file_mode_is_rejected",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.FinalStateTests.test_incomplete_run_is_rejected.test_incomplete_run_is_rejected",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.FinalStateTests.test_missing_review_retains_a_failure_report.test_missing_review_retains_a_failure_report",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.FinalStateTests.test_next_declaration_symlink_is_rejected.test_next_declaration_symlink_is_rejected",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.FinalStateTests.test_pinned_tool_mutation_is_rejected.test_pinned_tool_mutation_is_rejected",
+            "status": "pass"
+          },
+          {
+            "name": "__main__.FinalStateTests.test_unrelated_tracked_mutation_is_rejected_even_if_git_status_is_clean.test_unrelated_tracked_mutation_is_rejected_even_if_git_status_is_clean",
+            "status": "pass"
+          }
+        ],
+        "report_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-audit-private-preflight.json",
+        "report_sha256": "95eecd6cd690755ae3958acb5cdfcb59a29b2787935f5a7313528c93cc18beaf",
+        "raw_log_sha256": "22e328b3fd68a307bee1d3e5fc709b36a8b975378a50072d39ea07ddaad71af9"
+      }
+    ],
+    "counts": {
+      "launcher": 46,
+      "adapter-env": 7,
+      "final-audit": 16
+    },
+    "total": 69,
+    "passed": 69,
+    "failed": 0,
+    "skipped": 0,
+    "software_fullcheck_claim": false
+  },
+  "minimum_fixture_binding": {
+    "path": "e2e/fixtures/triage-duplicate-picker.ts",
+    "sha256": "0cbc13c518022a2af413da1f09b3801e8b0f4a6c7264bbf395544a301a69c029",
+    "only_changed_path_since_d41573e3a": true,
+    "two_additional_assertions_only": true,
+    "original_assertions_preserved": 52,
+    "green_report_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-failure-diagnosis/triage-focus-dynamic/uncontrolled-green/green-report.json",
+    "green_report_sha256": "e3147717799f17952888dd5676acc4541efe605bdcc37c969e2756d6d50c8374",
+    "strict_noemit_exit": 0,
+    "uncontrolled_client_locale_cases": [
+      {
+        "title": "Native duplicate picker browses all formal tasks and confirms the chosen target (en)",
+        "file": "triage-duplicate-picker-desktop.spec.ts",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "title": "Native duplicate picker browses all formal tasks and confirms the chosen target (zh-Hans)",
+        "file": "triage-duplicate-picker-desktop.spec.ts",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "title": "Web duplicate picker browses all formal tasks and confirms the chosen target (en)",
+        "file": "triage-duplicate-picker.spec.ts",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "title": "Web duplicate picker browses all formal tasks and confirms the chosen target (zh-Hans)",
+        "file": "triage-duplicate-picker.spec.ts",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      }
+    ],
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "retries": 0,
+    "scheduling_hooks_or_observer": false
+  },
+  "actual_shared_executor_handoff": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/actual-handoff.json",
+    "sha256": "f942a8b3faa982db3662cdc47476116a99a26a182c63a2321aaf820e51f18c29"
+  },
+  "contract_review": {
+    "Go": "Exact70ca admission, recursive/compile/source-rewrite guards and per-package pool/publication removal; no new policy changes.",
+    "pnpm": "Exact canonical five-package core/docs/views/web/desktop Turbo test argv adds JSON only; original v9 browser raw basenames remain in V16 directory.",
+    "source_environment": "Canonical nonzero UUID before metadata subprocess; Make/data dollar/control guards and legacy/defaultfalse/no-model flags retained.",
+    "final_audit": "Current default review path, exact generated Next route import exception only, original tracked modes/types/tool/graph/artifact/config/log/product/development identities; complete actual run required.",
+    "cache": "SDK fclonefileat performed in fresh owned namespace with distinct regular inodes; immutable clone evidence and independently unchanged donor; subsequent build cache writes confined to new destination.",
+    "execution": "24 core materialized; flat clearance and sole wrapper still absent, exclusive fresh execution/home/package-evidence/registry/profile/workspace/safe-env/claim paths verified."
+  },
+  "notes": [
+    {
+      "id": "ACTUAL-ADMISSION-ONLY",
+      "text": "Root owns issuing actual flat clearance and materializing the single wrapper. Shared acceptance requires actual make exit0, registered final identity audit pass, complete five-package TS/Go/browser named inventories and all skip review."
+    },
+    {
+      "id": "WARM-CACHE-MUTABILITY",
+      "text": "After clone seeding, the recorded CLI/Desktop/migrate builds use the new writable task cache. The read-only current rehash observes one changed action-cache member and five added members, no missing cloned files; the entire old source remains byte/mode/inode/mtime-identical. Do not mistake the original clone snapshot for a frozen future build cache."
+    },
+    {
+      "id": "V15-RETAINED",
+      "text": "Original V15 make exit2/final identity pass and all33 protected inputs remain retained. New EDA0 source transition is the exact independently reviewed two-assertion fixture increment; old V15 is not reclassified by new checks."
+    },
+    {
+      "id": "REAL-KNOWLEDGE-GATE",
+      "text": "Knowledge budget/calls0/0, real entry closed, production knowledgefalse, CCG/#6/model/release acceptance not granted."
+    }
+  ],
+  "verification": {
+    "actual_filesystem_binding": "pass",
+    "actual_root_live_confirmation_bound": true,
+    "controls_rerun": 0,
+    "product_or_browser_suites_run_by_reviewer": 0,
+    "source_changes_by_reviewer": 0,
+    "cache_clone_or_write_by_reviewer": 0,
+    "actual_final_audit_run": false,
+    "candidate_clean": true
+  },
+  "operations": {
+    "write_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/independent-review",
+    "source_template_mutations": 0,
+    "builds": 0,
+    "DB_service_process_mutations": 0,
+    "cache_mutations": 0,
+    "models": 0,
+    "commits": 0,
+    "knowledge_budget_allocated": 0,
+    "knowledge_calls": 0,
+    "production_knowledge_default": false,
+    "clearance_issued": false
+  },
+  "next": "Root verifies all required hashes, issues flat V16 clearance, materializes and reviews one execution wrapper, then one complete V16 plus actual final audit/inventories."
+}

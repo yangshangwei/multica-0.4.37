@@ -1,0 +1,53 @@
+--- /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/source-inputs.json
++++ /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/source-inputs.json
+@@ -1,16 +1,17 @@
+ {
+-  "state": "prepared_pending_final_audit_review_and_later_root_permission",
++  "state": "prepared_pending_v15_shared_result_final_identity_and_later_root_permission",
+   "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+-  "candidate_sha": "d0b132fff0c477eb2d744933e13db730240231aa",
+-  "full_run_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/make-check-v14.json",
++  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
++  "full_run_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/make-check-v15.json",
+   "audit_module": {
+-    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/final-state-audit-v14/final_state_audit.py",
+-    "sha256": "9dfa39822223d8487d569cbe619b7ee4039277aec3a211bdfaa3148f1076484e"
++    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/final-state-audit-v15/final_state_audit.py",
++    "sha256": "d4201c363b2fa8f147915c67e73947fd1b715077ef06754a80688b201a2c6fd8",
++    "state": "materialized_bytes_only_pending_independent_review"
+   },
+   "audit_review": {
+-    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/independent-review/review.json",
+-    "sha256": "7b7047c02fba74dbc2a080581eb8adcf99922a2aa6a89d43e2942bbc041497c3",
+-    "state": "accepted_v14_independent_review_pinned; execution_gates_pending"
++    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/final-state-audit-v15/review.json",
++    "sha256": null,
++    "state": "pending_v15_independent_final_identity_review"
+   },
+   "tools": {
+     "node": {
+@@ -47,12 +48,20 @@
+   "knowledge_default_enabled": false,
+   "real_provider_allowed": false,
+   "environment_parser": {
+-    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/run-make-check-v14-provenance.py",
+-    "sha256": "7bdc66bcab9b31bf3ec570fd005d0fd59e89d9efe0ec08a2ed170ce0e0eb480c"
++    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/run-make-check-v15-provenance.py",
++    "sha256": "10ee286f89ae1072c3384abeb88b86cac078ecbadba2cfb6b0a07201d107180d",
++    "state": "materialized_bytes_only_pending_independent_review"
+   },
+   "forbidden_renderer_origins": [
+     "http://127.0.0.1:55132",
+-    "http://localhost:55132"
++    "http://localhost:55132",
++    "http://127.0.0.1:61276",
++    "http://localhost:61276"
+   ],
+-  "coordinator": "01a1a186-9a5c-7b00-96f8-0430b47edb4c"
++  "coordinator": "01a1a3c9-2459-7de1-8244-55640c5f6143",
++  "pending_bindings": [
++    "audit_review.path_and_sha256",
++    "actual_full_result_and_independent_final_identity",
++    "four_actual_permission_resource_and_freshness_fields"
++  ]
+ }

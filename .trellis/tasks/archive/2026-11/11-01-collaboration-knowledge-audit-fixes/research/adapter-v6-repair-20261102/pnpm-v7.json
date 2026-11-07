@@ -1,0 +1,288 @@
+{
+  "wrapper": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/pnpm",
+  "wrapper_sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+  "tests_run": 5,
+  "failure_count": 0,
+  "error_count": 0,
+  "observations": [
+    {
+      "test": "__main__.PnpmReportingTests.test_both_explicit_reporter_forms_remain_unchanged",
+      "argv": [
+        "exec",
+        "playwright",
+        "test",
+        "e2e/one.spec.ts",
+        "--workers=1",
+        "--reporter=dot"
+      ],
+      "terminal": "forwarded",
+      "calls": [
+        {
+          "executable": "bash",
+          "argv": [
+            "bash",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-duzqsqp4/scripts/go-test-with-agent-cli-guard.sh",
+            "--",
+            "/fixture/fake-pnpm",
+            "exec",
+            "playwright",
+            "test",
+            "e2e/one.spec.ts",
+            "--workers=1",
+            "--reporter=dot"
+          ],
+          "environment": {
+            "MULTICA_TASK_REAL_PNPM": "/fixture/fake-pnpm",
+            "MULTICA_TASK_CANDIDATE_ROOT": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-duzqsqp4",
+            "MULTICA_TASK_RENDERER_URL": "http://127.0.0.1:19841",
+            "NEXT_PUBLIC_API_URL": "http://127.0.0.1:18081",
+            "DATABASE_URL": "postgres://127.0.0.1/multica_check_fixture_api",
+            "MULTICA_TASK_PACKAGE_DB_EVIDENCE": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-duzqsqp4/packages",
+            "PLAYWRIGHT_BASE_URL": "http://127.0.0.1:19081",
+            "COLLABORATION_E2E_API_URL": "http://127.0.0.1:18081",
+            "COLLABORATION_ELECTRON_SOURCE_ROOT": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-duzqsqp4",
+            "COLLABORATION_ELECTRON_RENDERER_URL": "http://127.0.0.1:19841",
+            "CHANGELOG_E2E_API_URL": "http://127.0.0.1:18081",
+            "CHANGELOG_ELECTRON_RENDERER_URL": "http://127.0.0.1:19841",
+            "PLAYWRIGHT_JSON_OUTPUT_NAME": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-duzqsqp4/makecheck-playwright-results.json"
+          }
+        }
+      ],
+      "actual_pnpm_or_guard_calls": 0,
+      "actual_network_calls": 0
+    },
+    {
+      "test": "__main__.PnpmReportingTests.test_both_explicit_reporter_forms_remain_unchanged",
+      "argv": [
+        "exec",
+        "playwright",
+        "test",
+        "e2e/one.spec.ts",
+        "--workers=1",
+        "--reporter",
+        "line,json"
+      ],
+      "terminal": "forwarded",
+      "calls": [
+        {
+          "executable": "bash",
+          "argv": [
+            "bash",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-duzqsqp4/scripts/go-test-with-agent-cli-guard.sh",
+            "--",
+            "/fixture/fake-pnpm",
+            "exec",
+            "playwright",
+            "test",
+            "e2e/one.spec.ts",
+            "--workers=1",
+            "--reporter",
+            "line,json"
+          ],
+          "environment": {
+            "MULTICA_TASK_REAL_PNPM": "/fixture/fake-pnpm",
+            "MULTICA_TASK_CANDIDATE_ROOT": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-duzqsqp4",
+            "MULTICA_TASK_RENDERER_URL": "http://127.0.0.1:19841",
+            "NEXT_PUBLIC_API_URL": "http://127.0.0.1:18081",
+            "DATABASE_URL": "postgres://127.0.0.1/multica_check_fixture_api",
+            "MULTICA_TASK_PACKAGE_DB_EVIDENCE": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-duzqsqp4/packages",
+            "PLAYWRIGHT_BASE_URL": "http://127.0.0.1:19081",
+            "COLLABORATION_E2E_API_URL": "http://127.0.0.1:18081",
+            "COLLABORATION_ELECTRON_SOURCE_ROOT": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-duzqsqp4",
+            "COLLABORATION_ELECTRON_RENDERER_URL": "http://127.0.0.1:19841",
+            "CHANGELOG_E2E_API_URL": "http://127.0.0.1:18081",
+            "CHANGELOG_ELECTRON_RENDERER_URL": "http://127.0.0.1:19841",
+            "PLAYWRIGHT_JSON_OUTPUT_NAME": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-duzqsqp4/makecheck-playwright-results.json"
+          }
+        }
+      ],
+      "actual_pnpm_or_guard_calls": 0,
+      "actual_network_calls": 0
+    },
+    {
+      "test": "__main__.PnpmReportingTests.test_default_database_or_remote_api_refuses_before_forwarding",
+      "argv": [
+        "exec",
+        "playwright",
+        "test"
+      ],
+      "terminal": "SystemExit",
+      "calls": [],
+      "actual_pnpm_or_guard_calls": 0,
+      "actual_network_calls": 0
+    },
+    {
+      "test": "__main__.PnpmReportingTests.test_default_database_or_remote_api_refuses_before_forwarding",
+      "argv": [
+        "exec",
+        "playwright",
+        "test"
+      ],
+      "terminal": "SystemExit",
+      "calls": [],
+      "actual_pnpm_or_guard_calls": 0,
+      "actual_network_calls": 0
+    },
+    {
+      "test": "__main__.PnpmReportingTests.test_missing_repository_guard_refuses_before_pnpm_execution",
+      "argv": [
+        "exec",
+        "playwright",
+        "test"
+      ],
+      "terminal": "AssertionError",
+      "calls": [],
+      "actual_pnpm_or_guard_calls": 0,
+      "actual_network_calls": 0
+    },
+    {
+      "test": "__main__.PnpmReportingTests.test_non_playwright_commands_forward_without_guard_or_added_flags",
+      "argv": [
+        "lint"
+      ],
+      "terminal": "forwarded",
+      "calls": [
+        {
+          "executable": "/fixture/fake-pnpm",
+          "argv": [
+            "/fixture/fake-pnpm",
+            "lint"
+          ],
+          "environment": {
+            "MULTICA_TASK_REAL_PNPM": "/fixture/fake-pnpm",
+            "MULTICA_TASK_CANDIDATE_ROOT": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-rm69v56g",
+            "MULTICA_TASK_RENDERER_URL": "http://127.0.0.1:19841",
+            "NEXT_PUBLIC_API_URL": "http://127.0.0.1:18081",
+            "DATABASE_URL": "postgres://127.0.0.1/multica_check_fixture_api",
+            "MULTICA_TASK_PACKAGE_DB_EVIDENCE": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-rm69v56g/packages",
+            "PLAYWRIGHT_BASE_URL": "http://127.0.0.1:19081"
+          }
+        }
+      ],
+      "actual_pnpm_or_guard_calls": 0,
+      "actual_network_calls": 0
+    },
+    {
+      "test": "__main__.PnpmReportingTests.test_non_playwright_commands_forward_without_guard_or_added_flags",
+      "argv": [
+        "--filter",
+        "@multica/views",
+        "test"
+      ],
+      "terminal": "forwarded",
+      "calls": [
+        {
+          "executable": "/fixture/fake-pnpm",
+          "argv": [
+            "/fixture/fake-pnpm",
+            "--filter",
+            "@multica/views",
+            "test"
+          ],
+          "environment": {
+            "MULTICA_TASK_REAL_PNPM": "/fixture/fake-pnpm",
+            "MULTICA_TASK_CANDIDATE_ROOT": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-rm69v56g",
+            "MULTICA_TASK_RENDERER_URL": "http://127.0.0.1:19841",
+            "NEXT_PUBLIC_API_URL": "http://127.0.0.1:18081",
+            "DATABASE_URL": "postgres://127.0.0.1/multica_check_fixture_api",
+            "MULTICA_TASK_PACKAGE_DB_EVIDENCE": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-rm69v56g/packages",
+            "PLAYWRIGHT_BASE_URL": "http://127.0.0.1:19081"
+          }
+        }
+      ],
+      "actual_pnpm_or_guard_calls": 0,
+      "actual_network_calls": 0
+    },
+    {
+      "test": "__main__.PnpmReportingTests.test_non_playwright_commands_forward_without_guard_or_added_flags",
+      "argv": [
+        "exec",
+        "turbo",
+        "typecheck"
+      ],
+      "terminal": "forwarded",
+      "calls": [
+        {
+          "executable": "/fixture/fake-pnpm",
+          "argv": [
+            "/fixture/fake-pnpm",
+            "exec",
+            "turbo",
+            "typecheck"
+          ],
+          "environment": {
+            "MULTICA_TASK_REAL_PNPM": "/fixture/fake-pnpm",
+            "MULTICA_TASK_CANDIDATE_ROOT": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-rm69v56g",
+            "MULTICA_TASK_RENDERER_URL": "http://127.0.0.1:19841",
+            "NEXT_PUBLIC_API_URL": "http://127.0.0.1:18081",
+            "DATABASE_URL": "postgres://127.0.0.1/multica_check_fixture_api",
+            "MULTICA_TASK_PACKAGE_DB_EVIDENCE": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-rm69v56g/packages",
+            "PLAYWRIGHT_BASE_URL": "http://127.0.0.1:19081"
+          }
+        }
+      ],
+      "actual_pnpm_or_guard_calls": 0,
+      "actual_network_calls": 0
+    },
+    {
+      "test": "__main__.PnpmReportingTests.test_selection_workers_retries_timeout_and_default_reporter_are_preserved",
+      "argv": [
+        "exec",
+        "playwright",
+        "test",
+        "e2e/one.spec.ts",
+        "e2e/two.spec.ts",
+        "--grep",
+        "named case",
+        "--workers=3",
+        "--retries=0",
+        "--timeout=32000",
+        "--project=chromium",
+        "--output=fixture-artifacts"
+      ],
+      "terminal": "forwarded",
+      "calls": [
+        {
+          "executable": "bash",
+          "argv": [
+            "bash",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-pcp_yr77/scripts/go-test-with-agent-cli-guard.sh",
+            "--",
+            "/fixture/fake-pnpm",
+            "exec",
+            "playwright",
+            "test",
+            "e2e/one.spec.ts",
+            "e2e/two.spec.ts",
+            "--grep",
+            "named case",
+            "--workers=3",
+            "--retries=0",
+            "--timeout=32000",
+            "--project=chromium",
+            "--output=fixture-artifacts",
+            "--reporter=line,json"
+          ],
+          "environment": {
+            "MULTICA_TASK_REAL_PNPM": "/fixture/fake-pnpm",
+            "MULTICA_TASK_CANDIDATE_ROOT": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-pcp_yr77",
+            "MULTICA_TASK_RENDERER_URL": "http://127.0.0.1:19841",
+            "NEXT_PUBLIC_API_URL": "http://127.0.0.1:18081",
+            "DATABASE_URL": "postgres://127.0.0.1/multica_check_fixture_api",
+            "MULTICA_TASK_PACKAGE_DB_EVIDENCE": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-pcp_yr77/packages",
+            "PLAYWRIGHT_BASE_URL": "http://127.0.0.1:19081",
+            "COLLABORATION_E2E_API_URL": "http://127.0.0.1:18081",
+            "COLLABORATION_ELECTRON_SOURCE_ROOT": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-pcp_yr77",
+            "COLLABORATION_ELECTRON_RENDERER_URL": "http://127.0.0.1:19841",
+            "CHANGELOG_E2E_API_URL": "http://127.0.0.1:18081",
+            "CHANGELOG_ELECTRON_RENDERER_URL": "http://127.0.0.1:19841",
+            "PLAYWRIGHT_JSON_OUTPUT_NAME": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/pnpm-pcp_yr77/makecheck-playwright-results.json"
+          }
+        }
+      ],
+      "actual_pnpm_or_guard_calls": 0,
+      "actual_network_calls": 0
+    }
+  ],
+  "method": "Exact pnpm source with all execve/execvpe boundaries mocked"
+}

@@ -1,0 +1,143 @@
+{
+  "recorded_at": "2026-11-03T13:38:09.214367+00:00",
+  "verdict": "ready_for_independent_final_review",
+  "candidate_head": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "source_id": "166a63e0c4467612a5d3b206743e18ed0e72ce5f24a733f6bc521a4937648e65",
+  "runtime_product_source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+  "all_seven_source_hashes": {
+    "e2e/collaboration-boundaries-web.spec.ts": "8dff851fee66b7b7df826d7ec4c5e3f2c41e4c1fb44b25d9d1d6523ccef5e7c7",
+    "e2e/collaboration-workbench-web.spec.ts": "c3a902fe29e90df772ff65c66e23aba86c54cb1cb2bcb7b0d0a8acc8e31dd742",
+    "e2e/collaboration-memory-web.spec.ts": "48ad9875f6d849ecfc50d115d9b656c63b03aa4d14f164a4fd215bf83bc00c0e",
+    "e2e/fixtures/collaboration-mention-journeys.ts": "1fe5fef06293779712f655fd9fb36aaca8027f75d8ed8bff40ee85b556781bdc",
+    "e2e/collaboration-preview-web.spec.ts": "f276667c3ee3190fbb2141e3dba08c6439d42604a5aec0253a7075d7aa36f56b",
+    "e2e/collaboration-preparation-records-web.spec.ts": "92b47ff47942218e53207b850e6331d3c0d5f7d1d0f36f11a074013a0036c8ff",
+    "e2e/settings-preferences.spec.ts": "5f54eed9f0a5ae7ccd84dba20bf940bf7b835aeaeb152ec69385c9cb194cd1f7"
+  },
+  "P3_source": {
+    "path": "e2e/collaboration-preview-web.spec.ts",
+    "before_sha256": "a53e53b8fc8ded1b342106f940c12e8ff53b5f347ba1fe642d0fb436b7273072",
+    "proposed_sha256": "f276667c3ee3190fbb2141e3dba08c6439d42604a5aec0253a7075d7aa36f56b",
+    "patch_sha256": "a8070a992407ab700649b2f06e919b3d188f01d3b325703cc4527b1abcac777d",
+    "applied": false,
+    "runtime_executed": false
+  },
+  "controls": [
+    "fresh Send-preview confirmation followed by exact retained draft assertion",
+    "manual localized Preview waited through exact POST/status200/issueID/suppressedtarget",
+    "manual response grouping visible, suppressedtarget absent, checkbox unchecked and draft retained",
+    "zero commentsPOST, full comment objects except validated evaluated_at, and execution equality at both preview boundaries",
+    "single subsequent actual commentsPOST and waiting/suppressed receipt assertions retained"
+  ],
+  "pre_run_review": "/root/closure_inventory pass zero source blockers, root confirmed exact patch a8070a992407ab700649b2f06e919b3d188f01d3b325703cc4527b1abcac777d",
+  "final_run": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-chinese17",
+    "exit_code": 0,
+    "stats": {
+      "startTime": "2026-11-03T13:35:36.903Z",
+      "duration": 86945.431,
+      "expected": 17,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "source_unchanged": true,
+    "old_round1_unchanged": true
+  },
+  "typecheck": {
+    "typescript_version": "5.9.3",
+    "root_files": [
+      "e2e/collaboration-boundaries-web.spec.ts",
+      "e2e/collaboration-workbench-web.spec.ts",
+      "e2e/collaboration-memory-web.spec.ts",
+      "e2e/fixtures/collaboration-mention-journeys.ts",
+      "e2e/collaboration-preview-web.spec.ts",
+      "e2e/collaboration-preparation-records-web.spec.ts",
+      "e2e/settings-preferences.spec.ts"
+    ],
+    "method": "strict TypeScript noEmit over final seven-file E2E overlay and imports",
+    "diagnostics": [],
+    "exit_code": 0
+  },
+  "git_diff_check": "exit0",
+  "prior_results_preserved": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/report.json": {
+      "sha256": "fca91c8a8e85c539c981561e1bd0ce1651d34f6528590540feee14bd7218b2ff",
+      "artifacts_unchanged": true
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/report.json": {
+      "sha256": "7fc8c63d7d063c4a76607d6892769566ed3d8eab9817fac173ee6180dc355bf7",
+      "artifacts_unchanged": true
+    }
+  },
+  "Provider_calls": 0,
+  "wholecheck_accepted": false,
+  "product_modified": false,
+  "no_commits": true,
+  "followup": "Root independent final review then freeze successor; do not repeat after passing unless new findings/change justify it.",
+  "artifacts": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/chinese-preview/applied.json": {
+      "sha256": "396b65f5a0849514d7ba335888d5d17ee3c023ff3ef09d5ffe98b94240a03dc2",
+      "bytes": 259
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/chinese-preview/final.json": {
+      "sha256": "db4b332fcfe2b9401d0ea19385db39f56b2298e098d644b2d811ba95b1863813",
+      "bytes": 1631
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/chinese-preview/inventory.json": {
+      "sha256": "56c6be61dce9e19be967b01ad36eb7dc3d251c0c019e2976467c36addcd255be",
+      "bytes": 4945
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/chinese-preview/proposal.json": {
+      "sha256": "a3dfa56338d7ae72aa79d29ea68dba69da7e5c5b6d5d849910c41d0a32d78e11",
+      "bytes": 365
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/chinese-preview/restore-chinese-manual-preview.patch": {
+      "sha256": "a8070a992407ab700649b2f06e919b3d188f01d3b325703cc4527b1abcac777d",
+      "bytes": 4235
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/chinese-preview/source-before.ts": {
+      "sha256": "a53e53b8fc8ded1b342106f940c12e8ff53b5f347ba1fe642d0fb436b7273072",
+      "bytes": 8481
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/chinese-preview/source-proposed.ts": {
+      "sha256": "f276667c3ee3190fbb2141e3dba08c6439d42604a5aec0253a7075d7aa36f56b",
+      "bytes": 9762
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/chinese-preview/typecheck-final.json": {
+      "sha256": "e9d5ea081da00c4489525a742dda9ff9d07f6fcf5836c4febb57b9acae366fa8",
+      "bytes": 518
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/chinese-preview/typecheck-proposal.json": {
+      "sha256": "df86f4feecdae3cae901ed9b37b40281ba1b683642e443e3624f834f6f37c65a",
+      "bytes": 550
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-chinese17/run.log": {
+      "sha256": "3e32cd3db34fed7f43f9b376ee429c987bb1d0daa54514ea1c6c15fe192ce6b3",
+      "bytes": 3146
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-chinese17/results.json": {
+      "sha256": "d76ece4aca397aeab446013c03f8ecb11db2707348fe10ba2f8b59a469023dfe",
+      "bytes": 72158
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-chinese17/result.json": {
+      "sha256": "8534a53afe2e37241e83e3e898b83d2a577fa9d0a47d5cbd83573857bb1c99c4",
+      "bytes": 15664
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-chinese17/source-before.json": {
+      "sha256": "de20fcb08991e40915e5d238f89494968e4711690a28daaf4fbf0ae6848a9252",
+      "bytes": 5413860
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-chinese17/source-after.json": {
+      "sha256": "de20fcb08991e40915e5d238f89494968e4711690a28daaf4fbf0ae6848a9252",
+      "bytes": 5413860
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/run-chinese-preview.py": {
+      "sha256": "3c109eb612d3fe62863ce6edbb3be03287bcf3799071b3887dca29b2d652e727",
+      "bytes": 7621
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/static-check-chinese-final.cjs": {
+      "sha256": "fae43cf6482a3eeacd882891bde5e5f8944ea7fc298f4d207acbe49fdf3f6a45",
+      "bytes": 1668
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "recorded_at": "2026-11-03T15:22:18.729170+00:00",
+  "auditor_sha256": "9dfa39822223d8487d569cbe619b7ee4039277aec3a211bdfaa3148f1076484e",
+  "independent_review_sha256": "7b7047c02fba74dbc2a080581eb8adcf99922a2aa6a89d43e2942bbc041497c3",
+  "status": "pass",
+  "scope": "final filesystem identities only; root still owns live resource and result inventory checks",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "launcher_sha256": "7bdc66bcab9b31bf3ec570fd005d0fd59e89d9efe0ec08a2ed170ce0e0eb480c",
+  "bindings_sha256": "c86aaae47ff62a177dd0cf469396cd26e6db647c0c3cffd4fdf7befd40030cfa",
+  "source_env_sha256": "da26b06efe361d0a51f3a6e474db84764bf19095f0e151c8b32b7c3970bba771",
+  "adapter_sha256": {
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+  },
+  "run_sha256": "fc479c764bf1092026603b7e685ae9a996bda8dca63a15afcbe34e6f7c23bd85",
+  "wholecheck_exit_code": 2,
+  "wholecheck_passed": false,
+  "clearance_sha256": "090a04b324169f897f9d24a82fdccfe09afbf9690d129f5aa9d2c48d25be94e4",
+  "resource_ownership_sha256": "d0f55a636a37197ec053ac3fb0fd95661641d656d38fd0904ae7e0980cc21173",
+  "tracked_file_count": 17536,
+  "workspace_edges": 22,
+  "workspace_exports": 66,
+  "canonical_raw_source_id": "62e12d358a8d2af1a5ca7e569c696dbe4a4eae37479fbb3905280a832c26cdf4",
+  "canonical_normalized_source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+  "dev_environment_source_id": "26c01e6174e12fdf99c1a586271a0b0ac66c02f515070d16e42a8a26be05babc",
+  "tracked_snapshot_fingerprint": "62499df8c3673e4b176af0adb990c85b9ba7f954f8d627f619d266ede6010c76",
+  "next_env": {
+    "path": "apps/web/next-env.d.ts",
+    "generated_rewrite": true,
+    "raw_sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+    "normalized_sha256": "7ad303e40d4fddf44f156129e397511953a71481c5cfd86b1862649aaaf240cc"
+  },
+  "source_changes": [
+    " M apps/web/next-env.d.ts"
+  ],
+  "candidate_files_written": 0,
+  "live_resources_revalidated": false
+}

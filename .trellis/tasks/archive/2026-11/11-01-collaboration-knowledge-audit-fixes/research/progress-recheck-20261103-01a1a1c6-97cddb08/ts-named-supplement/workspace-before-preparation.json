@@ -1,0 +1,551 @@
+{
+  "recorded_at": "2026-11-03T15:26:48.999928+00:00",
+  "resolver_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/resolve-workspaces-v14.mjs",
+  "resolver_sha256": "1ded34cc530c40b9f995b80178f07df0a49ce3658ba5f4484ed36fc25f819c1c",
+  "resolver_exit_code": 0,
+  "graph": {
+    "root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+    "exports": [
+      {
+        "consumer": ".",
+        "specifier": "@multica/core/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/auth/index.ts"
+      },
+      {
+        "consumer": ".",
+        "specifier": "@multica/views/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/auth/index.ts"
+      },
+      {
+        "consumer": ".",
+        "specifier": "@multica/ui/lib/utils",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui/lib/utils.ts"
+      },
+      {
+        "consumer": ".",
+        "specifier": "@multica/tsconfig/react-library.json",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig/react-library.json"
+      },
+      {
+        "consumer": ".",
+        "specifier": "@multica/eslint-config/base",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config/base.js"
+      },
+      {
+        "consumer": ".",
+        "specifier": "@multica/plugin-sdk",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/plugin-sdk/index.ts"
+      },
+      {
+        "consumer": "apps/desktop",
+        "specifier": "@multica/core/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/auth/index.ts"
+      },
+      {
+        "consumer": "apps/desktop",
+        "specifier": "@multica/views/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/auth/index.ts"
+      },
+      {
+        "consumer": "apps/desktop",
+        "specifier": "@multica/ui/lib/utils",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui/lib/utils.ts"
+      },
+      {
+        "consumer": "apps/desktop",
+        "specifier": "@multica/tsconfig/react-library.json",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig/react-library.json"
+      },
+      {
+        "consumer": "apps/desktop",
+        "specifier": "@multica/eslint-config/base",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config/base.js"
+      },
+      {
+        "consumer": "apps/desktop",
+        "specifier": "@multica/plugin-sdk",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/plugin-sdk/index.ts"
+      },
+      {
+        "consumer": "apps/docs",
+        "specifier": "@multica/core/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/auth/index.ts"
+      },
+      {
+        "consumer": "apps/docs",
+        "specifier": "@multica/views/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/auth/index.ts"
+      },
+      {
+        "consumer": "apps/docs",
+        "specifier": "@multica/ui/lib/utils",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui/lib/utils.ts"
+      },
+      {
+        "consumer": "apps/docs",
+        "specifier": "@multica/tsconfig/react-library.json",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig/react-library.json"
+      },
+      {
+        "consumer": "apps/docs",
+        "specifier": "@multica/eslint-config/base",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config/base.js"
+      },
+      {
+        "consumer": "apps/docs",
+        "specifier": "@multica/plugin-sdk",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/plugin-sdk/index.ts"
+      },
+      {
+        "consumer": "apps/mobile",
+        "specifier": "@multica/core/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/auth/index.ts"
+      },
+      {
+        "consumer": "apps/mobile",
+        "specifier": "@multica/views/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/auth/index.ts"
+      },
+      {
+        "consumer": "apps/mobile",
+        "specifier": "@multica/ui/lib/utils",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui/lib/utils.ts"
+      },
+      {
+        "consumer": "apps/mobile",
+        "specifier": "@multica/tsconfig/react-library.json",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig/react-library.json"
+      },
+      {
+        "consumer": "apps/mobile",
+        "specifier": "@multica/eslint-config/base",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config/base.js"
+      },
+      {
+        "consumer": "apps/mobile",
+        "specifier": "@multica/plugin-sdk",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/plugin-sdk/index.ts"
+      },
+      {
+        "consumer": "apps/web",
+        "specifier": "@multica/core/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/auth/index.ts"
+      },
+      {
+        "consumer": "apps/web",
+        "specifier": "@multica/views/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/auth/index.ts"
+      },
+      {
+        "consumer": "apps/web",
+        "specifier": "@multica/ui/lib/utils",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui/lib/utils.ts"
+      },
+      {
+        "consumer": "apps/web",
+        "specifier": "@multica/tsconfig/react-library.json",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig/react-library.json"
+      },
+      {
+        "consumer": "apps/web",
+        "specifier": "@multica/eslint-config/base",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config/base.js"
+      },
+      {
+        "consumer": "apps/web",
+        "specifier": "@multica/plugin-sdk",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/plugin-sdk/index.ts"
+      },
+      {
+        "consumer": "packages/core",
+        "specifier": "@multica/core/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/auth/index.ts"
+      },
+      {
+        "consumer": "packages/core",
+        "specifier": "@multica/views/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/auth/index.ts"
+      },
+      {
+        "consumer": "packages/core",
+        "specifier": "@multica/ui/lib/utils",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui/lib/utils.ts"
+      },
+      {
+        "consumer": "packages/core",
+        "specifier": "@multica/tsconfig/react-library.json",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig/react-library.json"
+      },
+      {
+        "consumer": "packages/core",
+        "specifier": "@multica/eslint-config/base",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config/base.js"
+      },
+      {
+        "consumer": "packages/core",
+        "specifier": "@multica/plugin-sdk",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/plugin-sdk/index.ts"
+      },
+      {
+        "consumer": "packages/eslint-config",
+        "specifier": "@multica/core/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/auth/index.ts"
+      },
+      {
+        "consumer": "packages/eslint-config",
+        "specifier": "@multica/views/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/auth/index.ts"
+      },
+      {
+        "consumer": "packages/eslint-config",
+        "specifier": "@multica/ui/lib/utils",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui/lib/utils.ts"
+      },
+      {
+        "consumer": "packages/eslint-config",
+        "specifier": "@multica/tsconfig/react-library.json",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig/react-library.json"
+      },
+      {
+        "consumer": "packages/eslint-config",
+        "specifier": "@multica/eslint-config/base",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config/base.js"
+      },
+      {
+        "consumer": "packages/eslint-config",
+        "specifier": "@multica/plugin-sdk",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/plugin-sdk/index.ts"
+      },
+      {
+        "consumer": "packages/plugin-sdk",
+        "specifier": "@multica/core/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/auth/index.ts"
+      },
+      {
+        "consumer": "packages/plugin-sdk",
+        "specifier": "@multica/views/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/auth/index.ts"
+      },
+      {
+        "consumer": "packages/plugin-sdk",
+        "specifier": "@multica/ui/lib/utils",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui/lib/utils.ts"
+      },
+      {
+        "consumer": "packages/plugin-sdk",
+        "specifier": "@multica/tsconfig/react-library.json",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig/react-library.json"
+      },
+      {
+        "consumer": "packages/plugin-sdk",
+        "specifier": "@multica/eslint-config/base",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config/base.js"
+      },
+      {
+        "consumer": "packages/plugin-sdk",
+        "specifier": "@multica/plugin-sdk",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/plugin-sdk/index.ts"
+      },
+      {
+        "consumer": "packages/tsconfig",
+        "specifier": "@multica/core/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/auth/index.ts"
+      },
+      {
+        "consumer": "packages/tsconfig",
+        "specifier": "@multica/views/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/auth/index.ts"
+      },
+      {
+        "consumer": "packages/tsconfig",
+        "specifier": "@multica/ui/lib/utils",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui/lib/utils.ts"
+      },
+      {
+        "consumer": "packages/tsconfig",
+        "specifier": "@multica/tsconfig/react-library.json",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig/react-library.json"
+      },
+      {
+        "consumer": "packages/tsconfig",
+        "specifier": "@multica/eslint-config/base",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config/base.js"
+      },
+      {
+        "consumer": "packages/tsconfig",
+        "specifier": "@multica/plugin-sdk",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/plugin-sdk/index.ts"
+      },
+      {
+        "consumer": "packages/ui",
+        "specifier": "@multica/core/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/auth/index.ts"
+      },
+      {
+        "consumer": "packages/ui",
+        "specifier": "@multica/views/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/auth/index.ts"
+      },
+      {
+        "consumer": "packages/ui",
+        "specifier": "@multica/ui/lib/utils",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui/lib/utils.ts"
+      },
+      {
+        "consumer": "packages/ui",
+        "specifier": "@multica/tsconfig/react-library.json",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig/react-library.json"
+      },
+      {
+        "consumer": "packages/ui",
+        "specifier": "@multica/eslint-config/base",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config/base.js"
+      },
+      {
+        "consumer": "packages/ui",
+        "specifier": "@multica/plugin-sdk",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/plugin-sdk/index.ts"
+      },
+      {
+        "consumer": "packages/views",
+        "specifier": "@multica/core/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/auth/index.ts"
+      },
+      {
+        "consumer": "packages/views",
+        "specifier": "@multica/views/auth",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/auth/index.ts"
+      },
+      {
+        "consumer": "packages/views",
+        "specifier": "@multica/ui/lib/utils",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui/lib/utils.ts"
+      },
+      {
+        "consumer": "packages/views",
+        "specifier": "@multica/tsconfig/react-library.json",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig/react-library.json"
+      },
+      {
+        "consumer": "packages/views",
+        "specifier": "@multica/eslint-config/base",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config/base.js"
+      },
+      {
+        "consumer": "packages/views",
+        "specifier": "@multica/plugin-sdk",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/plugin-sdk/index.ts"
+      }
+    ],
+    "auth": [
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/auth/index.ts",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/auth/index.ts",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/auth/index.ts",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/auth/index.ts"
+    ],
+    "errors": []
+  },
+  "edge_count": 22,
+  "edges": [
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/core",
+      "expected": "packages/core",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/node_modules/@multica/core",
+      "raw_link": "../../../../packages/core",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core",
+      "matches_expected": true
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/ui",
+      "expected": "packages/ui",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/node_modules/@multica/ui",
+      "raw_link": "../../../../packages/ui",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui",
+      "matches_expected": true
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/views",
+      "expected": "packages/views",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/node_modules/@multica/views",
+      "raw_link": "../../../../packages/views",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views",
+      "matches_expected": true
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/eslint-config",
+      "expected": "packages/eslint-config",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/node_modules/@multica/eslint-config",
+      "raw_link": "../../../../packages/eslint-config",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config",
+      "matches_expected": true
+    },
+    {
+      "consumer": "apps/desktop",
+      "name": "@multica/tsconfig",
+      "expected": "packages/tsconfig",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/node_modules/@multica/tsconfig",
+      "raw_link": "../../../../packages/tsconfig",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig",
+      "matches_expected": true
+    },
+    {
+      "consumer": "apps/docs",
+      "name": "@multica/ui",
+      "expected": "packages/ui",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/docs/node_modules/@multica/ui",
+      "raw_link": "../../../../packages/ui",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui",
+      "matches_expected": true
+    },
+    {
+      "consumer": "apps/mobile",
+      "name": "@multica/core",
+      "expected": "packages/core",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/mobile/node_modules/@multica/core",
+      "raw_link": "../../../../packages/core",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core",
+      "matches_expected": true
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@multica/core",
+      "expected": "packages/core",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web/node_modules/@multica/core",
+      "raw_link": "../../../../packages/core",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core",
+      "matches_expected": true
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@multica/ui",
+      "expected": "packages/ui",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web/node_modules/@multica/ui",
+      "raw_link": "../../../../packages/ui",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui",
+      "matches_expected": true
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@multica/views",
+      "expected": "packages/views",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web/node_modules/@multica/views",
+      "raw_link": "../../../../packages/views",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views",
+      "matches_expected": true
+    },
+    {
+      "consumer": "apps/web",
+      "name": "@multica/eslint-config",
+      "expected": "packages/eslint-config",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web/node_modules/@multica/eslint-config",
+      "raw_link": "../../../../packages/eslint-config",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config",
+      "matches_expected": true
+    },
+    {
+      "consumer": "packages/core",
+      "name": "@multica/eslint-config",
+      "expected": "packages/eslint-config",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/node_modules/@multica/eslint-config",
+      "raw_link": "../../../eslint-config",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config",
+      "matches_expected": true
+    },
+    {
+      "consumer": "packages/core",
+      "name": "@multica/tsconfig",
+      "expected": "packages/tsconfig",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/node_modules/@multica/tsconfig",
+      "raw_link": "../../../tsconfig",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig",
+      "matches_expected": true
+    },
+    {
+      "consumer": "packages/plugin-sdk",
+      "name": "@multica/eslint-config",
+      "expected": "packages/eslint-config",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/plugin-sdk/node_modules/@multica/eslint-config",
+      "raw_link": "../../../eslint-config",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config",
+      "matches_expected": true
+    },
+    {
+      "consumer": "packages/plugin-sdk",
+      "name": "@multica/tsconfig",
+      "expected": "packages/tsconfig",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/plugin-sdk/node_modules/@multica/tsconfig",
+      "raw_link": "../../../tsconfig",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig",
+      "matches_expected": true
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@multica/eslint-config",
+      "expected": "packages/eslint-config",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui/node_modules/@multica/eslint-config",
+      "raw_link": "../../../eslint-config",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config",
+      "matches_expected": true
+    },
+    {
+      "consumer": "packages/ui",
+      "name": "@multica/tsconfig",
+      "expected": "packages/tsconfig",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui/node_modules/@multica/tsconfig",
+      "raw_link": "../../../tsconfig",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig",
+      "matches_expected": true
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/core",
+      "expected": "packages/core",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/node_modules/@multica/core",
+      "raw_link": "../../../core",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core",
+      "matches_expected": true
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/ui",
+      "expected": "packages/ui",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/node_modules/@multica/ui",
+      "raw_link": "../../../ui",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui",
+      "matches_expected": true
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/eslint-config",
+      "expected": "packages/eslint-config",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/node_modules/@multica/eslint-config",
+      "raw_link": "../../../eslint-config",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/eslint-config",
+      "matches_expected": true
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/plugin-sdk",
+      "expected": "packages/plugin-sdk",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/node_modules/@multica/plugin-sdk",
+      "raw_link": "../../../plugin-sdk",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/plugin-sdk",
+      "matches_expected": true
+    },
+    {
+      "consumer": "packages/views",
+      "name": "@multica/tsconfig",
+      "expected": "packages/tsconfig",
+      "link_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/node_modules/@multica/tsconfig",
+      "raw_link": "../../../tsconfig",
+      "actual_realpath": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/tsconfig",
+      "matches_expected": true
+    }
+  ],
+  "matches_registered_graph": true,
+  "scope": "Readonly Node package resolution; no tests or package-manager operations."
+}

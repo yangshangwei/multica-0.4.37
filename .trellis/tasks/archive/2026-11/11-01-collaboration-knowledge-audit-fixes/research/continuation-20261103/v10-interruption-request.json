@@ -1,0 +1,22 @@
+{
+  "requested_at": "2026-11-02T21:12:31.045612+00:00",
+  "kind": "intentional stop of proven invalid mixed-workspace browser build",
+  "state_before": "running",
+  "signal": "SIGINT",
+  "owned_playwright_cli_pid": 22294,
+  "verified_parent_chain_to_make": [
+    22294,
+    22288,
+    22287,
+    22229,
+    92601,
+    92594
+  ],
+  "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "make_pid": 92594,
+  "reason": "v10 boundary module reads uninitialized auth proxy10100 while WebProviders registers99423; client manifest maps boundary to final4 and WebProviders to v10. Exact source-only diagnosis supplied by runtime coordinator; no product guard/selector/timeout change.",
+  "whole_run_not_pass": true,
+  "partial_results_and_unrun_tests_must_be_preserved": true,
+  "API_Web_cleanup": "existing reviewed check.sh EXIT trap after Playwright exits",
+  "Redis_and_renderer_manual_stop_or_flush": false
+}

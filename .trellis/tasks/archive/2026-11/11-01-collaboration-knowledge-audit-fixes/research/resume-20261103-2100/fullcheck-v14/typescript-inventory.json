@@ -1,0 +1,7510 @@
+{
+  "scope": "Actual configured Vitest reporter: named file inventory and package test totals; individual case names are not emitted for every successful test.",
+  "packages": {
+    "@multica/core": {
+      "passed": 4455
+    },
+    "@multica/docs": {
+      "passed": 62
+    },
+    "@multica/views": {
+      "passed": 7165
+    },
+    "@multica/web": {
+      "passed": 290
+    },
+    "@multica/desktop": {
+      "passed": 1272
+    }
+  },
+  "files": [
+    {
+      "package": "@multica/core",
+      "file": "issues/canonical-id.test.tsx",
+      "tests": 12,
+      "line": 219,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "platform/auth-initializer.test.tsx",
+      "tests": 43,
+      "line": 221,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "runtimes/models.test.ts",
+      "tests": 18,
+      "line": 222,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/knowledge-sources.test.ts",
+      "tests": 5,
+      "line": 224,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/use-admin-access.test.tsx",
+      "tests": 11,
+      "line": 226,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issue-statuses/mutations.test.tsx",
+      "tests": 12,
+      "line": 227,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "platform/core-provider.test.tsx",
+      "tests": 5,
+      "line": 325,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "notification-preferences/mutations.test.tsx",
+      "tests": 5,
+      "line": 326,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/run-handoff-queries.test.ts",
+      "tests": 17,
+      "line": 327,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/control.test.ts",
+      "tests": 12,
+      "line": 328,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "inbox/mutations.test.tsx",
+      "tests": 6,
+      "line": 329,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/queries.test.ts",
+      "tests": 19,
+      "line": 330,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "iterations/command.test.tsx",
+      "tests": 14,
+      "line": 331,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/mutations.test.tsx",
+      "tests": 27,
+      "line": 332,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/run-handoff-schema.test.ts",
+      "tests": 16,
+      "line": 333,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/resource.test.ts",
+      "tests": 17,
+      "line": 334,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/switch.test.ts",
+      "tests": 16,
+      "line": 335,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/command.test.ts",
+      "tests": 17,
+      "line": 336,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/endpoint-uploads.test.ts",
+      "tests": 8,
+      "line": 337,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "labels/mutations.test.tsx",
+      "tests": 3,
+      "line": 338,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "workspace/mutations.test.tsx",
+      "tests": 10,
+      "line": 339,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "realtime/collaboration.test.ts",
+      "tests": 11,
+      "line": 410,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "realtime/use-realtime-sync-task-messages.test.tsx",
+      "tests": 6,
+      "line": 411,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "auth/token-queries.test.tsx",
+      "tests": 5,
+      "line": 412,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "properties/mutations.test.tsx",
+      "tests": 2,
+      "line": 413,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "projects/issue-candidates.test.ts",
+      "tests": 12,
+      "line": 414,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "realtime/use-realtime-sync-ws-instance.test.tsx",
+      "tests": 33,
+      "line": 437,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "iterations/activity.test.ts",
+      "tests": 33,
+      "line": 438,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/operation.test.ts",
+      "tests": 30,
+      "line": 439,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "projects/execution-mutations.test.tsx",
+      "tests": 3,
+      "line": 440,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "realtime/use-realtime-sync.test.ts",
+      "tests": 51,
+      "line": 441,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "projects/description-save.test.ts",
+      "tests": 2,
+      "line": 442,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/delivery.test.ts",
+      "tests": 23,
+      "line": 443,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/issue-description-stream.test.ts",
+      "tests": 12,
+      "line": 444,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/recovery-requests.test.ts",
+      "tests": 18,
+      "line": 445,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "triage/mutations.test.tsx",
+      "tests": 7,
+      "line": 446,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/attachment-schema.test.ts",
+      "tests": 7,
+      "line": 447,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "workspace/hooks.test.tsx",
+      "tests": 5,
+      "line": 448,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/stores/surface-view-store.test.tsx",
+      "tests": 6,
+      "line": 449,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "workspace/mcp-market-mutations.test.tsx",
+      "tests": 3,
+      "line": 462,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/resource-api.test.ts",
+      "tests": 4,
+      "line": 463,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "iterations/catalogue.test.ts",
+      "tests": 7,
+      "line": 464,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/execution-schema.test.ts",
+      "tests": 59,
+      "line": 465,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "projects/mutations.test.tsx",
+      "tests": 6,
+      "line": 466,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/client.test.ts",
+      "tests": 122,
+      "line": 467,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/schema.test.ts",
+      "tests": 134,
+      "line": 468,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/run-records-queries.test.ts",
+      "tests": 27,
+      "line": 469,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/collaboration-workflow.test.ts",
+      "tests": 133,
+      "line": 470,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/command-history-queries.test.ts",
+      "tests": 25,
+      "line": 471,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/result-operation.test.ts",
+      "tests": 30,
+      "line": 472,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/triage-client.test.ts",
+      "tests": 74,
+      "line": 473,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/execution-negotiation.test.ts",
+      "tests": 15,
+      "line": 474,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/schemas.test.ts",
+      "tests": 156,
+      "line": 475,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/execution-fifo-switch.test.ts",
+      "tests": 22,
+      "line": 476,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/comment.test.ts",
+      "tests": 18,
+      "line": 477,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/collaboration-knowledge.test.ts",
+      "tests": 11,
+      "line": 478,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "realtime/knowledge-provider.test.tsx",
+      "tests": 1,
+      "line": 485,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/collaboration.test.ts",
+      "tests": 24,
+      "line": 486,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/switch-api.test.ts",
+      "tests": 8,
+      "line": 487,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/knowledge-cache.test.ts",
+      "tests": 8,
+      "line": 488,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "chat/mutations.test.tsx",
+      "tests": 7,
+      "line": 536,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/issue-description-assist.test.ts",
+      "tests": 12,
+      "line": 537,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/view-params.test.ts",
+      "tests": 25,
+      "line": 538,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/collaboration-lifecycle.test.ts",
+      "tests": 34,
+      "line": 539,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "skills/template-draft.test.ts",
+      "tests": 37,
+      "line": 540,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/delivery-form.test.tsx",
+      "tests": 3,
+      "line": 541,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/collaboration-run-records.test.ts",
+      "tests": 5,
+      "line": 542,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/collaboration-control.test.ts",
+      "tests": 6,
+      "line": 543,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/issue-source-redaction.test.ts",
+      "tests": 12,
+      "line": 544,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/project-p1-client.test.ts",
+      "tests": 16,
+      "line": 545,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/comment-actions.test.ts",
+      "tests": 15,
+      "line": 546,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/project-execution.test.ts",
+      "tests": 27,
+      "line": 547,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/delivery-api.test.ts",
+      "tests": 6,
+      "line": 548,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/resource-api.test.ts",
+      "tests": 8,
+      "line": 549,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/iteration-client.test.ts",
+      "tests": 19,
+      "line": 550,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/skill-template-client.test.ts",
+      "tests": 28,
+      "line": 551,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "i18n/provider.test.tsx",
+      "tests": 1,
+      "line": 552,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/collaboration-recipients.test.ts",
+      "tests": 21,
+      "line": 553,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/delivery-history.test.ts",
+      "tests": 8,
+      "line": 554,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/discussion.test.ts",
+      "tests": 10,
+      "line": 555,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/collaboration-fields.test.ts",
+      "tests": 16,
+      "line": 556,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/collaboration-api.test.ts",
+      "tests": 10,
+      "line": 557,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/knowledge-schema.test.ts",
+      "tests": 12,
+      "line": 558,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/schema.test.ts",
+      "tests": 46,
+      "line": 559,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/issue-creator-recommendation.test.ts",
+      "tests": 13,
+      "line": 560,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/mcp-deployment-client.test.ts",
+      "tests": 7,
+      "line": 561,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "feature-flags/context.test.tsx",
+      "tests": 5,
+      "line": 562,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/iteration-schemas.test.ts",
+      "tests": 29,
+      "line": 563,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/personal-access-tokens.test.ts",
+      "tests": 17,
+      "line": 564,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/collaboration-content.test.ts",
+      "tests": 5,
+      "line": 565,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "changelog/queries.test.ts",
+      "tests": 5,
+      "line": 566,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/field-queries.test.ts",
+      "tests": 3,
+      "line": 567,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/memory-queries.test.ts",
+      "tests": 3,
+      "line": 568,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "docs/schema.test.ts",
+      "tests": 13,
+      "line": 569,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/collaboration-queries.test.ts",
+      "tests": 45,
+      "line": 570,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/mcp-market-client.test.ts",
+      "tests": 9,
+      "line": 571,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "changelog/schema.test.ts",
+      "tests": 20,
+      "line": 572,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/missing-user-session.test.ts",
+      "tests": 8,
+      "line": 573,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/ws-client.test.ts",
+      "tests": 15,
+      "line": 574,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/squad-members.test.ts",
+      "tests": 12,
+      "line": 575,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "i18n/user-locale-sync.test.tsx",
+      "tests": 9,
+      "line": 576,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/knowledge-actions.test.ts",
+      "tests": 15,
+      "line": 577,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/activity-schema.test.ts",
+      "tests": 3,
+      "line": 578,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/fields-schema.test.ts",
+      "tests": 59,
+      "line": 579,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/collaboration-gate-schema.test.ts",
+      "tests": 5,
+      "line": 580,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/auth-redirects.test.ts",
+      "tests": 2,
+      "line": 581,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/execution-squad.test.ts",
+      "tests": 7,
+      "line": 582,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/content-schema.test.ts",
+      "tests": 24,
+      "line": 583,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/run-preparation-schema.test.ts",
+      "tests": 34,
+      "line": 584,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "hooks/use-file-upload.test.ts",
+      "tests": 6,
+      "line": 585,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "auth/password.test.ts",
+      "tests": 8,
+      "line": 586,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/run-records-schema.test.ts",
+      "tests": 51,
+      "line": 587,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/action.test.ts",
+      "tests": 3,
+      "line": 588,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/execution-host.test.ts",
+      "tests": 21,
+      "line": 589,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "realtime/use-realtime-sync-comment.test.tsx",
+      "tests": 3,
+      "line": 590,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/comment-history.test.ts",
+      "tests": 2,
+      "line": 591,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "client-usage/reporter.test.tsx",
+      "tests": 2,
+      "line": 592,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/queries.test.ts",
+      "tests": 2,
+      "line": 593,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/ws-updaters.test.ts",
+      "tests": 44,
+      "line": 594,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/api.test.ts",
+      "tests": 3,
+      "line": 595,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/control-api.test.ts",
+      "tests": 2,
+      "line": 596,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "i18n/pick-locale.test.ts",
+      "tests": 17,
+      "line": 597,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/execution-api.test.ts",
+      "tests": 2,
+      "line": 598,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/resource-schema.test.ts",
+      "tests": 13,
+      "line": 599,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/ws-client-account.test.ts",
+      "tests": 5,
+      "line": 600,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "diagnostics/freeze-watchdog.test.ts",
+      "tests": 9,
+      "line": 601,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "analytics/index.test.ts",
+      "tests": 9,
+      "line": 602,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "drafts/upload-coordinator.test.ts",
+      "tests": 5,
+      "line": 619,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/collaboration-recipient-search.test.ts",
+      "tests": 20,
+      "line": 620,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/installation-metadata.test.ts",
+      "tests": 2,
+      "line": 621,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/date.test.ts",
+      "tests": 7,
+      "line": 622,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/password-members.test.ts",
+      "tests": 1,
+      "line": 623,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "iterations/calendar.test.ts",
+      "tests": 2,
+      "line": 624,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/presentation.test.ts",
+      "tests": 10,
+      "line": 625,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/stores/quick-create-store.test.ts",
+      "tests": 40,
+      "line": 626,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/operation-draft.test.ts",
+      "tests": 8,
+      "line": 627,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/control-schema.test.ts",
+      "tests": 9,
+      "line": 628,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/delivery-result.test.ts",
+      "tests": 14,
+      "line": 629,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "projects/planning-timezone.test.tsx",
+      "tests": 1,
+      "line": 630,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "workspace/mcp-template-queries.test.ts",
+      "tests": 8,
+      "line": 631,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/command-history-schema.test.ts",
+      "tests": 39,
+      "line": 632,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "iterations/scope.test.ts",
+      "tests": 79,
+      "line": 633,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/draft.test.ts",
+      "tests": 4,
+      "line": 634,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "skills/frontmatter.test.ts",
+      "tests": 14,
+      "line": 635,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "iterations/timeline.test.ts",
+      "tests": 14,
+      "line": 636,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "changelog/selection.test.ts",
+      "tests": 16,
+      "line": 637,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/agent-template-schemas.test.ts",
+      "tests": 20,
+      "line": 638,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/mcp-template-schemas.test.ts",
+      "tests": 15,
+      "line": 639,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "workspace/skill-template-live-queries.test.ts",
+      "tests": 7,
+      "line": 640,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "chat/store.test.ts",
+      "tests": 25,
+      "line": 680,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/switch-schema.test.ts",
+      "tests": 8,
+      "line": 681,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "projects/access-lifecycle.test.ts",
+      "tests": 12,
+      "line": 682,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/category.test.ts",
+      "tests": 14,
+      "line": 683,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/children-schema.test.ts",
+      "tests": 23,
+      "line": 684,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/resource-offer-schema.test.ts",
+      "tests": 5,
+      "line": 685,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/cache-coordinator.test.ts",
+      "tests": 24,
+      "line": 686,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/collaboration-schema.test.ts",
+      "tests": 21,
+      "line": 687,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/memory-actions.test.ts",
+      "tests": 5,
+      "line": 688,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "navigation/store.test.ts",
+      "tests": 2,
+      "line": 689,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/observability-schema.test.ts",
+      "tests": 11,
+      "line": 690,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issue-statuses/queries.test.ts",
+      "tests": 16,
+      "line": 691,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "skills/pack-archive.test.ts",
+      "tests": 11,
+      "line": 692,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "query-access.test.ts",
+      "tests": 9,
+      "line": 693,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "iterations/candidates.test.ts",
+      "tests": 39,
+      "line": 694,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "workspace/workspace-names.test.ts",
+      "tests": 14,
+      "line": 695,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/collaboration-memory.test.ts",
+      "tests": 4,
+      "line": 696,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/memory-schema.test.ts",
+      "tests": 9,
+      "line": 697,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/access.test.ts",
+      "tests": 8,
+      "line": 698,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/queries.test.ts",
+      "tests": 14,
+      "line": 699,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "i18n/browser-cookie-adapter.test.ts",
+      "tests": 6,
+      "line": 700,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/operation-queries.test.ts",
+      "tests": 18,
+      "line": 701,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/edit-schema.test.ts",
+      "tests": 8,
+      "line": 702,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/handoff-schema.test.ts",
+      "tests": 9,
+      "line": 703,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/revision-realtime.test.ts",
+      "tests": 11,
+      "line": 704,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/field-actions.test.ts",
+      "tests": 4,
+      "line": 705,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/agent-category-schemas.test.ts",
+      "tests": 7,
+      "line": 706,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/project-p1-schema.test.ts",
+      "tests": 15,
+      "line": 707,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/lifecycle-schema.test.ts",
+      "tests": 47,
+      "line": 708,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/skill-template-schemas.test.ts",
+      "tests": 18,
+      "line": 709,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/result-notification.test.ts",
+      "tests": 12,
+      "line": 710,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/execution-schemas.test.ts",
+      "tests": 7,
+      "line": 711,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/stores/draft-store.test.ts",
+      "tests": 16,
+      "line": 712,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/autopilot-template-schemas.test.ts",
+      "tests": 8,
+      "line": 713,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "skills/stores/view-store.test.ts",
+      "tests": 20,
+      "line": 714,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "platform/session-cleanup.test.ts",
+      "tests": 5,
+      "line": 715,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "triage/queries.test.ts",
+      "tests": 7,
+      "line": 716,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/stores/view-store.test.ts",
+      "tests": 21,
+      "line": 717,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "realtime/knowledge.test.ts",
+      "tests": 4,
+      "line": 718,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "auth/store.test.ts",
+      "tests": 15,
+      "line": 719,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/installation-schemas.test.ts",
+      "tests": 6,
+      "line": 720,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "shortcuts/definitions.test.ts",
+      "tests": 26,
+      "line": 721,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/collaboration-draft.test.ts",
+      "tests": 4,
+      "line": 722,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/stores/comment-draft-store.test.ts",
+      "tests": 21,
+      "line": 723,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "diagnostics/diagnostic-context.test.ts",
+      "tests": 15,
+      "line": 724,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/resource-queries.test.ts",
+      "tests": 5,
+      "line": 725,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "inbox/ws-updaters.test.ts",
+      "tests": 11,
+      "line": 726,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "triage/duplicate-targets.test.ts",
+      "tests": 3,
+      "line": 727,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/observability-schema.regression-1.test.ts",
+      "tests": 5,
+      "line": 728,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "iterations/access.test.ts",
+      "tests": 6,
+      "line": 729,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "api/messaging-config.test.ts",
+      "tests": 12,
+      "line": 730,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "dingtalk/queries.test.ts",
+      "tests": 7,
+      "line": 731,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "analytics/exception-dedupe.test.ts",
+      "tests": 15,
+      "line": 732,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "paths/account.test.ts",
+      "tests": 9,
+      "line": 733,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/alert-schema.test.ts",
+      "tests": 5,
+      "line": 734,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "chat/recent-context-store.test.ts",
+      "tests": 7,
+      "line": 735,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "workspace/workspace-name-preferences.test.ts",
+      "tests": 11,
+      "line": 736,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "iterations/grouped-issues.test.ts",
+      "tests": 4,
+      "line": 737,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/operation-schema.test.ts",
+      "tests": 4,
+      "line": 738,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/recipient-schema.test.ts",
+      "tests": 9,
+      "line": 739,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "inbox/filter-store.test.ts",
+      "tests": 15,
+      "line": 740,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/participant.test.ts",
+      "tests": 1,
+      "line": 741,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "platform/system-notification.test.ts",
+      "tests": 10,
+      "line": 742,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "attachments/image-sequence.test.ts",
+      "tests": 16,
+      "line": 743,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/installation-queries.test.ts",
+      "tests": 3,
+      "line": 744,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/user-schema.test.ts",
+      "tests": 3,
+      "line": 745,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/draft.test.ts",
+      "tests": 19,
+      "line": 746,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "workspace/skill-template-queries.test.ts",
+      "tests": 4,
+      "line": 747,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "feature-flags/hash.test.ts",
+      "tests": 6,
+      "line": 748,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "paths/tab-presentation.test.ts",
+      "tests": 17,
+      "line": 749,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/execution-queries.test.ts",
+      "tests": 2,
+      "line": 750,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "iterations/prepare.test.ts",
+      "tests": 7,
+      "line": 751,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/builder-protocol.test.ts",
+      "tests": 17,
+      "line": 752,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "projects/realtime.test.ts",
+      "tests": 13,
+      "line": 753,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "permissions/rules.test.ts",
+      "tests": 39,
+      "line": 754,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "chat/message-cache.test.ts",
+      "tests": 8,
+      "line": 755,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "onboarding/use-bootstrap-mika.test.ts",
+      "tests": 6,
+      "line": 756,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/schema.test.ts",
+      "tests": 11,
+      "line": 757,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "paths/tab-subject.test.ts",
+      "tests": 41,
+      "line": 758,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/resource-schema.test.ts",
+      "tests": 3,
+      "line": 759,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/derive-presence.test.ts",
+      "tests": 29,
+      "line": 760,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "feature-flags/static-provider.test.ts",
+      "tests": 12,
+      "line": 761,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/pending.test.ts",
+      "tests": 1,
+      "line": 762,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "inbox/queries.test.ts",
+      "tests": 15,
+      "line": 763,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/source-collaboration.test.ts",
+      "tests": 11,
+      "line": 764,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/stores/recent-issues-store.test.ts",
+      "tests": 12,
+      "line": 765,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/user-queries.test.ts",
+      "tests": 5,
+      "line": 766,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/cache-helpers.test.ts",
+      "tests": 17,
+      "line": 767,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/control-schema.test.ts",
+      "tests": 3,
+      "line": 768,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "skills/presentation.test.ts",
+      "tests": 15,
+      "line": 769,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "chat/pending.test.ts",
+      "tests": 20,
+      "line": 770,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/use-agent-activity.test.ts",
+      "tests": 11,
+      "line": 771,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "types/property.test.ts",
+      "tests": 21,
+      "line": 772,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "platform/workspace-storage.test.ts",
+      "tests": 8,
+      "line": 773,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/comment-trigger-outcomes.test.ts",
+      "tests": 7,
+      "line": 774,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "shortcuts/store.test.ts",
+      "tests": 9,
+      "line": 775,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "search/cancelled-rank.test.ts",
+      "tests": 12,
+      "line": 776,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "projects/execution-squad.test.ts",
+      "tests": 16,
+      "line": 777,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "github/pull-request-status.test.ts",
+      "tests": 19,
+      "line": 778,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/status-behavior.test.ts",
+      "tests": 19,
+      "line": 779,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "chat/queries.test.ts",
+      "tests": 16,
+      "line": 780,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "squads/stores/view-store.test.ts",
+      "tests": 6,
+      "line": 781,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "utils.test.ts",
+      "tests": 7,
+      "line": 782,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "platform/storage-cleanup.test.ts",
+      "tests": 4,
+      "line": 783,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "runtimes/cli-version.test.ts",
+      "tests": 21,
+      "line": 784,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "projects/stores/view-store.test.ts",
+      "tests": 5,
+      "line": 785,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "admin/observability-queries.test.ts",
+      "tests": 4,
+      "line": 786,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/manual-draft-store.test.ts",
+      "tests": 17,
+      "line": 787,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "types/attachment-url.test.ts",
+      "tests": 22,
+      "line": 788,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "paths/route-icons.test.ts",
+      "tests": 7,
+      "line": 789,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/surface/membership.test.ts",
+      "tests": 15,
+      "line": 790,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "types/agent-template.test.ts",
+      "tests": 10,
+      "line": 791,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/creator-selection.test.ts",
+      "tests": 9,
+      "line": 792,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/delete-cache.test.ts",
+      "tests": 3,
+      "line": 793,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/participant-schema.test.ts",
+      "tests": 2,
+      "line": 794,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "paths/resolve.test.ts",
+      "tests": 3,
+      "line": 795,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "workspace/squad-members-query.test.ts",
+      "tests": 2,
+      "line": 796,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/workdir.test.ts",
+      "tests": 11,
+      "line": 797,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/effective-access.test.ts",
+      "tests": 14,
+      "line": 798,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "navigation/scope-history.test.ts",
+      "tests": 4,
+      "line": 799,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/stores/view-store-status.test.ts",
+      "tests": 7,
+      "line": 800,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "paths/paths.test.ts",
+      "tests": 10,
+      "line": 801,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/knowledge-lease.test.ts",
+      "tests": 6,
+      "line": 802,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/batch.test.ts",
+      "tests": 10,
+      "line": 803,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "analytics/redact-exception.test.ts",
+      "tests": 7,
+      "line": 804,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/stores/comment-collapse-store.test.ts",
+      "tests": 4,
+      "line": 805,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/stores/transcript-view-store.test.ts",
+      "tests": 4,
+      "line": 806,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "vcs/repo-provider.test.ts",
+      "tests": 8,
+      "line": 807,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "drafts/create-draft-store.test.ts",
+      "tests": 3,
+      "line": 808,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/surface/scope.test.ts",
+      "tests": 6,
+      "line": 809,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/stores/issue-create-settings-store.test.ts",
+      "tests": 4,
+      "line": 810,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "iterations/realtime.test.ts",
+      "tests": 24,
+      "line": 811,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "paths/consistency.test.ts",
+      "tests": 4,
+      "line": 812,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/stores/resolved-expand-store.test.ts",
+      "tests": 6,
+      "line": 813,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/discovery.test.ts",
+      "tests": 7,
+      "line": 814,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "drafts/draft-upload.test.ts",
+      "tests": 6,
+      "line": 815,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "drafts/cleanup-registry.test.ts",
+      "tests": 3,
+      "line": 816,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "autopilots/webhook.test.ts",
+      "tests": 11,
+      "line": 817,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "runtimes/derive-health.test.ts",
+      "tests": 7,
+      "line": 818,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "onboarding/welcome-store.test.ts",
+      "tests": 4,
+      "line": 819,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "platform/persist-storage.test.ts",
+      "tests": 3,
+      "line": 820,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "feature-flags/service.test.ts",
+      "tests": 9,
+      "line": 821,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/stores/create-mode-store.test.ts",
+      "tests": 3,
+      "line": 822,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/stored-draft.test.ts",
+      "tests": 6,
+      "line": 823,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/stores/sub-issue-display-store.test.ts",
+      "tests": 3,
+      "line": 824,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "projects/progress-draft-store.test.ts",
+      "tests": 2,
+      "line": 825,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "onboarding/mika.test.ts",
+      "tests": 9,
+      "line": 826,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "iterations/validation.test.ts",
+      "tests": 9,
+      "line": 827,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/conversation-starters.test.ts",
+      "tests": 8,
+      "line": 828,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "paths/reserved-slugs.test.ts",
+      "tests": 6,
+      "line": 829,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "iterations/choices.test.ts",
+      "tests": 1,
+      "line": 830,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "github/settings.test.ts",
+      "tests": 5,
+      "line": 831,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "runtimes/display.test.ts",
+      "tests": 8,
+      "line": 832,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "dashboard/queries.test.ts",
+      "tests": 8,
+      "line": 833,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/stores/view-store-property-filter.test.ts",
+      "tests": 3,
+      "line": 834,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "workspace/queries.test.ts",
+      "tests": 4,
+      "line": 835,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/failure-reason.test.ts",
+      "tests": 8,
+      "line": 836,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "auth/recovery.test.ts",
+      "tests": 6,
+      "line": 837,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "auth/utils.test.ts",
+      "tests": 7,
+      "line": 838,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "dashboard/failure-class.test.ts",
+      "tests": 4,
+      "line": 839,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "notification-preferences/patch.test.ts",
+      "tests": 5,
+      "line": 840,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/stores/comment-composer-store.test.ts",
+      "tests": 2,
+      "line": 841,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "analytics/benign-exceptions.test.ts",
+      "tests": 7,
+      "line": 842,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/stores/issues-scope-store.test.ts",
+      "tests": 3,
+      "line": 843,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "config/index.test.ts",
+      "tests": 1,
+      "line": 844,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/recipient-sections.test.ts",
+      "tests": 3,
+      "line": 845,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "chat/unread.test.ts",
+      "tests": 5,
+      "line": 846,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "workspace/workspace-url.test.ts",
+      "tests": 5,
+      "line": 847,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "workspace/avatar-url.test.ts",
+      "tests": 5,
+      "line": 848,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/openclaw-runtime-config.test.ts",
+      "tests": 3,
+      "line": 849,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/mcp-support.test.ts",
+      "tests": 2,
+      "line": 850,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "collaboration/comment-recall-queries.test.ts",
+      "tests": 1,
+      "line": 851,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "plugins/queries.test.ts",
+      "tests": 1,
+      "line": 852,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "runtimes/access.test.ts",
+      "tests": 5,
+      "line": 853,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "issues/stores/my-issues-view-store.test.ts",
+      "tests": 4,
+      "line": 854,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/runtime-binding.test.ts",
+      "tests": 4,
+      "line": 855,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "paths/triage.test.ts",
+      "tests": 1,
+      "line": 856,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "agents/autonomy.test.ts",
+      "tests": 2,
+      "line": 857,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "billing/workspace-subscription-queries.test.ts",
+      "tests": 2,
+      "line": 858,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "client-usage/install-id.test.ts",
+      "tests": 2,
+      "line": 859,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "feedback/types.test.ts",
+      "tests": 2,
+      "line": 860,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/core",
+      "file": "projects/goal-template.test.ts",
+      "tests": 1,
+      "line": 861,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/docs",
+      "file": "lib/site.test.ts",
+      "tests": 5,
+      "line": 877,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/docs",
+      "file": "lib/docs-bundle/generate-docs-bundle.test.ts",
+      "tests": 1,
+      "line": 878,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/docs",
+      "file": "lib/docs-bundle/parse-page.test.ts",
+      "tests": 20,
+      "line": 879,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/docs",
+      "file": "lib/docs-bundle/jsx-to-directive.test.ts",
+      "tests": 18,
+      "line": 880,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/docs",
+      "file": "lib/locale-link.test.ts",
+      "tests": 8,
+      "line": 881,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/docs",
+      "file": "lib/docs-bundle/docs-anchor-parity.test.ts",
+      "tests": 4,
+      "line": 882,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/docs",
+      "file": "app/font-fallback-order.test.ts",
+      "tests": 1,
+      "line": 883,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/docs",
+      "file": "lib/retired-locale-redirects.test.ts",
+      "tests": 3,
+      "line": 884,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/docs",
+      "file": "lib/static-params.test.ts",
+      "tests": 2,
+      "line": 885,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "auth/login-page.test.tsx",
+      "tests": 39,
+      "line": 901,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/billing-tab.test.tsx",
+      "tests": 50,
+      "line": 916,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/create-skill-template-flow.test.tsx",
+      "tests": 45,
+      "line": 929,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/iteration-navigation.test.tsx",
+      "tests": 62,
+      "line": 931,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/schedule-editor/schedule-editor.test.tsx",
+      "tests": 77,
+      "line": 938,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/creation-form.test.tsx",
+      "tests": 20,
+      "line": 947,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/knowledge-panel.test.tsx",
+      "tests": 34,
+      "line": 953,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-review-regressions.test.tsx",
+      "tests": 18,
+      "line": 955,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "search/search-command.test.tsx",
+      "tests": 38,
+      "line": 961,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/mcp-tab.test.tsx",
+      "tests": 53,
+      "line": 971,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/quick-create-actor-picker.test.tsx",
+      "tests": 23,
+      "line": 990,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/issue-detail.test.tsx",
+      "tests": 87,
+      "line": 996,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/iteration-events.test.tsx",
+      "tests": 32,
+      "line": 997,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/workspace-planning-timezone.test.tsx",
+      "tests": 9,
+      "line": 1003,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/issue-picker-modal.test.tsx",
+      "tests": 14,
+      "line": 1007,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "mcp/mcp-market.test.tsx",
+      "tests": 42,
+      "line": 1018,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/iteration-details.test.tsx",
+      "tests": 26,
+      "line": 1020,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/create-issue.test.tsx",
+      "tests": 61,
+      "line": 1026,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-management.test.tsx",
+      "tests": 9,
+      "line": 1028,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/schedule-editor/cron-grammar.test.ts",
+      "tests": 11,
+      "line": 1032,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-squad-section.test.tsx",
+      "tests": 30,
+      "line": 1035,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/tabs/mcp-config-tab.test.tsx",
+      "tests": 40,
+      "line": 1036,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-duplicate-picker.test.tsx",
+      "tests": 12,
+      "line": 1037,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/iteration-operation.test.tsx",
+      "tests": 17,
+      "line": 1041,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "auth/password-form.test.tsx",
+      "tests": 16,
+      "line": 1043,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/tabs/mcp-server-dialog.test.tsx",
+      "tests": 19,
+      "line": 1044,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-create-dialog.test.tsx",
+      "tests": 12,
+      "line": 1046,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/workflow.test.tsx",
+      "tests": 11,
+      "line": 1049,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/template-skill-create-panel.test.tsx",
+      "tests": 23,
+      "line": 1075,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-detail.test.tsx",
+      "tests": 25,
+      "line": 1076,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/iteration-add-existing.test.tsx",
+      "tests": 7,
+      "line": 1078,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/template-create-autopilot-page.test.tsx",
+      "tests": 33,
+      "line": 1084,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/skill-market-panel.test.tsx",
+      "tests": 11,
+      "line": 1092,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/issues-header.search-filter.test.tsx",
+      "tests": 7,
+      "line": 1094,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/mention-suggestion.test.tsx",
+      "tests": 44,
+      "line": 1096,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/field-editing.test.tsx",
+      "tests": 7,
+      "line": 1097,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/surface/use-issue-surface-controller.test.tsx",
+      "tests": 54,
+      "line": 1103,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/projects-page.test.tsx",
+      "tests": 20,
+      "line": 1204,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/skill-detail-page.test.tsx",
+      "tests": 33,
+      "line": 1492,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/account-picker.test.tsx",
+      "tests": 9,
+      "line": 1493,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/quick-create-issue.test.tsx",
+      "tests": 51,
+      "line": 1508,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/create-project.test.tsx",
+      "tests": 16,
+      "line": 1509,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/preferences-tab.test.tsx",
+      "tests": 17,
+      "line": 1511,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/create-project-local-mode.test.tsx",
+      "tests": 11,
+      "line": 1512,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/chat-new-chat-button.test.tsx",
+      "tests": 17,
+      "line": 1530,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/connect-remote-dialog.test.tsx",
+      "tests": 17,
+      "line": 1531,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/swimlane-view.test.tsx",
+      "tests": 55,
+      "line": 1535,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/chat-window.test.tsx",
+      "tests": 10,
+      "line": 1536,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/iteration-settings-tab.test.tsx",
+      "tests": 19,
+      "line": 1552,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/gantt-view.test.tsx",
+      "tests": 9,
+      "line": 1553,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/collaboration/collaboration-page.test.tsx",
+      "tests": 15,
+      "line": 1556,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/table-view-editing.test.tsx",
+      "tests": 10,
+      "line": 1557,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/tokens-tab.test.tsx",
+      "tests": 12,
+      "line": 1560,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/use-chat-draft-restore.test.tsx",
+      "tests": 8,
+      "line": 1561,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/task-transcript/agent-transcript-dialog.test.tsx",
+      "tests": 40,
+      "line": 1575,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/issues-header.property-filter.test.tsx",
+      "tests": 7,
+      "line": 1576,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/mermaid-viewer.test.tsx",
+      "tests": 25,
+      "line": 1577,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "dashboard/components/dashboard-page.test.tsx",
+      "tests": 24,
+      "line": 1840,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/resource-offers.test.tsx",
+      "tests": 10,
+      "line": 1841,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/keyboard-shortcuts-tab.test.tsx",
+      "tests": 9,
+      "line": 1843,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/provider-settings-recovery.test.tsx",
+      "tests": 23,
+      "line": 1844,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/avatar-upload-control.test.tsx",
+      "tests": 13,
+      "line": 1845,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-picker.open-state.test.tsx",
+      "tests": 11,
+      "line": 1846,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/create-skill-dialog.test.tsx",
+      "tests": 14,
+      "line": 1847,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/field-inputs.test.tsx",
+      "tests": 8,
+      "line": 1848,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/iteration-form.test.tsx",
+      "tests": 17,
+      "line": 1861,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/source-context-viewer.test.tsx",
+      "tests": 47,
+      "line": 1863,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/autopilot-dialog.validation.test.tsx",
+      "tests": 4,
+      "line": 1864,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/repositories-tab.test.tsx",
+      "tests": 16,
+      "line": 1866,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/settings-page.test.tsx",
+      "tests": 24,
+      "line": 1867,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/iteration-assignment.test.tsx",
+      "tests": 8,
+      "line": 1868,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "squads/components/squads-page.test.tsx",
+      "tests": 17,
+      "line": 1901,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/comment-composer.test.tsx",
+      "tests": 9,
+      "line": 1902,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/autopilot-dialog.project.test.tsx",
+      "tests": 5,
+      "line": 1903,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "mcp/mcp-market-panel.test.tsx",
+      "tests": 8,
+      "line": 1905,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/runtime-local-skill-import-panel.test.tsx",
+      "tests": 14,
+      "line": 1906,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/surface/issue-surface.test.tsx",
+      "tests": 27,
+      "line": 2016,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/iteration-candidate.test.tsx",
+      "tests": 6,
+      "line": 2017,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/members-tab.test.tsx",
+      "tests": 12,
+      "line": 2019,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/resource-panel.test.tsx",
+      "tests": 6,
+      "line": 2020,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/tabs/env-tab.test.tsx",
+      "tests": 18,
+      "line": 2021,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-page.test.tsx",
+      "tests": 22,
+      "line": 2022,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/wecom-tab.test.tsx",
+      "tests": 14,
+      "line": 2023,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/table-view-virtualized-hierarchy.test.tsx",
+      "tests": 1,
+      "line": 2036,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/agent-overview-pane.test.tsx",
+      "tests": 25,
+      "line": 2038,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/autopilot-dialog.schedule.test.tsx",
+      "tests": 7,
+      "line": 2039,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/catalog-recovery.test.tsx",
+      "tests": 8,
+      "line": 2040,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/use-auto-save.test.tsx",
+      "tests": 6,
+      "line": 2042,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/skills-page.test.tsx",
+      "tests": 22,
+      "line": 2059,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "onboarding/onboarding-flow-mode.test.tsx",
+      "tests": 9,
+      "line": 2067,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/agent-category-input.test.tsx",
+      "tests": 7,
+      "line": 2068,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-squad-picker.test.tsx",
+      "tests": 12,
+      "line": 2069,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/file-tree.test.tsx",
+      "tests": 9,
+      "line": 2070,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/agents-page.test.tsx",
+      "tests": 26,
+      "line": 2071,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/actions/__tests__/issue-actions-menu.test.tsx",
+      "tests": 12,
+      "line": 2080,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/create-agent-dialog.test.tsx",
+      "tests": 10,
+      "line": 2093,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/github-tab.test.tsx",
+      "tests": 18,
+      "line": 2094,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/agent-batch-toolbar.test.tsx",
+      "tests": 12,
+      "line": 2095,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/issues-page.test.tsx",
+      "tests": 10,
+      "line": 2129,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/skill-presentation-fields.test.tsx",
+      "tests": 5,
+      "line": 2130,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "mcp/mcp-agent-picker.test.tsx",
+      "tests": 7,
+      "line": 2131,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/repositories-tab.recovery.test.tsx",
+      "tests": 7,
+      "line": 2132,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/comment-card-edit-gate.test.tsx",
+      "tests": 6,
+      "line": 2133,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/comment-composers.test.tsx",
+      "tests": 41,
+      "line": 2254,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/inspector/runtime-picker.test.tsx",
+      "tests": 10,
+      "line": 2537,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/iteration-term.test.tsx",
+      "tests": 4,
+      "line": 2538,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "mcp/mcp-agent-discovery.test.tsx",
+      "tests": 6,
+      "line": 2540,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/comment-list.test.tsx",
+      "tests": 9,
+      "line": 2541,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/thread-nav-panel.test.tsx",
+      "tests": 49,
+      "line": 2542,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/mermaid-diagram.test.tsx",
+      "tests": 19,
+      "line": 2747,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/hooks/use-issue-subscribers.test.tsx",
+      "tests": 9,
+      "line": 2748,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/tabs/instructions-tab.test.tsx",
+      "tests": 13,
+      "line": 2749,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/pickers/property-picker.test.tsx",
+      "tests": 9,
+      "line": 2767,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/execution-panel.test.tsx",
+      "tests": 12,
+      "line": 2768,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/approvals/agent-approvals-page.test.tsx",
+      "tests": 14,
+      "line": 2769,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/admin-shell.test.tsx",
+      "tests": 10,
+      "line": 2770,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-page-recovery.test.tsx",
+      "tests": 9,
+      "line": 2771,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "onboarding/steps/step-workspace.test.tsx",
+      "tests": 21,
+      "line": 2772,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/project-iterations.test.tsx",
+      "tests": 2,
+      "line": 2773,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/issue-description-assist.test.tsx",
+      "tests": 18,
+      "line": 2776,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "inbox/components/inbox-filter-menu.test.tsx",
+      "tests": 7,
+      "line": 2777,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/workspace-tab.test.tsx",
+      "tests": 8,
+      "line": 2880,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/chat-input.test.tsx",
+      "tests": 49,
+      "line": 2911,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/markdown-paste.test.ts",
+      "tests": 26,
+      "line": 2912,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/skill-list-actions.test.tsx",
+      "tests": 16,
+      "line": 2914,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/lark-tab.test.tsx",
+      "tests": 22,
+      "line": 2915,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/telegram-tab.test.tsx",
+      "tests": 17,
+      "line": 2916,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/runtime-profiles-dialog.test.tsx",
+      "tests": 6,
+      "line": 2917,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/issue-limit-upgrade-dialog.test.tsx",
+      "tests": 13,
+      "line": 2918,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/issue-detail-route.test.tsx",
+      "tests": 11,
+      "line": 2934,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/dingtalk-tab.test.tsx",
+      "tests": 30,
+      "line": 2936,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/memory-panel.test.tsx",
+      "tests": 7,
+      "line": 2937,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/issue-statuses-tab.test.tsx",
+      "tests": 11,
+      "line": 2938,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/iteration-history.test.tsx",
+      "tests": 6,
+      "line": 2939,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/skill-template-catalog.test.tsx",
+      "tests": 11,
+      "line": 2941,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/observability/read-pages.test.tsx",
+      "tests": 11,
+      "line": 2942,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-import-dialog.test.tsx",
+      "tests": 5,
+      "line": 2943,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/attachment-preview-modal.test.tsx",
+      "tests": 50,
+      "line": 2947,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/create/template-create-agent-page.test.tsx",
+      "tests": 15,
+      "line": 2948,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "rich-content/rich-content-parity.test.tsx",
+      "tests": 13,
+      "line": 2961,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/suggestion-popup.test.tsx",
+      "tests": 16,
+      "line": 2962,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "inbox/components/inbox-list.test.tsx",
+      "tests": 11,
+      "line": 3205,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "inbox/components/inbox-context-menu.test.tsx",
+      "tests": 12,
+      "line": 3206,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "changelog/changelog-page.test.tsx",
+      "tests": 16,
+      "line": 3207,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/skill-list-toolbar.test.tsx",
+      "tests": 4,
+      "line": 3208,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-picker.test.tsx",
+      "tests": 5,
+      "line": 3209,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/workspace-tab.recovery.test.tsx",
+      "tests": 6,
+      "line": 3210,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/notifications.test.tsx",
+      "tests": 3,
+      "line": 3211,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/readonly-content.test.tsx",
+      "tests": 50,
+      "line": 3234,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/issue-statuses-recovery.test.tsx",
+      "tests": 4,
+      "line": 3235,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-date-pickers.test.tsx",
+      "tests": 6,
+      "line": 3236,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "workspace/workspace-name-picker.test.tsx",
+      "tests": 4,
+      "line": 3237,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/table-view-project-grouping.test.tsx",
+      "tests": 5,
+      "line": 3238,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/command-history.test.tsx",
+      "tests": 3,
+      "line": 3239,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/chat-queue.test.tsx",
+      "tests": 7,
+      "line": 3241,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "onboarding/steps/step-about-you.test.tsx",
+      "tests": 11,
+      "line": 3242,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/integrations-tab.test.tsx",
+      "tests": 26,
+      "line": 3243,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/autopilot-template-catalog.test.tsx",
+      "tests": 10,
+      "line": 3244,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/agent-detail-page.test.tsx",
+      "tests": 17,
+      "line": 3245,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/list-view.test.tsx",
+      "tests": 8,
+      "line": 3249,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/use-squad-for-project-dialog.test.tsx",
+      "tests": 9,
+      "line": 3250,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/filter-feedback.test.tsx",
+      "tests": 4,
+      "line": 3251,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/tabs/custom-args-tab.test.tsx",
+      "tests": 4,
+      "line": 3252,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/issue-hover-card.test.tsx",
+      "tests": 17,
+      "line": 3253,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/run-navigation.test.tsx",
+      "tests": 1,
+      "line": 3254,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/model-dropdown.test.tsx",
+      "tests": 6,
+      "line": 3256,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/overview/overview-page.test.tsx",
+      "tests": 7,
+      "line": 3257,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "inbox/components/inbox-page.test.tsx",
+      "tests": 44,
+      "line": 3258,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/skill-picker-list.test.tsx",
+      "tests": 3,
+      "line": 3259,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/pickers/deferred-trigger.test.tsx",
+      "tests": 3,
+      "line": 3260,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/issues-header.status-filter.test.tsx",
+      "tests": 2,
+      "line": 3261,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/pickers/assignee-picker.keyboard.test.tsx",
+      "tests": 3,
+      "line": 3262,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-health-presentation.test.tsx",
+      "tests": 10,
+      "line": 3263,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "onboarding/steps/step-platform-fork.test.tsx",
+      "tests": 9,
+      "line": 3368,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "inbox/components/inbox-page-recovery.test.tsx",
+      "tests": 6,
+      "line": 3369,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "marketplace/marketplace-page.test.tsx",
+      "tests": 8,
+      "line": 3382,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/issue-description-assist-editor.test.tsx",
+      "tests": 1,
+      "line": 3383,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/agent-detail-inspector.labels.test.tsx",
+      "tests": 10,
+      "line": 3385,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/issue-statuses-ordering.test.tsx",
+      "tests": 2,
+      "line": 3386,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/surface/use-issue-group-branches.test.tsx",
+      "tests": 3,
+      "line": 3387,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-risk-pagination.test.tsx",
+      "tests": 5,
+      "line": 3388,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "plugins/surface-bridge.test.ts",
+      "tests": 6,
+      "line": 3389,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/compact-view-selector.test.tsx",
+      "tests": 3,
+      "line": 3390,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/chat-message-list.test.tsx",
+      "tests": 22,
+      "line": 3439,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/chat-thread-list.test.tsx",
+      "tests": 12,
+      "line": 3440,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/account-workbench-page.test.tsx",
+      "tests": 5,
+      "line": 3441,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/inspector/model-picker.test.tsx",
+      "tests": 4,
+      "line": 3724,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/delete-runtime-dialog.test.tsx",
+      "tests": 10,
+      "line": 3725,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "layout/app-sidebar.test.tsx",
+      "tests": 36,
+      "line": 3768,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/quick-actions-section.test.tsx",
+      "tests": 10,
+      "line": 3769,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/inspector/thinking-picker.test.tsx",
+      "tests": 7,
+      "line": 4374,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/plugins-tab.test.tsx",
+      "tests": 6,
+      "line": 4375,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/delete-workspace-dialog.test.tsx",
+      "tests": 9,
+      "line": 4376,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/users/user-action-form.test.tsx",
+      "tests": 11,
+      "line": 4377,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/resources/resource-editor.test.tsx",
+      "tests": 6,
+      "line": 4378,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/tabs/skills-tab.test.tsx",
+      "tests": 10,
+      "line": 4379,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/collaboration/collaboration-memory-controls.test.tsx",
+      "tests": 3,
+      "line": 4380,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/inspector/thinking-prop-row.test.tsx",
+      "tests": 10,
+      "line": 4985,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/runtime-machine-filter-dropdown.test.tsx",
+      "tests": 9,
+      "line": 4986,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/operations/control-form.test.tsx",
+      "tests": 11,
+      "line": 4987,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/use-project-access-guard.test.tsx",
+      "tests": 1,
+      "line": 4988,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/pull-request-list.test.tsx",
+      "tests": 23,
+      "line": 4989,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/create-squad.test.tsx",
+      "tests": 7,
+      "line": 4990,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-action-dialog.test.tsx",
+      "tests": 4,
+      "line": 4991,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/feedback.test.tsx",
+      "tests": 8,
+      "line": 4992,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/slack-tab.test.tsx",
+      "tests": 7,
+      "line": 4993,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/collaboration-detail.test.tsx",
+      "tests": 6,
+      "line": 4994,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/executions/list-controls.test.tsx",
+      "tests": 8,
+      "line": 4995,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "onboarding/components/development-lifecycle.test.tsx",
+      "tests": 7,
+      "line": 4996,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/runtime-detail-visibility.test.tsx",
+      "tests": 14,
+      "line": 4997,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/users/users-page.test.tsx",
+      "tests": 9,
+      "line": 4998,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/create/agent-execution-overrides.test.tsx",
+      "tests": 6,
+      "line": 5603,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/issue-usage-dialog.test.tsx",
+      "tests": 7,
+      "line": 5604,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/delivery-panel.test.tsx",
+      "tests": 5,
+      "line": 5605,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/tabs/integrations-tab.test.tsx",
+      "tests": 27,
+      "line": 5606,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/settings/settings-page.test.tsx",
+      "tests": 7,
+      "line": 5607,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/usage-section-recovery.test.tsx",
+      "tests": 6,
+      "line": 5608,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "labels/resource-label-picker.test.tsx",
+      "tests": 5,
+      "line": 5609,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/board-view-project-grouping.test.tsx",
+      "tests": 9,
+      "line": 5613,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "onboarding/onboarding-flow-completion.test.tsx",
+      "tests": 3,
+      "line": 5614,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/runtime-row-menu.test.tsx",
+      "tests": 11,
+      "line": 5615,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-history.test.tsx",
+      "tests": 5,
+      "line": 5616,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/executions/execution-detail.test.tsx",
+      "tests": 6,
+      "line": 5617,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-execution-preview.test.tsx",
+      "tests": 8,
+      "line": 5618,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/inspector/access-picker.test.tsx",
+      "tests": 8,
+      "line": 5655,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/inspector/service-tier-setting-field.test.tsx",
+      "tests": 4,
+      "line": 6260,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/local-directory-mode-dialog.test.tsx",
+      "tests": 7,
+      "line": 6261,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/create/use-role-templates.queries.test.tsx",
+      "tests": 3,
+      "line": 6262,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/usage-section.test.tsx",
+      "tests": 8,
+      "line": 6263,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/surface/use-issue-group-branches.category.test.tsx",
+      "tests": 2,
+      "line": 6264,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/file-upload.test.ts",
+      "tests": 17,
+      "line": 6265,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/autolink-policy.test.ts",
+      "tests": 16,
+      "line": 6266,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/executions/execution-list.test.tsx",
+      "tests": 4,
+      "line": 6267,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/preparation-summary.test.tsx",
+      "tests": 4,
+      "line": 6268,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/image-sequence-context.test.tsx",
+      "tests": 8,
+      "line": 6269,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/skill-category-sidebar.test.tsx",
+      "tests": 4,
+      "line": 6270,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/run-confirm.test.tsx",
+      "tests": 19,
+      "line": 6295,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/installations/installations-page.test.tsx",
+      "tests": 5,
+      "line": 6296,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/autopilots-page.test.tsx",
+      "tests": 5,
+      "line": 6297,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-settings-recovery.test.tsx",
+      "tests": 5,
+      "line": 6310,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/creator-recommendations.test.tsx",
+      "tests": 10,
+      "line": 6311,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/notifications-tab.test.tsx",
+      "tests": 4,
+      "line": 6312,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/board-card-assignee-picker.test.tsx",
+      "tests": 3,
+      "line": 6313,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-filters.test.tsx",
+      "tests": 1,
+      "line": 6314,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/use-chat-controller.test.tsx",
+      "tests": 44,
+      "line": 6315,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/batch-action-toolbar.test.tsx",
+      "tests": 7,
+      "line": 6316,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-issue-surface.test.tsx",
+      "tests": 2,
+      "line": 6317,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "squads/components/builtin-squad-catalog.test.tsx",
+      "tests": 11,
+      "line": 6318,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/installations/unassociated-page.test.tsx",
+      "tests": 2,
+      "line": 6319,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "workspace/welcome-after-onboarding.test.tsx",
+      "tests": 6,
+      "line": 6320,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/data-table-resize.test.tsx",
+      "tests": 13,
+      "line": 6321,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/resources/resources-withdrawal.test.tsx",
+      "tests": 2,
+      "line": 6322,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "onboarding/components/step-shell.test.tsx",
+      "tests": 17,
+      "line": 6338,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/refresh-skill-dialog.test.tsx",
+      "tests": 3,
+      "line": 6339,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/attachment-panel.test.tsx",
+      "tests": 4,
+      "line": 6340,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/list-keyboard.test.ts",
+      "tests": 12,
+      "line": 6341,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/surface/use-issue-status-branches.category.test.tsx",
+      "tests": 4,
+      "line": 6342,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/save-view-dialog.test.tsx",
+      "tests": 2,
+      "line": 6343,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/use-chat-project-context-support.test.tsx",
+      "tests": 4,
+      "line": 6344,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/account-tab.test.tsx",
+      "tests": 2,
+      "line": 6345,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/chat-session-header.test.tsx",
+      "tests": 9,
+      "line": 6346,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/run-handoff.test.tsx",
+      "tests": 4,
+      "line": 6347,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/comment-trigger-chips.test.tsx",
+      "tests": 10,
+      "line": 6348,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "docs/docs-content.test.tsx",
+      "tests": 19,
+      "line": 6349,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/pickers/status-picker.test.tsx",
+      "tests": 2,
+      "line": 6350,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/source-bridge.test.tsx",
+      "tests": 7,
+      "line": 6351,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "rich-content/rich-content-boundary.test.ts",
+      "tests": 9,
+      "line": 6352,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/use-composer-submit.test.tsx",
+      "tests": 14,
+      "line": 6353,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/runtime-picker.test.tsx",
+      "tests": 3,
+      "line": 6354,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/focus.test.tsx",
+      "tests": 3,
+      "line": 6355,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/row-actions-menu.test.tsx",
+      "tests": 5,
+      "line": 6356,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/resources/resources-page.test.tsx",
+      "tests": 4,
+      "line": 6357,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/skill-card.test.tsx",
+      "tests": 8,
+      "line": 6358,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/skill-category-chips.test.tsx",
+      "tests": 3,
+      "line": 6359,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/table-column-picker.test.tsx",
+      "tests": 2,
+      "line": 6360,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-automations-section.test.tsx",
+      "tests": 3,
+      "line": 6361,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-overview-lifecycle.test.tsx",
+      "tests": 5,
+      "line": 6362,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/table-inline-title.test.tsx",
+      "tests": 6,
+      "line": 6363,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/reorder-controls.test.tsx",
+      "tests": 2,
+      "line": 6364,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "billing/billing-return-page.test.tsx",
+      "tests": 16,
+      "line": 6365,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/repair-list-items.test.ts",
+      "tests": 8,
+      "line": 6366,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "layout/tab-presentation.test.tsx",
+      "tests": 23,
+      "line": 6367,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/agent-toolbars.test.tsx",
+      "tests": 3,
+      "line": 6368,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/iteration-chart-closeout.test.tsx",
+      "tests": 1,
+      "line": 6369,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/issue-agent-header-chip.test.tsx",
+      "tests": 9,
+      "line": 6370,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/tabs/agent-mcp-tab.test.tsx",
+      "tests": 11,
+      "line": 6371,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-batch-dialog.test.tsx",
+      "tests": 1,
+      "line": 6372,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/heading-levels.test.ts",
+      "tests": 8,
+      "line": 6373,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "invitations/invitations-page.test.tsx",
+      "tests": 4,
+      "line": 6374,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/execution-log-section.test.tsx",
+      "tests": 21,
+      "line": 6387,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/chat-page.test.tsx",
+      "tests": 14,
+      "line": 6388,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/webhook-url-field.test.tsx",
+      "tests": 6,
+      "line": 6401,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "rich-content/rich-fence-block-ssr.test.tsx",
+      "tests": 5,
+      "line": 6449,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/attachment-picker.test.tsx",
+      "tests": 2,
+      "line": 6450,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/delete-issue-confirm.test.tsx",
+      "tests": 4,
+      "line": 6451,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/issues-cold-load-loop.test.tsx",
+      "tests": 2,
+      "line": 6455,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/surface/use-issue-surface-catalog.test.tsx",
+      "tests": 4,
+      "line": 6459,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/operations/control-panel.test.tsx",
+      "tests": 2,
+      "line": 6460,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/html-block-preview.test.tsx",
+      "tests": 4,
+      "line": 6461,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/task-list-markdown.test.ts",
+      "tests": 11,
+      "line": 6462,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/builtin-template-catalog.test.tsx",
+      "tests": 1,
+      "line": 6463,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/users/user-detail-page.test.tsx",
+      "tests": 7,
+      "line": 6464,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/color-picker.test.tsx",
+      "tests": 6,
+      "line": 6465,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/mika-runtime-choice.test.tsx",
+      "tests": 2,
+      "line": 6466,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "plugins/plugin-panel-section.test.tsx",
+      "tests": 11,
+      "line": 6467,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/underline.test.ts",
+      "tests": 5,
+      "line": 6468,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/create-issue-dialog.test.tsx",
+      "tests": 6,
+      "line": 6469,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "onboarding/steps/step-runtime-connect.test.tsx",
+      "tests": 6,
+      "line": 6470,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "onboarding/steps/step-welcome.test.tsx",
+      "tests": 4,
+      "line": 6483,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/hooks/use-in-page-find.test.ts",
+      "tests": 9,
+      "line": 6484,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "search/command-input.test.tsx",
+      "tests": 3,
+      "line": 6485,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/access-picker-bulk-commit.test.tsx",
+      "tests": 4,
+      "line": 6486,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/hooks/use-comment-trigger-preview.test.ts",
+      "tests": 12,
+      "line": 6511,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/source-context-preview.test.tsx",
+      "tests": 8,
+      "line": 6512,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/thread-minimap.test.tsx",
+      "tests": 13,
+      "line": 6513,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/attachment.test.tsx",
+      "tests": 30,
+      "line": 6514,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/batch-action-toolbar.confirm.test.tsx",
+      "tests": 6,
+      "line": 6515,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-settings-tab.test.tsx",
+      "tests": 4,
+      "line": 6528,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/mcp-server-row.test.tsx",
+      "tests": 4,
+      "line": 6529,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "inbox/components/inbox-list-item.test.tsx",
+      "tests": 19,
+      "line": 6530,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-icon.test.tsx",
+      "tests": 3,
+      "line": 6531,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/content-editor.test.tsx",
+      "tests": 38,
+      "line": 6535,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/surface/use-issue-status-branches.test.tsx",
+      "tests": 1,
+      "line": 6548,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/chat-message-list.autoscroll.test.tsx",
+      "tests": 23,
+      "line": 6775,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "telegram/bind-page.test.tsx",
+      "tests": 14,
+      "line": 6776,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/alerts/alert-detail-page.test.tsx",
+      "tests": 4,
+      "line": 6777,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "wecom/bind-page.test.tsx",
+      "tests": 12,
+      "line": 6778,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/title-editor.shortcut.test.tsx",
+      "tests": 5,
+      "line": 6779,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/task-transcript/transcript-button.test.tsx",
+      "tests": 5,
+      "line": 6780,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/issues/issue-list.test.tsx",
+      "tests": 1,
+      "line": 6781,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/webhook-event-filter-section.test.tsx",
+      "tests": 6,
+      "line": 6782,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/content-editor-accessibility.test.tsx",
+      "tests": 1,
+      "line": 6783,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "layout/global-scope-navigation.test.tsx",
+      "tests": 1,
+      "line": 6784,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/iteration-recovery.test.tsx",
+      "tests": 2,
+      "line": 6785,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-resources-rename.test.tsx",
+      "tests": 3,
+      "line": 6786,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "layout/page-header.test.tsx",
+      "tests": 8,
+      "line": 6787,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/iteration-progress.test.tsx",
+      "tests": 2,
+      "line": 6788,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/workspace-agent-working-chip.test.tsx",
+      "tests": 15,
+      "line": 6789,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/update-section.test.tsx",
+      "tests": 10,
+      "line": 6802,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "rich-content/project-mention-a11y.test.tsx",
+      "tests": 6,
+      "line": 6803,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/issue-identifier-autolink.test.ts",
+      "tests": 9,
+      "line": 6804,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-history-filter-summary.test.tsx",
+      "tests": 3,
+      "line": 6805,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/use-chat-input-focus.test.ts",
+      "tests": 13,
+      "line": 6806,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/operations/operation-detail-page.test.tsx",
+      "tests": 3,
+      "line": 6807,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/composio-tab.test.tsx",
+      "tests": 6,
+      "line": 6808,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/creator-recommendations-cache.test.tsx",
+      "tests": 1,
+      "line": 6809,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/code.test.ts",
+      "tests": 5,
+      "line": 6810,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "layout/help-launcher.test.tsx",
+      "tests": 11,
+      "line": 6847,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/chat-empty-state.test.tsx",
+      "tests": 4,
+      "line": 6848,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/installations/installation-detail-page.test.tsx",
+      "tests": 2,
+      "line": 6849,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/slash-command-suggestion.test.tsx",
+      "tests": 39,
+      "line": 6872,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "navigation/use-row-link.test.tsx",
+      "tests": 8,
+      "line": 6873,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/expandable-description.test.tsx",
+      "tests": 3,
+      "line": 6874,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/suggestion-trigger-arming.test.ts",
+      "tests": 11,
+      "line": 6875,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/data-table-sticky.test.tsx",
+      "tests": 3,
+      "line": 6876,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "lark/bind-page.test.tsx",
+      "tests": 6,
+      "line": 6877,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/session-rename-input.test.tsx",
+      "tests": 6,
+      "line": 6878,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "navigation/app-link.test.tsx",
+      "tests": 30,
+      "line": 6880,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/squad-avatar.test.tsx",
+      "tests": 15,
+      "line": 6881,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/highlight.test.ts",
+      "tests": 11,
+      "line": 6882,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/avatar-icon.test.tsx",
+      "tests": 15,
+      "line": 6883,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "workspace/no-access-page.test.tsx",
+      "tests": 4,
+      "line": 6884,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/actor-avatar-profile-link.test.tsx",
+      "tests": 6,
+      "line": 6885,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/create/agent-configuration-panel.test.tsx",
+      "tests": 2,
+      "line": 6886,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/agent-live-peek-card.test.tsx",
+      "tests": 4,
+      "line": 6887,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/content-editor-current-issue.test.tsx",
+      "tests": 1,
+      "line": 6888,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/list-item.test.ts",
+      "tests": 12,
+      "line": 6889,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/create/create-agent-ui.test.ts",
+      "tests": 12,
+      "line": 6890,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/webhook-payload-preview.test.tsx",
+      "tests": 3,
+      "line": 6903,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/revision-conflict-compare.test.tsx",
+      "tests": 3,
+      "line": 6904,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/labels-tab.test.tsx",
+      "tests": 2,
+      "line": 6905,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/run-memory-records.test.tsx",
+      "tests": 1,
+      "line": 6906,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/html-attachment-preview.test.tsx",
+      "tests": 8,
+      "line": 6907,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/actions/__tests__/use-issue-actions.test.tsx",
+      "tests": 17,
+      "line": 6911,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-execution-status.test.tsx",
+      "tests": 2,
+      "line": 6912,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/create-renderers.test.tsx",
+      "tests": 2,
+      "line": 6913,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "layout/collection-page.test.tsx",
+      "tests": 3,
+      "line": 6914,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "onboarding/components/onboarding-logout-button.test.tsx",
+      "tests": 1,
+      "line": 6915,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/issue-parent-modals.test.tsx",
+      "tests": 4,
+      "line": 6916,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/shortcut-keycaps.test.tsx",
+      "tests": 4,
+      "line": 6917,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "navigation/use-back-or-replace.test.tsx",
+      "tests": 4,
+      "line": 6918,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/chat-input-draft-isolation.test.tsx",
+      "tests": 8,
+      "line": 6957,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/select.test.tsx",
+      "tests": 1,
+      "line": 6958,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/charts/activity-heatmap.test.tsx",
+      "tests": 1,
+      "line": 6959,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/filter-summary.test.tsx",
+      "tests": 2,
+      "line": 6960,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/table-group-row.test.tsx",
+      "tests": 1,
+      "line": 6961,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "onboarding/components/mika-intro.test.tsx",
+      "tests": 1,
+      "line": 6962,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/machine-cli-section.test.tsx",
+      "tests": 5,
+      "line": 6963,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "plugins/plugin-sdk-handshake.test.ts",
+      "tests": 2,
+      "line": 6964,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/agent-detail-inspector.runtime-access.test.tsx",
+      "tests": 2,
+      "line": 6965,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/agent-profile-card.test.tsx",
+      "tests": 8,
+      "line": 6966,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/math.test.ts",
+      "tests": 3,
+      "line": 6967,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/table-issue-search.test.tsx",
+      "tests": 1,
+      "line": 6968,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/submit-shortcut.test.ts",
+      "tests": 8,
+      "line": 6969,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/rich-content-sanitize-contract.test.tsx",
+      "tests": 17,
+      "line": 6973,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/bubble-menu.test.tsx",
+      "tests": 2,
+      "line": 6974,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/image-markdown-roundtrip.test.ts",
+      "tests": 2,
+      "line": 6975,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/installations/installation-common.test.tsx",
+      "tests": 10,
+      "line": 6976,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "rich-content/current-issue-rendering.test.tsx",
+      "tests": 5,
+      "line": 6977,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/local-directory-hint.test.tsx",
+      "tests": 7,
+      "line": 6978,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/attribution-badge.test.tsx",
+      "tests": 11,
+      "line": 6979,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "rich-content/entity-link-unfurl.test.tsx",
+      "tests": 8,
+      "line": 6980,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/issue-mention-card.test.tsx",
+      "tests": 8,
+      "line": 6982,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/agent-activity-hover-content.test.tsx",
+      "tests": 8,
+      "line": 6983,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "attachments/use-html-preview-scroll-restore.test.tsx",
+      "tests": 9,
+      "line": 6984,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "rich-content/app-url-link-routing.test.tsx",
+      "tests": 4,
+      "line": 6988,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "eslint-i18n-guard.test.ts",
+      "tests": 25,
+      "line": 6989,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/mention-view.test.tsx",
+      "tests": 7,
+      "line": 6994,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/tabs/activity-tab.render.test.tsx",
+      "tests": 2,
+      "line": 6995,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/use-board-drag-pan.test.tsx",
+      "tests": 15,
+      "line": 6996,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/comment-card.test.tsx",
+      "tests": 3,
+      "line": 7000,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/code-block-view.test.tsx",
+      "tests": 3,
+      "line": 7001,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "rich-content/lazy-rich-block.test.tsx",
+      "tests": 14,
+      "line": 7014,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/chat-column.test.tsx",
+      "tests": 9,
+      "line": 7015,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/conversation-starters-editor.test.tsx",
+      "tests": 3,
+      "line": 7016,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/file-card.test.tsx",
+      "tests": 1,
+      "line": 7020,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/readonly-content-math.test.tsx",
+      "tests": 3,
+      "line": 7024,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "rich-content/cdn-config-reactivity.test.tsx",
+      "tests": 3,
+      "line": 7025,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/hooks/use-issue-detail-scroll-restore.test.tsx",
+      "tests": 11,
+      "line": 7026,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "layout/sidebar-resize.test.tsx",
+      "tests": 2,
+      "line": 7027,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/attachment-card.test.tsx",
+      "tests": 7,
+      "line": 7028,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "layout/sidebar-auto-collapse.test.tsx",
+      "tests": 7,
+      "line": 7029,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "labels/label-chip.test.ts",
+      "tests": 15,
+      "line": 7030,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/use-download-attachment.test.tsx",
+      "tests": 17,
+      "line": 7031,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/lib/skill-presentation.test.ts",
+      "tests": 109,
+      "line": 7032,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/use-app-foreground.test.ts",
+      "tests": 5,
+      "line": 7033,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/title-editor.test.tsx",
+      "tests": 14,
+      "line": 7034,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "collaboration/host-execution.test.tsx",
+      "tests": 3,
+      "line": 7038,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/create/use-builder-session-cache.test.tsx",
+      "tests": 4,
+      "line": 7097,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "attachments/attachment-preview-page.test.tsx",
+      "tests": 2,
+      "line": 7098,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "iterations/iteration-page.test.tsx",
+      "tests": 1,
+      "line": 7099,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/hooks/issue-delete-mutations.test.tsx",
+      "tests": 8,
+      "line": 7100,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/provider-logo.test.tsx",
+      "tests": 9,
+      "line": 7101,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "onboarding/steps/cli-install-instructions.test.tsx",
+      "tests": 1,
+      "line": 7102,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/mermaid-export.test.ts",
+      "tests": 14,
+      "line": 7103,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/utils.test.ts",
+      "tests": 98,
+      "line": 7104,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/schedule-editor/cron-mapping.test.ts",
+      "tests": 280,
+      "line": 7105,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/custom-status-chip.test.tsx",
+      "tests": 4,
+      "line": 7106,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/agent-status-dot-i18n.test.tsx",
+      "tests": 3,
+      "line": 7107,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/agents-page-access-cell.test.tsx",
+      "tests": 6,
+      "line": 7124,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/code-block-static.test.tsx",
+      "tests": 3,
+      "line": 7125,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/create/use-create-template-agent-submit.test.tsx",
+      "tests": 8,
+      "line": 7126,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/issue-agent-activity-indicator.test.tsx",
+      "tests": 4,
+      "line": 7127,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "locales/mcp.test.ts",
+      "tests": 6,
+      "line": 7128,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/deferred-popup.test.tsx",
+      "tests": 2,
+      "line": 7129,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/sub-issues-agent-working-chip.test.tsx",
+      "tests": 4,
+      "line": 7130,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "layout/navigation-progress.test.tsx",
+      "tests": 4,
+      "line": 7131,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "dashboard/utils.test.ts",
+      "tests": 44,
+      "line": 7132,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "layout/sidebar-wrapper-fill.test.tsx",
+      "tests": 3,
+      "line": 7133,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/hooks/use-issue-timeline.test.tsx",
+      "tests": 13,
+      "line": 7137,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "workspace/paths-hooks.test.tsx",
+      "tests": 5,
+      "line": 7138,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/composio-toolkit-logo.test.tsx",
+      "tests": 3,
+      "line": 7139,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-chip.test.tsx",
+      "tests": 2,
+      "line": 7140,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/issue-chip.test.tsx",
+      "tests": 2,
+      "line": 7141,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/surface/use-issue-surface-actions.collaboration.test.tsx",
+      "tests": 4,
+      "line": 7142,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/iframe-fragment-nav.test.ts",
+      "tests": 11,
+      "line": 7144,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/preprocess-links.test.ts",
+      "tests": 28,
+      "line": 7145,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/iframe-scroll-bridge.test.ts",
+      "tests": 16,
+      "line": 7146,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "locales/parity.test.ts",
+      "tests": 66,
+      "line": 7147,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/clipboard.test.ts",
+      "tests": 4,
+      "line": 7148,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-history-dates.test.ts",
+      "tests": 5,
+      "line": 7149,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/components/skill-file-path.test.tsx",
+      "tests": 5,
+      "line": 7150,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/use-editor-upload.test.tsx",
+      "tests": 3,
+      "line": 7151,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/utils/status-options.test.tsx",
+      "tests": 9,
+      "line": 7152,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "inbox/components/inbox-detail-label.test.tsx",
+      "tests": 5,
+      "line": 7153,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/registry-project-prefill.test.tsx",
+      "tests": 1,
+      "line": 7154,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/status-icon.test.tsx",
+      "tests": 2,
+      "line": 7155,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/use-drag-settle.test.tsx",
+      "tests": 2,
+      "line": 7156,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "layout/global-shortcuts.chat.test.tsx",
+      "tests": 6,
+      "line": 7157,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "admin/admin-session-boundary.test.tsx",
+      "tests": 4,
+      "line": 7158,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "layout/global-shortcuts.history.test.tsx",
+      "tests": 4,
+      "line": 7159,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/use-visual-viewport-keyboard.test.ts",
+      "tests": 8,
+      "line": 7160,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/hooks/use-sticky-composer.test.tsx",
+      "tests": 5,
+      "line": 7173,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/text-anchor.test.ts",
+      "tests": 11,
+      "line": 7174,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/use-coordinated-uploads.test.tsx",
+      "tests": 2,
+      "line": 7175,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "platform/scroll-restoration.test.tsx",
+      "tests": 7,
+      "line": 7176,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/use-lazy-editor.test.ts",
+      "tests": 4,
+      "line": 7177,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/color-utils.test.ts",
+      "tests": 9,
+      "line": 7178,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "layout/animated-right-sidebar.test.tsx",
+      "tests": 7,
+      "line": 7179,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/runtime-machines.test.ts",
+      "tests": 22,
+      "line": 7180,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/create/use-create-agent-submit.test.tsx",
+      "tests": 1,
+      "line": 7181,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/create/use-manual-draft-sync.test.tsx",
+      "tests": 4,
+      "line": 7182,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/quick-create-actor-picker-model.test.ts",
+      "tests": 7,
+      "line": 7183,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/create/use-duplicate-draft-seed.test.tsx",
+      "tests": 4,
+      "line": 7184,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/format-in-time-zone.test.ts",
+      "tests": 5,
+      "line": 7185,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/use-viewing-timezone.test.ts",
+      "tests": 6,
+      "line": 7186,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/infinite-scroll-sentinel.test.tsx",
+      "tests": 1,
+      "line": 7187,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "workspace/use-workspace-seen.test.ts",
+      "tests": 4,
+      "line": 7188,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/surface/selection-context.test.tsx",
+      "tests": 2,
+      "line": 7189,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "rich-content/streaming-fence.test.ts",
+      "tests": 16,
+      "line": 7190,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/runtime-profile-catalog.test.ts",
+      "tests": 11,
+      "line": 7191,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/type-scale-merge.test.ts",
+      "tests": 22,
+      "line": 7192,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/connect-remote-machine.test.ts",
+      "tests": 12,
+      "line": 7193,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/tabs/task-failure.test.ts",
+      "tests": 14,
+      "line": 7194,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/tabs/mcp-config-model.test.ts",
+      "tests": 4,
+      "line": 7195,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "auth/use-logout.test.ts",
+      "tests": 1,
+      "line": 7196,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/syntax-highlight.test.ts",
+      "tests": 3,
+      "line": 7197,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "modals/quick-create-scenario.test.ts",
+      "tests": 58,
+      "line": 7198,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/utils/sort.test.ts",
+      "tests": 4,
+      "line": 7199,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/runtime-settings-page.test.ts",
+      "tests": 2,
+      "line": 7200,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-create-dialog.validation.test.ts",
+      "tests": 41,
+      "line": 7201,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/link-handler.test.ts",
+      "tests": 36,
+      "line": 7202,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/issue-identifiers.test.ts",
+      "tests": 17,
+      "line": 7203,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "rich-content/package-exports.test.ts",
+      "tests": 3,
+      "line": 7204,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "triage/triage-ui.test.ts",
+      "tests": 44,
+      "line": 7205,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/lib/skill-template-discovery.test.ts",
+      "tests": 26,
+      "line": 7206,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/task-transcript/trace-event-presenter.test.ts",
+      "tests": 50,
+      "line": 7207,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "onboarding/templates/index.test.ts",
+      "tests": 2,
+      "line": 7208,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/schedule-editor/describe.test.ts",
+      "tests": 16,
+      "line": 7209,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/task-transcript/build-steps.test.ts",
+      "tests": 27,
+      "line": 7210,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/utils/filter.test.ts",
+      "tests": 48,
+      "line": 7211,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/agents-i18n-parity.test.ts",
+      "tests": 11,
+      "line": 7212,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/connect-remote-commands.test.ts",
+      "tests": 35,
+      "line": 7213,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/tabs/env-file.test.ts",
+      "tests": 29,
+      "line": 7214,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/file-card-href.test.ts",
+      "tests": 72,
+      "line": 7215,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/schedule-editor/transitions.test.ts",
+      "tests": 34,
+      "line": 7216,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/schedule-editor/validate.test.ts",
+      "tests": 5,
+      "line": 7217,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/utils/drag-utils.test.ts",
+      "tests": 23,
+      "line": 7218,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/zoom-transform.test.ts",
+      "tests": 28,
+      "line": 7219,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/task-transcript/redact.test.ts",
+      "tests": 16,
+      "line": 7220,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/use-chat-controller.test.ts",
+      "tests": 14,
+      "line": 7221,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/settings-nav.test.ts",
+      "tests": 6,
+      "line": 7222,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/autopilot-dialog-i18n.test.ts",
+      "tests": 6,
+      "line": 7223,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "workspace/slug.test.ts",
+      "tests": 9,
+      "line": 7224,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/task-transcript/transcript-follow.test.ts",
+      "tests": 26,
+      "line": 7225,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/slash-command-extension.test.ts",
+      "tests": 14,
+      "line": 7226,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "auth/password-error.test.ts",
+      "tests": 25,
+      "line": 7227,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/actions/run-confirm-gate.test.ts",
+      "tests": 24,
+      "line": 7228,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/preview.test.ts",
+      "tests": 31,
+      "line": 7229,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/task-transcript/build-timeline.test.ts",
+      "tests": 7,
+      "line": 7230,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/description-preview.test.ts",
+      "tests": 12,
+      "line": 7231,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/table-view-model.test.ts",
+      "tests": 7,
+      "line": 7232,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/agents-page-filter-predicate.test.ts",
+      "tests": 14,
+      "line": 7233,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/pinyin-match.test.ts",
+      "tests": 10,
+      "line": 7234,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/picker-keys.test.ts",
+      "tests": 11,
+      "line": 7235,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/pending-runtime.test.ts",
+      "tests": 4,
+      "line": 7236,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/mention-extension.test.ts",
+      "tests": 15,
+      "line": 7237,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/github-url.test.ts",
+      "tests": 13,
+      "line": 7238,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/highlight-match.test.ts",
+      "tests": 13,
+      "line": 7239,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "inbox/components/inbox-display.test.ts",
+      "tests": 16,
+      "line": 7240,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/extensions/file-card-markdown.test.ts",
+      "tests": 12,
+      "line": 7241,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/lib/copy-text.test.ts",
+      "tests": 11,
+      "line": 7242,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/highlight-markdown.test.ts",
+      "tests": 17,
+      "line": 7243,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/filter-chips-bar.test.ts",
+      "tests": 11,
+      "line": 7244,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/settings-integration-navigation.test.ts",
+      "tests": 17,
+      "line": 7245,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "plugins/surface-document.test.ts",
+      "tests": 6,
+      "line": 7246,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/surface/activity.test.ts",
+      "tests": 4,
+      "line": 7247,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/task-transcript/run-outcome.test.ts",
+      "tests": 7,
+      "line": 7248,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/create/use-role-templates.test.ts",
+      "tests": 11,
+      "line": 7249,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/billing-state.test.ts",
+      "tests": 5,
+      "line": 7250,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/pickers/actor-property-picker.test.ts",
+      "tests": 7,
+      "line": 7251,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "plugins/plugin-hook-activity.test.ts",
+      "tests": 6,
+      "line": 7252,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/lib/skill-presentation-icon.test.ts",
+      "tests": 3,
+      "line": 7253,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/utils/strip-mention-markdown.test.ts",
+      "tests": 10,
+      "line": 7254,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/task-status-pill.test.ts",
+      "tests": 8,
+      "line": 7255,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/project-issue-metrics.test.ts",
+      "tests": 4,
+      "line": 7256,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "mcp/mcp-catalog.test.ts",
+      "tests": 3,
+      "line": 7257,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "layout/route-icon-components.test.tsx",
+      "tests": 4,
+      "line": 7258,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/parse-markdown-chunked.test.ts",
+      "tests": 2,
+      "line": 7259,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "plugins/plugin-hook-actions.test.ts",
+      "tests": 5,
+      "line": 7260,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/inspector/model-change-cleanup.test.ts",
+      "tests": 8,
+      "line": 7261,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/thread-utils.test.ts",
+      "tests": 6,
+      "line": 7262,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/tabs/activity-tab.test.ts",
+      "tests": 8,
+      "line": 7263,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/seat-invite-purchase.test.ts",
+      "tests": 6,
+      "line": 7264,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/surface/create-defaults.test.ts",
+      "tests": 8,
+      "line": 7265,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/runtime-docs.test.ts",
+      "tests": 4,
+      "line": 7266,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/lib/origin.test.ts",
+      "tests": 7,
+      "line": 7267,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/pickers/stage-picker.test.tsx",
+      "tests": 5,
+      "line": 7268,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/hooks/use-skill-list-facets.test.ts",
+      "tests": 2,
+      "line": 7269,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "settings/components/settings-query-feedback.test.ts",
+      "tests": 4,
+      "line": 7270,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/blocked-trigger-copy.test.ts",
+      "tests": 4,
+      "line": 7271,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/lib/skill-market.test.ts",
+      "tests": 3,
+      "line": 7272,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "plugins/plugin-modal-surface.test.ts",
+      "tests": 5,
+      "line": 7273,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/hooks/use-can-edit-skill.test.ts",
+      "tests": 7,
+      "line": 7274,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "plugins/plugin-mcp-approval.test.ts",
+      "tests": 4,
+      "line": 7275,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/hash-string.test.ts",
+      "tests": 4,
+      "line": 7276,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "layout/global-shortcuts.test.ts",
+      "tests": 3,
+      "line": 7277,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "runtimes/components/runtime-list.test.ts",
+      "tests": 3,
+      "line": 7278,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "autopilots/components/run-now-toast.test.ts",
+      "tests": 6,
+      "line": 7279,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "common/avatar-crop.test.ts",
+      "tests": 4,
+      "line": 7280,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/utils/adjacent-order.test.ts",
+      "tests": 3,
+      "line": 7281,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/preprocess-channel-media.test.ts",
+      "tests": 1,
+      "line": 7282,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/components/stick-to-bottom.test.ts",
+      "tests": 4,
+      "line": 7283,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "plugins/plugin-sdk-protocol.test.ts",
+      "tests": 4,
+      "line": 7284,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "editor/utils/escape-markdown-label.test.ts",
+      "tests": 5,
+      "line": 7285,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/agents-page-bulk-access-dialog-state.test.ts",
+      "tests": 5,
+      "line": 7286,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "agents/components/inspector/model-capability.test.ts",
+      "tests": 3,
+      "line": 7287,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "projects/components/local-directory-label.test.ts",
+      "tests": 5,
+      "line": 7288,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/lib/quick-actions.test.ts",
+      "tests": 2,
+      "line": 7289,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "navigation/current-path.test.ts",
+      "tests": 3,
+      "line": 7290,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "skills/lib/skill-icon.test.ts",
+      "tests": 2,
+      "line": 7291,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "chat/floating-chat-visibility.test.ts",
+      "tests": 2,
+      "line": 7292,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/views",
+      "file": "issues/components/pickers/custom-property-picker.test.ts",
+      "tests": 5,
+      "line": 7293,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "app/brand-variant-cascade.test.ts",
+      "tests": 14,
+      "line": 7309,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "app/text-contrast.test.ts",
+      "tests": 23,
+      "line": 7310,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "app/auth/callback/page.test.tsx",
+      "tests": 11,
+      "line": 7311,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "app/join/page.test.tsx",
+      "tests": 10,
+      "line": 7312,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "features/landing/components/landing-download-links.test.tsx",
+      "tests": 2,
+      "line": 7335,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "app/(auth)/login/page.test.tsx",
+      "tests": 6,
+      "line": 7348,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "app/type-scale.test.ts",
+      "tests": 13,
+      "line": 7349,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "platform/navigation.test.tsx",
+      "tests": 15,
+      "line": 7394,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "platform/scope-shell.test.tsx",
+      "tests": 7,
+      "line": 7395,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "app/[workspaceSlug]/layout.test.tsx",
+      "tests": 5,
+      "line": 7396,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "platform/scroll-restoration.test.tsx",
+      "tests": 9,
+      "line": 7397,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "app/(auth)/login/admin-login.test.tsx",
+      "tests": 4,
+      "line": 7398,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "platform/account-route.test.tsx",
+      "tests": 6,
+      "line": 7399,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "platform/document-title.test.tsx",
+      "tests": 10,
+      "line": 7400,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "platform/admin-route.test.tsx",
+      "tests": 3,
+      "line": 7401,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "features/landing/components/redirect-if-authenticated.test.tsx",
+      "tests": 2,
+      "line": 7402,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "app/favicon.ico/route.test.ts",
+      "tests": 3,
+      "line": 7403,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "proxy.test.ts",
+      "tests": 33,
+      "line": 7404,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "features/landing/components/changelog-page-client.test.ts",
+      "tests": 3,
+      "line": 7405,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "lib/locale-routing.test.ts",
+      "tests": 9,
+      "line": 7406,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "app/manifest.test.ts",
+      "tests": 7,
+      "line": 7407,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "config/runtime-urls.test.ts",
+      "tests": 33,
+      "line": 7408,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "app/font-fallback-order.test.ts",
+      "tests": 2,
+      "line": 7409,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "lib/use-case-locale-fallback.test.ts",
+      "tests": 4,
+      "line": 7410,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "features/auth/device-identity.test.ts",
+      "tests": 10,
+      "line": 7411,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "platform/admin-path.test.ts",
+      "tests": 8,
+      "line": 7412,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "lib/workspace-slug-from-pathname.test.ts",
+      "tests": 6,
+      "line": 7413,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "features/landing/utils/use-dashboard-cta.test.ts",
+      "tests": 5,
+      "line": 7414,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "features/landing/utils/use-github-stars.test.ts",
+      "tests": 5,
+      "line": 7415,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "lib/public-host.test.ts",
+      "tests": 8,
+      "line": 7416,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "platform/client-os.test.ts",
+      "tests": 6,
+      "line": 7417,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "platform/in-app-history.test.ts",
+      "tests": 5,
+      "line": 7418,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "features/auth/desktop-handoff.test.ts",
+      "tests": 2,
+      "line": 7419,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/web",
+      "file": "lib/docs-href.test.ts",
+      "tests": 1,
+      "line": 7420,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "scripts/download-page.test.mjs",
+      "tests": 31,
+      "line": 7436,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/managed-lock-publish.test.ts",
+      "tests": 14,
+      "line": 7437,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/daemon-manager-auth.test.ts",
+      "tests": 39,
+      "line": 7441,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/managed-transition.test.ts",
+      "tests": 14,
+      "line": 7442,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/managed-installation.test.ts",
+      "tests": 30,
+      "line": 7443,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/managed-lock.test.ts",
+      "tests": 5,
+      "line": 7445,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/managed-session.test.ts",
+      "tests": 16,
+      "line": 7447,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/daemon-manager-managed-recovery.test.ts",
+      "tests": 22,
+      "line": 7448,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/daemon-quit.test.ts",
+      "tests": 8,
+      "line": 7449,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/daemon-panel.test.tsx",
+      "tests": 3,
+      "line": 7486,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/tab-bar.test.tsx",
+      "tests": 22,
+      "line": 7488,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "scripts/update-artifacts.test.mjs",
+      "tests": 45,
+      "line": 7489,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/desktop-layout.test.tsx",
+      "tests": 4,
+      "line": 7490,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/daemon-runtime-card.test.tsx",
+      "tests": 15,
+      "line": 7491,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/daemon-settings-tab.test.tsx",
+      "tests": 17,
+      "line": 7492,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "scripts/verify-updates.test.mjs",
+      "tests": 41,
+      "line": 7493,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/tab-bar.accessibility.test.tsx",
+      "tests": 5,
+      "line": 7518,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/sidebar-version.test.tsx",
+      "tests": 11,
+      "line": 7519,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/close-behavior-prompt.test.tsx",
+      "tests": 9,
+      "line": 7532,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/pages/login.test.tsx",
+      "tests": 10,
+      "line": 7569,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "scripts/bundle-cli.test.mjs",
+      "tests": 7,
+      "line": 7570,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "scripts/package.test.mjs",
+      "tests": 52,
+      "line": 7571,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/updates-settings-tab.test.tsx",
+      "tests": 7,
+      "line": 7572,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/connection-recovery-boundary.test.tsx",
+      "tests": 6,
+      "line": 7573,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/route-error-page.test.tsx",
+      "tests": 10,
+      "line": 7589,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/desktop-behavior-settings-tab.test.tsx",
+      "tests": 1,
+      "line": 7590,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/pages/auth-recovery.test.tsx",
+      "tests": 4,
+      "line": 7603,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/update-notification.test.tsx",
+      "tests": 6,
+      "line": 7604,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/pages/endpoint-setup.test.tsx",
+      "tests": 4,
+      "line": 7671,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/platform/i18n-adapter.test.tsx",
+      "tests": 4,
+      "line": 7672,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/desktop-layout.workspace-gate.test.tsx",
+      "tests": 9,
+      "line": 7673,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/cli-bootstrap.test.ts",
+      "tests": 5,
+      "line": 7674,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/app-crash-boundary.test.tsx",
+      "tests": 4,
+      "line": 7675,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/issue-window.test.tsx",
+      "tests": 6,
+      "line": 7688,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/use-desktop-runtime-context.test.tsx",
+      "tests": 1,
+      "line": 7689,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/workspace-route-layout.test.tsx",
+      "tests": 12,
+      "line": 7690,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/platform/navigation.test.tsx",
+      "tests": 28,
+      "line": 8199,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/platform/issue-window-navigation.test.tsx",
+      "tests": 9,
+      "line": 8200,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/managed-control.test.ts",
+      "tests": 8,
+      "line": 8201,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/hooks/use-workspace-connection-recovery.test.tsx",
+      "tests": 5,
+      "line": 8202,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/runtime-config-loader.test.ts",
+      "tests": 8,
+      "line": 8203,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/desktop-settings-route.test.tsx",
+      "tests": 6,
+      "line": 8204,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/platform/diagnostic-route-reporter.test.tsx",
+      "tests": 9,
+      "line": 8205,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/stores/tab-store.test.ts",
+      "tests": 81,
+      "line": 8206,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/hooks/use-navigation-input-bindings.test.tsx",
+      "tests": 8,
+      "line": 8243,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/close-behavior.test.ts",
+      "tests": 25,
+      "line": 8263,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/updater.test.ts",
+      "tests": 26,
+      "line": 8264,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/server-switch.test.ts",
+      "tests": 13,
+      "line": 8265,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "scripts/configure-updates.test.mjs",
+      "tests": 13,
+      "line": 8266,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/hooks/use-open-settings-shortcut.test.tsx",
+      "tests": 6,
+      "line": 8267,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/platform/installation-metadata-bridge.test.tsx",
+      "tests": 3,
+      "line": 8268,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/renderer-recovery.test.ts",
+      "tests": 13,
+      "line": 8269,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "scripts/worktree-dev-env.test.mjs",
+      "tests": 12,
+      "line": 8270,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/platform/tab-coordinator.test.ts",
+      "tests": 7,
+      "line": 8271,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/daemon-recovery.test.ts",
+      "tests": 38,
+      "line": 8272,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/desktop-runtimes-page.test.tsx",
+      "tests": 1,
+      "line": 8273,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/stores/account-tab.test.ts",
+      "tests": 10,
+      "line": 8274,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/freeze-breadcrumb.test.ts",
+      "tests": 17,
+      "line": 8275,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/platform/daemon-diagnostics.test.ts",
+      "tests": 34,
+      "line": 8276,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/close-behavior-prompt.test.ts",
+      "tests": 9,
+      "line": 8277,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/freeze-flush.test.ts",
+      "tests": 14,
+      "line": 8278,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/platform/client-usage-reporter.test.ts",
+      "tests": 2,
+      "line": 8279,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/platform/daemon-reauth.test.ts",
+      "tests": 8,
+      "line": 8280,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/window-state.test.ts",
+      "tests": 27,
+      "line": 8281,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/tray.test.ts",
+      "tests": 15,
+      "line": 8282,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/tray-support.test.ts",
+      "tests": 21,
+      "line": 8283,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/device-identity.test.ts",
+      "tests": 10,
+      "line": 8284,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/managed-process.test.ts",
+      "tests": 10,
+      "line": 8285,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/shared/runtime-config.test.ts",
+      "tests": 21,
+      "line": 8286,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/keyboard-shortcuts.test.ts",
+      "tests": 32,
+      "line": 8287,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/updater-preferences.test.ts",
+      "tests": 2,
+      "line": 8288,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "scripts/windows-installer-smoke.test.mjs",
+      "tests": 11,
+      "line": 8289,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/platform/workspace-daemon-scope.test.ts",
+      "tests": 17,
+      "line": 8290,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/shared/issue-window.test.ts",
+      "tests": 16,
+      "line": 8291,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/renderer-file-access.test.ts",
+      "tests": 5,
+      "line": 8292,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/context-menu.test.ts",
+      "tests": 7,
+      "line": 8293,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/platform/session-teardown.test.ts",
+      "tests": 5,
+      "line": 8294,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/daemon-profile.test.ts",
+      "tests": 11,
+      "line": 8295,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/platform/daemon-login-sync.test.ts",
+      "tests": 3,
+      "line": 8296,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/external-url.test.ts",
+      "tests": 10,
+      "line": 8302,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/navigation-guard.test.ts",
+      "tests": 11,
+      "line": 8303,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/components/parse-daemon-log.test.ts",
+      "tests": 13,
+      "line": 8304,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/shared/renderer-route-context.test.ts",
+      "tests": 6,
+      "line": 8305,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/shared/main-renderer-messages.test.ts",
+      "tests": 7,
+      "line": 8306,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/dev-log.test.ts",
+      "tests": 5,
+      "line": 8307,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/auth-session-coordinator.test.ts",
+      "tests": 5,
+      "line": 8308,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/cli-release-asset.test.ts",
+      "tests": 10,
+      "line": 8309,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/shared/account-navigation.test.ts",
+      "tests": 9,
+      "line": 8310,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/daemon-os.test.ts",
+      "tests": 10,
+      "line": 8311,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/version-decision.test.ts",
+      "tests": 9,
+      "line": 8312,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/runtime-config-editor.test.ts",
+      "tests": 3,
+      "line": 8313,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/navigation-gestures.test.ts",
+      "tests": 3,
+      "line": 8314,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/packaged-acceptance-home.test.ts",
+      "tests": 3,
+      "line": 8315,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/notification-gate.test.ts",
+      "tests": 7,
+      "line": 8316,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/daemon-auth-probe.test.ts",
+      "tests": 8,
+      "line": 8317,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/main/renderer-web-preferences.test.ts",
+      "tests": 7,
+      "line": 8318,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/font-fallback-order.test.ts",
+      "tests": 1,
+      "line": 8319,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/platform/account-bootstrap.test.ts",
+      "tests": 8,
+      "line": 8320,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/shared/managed-installation.test.ts",
+      "tests": 2,
+      "line": 8321,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/shared/daemon-types.test.ts",
+      "tests": 4,
+      "line": 8322,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/shared/navigation-gestures.test.ts",
+      "tests": 3,
+      "line": 8323,
+      "status": "passed"
+    },
+    {
+      "package": "@multica/desktop",
+      "file": "src/renderer/src/platform/auth-session-bridge.test.ts",
+      "tests": 3,
+      "line": 8324,
+      "status": "passed"
+    }
+  ],
+  "total_passed": 13244,
+  "raw": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/make-check-v14.log",
+    "sha256": "d20bc6177a221d3c4921592548ff99e5be567e74977d8223c1eda2c18435f557"
+  }
+}

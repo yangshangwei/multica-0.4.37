@@ -1,0 +1,99 @@
+--- retained-main/e2e/collaboration-boundaries-web.spec.ts
++++ tested-eda0/e2e/collaboration-boundaries-web.spec.ts
+@@ -180,24 +180,25 @@
+   expect(openRefusal).toEqual({ status: 409, body: { code: "workspace_has_collaboration_records", error: "This workspace contains collaboration records." } });
+   expect(await workspaceInventory(workspace.id, issueId)).toEqual(before);
+ 
+-  // The handler delivers a real result; the creator accepts its exact identity.
+-  // A non-creator participant then leaves: retained records still refuse deletion (AC62).
++  // The external handler submits a result; the creator accepts that exact delivery.
++  // A completed collaboration still prevents workspace teardown (AC62).
+   const submissionOptions = await handler.api.requestJSON<{ default_status: string; status_options_version: string }>(`${root(issueId)}/status-options?action=submit_acceptance`);
+   const submitted = await write(handler, `${root(issueId)}/acceptance-submissions`, { ...observed(await readIssue(handler, issueId)),
+-    note: "The boundary issue is delivered with its discussion and attachment retained.",
+-    basis: "Creator, handler and peer can read the same original retained records.",
++    note: "Completed the boundary-check work.", basis: "Verified the retained source records and attachment.", attachment_ids: [],
+     expected_status: submissionOptions.default_status, status_options_version: submissionOptions.status_options_version });
+   expect(submitted.status).toBe(200);
+-  expect(submitted.body).toMatchObject({ code: "acceptance_submitted", delivery_confirmation: { attachment_ids: [] } });
+-  const submissionId = (submitted.body.delivery_confirmation as { submission_id: string }).submission_id;
+-  expect(submissionId).toMatch(/^[0-9a-f-]{36}$/i);
+-  expect(await readIssue(creator, issueId)).toMatchObject({ handler: { user_id: creator.id },
+-    delivery: { current: { id: submissionId, author_user_id: handler.id, evidence_state: "available", decision: null } } });
++  expect(submitted.body).toMatchObject({ code: "acceptance_submitted" });
++  const pending = await readIssue(creator, issueId);
++  expect(pending).toMatchObject({ status_category: "in_review", handler: { user_id: creator.id } });
++  const submission = pending.delivery!.current!;
++  expect(submission.id).toMatch(/^[0-9a-f-]{36}$/i);
++  expect(submission).toMatchObject({ author_user_id: handler.id, evidence_state: "available", decision: null });
++  expect(submitted.body.delivery_confirmation).toEqual({ submission_id: submission.id, attachment_ids: [] });
+   const options = await creator.api.requestJSON<{ default_status: string; status_options_version: string }>(`${root(issueId)}/status-options?action=complete`);
+   const completed = await write(creator, `${root(issueId)}/lifecycle`, { ...observed(await readIssue(creator, issueId)), action: "complete",
+-    submission_id: submissionId, status: options.default_status, status_options_version: options.status_options_version });
++    submission_id: submission.id, status: options.default_status, status_options_version: options.status_options_version });
+   expect(completed.status).toBe(200);
+-  expect(completed.body).toMatchObject({ code: "completed", delivery_confirmation: { submission_id: submissionId, attachment_ids: [] } });
++  expect(completed.body).toMatchObject({ code: "completed", delivery_confirmation: { submission_id: submission.id, attachment_ids: [] } });
+   const left = await write(peer, `${root(issueId)}/leave`, observed(await readIssue(peer, issueId)));
+   expect(left.body).toMatchObject({ code: "participant_left" });
+   expect(await readIssue(creator, issueId)).toMatchObject({ status_category: "done", session: { queue_state: "closed" } });
+@@ -239,7 +240,8 @@
+   expect((await creator.api.getWorkspaces()).map((item) => item.id)).toContain(workspace.id);
+   expect(await creator.api.requestJSON(`/api/issues/${ordinary.id}`)).toMatchObject({ title: ordinary.title });
+   expect(await readIssue(handler, issueId)).toMatchObject({ id: issueId, status_category: "done", handler: { user_id: creator.id },
+-    delivery: { latest: { id: submissionId, author_user_id: handler.id, decision: { kind: "accepted", submission_id: submissionId, actor_user_id: creator.id } } } });
++    delivery: { current: null, latest: { id: submission.id, author_user_id: handler.id,
++      decision: { kind: "accepted", submission_id: submission.id, actor_user_id: creator.id } } } });
+   const comments = await handler.api.requestJSON<{ items: { id: string; content: string }[] }>(`${root(issueId)}/comments`);
+   expect(comments.items).toEqual(expect.arrayContaining([expect.objectContaining({ id: comment.body.comment_id, content: `Retained discussion ${fixture.key}` })]));
+   const file = await fetch(`${apiUrl}${root(issueId)}/attachments/${fixture.attachment!.id}/content`, { headers: { Authorization: `Bearer ${handler.api.getToken()}` } });
+@@ -248,8 +250,8 @@
+   expect((await send(peer, root(issueId))).status).toBe(404);
+ });
+ 
+-/** Exact business-action labels after authorized More discovery; the summary is a disclosure control. */
+-const visibleActions = async (page: Page) => (await actionsRow(page).locator("button:visible").allTextContents()).map((text) => text.trim()).sort();
++/** Include collapsed descendants so an unauthorized action cannot hide inside More actions. */
++const renderedActions = async (page: Page) => (await actionsRow(page).getByRole("button", { includeHidden: true }).allTextContents()).map((text) => text.trim());
+ 
+ /**
+  * P registers and authorizes its own agent A as an AI target, so A is in every
+@@ -332,28 +334,30 @@
+     expect((control.body as unknown as CommentReceipt).targets).toEqual([expect.objectContaining({ target_id: agent.targetId, state: "waiting" })]);
+     expect(await commandRows()).toEqual([{ author_user_id: creator.id, state: "waiting" }]);
+ 
+-    // Each client shows exactly the actions its role holds.
++    // Current actions combine the role with the exact delivery state. No result
++    // exists yet, so the external creator cannot accept or self-complete it.
+     await openIssuePage(pages.creator!.page, fixture, "source");
+     await revealCollaborationDisclosure(pages.creator!.page, "More actions");
+-    const creatorActions = ["Comments", "Add participant", "Transfer", "Change status", "Cancel issue", "Edit issue", "Change AI policy", "Edit source fields", "Change iteration"];
+-    await expect.poll(() => visibleActions(pages.creator!.page)).toEqual(creatorActions.sort());
++    const creatorActions = ["Comments", "Transfer", "Change status", "Add participant", "Change AI policy", "Cancel issue", "Edit issue"];
++    if ((await readIssue(creator, issueId)).source_structure !== undefined) creatorActions.push("Edit source fields", "Change iteration");
++    await expect.poll(() => renderedActions(pages.creator!.page)).toEqual(creatorActions);
+     await openIssuePage(pages.handler!.page, fixture, "account");
+     await revealCollaborationDisclosure(pages.handler!.page, "More actions");
+-    await expect.poll(() => visibleActions(pages.handler!.page))
+-      .toEqual(["Add participant", "Transfer", "Request information", "Submit result", "Start work", "Edit issue"].sort());
++    await expect.poll(() => renderedActions(pages.handler!.page))
++      .toEqual(["Start work", "Submit result", "Request information", "Add participant", "Transfer", "Edit issue"]);
+     for (const name of ["peer", "former"]) {
+       await openIssuePage(pages[name]!.page, fixture, "account");
+-      await expect.poll(() => visibleActions(pages[name]!.page)).toEqual(["Comments", "Leave issue"].sort());
++      await expect.poll(() => renderedActions(pages[name]!.page)).toEqual(["Comments", "Leave issue"]);
+     }
+     await openIssuePage(pages.member!.page, fixture, "source");
+-    await expect.poll(() => visibleActions(pages.member!.page)).toEqual(["Comments"]);
++    await expect.poll(() => renderedActions(pages.member!.page)).toEqual(["Comments"]);
+     // Only the creator can remove participants (participants.tsx canRemove).
+     for (const name of ["creator", "handler"]) {
+       await pages[name]!.page.getByRole("region", { name: "Issue actions", exact: true }).getByRole("button", { name: "Participants", exact: true }).click();
+       await expect(pages[name]!.page.getByRole("list", { name: "Participants", exact: true }).getByRole("listitem")).toHaveCount(4);
+     }
+     await expect(pages.creator!.page.getByRole("button", { name: `Remove ${peer.name}`, exact: true })).toBeVisible();
+-    await expect(pages.handler!.page.getByRole("button", { name: /^Remove / })).toHaveCount(0);
++    await expect(pages.handler!.page.getByRole("button", { name: /^Remove /, includeHidden: true })).toHaveCount(0);
+ 
+     // M, a source member outside the issue, comments through the real composer
+     // and mentions A: the comment lands, A is refused for M's role and nothing

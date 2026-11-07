@@ -1,0 +1,35 @@
+{
+  "recorded_at": "2026-11-03T11:33:46.553906+00:00",
+  "kind": "static patch roundtrip only",
+  "patch_sha256": "6981b1d79d61369bff53ee8e10754b3e89a814010579cff168b22b96a53f8940",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "apply",
+        "--no-index",
+        "--whitespace=error-all",
+        "--check",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/mention-preview-repair/repair-v2.patch"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "--no-index",
+        "--whitespace=error-all",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/mention-preview-repair/repair-v2.patch"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "roundtrip_hashes_match": true,
+  "candidate_source_unchanged": true,
+  "runtime_tests_run": false
+}

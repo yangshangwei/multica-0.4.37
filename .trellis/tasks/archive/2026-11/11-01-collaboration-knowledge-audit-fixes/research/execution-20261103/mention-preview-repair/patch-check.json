@@ -1,0 +1,36 @@
+{
+  "recorded_at": "2026-11-03T11:31:18.162278+00:00",
+  "scope": "patch/whitespace roundtrip in ignored scratch copies with Git root discovery blocked",
+  "git_ceiling_directory": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/mention-preview-repair-v13",
+  "repository_probe_exit": 128,
+  "commands": [
+    {
+      "command": [
+        "git",
+        "apply",
+        "--no-index",
+        "--whitespace=error-all",
+        "--check",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/mention-preview-repair/repair.patch"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "--no-index",
+        "--whitespace=error-all",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/mention-preview-repair/repair.patch"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "roundtrip_hashes_match": true,
+  "candidate_source_unchanged": true,
+  "runtime_tests_run": false
+}

@@ -1,0 +1,78 @@
+{
+  "failure_file": "e2e/fixtures/collaboration-native.ts",
+  "failure_line": 130,
+  "actual_coveredThrough": 238,
+  "initial_focusHeight": 274,
+  "required_coverage_lower_bound": 273,
+  "preserved_source_sha256": "88b19f3fcc107997d5b4a1ab8364de3ba4a4930bacbda3c25fa97d60463c3095",
+  "png_directory": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/playwright-directed17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium",
+  "png": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/playwright-directed17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/attachments/desktop-account-failure-2ac5dccabc8a86aba0326918e4b56633c6a44ee2.png",
+      "relative": "attachments/desktop-account-failure-2ac5dccabc8a86aba0326918e4b56633c6a44ee2.png",
+      "bytes": 70254,
+      "sha256": "a9a79622d225670a615294ccd20f4350fba73886404e3847396aa9255f09f904",
+      "width": 900,
+      "height": 1200
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/playwright-directed17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-account-failure.png",
+      "relative": "desktop-account-failure.png",
+      "bytes": 70254,
+      "sha256": "a9a79622d225670a615294ccd20f4350fba73886404e3847396aa9255f09f904",
+      "width": 900,
+      "height": 1200
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/playwright-directed17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-adoption-200-percent.png",
+      "relative": "desktop-adoption-200-percent.png",
+      "bytes": 248060,
+      "sha256": "be013ad986693853f8a255e64bc274c125624ac31ae5a7a753d2118c4066bd13",
+      "width": 1800,
+      "height": 2400
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/playwright-directed17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-adoption-wide.png",
+      "relative": "desktop-adoption-wide.png",
+      "bytes": 273079,
+      "sha256": "1a858d847eea544b18f86f9262832e943630dae4e624b629e226e66b5647c72c",
+      "width": 2760,
+      "height": 2240
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/playwright-directed17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-supplier-200-percent.png",
+      "relative": "desktop-supplier-200-percent.png",
+      "bytes": 251812,
+      "sha256": "bb972b1f13f8dd537c53eea793ea57936d067603b12e6ab39c24ac9b5c73a258",
+      "width": 1800,
+      "height": 2400
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/playwright-directed17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-supplier-wide.png",
+      "relative": "desktop-supplier-wide.png",
+      "bytes": 254971,
+      "sha256": "455cf76bf55b4e7b006a692fda196eb4389147f30a08b332b2c743a7f1beda54",
+      "width": 2760,
+      "height": 2240
+    }
+  ],
+  "other_files": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/playwright-directed17/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-account-responses.json",
+      "relative": "desktop-account-responses.json",
+      "bytes": 3591,
+      "sha256": "46a894f8d30c4afb0b449c11aef44c7c2cf51f86be7a2b2fbc7532bffb7841de"
+    }
+  ],
+  "saved_geometry_or_scroll_trace": false,
+  "missing_observation_reason": "captureNativeSection stores each geometry only in local captures; the coverage assertion throws before returning. The caller attaches that geometry only after the capture call succeeds. No complete focus/root bounding boxes or scroll trace were emitted in the failing raw report.",
+  "algorithm_boundaries": [
+    "For each native width/zoom, dimensions measured once after fonts and two animation frames",
+    "Fixed offsets derived from initial focusHeight and root.clientHeight minus24",
+    "Each scroll uses root.scrollTop += current focus.top-root.top-12+offset",
+    "Geometry remeasured per tile after two frames; visibleStart/End use root/focus rectangles",
+    "Coverage asserts against initially sampled dimensions.focusHeight-1; does not persist local geometry before assertion",
+    "Failure data alone cannot distinguish a changing focusHeight from insufficient/clamped scroll coverage"
+  ],
+  "new_fix_or_retry_performed": false
+}

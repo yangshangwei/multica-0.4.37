@@ -1,0 +1,170 @@
+{
+  "scope": "deployed environment -> public API -> actual test-owned Host input",
+  "expected_knowledge_enabled": false,
+  "real_provider_calls": 0,
+  "excludes": [
+    "real model understanding",
+    "human approval UI",
+    "correction/withdrawal composite",
+    "installer and different-account journey"
+  ],
+  "environment": {
+    "api": "http://127.0.0.1:18231",
+    "deployment_id": "efce5c6d-3992-487d-bc6e-4381fbb95424",
+    "auth_mode": "password",
+    "api_health": {
+      "status": "ok",
+      "pid": 51638,
+      "commit": "eda0d68fb",
+      "started_at": "2026-11-04T05:44:19Z"
+    },
+    "database": "multica_ccg2_v16_off_a3c9",
+    "native_os": "darwin",
+    "native_arch": "arm64"
+  },
+  "approved": {
+    "candidate_id": "79e7f299-9bf0-49c0-808e-3284bd4d378b",
+    "version": "1",
+    "content_sha256": "f01375e2924645d76c300eebbd1d8cdb0c2912225cb0d32f450567e1af0856ac",
+    "source_issue_id": "01a1a589-949d-7451-bc6b-b68b29f76ccc",
+    "target_workspace_id": "e611fafa-a6ea-41ed-be1f-65d30c3d0c40",
+    "proposed_by_user_id": "7443c2b5-b460-4c84-9d98-0f3d2a5a4900"
+  },
+  "accepted_input": {
+    "command_id": "e068de4f-d59b-4f95-a676-fbd4781122e2",
+    "batch_id": "373f949a-5e67-456d-956c-2dea62bff4c1",
+    "author_user_id": "7443c2b5-b460-4c84-9d98-0f3d2a5a4900",
+    "content_sha256": "57084c86482129651e14ef8b2f3ff424d55fd267ab4c990567b98d29950ad695"
+  },
+  "actual_input": {
+    "prompt_sha256": "a04941df72d43723b3e666d22221de8bc0c16257562f4871b1e565650aee9bd1",
+    "section_present": false,
+    "contributions": [],
+    "no_session_persistence": false
+  },
+  "run": {
+    "id": "d8e1b112-2917-4429-acf3-2b03dd283360",
+    "progress_state": "settled",
+    "proof_state": "host_exit_observed",
+    "business_outcome": "success",
+    "launch_count": "1"
+  },
+  "knowledge_events": {
+    "knowledge_claim": 0,
+    "knowledge_preparation": 0,
+    "knowledge_authorization": 0
+  },
+  "binary_sha256": {
+    "COLLABORATION_HOST_DAEMON": "2b36f0de335919fbc1d36247d9573b13b776e8a1e85e78c0e7117e8e05ed7847",
+    "COLLABORATION_HOST_PROVIDER": "133c116fddf461e69b6f154c1d83123055d59934981e69deb85a45b9fe942061",
+    "COLLABORATION_HOST_CLI": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac"
+  },
+  "source_sha256": {
+    "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+    "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+    "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e"
+  },
+  "daemon": {
+    "exit_code": 0,
+    "messages": [
+      {
+        "arch": "arm64",
+        "execution_mode": "host_process_supervision_v1",
+        "max_concurrent_tasks": 1,
+        "os": "darwin",
+        "preparation_version": 2,
+        "protocol_version": 3,
+        "ready": true,
+        "runtime_config_epoch": "2"
+      },
+      {
+        "active_tasks": 0,
+        "available_slots": 1,
+        "claims": 1,
+        "http": [
+          {
+            "operation": "claim",
+            "run_id": "d8e1b112-2917-4429-acf3-2b03dd283360",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "status": 200
+          },
+          {
+            "operation": "permit",
+            "run_id": "d8e1b112-2917-4429-acf3-2b03dd283360",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "attempt_seq": "1",
+            "launch_hash": "8fac8cd31ce43eadb407b386c6ca9ce18d918a0d64206bb0941aeb4627546d09",
+            "status": 200
+          },
+          {
+            "operation": "permit",
+            "run_id": "d8e1b112-2917-4429-acf3-2b03dd283360",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "attempt_seq": "1",
+            "launch_hash": "8fac8cd31ce43eadb407b386c6ca9ce18d918a0d64206bb0941aeb4627546d09",
+            "status": 200
+          },
+          {
+            "operation": "termination",
+            "run_id": "d8e1b112-2917-4429-acf3-2b03dd283360",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "attempt_seq": "1",
+            "launch_hash": "8fac8cd31ce43eadb407b386c6ca9ce18d918a0d64206bb0941aeb4627546d09",
+            "kind": "managed_launch_ended",
+            "status": 200
+          },
+          {
+            "operation": "proof",
+            "run_id": "d8e1b112-2917-4429-acf3-2b03dd283360",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "launch_hash": "8fac8cd31ce43eadb407b386c6ca9ce18d918a0d64206bb0941aeb4627546d09",
+            "state": "host_exit_observed",
+            "status": 200
+          }
+        ],
+        "invalid_capacity": false
+      }
+    ],
+    "ledger": [
+      {
+        "version": 2,
+        "run_id": "d8e1b112-2917-4429-acf3-2b03dd283360",
+        "issue_id": "01a1a589-949d-7451-bc6b-b68b29f76ccc",
+        "phase": "proof_acknowledged",
+        "session_key": "64ebc24141c0201d9f6c1c332223564d203919ef569f4adc4a614a6d9d57f58e",
+        "namespace_present": false,
+        "sealed": true,
+        "proof_state": "host_exit_observed",
+        "cleanup": {
+          "state": "tracked_scope_complete",
+          "scope": "process_group",
+          "attempted": true
+        },
+        "launches": [
+          {
+            "attempt_seq": "1",
+            "kind": "provider",
+            "phase": "attempt_reaped",
+            "process_observed": true,
+            "scope": "process_group",
+            "terminal_accepted": true,
+            "authorized": true,
+            "terminal_kind": "managed_launch_ended",
+            "cleanup": {
+              "state": "tracked_scope_complete",
+              "scope": "process_group",
+              "attempted": true
+            }
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "stderr": ""
+  }
+}

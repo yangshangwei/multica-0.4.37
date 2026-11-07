@@ -1,0 +1,42 @@
+{
+  "recorded_at": "2026-11-04T04:54:24.402541+00:00",
+  "scope": "Explicit permit endpoints; psql read-only identity/migration and zero issue/task row queries only",
+  "psql_path": "/opt/homebrew/opt/libpq/bin/psql",
+  "psql_sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07",
+  "rows": [
+    {
+      "mode": "normal",
+      "permit_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg1-normal.json",
+      "permit_sha256": "3f6d63519a055b7ca65d715a017d40f4c93248a17b3406c0814ff91719024358",
+      "database": "multica_knowledge_host_composite_20261101_v16n_a3c9",
+      "endpoint": {
+        "host": "127.0.0.1",
+        "port": 5432
+      },
+      "read_only_enforced": true,
+      "actual_identity_and_empty_rows": "multica_knowledge_host_composite_20261101_v16n_a3c9|764_collaboration_ai_policy\n0|0",
+      "matches_expected_identity_and_seed_empty": true,
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "no_credentials_in_output": true
+    },
+    {
+      "mode": "race",
+      "permit_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg1-race.json",
+      "permit_sha256": "0033d13871f72ca4d1460d7ea9319f8077a56a50e377d0a38911801942f8e682",
+      "database": "multica_knowledge_host_composite_20261101_v16r_a3c9",
+      "endpoint": {
+        "host": "127.0.0.1",
+        "port": 5432
+      },
+      "read_only_enforced": true,
+      "actual_identity_and_empty_rows": "multica_knowledge_host_composite_20261101_v16r_a3c9|764_collaboration_ai_policy\n0|0",
+      "matches_expected_identity_and_seed_empty": true,
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "no_credentials_in_output": true
+    }
+  ],
+  "no_database_writes": true,
+  "passed": true
+}

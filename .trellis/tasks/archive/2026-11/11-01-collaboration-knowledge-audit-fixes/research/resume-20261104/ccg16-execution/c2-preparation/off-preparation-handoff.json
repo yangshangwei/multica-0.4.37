@@ -1,0 +1,178 @@
+{
+  "state": "prepared_pending_Root_independent_review",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "binary_build_exit_codes": [
+    0,
+    0
+  ],
+  "API_Web_startup_exit_code": 0,
+  "origins": {
+    "api": "http://127.0.0.1:18231",
+    "web": "http://127.0.0.1:13151",
+    "renderer": "http://127.0.0.1:60377"
+  },
+  "live_processes": {
+    "api": {
+      "pid": 51638,
+      "ppid": 51602,
+      "pgid": 51602,
+      "executable": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/go-build-cache/e2/e2ded241a09cabe58a03855af76bedfaa95f70879c266b36b83480798177651f-d/server",
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server",
+      "command": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/go-build-cache/e2/e2ded241a09cabe58a03855af76bedfaa95f70879c266b36b83480798177651f-d/server",
+      "listener_port": 18231,
+      "owned_listener_verified": true,
+      "owned_launcher_ancestry": [
+        51638,
+        51602
+      ]
+    },
+    "web": {
+      "pid": 51913,
+      "ppid": 51891,
+      "pgid": 51891,
+      "executable": "next-server (v16.2.6)",
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web",
+      "command": "next-server (v16.2.6)",
+      "listener_port": 13151,
+      "owned_listener_verified": true,
+      "owned_launcher_ancestry": [
+        51913,
+        51891
+      ]
+    },
+    "renderer": {
+      "pid": 51848,
+      "ppid": 1,
+      "pgid": 51848,
+      "executable": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python",
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+      "command": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B -m http.server 60377 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+      "listener_port": 60377,
+      "owned_listener_verified": true
+    }
+  },
+  "configuration_verified": true,
+  "actual_process_knowledge_flag": "false",
+  "actual_HTML_WebProviders_pairs": [
+    {
+      "apiBaseUrl": "http://127.0.0.1:18231",
+      "wsUrl": "ws://127.0.0.1:18231/ws"
+    }
+  ],
+  "actual_public_password_managed_signup": true,
+  "actual_public_platform_admin": false,
+  "exact_CORS_origins": [
+    "http://127.0.0.1:13151",
+    "http://127.0.0.1:60377"
+  ],
+  "resource": {
+    "database": "multica_ccg2_v16_off_a3c9",
+    "migration": "764_collaboration_ai_policy",
+    "issues": 0,
+    "tasks": 0,
+    "cluster_max_connections": 100,
+    "cluster_actual_connections": 30,
+    "OFF_database_connections": 11,
+    "API_budget_max": 10,
+    "API_budget_min": 1,
+    "ON_connected": false,
+    "SQL_writes_from_preparation": 0
+  },
+  "source_identity": "080e49210a53a763213651be5d76b343186613d1673cafdfc6519645c4690364",
+  "protected_inputs": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/source-inputs.json",
+      "sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+      "mode": 384,
+      "unchanged": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/run-ccg2.py",
+      "sha256": "a6d070263badb138855b1caaaa45d8ea22cfdaebf66e33c09f1e2378748fab3e",
+      "mode": 384,
+      "unchanged": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/run-ccg1.py",
+      "sha256": "4b29de6c452da8f1171b343113297710d055caf5c6aacf41a4ac1794837d2d39",
+      "mode": 384,
+      "unchanged": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binary-binding.json.template",
+      "sha256": "72c22dabd687cdbd2b1f752dd734ad6ebe988412c70b0ab02738066ecce911b8",
+      "mode": 384,
+      "unchanged": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-off.json.template",
+      "sha256": "18e190be0c0541a3e609f0a3a4bae06bcd48d96cd063b67d119afa032875403d",
+      "mode": 384,
+      "unchanged": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-on.json.template",
+      "sha256": "72370fd7e7c4870c51449f0eba4743f77cff19a4bc6be4d4e035cae7216f4e5a",
+      "mode": 384,
+      "unchanged": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/off/source-values.json.template",
+      "sha256": "0f3c3151ae1846106082a332321054a1745a0914937b3a4a691d91d4939fe962",
+      "mode": 384,
+      "unchanged": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/off/deployment-proof.json.template",
+      "sha256": "af716f03d806a1673cef4196c265ec0077d7476e8d0c0ef68b60f81b66d33d77",
+      "mode": 384,
+      "unchanged": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/c2-root-allocation-private.json",
+      "sha256": "408edca07c65d6501320378610ef767326afeac5bede1d44d4e4fc7dadc3547f",
+      "mode": 384,
+      "unchanged": true
+    }
+  ],
+  "source_sha256": {
+    "server/cmd/server/collaboration_knowledge_correction_composite_test.go": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+    "server/cmd/server/collaboration_knowledge_host_composite_test.go": "d866d3f888a1ed48b015a04bb844170a1b5cd8c53ee662f104f0508b23fac3f6",
+    "server/internal/daemon/collaboration_host_router_test.go": "1939ea098c47210f62512a138b35d944add6f3b4f02b5f2e0fd9a5dabaab130f",
+    "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+    "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+    "e2e/fixtures/collaboration-host-provider_test.go": "10af5c9122d610dd966fd78ea8eed48ec6fe93ba263025cb17cbee9c0853a600",
+    "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e",
+    "e2e/fixtures/collaboration-knowledge.ts": "7a3f68f8a7213dbc40de3e7a8bf02222fb39d27411a0244b8ae2ea6ea89b1960",
+    "scripts/go-test-with-agent-cli-guard.sh": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+    "scripts/dev-env.sh": "6fb4a38c75ffe51c4e1a60712f52887263ee2a21ab205432c3bc90fdf25e001e",
+    "server/internal/auth/password_config.go": "390625cc9961a791adfd24e0fdccffba0607053d9f6271717f889b2d2d885103"
+  },
+  "files": {
+    "source_environment": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/off/source-values.env",
+      "sha256": "e0a6a47cc30e26b36c2b3e7dbf2a219481401362c73a1e0323ecbabc17ba15a1"
+    },
+    "deployment_proof": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/off/deployment-proof.json",
+      "sha256": "3fc506a0c4275afe6037626e8da96cec5c33f1547e020115bd692ee0c1ef193a"
+    },
+    "binary_binding": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binary-binding.json",
+      "sha256": "bc3863a5bfec55b1a2955c65643b03717fb6ec339458c6e90ed90abdd8612f60"
+    },
+    "OFF_permit": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-off.json",
+      "sha256": "a597ed12993cc0bce1c5ba79b6e949cead42f2a972f3d37e72d39fd1c4993395",
+      "ready_to_execute": false,
+      "mode": 384
+    }
+  },
+  "previous_Web_snapshot": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/retained-v16-web-artifacts.json",
+  "standalone_final_auditor_rerun": false,
+  "OFF_browser_probe_executed": false,
+  "ON_connected_or_started": false,
+  "knowledge_allocated": 0,
+  "real_Provider_calls": 0,
+  "finished_at": "2026-11-04T05:50:37.480331+00:00"
+}

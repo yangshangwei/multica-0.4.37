@@ -1,0 +1,40 @@
+Captured 2026-11-03T11:09:40.571882+00:00 from still-running v13; not final inventory.
+
+  1) [chromium] › e2e/collaboration-boundaries-web.spec.ts:163:1 › Gap 5: a source workspace holding a collaboration issue cannot be deleted, open or completed, and nothing is cleaned up 
+
+    Error: expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+    -   "code": "completed",
+    +   "code": "delivery_required",
+      }
+
+      184 |   const completed = await write(creator, `${root(issueId)}/lifecycle`, { ...observed(await readIssue(creator, issueId)), action: "complete",
+      185 |     status: options.default_status, status_options_version: options.status_options_version });
+    > 186 |   expect(completed.body).toMatchObject({ code: "completed" });
+          |                          ^
+      187 |   const left = await write(peer, `${root(issueId)}/leave`, observed(await readIssue(peer, issueId)));
+      188 |   expect(left.body).toMatchObject({ code: "participant_left" });
+      189 |   expect(await readIssue(creator, issueId)).toMatchObject({ status_category: "done", session: { queue_state: "closed" } });
+        at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-boundaries-web.spec.ts:186:26
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/collaboration-boundaries-w-58084-d-and-nothing-is-cleaned-up-chromium/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/collaboration-boundaries-w-58084-d-and-nothing-is-cleaned-up-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:5053) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:5053) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+

@@ -1,0 +1,169 @@
+{
+  "recorded_at": "2026-11-03T10:24:01.957455+00:00",
+  "raw_template_refusals": [
+    {
+      "name": "ccg1-normal-template-refused",
+      "command": [
+        "/opt/homebrew/bin/python3.14",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg1.py",
+        "normal",
+        "--permit",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg1-normal.json.template",
+        "--label",
+        "review-refusal-ccg1-normal"
+      ],
+      "exit_code": 2,
+      "stdout": "REFUSED: Later root execution permission is required",
+      "candidate_run_output_created": false
+    },
+    {
+      "name": "ccg1-race-template-refused",
+      "command": [
+        "/opt/homebrew/bin/python3.14",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg1.py",
+        "race",
+        "--permit",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg1-race.json.template",
+        "--label",
+        "review-refusal-ccg1-race"
+      ],
+      "exit_code": 2,
+      "stdout": "REFUSED: Later root execution permission is required",
+      "candidate_run_output_created": false
+    },
+    {
+      "name": "ccg2-off-template-refused",
+      "command": [
+        "/opt/homebrew/bin/python3.14",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg2.py",
+        "off",
+        "--permit",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg2-off.json.template",
+        "--label",
+        "review-refusal-ccg2-off"
+      ],
+      "exit_code": 2,
+      "stdout": "REFUSED: Later root execution permission is required",
+      "candidate_run_output_created": false
+    },
+    {
+      "name": "ccg2-on-template-refused",
+      "command": [
+        "/opt/homebrew/bin/python3.14",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg2.py",
+        "on",
+        "--permit",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg2-on.json.template",
+        "--label",
+        "review-refusal-ccg2-on"
+      ],
+      "exit_code": 2,
+      "stdout": "REFUSED: Later root execution permission is required",
+      "candidate_run_output_created": false
+    }
+  ],
+  "offline_early_admission_cases": [
+    {
+      "runner": "run-ccg1.py",
+      "name": "invalid-label",
+      "refused": true,
+      "external_invocations": 0
+    },
+    {
+      "runner": "run-ccg1.py",
+      "name": "unready",
+      "refused": true,
+      "external_invocations": 0
+    },
+    {
+      "runner": "run-ccg1.py",
+      "name": "wrong-gate",
+      "refused": true,
+      "external_invocations": 0
+    },
+    {
+      "runner": "run-ccg1.py",
+      "name": "unreleased",
+      "refused": true,
+      "external_invocations": 0
+    },
+    {
+      "runner": "run-ccg1.py",
+      "name": "inventory-not-cleared",
+      "refused": true,
+      "external_invocations": 0
+    },
+    {
+      "runner": "run-ccg1.py",
+      "name": "fresh-db-unproved",
+      "refused": true,
+      "external_invocations": 0
+    },
+    {
+      "runner": "run-ccg1.py",
+      "name": "provider-not-forbidden",
+      "refused": true,
+      "external_invocations": 0
+    },
+    {
+      "runner": "run-ccg1.py",
+      "name": "outside-permit",
+      "refused": true,
+      "external_invocations": 0
+    },
+    {
+      "runner": "run-ccg2.py",
+      "name": "invalid-label",
+      "refused": true,
+      "external_invocations": 0
+    },
+    {
+      "runner": "run-ccg2.py",
+      "name": "unready",
+      "refused": true,
+      "external_invocations": 0
+    },
+    {
+      "runner": "run-ccg2.py",
+      "name": "wrong-gate",
+      "refused": true,
+      "external_invocations": 0
+    },
+    {
+      "runner": "run-ccg2.py",
+      "name": "unreleased",
+      "refused": true,
+      "external_invocations": 0
+    },
+    {
+      "runner": "run-ccg2.py",
+      "name": "inventory-not-cleared",
+      "refused": true,
+      "external_invocations": 0
+    },
+    {
+      "runner": "run-ccg2.py",
+      "name": "fresh-db-unproved",
+      "refused": true,
+      "external_invocations": 0
+    },
+    {
+      "runner": "run-ccg2.py",
+      "name": "provider-not-forbidden",
+      "refused": true,
+      "external_invocations": 0
+    },
+    {
+      "runner": "run-ccg2.py",
+      "name": "outside-permit",
+      "refused": true,
+      "external_invocations": 0
+    }
+  ],
+  "raw_refusals": 4,
+  "offline_cases": 16,
+  "go_pw_database_service_provider_invocations": 0,
+  "active_v13_files_written": 0,
+  "prepared_ccg_files_written": 0,
+  "candidate_ccg_result_directories_created": 0
+}

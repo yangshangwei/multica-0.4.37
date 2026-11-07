@@ -1,0 +1,140 @@
+{
+  "state": "actual_prepared_pending_independent_review",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "database": "multica_ccg2_v16_off_a3c9",
+  "source_environment_sha256": "e0a6a47cc30e26b36c2b3e7dbf2a219481401362c73a1e0323ecbabc17ba15a1",
+  "distinct_from_complete_check_resources": true,
+  "registry": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/off/registry",
+    "environment_name": "knowledge-v16-off-a3c9-01",
+    "manifest": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/off/registry/envs/knowledge-v16-off-a3c9-01/manifest.env",
+    "manifest_sha256": "4d55b5b7f288a879bb603399f1662dc927116d35900074903e38a0824b8650ae",
+    "TTL_HOURS": 0
+  },
+  "api": {
+    "pid": 51638,
+    "ppid": 51602,
+    "pgid": 51602,
+    "executable": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/go-build-cache/e2/e2ded241a09cabe58a03855af76bedfaa95f70879c266b36b83480798177651f-d/server",
+    "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server",
+    "command": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/go-build-cache/e2/e2ded241a09cabe58a03855af76bedfaa95f70879c266b36b83480798177651f-d/server",
+    "listener_port": 18231,
+    "owned_listener_verified": true,
+    "owned_launcher_ancestry": [
+      51638,
+      51602
+    ],
+    "origin": "http://127.0.0.1:18231",
+    "launcher_pid": 51602,
+    "startup_command": "go run -ldflags '-X main.commit=eda0d68fb' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server)",
+    "commit": "eda0d68fb",
+    "source_id": "080e49210a53a763213651be5d76b343186613d1673cafdfc6519645c4690364",
+    "configuration_id": "b05a18f4c710634248bd6fad3e73e2d9eb38a8ad3daac05b3e6231ce301f80fc",
+    "deployment_id": "efce5c6d-3992-487d-bc6e-4381fbb95424",
+    "actual_startup_knowledge_flag": "false",
+    "flag_observed_from_owned_process": true,
+    "process_environment_observation_sha256": "76b2bcfb586a5181347c2ffd279de6ee9342f2ae7d0d0736af6469e273f5d3d0",
+    "same_URL_database_identity": "multica_ccg2_v16_off_a3c9|764_collaboration_ai_policy",
+    "public_config_sha256": "49f15aa1b4edd596cb8d20c79ce1cdb621fc5c4ae874e939a60186d31b231ded",
+    "public_config_password_managed_signup_verified": true
+  },
+  "web": {
+    "pid": 51913,
+    "ppid": 51891,
+    "pgid": 51891,
+    "executable": "next-server (v16.2.6)",
+    "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web",
+    "command": "next-server (v16.2.6)",
+    "listener_port": 13151,
+    "owned_listener_verified": true,
+    "owned_launcher_ancestry": [
+      51913,
+      51891
+    ],
+    "origin": "http://127.0.0.1:13151",
+    "launcher_pid": 51891,
+    "startup_command": "pnpm --filter @multica/web exec next start --port 13151",
+    "commit": "eda0d68fb",
+    "source_id": "080e49210a53a763213651be5d76b343186613d1673cafdfc6519645c4690364",
+    "configuration_id": "52ad5bbfd5117d9d839f6188312a09fb18c2b86e0ca3118ba98ddb09783f79cf",
+    "mode": "production",
+    "build_id": "zbgepuIQ9PJvKbS1ha1Vg",
+    "rendered_api_base_url": "http://127.0.0.1:18231",
+    "rendered_ws_url": "ws://127.0.0.1:18231/ws",
+    "rendered_runtime_config_verified": true,
+    "actual_HTML_sha256": "45bdc9c18ea6a8ffe8cefc07d207ccc68a2dbb111503c771b6ae5cda9d8536df",
+    "actual_proxy_verified": true,
+    "build_log_sha256": "5a26a0b4efd6a27da2d95e9b8ac9e64c8899383dbe45e584bd4f5ab3cadfdc12"
+  },
+  "renderer": {
+    "pid": 51848,
+    "ppid": 1,
+    "pgid": 51848,
+    "executable": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python",
+    "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+    "command": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B -m http.server 60377 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+    "listener_port": 60377,
+    "owned_listener_verified": true,
+    "origin": "http://127.0.0.1:60377",
+    "index_sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+    "ownership_verified": true,
+    "installed_desktop_files_verified": 495,
+    "installed_desktop_unchanged": true
+  },
+  "actual_database_freshness_proof": {
+    "root_allocation": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/root-database-temp-allocation.json",
+    "root_allocation_sha256": "57edeab994f93bad0022e634f41e409889c3ffa252017bdad55a2b01065d3e44",
+    "before_API": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/off-readonly-resource-admission.json",
+    "current": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/off-actual-resource-proof.json"
+  },
+  "binary_binding_sha256": "bc3863a5bfec55b1a2955c65643b03717fb6ec339458c6e90ed90abdd8612f60",
+  "source_inputs_sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+  "runner_sha256": "a6d070263badb138855b1caaaa45d8ea22cfdaebf66e33c09f1e2378748fab3e",
+  "current_source_identity": "080e49210a53a763213651be5d76b343186613d1673cafdfc6519645c4690364",
+  "source_sha256": {
+    "server/cmd/server/collaboration_knowledge_correction_composite_test.go": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+    "server/cmd/server/collaboration_knowledge_host_composite_test.go": "d866d3f888a1ed48b015a04bb844170a1b5cd8c53ee662f104f0508b23fac3f6",
+    "server/internal/daemon/collaboration_host_router_test.go": "1939ea098c47210f62512a138b35d944add6f3b4f02b5f2e0fd9a5dabaab130f",
+    "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+    "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+    "e2e/fixtures/collaboration-host-provider_test.go": "10af5c9122d610dd966fd78ea8eed48ec6fe93ba263025cb17cbee9c0853a600",
+    "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e",
+    "e2e/fixtures/collaboration-knowledge.ts": "7a3f68f8a7213dbc40de3e7a8bf02222fb39d27411a0244b8ae2ea6ea89b1960",
+    "scripts/go-test-with-agent-cli-guard.sh": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+    "scripts/dev-env.sh": "6fb4a38c75ffe51c4e1a60712f52887263ee2a21ab205432c3bc90fdf25e001e",
+    "server/internal/auth/password_config.go": "390625cc9961a791adfd24e0fdccffba0607053d9f6271717f889b2d2d885103"
+  },
+  "source_observation": {
+    "HEAD": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "tracked_dirty": [
+      " M apps/web/next-env.d.ts"
+    ],
+    "Next_env_sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+    "known_generated_import_only": true,
+    "protected_inputs_unchanged": true
+  },
+  "CORS_verified_origins": [
+    "http://127.0.0.1:13151",
+    "http://127.0.0.1:60377"
+  ],
+  "root_shared_references": {
+    "final_audit": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-state-audit-v16/post-make-v16.json",
+      "sha256": "73c198b8f21f92235f5d20f54031e486ce0de23fcdb4521712daaf03e0194baf"
+    },
+    "complete_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/final-v16-actual-01/independent-shared-readiness-review.json",
+      "sha256": "b84ae87408a08e3e2536dfef08935c92b1ec23deddfc8e8a5c88b00d343734a2"
+    },
+    "resource_release": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/root-v16-resource-release.json",
+      "sha256": "ffd84568037732e3642d3a0c661fbd90a34596150086e26460bdc1f034bf9200"
+    }
+  },
+  "browser_probe_executed": false,
+  "gate_passed": false,
+  "ON_started": false,
+  "knowledge_allocated": 0,
+  "real_Provider_calls": 0,
+  "recorded_at": "2026-11-04T05:50:37.477386+00:00"
+}

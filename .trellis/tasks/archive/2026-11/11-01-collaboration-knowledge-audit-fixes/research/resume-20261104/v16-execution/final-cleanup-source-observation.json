@@ -1,0 +1,192 @@
+{
+  "recorded_at": "2026-11-04T04:17:48.873155+00:00",
+  "scope": "Readonly final cleanup/source/historical preservation after one V16 full run and its one auditor",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "source_status": " M apps/web/next-env.d.ts\n",
+  "provenances": {
+    "api": {
+      "component": "api",
+      "mode": "development",
+      "build_id": "",
+      "command": "go run -ldflags '-X main.commit=eda0d68fb' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server)",
+      "source_id": "080e49210a53a763213651be5d76b343186613d1673cafdfc6519645c4690364",
+      "configuration_id": "5bb45ae6aa2945bf157ff50e64dd292e025e97db737de9a961d589286024985b",
+      "commit": "eda0d68fb",
+      "launcher_pid": 33628,
+      "started_at": "2026-11-04T03:52:52Z",
+      "listener_pid": 33694
+    },
+    "web": {
+      "component": "web",
+      "mode": "production",
+      "build_id": "wJb8_oXVm-RQLLW3V6hi3",
+      "command": "pnpm --filter @multica/web exec next start --port 13894",
+      "source_id": "080e49210a53a763213651be5d76b343186613d1673cafdfc6519645c4690364",
+      "configuration_id": "1d0be98969ce00322461c1c6a201152bf7db074e431bd983f767061f8557aba6",
+      "commit": "eda0d68fb",
+      "launcher_pid": 34854,
+      "started_at": "2026-11-04T03:53:56Z",
+      "listener_pid": 34873
+    }
+  },
+  "processes": [
+    {
+      "pid": 8937,
+      "present": false,
+      "process": ""
+    },
+    {
+      "pid": 8940,
+      "present": false,
+      "process": ""
+    },
+    {
+      "pid": 8959,
+      "present": false,
+      "process": ""
+    },
+    {
+      "pid": 33628,
+      "present": false,
+      "process": ""
+    },
+    {
+      "pid": 33694,
+      "present": false,
+      "process": ""
+    },
+    {
+      "pid": 34854,
+      "present": false,
+      "process": ""
+    },
+    {
+      "pid": 34873,
+      "present": false,
+      "process": ""
+    }
+  ],
+  "ports": [
+    {
+      "port": 18974,
+      "listener_present": false,
+      "output": ""
+    },
+    {
+      "port": 13894,
+      "listener_present": false,
+      "output": ""
+    }
+  ],
+  "owned_API_and_Web_released": true,
+  "database_observation": {
+    "database": "postgres",
+    "existing_requested_databases": [
+      "ccheck_20261104031740766385_bb940f8eb38e",
+      "ccheck_20261104031745747384_07eb79fa72b8",
+      "ccheck_20261104031746171984_f47ea76e9369",
+      "ccheck_20261104031746594551_f9a6f66e94fe",
+      "ccheck_20261104031805308567_b0ca13f2a1d5",
+      "ccheck_20261104031811207317_6f87875654d8",
+      "ccheck_20261104031937424974_7427887f8751",
+      "ccheck_20261104031938244472_e243b33d7b90",
+      "ccheck_20261104031938482567_a33d11aa74fd",
+      "ccheck_20261104031938885987_8ec97853df30",
+      "ccheck_20261104031939178887_d642fc7111ff",
+      "ccheck_20261104031942240211_d4b8dc307441",
+      "ccheck_20261104031948883459_cc1252fad4dc",
+      "ccheck_20261104031950990136_4b76585c3aa4",
+      "ccheck_20261104031951327172_b8d431c478e1",
+      "ccheck_20261104031951635079_f26ab7ece539",
+      "ccheck_20261104031951864429_248934fbfb73",
+      "ccheck_20261104031956504160_cffe407cfbfc",
+      "ccheck_20261104031956850691_472bb8236d85",
+      "ccheck_20261104031957378708_7a21f045e560",
+      "ccheck_20261104032100925390_e304ab6e77ff",
+      "ccheck_20261104032242583174_443be4706fd4",
+      "ccheck_20261104032347208694_abe022601f40",
+      "ccheck_20261104032350196125_9ae551c14945",
+      "ccheck_20261104032358086117_a2993220b42d",
+      "ccheck_20261104032358975730_2ec21eaa1b3e",
+      "ccheck_20261104032402283229_2c99ee2c73c6",
+      "ccheck_20261104032402494738_0fb816f659c3",
+      "ccheck_20261104032404675890_103bcb57d099",
+      "ccheck_20261104032405052024_2f5af1a52539",
+      "ccheck_20261104032405338916_c824a98f5f50",
+      "ccheck_20261104032405631954_5baa8458c611",
+      "ccheck_20261104032405883174_199d57419d78",
+      "ccheck_20261104032845341311_f98f1babe5ae",
+      "ccheck_20261104032846053762_bbd7303d32a6",
+      "ccheck_20261104032846349449_d01cb786d08e",
+      "ccheck_20261104032856706392_e133f82ee548",
+      "ccheck_20261104032857053624_33991a652421",
+      "ccheck_20261104032903755471_a384d9e70280",
+      "ccheck_20261104032907610471_36f5a604ea4d",
+      "ccheck_20261104032912919956_a57e8d23d980",
+      "ccheck_20261104032916321794_72398aa1f6d0",
+      "ccheck_20261104032925549884_b565f47a53d0",
+      "ccheck_20261104032925871670_549757f027eb",
+      "ccheck_20261104033025657989_6bdd179505c2",
+      "ccheck_20261104033028917410_3202a0f12174",
+      "ccheck_20261104033029299086_7a51ef9d7409",
+      "ccheck_20261104033029584433_3df108fbf701",
+      "ccheck_20261104033029886397_fb52e0df1f83",
+      "ccheck_20261104033030197267_b3616ef0c58b",
+      "ccheck_20261104033030836719_734f4abb7b12",
+      "ccheck_20261104033031454684_919b30f55bea",
+      "ccheck_20261104033034669922_33c023a139ab",
+      "ccheck_20261104033110811817_9f2c7589a33e",
+      "ccheck_20261104033111342783_402988e4441d",
+      "ccheck_20261104033111758186_08997a7fa7fe",
+      "ccheck_20261104033117119416_6d7856d79665",
+      "ccheck_20261104033117389071_b41f457af4f5",
+      "ccheck_20261104033122759552_2f225990571e",
+      "ccheck_20261104033123123806_0ee13f0d2884",
+      "ccheck_20261104033124895402_986dfe9cbf73",
+      "ccheck_20261104034819434464_c0b56fe05d44",
+      "ccheck_20261104034820072974_85091a8daf2c",
+      "ccheck_20261104034823380399_0548817c3f9d",
+      "ccheck_20261104034828718346_8c57f41cf87d",
+      "ccheck_20261104034829064822_c02d86db4237",
+      "ccheck_20261104034829319440_d763dfcd7176",
+      "ccheck_20261104034829679990_f8cc8b7af4e6",
+      "ccheck_20261104034829943967_3b4cd4ae0d09",
+      "ccheck_20261104034830289507_fb47920ce532",
+      "ccheck_20261104034830612531_bd354a329a15",
+      "ccheck_20261104034834810810_d7ecdfa3f812",
+      "ccheck_20261104034836680670_e859efa47f08",
+      "ccheck_20261104034846102807_2801bc792e83",
+      "ccheck_20261104034846412659_b2f76499e952",
+      "ccheck_20261104034846688547_4fc98d5f8acf",
+      "ccheck_20261104034846998290_4f0dde5e8035",
+      "ccheck_20261104034848820547_b541162c7d6d",
+      "ccheck_20261104034849171095_e6acddbc5503",
+      "ccheck_20261104034849509069_2405237448a4",
+      "ccheck_20261104034849755693_d8de8e43c096",
+      "ccheck_20261104034850239675_56802910400e",
+      "multica_check_20261104030822_8966_api",
+      "multica_closure_v16_seed_01a1a3c9"
+    ],
+    "task_api_connections": 0,
+    "cluster_connections": 23,
+    "max_connections": "100"
+  },
+  "package_record_count": 82,
+  "package_databases_retained": true,
+  "historical_V15_and_CCG15_protected_hashes_unchanged": true,
+  "protected_hash_count": 46,
+  "test_artifacts": {
+    "test-results": {
+      "original": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results",
+      "retained": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/retained-test-artifacts/test-results",
+      "file_count": 873,
+      "bytes": 128327284,
+      "manifest_sha256": "5fc1f99eb3419952923249dd49951dc8c86c4007dab7a88ac424a5d751e3090b"
+    }
+  },
+  "auditor_invocations": 1,
+  "additional_tests_or_CCG_framework_model_calls": 0,
+  "knowledge_budget": 0,
+  "knowledge_calls": 0,
+  "production_knowledge_default": false
+}

@@ -1,0 +1,632 @@
+{
+  "recorded_at": "2026-11-03T15:26:20.114191+00:00",
+  "reviewer": "/root/ccg14_admission_review",
+  "verdict": "failed_not_accepted; final_identity_audit_pass",
+  "candidate_sha": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "make_exit": 2,
+  "final_identity_audit_exit": 0,
+  "final_identity_audit_status": "pass",
+  "wholecheck_passed": false,
+  "wholecheck_accepted": false,
+  "checks": {
+    "original_wrapper_matches_launch_record": true,
+    "claim_launcher_matches_registered_current": true,
+    "claim_clearance_matches_current": true,
+    "actual_run_hash_matches_auditor": true,
+    "actual_log_hash_matches_run": true,
+    "actual_audit_hash_matches_wrapper": true,
+    "actual_auditor_hash_matches_clearance_and_audit": true,
+    "independent_review_hash_matches_clearance_and_audit": true,
+    "source_candidate_consistent": true,
+    "original_wrapper_reruns_zero": true,
+    "all_exit_codes_consistent": true,
+    "audit_is_identity_pass_with_wholecheck_false": true
+  },
+  "retained_owner": "01a1a186-9a5c-7b00-96f8-0430b47edb4c",
+  "retained_executor": "/root/closure_inventory",
+  "actual_completed_run": {
+    "started_at": "2026-11-03T14:14:24.140405+00:00",
+    "finished_at": "2026-11-03T15:22:18.571353+00:00",
+    "state": "complete",
+    "exit_code": 2,
+    "canonical_product_source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+    "tracked_snapshot_fingerprint": "62499df8c3673e4b176af0adb990c85b9ba7f954f8d627f619d266ede6010c76"
+  },
+  "live_E2E_proof_captured_before_cleanup": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/v14-live-proof/snapshot-150344386750.json",
+    "sha256": "7a64adc214ddb5bf0bc8508154d0e6e059621335eb707717796e846e6c9da1aa",
+    "api_listener_pid": 74970,
+    "web_listener_pid": 75426,
+    "registered_database": "multica_check_20261103141424_39386_api",
+    "latest_migration": "764_collaboration_ai_policy",
+    "rendered_api": "http://localhost:18974",
+    "rendered_ws": "ws://localhost:18974/ws",
+    "actual_api_knowledge_enabled": false
+  },
+  "actual_browser_terminal_observation": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/v14-live-proof/browser-terminal-observation.json",
+    "sha256": "646a529d3911caa899903dc2a3cc85090aef354867b2007f48fc3c4bcdca234e",
+    "passed": 334,
+    "failed": 16,
+    "explicit_skipped": 91,
+    "retries": 0,
+    "named_total": 441,
+    "unrun": 0,
+    "flaky": 0
+  },
+  "actual_failure_names": [
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "line": 277,
+      "title": "Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",
+      "project": "chromium"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "line": 402,
+      "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "project": "chromium"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "line": 583,
+      "title": "Desktop resource owners authorize, withdraw and commit a held configuration switch",
+      "project": "chromium"
+    },
+    {
+      "file": "collaboration-boundaries-web.spec.ts",
+      "line": 291,
+      "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+      "project": "chromium"
+    },
+    {
+      "file": "collaboration-command-history-web.spec.ts",
+      "line": 8,
+      "title": "cancelled waiting commands retain original content after comment changes, refresh and another account reads",
+      "project": "chromium"
+    },
+    {
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "line": 97,
+      "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "project": "chromium"
+    },
+    {
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "line": 102,
+      "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "project": "chromium"
+    },
+    {
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "line": 107,
+      "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+      "project": "chromium"
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "line": 46,
+      "title": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "project": "chromium"
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "line": 46,
+      "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "project": "chromium"
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "line": 65,
+      "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+      "project": "chromium"
+    },
+    {
+      "file": "collaboration-preparation-records-desktop.spec.ts",
+      "line": 8,
+      "title": "Desktop reads synthetic preparation with native 200 percent captures and unchanged proof",
+      "project": "chromium"
+    },
+    {
+      "file": "collaboration-preparation-records-web.spec.ts",
+      "line": 7,
+      "title": "Web reads synthetic frozen preparation without inferring termination across refresh and viewers",
+      "project": "chromium"
+    },
+    {
+      "file": "collaboration-preview-web.spec.ts",
+      "line": 8,
+      "title": "trigger preview explains shared and later batches before a suppressed target is sent",
+      "project": "chromium"
+    },
+    {
+      "file": "collaboration-resource-offers-web.spec.ts",
+      "line": 7,
+      "title": "a private owner offers a resource to an external organizer and independently authorizes it",
+      "project": "chromium"
+    },
+    {
+      "file": "collaboration-resources-web.spec.ts",
+      "line": 7,
+      "title": "resource owners register, authorize, withdraw and switch while participant management preserves authority",
+      "project": "chromium"
+    }
+  ],
+  "actual_named_raw_Go_source_files": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142414456860_bb940f8eb38e.jsonl",
+      "sha256": "4ae716e97f8c68eb9c098c9e14e010c80a0b847805828bf24b816895d367b0f8",
+      "bytes": 20515
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142420384899_07eb79fa72b8.jsonl",
+      "sha256": "a14a8a352adae297f20bfdd715b3f96deeffcdfeb58cefebb4183763be6cf287",
+      "bytes": 2658
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142421063304_f47ea76e9369.jsonl",
+      "sha256": "8690e2fee882640a0d19e176aa8b9909b8c85c6be59f080993991afb72ac129a",
+      "bytes": 538
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142421583865_f9a6f66e94fe.jsonl",
+      "sha256": "cff2ad1429ccd19b646c0e83c97f795637885976992c6113d95d20af1f276c6b",
+      "bytes": 305739
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142440526499_b0ca13f2a1d5.jsonl",
+      "sha256": "8bcbcfd9d841b375fdfa35fba9439f2bcd92de9d99ad10acb90df839c6293282",
+      "bytes": 1099438
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl",
+      "sha256": "48846562f2bad6f2ce4e06b8afba871b88399d23a6f9a886d68a9afc262a1897",
+      "bytes": 1445492
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142617219999_7427887f8751.jsonl",
+      "sha256": "bb359e7c31b03606025971a612831c50e3656d1d0f6922aa234e94e2a86cd018",
+      "bytes": 491
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142618140093_e243b33d7b90.jsonl",
+      "sha256": "c90094d99c2dda482e0eaa05a9fdde002d37f2e4b089e0c3ec049424fd056e91",
+      "bytes": 499
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142618415974_a33d11aa74fd.jsonl",
+      "sha256": "1f5ad13031c0f90d8e1a99adef527bab9ac24050a543eb267fe98f64cf9756d1",
+      "bytes": 8709
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142618943519_8ec97853df30.jsonl",
+      "sha256": "029b43e6598410168b7c8d1d7cb28749586c80eb6fb63edf423cde515103b122",
+      "bytes": 28532
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142619286627_d642fc7111ff.jsonl",
+      "sha256": "3df741062525878a4ddaa4155f770e5d7d169a427c002d194f070466e4d0813e",
+      "bytes": 7495
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142622796822_d4b8dc307441.jsonl",
+      "sha256": "6b593072bf0eccce5d94ea1dd2eb65d60604ca5f20afc2813884af093fc7b2b6",
+      "bytes": 97400
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142629480868_cc1252fad4dc.jsonl",
+      "sha256": "d5e6da9701d5b65546da5d3bb60819bf3eb421fa7e88b4fdca0c7962a578bd47",
+      "bytes": 55278
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142631646941_4b76585c3aa4.jsonl",
+      "sha256": "4a6086c7c7d84c4b45018c808f9b98fb93b303e3bd6972683da960cbda112bfb",
+      "bytes": 3274
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142632017025_b8d431c478e1.jsonl",
+      "sha256": "ebae913710edfb345f5b4cfdd64808771c523bed11b3f7c4171eb9053fed97ba",
+      "bytes": 527
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142632340600_f26ab7ece539.jsonl",
+      "sha256": "57007886be4101969ae071f97d36e29f51b47b82dff6f191b1773666b52dd305",
+      "bytes": 491
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142632582902_248934fbfb73.jsonl",
+      "sha256": "3cae6896d809bc071bf5adfc93c8faecb7f417db784e44d000d235d61bb12722",
+      "bytes": 302127
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142637242175_cffe407cfbfc.jsonl",
+      "sha256": "44f0043887dd11bd54b73aa5d9801f22045561f1658ffee3bde8516195185084",
+      "bytes": 3018
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142637590865_472bb8236d85.jsonl",
+      "sha256": "861a1369c22d311a01edda29696448d1ae955ccbf396da31411b64a305283444",
+      "bytes": 11372
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142638210715_7a21f045e560.jsonl",
+      "sha256": "f586d65c1c77081f3011a769eda3944b8a8cfe0c0022b59fca5fdc003492100c",
+      "bytes": 2262569
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142742809429_e304ab6e77ff.jsonl",
+      "sha256": "3dd33affd377742319354b0d3cbbdf09c1b17f585f387ac6aa99f2796008142d",
+      "bytes": 377222
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142921666424_443be4706fd4.jsonl",
+      "sha256": "3b80c0c9ac3ee07ad633a03f7db5c95c53875f8c9e582cac4d6f27173ecb077b",
+      "bytes": 2384251
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143027779583_abe022601f40.jsonl",
+      "sha256": "2f39cbb04a7451fa9588fe1e183bd2bbc3e4c5c1c2895821cd26376a68fb72a0",
+      "bytes": 2545
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143031006242_9ae551c14945.jsonl",
+      "sha256": "41c2fbc1f3135fc250ab1427df4b8a4b35d94cf04e10ed59456b3d4712cdcade",
+      "bytes": 138646
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143038984041_a2993220b42d.jsonl",
+      "sha256": "62cacac4617c614cdd4974efa374a6b7d25e0f7b77a36c6a079e326c4eedf3c7",
+      "bytes": 43583
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143039894572_2ec21eaa1b3e.jsonl",
+      "sha256": "04efe571a48b8c151e06fb6c9a6b8492e397b1890b3bde09d79cf0c90e7d3bc6",
+      "bytes": 31249
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143043358399_2c99ee2c73c6.jsonl",
+      "sha256": "3c3aecf51ecd3c0177de8d12560ee27b2eb692db72840cb77ed47cbb1547fb14",
+      "bytes": 487
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143043572043_0fb816f659c3.jsonl",
+      "sha256": "334be989ce6cd3bd09b7996c75dae86dd59e6a094fbcfdb11958a8771935a7d2",
+      "bytes": 15184
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143045808082_103bcb57d099.jsonl",
+      "sha256": "8f6d8c9b12f2e986886a7a7d7a99fb438aa20897495d810e006753507357ccf6",
+      "bytes": 30179
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143046194798_2f5af1a52539.jsonl",
+      "sha256": "6457300b8fcfb2dd5b5048c71f0a13f4db4cc5bfc2c91ddc802d196e21f8985a",
+      "bytes": 1651
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143046511022_c824a98f5f50.jsonl",
+      "sha256": "c7bb0c56977379b3dc535606fa0aa216fa48c36635e241829e347ef23ccf49a1",
+      "bytes": 7613
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143046779654_5baa8458c611.jsonl",
+      "sha256": "08bfb281ab4a91fc121819ed098d1a2b5a38ef4dffa09a2c25155bd1c58012b9",
+      "bytes": 6698
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143047061309_199d57419d78.jsonl",
+      "sha256": "9612417363a11a34c6753565cbce80965adb860697ab9f19163acdcdf8ce21bb",
+      "bytes": 5200849
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143538973766_f98f1babe5ae.jsonl",
+      "sha256": "5fba866e93f8577ba35df57bc13dfa449d7e17432044dc41355708d219545be7",
+      "bytes": 8013
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143539906942_bbd7303d32a6.jsonl",
+      "sha256": "d766a0c6715a363719c7226a1f09d72afaecf8db6637aa862faf05fc05f7b716",
+      "bytes": 19928
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143540304268_d01cb786d08e.jsonl",
+      "sha256": "edfb2d0193c814fba6913103547dd96c6b682f9d71ad3d812db4d376eda29369",
+      "bytes": 215210
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143551595046_e133f82ee548.jsonl",
+      "sha256": "1e2dcc920e6682be5b012ba3ff8fbee01ca7229de21e92f4db7b58538f1aee50",
+      "bytes": 76497
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143552509140_33991a652421.jsonl",
+      "sha256": "b0dae44ae43bc7c0c78c30881c25abfc94ef06044658195ef1cd63bda5df92f4",
+      "bytes": 223406
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143601625070_a384d9e70280.jsonl",
+      "sha256": "85aefdeee53b9ca7821173f5704edd6aade1e97479fc76ee4659af3a213d4763",
+      "bytes": 33505
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143605628837_36f5a604ea4d.jsonl",
+      "sha256": "4f7a7ac28dc5d4c7ba04d974330f2d9a721265963f0f91d744ec9bf3cc9ce115",
+      "bytes": 548470
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143614437911_a57e8d23d980.jsonl",
+      "sha256": "dbd69820aca6c9eb734bffabd4e549479e22b1058cca81fce2b3a566f2627595",
+      "bytes": 181842
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143620678000_72398aa1f6d0.jsonl",
+      "sha256": "72a319bc6ab54628b905a3acbdc0c2ade4f7fc5f4ac7c57b179326c5c19c64b6",
+      "bytes": 120277
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143632400161_b565f47a53d0.jsonl",
+      "sha256": "f63bf922b6d0132b35ea12933486f0ee43eec46be4944d91d895dacdd0194a95",
+      "bytes": 12753
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143633292403_549757f027eb.jsonl",
+      "sha256": "de8b2d17c9c2eb0e757387271b6e9eabc4e49fe0edac39b4451c300ff86f8fb8",
+      "bytes": 906155
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143736599698_6bdd179505c2.jsonl",
+      "sha256": "1bd196444235b20faa23a8b4c8714fc4ab704afe76f1d7ec7b9aba9a35fb2689",
+      "bytes": 2462
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143740532108_3202a0f12174.jsonl",
+      "sha256": "54e64fed06915d2c593929775e7e915e4c7eab3e34fcafe9601f46bf1773df39",
+      "bytes": 2663
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143740971069_7a51ef9d7409.jsonl",
+      "sha256": "091b333dede1da662c8379ca30187367a49b47ccd30aacd0211021bcce64a8b7",
+      "bytes": 507
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143741368206_3df108fbf701.jsonl",
+      "sha256": "702f15a2c728d0b861751eff645d6ea11efb0143ce04f44fde7264d448a0387b",
+      "bytes": 24403
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143741771756_fb52e0df1f83.jsonl",
+      "sha256": "8a8a525c0a86ccb6a9e12ab2a7f205061f190b25910e7085418dd0b2104f9fa5",
+      "bytes": 122546
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143742191490_b3616ef0c58b.jsonl",
+      "sha256": "2cc7e44e9f4180c8b8648545eb81b22ec4b59e8761c3e70f66f8ddf654437ab6",
+      "bytes": 1383
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143743051588_734f4abb7b12.jsonl",
+      "sha256": "074206d7785da64d8bef731249c550b77d302256e19982572a62d66e41b9247c",
+      "bytes": 117840
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143743870879_919b30f55bea.jsonl",
+      "sha256": "e3ede2f8d046ac99d1b6c3502aa84471cf194bb5eb3112fe4300720d085abd1e",
+      "bytes": 117030
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143747720134_33c023a139ab.jsonl",
+      "sha256": "55f745da205c99df4e6a37a293885f230db6be983768bec2be778f4f2dadbbaf",
+      "bytes": 626557
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143825010600_9f2c7589a33e.jsonl",
+      "sha256": "9ba586b70d5b5e47bebb56fe15735dba6d1aecdc987a8b4fc673ead86dc2a9e3",
+      "bytes": 491
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143825686832_402988e4441d.jsonl",
+      "sha256": "84b580b90b6d1ac26bef99ee038e2544c6ce37191e08b6be409e9357373e26e2",
+      "bytes": 17883
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143826155566_08997a7fa7fe.jsonl",
+      "sha256": "a06bd5b0bbc58d49f4186a72e601519503c15b5044ed81f85d7ffb1c2e057570",
+      "bytes": 86408
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143831637052_6d7856d79665.jsonl",
+      "sha256": "5b03ec5d656a64b44c87f90376feccd582ccd4e92dc0a1eb3aada954e288dddd",
+      "bytes": 499
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143831989575_b41f457af4f5.jsonl",
+      "sha256": "be7af56b802462fe73066e7f6474967d82f1da0406b7f4aca87a195eb629d767",
+      "bytes": 39285
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143837701378_2f225990571e.jsonl",
+      "sha256": "374f15c796a188ef57dd1e3e166c91da1a48ebeca240651bd5937c5fcac54216",
+      "bytes": 22146
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143838105801_0ee13f0d2884.jsonl",
+      "sha256": "614ce8ea12520b9bc628caa4d3efbe189a2b98c3d77760b2e1ed8837ff76098b",
+      "bytes": 9489
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143839963014_986dfe9cbf73.jsonl",
+      "sha256": "7f48831a43b725880efec631b9a2007e7ee9101c0b05cd042f2bc6f753ff2af5",
+      "bytes": 4082576
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145715083770_c0b56fe05d44.jsonl",
+      "sha256": "b7a29be68374f6d855f7620267e7d5ad202e238443212f8eb2ce2cef280c86a9",
+      "bytes": 60073
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145715950320_85091a8daf2c.jsonl",
+      "sha256": "946b9c5526c68b4cde4ca58a2f95905b0c43b9012a48d5fd77f3d19c9b27ce33",
+      "bytes": 101897
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145719839465_0548817c3f9d.jsonl",
+      "sha256": "9e5037dfae648cfce65cbd0cfc7f4a4e131c936effef1a5ea1c53193ce98275d",
+      "bytes": 3707
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145724036420_8c57f41cf87d.jsonl",
+      "sha256": "4284d7e3dc814a3739080acaf43b60f363fe53724102659e134acee48a409931",
+      "bytes": 21330
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145724597470_c02d86db4237.jsonl",
+      "sha256": "7a85d837c7dfe32778c0cbe875d11bbf106081f128f9735ad28318fa9325e184",
+      "bytes": 13997
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145724896538_d763dfcd7176.jsonl",
+      "sha256": "78d6e407b0453b5bfd45191b60903a1eb3b1d1f95320fd080c0988f55a47fbc3",
+      "bytes": 103596
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145725277589_f8cc8b7af4e6.jsonl",
+      "sha256": "776d5f7e602a612b12884e44d48a7b14496ad3b022e3a411119e434baa88d92a",
+      "bytes": 8281
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145725570176_3b4cd4ae0d09.jsonl",
+      "sha256": "02d8a0c67f196bc19e6b188d286d41b95a261a0fe4be2a6b719ac2c06e4e134e",
+      "bytes": 31582
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145725996378_fb47920ce532.jsonl",
+      "sha256": "0f0f2338695f1487a2c971346e259cfa0beb41a0e590af19f1c7b4e8c37de94d",
+      "bytes": 6544
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145726417604_bd354a329a15.jsonl",
+      "sha256": "8bdc8bf3f666ed2dab635037779524be7dfb0d9380822ae883ba2680f1d9bc75",
+      "bytes": 21967
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145731177209_d7ecdfa3f812.jsonl",
+      "sha256": "cab1c21ce67f493f96f66ff8c30f4bcddfa2296d01fdb897e50db6b7ca0599a6",
+      "bytes": 73549
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145733069028_e859efa47f08.jsonl",
+      "sha256": "7218fee2f6d54f91f31315a14619a73eb12211808b19e2fccd3ee32cd8fc928d",
+      "bytes": 28940
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145742992223_2801bc792e83.jsonl",
+      "sha256": "51241dfb128ca9ee02511598d19c1c8c3be1a5e715b4c4fbf759360ed60f9ce4",
+      "bytes": 96506
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145743426254_b2f76499e952.jsonl",
+      "sha256": "87ef98114a8b46819dbb28a43ccfaffb94c9206d641fe3bd5090e69a1b8d9299",
+      "bytes": 395841
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145743799658_4fc98d5f8acf.jsonl",
+      "sha256": "7aebe94aab2f1dd9f641bae2fcfd2c60f4122ac98cca395cbe88a5e6e18955f1",
+      "bytes": 4939
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145744255807_4f0dde5e8035.jsonl",
+      "sha256": "74ed0ea68a4ef4b8e1eadb160de3833511e5b4b0a77dcaec5ac241e5a462d6de",
+      "bytes": 48115
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145746103782_b541162c7d6d.jsonl",
+      "sha256": "7f8eff5145db265bd879f887870b02969b8b97de365464f2e5fb40e5c39f29ca",
+      "bytes": 7521
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145746451490_e6acddbc5503.jsonl",
+      "sha256": "033358c5a7c391b39145e08ce1398e2c4484d1141d80e49d5e93f0a0d8598e59",
+      "bytes": 1592
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145746789073_2405237448a4.jsonl",
+      "sha256": "2ff7c930bb30c44fe3d021c563c5e61a28b415753a8742c806312ee310ced691",
+      "bytes": 2317
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145747088589_d8de8e43c096.jsonl",
+      "sha256": "33de26e0924b191624247bf2045b0769b28b6db4c95d3f3fcdf048954206e652",
+      "bytes": 240336
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145747640958_56802910400e.jsonl",
+      "sha256": "20165c548edc147700c4992ceb13d5db8fbdbf04f942f716adf8c5b48b4d02ec",
+      "bytes": 3522563
+    }
+  ],
+  "Go_inventory_limit": "Raw named source files are hashed here. Root owns independent reconstruction of package completion and all pass/fail/skip terminals; this observer does not fabricate Go inventory from status counts.",
+  "actual_result_audit_source_files": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/make-check-v14.json",
+      "sha256": "fc479c764bf1092026603b7e685ae9a996bda8dca63a15afcbe34e6f7c23bd85",
+      "bytes": 259801
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/make-check-v14.log",
+      "sha256": "d20bc6177a221d3c4921592548ff99e5be567e74977d8223c1eda2c18435f557",
+      "bytes": 27047905
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/makecheck-playwright-results-v9.json",
+      "sha256": "dc6603b3ef78ef81c597f061b12fb0f02f9b035a3dc891e7fb8b415e1fad04da",
+      "bytes": 3069164
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/makecheck-playwright-environment-v9.json",
+      "sha256": "affd1c1cb65aa7890a33ed997857dd6ba7d4ce1b9e07b0a8b5e43e7699c3711c",
+      "bytes": 470
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/fullcheck-v14/execution-finished.json",
+      "sha256": "c2346cd8c7f89b4695ed12841257e6d171885ad9aa726cbef7ca5c895e943422",
+      "bytes": 790
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/fullcheck-v14/launch.json",
+      "sha256": "4aee92e966b27b9c0072f95972284a3f6522ac13d22ed0b75e19c39cba026924",
+      "bytes": 1134
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/fullcheck-v14/execute-once.py",
+      "sha256": "577d55ac897dd90a6457b611691aab5ef2364f7a617441e5c02175180ac42fcb",
+      "bytes": 4377
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/fullcheck-v14/final-audit-output.log",
+      "sha256": "a8745183ed5b7a6e794df3ee558f217e2b64f0c50482b392e9ec9ce8f7d35cd3",
+      "bytes": 277
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/final-state-audit-v14/post-make-v14.json",
+      "sha256": "d4179f5860d96c386d9a41828a92024466fd6fd20876b354cff2bf88f0a2d15a",
+      "bytes": 2188
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/final-state-audit-v14/final_state_audit.py",
+      "sha256": "9dfa39822223d8487d569cbe619b7ee4039277aec3a211bdfaa3148f1076484e",
+      "bytes": 9569
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/independent-review/review.json",
+      "sha256": "7b7047c02fba74dbc2a080581eb8adcf99922a2aa6a89d43e2942bbc041497c3",
+      "bytes": 18277
+    }
+  ],
+  "future_gate": "CCG successful permits and #7 final closure remain prohibited by the missing exit0/full inventory condition. Preserve this failed run and its identity pass; do not replace it with directed replay or fake framework success.",
+  "witness_tests_started": 0,
+  "second_auditor_started": false,
+  "DB_service_or_Provider_mutations": 0,
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "production_default_enabled": false
+}

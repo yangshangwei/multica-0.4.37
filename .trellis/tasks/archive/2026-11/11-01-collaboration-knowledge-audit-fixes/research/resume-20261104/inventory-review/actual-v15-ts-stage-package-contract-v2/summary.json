@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-04T00:36:54.720068+00:00",
+  "scope": "Independent actual five TS reporter spans from the same sole v15; Go/browser/final-audit acceptance remains separate.",
+  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "collector": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/collect.py",
+    "sha256": "6acef959f12c095776aa9f8f8812c5d12273a2c22f01db404eee9f6f986b62aa",
+    "bytes": 29418
+  },
+  "package_contract": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/package-contract-repair-v2.json",
+    "sha256": "92c44419a2b2c8fa3d7315b71f504ec841caf73dd96dec7adc631cc60199cfca",
+    "bytes": 6376
+  },
+  "source_raw_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/make-check-v15.log",
+  "visible_source_prefix_bytes": 13684812,
+  "visible_source_prefix_sha256": "794e8bcedbe74aa0b12e5d4a8bcc7bad82dcbe0047652f4ed3fd6b9914bcd9eb",
+  "selected_raw_spans": [
+    {
+      "package": "@multica/core",
+      "original_line": 216,
+      "byte_offset": 19505,
+      "byte_length": 1541097,
+      "raw_span_sha256": "547b1d16d0b0826fce7aa4af2b659c5303e169099639c27392c6e7130f899145",
+      "raw_object_sha256": "dbd80a07a603a5503271182ae3d1662c9c7e3405eb39132fec554dfefe43f297",
+      "phase_observation_hash_matches": true
+    },
+    {
+      "package": "@multica/docs",
+      "original_line": 223,
+      "byte_offset": 1561128,
+      "byte_length": 19641,
+      "raw_span_sha256": "f2165780f2bf6b0130c918d9fe04194f0ab3fa4221b883c69fec637a538eecbd",
+      "raw_object_sha256": "0c897916e82e7aeec9e473eae593aa680c262f630e156b1bcc339f7d4feb7201",
+      "phase_observation_hash_matches": true
+    },
+    {
+      "package": "@multica/views",
+      "original_line": 277,
+      "byte_offset": 1586474,
+      "byte_length": 2345630,
+      "raw_span_sha256": "e27a36f6607e9a71082302b055185e6aa21fdd543b9dc25724906bc979b3a05c",
+      "raw_object_sha256": "e936103a0817b963f225e9c1ff45ce8ce0559d0d711308aa2201a643a90735af",
+      "phase_observation_hash_matches": true
+    },
+    {
+      "package": "@multica/web",
+      "original_line": 284,
+      "byte_offset": 3932623,
+      "byte_length": 96074,
+      "raw_span_sha256": "54864097b6853d169e42b28e337ef762c770636d36b4b75c3f19b3f9b6a11144",
+      "raw_object_sha256": "c3ebb40449ede5a4b70a4dd0d165b878a032ab2635d0986d1132426288ce6150",
+      "phase_observation_hash_matches": true
+    },
+    {
+      "package": "@multica/desktop",
+      "original_line": 291,
+      "byte_offset": 4029247,
+      "byte_length": 410656,
+      "raw_span_sha256": "ad174f47417bafc4db8571677767110b593e86fd7e20e6998a64006d798d5e06",
+      "raw_object_sha256": "62d162fc49dbf8c34ce642c56a309eb742dff3b07baff03d28026b6a1a78b8f7",
+      "phase_observation_hash_matches": true
+    }
+  ],
+  "selected_spans_still_byte_identical_after_collection": true,
+  "phase_observation": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/TS-phase-observation.json",
+    "sha256": "79c15cc48894bfef7a63abdebfff3f254556f321b8dcfa37ba59a91d51e70d97"
+  },
+  "copied_actual_raw_spans": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/actual-v15-ts-stage-package-contract-v2/actual-ts-reporter-spans.log",
+    "sha256": "a0217f3572b029bdd373ac7a445e149d03841c96e6e54b11ae36cb8641d53367",
+    "bytes": 4413098
+  },
+  "TS": {
+    "packages": [
+      {
+        "package": "@multica/core",
+        "actual_report": {
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/actual-v15-ts-stage-package-contract-v2/core-actual-vitest-report.json",
+          "sha256": "d38555db4823431e7dabafa7531b5b6da9d8cc21287228cc015fe76daeef55d3",
+          "bytes": 1541077
+        },
+        "raw_line": 1,
+        "same_report_log_occurrences": 1,
+        "reported_metrics": {
+          "numTotalTests": 4455,
+          "numPassedTests": 4455,
+          "numFailedTests": 0,
+          "numPendingTests": 0,
+          "numTodoTests": 0
+        },
+        "actual_assertion_statuses": {
+          "passed": 4455
+        },
+        "actual_file_count": 331,
+        "reported_nested_suite_counts": {
+          "numTotalTestSuites": 904,
+          "numPassedTestSuites": 904,
+          "numFailedTestSuites": 0,
+          "numPendingTestSuites": 0
+        },
+        "success": true,
+        "suite_count_note": "Vitest 4.1 suites includes nested describe suites; file count is testResults.length.",
+        "retry_scope": "JSON reporter omits retry counters; no fabricated TS zero-retry claim."
+      },
+      {
+        "package": "@multica/docs",
+        "actual_report": {
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/actual-v15-ts-stage-package-contract-v2/docs-actual-vitest-report.json",
+          "sha256": "caec838ceef17504e1e56a0d18361de0c982aedff0081d61026bdf1117b348e7",
+          "bytes": 19621
+        },
+        "raw_line": 2,
+        "same_report_log_occurrences": 1,
+        "reported_metrics": {
+          "numTotalTests": 62,
+          "numPassedTests": 62,
+          "numFailedTests": 0,
+          "numPendingTests": 0,
+          "numTodoTests": 0
+        },
+        "actual_assertion_statuses": {
+          "passed": 62
+        },
+        "actual_file_count": 9,
+        "reported_nested_suite_counts": {
+          "numTotalTestSuites": 20,
+          "numPassedTestSuites": 20,
+          "numFailedTestSuites": 0,
+          "numPendingTestSuites": 0
+        },
+        "success": true,
+        "suite_count_note": "Vitest 4.1 suites includes nested describe suites; file count is testResults.length.",
+        "retry_scope": "JSON reporter omits retry counters; no fabricated TS zero-retry claim."
+      },
+      {
+        "package": "@multica/views",
+        "actual_report": {
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/actual-v15-ts-stage-package-contract-v2/views-actual-vitest-report.json",
+          "sha256": "afd6dced8237a5f2ba96948fb677619d7b1ff668c13bed772d2faa71bc51865b",
+          "bytes": 2345609
+        },
+        "raw_line": 3,
+        "same_report_log_occurrences": 1,
+        "reported_metrics": {
+          "numTotalTests": 7165,
+          "numPassedTests": 7165,
+          "numFailedTests": 0,
+          "numPendingTests": 0,
+          "numTodoTests": 0
+        },
+        "actual_assertion_statuses": {
+          "passed": 7165
+        },
+        "actual_file_count": 593,
+        "reported_nested_suite_counts": {
+          "numTotalTestSuites": 1611,
+          "numPassedTestSuites": 1611,
+          "numFailedTestSuites": 0,
+          "numPendingTestSuites": 0
+        },
+        "success": true,
+        "suite_count_note": "Vitest 4.1 suites includes nested describe suites; file count is testResults.length.",
+        "retry_scope": "JSON reporter omits retry counters; no fabricated TS zero-retry claim."
+      },
+      {
+        "package": "@multica/web",
+        "actual_report": {
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/actual-v15-ts-stage-package-contract-v2/web-actual-vitest-report.json",
+          "sha256": "2e41b9772a6c8c68f90d5479b65ec735fe4082e1bd03a2e33d9ace96cc0a3d9a",
+          "bytes": 96055
+        },
+        "raw_line": 4,
+        "same_report_log_occurrences": 1,
+        "reported_metrics": {
+          "numTotalTests": 290,
+          "numPassedTests": 290,
+          "numFailedTests": 0,
+          "numPendingTests": 0,
+          "numTodoTests": 0
+        },
+        "actual_assertion_statuses": {
+          "passed": 290
+        },
+        "actual_file_count": 34,
+        "reported_nested_suite_counts": {
+          "numTotalTestSuites": 88,
+          "numPassedTestSuites": 88,
+          "numFailedTestSuites": 0,
+          "numPendingTestSuites": 0
+        },
+        "success": true,
+        "suite_count_note": "Vitest 4.1 suites includes nested describe suites; file count is testResults.length.",
+        "retry_scope": "JSON reporter omits retry counters; no fabricated TS zero-retry claim."
+      },
+      {
+        "package": "@multica/desktop",
+        "actual_report": {
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/actual-v15-ts-stage-package-contract-v2/desktop-actual-vitest-report.json",
+          "sha256": "631adb2c1964139c1e96435f00cc298e9dc4284eb62b3bc028d04a854a4645ef",
+          "bytes": 410633
+        },
+        "raw_line": 5,
+        "same_report_log_occurrences": 1,
+        "reported_metrics": {
+          "numTotalTests": 1272,
+          "numPassedTests": 1272,
+          "numFailedTests": 0,
+          "numPendingTests": 0,
+          "numTodoTests": 0
+        },
+        "actual_assertion_statuses": {
+          "passed": 1272
+        },
+        "actual_file_count": 102,
+        "reported_nested_suite_counts": {
+          "numTotalTestSuites": 297,
+          "numPassedTestSuites": 297,
+          "numFailedTestSuites": 0,
+          "numPendingTestSuites": 0
+        },
+        "success": true,
+        "suite_count_note": "Vitest 4.1 suites includes nested describe suites; file count is testResults.length.",
+        "retry_scope": "JSON reporter omits retry counters; no fabricated TS zero-retry claim."
+      }
+    ],
+    "leaf_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/actual-v15-ts-stage-package-contract-v2/ts-leaves.jsonl",
+      "sha256": "5512cd81f0786b2140da4a3af54d54dd542295f49a85ba1672f0c13b6ae180f8",
+      "bytes": 8051700
+    },
+    "file_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/actual-v15-ts-stage-package-contract-v2/ts-files.jsonl",
+      "sha256": "92949438e4506afccca214334d7f04a23782096aef002604a49f01d1d865905a",
+      "bytes": 328273
+    },
+    "skip_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/actual-v15-ts-stage-package-contract-v2/ts-skips.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "counts": {
+      "passed": 13244
+    },
+    "file_count": 1069,
+    "leaf_count": 13244
+  },
+  "TS_named_inventory_complete": true,
+  "actual_run_state_at_witness": "running",
+  "actual_make_exit_at_witness": null,
+  "wholecheck_accepted": false,
+  "shared_gate_ready": false,
+  "task7_closed": false,
+  "product_tests_or_services_or_databases_started_by_collector": 0,
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0
+}

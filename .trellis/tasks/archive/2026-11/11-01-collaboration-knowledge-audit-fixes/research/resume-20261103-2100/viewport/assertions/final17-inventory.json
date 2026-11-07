@@ -1,0 +1,189 @@
+[
+  {
+    "file": "collaboration-boundaries-web.spec.ts",
+    "title": "Gap 5: a source workspace holding a collaboration issue cannot be deleted, open or completed, and nothing is cleaned up",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "collaboration-boundaries-web.spec.ts",
+    "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "collaboration-boundaries-web.spec.ts",
+    "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "collaboration-memory-web.spec.ts",
+    "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "collaboration-memory-web.spec.ts",
+    "title": "shared context recovers a lost save response with its original request after reload",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "collaboration-mention-journeys-desktop.spec.ts",
+    "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "collaboration-mention-journeys-desktop.spec.ts",
+    "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "collaboration-mention-journeys-desktop.spec.ts",
+    "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "collaboration-mention-journeys-web.spec.ts",
+    "title": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "collaboration-mention-journeys-web.spec.ts",
+    "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "collaboration-mention-journeys-web.spec.ts",
+    "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "collaboration-preparation-records-web.spec.ts",
+    "title": "Web reads synthetic frozen preparation without inferring termination across refresh and viewers",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "collaboration-preview-web.spec.ts",
+    "title": "trigger preview explains shared and later batches before a suppressed target is sent",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "collaboration-workbench-web.spec.ts",
+    "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "collaboration-workbench-web.spec.ts",
+    "title": "Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "settings-preferences.spec.ts",
+    "title": "grouped settings remain reachable from the sidebar and floating chat survives navigation and reload",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  {
+    "file": "settings-preferences.spec.ts",
+    "title": "hidden manual issue fields persist and remain usable through the overflow menu",
+    "status": "expected",
+    "attempts": [
+      {
+        "status": "passed",
+        "retry": 0
+      }
+    ]
+  }
+]

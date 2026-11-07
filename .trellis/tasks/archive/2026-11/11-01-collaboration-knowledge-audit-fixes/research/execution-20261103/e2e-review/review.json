@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-03T09:40:35.791203+00:00",
+  "reviewer": "/root/v11_evidence_audit",
+  "active_task": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "scope": "Read-only independent review of all current E2E maintenance against immutable b6c74033f and current production UI. Report writes only. No runtime clearance.",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_head": "b6c74033f1913e46418ec1b119da33236dcba805",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "reviewed_files": [
+    {
+      "path": "e2e/collaboration-account-desktop.spec.ts",
+      "base_sha256": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c",
+      "reviewed_sha256": "0e20376018ab0225ea81a637ffc67fdafa4dd73f84a71dad25321e5524b4c328",
+      "bytes": 59216,
+      "mode": "0o644",
+      "untracked": false
+    },
+    {
+      "path": "e2e/collaboration-delivery-web.spec.ts",
+      "base_sha256": "8fa5489d0d647ebbed607b72b021c620658796a6c63634511270c5969a42598e",
+      "reviewed_sha256": "2abe357d3dda931edae450548183a9501d00daec98c124c28227f23b4342f110",
+      "bytes": 22014,
+      "mode": "0o644",
+      "untracked": false
+    },
+    {
+      "path": "e2e/collaboration-editing-web.spec.ts",
+      "base_sha256": "3107232598be85c17368e409647d159eabae8976ccc7518267003395445cbd78",
+      "reviewed_sha256": "fa0aace8ffd19da4dc32eee5c01324df711e4089b79d5472649f54f71a4e3963",
+      "bytes": 10864,
+      "mode": "0o644",
+      "untracked": false
+    },
+    {
+      "path": "e2e/collaboration-knowledge.spec.ts",
+      "base_sha256": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015",
+      "reviewed_sha256": "5da7bfe9e0d7b3755e079b01eda7f6a71fcf0a8ee2f6559b57c75589937be4cb",
+      "bytes": 25382,
+      "mode": "0o644",
+      "untracked": false
+    },
+    {
+      "path": "e2e/collaboration-records-web.spec.ts",
+      "base_sha256": "7128e45665c4ef455ecb18d4ef9d71995cee2caec001dadfc6b7fb78584853fb",
+      "reviewed_sha256": "5a3e3dc51da3a45d20b0e5b6befe01a329464fc02fdb57ff9f73f221f797a6a5",
+      "bytes": 10840,
+      "mode": "0o644",
+      "untracked": false
+    },
+    {
+      "path": "e2e/collaboration-resources-web.spec.ts",
+      "base_sha256": "a23200cf2697455b6a80d5d51b6c8e69b19f4e37886589d9b3756ddac836e501",
+      "reviewed_sha256": "faa9bd82e145f6c473ca8365fb2408ab080fa6fd12126d132a14ac93df5994bf",
+      "bytes": 8669,
+      "mode": "0o644",
+      "untracked": false
+    },
+    {
+      "path": "e2e/fixtures/collaboration-disclosures.ts",
+      "base_sha256": null,
+      "reviewed_sha256": "87b156d9da50daa7af35dab40130fe03579cfb9ef6c1a10e15b6f2a88499bb32",
+      "bytes": 860,
+      "mode": "0o644",
+      "untracked": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-editing.ts",
+      "base_sha256": "f6a33e2ccf36799ad3f8fb5a557599b7d71ce3a9a8be42140700482d2bf08207",
+      "reviewed_sha256": "085b5af7434d93e3c6efe659c51f7c83bff7ac5c9712a1413e480e4d0e92c58d",
+      "bytes": 16849,
+      "mode": "0o644",
+      "untracked": false
+    },
+    {
+      "path": "e2e/fixtures/collaboration-knowledge.ts",
+      "base_sha256": "b92926adbca1cabd2fb265ff2f1f80b4b26feda3889502eea9ff3bbb6f7ef5f5",
+      "reviewed_sha256": "7a3f68f8a7213dbc40de3e7a8bf02222fb39d27411a0244b8ae2ea6ea89b1960",
+      "bytes": 22823,
+      "mode": "0o644",
+      "untracked": false
+    },
+    {
+      "path": "e2e/fixtures/collaboration-resource-offers.ts",
+      "base_sha256": "7419e4152fa92ded7c64d45629c679464caaff01d62ad3c68924916a1abdac3b",
+      "reviewed_sha256": "73f6005d8830877bec3b7c7710417ac6cd39fd6eb70dd17d18d3129136add4c4",
+      "bytes": 25781,
+      "mode": "0o644",
+      "untracked": false
+    }
+  ],
+  "tracked_e2e_patch_sha256": "a3f24cb7a1ed0f8e66d37be126d94faca524ec9294c3c31d38b5ba9d54647d98",
+  "reviewed_file_manifest_sha256": "74f2e5ab2e1ec675a44b69c3633c02a5a247cf90613318f986089821a9ff92aa",
+  "product_contracts": [
+    {
+      "path": "packages/views/collaboration/collaboration-detail.tsx",
+      "sha256": "3ba249181df0461f124cd3d8670d00e90154c0c055321afda6b6746c2695f6e6",
+      "same_as_base": true
+    },
+    {
+      "path": "packages/views/collaboration/workflow.tsx",
+      "sha256": "a8848effe6d8b822369b2466ecce4e86f5dd67ec0ac5ca52ba6db7202ecc9e68",
+      "same_as_base": true
+    },
+    {
+      "path": "packages/views/collaboration/comment-composer.tsx",
+      "sha256": "9281818cdd5fdadaed9701d6f4c2b11b5fbe054b90b88acfba97f836412cf9d3",
+      "same_as_base": true
+    },
+    {
+      "path": "packages/views/collaboration/comment-composer.test.tsx",
+      "sha256": "c3517a8789ccdfe391b45dcc8df18ad8fe180439b3f4bf096aad19802a51d494",
+      "same_as_base": true
+    },
+    {
+      "path": "packages/views/collaboration/execution-panel.tsx",
+      "sha256": "6e2e2278df74656c52acb1655007337d548396a988f3e4f889b4f10429f384f0",
+      "same_as_base": true
+    },
+    {
+      "path": "packages/views/collaboration/knowledge-panel.tsx",
+      "sha256": "ae493596d090ec1ffc7134b9247e2b58dabf2c8aa9e8c4028164795e9e5be735",
+      "same_as_base": true
+    },
+    {
+      "path": "packages/views/issues/components/issue-detail-route.tsx",
+      "sha256": "bf1566c931f3383e3a7677d2ed66bb2286bb5ad350509fc8a62f3d9b91e10a6a",
+      "same_as_base": true
+    }
+  ],
+  "evidence_source_bindings": {
+    "disclosure-replay-input.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/disclosure-replay-input.json",
+      "sha256": "c3577aa80ca0ec0f4d6d497b56e4b71931afe8d7aa25130d3491797753d140a0",
+      "files": [
+        {
+          "path": "e2e/fixtures/collaboration-disclosures.ts",
+          "recorded_after_sha256": "87b156d9da50daa7af35dab40130fe03579cfb9ef6c1a10e15b6f2a88499bb32",
+          "matches_current": true
+        },
+        {
+          "path": "e2e/collaboration-account-desktop.spec.ts",
+          "recorded_after_sha256": "0e20376018ab0225ea81a637ffc67fdafa4dd73f84a71dad25321e5524b4c328",
+          "matches_current": true
+        },
+        {
+          "path": "e2e/collaboration-delivery-web.spec.ts",
+          "recorded_after_sha256": "2abe357d3dda931edae450548183a9501d00daec98c124c28227f23b4342f110",
+          "matches_current": true
+        },
+        {
+          "path": "e2e/collaboration-records-web.spec.ts",
+          "recorded_after_sha256": "5a3e3dc51da3a45d20b0e5b6befe01a329464fc02fdb57ff9f73f221f797a6a5",
+          "matches_current": true
+        },
+        {
+          "path": "e2e/fixtures/collaboration-knowledge.ts",
+          "recorded_after_sha256": "7a3f68f8a7213dbc40de3e7a8bf02222fb39d27411a0244b8ae2ea6ea89b1960",
+          "matches_current": true
+        },
+        {
+          "path": "e2e/collaboration-knowledge.spec.ts",
+          "recorded_after_sha256": "5da7bfe9e0d7b3755e079b01eda7f6a71fcf0a8ee2f6559b57c75589937be4cb",
+          "matches_current": true
+        },
+        {
+          "path": "e2e/fixtures/collaboration-resource-offers.ts",
+          "recorded_after_sha256": "73f6005d8830877bec3b7c7710417ac6cd39fd6eb70dd17d18d3129136add4c4",
+          "matches_current": true
+        },
+        {
+          "path": "e2e/collaboration-resources-web.spec.ts",
+          "recorded_after_sha256": "faa9bd82e145f6c473ca8365fb2408ab080fa6fd12126d132a14ac93df5994bf",
+          "matches_current": true
+        }
+      ]
+    },
+    "directed-replay-input-v2.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/directed-replay-input-v2.json",
+      "sha256": "73dc77603d49bb35c33d0854cc1dec0bc318f105ea7649ca1024f097bc39b62e",
+      "files": [
+        {
+          "path": "e2e/fixtures/collaboration-editing.ts",
+          "recorded_after_sha256": "085b5af7434d93e3c6efe659c51f7c83bff7ac5c9712a1413e480e4d0e92c58d",
+          "matches_current": true
+        },
+        {
+          "path": "e2e/collaboration-editing-web.spec.ts",
+          "recorded_after_sha256": "fa0aace8ffd19da4dc32eee5c01324df711e4089b79d5472649f54f71a4e3963",
+          "matches_current": true
+        },
+        {
+          "path": "e2e/collaboration-account-desktop.spec.ts",
+          "recorded_after_sha256": "7e421e01c1eafbbe9bb3ae28513dd7c60d685ad5e84e2041bae255d6a98235df",
+          "matches_current": false
+        }
+      ]
+    }
+  },
+  "retained_verification": {
+    "directed-e2e-pass3": {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/directed-e2e-pass3.json",
+      "record_sha256": "a8b61bd92afbfc5df17ab34e8ac6708df985e858eb7e47ed715d447ef3c862a8",
+      "raw_result": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/directed-e2e-pass3-results.json",
+      "raw_result_sha256": "05866d4feed171cbbf333c411759e9ff3aca97858b2f50ea86e03b05139b8be4",
+      "log_sha256": "7ac1cfec5615735eabbdf0f474e03cd9dea5e8670d9dc571ae2e5bcd6e29c13e",
+      "started_at": "2026-11-03T08:28:04.989939+00:00",
+      "finished_at": "2026-11-03T08:28:28.787789+00:00",
+      "exit_code": 0,
+      "stats": {
+        "startTime": "2026-11-03T08:28:05.780Z",
+        "duration": 22986.203,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "scope": "retained actual directed production Web/native evidence only"
+    },
+    "disclosure-e2e": {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/disclosure-e2e.json",
+      "record_sha256": "405c70770f7249930febc6384166244924c5219769d7c603ab46be9bfc362d56",
+      "raw_result": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/disclosure-e2e-results.json",
+      "raw_result_sha256": "e58d2220ab0c62ee1a9be203511c912159da51da729f90c28f95debf94a22c9a",
+      "log_sha256": "50b1ce91f7048b7b38e734697596f836706ae601353f6b0ef5bd9858ca9e2b27",
+      "started_at": "2026-11-03T08:49:09.607916+00:00",
+      "finished_at": "2026-11-03T08:51:43.114334+00:00",
+      "exit_code": 0,
+      "stats": {
+        "startTime": "2026-11-03T08:49:10.562Z",
+        "duration": 152524.791,
+        "expected": 25,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "scope": "retained actual directed production Web/native evidence only"
+    }
+  },
+  "review_observations": [
+    "Native disclosure helper clicks exact visible direct summaries only if closed, then asserts open. It does not mutate DOM open, bypass authority, widen timeout, force clicks, retry, or skip tests.",
+    "All added disclosure calls serve ordinary fresh-entry/navigation discovery. Knowledge original-key recovery after page.reload still asserts visible recovery controls without calling any reveal helper. Existing run/comment anchor assertions remain unassisted.",
+    "Workflow editing helper scopes to Issue actions and discovers the current More actions disclosure. Production workflow derives capability-filtered actions and places remaining actions under that summary.",
+    "Ordinary comment helper now uses current one-action publish behavior. Both callers provide plain non-AI discussion text. Production still performs validated preflight and returns for explicit targets; AI two-action component regression is unchanged.",
+    "Web source journey waits for actual UUID-to-identifier canonicalization after asserting the API UUID. It preserves source identity, source/iteration edit transactions, author checks and no forbidden catalog requests.",
+    "External source/iteration button absence includes hidden nodes after revealing ordinary edit controls, preventing collapsed-content false positives. Native outside popup additionally asserts child title visibility before the no-links privacy assertion.",
+    "Exact knowledge sources, candidate versions, target identity, approval and correction, recovery GET/original request lock, expiry and purge assertions remain unchanged.",
+    "Attachment bytes/native IPC, WebSocket revocation, source/child privacy, record links/usage, resource consent/withdraw/switch and comment history/reaction/recovery assertions remain unchanged."
+  ],
+  "reuse_limits": [
+    "All eight disclosure replay files match current bytes. Their 25-case pass is reusable as directed evidence for this exact increment.",
+    "Directed3 editing helper and Web editing spec still match current bytes. Desktop spec changed afterwards only in the reviewed disclosure increment and its affected journey subsequently passed in the25 run; do not claim current Desktop file equals directed3 snapshot.",
+    "Directed3 and directed25 overlap in two test identities. Do not sum them as28 independent scenarios or treat them as a complete suite.",
+    "The disclosure report says the harmless More actions type-union member was added after its final tsc. No fresh lint/typecheck/test was run by this reviewer; the forthcoming complete gate remains required.",
+    "The separate lifecycle maintenance lane is not present in this exact candidate diff. Any later copied files or changes require an updated source review/binding.",
+    "Actual new frozen source, full make check, final-state audit, environment/process ownership and required skip reconciliation remain root-owned gates."
+  ],
+  "next_env": {
+    "path": "apps/web/next-env.d.ts",
+    "base_sha256": "7ad303e40d4fddf44f156129e397511953a71481c5cfd86b1862649aaaf240cc",
+    "current_sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+    "only_change": "exact generated route-types import .next/dev/types/routes.d.ts -> .next/types/routes.d.ts",
+    "normalized_equal": true,
+    "commit_recommendation": "Exclude generated-only import delta from the E2E maintenance commit; retain only permitted line normalization in final source fingerprint."
+  },
+  "source_files_root_should_commit": [
+    "e2e/collaboration-account-desktop.spec.ts",
+    "e2e/collaboration-delivery-web.spec.ts",
+    "e2e/collaboration-editing-web.spec.ts",
+    "e2e/collaboration-knowledge.spec.ts",
+    "e2e/collaboration-records-web.spec.ts",
+    "e2e/collaboration-resources-web.spec.ts",
+    "e2e/fixtures/collaboration-disclosures.ts",
+    "e2e/fixtures/collaboration-editing.ts",
+    "e2e/fixtures/collaboration-knowledge.ts",
+    "e2e/fixtures/collaboration-resource-offers.ts"
+  ],
+  "non_e2e_dirty_files": [
+    "apps/web/next-env.d.ts"
+  ],
+  "verification_by_this_reviewer": {
+    "tests_run": 0,
+    "lint_run": 0,
+    "typecheck_run": 0,
+    "services_DB_Provider_actions": 0,
+    "source_files_written": 0,
+    "source_diff_and_product_paths_reviewed": true,
+    "retained_raw_results_and_source_hashes_checked": true
+  },
+  "final_runtime_clearance": false,
+  "whole_product_acceptance": false
+}

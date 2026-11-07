@@ -1,0 +1,108 @@
+{
+  "observation_started_at": "2026-11-03T15:00:41.057152+00:00",
+  "reviewer": "/root/ccg14_admission_review",
+  "stage": 3,
+  "run_state": "running",
+  "make_pid": 39379,
+  "candidate_sha": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "retained_execution_claim": {
+    "claimed_at": "2026-11-03T14:14:19.093648+00:00",
+    "coordinator": "01a1a186-9a5c-7b00-96f8-0430b47edb4c",
+    "executor": "/root/closure_inventory",
+    "wrapper_pid": 39356,
+    "candidate_sha": "d0b132fff0c477eb2d744933e13db730240231aa",
+    "clearance_sha256": "090a04b324169f897f9d24a82fdccfe09afbf9690d129f5aa9d2c48d25be94e4",
+    "launcher_sha256": "7bdc66bcab9b31bf3ec570fd005d0fd59e89d9efe0ec08a2ed170ce0e0eb480c",
+    "mode": "single_detached_complete_execution_no_rerun",
+    "Provider_calls": 0
+  },
+  "manifest": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/dev-registry-v14/envs/check-20261103141424-39386/manifest.env",
+    "sha256": "2e7d1fa88494d2b9fa96b829e8a925f6edd0e113a8d380f3b6b28d0bc783b150",
+    "declared": {
+      "NAME": "check-20261103141424-39386",
+      "DIR": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+      "OWNER": "agent",
+      "WEB_MODE": "production",
+      "BACKEND_PORT": "18974",
+      "FRONTEND_PORT": "13894",
+      "DB_NAME": "multica_check_20261103141424_39386_api",
+      "ENV_FILE": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/dev-registry-v14/envs/check-20261103141424-39386/check.env",
+      "CREATED_AT": "2026-11-03T14:14:24Z"
+    }
+  },
+  "task_environment": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/dev-registry-v14/envs/check-20261103141424-39386/check.env",
+    "sha256": "e2754c0b439b3c01a75d792ec3e0e3d659231fdb63b42b75ea696ec3e4078ee5",
+    "declared_nonsecret": {
+      "APP_ENV": "development",
+      "PORT": "18974",
+      "FRONTEND_PORT": "13894",
+      "MULTICA_DEPLOYMENT_ID": "collaboration-closure-v14-01a1a186",
+      "MULTICA_AUTH_MODE": "legacy",
+      "MULTICA_DEVICE_AUTH_ENABLED": "false",
+      "MULTICA_KNOWLEDGE_CONTEXT_ENABLED": "false",
+      "MULTICA_MANAGED_INSTALLATIONS_ENABLED": "false",
+      "NEXT_PUBLIC_API_URL": "http://localhost:18974",
+      "NEXT_PUBLIC_WS_URL": "ws://localhost:18974/ws",
+      "FRONTEND_ORIGIN": "http://localhost:13894",
+      "PLAYWRIGHT_BASE_URL": "http://localhost:13894",
+      "COLLABORATION_ELECTRON_RENDERER_URL": "http://127.0.0.1:55132/"
+    }
+  },
+  "pinned_psql": {
+    "path": "/opt/homebrew/opt/libpq/bin/psql",
+    "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07",
+    "actual_sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07",
+    "matches": true
+  },
+  "source": {
+    "actual_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+    "head_query_exit": 0,
+    "actual_head": "d0b132fff0c477eb2d744933e13db730240231aa",
+    "expected_head_matches": true,
+    "status_query_exit": 0,
+    "dirty_paths": [],
+    "selected_current_file_hashes": {
+      "server/cmd/server/main.go": "561c399b22265548f56f3d383a2b4ec18ddca1efa5a4662005ca99199210d0f1",
+      "apps/web/app/layout.tsx": "3908ad22d78acbca99c00665a953e4250fc908db1f7d1098e57b19b3d9c4f341",
+      "scripts/dev-env.sh": "6fb4a38c75ffe51c4e1a60712f52887263ee2a21ab205432c3bc90fdf25e001e",
+      "scripts/check.sh": "c6d544402060c0e76fafc73e98fece92e063a971bc3cc4e85b36f8d5b8058ae6",
+      "apps/desktop/out/renderer/index.html": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847"
+    },
+    "canonical_product_source_id_declared_in_run": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+    "full_source_binding_limit": "Selected files/HEAD are observed here; registered detached final auditor owns all-file/tool/workspace/CLI/Desktop final verification."
+  },
+  "api": {
+    "url": "http://127.0.0.1:18974",
+    "http": {
+      "reachable": false,
+      "not_started_at_stage3": true
+    },
+    "actual_health_nonsecret": null,
+    "listener": {
+      "port": 18974,
+      "query_exit": 1,
+      "pids": [],
+      "observation": ""
+    },
+    "actual_process_ancestry": [],
+    "health_pid_is_actual_listener": false,
+    "recorded_provenance": null
+  },
+  "web": {
+    "url": "http://127.0.0.1:13894",
+    "listener": {
+      "port": 13894,
+      "query_exit": 1,
+      "pids": [],
+      "observation": ""
+    },
+    "recorded_provenance": null
+  },
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "production_knowledge_default": false,
+  "commands_started": "Read-only ps/lsof/git/HTTP/explicit own-DB psql and optional own-Redis docker inspect only; no tests/build/service/DB write/Provider commands.",
+  "observation_finished_at": "2026-11-03T15:00:41.258006+00:00"
+}

@@ -1,0 +1,394 @@
+{
+  "recorded_at": "2026-11-03T14:57:21.081834+00:00",
+  "scope": "Research-only execution pack; no test, build, allocation, network, DB or git operation performed by this agent",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "ready_to_execute": false,
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "production_knowledge_default": false,
+  "current_preparation": {
+    "source_inputs_sha256": "e688795a758ae51478175bd1bf5a8cd99e1164545d522bab93235dddffe45589",
+    "final_preparation_review": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/ccg14-review/final-preparation-review.json",
+    "final_preparation_review_sha256": "e4c4c5863908961ab9faf9efb49ac7e8ed7d5fab7dd32bf9564c90e79367d917",
+    "prepared13": {
+      "binary-binding.json.template": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/binary-binding.json.template",
+        "sha256": "27d046f5e10a3709ce778206e41a1871ae3acd17bf7987aae551f163559da120"
+      },
+      "ccg-admission-template.py.txt": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/ccg-admission-template.py.txt",
+        "sha256": "d0388faf1b35a5c9e13879aacfbf6c5a8041d150ad07b06cf0e264a5c05c450d"
+      },
+      "deployments/off/deployment-proof.json.template": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/deployments/off/deployment-proof.json.template",
+        "sha256": "9374e9a2424e852ecf7a99e67084046a28f14ba1d533b12d9074f212217e0101"
+      },
+      "deployments/off/source-values.json.template": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/deployments/off/source-values.json.template",
+        "sha256": "9a117fdb52ddff38b702ba508e5532972bc52736d5224d6c45ff40509909037b"
+      },
+      "deployments/on/deployment-proof.json.template": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/deployments/on/deployment-proof.json.template",
+        "sha256": "b2e0928144259a05ca81d0004eb58ef9f6b27748dc93a918ea58c0a66f6eab9e"
+      },
+      "deployments/on/source-values.json.template": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/deployments/on/source-values.json.template",
+        "sha256": "fde93f47645e7dec92c37a22d7bde6952d341ce15ce0209516f432f1dd133b9e"
+      },
+      "permissions/ccg1-normal.json.template": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg1-normal.json.template",
+        "sha256": "a08666866d8c794e8cf02af3db4b86cfe1a7cd4f5c029bfec7896e4e1def99f0"
+      },
+      "permissions/ccg1-race.json.template": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg1-race.json.template",
+        "sha256": "c15bc0131bd48ad00d8b893f1ee0d6f45871c217e638939e3cd782297941c420"
+      },
+      "permissions/ccg2-off.json.template": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg2-off.json.template",
+        "sha256": "d883715de8cc987521b9d7364cd759a3e4debadb3420348b7cd7e04ce8f2ff66"
+      },
+      "permissions/ccg2-on.json.template": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg2-on.json.template",
+        "sha256": "2cd7f76252eedc7f8a31af5649755970eaf89c423d1d59c211b885917b087a1f"
+      },
+      "run-ccg1.py": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/run-ccg1.py",
+        "sha256": "b2f5a9f27c19e240d9cdc7a5a81bf932cd65d489d6513c5fd0ccbd28d5ea09f3"
+      },
+      "run-ccg2.py": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/run-ccg2.py",
+        "sha256": "73e53eca2540bec81d8e58b5de81766edee44b9846c9fd64840707895ff4289b"
+      },
+      "source-inputs.json": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/source-inputs.json",
+        "sha256": "e688795a758ae51478175bd1bf5a8cd99e1164545d522bab93235dddffe45589"
+      }
+    },
+    "all_four_permission_templates_false": true,
+    "registered_tools": {
+      "node": {
+        "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572"
+      },
+      "pnpm": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+        "sha256": "b276da51dc8ca5b0d3ee3371695b50fc8b3244b281b091c63a3f082a88dadeb9"
+      },
+      "go": {
+        "path": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+        "sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412"
+      },
+      "psql": {
+        "path": "/opt/homebrew/opt/libpq/bin/psql",
+        "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07"
+      }
+    },
+    "registered_GOROOT": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64",
+    "audit_module": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/final-state-audit-v14/final_state_audit.py",
+      "sha256": "9dfa39822223d8487d569cbe619b7ee4039277aec3a211bdfaa3148f1076484e"
+    },
+    "audit_review": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/independent-review/review.json",
+      "sha256": "7b7047c02fba74dbc2a080581eb8adcf99922a2aa6a89d43e2942bbc041497c3",
+      "state": "accepted_v14_independent_review_pinned; execution_gates_pending"
+    },
+    "environment_parser": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/run-make-check-v14-provenance.py",
+      "sha256": "7bdc66bcab9b31bf3ec570fd005d0fd59e89d9efe0ec08a2ed170ce0e0eb480c"
+    }
+  },
+  "preallocation_prerequisites": [
+    "actual v14 complete exit0",
+    "actual registered post-make audit pass",
+    "complete named and individually reviewed skip inventories",
+    "actual source/API/Web/database/renderer/process identities",
+    "root release of sole complete-check window",
+    "recorded current coordinator and unique CCG execution claim"
+  ],
+  "allocation_order": [
+    "validate names/URL and proposed matched ports, query database absence through exact selected PostgreSQL",
+    "atomic CREATE DATABASE without IF EXISTS under root CCG ownership claim; preserve absence/create evidence",
+    "materialize reviewed private source-values and canonical source env with exact DB/ports/origins",
+    "make up allocates/adopts matched slot under MULTICA_DEV_HOME lock; use separate empty OFF and ON registries",
+    "compare actual manifest DB_NAME/DATABASE_URL/ports/env/profile/workspaces to proposal, actual health/config/schema/PIDs and rendered runtime",
+    "finish independent exact materialized input/resource review, then issue new per-attempt permit; never modify false template"
+  ],
+  "supported_lifecycle": {
+    "registry_env": "MULTICA_DEV_HOME",
+    "profile_env": "MULTICA_DEV_PROFILES_HOME",
+    "workspace_parent_env": "MULTICA_DEV_WORKSPACES_PARENT",
+    "build_temp_env": "MULTICA_DEV_TMPDIR",
+    "web_mode_env": "MULTICA_WEB_MODE",
+    "startup_argv": [
+      "make",
+      "up",
+      "C=api,web",
+      "ENV_FILE=<owned canonical env>",
+      "ARGS=--web-mode production --name <validated unique lane name> --ephemeral"
+    ],
+    "stop_argv": [
+      "make",
+      "down",
+      "ENV_FILE=<same env>",
+      "ARGS=--components api,web <actual owned manifest NAME>"
+    ],
+    "explicit_not_supported": [
+      "MULTICA_DEV_REGISTRY is not the registry selector",
+      "changing --name does not avoid checkout reuse inside one registry"
+    ],
+    "slot": {
+      "offset_range": [
+        0,
+        999
+      ],
+      "api": "18080 + offset",
+      "web": "13000 + offset",
+      "allocator_renderer": "5174 + offset, except 6000 becomes 6174",
+      "database_retention": "If fresh registry, provided PORT/FRONTEND_PORT form a free matched slot and renderer is free, registered DB_NAME remains POSTGRES_DB and DATABASE_URL remains selected URL. A fallback rewrites both DB fields using multica_<checkout basename slug>_<offset>; detect and reject that attempt before a test permit."
+    }
+  },
+  "database_contract": {
+    "ccg1_normal_prefix": "multica_knowledge_host_composite_20261101_v14n_",
+    "ccg1_race_prefix": "multica_knowledge_host_composite_20261101_v14r_",
+    "ccg2_off_example": "multica_ccg14_off_<nonce>",
+    "ccg2_on_example": "multica_ccg14_on_<nonce>",
+    "validation": "lowercase [a-z0-9_]+, <=63 bytes, distinct all four and any prior failed/business DB",
+    "admin_connection": "same selected host/port/user/SSL as private URL; database postgres only for absence/create; no docker exec or cluster restart",
+    "absence_query_stdin": "SELECT datname FROM pg_database WHERE datname=:'ccg_db';\n",
+    "create_query_stdin": "CREATE DATABASE :\"ccg_db\";\n",
+    "psql_argv": [
+      "<pinned psql>",
+      "-X",
+      "-v",
+      "ON_ERROR_STOP=1",
+      "-v",
+      "ccg_db=<validated task name>"
+    ],
+    "migration_argv": [
+      "<pinned Go>",
+      "-C",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server",
+      "run",
+      "./cmd/migrate",
+      "up"
+    ],
+    "migration_environment": "minimal reviewed CCG environment with explicit DATABASE_URL for that one newly created DB; pinned Go/cache/temp; raw log and exit retained",
+    "identity_query": "SELECT current_database(),max(version) FROM schema_migrations",
+    "identity_required": "<exact database>|764_collaboration_ai_policy",
+    "freshness_caveat": "PostgreSQL does not supply database creation time; retain actual absent -> successful non-reusing CREATE -> explicit migration chain. Port checks are advisory; supported per-registry allocation lock plus live post-start listener/manifest checks is required."
+  },
+  "permit_common_fields": [
+    "ready_to_execute",
+    "gate",
+    "candidate_sha",
+    "source_inputs_sha256",
+    "runner_sha256",
+    "root_released_complete_check_resources",
+    "root_verified_complete_named_inventory",
+    "root_verified_fresh_database",
+    "database",
+    "DATABASE_URL",
+    "identity_verified",
+    "temp_directory",
+    "cache_paths",
+    "root_permission_record",
+    "real_provider_allowed",
+    "coordinator"
+  ],
+  "ccg2_additional_permit_fields": [
+    "source_environment",
+    "source_environment_sha256",
+    "deployment_proof",
+    "deployment_proof_sha256",
+    "binary_binding",
+    "binary_binding_sha256"
+  ],
+  "required_materialized_environment": {
+    "base": "copy lane source-values.json.template to new private materialized JSON; preserve original template",
+    "addition_CORS_ALLOWED_ORIGINS": "<exact Web origin>,<exact CCG renderer origin>",
+    "addition_ALLOWED_ORIGINS": "same exact two origins",
+    "auth": "password; device=false; managed=true; limiter=single; ALLOW_SIGNUP=true; E2E_PASSWORD_AUTH=1",
+    "knowledge": "false OFF / true only new isolated ON deployment",
+    "identity": "unique database, JWT_SECRET and deployment UUID per lane; PORT and POSTGRES_DB exactly match selected DATABASE_URL",
+    "origins": "explicit credential-free loopback origins, same API for COLLABORATION_E2E_API_URL/NEXT_PUBLIC_API_URL, exact ws://<API host>:<API port>/ws, Web for FRONTEND_ORIGIN/PLAYWRIGHT_BASE_URL",
+    "Redis": "explicit empty REDIS_URL is supported for this one-process single-mode password/in-memory deployment; otherwise new CCG-owned Redis only, never fullcheck55131",
+    "model": "MULTICA_LLM_API_KEY and MULTICA_LLM_BASE_URL empty; start through minimal environment rather than carrying ambient account/model variables",
+    "forbidden_renderer_origins": [
+      "http://127.0.0.1:55132",
+      "http://localhost:55132"
+    ],
+    "hash_and_review": [
+      "new source-values JSON",
+      "canonical private env",
+      "unchanged registered source-inputs",
+      "matching per-lane deployment proof",
+      "new binary-binding/build records",
+      "new permission and root evidence/ownership record"
+    ],
+    "serializer": "join key=shlex.quote(value)+newline; call registered parse_generated_environment and require exact decoded dict before exclusive0600 write; reject dollar/control/newline characters and unresolved ROOT_ placeholders"
+  },
+  "ccg1_commands": {
+    "normal": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/run-ccg1.py",
+      "normal",
+      "--permit",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg1-normal-<new-label>.json",
+      "--label",
+      "ccg1-normal-<new-label>"
+    ],
+    "race": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/run-ccg1.py",
+      "race",
+      "--permit",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg1-race-<new-label>.json",
+      "--label",
+      "ccg1-race-<new-label>"
+    ]
+  },
+  "ccg2_commands": {
+    "off": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/run-ccg2.py",
+      "off",
+      "--permit",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg2-off-<new-label>.json",
+      "--label",
+      "ccg2-off-<new-label>"
+    ],
+    "on": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/run-ccg2.py",
+      "on",
+      "--permit",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg2-on-<new-label>.json",
+      "--label",
+      "ccg2-on-<new-label>"
+    ]
+  },
+  "binary_build_commands": {
+    "daemon": [
+      "<pinned Go>",
+      "-C",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server",
+      "test",
+      "-c",
+      "-o",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/binaries/host-daemon.test",
+      "./internal/daemon"
+    ],
+    "provider": [
+      "<pinned Go>",
+      "build",
+      "-o",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/binaries/host-provider",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-host-provider.go"
+    ],
+    "CLI_source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/multica",
+    "CLI_destination": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/binaries/multica",
+    "CLI_existing_build_record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/candidate-setup/cli-build-v14.json",
+    "CLI_existing_build_record_sha256": "99a426822170b176c7f241107b3c4677b8d1a9b915180daeb6632dd2811c2b50",
+    "CLI_expected_sha256": "ad532d8d34ea3ee8e6707e88b49207959dec7452733b83b6d631f59e83b13c2f",
+    "CLI_copy_contract": "copy exact successful v14 bytes, mode executable, record src/dst hashes and original build record; no installed user CLI"
+  },
+  "raw_acceptance": {
+    "CCG1": "one named run/pass, exit0, no fail/skip/race; exact physical_launches=2 corrected_version=2 superseded_stdin_absent=true third_authorization_refused=true third_physical_launches=0 original_exposure_and_receipts_retained=true",
+    "CCG2": "one expected test, exit0, zero unexpected/flaky/skipped/retry/report errors, exactly one full deployed-knowledge-gate-evidence attachment; exact source/binary/account/deployment/command/batch/run/version/content; single fake launch; OFF empty knowledge/no-persistence/events0; ON exact approved contribution/no-session-persistence/events each1; settled success and ledger authorized/observed/reaped/sealed/proof_acknowledged; real calls0"
+  },
+  "runner_vs_root": {
+    "runner": "checks root booleans, exact candidate/source/tool/auditor/current audit, selected DB identity/cache/paths, exact source-env/proof/binary fields, actual HTTP health/config/CORS/renderer and selected result facts",
+    "root": "independently reconstruct inventory/release, physical ownership/absence/create history, registry/source/config/startup process flags, Web build/rendered origins, each actual binary build/copy provenance, all raw attachment identities/ledger facts and source after final run; root_permission_record/build_record paths/freshness proof are not read as independent attestations by the runner"
+  },
+  "failure_policy": [
+    "Preserve original started/result/raw logs, failed proposed and actual DBs, env before/after and registry manifests.",
+    "If allocator rewrites DB or port, do not switch the permit to accept it; retain failure, stop only verified own processes through registered down, use another new matched slot/database/env/JWT/deployment/label for a fresh attempt.",
+    "If case or source/tool/final audit fails, leave subsequent permits false and stop the lane; diagnose/review exact correction/new candidate before any new numbered attempt.",
+    "Never drop/reuse failed DBs, kill another owner, restart cluster, weaken assertions/timeouts, auto-retry, or spend/transfer model quota."
+  ],
+  "source_citations": {
+    "Makefile": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/Makefile",
+      "sha256": "02db245b6fc53efd75119b897fd5aad832141f6fed770156e165d9e5c0bd9260",
+      "lines": {
+        "lifecycle": 185,
+        "up_argv": 186,
+        "down_argv": 189
+      }
+    },
+    "dev-env": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/scripts/dev-env.sh",
+      "sha256": "6fb4a38c75ffe51c4e1a60712f52887263ee2a21ab205432c3bc90fdf25e001e",
+      "lines": {
+        "registry": 30,
+        "workspaces": 33,
+        "profiles": 36,
+        "temp": 53,
+        "slot_renderer": 250,
+        "matched_slot_lock": 1380,
+        "existing_checkout_reuse": 1387,
+        "fallback_rewrite": 1406,
+        "database_url_from_manifest": 1451,
+        "migrate": 1460,
+        "api_provenance": 598,
+        "web_build": 808,
+        "down": 1473
+      }
+    },
+    "CORS": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/cmd/server/router.go",
+      "sha256": "57f90b8fdcb2cc83a4a26c131092629ac402d72e6e93241a05f5d09b1bf09bc8",
+      "line": 115
+    },
+    "WS_origins": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/realtime/hub.go",
+      "sha256": "0dc30f465fd4a3a83e8dc230bfd2230c6538a2b96843ea6250a8e06372cb72dc",
+      "line": 55
+    },
+    "password_limiter": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/auth/password_config.go",
+      "sha256": "390625cc9961a791adfd24e0fdccffba0607053d9f6271717f889b2d2d885103",
+      "line": 39
+    },
+    "runtime_urls": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web/config/runtime-urls.ts",
+      "sha256": "5b15769a8f1066c1799fffe9825b2eec49fc63cdee7f7c27670e15a06e699fc4",
+      "line": 98
+    },
+    "SSR_provider_urls": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web/app/layout.tsx",
+      "sha256": "3908ad22d78acbca99c00665a953e4250fc908db1f7d1098e57b19b3d9c4f341",
+      "line": 138
+    },
+    "host_environment": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-host-runtime.ts",
+      "sha256": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e",
+      "line": 82
+    },
+    "deployed_case": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-knowledge-deployed.spec.ts",
+      "sha256": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+      "line": 15
+    }
+  },
+  "historical_patterns_only": {
+    "CCG1_summary": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/knowledge-crosschain-correction-20261102/summary.json",
+    "CCG2_deployed": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/knowledge-deployed-probe-20261102/root-deployed-results.json",
+    "CCG2_manifest": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/knowledge-deployed-probe-20261102/root-deployment-manifest.json",
+    "reuse": "setup/assertion pattern only; old whole-chain evidence cannot be rebound to current product changes"
+  },
+  "operations_here": {
+    "product_or_private_writes": false,
+    "git_commands": false,
+    "tests": false,
+    "builds": false,
+    "DB_queries": false,
+    "network": false,
+    "services": false,
+    "provider": false,
+    "only_research_outputs": true
+  }
+}

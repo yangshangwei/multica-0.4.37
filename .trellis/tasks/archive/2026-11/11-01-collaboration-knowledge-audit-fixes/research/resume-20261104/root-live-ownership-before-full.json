@@ -1,0 +1,42 @@
+{
+  "recorded_at": "2026-11-04T00:06:58.672318+00:00",
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "source_env_sha256": "0a463c24cbacf74b2d42e956bddbdddade7fa19fee5713e1ce37dea44ace8805",
+  "resource_proof_sha256": "f90fced5bd4769ac3a15e075381985f7d909b976d45906bd4c835a56165390b8",
+  "renderer": {
+    "pid": 51108,
+    "url": "http://127.0.0.1:61276/",
+    "index_sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+    "process": "51108     1 51108 Wed Nov  4 08:02:30 2026     /opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -u -m http.server 61276 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+    "cwd": "p51108\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+    "ownership_verified": true
+  },
+  "redis": {
+    "port": 61277,
+    "container_id": "cef486b02602c2bec97475b448dba9d7c1014d6334f7f4676ff9c2c88121e63a",
+    "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+    "labels": {
+      "multica.candidate": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+      "multica.task.owner": "01a1a3c9-2459-7de1-8244-55640c5f6143"
+    },
+    "PONG": true,
+    "ownership_verified": true
+  },
+  "postgres": {
+    "database": "multica_closure_v15_seed_01a1a3c9",
+    "server_addr": "172.20.0.2",
+    "server_port": 5432,
+    "latest": "764_collaboration_ai_policy",
+    "ledger": 752,
+    "connections": 21,
+    "max_connections": "100"
+  },
+  "knowledge": {
+    "allocated": 0,
+    "consumed": 0,
+    "enabled": false,
+    "real_allowed": false
+  },
+  "scope": "Root actual read-only pre-complete resource confirmation; fullpass not claimed"
+}

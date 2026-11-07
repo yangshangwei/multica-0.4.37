@@ -1,0 +1,78 @@
+{
+  "recorded_at": "2026-11-04T03:18:27.574131+00:00",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "state": "prepared_not_runnable",
+  "source_inputs_sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+  "review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/independent-review/review.json",
+    "sha256": "d2766b57bc41f72a08651f5028258f881f2763dc9036dd94526aebb685b9ee52",
+    "scope": "immutable prelaunch admission only; no actual full acceptance"
+  },
+  "auditor": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-state-audit-v16/final_state_audit.py",
+    "sha256": "2bf50f6e244f4c5f3b1c2022ae67663d8888047098145f8a1ea30fb4d28eb318",
+    "state": "actual_V16_independent_prelaunch_review_bound; final_result_pending"
+  },
+  "parser": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/run-make-check-v16-provenance.py",
+    "sha256": "52c2f0a40fab9dcaabbc20267c106cdffc503d126853e9a3290da280350deaca",
+    "state": "actual_V16_independent_prelaunch_review_bound; final_result_pending"
+  },
+  "current_CLI_reference": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/multica",
+    "sha256": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac",
+    "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "build_record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/candidate-setup/cli-build-v16.json",
+    "build_record_sha256": "c2a2e2b6077b3ca3fd4d5ccd8392027ff29c5ec7eab82e185d05c1b48597c355",
+    "build_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "existing_version_observation": "multica v0.6.7-469-geda0d68fb (commit: eda0d68fb, built: 2026-11-04T02:41:50Z)\ngo: go1.26.6, os/arch: darwin/arm64\n",
+    "verified_read_only_without_execution": true,
+    "destination_CCG_copy_pending": true
+  },
+  "current_migration_tool_reference": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/migrate",
+    "sha256": "060c3a17ba03e9837092884a6fc789c067830629692d4ddec6f309c40f26a379",
+    "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "build_migration_record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/seed-migration-result.json",
+    "build_migration_record_sha256": "220f6c7cf6f228539abe17445ef70d45c1d3f57c960b396d6c96f809ef77a70a",
+    "build_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scope": "actual current V16 tool build and V16 seed migration only; CCG fresh DBs unallocated",
+    "verified_read_only_without_execution": true
+  },
+  "changed_file_count": 5,
+  "unchanged_current_CCG16_file_count": 8,
+  "protected_CCG15_count": 13,
+  "artifact_protection": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/prepared-manifest.json": "1f5115505a1319e81c137b5047b68df4a442b87f7c0ba1498c6c508b397bb362",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/verification.json": "4c17d55a9347f3db8205c955929f10f0543165728973cd5f84e8c736f01eed19",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/controls-execution.json": "4a2d58a2531a59c99d75d0eb22fd48d6840cdb050f3530885e9b24642e13cda2",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/commands.json": "14136825f991769ad3368f24934aa7debff48c20af9893a690e41e281a595aab",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/handoff.json": "c96c0147d563850d30f2c98a7188302c2eca06aff3cbd49836a4cd9f5c1df7a4"
+  },
+  "artifacts": {
+    "binding.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/review-hash-binding/binding.json",
+      "sha256": "593d94907d6b0e1cad3a5cfa1a3f21f6f84e98d09231a3632f7c0c698db6c948"
+    },
+    "commands.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/review-hash-binding/commands.json",
+      "sha256": "61cdd9df045e62e1e83cf123d83898ee0e0ed8f941923e34a2b8277c1aa8d7b5"
+    },
+    "README.md": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/review-hash-binding/README.md",
+      "sha256": "227cc928908506ba0338517e287cc84619a45c873a2a8ed6eb522399977259cc"
+    }
+  },
+  "actual_full_state_read_only_observation": "running",
+  "actual_full_exit_read_only_observation": null,
+  "actual_full_acceptance_claimed": false,
+  "fake_binaries_deployments_freshDB_runtime_proofs": "pending",
+  "root_release": false,
+  "actual_CCG_permissions": 0,
+  "permissions_all_false": true,
+  "controls_or_tests_rerun": 0,
+  "build_DB_service_browser_Provider_operations": 0,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false
+}

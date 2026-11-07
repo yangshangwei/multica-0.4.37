@@ -1,0 +1,348 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-02T21:25:23.483968+00:00",
+  "state": "intentionally_interrupted_invalid_browser_environment; not_accepted",
+  "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "actual_run_record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+  "actual_run_record_sha256": "a691caa6d0168db903bff9abf12d3a393f8949725110710302d4ac42d9034019",
+  "started_at": "2026-11-02T19:56:51.936099+00:00",
+  "finished_at": "2026-11-02T21:12:33.404620+00:00",
+  "make_exit_code": 2,
+  "check_script_exit_code": 130,
+  "full_check_pass": false,
+  "source_log": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.log",
+  "source_log_sha256": "b513d00d2c14838557e3bebf0190f4cd935240b19983532889736ef435fb2f64",
+  "static": {
+    "pass_tasks": 15
+  },
+  "typescript": {
+    "named_pass": 13082
+  },
+  "go": {
+    "packages": 82,
+    "named_pass": 20852,
+    "fail": 0,
+    "explicit_skip": 22
+  },
+  "browser": {
+    "registered": 439,
+    "pass": 39,
+    "fail": 36,
+    "interrupted": 1,
+    "explicit_skip": 22,
+    "no_result_unrun": 341,
+    "reporter_skipped": 364,
+    "reporter_skipped_breakdown": "22 explicit skip +1 interrupted +341 unrun; not364 executed skips",
+    "report": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/makecheck-playwright-results-v9.json",
+    "report_sha256": "bb72fb895375db673b301c9dcbeda229405143e2f1af2c12659e4cda7d9ed131",
+    "failures": [
+      {
+        "file": "agent-categories.spec.ts",
+        "line": 10,
+        "outcome": "unexpected",
+        "results": [
+          "timedOut"
+        ]
+      },
+      {
+        "file": "agent-category-grouping.spec.ts",
+        "line": 23,
+        "outcome": "unexpected",
+        "results": [
+          "timedOut"
+        ]
+      },
+      {
+        "file": "agent-mcp.spec.ts",
+        "line": 165,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "agent-mcp.spec.ts",
+        "line": 190,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "agent-role-template.spec.ts",
+        "line": 172,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "agent-role-template.spec.ts",
+        "line": 248,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "agent-role-template.spec.ts",
+        "line": 300,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "agents-discovery.spec.ts",
+        "line": 97,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "auth.spec.ts",
+        "line": 5,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "auth.spec.ts",
+        "line": 15,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "auth.spec.ts",
+        "line": 22,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "auth.spec.ts",
+        "line": 34,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "autopilot-lifecycle-branches.spec.ts",
+        "line": 133,
+        "outcome": "unexpected",
+        "results": [
+          "timedOut"
+        ]
+      },
+      {
+        "file": "autopilot-lifecycle-branches.spec.ts",
+        "line": 164,
+        "outcome": "unexpected",
+        "results": [
+          "timedOut"
+        ]
+      },
+      {
+        "file": "autopilot-lifecycle-branches.spec.ts",
+        "line": 189,
+        "outcome": "unexpected",
+        "results": [
+          "timedOut"
+        ]
+      },
+      {
+        "file": "autopilot-lifecycle-branches.spec.ts",
+        "line": 207,
+        "outcome": "unexpected",
+        "results": [
+          "timedOut"
+        ]
+      },
+      {
+        "file": "autopilot-lifecycle-branches.spec.ts",
+        "line": 228,
+        "outcome": "unexpected",
+        "results": [
+          "timedOut"
+        ]
+      },
+      {
+        "file": "autopilot-lifecycle-branches.spec.ts",
+        "line": 249,
+        "outcome": "unexpected",
+        "results": [
+          "timedOut"
+        ]
+      },
+      {
+        "file": "autopilot-lifecycle-branches.spec.ts",
+        "line": 273,
+        "outcome": "unexpected",
+        "results": [
+          "timedOut"
+        ]
+      },
+      {
+        "file": "autopilot-lifecycle-branches.spec.ts",
+        "line": 292,
+        "outcome": "unexpected",
+        "results": [
+          "timedOut"
+        ]
+      },
+      {
+        "file": "autopilot-lifecycle-branches.spec.ts",
+        "line": 324,
+        "outcome": "unexpected",
+        "results": [
+          "timedOut"
+        ]
+      },
+      {
+        "file": "autopilot-template.spec.ts",
+        "line": 188,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "autopilot-template.spec.ts",
+        "line": 219,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "builtin-agent-concurrency.spec.ts",
+        "line": 65,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "capability-market.spec.ts",
+        "line": 5,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "capability-market.spec.ts",
+        "line": 107,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "capability-market.spec.ts",
+        "line": 219,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "changelog.spec.ts",
+        "line": 56,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "chat-recovery-branches.spec.ts",
+        "line": 120,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "chat-recovery-branches.spec.ts",
+        "line": 151,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "chat-recovery-branches.spec.ts",
+        "line": 175,
+        "outcome": "unexpected",
+        "results": [
+          "timedOut"
+        ]
+      },
+      {
+        "file": "chat-recovery-branches.spec.ts",
+        "line": 201,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "chat-recovery-branches.spec.ts",
+        "line": 224,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "chat-recovery-branches.spec.ts",
+        "line": 250,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "collaboration-creation-default.spec.ts",
+        "line": 26,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "collaboration-creation-default.spec.ts",
+        "line": 61,
+        "outcome": "unexpected",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "file": "collaboration-delivery-web.spec.ts",
+        "line": 22,
+        "outcome": "skipped",
+        "results": [
+          "interrupted"
+        ]
+      }
+    ]
+  },
+  "cleanup_lines": [
+    "    ✓ web stopped (pid 21902)",
+    "    ✓ api stopped (pid 21435)",
+    "    Dropping isolated Go database multica_check_20261102195652_92601_go",
+    "✗ Checks FAILED (exit 130).",
+    "make: *** [check] Error 130"
+  ],
+  "termination_request": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-interruption-request.json",
+  "next_required": "new isolated candidate with own internal workspace links, reviewed dependency identities, minimal SSR replay and a complete fresh repository check; combine current committed production12 changes and selected118fc E2E patch before final binding",
+  "historical_v9_failed_result": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/shared-check-v9-result.json",
+  "Provider_calls": 0
+}

@@ -1,0 +1,11 @@
+--- /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/check-bin/pnpm
++++ /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/check-bin/pnpm.in
+@@ -16,7 +16,7 @@
+ ]
+ if args == canonical_turbo_tests:
+     args.append("--reporter=json")
+-    output = Path(environment["MULTICA_TASK_PACKAGE_DB_EVIDENCE"]).parent / "makecheck-vitest-reporting-v15.json"
++    output = Path(environment["MULTICA_TASK_PACKAGE_DB_EVIDENCE"]).parent / "makecheck-vitest-reporting-v16.json"
+     record = {"original_argv": canonical_turbo_tests, "effective_argv": args,
+               "candidate": environment["MULTICA_TASK_CANDIDATE_ROOT"],
+               "reporter": "json", "transport": "per-package-prefixed stdout in the actual full raw log",
