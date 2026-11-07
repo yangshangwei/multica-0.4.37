@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import pg from "pg";
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page, type Route } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
 import { deepLink, nativeScreenshot, openDesktop } from "./fixtures/collaboration-native";
 
@@ -113,6 +113,71 @@ for (const platform of ["Web", "Desktop"] as const) {
       const capture = async (name: string) => native ? nativeScreenshot(native.app, page, testInfo.outputPath(name)) : page.screenshot({ path: testInfo.outputPath(name), fullPage: false });
       await capture(`${platform.toLowerCase()}-scope-resumed.png`);
 
+      // The app owns this root's saved offset. A retained read error can still
+      // be present on resume and disappear only after an explicit refresh completes.
+      const issueUrl = (url: URL) => url.pathname === `/api/collaboration/issues/${selected.id}`;
+      let recovering = false;
+      let releaseRecovery!: () => void;
+      let recoveryRequested!: (route: Route) => void;
+      const recoveryReady = new Promise<Route>((resolve) => { recoveryRequested = resolve; });
+      const recoveryRelease = new Promise<void>((resolve) => { releaseRecovery = resolve; });
+      const banner = detail.locator(":scope > div > [role=alert]");
+      const activeRecoveries = new Set<Promise<void>>();
+      const recover = async (route: Route) => {
+        if (!recovering) {
+          await route.abort("failed");
+          return;
+        }
+        recoveryRequested(route);
+        await recoveryRelease;
+        // Continue the original renderer request so recovery uses its actual
+        // transport response in both Chromium and Electron.
+        await route.continue();
+      };
+      const intercept = (route: Route) => {
+        const operation = recover(route);
+        activeRecoveries.add(operation);
+        return operation.finally(() => activeRecoveries.delete(operation));
+      };
+      await page.route(issueUrl, intercept);
+      try {
+        await globalNav(page).getByRole("button", { name: "Workspaces", exact: true }).click();
+        await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
+        await globalNav(page).getByRole("button", { name: "Collaboration", exact: true }).click();
+        await expect(banner).toBeVisible();
+        await detail.evaluate((element) => { element.scrollTop = 620; });
+        await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+        expect(await detail.evaluate((element) => element.scrollTop)).toBe(620);
+        await globalNav(page).getByRole("button", { name: "Workspaces", exact: true }).click();
+        await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
+        await globalNav(page).getByRole("button", { name: "Collaboration", exact: true }).click();
+        await expect(banner).toBeVisible();
+        await expect.poll(() => detail.evaluate((element) => element.scrollTop)).toBe(620);
+        // Scope switching can cancel earlier reads. Finish those injected
+        // failures before starting one refresh on the currently rendered detail.
+        await expect.poll(() => activeRecoveries.size).toBe(0);
+        const refresh = banner.getByRole("button", { name: "Refresh", exact: true });
+        // Keyboard activation keeps the saved offset while exercising the real
+        // refresh control; a pointer click would scroll its offscreen button in.
+        await refresh.evaluate((element) => element.focus({ preventScroll: true }));
+        recovering = true;
+        await refresh.press("Enter");
+        const recoveryRoute = await recoveryReady;
+        const recovered = page.waitForResponse((response) => response.request() === recoveryRoute.request());
+        expect(await detail.evaluate((element) => element.scrollTop)).toBe(620);
+        releaseRecovery();
+        const response = await recovered;
+        expect(response.status()).toBe(200);
+        expect(await response.finished()).toBeNull();
+        await expect(banner).toHaveCount(0);
+        await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+        expect(await detail.evaluate((element) => element.scrollTop)).toBe(620);
+      } finally {
+        releaseRecovery();
+        await Promise.allSettled([...activeRecoveries]);
+        await page.unroute(issueUrl, intercept);
+      }
+
       const other = fixture.issues[1]!;
       const explicit = `/account?view=participating&issue=${other.id}#description`;
       if (native) await deepLink(native.app, explicit);
@@ -143,7 +208,7 @@ for (const platform of ["Web", "Desktop"] as const) {
       await page.reload();
       const chineseNavigation = page.getByRole("navigation", { name: "应用导航", exact: true });
       await expect(chineseNavigation.getByRole("button", { name: "工作空间", exact: true })).toBeVisible();
-      await expect(chineseNavigation.getByRole("button", { name: "协作", exact: true })).toBeVisible();
+      await expect(chineseNavigation.getByRole("button", { name: "协作空间", exact: true })).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       await capture(`${platform.toLowerCase()}-scope-compact-zh.png`);
       await testInfo.attach("scope-restoration.json", { body: JSON.stringify({ platform, source: fixture.source.id, selected: selected.id, saved, originalBounds, resumedBounds }), contentType: "application/json" });

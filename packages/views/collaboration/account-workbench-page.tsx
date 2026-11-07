@@ -123,7 +123,8 @@ function WorkbenchBody({ scope, destination }: { scope: ReturnType<typeof useCol
         {list.hasNextPage && <Button variant="ghost" className="mt-4 h-auto min-h-8 w-full whitespace-normal pointer-coarse:min-h-11" disabled={list.isFetchingNextPage} onClick={() => void list.fetchNextPage()}>{list.isFetchingNextPage ? t(($) => $.page.loading) : t(($) => $.page.more)}</Button>}
       </div>
     </section>
-    <section ref={restoreDetail} data-tab-scroll-root="account-detail" aria-label={t(($) => $.detail.title)} className={`${destination.issueId ? "flex" : "hidden md:flex"} min-h-0 min-w-0 flex-col overflow-y-auto px-4 pb-10 md:px-8`}>
+    {/* This root restores an explicit offset; late query banners must not re-anchor it. */}
+    <section ref={restoreDetail} data-tab-scroll-root="account-detail" aria-label={t(($) => $.detail.title)} className={`${destination.issueId ? "flex" : "hidden md:flex"} min-h-0 min-w-0 flex-col overflow-y-auto [overflow-anchor:none] px-4 pb-10 md:px-8`}>
       {destination.issueId ? <>
         <AppLink className="mb-4 inline-flex min-h-11 items-center self-start text-body text-muted-foreground hover:text-foreground md:hidden" href={accountPath({ view: destination.view })}>{t(($) => $.page.back)}</AppLink>
         {selectedOutside && <div className="mb-6 space-y-2 text-caption text-muted-foreground"><p role="status">{t(($) => $.page.filteredOut)}</p>{destination.view === "current" && <AppLink className="underline underline-offset-4" href={accountPath({ ...destination, view: "participating" })}>{t(($) => $.page.openParticipating)}</AppLink>}</div>}

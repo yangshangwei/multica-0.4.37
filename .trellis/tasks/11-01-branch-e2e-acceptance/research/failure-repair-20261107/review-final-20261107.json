@@ -1,0 +1,236 @@
+{
+  "reviewed_at": "2026-11-07T08:33:07.115694+00:00",
+  "reviewer": "/root/independent_review",
+  "result": "APPROVED_REQUESTED_DEFECT_REPAIR",
+  "full_acceptance": "NOT_CLAIMED; unrelated platform/provider/inventory gates remain open",
+  "baseline": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+  "read_only_source_review": true,
+  "source": [
+    {
+      "path": "packages/core/diagnostics/diagnostic-context.ts",
+      "source_root": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "before_sha256": "6bb2dd4e46e0300746a669086e85211c782721e3c9ef2798bcead62fc04d8fc8",
+      "after_sha256": "6f4a130597f61732708de0fa6a9b0a775146382a70f39cd6cd125f03e4fcabf5"
+    },
+    {
+      "path": "packages/core/diagnostics/diagnostic-context.test.ts",
+      "source_root": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "before_sha256": "720546fdaa0ca3632a257672a43651ac7ed31603c8debbae3abd90b6610969d4",
+      "after_sha256": "1230f927b7137a1b3f83b6279f0e4c75782a0eff4ece586f7b6480ea90f5975b"
+    },
+    {
+      "path": "packages/views/locales/en/skills.json",
+      "source_root": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "before_sha256": "d7ee6f72624fb1760725f78f1dd5e74efb3d50713343df889def3f71946bcd84",
+      "after_sha256": "4add3757bc24b0aff74724108727bfab32540bfced1e67af51f596898610bd71"
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/skills.json",
+      "source_root": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "before_sha256": "ec12f0bf8260bbe5d76ceb6de36634b5c9bbc53aad1b1339fa7ea10f3a24686d",
+      "after_sha256": "02341991cb95f686f9beee099a84ce3371ac27529644545c83dccdffc77f6049"
+    },
+    {
+      "path": "packages/views/skills/lib/skill-presentation.ts",
+      "source_root": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "before_sha256": "84f078a7b6a326e806198dbb94df750d8fa51f2d092276856865d447fa68ddca",
+      "after_sha256": "b325455fabb8e5f92873913b53daf59687d85920315e6808b2d285fe639cb17f"
+    },
+    {
+      "path": "packages/views/skills/lib/skill-presentation.test.ts",
+      "source_root": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "before_sha256": "9730b251253ee35ef986dd8dcdc691bb312449155c5454fa629bfeafbea2ab9a",
+      "after_sha256": "d7cf0a7bd91c24ddef8c1d083460f6890f7bd3573fd588833ad0f9e2990fdc40"
+    },
+    {
+      "path": "packages/views/collaboration/account-workbench-page.tsx",
+      "source_root": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "before_sha256": "8411072cf6dbef1815f1588809fcdd61e3fc0b277b7485c61f631bc0c43de338",
+      "after_sha256": "1cf48d9d88a716910fdf5552aaed79aa1da751c6cd7495dad477e9c1a84130a6"
+    },
+    {
+      "path": "e2e/global-scope-navigation.spec.ts",
+      "source_root": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "before_sha256": "d1c42fe74bb0a9a4f6b3a526da3ebb78127959f227e87487499a90d9c7b3ed60",
+      "after_sha256": "5313dea3fee384ae097bf0c3e9b2467ffbc28afa673503da0d039a932174f624"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-detail-journey.ts",
+      "source_root": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "before_sha256": "0c0ef62cb1bdee7cb043727b80f95977ccddd584aadfbb7be6ad3e99139ab67e",
+      "after_sha256": "ec727d740cf074b4b7f47a257ef29a3e2e233736b7f69c845c2b69fd58bc88e2"
+    },
+    {
+      "path": ".trellis/spec/core/frontend/global-scope-navigation.md",
+      "source_root": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "before_sha256": "27614921f7f75c4f07cf2b0dff1aae1325b9e2668026a654ab5e64e99cbd4e13",
+      "after_sha256": "6b9f859d05e96a6e0b546989f953552a2bc8f1302088b2f73c052c741ff382f1"
+    },
+    {
+      "path": ".trellis/spec/views/frontend/builtin-skill-localization.md",
+      "source_root": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "before_sha256": "4132e89dc347c248343585fc200f8e4e1288527af9de532a75affb3aa72a3733",
+      "after_sha256": "922fa888f5e32f578aec4eb8491f2b88606f2735905fd3ae9796d25226425484"
+    }
+  ],
+  "findings": [],
+  "verification": {
+    "canonical": {
+      "candidate": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-detail-journey.spec.ts",
+        "e2e/global-scope-navigation.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--output=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/runs/canonical-final2/artifacts"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "started_at": "2026-11-07T08:30:58.452809+00:00",
+      "state": "complete",
+      "exit_code": 0,
+      "finished_at": "2026-11-07T08:31:56.713636+00:00"
+    },
+    "cases": [
+      {
+        "name": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+        "status": "PASS",
+        "attempts": 1,
+        "retry": 0
+      },
+      {
+        "name": "Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+        "status": "PASS",
+        "attempts": 1,
+        "retry": 0
+      },
+      {
+        "name": "Web global switching resumes the task, collaboration filters and both scroll positions",
+        "status": "PASS",
+        "attempts": 1,
+        "retry": 0
+      },
+      {
+        "name": "Desktop global switching resumes the task, collaboration filters and both scroll positions",
+        "status": "PASS",
+        "attempts": 1,
+        "retry": 0
+      }
+    ],
+    "journeys": [
+      {
+        "platform": "web",
+        "saved": 620,
+        "restored": 620,
+        "captures": 19,
+        "evidence": ".omx/private/acceptance-repair-20261107/scroll/runs/canonical-final2/artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/detail-journey-evidence.json",
+        "sha256": "071f3f61ae783a1bafdafe8e8d6d7defba0e6b1de9f552a473fa1ad5a8b186ad"
+      },
+      {
+        "platform": "desktop",
+        "saved": 620,
+        "restored": 620,
+        "captures": 19,
+        "evidence": ".omx/private/acceptance-repair-20261107/scroll/runs/canonical-final2/artifacts/collaboration-detail-journ-c170c-ission-and-exact-acceptance-chromium/detail-journey-evidence.json",
+        "sha256": "590ff72cd6fa3d83007d2c1c1734052299ab2b0a6e58f19ae220f248e4f969f5"
+      }
+    ],
+    "product_static": "15 supported lint/typecheck tasks passed; all seven current product/unit diff hunks exactly match static-final candidate.diff",
+    "unit": "Original four failures passed targeted and full suites. 213 targeted passes. Full package first pass13329/fail3; unchanged61-case create-issue file separately passes. All prior unit-full-results evidence hashes independently checked.",
+    "adhoc_e2e_lint": "No supported root E2E eslint/tsconfig exists. Borrowed Web ESLint reports unchanged baseline errors (8 in detail helper,1 in scope spec); this ad-hoc command is not PASS. No suppressions added.",
+    "provenance": "Independently verified all8169 source hashes and494 renderer artifact hashes; only two E2E source files differ from immutable original build; service source_id retained.",
+    "screenshot_assertions": "Original viewport/target geometry and before/after scroll equality remain unchanged; all38 detail captures recorded contained targets before/after."
+  },
+  "observations": [
+    "Diagnostic known routes retain structural ID masking and unknown-path fallback.",
+    "Current progress description matches embedded current-project text; exact old Chinese embedded and English catalog values verified at cd95c8e40^; existing origin/custom-text safeguards remain.",
+    "Account detail alone disables browser anchoring; generic restoration and source-workspace scrollers unchanged.",
+    "Web reload focus wait observes actual comment focus; native reload correctly rehydrates isScopeResume=true and explicit native deep-link assertions remain.",
+    "Scope regression aborts reads, verifies cached error+620, drains old route handlers, activates real Refresh with Enter and preventScroll, then continues the held original GET. Exact browser Request must receive200 and complete before banner removal and620 assertion. No new automatic retries or timeout changes.",
+    "Native fulfilled-response status0 is a reproduced fixture transport boundary; continuing original request restores actual200. Vendor internals and all historical canceled request associations remain unproved.",
+    "The first full views run had3 failures in unchanged create-issue tests; a subsequent unchanged61-test file passed. Do not describe it as first-run all-green."
+  ],
+  "remaining_parent_steps": [
+    "Exact guarded integration of approved files only",
+    "Owned environment cleanup proof",
+    "Lore local commit and journal; no push/deploy"
+  ],
+  "evidence": [
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/runs/canonical-final2/run.json",
+      "sha256": "97a627bfbb538d96e8c3e9a70b072b7f1addc67b6777ca67dd4a28a3aa277773"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/runs/canonical-final2/results.json",
+      "sha256": "34645fc591e4bffc2f6a3bd0f505fb8d09f408cade1ff008ce3d587c1674c655"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/runs/canonical-final2/stdout.txt",
+      "sha256": "c638ab58e9acc917cdfcacf62e9f96eac8c23b5d1499b1e578cd415389e0fbdc"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/revision-canonical-final2/audit.json",
+      "sha256": "5ef1e7d6599709dbcd9280c21dd38220bd234a87d481fe18ce5d8ddf800bef15"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/revision-canonical-final2/build-provenance.json",
+      "sha256": "5951994c075dac72bf414706b4c4d157d049d9b528963fe8f65025fbc744885d"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/revision-canonical-final2/detail-provenance.json",
+      "sha256": "781ace94440013ffabb7fb334bcf655f2cf29c7364bf8550d6ca1e31a0a59fcd"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/revision-canonical-final2/candidate.diff",
+      "sha256": "559ab91d08e54ed768ccd6b25ef76935e8c582561fa3063fbd515889e8c636b3"
+    },
+    {
+      "path": ".trellis/tasks/11-01-branch-e2e-acceptance/research/failure-repair-20261107/unit-full-results.json",
+      "sha256": "0bb51591bcb6be323d05433f15c62f3e605f7283bfd9cbdb3aff4ee238ee0486"
+    },
+    {
+      "path": ".trellis/tasks/11-01-branch-e2e-acceptance/research/failure-repair-20261107/review-unit.json",
+      "sha256": "e61f31aec5ef05816409fe15aa31d7c17148dd98750a206e6ca9a961aac51d7b"
+    },
+    {
+      "path": ".trellis/tasks/11-01-branch-e2e-acceptance/research/failure-repair-20261107/scroll-root-cause.json",
+      "sha256": "d0c32cde5db2da1e010716d5f517c0f827c7b91dfe376ff47459b94e42b2cf51"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/runs/diagnosis-after-recovery/layout.json",
+      "sha256": "91a29b81c10ccb6a877d4a2e254f4164550131cd860977cd2d082833ad37ca0d"
+    },
+    {
+      "path": ".trellis/tasks/11-01-branch-e2e-acceptance/research/failure-repair-20261107/scope-transport-root-cause.json",
+      "sha256": "01ac49ffb19f6f5e9724c43b94a016fb3335237ea9984d9d5596a4a45d28e5ed"
+    },
+    {
+      "path": ".trellis/tasks/11-01-branch-e2e-acceptance/research/failure-repair-20261107/locale-wait-boundary.json",
+      "sha256": "2ead5b2c58be0fd917546234828429a523d2521b4f9d0916f9b6d053a3d3d62c"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/static-final/run.json",
+      "sha256": "6a2dac3241c1831d40446a7067cecb0040f4a56f43d90d96c557e7950c58d275"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/static-final/stdout.txt",
+      "sha256": "97fdbbef7f6c9f72553f265b93769433d5175480b2242e88f052a49aaaf0c170"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/static-final/candidate.diff",
+      "sha256": "e660841a14f0556303ff11a9af41f76aab0d761535476c684dc237aacbcee988"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/runs/canonical-final1/results.json",
+      "sha256": "5a3ab90cea927abac62a4f8996f7c797b8bb3d06f0c3d18cab215b78c5ff6eaf"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/runs/repaired-canonical/results.json",
+      "sha256": "8f375f64e295b8c3018711730d5b0e8da8147766dc4038dd0d2c97403d712e51"
+    }
+  ]
+}

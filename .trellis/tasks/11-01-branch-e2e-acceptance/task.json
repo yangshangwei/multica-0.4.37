@@ -58,5 +58,22 @@
       "blocked": 2
     },
     "cleanup": "5 owned ports closed; 3 browser and 8 backend databases have zero connections; owned processes exited"
+  },
+  "repair": {
+    "status": "verified_integrated",
+    "baseline": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+    "authorization": "Current user explicitly requested diagnosis and repair of remaining2E2E/4unitfailures",
+    "plan": "research/failure-repair-20261107/plan.md",
+    "report": "research/failure-repair-20261107/final-report.md",
+    "e2e": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "retries": 0
+    },
+    "requested_unit_failures_resolved": 4,
+    "cleanup": "Owned ports closed; PIDs/groups exited; dedicated database has zero other connections",
+    "overall_acceptance": "still open; original installer/provider/inventory gates unchanged",
+    "review": "research/failure-repair-20261107/review-final-20261107.md"
   }
 }

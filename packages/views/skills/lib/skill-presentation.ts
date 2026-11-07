@@ -34,8 +34,9 @@ function getDefaultDescriptionKey(
   // Match only shipped historical defaults; a version or prefix cannot prove
   // that a workspace description has not been customized.
   if (
-    (name === "multica-release-check" || name === "multica-architecture-decision-record") &&
-    text === enSkills.builtin_role_skills[name].description_v1.trim()
+    (name === "multica-release-check" || name === "multica-architecture-decision-record" || name === "multica-progress-report") &&
+    (text === enSkills.builtin_role_skills[name].description_v1.trim() ||
+      (name === "multica-progress-report" && text === zhSkills.builtin_role_skills[name].description_v1.trim()))
   ) return "description_v1";
 
   return null;
@@ -77,7 +78,7 @@ export function getBuiltinRoleSkillPresentation(
   // Existing workspace copies retain shipped defaults when templates change.
   // Recognize the exact old text so customized descriptions still stay untouched.
   if (
-    (key === "multica-release-check" || key === "multica-architecture-decision-record") &&
+    (key === "multica-release-check" || key === "multica-architecture-decision-record" || key === "multica-progress-report") &&
     descriptionKey === "description_v1"
   ) {
     translatedDescription = t(($) => $.builtin_role_skills[key].description_v1);

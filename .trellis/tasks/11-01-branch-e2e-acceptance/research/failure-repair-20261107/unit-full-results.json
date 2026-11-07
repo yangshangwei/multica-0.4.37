@@ -1,0 +1,307 @@
+{
+  "baseline": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+  "runs": {
+    "core-full": {
+      "run": {
+        "source_diff_sha256": "768f663dd07250557899eacced7524a47729ee1460984a0e0eabb16bd6f45df2",
+        "label": "core-full",
+        "source_head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+        "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+        "command": [
+          "pnpm",
+          "--dir",
+          "packages/core",
+          "exec",
+          "vitest",
+          "run",
+          "--maxWorkers=2",
+          "--reporter=json",
+          "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/checks/core-full/results.json"
+        ],
+        "start": "2026-11-07T07:26:37.449002+00:00",
+        "state": "complete",
+        "exit_code": 0,
+        "finished": "2026-11-07T07:27:40.366956+00:00"
+      },
+      "tests": 4464,
+      "pass": 4464,
+      "fail": 0,
+      "file_count": 331,
+      "case_count": 4464,
+      "failed_cases": []
+    },
+    "views-full": {
+      "run": {
+        "source_diff_sha256": "e660841a14f0556303ff11a9af41f76aab0d761535476c684dc237aacbcee988",
+        "label": "views-full",
+        "source_head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+        "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+        "command": [
+          "pnpm",
+          "--dir",
+          "packages/views",
+          "exec",
+          "vitest",
+          "run",
+          "--maxWorkers=2",
+          "--reporter=json",
+          "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/checks/views-full/results.json"
+        ],
+        "start": "2026-11-07T07:38:50.831621+00:00",
+        "state": "complete",
+        "exit_code": 1,
+        "finished": "2026-11-07T07:48:49.659855+00:00"
+      },
+      "tests": 7244,
+      "pass": 7241,
+      "fail": 3,
+      "file_count": 598,
+      "case_count": 7244,
+      "failed_cases": [
+        {
+          "name": "CreateIssueModal retains a stale iteration revision and draft after rejection until an explicit selection",
+          "duration": 17187.384292000002,
+          "errors": [
+            "Error: STACK_TRACE_ERROR\n    at task (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1139:27)\n    at Object.<anonymous> (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1172:16)\n    at Object.<anonymous> (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:918:28)\n    at chain (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/chunk-tasks.js:13:14)\n    at /Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/views/modals/create-issue.test.tsx:783:3\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1244:40\n    at runWithSuite (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1613:8)\n    at Object.collect (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1244:10)\n    at Object.collect (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1248:54)\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)"
+          ]
+        },
+        {
+          "name": "CreateIssueModal does not silently discard an invalid scoped iteration: {\"workspace_id\":\"other-workspace\",\"current_iteration_id\":\"iteration-1\",\"expected_iteration_revision\":7}",
+          "duration": 5781.697208000001,
+          "errors": [
+            "Error: STACK_TRACE_ERROR\n    at task (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1139:27)\n    at Object.<anonymous> (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1172:16)\n    at Object.<anonymous> (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:918:28)\n    at Object.chain (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/chunk-tasks.js:13:14)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1382:7\n    at Array.forEach (<anonymous>)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1376:10\n    at /Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/views/modals/create-issue.test.tsx:807:5\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1244:40\n    at runWithSuite (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1613:8)"
+          ]
+        },
+        {
+          "name": "CreateIssueModal does not silently discard an invalid scoped iteration: {\"workspace_id\":\"ws-test\",\"current_iteration_id\":\"iteration-1\"}",
+          "duration": 2610.537708,
+          "errors": [
+            "Error: Unable to perform pointer interaction as the element has `pointer-events: none`:\n\nBUTTON(label=Delivery plan)\n    at assertPointerEvents (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@testing-library+user-event@14.6.1_@testing-library+dom@10.4.1/node_modules/@testing-library/user-event/dist/esm/utils/pointer/cssPointerEvents.js:45:15)\n    at Object.enter (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@testing-library+user-event@14.6.1_@testing-library+dom@10.4.1/node_modules/@testing-library/user-event/dist/esm/system/pointer/pointer.js:50:17)\n    at PointerHost.move (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@testing-library+user-event@14.6.1_@testing-library+dom@10.4.1/node_modules/@testing-library/user-event/dist/esm/system/pointer/index.js:51:85)\n    at pointerAction (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@testing-library+user-event@14.6.1_@testing-library+dom@10.4.1/node_modules/@testing-library/user-event/dist/esm/pointer/index.js:57:39)\n    at Object.pointer (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@testing-library+user-event@14.6.1_@testing-library+dom@10.4.1/node_modules/@testing-library/user-event/dist/esm/pointer/index.js:25:15)\n    at Object.asyncWrapper (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@testing-library+react@16.3.2_@testing-library+dom@10.4.1_@types+react-dom@19.2.3_@type_45d0eec8526379f6699ddacab327519f/node_modules/@testing-library/react/dist/pure.js:87:22)\n    at /Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/views/modals/create-issue.test.tsx:815:5\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1258:20"
+          ]
+        }
+      ]
+    },
+    "remaining-unit-packages": {
+      "run": {
+        "source_diff_sha256": "e660841a14f0556303ff11a9af41f76aab0d761535476c684dc237aacbcee988",
+        "label": "remaining-unit-packages",
+        "source_head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+        "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+        "command": [
+          "pnpm",
+          "exec",
+          "turbo",
+          "run",
+          "test",
+          "--filter=!@multica/mobile",
+          "--filter=!@multica/core",
+          "--filter=!@multica/views",
+          "--concurrency=1",
+          "--force",
+          "--",
+          "--maxWorkers=2"
+        ],
+        "start": "2026-11-07T07:40:46.733319+00:00",
+        "state": "complete",
+        "exit_code": 0,
+        "finished": "2026-11-07T07:42:47.469580+00:00"
+      }
+    },
+    "static-final": {
+      "run": {
+        "source_diff_sha256": "e660841a14f0556303ff11a9af41f76aab0d761535476c684dc237aacbcee988",
+        "label": "static-final",
+        "source_head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+        "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+        "command": [
+          "pnpm",
+          "exec",
+          "turbo",
+          "run",
+          "lint",
+          "typecheck",
+          "--filter=!@multica/mobile",
+          "--concurrency=1",
+          "--force"
+        ],
+        "start": "2026-11-07T07:38:50.831617+00:00",
+        "state": "complete",
+        "exit_code": 0,
+        "finished": "2026-11-07T07:45:25.422694+00:00"
+      }
+    },
+    "create-issue-recheck": {
+      "run": {
+        "source_diff_sha256": "e660841a14f0556303ff11a9af41f76aab0d761535476c684dc237aacbcee988",
+        "label": "create-issue-recheck",
+        "source_head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+        "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+        "command": [
+          "pnpm",
+          "--dir",
+          "packages/views",
+          "exec",
+          "vitest",
+          "run",
+          "modals/create-issue.test.tsx",
+          "--maxWorkers=1",
+          "--reporter=json",
+          "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/checks/create-issue-recheck/results.json"
+        ],
+        "start": "2026-11-07T07:50:19.513857+00:00",
+        "state": "complete",
+        "exit_code": 0,
+        "finished": "2026-11-07T07:50:25.489800+00:00"
+      },
+      "tests": 61,
+      "pass": 61,
+      "fail": 0,
+      "file_count": 1,
+      "case_count": 61,
+      "failed_cases": []
+    }
+  },
+  "other_units": {
+    "docs": 62,
+    "web": 290,
+    "desktop": 1272
+  },
+  "first_complete_package_results": {
+    "pass": 13329,
+    "fail": 3,
+    "total": 13332
+  },
+  "after_unchanged_file_recheck": {
+    "unique_tests_with_pass": 13332,
+    "remaining_failures": 0,
+    "method": "Only3 previouslyfailedidentities superseded bywholefile61PASS; firstfullviews7241PASS3FAILretained; noautoreretry"
+  },
+  "static": {
+    "tasks": 15,
+    "passed": 15,
+    "warnings": 30,
+    "errors": 0
+  },
+  "limitations": [
+    "First fullViews run had3 failures in unchangedcreate-issue.test.tsx; separate61-testfilepassedwithoutsource/timeoutchanges; precisefirstfailurecause notestablished",
+    "Original4requestedunitfailures allpassed in targeted andfullruns",
+    "No Go/backend rerun: productbackendunchanged"
+  ],
+  "evidence": [
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/core-full/stdout.txt",
+      "sha256": "1d1ffa3d9b213db0f7da0ed84af859a99245727fac307d136f12a1a944096c40",
+      "bytes": 135
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/core-full/results.json",
+      "sha256": "343f34f6ad91ce3e0e87fae6bb626c88640d704da420ee27d2c17afc64743443",
+      "bytes": 1540538
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/core-full/stderr.txt",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/core-full/candidate.diff",
+      "sha256": "768f663dd07250557899eacced7524a47729ee1460984a0e0eabb16bd6f45df2",
+      "bytes": 10073
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/core-full/run.json",
+      "sha256": "d60babe71cdd8030e0fa7501700b002fc56f923ed15d931116a55fa8435846af",
+      "bytes": 665
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/views-full/stdout.txt",
+      "sha256": "e544a9e3c2f405d3dcc433bf3e672ef7c9593e3be2e7e318c93cdbec740c1ccc",
+      "bytes": 136
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/views-full/results.json",
+      "sha256": "6a4443f406bd553583857edf4fbddd0859249c68846b6614bce745a020216844",
+      "bytes": 2371255
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/views-full/stderr.txt",
+      "sha256": "6f2aa29c4262361039400a7cddedee665518c7f130e122245d3979ba7ed41582",
+      "bytes": 4391
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/views-full/candidate.diff",
+      "sha256": "e660841a14f0556303ff11a9af41f76aab0d761535476c684dc237aacbcee988",
+      "bytes": 16152
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/views-full/run.json",
+      "sha256": "5201df0ff52c6c920341b35e5896c2155e97fc2e1ca0dd6473bc9446af134811",
+      "bytes": 668
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/remaining-unit-packages/stdout.txt",
+      "sha256": "8a54510278430202104be770c438134a2226ceed1c74891430ca89fef12ccb09",
+      "bytes": 87322
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/remaining-unit-packages/stderr.txt",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/remaining-unit-packages/candidate.diff",
+      "sha256": "e660841a14f0556303ff11a9af41f76aab0d761535476c684dc237aacbcee988",
+      "bytes": 16152
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/remaining-unit-packages/run.json",
+      "sha256": "57d7a9ae8fa0ecee55c52fb8f20b9389011f69f288f04fefc84815372e006774",
+      "bytes": 645
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/static-final/stdout.txt",
+      "sha256": "97fdbbef7f6c9f72553f265b93769433d5175480b2242e88f052a49aaaf0c170",
+      "bytes": 13996
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/static-final/stderr.txt",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/static-final/candidate.diff",
+      "sha256": "e660841a14f0556303ff11a9af41f76aab0d761535476c684dc237aacbcee988",
+      "bytes": 16152
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/static-final/run.json",
+      "sha256": "6a2dac3241c1831d40446a7067cecb0040f4a56f43d90d96c557e7950c58d275",
+      "bytes": 556
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/create-issue-recheck/stdout.txt",
+      "sha256": "59ed4ac9a0305f83e1e49b95127bd773fdf164a998e189891abdb02a2d4eb0ff",
+      "bytes": 146
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/create-issue-recheck/results.json",
+      "sha256": "8787313175066bad69012e67c2c130b03d3a67476215ca9e9d3611fc90ea85b4",
+      "bytes": 20659
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/create-issue-recheck/stderr.txt",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/create-issue-recheck/candidate.diff",
+      "sha256": "e660841a14f0556303ff11a9af41f76aab0d761535476c684dc237aacbcee988",
+      "bytes": 16152
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/checks/create-issue-recheck/run.json",
+      "sha256": "857aac10889e687f5ae8b22e7cfe721e355d36f8e5e9b8d2bb89743e42122ec3",
+      "bytes": 724
+    }
+  ]
+}

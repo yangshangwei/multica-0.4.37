@@ -1,0 +1,166 @@
+{
+  "reviewed_at": "2026-11-07T07:24:38.159232+00:00",
+  "reviewer": "/root/repair_review",
+  "result": "PASS_UNIT_SOURCE_AND_TARGETED_EVIDENCE",
+  "full_repair_status": "PENDING_SCROLL_AND_BROAD_CHECKS",
+  "baseline": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+  "source": [
+    {
+      "path": "packages/core/diagnostics/diagnostic-context.ts",
+      "before_sha256": "6bb2dd4e46e0300746a669086e85211c782721e3c9ef2798bcead62fc04d8fc8",
+      "after_sha256": "6f4a130597f61732708de0fa6a9b0a775146382a70f39cd6cd125f03e4fcabf5"
+    },
+    {
+      "path": "packages/core/diagnostics/diagnostic-context.test.ts",
+      "before_sha256": "720546fdaa0ca3632a257672a43651ac7ed31603c8debbae3abd90b6610969d4",
+      "after_sha256": "1230f927b7137a1b3f83b6279f0e4c75782a0eff4ece586f7b6480ea90f5975b"
+    },
+    {
+      "path": "packages/views/locales/en/skills.json",
+      "before_sha256": "d7ee6f72624fb1760725f78f1dd5e74efb3d50713343df889def3f71946bcd84",
+      "after_sha256": "4add3757bc24b0aff74724108727bfab32540bfced1e67af51f596898610bd71"
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/skills.json",
+      "before_sha256": "ec12f0bf8260bbe5d76ceb6de36634b5c9bbc53aad1b1339fa7ea10f3a24686d",
+      "after_sha256": "02341991cb95f686f9beee099a84ce3371ac27529644545c83dccdffc77f6049"
+    },
+    {
+      "path": "packages/views/skills/lib/skill-presentation.ts",
+      "before_sha256": "84f078a7b6a326e806198dbb94df750d8fa51f2d092276856865d447fa68ddca",
+      "after_sha256": "b325455fabb8e5f92873913b53daf59687d85920315e6808b2d285fe639cb17f"
+    },
+    {
+      "path": "packages/views/skills/lib/skill-presentation.test.ts",
+      "before_sha256": "9730b251253ee35ef986dd8dcdc691bb312449155c5454fa629bfeafbea2ab9a",
+      "after_sha256": "d7cf0a7bd91c24ddef8c1d083460f6890f7bd3573fd588833ad0f9e2990fdc40"
+    }
+  ],
+  "historical_proof": {
+    "commit": "cd95c8e40^",
+    "embedded_source_sha256": "8cbc29c8c5fe57e9309d324066199a7b2a2c6ef2db1a477d74e2a581ed7354dc",
+    "exact_zh_default_matches": true,
+    "exact_en_catalog_matches": true
+  },
+  "findings": [],
+  "observations": [
+    "Known routes remain structural; fallback privacy masking and all original assertions retained",
+    "Current progress locale aligns with immutable current-project embedded scope",
+    "Existing description_v1 path recognizes only verified exact previous EN/ZH progress text; origin guard and customized-description preservation retained",
+    "Interim skill test failure came from extending old EN-only parameter matrix to a deliberately recognized ZH case; old two entries retained and separate progress both-language test added"
+  ],
+  "verification": [
+    {
+      "label": "baseline-diagnostic",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/baseline-diagnostic/run.json",
+      "exit_code": 1,
+      "results_sha256": "fba054fde818ac78ce9798d7408c1f776e936919f1fb281910c8753b57f83306",
+      "tests": {
+        "numTotalTests": 15,
+        "numPassedTests": 14,
+        "numFailedTests": 1
+      }
+    },
+    {
+      "label": "baseline-skill",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/baseline-skill/run.json",
+      "exit_code": 1,
+      "results_sha256": "d5fe0423189c04f0630134ac572f232a98fa334ad160d6d1fbd7b117b1577a3a",
+      "tests": {
+        "numTotalTests": 109,
+        "numPassedTests": 106,
+        "numFailedTests": 3
+      }
+    },
+    {
+      "label": "diagnostic-regression-red",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/diagnostic-regression-red/run.json",
+      "exit_code": 1,
+      "results_sha256": "b69409c6f6f26804c48d41eed1ca7a51bd9eb77a32fc0eca0eef1512a22a2c44",
+      "tests": {
+        "numTotalTests": 18,
+        "numPassedTests": 14,
+        "numFailedTests": 4
+      }
+    },
+    {
+      "label": "diagnostic-green",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/diagnostic-green/run.json",
+      "exit_code": 0,
+      "results_sha256": "7151a90eda2714a0a0709d3baeba1df72f3dad52616d4310f7b4d97e3f7d64e5",
+      "tests": {
+        "numTotalTests": 33,
+        "numPassedTests": 33,
+        "numFailedTests": 0
+      }
+    },
+    {
+      "label": "skill-green",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/skill-green/run.json",
+      "exit_code": 1,
+      "results_sha256": "8e7b69c73f3df69c5a61d1d8299207a30f0f60b06b60315925d8659c9df805c6",
+      "tests": {
+        "numTotalTests": 114,
+        "numPassedTests": 113,
+        "numFailedTests": 1
+      }
+    },
+    {
+      "label": "skill-green-final",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/skill-green-final/run.json",
+      "exit_code": 0,
+      "results_sha256": "5be76a82ab4bc8c927baf6e46ee21c92c807b0b51e5710316637ddfeb1d45751",
+      "tests": {
+        "numTotalTests": 180,
+        "numPassedTests": 180,
+        "numFailedTests": 0
+      }
+    },
+    {
+      "label": "locale-parity",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/locale-parity/run.json",
+      "exit_code": 0,
+      "results_sha256": "ea3ef4f9b6db189223e5319a4d8a3898c96cfe76206c94a47f2619b14597532d",
+      "tests": {
+        "numTotalTests": 66,
+        "numPassedTests": 66,
+        "numFailedTests": 0
+      }
+    },
+    {
+      "label": "diagnostic-lint",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/diagnostic-lint/run.json",
+      "exit_code": 0,
+      "results_sha256": null,
+      "tests": null
+    },
+    {
+      "label": "skill-lint",
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/skill-lint/run.json",
+      "exit_code": 0,
+      "results_sha256": null,
+      "tests": null
+    },
+    {
+      "label": "skill-lint-final",
+      "record": ".omx/private/acceptance-repair-20261107/units/skill-lint-final/run.json",
+      "exit_code": 0,
+      "record_sha256": "584ad4a59a76532b47f4ea6bb6f3b7cae58a99d99a6ef22f8fdd3aae691aa6cc"
+    },
+    {
+      "label": "core-typecheck",
+      "record": ".omx/private/acceptance-repair-20261107/units/core-typecheck/run.json",
+      "exit_code": 0,
+      "record_sha256": "8d3a864094fd04474210170dada7a1478ed727fbce5f23525f181dec3ed96e83"
+    },
+    {
+      "label": "views-typecheck",
+      "record": ".omx/private/acceptance-repair-20261107/units/views-typecheck/run.json",
+      "exit_code": 0,
+      "record_sha256": "46b1b71535f50551515cced5736cd6f26f846046c68e2594dd363f670999d65c"
+    }
+  ],
+  "spec_update": "Document exact verified historical Chinese progress default in builtin-skill-localization.md",
+  "reviewer_source_edits": false,
+  "reviewer_test_executions": 0
+}

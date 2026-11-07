@@ -39,6 +39,17 @@ restores after data readiness on resume, including URLs with run/comment or
 section anchors; explicit opens retain anchor focus. Shared-context version URLs
 retain their exact meaning; a global resume must not reopen a dismissed dialog.
 
+The account detail container owns its numeric scroll memento, so opt that
+container out of browser scroll anchoring with `overflow-anchor: none`. A cached
+read-error banner can remain during restoration and disappear after a successful
+background refetch; native anchoring otherwise moves the restored offset by the
+banner's height and gap, even when the scroll range still permits the saved
+position. Keep this policy local to the account detail root, not the generic
+restoration hook or every application scroller. The tradeoff is that later
+layout changes in this container no longer receive automatic anchor adjustment;
+explicit comment/run/description navigation still owns its deliberate scroll.
+Do not compensate with a timer or repeated writes of the saved position.
+
 The global row is 48px high and outside the content canvas and sidebar collapse.
 Viewport-fixed sidebar containers start below it. Desktop reserves 80px for
 native traffic lights in that row, with no-drag interactive controls; history
@@ -82,6 +93,24 @@ tests own switch keyboard/current state and anchor/scroll behavior. Production
 Web and actual Electron navigation journeys live in
 `e2e/global-scope-navigation.spec.ts`; record build identity and exact native
 harness scope. Class assertions or JSDOM offsets are not visual/native proof.
+
+The scope-navigation browser regression injects a failed issue read, resumes the
+cached detail at 620, drains earlier handlers, then activates the current error
+banner's Refresh control with Enter. Focus it with `preventScroll` so an offscreen
+pointer click does not move the offset. Hold that GET, assert 620, and release it
+with `route.continue()`. Match the browser response by Request identity and require
+200 and completed transport before error removal, painted frames and the same
+offset on Web and actual Electron. In the native harness, synthesized
+`route.fulfill` responses can surface status 0 even when `route.fetch()` returned
+200; that upstream result alone does not prove recovery. A check that finishes
+before the banner disappears can pass while the later position is wrong. Retain
+the complete detail journeys and their exact restoration assertions.
+
+Web document reloads process the URL's explicit comment anchor; wait for its
+actual focus before choosing a screenshot position. Desktop rehydration restores
+the persisted account tab with `isScopeResume: true`, so it must not be required
+to refocus the old anchor. Keep explicit native deep-link focus assertions and
+all screenshot geometry checks separate from reload/memento restoration.
 
 ## 7. Wrong vs Correct
 

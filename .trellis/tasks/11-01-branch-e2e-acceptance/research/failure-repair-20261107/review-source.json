@@ -1,0 +1,79 @@
+{
+  "at": "2026-11-07T07:43:27.956223+00:00",
+  "reviewer": "/root/repair_review",
+  "result": "PASS_SOURCE_REVIEW_PENDING_FINAL_EXECUTION",
+  "blocking_findings": [],
+  "files": [
+    {
+      "path": "packages/core/diagnostics/diagnostic-context.ts",
+      "before_sha256": "6bb2dd4e46e0300746a669086e85211c782721e3c9ef2798bcead62fc04d8fc8",
+      "after_sha256": "6f4a130597f61732708de0fa6a9b0a775146382a70f39cd6cd125f03e4fcabf5"
+    },
+    {
+      "path": "packages/core/diagnostics/diagnostic-context.test.ts",
+      "before_sha256": "720546fdaa0ca3632a257672a43651ac7ed31603c8debbae3abd90b6610969d4",
+      "after_sha256": "1230f927b7137a1b3f83b6279f0e4c75782a0eff4ece586f7b6480ea90f5975b"
+    },
+    {
+      "path": "packages/views/locales/en/skills.json",
+      "before_sha256": "d7ee6f72624fb1760725f78f1dd5e74efb3d50713343df889def3f71946bcd84",
+      "after_sha256": "4add3757bc24b0aff74724108727bfab32540bfced1e67af51f596898610bd71"
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/skills.json",
+      "before_sha256": "ec12f0bf8260bbe5d76ceb6de36634b5c9bbc53aad1b1339fa7ea10f3a24686d",
+      "after_sha256": "02341991cb95f686f9beee099a84ce3371ac27529644545c83dccdffc77f6049"
+    },
+    {
+      "path": "packages/views/skills/lib/skill-presentation.ts",
+      "before_sha256": "84f078a7b6a326e806198dbb94df750d8fa51f2d092276856865d447fa68ddca",
+      "after_sha256": "b325455fabb8e5f92873913b53daf59687d85920315e6808b2d285fe639cb17f"
+    },
+    {
+      "path": "packages/views/skills/lib/skill-presentation.test.ts",
+      "before_sha256": "9730b251253ee35ef986dd8dcdc691bb312449155c5454fa629bfeafbea2ab9a",
+      "after_sha256": "d7cf0a7bd91c24ddef8c1d083460f6890f7bd3573fd588833ad0f9e2990fdc40"
+    },
+    {
+      "path": "packages/views/collaboration/account-workbench-page.tsx",
+      "before_sha256": "8411072cf6dbef1815f1588809fcdd61e3fc0b277b7485c61f631bc0c43de338",
+      "after_sha256": "1cf48d9d88a716910fdf5552aaed79aa1da751c6cd7495dad477e9c1a84130a6"
+    },
+    {
+      "path": "e2e/global-scope-navigation.spec.ts",
+      "before_sha256": "d1c42fe74bb0a9a4f6b3a526da3ebb78127959f227e87487499a90d9c7b3ed60",
+      "after_sha256": "7f76197d92419ee2afa11aab519a1161cdb9e5738fee964b3bba175479220313"
+    }
+  ],
+  "patch_sha256": "e4173bd547fc856ba0195b9f06ca77c513b1831572aa7b48c735e0ff95058d08",
+  "documentation": [
+    {
+      "path": ".trellis/spec/core/frontend/global-scope-navigation.md",
+      "sha256": "14230f2ad5a85576f5eb098f433e1cff738178ce2b0f43ab9c8ddd391aea56ec"
+    },
+    {
+      "path": ".trellis/spec/views/frontend/builtin-skill-localization.md",
+      "sha256": "922fa888f5e32f578aec4eb8491f2b88606f2735905fd3ae9796d25226425484"
+    }
+  ],
+  "confirmed_scope": [
+    "Numeric offset authority scoped only account-detail scrollroot",
+    "No generic scrollhook/timer/continuous forcing or cache/membership changes",
+    "Permanent browserregression holds actualGET untilretainederror+620 visible then requireserrorgone+paint+620",
+    "Originalnavigationmemento180/620,explicitanchor800,narrowlocale andnative assertions retained",
+    "Exactverifiedhistoricalprogress texts only;custom records protected"
+  ],
+  "required_final_evidence": [
+    "Production Web+Electron canonicaldetail2PASS",
+    "Global-scope Web+Electron2PASS includingrecoveryblock",
+    "Parent lint/typecheck andaffectedfullunitresults",
+    "Ownedcleanup andsourceintegrationhashes"
+  ],
+  "red_evidence_limits": [
+    "Corrected globalREDcases failedat earlieroffsetchecks620→660/Web and620→580/Desktop; do not labelboth newrecoveryassertion failures",
+    "Exact620→476 aftererrorgone comes fromseparateprivateafter-recoverydiagnostic",
+    "Initialqueryparameterglobfailure wasinterruptedfixture attempt;not productRED"
+  ],
+  "source_edits_by_reviewer": false,
+  "test_executions_by_reviewer": 0
+}

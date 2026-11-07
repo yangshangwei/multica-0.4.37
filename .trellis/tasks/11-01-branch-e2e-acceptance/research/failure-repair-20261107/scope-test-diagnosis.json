@@ -1,0 +1,158 @@
+{
+  "reviewed_at": "2026-11-07T07:54:57.555498+00:00",
+  "role": "Independent read-only diagnosis; no runtime/DB/source edits",
+  "run": "repaired-canonical",
+  "cases": [
+    {
+      "title": "Web global switching resumes the task, collaboration filters and both scroll positions",
+      "status": "failed",
+      "start_time": "2026-11-07T07:44:46.387Z",
+      "duration_ms": 14576,
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('navigation', { name: '应用导航', exact: true }).getByRole('button', { name: '协作', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('navigation', { name: '应用导航', exact: true }).getByRole('button', { name: '协作', exact: true })\n",
+      "location": {
+        "file": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/e2e/global-scope-navigation.spec.ts",
+        "column": 88,
+        "line": 197
+      },
+      "attachments": [
+        {
+          "name": "error-context",
+          "contentType": "text/markdown",
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/runs/repaired-canonical/artifacts/global-scope-navigation-We-2f8bc-s-and-both-scroll-positions-chromium/error-context.md"
+        }
+      ]
+    },
+    {
+      "title": "Desktop global switching resumes the task, collaboration filters and both scroll positions",
+      "status": "failed",
+      "start_time": "2026-11-07T07:45:02.492Z",
+      "duration_ms": 16270,
+      "error": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  locator('[data-tab-scroll-root=\"account-detail\"]').locator(':scope > div > [role=alert]')\nExpected: 0\nReceived: 1\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for locator('[data-tab-scroll-root=\"account-detail\"]').locator(':scope > div > [role=alert]')\n    9 × locator resolved to 1 element\n      - unexpected value \"1\"\n",
+      "location": {
+        "file": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/e2e/global-scope-navigation.spec.ts",
+        "column": 30,
+        "line": 158
+      },
+      "attachments": []
+    }
+  ],
+  "findings": {
+    "web": {
+      "classification": "Confirmed obsolete fixture label",
+      "actual_label": "协作空间",
+      "expected_label": "协作",
+      "evidence": "Saved ARIA snapshot navigation and collaboration.page.title source agree; GlobalScopeNavigation reads that catalog key. The full recovery section already completed before this late assertion.",
+      "recommended_fix": "Use exact current product label, preferably same shared locale fixture/catalog source. Keep visible nav and overflow assertions."
+    },
+    "desktop": {
+      "classification": "Recovery response/UI symptom unresolved; not a Chinese label failure",
+      "observed": "After releaseRecovery(), root alert count stayed1 for5s atline158. No trace/native snapshot/request correlation was retained.",
+      "route_contract": "The ready promise resolves when a handler enters recovery, before route.fetch or route.fulfill. Active set may also contain older failing handlers. Finally releases, awaits active handlers, then unregisters.",
+      "limits": "Neither route outcome nor which renderer request consumed each API200/503 is recorded. A product/query error versus injection/cancellation race cannot be established from current logs.",
+      "recommended_diagnostic": "Passively record operationid, GET/method/path, branch-at-entry, request-failed/cancel, fetchstatus/duration, fulfillcompletion and bannertext; bind recoveredresponse to actualcurrentrequest. Preserve existing5s UI expectation and620 offset.",
+      "conditional_fix": "If currentheld request gets genuine200 and completesfulfill, waitonthat boundary before checkingbanner. If statusfails, preserveitanddiagnose; do notforce200/deletealert/retryorraiseassertionbudget."
+    }
+  },
+  "api_evidence": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/registry/envs/scroll-repair-20261107/logs/api.log",
+    "timezone": "Asia/Shanghai (UTC+08)",
+    "test_interval_utc": "07:45:02.492–07:45:18.762",
+    "same_issue": "01a1b4f7-d640-779d-8f03-874ae54f2d2e",
+    "selected_lines": [
+      {
+        "line": 3022,
+        "text": "15:45:07.568 ERR http request method=GET path=/api/collaboration/issues/01a1b4f7-d640-779d-8f03-874ae54f2d2e status=503 duration=6.201ms request_id=e09da484 user_id=d2710f46-68eb-4a87-ae64-a5975220dea7 client_platform=desktop client_version=0.4.40-test client_os=macos"
+      },
+      {
+        "line": 3025,
+        "text": "15:45:07.674 INF http request method=GET path=/api/collaboration/issues/01a1b4f7-d640-779d-8f03-874ae54f2d2e status=200 duration=106.284ms request_id=354e58e9 user_id=d2710f46-68eb-4a87-ae64-a5975220dea7 client_platform=desktop client_version=0.4.40-test client_os=macos"
+      },
+      {
+        "line": 3100,
+        "text": "15:45:09.071 ERR http request method=GET path=/api/collaboration/issues/01a1b4f7-d640-779d-8f03-874ae54f2d2e status=503 duration=78.547ms request_id=93b46943 user_id=d2710f46-68eb-4a87-ae64-a5975220dea7 client_platform=desktop client_version=0.4.40-test client_os=macos"
+      },
+      {
+        "line": 3110,
+        "text": "15:45:09.469 ERR http request method=GET path=/api/collaboration/issues/01a1b4f7-d640-779d-8f03-874ae54f2d2e status=503 duration=394.748ms request_id=7b39e078 user_id=d2710f46-68eb-4a87-ae64-a5975220dea7 client_platform=desktop client_version=0.4.40-test client_os=macos"
+      },
+      {
+        "line": 3117,
+        "text": "15:45:09.500 WRN db pool pressure max_conns=25 total_conns=16 acquired_conns=4 idle_conns=0 constructing_conns=12 acquire_count_delta=1240 empty_acquire_delta=24 canceled_acquire_delta=10 avg_acquire_ms=2"
+      },
+      {
+        "line": 3128,
+        "text": "15:45:10.129 INF http request method=GET path=/api/collaboration/issues/01a1b4f7-d640-779d-8f03-874ae54f2d2e status=200 duration=645.808ms request_id=76c0bdf8 user_id=d2710f46-68eb-4a87-ae64-a5975220dea7 client_platform=desktop client_version=0.4.40-test client_os=macos"
+      },
+      {
+        "line": 3209,
+        "text": "15:45:11.731 INF http request method=GET path=/api/collaboration/issues/01a1b4f7-d640-779d-8f03-874ae54f2d2e status=200 duration=167.581ms request_id=9445a879 user_id=d2710f46-68eb-4a87-ae64-a5975220dea7 client_platform=desktop client_version=0.4.40-test client_os=macos"
+      },
+      {
+        "line": 3210,
+        "text": "15:45:11.745 INF http request method=GET path=/api/collaboration/issues/01a1b4f7-d640-779d-8f03-874ae54f2d2e status=200 duration=238.158ms request_id=5b02ee55 user_id=d2710f46-68eb-4a87-ae64-a5975220dea7 client_platform=desktop client_version=0.4.40-test client_os=macos"
+      },
+      {
+        "line": 3211,
+        "text": "15:45:11.745 INF http request method=GET path=/api/collaboration/issues/01a1b4f7-d640-779d-8f03-874ae54f2d2e status=200 duration=259.69ms request_id=2be66b66 user_id=d2710f46-68eb-4a87-ae64-a5975220dea7 client_platform=desktop client_version=0.4.40-test client_os=macos"
+      },
+      {
+        "line": 3293,
+        "text": "15:45:12.519 INF http request method=GET path=/api/collaboration/issues/01a1b4f7-d640-779d-8f03-874ae54f2d2e status=200 duration=62.132ms request_id=1175264a user_id=d2710f46-68eb-4a87-ae64-a5975220dea7 client_platform=desktop client_version=0.4.40-test client_os=macos"
+      },
+      {
+        "line": 3294,
+        "text": "15:45:12.524 INF http request method=GET path=/api/collaboration/issues/01a1b4f7-d640-779d-8f03-874ae54f2d2e status=200 duration=66.215ms request_id=a75edcdf user_id=d2710f46-68eb-4a87-ae64-a5975220dea7 client_platform=desktop client_version=0.4.40-test client_os=macos"
+      },
+      {
+        "line": 3295,
+        "text": "15:45:12.540 INF http request method=GET path=/api/collaboration/issues/01a1b4f7-d640-779d-8f03-874ae54f2d2e status=200 duration=84.971ms request_id=b15402d6 user_id=d2710f46-68eb-4a87-ae64-a5975220dea7 client_platform=desktop client_version=0.4.40-test client_os=macos"
+      }
+    ],
+    "interpretation": "Repeated sameissue200/503 duringnav;lastrecorded200at15:45:12.519/.524/.540. APIlogs alone do not bind these to route.fulfill or browser consumption. Unrelated503 duringnav alsooccur; cancellation is possible, not established."
+  },
+  "references": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/runs/repaired-canonical/results.json",
+      "sha256_at_inspection": "8f375f64e295b8c3018711730d5b0e8da8147766dc4038dd0d2c97403d712e51",
+      "bytes": 46958
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/runs/repaired-canonical/run.json",
+      "sha256_at_inspection": "fc2c805745dc1dab864929ebcd263d2436261c6a599bd62bf3e5454d7cb44974",
+      "bytes": 645
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/runs/repaired-canonical/stderr.txt",
+      "sha256_at_inspection": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/runs/repaired-canonical/artifacts/global-scope-navigation-We-2f8bc-s-and-both-scroll-positions-chromium/error-context.md",
+      "sha256_at_inspection": "c996feba81b00ba4d4b446637b0eb089cbbe0e43dba3d8694c0242138a4ba034",
+      "bytes": 12990
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/e2e/global-scope-navigation.spec.ts",
+      "sha256_at_inspection": "c9c9cd977e3421fd5d748104222010261bb1646e3f3f77e965fff691e4bfb1a4",
+      "bytes": 14611
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/views/layout/global-scope-navigation.tsx",
+      "sha256_at_inspection": "f70b3386721858de2645e3f01d3022d377aa1c2a49b7400e63816fa20a082324",
+      "bytes": 1644
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/views/locales/zh-Hans/collaboration.json",
+      "sha256_at_inspection": "b9108306902a9b9e540f48314decffd0e72462ef25bf555aecc6df9e86fe6cb7",
+      "bytes": 46145
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/core/collaboration/queries.ts",
+      "sha256_at_inspection": "429dd8178587b17ec4187cd740f944093c1b5485cbc8c0e983fb4bc7ae379ab9",
+      "bytes": 4236
+    }
+  ],
+  "runtime_actions": false,
+  "database_actions": false,
+  "source_edits": false
+}

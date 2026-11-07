@@ -1,0 +1,47 @@
+{
+  "time": "2026-11-07T08:33:52.038276+00:00",
+  "baseline": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+  "files": {
+    "e2e/fixtures/collaboration-detail-journey.ts": {
+      "root_before": "0c0ef62cb1bdee7cb043727b80f95977ccddd584aadfbb7be6ad3e99139ab67e",
+      "integrated_sha256": "ec727d740cf074b4b7f47a257ef29a3e2e233736b7f69c845c2b69fd58bc88e2"
+    },
+    "e2e/global-scope-navigation.spec.ts": {
+      "root_before": "d1c42fe74bb0a9a4f6b3a526da3ebb78127959f227e87487499a90d9c7b3ed60",
+      "integrated_sha256": "5313dea3fee384ae097bf0c3e9b2467ffbc28afa673503da0d039a932174f624"
+    },
+    "packages/core/diagnostics/diagnostic-context.test.ts": {
+      "root_before": "720546fdaa0ca3632a257672a43651ac7ed31603c8debbae3abd90b6610969d4",
+      "integrated_sha256": "1230f927b7137a1b3f83b6279f0e4c75782a0eff4ece586f7b6480ea90f5975b"
+    },
+    "packages/core/diagnostics/diagnostic-context.ts": {
+      "root_before": "6bb2dd4e46e0300746a669086e85211c782721e3c9ef2798bcead62fc04d8fc8",
+      "integrated_sha256": "6f4a130597f61732708de0fa6a9b0a775146382a70f39cd6cd125f03e4fcabf5"
+    },
+    "packages/views/collaboration/account-workbench-page.tsx": {
+      "root_before": "8411072cf6dbef1815f1588809fcdd61e3fc0b277b7485c61f631bc0c43de338",
+      "integrated_sha256": "1cf48d9d88a716910fdf5552aaed79aa1da751c6cd7495dad477e9c1a84130a6"
+    },
+    "packages/views/locales/en/skills.json": {
+      "root_before": "d7ee6f72624fb1760725f78f1dd5e74efb3d50713343df889def3f71946bcd84",
+      "integrated_sha256": "4add3757bc24b0aff74724108727bfab32540bfced1e67af51f596898610bd71"
+    },
+    "packages/views/locales/zh-Hans/skills.json": {
+      "root_before": "ec12f0bf8260bbe5d76ceb6de36634b5c9bbc53aad1b1339fa7ea10f3a24686d",
+      "integrated_sha256": "02341991cb95f686f9beee099a84ce3371ac27529644545c83dccdffc77f6049"
+    },
+    "packages/views/skills/lib/skill-presentation.test.ts": {
+      "root_before": "9730b251253ee35ef986dd8dcdc691bb312449155c5454fa629bfeafbea2ab9a",
+      "integrated_sha256": "d7cf0a7bd91c24ddef8c1d083460f6890f7bd3573fd588833ad0f9e2990fdc40"
+    },
+    "packages/views/skills/lib/skill-presentation.ts": {
+      "root_before": "84f078a7b6a326e806198dbb94df750d8fa51f2d092276856865d447fa68ddca",
+      "integrated_sha256": "b325455fabb8e5f92873913b53daf59687d85920315e6808b2d285fe639cb17f"
+    }
+  },
+  "generated_exclusion": {
+    "file": "apps/web/next-env.d.ts",
+    "exact_diff": "diff --git a/apps/web/next-env.d.ts b/apps/web/next-env.d.ts\nindex c4b7818fb..9edff1c7c 100755\n--- a/apps/web/next-env.d.ts\n+++ b/apps/web/next-env.d.ts\n@@ -1,6 +1,6 @@\n /// <reference types=\"next\" />\n /// <reference types=\"next/image-types/global\" />\n-import \"./.next/dev/types/routes.d.ts\";\n+import \"./.next/types/routes.d.ts\";\n \n // NOTE: This file should not be edited\n // see https://nextjs.org/docs/app/api-reference/config/typescript for more information.\n"
+  },
+  "method": "Assert root bytes equal baseline and repair bytes equal verified final source, then copy exactly9 files. No other root files overwritten."
+}

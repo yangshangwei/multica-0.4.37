@@ -13,7 +13,7 @@ import {
   CollaborationTriggerPreviewSchema,
   type CollaborationIssue, type CollaborationStatusAction, type CollaborationSubmission,
 } from "@multica/core/collaboration";
-import { accountPath as collaborationAccountPath } from "@multica/core/paths";
+import { accountPath as collaborationAccountPath, parseAccountPath } from "@multica/core/paths";
 import { TestApiClient } from "../fixtures";
 import { gapWorkflowObservations } from "./collaboration-control-gaps";
 import { selectHandoffRecipient } from "./collaboration-offline-handoff";
@@ -679,7 +679,12 @@ export async function switchJourneyLocale(session: DetailJourneySession, actor: 
     document.cookie = `multica-locale=${value}; path=/; SameSite=Lax`;
   }, locale);
   session.locale = locale;
+  const url = new URL(session.page.url());
+  const destination = session.platform === "web" ? parseAccountPath(url.pathname + url.search + url.hash) : null;
   await refreshJourneyIssue(session, id);
+  // Web reload reopens the URL anchor; Desktop rehydrates its saved tab instead.
+  // Wait for Web's comment focus before capture chooses its own scroll position.
+  if (destination?.commentId) await expect(session.page.locator(`[id="comment-${destination.commentId}"]`)).toBeFocused();
   await expect(session.page.getByRole("heading", { name: journeyCopy(locale).delivery, exact: true })).toBeVisible();
 }
 

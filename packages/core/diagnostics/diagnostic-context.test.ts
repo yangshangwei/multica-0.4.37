@@ -93,6 +93,13 @@ describe("bucketDiagnosticPath", () => {
     expect(bucketDiagnosticPath("/acme/agents")).toBe("/:slug/agents");
   });
 
+  it.each(["new", "new/manual", "new/template"])(
+    "identifies the squad creation screen %s without treating it as an id",
+    (screen) => {
+      expect(bucketDiagnosticPath(`/acme/squads/${screen}`)).toBe(`/:slug/squads/${screen}`);
+    },
+  );
+
   it("keeps pre-workspace routes intact", () => {
     expect(bucketDiagnosticPath("/login")).toBe("/login");
     expect(bucketDiagnosticPath("/account?view=current&issue=private-id#comment-private")).toBe("/account");

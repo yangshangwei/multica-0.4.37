@@ -1,0 +1,58 @@
+{
+  "scope": "Desktop held scope-recovery fixture continuation",
+  "source_file": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/e2e/global-scope-navigation.spec.ts",
+  "source_sha256": "fb585cfb6a6b7012af0994664b698f963760365c423b6f29a86743485ba99017",
+  "old_evidence": {
+    "scope-recovery-diagnosis": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/runs/scope-recovery-diagnosis/stdout.txt",
+      "sha256": "05e89c7c7369f6711a795dcaefc55afc2bc51b94230ab2fba316a7eefaa81dc9",
+      "events": [
+        "RECOVERY_FAILED 1794037920640 { errorText: 'net::ERR_ABORTED' }",
+        "RECOVERY_FAILED 1794037920654 { errorText: 'net::ERR_ABORTED' }",
+        "RECOVERY_FAILED 1794037920896 { errorText: 'net::ERR_ABORTED' }",
+        "RECOVERY_REQUEST 1794037921039 http://localhost:19793/api/collaboration/issues/01a1b4fe-231d-7dcb-9f86-322f6618bbfc?execution_view_version=6",
+        "RECOVERY_REQUEST 1794037921093 http://localhost:19793/api/collaboration/issues/01a1b4fe-231d-7dcb-9f86-322f6618bbfc?execution_view_version=6",
+        "RECOVERY_FAILED 1794037921123 { errorText: 'net::ERR_ABORTED' }",
+        "RECOVERY_REQUEST 1794037921133 http://localhost:19793/api/collaboration/issues/01a1b4fe-231d-7dcb-9f86-322f6618bbfc?execution_view_version=6",
+        "RECOVERY_FAILED 1794037921160 { errorText: 'net::ERR_ABORTED' }",
+        "RECOVERY_RESPONSE 1794037921242 200 {\"labels\":[],\"properties\":{},\"property_definitions\":[],\"source_structure\":{\"issue_revision\":\"1\",\"project\":null,\"parent_issue\":null,\"iteration\":null,\"stage\":null},\"id\":\"01a1b4fe-231d-7dcb-9f86-322f6618bbfc\",\"title\":\"Resume collaboration 00 e9e381aa\",\"",
+        "RECOVERY_RESPONSE 1794037921245 200 {\"labels\":[],\"properties\":{},\"property_definitions\":[],\"source_structure\":{\"issue_revision\":\"1\",\"project\":null,\"parent_issue\":null,\"iteration\":null,\"stage\":null},\"id\":\"01a1b4fe-231d-7dcb-9f86-322f6618bbfc\",\"title\":\"Resume collaboration 00 e9e381aa\",\"",
+        "RECOVERY_FULFILLED 1794037921246",
+        "RECOVERY_FULFILLED 1794037921246",
+        "RECOVERY_RESPONSE 1794037921252 200 {\"labels\":[],\"properties\":{},\"property_definitions\":[],\"source_structure\":{\"issue_revision\":\"1\",\"project\":null,\"parent_issue\":null,\"iteration\":null,\"stage\":null},\"id\":\"01a1b4fe-231d-7dcb-9f86-322f6618bbfc\",\"title\":\"Resume collaboration 00 e9e381aa\",\"",
+        "RECOVERY_FULFILLED 1794037921253"
+      ]
+    },
+    "scope-response-diagnosis": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/runs/scope-response-diagnosis/stdout.txt",
+      "sha256": "f0c453ef796f1f377d378173edb5812421d45d7a20697442cb4ed12f16fbb828",
+      "events": [
+        "RECOVERY_FAILED 1794038241709 { errorText: 'net::ERR_ABORTED' }",
+        "RECOVERY_FAILED 1794038241767 { errorText: 'net::ERR_ABORTED' }",
+        "RECOVERY_FAILED 1794038242032 { errorText: 'net::ERR_ABORTED' }",
+        "RECOVERY_REQUEST 1794038242155 http://localhost:19793/api/collaboration/issues/01a1b503-06cb-726d-9b6f-4bcf908407aa?execution_view_version=6",
+        "RECOVERY_REQUEST 1794038242221 http://localhost:19793/api/collaboration/issues/01a1b503-06cb-726d-9b6f-4bcf908407aa?execution_view_version=6",
+        "RECOVERY_FAILED 1794038242244 { errorText: 'net::ERR_ABORTED' }",
+        "RECOVERY_REQUEST 1794038242347 http://localhost:19793/api/collaboration/issues/01a1b503-06cb-726d-9b6f-4bcf908407aa?execution_view_version=6",
+        "RECOVERY_FAILED 1794038242358 { errorText: 'net::ERR_ABORTED' }",
+        "RECOVERY_RESPONSE 1794038242375 200 {",
+        "RECOVERY_FULFILLED 1794038242390",
+        "RECOVERY_RESPONSE 1794038242428 200 {",
+        "RECOVERY_FULFILLED 1794038242430",
+        "RECOVERY_RESPONSE 1794038242438 200 {",
+        "RECOVERY_FULFILLED 1794038242441",
+        "FINAL_BANNER [ 'Could not load collaboration. Try again.Refresh' ]",
+        "    > 161 |         try { await expect(banner).toHaveCount(0); } finally { console.log(\"FINAL_BANNER\",await banner.allTextContents()); }"
+      ]
+    }
+  },
+  "finding": "Old route.fetch 200 and route.fulfill completion are not correlated with successful renderer receipt. At least two held requests are aborted during scope transitions. Exact stale Query/remaining banner cause is not established by retained logs.",
+  "change": "Keep injected failures through scope resume; require banner and620; drain earlier handlers; focus real Refresh without scrolling and activate via Enter; hold fresh request, match response by request identity, require200 and finished null; banner removal and620 unchanged.",
+  "new_browser_result": "Parent-owned canonical run pending",
+  "checks": {
+    "diff_check": "pass",
+    "root_eslint": "cannot locate root configuration",
+    "web_config_eslint": "one pre-existing no-unsafe-finally at cleanup catch/throw; same code exists in HEAD; pnpm config migration warning and Next pages-directory warning"
+  },
+  "product_changes": []
+}

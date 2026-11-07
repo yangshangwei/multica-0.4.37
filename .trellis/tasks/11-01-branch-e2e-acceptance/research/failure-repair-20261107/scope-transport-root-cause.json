@@ -1,0 +1,121 @@
+{
+  "versions": {
+    "electron": "39.8.7",
+    "playwright": "1.58.2"
+  },
+  "source_file": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/e2e/global-scope-navigation.spec.ts",
+  "source_sha256": "5313dea3fee384ae097bf0c3e9b2467ffbc28afa673503da0d039a932174f624",
+  "diagnostic_final_source": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/scope-transport-probe/final-diagnostic-snapshot.ts",
+  "diagnostic_final_sha256": "d5cd98c4e97bc4e06d1d447094e81d958313d4b393a16afde54164bbd6cb2e62",
+  "runs": {
+    "scope-transport-probe1": {
+      "run": {
+        "candidate": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+        "command": [
+          "pnpm",
+          "exec",
+          "playwright",
+          "test",
+          "--config=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/scope-transport-probe/playwright.config.ts",
+          "--grep",
+          "Desktop",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=line,json",
+          "--output=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/runs/scope-transport-probe1/artifacts"
+        ],
+        "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+        "started_at": "2026-11-07T08:27:32.756798+00:00",
+        "state": "complete",
+        "exit_code": 1,
+        "finished_at": "2026-11-07T08:27:33.828867+00:00"
+      },
+      "stdout_sha256": "0f06d5eac8ecd3ae490be26dd60ef56e10e07bf51521de89dec1dba18b170411",
+      "result_sha256": "23bc5b6fadf35bb55e6c3b66a53f06113771bcb6e09efa05f7418bf44efaff02"
+    },
+    "scope-transport-probe2": {
+      "run": {
+        "candidate": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+        "command": [
+          "pnpm",
+          "exec",
+          "playwright",
+          "test",
+          "--config=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/scope-transport-probe/playwright.config.ts",
+          "--grep",
+          "Desktop",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=line,json",
+          "--output=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/runs/scope-transport-probe2/artifacts"
+        ],
+        "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+        "started_at": "2026-11-07T08:28:21.781175+00:00",
+        "state": "complete",
+        "exit_code": 1,
+        "finished_at": "2026-11-07T08:28:29.708238+00:00"
+      },
+      "stdout_sha256": "ce21aa26b9c24c7a5f2c7593af722ed8ebe2cf972313f22daab4d8756c8a4f99",
+      "result_sha256": "5349574530620262b106678d265218c672e6ac499bbe721fad80b002dd138619"
+    },
+    "scope-transport-explicit-bytes": {
+      "run": {
+        "candidate": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+        "command": [
+          "pnpm",
+          "exec",
+          "playwright",
+          "test",
+          "--config=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/scope-transport-probe/playwright.config.ts",
+          "--grep",
+          "Desktop",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=line,json",
+          "--output=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/runs/scope-transport-explicit-bytes/artifacts"
+        ],
+        "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+        "started_at": "2026-11-07T08:29:21.342437+00:00",
+        "state": "complete",
+        "exit_code": 1,
+        "finished_at": "2026-11-07T08:29:29.515433+00:00"
+      },
+      "stdout_sha256": "71f8800137a630d2ff0ab3b968c0b6d5a80588c35771b2bb6b88aeab63dd6182",
+      "result_sha256": "b995540d141b50d1cfecbe0f313b67cb597551286a28da7f3b039596dbe2fa41"
+    },
+    "scope-transport-continue": {
+      "run": {
+        "candidate": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+        "command": [
+          "pnpm",
+          "exec",
+          "playwright",
+          "test",
+          "--config=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/scope-transport-probe/playwright.config.ts",
+          "--grep",
+          "Desktop",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=line,json",
+          "--output=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/runs/scope-transport-continue/artifacts"
+        ],
+        "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+        "started_at": "2026-11-07T08:29:48.414889+00:00",
+        "state": "complete",
+        "exit_code": 0,
+        "finished_at": "2026-11-07T08:29:57.135742+00:00"
+      },
+      "stdout_sha256": "f4021aa248ad379512ee1e0083e446a6a1a5a2bdc897de647b7042ee40d94c5e",
+      "result_sha256": "d23324eb9ec2324e9d34ba87116e041715a34b7e8fc351ebaa4473dde6ab9495"
+    }
+  },
+  "proved": "The exact current Refresh GET produces a renderer/CDP status0 empty-header response when fulfilled from a real200 APIResponse, and also when status/headers/body are explicitly materialized. Continuing the original request gives renderer/CDP200 plus completed transport; banner disappears and620 survives.",
+  "not_proved": "Exact vendor internals causing the injected response to become0; all historical auto-probe request-to-Query associations. No product transport fix inferred.",
+  "change": "Use real failed network read via route.abort(failed), then hold/continue the exact Refresh request; retain actual200, completed response, banner0 and620 checks.",
+  "checks": {
+    "canonical": "Parent-owned fresh canonical run required",
+    "private_native_continue": "1PASS, no retries",
+    "diff_check": "PASS",
+    "eslint": "One unchanged existing cleanup no-unsafe-finally, no suppression"
+  }
+}
