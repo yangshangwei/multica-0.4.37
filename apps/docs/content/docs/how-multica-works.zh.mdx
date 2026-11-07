@@ -9,7 +9,28 @@ import { Callout } from "fumadocs-ui/components/callout";
 
 ## 一次执行的完整链路
 
-![一次执行的流程图：左侧 Multica 区域负责记录与调度，任务触发创建 Task；右侧"你的电脑"区域中，守护进程领取任务、启动 AI 编程工具、读写工作目录；过程消息实时流回执行日志，最终结果由守护进程写回任务](/images/docs/how-a-run-works.webp)
+从一次新执行入队开始，服务端负责协调与记录，连接电脑上的守护进程负责准备和运行工具：
+
+```mermaid
+sequenceDiagram
+    accTitle: 从任务触发到执行结果回传
+    accDescr: 用户触发执行后，服务端校验并入队，通过 WebSocket 唤醒守护进程；守护进程通过 API 领取任务，启动本机 AI 工具，上报进度和最终状态，客户端通过实时事件刷新结果。
+    participant user as 用户客户端
+    participant api as Multica 服务端
+    participant daemon as 本机守护进程
+    participant tool as AI 编程工具
+    user->>api: 分配任务或提及智能体
+    api->>api: 校验权限并创建执行
+    api-->>daemon: WebSocket 唤醒通知
+    daemon->>api: 通过 API 领取 task
+    api-->>daemon: 返回上下文与执行凭据
+    daemon->>tool: 准备目录并启动工具
+    tool-->>daemon: 进度、工具活动与结果
+    daemon->>api: 上报进度与最终状态
+    api-->>user: 实时事件刷新执行记录
+```
+
+WebSocket 通知帮助运行时及时领取任务；断线重连后仍会查询和校准状态。工具返回结果不等于业务任务已验收完成。
 
 1. **任务提供上下文。** 任务保存工作说明、讨论和负责人。分配给智能体后，系统会使用该智能体的指令、模型、skill 和运行时配置。
 2. **Multica 创建执行任务。** 执行任务进入队列；没有在线运行时时，它会在队列中等待。

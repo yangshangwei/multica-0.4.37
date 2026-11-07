@@ -3,9 +3,23 @@ title: 核心概念
 description: 一页认识 Multica 的全部核心对象，以及它们之间的关系。
 ---
 
-![工作空间内任务、智能体与执行的关系图](/images/docs/concepts-core-objects.webp)
+先看一条任务如何连接配置与执行：任务记录要做的事，智能体提供做事的方法，运行时负责实际执行。
 
-这张图展示工作空间内的基础关系；跨工作空间共享任务和知识贡献见下文。
+```mermaid
+flowchart TB
+    accTitle: 工作空间内的核心对象关系
+    accDescr: 工作空间管理任务、项目和智能体。项目可选地组织任务，skill 为智能体补充能力；任务记录多次执行，智能体为执行提供配置，运行时负责执行。
+    workspace["工作空间"] --> issue["任务"]
+    workspace --> project["项目"]
+    workspace --> agent["智能体"]
+    project -. 可选归属 .-> issue
+    skill["skill"] -->|补充能力| agent
+    issue -->|记录多次执行| run["执行任务（task）"]
+    agent -->|提供配置| run
+    run -->|交给| runtime["运行时"]
+```
+
+项目是可选的组织方式；任务不必归入项目才能执行。图中展示普通工作空间内的关系，跨工作空间共享任务和知识贡献见下文。
 
 ## 基础对象
 

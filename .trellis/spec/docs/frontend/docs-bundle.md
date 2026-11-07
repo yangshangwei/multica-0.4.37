@@ -196,3 +196,37 @@ run node scripts/generate-docs-bundle.mjs
 commit source + meta + regenerated server/internal/docs/content/ together
 grep remaining .zh.mdx + bundle for "<slug>" → 0 hits
 ```
+
+
+## 8. Mermaid diagrams in user guides
+
+Author diagrams as ordinary fenced `mermaid` blocks, with `accTitle` and
+`accDescr` plus adjacent prose that explains the decision or boundary. Keep
+language exactly `mermaid`; lookalikes are code. Do not add JSX Mermaid imports
+or expand the generator's closed JSX whitelist: the bundle preserves fences,
+while the public MDX compiler uses `remarkMdxMermaid` from the existing
+`fumadocs-core/mdx-plugins` and binds `Mermaid` at both page entry points.
+
+The application reader dispatches fences through `DocsDiagram`, reusing the
+near-viewport `LazyRichBlock`, editor `MermaidDiagram` and its viewer. Style only
+the diagram wrapper; never attach editor prose styles to the whole article.
+Preserve strict rendering and the empty iframe sandbox. The iframe document
+must inherit the host's computed `color-scheme` in both inline and viewer
+modes: Chromium otherwise paints a white canvas under transparent SVGs when
+the parent is dark. Include `min-w-0` at the reader's outer flex boundary so
+natural SVG widths scroll inside the diagram instead of widening the page.
+
+Diagram shapes convey meaning. Use neutral theme tokens with readable node,
+decision and cluster outlines; keep the outer card border quiet. Do not hardcode
+colors or Mermaid init directives in content. Preserve real font stacks in SVG
+and avoid shrinking a wide diagram until labels are illegible. Application
+viewers retain zoom, source, export, Escape and focus return.
+
+Validation must include Mermaid parsing and source preservation, both compiled
+public routes and the real in-app renderer, light/dark and narrow layouts,
+error/source fallback, and viewer keyboard/zoom behavior. Wait for the iframe's
+SVG and fonts to paint before screenshots; `srcdoc` containing SVG is not proof
+that pixels have appeared. Tall-diagram captures must fit inside their scrolling
+ancestor or be captured in sections. The canonical wiring tests are
+`docs-content.test.tsx` and `mermaid-fences.test.ts`; renderer/viewer behavior
+stays in their existing suites.

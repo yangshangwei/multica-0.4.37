@@ -16,6 +16,11 @@ import { DocsContent, docsImageSrc, resolveDocsHref } from "./docs-content";
 // Pure URL mapping is asserted directly against the two exported helpers; the
 // DOM cases below cover what only a real render can show.
 
+vi.mock("../editor/mermaid-diagram", () => ({
+  MERMAID_SKELETON_HEIGHT_PX: 280,
+  MermaidDiagram: ({ chart }: { chart: string }) => <div data-testid="docs-mermaid">{chart}</div>,
+}));
+
 const API_BASE = "https://api.example.test";
 
 beforeAll(() => {
@@ -205,6 +210,21 @@ describe("DocsContent blocks", () => {
   it("renders a fenced block through the shared code block", () => {
     renderBody("```bash\nmake up\n```");
     expect(screen.getByText(/make up/)).toBeInTheDocument();
+  });
+
+  it("renders Mermaid fences as diagrams while preserving their exact source", () => {
+    const chart = 'flowchart TD\n  A["检查 <条件>"] --> B["继续"]';
+    renderBody(`正文\n\n\`\`\`mermaid\n${chart}\n\`\`\``);
+
+    expect(screen.getByTestId("docs-mermaid").textContent).toBe(chart);
+    expect(screen.getByTestId("docs-mermaid").closest(".docs-diagram")).not.toBeNull();
+    expect(screen.getByText("正文")).toBeInTheDocument();
+  });
+
+  it.each(["mermaidx", "mermaid+preview"])("keeps %s as code rather than a diagram", (language) => {
+    renderBody(`\`\`\`${language}\nflowchart TD\nA --> B\n\`\`\``);
+    expect(screen.queryByTestId("docs-mermaid")).toBeNull();
+    expect(screen.getByText(/A --> B/)).toBeInTheDocument();
   });
 
   it("does not pass raw HTML through", () => {

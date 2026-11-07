@@ -32,11 +32,33 @@ import { Callout } from "fumadocs-ui/components/callout";
 
 ## 执行过程
 
-一条 task 通常会经过以下状态：
+先沿主线判断执行停在哪一步。延后触发和等待目录锁都是条件分支，并非每次执行都会经过。
+
+```mermaid
+flowchart TB
+    accTitle: 执行任务的主要状态与重试
+    accDescr: 延后执行达到计划时间且满足运行条件后进入队列，运行时领取后进入准备阶段，可直接启动或等待本地目录锁后启动。正常结束为 completed；失败或取消保留原记录，重试创建新的 task。图只展示主要路径，不枚举所有故障与取消来源。
+    deferred["延后触发 · deferred"] -->|满足触发条件| queued["排队 · queued"]
+    queued -->|运行时领取| dispatched["准备 · dispatched"]
+    dispatched -->|准备完成| running["执行中 · running"]
+    dispatched -->|目录被占用| waiting["等待目录锁"]
+    waiting -->|锁释放并启动| running
+    running -->|正常结束| completed["结束 · completed"]
+    running -->|出错| failed["失败 · failed"]
+    running -->|停止完成| cancelled["取消 · cancelled"]
+    failed -. 按重试规则 .-> retry["新 task 入队"]
+    cancelled -. 手动重试 .-> retry
+```
+
+达到计划时间后，延后触发仍需运行时在线、心跳正常，并且同一任务与智能体的待派发位置空闲，才会进入队列。
+
+图展示主要路径；排队、准备和等待目录期间也可能失败或取消，具体原因见下文。`waiting_local_directory` 在目录可用后进入 `running`。重试保留原 task，另建执行记录；`completed` 也不会自动把业务任务改为已完成。
+
+各状态含义如下：
 
 | 状态 | 表示什么 |
 | --- | --- |
-| `deferred` | 已安排稍后触发，到达指定时间后进入队列 |
+| `deferred` | 已安排稍后触发；到达计划时间且运行时可用、待派发位置空闲后进入队列 |
 | `queued` | 正在等待运行时领取 |
 | `dispatched` | 运行时已经领取，正在启动 AI 编程工具 |
 | `waiting_local_directory` | 目标本地目录正被另一条执行占用，等待目录锁释放 |

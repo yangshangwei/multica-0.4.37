@@ -5,17 +5,27 @@ description: 了解 Multica 的客户端、Go 服务、执行守护进程和共�
 
 Multica 由一个 Go backend、多种客户端和运行在执行电脑上的守护进程组成。PostgreSQL 保存协作数据；守护进程领取 task，并调用本机的 AI 编程工具。
 
-```text
-Web / Desktop / Mobile / CLI
-             │
-       HTTP + WebSocket
-             │
-      Go API ───────── PostgreSQL
-             │
-      daemon WebSocket
-             │
-     本机守护进程 ─── AI 编程工具
+下面按部署位置划分职责。客户端操作进入 API，实际命令和文件读写发生在执行电脑。
+
+```mermaid
+flowchart TB
+    accTitle: Multica 的部署与执行边界
+    accDescr: Web、Desktop、Mobile 和 CLI 通过 HTTP 请求 Go API。服务端读写 PostgreSQL，并通过两类 WebSocket 分别通知用户客户端和守护进程。守护进程通过 API 领取与上报任务，在本机调用 AI 编程工具读写目录。
+    client["Web / Desktop / Mobile"] -->|HTTP 请求| api
+    cli["CLI"] -->|HTTP 请求| api
+    subgraph server["服务端"]
+        api["Go API"] <-->|读写业务数据| db[("PostgreSQL")]
+    end
+    api -. 实时事件 .-> client
+    subgraph machine["执行电脑"]
+        daemon["守护进程"] -->|调用 provider| tool["AI 编程工具"]
+        tool -->|读取与修改| files["本机工作目录"]
+    end
+    daemon -->|API 领取与上报| api
+    api -. 唤醒与 RPC .-> daemon
 ```
+
+虚线是 WebSocket 通道；HTTP 领取与上报并不依赖一条 WebSocket 始终在线。PostgreSQL 保存业务权威状态，本机工作目录不构成操作系统沙箱。Redis 是可选的协调组件，见下文。
 
 面向产品用户的解释见 [Multica 的工作方式](/how-multica-works)。本页关注代码如何分层。
 
@@ -45,14 +55,20 @@ Web 和 Desktop 共用三层：
 
 路由、cookie 和 Electron IPC 等平台能力留在应用层。共享页面通过 `NavigationAdapter` 导航，不直接导入 `next/*` 或 `react-router-dom`。
 
-例如，一项 Web 与 Desktop 都需要的 issue 功能通常会涉及：
+下面的箭头表示允许的依赖方向。共享业务页面通过平台适配器使用导航等能力，避免绑定到某一个客户端框架。
 
-```text
-packages/core/issues/      查询、mutation、缓存更新
-packages/views/issues/     页面和业务组件
-apps/web/platform/         Next.js 路由适配
-apps/desktop/.../platform/ Electron 路由适配
+```mermaid
+flowchart TB
+    accTitle: Web、Desktop 与共享前端包的依赖方向
+    accDescr: Web 和 Desktop 的平台适配层承载共享 views 页面；views 依赖 core 业务逻辑与 ui 基础组件，core 和 ui 互不依赖。Mobile 只复用 core 的类型和纯函数。
+    web["Web 平台适配"] --> views["views · 业务页面"]
+    desktop["Desktop 平台适配"] --> views
+    views --> core["core · 业务逻辑与状态"]
+    views --> ui["ui · 基础组件"]
+    mobile["Mobile · 独立界面"] -. 仅类型与纯函数 .-> core
 ```
+
+`core` 和 `ui` 互不依赖。新增 Web 与 Desktop 共用的任务功能时，查询与 mutation 放在 `packages/core/issues/`，页面放在 `packages/views/issues/`，平台路由留在各自应用内。
 
 Mobile 不复用这些 React 页面。它可以导入 `@multica/core` 的类型和纯函数，但拥有自己的 UI、query key、状态、实时订阅和发布流程。
 

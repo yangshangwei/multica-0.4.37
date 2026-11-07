@@ -44,7 +44,7 @@ export function DocsPage({ slug }: { slug?: string }) {
   const title = slug ? page.data?.title : manifest.data?.title;
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col">
       <PageHeader>
         <div className="flex min-w-0 flex-1 items-center gap-2">
           <BookOpen

@@ -37,6 +37,7 @@ import { CodeBlock, InlineCode } from "@multica/ui/markdown";
 import { cn } from "@multica/ui/lib/utils";
 import { AppLink } from "../navigation";
 import { DocsCallout } from "./docs-callout";
+import { DocsDiagram } from "./docs-diagram";
 import { DocsCommunityLinks } from "./docs-community-links";
 import { DocsVideoEmbed } from "./docs-video-embed";
 import {
@@ -191,9 +192,9 @@ export function DocsContent({
         />
       ),
 
-      // Fenced code arrives as pre > code; the fence is rendered by CodeBlock
-      // (shiki + copy button) and `pre` only unwraps it. Inline code keeps the
-      // primitive's own treatment.
+      // Only exact Mermaid fences become diagrams. All other languages keep
+      // the shared highlighted code block and copy action; inline code keeps
+      // the primitive's own treatment.
       pre: ({ children }) => {
         const child = Array.isArray(children) ? children[0] : children;
         const props =
@@ -201,10 +202,12 @@ export function DocsContent({
             ? (child as { props: { className?: string; children?: ReactNode } }).props
             : null;
         if (!props) return <>{children}</>;
-        const language = /language-([\w-]+)/.exec(props.className ?? "")?.[1] ?? "text";
+        const language = /\blanguage-([^\s]+)/.exec(props.className ?? "")?.[1] ?? "text";
+        const code = elementText(props.children).replace(/\n$/, "");
+        if (language === "mermaid") return <DocsDiagram chart={code} />;
         return (
           <div className="my-4">
-            <CodeBlock code={elementText(props.children).replace(/\n$/, "")} language={language} mode="full" />
+            <CodeBlock code={code} language={language} mode="full" />
           </div>
         );
       },
