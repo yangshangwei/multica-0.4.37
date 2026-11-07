@@ -135,8 +135,11 @@ export async function createCollaborationWithInitialFields(page: Page, fixture: 
 export async function revealCollaborationEditingAction(page: Page, name: "Edit issue" | "Edit source fields" | "Change iteration") {
   const workflow = page.getByRole("region", { name: "Issue actions", exact: true });
   await expect(workflow).toBeVisible();
-  const action = workflow.getByRole("button", { name, exact: true });
-  if (!await action.isVisible()) await workflow.locator("summary").filter({ hasText: /^More actions$/ }).click();
+  let action = workflow.getByRole("button", { name, exact: true });
+  if (!await action.isVisible()) {
+    await workflow.getByRole("button", { name: "More actions", exact: true }).click();
+    action = page.getByRole("menuitem", { name, exact: true });
+  }
   await expect(action).toBeVisible();
   return action;
 }

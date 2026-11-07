@@ -47,10 +47,10 @@ test("Web Leave issue refuses creator and handler; an owner's departure revokes 
     for (const session of [creator, handler]) {
       if (!await session.page.getByRole("button", { name: "Transfer", exact: true }).isVisible()) await revealCollaborationDisclosure(session.page, "More actions");
       await expect(session.page.getByRole("button", { name: "Transfer", exact: true })).toBeVisible();
-      await expect(session.page.getByRole("button", { name: "Leave issue", exact: true })).toHaveCount(0);
+      await expect(session.page.getByRole("button", { name: "Leave issue", exact: true }).or(session.page.getByRole("menuitem", { name: "Leave issue", exact: true }))).toHaveCount(0);
     }
-    if (!await owner.page.getByRole("button", { name: "Leave issue", exact: true }).isVisible()) await revealCollaborationDisclosure(owner.page, "More actions");
-    await expect(owner.page.getByRole("button", { name: "Leave issue", exact: true })).toBeVisible();
+    if (!await owner.page.getByRole("button", { name: "Leave issue", exact: true }).or(owner.page.getByRole("menuitem", { name: "Leave issue", exact: true })).isVisible()) await revealCollaborationDisclosure(owner.page, "More actions");
+    await expect(owner.page.getByRole("button", { name: "Leave issue", exact: true }).or(owner.page.getByRole("menuitem", { name: "Leave issue", exact: true }))).toBeVisible();
     const participantsBefore = await fixture.creator.requestJSON<CollaborationParticipants>(`${root}/participants`);
     const beforeRefusals = await readGapIssue(fixture);
     const refusals: unknown[] = [];

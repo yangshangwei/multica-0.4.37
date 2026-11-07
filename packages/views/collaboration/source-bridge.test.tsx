@@ -1,6 +1,7 @@
 import { useState, type ComponentProps } from "react";
 import { cleanup, fireEvent, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import userEvent from "@testing-library/user-event";
 import { ApiError } from "@multica/core/api";
 import { collaborationIssueFixture } from "@multica/core/collaboration/test-fixtures";
 import { renderWithI18n } from "../test/i18n";
@@ -17,9 +18,9 @@ vi.mock("@multica/core/collaboration", async (original) => ({
 vi.mock("@multica/core/realtime", () => ({ useCollaborationRealtime: vi.fn() }));
 vi.mock("./creation-form", () => ({ CollaborationCreationEntry: ({ sourceWorkspaceId }: { sourceWorkspaceId?: string }) => <button>New collaboration in {sourceWorkspaceId}</button> }));
 vi.mock("./collaboration-detail", () => ({ CollaborationDetail: ({ destination }: { destination: { issueId: string; commentId?: string; runId?: string } }) => <p data-testid="shared-detail" data-run-id={destination.runId}>{destination.issueId}:{destination.commentId}</p> }));
-vi.mock("./workflow", () => ({ CollaborationWorkflow: ({ initialAction, initialStatus }: { initialAction?: string; initialStatus?: string }) => {
+vi.mock("./workflow", () => ({ CollaborationWorkflow: ({ initialAction, initialStatus, embedded, onBusyChange }: { initialAction?: string; initialStatus?: string; embedded?: boolean; onBusyChange?: (busy: boolean) => void }) => {
   const [draft, setDraft] = useState("");
-  return <form aria-label="shared workflow">{initialAction}:{initialStatus}<input aria-label="Workflow draft" value={draft} onChange={(event) => setDraft(event.target.value)} /></form>;
+  return <form aria-label="shared workflow" data-embedded={embedded}>{initialAction}:{initialStatus}<input aria-label="Workflow draft" value={draft} onChange={(event) => setDraft(event.target.value)} /><button type="button" onClick={() => onBusyChange?.(true)}>Begin request</button><button type="button" onClick={() => onBusyChange?.(false)}>Finish request</button></form>;
 } }));
 vi.mock("../navigation", () => ({ AppLink: (props: ComponentProps<"a">) => <a {...props} /> }));
 
@@ -46,7 +47,21 @@ describe("source collaboration bridge", () => {
     const close = vi.fn();
     renderWithI18n(<SourceCollaborationActionDialog action={{ issueId: collaborationIssueFixture.id, action: "transfer" }} close={close} />);
     expect(screen.getByRole("form", { name: "shared workflow" })).toHaveTextContent("transfer");
+    expect(screen.getByRole("form", { name: "shared workflow" })).toHaveAttribute("data-embedded", "true");
+    expect(screen.getAllByRole("dialog")).toHaveLength(1);
     fireEvent.click(screen.getByRole("button", { name: "Close" }));
+    expect(close).toHaveBeenCalledOnce();
+  });
+  it("keeps the outer source dialog open during an embedded request", async () => {
+    const close = vi.fn();
+    const user = userEvent.setup();
+    renderWithI18n(<SourceCollaborationActionDialog action={{ issueId: collaborationIssueFixture.id, action: "edit" }} close={close} />);
+    await user.click(screen.getByRole("button", { name: "Begin request" }));
+    expect(screen.queryByRole("button", { name: "Close" })).not.toBeInTheDocument();
+    await user.keyboard("{Escape}");
+    expect(close).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "Finish request" }));
+    await user.keyboard("{Escape}");
     expect(close).toHaveBeenCalledOnce();
   });
   it("does not expose ordinary assignment when the cached actor is no longer the handler", () => {

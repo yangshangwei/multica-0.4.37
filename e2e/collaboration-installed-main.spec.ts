@@ -54,7 +54,7 @@ async function refreshWebIssue(page: Page, issueId: string) {
 async function webOperation(page: Page, issueId: string, action: "invite" | "transfer", userId: string, name: string, note = "") {
   const baseline = await refreshWebIssue(page, issueId);
   const label = action === "invite" ? "Add participant" : "Transfer";
-  const actionButton = page.getByRole("button", { name: label, exact: true });
+  const actionButton = page.getByRole("button", { name: label, exact: true }).or(page.getByRole("menuitem", { name: label, exact: true }));
   if (!await actionButton.isVisible()) await revealCollaborationDisclosure(page, "More actions");
   await actionButton.click();
   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: label, exact: true }) });

@@ -75,7 +75,7 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
   const canPrepareResult = state.canSelfComplete || state.primary === "submit_acceptance" || state.secondary.includes("submit_acceptance");
   const rows = [...new Map([...(linkedComment.data ? [linkedComment.data] : []), ...(comments.data?.pages.flatMap((page) => page.items) ?? [])].map((comment) => [comment.id, comment])).values()]
     .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime() || a.id.localeCompare(b.id));
-  return <div ref={root} className="@container/collaboration-detail mx-auto w-full min-w-0 max-w-6xl space-y-8">
+  return <div ref={root} className="@container/collaboration-detail mx-auto w-full min-w-0 max-w-4xl space-y-8">
     {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
     <header className="space-y-4">
       <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
@@ -98,9 +98,8 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
           textarea?.focus(); textarea?.scrollIntoView?.({ block: "nearest" });
         }} />
     </header>
-    <div className="grid min-w-0 gap-8 @4xl/collaboration-detail:grid-cols-[minmax(0,1fr)_16rem]">
     <div className="min-w-0 space-y-8">
-    <section id="description" tabIndex={-1} className="min-w-0 space-y-3"><h3 className="text-body font-semibold">{t(($) => $.detail.description)}</h3>
+    <section id="description" tabIndex={-1} className="min-w-0 space-y-3"><h3 className="text-title-sm font-semibold">{t(($) => $.detail.description)}</h3>
       <div className="max-w-[75ch]"><RichContent resourcePolicy="restricted" content={issue.description} /></div>
       <Button variant="link" size="sm" className="h-auto max-w-full whitespace-normal px-0 py-1 text-caption text-muted-foreground underline-offset-4 pointer-coarse:min-h-11" onClick={() => {
         const files = root.current?.querySelector<HTMLDetailsElement>("#collaboration-files");
@@ -109,7 +108,7 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
     </section>
     <CollaborationDeliveryPanel key={`delivery:${identity}`} scope={scope} issue={issue} />
     <CollaborationIssueReactions scope={scope} issue={issue} />
-    <section id="discussion" tabIndex={-1} className="min-w-0 space-y-4"><h3 className="text-body font-semibold">{t(($) => $.detail.comments)}</h3>
+    <section id="discussion" tabIndex={-1} className="min-w-0 space-y-4"><h3 className="text-title-sm font-semibold">{t(($) => $.detail.comments)}</h3>
       {comments.isPending && <p role="status" className="text-body text-muted-foreground">{t(($) => $.page.loading)}</p>}
       {comments.error && <CollaborationQueryState error={comments.error} retry={() => void comments.refetch()} />}
       {linkedComment.error && <CollaborationQueryState error={linkedComment.error} retry={() => void linkedComment.refetch()} />}
@@ -123,7 +122,17 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
       <CollaborationCommentComposer key={`composer:${identity}`} scope={scope} issue={issue} replyTo={replyTo?.identity === identity ? replyTo.comment : null} onCancelReply={() => setReplyTo(null)} onSent={() => setReplyTo(null)} />
     </section>
     <CollaborationExecutionPanel scope={scope} issue={issue} selectedRunId={destination.runId} />
-    <div className="min-w-0 space-y-4">
+    </div>
+    <aside aria-label={t(($) => $.detail.context)} className="min-w-0 space-y-2 border-t border-border pt-5">
+      <CollaborationDisclosure title={t(($) => $.detail.context)}>
+        <dl className="grid min-w-0 gap-x-8 gap-y-3 text-body @xl/collaboration-detail:grid-cols-2 [&_dt]:mb-1 [&_dt]:text-caption [&_dt]:text-muted-foreground [&_dd]:[overflow-wrap:anywhere]">
+          <div><dt>{t(($) => $.detail.creator)}</dt><dd>{issue.creator.name}</dd></div>
+          <div><dt>{t(($) => $.detail.source)}</dt><dd>{issue.source_workspace.name}</dd></div>
+          {state.stage !== "working" && <div><dt>{t(($) => $.detail.status)}</dt><dd>{labels.status(issue.status)}</dd></div>}
+          <div><dt>{t(($) => $.policy.title)}</dt><dd>{issue.ai_policy === "manual" ? t(($) => $.policy.manual) : issue.ai_policy === "assisted" ? t(($) => $.policy.assisted) : t(($) => $.policy.unknown)}</dd></div>
+        </dl>
+        <CollaborationFieldSummary issue={issue} />
+      </CollaborationDisclosure>
       <CollaborationDisclosure id="collaboration-files" title={t(($) => $.attachments.title)} attention={pending.error}>
         <CollaborationAttachmentPanel scope={scope} issue={issue} />
       </CollaborationDisclosure>
@@ -136,21 +145,10 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
       <CollaborationDisclosure title={t(($) => $.activity.title)}>
         <CollaborationActivity scope={scope} destination={destination} />
       </CollaborationDisclosure>
-    </div>
-    </div>
-    <aside aria-label={t(($) => $.detail.context)} className="min-w-0 space-y-6">
-      <dl className="space-y-3 text-body [&_dt]:mb-1 [&_dt]:text-caption [&_dt]:text-muted-foreground [&_dd]:[overflow-wrap:anywhere]">
-        <div><dt>{t(($) => $.detail.creator)}</dt><dd>{issue.creator.name}</dd></div>
-        <div><dt>{t(($) => $.detail.source)}</dt><dd>{issue.source_workspace.name}</dd></div>
-        {state.stage !== "working" && <div><dt>{t(($) => $.detail.status)}</dt><dd>{labels.status(issue.status)}</dd></div>}
-        <div><dt>{t(($) => $.policy.title)}</dt><dd>{issue.ai_policy === "manual" ? t(($) => $.policy.manual) : issue.ai_policy === "assisted" ? t(($) => $.policy.assisted) : t(($) => $.policy.unknown)}</dd></div>
-      </dl>
-      <CollaborationFieldSummary issue={issue} />
       <CollaborationDisclosure title={t(($) => $.children.title)}>
         <CollaborationChildren issue={issue} />
       </CollaborationDisclosure>
     </aside>
-    </div>
   </div>;
 }
 
@@ -158,7 +156,7 @@ function CollaborationDisclosure({ id, title, attention = false, children }: { i
   const disclosure = useRef<HTMLDetailsElement>(null);
   useEffect(() => { if (attention && disclosure.current) disclosure.current.open = true; }, [attention]);
   return <details ref={disclosure} id={id} className="min-w-0 space-y-4">
-    <summary className="cursor-pointer py-2 text-body font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11">{title}</summary>
+    <summary className="cursor-pointer rounded-sm py-2 text-body font-medium text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11">{title}</summary>
     {children}
   </details>;
 }

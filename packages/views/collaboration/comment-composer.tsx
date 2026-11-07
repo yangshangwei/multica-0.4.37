@@ -7,6 +7,7 @@ import { collaborationCommentOptions, collaborationKeys, collaborationMentionMar
 import { Button } from "@multica/ui/components/ui/button";
 import { Textarea } from "@multica/ui/components/ui/textarea";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
+import { AtSign, Paperclip } from "lucide-react";
 import { useT } from "../i18n";
 import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
@@ -36,6 +37,11 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
   }, [parentId]);
   const content = delivery.form.content;
   const [uploading, setUploading] = useState(false);
+  const [mentionsOpen, setMentionsOpen] = useState(false);
+  const [attachmentsOpen, setAttachmentsOpen] = useState(false);
+  useEffect(() => {
+    if (delivery.form.selectedAttachmentIds.length > 0 || delivery.uploads.length > 0 || delivery.error || uploading) setAttachmentsOpen(true);
+  }, [delivery.form.selectedAttachmentIds.length, delivery.uploads.length, delivery.error, uploading]);
   const [suppressed, setSuppressed] = useState<string[]>([]);
   const [draftChanged, setDraftChanged] = useState(false);
   const submitting = useRef(false);
@@ -111,6 +117,8 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
       <Button type="button" variant="ghost" size="sm" disabled={locked} className="pointer-coarse:min-h-11" onClick={() => { delivery.update({ parentCommentId: null }); inspect.reset(); onCancelReply?.(); recoverFocus(() => textarea.current); }}>{t(($) => $.commentActions.cancelReply)}</Button></div>}
     {parent.error && <CollaborationQueryState error={parent.error} retry={() => void parent.refetch()} />}
     <Textarea ref={textarea} id={fieldId} placeholder={t(($) => $.composer.placeholder)} value={content} disabled={locked} onChange={(event) => change(event.target.value)} className="min-h-28" />
+    <div id={`${fieldId}-mentions`} hidden={!mentionsOpen} className="space-y-3">
+    {mentions.isPending && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.page.loading)}</p>}
     {mentions.data && <div className="min-w-0 space-y-3" role="group" aria-label={t(($) => $.composer.mentions)}>
       <div role="group" aria-labelledby={`${fieldId}-people`} className="min-w-0 space-y-1">
         <p id={`${fieldId}-people`} className="text-caption font-medium text-muted-foreground">{t(($) => $.composer.mentionPeople)}</p>
@@ -128,16 +136,27 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
       </div>}
     </div>}
     {mentions.error && <CollaborationQueryState error={mentions.error} retry={() => void mentions.refetch()} />}
+    </div>
+    <div id={`${fieldId}-attachments`} hidden={!attachmentsOpen}>
     <CollaborationAttachmentPicker scope={scope} form={delivery.form} update={delivery.update} uploads={delivery.uploads} onBusyChange={setUploading}
       disabled={inspect.isPending || send.isPending || drafts.comments.length > 0 || drafts.error || Boolean(delivery.error)} onChange={() => inspect.reset()} />
+    </div>
     {Boolean(delivery.error) && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
-    <div className="flex flex-wrap gap-2"><Button variant="outline" type="button" disabled={locked || !content.trim()} onClick={() => {
+    <div className="flex min-w-0 flex-wrap items-center justify-between gap-2">
+      <div className="flex min-w-0 flex-wrap gap-1">
+        <Button type="button" variant="ghost" size="sm" aria-expanded={mentionsOpen} aria-controls={`${fieldId}-mentions`}
+          onClick={() => setMentionsOpen((open) => !open)} className="pointer-coarse:min-h-11"><AtSign className="size-4" aria-hidden="true" />{t(($) => $.composer.mention)}</Button>
+        <Button type="button" variant="ghost" size="sm" aria-expanded={attachmentsOpen} aria-controls={`${fieldId}-attachments`} disabled={uploading}
+          onClick={() => setAttachmentsOpen((open) => !open)} className="pointer-coarse:min-h-11"><Paperclip className="size-4" aria-hidden="true" />{t(($) => $.attachments.title)}</Button>
+      </div>
+      <div className="flex flex-wrap gap-2"><Button variant="ghost" type="button" disabled={locked || !content.trim()} onClick={() => {
       setInspectedDraftId(delivery.form.draftId);
       setInspectedIntentVersion(intentVersion);
       inspect.mutate({ ...executionView, content, parent_id: parentId, suppressed_target_ids: suppressed,
         ...(delivery.form.selectedAttachmentIds.length ? { draft_id: delivery.form.draftId, attachment_ids: delivery.form.selectedAttachmentIds } : {}) });
     }} className="pointer-coarse:min-h-11">{t(($) => $.composer.preview)}</Button>
       <Button type="submit" aria-describedby={preview?.targets.length ? `${fieldId}-ai-confirmation` : undefined} disabled={locked || !content.trim()} className="pointer-coarse:min-h-11">{t(($) => $.composer.send)}</Button>
+      </div>
     </div>
     {draftChanged && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.composer.draftChanged)}</p>}
     {preview && <div className="space-y-3 text-body"><p className="text-caption text-muted-foreground">{t(($) => $.composer.recipients, { count: preview.recipients.length })}</p>

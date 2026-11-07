@@ -3,7 +3,7 @@ import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
-import { collaborationScope, finishCollaborationDeliveryDraft, parseCollaborationComment, parseCollaborationIssue, readCollaborationDeliveryRecords, saveCollaborationDeliveryRecord } from "@multica/core/collaboration";
+import { collaborationScope, finishCollaborationDeliveryDraft, newCollaborationDeliveryForm, parseCollaborationComment, parseCollaborationIssue, readCollaborationDeliveryRecords, saveCollaborationDeliveryRecord } from "@multica/core/collaboration";
 import { renderWithI18n } from "../test/i18n";
 import { CollaborationCommentComposer } from "./comment-composer";
 
@@ -18,6 +18,55 @@ afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); }
 const issue = parseCollaborationIssue({ id, title: "Issue", description: "Body", status: "todo", status_category: "todo", priority: "none", source_workspace: { id, name: "Source", identifier: "SRC" }, creator: account, handler: account,
   collaboration_revision: "1", lifecycle_epoch: "1", write_context: { participant_epoch: "2", account_epoch: "3" }, session: { id, queue_state: "paused", control_version: "1" },
   capabilities: { reference: true, read: true, comment: true, control_ai: false, submit_command: false, invite: false, transfer: false, remove_participants: false, leave: false, edit: false, edit_source_structure: false, reorder: false, change_status: false, complete: false, cancel: false, reopen: false, resolve_thread: false, react: false } })!;
+
+it("keeps optional tools collapsed and preserves the comment when toggled by keyboard", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(id);
+  vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ protocol_version: 2, issue_id: id,
+    participants: [account], can_submit_commands: false, targets: [] }))));
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentComposer scope={scope} issue={issue} /></QueryClientProvider>);
+  const user = userEvent.setup();
+  await user.type(screen.getByLabelText("Add comment"), "Progress");
+  expect(screen.queryByRole("button", { name: "Participant" })).not.toBeInTheDocument();
+  expect(screen.getByLabelText("Attach files")).not.toBeVisible();
+  const mention = screen.getByRole("button", { name: "Mention" });
+  mention.focus();
+  await user.keyboard("{Enter}");
+  expect(mention).toHaveAttribute("aria-expanded", "true");
+  await user.click(await screen.findByRole("button", { name: "Participant" }));
+  await user.click(mention);
+  expect(mention).toHaveAttribute("aria-expanded", "false");
+  expect(screen.getByLabelText("Add comment")).toHaveValue(`Progress [@Participant](mention://member/${id})`);
+  await user.click(screen.getByRole("button", { name: "Attachments" }));
+  const fileInput = screen.getByLabelText("Attach files");
+  expect(fileInput).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Attachments" }));
+  expect(fileInput).not.toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Attachments" }));
+  expect(screen.getByLabelText("Attach files")).toBe(fileInput);
+});
+
+it("reveals a retained upload and preserves its original recovery request", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(id);
+  const form = newCollaborationDeliveryForm({ server: scope.server, userId: id,
+    context: { kind: "issue", issueId: id, sourceWorkspaceId: id } }, "comment");
+  saveCollaborationDeliveryRecord({ ...form, content: "Preserved comment" });
+  const requestId = "00000000-0000-4000-8000-000000000005";
+  saveCollaborationDeliveryRecord({ scope: form.scope, draftId: form.draftId, kind: "upload", requestId,
+    createdAt: Date.now(), file: { name: "unconfirmed.txt", type: "text/plain", size: 5, sha256: "a".repeat(64) } });
+  const fetch = vi.fn(async (url: string, _init?: RequestInit) => new Response(JSON.stringify(url.endsWith("mention-targets")
+    ? { protocol_version: 2, issue_id: id, participants: [], can_submit_commands: false, targets: [] }
+    : { draft_id: form.draftId, attachments: [] })));
+  vi.stubGlobal("fetch", fetch);
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentComposer scope={scope} issue={issue} /></QueryClientProvider>);
+  expect(await screen.findByRole("button", { name: "Check upload" })).toBeVisible();
+  expect(screen.getByRole("button", { name: "Attachments" })).toHaveAttribute("aria-expanded", "true");
+  expect(screen.getByLabelText("Add comment")).toHaveValue("Preserved comment");
+  expect(screen.getByRole("button", { name: "Send comment" })).toBeDisabled();
+  expect(readCollaborationDeliveryRecords(scope).find((record) => record.kind === "upload")).toMatchObject({ requestId });
+  expect(fetch.mock.calls.every(([, init]) => (init?.method ?? "GET") === "GET")).toBe(true);
+});
 
 // Pure input and authority matrices belong to Core. These regressions prove
 // the Publish button still uses the validated preflight before any write.
@@ -51,6 +100,7 @@ it("shows AI impact and requires a second explicit action before publishing targ
       : { protocol_version: 2, issue_id: id, status: 201, code: "comment_created", comment_id: eventId, comment_revision: "1", event_id: eventId, event_seq: "1", targets: [{ ...candidate, state: "waiting", code: "command_waiting", command_id: eventId, command_sequence: "1" }] })));
   vi.stubGlobal("fetch", fetch);
   renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentComposer scope={scope} issue={issue} /></QueryClientProvider>);
+  await userEvent.click(screen.getByRole("button", { name: "Mention" }));
   await userEvent.click(await screen.findByRole("button", { name: "Authorized agent" }));
   await userEvent.click(screen.getByRole("button", { name: "Send comment" }));
   expect(await screen.findByRole("checkbox", { name: /Authorized agent/ })).toBeInTheDocument();
@@ -91,6 +141,7 @@ it("invalidates grouping when another form updates the shared draft", async () =
   vi.stubGlobal("fetch", fetch);
   renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentComposer scope={scope} issue={issue} /></QueryClientProvider>);
   const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Mention" }));
   await user.click(await screen.findByRole("button", { name: "Leader" }));
   await user.click(screen.getByRole("button", { name: "Preview delivery" }));
   expect(await screen.findByRole("region", { name: "AI grouping preview" })).toBeInTheDocument();
@@ -143,6 +194,7 @@ it("shows merged and later pending batches, then requires a fresh preview after 
   vi.stubGlobal("fetch", fetch);
   renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentComposer scope={scope} issue={issue} /></QueryClientProvider>);
   const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Mention" }));
   await user.click(await screen.findByRole("button", { name: "Leader" }));
   await user.click(screen.getByRole("button", { name: "Build squad" }));
   await user.click(screen.getByRole("button", { name: "Review squad" }));
@@ -180,6 +232,7 @@ it("describes a possible squad continuation in Chinese before any comment is sen
     : { protocol_version: 2, issue_id: id, lifecycle_epoch: "1", recipients: [], targets: [{ ...candidate, state: "waiting", code: "command_waiting", command_id: null,
       grouping: { kind: "squad_continuation", target_ids: [target], has_existing_inputs: true, follows_pending_batch: false } }] }))));
   renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentComposer scope={scope} issue={issue} /></QueryClientProvider>, { locale: "zh-Hans" });
+  await userEvent.click(screen.getByRole("button", { name: "提及" }));
   await userEvent.click(await screen.findByRole("button", { name: "Leader" }));
   await userEvent.click(screen.getByRole("button", { name: "预览发送" }));
   const groups = within(await screen.findByRole("region", { name: "AI 分组预览" }));
@@ -210,6 +263,7 @@ it("groups people and AI, inserts @all without losing explicit targets, and send
   vi.stubGlobal("fetch", fetch);
   renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentComposer scope={scope} issue={issue} /></QueryClientProvider>);
   const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Mention" }));
   const people = within(await screen.findByRole("group", { name: "People" }));
   const ai = within(screen.getByRole("group", { name: "AI targets" }));
   expect(people.getByText("People")).toBeVisible();

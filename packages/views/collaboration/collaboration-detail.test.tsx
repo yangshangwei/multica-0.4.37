@@ -27,12 +27,12 @@ vi.mock("./workflow", () => ({ CollaborationWorkflow: () => null }));
 vi.mock("./execution-panel", () => ({ CollaborationExecutionPanel: ({ selectedRunId }: { selectedRunId?: string }) => selectedRunId ? <div id={`run-${selectedRunId}`} data-testid="linked-run" tabIndex={-1} /> : null }));
 // The detail composition suite isolates its sibling identities; shared-context
 // query/mutation behavior is covered by memory-panel.test.tsx.
-vi.mock("./memory-panel", () => ({ CollaborationMemoryPanel: () => null }));
+vi.mock("./memory-panel", () => ({ CollaborationMemoryPanel: () => <section id="memory" data-testid="memory-mount" tabIndex={-1} /> }));
 vi.mock("./knowledge-panel", () => ({ CollaborationKnowledgePanel: ({ issue: value }: { issue: CollaborationIssue }) => <div data-testid="knowledge-mount">{value.id}</div> }));
 vi.mock("./activity", () => ({ CollaborationActivity: () => null }));
 vi.mock("./discussion-actions", () => ({ CollaborationIssueReactions: () => null }));
-vi.mock("./attachment-panel", () => ({ CollaborationAttachmentPanel: () => null }));
-vi.mock("./field-summary", () => ({ CollaborationFieldSummary: () => null }));
+vi.mock("./attachment-panel", () => ({ CollaborationAttachmentPanel: () => <section data-testid="files-mount" /> }));
+vi.mock("./field-summary", () => ({ CollaborationFieldSummary: () => <section data-testid="fields-mount" /> }));
 // The detail owns these two sibling component identities; their behavior is
 // tested separately in comment-list and comment-composer suites.
 vi.mock("./comment-list", () => ({ CollaborationCommentList: ({ comments }: { comments: { id: string }[] }) => <ol data-testid="comment-list">{comments.map((comment) => <li id={`comment-${comment.id}`} key={comment.id} />)}</ol> }));
@@ -41,6 +41,51 @@ vi.mock("./comment-composer", () => ({ CollaborationCommentComposer: function Co
   return <form data-testid="comment-composer"><textarea aria-label="Composer draft" value={value} onChange={(event) => setValue(event.target.value)} /></form>;
 } }));
 afterEach(() => { client.clear(); state.comments = []; state.total = undefined; state.pending = true; state.children = undefined; navigation.push.mockClear(); navigation.prefetch.mockClear(); navigation.isScopeResume = false; navigation.navigationKey = 0; restoreScroll.mockReset(); vi.restoreAllMocks(); });
+
+it.each(["en", "zh-Hans"] as const)("keeps the main journey visible and task metadata behind a deliberate disclosure in %s", async (locale) => {
+  setApiInstance(new ApiClient("https://detail.example"));
+  const title = locale === "en" ? "Issue details" : "任务信息";
+  renderWithI18n(<CollaborationDetail scope={collaborationScope(issue.creator.user_id)} destination={{ view: "participating", issueId: issue.id, commentId: null }} />, { locale });
+  const requirements = document.getElementById("description")!;
+  const delivery = document.getElementById("delivery")!;
+  const discussion = document.getElementById("discussion")!;
+  const context = screen.getByRole("complementary", { name: title });
+  for (const [before, after] of [[requirements, delivery], [delivery, discussion], [discussion, context]]) {
+    expect(before!.compareDocumentPosition(after!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  }
+  expect(screen.getByTestId("comment-composer")).toBeVisible();
+  expect(screen.getByTestId("fields-mount")).not.toBeVisible();
+  expect(screen.getByTestId("knowledge-mount")).not.toBeVisible();
+  await userEvent.click(within(context).getByText(title, { selector: "summary" }));
+  expect(screen.getByTestId("fields-mount")).toBeVisible();
+  expect(within(context).getByText(issue.source_workspace.name)).toBeVisible();
+});
+
+it("opens reference files directly from requirements without exposing the other auxiliaries", async () => {
+  setApiInstance(new ApiClient("https://detail.example"));
+  renderWithI18n(<CollaborationDetail scope={collaborationScope(issue.creator.user_id)} destination={{ view: "participating", issueId: issue.id, commentId: null }} />);
+  expect(screen.getByTestId("files-mount")).not.toBeVisible();
+  await userEvent.click(screen.getByRole("button", { name: "Files and reference material" }));
+  expect(screen.getByTestId("files-mount")).toBeVisible();
+  expect(document.querySelector("#collaboration-files > summary")).toHaveFocus();
+  expect(screen.getByTestId("fields-mount")).not.toBeVisible();
+  expect(screen.getByTestId("knowledge-mount")).not.toBeVisible();
+});
+
+it("reopens and focuses shared context on each explicit anchor navigation", () => {
+  setApiInstance(new ApiClient("https://detail.example"));
+  const view = () => <section data-tab-scroll-root="account-detail"><CollaborationDetail scope={collaborationScope(issue.creator.user_id)} destination={{ view: "participating", issueId: issue.id, commentId: null, anchor: "memory" }} /></section>;
+  const mounted = renderWithI18n(view());
+  const memory = screen.getByTestId("memory-mount");
+  expect(memory).toBeVisible();
+  expect(memory).toHaveFocus();
+  memory.closest("details")!.open = false;
+  screen.getByLabelText("Composer draft").focus();
+  navigation.navigationKey += 1;
+  mounted.rerender(view());
+  expect(memory).toBeVisible();
+  expect(memory).toHaveFocus();
+});
 
 it("shows the loaded range and keeps an older server's unknown total explicit", () => {
   setApiInstance(new ApiClient("https://detail.example"));

@@ -126,7 +126,7 @@ export async function selectHandoffRecipient(page: Page, form: Locator, recipien
 export async function uiWorkflow(session: HandoffSession, fixture: OfflineHandoffFixture, actor: HandoffActor,
   action: "invite" | "transfer", target: HandoffActor, note = "") {
   const page = session.page;
-  const actionButton = page.getByRole("button", { name: action === "invite" ? "Add participant" : "Transfer", exact: true });
+  const actionButton = page.getByRole("button", { name: action === "invite" ? "Add participant" : "Transfer", exact: true }).or(page.getByRole("menuitem", { name: action === "invite" ? "Add participant" : "Transfer", exact: true }));
   if (!await actionButton.isVisible()) await revealCollaborationDisclosure(page, "More actions");
   await actionButton.click();
   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: action === "invite" ? "Add participant" : "Transfer", exact: true }) });

@@ -46,7 +46,8 @@ it("restores selected labels and false property input after a lost response and 
   const ui = (value: typeof issue) => <QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={value} /></QueryClientProvider>;
   const { rerender, unmount } = renderWithI18n(ui(issue));
   const user = userEvent.setup();
-  await user.click(screen.getByRole("button", { name: "Edit issue" }));
+  await user.click(screen.getByRole("button", { name: "More actions" }));
+  await user.click(await screen.findByRole("menuitem", { name: "Edit issue" }));
   await user.click(await screen.findByRole("button", { name: "Labels" }));
   await user.click(screen.getByRole("button", { name: "Needs review" }));
   await user.keyboard("{Escape}");
@@ -74,7 +75,8 @@ it("submits source structure and iteration through their separate versioned acti
   vi.stubGlobal("fetch", fetch);
   const view = renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={issue} /></QueryClientProvider>);
   const user = userEvent.setup();
-  await user.click(screen.getByRole("button", { name: "Edit source fields" }));
+  await user.click(screen.getByRole("button", { name: "More actions" }));
+  await user.click(await screen.findByRole("menuitem", { name: "Edit source fields" }));
   await user.selectOptions(await screen.findByLabelText("Project", { exact: true }), projectId);
   await user.click(screen.getByRole("button", { name: "Parent issue" }));
   await user.click(await screen.findByRole("button", { name: "SRC-2 Source parent" }));
@@ -85,7 +87,8 @@ it("submits source structure and iteration through their separate versioned acti
   view.unmount();
   const assigned = { ...issue, source_structure: { ...issue.source_structure!, iteration: { id: parentId, name: "Current period", revision: "3", status: "active" as const } } };
   renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={assigned} /></QueryClientProvider>);
-  await user.click(screen.getByRole("button", { name: "Change iteration" }));
+  await user.click(screen.getByRole("button", { name: "More actions" }));
+  await user.click(await screen.findByRole("menuitem", { name: "Change iteration" }));
   await user.selectOptions(await screen.findByLabelText("Iteration", { exact: true }), iterationId);
   expect(screen.getByRole("button", { name: "Confirm" })).toBeDisabled();
   await user.type(screen.getByLabelText("Reason for switching or leaving the iteration"), "Ready for the next delivery");
@@ -94,13 +97,15 @@ it("submits source structure and iteration through their separate versioned acti
   expect(JSON.parse(String(fetch.mock.calls.find(([, init]) => init?.method === "PUT")?.[1]?.body))).toMatchObject({ current_iteration_id: iterationId, expected_revision: "19", expected_iteration_revision: "12", iteration_reason: "Ready for the next delivery" });
 });
 
-it("does not offer source editors or request source catalogs for an external collaborator", () => {
+it("does not offer source editors or request source catalogs for an external collaborator", async () => {
   const { scope, client } = context();
   const fetch = vi.fn();
   vi.stubGlobal("fetch", fetch);
   renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={{ ...issue, capabilities: { ...issue.capabilities, edit_source_structure: false } }} /></QueryClientProvider>);
-  expect(screen.queryByRole("button", { name: "Edit source fields" })).toBeNull();
-  expect(screen.queryByRole("button", { name: "Change iteration" })).toBeNull();
+  await userEvent.click(screen.getByRole("button", { name: "More actions" }));
+  await screen.findByRole("menu");
+  expect(screen.queryByRole("menuitem", { name: "Edit source fields" })).toBeNull();
+  expect(screen.queryByRole("menuitem", { name: "Change iteration" })).toBeNull();
   expect(fetch).not.toHaveBeenCalled();
 });
 

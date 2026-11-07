@@ -29,11 +29,11 @@ or a second workflow model.
 
 Use the title, labelled status/current handler/due date and one primary action
 before the main content. Keep up to two secondary actions; the remaining current
-actions live under More. Permission context beside Participants explains the
-viewer's actual roles and available operations, while its roster stays lazy.
-Render requirements → delivered result/decision → discussion/progress. Selected
-source metadata/fields are compact; empty properties belong in editing. The
-sidebar stacks below the main column at narrow container widths. Long titles,
+actions live in the portaled More menu. Participants shows a compact role summary;
+full permission context and the lazy roster appear only when opened.
+Render requirements → delivered result/decision → discussion/progress. Source metadata/fields and auxiliary records share full-width secondary disclosures
+below the main journey; empty properties belong in editing. Do not squeeze their
+editors into a permanent narrow sidebar. Long titles,
 names, result/basis and translated controls wrap without horizontal overflow.
 
 Preparing a result from a comment copies its current text/file identity into a
@@ -50,6 +50,10 @@ both locales, preserving the R38 management exception. History cannot say there
 are no earlier results while `hasNextPage` is true.
 
 ### One-action ordinary comments and explicit AI confirmation
+
+Comment tools (mentions and attachments) are explicit compact toggles. The
+attachment picker stays mounted, and retained files/uploads/errors reveal it;
+hiding optional tools must never reset the composer or change send semantics.
 
 An ordinary Publish click obtains the validated preflight and sends once if the
 captured draft UUID, text, parent, selected files, suppressions and execution
@@ -95,9 +99,18 @@ Use protected query retry and a factual missing-file notice. Active previews
 must derive from currently supplied metadata so removed files cannot retain a
 stale open preview. Never use workspace attachment APIs as a fallback.
 
-Intentional workflow form opening, including preparing a result from a comment,
-moves focus into the named form and reveals it in its actual scroll container.
-Closing returns focus to its actual opener when focus would otherwise be lost.
+Workflow actions open a named, scroll-bounded shared Dialog without moving the
+underlying detail. The form heading receives focus; closing returns to the actual
+button or persistent More trigger. If the original control is disabled by an
+unknown receipt, return to the visible original-result recovery control instead.
+Mutation feedback and original-key recovery belong inside the open dialog, and
+remain outside when it closes. Source-workspace action dialogs pass `embedded`
+and forward `onDismiss` / `onBusyChange` so only one modal owns focus.
+
+Active writes/uploads prevent dismissal. Keep the upload cancellation control
+enabled: the form's mutation/receipt lock must be separate from the toolbar and
+dismissal upload lock. Retained unknown operations are dismissible and recoverable.
+Comment preparation still requires explicit submission; result drafts survive close.
 Do not repeat this on a refetch or a keystroke, and do not automatically submit
 prepared content. Associate byte-limit errors with each affected reason/result/
 basis field; an unrelated field must not become invalid.
@@ -138,7 +151,8 @@ Views tests own actual happy-path wiring, accessible names/keyboard actions,
 captured-preflight edits, distinct AI confirmation, result/basis/decision/history
 presentation, participants, ancestor recovery, both locales and repeated anchors.
 Use endpoint-routed mocks when history discovery adds an independent Query.
-Core owns pure parsing/action/page/recovery matrices; Server owns transactions
+The workflow upload regression covers Cancel upload inside the modal, and the
+unknown-result regression covers focus returning to recovery. Core owns pure parsing/action/page/recovery matrices; Server owns transactions
 and admission. Do not multiply these matrices through DOM mounts.
 
 `e2e/collaboration-detail-journey.spec.ts` proves the full production Web/actual

@@ -1,9 +1,11 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationFieldOptions, collaborationPropertyValueMatchesDefinition, collaborationKeys, executeCollaborationAction, isCollaborationDenied, parseCollaborationActionDraft, prepareCollaborationAction, useCollaborationPendingDrafts, useCollaborationStatusOptions,
   deriveCollaborationDetailState, useCollaborationDeliveryForm, collaborationCommentWithinByteLimit, collaborationDraftAttachmentsOptions, collaborationAttachmentsOptions,
   type CollaborationAction, type CollaborationActionIntent, type CollaborationAttachment, type CollaborationComment, type CollaborationDraft, type CollaborationIssue, type CollaborationRecipientAccount, type CollaborationScope, type CollaborationStatusAction } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@multica/ui/components/ui/dialog";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@multica/ui/components/ui/dropdown-menu";
 import { Input } from "@multica/ui/components/ui/input";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import { Textarea } from "@multica/ui/components/ui/textarea";
@@ -16,15 +18,16 @@ import { CollaborationParticipants } from "./participants";
 import { CollaborationAttachmentPicker } from "./attachment-picker";
 import { CollaborationSubmissionRecord } from "./delivery-panel";
 import type { IssuePropertyValue } from "@multica/core/types";
-import { recoverFocus, useOpenedForm } from "./focus";
+import { recoverFocus } from "./focus";
 import { CollaborationIterationInput, CollaborationLabelInput, CollaborationPropertyInputs, CollaborationSourceInputs, type CollaborationSourceSelection } from "./field-inputs";
 
 type ActionName = CollaborationAction["action"];
 const successful = new Set(["participant_added", "already_participant", "transferred", "already_handler", "participant_left", "participant_removed", "information_requested", "information_returned", "acceptance_submitted", "acceptance_returned", "ai_policy_changed", "ai_policy_unchanged", "status_changed", "status_unchanged", "completed", "cancelled", "reopened", "issue_edited", "iteration_changed", "unchanged"]);
 
-export function CollaborationWorkflow({ scope, issue, initialAction, initialStatus, resultFromComment, onResultPrepared, onDiscuss }: {
+export function CollaborationWorkflow({ scope, issue, initialAction, initialStatus, resultFromComment, onResultPrepared, onDiscuss, embedded = false, onDismiss, onBusyChange }: {
   scope: CollaborationScope; issue: CollaborationIssue; initialAction?: "transfer" | "change_status" | "edit"; initialStatus?: string;
   resultFromComment?: CollaborationComment | null; onResultPrepared?: () => void; onDiscuss?: () => void;
+  embedded?: boolean; onDismiss?: () => void; onBusyChange?: (busy: boolean) => void;
 }) {
   const { t } = useT("collaboration");
   const labels = useCollaborationLabels();
@@ -36,10 +39,14 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
   const submitting = useRef(false);
   const trigger = useRef<HTMLElement | null>(null);
   const section = useRef<HTMLElement>(null);
-  const dismiss = () => { setSelection(null); recoverFocus(() => {
-    if (trigger.current?.isConnected) trigger.current.scrollIntoView({ block: "nearest" });
-    return trigger.current;
-  }, () => section.current); };
+  const menuTrigger = useRef<HTMLButtonElement>(null);
+  const dialog = useRef<HTMLDivElement>(null);
+  const [formBusy, setFormBusy] = useState(false);
+  const dismiss = () => {
+    setSelection(null);
+    onDismiss?.();
+    if (embedded) recoverFocus(() => trigger.current, () => section.current);
+  };
   const drafts = useCollaborationPendingDrafts({ ...scope, issueId: issue.id });
   const apply = useMutation({ mutationKey: [...collaborationKeys.issue(scope, issue.id), "human-action"], retry: false, networkMode: "always",
     mutationFn: ({ draft, recovery }: { draft: CollaborationDraft; recovery: boolean }) => executeCollaborationAction(client, scope, draft, recovery),
@@ -52,6 +59,9 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
         }
       }
     } });
+  const busy = apply.isPending || formBusy;
+  useEffect(() => { onBusyChange?.(busy); }, [busy, onBusyChange]);
+  useEffect(() => () => onBusyChange?.(false), [onBusyChange]);
   const actions: [ActionName, boolean][] = [["invite", issue.capabilities.invite], ["transfer", issue.capabilities.transfer],
     ["request_information", issue.capabilities.request_information], ["return_information", issue.capabilities.return_information], ["submit_acceptance", issue.capabilities.submit_acceptance],
     ["return_acceptance", issue.capabilities.return_acceptance === true], ["change_ai_policy", issue.capabilities.change_ai_policy === true],
@@ -64,7 +74,8 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
   const primary = state.primary !== "discuss" && state.primary !== null && available.includes(state.primary) ? state.primary : null;
   const secondary = state.secondary.filter((action): action is ActionName => action !== "discuss" && available.includes(action)).slice(0, 2);
   const more = available.filter((action) => action !== primary && !secondary.includes(action));
-  const locked = apply.isPending || drafts.actions.length > 0 || drafts.error;
+  const formLocked = apply.isPending || drafts.actions.length > 0 || drafts.error;
+  const locked = formLocked || formBusy;
   const startingWork = selected === "change_status" && state.primary === "change_status" && ["backlog", "todo"].includes(issue.status_category) && initialAction === undefined;
   const preparedSelection = useRef<CollaborationComment | null>(null);
   const resetApply = apply.reset;
@@ -80,15 +91,36 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
   }, [resultFromComment, issue.id, locked, state.canSelfComplete, available, resetApply]);
   const actionLabel = (action: ActionName, isPrimary = false) => action === "complete" ? state.canAccept ? t(($) => $.delivery.accept) : t(($) => $.delivery.selfComplete)
     : action === "change_status" && isPrimary && ["backlog", "todo"].includes(issue.status_category) ? t(($) => $.delivery.start) : labels.action(action);
-  function select(action: ActionName, button: HTMLButtonElement) { trigger.current = button; apply.reset(); setRestored(null); setSelection({ action }); }
+  function select(action: ActionName, button: HTMLElement | null) { trigger.current = button; apply.reset(); setRestored(null); setSelection({ action }); }
+  const formOpen = selected !== undefined && issue.write_context != null && available.includes(selected);
+  const feedback = <>
+    {drafts.error && <p role="alert" className="text-body">{t(($) => $.workflow.storageError)}</p>}
+    {apply.isPending && <p role="status" className="text-body">{t(($) => $.workflow.pending)}</p>}
+    {apply.error && <CollaborationQueryState error={apply.error} />}
+    {apply.data && <p role="status" className="text-body">{successful.has(apply.data.code) && (apply.data.status === undefined || apply.data.status < 400) ? t(($) => $.workflow.success) : t(($) => $.workflow.refused)}</p>}
+    {!apply.isPending && drafts.actions.length > 0 && <div className="space-y-3"><p role="status" className="text-body">{t(($) => $.workflow.unknown)}</p>{drafts.actions.map((draft) =>
+      <Button key={draft.requestId} data-workflow-recovery type="button" variant="outline" disabled={apply.isPending} className="pointer-coarse:min-h-11" onClick={(event) => { if (!selection) trigger.current = event.currentTarget; apply.mutate({ draft, recovery: true }); }}>{t(($) => $.workflow.recover)}</Button>)}</div>}
+  </>;
+  const form = formOpen ? <WorkflowForm key={`${selected}:${restored?.requestId ?? "new"}`} opening={selection} scope={scope} issue={issue} action={selected} restoredAction={restored?.action === selected ? restored : undefined} initialStatus={selected === "change_status" ? initialStatus : undefined} startWork={startingWork} resultFromComment={resultFromComment} onResultPrepared={onResultPrepared} locked={formLocked} busy={busy} modal={!embedded} feedback={feedback} onBusyChange={setFormBusy} close={dismiss} submit={async (intent, baseline) => {
+      if (submitting.current) return;
+      submitting.current = true;
+      try {
+        const draft = prepareCollaborationAction(scope, baseline, crypto.randomUUID(), intent);
+        await apply.mutateAsync({ draft, recovery: false });
+      } catch { /* The original saved intent is the recovery boundary. */ }
+      finally { submitting.current = false; }
+    }} /> : null;
   return <section ref={section} tabIndex={-1} aria-label={t(($) => $.workflow.title)} className="space-y-4 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring">
     <div className="flex min-w-0 flex-wrap items-start gap-2">
       {primary && <Button className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11" disabled={locked} onClick={(event) => select(primary, event.currentTarget)}>{actionLabel(primary, true)}</Button>}
       {state.primary === "discuss" && onDiscuss && <Button className="pointer-coarse:min-h-11" onClick={onDiscuss}>{t(($) => $.detail.comments)}</Button>}
       {secondary.map((action) => <Button key={action} variant="outline" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11" disabled={locked} onClick={(event) => select(action, event.currentTarget)}>{actionLabel(action)}</Button>)}
-      {more.length > 0 && <details className="min-w-0 open:basis-full"><summary className="cursor-pointer rounded-md px-3 py-1.5 text-body font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11">{t(($) => $.delivery.more)}</summary>
-        <div className="flex min-w-0 flex-wrap gap-2 pt-3">{more.map((action) => <Button key={action} variant="ghost" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11" disabled={locked} onClick={(event) => select(action, event.currentTarget)}>{actionLabel(action)}</Button>)}</div>
-      </details>}
+      {more.length > 0 && <DropdownMenu>
+        <DropdownMenuTrigger ref={menuTrigger} disabled={locked} render={<Button variant="ghost" className="pointer-coarse:min-h-11" />}>{t(($) => $.delivery.more)}</DropdownMenuTrigger>
+        <DropdownMenuContent finalFocus={() => selection ? false : menuTrigger.current}>
+          {more.map((action) => <DropdownMenuItem key={action} disabled={locked} className="max-w-80 whitespace-normal pointer-coarse:min-h-11" onClick={() => select(action, menuTrigger.current)}>{actionLabel(action)}</DropdownMenuItem>)}
+        </DropdownMenuContent>
+      </DropdownMenu>}
     </div>
     <CollaborationParticipants key={issue.id} scope={scope} issue={issue} locked={locked} submit={async (draft) => {
       if (submitting.current) return;
@@ -96,28 +128,21 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
       try { await apply.mutateAsync({ draft, recovery: false }); } catch { /* Original-key recovery remains available above the form. */ }
       finally { submitting.current = false; }
     }} />
-    {drafts.error && <p role="alert" className="text-body">{t(($) => $.workflow.storageError)}</p>}
-    {apply.isPending && <p role="status" className="text-body">{t(($) => $.workflow.pending)}</p>}
-    {apply.error && <CollaborationQueryState error={apply.error} />}
-    {apply.data && <p role="status" className="text-body">{successful.has(apply.data.code) && (apply.data.status === undefined || apply.data.status < 400) ? t(($) => $.workflow.success) : t(($) => $.workflow.refused)}</p>}
-    {!apply.isPending && drafts.actions.length > 0 && <div className="space-y-3"><p role="status" className="text-body">{t(($) => $.workflow.unknown)}</p>{drafts.actions.map((draft) =>
-      <Button key={draft.requestId} variant="outline" disabled={apply.isPending} className="pointer-coarse:min-h-11" onClick={() => apply.mutate({ draft, recovery: true })}>{t(($) => $.workflow.recover)}</Button>)}</div>}
-    {selected && issue.write_context && available.includes(selected) && <WorkflowForm key={`${selected}:${restored?.requestId ?? "new"}`} opening={selection} scope={scope} issue={issue} action={selected} restoredAction={restored?.action === selected ? restored : undefined} initialStatus={selected === "change_status" ? initialStatus : undefined} startWork={startingWork} resultFromComment={resultFromComment} onResultPrepared={onResultPrepared} locked={locked} close={dismiss} submit={async (intent, baseline) => {
-      if (submitting.current) return;
-      submitting.current = true;
-      try {
-        const draft = prepareCollaborationAction(scope, baseline, crypto.randomUUID(), intent);
-        const result = await apply.mutateAsync({ draft, recovery: false });
-        if (successful.has(result.code) && (result.status === undefined || result.status < 400)) dismiss();
-      } catch { /* The original saved intent is the recovery boundary. */ }
-      finally { submitting.current = false; }
-    }} />}
+    {!formOpen && feedback}
+    {embedded ? form : <Dialog open={formOpen} onOpenChange={(open) => { if (!open && !busy) dismiss(); }}>
+      <DialogContent ref={dialog} showCloseButton={!busy} closeLabel={t(($) => $.creation.close)}
+        initialFocus={() => dialog.current?.querySelector<HTMLElement>("[data-workflow-heading]") ?? false}
+        finalFocus={() => trigger.current?.isConnected && !trigger.current.matches(':disabled, [aria-disabled="true"]') ? trigger.current : section.current?.querySelector<HTMLElement>("[data-workflow-recovery]") ?? section.current}
+        className="max-h-[90dvh] overflow-y-auto overscroll-contain sm:max-w-2xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11">
+        {form}
+      </DialogContent>
+    </Dialog>}
   </section>;
 }
 
-function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAction, locked, submit, close, startWork = false, resultFromComment, onResultPrepared }: {
+function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAction, locked, busy, modal, feedback, onBusyChange, submit, close, startWork = false, resultFromComment, onResultPrepared }: {
   scope: CollaborationScope; issue: CollaborationIssue; action: ActionName; initialStatus?: string; restoredAction?: CollaborationAction; locked: boolean;
-  opening: unknown;
+  opening: unknown; busy: boolean; modal: boolean; feedback: ReactNode; onBusyChange: (busy: boolean) => void;
   submit: (intent: CollaborationActionIntent, baseline: CollaborationIssue) => Promise<void>; close: () => void;
   startWork?: boolean; resultFromComment?: CollaborationComment | null; onResultPrepared?: () => void;
 }) {
@@ -125,7 +150,8 @@ function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAc
   const labels = useCollaborationLabels();
   const client = useQueryClient();
   const fieldId = useId();
-  const heading = useOpenedForm<HTMLHeadingElement>({ opening, reveal: true });
+  const heading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => { heading.current?.focus({ preventScroll: true }); }, [opening]);
   // A recovered rejection retains the original observations. Accepting a new
   // baseline is a separate, explicit action and never submits automatically.
   const [baseline, setBaseline] = useState<CollaborationIssue>(() => restoredAction ? { ...issue,
@@ -151,6 +177,8 @@ function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAc
   const result = useCollaborationDeliveryForm({ server: scope.server, userId: scope.userId,
     context: { kind: "issue", issueId: issue.id, sourceWorkspaceId: issue.source_workspace.id } }, "result");
   const [uploading, setUploading] = useState(false);
+  useEffect(() => { onBusyChange(uploading); }, [uploading, onBusyChange]);
+  useEffect(() => () => onBusyChange(false), [onBusyChange]);
   const [referencesOpen, setReferencesOpen] = useState(false);
   const [preparationBlocked, setPreparationBlocked] = useState(false);
   const preparedComment = useRef<CollaborationComment | null>(null);
@@ -246,8 +274,12 @@ function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAc
       default: throw new Error("Unsupported collaboration action");
     }
   }
-  return <form aria-label={formLabel} onSubmit={(event) => { if (event.target !== event.currentTarget) return; event.preventDefault(); if (ready) void submit(intent(), baseline); }} className="min-w-0 space-y-4 rounded-lg border border-border p-4">
-    <h3 ref={heading} tabIndex={-1} className="rounded-sm text-body font-semibold outline-none focus-visible:ring-2 focus-visible:ring-faint-foreground">{formLabel}</h3>
+  return <form aria-label={formLabel} onSubmit={(event) => { if (event.target !== event.currentTarget) return; event.preventDefault(); if (ready) void submit(intent(), baseline); }} className="min-w-0 space-y-4">
+    {modal ? <>
+      <DialogTitle ref={heading} tabIndex={-1} data-workflow-heading className="pr-10 outline-none focus-visible:ring-2 focus-visible:ring-ring">{formLabel}</DialogTitle>
+      <DialogDescription className="[overflow-wrap:anywhere]">{issue.title}</DialogDescription>
+    </> : <h3 ref={heading} tabIndex={-1} className="rounded-sm text-body font-semibold outline-none focus-visible:ring-2 focus-visible:ring-ring">{formLabel}</h3>}
+    {feedback}
     <fieldset disabled={locked} className="min-w-0 space-y-4">
       {deciding && (submitted ? <CollaborationSubmissionRecord scope={scope} issueId={issue.id} submission={submitted} /> : <p className="text-body text-muted-foreground">{t(($) => $.delivery.unavailable)}</p>)}
       {informationRequest && <div id={`${fieldId}-request`} className="min-w-0 space-y-2 rounded-md bg-muted/30 p-3 [overflow-wrap:anywhere]">
@@ -337,7 +369,7 @@ function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAc
         if (action === "return_acceptance" && !recipientWasChosen.current) setRecipient(issue.delivery?.current?.author ?? null);
         if (iterationId) setIterationRevision(sourceOptions?.iterations.find((item) => item.id === iterationId)?.revision);
       }}>{t(($) => $.fields.useCurrentVersion)}</Button></div>}
-    <div className="flex flex-wrap gap-2"><Button disabled={!ready} type="submit" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11">{needsResult || deciding || startWork ? formLabel : t(($) => $.workflow.confirm)}</Button><Button disabled={locked} type="button" variant="ghost" onClick={close} className="pointer-coarse:min-h-11">{t(($) => $.workflow.dismiss)}</Button></div>
+    <div className="flex flex-wrap gap-2"><Button disabled={!ready} type="submit" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11">{needsResult || deciding || startWork ? formLabel : t(($) => $.workflow.confirm)}</Button><Button disabled={busy} type="button" variant="ghost" onClick={close} className="pointer-coarse:min-h-11">{t(($) => $.workflow.dismiss)}</Button></div>
   </form>;
 }
 

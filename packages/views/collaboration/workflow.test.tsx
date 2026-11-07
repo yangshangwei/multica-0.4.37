@@ -4,6 +4,7 @@ import { act, fireEvent, screen, waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
+import { Dialog, DialogContent, DialogTitle } from "@multica/ui/components/ui/dialog";
 import { collaborationScope, parseCollaborationComment, parseCollaborationIssue, readCollaborationDrafts, type CollaborationComment } from "@multica/core/collaboration";
 import { renderWithI18n } from "../test/i18n";
 import { CollaborationWorkflow } from "./workflow";
@@ -26,7 +27,7 @@ const submission = { id: submissionId, issue_id: id, event_seq: "8", lifecycle_e
   author: { ...account, user_id: recipientId, name: "Result author" }, created_at: "2026-11-03T00:00:00Z", result: "Delivered outcome",
   basis: "Verified against the requested checks", attachment_ids: [], source_comment_id: null, evidence_state: "available" as const, decision: null };
 
-it("reveals explicit comment preparation, focuses the result heading, and returns to its latest opener without submitting", async () => {
+it("opens comment preparation in a named modal without scrolling, preserves focus through refetch, and returns to its opener", async () => {
   setApiInstance(new ApiClient("https://server.example"));
   const source = { ...issue, ai_policy: "manual" as const, delivery: { current: null, latest: null, has_history: false } };
   const comment = parseCollaborationComment({ id: recipientId, issue_id: id, author_type: "member", author: account, content: "Prepared result", type: "comment", parent_id: null,
@@ -55,7 +56,8 @@ it("reveals explicit comment preparation, focuses the result heading, and return
   for (const disclosure of document.querySelectorAll("details")) {
     if (disclosure.contains(form)) expect(disclosure.open).toBe(true);
   }
-  expect(scroll.mock.contexts).toContain(heading);
+  expect(screen.getByRole("dialog", { name: "Record result and complete" })).toContainElement(form);
+  expect(scroll).not.toHaveBeenCalled();
   expect(within(form).getByLabelText("Result")).toHaveValue("Prepared result");
   expect(within(form).getByLabelText("Basis")).toHaveValue("");
   expect(within(form).getByRole("button", { name: "Record result and complete" })).toBeDisabled();
@@ -65,13 +67,16 @@ it("reveals explicit comment preparation, focuses the result heading, and return
   expect(within(form).getByLabelText("Basis")).toHaveFocus();
   expect(scroll).not.toHaveBeenCalled();
 
+  await user.keyboard("{Escape}");
+  await waitFor(() => expect(opener).toHaveFocus());
   const nextOpener = screen.getByRole("button", { name: "Use updated comment" });
   await user.click(nextOpener);
-  expect(heading).toHaveFocus();
-  expect(within(form).getByLabelText("Result")).toHaveValue("Another result");
-  await user.click(within(form).getByRole("button", { name: "Close" }));
+  const nextForm = screen.getByRole("form", { name: "Record result and complete" });
+  expect(within(nextForm).getByRole("heading")).toHaveFocus();
+  expect(within(nextForm).getByLabelText("Result")).toHaveValue("Another result");
+  await user.click(within(nextForm).getByRole("button", { name: "Close" }));
   await waitFor(() => expect(nextOpener).toHaveFocus());
-  expect(scroll.mock.contexts).toContain(nextOpener);
+  expect(scroll).not.toHaveBeenCalled();
   expect(fetch.mock.calls.every(([, init]) => !init || init.method !== "POST")).toBe(true);
 });
 
@@ -87,10 +92,6 @@ it("requires a result and basis for text-only delivery and preserves the input a
     : { code: "acceptance_submitted", status: 200, collaboration_revision: "9007199254740994", delivery_confirmation: { submission_id: submissionId, attachment_ids: [] } })));
   vi.stubGlobal("fetch", fetch);
   renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={source} /></QueryClientProvider>);
-  const permissions = screen.getByLabelText("Current permissions");
-  expect(permissions).toHaveTextContent("Current handler");
-  expect(permissions).toHaveTextContent("Submit result");
-  expect(permissions).not.toHaveTextContent("Accept and complete");
   const user = userEvent.setup();
   const opener = screen.getByRole("button", { name: /Submit (result|for acceptance)/ });
   await user.click(opener);
@@ -119,9 +120,6 @@ it("accepts the exact observed submission and shows its author before completion
     : { code: "completed", status: 200, collaboration_revision: "9007199254740994", delivery_confirmation: { submission_id: submissionId, attachment_ids: [] } })));
   vi.stubGlobal("fetch", fetch);
   renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={source} /></QueryClientProvider>);
-  const permissions = screen.getByLabelText("Current permissions");
-  expect(permissions).toHaveTextContent("Accept and complete");
-  expect(permissions).not.toHaveTextContent("Record result and complete");
   const user = userEvent.setup();
   await user.click(screen.getByRole("button", { name: /Accept and complete|^Complete$/ }));
   const form = await screen.findByRole("form", { name: "Accept and complete" });
@@ -223,9 +221,6 @@ it("records a self-handled result and completes without a transfer form", async 
     : { code: "completed", status: 200, collaboration_revision: "9007199254740994", delivery_confirmation: { submission_id: submissionId, attachment_ids: [] } })));
   vi.stubGlobal("fetch", fetch);
   renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={source} /></QueryClientProvider>);
-  const permissions = screen.getByLabelText("Current permissions");
-  expect(permissions).toHaveTextContent("Record result and complete");
-  expect(permissions).not.toHaveTextContent("Accept and complete");
   const user = userEvent.setup();
   await user.click(screen.getByRole("button", { name: "Record result and complete" }));
   const form = await screen.findByRole("form", { name: "Record result and complete" });
@@ -252,15 +247,17 @@ it("shows the current-viewer context beside Participants and opens the scoped li
   });
   vi.stubGlobal("fetch", fetch);
   renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={source} /></QueryClientProvider>, { locale: "zh-Hans" });
-  const permissions = screen.getByLabelText("当前权限");
-  expect(within(permissions).getByText("查看者")).toBeInTheDocument();
-  expect(permissions).not.toHaveTextContent("验收并完成");
-  expect(permissions).not.toHaveTextContent("编辑任务");
+  expect(screen.queryByLabelText("当前权限")).not.toBeInTheDocument();
   expect(fetch).not.toHaveBeenCalled();
   const trigger = screen.getByRole("button", { name: "参与者" });
   trigger.focus();
   await userEvent.setup().keyboard("{Enter}");
   expect(trigger).toHaveAttribute("aria-expanded", "true");
+  const permissions = screen.getByLabelText("当前权限");
+  expect(within(permissions).getByText("查看者")).toBeInTheDocument();
+  expect(permissions).not.toHaveTextContent("验收并完成");
+  expect(permissions).not.toHaveTextContent("编辑任务");
+
   const list = await screen.findByRole("list", { name: "参与者" });
   expect(await within(list).findByText("Current participant")).toBeInTheDocument();
   expect(within(list).getByText("发起人")).toBeInTheDocument();
@@ -300,12 +297,14 @@ it("resolves one exact recipient, preserves an unknown transfer, and recovers it
   expect(await screen.findByText(/The result is not confirmed/)).toBeInTheDocument();
   const [draft] = readCollaborationDrafts({ ...scope, issueId: id });
   expect(draft?.payload).toMatchObject({ targetUserId: recipientId, note: "Keep original note", expectedCollaborationRevision: "9007199254740993" });
-  await user.click(screen.getByRole("button", { name: "Check original result" }));
+  const dialog = screen.getByRole("dialog", { name: "Transfer" });
+  await user.click(within(dialog).getByRole("button", { name: "Check original result" }));
   await waitFor(() => expect(readCollaborationDrafts({ ...scope, issueId: id })).toEqual([]));
   const recoveryCall = fetch.mock.calls.find(([input]) => input.includes(`/operations/${draft!.requestId}`));
   expect(recoveryCall?.[0]).toContain(`/operations/${draft!.requestId}`);
   expect(recoveryCall?.[1]?.method ?? "GET").toBe("GET");
   expect(screen.getByText("Action confirmed.")).toBeInTheDocument();
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 });
 
 it("discards an in-flight exact lookup after the recipient text changes", async () => {
@@ -343,7 +342,8 @@ it("shows a real stale-revision refusal immediately and keeps input for an expli
   const ui = (value: typeof editable) => <QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={value} /></QueryClientProvider>;
   const { rerender } = renderWithI18n(ui(editable));
   const user = userEvent.setup();
-  await user.click(screen.getByRole("button", { name: "Edit issue" }));
+  await user.click(screen.getByRole("button", { name: "More actions" }));
+  await user.click(await screen.findByRole("menuitem", { name: "Edit issue" }));
   await user.clear(screen.getByLabelText("Title"));
   await user.type(screen.getByLabelText("Title"), "My retained title");
   rerender(ui({ ...editable, title: "Someone else's title", description: "New remote body", collaboration_revision: "9007199254740994" }));
@@ -427,4 +427,60 @@ it("says where the issue returns when the request's saved status is gone", async
   await openReturnForm(askedIssue({ note: "", return_status: "in_progress", return_status_fallback: true }));
   expect(await screen.findByText("The status saved with this request is no longer available, so the issue returns to In progress.")).toBeInTheDocument();
   expect(screen.getByText("The request has no note.")).toBeInTheDocument();
+});
+
+
+it("opens a menu action in one dialog and restores the persistent menu trigger on Escape", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  vi.stubGlobal("fetch", vi.fn());
+  const user = userEvent.setup();
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={{ ...issue, start_date: null, due_date: null }} /></QueryClientProvider>);
+  const trigger = screen.getByRole("button", { name: "More actions" });
+  trigger.focus();
+  await user.keyboard("{Enter}");
+  await user.click(await screen.findByRole("menuitem", { name: "Edit issue" }));
+  expect(await screen.findByRole("dialog", { name: "Edit issue" })).toBeVisible();
+  expect(screen.getAllByRole("dialog")).toHaveLength(1);
+  expect(screen.getByRole("heading", { name: "Edit issue" })).toHaveFocus();
+  await user.keyboard("{Escape}");
+  await waitFor(() => expect(trigger).toHaveFocus());
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+});
+
+it("keeps a submission modal open during the request and allows dismissal of an uncertain result", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  let reject!: (error: Error) => void;
+  const fetch = vi.fn(() => new Promise<Response>((_resolve, rejectRequest) => { reject = rejectRequest; }));
+  vi.stubGlobal("fetch", fetch);
+  const user = userEvent.setup();
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={{ ...issue, start_date: null, due_date: null }} /></QueryClientProvider>);
+  await user.click(screen.getByRole("button", { name: "More actions" }));
+  await user.click(await screen.findByRole("menuitem", { name: "Edit issue" }));
+  const dialog = screen.getByRole("dialog", { name: "Edit issue" });
+  await user.click(within(dialog).getByRole("button", { name: "Confirm" }));
+  await waitFor(() => expect(fetch).toHaveBeenCalledOnce());
+  expect(within(dialog).getByRole("button", { name: "Close" })).toBeDisabled();
+  await user.keyboard("{Escape}");
+  expect(dialog).toBeVisible();
+  await act(async () => reject(new TypeError("Response lost")));
+  expect(await within(dialog).findByRole("button", { name: "Check original result" })).toBeEnabled();
+  await user.keyboard("{Escape}");
+  await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+  expect(screen.getByRole("button", { name: "Check original result" })).toBeEnabled();
+  await waitFor(() => expect(screen.getByRole("button", { name: "Check original result" })).toHaveFocus());
+  expect(fetch).toHaveBeenCalledOnce();
+});
+
+it("embeds the source action in its existing dialog without creating another modal", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  vi.stubGlobal("fetch", vi.fn());
+  const dismissed = vi.fn();
+  renderWithI18n(<QueryClientProvider client={client}><Dialog open><DialogContent aria-describedby={undefined} showCloseButton={false}>
+    <DialogTitle>Source action</DialogTitle>
+    <CollaborationWorkflow scope={collaborationScope(id)} issue={{ ...issue, start_date: null, due_date: null }} initialAction="edit" embedded onDismiss={dismissed} />
+  </DialogContent></Dialog></QueryClientProvider>);
+  expect(screen.getAllByRole("dialog")).toHaveLength(1);
+  expect(screen.getByRole("dialog", { name: "Source action" })).toContainElement(screen.getByRole("form", { name: "Edit issue" }));
+  await userEvent.click(within(screen.getByRole("form", { name: "Edit issue" })).getByRole("button", { name: "Close" }));
+  expect(dismissed).toHaveBeenCalledOnce();
 });

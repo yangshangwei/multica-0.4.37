@@ -127,7 +127,6 @@ test("Web workbench keeps account scope through comments, uncertain cancellation
   await page.getByRole("button", { name: "Send comment" }).click();
   await expect(page.getByText("Comment confirmed.")).toBeVisible();
 
-  await revealCollaborationDisclosure(page, "More actions");
   await page.getByRole("button", { name: "Transfer", exact: true }).click();
   const transfer = page.locator("form").filter({ has: page.getByRole("heading", { name: "Transfer", exact: true }) });
   await selectHandoffRecipient(page, transfer, { id: recipientAccount.id, name: "Browser recipient" });
@@ -147,7 +146,6 @@ test("Web workbench keeps account scope through comments, uncertain cancellation
     await authenticatePage(recipientPage, recipient.getToken()!);
     await recipientPage.goto(new URL(account, page.url()).href);
     await expect(recipientPage.getByRole("heading", { name: created.title, exact: true })).toBeVisible();
-    await revealCollaborationDisclosure(recipientPage, "More actions");
     await expect(recipientPage.getByRole("button", { name: "Transfer", exact: true })).toBeVisible();
   } finally { await recipientPage.close(); }
 
@@ -320,7 +318,7 @@ test("Web stale lifecycle conflict immediately reports refusal and preserves inp
       expected_account_epoch: latest.write_context!.account_epoch, submission_id: submission.id, status: "done" });
     await expect(form).toHaveCount(0);
     await revealCollaborationDisclosure(page, "More actions");
-    await expect(page.getByRole("button", { name: "Reopen issue", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Reopen issue", exact: true }).or(page.getByRole("menuitem", { name: "Reopen issue", exact: true }))).toBeVisible();
     const final = await creator.requestJSON<CollaborationIssue>(`/api/collaboration/issues/${issue.id}`);
     expect(final).toMatchObject({ id: issue.id, status: "done", handler: { user_id: creatorAccount.id }, execution: { commands: [], groups: [], runs: [] },
       delivery: { current: null, latest: { id: submission.id, author_user_id: handlerAccount.id,

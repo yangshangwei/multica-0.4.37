@@ -118,8 +118,8 @@ test("Web directed handoff chain moves current todos with responsibility and onl
     // H, now neither creator nor handler, keeps discussion/AI control but cannot complete (AC27, AC54).
     const hView = await read(H);
     expect(hView.capabilities).toMatchObject({ complete: false, cancel: false, transfer: false, submit_acceptance: false, comment: true, control_ai: true, leave: true });
-    if (!await hSession.page.getByRole("button", { name: "Leave issue", exact: true }).isVisible()) await revealCollaborationDisclosure(hSession.page, "More actions");
-    await expect(hSession.page.getByRole("button", { name: "Leave issue", exact: true })).toBeVisible();
+    if (!await hSession.page.getByRole("button", { name: "Leave issue", exact: true }).or(hSession.page.getByRole("menuitem", { name: "Leave issue", exact: true })).isVisible()) await revealCollaborationDisclosure(hSession.page, "More actions");
+    await expect(hSession.page.getByRole("button", { name: "Leave issue", exact: true }).or(hSession.page.getByRole("menuitem", { name: "Leave issue", exact: true }))).toBeVisible();
     for (const label of ["Accept and complete", "Record result and complete", "Cancel issue", "Submit result", "Transfer"]) {
       await expect(hSession.page.getByRole("button", { name: label, exact: true })).toHaveCount(0);
     }

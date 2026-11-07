@@ -228,13 +228,10 @@ async function cliAvailable() {
 }
 
 async function workflowButton(label) {
-  const button = page.getByRole("button", { name: label, exact: true });
+  let button = page.getByRole("button", { name: label, exact: true });
   if (!await button.isVisible()) {
-    const summary = page.locator("details > summary:visible").filter({ hasText: /^More actions$/ });
-    await expect(summary).toBeVisible();
-    const disclosure = summary.locator("..");
-    if (await disclosure.getAttribute("open") === null) await summary.click();
-    await expect(disclosure).toHaveAttribute("open", "");
+    await page.getByRole("button", { name: "More actions", exact: true }).click();
+    button = page.getByRole("menuitem", { name: label, exact: true });
   }
   await button.click();
 }

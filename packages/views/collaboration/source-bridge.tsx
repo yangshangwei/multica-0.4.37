@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { isCollaborationDenied, useCollaborationIssue, useCollaborationScope } from "@multica/core/collaboration";
 import type { SourceCollaborationAction } from "@multica/core/issues";
 import { useCollaborationRealtime } from "@multica/core/realtime";
@@ -50,16 +50,17 @@ export function SourceCollaborationDetail({ issueId, commentId, runId, leading }
 export function SourceCollaborationActionDialog({ action, close }: { action: SourceCollaborationAction | null; close: () => void }) {
   const scope = useCollaborationScope();
   const { t } = useT("collaboration");
-  return <Dialog open={action !== null} onOpenChange={(open) => { if (!open) close(); }}>
-    <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11" closeLabel={t(($) => $.creation.close)}>
+  const [busy, setBusy] = useState(false);
+  return <Dialog open={action !== null} onOpenChange={(open) => { if (!open && !busy) close(); }}>
+    <DialogContent showCloseButton={!busy} className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11" closeLabel={t(($) => $.creation.close)}>
       <DialogTitle className="pr-12">{t(($) => $.workflow.title)}</DialogTitle>
       <DialogDescription>{action?.action === "lifecycle" ? t(($) => $.source.lifecycle) : t(($) => $.source.workflow)}</DialogDescription>
-      {scope && action && <SourceAction key={`${scope.apiScope}:${scope.userId}:${action.issueId}:${action.action}:${action.status ?? ""}`} scope={scope} action={action} />}
+      {scope && action && <SourceAction key={`${scope.apiScope}:${scope.userId}:${action.issueId}:${action.action}:${action.status ?? ""}`} scope={scope} action={action} close={close} onBusyChange={setBusy} />}
     </DialogContent>
   </Dialog>;
 }
 
-function SourceAction({ scope, action }: { scope: NonNullable<ReturnType<typeof useCollaborationScope>>; action: SourceCollaborationAction }) {
+function SourceAction({ scope, action, close, onBusyChange }: { scope: NonNullable<ReturnType<typeof useCollaborationScope>>; action: SourceCollaborationAction; close: () => void; onBusyChange: (busy: boolean) => void }) {
   const { t } = useT("collaboration");
   const query = useCollaborationIssue(scope, action.issueId);
   useCollaborationRealtime(scope, action.issueId);
@@ -70,6 +71,6 @@ function SourceAction({ scope, action }: { scope: NonNullable<ReturnType<typeof 
   if (allowed !== true || !issue.write_context) return <p role="alert" className="text-body">{t(($) => $.source.notAllowed)}</p>;
   return <>
     {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
-    <CollaborationWorkflow scope={scope} issue={issue} initialAction={action.action === "lifecycle" ? undefined : action.action} initialStatus={action.status} />
+    <CollaborationWorkflow scope={scope} issue={issue} embedded onDismiss={close} onBusyChange={onBusyChange} initialAction={action.action === "lifecycle" ? undefined : action.action} initialStatus={action.status} />
   </>;
 }

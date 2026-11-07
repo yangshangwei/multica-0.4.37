@@ -250,8 +250,11 @@ test("Gap 5: a source workspace holding a collaboration issue cannot be deleted,
   expect((await send(peer, root(issueId))).status).toBe(404);
 });
 
-/** Include collapsed descendants so an unauthorized action cannot hide inside More actions. */
-const renderedActions = async (page: Page) => (await actionsRow(page).getByRole("button", { includeHidden: true }).allTextContents()).map((text) => text.trim());
+/** Inspect the toolbar and open portaled menu so unauthorized actions cannot hide in More. */
+const renderedActions = async (page: Page) => [
+  ...await actionsRow(page).getByRole("button", { includeHidden: true }).allTextContents(),
+  ...await page.getByRole("menuitem").allTextContents(),
+].map((text) => text.trim()).filter((text) => text !== "More actions");
 
 /**
  * P registers and authorizes its own agent A as an AI target, so A is in every
@@ -353,6 +356,7 @@ test("Gap 7: hidden manager actions POSTed by the wrong role are refused and cha
     await expect.poll(() => renderedActions(pages.member!.page)).toEqual(["Comments"]);
     // Only the creator can remove participants (participants.tsx canRemove).
     for (const name of ["creator", "handler"]) {
+      await pages[name]!.page.keyboard.press("Escape");
       await pages[name]!.page.getByRole("region", { name: "Issue actions", exact: true }).getByRole("button", { name: "Participants", exact: true }).click();
       await expect(pages[name]!.page.getByRole("list", { name: "Participants", exact: true }).getByRole("listitem")).toHaveCount(4);
     }
@@ -498,7 +502,7 @@ test("Smaller gaps: title/date edits leave attributed records, the exact recipie
     const lookup = (value: string) => creatorSide.page.waitForResponse((r) => new URL(r.url()).pathname === "/api/collaboration/recipients/resolve"
       && r.request().method() === "POST" && (r.request().postDataJSON() as { value: string }).value === value);
     await revealCollaborationDisclosure(creatorSide.page, "More actions");
-    await actionsRow(creatorSide.page).getByRole("button", { name: "Add participant", exact: true }).click();
+    await creatorSide.page.getByRole("menuitem", { name: "Add participant", exact: true }).click();
     const invite = creatorSide.page.locator("form").filter({ has: creatorSide.page.getByRole("heading", { name: "Add participant", exact: true }) });
     await invite.getByRole("button", { name: "Recipient", exact: true }).click();
     const list = creatorSide.page.getByRole("listbox", { name: "Recipient", exact: true });

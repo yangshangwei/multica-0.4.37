@@ -109,7 +109,7 @@ test("shared context keeps concurrent edits, restores versions, and permits hist
     expect(await fixture.creator.client.requestJSON<CollaborationIssue>(fixture.root)).toMatchObject({ status_category: "done", handler: { user_id: fixture.creator.id },
       delivery: { current: null, latest: { id: submission.id, decision: { kind: "accepted", submission_id: submission.id, actor_user_id: fixture.creator.id } } } });
     await revealCollaborationDisclosure(page, "More actions");
-    await expect(page.getByRole("button", { name: "Reopen issue", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Reopen issue", exact: true }).or(page.getByRole("menuitem", { name: "Reopen issue", exact: true }))).toBeVisible();
     await expect(panel.getByRole("button", { name: "Edit shared context", exact: true })).toHaveCount(0);
     await expect(panel.getByRole("button", { name: /^Restore v/ })).toHaveCount(0);
     await expect(panel).toContainText("This issue is closed, so its shared context is read-only.");

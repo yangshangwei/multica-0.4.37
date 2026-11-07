@@ -95,11 +95,11 @@ test("Web closed issue refuses @agent and Resume, only the creator reopens, and 
     const handler = await openGapSession(browser, fixture, "handler", webUrl);
     sessions.push(handler);
     await expect(panelFor(handler.page).getByRole("button", { name: "Stop all", exact: true })).toBeEnabled();
-    const handlerActions = handler.page.locator("details > summary:visible").filter({ hasText: /^More actions$/ });
+    const handlerActions = handler.page.getByRole("button", { name: "More actions", exact: true });
     if (await handlerActions.count() > 0) await revealCollaborationDisclosure(handler.page, "More actions");
-    await expect(handler.page.getByRole("button", { name: "Reopen issue", exact: true })).toHaveCount(0);
-    if (!await page.getByRole("button", { name: "Reopen issue", exact: true }).isVisible()) await revealCollaborationDisclosure(page, "More actions");
-    await expect(page.getByRole("button", { name: "Reopen issue", exact: true })).toBeVisible();
+    await expect(handler.page.getByRole("button", { name: "Reopen issue", exact: true }).or(handler.page.getByRole("menuitem", { name: "Reopen issue", exact: true }))).toHaveCount(0);
+    if (!await page.getByRole("button", { name: "Reopen issue", exact: true }).or(page.getByRole("menuitem", { name: "Reopen issue", exact: true })).isVisible()) await revealCollaborationDisclosure(page, "More actions");
+    await expect(page.getByRole("button", { name: "Reopen issue", exact: true }).or(page.getByRole("menuitem", { name: "Reopen issue", exact: true }))).toBeVisible();
     expect((await rawGapRequest(fixture, "handler", "GET", `${root}/status-options?action=reopen`)).status).toBe(403);
     const creatorOptions = await fixture.creator.requestJSON<{ default_status: string; status_options_version: string }>(`${root}/status-options?action=reopen`);
     const handlerView = await readGapIssue(fixture, "handler");
@@ -135,9 +135,9 @@ test("Web closed issue refuses @agent and Resume, only the creator reopens, and 
     for (const input of [a2, b1]) expect(reopenedHistory.items.find((item) => item.id === input.commandId)).toEqual(closedHistory.items.find((item) => item.id === input.commandId));
     await reloadGapPage(page, fixture.issueId, fixture.title);
     await expect(panelFor(page).locator(":scope > p").filter({ hasText: /^Paused$/ })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Reopen issue", exact: true })).toHaveCount(0);
-    if (!await page.getByRole("button", { name: "Record result and complete", exact: true }).isVisible()) await revealCollaborationDisclosure(page, "More actions");
-    await expect(page.getByRole("button", { name: "Record result and complete", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Reopen issue", exact: true }).or(page.getByRole("menuitem", { name: "Reopen issue", exact: true }))).toHaveCount(0);
+    if (!await page.getByRole("button", { name: "Record result and complete", exact: true }).or(page.getByRole("menuitem", { name: "Record result and complete", exact: true })).isVisible()) await revealCollaborationDisclosure(page, "More actions");
+    await expect(page.getByRole("button", { name: "Record result and complete", exact: true }).or(page.getByRole("menuitem", { name: "Record result and complete", exact: true }))).toBeVisible();
     for (const input of [a2, b1]) await showGapHistory(page, input.commandId, input.marker, "Cancelled", "The collaboration was completed");
 
     // 5. Resume all after reopen: the unconfirmed run still holds lane A (R17).

@@ -135,7 +135,7 @@ export async function mentionNames(client: TestApiClient, issueId: string) {
 
 /** Submit real result evidence before exercising the creator's acceptance. */
 export async function submitResultThroughUI(page: Page, issueId: string, result: string, basis: string) {
-  const action = page.getByRole("button", { name: "Submit result", exact: true });
+  const action = page.getByRole("button", { name: "Submit result", exact: true }).or(page.getByRole("menuitem", { name: "Submit result", exact: true }));
   if (!await action.isVisible()) await revealCollaborationDisclosure(page, "More actions");
   const optionsPending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/status-options`
     && new URL(response.url()).searchParams.get("action") === "submit_acceptance" && response.request().method() === "GET");
@@ -168,7 +168,7 @@ export async function submitResultThroughUI(page: Page, issueId: string, result:
 export async function lifecycleThroughUI(page: Page, issueId: string, action: "complete" | "cancel" | "reopen", submissionId?: string) {
   if (action === "complete" && !submissionId) throw new Error("Acceptance must identify the exact submitted result");
   const label = { complete: "Accept and complete", cancel: "Cancel issue", reopen: "Reopen issue" }[action];
-  const actionButton = page.getByRole("button", { name: label, exact: true });
+  const actionButton = page.getByRole("button", { name: label, exact: true }).or(page.getByRole("menuitem", { name: label, exact: true }));
   if (!await actionButton.isVisible()) await revealCollaborationDisclosure(page, "More actions");
   const optionsPending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/status-options`
     && new URL(response.url()).searchParams.get("action") === action && response.request().method() === "GET");
@@ -197,7 +197,7 @@ export async function lifecycleThroughUI(page: Page, issueId: string, action: "c
   return { receipt, requestId, input, options };
 }
 export async function leaveThroughUI(page: Page, issueId: string) {
-  const actionButton = page.getByRole("button", { name: "Leave issue", exact: true });
+  const actionButton = page.getByRole("button", { name: "Leave issue", exact: true }).or(page.getByRole("menuitem", { name: "Leave issue", exact: true }));
   if (!await actionButton.isVisible()) await revealCollaborationDisclosure(page, "More actions");
   await actionButton.click();
   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Leave issue", exact: true }) });
@@ -212,7 +212,7 @@ export async function leaveThroughUI(page: Page, issueId: string) {
 }
 
 export async function inviteThroughUI(page: Page, issueId: string, target: { id: string; name: string }) {
-  const actionButton = page.getByRole("button", { name: "Add participant", exact: true });
+  const actionButton = page.getByRole("button", { name: "Add participant", exact: true }).or(page.getByRole("menuitem", { name: "Add participant", exact: true }));
   if (!await actionButton.isVisible()) await revealCollaborationDisclosure(page, "More actions");
   await actionButton.click();
   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Add participant", exact: true }) });

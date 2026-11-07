@@ -1,0 +1,14 @@
+{
+  "checks": [
+    "Opening workflow dialog preserves underlying detail height/scroll/requirements position",
+    "Escape restores opener focus; result and basis survive dismissal",
+    "More menu opens one action dialog and returns focus to More",
+    "Permissions and mention tools open intentionally",
+    "Narrow native window has no horizontal overflow and Tab remains in dialog",
+    "150% root text size keeps dialog content within width and Close reachable"
+  ],
+  "errors": [],
+  "api": "http://localhost:18572",
+  "renderer": "http://localhost:5666",
+  "mutations": "None; local draft fields restored empty"
+}

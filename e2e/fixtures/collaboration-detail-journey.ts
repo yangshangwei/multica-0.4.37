@@ -452,8 +452,11 @@ export async function openJourneyAction(session: DetailJourneySession, id: strin
     await button.focus();
     await button.press("Enter");
   } else {
-    const trigger = workflow.getByRole("button", { name: label, exact: true });
-    if (!await trigger.isVisible()) await workflow.locator("summary").filter({ hasText: copy.more }).click();
+    let trigger = workflow.getByRole("button", { name: label, exact: true });
+    if (!await trigger.isVisible()) {
+      await workflow.getByRole("button", { name: copy.more, exact: true }).click();
+      trigger = session.page.getByRole("menuitem", { name: label, exact: true });
+    }
     await trigger.focus();
     await expect(trigger).toBeFocused();
     await trigger.press("Enter");
