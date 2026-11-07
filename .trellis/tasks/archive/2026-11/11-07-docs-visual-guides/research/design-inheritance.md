@@ -1,7 +1,7 @@
 # Diagram design inheritance
 
-Task: `11-07-docs-visual-guides`  
-Mode: **Read** — a local extension of existing documentation.  
+Task: `11-07-docs-visual-guides`
+Mode: **Read** — a local extension of existing documentation.
 Evidence baseline: current working-tree implementation and the three existing task screenshots below, inspected on 2026-11-07. This is a design record, not a new visual review or proof of a deployed release.
 
 ## Scope and visual authority
