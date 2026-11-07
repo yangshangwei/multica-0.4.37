@@ -1,0 +1,30 @@
+{
+  "id": "collaboration-create-expand-close",
+  "name": "collaboration-create-expand-close",
+  "title": "Fix collaboration composer expansion and close",
+  "description": "Allocate expanded dialog space to the description editor and restore reliable Close behavior while preserving drafts, AI streams, attachments and focus.",
+  "status": "in_progress",
+  "dev_type": "frontend",
+  "scope": "collaboration",
+  "package": "views",
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-08",
+  "completedAt": null,
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/views/collaboration/creation-form.tsx",
+    "packages/views/collaboration/creation-description-assist.test.tsx",
+    ".trellis/spec/views/frontend/collaboration-creation.md"
+  ],
+  "notes": "Expanded description receives spare height; local no-drag popup fixes OS mouse Close interception.81tests/typecheck/lint/detector and8browser cases passed; native Quartz OS proof before/after retained. See verification.md.",
+  "meta": {}
+}

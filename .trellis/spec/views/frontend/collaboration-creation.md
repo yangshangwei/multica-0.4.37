@@ -195,6 +195,21 @@ outside the scrolling body with viewport gutters and coarse targets >=44px.
 Standalone panels accept optional header/layout callbacks without a Dialog
 dependency.
 
+Expanded height must enlarge the description editor, not create an unused gap
+after the fields. Use an expanded-only flex column in the scrolling body with
+natural-height, nonshrinking siblings and the description as the sole grow
+item. The textarea grows with an auto content basis and retains natural
+field-sizing/minimum height. Extra AI questions, files or open advanced fields
+consume that spare space before genuine content overflow scrolls the body.
+Keep the default compact flow and all mounted editor/assistant identities.
+
+The popup must explicitly opt out of Electron app-region dragging. Expanded
+header controls overlap the desktop shell's native drag strip; a high z-index
+or successful Chromium click does not prove native pointer delivery. Verify
+the popup's no-drag boundary and distinguish OS mouse evidence from renderer
+synthetic input. Do not replace correct DialogClose wiring to mask native
+drag interception.
+
 Description help reuses `IssueDescriptionAssist` through a plain-text adapter.
 Pass the selected source UUID and manual description mode, preserve exact raw
 undo text, and keep provisional output out of create payloads. Source/API/viewer

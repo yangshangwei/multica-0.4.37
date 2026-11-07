@@ -1,0 +1,10 @@
+{
+  "score": 95,
+  "verdict": "pass",
+  "category_match": true,
+  "differences": [
+    "Expanded free body space now belongs to the actual textarea; compact default remains64px."
+  ],
+  "suggestions": [],
+  "reasoning": "Measured editor growth, preserved single-node streams and body scrolling meet the requested layout. OS-level Quartz input in owned Electron reproduces drag interception before the fix and proves the same Close hit works after the local no-drag boundary."
+}

@@ -1,0 +1,4773 @@
+{
+  "mode": "round-1",
+  "fixture": "Production build of original shared components/CSS/locales, synthetic API and memory StorageAdapter",
+  "provenance": {
+    "mode": "round-1",
+    "output": "/tmp/collaboration-create-expand-close-round-1-23645",
+    "builtAt": "2026-11-07T16:14:37.735Z",
+    "buildPid": 23645,
+    "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "sources": [
+      {
+        "path": "packages/views/collaboration/creation-form.tsx",
+        "sha256": "3e788f11726c2f21e3bb9ced9c7b51667815daa8efd70a1b71d152ecb9c8bc64"
+      },
+      {
+        "path": "packages/views/collaboration/creation-form.test.tsx",
+        "sha256": "a63a9ff9110526daba596a6158d7a4e07adf45b929de37df108a952f2a89c138"
+      },
+      {
+        "path": "packages/views/collaboration/account-picker.tsx",
+        "sha256": "047eb23f902b6fef30573e4e571290d80fc59deb831a5310efc613d066f8257e"
+      },
+      {
+        "path": "packages/views/collaboration/attachment-picker.tsx",
+        "sha256": "d909037eb0910954168c7ef7710e0ca6466f5fa5ab7cbe0138bb2f43c56c70c8"
+      },
+      {
+        "path": "packages/views/collaboration/creation-description-assist.tsx",
+        "sha256": "0bda3ef2edaa4548c1b0f2b9b8f2f94b6ea4ae7c41eddc3e99234517a1740081"
+      },
+      {
+        "path": "packages/views/modals/issue-description-assist.tsx",
+        "sha256": "c27764b9d0bd8288e790fcabd2717e4b9003c29c43d8ea085938a221cc4b6552"
+      },
+      {
+        "path": "packages/core/api/issue-description-stream.ts",
+        "sha256": "b0841552950178ead6bed4ac3b9b29622b66568cad6d23e03122790383039317"
+      },
+      {
+        "path": "packages/views/locales/en/modals.json",
+        "sha256": "2d06e8dfd98c517db05d1bca79e07df1d44fc4250f501a2a7c31aabd03c66531"
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/modals.json",
+        "sha256": "5f04a651a2f1e725eae993f46ba1402fb8e80e68c58cd2456b3f1d8c4a37fb52"
+      },
+      {
+        "path": "packages/views/collaboration/field-inputs.tsx",
+        "sha256": "823c7a6d1898eea6b85f39ff0b103fdec32b8858d70f85200c3f811049967987"
+      },
+      {
+        "path": "packages/views/collaboration/form-styles.ts",
+        "sha256": "fc42e560df3ce9a76db383e586a3a456f8c5e2c3596e7c58486452530ba74e8f"
+      },
+      {
+        "path": "packages/views/collaboration/focus.ts",
+        "sha256": "b9e0e438e5afcd5778e39b39991bdd49ff9b2bddb7af3c46f818083627fe4870"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/property-picker.tsx",
+        "sha256": "7ae19a5d2e4ea1d3c94caf29187f0a256dacb5bdfaf46a545acd432db0e8d6a7"
+      },
+      {
+        "path": "packages/views/locales/en/collaboration.json",
+        "sha256": "e8c13afb0eea0849c13730510b5acde27e55833f722af3759fc0f6ba45bb4722"
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/collaboration.json",
+        "sha256": "415a3273a4b0abd4636b6d02fce3203591d9a0869f8dbb3181726142b3000269"
+      },
+      {
+        "path": "packages/ui/styles/tokens.css",
+        "sha256": "0ac7c9603d5bd945f26a46ebe6d3ea42594a45acadf8e88a9300898ce968dc3c"
+      },
+      {
+        "path": "packages/ui/styles/base.css",
+        "sha256": "c01e09bc563ff342966c1edfc0de756eff288ba4907680fd1c89e30748a6ab82"
+      },
+      {
+        "path": "packages/ui/components/ui/dialog.tsx",
+        "sha256": "35a8ac18ba129e7d90fe11e74fa2dfb5dc483d28424f39592e660884b99973cf"
+      },
+      {
+        "path": "packages/ui/components/ui/input.tsx",
+        "sha256": "7119bac8d69289dbf6c0fe81df25ff5102a474d98f8a7ebf05ae551f969f9749"
+      },
+      {
+        "path": "packages/ui/components/ui/textarea.tsx",
+        "sha256": "16c7355c309cf87ed3dcbd35d98fda8490cc0525d4e4d05534b01d0e3b3d385c"
+      },
+      {
+        "path": "packages/ui/components/ui/button.tsx",
+        "sha256": "132669be5d65af6b27bb492b5237b90c27c2869227251efc65a1d1f9b174da28"
+      },
+      {
+        "path": "packages/ui/components/ui/popover.tsx",
+        "sha256": "46d8d14a5637d48f6342f011027c2ac6e9e8cc53f6f4bbc41b633a773fd506e8"
+      },
+      {
+        "path": "packages/views/modals/create-issue.tsx",
+        "sha256": "16f154a27dc64ecd435b40d560a076546b7c90c27f0571e95d2f75b90b676b70"
+      },
+      {
+        "path": ".trellis/tasks/11-08-collaboration-create-expand-close/research/preview/main.tsx",
+        "sha256": "9df1613a262a2bc2cd81eaa116ca2ce505ce29deeebc1468af9df1d56041d1b0"
+      },
+      {
+        "path": ".trellis/tasks/11-08-collaboration-create-expand-close/research/preview/verify.mjs",
+        "sha256": "0f135c112cf4d107151fca7ae2c70aaba3edf1080f3f31eecacf85489d7e4548"
+      },
+      {
+        "path": ".trellis/tasks/11-08-collaboration-create-expand-close/research/preview/build.mjs",
+        "sha256": "fd5de6608391ab427b2d4fb0f7da7cd938a8ead9ec9baf94bf8026f4d85cdeb6"
+      }
+    ]
+  },
+  "driverPid": 24331,
+  "startedAt": "2026-11-07T16:16:19.922Z",
+  "scenarios": {
+    "expanded-editor-901-light": {
+      "initial": {
+        "dialog": {
+          "width": 672,
+          "height": 544,
+          "top": 249,
+          "bottom": 793,
+          "left": 114.5,
+          "right": 786.5,
+          "visible": true
+        },
+        "description": {
+          "width": 632,
+          "height": 64,
+          "top": 409,
+          "bottom": 473,
+          "left": 134.5,
+          "right": 766.5,
+          "visible": true
+        },
+        "footer": {
+          "width": 672,
+          "height": 57,
+          "top": 736,
+          "bottom": 793,
+          "left": 114.5,
+          "right": 786.5,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 517,
+          "top": 172,
+          "bottom": 689,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 905
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 517,
+          "scroll": 517
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 64,
+          "top": 172,
+          "bottom": 236,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 1048
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 329,
+          "top": 172,
+          "bottom": 501,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 905
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 329,
+          "scroll": 329
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 636,
+          "top": 172,
+          "bottom": 808,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 1212
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 636,
+          "scroll": 636
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 165,
+          "top": 172,
+          "bottom": 337,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 905
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 165,
+          "scroll": 165
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 811,
+        "height": 38,
+        "top": 446,
+        "bottom": 484,
+        "left": 45,
+        "right": 856,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    },
+    "expanded-editor-901-dark": {
+      "initial": {
+        "dialog": {
+          "width": 672,
+          "height": 544,
+          "top": 249,
+          "bottom": 793,
+          "left": 114.5,
+          "right": 786.5,
+          "visible": true
+        },
+        "description": {
+          "width": 632,
+          "height": 64,
+          "top": 409,
+          "bottom": 473,
+          "left": 134.5,
+          "right": 766.5,
+          "visible": true
+        },
+        "footer": {
+          "width": 672,
+          "height": 57,
+          "top": 736,
+          "bottom": 793,
+          "left": 114.5,
+          "right": 786.5,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 517,
+          "top": 172,
+          "bottom": 689,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 905
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 517,
+          "scroll": 517
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 64,
+          "top": 172,
+          "bottom": 236,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 1048
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 329,
+          "top": 172,
+          "bottom": 501,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 905
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 329,
+          "scroll": 329
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 636,
+          "top": 172,
+          "bottom": 808,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 1212
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 636,
+          "scroll": 636
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 165,
+          "top": 172,
+          "bottom": 337,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 905
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 165,
+          "scroll": 165
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 811,
+        "height": 38,
+        "top": 446,
+        "bottom": 484,
+        "left": 45,
+        "right": 856,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    },
+    "expanded-editor-1280-light": {
+      "initial": {
+        "dialog": {
+          "width": 672,
+          "height": 544,
+          "top": 178,
+          "bottom": 722,
+          "left": 304,
+          "right": 976,
+          "visible": true
+        },
+        "description": {
+          "width": 632,
+          "height": 64,
+          "top": 338,
+          "bottom": 402,
+          "left": 324,
+          "right": 956,
+          "visible": true
+        },
+        "footer": {
+          "width": 672,
+          "height": 57,
+          "top": 665,
+          "bottom": 722,
+          "left": 304,
+          "right": 976,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 375,
+          "top": 172,
+          "bottom": 547,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 763
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 375,
+          "scroll": 375
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 64,
+          "top": 172,
+          "bottom": 236,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 1048
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 187,
+          "top": 172,
+          "bottom": 359,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 763
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 187,
+          "scroll": 187
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 636,
+          "top": 172,
+          "bottom": 808,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 1212
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 636,
+          "scroll": 636
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 64,
+          "top": 172,
+          "bottom": 236,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 804
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 830,
+        "height": 38,
+        "top": 345,
+        "bottom": 383,
+        "left": 225,
+        "right": 1055,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    },
+    "expanded-editor-1280-dark": {
+      "initial": {
+        "dialog": {
+          "width": 672,
+          "height": 544,
+          "top": 178,
+          "bottom": 722,
+          "left": 304,
+          "right": 976,
+          "visible": true
+        },
+        "description": {
+          "width": 632,
+          "height": 64,
+          "top": 338,
+          "bottom": 402,
+          "left": 324,
+          "right": 956,
+          "visible": true
+        },
+        "footer": {
+          "width": 672,
+          "height": 57,
+          "top": 665,
+          "bottom": 722,
+          "left": 304,
+          "right": 976,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 375,
+          "top": 172,
+          "bottom": 547,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 763
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 375,
+          "scroll": 375
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 64,
+          "top": 172,
+          "bottom": 236,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 1048
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 187,
+          "top": 172,
+          "bottom": 359,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 763
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 187,
+          "scroll": 187
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 636,
+          "top": 172,
+          "bottom": 808,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 1212
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 636,
+          "scroll": 636
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 64,
+          "top": 172,
+          "bottom": 236,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 804
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 830,
+        "height": 38,
+        "top": 345,
+        "bottom": 383,
+        "left": 225,
+        "right": 1055,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    },
+    "expanded-editor-390-light": {
+      "initial": {
+        "dialog": {
+          "width": 366,
+          "height": 544,
+          "top": 98,
+          "bottom": 642,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 270,
+          "bottom": 334,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 521,
+          "bottom": 642,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 184,
+          "bottom": 248,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 527,
+          "content": 600
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 111,
+          "bottom": 175,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 73,
+          "height": 527,
+          "content": 1368
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 111,
+          "bottom": 175,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 73,
+          "height": 527,
+          "content": 968
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 1236,
+          "top": -624,
+          "bottom": 612,
+          "left": 32,
+          "right": 358,
+          "visible": false
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 808,
+          "height": 527,
+          "content": 2140
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 1236,
+          "scroll": 1236
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 75,
+          "bottom": 139,
+          "left": 32,
+          "right": 358,
+          "visible": false
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 109,
+          "height": 527,
+          "content": 1198
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 300,
+        "height": 44,
+        "top": 308,
+        "bottom": 352,
+        "left": 45,
+        "right": 345,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    },
+    "expanded-editor-390-dark": {
+      "initial": {
+        "dialog": {
+          "width": 366,
+          "height": 544,
+          "top": 98,
+          "bottom": 642,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 270,
+          "bottom": 334,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 521,
+          "bottom": 642,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 184,
+          "bottom": 248,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 527,
+          "content": 600
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 111,
+          "bottom": 175,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 73,
+          "height": 527,
+          "content": 1368
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 111,
+          "bottom": 175,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 73,
+          "height": 527,
+          "content": 968
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 1236,
+          "top": -624,
+          "bottom": 612,
+          "left": 32,
+          "right": 358,
+          "visible": false
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 808,
+          "height": 527,
+          "content": 2140
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 1236,
+          "scroll": 1236
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 75,
+          "bottom": 139,
+          "left": 32,
+          "right": 358,
+          "visible": false
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 109,
+          "height": 527,
+          "content": 1198
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 300,
+        "height": 44,
+        "top": 308,
+        "bottom": 352,
+        "left": 45,
+        "right": 345,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    },
+    "expanded-editor-320-light": {
+      "initial": {
+        "dialog": {
+          "width": 296,
+          "height": 511.1875,
+          "top": 28.40625,
+          "bottom": 539.59375,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": 222.40625,
+          "bottom": 286.40625,
+          "left": 32,
+          "right": 288,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 418.59375,
+          "bottom": 539.59375,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": 206,
+          "bottom": 270,
+          "left": 32,
+          "right": 288,
+          "visible": true
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 333,
+          "content": 616
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": -77,
+          "bottom": -13,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 283,
+          "height": 333,
+          "content": 1400
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": -77,
+          "bottom": -13,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 283,
+          "height": 333,
+          "content": 984
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 1236,
+          "top": -796,
+          "bottom": 440,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 1002,
+          "height": 333,
+          "content": 2156
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 1236,
+          "scroll": 1236
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": 97,
+          "bottom": 161,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 109,
+          "height": 333,
+          "content": 1214
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 230,
+        "height": 44,
+        "top": 330,
+        "bottom": 374,
+        "left": 45,
+        "right": 275,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    },
+    "expanded-editor-320-dark": {
+      "initial": {
+        "dialog": {
+          "width": 296,
+          "height": 511.1875,
+          "top": 28.40625,
+          "bottom": 539.59375,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": 222.40625,
+          "bottom": 286.40625,
+          "left": 32,
+          "right": 288,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 418.59375,
+          "bottom": 539.59375,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": 206,
+          "bottom": 270,
+          "left": 32,
+          "right": 288,
+          "visible": true
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 333,
+          "content": 616
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": -77,
+          "bottom": -13,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 283,
+          "height": 333,
+          "content": 1400
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": -77,
+          "bottom": -13,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 283,
+          "height": 333,
+          "content": 984
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 1236,
+          "top": -796,
+          "bottom": 440,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 1002,
+          "height": 333,
+          "content": 2156
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 1236,
+          "scroll": 1236
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": 97,
+          "bottom": 161,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 109,
+          "height": 333,
+          "content": 1214
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 230,
+        "height": 44,
+        "top": 330,
+        "bottom": 374,
+        "left": 45,
+        "right": 275,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    }
+  },
+  "diagnostics": {
+    "expanded-editor-901-light": {
+      "initial": {
+        "dialog": {
+          "width": 672,
+          "height": 544,
+          "top": 249,
+          "bottom": 793,
+          "left": 114.5,
+          "right": 786.5,
+          "visible": true
+        },
+        "description": {
+          "width": 632,
+          "height": 64,
+          "top": 409,
+          "bottom": 473,
+          "left": 134.5,
+          "right": 766.5,
+          "visible": true
+        },
+        "footer": {
+          "width": 672,
+          "height": 57,
+          "top": 736,
+          "bottom": 793,
+          "left": 114.5,
+          "right": 786.5,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 517,
+          "top": 172,
+          "bottom": 689,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 905
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 517,
+          "scroll": 517
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 64,
+          "top": 172,
+          "bottom": 236,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 1048
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 329,
+          "top": 172,
+          "bottom": 501,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 905
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 329,
+          "scroll": 329
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 636,
+          "top": 172,
+          "bottom": 808,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 1212
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 636,
+          "scroll": 636
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 165,
+          "top": 172,
+          "bottom": 337,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 905
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 165,
+          "scroll": 165
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 811,
+        "height": 38,
+        "top": 446,
+        "bottom": 484,
+        "left": 45,
+        "right": 856,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    },
+    "expanded-editor-901-dark": {
+      "initial": {
+        "dialog": {
+          "width": 672,
+          "height": 544,
+          "top": 249,
+          "bottom": 793,
+          "left": 114.5,
+          "right": 786.5,
+          "visible": true
+        },
+        "description": {
+          "width": 632,
+          "height": 64,
+          "top": 409,
+          "bottom": 473,
+          "left": 134.5,
+          "right": 766.5,
+          "visible": true
+        },
+        "footer": {
+          "width": 672,
+          "height": 57,
+          "top": 736,
+          "bottom": 793,
+          "left": 114.5,
+          "right": 786.5,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 517,
+          "top": 172,
+          "bottom": 689,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 905
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 517,
+          "scroll": 517
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 64,
+          "top": 172,
+          "bottom": 236,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 1048
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 329,
+          "top": 172,
+          "bottom": 501,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 905
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 329,
+          "scroll": 329
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 636,
+          "top": 172,
+          "bottom": 808,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 1212
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 636,
+          "scroll": 636
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 877,
+          "height": 1018,
+          "top": 12,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "description": {
+          "width": 837,
+          "height": 165,
+          "top": 172,
+          "bottom": 337,
+          "left": 32,
+          "right": 869,
+          "visible": true
+        },
+        "body": {
+          "width": 877,
+          "height": 905,
+          "top": 68,
+          "bottom": 973,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "footer": {
+          "width": 877,
+          "height": 57,
+          "top": 973,
+          "bottom": 1030,
+          "left": 12,
+          "right": 889,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 905,
+          "content": 905
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 165,
+          "scroll": 165
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 811,
+        "height": 38,
+        "top": 446,
+        "bottom": 484,
+        "left": 45,
+        "right": 856,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    },
+    "expanded-editor-1280-light": {
+      "initial": {
+        "dialog": {
+          "width": 672,
+          "height": 544,
+          "top": 178,
+          "bottom": 722,
+          "left": 304,
+          "right": 976,
+          "visible": true
+        },
+        "description": {
+          "width": 632,
+          "height": 64,
+          "top": 338,
+          "bottom": 402,
+          "left": 324,
+          "right": 956,
+          "visible": true
+        },
+        "footer": {
+          "width": 672,
+          "height": 57,
+          "top": 665,
+          "bottom": 722,
+          "left": 304,
+          "right": 976,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 375,
+          "top": 172,
+          "bottom": 547,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 763
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 375,
+          "scroll": 375
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 64,
+          "top": 172,
+          "bottom": 236,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 1048
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 187,
+          "top": 172,
+          "bottom": 359,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 763
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 187,
+          "scroll": 187
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 636,
+          "top": 172,
+          "bottom": 808,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 1212
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 636,
+          "scroll": 636
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 64,
+          "top": 172,
+          "bottom": 236,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 804
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 830,
+        "height": 38,
+        "top": 345,
+        "bottom": 383,
+        "left": 225,
+        "right": 1055,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    },
+    "expanded-editor-1280-dark": {
+      "initial": {
+        "dialog": {
+          "width": 672,
+          "height": 544,
+          "top": 178,
+          "bottom": 722,
+          "left": 304,
+          "right": 976,
+          "visible": true
+        },
+        "description": {
+          "width": 632,
+          "height": 64,
+          "top": 338,
+          "bottom": 402,
+          "left": 324,
+          "right": 956,
+          "visible": true
+        },
+        "footer": {
+          "width": 672,
+          "height": 57,
+          "top": 665,
+          "bottom": 722,
+          "left": 304,
+          "right": 976,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 375,
+          "top": 172,
+          "bottom": 547,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 763
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 375,
+          "scroll": 375
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 64,
+          "top": 172,
+          "bottom": 236,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 1048
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 187,
+          "top": 172,
+          "bottom": 359,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 763
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 187,
+          "scroll": 187
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 636,
+          "top": 172,
+          "bottom": 808,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 1212
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 636,
+          "scroll": 636
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 896,
+          "height": 876,
+          "top": 12,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "description": {
+          "width": 856,
+          "height": 64,
+          "top": 172,
+          "bottom": 236,
+          "left": 212,
+          "right": 1068,
+          "visible": true
+        },
+        "body": {
+          "width": 896,
+          "height": 763,
+          "top": 68,
+          "bottom": 831,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "footer": {
+          "width": 896,
+          "height": 57,
+          "top": 831,
+          "bottom": 888,
+          "left": 192,
+          "right": 1088,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 763,
+          "content": 804
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 830,
+        "height": 38,
+        "top": 345,
+        "bottom": 383,
+        "left": 225,
+        "right": 1055,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    },
+    "expanded-editor-390-light": {
+      "initial": {
+        "dialog": {
+          "width": 366,
+          "height": 544,
+          "top": 98,
+          "bottom": 642,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 270,
+          "bottom": 334,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 521,
+          "bottom": 642,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 184,
+          "bottom": 248,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 527,
+          "content": 600
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 111,
+          "bottom": 175,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 73,
+          "height": 527,
+          "content": 1368
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 111,
+          "bottom": 175,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 73,
+          "height": 527,
+          "content": 968
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 1236,
+          "top": -624,
+          "bottom": 612,
+          "left": 32,
+          "right": 358,
+          "visible": false
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 808,
+          "height": 527,
+          "content": 2140
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 1236,
+          "scroll": 1236
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 75,
+          "bottom": 139,
+          "left": 32,
+          "right": 358,
+          "visible": false
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 109,
+          "height": 527,
+          "content": 1198
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 300,
+        "height": 44,
+        "top": 308,
+        "bottom": 352,
+        "left": 45,
+        "right": 345,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    },
+    "expanded-editor-390-dark": {
+      "initial": {
+        "dialog": {
+          "width": 366,
+          "height": 544,
+          "top": 98,
+          "bottom": 642,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 270,
+          "bottom": 334,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 521,
+          "bottom": 642,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 184,
+          "bottom": 248,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 527,
+          "content": 600
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 111,
+          "bottom": 175,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 73,
+          "height": 527,
+          "content": 1368
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 111,
+          "bottom": 175,
+          "left": 32,
+          "right": 358,
+          "visible": true
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 73,
+          "height": 527,
+          "content": 968
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 1236,
+          "top": -624,
+          "bottom": 612,
+          "left": 32,
+          "right": 358,
+          "visible": false
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 808,
+          "height": 527,
+          "content": 2140
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 1236,
+          "scroll": 1236
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 366,
+          "height": 716,
+          "top": 12,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "description": {
+          "width": 326,
+          "height": 64,
+          "top": 75,
+          "bottom": 139,
+          "left": 32,
+          "right": 358,
+          "visible": false
+        },
+        "body": {
+          "width": 366,
+          "height": 527,
+          "top": 80,
+          "bottom": 607,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "top": 607,
+          "bottom": 728,
+          "left": 12,
+          "right": 378,
+          "visible": true
+        },
+        "scroll": {
+          "top": 109,
+          "height": 527,
+          "content": 1198
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 300,
+        "height": 44,
+        "top": 308,
+        "bottom": 352,
+        "left": 45,
+        "right": 345,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    },
+    "expanded-editor-320-light": {
+      "initial": {
+        "dialog": {
+          "width": 296,
+          "height": 511.1875,
+          "top": 28.40625,
+          "bottom": 539.59375,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": 222.40625,
+          "bottom": 286.40625,
+          "left": 32,
+          "right": 288,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 418.59375,
+          "bottom": 539.59375,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": 206,
+          "bottom": 270,
+          "left": 32,
+          "right": 288,
+          "visible": true
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 333,
+          "content": 616
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": -77,
+          "bottom": -13,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 283,
+          "height": 333,
+          "content": 1400
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": -77,
+          "bottom": -13,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 283,
+          "height": 333,
+          "content": 984
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 1236,
+          "top": -796,
+          "bottom": 440,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 1002,
+          "height": 333,
+          "content": 2156
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 1236,
+          "scroll": 1236
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": 97,
+          "bottom": 161,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 109,
+          "height": 333,
+          "content": 1214
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 230,
+        "height": 44,
+        "top": 330,
+        "bottom": 374,
+        "left": 45,
+        "right": 275,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    },
+    "expanded-editor-320-dark": {
+      "initial": {
+        "dialog": {
+          "width": 296,
+          "height": 511.1875,
+          "top": 28.40625,
+          "bottom": 539.59375,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": 222.40625,
+          "bottom": 286.40625,
+          "left": 32,
+          "right": 288,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 418.59375,
+          "bottom": 539.59375,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        }
+      },
+      "expanded": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": 206,
+          "bottom": 270,
+          "left": 32,
+          "right": 288,
+          "visible": true
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 0,
+          "height": 333,
+          "content": 616
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "advanced": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": -77,
+          "bottom": -13,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 283,
+          "height": 333,
+          "content": 1400
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "files": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": -77,
+          "bottom": -13,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 283,
+          "height": 333,
+          "content": 984
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "long": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 1236,
+          "top": -796,
+          "bottom": 440,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 1002,
+          "height": 333,
+          "content": 2156
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 1236,
+          "scroll": 1236
+        },
+        "documentOverflow": false
+      },
+      "questions": {
+        "dialog": {
+          "width": 296,
+          "height": 544,
+          "top": 12,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "description": {
+          "width": 256,
+          "height": 64,
+          "top": 97,
+          "bottom": 161,
+          "left": 32,
+          "right": 288,
+          "visible": false
+        },
+        "body": {
+          "width": 296,
+          "height": 333,
+          "top": 102,
+          "bottom": 435,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        },
+        "scroll": {
+          "top": 109,
+          "height": 333,
+          "content": 1214
+        },
+        "editorOverflow": {
+          "vertical": "auto",
+          "client": 64,
+          "scroll": 64
+        },
+        "documentOverflow": false
+      },
+      "answerGeometry": {
+        "width": 230,
+        "height": 44,
+        "top": 330,
+        "bottom": 374,
+        "left": 45,
+        "right": 275,
+        "visible": true
+      },
+      "nodeSame": true,
+      "toggleFocused": true,
+      "closeReturnsFocus": true,
+      "draftFilesRetained": true
+    }
+  },
+  "failures": [],
+  "pageErrors": [],
+  "blockedExternalRequests": [],
+  "listener": {
+    "origin": "http://127.0.0.1:58179",
+    "pid": 24331,
+    "owned": true
+  },
+  "engine": "Playwright Chromium 145.0.7632.6",
+  "ownedBrowserProcesses": [
+    {
+      "id": 24335,
+      "type": "browser"
+    },
+    {
+      "id": 24339,
+      "type": "GPU"
+    },
+    {
+      "id": 24340,
+      "type": "network.mojom.NetworkService"
+    }
+  ],
+  "listenerClosed": true,
+  "browserClosed": true,
+  "finishedAt": "2026-11-07T16:16:54.722Z"
+}

@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore, type ReactNode, type CSSProperties } from "react";
 import { ChevronRight, Maximize2, Minimize2, XIcon } from "lucide-react";
 import { keepPreviousData, useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationCreationOptions, collaborationDeliveryKey, collaborationDeliveryRevision, collaborationKeys,
@@ -49,7 +49,8 @@ export function CollaborationCreationEntry({ scope, sourceWorkspaceId }: { scope
     setOpen(next);
   }}>
     <DialogTrigger ref={trigger} render={<Button className="pointer-coarse:min-h-11 focus-visible:ring-faint-foreground focus-visible:border-faint-foreground" />}>{t(($) => $.creation.entry)}</DialogTrigger>
-    <DialogContent ref={dialog} showCloseButton={false}
+    <DialogContent ref={dialog} showCloseButton={false} data-expanded={expanded}
+      style={{ WebkitAppRegion: "no-drag" } as CSSProperties}
       initialFocus={() => {
         if (document.activeElement === trigger.current) dialog.current?.focus({ preventScroll: true });
         // Base UI otherwise queues an unconditional focus frame. Recover only
@@ -62,7 +63,7 @@ export function CollaborationCreationEntry({ scope, sourceWorkspaceId }: { scope
         });
         return false;
       }}
-      className={`flex w-[calc(100vw-1.5rem)] max-w-[calc(100vw-1.5rem)] flex-col gap-0 overflow-hidden bg-background p-0 motion-reduce:animate-none ${expanded ? "h-[calc(100dvh-1.5rem)] max-h-[calc(100dvh-1.5rem)] sm:max-w-4xl" : `${size === "assist" ? "h-[min(600px,90dvh)]" : "h-[min(34rem,90dvh)]"} max-h-[90dvh] sm:max-w-2xl`} ${collaborationFocusWithinClass}`} closeLabel={t(($) => $.creation.close)}>
+      className={`group/collaboration-creation flex w-[calc(100vw-1.5rem)] max-w-[calc(100vw-1.5rem)] flex-col gap-0 overflow-hidden bg-background p-0 motion-reduce:animate-none ${expanded ? "h-[calc(100dvh-1.5rem)] max-h-[calc(100dvh-1.5rem)] sm:max-w-4xl" : `${size === "assist" ? "h-[min(600px,90dvh)]" : "h-[min(34rem,90dvh)]"} max-h-[90dvh] sm:max-w-2xl`} ${collaborationFocusWithinClass}`} closeLabel={t(($) => $.creation.close)}>
       <DialogTitle className="sr-only">{t(($) => $.creation.title)}</DialogTitle>
       <DialogDescription className="sr-only">{t(($) => $.creation.help)}</DialogDescription>
       {open && <CollaborationCreationPanel scope={scope} sourceWorkspaceId={sourceWorkspaceId} constrained headerActions={headerActions}
@@ -140,7 +141,7 @@ export function CollaborationCreationPanel({ scope, sourceWorkspaceId, onCreated
 
 function CreationContents({ constrained, children, actions }: { constrained: boolean; children: ReactNode; actions?: ReactNode }) {
   return <>
-    <div data-collaboration-creation-body className={`min-w-0 space-y-4 ${constrained ? "min-h-0 flex-1 overflow-y-auto overscroll-contain scroll-py-1 px-5 pb-4 pt-1 [&_:is(input,textarea,select,button,summary)]:scroll-my-1" : ""}`}
+    <div data-collaboration-creation-body className={`min-w-0 space-y-4 group-data-[expanded=true]/collaboration-creation:flex group-data-[expanded=true]/collaboration-creation:flex-col group-data-[expanded=true]/collaboration-creation:gap-4 group-data-[expanded=true]/collaboration-creation:space-y-0 group-data-[expanded=true]/collaboration-creation:[&>*]:shrink-0 ${constrained ? "min-h-0 flex-1 overflow-y-auto overscroll-contain scroll-py-1 px-5 pb-4 pt-1 [&_:is(input,textarea,select,button,summary)]:scroll-my-1" : ""}`}
       onFocusCapture={constrained ? (event) => {
         const body = event.currentTarget;
         const target = event.target;
@@ -288,8 +289,8 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
       </div>
       <Input ref={titleInput} data-creation-title id={`${id}-title`} value={form.title} maxLength={1000} disabled={!editable} onChange={(event) => draft.update({ title: event.target.value })} required aria-describedby={submitHint ? `${id}-submit-hint` : undefined} placeholder={t(($) => $.creation.titlePlaceholder)} className="min-h-11 rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 text-title-lg font-semibold shadow-none focus-visible:border-faint-foreground focus-visible:ring-0 md:text-title-lg dark:bg-transparent" />
     </div>
-    <div className="space-y-1"><label htmlFor={`${id}-description`} className="block text-caption text-muted-foreground">{t(($) => $.creation.description)}</label>
-      <Textarea ref={descriptionInput} id={`${id}-description`} value={form.content} maxLength={1_000_000} disabled={!editable} onChange={(event) => draft.update({ content: event.target.value })} placeholder={t(($) => $.creation.descriptionPlaceholder)} className="min-h-16 resize-none rounded-sm border-0 bg-transparent px-0 text-body shadow-none focus-visible:ring-2 focus-visible:ring-inset dark:bg-transparent" />
+    <div className="space-y-1 group-data-[expanded=true]/collaboration-creation:flex group-data-[expanded=true]/collaboration-creation:grow group-data-[expanded=true]/collaboration-creation:basis-auto group-data-[expanded=true]/collaboration-creation:flex-col group-data-[expanded=true]/collaboration-creation:gap-1 group-data-[expanded=true]/collaboration-creation:space-y-0 group-data-[expanded=true]/collaboration-creation:[&>*]:shrink-0"><label htmlFor={`${id}-description`} className="block text-caption text-muted-foreground">{t(($) => $.creation.description)}</label>
+      <Textarea ref={descriptionInput} id={`${id}-description`} value={form.content} maxLength={1_000_000} disabled={!editable} onChange={(event) => draft.update({ content: event.target.value })} placeholder={t(($) => $.creation.descriptionPlaceholder)} className="min-h-16 group-data-[expanded=true]/collaboration-creation:grow group-data-[expanded=true]/collaboration-creation:basis-auto resize-none rounded-sm border-0 bg-transparent px-0 text-body shadow-none focus-visible:ring-2 focus-visible:ring-inset dark:bg-transparent" />
       <CollaborationCreationDescriptionAssist key={form.draftId} textareaRef={descriptionInput} sourceId={sourceId} value={form.content} title={form.title}
         uploading={uploading || draft.uploads.length > 0} submitting={create.isPending || draft.creations.length > 0}
         isBlocked={assistBlocked} isCurrent={assistCurrent} onChange={(content) => draft.update({ content })} onNeedsSpace={onNeedsSpace} />

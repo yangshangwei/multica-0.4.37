@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { act, fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, it, vi } from "vitest";
@@ -252,4 +253,30 @@ it("cancels AI without clearing the original draft or admitting a late completio
   expect(description).toHaveValue("Keep this after cancel");
   expect(screen.queryByText("Cancelled result")).not.toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Help me improve" })).toBeEnabled();
+});
+
+
+it.each([false, true])("keeps the popup interactive over desktop drag regions and closes its stream: expanded=%s", async (expanded) => {
+  let finish!: (response: Response) => void;
+  const { requests } = mountAI({ modal: true, optimize: () => new Promise((resolve) => { finish = resolve; }) });
+  const user = userEvent.setup();
+  const opener = screen.getByRole("button", { name: "New collaboration issue" });
+  await user.click(opener);
+  const description = await screen.findByLabelText("Description");
+  fireEvent.change(description, { target: { value: "Preserve the closing draft" } });
+  await user.click(screen.getByRole("button", { name: "Help me improve" }));
+  if (expanded) await user.click(screen.getByRole("button", { name: "Expand" }));
+  const popup = screen.getByRole("dialog");
+  // Electron consumes its drag-region property before DOM events; keep the
+  // owning popup excluded in every size. Native hit testing is browser QA.
+  expect((popup.style as CSSProperties & { WebkitAppRegion?: string }).WebkitAppRegion).toBe("no-drag");
+  const close = screen.getByRole("button", { name: "Close" });
+  close.focus();
+  await user.keyboard("{Enter}");
+  await waitFor(() => expect(opener).toHaveFocus());
+  expect(requests[0]!.signal?.aborted).toBe(true);
+  await act(async () => finish(json({ text: "Late result after Close", questions: [] })));
+  await user.click(opener);
+  expect(await screen.findByLabelText("Description")).toHaveValue("Preserve the closing draft");
+  expect(screen.queryByText("Late result after Close")).not.toBeInTheDocument();
 });
