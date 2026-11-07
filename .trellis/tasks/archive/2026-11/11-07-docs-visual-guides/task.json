@@ -3,7 +3,7 @@
   "name": "docs-visual-guides",
   "title": "为使用文档补充可视化流程与架构说明",
   "description": "使用 impeccable 阅读场景规范，补齐内置文档及文档站 Mermaid 渲染，在重点指南添加准确的流程/架构/时序图，并验证深浅主题、窄窗口和放大阅读。",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": "frontend",
   "scope": "docs",
   "package": null,
@@ -11,11 +11,11 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-11-07",
-  "completedAt": null,
+  "completedAt": "2026-11-07",
   "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
-  "commit": null,
+  "commit": "c15a55fae",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -55,6 +55,6 @@
     "packages/views/docs/docs-diagram.css",
     "apps/docs/lib/docs-bundle/mermaid-fences.test.ts"
   ],
-  "notes": "12 diagrams in 10 guides; all scoped checks and independent visual fix verdict passed. Local preview refresh follows commit.",
+  "notes": "Completed: 12 diagrams, all scoped checks and independent visual fix verdict passed; local environment refresh after archive.",
   "meta": {}
 }
