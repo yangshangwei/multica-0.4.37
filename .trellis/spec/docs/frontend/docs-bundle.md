@@ -117,6 +117,11 @@ keep its prerequisites in the prose:
 | Offline display versus task recovery, preparation leases, and daemon restart | `server/cmd/server/runtime_sweeper.go`, `server/pkg/db/queries/runtime.sql`, `agent.sql` |
 | Device, password, and legacy authentication; limiter failure behavior | `server/internal/handler/auth_device.go`, `server/internal/auth/password_config.go`, `password_limiter.go`, `server/cmd/server/router.go` |
 | Managed workdirs versus `local_directory/in_place`; chat directory-lock exemption | `server/internal/daemon/execenv/execenv.go`, `server/internal/daemon/local_directory.go` |
+| Account collaboration versus source-workspace membership; resource consent and resume | `server/internal/collaboration/access.go`, `packages/views/collaboration/resource-panel.tsx`, `execution-panel.tsx` |
+| Comment saved versus each target admitted versus work delivered | `server/internal/handler/squad_briefing.go`, `server/cmd/multica/cmd_comment_trigger_outcomes.go` |
+| Workspace MCP write-only configuration versus agent MCP and audited env reads | `server/internal/handler/workspace_mcp_api.go`, `agent.go`, `agent_env.go` |
+| Approval decision versus execution report; knowledge confirmation versus runtime use | `server/internal/handler/agent_approval.go`, `server/internal/service/collaboration_knowledge_runtime.go` |
+| Usage task/runtime counts versus failure-rate populations | `server/pkg/db/queries/task_usage.sql`, `packages/views/dashboard/components/dashboard-page.tsx` |
 
 Update directly linked pages that repeat the same claim. For example, changing
 the security page's directory-isolation description also requires checking the
@@ -124,6 +129,22 @@ project-resources page. Identify old screenshots explicitly and describe the
 current entry point; an old screenshot's four choices must not override the
 five choices in the current skill creation UI. Keep English and Chinese
 `developers/conventions` aligned when correcting their shared contracts.
+
+### Feature coverage audits
+
+Inventory both workspace navigation (`app-sidebar.tsx`) and account-level
+collaboration (`global-scope-navigation.tsx`), plus settings entries and gated
+features. Record source evidence and the destination guide for each surface;
+`feature-overview.zh.mdx` is the user-facing map, while audit evidence belongs
+under `docs/audits/`. Verify visible labels against the locale files, not file
+names: Chat selects a single agent even when the picker receives squad metadata.
+
+A current-working-tree audit can include uncommitted implementation. Record that
+baseline explicitly and never present it as proof that an installed desktop or
+server already ships the feature. The Help menu's desktop version is independent
+of the server-provided docs manifest version. Keep planned-only features out of
+usage instructions. The example audit is
+`docs/audits/2026-11-07-user-docs-coverage.zh-CN.md`.
 
 ## 6. Good/Base/Bad Cases
 

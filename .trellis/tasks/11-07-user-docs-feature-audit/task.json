@@ -1,0 +1,31 @@
+{
+  "id": "user-docs-feature-audit",
+  "name": "user-docs-feature-audit",
+  "title": "核对当前系统功能并完善内置使用文档",
+  "description": "以当前工作区实现为依据审核中文使用文档，补齐功能操作与权限限制，同步服务器内置文档包并验证。",
+  "status": "in_progress",
+  "dev_type": "docs",
+  "scope": "docs",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-07",
+  "completedAt": null,
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "apps/docs/content/docs/",
+    "server/internal/docs/content/",
+    "docs/audits/2026-11-07-user-docs-coverage.zh-CN.md",
+    ".trellis/spec/docs/frontend/docs-bundle.md"
+  ],
+  "notes": "Documentation-only audit complete; all scoped checks passed. Current working-tree features do not imply deployment availability.",
+  "meta": {}
+}
