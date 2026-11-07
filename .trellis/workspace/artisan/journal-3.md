@@ -736,3 +736,69 @@ Archived 11-02-branch-functional-regression at the user's accepted P95 boundary.
 ### Next Steps
 
 - Continue only remaining platform/auth/updater/provider work in a separate task when real prerequisites exist.
+
+
+## Session 141: Expand collaboration creation and assist descriptions
+<!-- trellis-session: v=2 fp=e53bc00750098b90 -->
+
+**Date**: 2026-11-07
+**Task**: Expand collaboration creation and assist descriptions
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Added single-mounted expansion and reused source-scoped AI description help with exact plain-text undo, authority fences and preserved drafts.
+
+### Main Changes
+
+- Shared assistant optional plain/current-owner/limit/label presentation; compact collaboration integration and right-corner sizing controls.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `eb80f07e7` | feat(collaboration): give shared task authors room and help to clarify their work |
+
+### Testing
+
+- [OK] 458 tests, Views typecheck/lint, detector clear;20feature+3geometry+6confirmation browser receipts. No live AI calls.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None within scoped implementation; live model quality and native backend/device acceptance remain outside deterministic tests.
+
+
+## Session 142: Archive branch E2E acceptance
+<!-- trellis-session: v=2 fp=a87b87ec19a00ff8 -->
+
+**Date**: 2026-11-08
+**Task**: Archive branch E2E acceptance
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Archived 11-01-branch-e2e-acceptance at the user's request. Preserved the retained failures, blocked installation gates, and the separate isolated repair evidence; no full-acceptance claim was made.
+
+### Main Changes
+
+- Moved the task to .trellis/tasks/archive/2026-11/11-01-branch-e2e-acceptance and retained all reports, evidence, and handoff records.
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] Verified archive placement, completed task metadata, absence from the active task list, and the archive commit.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Continue any remaining platform or repair work in a separate active task if needed.
