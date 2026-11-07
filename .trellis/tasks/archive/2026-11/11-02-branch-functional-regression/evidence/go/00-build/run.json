@@ -1,0 +1,37 @@
+{
+  "name": "00-build",
+  "kind": "build",
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "build",
+    "./..."
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "started_at": "2026-11-02T00:09:13.394162+00:00",
+  "state": "complete",
+  "database": null,
+  "environment_keys": [
+    "GOTOOLCHAIN",
+    "HOME",
+    "LANG",
+    "LC_ALL",
+    "LOGNAME",
+    "NVM_DIR",
+    "PATH",
+    "PGCONNECT_TIMEOUT",
+    "SHELL",
+    "TEMP",
+    "TMP",
+    "TMPDIR",
+    "USER"
+  ],
+  "real_provider_authorization": false,
+  "exit_code": 0,
+  "finished_at": "2026-11-02T00:09:25.641816+00:00",
+  "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

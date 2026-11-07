@@ -1,0 +1,260 @@
+import { describe, expect, it, vi } from "vitest";
+import type { ApiClient } from "../api/client";
+import type { StorageAdapter, User } from "../types";
+import { createAuthStore } from "./store";
+
+const fakeUser: User = {
+  id: "u1",
+  name: "Alice",
+  email: "alice@example.com",
+  avatar_url: null,
+} as User;
+
+function makeStorage(initial: Record<string, string> = {}): StorageAdapter & {
+  snapshot: () => Record<string, string>;
+} {
+  const data = { ...initial };
+  return {
+    getItem: (k) => data[k] ?? null,
+    setItem: (k, v) => {
+      data[k] = v;
+    },
+    removeItem: (k) => {
+      delete data[k];
+    },
+    snapshot: () => ({ ...data }),
+  };
+}
+
+function makeApi(): ApiClient {
+  return {
+    setToken: vi.fn(),
+  } as unknown as ApiClient;
+}
+
+describe("authStore", () => {
+  it("publishes a retry request instead of silently ignoring it", () => {
+    const storage = makeStorage({ multica_token: "t" });
+    const api = makeApi();
+    const store = createAuthStore({ api, storage });
+
+    const failure = { kind: "server" as const, occurredAt: 1, status: 503 };
+    store.setState({ isLoading: true, status: "recovering", recovery: { isRetrying: false, nextRetryAt: 1_000, failure } });
+    store.getState().retryAuthentication();
+
+    expect(store.getState().status).toBe("recovering");
+    expect(store.getState().retryGeneration).toBe(1);
+    expect(store.getState().recovery).toEqual({ isRetrying: true, nextRetryAt: null, failure });
+    store.getState().retryAuthentication();
+    expect(store.getState().retryGeneration).toBe(1);
+  });
+
+  it.each(["logout", "sessionExpired"] as const)("clears recovery metadata on %s", (action) => {
+    const store = createAuthStore({ api: makeApi(), storage: makeStorage({ multica_token: "saved-token" }) });
+    store.setState({ status: "recovering", recovery: { isRetrying: true, nextRetryAt: null, failure: { kind: "timeout", occurredAt: 1 } } });
+    store.getState()[action]();
+    expect(store.getState().recovery).toBeNull();
+  });
+
+  it("does not publish a canceled device login even when its API response resolves late", async () => {
+    let finish!: (response: { token: string; user: User }) => void;
+    const api = { setToken: vi.fn(), deviceLogin: vi.fn(() => new Promise(resolve => { finish = resolve; })) } as unknown as ApiClient;
+    const storage = makeStorage();
+    const onLogin = vi.fn();
+    const store = createAuthStore({ api, storage, onLogin });
+    const controller = new AbortController();
+    const outcome = store.getState().loginWithDevice("device-id", "Test device", { signal: controller.signal }).catch((error: unknown) => error);
+    controller.abort();
+    finish({ token: "late-secret", user: fakeUser });
+    expect(await outcome).toMatchObject({ name: "AbortError" });
+    expect(storage.getItem("multica_token")).toBeNull();
+    expect(store.getState().user).toBeNull();
+    expect(onLogin).not.toHaveBeenCalled();
+  });
+
+  it("explicit logout still clears credentials and publishes unauthenticated state", () => {
+    const storage = makeStorage({ multica_token: "t" });
+    const api = makeApi();
+    const onLogout = vi.fn();
+    const store = createAuthStore({ api, storage, onLogout });
+
+    store.setState({ user: fakeUser, status: "authenticated", isLoading: false });
+    store.getState().logout();
+
+    expect(storage.snapshot().multica_token).toBeUndefined();
+    expect(api.setToken).toHaveBeenCalledWith(null);
+    expect(onLogout).toHaveBeenCalledOnce();
+    expect(store.getState().user).toBeNull();
+    expect(store.getState().status).toBe("unauthenticated");
+    expect(store.getState().expired).toBe(false);
+  });
+
+  it("ends the session when the server rejects the credential", () => {
+    const storage = makeStorage({ multica_token: "t" });
+    const api = makeApi();
+    const onLogout = vi.fn();
+    const store = createAuthStore({ api, storage, onLogout });
+
+    store.setState({ user: fakeUser, status: "authenticated", isLoading: false });
+    store.getState().sessionExpired();
+
+    expect(storage.snapshot().multica_token).toBeUndefined();
+    expect(api.setToken).toHaveBeenCalledWith(null);
+    expect(onLogout).toHaveBeenCalledOnce();
+    expect(store.getState().user).toBeNull();
+    expect(store.getState().isLoading).toBe(false);
+    expect(store.getState().status).toBe("unauthenticated");
+    expect(store.getState().expired).toBe(true);
+  });
+
+  // Desktop's deep link writes the token, then verifies it. A rejected token
+  // never leaves "unauthenticated", so an idempotence guard placed before the
+  // credential teardown would return with the invalid token still in storage,
+  // to be replayed at the next launch. The old 401 handler always removed it.
+  it("drops a rejected token even when there was no session to end", async () => {
+    const storage = makeStorage();
+    const api = {
+      setToken: vi.fn(),
+      getMe: vi.fn().mockRejectedValue(new Error("unauthorized")),
+    } as unknown as ApiClient;
+    const store = createAuthStore({ api, storage });
+    store.setState({ user: null, status: "unauthenticated", isLoading: false });
+
+    await expect(
+      store.getState().loginWithToken("stale-deep-link-token"),
+    ).rejects.toThrow();
+    // Stands in for the api client's 401 hook, which fires inside getMe.
+    store.getState().sessionExpired();
+
+    expect(storage.snapshot().multica_token).toBeUndefined();
+    expect(api.setToken).toHaveBeenLastCalledWith(null);
+  });
+
+  it("does not claim a session expired for a client that never had one", () => {
+    const storage = makeStorage();
+    const api = makeApi();
+    const store = createAuthStore({ api, storage, cookieAuth: true });
+
+    // Boot-time identity probe on a first visit: still "authenticating",
+    // no stored credential.
+    store.getState().sessionExpired();
+
+    expect(store.getState().status).toBe("unauthenticated");
+    expect(store.getState().expired).toBe(false);
+  });
+
+  it("flags expiry when a stored token is rejected at boot", () => {
+    const storage = makeStorage({ multica_token: "stale" });
+    const api = makeApi();
+    const store = createAuthStore({ api, storage });
+
+    store.getState().sessionExpired();
+
+    expect(store.getState().expired).toBe(true);
+    expect(storage.snapshot().multica_token).toBeUndefined();
+  });
+
+  it("runs the expiry handler instead of the logout one when given both", () => {
+    const storage = makeStorage({ multica_token: "t" });
+    const api = makeApi();
+    const onLogout = vi.fn();
+    const onSessionExpired = vi.fn();
+    const store = createAuthStore({ api, storage, onLogout, onSessionExpired });
+
+    store.setState({ user: fakeUser, status: "authenticated", isLoading: false });
+    store.getState().sessionExpired();
+
+    // Desktop's logout teardown stops the local daemon, which is the wrong
+    // answer for a session the user did not choose to end (MUL-7028).
+    expect(onSessionExpired).toHaveBeenCalledOnce();
+    expect(onLogout).not.toHaveBeenCalled();
+  });
+
+  it("still runs the logout teardown for an explicit logout", () => {
+    const storage = makeStorage({ multica_token: "t" });
+    const api = makeApi();
+    const onLogout = vi.fn();
+    const onSessionExpired = vi.fn();
+    const store = createAuthStore({ api, storage, onLogout, onSessionExpired });
+
+    store.setState({ user: fakeUser, status: "authenticated", isLoading: false });
+    store.getState().logout();
+
+    expect(onLogout).toHaveBeenCalledOnce();
+    expect(onSessionExpired).not.toHaveBeenCalled();
+  });
+
+  it("treats a burst of parallel 401s as the one expiry it is", () => {
+    const storage = makeStorage({ multica_token: "t" });
+    const api = makeApi();
+    const onLogout = vi.fn();
+    const store = createAuthStore({ api, storage, onLogout });
+
+    store.setState({ user: fakeUser, status: "authenticated", isLoading: false });
+    store.getState().sessionExpired();
+    store.getState().sessionExpired();
+    store.getState().sessionExpired();
+
+    expect(onLogout).toHaveBeenCalledOnce();
+  });
+
+  it("clears the expired notice once the user signs back in", async () => {
+    const storage = makeStorage();
+    const api = {
+      setToken: vi.fn(),
+      getMe: vi.fn().mockResolvedValue(fakeUser),
+    } as unknown as ApiClient;
+    const store = createAuthStore({ api, storage });
+
+    store.setState({ user: fakeUser, status: "authenticated", isLoading: false });
+    store.getState().sessionExpired();
+    expect(store.getState().expired).toBe(true);
+
+    await store.getState().loginWithToken("fresh-token");
+
+    expect(store.getState().status).toBe("authenticated");
+    expect(store.getState().expired).toBe(false);
+  });
+
+  it("stores the session a device login returns", async () => {
+    const storage = makeStorage();
+    const deviceLogin = vi
+      .fn()
+      .mockResolvedValue({ token: "device-jwt", user: fakeUser });
+    const api = { setToken: vi.fn(), deviceLogin } as unknown as ApiClient;
+    const onLogin = vi.fn();
+    const store = createAuthStore({ api, storage, onLogin });
+
+    const user = await store
+      .getState()
+      .loginWithDevice("a".repeat(32), "artisan@mac-mini");
+
+    expect(deviceLogin).toHaveBeenCalledWith("a".repeat(32), "artisan@mac-mini");
+    expect(storage.snapshot().multica_token).toBe("device-jwt");
+    expect(api.setToken).toHaveBeenCalledWith("device-jwt");
+    expect(onLogin).toHaveBeenCalledOnce();
+    expect(user).toEqual(fakeUser);
+    expect(store.getState().status).toBe("authenticated");
+  });
+
+  // The api client answers an unreadable body with an empty session instead of
+  // throwing, so the store is the last place that can stop a "signed in" state
+  // whose every request 401s.
+  it("rejects an empty device session instead of persisting it", async () => {
+    const storage = makeStorage();
+    const api = {
+      setToken: vi.fn(),
+      deviceLogin: vi
+        .fn()
+        .mockResolvedValue({ token: "", user: { ...fakeUser, id: "" } }),
+    } as unknown as ApiClient;
+    const store = createAuthStore({ api, storage });
+
+    await expect(
+      store.getState().loginWithDevice("b".repeat(32)),
+    ).rejects.toThrow();
+    expect(storage.snapshot().multica_token).toBeUndefined();
+    expect(api.setToken).not.toHaveBeenCalled();
+    expect(store.getState().status).not.toBe("authenticated");
+  });
+});

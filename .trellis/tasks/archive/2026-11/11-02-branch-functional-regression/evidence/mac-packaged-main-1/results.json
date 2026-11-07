@@ -1,0 +1,126 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/mac-packaged-main-1/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-host-installed.spec.ts",
+      "file": "collaboration-host-installed.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Packaged full Main controls a real native host run and explicitly resumes the shared Agent",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 480000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 24248,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:45:01.078Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "installed-host-stopped.png",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/mac-packaged-main-1/artifacts/collaboration-host-install-7dc38-ly-resumes-the-shared-Agent-chromium/attachments/installed-host-stopped-png-ed52c07beba07c2ccf29fb6f848c13e2c2171edc.png"
+                    },
+                    {
+                      "name": "installed-host-ended.png",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/mac-packaged-main-1/artifacts/collaboration-host-install-7dc38-ly-resumes-the-shared-Agent-chromium/attachments/installed-host-ended-png-324b0a17e5828e8bf5bcd64893de146033790003.png"
+                    },
+                    {
+                      "name": "installed-host-evidence",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/mac-packaged-main-1/artifacts/collaboration-host-install-7dc38-ly-resumes-the-shared-Agent-chromium/attachments/installed-host-evidence-80a2b3d68b25bcc581f5b7e85101dec6b8512997.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e481c356ede738d608ed-429067c898ab68cfd473",
+          "file": "collaboration-host-installed.spec.ts",
+          "line": 36,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T01:45:00.609Z",
+    "duration": 25178.852,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

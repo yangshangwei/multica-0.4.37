@@ -1,0 +1,138 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CHART_DIR="$ROOT_DIR/deploy/helm/multica"
+
+require_rendered_value() {
+  local rendered=$1
+  local expected=$2
+
+  if ! grep -Fq "$expected" <<<"$rendered"; then
+    echo "Missing expected Helm-rendered config value:"
+    echo "  $expected"
+    exit 1
+  fi
+}
+
+reject_rendered_value() {
+  local rendered=$1
+  local forbidden=$2
+
+  if grep -Fq "$forbidden" <<<"$rendered"; then
+    echo "Forbidden Helm-rendered config value:"
+    echo "  $forbidden"
+    exit 1
+  fi
+}
+
+helm lint "$CHART_DIR"
+
+default_config="$(
+  helm template multica "$CHART_DIR" \
+    --show-only templates/configmap.yaml
+)"
+require_rendered_value "$default_config" 'MULTICA_VCS_INTEGRATION_ENABLED: "true"'
+require_rendered_value "$default_config" 'MULTICA_MESSAGING_INTEGRATIONS_ENABLED: "true"'
+require_rendered_value "$default_config" 'MULTICA_CLOUD_URL: ""'
+require_rendered_value "$default_config" 'MULTICA_DATABASE_STARTUP_TIMEOUT: "3m"'
+require_rendered_value "$default_config" 'MULTICA_DATABASE_CONNECT_TIMEOUT: "5s"'
+require_rendered_value "$default_config" 'CHANGELOG_FILE: ""'
+require_rendered_value "$default_config" 'MULTICA_CLI_INSTALL_COMMAND: ""'
+require_rendered_value "$default_config" 'MULTICA_CLI_INSTALL_COMMAND_WINDOWS: ""'
+require_rendered_value "$default_config" 'MULTICA_CLI_INSTALL_COMMAND_MACOS: ""'
+require_rendered_value "$default_config" 'MULTICA_CLI_INSTALL_COMMAND_LINUX: ""'
+require_rendered_value "$default_config" 'MULTICA_DESKTOP_DOWNLOAD_URL: ""'
+# A chart install must not put every device into a workspace nobody chose: with
+# no slug, device auth establishes the identity and the client runs onboarding,
+# where the member names their own workspace (ART-7). The old default shipped
+# "intranet" here, so assert the empty string rather than merely the absence of
+# that one slug.
+require_rendered_value "$default_config" 'MULTICA_DEVICE_AUTH_WORKSPACE: ""'
+require_rendered_value "$default_config" 'MULTICA_DEVICE_AUTH_WORKSPACE_NAME: ""'
+
+default_backend="$(
+  helm template multica "$CHART_DIR" \
+    --show-only templates/backend.yaml
+)"
+require_rendered_value "$default_backend" 'failureThreshold: 60'
+reject_rendered_value "$default_backend" 'name: changelog'
+liveness_block="$(sed -n '/livenessProbe:/,/resources:/p' <<<"$default_backend")"
+require_rendered_value "$liveness_block" 'path: /health'
+reject_rendered_value "$liveness_block" 'path: /healthz'
+
+disabled_config="$(
+  helm template multica "$CHART_DIR" \
+    --show-only templates/configmap.yaml \
+    --set backend.config.vcsIntegrationEnabled=false
+)"
+require_rendered_value "$disabled_config" 'MULTICA_VCS_INTEGRATION_ENABLED: "false"'
+
+intranet_config="$(
+  helm template multica "$CHART_DIR" \
+    --show-only templates/configmap.yaml \
+    --set backend.config.messagingIntegrationsEnabled=false
+)"
+require_rendered_value "$intranet_config" 'MULTICA_MESSAGING_INTEGRATIONS_ENABLED: "false"'
+require_rendered_value "$intranet_config" 'MULTICA_VCS_INTEGRATION_ENABLED: "true"'
+
+capacity_config="$(
+  helm template multica "$CHART_DIR" \
+    --show-only templates/configmap.yaml \
+    --set-string backend.config.cloud.url=https://multica-cloud.internal
+)"
+require_rendered_value "$capacity_config" 'MULTICA_CLOUD_URL: "https://multica-cloud.internal"'
+
+install_config="$(
+  helm template multica "$CHART_DIR" \
+    --show-only templates/configmap.yaml \
+    --set-string backend.config.cliInstallCommand='legacy installer' \
+    --set-string backend.config.cliInstallCommands.windows='windows installer' \
+    --set-string backend.config.cliInstallCommands.macos='macos installer' \
+    --set-string backend.config.cliInstallCommands.linux='linux installer'
+)"
+require_rendered_value "$install_config" 'MULTICA_CLI_INSTALL_COMMAND: "legacy installer"'
+require_rendered_value "$install_config" 'MULTICA_CLI_INSTALL_COMMAND_WINDOWS: "windows installer"'
+require_rendered_value "$install_config" 'MULTICA_CLI_INSTALL_COMMAND_MACOS: "macos installer"'
+require_rendered_value "$install_config" 'MULTICA_CLI_INSTALL_COMMAND_LINUX: "linux installer"'
+
+download_config="$(
+  helm template multica "$CHART_DIR" \
+    --show-only templates/configmap.yaml \
+    --set-string backend.config.desktopDownloadUrl=http://10.10.10.20:18080/desktop/
+)"
+require_rendered_value "$download_config" 'MULTICA_DESKTOP_DOWNLOAD_URL: "http://10.10.10.20:18080/desktop/"'
+
+# The opt-in direction: an operator whose intranet really is one shared space
+# names the slug, and that name has to reach the backend for any device to join
+# it instead of onboarding.
+shared_workspace_config="$(
+  helm template multica "$CHART_DIR" \
+    --show-only templates/configmap.yaml \
+    --set-string backend.config.deviceAuth.workspaceSlug=acme-intranet
+)"
+require_rendered_value "$shared_workspace_config" 'MULTICA_DEVICE_AUTH_WORKSPACE: "acme-intranet"'
+
+changelog_config="$(
+  helm template multica "$CHART_DIR" \
+    --show-only templates/configmap.yaml \
+    --set-string backend.config.changelogFile=/app/data/changelog/changelog.json
+)"
+require_rendered_value "$changelog_config" 'CHANGELOG_FILE: "/app/data/changelog/changelog.json"'
+
+# Mount the directory rather than one file: an atomic publication replaces the
+# inode, and a subPath file mount would keep serving the previous release.
+changelog_backend="$(
+  helm template multica "$CHART_DIR" \
+    --show-only templates/backend.yaml \
+    --set backend.uploads.persistence.enabled=false \
+    --set-string backend.changelog.existingClaim=release-history
+)"
+require_rendered_value "$changelog_backend" 'name: changelog'
+require_rendered_value "$changelog_backend" 'mountPath: /app/data/changelog'
+require_rendered_value "$changelog_backend" 'readOnly: true'
+require_rendered_value "$changelog_backend" 'claimName: "release-history"'
+reject_rendered_value "$changelog_backend" 'subPath:'
+reject_rendered_value "$changelog_backend" 'name: uploads'
+
+echo "helm config rendering ok"

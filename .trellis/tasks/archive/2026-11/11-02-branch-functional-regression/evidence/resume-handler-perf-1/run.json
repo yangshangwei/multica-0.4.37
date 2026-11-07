@@ -1,0 +1,68 @@
+{
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "source_root": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+  "started_at": "2026-11-02T02:22:20.530171+00:00",
+  "state": "complete",
+  "database": "multica_func7af9_resume_perf_1",
+  "template_database": "multica_func7af9_template_20261102",
+  "commercial_provider_calls": 0,
+  "new_test_source_changes": false,
+  "agent_cli_guard": true,
+  "automatic_retries": 0,
+  "product_trees": {
+    "server": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+    "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+    "packages": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292"
+  },
+  "preexisting_patch_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+  "migration_count": 751,
+  "pg_headroom_before": {
+    "maximum": 100,
+    "used": 43
+  },
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-count=1",
+    "-timeout=40m",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-json",
+    "-run",
+    "^(TestIterationI1P95|TestIterationI1DisableP95|TestTriageQueueScaleBaseline)$",
+    "./internal/handler"
+  ],
+  "selected_tests": [
+    "TestIterationI1P95",
+    "TestIterationI1DisableP95",
+    "TestTriageQueueScaleBaseline"
+  ],
+  "race_enabled": false,
+  "private_environment_sha256": "32dd99fc15674d017328f1219ce9445cb5c787662407760fa96f90322571182e",
+  "execution_started_at": "2026-11-02T02:22:23.735473+00:00",
+  "measurement_scope": "local handler and isolated database; shared host/PG resources, no production latency claim",
+  "runner_sha256": "21801f3e2bf4116688822dd09cb6281e73a971a2a09f0674f3443327b42119dd",
+  "exit_code": 1,
+  "finished_at": "2026-11-02T02:28:16.407440+00:00",
+  "outcomes": {
+    "TestIterationI1P95": "fail",
+    "TestIterationI1DisableP95": "pass",
+    "TestTriageQueueScaleBaseline": "pass"
+  },
+  "counts": {
+    "fail": 1,
+    "pass": 2
+  },
+  "all_selected_executed": true,
+  "stdout_sha256": "d1cc8478e2f2a98db8737f3d93dce4e9d13084de01386d3934b5d3b2e3708276",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "connections_after": 0,
+  "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4"
+}

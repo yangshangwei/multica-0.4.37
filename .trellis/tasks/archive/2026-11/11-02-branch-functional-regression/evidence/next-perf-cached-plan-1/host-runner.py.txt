@@ -1,0 +1,155 @@
+import collections
+import datetime
+import difflib
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import traceback
+from urllib.parse import parse_qs, unquote, urlsplit, urlunsplit
+
+ROOT=Path("/Volumes/artisan/code/2026/multica-0.4.37")
+SOURCE=Path("/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102")
+TASK=ROOT/".trellis/tasks/11-02-branch-functional-regression"
+CONTROL=ROOT/".omx/private/branch-functional-regression-20261102"
+PRIVATE=Path(__file__).resolve().parent
+RUN=TASK/"evidence/next-perf-cached-plan-1"
+CANDIDATE="7af9ab9905c98c77bb091223ebe687c639475bb4"
+DATABASE="multica_func7af9_next_cached_diag_1"
+PSQL="/opt/homebrew/opt/libpq/bin/psql"
+now=lambda:datetime.datetime.now(datetime.timezone.utc).isoformat()
+def sha(p):
+    with Path(p).open("rb") as f:
+        return hashlib.file_digest(f,"sha256").hexdigest()
+
+RUN.mkdir(exist_ok=False)
+shutil.copyfile(__file__, RUN/"host-runner.py.txt")
+home=PRIVATE/"home"
+home.mkdir(exist_ok=False);home.chmod(0o700)
+record=dict(started_at=now(),state="preflight",candidate=CANDIDATE,database=DATABASE,
+    source_root=str(SOURCE),commercial_provider_calls=0,original_p95_failure_retained=True,
+    original_p95_gate_executed=False,closure_operations_permit=1,product_source_changed=False,
+    automatic_retries=0,agent_cli_guard=True,race_enabled=False,actual_prepared_capture="backend-only auto_explain notice",statistics_experiment="Task-only ANALYZE of four tables at source and target phases after two full baseline rollbacks",steps=[])
+created=False
+pg=None
+def persist():
+    (RUN/"run.json").write_text(json.dumps(record,indent=2)+"\n")
+def invoke(name,command,env):
+    step=dict(name=name,command=command,cwd=str(SOURCE),started_at=now())
+    record["steps"].append(step);persist()
+    with (RUN/(name+".stdout")).open("w") as out,(RUN/(name+".stderr")).open("w") as err:
+        process=subprocess.Popen(command,cwd=SOURCE,env=env,stdout=out,stderr=err,stdin=subprocess.DEVNULL)
+        step["pid"]=process.pid;persist()
+        try:
+            exit_code=process.wait(timeout=600)
+        except subprocess.TimeoutExpired:
+            process.terminate();process.wait(timeout=15);raise
+        result=subprocess.CompletedProcess(command,exit_code)
+    step.update(finished_at=now(),exit_code=result.returncode,stdout_sha256=sha(RUN/(name+".stdout")),
+        stderr_sha256=sha(RUN/(name+".stderr")))
+    persist()
+    return result.returncode
+def sql(query,db=None):
+    result=subprocess.run([PSQL,"-X","-At","-v","ON_ERROR_STOP=1","-c",query],
+        env=dict(pg,PGDATABASE=db or pg["PGDATABASE"]),capture_output=True,text=True,timeout=25)
+    with (RUN/"database-operations.jsonl").open("a") as f:
+        f.write(json.dumps(dict(at=now(),database=db or pg["PGDATABASE"],sql=query,
+            exit_code=result.returncode,stdout=result.stdout,stderr=result.stderr))+"\n")
+    if result.returncode:
+        raise RuntimeError("Database operation failed; inspect task-owned sanitized evidence")
+    return result.stdout.strip()
+persist()
+try:
+    assert subprocess.check_output(["git","rev-parse","HEAD"],cwd=SOURCE,text=True).strip()==CANDIDATE
+    dirty=subprocess.check_output(["git","diff","--name-only"],cwd=SOURCE,text=True).splitlines()
+    assert dirty==["server/internal/handler/daemon_test.go"],dirty
+    before_diff=subprocess.check_output(["git","diff"],cwd=SOURCE)
+    record["preexisting_patch_sha256"]=hashlib.sha256(before_diff).hexdigest()
+    assert record["preexisting_patch_sha256"]=="f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe"
+    record["frozen_test_sha256_before"]=sha(SOURCE/"server/internal/handler/iteration_i1_p95_test.go")
+    record["product_trees"]={p:subprocess.check_output(["git","rev-parse","HEAD:"+p],cwd=SOURCE,text=True).strip()
+        for p in ["server","apps","packages"]}
+    config=json.loads(subprocess.check_output(["node","-e",
+        'process.stdout.write(JSON.stringify(require("dotenv").parse(require("fs").readFileSync(process.argv[1]))))',
+        str(CONTROL/"go-package-env/33.env")],cwd=ROOT,text=True))
+    allocation=json.loads((CONTROL/"go-permits.json").read_text())
+    template=allocation["template_database"]
+    record["template_database"]=template
+    base={k:os.environ[k] for k in ["PATH","LANG","LC_ALL","USER","LOGNAME","SHELL"] if k in os.environ}
+    build=dict(base,HOME=str(home),GOTOOLCHAIN="local")
+    build.update({k:config[k] for k in ["GOCACHE","GOMODCACHE","GOPATH"] if k in config})
+    build.update(TMPDIR=allocation["build_tmp"],TMP=allocation["build_tmp"],TEMP=allocation["build_tmp"])
+    assert invoke("format-private-test",["gofmt","-w",str(PRIVATE/"diagnostic_test.go")],build)==0
+    target=SOURCE/"server/internal/handler/zz_task_private_iteration_cached_diagnostic_test.go"
+    assert not target.exists()
+    overlay=PRIVATE/"overlay.json"
+    overlay.write_text(json.dumps({"Replace":{str(target):str(PRIVATE/"diagnostic_test.go")}},indent=2)+"\n")
+    shutil.copyfile(PRIVATE/"diagnostic_test.go",RUN/"diagnostic_test.go.txt")
+    shutil.copyfile(overlay,RUN/"overlay.json")
+    record.update(overlay_virtual_target=str(target),overlay_target_exists_on_disk=False,
+        diagnostic_test_sha256=sha(PRIVATE/"diagnostic_test.go"),overlay_sha256=sha(overlay))
+    # The only source overlay is a new test file: no existing Go file is replaced.
+    record["overlay_diff"]="+ task-private zz_task_private_iteration_cached_diagnostic_test.go; all existing source files unchanged"
+    binary=PRIVATE/"handler-cached-plan.test"
+    assert invoke("compile",["go","-C","server","test","-c","-p","2","-overlay",str(overlay),
+        "-o",str(binary),"./internal/handler"],build)==0,"Private diagnostic compilation failed"
+    record["test_binary_sha256"]=sha(binary)
+    u=urlsplit(config["DATABASE_URL"])
+    pg=dict(base,PGHOST=u.hostname,PGPORT=str(u.port),PGUSER=unquote(u.username or ""),
+        PGPASSWORD=unquote(u.password or ""),PGDATABASE=template,PGCONNECT_TIMEOUT="5",
+        PGSSLMODE=parse_qs(u.query)["sslmode"][0])
+    assert sql("SELECT current_database()")==template
+    assert sql('SELECT (SELECT count(*) FROM "user"), (SELECT count(*) FROM workspace), (SELECT count(*) FROM issue)')=="0|0|0"
+    maximum,used=map(int,sql("SELECT current_setting('max_connections'),count(*) FROM pg_stat_activity").split("|"))
+    record["pg_headroom_before"]=dict(maximum=maximum,used=used)
+    assert maximum-used>=25,"Insufficient shared PG headroom"
+    assert sql("SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid()")=="0"
+    assert sql("SELECT count(*) FROM pg_database WHERE datname='"+DATABASE+"'")=="0"
+    sql('CREATE DATABASE "'+DATABASE+'" TEMPLATE "'+template+'"',"postgres")
+    created=True
+    assert sql("SELECT current_database()",DATABASE)==DATABASE
+    record["migration_count"]=int(sql("SELECT count(*) FROM schema_migrations",DATABASE))
+    env=dict(build,DATABASE_URL=urlunsplit(u._replace(path="/"+DATABASE)),
+        MULTICA_ITERATION_CACHED_DIAGNOSTIC="1",MULTICA_ITERATION_CACHED_REPORT_DIR=str(RUN))
+    env.update({k:config[k] for k in ["MULTICA_DSH_PATH","MULTICA_KNOWLEDGE_CONTEXT_ENABLED"] if k in config})
+    permit=PRIVATE/"environment.json"
+    permit.write_text(json.dumps(env,indent=2)+"\n");permit.chmod(0o600)
+    record.update(state="running",private_environment_sha256=sha(permit),runner_sha256=sha(__file__))
+    persist()
+    command=["bash","scripts/go-test-with-agent-cli-guard.sh","--","go","tool","test2json","-t","-p",
+        "github.com/multica-ai/multica/server/internal/handler",str(binary),"-test.v",
+        "-test.run","^TestIterationCanonicalCachedPlanDiagnostic$","-test.count=1","-test.parallel=1","-test.timeout=5m"]
+    exit_code=invoke("diagnostic",command,env)
+    events=[json.loads(l) for l in (RUN/"diagnostic.stdout").read_text().splitlines() if l.startswith("{")]
+    terminal={e["Test"]:e["Action"] for e in events if e.get("Test") and e["Action"] in ["pass","fail","skip"]}
+    record.update(state="complete",finished_at=now(),exit_code=exit_code,outcomes=terminal,
+        counts=dict(collections.Counter(terminal.values())))
+    assert set(terminal)=={"TestIterationCanonicalCachedPlanDiagnostic"},terminal
+    assert (RUN/"diagnostic-metrics.json").exists(),"No closure attribution report"
+    metrics=json.loads((RUN/"diagnostic-metrics.json").read_text())
+    assert metrics["closure_operations"]==1
+    assert metrics["phases"]==6
+    assert metrics["full_transaction_replays"]==2
+    assert metrics["all_full_transaction_rollbacks_equal"]
+    record["metrics_sha256"]=sha(RUN/"diagnostic-metrics.json")
+    assert exit_code==0 and terminal["TestIterationCanonicalCachedPlanDiagnostic"]=="pass","Private diagnostic failed"
+    print(json.dumps({k:record[k] for k in ["state","exit_code","database","outcomes","counts"]},indent=2),flush=True)
+except Exception as e:
+    record.update(state="setup_or_diagnostic_failed",finished_at=now(),error_type=type(e).__name__,
+        error=str(e),traceback=traceback.format_exc())
+    persist()
+    raise
+finally:
+    if created and pg:
+        try:
+            record["connections_after"]=int(sql("SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid()",DATABASE))
+        except Exception as e:
+            record["cleanup_audit_error"]=str(e)
+    record["frozen_test_sha256_after"]=sha(SOURCE/"server/internal/handler/iteration_i1_p95_test.go")
+    record["frozen_test_unchanged"]=record.get("frozen_test_sha256_before")==record["frozen_test_sha256_after"]
+    record["source_diff_unchanged"]=subprocess.check_output(["git","diff"],cwd=SOURCE)==before_diff
+    record["overlay_target_absent_after"]=not (SOURCE/"server/internal/handler/zz_task_private_iteration_cached_diagnostic_test.go").exists()
+    record["cleanup_checked_at"]=now()
+    persist()

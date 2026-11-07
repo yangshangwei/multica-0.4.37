@@ -1,0 +1,70 @@
+{
+  "started_at": "2026-11-02T02:30:08.163580+00:00",
+  "state": "complete",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "packaging_source": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "baseline": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-deb-install-20261026/package/multica-desktop-0.6.5-179-g1bfd169dc-linux-arm64.deb",
+  "candidate_input": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/linux-arm64-dir/linux-arm64-unpacked",
+  "copied_input": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/resume-linux-deb-1/input",
+  "output_directory": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/resume-linux-deb-1/package",
+  "product_changes": false,
+  "commercial_provider_calls": 0,
+  "publish": "never",
+  "source_artifact_is_read_only": true,
+  "scope": "Build only; actual installation is recorded separately",
+  "product_trees": {
+    "server": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+    "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+    "packages": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292"
+  },
+  "baseline_sha256": "7e23d62da6189d128bb08dd2caa011a8ca61ea6ad5256d346c331ec794b1c346",
+  "copied_input_matches_original": true,
+  "config_sha256": "962eea177f02bdfa75937312e339e042664724245086fbb6d24eeb387d6cf4d6",
+  "builder_version": "26.8.1",
+  "command": [
+    "pnpm",
+    "exec",
+    "electron-builder",
+    "--prepackaged",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/resume-linux-deb-1/input",
+    "--linux",
+    "deb",
+    "--arm64",
+    "--publish",
+    "never",
+    "-c.extraMetadata.version=0.6.8-rc.20261102",
+    "-c.directories.output=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/resume-linux-deb-1/package"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/apps/desktop",
+  "execution_started_at": "2026-11-02T02:30:11.099047+00:00",
+  "environment_keys": [
+    "CI",
+    "CSC_IDENTITY_AUTO_DISCOVERY",
+    "ELECTRON_BUILDER_CACHE",
+    "HOME",
+    "LANG",
+    "LC_ALL",
+    "LOGNAME",
+    "PATH",
+    "SHELL",
+    "TEMP",
+    "TMP",
+    "TMPDIR",
+    "USER"
+  ],
+  "runner_sha256": "4dc6b86af0d6f4f958ca92ad98e2ee2ad9c4cd14a1e3db56ed4d8349b4a5c364",
+  "exit_code": 0,
+  "finished_at": "2026-11-02T02:31:09.917210+00:00",
+  "original_input_unchanged": true,
+  "packages": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/resume-linux-deb-1/package/multica-desktop-0.6.8-rc.20261102-linux-arm64.deb",
+      "bytes": 167919816,
+      "sha256": "44f3a4c5f74e91205bea4d398a81ed737efa49d9062a9f4bc4c2234c588fb01a"
+    }
+  ],
+  "copied_input_changes": [
+    "resources/apparmor-profile",
+    "resources/package-type"
+  ]
+}

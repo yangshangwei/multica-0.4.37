@@ -1,0 +1,179 @@
+{
+  "state": "complete",
+  "records": [
+    {
+      "name": "ordinary-normal",
+      "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "source_root": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T01:47:04.449015+00:00",
+      "state": "complete",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestKnowledgeServerDaemonComposite",
+        "-p=1",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=5m",
+        "./internal/daemon"
+      ],
+      "database": "multica_knowledge_composite_20261101_func7af9_normal",
+      "commercial_provider_calls": 0,
+      "prior_prefix_rejection_preserved": "evidence/knowledge-tagged/ordinary-normal",
+      "correction": "New owned database satisfies existing immutable fixture prefix; no ownership guard/source/assertions changed",
+      "scope": "Actual HTTP/WS/daemon/Runner controlled fake composites; programmatic gates separate from deployed startup flag",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T01:47:23.931521+00:00",
+      "top": {
+        "pass": 14,
+        "fail": 0,
+        "skip": 0
+      },
+      "subtests": {
+        "pass": 13,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": []
+    },
+    {
+      "name": "ordinary-race",
+      "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "source_root": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T01:47:24.154959+00:00",
+      "state": "complete",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestKnowledgeServerDaemonComposite",
+        "-p=1",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=5m",
+        "-race",
+        "./internal/daemon"
+      ],
+      "database": "multica_knowledge_composite_20261101_func7af9_race",
+      "commercial_provider_calls": 0,
+      "prior_prefix_rejection_preserved": "evidence/knowledge-tagged/ordinary-race",
+      "correction": "New owned database satisfies existing immutable fixture prefix; no ownership guard/source/assertions changed",
+      "scope": "Actual HTTP/WS/daemon/Runner controlled fake composites; programmatic gates separate from deployed startup flag",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T01:47:46.981152+00:00",
+      "top": {
+        "pass": 14,
+        "fail": 0,
+        "skip": 0
+      },
+      "subtests": {
+        "pass": 13,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": []
+    },
+    {
+      "name": "host-normal",
+      "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "source_root": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T01:47:47.271467+00:00",
+      "state": "complete",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestCollaborationKnowledgeHostComposite",
+        "-p=1",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=5m",
+        "./cmd/server"
+      ],
+      "database": "multica_knowledge_host_composite_20261101_func7af9_normal",
+      "commercial_provider_calls": 0,
+      "prior_prefix_rejection_preserved": "evidence/knowledge-tagged/host-normal",
+      "correction": "New owned database satisfies existing immutable fixture prefix; no ownership guard/source/assertions changed",
+      "scope": "Actual HTTP/WS/daemon/Runner controlled fake composites; programmatic gates separate from deployed startup flag",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T01:48:33.243387+00:00",
+      "top": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "subtests": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": []
+    },
+    {
+      "name": "host-race",
+      "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "source_root": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T01:48:33.470045+00:00",
+      "state": "complete",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestCollaborationKnowledgeHostComposite",
+        "-p=1",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=5m",
+        "-race",
+        "./cmd/server"
+      ],
+      "database": "multica_knowledge_host_composite_20261101_func7af9_race",
+      "commercial_provider_calls": 0,
+      "prior_prefix_rejection_preserved": "evidence/knowledge-tagged/host-race",
+      "correction": "New owned database satisfies existing immutable fixture prefix; no ownership guard/source/assertions changed",
+      "scope": "Actual HTTP/WS/daemon/Runner controlled fake composites; programmatic gates separate from deployed startup flag",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T01:49:53.852439+00:00",
+      "top": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "subtests": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": []
+    }
+  ]
+}

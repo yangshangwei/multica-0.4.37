@@ -1,0 +1,43 @@
+{
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "started_at": "2026-11-02T02:20:23.728519+00:00",
+  "finished_at": "2026-11-02T02:24:03.601007+00:00",
+  "state": "complete",
+  "scope": "Remaining desktop acceptance readiness and local artifact integrity, not installer/runtime acceptance",
+  "commercial_provider_calls": 0,
+  "services_started": 0,
+  "containers_started": 0,
+  "cloud_requests": 0,
+  "product_or_test_source_changed": false,
+  "completed_tests_rerun": 0,
+  "checks": {
+    "product_tree_equality": "PASS",
+    "pinned_payload_bytes": "PASS",
+    "mac_distribution_metadata_sha512": "PASS",
+    "mac_zip_pinned_payloads": "PASS",
+    "mac_dmg_integrity": "PASS",
+    "mac_adhoc_signature_structure": "PASS",
+    "mac_stapled_notary_ticket": "FAIL: stapler exit 65, ticket absent",
+    "developer_id_signing": "BLOCKED: current artifact is ad-hoc with no TeamIdentifier",
+    "windows_native_runner": "BLOCKED: no local runner in bounded inventory; remote infrastructure not queried",
+    "linux_native_desktop": "BLOCKED: Docker Linux available, no native desktop VM in bounded inventory",
+    "linux_package_manager_lane": "PREPARABLE: verified baseline deb and linux/arm64 Docker image available; candidate deb must be built and verified in a new run"
+  },
+  "evidence": [
+    "commands.json",
+    "tool-paths.json",
+    "vm-app-paths.json",
+    "artifact-inventory.json",
+    "artifact-byte-verification.json",
+    "mac-distribution-integrity.json",
+    "linux-baseline-deb.json"
+  ],
+  "exclusions": [
+    "No user keychain inventory/signing",
+    "No notarization submission",
+    "No remote CI dispatch",
+    "No user home scan",
+    "No installer executed or image mounted",
+    "No previous acceptance conclusion replaced"
+  ]
+}

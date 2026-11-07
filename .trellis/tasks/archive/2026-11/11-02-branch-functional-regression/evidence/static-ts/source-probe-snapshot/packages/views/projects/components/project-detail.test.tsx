@@ -1,0 +1,710 @@
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { act, fireEvent, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import type { Agent, Issue, Project, Squad } from "@multica/core/types";
+import { renderWithI18n } from "../../test/i18n";
+import { NavigationProvider, type NavigationAdapter } from "../../navigation";
+import { ProjectDetail } from "./project-detail";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ApiError, setApiInstance } from "@multica/core/api";
+import type { ApiClient } from "@multica/core/api/client";
+import { projectKeys } from "@multica/core/projects/queries";
+import { emptyProjectUpdateDraft, projectP1Keys, projectProgressDraftKey, useProjectAccessStore, useProjectProgressDraftStore, writeProjectProgressDraft } from "@multica/core/projects";
+import { p1Overview, p1Preview, p1Project } from "@multica/core/projects/test-fixtures/p1";
+// Knowledge interactions are canonical in collaboration/knowledge-panel.test.tsx.
+vi.mock("../../collaboration/knowledge-panel", () => ({ ManagedKnowledgePanel: ({ workspaceId, projectId }: { workspaceId: string; projectId?: string }) => <div data-testid="knowledge-target-mount" data-workspace={workspaceId} data-project={projectId} /> }));
+
+const mocks = vi.hoisted(() => ({
+  role: "admin",
+  mobile: false,
+  realQueries: false,
+  editorEmitted: vi.fn(),
+  copyText: vi.fn(),
+  deleteProject: vi.fn(),
+  getShareableUrl: vi.fn((path: string) => `https://app.example${path}`),
+  push: vi.fn(),
+  recordVisit: vi.fn(),
+  toastSuccess: vi.fn(),
+  toastError: vi.fn(),
+  openCreateIssue: vi.fn(),
+  linkIssue: vi.fn(),
+  pickerProps: null as null | {
+    open: boolean;
+    filterIssue?: (issue: Issue) => boolean;
+    onSelect: (issue: Issue) => void | boolean | Promise<void | boolean>;
+  },
+  project: null as Project | null,
+  agents: [] as Agent[],
+  squads: [] as Squad[],
+}));
+
+vi.mock("@multica/ui/lib/clipboard", () => ({
+  copyText: mocks.copyText,
+}));
+
+vi.mock("@tanstack/react-query", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@tanstack/react-query")>();
+  return {
+  ...actual,
+  useQueryClient: () => mocks.realQueries ? actual.useQueryClient() : ({ removeQueries: vi.fn(), cancelQueries: vi.fn(), invalidateQueries: vi.fn() }),
+  useQuery: (options: { queryKey?: readonly unknown[] }) => {
+    if (mocks.realQueries) return actual.useQuery(options as Parameters<typeof actual.useQuery>[0]);
+    switch (options.queryKey?.[0]) {
+      case "project-detail":
+        return { data: mocks.project, isLoading: false };
+      case "members":
+        return {
+          data: [{ user_id: "user-1", name: "User One", role: mocks.role }],
+          isLoading: false,
+        };
+      case "agents":
+        return { data: mocks.agents, isLoading: false };
+      case "squads":
+        return { data: mocks.squads, isLoading: false };
+      case "pins":
+        return { data: [], isLoading: false };
+      default:
+        return { data: undefined, isLoading: false };
+    }
+  },
+}; });
+
+vi.mock("@multica/core/projects/queries", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@multica/core/projects/queries")>();
+  return { ...actual, projectDetailOptions: (ws: string, id: string) => mocks.realQueries ? actual.projectDetailOptions(ws, id) : { queryKey: ["project-detail"] } };
+});
+
+vi.mock("@multica/core/projects/mutations", () => ({
+  useUpdateProject: () => ({ mutate: vi.fn() }),
+  useDeleteProject: () => ({ mutate: mocks.deleteProject }),
+}));
+
+vi.mock("@multica/core/issues/mutations", () => ({
+  useUpdateIssue: () => ({ mutateAsync: mocks.linkIssue }),
+}));
+
+vi.mock("@multica/core/pins", () => ({
+  pinListOptions: () => ({ queryKey: ["pins"], queryFn: async () => [] }),
+  useCreatePin: () => ({ mutate: vi.fn() }),
+  useDeletePin: () => ({ mutate: vi.fn() }),
+}));
+
+vi.mock("@multica/core/workspace/queries", () => ({
+  memberListOptions: () => ({ queryKey: ["members"], queryFn: async () => [] }),
+  agentListOptions: () => ({ queryKey: ["agents"], queryFn: async () => [] }),
+  squadListOptions: () => ({ queryKey: ["squads"], queryFn: async () => [] }),
+}));
+
+vi.mock("@multica/core/hooks", () => ({
+  useWorkspaceId: () => "workspace-1",
+}));
+
+vi.mock("@multica/core/auth", () => ({
+  useAuthStore: (selector: (state: { user: { id: string } }) => unknown) =>
+    selector({ user: { id: "user-1" } }),
+}));
+
+vi.mock("@multica/core/chat", () => ({
+  useRecentContextStore: (
+    selector: (state: { recordVisit: typeof mocks.recordVisit }) => unknown,
+  ) => selector({ recordVisit: mocks.recordVisit }),
+}));
+
+vi.mock("@multica/core/paths", () => ({
+  useWorkspacePaths: () => ({
+    projects: () => "/test-workspace/projects",
+    projectDetail: (id: string) => `/test-workspace/projects/${id}`,
+  }),
+}));
+
+vi.mock("@multica/core/workspace/hooks", () => ({
+  useActorName: () => ({ getActorName: () => "User One" }),
+}));
+
+vi.mock("sonner", () => ({
+  toast: { success: mocks.toastSuccess, error: mocks.toastError },
+}));
+
+vi.mock("react-resizable-panels", () => ({
+  useDefaultLayout: () => ({
+    defaultLayout: undefined,
+    onLayoutChanged: vi.fn(),
+  }),
+  usePanelRef: () => ({
+    current: {
+      isCollapsed: () => false,
+      expand: vi.fn(),
+      collapse: vi.fn(),
+    },
+  }),
+}));
+
+vi.mock("@multica/ui/hooks/use-mobile", () => ({
+  useIsMobile: () => mocks.mobile,
+}));
+
+vi.mock("@multica/ui/components/ui/resizable", () => ({
+  ResizablePanelGroup: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  ResizablePanel: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  ResizableHandle: () => null,
+}));
+
+vi.mock("@multica/ui/components/ui/dropdown-menu", () => ({
+  DropdownMenu: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  DropdownMenuTrigger: ({ render }: { render: React.ReactNode }) => <>{render}</>,
+  DropdownMenuContent: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  DropdownMenuItem: ({
+    children,
+    onClick,
+  }: {
+    children: React.ReactNode;
+    onClick?: () => void;
+  }) => (
+    <button type="button" onClick={onClick}>
+      {children}
+    </button>
+  ),
+  DropdownMenuSeparator: () => <hr />,
+}));
+
+vi.mock("@multica/ui/components/ui/popover", () => ({
+  Popover: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  PopoverTrigger: ({ render }: { render: React.ReactNode }) => <>{render}</>,
+  PopoverContent: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+}));
+
+vi.mock("@multica/ui/components/ui/tooltip", () => ({
+  Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  TooltipTrigger: ({ render }: { render: React.ReactNode }) => <>{render}</>,
+  TooltipContent: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+}));
+
+vi.mock("@multica/ui/components/ui/alert-dialog", () => ({
+  AlertDialog: ({
+    open,
+    children,
+  }: {
+    open: boolean;
+    children: React.ReactNode;
+  }) => (open ? <div role="alertdialog">{children}</div> : null),
+  AlertDialogContent: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  AlertDialogHeader: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  AlertDialogTitle: ({ children }: { children: React.ReactNode }) => (
+    <h2>{children}</h2>
+  ),
+  AlertDialogDescription: ({ children }: { children: React.ReactNode }) => (
+    <p>{children}</p>
+  ),
+  AlertDialogFooter: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  AlertDialogCancel: ({ children }: { children: React.ReactNode }) => (
+    <button type="button">{children}</button>
+  ),
+  AlertDialogAction: ({
+    children,
+    onClick,
+  }: {
+    children: React.ReactNode;
+    onClick?: () => void;
+  }) => (
+    <button type="button" onClick={onClick}>
+      {children}
+    </button>
+  ),
+}));
+
+vi.mock("../../editor", () => ({
+  TitleEditor: ({ defaultValue }: { defaultValue: string }) => (
+    <div>{defaultValue}</div>
+  ),
+  // Match the mount-only value and delayed/unmount emission contract. The
+  // editor's own suite covers Tiptap; this suite owns the ancestor lifetime.
+  ContentEditor: forwardRef(function Editor({ defaultValue, onUpdate, debounceMs = 300, flushPendingOnUnmount }: { defaultValue: string; onUpdate: (value: string) => void; debounceMs?: number; flushPendingOnUnmount?: boolean }, ref) {
+    const [text, setText] = useState(defaultValue);
+    const current = useRef(text); const callback = useRef(onUpdate); callback.current = onUpdate;
+    const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+    useImperativeHandle(ref, () => ({ getMarkdown: () => current.current }));
+    useEffect(() => () => { if (timer.current) { clearTimeout(timer.current); if (flushPendingOnUnmount) callback.current(current.current); } }, [flushPendingOnUnmount]);
+    return <textarea aria-label="Progress editor" value={text} onChange={(event) => {
+      current.current = event.target.value; setText(current.current); clearTimeout(timer.current);
+      timer.current = setTimeout(() => { timer.current = undefined; mocks.editorEmitted(current.current); callback.current(current.current); }, debounceMs);
+    }} />;
+  }),
+}));
+
+vi.mock("../../common/actor-avatar", () => ({
+  ActorAvatar: () => null,
+}));
+
+vi.mock("../../issues/components/priority-icon", () => ({
+  PriorityIcon: () => null,
+}));
+
+vi.mock("./project-resources-section", () => ({
+  ProjectResourcesSection: () => <section aria-label="Project resources" />,
+}));
+
+vi.mock("./project-squad-section", () => ({
+  ProjectSquadSection: ({ project }: { project: Project }) => <section aria-label="Execution squad" data-project-id={project.id} />,
+}));
+
+vi.mock("./project-automations-section", () => ({
+  ProjectAutomationsSection: ({ projectId, defaultSquadId }: { projectId: string; defaultSquadId?: string | null }) => <section aria-label="Project automations" data-project-id={projectId} data-squad-id={defaultSquadId} />,
+}));
+
+vi.mock("./project-start-date-picker", () => ({
+  ProjectStartDatePicker: () => null,
+}));
+
+vi.mock("./project-due-date-picker", () => ({
+  ProjectDueDatePicker: () => null,
+}));
+
+vi.mock("../../issues/surface/issue-surface", () => ({
+  IssueSurface: ({ fallbackCreateDefaults, isScopeEmpty, headerActions, renderEmpty }: {
+    fallbackCreateDefaults?: object;
+    isScopeEmpty?: boolean;
+    headerActions?: (context: { controller: { openCreateIssue: () => void } }) => React.ReactNode;
+    renderEmpty?: (context: { controller: { openCreateIssue: () => void } }) => React.ReactNode;
+  }) => <section aria-label="Project issues">
+    <output aria-label="Project issue defaults">{JSON.stringify(fallbackCreateDefaults)}</output>
+    {isScopeEmpty
+      ? renderEmpty?.({ controller: { openCreateIssue: mocks.openCreateIssue } })
+      : headerActions?.({ controller: { openCreateIssue: mocks.openCreateIssue } })}
+  </section>,
+}));
+
+vi.mock("../../modals/issue-picker-modal", () => ({
+  IssuePickerModal: (props: NonNullable<typeof mocks.pickerProps>) => {
+    mocks.pickerProps = props;
+    return props.open ? <div role="dialog" aria-label="Choose an existing issue" /> : null;
+  },
+}));
+
+vi.mock("../../layout/breadcrumb-header", () => ({
+  BreadcrumbHeader: ({ actions }: { actions: React.ReactNode }) => (
+    <header>{actions}</header>
+  ),
+}));
+
+vi.mock("../../layout/animated-right-sidebar", () => ({
+  AnimatedRightSidebar: ({ children }: { children: React.ReactNode }) => (
+    <aside>{children}</aside>
+  ),
+  getAnimatedRightSidebarInitialOpen: () => true,
+  rightSidebarPanelMotionProps: {},
+  useRightSidebarShortcut: vi.fn(),
+  useAnimatedRightSidebarState: () => ({
+    open: true,
+    visualOpen: true,
+    motionEnabled: false,
+    beginToggle: vi.fn(),
+    handleResize: vi.fn(),
+  }),
+}));
+
+const PROJECT: Project = {
+  id: "project-1",
+  workspace_id: "workspace-1",
+  title: "Launch Plan",
+  description: null,
+  icon: null,
+  status: "in_progress",
+  priority: "high",
+  lead_type: null,
+  lead_id: null,
+  start_date: null,
+  due_date: null,
+  created_at: "2026-06-01T00:00:00Z",
+  updated_at: "2026-06-01T00:00:00Z",
+  issue_count: 3,
+  done_count: 1,
+  resource_count: 0,
+  execution_squad: { state: "configured", squad_id: "delivery-squad" },
+};
+
+const PROJECT_LEADER: Agent = {
+  id: "project-leader", workspace_id: "workspace-1", runtime_id: "runtime-1", owner_id: "user-1", name: "Delivery leader",
+  permission_mode: "private", invocation_targets: [], archived_at: null, archived_by: null,
+  description: "", instructions: "", avatar_url: null, runtime_mode: "local", runtime_config: {}, custom_args: [],
+  visibility: "private", status: "idle", max_concurrent_tasks: 1, model: "", skills: [], created_at: "", updated_at: "",
+};
+const PROJECT_SQUAD: Squad = {
+  id: "delivery-squad", workspace_id: "workspace-1", name: "Delivery squad", description: "", instructions: "", avatar_url: null,
+  leader_id: PROJECT_LEADER.id, creator_id: "user-1", created_at: "", updated_at: "", archived_at: null, archived_by: null,
+};
+
+const UNLINKED_ISSUE: Issue = {
+  id: "existing-issue", workspace_id: "workspace-1", number: 8, identifier: "MUL-8",
+  title: "Review launch checklist", description: null, status: "in_review", priority: "high",
+  assignee_type: "squad", assignee_id: "existing-owner", creator_type: "member", creator_id: "user-1",
+  parent_issue_id: null, project_id: null, position: 1, stage: null, start_date: null, due_date: null,
+  metadata: {}, properties: {}, created_at: "2026-09-28T00:00:00Z", updated_at: "2026-09-28T00:00:00Z",
+};
+
+function renderProjectDetail(locale: "en" | "zh-Hans" = "en") {
+  const adapter: NavigationAdapter = {
+    push: mocks.push,
+    replace: vi.fn(),
+    back: vi.fn(),
+    pathname: "/test-workspace/projects/project-1",
+    searchParams: new URLSearchParams(),
+    hash: "",
+    getShareableUrl: mocks.getShareableUrl,
+  };
+
+  return renderWithI18n(
+    <NavigationProvider value={adapter}>
+      <ProjectDetail projectId={PROJECT.id} />
+    </NavigationProvider>,
+    { locale },
+  );
+}
+
+beforeEach(() => {
+  mocks.role = "admin";
+  mocks.mobile = false;
+  mocks.realQueries = false;
+  mocks.editorEmitted.mockClear();
+  mocks.project = PROJECT;
+  mocks.agents = [PROJECT_LEADER];
+  mocks.squads = [PROJECT_SQUAD];
+  mocks.copyText.mockReset().mockResolvedValue(true);
+  mocks.deleteProject.mockReset();
+  mocks.getShareableUrl.mockClear();
+  mocks.push.mockReset();
+  mocks.recordVisit.mockReset();
+  mocks.toastSuccess.mockReset();
+  mocks.toastError.mockReset();
+  mocks.openCreateIssue.mockReset();
+  mocks.linkIssue.mockReset().mockResolvedValue(UNLINKED_ISSUE);
+  mocks.pickerProps = null;
+  useProjectAccessStore.setState({ denied: {}, epochs: {}, deleted: {} });
+});
+
+describe("ProjectDetail task workspace", () => {
+  it("focuses an empty project on its first issue and one create action", async () => {
+    mocks.project = { ...PROJECT, issue_count: 0, done_count: 0 };
+    renderProjectDetail();
+
+    expect(screen.getByText("Create your first issue")).toBeInTheDocument();
+    expect(screen.getByTestId("knowledge-target-mount")).toHaveAttribute("data-project", PROJECT.id);
+    expect(screen.getAllByRole("button", { name: /^new issue$/i })).toHaveLength(1);
+    await userEvent.setup().click(screen.getByRole("button", { name: /^new issue$/i }));
+    expect(mocks.openCreateIssue).toHaveBeenCalledOnce();
+    expect(screen.getByRole("button", { name: "Link an existing issue" })).toBeInTheDocument();
+  });
+
+  it("provides a single toolbar creation action for a populated project", async () => {
+    renderProjectDetail();
+
+    expect(screen.queryByText("Create your first issue")).not.toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: /^new issue$/i })).toHaveLength(1);
+    await userEvent.setup().click(screen.getByRole("button", { name: /^new issue$/i }));
+    expect(mocks.openCreateIssue).toHaveBeenCalledOnce();
+  });
+
+  it("links only an unassigned-project issue without changing its owner or status", async () => {
+    renderProjectDetail();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Link an existing issue" }));
+    expect(screen.getByRole("dialog", { name: "Choose an existing issue" })).toBeInTheDocument();
+    expect(mocks.pickerProps?.filterIssue?.(UNLINKED_ISSUE)).toBe(true);
+    expect(mocks.pickerProps?.filterIssue?.({ ...UNLINKED_ISSUE, project_id: "another-project" })).toBe(false);
+    expect(mocks.pickerProps?.filterIssue?.({ ...UNLINKED_ISSUE, workspace_id: "another-workspace" })).toBe(false);
+
+    await act(async () => {
+      expect(await mocks.pickerProps?.onSelect(UNLINKED_ISSUE)).toBe(true);
+    });
+    expect(mocks.linkIssue).toHaveBeenCalledExactlyOnceWith({ id: "existing-issue", project_id: "project-1" });
+    expect(mocks.toastSuccess).toHaveBeenCalledWith("MUL-8 linked to the project");
+  });
+
+  it("keeps a failed association retryable without reporting success", async () => {
+    mocks.linkIssue.mockRejectedValueOnce(new Error("Connection lost"));
+    renderProjectDetail();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Link an existing issue" }));
+
+    await act(async () => {
+      expect(await mocks.pickerProps?.onSelect(UNLINKED_ISSUE)).toBe(false);
+    });
+    expect(mocks.toastError).toHaveBeenCalledWith("Could not link the issue. Try again.");
+    expect(mocks.toastSuccess).not.toHaveBeenCalled();
+    await act(async () => {
+      expect(await mocks.pickerProps?.onSelect(UNLINKED_ISSUE)).toBe(true);
+    });
+    expect(mocks.linkIssue).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("ProjectDetail sharing", () => {
+  it("names its icon-only project and sidebar actions", () => {
+    renderProjectDetail();
+    expect(screen.getByRole("button", { name: "Project actions" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Toggle right sidebar" })).toBeInTheDocument();
+  });
+
+  it("supplies its configured invocable squad to ordinary project issue creation", () => {
+    renderProjectDetail();
+    expect(JSON.parse(screen.getByLabelText("Project issue defaults").textContent || "null")).toEqual({
+      assignee_type: "squad", assignee_id: "delivery-squad", status: "todo",
+    });
+  });
+
+  it.each(["missing", "archived", "private", "not-configured"])("does not prefill a %s squad default", (state) => {
+    if (state === "missing") mocks.squads = [];
+    if (state === "archived") mocks.squads = [{ ...PROJECT_SQUAD, archived_at: "2026-09-12T00:00:00Z" }];
+    if (state === "private") mocks.agents = [{ ...PROJECT_LEADER, owner_id: "another-owner" }];
+    if (state === "not-configured") mocks.project = { ...PROJECT, execution_squad: { state: "failed", squad_id: PROJECT_SQUAD.id } };
+    renderProjectDetail();
+    expect(screen.getByLabelText("Project issue defaults")).toBeEmptyDOMElement();
+  });
+
+  it("places execution above issues and project automation entry below resources", () => {
+    renderProjectDetail();
+    const squad = screen.getByRole("region", { name: "Execution squad" });
+    const issues = screen.getByRole("region", { name: "Project issues" });
+    const resources = screen.getByRole("region", { name: "Project resources" });
+    const automations = screen.getByRole("region", { name: "Project automations" });
+    expect(squad).toHaveAttribute("data-project-id", "project-1");
+    expect(squad.compareDocumentPosition(issues) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(resources.compareDocumentPosition(automations) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(automations).toHaveAttribute("data-project-id", "project-1");
+    expect(automations).toHaveAttribute("data-squad-id", "delivery-squad");
+  });
+
+  it("copies the platform shareable URL instead of the renderer URL", async () => {
+    const user = userEvent.setup();
+    renderProjectDetail();
+
+    await user.click(screen.getByRole("button", { name: "Copy link" }));
+
+    expect(mocks.getShareableUrl).toHaveBeenCalledWith(
+      "/test-workspace/projects/project-1",
+    );
+    expect(mocks.copyText).toHaveBeenCalledWith(
+      "https://app.example/test-workspace/projects/project-1",
+    );
+  });
+});
+
+describe("ProjectDetail project deletion", () => {
+  it("requires confirmation and navigates only after deletion succeeds", async () => {
+    const user = userEvent.setup();
+    renderProjectDetail();
+
+    await user.click(screen.getByRole("button", { name: "Delete project" }));
+
+    expect(screen.getByRole("alertdialog")).toBeInTheDocument();
+    expect(mocks.deleteProject).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+
+    expect(mocks.deleteProject).toHaveBeenCalledWith(
+      PROJECT.id,
+      expect.objectContaining({ onSuccess: expect.any(Function) }),
+    );
+    expect(mocks.push).not.toHaveBeenCalled();
+
+    const options = mocks.deleteProject.mock.calls[0]?.[1] as {
+      onSuccess: () => void;
+    };
+    options.onSuccess();
+
+    expect(mocks.toastSuccess).toHaveBeenCalledWith("Project deleted");
+    expect(mocks.push).toHaveBeenCalledWith("/test-workspace/projects");
+  });
+
+  it("does not offer project deletion to regular members", () => {
+    mocks.role = "member";
+
+    renderProjectDetail();
+
+    expect(
+      screen.queryByRole("button", { name: "Delete project" }),
+    ).not.toBeInTheDocument();
+  });
+});
+
+vi.mock("./project-description", () => ({
+  ProjectDescription: ({ isVisible = true }: { isVisible?: boolean }) => <textarea aria-label="Project description draft" data-visible={isVisible} />,
+}));
+
+describe("ProjectDetail sidebar accessibility", () => {
+  it.each(["Properties", "Scope closure", "Description"])("exposes stable disclosure state for %s", async (name) => {
+    renderProjectDetail();
+    const toggle = screen.getByRole("button", { name });
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    const regionId = toggle.getAttribute("aria-controls")!;
+    const region = document.getElementById(regionId);
+    expect(region).toBeVisible();
+
+    await userEvent.setup().click(toggle);
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(document.getElementById(regionId)).toBe(region);
+    expect(region).not.toBeVisible();
+
+    await userEvent.setup().click(toggle);
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(document.getElementById(regionId)).toBe(region);
+    expect(region).toBeVisible();
+  });
+
+  it("keeps the description editor and pending input when collapsed", async () => {
+    renderProjectDetail();
+    const user = userEvent.setup();
+    const editor = screen.getByRole("textbox", { name: "Project description draft" });
+    await user.type(editor, "Unpublished project context");
+    const toggle = screen.getByRole("button", { name: "Description" });
+    await user.click(toggle);
+    expect(editor).not.toBeVisible();
+    expect(editor).toHaveAttribute("data-visible", "false");
+    await user.click(toggle);
+    expect(screen.getByRole("textbox", { name: "Project description draft" })).toBe(editor);
+    expect(editor).toHaveValue("Unpublished project context");
+    expect(editor).toHaveAttribute("data-visible", "true");
+  });
+
+  it.each([
+    ["en", "Toggle right sidebar", `Properties for ${PROJECT.title}`],
+    ["zh-Hans", "切换右侧边栏", `${PROJECT.title}的属性`],
+  ] as const)("names the compact properties Sheet in %s", async (locale, toggleName, dialogName) => {
+    mocks.mobile = true;
+    renderProjectDetail(locale);
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: toggleName }));
+    expect(await screen.findByRole("dialog", { name: dialogName })).toBeVisible();
+    await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+  });
+});
+
+describe("ProjectDetail query recovery", () => {
+  const project: Project = { ...p1Project, workspace_id: "workspace-1", status: "in_progress", priority: "medium", lead_type: "member" };
+
+  function renderRecovery(getProject: ReturnType<typeof vi.fn>, cached = false) {
+    mocks.realQueries = true;
+    const server = "https://project-recovery.test";
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
+    setApiInstance({ getBaseUrl: () => server, getProject } as unknown as ApiClient);
+    useProjectProgressDraftStore.getState().clearDraft();
+    if (cached) client.setQueryData(projectKeys.detail(project.workspace_id, project.id), project);
+    client.setQueryData(projectP1Keys.capabilities(project.workspace_id, server), { overview: true, updates: true });
+    client.setQueryData(projectP1Keys.overview(project.workspace_id, project.id), { ...p1Overview, project_id: project.id, workspace_id: project.workspace_id });
+    client.setQueryData([...projectP1Keys.updates(project.workspace_id, project.id), null], { items: [], next_cursor: null });
+    for (const key of ["members", "agents", "squads", "pins"]) client.setQueryData([key], []);
+    const view = renderWithI18n(
+      <QueryClientProvider client={client}>
+        <NavigationProvider value={{ push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: `/test-workspace/projects/${project.id}`, searchParams: new URLSearchParams("section=overview"), hash: "", getShareableUrl: (path) => path }}>
+          <ProjectDetail projectId={project.id} />
+        </NavigationProvider>
+      </QueryClientProvider>,
+    );
+    return { ...view, client };
+  }
+
+  it("retries an initial service failure without presenting the project as missing", async () => {
+    const getProject = vi.fn().mockRejectedValueOnce(new ApiError("Unavailable", 500, "Internal Server Error")).mockResolvedValue(project);
+    const view = renderRecovery(getProject);
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not load this project");
+    expect(screen.queryByText("Project not found")).not.toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Retry" }));
+    expect(await screen.findByRole("button", { name: "Write progress" })).toBeInTheDocument();
+    expect(getProject).toHaveBeenCalledTimes(2);
+    view.unmount();
+    view.client.clear();
+  });
+
+  it.each([
+    [404, "Not Found", "Project not found"],
+    [403, "Forbidden", "You no longer have access to this project."],
+  ])("keeps a genuine %i response distinct from a retryable failure", async (status, statusText, message) => {
+    const view = renderRecovery(vi.fn().mockRejectedValue(new ApiError("Unavailable", status, statusText)));
+    expect(await screen.findByText(message)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Retry" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Write progress" })).not.toBeInTheDocument();
+    view.unmount();
+    view.client.clear();
+  });
+
+  it("keeps the mounted progress editor and its draft through a cached failure and retry", async () => {
+    const user = userEvent.setup();
+    const getProject = vi.fn().mockRejectedValueOnce(new Error("Offline")).mockResolvedValue(project);
+    const view = renderRecovery(getProject, true);
+    await user.click(screen.getByRole("button", { name: "Write progress" }));
+    const editor = screen.getByRole("textbox", { name: "Progress editor" });
+    await user.type(editor, "Unsent progress stays here");
+    await act(async () => { await view.client.refetchQueries({ queryKey: projectKeys.detail(project.workspace_id, project.id), exact: true }); });
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not refresh this project");
+    expect(screen.getByRole("textbox", { name: "Progress editor" })).toBe(editor);
+    expect(editor).toHaveValue("Unsent progress stays here");
+    expect(editor).toHaveFocus();
+    await user.click(screen.getByRole("button", { name: "Retry" }));
+    await waitFor(() => expect(screen.queryByText(/Could not refresh this project/)).not.toBeInTheDocument());
+    expect(screen.getByRole("textbox", { name: "Progress editor" })).toBe(editor);
+    expect(editor).toHaveValue("Unsent progress stays here");
+    expect(getProject).toHaveBeenCalledTimes(2);
+    view.unmount();
+    view.client.clear();
+  });
+});
+
+
+it("isolates cached same-tab overview navigation and flushes outgoing text under its own project", async () => {
+  mocks.realQueries = true;
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
+  const first: Project = { ...p1Project, workspace_id: "workspace-1", status: "in_progress", priority: "medium", lead_type: "member" };
+  const second: Project = { ...first, id: "22222222-2222-4222-8222-222222222223", title: "Second project" };
+  const server = "https://overview.test";
+  const previewProjectUpdate = vi.fn(async (ws, id, draft) => ({ ...p1Preview, workspace_id: ws, project_id: id, draft }));
+  setApiInstance({ getBaseUrl: () => server, previewProjectUpdate } as unknown as ApiClient);
+  useProjectAccessStore.setState({ denied: {}, epochs: {}, deleted: {} });
+  useProjectProgressDraftStore.getState().clearDraft();
+  for (const project of [first, second]) {
+    client.setQueryData(projectKeys.detail(project.workspace_id, project.id), project);
+    client.setQueryData(projectP1Keys.overview(project.workspace_id, project.id), { ...p1Overview, project_id: project.id, workspace_id: project.workspace_id });
+    client.setQueryData([...projectP1Keys.updates(project.workspace_id, project.id), null], { items: [], next_cursor: null });
+  }
+  client.setQueryData(projectP1Keys.capabilities(first.workspace_id, server), { overview: true, updates: true });
+  client.setQueryData(["members"], []); client.setQueryData(["agents"], []); client.setQueryData(["squads"], []); client.setQueryData(["pins"], []);
+  const firstKey = projectProgressDraftKey(server, first.workspace_id, first.id);
+  const secondKey = projectProgressDraftKey(server, second.workspace_id, second.id);
+  writeProjectProgressDraft(secondKey, { ...emptyProjectUpdateDraft(), body: "Second project's own draft" });
+  const ui = (project: Project) => <QueryClientProvider client={client}><NavigationProvider value={{ push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: `/test-workspace/projects/${project.id}`, searchParams: new URLSearchParams("section=overview"), hash: "", getShareableUrl: (path) => path }}><ProjectDetail projectId={project.id} /></NavigationProvider></QueryClientProvider>;
+  const view = renderWithI18n(ui(first));
+  fireEvent.click(screen.getByRole("button", { name: "Write progress" }));
+  fireEvent.change(screen.getByLabelText("Progress editor"), { target: { value: "First project's last keystroke" } });
+  expect(mocks.editorEmitted).not.toHaveBeenCalled();
+  expect(useProjectProgressDraftStore.getState().draft.entries[firstKey]).toBeUndefined();
+  view.rerender(ui(second));
+  expect(screen.queryByLabelText("Progress editor")).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Publish" })).not.toBeInTheDocument();
+  expect(useProjectProgressDraftStore.getState().draft.entries[firstKey]?.draft.body).toBe("First project's last keystroke");
+  expect(useProjectProgressDraftStore.getState().draft.entries[secondKey]?.draft.body).toBe("Second project's own draft");
+  fireEvent.click(screen.getByRole("button", { name: "Write progress" }));
+  expect(screen.getByLabelText("Progress editor")).toHaveValue("Second project's own draft");
+  fireEvent.click(screen.getByRole("button", { name: "Preview publication" }));
+  await screen.findByRole("button", { name: "Publish" });
+  expect(previewProjectUpdate).toHaveBeenCalledWith(second.workspace_id, second.id, expect.objectContaining({ body: "Second project's own draft" }));
+  view.rerender(ui(first));
+  expect(screen.queryByRole("button", { name: "Publish" })).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Write progress" }));
+  expect(screen.getByLabelText("Progress editor")).toHaveValue("First project's last keystroke");
+  expect(mocks.editorEmitted).not.toHaveBeenCalled();
+  view.unmount(); client.clear();
+});

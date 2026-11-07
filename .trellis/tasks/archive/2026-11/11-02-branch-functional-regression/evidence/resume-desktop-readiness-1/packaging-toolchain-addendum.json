@@ -1,0 +1,33 @@
+{
+  "at": "2026-11-02T02:26:44.135357+00:00",
+  "scope": "read-only packaging preflight after completed original readiness pass",
+  "metadata_command": [
+    "node",
+    "-e",
+    "const {createRequire}=require(\"node:module\");const path=require(\"node:path\");const r=createRequire(path.join(process.argv[1],\"package.json\"));const b=r.resolve(\"electron-builder/package.json\");const rb=createRequire(b);const lib=rb.resolve(\"app-builder-lib/package.json\");const asar=createRequire(lib)(\"@electron/asar\");const p=JSON.parse(asar.extractFile(process.argv[2],\"package.json\").toString());console.log(JSON.stringify({builderVersion:require(b).version,builderManifest:b,appBuilderManifest:lib,packagedMetadata:{name:p.name,productName:p.productName,version:p.version,main:p.main}}));",
+    "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/apps/desktop",
+    "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/linux-arm64-dir/linux-arm64-unpacked/resources/app.asar"
+  ],
+  "metadata_exit": 0,
+  "metadata": {
+    "builderVersion": "26.8.1",
+    "builderManifest": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/node_modules/.pnpm/electron-builder@26.8.1_electron-builder-squirrel-windows@26.8.1/node_modules/electron-builder/package.json",
+    "appBuilderManifest": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/node_modules/.pnpm/app-builder-lib@26.8.1_dmg-builder@26.8.1_electron-builder-squirrel-windows@26.8.1/node_modules/app-builder-lib/package.json",
+    "packagedMetadata": {
+      "name": "@multica/desktop",
+      "productName": "Multica",
+      "version": "0.6.8-rc.20261102",
+      "main": "./out/main/index.js"
+    }
+  },
+  "stderr": "",
+  "config_sha256": "962eea177f02bdfa75937312e339e042664724245086fbb6d24eeb387d6cf4d6",
+  "mandatory_input_copy": true,
+  "reason": "FpmTarget.build writes resources/app-update.yml, package-type and apparmor-profile into the prepackaged source directory; preserve original bytes by copying to a new task-owned input first.",
+  "not_run": [
+    "package build",
+    "container startup",
+    "package installation",
+    "native desktop test"
+  ]
+}

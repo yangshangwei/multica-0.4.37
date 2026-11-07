@@ -1,0 +1,382 @@
+package handler
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"os"
+	"path/filepath"
+	"runtime"
+	"strings"
+	"testing"
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/multica-ai/multica/server/internal/iteration"
+	"github.com/multica-ai/multica/server/internal/service"
+	"github.com/multica-ai/multica/server/internal/testutil"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
+)
+
+type cachedProbeKey struct{}
+type cachedStatement struct {
+	SQL  string `json:"sql"`
+	Args []any  `json:"args"`
+}
+type cachedCommand struct {
+	Kind       string            `json:"kind"`
+	Statements []cachedStatement `json:"statements"`
+}
+type cachedOwner struct {
+	conn          *pgx.Conn
+	t             *testing.T
+	root          string
+	phase         string
+	mode          string
+	notices       []map[string]any
+	commands      []cachedCommand
+	phases        []map[string]any
+	baseline      string
+	source        string
+	target        string
+	activeTx      *cachedTx
+	originalTyped bool
+}
+type cachedTx struct {
+	pgx.Tx
+	owner  *cachedOwner
+	active bool
+}
+type cachedBatch struct {
+	pgx.BatchResults
+	tx          *cachedTx
+	name        string
+	closed      bool
+	closeErr    error
+	before      json.RawMessage
+	sql         string
+	args        []cachedStatement
+	started     time.Time
+	noticeStart int
+}
+
+func cachedName(q string) string {
+	if strings.HasPrefix(q, "-- name: ") {
+		return strings.Fields(q)[2]
+	}
+	return strings.Join(strings.Fields(q), " ")
+}
+func (s *cachedOwner) fail(e error) {
+	if e != nil {
+		s.t.Fatal(e)
+	}
+}
+func (s *cachedOwner) write(name string, value any) {
+	b, e := json.MarshalIndent(value, "", "  ")
+	s.fail(e)
+	s.fail(os.WriteFile(filepath.Join(s.root, name), append(b, '\n'), 0600))
+}
+func (s *cachedOwner) Begin(ctx context.Context) (pgx.Tx, error) {
+	tx, e := s.conn.Begin(ctx)
+	if e != nil {
+		return nil, e
+	}
+	a, _ := ctx.Value(cachedProbeKey{}).(bool)
+	p := &cachedTx{Tx: tx, owner: s, active: a}
+	if a {
+		s.activeTx = p
+	}
+	return p, nil
+}
+func (p *cachedTx) note(kind, q string, args []any) {
+	if p.active {
+		p.owner.commands = append(p.owner.commands, cachedCommand{Kind: kind, Statements: []cachedStatement{{q, append([]any(nil), args...)}}})
+	}
+}
+func (p *cachedTx) Exec(ctx context.Context, q string, args ...any) (pgconn.CommandTag, error) {
+	p.note("exec", q, args)
+	return p.Tx.Exec(ctx, q, args...)
+}
+func (p *cachedTx) Query(ctx context.Context, q string, args ...any) (pgx.Rows, error) {
+	p.note("query", q, args)
+	return p.Tx.Query(ctx, q, args...)
+}
+func (p *cachedTx) QueryRow(ctx context.Context, q string, args ...any) pgx.Row {
+	p.note("queryrow", q, args)
+	return p.Tx.QueryRow(ctx, q, args...)
+}
+func (s *cachedOwner) fingerprint(ctx context.Context, q interface {
+	QueryRow(context.Context, string, ...any) pgx.Row
+}) string {
+	var out string
+	s.fail(q.QueryRow(ctx, `SELECT md5(jsonb_build_object(
+ 'issues',(SELECT jsonb_agg(to_jsonb(x) ORDER BY id) FROM issue x WHERE workspace_id=$1),
+ 'participation',(SELECT jsonb_agg(to_jsonb(x) ORDER BY iteration_id,issue_id) FROM iteration_participation x WHERE workspace_id=$1),
+ 'events',(SELECT jsonb_agg(to_jsonb(x) ORDER BY iteration_id,sequence) FROM iteration_event x WHERE workspace_id=$1),
+ 'iterations',(SELECT jsonb_agg(to_jsonb(x) ORDER BY id) FROM iteration x WHERE workspace_id=$1),
+ 'snapshots',(SELECT jsonb_agg(to_jsonb(x) ORDER BY iteration_id) FROM iteration_snapshot x WHERE workspace_id=$1),
+ 'operations',(SELECT jsonb_agg(to_jsonb(x) ORDER BY id) FROM iteration_operation x WHERE workspace_id=$1)
+ )::text)`, parseUUID(testWorkspaceID)).Scan(&out))
+	return out
+}
+func (s *cachedOwner) state(ctx context.Context, q interface {
+	QueryRow(context.Context, string, ...any) pgx.Row
+}) json.RawMessage {
+	var raw []byte
+	s.fail(q.QueryRow(ctx, `SELECT jsonb_build_object(
+ 'database',current_database(),'pid',pg_backend_pid(),'plan_cache_mode',current_setting('plan_cache_mode'),'transaction_isolation',current_setting('transaction_isolation'),
+ 'prepared',(SELECT COALESCE(jsonb_agg(jsonb_build_object('name',name,'sql',statement,'prepare_time',prepare_time,'parameter_types',parameter_types::text,'from_sql',from_sql,'generic_plans',generic_plans,'custom_plans',custom_plans) ORDER BY name),'[]'::jsonb) FROM pg_prepared_statements WHERE statement LIKE '-- name: LeaveDeletedIssueIterationParticipationBatch%' OR statement LIKE '-- name: JoinIterationParticipationBatch%'),
+ 'tables',(SELECT jsonb_agg(jsonb_build_object('table',c.relname,'reltuples',c.reltuples,'relpages',c.relpages,'heap_bytes',pg_relation_size(c.oid),'reloptions',c.reloptions,'n_live_tup',st.n_live_tup,'n_dead_tup',st.n_dead_tup,'last_analyze',st.last_analyze,'last_autoanalyze',st.last_autoanalyze,'analyze_count',st.analyze_count,'autoanalyze_count',st.autoanalyze_count) ORDER BY c.relname) FROM pg_class c JOIN pg_stat_all_tables st ON st.relid=c.oid WHERE c.relnamespace='public'::regnamespace AND c.relname IN ('iteration_event','iteration_participation','issue','agent_task_queue')),
+ 'counts',jsonb_build_object('issue',(SELECT count(*) FROM issue),'iteration_event',(SELECT count(*) FROM iteration_event),'iteration_participation',(SELECT count(*) FROM iteration_participation),'agent_task_queue',(SELECT count(*) FROM agent_task_queue)),
+ 'stats',(SELECT COALESCE(jsonb_agg(to_jsonb(st) ORDER BY tablename,attname),'[]'::jsonb) FROM pg_stats st WHERE schemaname='public' AND tablename IN ('iteration_event','iteration_participation','issue','agent_task_queue')),
+ 'indexes',(SELECT jsonb_agg(jsonb_build_object('table',t.relname,'name',i.relname,'definition',pg_get_indexdef(i.oid),'valid',x.indisvalid,'ready',x.indisready,'live',x.indislive) ORDER BY t.relname,i.relname) FROM pg_index x JOIN pg_class i ON i.oid=x.indexrelid JOIN pg_class t ON t.oid=x.indrelid WHERE t.relnamespace='public'::regnamespace AND t.relname IN ('iteration_event','iteration_participation','issue','agent_task_queue')),
+ 'settings',jsonb_build_object('enable_indexscan',current_setting('enable_indexscan'),'enable_bitmapscan',current_setting('enable_bitmapscan'),'enable_seqscan',current_setting('enable_seqscan'),'auto_explain.log_min_duration',current_setting('auto_explain.log_min_duration'),'auto_explain.log_analyze',current_setting('auto_explain.log_analyze'),'auto_explain.log_timing',current_setting('auto_explain.log_timing'),'auto_explain.log_buffers',current_setting('auto_explain.log_buffers'),'auto_explain.log_wal',current_setting('auto_explain.log_wal'),'auto_explain.log_level',current_setting('auto_explain.log_level'))
+ )`).Scan(&raw))
+	return raw
+}
+func (p *cachedTx) batch(ctx context.Context, b *pgx.Batch, record bool) pgx.BatchResults {
+	s := p.owner
+	if b.Len() == 0 {
+		return p.Tx.SendBatch(ctx, b)
+	}
+	name := cachedName(b.QueuedQueries[0].SQL)
+	ss := make([]cachedStatement, b.Len())
+	for i, x := range b.QueuedQueries {
+		ss[i] = cachedStatement{x.SQL, append([]any(nil), x.Arguments...)}
+	}
+	if record {
+		s.commands = append(s.commands, cachedCommand{Kind: "batch", Statements: ss})
+	}
+	if name != "LeaveDeletedIssueIterationParticipationBatch" && name != "JoinIterationParticipationBatch" {
+		return p.Tx.SendBatch(ctx, b)
+	}
+	if b.Len() != 1000 {
+		s.t.Fatalf("incomplete %s batch: %d", name, b.Len())
+	}
+	for _, x := range ss {
+		if cachedName(x.SQL) != name {
+			s.t.Fatal("mixed selected batch")
+		}
+	}
+	s.phase = name
+	before := s.state(ctx, p.Tx)
+	if s.mode == "after_analyze" {
+		for _, table := range []string{"iteration_event", "iteration_participation", "issue", "agent_task_queue"} {
+			sql := "ANALYZE public." + table
+			_, e := p.Tx.Exec(ctx, sql)
+			s.fail(e)
+			s.notices = append(s.notices, map[string]any{"kind": "task_analyze", "mode": s.mode, "phase": name, "sql": sql, "at": time.Now().UTC()})
+		}
+		s.write("state-"+s.mode+"-"+name+"-pre-analyze.json", before)
+		before = s.state(ctx, p.Tx)
+	}
+	s.fail(func() error { _, e := p.Tx.Exec(ctx, "SET LOCAL auto_explain.log_min_duration=0"); return e }())
+	start := len(s.notices)
+	at := time.Now()
+	br := p.Tx.SendBatch(ctx, b)
+	return &cachedBatch{BatchResults: br, tx: p, name: name, before: before, sql: ss[0].SQL, args: ss, started: at, noticeStart: start}
+}
+func (p *cachedTx) SendBatch(ctx context.Context, b *pgx.Batch) pgx.BatchResults {
+	if !p.active {
+		return p.Tx.SendBatch(ctx, b)
+	}
+	return p.batch(ctx, b, true)
+}
+func (b *cachedBatch) Close() error {
+	if b.closed {
+		return b.closeErr
+	}
+	b.closed = true
+	b.closeErr = b.BatchResults.Close()
+	s := b.tx.owner
+	wall := time.Since(b.started)
+	_, e := b.tx.Tx.Exec(context.Background(), "SET LOCAL auto_explain.log_min_duration=-1")
+	s.fail(e)
+	after := s.state(context.Background(), b.tx.Tx)
+	s.phases = append(s.phases, map[string]any{"mode": s.mode, "phase": b.name, "statement_count": len(b.args), "sql": b.sql, "statements": b.args, "before": b.before, "after": after, "notice_start": b.noticeStart, "notice_end": len(s.notices), "client_ms": float64(wall.Nanoseconds()) / 1e6, "batch_close_error": fmt.Sprint(b.closeErr), "original_production_typed_consumer": s.originalTyped})
+	s.phase = ""
+	return b.closeErr
+}
+func (s *cachedOwner) assertClosure(ctx context.Context, q interface {
+	QueryRow(context.Context, string, ...any) pgx.Row
+}) {
+	var n int
+	s.fail(q.QueryRow(ctx, "SELECT count(*) FROM issue WHERE current_iteration_id=$1 AND iteration_rollover_count=1", parseUUID(s.target)).Scan(&n))
+	if n != 1000 {
+		s.t.Fatalf("only %d exact rollovers", n)
+	}
+	s.fail(q.QueryRow(ctx, "SELECT count(*) FROM iteration_snapshot s, jsonb_array_elements(s.body->'scope') item WHERE s.iteration_id=$1 AND jsonb_array_length(item->'labels')=3 AND item->>'priority' IS NOT NULL", parseUUID(s.source)).Scan(&n))
+	if n != 1000 {
+		s.t.Fatalf("only %d frozen scope rows", n)
+	}
+}
+func (p *cachedTx) Commit(ctx context.Context) error {
+	if !p.active {
+		return p.Tx.Commit(ctx)
+	}
+	s := p.owner
+	s.assertClosure(ctx, p.Tx)
+	s.write("state-"+s.mode+"-before-rollback.json", s.state(ctx, p.Tx))
+	return p.Tx.Rollback(ctx)
+}
+func cachedConsume(rows pgx.Rows) error {
+	defer rows.Close()
+	for rows.Next() {
+		if _, e := rows.Values(); e != nil {
+			return e
+		}
+	}
+	return rows.Err()
+}
+func (s *cachedOwner) replay(ctx context.Context, mode string) {
+	s.mode = mode
+	s.originalTyped = false
+	tx, e := s.conn.Begin(ctx)
+	s.fail(e)
+	defer func() { _ = tx.Rollback(context.Background()) }()
+	p := &cachedTx{Tx: tx, owner: s, active: true}
+	for _, cmd := range s.commands {
+		if cmd.Kind == "batch" {
+			b := &pgx.Batch{}
+			for _, x := range cmd.Statements {
+				b.Queue(x.SQL, x.Args...)
+			}
+			br := p.batch(ctx, b, false)
+			for range cmd.Statements {
+				rows, e := br.Query()
+				s.fail(e)
+				s.fail(cachedConsume(rows))
+			}
+			s.fail(br.Close())
+			continue
+		}
+		x := cmd.Statements[0]
+		if cmd.Kind == "exec" {
+			_, e = tx.Exec(ctx, x.SQL, x.Args...)
+			s.fail(e)
+		} else {
+			rows, e := tx.Query(ctx, x.SQL, x.Args...)
+			s.fail(e)
+			s.fail(cachedConsume(rows))
+		}
+	}
+	s.assertClosure(ctx, tx)
+	s.write("state-"+mode+"-before-rollback.json", s.state(ctx, tx))
+	s.fail(tx.Rollback(ctx))
+	after := s.fingerprint(ctx, s.conn)
+	if after != s.baseline {
+		s.t.Fatal("full transaction rollback changed logical facts")
+	}
+	s.write("rollback-"+mode+".json", map[string]any{"before_fingerprint": s.baseline, "after_fingerprint": after, "equal": true, "state_after_rollback": s.state(ctx, s.conn)})
+}
+
+func TestIterationCanonicalCachedPlanDiagnostic(t *testing.T) {
+	if os.Getenv("MULTICA_ITERATION_CACHED_DIAGNOSTIC") != "1" {
+		t.Fatal("explicit diagnostic permit required")
+	}
+	ctx := t.Context()
+	base := lifecycleHTTPHandler(t)
+	owner := &cachedOwner{t: t, root: os.Getenv("MULTICA_ITERATION_CACHED_REPORT_DIR"), mode: "original", originalTyped: true}
+	t.Cleanup(func() {
+		owner.write("actual-plan-notices.json", owner.notices)
+		owner.write("actual-batch-phases.json", owner.phases)
+		owner.write("canonical-command-sequence.json", owner.commands)
+	})
+	cfg := testPool.Config().ConnConfig.Copy()
+	cfg.RuntimeParams["application_name"] = "i1-cached-plan-" + uuid.NewString()
+	cfg.OnNotice = func(c *pgconn.PgConn, n *pgconn.Notice) {
+		owner.notices = append(owner.notices, map[string]any{"mode": owner.mode, "phase": owner.phase, "pid": c.PID(), "severity": n.Severity, "code": n.Code, "message": n.Message, "detail": n.Detail, "at": time.Now().UTC()})
+	}
+	conn, e := pgx.ConnectConfig(ctx, cfg)
+	owner.fail(e)
+	owner.conn = conn
+	t.Cleanup(func() { _ = conn.Close(context.Background()) })
+	commands := []string{"LOAD 'auto_explain'", "SET client_min_messages=notice", "SET auto_explain.log_level=notice", "SET auto_explain.log_format=json", "SET auto_explain.log_analyze=on", "SET auto_explain.log_timing=on", "SET auto_explain.log_buffers=on", "SET auto_explain.log_wal=on", "SET auto_explain.log_settings=on", "SET auto_explain.log_nested_statements=off", "SET auto_explain.sample_rate=1", "SET auto_explain.log_min_duration=-1"}
+	for _, sql := range commands {
+		_, e = conn.Exec(ctx, sql)
+		owner.fail(e)
+	}
+	h := *testHandler
+	h.Queries, h.DB, h.TxStarter, h.FeatureFlags = db.New(conn), conn, owner, base.FeatureFlags
+	dbfx.Cleanup(t, "DELETE FROM iteration_notification WHERE workspace_id=$1", testWorkspaceID)
+	var postgres string
+	dbfx.QueryRow(t, "SELECT version()").Scan(&postgres)
+	const count = 1000
+	first := lifecycleHTTPCreate(t, &h, "Cached probe source")
+	next := lifecycleHTTPCreate(t, &h, "Cached probe next")
+	projects := make([]string, 10)
+	for n := range projects {
+		projects[n] = dbfx.Project(t, fmt.Sprintf("Cached probe project %d", n))
+	}
+	labels := make([]string, 6)
+	for n := range labels {
+		labels[n] = dbfx.Insert(t, "issue_label", testutil.Cols{"workspace_id": testWorkspaceID, "name": fmt.Sprintf("Cached probe label %d", n), "resource_type": "issue", "color": "#123456"})
+	}
+	priorities := []string{"urgent", "high", "medium", "low", "none"}
+	ids := make([]string, 0, count)
+	moves := make([]iteration.Move, 0, count)
+	for n := range count {
+		id := dbfx.Issue(t, fmt.Sprintf("Cached probe work %04d", n), testutil.Cols{"project_id": projects[n%len(projects)], "assignee_type": "member", "assignee_id": testUserID, "priority": priorities[n%len(priorities)]})
+		for j := range 3 {
+			label := labels[(n+j)%len(labels)]
+			dbfx.InsertNoID(t, "issue_to_label", testutil.Cols{"issue_id": id, "label_id": label}, "issue_id=$1 AND label_id=$2", id, label)
+		}
+		ids = append(ids, id)
+		moves = append(moves, iteration.Move{IssueID: id, ExpectedIssueRevision: 1, TargetID: &first})
+	}
+	lifecycleHTTPApply(t, &h, iteration.Draft{Operation: "move", ExpectedSettingsRevision: 2, Moves: moves})
+	row, err := h.Queries.GetIteration(t.Context(), db.GetIterationParams{WorkspaceID: parseUUID(testWorkspaceID), ID: parseUUID(first)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	lifecycleHTTPApply(t, &h, iteration.Draft{Operation: "start", IterationID: &first, ExpectedIterationRevision: &row.Revision, ExpectedScopeRevision: &row.ScopeRevision, ExpectedSettingsRevision: 2, Start: &iteration.StartDraft{TargetID: first, Mode: "scheduled", TerminalChoices: []iteration.TerminalChoice{}}})
+	var detail struct {
+		Iteration  iteration.Iteration  `json:"iteration"`
+		Statistics iteration.Statistics `json:"statistics"`
+	}
+	testutil.Call(t, h.GetIteration, lifecycleHTTPRequest("GET", "iterations/"+first, first, nil)).Want(200).JSON(&detail)
+	if detail.Statistics.Original != count || detail.Statistics.Current != count {
+		t.Fatalf("diagnostic incomplete population: %+v", detail.Statistics)
+	}
+	moves = moves[:0]
+	for _, id := range ids {
+		issue, e := h.Queries.GetIssue(t.Context(), parseUUID(id))
+		if e != nil {
+			t.Fatal(e)
+		}
+		moves = append(moves, iteration.Move{IssueID: id, ExpectedIssueRevision: issue.Revision, ExpectedSourceID: &first, TargetID: &next})
+	}
+	reason := "Task-only canonical SQL cost attribution"
+	draft := iteration.Draft{Operation: "end", IterationID: &first, ExpectedIterationRevision: &detail.Iteration.Revision, ExpectedScopeRevision: &detail.Iteration.ScopeRevision, ExpectedSettingsRevision: 2, Reason: &reason, Moves: moves}
+	var preview iteration.Preview
+	testutil.Call(t, h.PreviewIterationOperation, lifecycleHTTPRequest("POST", "iteration-previews", "", draft)).Want(200).JSON(&preview)
+	if !preview.Complete || preview.TotalAffected != count || len(preview.InvalidItems) != 0 {
+		t.Fatalf("diagnostic incomplete preview: %+v", preview)
+	}
+
+	owner.source = first
+	owner.target = next
+	owner.baseline = owner.fingerprint(ctx, conn)
+	owner.write("state-initial.json", owner.state(ctx, conn))
+	var result iteration.WriteResult
+	req := lifecycleHTTPRequest("POST", "iteration-operations", "", service.ApplyIterationInput{RequestID: uuid.NewString(), Draft: preview.Draft, PreviewHash: preview.PreviewHash})
+	req = req.WithContext(context.WithValue(req.Context(), cachedProbeKey{}, true))
+	testutil.Call(t, h.ApplyIterationOperation, req).Want(200).JSON(&result)
+
+	if owner.activeTx == nil {
+		t.Fatal("production closure was not captured")
+	}
+	if after := owner.fingerprint(ctx, conn); after != owner.baseline {
+		t.Fatal("original full closure rollback changed logical facts")
+	}
+	owner.write("rollback-original.json", map[string]any{"before_fingerprint": owner.baseline, "after_fingerprint": owner.fingerprint(ctx, conn), "equal": true, "state_after_rollback": owner.state(ctx, conn)})
+	owner.write("canonical-command-sequence.json", owner.commands)
+	owner.replay(ctx, "cache_control")
+	owner.replay(ctx, "after_analyze")
+	owner.write("actual-plan-notices.json", owner.notices)
+	owner.write("actual-batch-phases.json", owner.phases)
+	owner.write("diagnostic-metrics.json", map[string]any{"closure_operations": 1, "full_transaction_replays": 2, "tasks": 1000, "command_count": len(owner.commands), "phases": len(owner.phases), "notices": len(owner.notices), "original_p95_status": "FAIL retained 2171ms>2000ms", "original_p95_gate_executed": false, "postgres": postgres, "go": runtime.Version(), "os": runtime.GOOS, "arch": runtime.GOARCH, "default_query_exec_mode": cfg.DefaultQueryExecMode.String(), "statement_cache_capacity": cfg.StatementCacheCapacity, "session_setup_commands": commands, "all_full_transaction_rollbacks_equal": true, "original_typed_production_flow": true, "replays_generic_rows_values": true, "scope": "Actual canonical protocol-prepared SendBatch plans captured via backend-only auto_explain notices; no EXPLAIN replacement statement; original production closure stops at Commit with task-only rollback; same ordered SQL and original arguments replayed before/after task-only per-phase ANALYZE"})
+	t.Log("Actual cached plans and explicit statistics comparison recorded; original P95 FAIL retained")
+}

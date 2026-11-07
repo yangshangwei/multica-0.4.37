@@ -1,0 +1,421 @@
+{
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "started_at": "2026-11-02T02:53:40.871091+00:00",
+  "state": "complete",
+  "scope": "Task-owned macOS manual file-install lifecycle; launch requires proven profile and protocol-registration isolation",
+  "product_changes": false,
+  "commercial_provider_calls": 0,
+  "mounts_created": 0,
+  "artifacts": {
+    "baseline": {
+      "zip": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/multica-desktop-0.6.5-185-g61ff581d2-dirty-mac-arm64.zip",
+      "zip_bytes": 223097492,
+      "zip_sha256": "807cf1adb72639dc696070de8c0e0a684386b5092daac1da48b8c2b56cc473a1",
+      "zip_members": 608,
+      "bundle": {
+        "CFBundleIdentifier": "ai.multica.desktop",
+        "CFBundleExecutable": "Multica",
+        "CFBundleShortVersionString": "0.6.5-185-g61ff581d2-dirty",
+        "CFBundleVersion": "0.6.5-185-g61ff581d2-dirty"
+      },
+      "asar_sha256": "da566a4d55d35948fdf8150251e5980bbfcc6ffd0845f659f8f02737fe4201c6",
+      "asar_inspection_path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/baseline-app.asar",
+      "extracted_app": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/baseline-extracted/Multica.app",
+      "payload_sha256": {
+        "MacOS/Multica": "ed3bc83cc76ab5297348d24b8a8d4c558993c88fae49339dc56c7e961434bed9",
+        "Resources/app.asar": "da566a4d55d35948fdf8150251e5980bbfcc6ffd0845f659f8f02737fe4201c6",
+        "Resources/app.asar.unpacked/resources/bin/multica": "f2f27ba05b4da2eb87f60cb52d75e59f212835f796602cd16c7fc736a9ecafa4"
+      },
+      "manifest_sha256": "73c021fadbeb9afdf2f522b8e1f96f59d7336b822afd4854f3d15ee429b3f3ca"
+    },
+    "candidate": {
+      "zip": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/multica-desktop-0.6.8-rc.20261102-mac-arm64.zip",
+      "zip_bytes": 223524090,
+      "zip_sha256": "b50a00fa6fc44ca612a834aa8fd1c638f91431b87d5b6bb47abbd479433183d9",
+      "zip_members": 554,
+      "bundle": {
+        "CFBundleIdentifier": "ai.multica.desktop",
+        "CFBundleExecutable": "Multica",
+        "CFBundleShortVersionString": "0.6.8-rc.20261102",
+        "CFBundleVersion": "0.6.8-rc.20261102"
+      },
+      "asar_sha256": "128ff6f87dc18b78355ee5161171a86ec7828b18d5b87751d0f8142dd81b8485",
+      "asar_inspection_path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/candidate-app.asar",
+      "extracted_app": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/candidate-extracted/Multica.app",
+      "payload_sha256": {
+        "MacOS/Multica": "a46d907fc69ec527d1653bb0c231f9a569b4e255ae3f94bf0736f5abcbd9ebd0",
+        "Resources/app.asar": "128ff6f87dc18b78355ee5161171a86ec7828b18d5b87751d0f8142dd81b8485",
+        "Resources/app.asar.unpacked/resources/bin/multica": "706b6ac4fcef6fb41493785c0ac70d4ea3b1886efcd817882305eb5ab272a475"
+      },
+      "manifest_sha256": "409dc5fa429e361edd293265e8ce7fdd021522f10fe92605b064b06484a31e1e"
+    }
+  },
+  "commands": [
+    {
+      "name": "host",
+      "command": [
+        "sw_vers"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:21.318607+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:21.331706+00:00",
+      "stdout_sha256": "50d598276e1b5fb38874dedb2e0829126024993316eb2afda985821d3946863c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "architecture",
+      "command": [
+        "uname",
+        "-m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:21.332083+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:21.338427+00:00",
+      "stdout_sha256": "c1669e1d8edca98769c37d494b76442a1d6e5ffffd7b4da1fb63aef8ebaf6f01",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "baseline-zip-integrity",
+      "command": [
+        "unzip",
+        "-tq",
+        "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/multica-desktop-0.6.5-185-g61ff581d2-dirty-mac-arm64.zip"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:21.577075+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:24.968552+00:00",
+      "stdout_sha256": "e3c1cb81771a17dcbe5210a25e4db44e442cf081c5e01f7f853ad78c466b3882",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "baseline-extract",
+      "command": [
+        "ditto",
+        "-x",
+        "-k",
+        "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/multica-desktop-0.6.5-185-g61ff581d2-dirty-mac-arm64.zip",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/baseline-extracted"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:24.973055+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:26.026244+00:00",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "baseline-arch",
+      "command": [
+        "lipo",
+        "-archs",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/baseline-extracted/Multica.app/Contents/MacOS/Multica"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:26.454764+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:26.500329+00:00",
+      "stdout_sha256": "c1669e1d8edca98769c37d494b76442a1d6e5ffffd7b4da1fb63aef8ebaf6f01",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "baseline-signature-structure",
+      "command": [
+        "codesign",
+        "--verify",
+        "--deep",
+        "--strict",
+        "--verbose=2",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/baseline-extracted/Multica.app"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:26.500819+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:27.957423+00:00",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "5090b688a64263883ceebd0a01b2b941bec7ca6e79bc8f9bf5ab1772b4e4bd20"
+    },
+    {
+      "name": "baseline-signature-display",
+      "command": [
+        "codesign",
+        "--display",
+        "--verbose=4",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/baseline-extracted/Multica.app"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:27.957836+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:27.968624+00:00",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "8e3b0576c071ef1db4161c519c2783668633c1761fe774f1c8b5e06d3c17424b"
+    },
+    {
+      "name": "candidate-zip-integrity",
+      "command": [
+        "unzip",
+        "-tq",
+        "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/multica-desktop-0.6.8-rc.20261102-mac-arm64.zip"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:28.856547+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:32.196065+00:00",
+      "stdout_sha256": "309de6069df03d634f668a50435b76d89c518276abe7e8b91ee3d60939c9248b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "candidate-extract",
+      "command": [
+        "ditto",
+        "-x",
+        "-k",
+        "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/multica-desktop-0.6.8-rc.20261102-mac-arm64.zip",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/candidate-extracted"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:32.200304+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:33.321456+00:00",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "candidate-arch",
+      "command": [
+        "lipo",
+        "-archs",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/candidate-extracted/Multica.app/Contents/MacOS/Multica"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:33.829360+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:33.851428+00:00",
+      "stdout_sha256": "c1669e1d8edca98769c37d494b76442a1d6e5ffffd7b4da1fb63aef8ebaf6f01",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "candidate-signature-structure",
+      "command": [
+        "codesign",
+        "--verify",
+        "--deep",
+        "--strict",
+        "--verbose=2",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/candidate-extracted/Multica.app"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:33.851968+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:35.105730+00:00",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "d266af4cd32a7d5e84f8d81fb15c0750157df7f2ebeae99d0e7834f02da13da5"
+    },
+    {
+      "name": "candidate-signature-display",
+      "command": [
+        "codesign",
+        "--display",
+        "--verbose=4",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/candidate-extracted/Multica.app"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:35.106230+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:35.116725+00:00",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "2b156c5d0282137270a1d0ef79a2ca53085604d02a7105c81a29d551529fa17d"
+    },
+    {
+      "name": "baseline-manual-install",
+      "command": [
+        "ditto",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/baseline-extracted/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/installed/Multica.app"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:35.961027+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:37.992404+00:00",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "retain-installed-baseline",
+      "command": [
+        "mv",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/installed/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/retained-baseline.app"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:38.774020+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:38.782859+00:00",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "candidate-manual-upgrade",
+      "command": [
+        "ditto",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/candidate-extracted/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/installed/Multica.app"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:38.783565+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:40.690604+00:00",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "candidate-installed-signature",
+      "command": [
+        "codesign",
+        "--verify",
+        "--deep",
+        "--strict",
+        "--verbose=2",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/installed/Multica.app"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-02T02:55:41.595593+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T02:55:41.899167+00:00",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "dd8f64aa2d53873dd1b6fd8ef237d596cac323fe6aad9c879c45d35a03f756dc"
+    }
+  ],
+  "runner_sha256": "24d075e55e66c36ca4a4dd1b501b3fc6b0be39407d51d084551707e420f9e63b",
+  "runtime_launches": 0,
+  "default_protocol_registration_calls": 0,
+  "external_requests": 0,
+  "subgates": {
+    "distribution_integrity": "PASS",
+    "manual_file_install_upgrade": "PASS",
+    "synthetic_filesystem_state_retention": "PASS",
+    "actual_old_to_new_main_restart": "BLOCKED",
+    "actual_runtime_retained_state": "NOT_RUN",
+    "business_login_ipc_auto_update": "NOT_RUN",
+    "developer_id_notarized_delivery": "BLOCKED"
+  },
+  "assertions": [
+    {
+      "name": "host-arm64",
+      "passed": true
+    },
+    {
+      "name": "same-bundle-identity",
+      "passed": true
+    },
+    {
+      "name": "candidate-version-greater",
+      "passed": true
+    },
+    {
+      "name": "baseline-is-dirty-artifact",
+      "passed": true
+    },
+    {
+      "name": "baseline-zip-pin",
+      "passed": true
+    },
+    {
+      "name": "baseline-extracted-version",
+      "passed": true
+    },
+    {
+      "name": "baseline-extracted-asar",
+      "passed": true
+    },
+    {
+      "name": "candidate-zip-pin",
+      "passed": true
+    },
+    {
+      "name": "candidate-extracted-version",
+      "passed": true
+    },
+    {
+      "name": "candidate-extracted-asar",
+      "passed": true
+    },
+    {
+      "name": "candidate-original-pin-Resources/app.asar",
+      "passed": true
+    },
+    {
+      "name": "candidate-original-pin-MacOS/Multica",
+      "passed": true
+    },
+    {
+      "name": "candidate-original-pin-MacOS/multica",
+      "passed": true
+    },
+    {
+      "name": "candidate-original-pin-Resources/app.asar.unpacked/resources/bin/multica",
+      "passed": true
+    },
+    {
+      "name": "baseline-installed-manifest",
+      "passed": true
+    },
+    {
+      "name": "baseline-installed-identity",
+      "passed": true
+    },
+    {
+      "name": "candidate-installed-manifest",
+      "passed": true
+    },
+    {
+      "name": "candidate-installed-identity",
+      "passed": true
+    },
+    {
+      "name": "synthetic-filesystem-profile-retained",
+      "passed": true
+    },
+    {
+      "name": "retained-baseline-unchanged",
+      "passed": true
+    },
+    {
+      "name": "baseline-distribution-unchanged",
+      "passed": true
+    },
+    {
+      "name": "candidate-distribution-unchanged",
+      "passed": true
+    },
+    {
+      "name": "both-explicit-home-overrides-present",
+      "passed": true
+    },
+    {
+      "name": "both-register-host-protocol",
+      "passed": true
+    }
+  ],
+  "installed_app": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/installed/Multica.app",
+  "acceptance_home": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/acceptance-home",
+  "finished_at": "2026-11-02T02:55:43.439348+00:00",
+  "runtime_blocker": "Both immutable bundled Main programs call app.setAsDefaultProtocolClient unconditionally before the single-instance lock. Acceptance HOME redirects file paths but does not isolate host LaunchServices registration. No safe OS/protocol boundary was proven; assigned scope forbids native host registration, so neither application was launched.",
+  "baseline_provenance_limit": "Historical0.6.5-185-g61ff581d2-dirty exact ZIP bytes validated; source commit and dirty source diff are not reconstructed. Result applies only to these exact artifact bytes.",
+  "cleanup": {
+    "app_processes_started": 0,
+    "daemon_processes_started": 0,
+    "mounts_created": 0,
+    "external_requests": 0,
+    "host_applications_modified": false,
+    "user_profile_modified": false,
+    "task_files_retained": true,
+    "task_path_processes_remaining": [],
+    "task_path_mounts_remaining": []
+  },
+  "product_lint_typecheck": "Not repeated: no product code or dependency changes; actual distribution/copy/signature/hash checks executed.",
+  "application_processes_started": 0,
+  "verification_at": "2026-11-02T02:57:02.277796+00:00"
+}

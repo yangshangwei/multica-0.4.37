@@ -1,0 +1,79 @@
+diff --git a/e2e/collaboration-installed-main.spec.ts b/e2e/collaboration-installed-main.spec.ts
+index cfe72aa9d..78af971ca 100644
+--- a/e2e/collaboration-installed-main.spec.ts
++++ b/e2e/collaboration-installed-main.spec.ts
+@@ -5,6 +5,7 @@ import type { CollaborationCommentInput, CollaborationCommentReceipt, Collaborat
+ import { TestApiClient } from "./fixtures";
+ import { authenticateControlWeb, controlAccountPath, seedCollaborationControlJourney } from "./fixtures/collaboration-control-journey";
+ import { dockerTaskURL, InstalledMainClient, type InstalledMainMetadata, type InstalledMainWrite } from "./fixtures/collaboration-installed-main";
++import { selectCollaborationRecipient } from "./fixtures/collaboration-offline-handoff";
+ 
+ // The local runner handles secrets outside Playwright tracing. This actual
+ // installed Main evidence supplements the canonical service/renderer journeys;
+@@ -53,8 +54,7 @@ async function webOperation(page: Page, issueId: string, action: "invite" | "tra
+   const label = action === "invite" ? "Add participant" : "Transfer";
+   await page.getByRole("button", { name: label, exact: true }).click();
+   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: label, exact: true }) });
+-  await form.getByLabel("Exact recipient", { exact: true }).fill(userId);
+-  await form.getByRole("button", { name: "Find account", exact: true }).click();
++  await selectCollaborationRecipient(page, form, { id: userId, name });
+   await expect(form.getByText(`Selected account: ${name}`, { exact: true })).toBeVisible();
+   if (action === "transfer") await form.getByLabel("Note", { exact: true }).fill(note);
+   const endpoint = `/api/collaboration/issues/${issueId}/${action === "invite" ? "participants" : "handoffs"}`;
+@@ -111,8 +111,7 @@ async function webInformationForm(page: Page, issueId: string, action: DirectedA
+   expect(options.options).toHaveLength(1);
+   if (action === "request_information") {
+     if (!recipient) throw new Error("Request information needs the exact participant recipient");
+-    await form.getByLabel("Exact recipient", { exact: true }).fill(recipient.id);
+-    await form.getByRole("button", { name: "Find account", exact: true }).click();
++    await selectCollaborationRecipient(page, form, recipient);
+     await expect(form.getByText(`Selected account: ${recipient.name}`, { exact: true })).toBeVisible();
+   }
+   const select = form.getByLabel("Status", { exact: true });
+diff --git a/e2e/collaboration-memory-web.spec.ts b/e2e/collaboration-memory-web.spec.ts
+index b8eab43cb..ffbf3ae92 100644
+--- a/e2e/collaboration-memory-web.spec.ts
++++ b/e2e/collaboration-memory-web.spec.ts
+@@ -81,6 +81,8 @@ test("shared context keeps concurrent edits, restores versions, and permits hist
+     await expect(panel.getByRole("button", { name: "Edit shared context", exact: true })).toHaveCount(0);
+     await expect(panel.getByRole("button", { name: /^Restore v/ })).toHaveCount(0);
+     await expect(panel).toContainText("This issue is closed, so its shared context is read-only.");
++    await panel.getByRole("button", { name: "Version history", exact: true }).click();
++    await expect(panel.getByRole("button", { name: /^Restore v/ })).toHaveCount(0);
+     await panel.getByRole("button", { name: "Purge v2", exact: true }).click();
+     const purge = page.getByRole("alertdialog", { name: "Purge the text of v2?", exact: true });
+     await expect(purge).toBeVisible();
+diff --git a/e2e/fixtures/collaboration-installed-main.mjs b/e2e/fixtures/collaboration-installed-main.mjs
+index 28491eaf1..a58ec9fc5 100644
+--- a/e2e/fixtures/collaboration-installed-main.mjs
++++ b/e2e/fixtures/collaboration-installed-main.mjs
+@@ -8,6 +8,7 @@ import process from "node:process";
+ import { createInterface } from "node:readline";
+ import { _electron as electron, expect } from "@playwright/test";
+ import { nativeAcceptanceHome, nativeInstalledLayout } from "./collaboration-installed-layout.mjs";
++import { selectCollaborationRecipient } from "./collaboration-recipient-picker.mjs";
+ 
+ // This process controls the packaged executable. It never imports an alternate
+ // Main, replaces IPC handlers, injects auth, or changes the OS home directory.
+@@ -442,9 +443,7 @@ async function dispatch(message) {
+       const baseline = await refreshIssue(message.issueId);
+       await page.getByRole("button", { name: "Transfer", exact: true }).click();
+       const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Transfer", exact: true }) });
+-      await form.getByLabel("Exact recipient", { exact: true }).fill(message.recipientId);
+-      await form.getByRole("button", { name: "Find account", exact: true }).click();
+-      await expect(form.getByText(`Selected account: ${message.recipientName}`, { exact: true })).toBeVisible();
++      await selectCollaborationRecipient(page, form, { id: message.recipientId, name: message.recipientName });
+       await form.getByLabel("Note", { exact: true }).fill(message.note);
+       const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/collaboration/issues/${message.issueId}/handoffs`
+         && response.request().method() === "POST");
+@@ -470,9 +469,7 @@ async function dispatch(message) {
+       assert.equal(options.action, message.action);
+       assert.equal(options.options.length, 1);
+       if (message.action === "request_information") {
+-        await form.getByLabel("Exact recipient", { exact: true }).fill(message.recipientId);
+-        await form.getByRole("button", { name: "Find account", exact: true }).click();
+-        await expect(form.getByText(`Selected account: ${message.recipientName}`, { exact: true })).toBeVisible();
++        await selectCollaborationRecipient(page, form, { id: message.recipientId, name: message.recipientName });
+       }
+       const select = form.getByLabel("Status", { exact: true });
+       await expect(select.locator("option")).toHaveCount(1);

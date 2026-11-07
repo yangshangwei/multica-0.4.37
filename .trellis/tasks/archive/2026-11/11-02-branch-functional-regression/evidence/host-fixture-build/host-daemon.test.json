@@ -1,0 +1,21 @@
+{
+  "name": "host-daemon.test",
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-c",
+    "-o",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/host-daemon.test",
+    "./internal/daemon"
+  ],
+  "started_at": "2026-11-02T00:27:23.896050+00:00",
+  "state": "complete",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "exit_code": 0,
+  "finished_at": "2026-11-02T00:27:33.454081+00:00",
+  "artifact": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/host-daemon.test",
+  "sha256": "54d416cd405955d6ce674c8cc28a28ddb1beb34bb0d8d2aaa103de842a3c15eb",
+  "bytes": 41798130
+}

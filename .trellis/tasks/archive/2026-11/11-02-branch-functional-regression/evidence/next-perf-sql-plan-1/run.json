@@ -1,0 +1,120 @@
+{
+  "started_at": "2026-11-02T05:13:24.953740+00:00",
+  "state": "complete",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "database": "multica_func7af9_next_sql_diag_1",
+  "source_root": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+  "commercial_provider_calls": 0,
+  "original_p95_failure_retained": true,
+  "original_p95_gate_executed": false,
+  "closure_operations_permit": 1,
+  "product_source_changed": false,
+  "automatic_retries": 0,
+  "agent_cli_guard": true,
+  "race_enabled": false,
+  "steps": [
+    {
+      "name": "format-private-test",
+      "command": [
+        "gofmt",
+        "-w",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-perf-sql-plan-1/diagnostic_test.go"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T05:13:25.042992+00:00",
+      "pid": 89690,
+      "finished_at": "2026-11-02T05:13:25.068001+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "compile",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-p",
+        "2",
+        "-overlay",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-perf-sql-plan-1/overlay.json",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-perf-sql-plan-1/handler-sql-plan.test",
+        "./internal/handler"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T05:13:25.069121+00:00",
+      "pid": 89691,
+      "finished_at": "2026-11-02T05:13:40.010902+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "diagnostic",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/internal/handler",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-perf-sql-plan-1/handler-sql-plan.test",
+        "-test.v",
+        "-test.run",
+        "^TestIterationCanonicalSQLPlanDiagnostic$",
+        "-test.count=1",
+        "-test.parallel=1",
+        "-test.timeout=5m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T05:13:40.917065+00:00",
+      "pid": 89788,
+      "finished_at": "2026-11-02T05:13:57.753032+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "bbdad7f9729b3eff820614104f8f76290905efb0d4220b1b13ddb9448549809e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "preexisting_patch_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+  "frozen_test_sha256_before": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+  "product_trees": {
+    "server": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+    "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+    "packages": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292"
+  },
+  "template_database": "multica_func7af9_template_20261102",
+  "overlay_virtual_target": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102/server/internal/handler/zz_task_private_iteration_sql_diagnostic_test.go",
+  "overlay_target_exists_on_disk": false,
+  "diagnostic_test_sha256": "88e56d6b14836cff4553769a45a5321c83336788468230a51c1cbb0516959d7d",
+  "overlay_sha256": "4dec1b518112776b883df979901124238b368bff39493d29a5191bcd49e34577",
+  "overlay_diff": "+ task-private zz_task_private_iteration_sql_diagnostic_test.go; all existing source files unchanged",
+  "test_binary_sha256": "f0131c46f8c6d6280eea5cbe49ddffbc2195746bc8ebea8dc1608a4b5f3c5758",
+  "pg_headroom_before": {
+    "maximum": 100,
+    "used": 40
+  },
+  "migration_count": 751,
+  "private_environment_sha256": "25e12558e78e35e1f9682daa8bd752e96229441afb8723a4a73704c988f8e61f",
+  "runner_sha256": "a1caf56419e369b820ace2ee935ccc1f8e89aec8c05a3326fb8c13023a28bd34",
+  "finished_at": "2026-11-02T05:13:57.753458+00:00",
+  "exit_code": 0,
+  "outcomes": {
+    "TestIterationCanonicalSQLPlanDiagnostic": "pass"
+  },
+  "counts": {
+    "pass": 1
+  },
+  "metrics_sha256": "feb7fb4b268c052f49fe24a0c9d0fdf9fe6a28004d9f49bd36d9617307da73bb",
+  "connections_after": 0,
+  "frozen_test_sha256_after": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+  "frozen_test_unchanged": true,
+  "source_diff_unchanged": true,
+  "overlay_target_absent_after": true,
+  "cleanup_checked_at": "2026-11-02T05:13:57.857128+00:00"
+}

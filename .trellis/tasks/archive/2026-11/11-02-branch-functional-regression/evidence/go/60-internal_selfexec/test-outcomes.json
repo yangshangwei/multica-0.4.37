@@ -1,0 +1,12 @@
+{
+  "TestResolveWithUsesOSExecutable": "pass",
+  "TestResolveWithFallsBackToArgv0/absolute_path": "pass",
+  "TestResolveWithFallsBackToArgv0/relative_path": "pass",
+  "TestResolveWithFallsBackToArgv0/PATH_command": "pass",
+  "TestResolveWithFallsBackToArgv0": "pass",
+  "TestResolveWithRejectsInvalidFallback/missing_argv0": "pass",
+  "TestResolveWithRejectsInvalidFallback/empty_argv0": "pass",
+  "TestResolveWithRejectsInvalidFallback/missing_executable": "pass",
+  "TestResolveWithRejectsInvalidFallback/non-executable_file": "pass",
+  "TestResolveWithRejectsInvalidFallback": "pass"
+}

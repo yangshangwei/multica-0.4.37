@@ -1,0 +1,347 @@
+package handler
+
+import (
+	"context"
+	"crypto/rand"
+	"crypto/sha256"
+	"encoding/base64"
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
+	"os"
+	"path/filepath"
+	"reflect"
+	"strconv"
+	"strings"
+	"testing"
+	"time"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/multica-ai/multica/server/internal/testutil"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
+)
+
+// This task-private witness forwards the actual generated query and typed Scan.
+// It injects no error value: the independent pool/server supplies every result.
+type taskWebhookLookupDB struct {
+	delegate                          db.DBTX
+	queryRowCalls, scanCalls          int
+	execCalls, queryCalls, batchCalls int
+	query                             string
+	args                              []any
+	destTypes                         []string
+	scanErr                           error
+}
+
+func (d *taskWebhookLookupDB) Exec(ctx context.Context, sql string, args ...any) (pgconn.CommandTag, error) {
+	d.execCalls++
+	return d.delegate.Exec(ctx, sql, args...)
+}
+
+func (d *taskWebhookLookupDB) Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error) {
+	d.queryCalls++
+	return d.delegate.Query(ctx, sql, args...)
+}
+
+func (d *taskWebhookLookupDB) QueryRow(ctx context.Context, sql string, args ...any) pgx.Row {
+	d.queryRowCalls++
+	d.query = sql
+	d.args = append([]any(nil), args...)
+	return taskWebhookLookupRow{delegate: d.delegate.QueryRow(ctx, sql, args...), witness: d}
+}
+
+func (d *taskWebhookLookupDB) SendBatch(ctx context.Context, batch *pgx.Batch) pgx.BatchResults {
+	d.batchCalls++
+	return d.delegate.SendBatch(ctx, batch)
+}
+
+type taskWebhookLookupRow struct {
+	delegate pgx.Row
+	witness  *taskWebhookLookupDB
+}
+
+func (r taskWebhookLookupRow) Scan(dest ...any) error {
+	r.witness.scanCalls++
+	for _, value := range dest {
+		r.witness.destTypes = append(r.witness.destTypes, fmt.Sprintf("%T", value))
+	}
+	err := r.delegate.Scan(dest...)
+	r.witness.scanErr = err
+	return err
+}
+
+type taskWebhookBody struct {
+	reader *strings.Reader
+	reads  int
+}
+
+func (b *taskWebhookBody) Read(p []byte) (int, error) {
+	b.reads++
+	return b.reader.Read(p)
+}
+
+type taskWebhookTableFingerprint struct {
+	Count  int64  `json:"count"`
+	SHA256 string `json:"sha256"`
+}
+
+type taskWebhookLookupObservation struct {
+	Case                 string                                 `json:"case"`
+	StartedAt            string                                 `json:"started_at"`
+	FinishedAt           string                                 `json:"finished_at"`
+	Database             string                                 `json:"database"`
+	OwnedBackendPID      int                                    `json:"owned_backend_pid"`
+	OwnedSearchPath      string                                 `json:"owned_search_path"`
+	OwnedPoolClosed      bool                                   `json:"owned_pool_closed"`
+	HTTPStatus           int                                    `json:"http_status"`
+	ResponseBody         string                                 `json:"response_body"`
+	RetryAfter           string                                 `json:"retry_after"`
+	BodyReadCalls        int                                    `json:"body_read_calls"`
+	LookupCalls          int                                    `json:"lookup_calls"`
+	ScanCalls            int                                    `json:"scan_calls"`
+	ScanDestinationTypes []string                               `json:"scan_destination_types"`
+	ExecCalls            int                                    `json:"exec_calls"`
+	QueryCalls           int                                    `json:"query_calls"`
+	BatchCalls           int                                    `json:"batch_calls"`
+	CanonicalSQL         string                                 `json:"canonical_sql"`
+	CanonicalSQLSHA256   string                                 `json:"canonical_sql_sha256"`
+	ArgumentType         string                                 `json:"argument_type"`
+	ArgumentValid        bool                                   `json:"argument_valid"`
+	ArgumentBytes        int                                    `json:"argument_bytes"`
+	ArgumentSHA256       string                                 `json:"argument_sha256"`
+	ArgumentMatchesPath  bool                                   `json:"argument_matches_synthetic_path"`
+	ScanErrorType        string                                 `json:"scan_error_type"`
+	ScanErrorMessage     string                                 `json:"scan_error_message"`
+	SQLState             string                                 `json:"sqlstate"`
+	IsNoRows             bool                                   `json:"is_no_rows"`
+	BadDebtBeforeAllowed bool                                   `json:"bad_debt_before_allowed"`
+	BadDebtAfterAllowed  bool                                   `json:"bad_debt_after_allowed"`
+	AbsolutePrecharged   bool                                   `json:"absolute_precharged"`
+	Before               map[string]taskWebhookTableFingerprint `json:"persistence_before"`
+	After                map[string]taskWebhookTableFingerprint `json:"persistence_after"`
+	PersistenceUnchanged bool                                   `json:"persistence_unchanged"`
+	SharedPoolPingAfter  bool                                   `json:"shared_pool_ping_after"`
+	SharedPathBefore     string                                 `json:"shared_search_path_before"`
+	SharedPathAfter      string                                 `json:"shared_search_path_after"`
+	Failed               bool                                   `json:"test_failed"`
+}
+
+func taskWebhookDigest(value string) string {
+	digest := sha256.Sum256([]byte(value))
+	return hex.EncodeToString(digest[:])
+}
+
+func taskWebhookFingerprint(t *testing.T, ctx context.Context) map[string]taskWebhookTableFingerprint {
+	t.Helper()
+	out := make(map[string]taskWebhookTableFingerprint)
+	for _, table := range []string{"webhook_delivery", "autopilot_run", "agent_task_queue"} {
+		var count int64
+		var rows string
+		sql := "SELECT count(*), COALESCE(jsonb_agg(to_jsonb(row_data) ORDER BY row_data.id), '[]'::jsonb)::text FROM " + table + " row_data"
+		if err := testPool.QueryRow(ctx, sql).Scan(&count, &rows); err != nil {
+			t.Fatalf("fingerprint owned table %s: %v", table, err)
+		}
+		out[table] = taskWebhookTableFingerprint{Count: count, SHA256: taskWebhookDigest(rows)}
+	}
+	return out
+}
+
+func taskWebhookWriteReport(t *testing.T, filename string, value any) {
+	t.Helper()
+	encoded, err := json.MarshalIndent(value, "", "  ")
+	if err != nil {
+		t.Errorf("marshal task witness: %v", err)
+		return
+	}
+	path := filepath.Join(os.Getenv("MULTICA_WEBHOOK_LOOKUP_REPORT_DIR"), filename)
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0600)
+	if err != nil {
+		t.Errorf("create new task witness: %v", err)
+		return
+	}
+	if _, err := file.Write(append(encoded, '\n')); err != nil {
+		t.Errorf("write task witness: %v", err)
+	}
+	if err := file.Close(); err != nil {
+		t.Errorf("close task witness: %v", err)
+	}
+}
+
+func TestTaskPrivateWebhookTokenLookupErrorDiagnostic(t *testing.T) {
+	const ownedDatabase = "multica_func7af9_next_webhook_lookup_1"
+	const ip = "192.0.2.71"
+	if os.Getenv("MULTICA_WEBHOOK_LOOKUP_DIAGNOSTIC") != "1" {
+		t.Fatal("task diagnostic requires its explicit permit flag")
+	}
+	reportDir := os.Getenv("MULTICA_WEBHOOK_LOOKUP_REPORT_DIR")
+	if !filepath.IsAbs(reportDir) || !strings.HasSuffix(reportDir, "/evidence/next-webhook-lookup-1") {
+		t.Fatal("task diagnostic requires its new owned evidence directory")
+	}
+	expectedSQL, err := os.ReadFile(filepath.Join(reportDir, "canonical_sql.txt"))
+	if err != nil {
+		t.Fatalf("read canonical SQL captured before execution: %v", err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+	var sharedDatabase string
+	if err := testPool.QueryRow(ctx, "SELECT current_database()").Scan(&sharedDatabase); err != nil {
+		t.Fatalf("verify actual task database: %v", err)
+	}
+	if sharedDatabase != ownedDatabase {
+		t.Fatalf("actual database %q differs from the recorded task database", sharedDatabase)
+	}
+	var observations []taskWebhookLookupObservation
+	cases := []struct {
+		name string
+		mode string
+		want int
+		err  string
+	}{
+		{"server_lookup_error_returns500", "server", http.StatusInternalServerError, "internal error"},
+		{"closed_owned_pool_returns500", "closed", http.StatusInternalServerError, "internal error"},
+		{"real_missing_token_returns404", "missing", http.StatusNotFound, "webhook not found"},
+		{"absolute_limit_preempts_lookup", "limited", http.StatusTooManyRequests, "rate limit exceeded"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			fact := taskWebhookLookupObservation{Case: tc.name, StartedAt: time.Now().UTC().Format(time.RFC3339Nano), Database: sharedDatabase}
+			var witness *taskWebhookLookupDB
+			t.Cleanup(func() {
+				if witness != nil {
+					fact.LookupCalls, fact.ScanCalls = witness.queryRowCalls, witness.scanCalls
+					fact.ExecCalls, fact.QueryCalls, fact.BatchCalls = witness.execCalls, witness.queryCalls, witness.batchCalls
+					fact.CanonicalSQL = witness.query
+					fact.CanonicalSQLSHA256 = taskWebhookDigest(witness.query)
+					fact.ScanDestinationTypes = witness.destTypes
+					fact.ScanErrorType = fmt.Sprintf("%T", witness.scanErr)
+					if witness.scanErr != nil {
+						fact.ScanErrorMessage = witness.scanErr.Error()
+					}
+					fact.IsNoRows = errors.Is(witness.scanErr, pgx.ErrNoRows)
+					var pgError *pgconn.PgError
+					if errors.As(witness.scanErr, &pgError) {
+						fact.SQLState = pgError.Code
+					}
+				}
+				fact.FinishedAt, fact.Failed = time.Now().UTC().Format(time.RFC3339Nano), t.Failed()
+				observations = append(observations, fact)
+				taskWebhookWriteReport(t, "case-"+tc.name+".json", fact)
+			})
+			cfg := testPool.Config()
+			cfg.MaxConns, cfg.MinConns = 1, 0
+			cfg.ConnConfig.ConnectTimeout = 5 * time.Second
+			cfg.ConnConfig.RuntimeParams["statement_timeout"] = "5000"
+			if tc.mode == "server" || tc.mode == "limited" {
+				cfg.ConnConfig.RuntimeParams["search_path"] = "pg_catalog"
+			}
+			pool, err := pgxpool.NewWithConfig(ctx, cfg)
+			if err != nil {
+				t.Fatalf("construct independent task pool: %v", err)
+			}
+			t.Cleanup(func() { pool.Close(); fact.OwnedPoolClosed = true })
+			var actualDatabase string
+			if err := pool.QueryRow(ctx, "SELECT current_database(), pg_backend_pid(), current_setting('search_path')").Scan(&actualDatabase, &fact.OwnedBackendPID, &fact.OwnedSearchPath); err != nil {
+				t.Fatalf("verify independent pool identity: %v", err)
+			}
+			if actualDatabase != ownedDatabase {
+				t.Fatal("independent pool selected a different task database")
+			}
+			if (tc.mode == "server" || tc.mode == "limited") && fact.OwnedSearchPath != "pg_catalog" {
+				t.Fatal("independent fault pool did not receive its connection-local search path")
+			}
+			if tc.mode == "closed" {
+				pool.Close()
+				fact.OwnedPoolClosed = true
+			}
+			witness = &taskWebhookLookupDB{delegate: pool}
+			badDebt := NewMemoryWebhookIPRateLimiter(WebhookRateLimit{Limit: 1, Window: time.Minute})
+			absolute := NewMemoryWebhookAbsoluteIPRateLimiter(DefaultWebhookAbsoluteIPRateLimit())
+			if tc.mode == "limited" {
+				absolute = NewMemoryWebhookAbsoluteIPRateLimiter(WebhookRateLimit{Limit: 1, Window: time.Minute})
+				if !absolute.Allow(ctx, ip) {
+					t.Fatal("fresh absolute limiter did not permit its first real debit")
+				}
+				fact.AbsolutePrecharged = true
+			}
+			h := &Handler{Queries: db.New(witness), cfg: Config{}, WebhookIPRateLimiter: badDebt, WebhookAbsoluteIPRateLimiter: absolute}
+			body := &taskWebhookBody{reader: strings.NewReader(`{"event":"task-private-unissued-token"}`)}
+			bytes := make([]byte, 32)
+			if _, err := rand.Read(bytes); err != nil {
+				t.Fatalf("create synthetic unissued token: %v", err)
+			}
+			token := "whk_" + base64.RawURLEncoding.EncodeToString(bytes)
+			req := testutil.JSONRequest("POST", "/api/webhooks/autopilot/"+token, body).WithContext(ctx)
+			req = testutil.WithURLParams(req, "token", token)
+			req.RemoteAddr = ip + ":45678"
+			fact.Before = taskWebhookFingerprint(t, ctx)
+			if err := testPool.QueryRow(ctx, "SHOW search_path").Scan(&fact.SharedPathBefore); err != nil {
+				t.Fatalf("read shared pool search path: %v", err)
+			}
+			fact.BadDebtBeforeAllowed = slidingWindowLimiterCheck(ctx, badDebt, ip)
+			response := testutil.Call(t, h.HandleAutopilotWebhook, req)
+			fact.HTTPStatus, fact.ResponseBody, fact.RetryAfter = response.Code, response.Text(), response.Header().Get("Retry-After")
+			fact.BodyReadCalls = body.reads
+			fact.BadDebtAfterAllowed = slidingWindowLimiterCheck(ctx, badDebt, ip)
+			fact.After = taskWebhookFingerprint(t, ctx)
+			fact.PersistenceUnchanged = reflect.DeepEqual(fact.Before, fact.After)
+			fact.SharedPoolPingAfter = testPool.Ping(ctx) == nil
+			if err := testPool.QueryRow(ctx, "SHOW search_path").Scan(&fact.SharedPathAfter); err != nil {
+				t.Fatalf("read shared pool search path after fault: %v", err)
+			}
+			var payload map[string]any
+			response.Want(tc.want).JSON(&payload)
+			if len(payload) != 1 || payload["error"] != tc.err {
+				t.Fatalf("expected only the standard error JSON, got %v", payload)
+			}
+			if body.reads != 0 || witness.execCalls != 0 || witness.queryCalls != 0 || witness.batchCalls != 0 {
+				t.Fatal("early ingress failure read the body or executed downstream persistence/batch work")
+			}
+			if !fact.PersistenceUnchanged || !fact.SharedPoolPingAfter || fact.SharedPathBefore != fact.SharedPathAfter {
+				t.Fatal("owned fault affected persistent rows or the healthy shared pool")
+			}
+			if !fact.BadDebtBeforeAllowed || fact.BadDebtAfterAllowed != (tc.mode != "missing") {
+				t.Fatal("bad-credential debt differs from the real early-error contract")
+			}
+			if tc.mode == "limited" {
+				if witness.queryRowCalls != 0 || witness.scanCalls != 0 {
+					t.Fatal("absolute limiter did not preempt the token lookup")
+				}
+				seconds, err := strconv.Atoi(fact.RetryAfter)
+				if err != nil || seconds <= 0 {
+					t.Fatal("absolute-limit rejection lacks a positive Retry-After")
+				}
+				return
+			}
+			if witness.queryRowCalls != 1 || witness.scanCalls != 1 || len(witness.destTypes) != 20 || witness.query != string(expectedSQL) || len(witness.args) != 1 {
+				t.Fatal("request did not use exactly one canonical query and generated twenty-field Scan")
+			}
+			argument, ok := witness.args[0].(pgtype.Text)
+			fact.ArgumentType, fact.ArgumentValid, fact.ArgumentBytes = fmt.Sprintf("%T", witness.args[0]), argument.Valid, len(argument.String)
+			fact.ArgumentSHA256, fact.ArgumentMatchesPath = taskWebhookDigest(argument.String), ok && argument.Valid && argument.String == token
+			if !fact.ArgumentMatchesPath || len(token) != 47 {
+				t.Fatal("canonical argument did not preserve the synthetic request path token")
+			}
+			switch tc.mode {
+			case "server":
+				var pgError *pgconn.PgError
+				if !errors.As(witness.scanErr, &pgError) || pgError.Code != "42P01" || errors.Is(witness.scanErr, pgx.ErrNoRows) {
+					t.Fatalf("expected actual server SQLSTATE42P01, got %v", witness.scanErr)
+				}
+			case "closed":
+				if witness.scanErr == nil || errors.Is(witness.scanErr, pgx.ErrNoRows) || witness.scanErr.Error() != "closed pool" {
+					t.Fatalf("expected actual closed-pool acquisition error, got %v", witness.scanErr)
+				}
+			case "missing":
+				if !errors.Is(witness.scanErr, pgx.ErrNoRows) {
+					t.Fatalf("expected real generated no-row result, got %v", witness.scanErr)
+				}
+			}
+		})
+	}
+	taskWebhookWriteReport(t, "cases.json", observations)
+}

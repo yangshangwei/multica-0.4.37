@@ -1,0 +1,74 @@
+{
+  "at": "2026-11-02T07:52:13.545264+00:00",
+  "verifier": "implement child self-verification; independent review is separate",
+  "status": "PASS_DIAGNOSTIC_ONLY",
+  "commands_verified": [
+    "format-private-test",
+    "compile-handler",
+    "compile-service",
+    "run-handler",
+    "run-service"
+  ],
+  "terminal_counts": {
+    "handler_top_counts": {
+      "pass": 4
+    },
+    "handler_subtest_counts": {
+      "pass": 6
+    },
+    "service_top_counts": {
+      "pass": 8
+    },
+    "service_subtest_counts": {
+      "pass": 8
+    }
+  },
+  "generated_typed_results_equal": true,
+  "active_statuses": [
+    "queued",
+    "dispatched",
+    "running",
+    "waiting_local_directory"
+  ],
+  "empty_and_missing_typed_results": true,
+  "missing_then_next_batch_result": true,
+  "actual_first_lock_wait_observed": true,
+  "separate_statements_after_wait_observe_holder_commit": true,
+  "server_error_and_batch_close_sqlstate": "22012",
+  "failed_transaction_marker_rolled_back": true,
+  "connections_final": {
+    "multica_func7af9_next_read_semantics_1": 0,
+    "multica_func7af9_next_read_semantics_service_1": 0
+  },
+  "source_diff_unchanged": true,
+  "frozen_test_unchanged": true,
+  "overlay_additive_and_target_absent": true,
+  "owned_test_processes_remaining": [],
+  "gofmt": "PASS",
+  "python_ast": "PASS",
+  "git_diff_check": "PASS",
+  "full_product_lint_typecheck": "NOT_RERUN_NO_PRODUCT_CHANGE",
+  "original_p95": "FAIL2171ms>2000ms; not rerun",
+  "original_inventory_increment": 0,
+  "artifact_sha256": {
+    "batch-error-rollback.json": "c766b2eee7ae4116580f727e34bdee194a0a78ec8c6484453c8ae915e35530c8",
+    "canonical-reads.json": "42cf5529c1232b0ee834b1cfa3bcd0e2f790f9053f707a427c82600122324d5c",
+    "compile-handler.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-handler.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-service.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-service.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "database-operations.jsonl": "b2e2a138b142d184050e25bbc493baf1ff0e111c25b4e0e01b45ee53e353de90",
+    "diagnostic_test.go.txt": "2a0adf9b4851e10ac1b60dbc7c78ff6e1c246b55ce478b184914aa2dc3d8555b",
+    "first-lock-fresh-snapshot.json": "7f08c7e7ab122f7bc1214129581b0c9e93cf533dc51ec86693b90bb82ae5f92c",
+    "format-private-test.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "format-private-test.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "host-runner.py.txt": "0a225c0a12043be0eba5db4df527bdc96d16a61db0b310647200ae877b6ded57",
+    "overlay.json": "08831b1f3b74902b370aaef2faf68a686b6149a986caff058da9828e705b20cf",
+    "run-handler.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-handler.stdout": "63755cf2b081a58f17cc82081eebfce58bd78e4c12cd3d30b548b52c077d1df7",
+    "run-service.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-service.stdout": "6c1ddd9621f5b2d71525cc980aa103829ba090347538dd2dba07c67157d14fdf",
+    "run.json": "af1c8f345449df4370ae900fee8de934a514d42910fc935b28d8fa5d6265b198",
+    "typed-result-parity.json": "5c58d8059f1aa72dd098e97da071d3ea7ec8a4e9ef1ff16273e7d31866ddfbe1"
+  }
+}

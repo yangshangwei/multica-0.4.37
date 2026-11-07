@@ -1,0 +1,108 @@
+{
+  "name": "06-cmd_server",
+  "kind": "package",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout=40m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-json",
+    "github.com/multica-ai/multica/server/cmd/server"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "started_at": "2026-11-02T00:11:10.471314+00:00",
+  "state": "complete",
+  "database": "multica_func7af9_go_06_20261102",
+  "environment_keys": [
+    "DATABASE_MAX_CONNS",
+    "DATABASE_MIN_CONNS",
+    "DATABASE_URL",
+    "GOTOOLCHAIN",
+    "HOME",
+    "LANG",
+    "LC_ALL",
+    "LOGNAME",
+    "MULTICA_DSH_PATH",
+    "MULTICA_KNOWLEDGE_CONTEXT_ENABLED",
+    "MULTICA_TASK_CONFIG_ROOT",
+    "MULTICA_TASK_WORKSPACES_ROOT",
+    "NVM_DIR",
+    "PATH",
+    "PGCONNECT_TIMEOUT",
+    "POSTGRES_DB",
+    "SHELL",
+    "TASK_DATABASE_NAME",
+    "TEMP",
+    "TMP",
+    "TMPDIR",
+    "USER"
+  ],
+  "real_provider_authorization": false,
+  "permit_env_sha256": "8d4357902565c1b2de8528756162f58bd9e1ce9f12fa57847e68497c45bd0d36",
+  "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/06.env",
+  "database_identity": "multica_func7af9_go_06_20261102",
+  "database_identity_exit": 0,
+  "exit_code": 1,
+  "finished_at": "2026-11-02T00:13:51.328632+00:00",
+  "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "top_level": {
+    "pass": 363,
+    "fail": 3,
+    "skip": 7
+  },
+  "subtests": {
+    "pass": 365,
+    "fail": 0,
+    "skip": 0
+  },
+  "package_outcome": "fail",
+  "no_named_tests": false,
+  "failed_tests": [
+    "TestPoolSizing_DefaultsWhenNothingSet",
+    "TestPoolSizing_URLParamsHonoredWhenEnvUnset",
+    "TestPoolSizing_PartialURLParam"
+  ],
+  "skips": [
+    {
+      "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+      "output": "=== RUN   TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux\n    collaboration_daemon_cli_routes_test.go:27: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux (0.00s)\n"
+    },
+    {
+      "test": "TestCollaborationPartialResumeRoutesLinux",
+      "output": "=== RUN   TestCollaborationPartialResumeRoutesLinux\n    collaboration_hold_routes_test.go:155: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationPartialResumeRoutesLinux (0.00s)\n"
+    },
+    {
+      "test": "TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry",
+      "output": "=== RUN   TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry\n    collaboration_knowledge_realtime_test.go:125: requires isolated REDIS_TEST_URL\n--- SKIP: TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry (0.00s)\n"
+    },
+    {
+      "test": "TestCollaborationSingleAgentRuntimeRoutesLinux",
+      "output": "=== RUN   TestCollaborationSingleAgentRuntimeRoutesLinux\n    collaboration_single_agent_routes_test.go:418: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationSingleAgentRuntimeRoutesLinux (0.00s)\n"
+    },
+    {
+      "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+      "output": "=== RUN   TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux\n    collaboration_single_agent_routes_test.go:585: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux (0.00s)\n"
+    },
+    {
+      "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+      "output": "=== RUN   TestCollaborationRuntimeProofSurvivesOwnerDisableLinux\n    collaboration_single_agent_routes_test.go:688: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationRuntimeProofSurvivesOwnerDisableLinux (0.00s)\n"
+    },
+    {
+      "test": "TestCollaborationSquadCapacityOneRoutesLinux",
+      "output": "=== RUN   TestCollaborationSquadCapacityOneRoutesLinux\n    collaboration_squad_routes_test.go:173: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationSquadCapacityOneRoutesLinux (0.00s)\n"
+    }
+  ],
+  "stdout_sha256": "b781dbd074398c325ee10b70ddaa17c3af44564d9ef29a92d16adc4fabfb0d28",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

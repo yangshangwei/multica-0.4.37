@@ -1,0 +1,184 @@
+import ast
+import collections
+import datetime
+import hashlib
+import json
+import os
+import re
+import shutil
+import signal
+import subprocess
+from pathlib import Path
+from urllib.parse import parse_qs, unquote, urlsplit
+
+ROOT = Path('/Volumes/artisan/code/2026/multica-0.4.37')
+SOURCE = ROOT.parent / 'mc-functional-go-7af9ab990-20261102'
+TASK = ROOT / '.trellis/tasks/11-02-branch-functional-regression'
+PRIVATE = Path(__file__).resolve().parent
+RUN = TASK / 'evidence/next-webhook-lookup-1'
+PSQL = '/opt/homebrew/opt/libpq/bin/psql'
+TEST_NAME = 'TestTaskPrivateWebhookTokenLookupErrorDiagnostic'
+DATABASE = 'multica_func7af9_next_webhook_lookup_1'
+TARGET = SOURCE / 'server/internal/handler/zz_task_private_webhook_lookup_test.go'
+now = lambda: datetime.datetime.now(datetime.timezone.utc).isoformat()
+sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+record = json.loads((RUN / 'run.json').read_text())
+env = json.loads((PRIVATE / 'environment.json').read_text())
+uri = urlsplit(env['DATABASE_URL'])
+assert uri.path == '/' + DATABASE
+assert env['HOME'] == str(PRIVATE / 'home')
+assert not record['test_execution_attempts'], 'An executed diagnostic may not be rerun'
+assert not TARGET.exists()
+assert all(k not in env for k in ['DATABASE_MAX_CONNS', 'DATABASE_MIN_CONNS', 'MULTICA_TASK_CONFIG_ROOT', 'MULTICA_TASK_WORKSPACES_ROOT'])
+pg = {k: env[k] for k in ['PATH', 'LANG', 'LC_ALL'] if k in env}
+pg.update(PGHOST=uri.hostname, PGPORT=str(uri.port), PGUSER=unquote(uri.username or ''),
+          PGPASSWORD=unquote(uri.password or ''), PGDATABASE=DATABASE,
+          PGCONNECT_TIMEOUT='5', PGSSLMODE=parse_qs(uri.query)['sslmode'][0],
+          PGOPTIONS='-c default_transaction_read_only=on -c statement_timeout=5000')
+
+
+def persist():
+    (RUN / 'run.json').write_text(json.dumps(record, indent=2) + '\n')
+
+
+def invoke(name, command, selected_env=env, timeout=600):
+    step = dict(name=name, command=command, cwd=str(SOURCE), started_at=now())
+    if (PRIVATE / 'diagnostic_test.go').exists():
+        step['private_test_sha256'] = sha(PRIVATE / 'diagnostic_test.go')
+    record['steps'].append(step)
+    persist()
+    with (RUN / (name + '.stdout')).open('wb') as out, (RUN / (name + '.stderr')).open('wb') as err:
+        process = subprocess.Popen(command, cwd=SOURCE, env=selected_env, stdin=subprocess.DEVNULL,
+                                   stdout=out, stderr=err, start_new_session=True)
+        step.update(pid=process.pid, process_group=process.pid)
+        persist()
+        try:
+            code = process.wait(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            os.killpg(process.pid, signal.SIGTERM)
+            process.wait(timeout=15)
+            step['terminated_owned_group_for_timeout'] = True
+            code = process.returncode
+        step.update(exit_code=code, finished_at=now(), stdout_sha256=sha(RUN / (name + '.stdout')),
+                    stderr_sha256=sha(RUN / (name + '.stderr')))
+        persist()
+        return code
+
+
+def sql(name, query):
+    code = invoke(name, [PSQL, '-X', '-At', '-v', 'ON_ERROR_STOP=1', '-c', query], pg, timeout=20)
+    assert code == 0, 'Read-only task database check failed; see saved streams'
+    value = (RUN / (name + '.stdout')).read_text().strip()
+    with (RUN / 'database-operations.jsonl').open('a') as out:
+        out.write(json.dumps(dict(at=now(), database=DATABASE, sql=query, exit_code=code,
+                                  output_sha256=sha(RUN / (name + '.stdout')), read_only=True)) + '\n')
+    return value
+
+
+success = False
+try:
+    assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=SOURCE).decode().strip() == record['candidate']
+    assert hashlib.sha256(subprocess.check_output(['git', 'diff', '--binary'], cwd=SOURCE)).hexdigest() == record['source_diff_sha256_before']
+    for name, expected in record['source_watched_sha256_before'].items():
+        assert sha(SOURCE / name) == expected, name
+    assert sql('database-identity', 'SELECT current_database()') == DATABASE
+    assert sql('database-fresh', 'SELECT (SELECT count(*) FROM "user"),(SELECT count(*) FROM workspace),(SELECT count(*) FROM issue),(SELECT count(*) FROM schema_migrations)') == '0|0|0|751'
+    assert sql('database-connections-before', 'SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid()') == '0'
+    maximum, used = map(int, sql('database-headroom', "SELECT current_setting('max_connections'),count(*) FROM pg_stat_activity").split('|'))
+    assert maximum - used >= 25
+    record['headroom_before'] = dict(maximum=maximum, used=used, available=maximum - used)
+    source_sql = (SOURCE / 'server/pkg/db/generated/autopilot.sql.go').read_text()
+    canonical = re.search(r'const getWebhookTriggerByToken = `([\s\S]*?)`', source_sql).group(1)
+    (RUN / 'canonical_sql.txt').write_text(canonical)
+    record.update(canonical_sql_sha256=sha(RUN / 'canonical_sql.txt'), private_environment_sha256=sha(PRIVATE / 'environment.json'))
+    attempt = 1 + sum(s['name'].startswith('compile-') for s in record['steps'])
+    shutil.copyfile(PRIVATE / 'diagnostic_test.go', RUN / ('diagnostic-written-v' + str(attempt) + '.go.txt'))
+    shutil.copyfile(__file__, RUN / ('host-runner-v' + str(attempt) + '.py.txt'))
+    assert invoke('format-v' + str(attempt), ['gofmt', '-w', str(PRIVATE / 'diagnostic_test.go')]) == 0
+    shutil.copyfile(PRIVATE / 'diagnostic_test.go', RUN / ('diagnostic-formatted-v' + str(attempt) + '.go.txt'))
+    (PRIVATE / 'overlay.json').write_text(json.dumps({'Replace': {str(TARGET): str(PRIVATE / 'diagnostic_test.go')}}, indent=2) + '\n')
+    shutil.copyfile(PRIVATE / 'overlay.json', RUN / 'overlay.json')
+    record.update(private_test_sha256=sha(PRIVATE / 'diagnostic_test.go'), overlay_sha256=sha(PRIVATE / 'overlay.json'),
+                  state='compiling', compile_attempts=attempt)
+    persist()
+    for name, command in [('go-version', ['go', 'version']), ('host-os', ['uname', '-srm']),
+                          ('pgx-version', ['go', '-C', 'server', 'list', '-m', 'github.com/jackc/pgx/v5'])]:
+        assert invoke(name, command, timeout=30) == 0
+    binary = PRIVATE / 'handler-webhook-lookup.test'
+    compile_command = ['bash', 'scripts/go-test-with-agent-cli-guard.sh', '--', 'go', '-C', 'server', 'test',
+                       '-c', '-race', '-p', '2', '-overlay', str(PRIVATE / 'overlay.json'), '-o', str(binary), './internal/handler']
+    compile_code = invoke('compile-v' + str(attempt), compile_command)
+    if compile_code:
+        record['state'] = 'compile_failed_not_executed'
+        raise RuntimeError('Private diagnostic compilation failed; original attempt retained')
+    record.update(binary_sha256=sha(binary), state='executing', test_execution_attempts=1)
+    persist()
+    execution = ['bash', 'scripts/go-test-with-agent-cli-guard.sh', '--', 'go', 'tool', 'test2json', '-t', '-p',
+                 'github.com/multica-ai/multica/server/internal/handler', str(binary), '-test.v', '-test.run',
+                 '^' + TEST_NAME + '$', '-test.count=1', '-test.parallel=1', '-test.timeout=5m']
+    code = invoke('diagnostic', execution, timeout=330)
+    events = [json.loads(line) for line in (RUN / 'diagnostic.stdout').read_text().splitlines() if line.startswith('{')]
+    terminal = {event['Test']: event['Action'] for event in events if event.get('Test') and event['Action'] in ['pass', 'fail', 'skip']}
+    top = {name: outcome for name, outcome in terminal.items() if '/' not in name}
+    sub = {name: outcome for name, outcome in terminal.items() if '/' in name}
+    record.update(exit_code=code, outcomes=terminal, top_counts=dict(collections.Counter(top.values())),
+                  sub_counts=dict(collections.Counter(sub.values())))
+    expected = {TEST_NAME + '/' + name for name in ['server_lookup_error_returns500', 'closed_owned_pool_returns500',
+                                                    'real_missing_token_returns404', 'absolute_limit_preempts_lookup']}
+    assert set(top) == {TEST_NAME} and set(sub) == expected, 'Selected test identities missing'
+    assert code == 0 and all(outcome == 'pass' for outcome in terminal.values()), 'Executed diagnostic failed; do not retry to green'
+    facts = json.loads((RUN / 'cases.json').read_text())
+    assert len(facts) == 4 and all(not f['test_failed'] and f['owned_pool_closed'] for f in facts)
+    for fact in facts:
+        assert fact['database'] == DATABASE and fact['body_read_calls'] == 0
+        assert fact['exec_calls'] == fact['query_calls'] == fact['batch_calls'] == 0
+        assert fact['persistence_before'] == fact['persistence_after'] and fact['shared_pool_ping_after']
+        assert fact['shared_search_path_before'] == fact['shared_search_path_after']
+        if fact['lookup_calls']:
+            assert fact['lookup_calls'] == fact['scan_calls'] == 1
+            assert len(fact['scan_destination_types']) == 20
+            assert fact['canonical_sql'] == canonical and fact['canonical_sql_sha256'] == record['canonical_sql_sha256']
+            assert fact['argument_matches_synthetic_path'] and fact['argument_type'] == 'pgtype.Text'
+            assert fact['argument_valid'] and fact['argument_bytes'] == 47
+    success = True
+    record.update(state='complete', finished_at=now())
+except Exception as error:
+    record.update(state=record['state'] if record['state'] == 'compile_failed_not_executed' else 'diagnostic_or_setup_failed',
+                  error_type=type(error).__name__, error=str(error), finished_at=now())
+finally:
+    try:
+        record['connections_after'] = int(sql('database-connections-after', 'SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid()'))
+    except Exception as error:
+        record['cleanup_error'] = str(error)
+        record['state'] = 'cleanup_failed'
+        success = False
+    record['source_diff_unchanged'] = hashlib.sha256(subprocess.check_output(['git', 'diff', '--binary'], cwd=SOURCE)).hexdigest() == record['source_diff_sha256_before']
+    record['source_watched_sha256_after'] = {name: sha(SOURCE / name) for name in record['source_watched_sha256_before']}
+    record['watched_sources_unchanged'] = record['source_watched_sha256_after'] == record['source_watched_sha256_before']
+    record['frozen_test_sha256_after'] = sha(SOURCE / 'server/internal/handler/iteration_i1_p95_test.go')
+    record['frozen_test_unchanged'] = record['frozen_test_sha256_after'] == record['frozen_test_sha256_before']
+    record['overlay_target_absent_after'] = not TARGET.exists()
+    processes = subprocess.run(['ps', '-axo', 'pid=,pgid=,command='], capture_output=True, timeout=10)
+    groups = {s['process_group'] for s in record['steps'] if s.get('name', '').startswith('compile-') or s.get('name') == 'diagnostic'}
+    owned = [line.strip() for line in processes.stdout.decode().splitlines()
+             if len(line.split()) > 2 and int(line.split()[1]) in groups]
+    (RUN / 'owned-processes-after.json').write_text(json.dumps(owned, indent=2) + '\n')
+    record['owned_processes_remaining'] = owned
+    record['process_audit'] = dict(at=now(), command=['ps', '-axo', 'pid=,pgid=,command='], exit_code=processes.returncode,
+                                   selected_owned_groups=sorted(groups), stdout_filtered_to_owned_groups=True,
+                                   owned_output_sha256=sha(RUN / 'owned-processes-after.json'))
+    record['cleanup_checked_at'] = now()
+    persist()
+
+if success:
+    assert record['connections_after'] == 0 and record['source_diff_unchanged'] and record['watched_sources_unchanged']
+    assert record['frozen_test_unchanged'] and record['overlay_target_absent_after']
+    assert not record['owned_processes_remaining']
+    ast.parse(Path(__file__).read_text())
+    assert invoke('git-diff-check', ['git', 'diff', '--check'], timeout=15) == 0
+    assert invoke('format-check', ['gofmt', '-l', str(PRIVATE / 'diagnostic_test.go')], timeout=15) == 0
+    assert not (RUN / 'format-check.stdout').read_text().strip()
+    print(json.dumps({key: record[key] for key in ['state', 'top_counts', 'sub_counts', 'connections_after', 'source_diff_unchanged', 'frozen_test_unchanged']}, indent=2))
+else:
+    print(json.dumps({key: record.get(key) for key in ['state', 'error_type', 'error', 'test_execution_attempts', 'connections_after']}, indent=2))
+    raise SystemExit(1)

@@ -1,0 +1,62 @@
+{
+  "started_at": "2026-11-02T02:40:53.091105+00:00",
+  "state": "complete",
+  "scope": "Coordinator verification; independent sub-agents unavailable due429",
+  "checks": {
+    "resume-handler-perf-1": {
+      "exit_code": 1,
+      "counts": {
+        "fail": 1,
+        "pass": 2
+      },
+      "raw_hashes_match": true
+    },
+    "resume-handler-wire-live-1": {
+      "exit_code": 0,
+      "counts": {
+        "pass": 2
+      },
+      "raw_hashes_match": true
+    },
+    "linux-conditional": {
+      "passed": 7,
+      "raw_hashes_match": true
+    },
+    "wire-typescript": {
+      "passed": 7,
+      "failed": 0
+    },
+    "upgrade": {
+      "passed": 40,
+      "failed": 0
+    },
+    "fresh-lifecycle": {
+      "passed": 47,
+      "failed": 0
+    }
+  },
+  "historical_integrity": {
+    "files_checked": 4614,
+    "modified_coordination_files": [
+      "report.md",
+      "task.json",
+      "progress.md",
+      "session-prompt.md",
+      "conditional-matrix.csv",
+      "defects.md"
+    ],
+    "original_evidence_and_coverage_unchanged": true
+  },
+  "connections_after": {
+    "multica_func7af9_resume_perf_1": 0,
+    "multica_func7af9_resume_wire_live_1": 0,
+    "multica_func7af9_resume_linux_1": 0
+  },
+  "containers_after": {
+    "branch-functional-regression-deb-install-1": [],
+    "branch-functional-regression-resume-linux-1": []
+  },
+  "owned_processes_remaining": [],
+  "finished_at": "2026-11-02T02:40:54.602584+00:00",
+  "product_lint_typecheck": "Not repeated: no product source or dependency changes; package lifecycle and actual wire-schema checks executed"
+}

@@ -1,0 +1,239 @@
+{
+  "at": "2026-11-02T08:12:22.012496+00:00",
+  "verifier": "coordinator independent arithmetic against raw notices, exact SQL and parameters; not independent agent review",
+  "state": "PASS_DIAGNOSTIC_ONLY",
+  "results": {
+    "next-perf-cached-plan-1": {
+      "actual_plans": 6000,
+      "backend_pid": 2643,
+      "canonical_sql_and_parameters_exact": true,
+      "phases": [
+        {
+          "mode": "original",
+          "query": "LeaveDeletedIssueIterationParticipationBatch",
+          "actual_plans": 1000,
+          "notice_duration_ms_sum": 670.134,
+          "event_rows": 3003000,
+          "event_scan_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "sort_nodes": 1000,
+          "generic_delta": 995,
+          "custom_delta": 5,
+          "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+          "prepare_time": "2026-11-02T07:53:28.054363+00:00"
+        },
+        {
+          "mode": "original",
+          "query": "JoinIterationParticipationBatch",
+          "actual_plans": 1000,
+          "notice_duration_ms_sum": 249.11,
+          "event_rows": 1001000,
+          "event_scan_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "sort_nodes": 1000,
+          "generic_delta": 1000,
+          "custom_delta": 0,
+          "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+          "prepare_time": "2026-11-02T07:53:24.259813+00:00"
+        },
+        {
+          "mode": "cache_control",
+          "query": "LeaveDeletedIssueIterationParticipationBatch",
+          "actual_plans": 1000,
+          "notice_duration_ms_sum": 694.49,
+          "event_rows": 3003000,
+          "event_scan_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "sort_nodes": 1000,
+          "generic_delta": 1000,
+          "custom_delta": 0,
+          "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+          "prepare_time": "2026-11-02T07:53:28.054363+00:00"
+        },
+        {
+          "mode": "cache_control",
+          "query": "JoinIterationParticipationBatch",
+          "actual_plans": 1000,
+          "notice_duration_ms_sum": 248.412,
+          "event_rows": 1001000,
+          "event_scan_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "sort_nodes": 1000,
+          "generic_delta": 1000,
+          "custom_delta": 0,
+          "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+          "prepare_time": "2026-11-02T07:53:24.259813+00:00"
+        },
+        {
+          "mode": "after_analyze",
+          "query": "LeaveDeletedIssueIterationParticipationBatch",
+          "actual_plans": 1000,
+          "notice_duration_ms_sum": 23.32,
+          "event_rows": 1000,
+          "event_scan_shapes": {
+            "Index Scan Backward": 1000
+          },
+          "sort_nodes": 0,
+          "generic_delta": 1000,
+          "custom_delta": 0,
+          "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+          "prepare_time": "2026-11-02T07:53:28.054363+00:00"
+        },
+        {
+          "mode": "after_analyze",
+          "query": "JoinIterationParticipationBatch",
+          "actual_plans": 1000,
+          "notice_duration_ms_sum": 12.105,
+          "event_rows": 1000,
+          "event_scan_shapes": {
+            "Index Scan Backward": 1000
+          },
+          "sort_nodes": 0,
+          "generic_delta": 1000,
+          "custom_delta": 0,
+          "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+          "prepare_time": "2026-11-02T07:53:24.259813+00:00"
+        }
+      ],
+      "cache_reset": null
+    },
+    "next-perf-cached-plan-2": {
+      "actual_plans": 8000,
+      "backend_pid": 7356,
+      "canonical_sql_and_parameters_exact": true,
+      "phases": [
+        {
+          "mode": "original",
+          "query": "LeaveDeletedIssueIterationParticipationBatch",
+          "actual_plans": 1000,
+          "notice_duration_ms_sum": 710.095,
+          "event_rows": 3003000,
+          "event_scan_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "sort_nodes": 1000,
+          "generic_delta": 995,
+          "custom_delta": 5,
+          "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+          "prepare_time": "2026-11-02T08:07:42.7741+00:00"
+        },
+        {
+          "mode": "original",
+          "query": "JoinIterationParticipationBatch",
+          "actual_plans": 1000,
+          "notice_duration_ms_sum": 234.867,
+          "event_rows": 1001000,
+          "event_scan_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "sort_nodes": 1000,
+          "generic_delta": 1000,
+          "custom_delta": 0,
+          "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+          "prepare_time": "2026-11-02T08:07:38.881343+00:00"
+        },
+        {
+          "mode": "cache_control",
+          "query": "LeaveDeletedIssueIterationParticipationBatch",
+          "actual_plans": 1000,
+          "notice_duration_ms_sum": 690.996,
+          "event_rows": 3003000,
+          "event_scan_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "sort_nodes": 1000,
+          "generic_delta": 1000,
+          "custom_delta": 0,
+          "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+          "prepare_time": "2026-11-02T08:07:42.7741+00:00"
+        },
+        {
+          "mode": "cache_control",
+          "query": "JoinIterationParticipationBatch",
+          "actual_plans": 1000,
+          "notice_duration_ms_sum": 244.794,
+          "event_rows": 1001000,
+          "event_scan_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "sort_nodes": 1000,
+          "generic_delta": 1000,
+          "custom_delta": 0,
+          "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+          "prepare_time": "2026-11-02T08:07:38.881343+00:00"
+        },
+        {
+          "mode": "reprepare_control",
+          "query": "LeaveDeletedIssueIterationParticipationBatch",
+          "actual_plans": 1000,
+          "notice_duration_ms_sum": 667.284,
+          "event_rows": 3003000,
+          "event_scan_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "sort_nodes": 1000,
+          "generic_delta": 995,
+          "custom_delta": 5,
+          "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+          "prepare_time": "2026-11-02T08:07:48.335758+00:00"
+        },
+        {
+          "mode": "reprepare_control",
+          "query": "JoinIterationParticipationBatch",
+          "actual_plans": 1000,
+          "notice_duration_ms_sum": 236.153,
+          "event_rows": 1001000,
+          "event_scan_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "sort_nodes": 1000,
+          "generic_delta": 995,
+          "custom_delta": 5,
+          "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+          "prepare_time": "2026-11-02T08:07:49.2317+00:00"
+        },
+        {
+          "mode": "after_analyze",
+          "query": "LeaveDeletedIssueIterationParticipationBatch",
+          "actual_plans": 1000,
+          "notice_duration_ms_sum": 16.908,
+          "event_rows": 1000,
+          "event_scan_shapes": {
+            "Index Scan Backward": 1000
+          },
+          "sort_nodes": 0,
+          "generic_delta": 1000,
+          "custom_delta": 0,
+          "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+          "prepare_time": "2026-11-02T08:07:48.335758+00:00"
+        },
+        {
+          "mode": "after_analyze",
+          "query": "JoinIterationParticipationBatch",
+          "actual_plans": 1000,
+          "notice_duration_ms_sum": 11.184,
+          "event_rows": 1000,
+          "event_scan_shapes": {
+            "Index Scan Backward": 1000
+          },
+          "sort_nodes": 0,
+          "generic_delta": 1000,
+          "custom_delta": 0,
+          "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+          "prepare_time": "2026-11-02T08:07:49.2317+00:00"
+        }
+      ],
+      "cache_reset": {
+        "method": "pgx.Conn.DeallocateAll",
+        "pid_unchanged": true,
+        "tables_stats_and_settings_unchanged": true,
+        "prepared_view_empty_after_reset": true
+      }
+    }
+  },
+  "original_p95": "FAIL2171ms>2000ms retained; not rerun"
+}

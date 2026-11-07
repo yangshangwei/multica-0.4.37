@@ -1,0 +1,170 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-21-collaboration-cross-client-execution-1/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-cross-client-execution.spec.ts",
+      "file": "collaboration-cross-client-execution.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "AC33 Web and actual Electron collaborators execute independent A/B namespaces and one coalesced A follow-up",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 300000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 3878,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at readCrossClientIssue (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-cross-client-execution.ts:319:50)\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-cross-client-execution.spec.ts:51:21",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-cross-client-execution.ts",
+                      "column": 50,
+                      "line": 319
+                    },
+                    "snippet": "   at fixtures/collaboration-cross-client-execution.ts:319\n\n  317 |   const issue = await fixture.webActor.client.requestJSON<CollaborationIssue>(rootFor(fixture.issueId));\n  318 |   if (!issue.execution) throw new Error(\"The exact execution projection is missing\");\n> 319 |   expect(issue.execution.execution_gate.enabled).toBe(true);\n      |                                                  ^\n  320 |   expect(issue.creator.user_id).toBe(fixture.webActor.id);\n  321 |   expect(issue.handler.user_id).toBe(fixture.desktopActor.id);\n  322 |   expect(issue.execution.targets).toHaveLength(2);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-cross-client-execution.ts",
+                        "column": 50,
+                        "line": 319
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   at fixtures/collaboration-cross-client-execution.ts:319\n\n  317 |   const issue = await fixture.webActor.client.requestJSON<CollaborationIssue>(rootFor(fixture.issueId));\n  318 |   if (!issue.execution) throw new Error(\"The exact execution projection is missing\");\n> 319 |   expect(issue.execution.execution_gate.enabled).toBe(true);\n      |                                                  ^\n  320 |   expect(issue.creator.user_id).toBe(fixture.webActor.id);\n  321 |   expect(issue.handler.user_id).toBe(fixture.desktopActor.id);\n  322 |   expect(issue.execution.targets).toHaveLength(2);\n    at readCrossClientIssue (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-cross-client-execution.ts:319:50)\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-cross-client-execution.spec.ts:51:21"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:06:16.280Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "electron-failure-responses",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJwYXRoIjogIi9hcGkvY29uZmlnIiwKICAgICJzdGF0dXMiOiAyMDAKICB9LAogIHsKICAgICJwYXRoIjogIi9hcGkvbWUiLAogICAgInN0YXR1cyI6IDIwMAogIH0sCiAgewogICAgInBhdGgiOiAiL2FwaS93b3Jrc3BhY2VzIiwKICAgICJzdGF0dXMiOiAyMDAKICB9LAogIHsKICAgICJwYXRoIjogIi9hcGkvYWRtaW4vbWUiLAogICAgInN0YXR1cyI6IDQwMwogIH0sCiAgewogICAgInBhdGgiOiAiL2FwaS9tZS9jb2xsYWJvcmF0aW9uLW5vdGlmaWNhdGlvbnMiLAogICAgInN0YXR1cyI6IDIwMAogIH0sCiAgewogICAgInBhdGgiOiAiL2FwaS9tZS93b3JrYmVuY2giLAogICAgInN0YXR1cyI6IDIwMAogIH0sCiAgewogICAgInBhdGgiOiAiL2FwaS9jb2xsYWJvcmF0aW9uL2lzc3Vlcy8wMWExOTljYS1mMmQ3LTdkNWQtOTQwOC03MzNiOGI5OTIzNmEiLAogICAgInN0YXR1cyI6IDIwMAogIH0sCiAgewogICAgInBhdGgiOiAiL2FwaS9jb2xsYWJvcmF0aW9uL2lzc3Vlcy8wMWExOTljYS1mMmQ3LTdkNWQtOTQwOC03MzNiOGI5OTIzNmEvbWVtb3J5IiwKICAgICJzdGF0dXMiOiAyMDAKICB9LAogIHsKICAgICJwYXRoIjogIi9hcGkvY29sbGFib3JhdGlvbi9pc3N1ZXMvMDFhMTk5Y2EtZjJkNy03ZDVkLTk0MDgtNzMzYjhiOTkyMzZhL2F0dGFjaG1lbnRzIiwKICAgICJzdGF0dXMiOiAyMDAKICB9LAogIHsKICAgICJwYXRoIjogIi9hcGkvY29sbGFib3JhdGlvbi9pc3N1ZXMvMDFhMTk5Y2EtZjJkNy03ZDVkLTk0MDgtNzMzYjhiOTkyMzZhL2tub3dsZWRnZS1jYW5kaWRhdGVzIiwKICAgICJzdGF0dXMiOiAyMDAKICB9LAogIHsKICAgICJwYXRoIjogIi9hcGkvY29sbGFib3JhdGlvbi9pc3N1ZXMvMDFhMTk5Y2EtZjJkNy03ZDVkLTk0MDgtNzMzYjhiOTkyMzZhL2FjdGl2aXR5IiwKICAgICJzdGF0dXMiOiAyMDAKICB9LAogIHsKICAgICJwYXRoIjogIi9hcGkvY29sbGFib3JhdGlvbi9pc3N1ZXMvMDFhMTk5Y2EtZjJkNy03ZDVkLTk0MDgtNzMzYjhiOTkyMzZhL2NvbW1lbnRzIiwKICAgICJzdGF0dXMiOiAyMDAKICB9LAogIHsKICAgICJwYXRoIjogIi9hcGkvY29sbGFib3JhdGlvbi9pc3N1ZXMvMDFhMTk5Y2EtZjJkNy03ZDVkLTk0MDgtNzMzYjhiOTkyMzZhL21lbnRpb24tdGFyZ2V0cyIsCiAgICAic3RhdHVzIjogMjAwCiAgfSwKICB7CiAgICAicGF0aCI6ICIvYXBpL2NvbGxhYm9yYXRpb24vaXNzdWVzLzAxYTE5OWNhLWYyZDctN2Q1ZC05NDA4LTczM2I4Yjk5MjM2YS9yZWFjdGlvbnMiLAogICAgInN0YXR1cyI6IDIwMAogIH0KXQ=="
+                    },
+                    {
+                      "name": "electron-failure-page",
+                      "contentType": "text/plain",
+                      "body": "V29ya3NwYWNlcwpDb2xsYWJvcmF0aW9uCkNvbGxhYm9yYXRpb24KQ29sbGFib3JhdGlvbgpDdXJyZW50IGhhbmRsaW5nClBhcnRpY2lwYXRpbmcKTmV3IGNvbGxhYm9yYXRpb24gaXNzdWUKTm90aWZpY2F0aW9ucwoxIHVucmVhZAoxIGlzc3VlcwpSZWNlbnRseSB1cGRhdGVkClRpdGxlCkFDMzMgYWN0dWFsIGNyb3NzLWNsaWVudCBleGVjdXRpb24gZjU3ZDljNDA0YjI4NDYKQ3Jvc3MtY2xpZW50IHNvdXJjZQpUb2RvCkNyb3NzLWNsaWVudCBjb2xsYWJvcmF0b3IgQiDCtyBFeHRlcm5hbCBjb2xsYWJvcmF0b3IKQUMzMyBhY3R1YWwgY3Jvc3MtY2xpZW50IGV4ZWN1dGlvbiBmNTdkOWM0MDRiMjg0NgpDb3B5IGxpbmsKU3RhdHVzClRvZG8KSGFuZGxlcgpDcm9zcy1jbGllbnQgY29sbGFib3JhdG9yIEJFeHRlcm5hbCBjb2xsYWJvcmF0b3IKQ3JlYXRvcgpDcm9zcy1jbGllbnQgY29sbGFib3JhdG9yIEEKU291cmNlIHdvcmtzcGFjZQpDcm9zcy1jbGllbnQgc291cmNlCkFkZCBwYXJ0aWNpcGFudApUcmFuc2ZlcgpSZXF1ZXN0IGluZm9ybWF0aW9uClN1Ym1pdCBmb3IgYWNjZXB0YW5jZQpDaGFuZ2Ugc3RhdHVzCkVkaXQgaXNzdWUKUGFydGljaXBhbnRzCkRlc2NyaXB0aW9uCgpUd28gaW5kZXBlbmRlbnQgdGVzdC1vd25lZCBMaW51eCBuYW1lc3BhY2VzIGFuZCB0d28gYWN0dWFsIGh1bWFuIGNvbGxhYm9yYXRvcnMuIFN5bnRoZXRpYyBzdGRsaWIgcHJvdmlkZXIgb25seS4KClByaW9yaXR5Ck5vIHByaW9yaXR5ClN0YXJ0IGRhdGUKTm9uZQpEdWUgZGF0ZQpOb25lCkxhYmVscwpOb25lClByb2plY3QKTm9uZQpQYXJlbnQgaXNzdWUKTm9uZQpTdGFnZSB1bmRlciBwYXJlbnQKTm9uZQpJdGVyYXRpb24KTm9uZQpTdWItaXNzdWVzCgpObyBzdWItaXNzdWVzLgoKQXR0YWNobWVudHMKCkRlbGl2ZXJlZCBmaWxlcyByZW1haW4gb24gdGhpcyBpc3N1ZSB3aGVuIGEgY29tbWVudCBvciBpdHMgZmlsZSByZWZlcmVuY2UgaXMgcmVtb3ZlZC4KCk5vIGZpbGVzIGRlbGl2ZXJlZCB5ZXQuCgpBdHRhY2ggZmlsZXMKQUkgZXhlY3V0aW9uCgpOZXcgQUkgZXhlY3V0aW9uIGlzIGRpc2FibGVkLgoKU3RvcHBpbmcgb3IgcmVzdW1pbmcgYSB0YXJnZXQgYWZmZWN0cyBldmVyeSB0YXJnZXQgaW4gaXRzIGV4ZWN1dGlvbiBsYW5lLgoKUGF1c2VkCgpTdG9wIGFsbApSZXN1bWUgYWxsCk1hbmFnZSBBSSByZXNvdXJjZXMKRXhlY3V0aW9uIGxhbmUgMQpQYXVzZWQKQWdlbnQKM2JjNTE0ZjktZDhiOS00NTI5LTlkMDItODJhMjEwZDhiMGU0CgpBd2FpdGluZyBpbml0aWFsIGF1dGhvcml6YXRpb24KClN0b3AgdGFyZ2V0ClJlc3VtZSB0YXJnZXQKU3dpdGNoIHByb3Bvc2FscwpFeGVjdXRpb24gbGFuZSAyClBhdXNlZApBZ2VudAoyMGUzNDE2YS1iOWEyLTQ5MjctYmJiMy03ZGE4MmM1YWQ1NzYKCkF3YWl0aW5nIGluaXRpYWwgYXV0aG9yaXphdGlvbgoKU3RvcCB0YXJnZXQKUmVzdW1lIHRhcmdldApTd2l0Y2ggcHJvcG9zYWxzCkNvbW1hbmQgaGlzdG9yeQpTaGFyZWQgY29udGV4dAoKVGhlIGN1cnJlbnQgc3RhdGUgb2YgdGhpcyBpc3N1ZSwga2VwdCB1cCB0byBkYXRlIGJ5IGFnZW50cyBhY3Jvc3MgbWFjaGluZXMgYW5kIGFjY291bnRzLiBQYXJ0aWNpcGFudHMgd2hvIGNhbiBjb250cm9sIEFJIG1heSBjb3JyZWN0IGl0LgoKdjAgwrcgMCBvZiAxMzEwNzIgYnl0ZXMKCkVkaXQgc2hhcmVkIGNvbnRleHQKCk5vIHNoYXJlZCBjb250ZXh0IHlldC4gQWdlbnRzIGFkZCBmaW5kaW5ncywgZGVjaXNpb25zIGFuZCBuZXh0IHN0ZXBzIGhlcmUgYXMgdGhleSB3b3JrLgoKVmVyc2lvbiBoaXN0b3J5Cktub3dsZWRnZSBjYW5kaWRhdGVzCgpQcm9wb3NlIGEgcmV1c2FibGUgY29uY2x1c2lvbiB3aXRoIHNvdXJjZXMuIEh1bWFuIGFwcHJvdmFsIGNvbnRyb2xzIHdoZXJlIGl0IG1heSBiZSB1c2VkLgoKUHJvcG9zZSBrbm93bGVkZ2UKCk5vIGNhbmRpZGF0ZXMgeWV0LiBQcm9wb3NlIGEgY29uY2x1c2lvbiB3aGVuIGl0cyBzb3VyY2VzIGFyZSByZWFkeS4KCkFjdGl2aXR5CkFjdGl2aXR5IHJlY29yZGVkCkNyb3NzLWNsaWVudCBjb2xsYWJvcmF0b3IgQgoyMDI2LzExLzIgMDk6MDY6MTcKCkRldGFpbGVkIHJlY29yZHMgYXJlIHVuYXZhaWxhYmxlIGZvciB0aGlzIGV2ZW50LgoKQWN0aXZpdHkgcmVjb3JkZWQKQ3Jvc3MtY2xpZW50IGNvbGxhYm9yYXRvciBBCjIwMjYvMTEvMiAwOTowNjoxNwoKRGV0YWlsZWQgcmVjb3JkcyBhcmUgdW5hdmFpbGFibGUgZm9yIHRoaXMgZXZlbnQuCgpBY3Rpdml0eSByZWNvcmRlZApDcm9zcy1jbGllbnQgY29sbGFib3JhdG9yIEEKMjAyNi8xMS8yIDA5OjA2OjE3CgpEZXRhaWxlZCByZWNvcmRzIGFyZSB1bmF2YWlsYWJsZSBmb3IgdGhpcyBldmVudC4KCkFjdGl2aXR5IHJlY29yZGVkCkNyb3NzLWNsaWVudCBjb2xsYWJvcmF0b3IgQgoyMDI2LzExLzIgMDk6MDY6MTcKCkRldGFpbGVkIHJlY29yZHMgYXJlIHVuYXZhaWxhYmxlIGZvciB0aGlzIGV2ZW50LgoKQWN0aXZpdHkgcmVjb3JkZWQKQ3Jvc3MtY2xpZW50IGNvbGxhYm9yYXRvciBBCjIwMjYvMTEvMiAwOTowNjoxNwoKRGV0YWlsZWQgcmVjb3JkcyBhcmUgdW5hdmFpbGFibGUgZm9yIHRoaXMgZXZlbnQuCgpBY3Rpdml0eSByZWNvcmRlZApDcm9zcy1jbGllbnQgY29sbGFib3JhdG9yIEEKMjAyNi8xMS8yIDA5OjA2OjE3CgpEZXRhaWxlZCByZWNvcmRzIGFyZSB1bmF2YWlsYWJsZSBmb3IgdGhpcyBldmVudC4KCkFjdGl2aXR5IHJlY29yZGVkCkNyb3NzLWNsaWVudCBjb2xsYWJvcmF0b3IgQQoyMDI2LzExLzIgMDk6MDY6MTcKCkRldGFpbGVkIHJlY29yZHMgYXJlIHVuYXZhaWxhYmxlIGZvciB0aGlzIGV2ZW50LgoKQWN0aXZpdHkgcmVjb3JkZWQKQ3Jvc3MtY2xpZW50IGNvbGxhYm9yYXRvciBBCjIwMjYvMTEvMiAwOTowNjoxNwoKRGV0YWlsZWQgcmVjb3JkcyBhcmUgdW5hdmFpbGFibGUgZm9yIHRoaXMgZXZlbnQuCgpJc3N1ZSBjcmVhdGVkCkNyb3NzLWNsaWVudCBjb2xsYWJvcmF0b3IgQQoyMDI2LzExLzIgMDk6MDY6MTYKQ29tbWVudHMKCk5vIGNvbW1lbnRzIHlldC4KCkxvYWRlZCAwIG9mIDAgY29tbWVudHMKCkFkZCBjb21tZW50CgpQZW9wbGUKCkBhbGwgwrcgQWxsIHBhcnRpY2lwYW50cwpDcm9zcy1jbGllbnQgY29sbGFib3JhdG9yIEIKQ3Jvc3MtY2xpZW50IGNvbGxhYm9yYXRvciBBCgpBSSB0YXJnZXRzCgpJbmRlcGVuZGVudCBleGVjdXRpb24gYWdlbnQgQgpJbmRlcGVuZGVudCBleGVjdXRpb24gYWdlbnQgQQpBdHRhY2htZW50cwoKRmlsZXMgc3RheSBwcml2YXRlLiBPbmx5IHNlbGVjdGVkIGZpbGVzIGFyZSBzaGFyZWQgd2hlbiB5b3Ugc3VibWl0LgoKQXR0YWNoIGZpbGVzClByZXZpZXcgZGVsaXZlcnkKU2VuZCBjb21tZW50"
+                    },
+                    {
+                      "name": "cross-client-execution-identities",
+                      "contentType": "application/json",
+                      "body": "ewogICJjcml0ZXJpb24iOiAiQUMzMyIsCiAgImlzc3VlX2lkIjogIjAxYTE5OWNhLWYyZDctN2Q1ZC05NDA4LTczM2I4Yjk5MjM2YSIsCiAgIndlYl9hY3Rvcl9pZCI6ICJmMTEyOTMyNC02NzJlLTQ5NGQtOWI5My0zMDc1NGE5MDZjMDkiLAogICJlbGVjdHJvbl9hY3Rvcl9pZCI6ICIwN2UyYjYyZS00ZDU4LTQ3ZDktYTY4MC0zZjgzNDYyZjU0YmMiLAogICJlbnZpcm9ubWVudCI6IHsKICAgICJhcGkiOiAiaHR0cDovL2xvY2FsaG9zdDoxODkyMCIsCiAgICAicHJvZHVjdGlvbl93ZWIiOiAiaHR0cDovL2xvY2FsaG9zdDoxMzg0MCIsCiAgICAiZWxlY3Ryb25fcmVuZGVyZXIiOiAiaHR0cDovL2xvY2FsaG9zdDoxOTg2MCIsCiAgICAiZWxlY3Ryb25fb3MiOiAiZGFyd2luIiwKICAgICJleGVjdXRpb25fb3MiOiAiTGludXggYXJtNjQgRG9ja2VyIHdpdGggYWN0dWFsIGtlcm5lbCBQSUQgbmFtZXNwYWNlcyIsCiAgICAicHJvdmlkZXIiOiAiZXhwbGljaXQgc3RkbGliIHRlc3QtY3JlYXRlZCBleGVjdXRhYmxlIgogIH0sCiAgInNvdXJjZSI6IFsKICAgIHsKICAgICAgInBhdGgiOiAiZTJlL2ZpeHR1cmVzL2NvbGxhYm9yYXRpb24tY3Jvc3MtY2xpZW50LWV4ZWN1dGlvbi50cyIsCiAgICAgICJzaGEyNTYiOiAiZWFiNDYwYzI2ODFjOTU2OTZlYTkwMDM0ZWQ2M2IzNGZjNTIzMTY5YmYyZDEwZDE1MWMwNzljOThjZGRhNmM0MCIKICAgIH0sCiAgICB7CiAgICAgICJwYXRoIjogImUyZS9jb2xsYWJvcmF0aW9uLWNyb3NzLWNsaWVudC1leGVjdXRpb24uc3BlYy50cyIsCiAgICAgICJzaGEyNTYiOiAiMzQ4NTY2MjgyNmIyYWZjOWFiODJkYWRiYmUzZTNkNzFkZmFkNmJjYjljM2JlZTljNDQxOWM2M2E2ZDNiNTQxNiIKICAgIH0sCiAgICB7CiAgICAgICJwYXRoIjogImUyZS9maXh0dXJlcy9jb2xsYWJvcmF0aW9uLWNyb3NzLWNsaWVudC1wcm92aWRlci5nbyIsCiAgICAgICJzaGEyNTYiOiAiMzU2ZGZhYjQ5MWM1NWUwNjQ3ZTE1MjNlMzAzMzRjODA0M2M1OTdjMjQyNmUwNDVjYTIyZGQyNTU0NWYxN2M4OCIKICAgIH0sCiAgICB7CiAgICAgICJwYXRoIjogIi9Wb2x1bWVzL2FydGlzYW4vY29kZS8yMDI2L211bHRpY2EtMC40LjM3Ly5vbXgvcHJpdmF0ZS9icmFuY2gtZnVuY3Rpb25hbC1yZWdyZXNzaW9uLTIwMjYxMTAyL2ZpeHR1cmUtYmluL2xpbnV4LWhvc3QtZGFlbW9uLnRlc3QiLAogICAgICAic2hhMjU2IjogIjcwMTExMTk2ZDZhODIyYTBiZmRkNWVjNTVmNTQxY2FmMDMyOTE2NzU4MWYwYjgwMmQ3ZjA4YmI3ZjYyMGU2YmUiCiAgICB9LAogICAgewogICAgICAicGF0aCI6ICIvVm9sdW1lcy9hcnRpc2FuL2NvZGUvMjAyNi9tdWx0aWNhLTAuNC4zNy8ub214L3ByaXZhdGUvYnJhbmNoLWZ1bmN0aW9uYWwtcmVncmVzc2lvbi0yMDI2MTEwMi9maXh0dXJlLWJpbi9saW51eC1jcm9zcy1jbGllbnQtcHJvdmlkZXIiLAogICAgICAic2hhMjU2IjogIjE2OTQ1Y2NiMWY3NDFkMWY1Mzc2NGNhOTNlNjIzOTY4NjM5NTg4YzVhMDY1MDhlYzYyOWNiNjZhOGNiMGNiOWEiCiAgICB9CiAgXSwKICAicmVzb3VyY2VzIjogWwogICAgewogICAgICAibGFuZSI6ICJBIiwKICAgICAgImFnZW50X2lkIjogIjIwZTM0MTZhLWI5YTItNDkyNy1iYmIzLTdkYTgyYzVhZDU3NiIsCiAgICAgICJ0YXJnZXRfaWQiOiAiODMzMmEzNzQtNmM3Zi00NTM0LWI1ZWEtMGY2MGUxN2U1Nzg3IiwKICAgICAgImNoYW5uZWxfaWQiOiAiZWQyNGQ1NTItYjhmYy00OTk2LWExYWItYzVjNjBjZTQ1OWZiIiwKICAgICAgIm93bmVyX2lkIjogImYxMTI5MzI0LTY3MmUtNDk0ZC05YjkzLTMwNzU0YTkwNmMwOSIsCiAgICAgICJydW50aW1lX2lkIjogIjRkZTVmNGJiLWRjMmItNDVhYS05ZjU2LTU4Nzc3NmI4NjJjOCIsCiAgICAgICJ3b3Jrc3BhY2VfaWQiOiAiMzkyZGU2ZDUtNGNhNi00MmQ3LWIyM2QtNTU2OGY5OGUyZWZkIiwKICAgICAgImluc3RhbGxhdGlvbl9pZCI6ICI4NWMzZGY5OS0yOTUxLTQ5YWEtYWI2MC1iZmEwM2JkZTVlMmMiLAogICAgICAiYmluZGluZ19pZCI6ICI1OGI0MTlmZS03MTM5LTQ5OWQtYWNiNy02ZTU4MmFkNmRkM2EiCiAgICB9LAogICAgewogICAgICAibGFuZSI6ICJCIiwKICAgICAgImFnZW50X2lkIjogIjNiYzUxNGY5LWQ4YjktNDUyOS05ZDAyLTgyYTIxMGQ4YjBlNCIsCiAgICAgICJ0YXJnZXRfaWQiOiAiMTc1MWY3MTEtYmYwZi00ZDk0LTg0ODQtMjZlNTU2OTExYzMxIiwKICAgICAgImNoYW5uZWxfaWQiOiAiNWJjNGUyNGUtMTI4Ni00YWQ3LTk2ZjItZTkzYzk0MTNlOTdmIiwKICAgICAgIm93bmVyX2lkIjogIjA3ZTJiNjJlLTRkNTgtNDdkOS1hNjgwLTNmODM0NjJmNTRiYyIsCiAgICAgICJydW50aW1lX2lkIjogIjdhODc1ODMxLTVjNzUtNDRhZS1hOGFlLTcyZmJkODE5M2JlYSIsCiAgICAgICJ3b3Jrc3BhY2VfaWQiOiAiNjYxNTJkMTktMzY0YS00ZTlmLWExMzktY2RjMGUyMzQ3ZTc0IiwKICAgICAgImluc3RhbGxhdGlvbl9pZCI6ICI5N2Y5ODM5OC0zMjIyLTQwMjYtYmE2Yi03MDBhN2Y3YTNkYmMiLAogICAgICAiYmluZGluZ19pZCI6ICJhOTdjZGY0MS1mOGI0LTQyYWQtOTM1Ny03MTc5Zjk4OGZlODkiCiAgICB9CiAgXSwKICAid2ViX2Vycm9ycyI6IFtdLAogICJjbGllbnRfd3JpdGVzIjogW10KfQ=="
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-21-collaboration-cross-client-execution-1/artifacts/collaboration-cross-client-5618d-d-one-coalesced-A-follow-up-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-21-collaboration-cross-client-execution-1/artifacts/collaboration-cross-client-5618d-d-one-coalesced-A-follow-up-chromium/test-failed-2.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-21-collaboration-cross-client-execution-1/artifacts/collaboration-cross-client-5618d-d-one-coalesced-A-follow-up-chromium/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-21-collaboration-cross-client-execution-1/artifacts/collaboration-cross-client-5618d-d-one-coalesced-A-follow-up-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-cross-client-execution.ts",
+                    "column": 50,
+                    "line": 319
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "33392745d96a6bf05c15-ec9822c3a1d5a7fd89a0",
+          "file": "collaboration-cross-client-execution.spec.ts",
+          "line": 16,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T01:06:15.803Z",
+    "duration": 4827.606,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

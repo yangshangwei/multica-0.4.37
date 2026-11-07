@@ -1,0 +1,138 @@
+{
+  "at": "2026-11-02T03:43:19.977522+00:00",
+  "reviewer": "independent trellis-check child",
+  "status": "PASS_WITH_NOTES_OPEN_ACCEPTANCE_GATES",
+  "scope": "Read-only review of new diagnostic, distribution/manual upgrade, actual Main runtime and platform handoff; only this review report/json written.",
+  "artifact_sha256": {
+    "evidence/next-perf-analysis-1/sample-analysis.json": "1e21c1d0b8f86f0403052f40efe10f85df112a973080686b8263dc60129629e1",
+    "evidence/next-perf-analysis-1/original-measurements.json": "3f935d018f92c993c101f9bcc00f77cfa299164fbebb87198ba1e9d138d617bf",
+    "evidence/next-perf-environment-1/run.json": "91a950518ece0f3baf2cf3044c6c56f30c481aded0951bb500f6a7c90195189c",
+    "evidence/next-perf-probe-1/run.json": "3d26dc081eaa9de7dd278957a83e7b2e4e5f245301ce3bf032e62b733d1f5e14",
+    "evidence/next-perf-probe-1/phase-metrics.json": "a3f59948352fc441368a83152df4c41cce9672facadb8685abd0b22ba9d99ba3",
+    "evidence/next-perf-probe-1/diagnostic_test.go.txt": "25ce33f1a2f5a4848c18a8d2f379b49943a2f0c88c9414b720a022d2a02dafbe",
+    "evidence/next-perf-probe-1/verification.json": "3a405b8cd6a4364fd6b1671d1efcc6e83252426ff1e2981bb0dabd7de730a1b6",
+    "evidence/next-mac-upgrade-1/run.json": "a6c5e4783c3f1666755dbe50769f3f5dde29f14926f92124e83b1c13911faba1",
+    "evidence/next-mac-upgrade-1/verification.json": "ea6a3c5843efbf486e4a66c9aa23e51e2525d4f631abe84ffb0bcea1c9652976",
+    "evidence/next-mac-runtime-1/run.json": "733cd35a478513aa8f66ec28f957c214c5b654065320eadb6ea39bc5a53afc84",
+    "research/perf-code-diagnosis-1.md": "8fe467f0088b7485f740f179a6cd599ed7dbb07ae2d0fc5b571c988d583771f8",
+    "research/perf-phase-probe-1.md": "83cde52759e43efdec68b7accbacc5bf031e3f63c3cc191263a6f4eb56f20d34",
+    "research/mac-upgrade-acceptance-1.md": "979c272b514f769fbcdd71afc68573b2318b208bf2e0d8e4108c79cb79ac3fc3",
+    "research/mac-runtime-upgrade-1.md": "ad46ac7b22a18f14c046cbbcaeb5adaaa5d1eb19507561058d1935d3a2992bc9",
+    "research/remaining-platform-handoff-1.md": "985aa4b9af0d655a4f5265e187f87909c4965a79e08c2cac814c7f6d83c0f2cb",
+    "evidence/next-mac-runtime-2/run.json": "36a782603d07bfd56d505a83d0506912c9dae084b876ce93f4ef3d80d9862463",
+    "evidence/next-mac-runtime-2/driver-source.mjs.txt": "0205d781535b36e64290202fffd1c97bf0db9cd45c50ce708a9fdfc92cda1a4a",
+    "evidence/next-mac-runtime-2/candidate.png": "c8c246d778faa55492399a08b8435ddafd8140baa370f20fa4cd403e57cb4c2e"
+  },
+  "performance": {
+    "checks_passed": [
+      "raw command/output/metric/test hashes",
+      "unchanged candidate+frozen test+preexisting source diff",
+      "additive virtual test absent on disk",
+      "3053standalone counts and aggregate sum",
+      "7phases/7000statements and batch total",
+      "no query/batch duration double count in actual pgx SendBatch implementation",
+      "residual arithmetic",
+      "1000active reads/2000participation reads",
+      "original2171msP95 FAIL retained"
+    ],
+    "handler_ms": 2396.832334,
+    "batch_total_ms": 1279.291707,
+    "query_total_ms": 986.8559869999997,
+    "p95_gate_not_rerun": true,
+    "original_tail_cause_proven": false,
+    "diagnostic_db_connections_after": 0,
+    "database_read_by_reviewer": false
+  },
+  "mac_files": {
+    "assertions_passed": 24,
+    "commands_exit0": 16,
+    "command_stream_hashes_matched": 32,
+    "dirty_baseline_scope_retained": true
+  },
+  "mac_runtime": {
+    "actual_versions": [
+      "0.6.5-185-g61ff581d2-dirty",
+      "0.6.8-rc.20261102"
+    ],
+    "real_packaged_main": true,
+    "isolated_home_userdata": true,
+    "synthetic_config_and_preload_reads": true,
+    "old_renderer_localstorage_retained": true,
+    "normal_password_form_readiness": "NOT_PROVEN_CONFIG_FIXTURE_INCOMPLETE",
+    "business_login_credentials_auto_update": "NOT_RUN",
+    "signing_notarization": "OPEN",
+    "protocol_before_equals_final": true,
+    "fresh_readonly_protocol_same_as_before": true,
+    "fresh_owned_processes_remaining": [],
+    "fresh_synthetic_listener": {
+      "port": 58786,
+      "lsof_exit_code": 1,
+      "stdout": ""
+    },
+    "fresh_owned_protocol_registrations": []
+  },
+  "findings": [
+    {
+      "id": "R1",
+      "severity": "note",
+      "file": "research/remaining-platform-handoff-1.md:24",
+      "status": "corrected_by_coordinator",
+      "issue": "Windows all-flags command uses the feature-capable0.5.2-rc.11.1 baseline; stablev0.5.1 download is skipped when business acceptance is true. The unconditional stable baseline prerequisite is inaccurate.",
+      "evidence": [
+        ".github/workflows/desktop-smoke.yml:220",
+        ".github/workflows/desktop-smoke.yml:233"
+      ],
+      "recommendation": "State v0.5.1 installer/checksum applies only to windows_business_acceptance=false.",
+      "resolution": "Windows stable previous_tag prerequisite now explicitly limited to business=false lane."
+    },
+    {
+      "id": "R2",
+      "severity": "note",
+      "file": "evidence/next-mac-runtime-1/candidate.png",
+      "status": "addressed_in_new_run_original_limitation_retained",
+      "issue": "The synthetic config lacks password_auth_available=true; both captured startup screens show the authentication configuration error. This does not invalidate Main/version/config/IPC/localStorage retention evidence, but does not prove normal password-form readiness.",
+      "evidence": [
+        "packages/core/api/schemas.ts:1011",
+        "packages/views/auth/login-page.tsx:130"
+      ],
+      "recommendation": "Keep current pass scoped to Main/config/IPC/storage. Explicitly document fixture error; if normal auth-screen readiness is wanted, correct synthetic config and create a new distinct run without replacing run1.",
+      "resolution": "runtime-2 corrects synthetic password capability; both real forms visible; runtime-1 error screenshot and limit retained."
+    },
+    {
+      "id": "R3",
+      "severity": "note",
+      "file": "research/mac-runtime-upgrade-1.md",
+      "status": "addressed_in_current_report",
+      "issue": "Renderer HTTP request observation begins after firstWindow. It cannot prove all startup egress was restricted.",
+      "recommendation": "The current report now explicitly limits the observation window; retain that language."
+    }
+  ],
+  "lint": "NOT_RUN_NO_PRODUCT_CODE_CHANGE",
+  "typecheck": "NOT_RUN_NO_PRODUCT_CODE_CHANGE",
+  "tests": "No product tests rerun by reviewer; saved actual diagnostic/runtime outputs and source were independently checked",
+  "git_diff_check": "PASS",
+  "product_fixes": 0,
+  "new_dependencies": 0,
+  "supplemental_review_at": "2026-11-02T03:45:29.884424+00:00",
+  "mac_runtime_2": {
+    "state": "PASS_SCOPED_ACTUAL_MAIN_CONFIG_IPC_STORAGE_PASSWORD_FORM",
+    "source_record_sha256": "36a782603d07bfd56d505a83d0506912c9dae084b876ce93f4ef3d80d9862463",
+    "driver_sha256": "0205d781535b36e64290202fffd1c97bf0db9cd45c50ce708a9fdfc92cda1a4a",
+    "actual_versions": [
+      "0.6.5-185-g61ff581d2-dirty",
+      "0.6.8-rc.20261102"
+    ],
+    "both_password_forms_visible": true,
+    "candidate_screenshot_visually_verified": true,
+    "before_final_protocol_equal": true,
+    "fresh_protocol_query_matches_original": true,
+    "fresh_owned_runtime_processes_remaining": [],
+    "fresh_synthetic_listener": {
+      "port": 60790,
+      "lsof_exit_code": 1,
+      "stdout": ""
+    },
+    "real_business_login_credential_migration_auto_updater": "NOT_RUN",
+    "signing_notarization": "OPEN"
+  }
+}

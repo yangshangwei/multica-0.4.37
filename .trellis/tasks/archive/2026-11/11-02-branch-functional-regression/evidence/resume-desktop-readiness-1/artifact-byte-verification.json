@@ -1,0 +1,87 @@
+{
+  "at": "2026-11-02T02:20:58.682486+00:00",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "artifact_build_source": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "product_trees": {
+    "server": {
+      "candidate": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+      "artifact_build_source": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+      "equal": true
+    },
+    "apps": {
+      "candidate": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+      "artifact_build_source": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+      "equal": true
+    },
+    "packages": {
+      "candidate": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292",
+      "artifact_build_source": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292",
+      "equal": true
+    }
+  },
+  "checks": [
+    {
+      "platform": "mac",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Resources/app.asar",
+      "expected_sha256": "128ff6f87dc18b78355ee5161171a86ec7828b18d5b87751d0f8142dd81b8485",
+      "actual_sha256": "128ff6f87dc18b78355ee5161171a86ec7828b18d5b87751d0f8142dd81b8485",
+      "bytes": 480973982,
+      "matches": true
+    },
+    {
+      "platform": "mac",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/MacOS/Multica",
+      "expected_sha256": "a46d907fc69ec527d1653bb0c231f9a569b4e255ae3f94bf0736f5abcbd9ebd0",
+      "actual_sha256": "a46d907fc69ec527d1653bb0c231f9a569b4e255ae3f94bf0736f5abcbd9ebd0",
+      "bytes": 53312,
+      "matches": true
+    },
+    {
+      "platform": "mac",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/MacOS/multica",
+      "expected_sha256": "a46d907fc69ec527d1653bb0c231f9a569b4e255ae3f94bf0736f5abcbd9ebd0",
+      "actual_sha256": "a46d907fc69ec527d1653bb0c231f9a569b4e255ae3f94bf0736f5abcbd9ebd0",
+      "bytes": 53312,
+      "matches": true
+    },
+    {
+      "platform": "mac",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Resources/app.asar.unpacked/resources/bin/multica",
+      "expected_sha256": "706b6ac4fcef6fb41493785c0ac70d4ea3b1886efcd817882305eb5ab272a475",
+      "actual_sha256": "706b6ac4fcef6fb41493785c0ac70d4ea3b1886efcd817882305eb5ab272a475",
+      "bytes": 30054688,
+      "matches": true
+    },
+    {
+      "platform": "linux",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/linux-arm64-dir/linux-arm64-unpacked/resources/app.asar",
+      "expected_sha256": "a0d9aede77480b1692b917406c9b23fba1548d34d9e26807ca1e833cf173acc9",
+      "actual_sha256": "a0d9aede77480b1692b917406c9b23fba1548d34d9e26807ca1e833cf173acc9",
+      "bytes": 480973982,
+      "matches": true
+    },
+    {
+      "platform": "linux",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/linux-arm64-dir/linux-arm64-unpacked/resources/app.asar.unpacked/resources/bin/multica",
+      "expected_sha256": "d616e35c73aff287210eb6d33c8be69e4420c8f6362466ed0f1db5bef07085f2",
+      "actual_sha256": "d616e35c73aff287210eb6d33c8be69e4420c8f6362466ed0f1db5bef07085f2",
+      "bytes": 29436010,
+      "matches": true
+    },
+    {
+      "platform": "linux",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/linux-arm64-dir/linux-arm64-unpacked/multica-desktop",
+      "expected_sha256": "379334fb6707615062d32fcc481a8a8d3140938531378ccba14f3fa169665043",
+      "actual_sha256": "379334fb6707615062d32fcc481a8a8d3140938531378ccba14f3fa169665043",
+      "bytes": 191696160,
+      "matches": true
+    }
+  ],
+  "mac_info_plist": {
+    "CFBundleExecutable": "Multica",
+    "CFBundleIdentifier": "ai.multica.desktop",
+    "CFBundleName": "Multica",
+    "CFBundleShortVersionString": "0.6.8-rc.20261102",
+    "CFBundleVersion": "0.6.8-rc.20261102"
+  }
+}

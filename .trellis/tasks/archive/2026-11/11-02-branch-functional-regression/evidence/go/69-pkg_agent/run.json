@@ -1,0 +1,87 @@
+{
+  "name": "69-pkg_agent",
+  "kind": "package",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout=40m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-json",
+    "github.com/multica-ai/multica/server/pkg/agent"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "started_at": "2026-11-02T00:56:45.694419+00:00",
+  "state": "complete",
+  "database": null,
+  "environment_keys": [
+    "GOCACHE",
+    "GOMODCACHE",
+    "GOPATH",
+    "GOTOOLCHAIN",
+    "HOME",
+    "LANG",
+    "LC_ALL",
+    "LOGNAME",
+    "MULTICA_DSH_PATH",
+    "MULTICA_KNOWLEDGE_CONTEXT_ENABLED",
+    "NVM_DIR",
+    "PATH",
+    "PGCONNECT_TIMEOUT",
+    "REDIS_TEST_URL",
+    "SHELL",
+    "TEMP",
+    "TMP",
+    "TMPDIR",
+    "USER"
+  ],
+  "real_provider_authorization": false,
+  "permit_env_sha256": "3152167917f1514b5c03da0e21f7c83e5f4153c38c4b96edd9531fe8c1e07b80",
+  "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/69.env",
+  "exit_code": 0,
+  "finished_at": "2026-11-02T01:01:15.862106+00:00",
+  "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "top_level": {
+    "pass": 1221,
+    "fail": 0,
+    "skip": 3
+  },
+  "subtests": {
+    "pass": 730,
+    "fail": 0,
+    "skip": 1
+  },
+  "package_outcome": "pass",
+  "no_named_tests": false,
+  "failed_tests": [],
+  "skips": [
+    {
+      "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+      "output": "=== RUN   TestACPManagedTerminalPreservesWindowsUnicodeShellOutput\n    acp_terminal_test.go:89: Windows cmd.exe code-page behavior only applies on Windows\n--- SKIP: TestACPManagedTerminalPreservesWindowsUnicodeShellOutput (0.00s)\n"
+    },
+    {
+      "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+      "output": "=== RUN   TestCodexExecuteRetriesAfterSignaledProcessIsReaped\n    codex_test.go:3198: Linux signal/reap semantics regression\n--- SKIP: TestCodexExecuteRetriesAfterSignaledProcessIsReaped (0.00s)\n"
+    },
+    {
+      "test": "TestPiExecuteAttachesStdinPipe",
+      "output": "=== RUN   TestPiExecuteAttachesStdinPipe\n=== PAUSE TestPiExecuteAttachesStdinPipe\n=== CONT  TestPiExecuteAttachesStdinPipe\n    pi_test.go:226: stdin fd inspection relies on /proc/self/fd/0\n--- SKIP: TestPiExecuteAttachesStdinPipe (0.00s)\n"
+    },
+    {
+      "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+      "output": "=== RUN   TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors\n=== PAUSE TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors\n=== CONT  TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors\n    claude_test.go:756: root-only preflight assertion\n--- SKIP: TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors (0.00s)\n"
+    }
+  ],
+  "stdout_sha256": "743d92b8966f81732f5aa6ad2531502c335f87f3fb74a1813a8e0e29cfd05e7f",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

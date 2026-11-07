@@ -1,0 +1,150 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/legacy-memory-replay-1/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-memory-web.spec.ts",
+      "file": "collaboration-memory-web.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 18478,
+                  "error": {
+                    "message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#memory').getByRole('button', { name: 'Purge v2', exact: true })\u001b[22m\n",
+                    "stack": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#memory').getByRole('button', { name: 'Purge v2', exact: true })\u001b[22m\n\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-memory-web.spec.ts:84:72",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-memory-web.spec.ts",
+                      "column": 72,
+                      "line": 84
+                    },
+                    "snippet": "  82 |     await expect(panel.getByRole(\"button\", { name: /^Restore v/ })).toHaveCount(0);\n  83 |     await expect(panel).toContainText(\"This issue is closed, so its shared context is read-only.\");\n> 84 |     await panel.getByRole(\"button\", { name: \"Purge v2\", exact: true }).click();\n     |                                                                        ^\n  85 |     const purge = page.getByRole(\"alertdialog\", { name: \"Purge the text of v2?\", exact: true });\n  86 |     await expect(purge).toBeVisible();\n  87 |     await expect(purge.getByRole(\"button\", { name: \"Purge text\", exact: true })).toBeDisabled();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-memory-web.spec.ts",
+                        "column": 72,
+                        "line": 84
+                      },
+                      "message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#memory').getByRole('button', { name: 'Purge v2', exact: true })\u001b[22m\n\n\n  82 |     await expect(panel.getByRole(\"button\", { name: /^Restore v/ })).toHaveCount(0);\n  83 |     await expect(panel).toContainText(\"This issue is closed, so its shared context is read-only.\");\n> 84 |     await panel.getByRole(\"button\", { name: \"Purge v2\", exact: true }).click();\n     |                                                                        ^\n  85 |     const purge = page.getByRole(\"alertdialog\", { name: \"Purge the text of v2?\", exact: true });\n  86 |     await expect(purge).toBeVisible();\n  87 |     await expect(purge.getByRole(\"button\", { name: \"Purge text\", exact: true })).toBeDisabled();\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-memory-web.spec.ts:84:72"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:40:01.896Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/legacy-memory-replay-1/artifacts/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/legacy-memory-replay-1/artifacts/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/test-failed-2.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/legacy-memory-replay-1/artifacts/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-memory-web.spec.ts",
+                    "column": 72,
+                    "line": 84
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "dcd11c08b0fd8fcf1cf6-b4f252a185d9bd67c4c0",
+          "file": "collaboration-memory-web.spec.ts",
+          "line": 7,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T00:40:01.121Z",
+    "duration": 20044.142,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

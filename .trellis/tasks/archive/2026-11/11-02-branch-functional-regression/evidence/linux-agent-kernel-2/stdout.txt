@@ -1,0 +1,23 @@
+=== RUN   TestClaudeRootSudoPreflight
+=== PAUSE TestClaudeRootSudoPreflight
+=== RUN   TestCodexExecuteRetriesAfterSignaledProcessIsReaped
+--- PASS: TestCodexExecuteRetriesAfterSignaledProcessIsReaped (0.17s)
+=== RUN   TestPiExecuteAttachesStdinPipe
+=== PAUSE TestPiExecuteAttachesStdinPipe
+=== CONT  TestClaudeRootSudoPreflight
+=== RUN   TestClaudeRootSudoPreflight/sandbox_bypass_allowed
+=== PAUSE TestClaudeRootSudoPreflight/sandbox_bypass_allowed
+=== RUN   TestClaudeRootSudoPreflight/non_bypass_allowed
+=== PAUSE TestClaudeRootSudoPreflight/non_bypass_allowed
+=== RUN   TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors
+=== PAUSE TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors
+=== CONT  TestClaudeRootSudoPreflight/sandbox_bypass_allowed
+=== CONT  TestPiExecuteAttachesStdinPipe
+=== CONT  TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors
+=== CONT  TestClaudeRootSudoPreflight/non_bypass_allowed
+--- PASS: TestClaudeRootSudoPreflight (0.00s)
+    --- PASS: TestClaudeRootSudoPreflight/sandbox_bypass_allowed (0.00s)
+    --- PASS: TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors (0.00s)
+    --- PASS: TestClaudeRootSudoPreflight/non_bypass_allowed (0.00s)
+--- PASS: TestPiExecuteAttachesStdinPipe (0.01s)
+PASS

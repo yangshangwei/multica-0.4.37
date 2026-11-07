@@ -1,0 +1,32 @@
+{
+  "started_at": "2026-11-02T00:22:20.443157+00:00",
+  "state": "complete",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout=40m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-json",
+    "./internal/daemon/execenv"
+  ],
+  "isolated_home": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-home-replay/execenv-full",
+  "global_task_root_and_pool_overrides_absent": true,
+  "first_failure_retained": "evidence/go/22-internal_daemon_execenv",
+  "exit_code": 0,
+  "finished_at": "2026-11-02T00:24:19.127522+00:00",
+  "top_pass": 660,
+  "top_fail": 0,
+  "top_skip": 0,
+  "failed_tests": []
+}

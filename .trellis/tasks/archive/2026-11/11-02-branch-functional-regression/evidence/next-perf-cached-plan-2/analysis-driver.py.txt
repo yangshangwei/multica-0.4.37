@@ -1,0 +1,142 @@
+import ast
+import collections
+import datetime
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+
+ROOT=Path('/Volumes/artisan/code/2026/multica-0.4.37')
+TASK=ROOT/'.trellis/tasks/11-02-branch-functional-regression'
+RUN=TASK/'evidence/next-perf-cached-plan-2'
+SOURCE=ROOT.parent/'mc-functional-go-7af9ab990-20261102'
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+notices=json.loads((RUN/'actual-plan-notices.json').read_text())
+phases=json.loads((RUN/'actual-batch-phases.json').read_text())
+commands=json.loads((RUN/'canonical-command-sequence.json').read_text())
+run=json.loads((RUN/'run.json').read_text())
+(RUN/'analysis-driver.py.txt').write_text(Path(__file__).read_text())
+generated=(SOURCE/'server/pkg/db/generated/batch.go').read_text()
+canonical=dict(re.findall(r'const (\w+) = `([^`]+)`',generated))
+canonical_by_name={v.split()[2]:v for v in canonical.values() if v.startswith('-- name: ')}
+
+def nodes(n):
+    yield n
+    for c in n.get('Plans',[]):yield from nodes(c)
+
+def parse_value(v):
+    if v in ['t','f']:return v=='t'
+    if re.match(r'^\d{4}-\d\d-\d\d ',v):return datetime.datetime.fromisoformat(v.replace(' ','T')).isoformat()
+    return v
+
+def normalize_arg(v):
+    if isinstance(v,str) and re.match(r'^\d{4}-\d\d-\d\dT',v):return datetime.datetime.fromisoformat(v.replace('Z','+00:00')).isoformat()
+    return v
+
+summaries=[]
+selected={}
+pids=set()
+for phase in phases:
+    mode,name=phase['mode'],phase['phase']
+    statements=phase['statements']
+    assert len(statements)==1000
+    assert all(x['sql']==canonical_by_name[name] for x in statements)
+    if name not in selected:selected[name]=statements
+    else:assert selected[name]==statements
+    raw=notices[phase['notice_start']:phase['notice_end']]
+    assert len(raw)==1000
+    parsed=[]
+    durations=[]
+    types=collections.Counter()
+    event_rows=0
+    all_event_scans=[]
+    wal=collections.Counter()
+    for idx,(notice,statement) in enumerate(zip(raw,statements)):
+        assert (notice['mode'],notice['phase'])==(mode,name)
+        pids.add(notice['pid'])
+        duration,message=notice['message'].split('plan:\n',1)
+        durations.append(float(re.match(r'duration: ([\d.]+) ms',duration).group(1)))
+        plan=json.loads(message)
+        assert plan['Query Text']==statement['sql']
+        params=re.findall(r"\$(\d+) = '([^']*)'",plan['Query Parameters'])
+        assert [int(i) for i,_ in params]==list(range(1,len(statement['args'])+1))
+        assert [parse_value(v) for _,v in params]==[normalize_arg(v) for v in statement['args']]
+        for node in nodes(plan['Plan']):
+            types[node['Node Type']]+=1
+            if node.get('Relation Name')=='iteration_event':
+                event_rows+=node['Actual Rows']*node['Actual Loops']
+                all_event_scans.append({k:node[k] for k in ['Node Type','Index Name','Scan Direction','Plan Rows','Actual Rows','Actual Loops','Rows Removed by Filter','Index Cond','Filter'] if k in node})
+        for k in ['WAL Records','WAL FPI','WAL Bytes','Shared Hit Blocks','Shared Read Blocks','Shared Dirtied Blocks','Shared Written Blocks']:
+            wal[k]+=plan['Plan'].get(k,0)
+        parsed.append({'statement_index':idx,'parameters_verified':True,'duration_ms':durations[-1],'plan':plan})
+    before={x['sql'].split()[2]:x for x in phase['before']['prepared']}
+    after={x['sql'].split()[2]:x for x in phase['after']['prepared']}
+    b,a=before.get(name,{}),after[name]
+    generic=a['generic_plans']-b.get('generic_plans',0)
+    custom=a['custom_plans']-b.get('custom_plans',0)
+    assert generic+custom==1000
+    assert a['from_sql'] is False
+    assert phase['before']['plan_cache_mode']==phase['after']['plan_cache_mode']=='auto'
+    assert phase['before']['pid']==phase['after']['pid']==notice['pid']
+    assert phase['batch_close_error']=='<nil>'
+    output=f'plans-{mode}-{name}.json'
+    (RUN/output).write_text(json.dumps(parsed,indent=2)+'\n')
+    summary=dict(mode=mode,phase=name,count=1000,backend_pid=notice['pid'],actual_auto_explain_parameters_verified=True,original_typed_production_consumer=phase['original_production_typed_consumer'],prepared_name=a['name'],prepared_prepare_time=a['prepare_time'],generic_plans_delta=generic,custom_plans_delta=custom,prepared_before_counts={k:b.get(k,0) for k in ['generic_plans','custom_plans']},prepared_after_counts={k:a[k] for k in ['generic_plans','custom_plans']},notice_duration_ms_sum=round(sum(durations),6),root_actual_total_ms_sum=round(sum(x['plan']['Plan']['Actual Total Time'] for x in parsed),6),client_batch_ms=phase['client_ms'],node_counts=dict(types),iteration_event_rows_visited=event_rows,event_scan_first=all_event_scans[0],event_scan_shapes=dict(collections.Counter((x['Node Type']+' '+x.get('Scan Direction','')) for x in all_event_scans)),root_buffer_wal_totals=dict(wal),pre_batch_table_statistics=phase['before']['tables'],pre_batch_column_statistics_rows=len(phase['before']['stats']),artifact=output)
+    summaries.append(summary)
+assert len(pids)==1
+assert len(summaries)==8
+for name in selected:
+    a=[x for x in summaries if x['phase']==name]
+    assert len({(x['prepared_name'],x['prepared_prepare_time']) for x in a[:2]})==1
+    assert a[2]['prepared_prepare_time'] != a[1]['prepared_prepare_time']
+    assert a[3]['prepared_prepare_time'] == a[2]['prepared_prepare_time']
+    assert all(x['node_counts'].get('Sort',0)==1000 for x in a[:3])
+    assert all(x['pre_batch_column_statistics_rows']==0 for x in a[:3])
+    assert all(z['reltuples']==-1 for x in a[:3] for z in x['pre_batch_table_statistics'])
+    assert a[3]['node_counts'].get('Sort',0)==0
+    assert a[3]['iteration_event_rows_visited']==1000
+    assert a[3]['event_scan_shapes']=={'Index Scan Backward':1000}
+    assert a[3]['pre_batch_column_statistics_rows']>0
+reset=json.loads((RUN/'prepared-reset.json').read_text())
+assert reset['method']=='pgx.Conn.DeallocateAll' and reset['outside_business_transaction']
+assert reset['before']['pid']==reset['after']['pid']==next(iter(pids))
+assert reset['after']['prepared']==[]
+assert reset['before']['stats']==reset['after']['stats']==[]
+assert reset['before']['tables']==reset['after']['tables']
+assert reset['before']['settings']==reset['after']['settings']
+rollback=[]
+for mode in ['original','cache_control','reprepare_control','after_analyze']:
+    r=json.loads((RUN/f'rollback-{mode}.json').read_text());assert r['equal'] and r['before_fingerprint']==r['after_fingerprint']
+    rollback.append(dict(mode=mode,equal=True,fingerprint=r['after_fingerprint'],column_statistics_rows_after_rollback=len(r['state_after_rollback']['stats']),tables_after_rollback=r['state_after_rollback']['tables'],actual_counts_after_rollback=r['state_after_rollback']['counts']))
+analyzes=[x for x in notices if x.get('kind')=='task_analyze'];assert len(analyzes)==8
+batch_commands=[x for x in commands if x['kind']=='batch']
+assert len(batch_commands)==7 and all(len(x['statements'])==1000 for x in batch_commands)
+for cmd in batch_commands:
+    for statement in cmd['statements']:assert statement['sql']==canonical_by_name[statement['sql'].split()[2]]
+# Every non-batch canonical query is checked against the exact existing sqlc source text as well.
+all_generated='\n'.join(x.read_text() for x in (SOURCE/'server/pkg/db/generated').glob('*.go'))
+all_sql={v for _,v in re.findall(r'const (\w+) = `([^`]+)`',all_generated)}
+for cmd in commands:
+    for statement in cmd['statements']:
+        if statement['sql'].startswith('-- name:'):assert statement['sql'] in all_sql
+summary=dict(at=datetime.datetime.now(datetime.timezone.utc).isoformat(),status='PASS_DIAGNOSTIC_ONLY',scope='Actual canonical protocol-prepared plans, identical original args, same backend; task-only transaction rollback and ANALYZE comparison',candidate=run['candidate'],database=run['database'],backend_pid=next(iter(pids)),prepared_reset=reset,phases=summaries,explicit_analyze_commands=analyzes,ordered_canonical_commands=len(commands),command_kinds=dict(collections.Counter(x['kind'] for x in commands)),membership_batches=[dict(name=x['statements'][0]['sql'].split()[2],statements=len(x['statements'])) for x in batch_commands],full_transaction_rollback=rollback,original_gate=dict(p95_ms=2171,threshold_ms=2000,status='FAIL',rerun=False),findings=['All three no-statistics phases retain bitmap scans and sorts, including after safe client/server cache reset and fresh preparation. Stale prepared cache alone is insufficient in this fixture.','After ANALYZE both 1000-statement phases retain reprepare-control identities and use existing sequence index backward with one event row each; counters/actual paths recorded without forced generic/custom mode.','Full business rollback preserves six-table logical fingerprints, but does not undo WAL/cache/dead versions or reltuples/relpages/cumulative ANALYZE tracking; pg_stats rows revert to empty after rollback.'],limits=['No original tail sample plan or shared-host load reconstructed; original P95 remains FAIL.','auto_explain node timing and notice transport add overhead; instrumented timings are not uninstrumented endpoint savings.','First pass is the original typed production mutation flow but its task-only Commit rolls back rather than commits; no commit/durable HTTP acceptance claim.','Replays execute all canonical SQL/args and lock order but consume generic Rows.Values, not the full production authorization/typed-scan/error branch logic; no product optimization equivalence claimed.','One backend deliberately retained prepared cache; actual production pool backend assignment and original P95 cache/statistics history unknown.','ANALYZE runs within the new diagnostic transaction at each selected phase; target no-statistics baselines both completed before any task ANALYZE; after-statistics target receives a second explicit refresh after target events exist.','ANALYZE changes all four relevant tables at each phase; this discriminates statistics versus unchanged cache-only paths but does not isolate the marginal effect of any single column statistic.','Rollback fingerprints cover issues, participation, events, iterations, snapshots and operations; notification rollback follows transaction semantics but is not included in that fingerprint.','Snapshot assertion checks 1000 scope entries with three labels and nonnull priority, not exact IDs/values.','No-statistics DeallocateAll/reprepare control exists and retains scan/sort; ANALYZE changes four tables and invalidates plans, so no single-column causal estimate or original-tail attribution is established.',
+'Replayed clock_timestamp reads produce new values that are consumed generically, while the following writes deliberately reuse the original captured business-time arguments; this is not a second full service decision flow.',
+'No cold-cache reset, no VACUUM and no first-lock/concurrency/new result-path optimization proof.'])
+(RUN/'analysis-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
+streams=True
+for step in run['steps']:
+    for channel in ['stdout','stderr']:streams=streams and sha(RUN/(step['name']+'.'+channel))==step[channel+'_sha256']
+assert streams
+assert run['exit_code']==0 and run['connections_after']==0 and run['source_diff_unchanged'] and run['frozen_test_unchanged'] and run['overlay_target_absent_after']
+assert run['frozen_test_sha256_before']==sha(SOURCE/'server/internal/handler/iteration_i1_p95_test.go')
+assert run['preexisting_patch_sha256']==hashlib.sha256(subprocess.check_output(['git','diff'],cwd=SOURCE)).hexdigest()
+assert sha(RUN/'diagnostic_test.go.txt')==run['diagnostic_test_sha256']
+assert sha(RUN/'host-runner.py.txt')==run['runner_sha256']
+assert sha(RUN/'overlay.json')==run['overlay_sha256']
+assert not Path(run['overlay_virtual_target']).exists()
+events=[json.loads(l) for l in (RUN/'diagnostic.stdout').read_text().splitlines() if l.startswith('{')]
+terminal={x['Test']:x['Action'] for x in events if x.get('Test') and x['Action'] in ['pass','fail','skip']};assert terminal=={'TestIterationCanonicalCachedReprepareDiagnostic':'pass'}
+verify=dict(at=datetime.datetime.now(datetime.timezone.utc).isoformat(),reviewer='coordinator verification; independent review separate',status='PASS_DIAGNOSTIC_ONLY',canonical_sql_exact=True,all_8000_actual_auto_explain_parameter_populations_verified=True,eight_1000_statement_batches=True,same_backend_and_controlled_reprepare_times=True,plan_cache_mode_auto=True,explicit_analyze_statements=8,original_and_cache_control_nostats_baselines_uncontaminated=True,four_full_business_rollbacks_equal=True,seven_canonical_write_phases_each_1000_preserved=True,source_diff_and_frozen_test_unchanged=True,overlay_additive_virtual_target_absent=True,commands_stream_hashes_match=True,terminal=terminal,database_connections_after_as_recorded=run['connections_after'],original_p95='FAIL retained; not rerun',artifact_sha256={str(p.relative_to(RUN)):sha(p) for p in sorted(RUN.iterdir()) if p.is_file() and p.name!='verification.json'})
+(RUN/'verification.json').write_text(json.dumps(verify,indent=2)+'\n')
+print(json.dumps({'phases':[dict(mode=x['mode'],phase=x['phase'],notice_duration_ms_sum=x['notice_duration_ms_sum'],event_rows=x['iteration_event_rows_visited'],generic=x['generic_plans_delta'],custom=x['custom_plans_delta']) for x in summaries],'verification':verify['status'],'connections_after':run['connections_after']},indent=2))

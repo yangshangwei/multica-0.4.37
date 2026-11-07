@@ -1,0 +1,218 @@
+import ast
+import csv
+import datetime
+import hashlib
+import json
+import os
+import subprocess
+from collections import Counter
+from pathlib import Path
+
+ROOT = Path('/Volumes/artisan/code/2026/multica-0.4.37')
+TASK = ROOT / '.trellis/tasks/11-02-branch-functional-regression'
+RUN = TASK / 'evidence/next-remaining-identity-1'
+CANDIDATE = '7af9ab9905c98c77bb091223ebe687c639475bb4'
+FROZEN = 'server/internal/handler/iteration_i1_p95_test.go'
+NOW = lambda: datetime.datetime.now(datetime.timezone.utc).isoformat()
+SHA = lambda b: hashlib.sha256(b).hexdigest()
+COORDINATION = {'progress.md', 'report.md', 'defects.md', 'conditional-matrix.csv',
+                'session-prompt.md', 'task.json', 'implement.md',
+                'research/session-record.md', 'research/session-handoff-1.md',
+                'research/cached-final-verification-1.json',
+                'evidence/next-cached-session-1/agent-dispatch.json'}
+RUN.mkdir(exist_ok=False)
+result = {'started_at': NOW(), 'state': 'checking',
+          'reviewer': 'native trellis-check /root/remaining_identity_symptom',
+          'scope': 'Source/test/frozen identity, preserved raw hashes and task-local new-symptom inventory only',
+          'commands': [], 'database_connections_created': 0,
+          'tests_executed': 0, 'applications_started': 0, 'commercial_calls': 0,
+          'remote_actions': 0, 'product_changes': 0, 'prior_raw_changes': 0}
+
+
+def save():
+    (RUN / 'run.json').write_text(json.dumps(result, indent=2) + '\n')
+
+
+def command(label, args, cwd=ROOT):
+    started = NOW()
+    p = subprocess.run(args, cwd=cwd, capture_output=True, timeout=30)
+    (RUN / (label + '.stdout')).write_bytes(p.stdout)
+    (RUN / (label + '.stderr')).write_bytes(p.stderr)
+    result['commands'].append({'name': label, 'command': args, 'cwd': str(cwd),
+                              'started_at': started, 'finished_at': NOW(),
+                              'exit_code': p.returncode,
+                              'stdout_sha256': SHA(p.stdout), 'stderr_sha256': SHA(p.stderr)})
+    save()
+    if p.returncode:
+        raise RuntimeError(label + ' exit ' + str(p.returncode))
+    return p.stdout
+
+
+def filebytes(path):
+    return os.readlink(path).encode() if path.is_symlink() else path.read_bytes()
+
+
+def is_test(path):
+    return (path.startswith('e2e/') or '/test/' in path or '/tests/' in path or
+            path.endswith('_test.go') or '.test.' in path or '.spec.' in path or
+            path.endswith('.test.sh') or '/__tests__/' in path)
+
+
+def check_ledger(ledger):
+    checked = []
+    for name, expected in ledger.items():
+        p = ROOT / name
+        current = SHA(p.read_bytes()) if p.is_file() else None
+        relative = str(p.relative_to(TASK)) if TASK in p.parents else name
+        checked.append({'path': name, 'expected_sha256': expected, 'actual_sha256': current,
+                        'exists': current is not None, 'same': current == expected,
+                        'coordination_evolution_allowed': relative in COORDINATION})
+    return checked
+
+
+save()
+try:
+    before = json.loads((TASK / 'evidence/next-remaining-session-1/before.json').read_text())
+    final = json.loads((TASK / 'research/cached-final-verification-1.json').read_text())
+    result['snapshot_sha256'] = SHA((TASK / 'evidence/next-remaining-session-1/before.json').read_bytes())
+    result['context_full_hook_sha256'] = SHA(Path('/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/hook_outputs/01a19b6b-e253-7ab3-b7b9-3002d51f43e2/85d13e60-91ff-4e0c-b4d1-4bbb98c0fa4f.txt').read_bytes())
+    result['sources'] = []
+    for i, saved in enumerate(final['sources']):
+        source = Path(saved['path'])
+        head = command(f'source-{i}-head', ['git', 'rev-parse', 'HEAD'], source).decode().strip()
+        branch = command(f'source-{i}-branch', ['git', 'branch', '--show-current'], source).decode().strip()
+        diff = command(f'source-{i}-diff', ['git', 'diff', '--', 'server', 'apps', 'packages'], source)
+        paths = command(f'source-{i}-changed-paths', ['git', 'diff', '--name-only', 'HEAD', '--', 'server', 'apps', 'packages', 'e2e'], source).decode().splitlines()
+        untracked = command(f'source-{i}-untracked', ['git', 'ls-files', '--others', '--exclude-standard', '--', 'server', 'apps', 'packages', 'e2e'], source).decode().splitlines()
+        entries = command(f'source-{i}-tree', ['git', 'ls-tree', '-r', '-z', CANDIDATE, '--', 'server', 'apps', 'packages', 'e2e'], source).split(b'\0')
+        manifest = []
+        changed = []
+        for entry in entries:
+            if not entry:
+                continue
+            meta, name = entry.split(b'\t', 1)
+            mode, kind, oid = meta.decode().split()
+            path = name.decode()
+            if kind != 'blob':
+                continue
+            p = source / path
+            content = filebytes(p) if p.exists() or p.is_symlink() else None
+            actual = hashlib.sha1(b'blob ' + str(len(content)).encode() + b'\0' + content).hexdigest() if content is not None else None
+            row = {'path': path, 'candidate_blob': oid, 'actual_blob': actual,
+                   'sha256': SHA(content) if content is not None else None,
+                   'same_as_candidate': actual == oid, 'classification': 'test_or_harness' if is_test(path) else 'product_or_config'}
+            manifest.append(row)
+            if not row['same_as_candidate']:
+                changed.append(row)
+        for path in untracked:
+            p = source / path
+            manifest.append({'path': path, 'candidate_blob': None, 'sha256': SHA(filebytes(p)),
+                             'classification': 'test_or_harness' if is_test(path) else 'product_or_config',
+                             'untracked': True})
+        (RUN / f'source-{i}-file-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+        observed = {'path': str(source), 'head': head, 'branch': branch,
+                    'product_diff_sha256': SHA(diff), 'frozen_test_sha256': SHA((source / FROZEN).read_bytes()),
+                    'tracked_changed_paths': paths, 'untracked_source_paths': untracked,
+                    'tracked_file_manifest_count': len(entries) - 1, 'changed_from_candidate': changed,
+                    'product_behavior_or_config_changes': [r['path'] for r in changed if not is_test(r['path'])],
+                    'test_or_harness_changes': [r['path'] for r in changed if is_test(r['path'])]}
+        observed['same_as_saved_identity'] = all(observed[k] == saved[k] for k in ['head', 'product_diff_sha256', 'frozen_test_sha256'])
+        observed['note'] = 'Historical product_diff_sha256 label includes tracked tests; manifest separates product behavior/config from test/harness.'
+        result['sources'].append(observed)
+    result['main'] = command('local-main', ['git', 'rev-parse', 'main']).decode().strip()
+    result['origin_main'] = command('local-origin-main', ['git', 'rev-parse', 'origin/main']).decode().strip()
+    result['merge_base'] = command('local-merge-base', ['git', 'merge-base', 'HEAD', 'main']).decode().strip()
+    result['remote_fetch_performed'] = False
+    raw_checks = []
+    coordination_changes = []
+    for review_name in ['cached-semantics-evidence-review-1.json', 'cached-final-coordination-review-1.json']:
+        review = json.loads((TASK / 'research' / review_name).read_text())
+        for name, expected in review['artifact_sha256'].items():
+            p = TASK / name
+            actual = SHA(p.read_bytes()) if p.is_file() else None
+            row = {'review': review_name, 'path': name, 'expected_sha256': expected, 'actual_sha256': actual, 'same': actual == expected}
+            if name in COORDINATION:
+                if not row['same']:
+                    coordination_changes.append(row)
+            else:
+                raw_checks.append(row)
+    result['reviewed_raw_artifact_checks'] = raw_checks
+    result['reviewed_raw_hash_mismatches'] = [r for r in raw_checks if not r['same']]
+    result['expected_historical_coordination_evolution'] = coordination_changes
+    historical = {r['path']: r['sha256'] for r in before['historical_files']}
+    checked = check_ledger(historical)
+    (RUN / 'historical-checks.json').write_text(json.dumps(checked, indent=2) + '\n')
+    result['historical_files_checked'] = len(checked)
+    result['historical_missing'] = [r['path'] for r in checked if not r['exists']]
+    result['unexpected_historical_changes'] = [r['path'] for r in checked if not r['same'] and not r['coordination_evolution_allowed']]
+    result['current_coordination_evolution'] = [r['path'] for r in checked if not r['same'] and r['coordination_evolution_allowed']]
+    preserved = check_ledger(before['preserved_workspace_files'])
+    (RUN / 'preserved-workspace-checks.json').write_text(json.dumps(preserved, indent=2) + '\n')
+    result['preserved_workspace_files_checked'] = len(preserved)
+    result['preserved_workspace_mismatches'] = [r for r in preserved if not r['same']]
+    helper = 'e2e/fixtures/collaboration-recipient-picker.mjs'
+    result['untracked_helper'] = {'path': helper, 'sha256': SHA((ROOT / helper).read_bytes()),
+                                'snapshot_coverage': helper in before['preserved_workspace_files'],
+                                'ledger_note': 'Initially observed 35-file snapshot omitted helper; coordinator supplemented to36 without source change before this check.'}
+    old_before = json.loads((TASK / 'evidence/next-cached-session-1/before.json').read_text())
+    old_checks = check_ledger(old_before['historical_files'])
+    result['older_historical_files_checked'] = len(old_checks)
+    result['older_unexpected_changes'] = [r for r in old_checks if not r['same'] and not r['coordination_evolution_allowed']]
+    result['e2e_inventory'] = dict(Counter(row['status'] for row in csv.DictReader((TASK / 'coverage.csv').open())))
+    result['matrix'] = dict(Counter(row['status'] for row in csv.DictReader((TASK / 'conditional-matrix.csv').open())))
+    result['task_status'] = json.loads((TASK / 'task.json').read_text())['status']
+    perf_path = TASK / 'evidence/resume-handler-perf-1/stdout.jsonl'
+    events = [json.loads(line) for line in perf_path.read_text().splitlines() if line.strip()]
+    txt = ''.join(e.get('Output', '') for e in events if e.get('Test') == 'TestIterationI1P95')
+    perf = json.JSONDecoder().raw_decode(txt.split('I1_P95_JSON=', 1)[1])[0]
+    terminal = [e['Action'] for e in events if e.get('Test') == 'TestIterationI1P95' and e['Action'] in ['pass', 'fail', 'skip']]
+    result['original_frozen_gate'] = {'warmup': perf['warmup_samples'], 'measured': perf['measured_samples'],
+                                     'p95_ms': sorted(perf['samples_ms']['closure'][perf['warmup_samples']:])[28],
+                                     'threshold_ms': 2000, 'terminal': terminal, 'rerun': False,
+                                     'stdout_sha256': SHA(perf_path.read_bytes())}
+    cutoff = datetime.datetime.fromisoformat(final['at'])
+    new_runs = []
+    unknown_timestamp_runs = []
+    for p in sorted((TASK / 'evidence').rglob('run.json')):
+        if RUN in p.parents:
+            continue
+        d = json.loads(p.read_text())
+        ts = d.get('started_at') or d.get('at')
+        if isinstance(ts, str):
+            try:
+                parsed = datetime.datetime.fromisoformat(ts.replace('Z', '+00:00'))
+            except ValueError:
+                unknown_timestamp_runs.append(str(p.relative_to(TASK)))
+                continue
+            if parsed > cutoff:
+                new_runs.append({'path': str(p.relative_to(TASK)), 'time': ts,
+                                 'scope': d.get('scope'), 'state': d.get('state'),
+                                 'sha256': SHA(p.read_bytes())})
+    result['new_symptom_evidence'] = {'cutoff_saved_final_at': final['at'], 'runs_after_cutoff': new_runs,
+                                    'unparseable_timestamp_runs': unknown_timestamp_runs,
+                                    'genuine_symptom_runs': [],
+                                    'method': 'Task-local run ledger start times plus preserved6113file inventory; mtime alone does not establish execution or historical state.',
+                                    'conclusion': 'Only current read-only platform prerequisite audit follows cutoff; no new genuine symptom-environment observation. No cached-plan/statistics/backend probing justified.'}
+    result['private_recorder_ast'] = 'PASS' if ast.parse(Path(__file__).read_text()) else 'FAIL'
+    command('git-diff-check', ['git', 'diff', '--check'])
+    assert all(s['same_as_saved_identity'] for s in result['sources'])
+    assert all(not s['product_behavior_or_config_changes'] for s in result['sources'])
+    assert result['main'] == result['origin_main'] == result['merge_base'] == 'dd87e0b33c1d6a64d488f7ee9ecd0a65984a68ff'
+    assert not result['reviewed_raw_hash_mismatches']
+    assert not result['historical_missing'] and not result['unexpected_historical_changes']
+    assert not result['preserved_workspace_mismatches'] and not result['older_unexpected_changes']
+    assert result['e2e_inventory'] == {'PASS': 439}
+    assert result['matrix'] == {'PASS': 21, 'BLOCKED': 6, 'FAIL': 1, 'NOT_RUN': 3}
+    assert result['original_frozen_gate']['p95_ms'] == 2171 and terminal == ['fail']
+    assert result['task_status'] == 'in_progress'
+    result.update(state='complete', status='PASS_IDENTITY_AND_EVIDENCE_CHECK_REQUIRED_GATES_OPEN', finished_at=NOW(),
+                  lint='NOT_RERUN: evidence-only; no product/dependency change',
+                  typecheck='NOT_RERUN: evidence-only; no TypeScript/product change',
+                  tests='NOT_RERUN: frozenFAIL and completed gates retained; no new true symptom condition',
+                  findings_fixed=[], findings_not_fixed=['Original2171ms performanceFAIL and required native/auth/updater/trust/Provider gates remain open.'])
+    save()
+    print(json.dumps({k: result[k] for k in ['state', 'status', 'historical_files_checked', 'preserved_workspace_files_checked', 'reviewed_raw_hash_mismatches', 'e2e_inventory', 'matrix', 'new_symptom_evidence']}, indent=2))
+except Exception as error:
+    result.update(state='failed', error=repr(error), finished_at=NOW())
+    save()
+    raise

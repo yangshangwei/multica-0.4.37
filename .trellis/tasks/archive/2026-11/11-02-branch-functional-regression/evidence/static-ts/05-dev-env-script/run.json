@@ -1,0 +1,17 @@
+{
+  "id": "05-dev-env-script",
+  "command": [
+    "bash",
+    "scripts/dev-env.test.sh"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "candidate_before": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "started_at": "2026-11-02T00:22:11.212738+00:00",
+  "note": "Inspected fixture uses temporary registry, fake psql and fake service launchers; only test-owned sleep processes are started.",
+  "state": "complete",
+  "exit_code": 0,
+  "finished_at": "2026-11-02T00:22:20.107493+00:00",
+  "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "stdout_sha256": "4d88b22f5dab8d66d6470d98508fbc9254c4d7792bcf9d9e9875b410ff8c0c5c",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,46 @@
+{
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "source_root": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "pnpm",
+    "--filter",
+    "@multica/desktop",
+    "build"
+  ],
+  "started_at": "2026-11-02T00:10:28.977742+00:00",
+  "state": "complete",
+  "native_business_tests_executed": 0,
+  "fallback_reason": "Native preparation agent failed with HTTP429 before work",
+  "exit_code": 0,
+  "finished_at": "2026-11-02T00:10:44.057308+00:00",
+  "artifacts": {
+    "apps/desktop/out/renderer/index.html": {
+      "realpath": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/apps/desktop/out/renderer/index.html",
+      "bytes": 1256,
+      "sha256": "fa4a98cbd453d2ce881088d2f3f1661030579a8cea4b8ad59ee4bc093544be07"
+    },
+    "apps/desktop/out/preload/index.js": {
+      "realpath": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/apps/desktop/out/preload/index.js",
+      "bytes": 18912,
+      "sha256": "42955fe1f24c1116beb62894fa22536bbf64662c3adfb10f150473d4771e7160"
+    },
+    "apps/desktop/resources/bin/multica": {
+      "realpath": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/apps/desktop/resources/bin/multica",
+      "bytes": 30036864,
+      "sha256": "a7390724e2e076f10a45e35c2cc6537e0a56c6fe821bbe193a3a7c51e84fac5b"
+    },
+    "server/bin/darwin-arm64/multica": {
+      "realpath": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/server/bin/darwin-arm64/multica",
+      "bytes": 30194258,
+      "sha256": "ee51964f1c7e19f3a85595492c6915c0bd4ea815afd129200be14df2490cd13a"
+    },
+    "apps/desktop/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron": {
+      "realpath": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+      "bytes": 33968,
+      "sha256": "cf74833a9b0c242e26c177005d7d61819e5bf5ed199acc794fed2eb0cc4f3149"
+    }
+  }
+}

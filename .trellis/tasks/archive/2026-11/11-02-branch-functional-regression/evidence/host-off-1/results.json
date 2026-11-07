@@ -1,0 +1,263 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/host-off-1/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-host-runtime.spec.ts",
+      "file": "collaboration-host-runtime.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "host Web and actual Electron share one ordinary Agent, preserve authors, and explicitly resume after scoped Stop",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 300000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 25237,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:43:38.835Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "host-runtime-evidence",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/host-off-1/artifacts/collaboration-host-runtime-ae4a5-ly-resume-after-scoped-Stop-chromium/attachments/host-runtime-evidence-4533622db6e45d92235412b7d79e1f336baf5fc4.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "49e3411a966fddb17b9a-200bce7fedd3491208e3",
+          "file": "collaboration-host-runtime.spec.ts",
+          "line": 15,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "collaboration-host-squad.spec.ts",
+      "file": "collaboration-host-squad.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "a capacity-one host squad merges @A with @S, delegates to its member, joins a later instruction and queues another squad",
+          "ok": true,
+          "tags": [
+            "A",
+            "S,"
+          ],
+          "tests": [
+            {
+              "timeout": 300000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19647,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:44:04.753Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "host-squad-evidence",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/host-off-1/artifacts/collaboration-host-squad-a-3f5fb-on-and-queues-another-squad-chromium/attachments/host-squad-evidence-149713e2980548432a75429e422e216f39c3f165.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cf7c9df06f6e4ea1db10-0f46104619ff101d221a",
+          "file": "collaboration-host-squad.spec.ts",
+          "line": 13,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "collaboration-host-switch.spec.ts",
+      "file": "collaboration-host-switch.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "switching a squad to another native runtime waits for confirmed Stop and owner consent, then resumes there without moving local files",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 300000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12903,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:44:24.416Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "host-switch-evidence",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/host-off-1/artifacts/collaboration-host-switch--d940c--without-moving-local-files-chromium/attachments/host-switch-evidence-8c9dd1f4002cf9ae019fab22b936ad0ddcb45e77.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0e5cd2682e7c94e15948-a8b3ab0d75032729edb3",
+          "file": "collaboration-host-switch.spec.ts",
+          "line": 14,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "collaboration-knowledge-deployed.spec.ts",
+      "file": "collaboration-knowledge-deployed.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "deployed knowledge startup flag controls one actual Host input and its authorization events",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5098,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:44:37.336Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "deployed-knowledge-gate-evidence",
+                      "contentType": "application/json",
+                      "body": "ewogICJzY29wZSI6ICJkZXBsb3llZCBlbnZpcm9ubWVudCAtPiBwdWJsaWMgQVBJIC0+IGFjdHVhbCB0ZXN0LW93bmVkIEhvc3QgaW5wdXQiLAogICJleHBlY3RlZF9rbm93bGVkZ2VfZW5hYmxlZCI6IGZhbHNlLAogICJyZWFsX3Byb3ZpZGVyX2NhbGxzIjogMCwKICAiZXhjbHVkZXMiOiBbCiAgICAicmVhbCBtb2RlbCB1bmRlcnN0YW5kaW5nIiwKICAgICJodW1hbiBhcHByb3ZhbCBVSSIsCiAgICAiY29ycmVjdGlvbi93aXRoZHJhd2FsIGNvbXBvc2l0ZSIsCiAgICAiaW5zdGFsbGVyIGFuZCBkaWZmZXJlbnQtYWNjb3VudCBqb3VybmV5IgogIF0sCiAgImVudmlyb25tZW50IjogewogICAgImFwaSI6ICJodHRwOi8vbG9jYWxob3N0OjE4OTIwIiwKICAgICJkZXBsb3ltZW50X2lkIjogIjQ4ODA1OTA2LWQzNzQtNGE3Yy05ZDdiLWJiN2FlZjBiMTcyMyIsCiAgICAiYXV0aF9tb2RlIjogInBhc3N3b3JkIiwKICAgICJhcGlfaGVhbHRoIjogewogICAgICAic3RhdHVzIjogIm9rIiwKICAgICAgInBpZCI6IDQxMzU5LAogICAgICAiY29tbWl0IjogIjdhZjlhYjk5MCIsCiAgICAgICJzdGFydGVkX2F0IjogIjIwMjYtMTEtMDJUMDE6NDM6MzBaIgogICAgfSwKICAgICJkYXRhYmFzZSI6ICJtdWx0aWNhX2Z1bmM3YWY5X2hvc3Rfb2ZmXzIwMjYxMTAyIiwKICAgICJuYXRpdmVfb3MiOiAiZGFyd2luIiwKICAgICJuYXRpdmVfYXJjaCI6ICJhcm02NCIKICB9LAogICJhcHByb3ZlZCI6IHsKICAgICJjYW5kaWRhdGVfaWQiOiAiZjBhNDZjZTUtYmE5YS00NzI3LTgyMWMtZTJjNjY4MmVhNjFiIiwKICAgICJ2ZXJzaW9uIjogIjEiLAogICAgImNvbnRlbnRfc2hhMjU2IjogImM2OGUxYzAwODExMTk5MDY3MzQ2MDNmMDIwNTRlYWE0Zjk2N2U2NWUxNmE3YzBkNTYwODU2YjZjMzA0ZjNkNjYiLAogICAgInNvdXJjZV9pc3N1ZV9pZCI6ICIwMWExOTllZS0xMDkzLTdlYWQtYTE2NS0wNmFhOTU2ZWU3YTgiLAogICAgInRhcmdldF93b3Jrc3BhY2VfaWQiOiAiMWVhMmMwZWMtNzAzNS00NThkLThmZTYtYmE2NjA4OGI1M2JjIiwKICAgICJwcm9wb3NlZF9ieV91c2VyX2lkIjogImYzNDY1YzA0LWJlYzQtNDQ0NC1iOTAwLWViYjcyM2ZkMDU5NiIKICB9LAogICJhY2NlcHRlZF9pbnB1dCI6IHsKICAgICJjb21tYW5kX2lkIjogImFmMzUzOGMwLWQ3ZjctNDY3ZC1hNDY5LWI2MDI4NTA2NTdkMSIsCiAgICAiYmF0Y2hfaWQiOiAiMjE0MGI5NDEtODI3Mi00M2MxLTk2ZmYtZmRmNjMxYjQ3MzAzIiwKICAgICJhdXRob3JfdXNlcl9pZCI6ICJmMzQ2NWMwNC1iZWM0LTQ0NDQtYjkwMC1lYmI3MjNmZDA1OTYiLAogICAgImNvbnRlbnRfc2hhMjU2IjogIjU5ZjNkN2Y2OGVlYjIyYjllNjk5OTg3YzgzOTZlNmYwNGJjYzJlMTkzM2Q3YjhkMzVjYzI3NDY5ZjhhZDQwZTQiCiAgfSwKICAiYWN0dWFsX2lucHV0IjogewogICAgInByb21wdF9zaGEyNTYiOiAiNTU4MWM3OGIzYWZhYjAzZDRjM2FmMzlhYzliYWM0NmMwZmZkYzY3NDdlODNiNWRiYjBhMjEzNDQyZmYwOGI3NyIsCiAgICAic2VjdGlvbl9wcmVzZW50IjogZmFsc2UsCiAgICAiY29udHJpYnV0aW9ucyI6IFtdLAogICAgIm5vX3Nlc3Npb25fcGVyc2lzdGVuY2UiOiBmYWxzZQogIH0sCiAgInJ1biI6IHsKICAgICJpZCI6ICJmYmY3N2Q1My1hM2Q3LTQ0OWQtODlkMS0wNmJiMzE4NGRlODgiLAogICAgInByb2dyZXNzX3N0YXRlIjogInNldHRsZWQiLAogICAgInByb29mX3N0YXRlIjogImhvc3RfZXhpdF9vYnNlcnZlZCIsCiAgICAiYnVzaW5lc3Nfb3V0Y29tZSI6ICJzdWNjZXNzIiwKICAgICJsYXVuY2hfY291bnQiOiAiMSIKICB9LAogICJrbm93bGVkZ2VfZXZlbnRzIjogewogICAgImtub3dsZWRnZV9jbGFpbSI6IDAsCiAgICAia25vd2xlZGdlX3ByZXBhcmF0aW9uIjogMCwKICAgICJrbm93bGVkZ2VfYXV0aG9yaXphdGlvbiI6IDAKICB9LAogICJiaW5hcnlfc2hhMjU2IjogewogICAgIkNPTExBQk9SQVRJT05fSE9TVF9EQUVNT04iOiAiNTRkNDE2Y2Q0MDU5NTVkNmNlNjc0YzhjYzI4YTI4ZGRiMWJlYjM0YmIwZDhkMmFhYTEwM2RlODQyYTNjMTVlYiIsCiAgICAiQ09MTEFCT1JBVElPTl9IT1NUX1BST1ZJREVSIjogIjQwNDc1NDU0Yjg4ZDQ5Y2NiNzMyNThlODFlMTRlNzBjN2IwZjM2MzEwNzUwMTI0YzMzYTNlZjEzOTVkYjliMGYiLAogICAgIkNPTExBQk9SQVRJT05fSE9TVF9DTEkiOiAiYTczOTA3MjRlMmUwNzZmMTBhNDVlMzVjMmNjNjUzN2UwYTU2YzZmZTgyMWJiZTE5M2EzYTdjNTFlODRmYWM1YiIKICB9LAogICJzb3VyY2Vfc2hhMjU2IjogewogICAgImUyZS9jb2xsYWJvcmF0aW9uLWtub3dsZWRnZS1kZXBsb3llZC5zcGVjLnRzIjogIjBkZDRhZDRlMDRmNWMzNWM1ZWZkMTAzZGQxMWZhZTM1YjU4MTdjOTNmNmJkMjY0M2EzZGZlMzMzODc3MWYyNDEiLAogICAgImUyZS9maXh0dXJlcy9jb2xsYWJvcmF0aW9uLWhvc3QtcHJvdmlkZXIuZ28iOiAiYTIzNWRmZTJhNDg1OGYyMGY2NTMwOTllMjdhZTg4YjkzZWFiOTE5NGVmMDg0NjgzMDY2Nzk0NTdmNWQ1NGM5YSIsCiAgICAiZTJlL2ZpeHR1cmVzL2NvbGxhYm9yYXRpb24taG9zdC1ydW50aW1lLnRzIjogIjM5ZWRhNTAyZGI0YTRlZGVlYjE4YjVhMWU5OWRmYjhhMWZhMTYyOTE5Y2Y5ZTEzZDRhZGVmOWQxM2FhNDQ1OGUiCiAgfSwKICAiZGFlbW9uIjogewogICAgImV4aXRfY29kZSI6IDAsCiAgICAibWVzc2FnZXMiOiBbCiAgICAgIHsKICAgICAgICAiYXJjaCI6ICJhcm02NCIsCiAgICAgICAgImV4ZWN1dGlvbl9tb2RlIjogImhvc3RfcHJvY2Vzc19zdXBlcnZpc2lvbl92MSIsCiAgICAgICAgIm1heF9jb25jdXJyZW50X3Rhc2tzIjogMSwKICAgICAgICAib3MiOiAiZGFyd2luIiwKICAgICAgICAicHJlcGFyYXRpb25fdmVyc2lvbiI6IDIsCiAgICAgICAgInByb3RvY29sX3ZlcnNpb24iOiAzLAogICAgICAgICJyZWFkeSI6IHRydWUsCiAgICAgICAgInJ1bnRpbWVfY29uZmlnX2Vwb2NoIjogIjIiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiYWN0aXZlX3Rhc2tzIjogMCwKICAgICAgICAiYXZhaWxhYmxlX3Nsb3RzIjogMSwKICAgICAgICAiY2xhaW1zIjogMSwKICAgICAgICAiaHR0cCI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgIm9wZXJhdGlvbiI6ICJjbGFpbSIsCiAgICAgICAgICAgICJydW5faWQiOiAiZmJmNzdkNTMtYTNkNy00NDlkLTg5ZDEtMDZiYjMxODRkZTg4IiwKICAgICAgICAgICAgInByb3RvY29sX3ZlcnNpb24iOiAzLAogICAgICAgICAgICAiY29udGFpbm1lbnQiOiAiaG9zdF9wcm9jZXNzX3N1cGVydmlzaW9uX3YxIiwKICAgICAgICAgICAgInN0YXR1cyI6IDIwMAogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgIm9wZXJhdGlvbiI6ICJwZXJtaXQiLAogICAgICAgICAgICAicnVuX2lkIjogImZiZjc3ZDUzLWEzZDctNDQ5ZC04OWQxLTA2YmIzMTg0ZGU4OCIsCiAgICAgICAgICAgICJwcm90b2NvbF92ZXJzaW9uIjogMywKICAgICAgICAgICAgImNvbnRhaW5tZW50IjogImhvc3RfcHJvY2Vzc19zdXBlcnZpc2lvbl92MSIsCiAgICAgICAgICAgICJhdHRlbXB0X3NlcSI6ICIxIiwKICAgICAgICAgICAgImxhdW5jaF9oYXNoIjogIjQ3MGZiZjY3ZjdjYzU2YzI1ZDMwOGI2MzFkNzg4NGE5NDU3YmI3MjRlZTcwNjNmNmIzOWZhNzg1NzJjZTRkMDIiLAogICAgICAgICAgICAic3RhdHVzIjogMjAwCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAib3BlcmF0aW9uIjogInBlcm1pdCIsCiAgICAgICAgICAgICJydW5faWQiOiAiZmJmNzdkNTMtYTNkNy00NDlkLTg5ZDEtMDZiYjMxODRkZTg4IiwKICAgICAgICAgICAgInByb3RvY29sX3ZlcnNpb24iOiAzLAogICAgICAgICAgICAiY29udGFpbm1lbnQiOiAiaG9zdF9wcm9jZXNzX3N1cGVydmlzaW9uX3YxIiwKICAgICAgICAgICAgImF0dGVtcHRfc2VxIjogIjEiLAogICAgICAgICAgICAibGF1bmNoX2hhc2giOiAiNDcwZmJmNjdmN2NjNTZjMjVkMzA4YjYzMWQ3ODg0YTk0NTdiYjcyNGVlNzA2M2Y2YjM5ZmE3ODU3MmNlNGQwMiIsCiAgICAgICAgICAgICJzdGF0dXMiOiAyMDAKICAgICAgICAgIH0sCiAgICAgICAgICB7CiAgICAgICAgICAgICJvcGVyYXRpb24iOiAidGVybWluYXRpb24iLAogICAgICAgICAgICAicnVuX2lkIjogImZiZjc3ZDUzLWEzZDctNDQ5ZC04OWQxLTA2YmIzMTg0ZGU4OCIsCiAgICAgICAgICAgICJwcm90b2NvbF92ZXJzaW9uIjogMywKICAgICAgICAgICAgImNvbnRhaW5tZW50IjogImhvc3RfcHJvY2Vzc19zdXBlcnZpc2lvbl92MSIsCiAgICAgICAgICAgICJhdHRlbXB0X3NlcSI6ICIxIiwKICAgICAgICAgICAgImxhdW5jaF9oYXNoIjogIjQ3MGZiZjY3ZjdjYzU2YzI1ZDMwOGI2MzFkNzg4NGE5NDU3YmI3MjRlZTcwNjNmNmIzOWZhNzg1NzJjZTRkMDIiLAogICAgICAgICAgICAia2luZCI6ICJtYW5hZ2VkX2xhdW5jaF9lbmRlZCIsCiAgICAgICAgICAgICJzdGF0dXMiOiAyMDAKICAgICAgICAgIH0sCiAgICAgICAgICB7CiAgICAgICAgICAgICJvcGVyYXRpb24iOiAicHJvb2YiLAogICAgICAgICAgICAicnVuX2lkIjogImZiZjc3ZDUzLWEzZDctNDQ5ZC04OWQxLTA2YmIzMTg0ZGU4OCIsCiAgICAgICAgICAgICJwcm90b2NvbF92ZXJzaW9uIjogMywKICAgICAgICAgICAgImNvbnRhaW5tZW50IjogImhvc3RfcHJvY2Vzc19zdXBlcnZpc2lvbl92MSIsCiAgICAgICAgICAgICJsYXVuY2hfaGFzaCI6ICI0NzBmYmY2N2Y3Y2M1NmMyNWQzMDhiNjMxZDc4ODRhOTQ1N2JiNzI0ZWU3MDYzZjZiMzlmYTc4NTcyY2U0ZDAyIiwKICAgICAgICAgICAgInN0YXRlIjogImhvc3RfZXhpdF9vYnNlcnZlZCIsCiAgICAgICAgICAgICJzdGF0dXMiOiAyMDAKICAgICAgICAgIH0KICAgICAgICBdLAogICAgICAgICJpbnZhbGlkX2NhcGFjaXR5IjogZmFsc2UKICAgICAgfQogICAgXSwKICAgICJsZWRnZXIiOiBbCiAgICAgIHsKICAgICAgICAidmVyc2lvbiI6IDIsCiAgICAgICAgInJ1bl9pZCI6ICJmYmY3N2Q1My1hM2Q3LTQ0OWQtODlkMS0wNmJiMzE4NGRlODgiLAogICAgICAgICJpc3N1ZV9pZCI6ICIwMWExOTllZS0xMDkzLTdlYWQtYTE2NS0wNmFhOTU2ZWU3YTgiLAogICAgICAgICJwaGFzZSI6ICJwcm9vZl9hY2tub3dsZWRnZWQiLAogICAgICAgICJzZXNzaW9uX2tleSI6ICIxNDhiMDkxMDBkODhhNGFhMjA3NzZhYWM3NTI5MmE4NWRjZjhlNDYxM2ZjN2VlYWI2M2FjZTVjNWIyODgzNDFhIiwKICAgICAgICAibmFtZXNwYWNlX3ByZXNlbnQiOiBmYWxzZSwKICAgICAgICAic2VhbGVkIjogdHJ1ZSwKICAgICAgICAicHJvb2Zfc3RhdGUiOiAiaG9zdF9leGl0X29ic2VydmVkIiwKICAgICAgICAiY2xlYW51cCI6IHsKICAgICAgICAgICJzdGF0ZSI6ICJ0cmFja2VkX3Njb3BlX2NvbXBsZXRlIiwKICAgICAgICAgICJzY29wZSI6ICJwcm9jZXNzX2dyb3VwIiwKICAgICAgICAgICJhdHRlbXB0ZWQiOiB0cnVlCiAgICAgICAgfSwKICAgICAgICAibGF1bmNoZXMiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJhdHRlbXB0X3NlcSI6ICIxIiwKICAgICAgICAgICAgImtpbmQiOiAicHJvdmlkZXIiLAogICAgICAgICAgICAicGhhc2UiOiAiYXR0ZW1wdF9yZWFwZWQiLAogICAgICAgICAgICAicHJvY2Vzc19vYnNlcnZlZCI6IHRydWUsCiAgICAgICAgICAgICJzY29wZSI6ICJwcm9jZXNzX2dyb3VwIiwKICAgICAgICAgICAgInRlcm1pbmFsX2FjY2VwdGVkIjogdHJ1ZSwKICAgICAgICAgICAgImF1dGhvcml6ZWQiOiB0cnVlLAogICAgICAgICAgICAidGVybWluYWxfa2luZCI6ICJtYW5hZ2VkX2xhdW5jaF9lbmRlZCIsCiAgICAgICAgICAgICJjbGVhbnVwIjogewogICAgICAgICAgICAgICJzdGF0ZSI6ICJ0cmFja2VkX3Njb3BlX2NvbXBsZXRlIiwKICAgICAgICAgICAgICAic2NvcGUiOiAicHJvY2Vzc19ncm91cCIsCiAgICAgICAgICAgICAgImF0dGVtcHRlZCI6IHRydWUKICAgICAgICAgICAgfQogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgXSwKICAgICJlcnJvcnMiOiBbXSwKICAgICJzdGRlcnIiOiAiIgogIH0KfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d814fd936e4ae4f6acfe-fbd6745f598ba9178fdc",
+          "file": "collaboration-knowledge-deployed.spec.ts",
+          "line": 15,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T01:43:38.303Z",
+    "duration": 64161.79,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

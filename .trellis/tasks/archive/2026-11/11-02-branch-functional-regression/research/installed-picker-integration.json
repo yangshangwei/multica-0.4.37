@@ -1,0 +1,16 @@
+{
+  "at": "2026-11-02T01:43:28.804089+00:00",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "files": {
+    "e2e/collaboration-installed-main.spec.ts": "62a12245a627ac4ae6662101182746bd17e984f9d9798f391dbdb3007c7e3258",
+    "e2e/fixtures/collaboration-installed-main.mjs": "8f4424f757eb6e1a4859aa08b675e38db6c937e103110461d1ad8341e93ad0fb",
+    "e2e/fixtures/collaboration-recipient-picker.mjs": "4f3ed8fcac50f7fdef4a35dbd4a9c0f2e92c3d64faffdffb23f8df047250bdb5"
+  },
+  "review": "installed-picker-review.md PASS WITH NOTES; post-selection assertions restored",
+  "actual_verification": "evidence/linux-full-main-4:1pass/0fail/0skip",
+  "previous_failures_retained": [
+    "linux-full-main-1",
+    "linux-full-main-2"
+  ],
+  "scope": "Test interaction/harness only; no product change, no extra dependency; actual electron-builder directory Main in Linux container, not package-manager installation/upgrade"
+}

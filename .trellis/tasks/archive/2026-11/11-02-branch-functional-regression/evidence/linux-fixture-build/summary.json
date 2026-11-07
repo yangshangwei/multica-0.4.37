@@ -1,0 +1,64 @@
+{
+  "scope": "Compile-only Linux fixture binaries; no Linux native/installation acceptance inferred",
+  "records": [
+    {
+      "name": "linux-cross-client-provider",
+      "command": [
+        "go",
+        "build",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/linux-cross-client-provider",
+        "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-cross-client-provider.go"
+      ],
+      "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "started_at": "2026-11-02T00:50:57.796054+00:00",
+      "state": "complete",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T00:50:58.761481+00:00",
+      "artifact": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/linux-cross-client-provider",
+      "sha256": "16945ccb1f741d1f53764ca93e623968639588c5a06508ec629cb66a8cb0cb9a",
+      "bytes": 4573530
+    },
+    {
+      "name": "linux-host-daemon.test",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/linux-host-daemon.test",
+        "./internal/daemon"
+      ],
+      "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "started_at": "2026-11-02T00:50:58.767574+00:00",
+      "state": "complete",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T00:51:19.967906+00:00",
+      "artifact": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/linux-host-daemon.test",
+      "sha256": "70111196d6a822a0bfdd5ec55f541caf0329167581f0b802d7f08bb7f620e6be",
+      "bytes": 40447385
+    },
+    {
+      "name": "linux-multica",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "build",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/linux-multica",
+        "./cmd/multica"
+      ],
+      "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "started_at": "2026-11-02T00:51:19.999061+00:00",
+      "state": "complete",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T00:51:23.411850+00:00",
+      "artifact": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/linux-multica",
+      "sha256": "5b1fc620197fe339d9befe4f1d6a729425aeb57e309764fa2e0123dc518da387",
+      "bytes": 29435283
+    }
+  ]
+}

@@ -1,0 +1,257 @@
+import { create } from "zustand";
+import type { User, StorageAdapter } from "../types";
+import { identify as identifyAnalytics, resetAnalytics } from "../analytics";
+import type { ApiClient, ApiRequestOptions } from "../api/client";
+import type { AuthRecoveryState } from "./recovery";
+import { setCurrentWorkspace } from "../platform/workspace-storage";
+
+export interface AuthStoreOptions {
+  api: ApiClient;
+  storage: StorageAdapter;
+  onLogin?: () => void;
+  onLogout?: () => void;
+  /**
+   * Cleanup for a session the server ended, as opposed to one the user did.
+   * Defaults to `onLogout` — a shell only needs its own handler when some of
+   * its logout teardown is too destructive for an expiry it did not ask for.
+   */
+  onSessionExpired?: () => void;
+  /** When true, rely on HttpOnly cookies instead of localStorage for auth tokens. */
+  cookieAuth?: boolean;
+}
+
+export function userAuthStatus(user: User): AuthStatus {
+  if (user.requires_account_setup === true) return "account_setup_required";
+  if (user.requires_password_change === true) return "password_change_required";
+  return "authenticated";
+}
+
+export type AuthStatus =
+  | "account_setup_required"
+  | "password_change_required"
+  | "authenticating"
+  | "authenticated"
+  | "unauthenticated"
+  | "recovering";
+
+export interface AuthState {
+  user: User | null;
+  isLoading: boolean;
+  status: AuthStatus;
+  retryGeneration: number;
+  recovery: AuthRecoveryState | null;
+  /**
+   * The last transition to `unauthenticated` was the server rejecting our
+   * credential, not the user asking to leave. Purely presentational — the
+   * login page uses it to say why the session ended. Cleared by any
+   * successful login and by an explicit logout.
+   */
+  expired: boolean;
+
+  retryAuthentication: () => void;
+  sendCode: (email: string) => Promise<void>;
+  verifyCode: (email: string, code: string) => Promise<User>;
+  loginWithGoogle: (code: string, redirectUri: string) => Promise<User>;
+  loginWithToken: (token: string) => Promise<User>;
+  loginWithDevice: (deviceId: string, deviceName?: string, options?: ApiRequestOptions) => Promise<User>;
+  loginWithPassword: (username: string, password: string) => Promise<User>;
+  registerPassword: (username: string, password: string, name: string) => Promise<User>;
+  setupPassword: (username: string, password: string, name: string) => Promise<User>;
+  changePassword: (current: string, next: string) => Promise<User>;
+  logout: () => void;
+  sessionExpired: () => void;
+  setUser: (user: User) => void;
+  refreshMe: () => Promise<void>;
+}
+
+export function createAuthStore(options: AuthStoreOptions) {
+  const { api, storage, onLogin, onLogout, onSessionExpired, cookieAuth } =
+    options;
+
+  return create<AuthState>((set, get) => {
+    const accept = async (request: Promise<{token: string; user: User}>) => {
+      const { token, user } = await request;
+      if (!token || !user.id) throw new Error("Authentication returned an unusable session");
+      if (!cookieAuth) { storage.setItem("multica_token", token); api.setToken(token); }
+      const status = userAuthStatus(user);
+      if (status === "authenticated") onLogin?.();
+      identifyAnalytics(user.id, { ...(user.email ? {email: user.email} : {}), name: user.name });
+      set({ user, isLoading: false, status, expired: false, recovery: null });
+      return user;
+    };
+    return ({
+    user: null,
+    isLoading: true,
+    status: "authenticating",
+    retryGeneration: 0,
+    recovery: null,
+    expired: false,
+
+    retryAuthentication: () => {
+      if (get().recovery?.isRetrying) return;
+      set((state) => ({
+        isLoading: true,
+        status: state.status === "recovering" ? "recovering" : "authenticating",
+        recovery: state.status === "recovering"
+          ? { isRetrying: true, nextRetryAt: null, failure: state.recovery?.failure ?? null }
+          : null,
+        retryGeneration: state.retryGeneration + 1,
+      }));
+    },
+
+    sendCode: async (email: string) => {
+      await api.sendCode(email);
+    },
+
+    verifyCode: async (email: string, code: string) => {
+      const { token, user } = await api.verifyCode(email, code);
+      if (!cookieAuth) {
+        // Token mode: persist for Electron / legacy.
+        storage.setItem("multica_token", token);
+        api.setToken(token);
+      }
+      if (userAuthStatus(user) === "authenticated") onLogin?.();
+      identifyAnalytics(user.id, { ...(user.email ? { email: user.email } : {}), name: user.name });
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false, recovery: null });
+      return user;
+    },
+
+    loginWithGoogle: async (code: string, redirectUri: string) => {
+      const { token, user } = await api.googleLogin(code, redirectUri);
+      if (!cookieAuth) {
+        storage.setItem("multica_token", token);
+        api.setToken(token);
+      }
+      if (userAuthStatus(user) === "authenticated") onLogin?.();
+      identifyAnalytics(user.id, { ...(user.email ? { email: user.email } : {}), name: user.name });
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false, recovery: null });
+      return user;
+    },
+
+    loginWithToken: async (token: string) => {
+      storage.setItem("multica_token", token);
+      api.setToken(token);
+      const user = await api.getMe();
+      if (userAuthStatus(user) === "authenticated") onLogin?.();
+      identifyAnalytics(user.id, { ...(user.email ? { email: user.email } : {}), name: user.name });
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false, recovery: null });
+      return user;
+    },
+
+    /**
+     * Intranet device login: the client presents a stable device id and gets a
+     * session without anyone typing anything. Only call this after
+     * /api/config declared `device_auth_available` — elsewhere it is a 403.
+     */
+    loginWithDevice: async (deviceId: string, deviceName?: string, requestOptions?: ApiRequestOptions) => {
+      const { token, user } = await (requestOptions
+        ? api.deviceLogin(deviceId, deviceName, requestOptions)
+        : api.deviceLogin(deviceId, deviceName));
+      requestOptions?.signal?.throwIfAborted();
+      // The client parses this response with a fallback rather than throwing,
+      // so a drifted or truncated body arrives here as an empty session.
+      // Persisting that would leave the app looking signed in and 401ing on
+      // every request; failing the login sends the caller to the login page.
+      if (!token || !user.id) {
+        throw new Error("device login returned an unusable session");
+      }
+      if (!cookieAuth) {
+        storage.setItem("multica_token", token);
+        api.setToken(token);
+      }
+      if (userAuthStatus(user) === "authenticated") onLogin?.();
+      identifyAnalytics(user.id, { ...(user.email ? { email: user.email } : {}), name: user.name });
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false, recovery: null });
+      return user;
+    },
+
+    loginWithPassword: (username, password) => accept(api.passwordLogin(username, password)),
+    registerPassword: (username, password, name) => accept(api.registerPassword(username, password, name)),
+    setupPassword: (username, password, name) => accept(api.setupPassword(username, password, name)),
+    changePassword: (current, next) => accept(api.changePassword(current, next)),
+
+    logout: () => {
+      if (cookieAuth) {
+        // Clear server-side HttpOnly cookie.
+        api.logout().catch(() => {});
+      }
+      storage.removeItem("multica_token");
+      api.setToken(null);
+      setCurrentWorkspace(null, null);
+      resetAnalytics();
+      onLogout?.();
+      set({
+        user: null,
+        isLoading: false,
+        status: "unauthenticated",
+        expired: false,
+        recovery: null,
+      });
+    },
+
+    /**
+     * The server rejected our credential (401). Tears the session down to
+     * exactly the state a cold boot with a dead token lands in, so the shell
+     * unmounts and the app shows the login page instead of staying up while
+     * every request fails with an auth error the user cannot act on
+     * (MUL-7028).
+     *
+     * No server round-trip: the credential is already dead, and `/auth/logout`
+     * would be one more request to answer a 401 with. Idempotent, because a
+     * session dies once but a screen full of in-flight requests all learn
+     * about it separately.
+     */
+    sessionExpired: () => {
+      // "Expired" is a claim about the user's own history, so only make it
+      // when this client really did present a credential the server then
+      // rejected: a live session, or a stored token left by an earlier one.
+      // A first visit to /login 401s on the identity probe too, and telling
+      // that person their session expired would be a lie. Read before the
+      // teardown below removes the evidence.
+      const hadCredential =
+        get().status === "authenticated" ||
+        storage.getItem("multica_token") !== null;
+
+      // Dropping the rejected credential happens before the idempotence
+      // guard, and unconditionally. A login attempt that 401s never leaves
+      // `unauthenticated` — Desktop's deep link writes the token, calls
+      // getMe, and gets rejected — so a guard placed first would return with
+      // that invalid token still sitting in storage, to be replayed at the
+      // next launch. Nothing below this point is safe to repeat; this is.
+      storage.removeItem("multica_token");
+      api.setToken(null);
+
+      // Past here we are ending a session, which happens once no matter how
+      // many in-flight requests learn the credential is dead — and does not
+      // happen at all when there was no session to end.
+      if (get().status === "unauthenticated") {
+        set({ recovery: null });
+        return;
+      }
+
+      // Cookie mode leaves the workspace singleton alone: there the URL owns
+      // workspace identity and the login route overwrites it on the next
+      // entry. Mirrors AuthInitializer's boot-time rejection.
+      if (!cookieAuth) setCurrentWorkspace(null, null);
+      resetAnalytics();
+      (onSessionExpired ?? onLogout)?.();
+      set({
+        user: null,
+        isLoading: false,
+        status: "unauthenticated",
+        expired: hadCredential,
+        recovery: null,
+      });
+    },
+
+    setUser: (user: User) => {
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false, recovery: null });
+    },
+
+    refreshMe: async () => {
+      const user = await api.getMe();
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false, recovery: null });
+    },
+  });
+  });
+}

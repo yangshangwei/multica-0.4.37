@@ -1,0 +1,64 @@
+{
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "source_root": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+  "lane": "password",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-installed-main.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=line,json",
+    "--output=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/linux-full-main-1/artifacts"
+  ],
+  "database": "multica_func7af9_password_20261102",
+  "api_health": {
+    "status": "ok",
+    "pid": 26546,
+    "commit": "7af9ab990",
+    "started_at": "2026-11-02T01:01:54Z"
+  },
+  "web_build_id": "wYec8nnmn8Rukz4PiJAJ7",
+  "config_sha256": "8749449aa2ac4e3ae09a5c6bc512ee6a8c19060c5fc57a09a29e1a809d8424dd",
+  "started_at": "2026-11-02T01:37:21.436319+00:00",
+  "state": "complete",
+  "commercial_provider_calls": 0,
+  "agent_cli_guard": true,
+  "specialized_fixture": {
+    "COLLABORATION_INSTALLED_IMAGE": "multica-gap-full-main:20261022",
+    "COLLABORATION_INSTALLED_APP_DIR": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/linux-arm64-dir/linux-arm64-unpacked",
+    "COLLABORATION_HOST_INSTALLED_ASAR_SHA256": "a0d9aede77480b1692b917406c9b23fba1548d34d9e26807ca1e833cf173acc9",
+    "COLLABORATION_INSTALLED_EXECUTABLE_SHA256": "379334fb6707615062d32fcc481a8a8d3140938531378ccba14f3fa169665043",
+    "COLLABORATION_INSTALLED_CLI_SHA256": "d616e35c73aff287210eb6d33c8be69e4420c8f6362466ed0f1db5bef07085f2",
+    "COLLABORATION_INSTALLED_SOURCE_SHA": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2"
+  },
+  "collaboration_gate_before": {
+    "id": 1,
+    "epoch": 7,
+    "enabled": true,
+    "freeze_progress": null,
+    "creation_enabled": true,
+    "freeze_operation_id": null,
+    "host_execution_enabled": false
+  },
+  "harness_patch_sha256": "6378d5bb6185e8b986b9c52177e5ae2b5040fbdbd149792fe0e05c549982781a",
+  "harness_dirty_paths": [
+    "e2e/collaboration-memory-web.spec.ts"
+  ],
+  "exit_code": 1,
+  "finished_at": "2026-11-02T01:37:45.407393+00:00",
+  "stats": {
+    "startTime": "2026-11-02T01:37:22.341Z",
+    "duration": 23039.24,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "collection_errors": []
+}

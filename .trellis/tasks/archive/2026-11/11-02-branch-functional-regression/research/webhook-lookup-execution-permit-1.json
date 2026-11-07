@@ -1,0 +1,126 @@
+{
+  "status": "COORDINATOR_ADOPTED_FOR_EXISTING_AUTHORIZED_DIAGNOSTIC_SCOPE",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "candidate_version": "0.6.8-rc.20261102",
+  "owner": "Coordinator allocates/records environment; separately dispatched native implement child writes/run private diagnostic only",
+  "new_top_level_test": "TestTaskPrivateWebhookTokenLookupErrorDiagnostic",
+  "recommended_subcases": [
+    {
+      "id": "server_lookup_error_returns500",
+      "priority": "recommended",
+      "fault": "Separate owned pool with connection-local search_path=pg_catalog; no DDL or canonical SQL rewrite",
+      "expected_http": 500,
+      "expected_body": {
+        "error": "internal error"
+      },
+      "expected_lookup_calls": 1,
+      "expected_scan_error": "pgconn.PgError SQLSTATE42P01, not pgx.ErrNoRows",
+      "body_read_calls": 0,
+      "writes_queries_batches": 0,
+      "bad_credential_debt_charged": false
+    },
+    {
+      "id": "closed_owned_pool_returns500",
+      "priority": "recommended",
+      "fault": "Close only a separately constructed and identity-verified owned pgxpool before canonical lookup",
+      "expected_http": 500,
+      "expected_body": {
+        "error": "internal error"
+      },
+      "expected_lookup_calls": 1,
+      "expected_scan_error": "Actual closed-pool acquisition error, nonnil and not pgx.ErrNoRows; no claim of server-side SQL execution",
+      "body_read_calls": 0,
+      "writes_queries_batches": 0,
+      "bad_credential_debt_charged": false
+    },
+    {
+      "id": "real_missing_token_returns404",
+      "priority": "recommended control",
+      "fault": "Normal separate healthy pool; a fresh synthetic valid-shaped47-byte token with no row",
+      "expected_http": 404,
+      "expected_body": {
+        "error": "webhook not found"
+      },
+      "expected_lookup_calls": 1,
+      "expected_scan_error": "errors.Is(err,pgx.ErrNoRows)",
+      "body_read_calls": 0,
+      "writes_queries_batches": 0,
+      "bad_credential_debt_charged": true
+    },
+    {
+      "id": "absolute_limit_preempts_lookup",
+      "priority": "recommended ordering control",
+      "fault": "Precharge a real memory absolute-IP limiter with Limit1; error-pool DBTX remains ready",
+      "expected_http": 429,
+      "expected_body": {
+        "error": "rate limit exceeded"
+      },
+      "expected_lookup_calls": 0,
+      "expected_retry_after": "positive integer",
+      "body_read_calls": 0,
+      "writes_queries_batches": 0
+    }
+  ],
+  "private_test_file": ".omx/private/branch-functional-regression-20261102/next-webhook-lookup-1/diagnostic_test.go",
+  "virtual_overlay_target": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102/server/internal/handler/zz_task_private_webhook_lookup_test.go",
+  "new_evidence_run": "evidence/next-webhook-lookup-1",
+  "suggested_owned_database": "multica_func7af9_next_webhook_lookup_1",
+  "compile_argv": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-p",
+    "2",
+    "-overlay",
+    "ABS_TASK_OVERLAY_JSON",
+    "-c",
+    "-o",
+    "ABS_TASK_PRIVATE_HANDLER_BINARY",
+    "./internal/handler"
+  ],
+  "execution": "Run the guarded compiled binary through saved Go JSON capture, selecting only ^TestTaskPrivateWebhookTokenLookupErrorDiagnostic$, -test.count=1 -test.parallel=1 -test.timeout=5m. Expected1top/4sub if all four recommended cases execute. Count actual terminal events; do not infer execution from exit0.",
+  "environment_requirements": [
+    "New explicit task-owned migrated/empty DB verified by coordinator; not default, browser, prior failed or other task DB",
+    "Handler TestMain requires DATABASE_URL and performs fixture writes even under a narrow filter; unreachable DB can exit0 without tests, so require actual named terminals",
+    "Private HOME and explicit existing GOCACHE/GOMODCACHE/GOPATH; no MULTICA_TASK_CONFIG_ROOT/MULTICA_TASK_WORKSPACES_ROOT global overrides",
+    "No test-process DATABASE_MAX_CONNS/DATABASE_MIN_CONNS global overrides; each extra pgxpool uses own Config() copy with MaxConns1/MinConns0 and a bounded connect timeout",
+    "Repository Agent CLI guard enabled; no agentintegration or real-user executable discovery; no app/API/listener/provider startup",
+    "Source/test/frozen hashes match saved candidate identity before/after; virtual overlay target absent before/after; preserve original two skip source bytes"
+  ],
+  "query_witness": [
+    "Use existing db.New(DBTX); wrapper forwards exact canonical SQL/arguments unchanged to its own pool",
+    "Capture QueryRow count and SQL hash/name plus single pgtype.Text argument equal to the synthetic path token",
+    "Wrap returned pgx.Row.Scan, delegate all20destinations unchanged and record actual error type/SQLSTATE; do not manufacture the result",
+    "Count Exec/Query/SendBatch too: all zero for these request paths; no later GetAutopilot or delivery query"
+  ],
+  "handler_setup": "Use a new minimal Handler with only Queries, cfg:Config{} and owned real memory absolute/bad-credential limiters; Metrics nil. Do not mutate testHandler or close testPool. No New() service factory is required for this early branch.",
+  "request_setup": "Use testutil.JSONRequest/WithURLParams/Call(t,h.HandleAutopilotWebhook,req).Want(status).JSON(&out); bind a synthetic path token and a stable documentation-range RemoteAddr. A counting body reader must remain unread. No router/server socket.",
+  "persistence_and_cleanup": [
+    "Before/after each request, healthy testPool read counts/fingerprints for owned webhook_delivery, autopilot_run and agent_task_queue are equal; no new domain fixtures are required for a synthetic missing token",
+    "Healthy testPool.Ping succeeds after error-pool close/fault; optionally record pg_backend_pid/current_database from the normal pool separately from request witness",
+    "All test-created pools close; handler TestMain owns closing global testPool and fixture cleanup. Coordinator proves selected DB connections0 afterward and preserves DB/raw evidence",
+    "All task processes/ports/mounts/protocol registrations checked by coordinator; expected no resource of these classes from this probe"
+  ],
+  "forbidden": [
+    "Delete/change existingskip methods",
+    "Change product SQL/index/DDL/dependencies or shared maintenance",
+    "P95/cache/stats fixtures or completed E2E/DEB/Mac repeats",
+    "Close sharedtestPool",
+    "User accounts/provider/remote calls",
+    "Claim completeWebhookdispatch/signature/worker acceptance from an early lookup failure"
+  ],
+  "authorized_at": "2026-11-02T09:52:14.882352+00:00",
+  "allocation_evidence": "evidence/next-webhook-allocation-1/run.json",
+  "current_preflight": "evidence/next-webhook-preflight-1/run.json",
+  "source_root": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+  "database": "multica_func7af9_next_webhook_lookup_1",
+  "private_environment_path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-webhook-lookup-1/environment.json",
+  "private_home": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-webhook-lookup-1/home",
+  "full_acceptance": false,
+  "original_six_skip_retained": true
+}

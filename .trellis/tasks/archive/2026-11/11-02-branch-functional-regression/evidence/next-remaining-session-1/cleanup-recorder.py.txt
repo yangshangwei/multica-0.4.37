@@ -1,0 +1,172 @@
+import datetime
+import hashlib
+import json
+import os
+import plistlib
+import subprocess
+from pathlib import Path
+from urllib.parse import parse_qs, unquote, urlsplit
+
+ROOT = Path('/Volumes/artisan/code/2026/multica-0.4.37')
+TASK = ROOT / '.trellis/tasks/11-02-branch-functional-regression'
+PRIVATE = Path(__file__).resolve().parent
+RUN = TASK / 'evidence/next-remaining-cleanup-1'
+RUN.mkdir(exist_ok=False)
+now = lambda: datetime.datetime.now(datetime.timezone.utc).isoformat()
+record = {'started_at': now(), 'state': 'checking', 'scope': 'Coordinator read-only resource audit',
+          'candidate': '7af9ab9905c98c77bb091223ebe687c639475bb4', 'steps': [],
+          'processes_stopped': 0, 'ports_created': 0, 'protocol_mutations': 0,
+          'mounts_created': 0, 'containers_started': 0, 'databases_dropped': 0}
+
+
+def save():
+    (RUN / 'run.json').write_text(json.dumps(record, indent=2) + '\n')
+
+
+def command(name, args, env=None, filter_stdout=None):
+    start = now()
+    p = subprocess.run(args, capture_output=True, env=env, timeout=35)
+    stdout = filter_stdout(p.stdout) if filter_stdout else p.stdout
+    (RUN / (name + '.stdout')).write_bytes(stdout)
+    (RUN / (name + '.stderr')).write_bytes(p.stderr)
+    record['steps'].append({'name': name, 'command': args, 'started_at': start,
+                            'finished_at': now(), 'exit_code': p.returncode,
+                            'stdout_sha256': hashlib.sha256(stdout).hexdigest(),
+                            'stderr_sha256': hashlib.sha256(p.stderr).hexdigest(),
+                            'stdout_filtered_to_owned_scope': filter_stdout is not None})
+    save()
+    return p
+
+
+save()
+try:
+    ps = subprocess.run(['ps', '-axo', 'pid=,ppid=,command='], capture_output=True, check=True, timeout=10)
+    needles = [str(PRIVATE) + '/', 'handler-sql-plan.test', 'handler-phase-probe.test', 'handler-cached-plan.test', 'handler-cached-reprepare.test', '/next-perf-cached-plan-2/', 'handler-read-semantics.test', '/next-perf-cached-plan-1/', '/next-read-semantics-1/',
+               '/next-mac-runtime-1/installed/', '/next-mac-runtime-2/installed/']
+    ancestor_ids = {os.getpid()}
+    parent_map = {int(line.split()[0]): int(line.split()[1]) for line in ps.stdout.decode().splitlines() if len(line.split()) > 1}
+    parent = os.getpid()
+    while parent in parent_map and parent_map[parent] not in ancestor_ids:
+        parent = parent_map[parent]
+        ancestor_ids.add(parent)
+    needles.extend([str(ROOT / '.omx/private/branch-functional-regression-20261102') + '/', '/mc-functional-7af9ab990-20261102/', '/mc-functional-go-7af9ab990-20261102/'])
+    own = [line.strip() for line in ps.stdout.decode().splitlines()
+           if any(token in line for token in needles)
+           and int(line.split()[0]) not in ancestor_ids
+           and 'cleanup.py' not in line and 'cleanup-final.py' not in line and 'cleanup.py.txt' not in line
+           and 'apply_patch' not in line]
+    (RUN / 'owned-processes.json').write_text(json.dumps(own, indent=2) + '\n')
+    record['process_audit'] = {'command': ['ps', '-axo', 'pid=,ppid=,command='], 'exit_code': ps.returncode, 'at': now(), 'filtered_to_owned_paths': True, 'excluded_ancestor_pids': sorted(ancestor_ids), 'owned_output_sha256': hashlib.sha256((RUN / 'owned-processes.json').read_bytes()).hexdigest()}
+    record['owned_processes_remaining'] = own
+    record['process_audit_excludes'] = 'This cleanup script and its launching shell; no process was signaled.'
+    record['checked_ports'] = {}
+    for port in [18920, 13840, 19860, 16390, 58786, 60790]:
+        p = command('port-' + str(port), ['lsof', '-nP', '-iTCP:' + str(port), '-sTCP:LISTEN'])
+        record['checked_ports'][str(port)] = {'exit_code': p.returncode, 'closed': p.returncode == 1 and not p.stdout}
+
+    js = '\n'.join([
+        'ObjC.import("AppKit");', 'const w=$.NSWorkspace.sharedWorkspace;',
+        'const current=w.URLForApplicationToOpenURL($.NSURL.URLWithString("multica://branch-functional-regression"));',
+        'let p=null;try{p=ObjC.unwrap(current.path)||null;}catch(e){}',
+        'const urls=w.URLsForApplicationsWithBundleIdentifier("ai.multica.desktop");',
+        'const paths=[];for(let i=0;i<urls.count;i++)paths.push(ObjC.unwrap(urls.objectAtIndex(i).path));',
+        'JSON.stringify({defaultApplicationPath:p,registeredApplications:paths});'])
+    p = command('protocol-query', ['osascript', '-l', 'JavaScript', '-e', js])
+    assert p.returncode == 0
+    protocol = json.loads(p.stdout)
+    original = json.loads((TASK / 'evidence/next-mac-runtime-2/protocol-before.stdout').read_text())
+    record['protocol'] = {'current': protocol,
+                          'original_exact_default_preserved': protocol['defaultApplicationPath'] == original['defaultApplicationPath'],
+                          'original_registration_set_preserved': sorted(protocol['registeredApplications']) == sorted(original['registeredApplications']),
+                          'owned_registrations_remaining': [p for p in protocol['registeredApplications']
+                                                             if '/.omx/private/branch-functional-regression-20261102/' in p]}
+    # No image/container was created in this batch. Audit only the task path/labels.
+    mount_started = now()
+    p = subprocess.run(['hdiutil', 'info', '-plist'], capture_output=True, check=True, timeout=20)
+    images = plistlib.loads(p.stdout).get('images', [])
+    owned_images = [image for image in images if 'branch-functional-regression' in str(image)]
+    record['owned_mounted_images_remaining'] = owned_images
+    (RUN / 'owned-mounts.json').write_text(json.dumps(owned_images, indent=2) + '\n')
+    record['mount_audit'] = {'command': ['hdiutil', 'info', '-plist'], 'started_at': mount_started, 'finished_at': now(), 'exit_code': p.returncode, 'owned_output_sha256': hashlib.sha256((RUN / 'owned-mounts.json').read_bytes()).hexdigest(), 'filtered_to_owned_scope': True}
+    containers = command('containers-query', ['docker', 'ps', '-a', '--filter', 'name=branch-functional-regression',
+                                               '--format', '{{.ID}} {{.Names}} {{.Status}}'])
+    assert containers.returncode == 0
+    record['owned_containers_remaining'] = containers.stdout.decode().splitlines()
+
+    env = json.loads((ROOT / '.omx/private/branch-functional-regression-20261102/next-perf-sql-plan-1/environment.json').read_text())
+    uri = urlsplit(env['DATABASE_URL'])
+    assert uri.path == '/multica_func7af9_next_sql_diag_1'
+    pg = {k: os.environ[k] for k in ['PATH', 'LANG', 'LC_ALL'] if k in os.environ}
+    pg.update(PGHOST=uri.hostname, PGPORT=str(uri.port), PGUSER=unquote(uri.username or ''),
+              PGPASSWORD=unquote(uri.password or ''), PGDATABASE=uri.path[1:], PGCONNECT_TIMEOUT='5',
+              PGSSLMODE=parse_qs(uri.query)['sslmode'][0],
+              PGOPTIONS='-c default_transaction_read_only=on -c statement_timeout=5000')
+    psql = '/opt/homebrew/opt/libpq/bin/psql'
+    assert Path(psql).is_file() and os.access(psql, os.X_OK)
+    databases = ['multica_func7af9_next_sql_diag_1', 'multica_func7af9_next_perf_diag_1',
+                 'multica_func7af9_resume_perf_1', 'multica_func7af9_resume_wire_live_1',
+                 'multica_func7af9_resume_linux_1', 'multica_func7af9_next_cached_diag_1', 'multica_func7af9_next_cached_diag_2', 'multica_func7af9_next_read_semantics_1', 'multica_func7af9_next_read_semantics_service_1']
+    browser_databases = [v['database'] for v in json.loads((TASK / 'evidence/cleanup/run.json').read_text())['gates']]
+    tagged = json.loads((TASK / 'research/knowledge-tagged-summary.json').read_text())
+    def tagged_names(v):
+        if isinstance(v, dict):
+            for key, value in v.items():
+                if key == 'database' and isinstance(value, str) and 'func7af9' in value:
+                    yield value
+                else:
+                    yield from tagged_names(value)
+        elif isinstance(v, list):
+            for value in v:
+                yield from tagged_names(value)
+    supplemental = sorted(set(browser_databases + list(tagged_names(tagged))))
+    assert all(__import__('re').fullmatch(r'[a-z][a-z0-9_]*', name) for name in supplemental)
+    catalog_sql = "SELECT coalesce(jsonb_agg(datname ORDER BY datname),'[]'::jsonb) FROM pg_database WHERE starts_with(datname,'multica_func7af9_') OR datname IN (" + ','.join("'"+name+"'" for name in supplemental) + ")"
+    cp = command('owned-database-inventory', [psql, '-X', '-At', '-v', 'ON_ERROR_STOP=1', '-c', catalog_sql], env=pg)
+    assert cp.returncode == 0
+    retained_owned = json.loads(cp.stdout)
+    record['database_scope'] = {'required_last_batch': databases.copy(), 'historically_recorded_browser_and_tagged': supplemental, 'ownership_prefix': 'multica_func7af9_', 'retained_inventory': retained_owned, 'missing_historical_supplemental': sorted(set(supplemental)-set(retained_owned)), 'missing_supplemental_note': 'Current catalog only; registry TTL may collect browser DBs. Does not alter historical results.'}
+    databases = sorted(set(databases + retained_owned))
+    db_literals = ','.join("'" + name + "'" for name in databases)
+    query = ("SELECT jsonb_build_object('database',current_database(),'backend_pid',pg_backend_pid(),'server_version',current_setting('server_version'),'read_only',current_setting('default_transaction_read_only'),'connections',"
+             "(SELECT jsonb_object_agg(name,(SELECT count(*) FROM pg_stat_activity a "
+             "WHERE a.datname=name AND a.pid<>pg_backend_pid())) FROM (VALUES "
+             + ','.join("('" + name + "')" for name in databases) + ") owned(name)),"
+             "'retained_databases',(SELECT jsonb_agg(datname ORDER BY datname) FROM pg_database "
+             "WHERE datname IN (" + db_literals + ")))" )
+    p = command('database-connections', [psql, '-X', '-At', '-v', 'ON_ERROR_STOP=1', '-c', query], env=pg)
+    assert p.returncode == 0
+    db = json.loads(p.stdout)
+    assert db['database'] == 'multica_func7af9_next_sql_diag_1'
+    record['database_audit_identity'] = {k:db[k] for k in ['database','backend_pid','server_version','read_only']}
+    assert db['read_only'] == 'on'
+    record['database_connections_after'] = db['connections']
+    record['retained_databases'] = db['retained_databases']
+    assert all(n == 0 for n in db['connections'].values()) and sorted(db['retained_databases']) == sorted(databases)
+
+    record['database_connections_9_last_batch'] = {name:db['connections'][name] for name in record['database_scope']['required_last_batch']}
+    source_before = json.loads((TASK / 'evidence/next-remaining-session-1/before.json').read_text())['sources']
+    record['sources'] = {}
+    for before in source_before:
+        path = before['path']
+        head = subprocess.check_output(['git', '-C', path, 'rev-parse', 'HEAD']).decode().strip()
+        diff = subprocess.check_output(['git', '-C', path, 'diff', '--', 'server', 'apps', 'packages'])
+        frozen = Path(path) / 'server/internal/handler/iteration_i1_p95_test.go'
+        observed = {'head': head, 'product_diff_sha256': hashlib.sha256(diff).hexdigest(),
+                    'frozen_test_sha256': hashlib.sha256(frozen.read_bytes()).hexdigest()}
+        observed['same_as_before'] = all(observed[k] == before[k] for k in ['head', 'product_diff_sha256', 'frozen_test_sha256'])
+        record['sources'][path] = observed
+        assert observed['same_as_before']
+    assert not own and not owned_images and not record['owned_containers_remaining']
+    assert all(v['closed'] for v in record['checked_ports'].values())
+    assert record['protocol']['original_exact_default_preserved']
+    assert record['protocol']['original_registration_set_preserved']
+    assert not record['protocol']['owned_registrations_remaining']
+    record.update(state='complete', finished_at=now(), original_p95_fail_retained=True,
+                  no_product_or_dependency_change=True, commercial_provider_calls=0, remote_dispatches=0)
+    save()
+    print(json.dumps({k: record[k] for k in ['state', 'owned_processes_remaining', 'database_connections_after',
+                                            'owned_containers_remaining', 'owned_mounted_images_remaining']}, indent=2))
+except Exception as error:
+    record.update(state='failed', error=str(error), finished_at=now())
+    save()
+    raise

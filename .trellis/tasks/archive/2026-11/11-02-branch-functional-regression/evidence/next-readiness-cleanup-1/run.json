@@ -1,0 +1,502 @@
+{
+  "started_at": "2026-11-02T10:29:22.022380+00:00",
+  "state": "complete",
+  "scope": "Coordinator read-only resource audit",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "steps": [
+    {
+      "name": "port-18920",
+      "command": [
+        "lsof",
+        "-nP",
+        "-iTCP:18920",
+        "-sTCP:LISTEN"
+      ],
+      "started_at": "2026-11-02T10:29:22.044868+00:00",
+      "finished_at": "2026-11-02T10:29:22.078049+00:00",
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_filtered_to_owned_scope": false
+    },
+    {
+      "name": "port-13840",
+      "command": [
+        "lsof",
+        "-nP",
+        "-iTCP:13840",
+        "-sTCP:LISTEN"
+      ],
+      "started_at": "2026-11-02T10:29:22.078257+00:00",
+      "finished_at": "2026-11-02T10:29:22.101567+00:00",
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_filtered_to_owned_scope": false
+    },
+    {
+      "name": "port-19860",
+      "command": [
+        "lsof",
+        "-nP",
+        "-iTCP:19860",
+        "-sTCP:LISTEN"
+      ],
+      "started_at": "2026-11-02T10:29:22.101806+00:00",
+      "finished_at": "2026-11-02T10:29:22.125022+00:00",
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_filtered_to_owned_scope": false
+    },
+    {
+      "name": "port-16390",
+      "command": [
+        "lsof",
+        "-nP",
+        "-iTCP:16390",
+        "-sTCP:LISTEN"
+      ],
+      "started_at": "2026-11-02T10:29:22.125228+00:00",
+      "finished_at": "2026-11-02T10:29:22.148256+00:00",
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_filtered_to_owned_scope": false
+    },
+    {
+      "name": "port-58786",
+      "command": [
+        "lsof",
+        "-nP",
+        "-iTCP:58786",
+        "-sTCP:LISTEN"
+      ],
+      "started_at": "2026-11-02T10:29:22.148490+00:00",
+      "finished_at": "2026-11-02T10:29:22.172398+00:00",
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_filtered_to_owned_scope": false
+    },
+    {
+      "name": "port-60790",
+      "command": [
+        "lsof",
+        "-nP",
+        "-iTCP:60790",
+        "-sTCP:LISTEN"
+      ],
+      "started_at": "2026-11-02T10:29:22.172614+00:00",
+      "finished_at": "2026-11-02T10:29:22.195904+00:00",
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_filtered_to_owned_scope": false
+    },
+    {
+      "name": "protocol-query",
+      "command": [
+        "osascript",
+        "-l",
+        "JavaScript",
+        "-e",
+        "ObjC.import(\"AppKit\");\nconst w=$.NSWorkspace.sharedWorkspace;\nconst current=w.URLForApplicationToOpenURL($.NSURL.URLWithString(\"multica://branch-functional-regression\"));\nlet p=null;try{p=ObjC.unwrap(current.path)||null;}catch(e){}\nconst urls=w.URLsForApplicationsWithBundleIdentifier(\"ai.multica.desktop\");\nconst paths=[];for(let i=0;i<urls.count;i++)paths.push(ObjC.unwrap(urls.objectAtIndex(i).path));\nJSON.stringify({defaultApplicationPath:p,registeredApplications:paths});"
+      ],
+      "started_at": "2026-11-02T10:29:22.196684+00:00",
+      "finished_at": "2026-11-02T10:29:22.310908+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "2151fbce42f76f5cc8b11f4a58a9afa626658b26852d09b3c5447622867feacd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_filtered_to_owned_scope": false
+    },
+    {
+      "name": "containers-query",
+      "command": [
+        "docker",
+        "ps",
+        "-a",
+        "--filter",
+        "name=branch-functional-regression",
+        "--format",
+        "{{.ID}} {{.Names}} {{.Status}}"
+      ],
+      "started_at": "2026-11-02T10:29:22.328132+00:00",
+      "finished_at": "2026-11-02T10:29:22.453595+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_filtered_to_owned_scope": false
+    },
+    {
+      "name": "owned-database-inventory",
+      "command": [
+        "/opt/homebrew/opt/libpq/bin/psql",
+        "-X",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT coalesce(jsonb_agg(datname ORDER BY datname),'[]'::jsonb) FROM pg_database WHERE starts_with(datname,'multica_func7af9_') OR datname IN ('multica_func7af9_admin_init_20261102','multica_func7af9_assist_20261102','multica_func7af9_device_20261102','multica_func7af9_host_off_20261102','multica_func7af9_knowledge_on_20261102','multica_func7af9_password_20261102','multica_func7af9_recommend_20261102','multica_functional_7af9_legacy_20261102','multica_functional_7af9_legacy_full1_20261102','multica_knowledge_composite_20261101_func7af9_normal','multica_knowledge_composite_20261101_func7af9_race','multica_knowledge_host_composite_20261101_func7af9_normal','multica_knowledge_host_composite_20261101_func7af9_race')"
+      ],
+      "started_at": "2026-11-02T10:29:22.457794+00:00",
+      "finished_at": "2026-11-02T10:29:22.537843+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "dea2d9da832c4353ae797c3d66339a5e112f40a2600ce24dab3a0fefc0eba23a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_filtered_to_owned_scope": false
+    },
+    {
+      "name": "database-connections",
+      "command": [
+        "/opt/homebrew/opt/libpq/bin/psql",
+        "-X",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT jsonb_build_object('database',current_database(),'backend_pid',pg_backend_pid(),'server_version',current_setting('server_version'),'read_only',current_setting('default_transaction_read_only'),'connections',(SELECT jsonb_object_agg(name,(SELECT count(*) FROM pg_stat_activity a WHERE a.datname=name AND a.pid<>pg_backend_pid())) FROM (VALUES ('multica_func7af9_admin_init_20261102'),('multica_func7af9_assist_20261102'),('multica_func7af9_cmd_redis_20261102'),('multica_func7af9_daemon_full_20261102'),('multica_func7af9_daemon_targeted_20261102'),('multica_func7af9_device_20261102'),('multica_func7af9_go06_full_20261102'),('multica_func7af9_go06_targeted_20261102'),('multica_func7af9_go_01_20261102'),('multica_func7af9_go_04_20261102'),('multica_func7af9_go_06_20261102'),('multica_func7af9_go_11_20261102'),('multica_func7af9_go_20_20261102'),('multica_func7af9_go_33_20261102'),('multica_func7af9_go_36_20261102'),('multica_func7af9_go_38_20261102'),('multica_func7af9_go_39_20261102'),('multica_func7af9_go_40_20261102'),('multica_func7af9_go_41_20261102'),('multica_func7af9_go_42_20261102'),('multica_func7af9_go_44_20261102'),('multica_func7af9_go_45_20261102'),('multica_func7af9_go_51_20261102'),('multica_func7af9_go_52_20261102'),('multica_func7af9_go_53_20261102'),('multica_func7af9_go_58_20261102'),('multica_func7af9_go_61_20261102'),('multica_func7af9_go_64_20261102'),('multica_func7af9_go_65_20261102'),('multica_func7af9_go_78_20261102'),('multica_func7af9_handler_claim_replay_20261102'),('multica_func7af9_handler_freshfixture_20261102'),('multica_func7af9_host_off_20261102'),('multica_func7af9_knowledge_host_normal_20261102'),('multica_func7af9_knowledge_host_race_20261102'),('multica_func7af9_knowledge_on_20261102'),('multica_func7af9_knowledge_ordinary_normal_20261102'),('multica_func7af9_knowledge_ordinary_race_20261102'),('multica_func7af9_next_cached_diag_1'),('multica_func7af9_next_cached_diag_2'),('multica_func7af9_next_perf_diag_1'),('multica_func7af9_next_read_semantics_1'),('multica_func7af9_next_read_semantics_service_1'),('multica_func7af9_next_sql_diag_1'),('multica_func7af9_next_webhook_lookup_1'),('multica_func7af9_password_20261102'),('multica_func7af9_recommend_20261102'),('multica_func7af9_resume_linux_1'),('multica_func7af9_resume_perf_1'),('multica_func7af9_resume_wire_live_1'),('multica_func7af9_template_20261102'),('multica_functional_7af9_legacy_20261102'),('multica_functional_7af9_legacy_full1_20261102'),('multica_knowledge_composite_20261101_func7af9_normal'),('multica_knowledge_composite_20261101_func7af9_race'),('multica_knowledge_host_composite_20261101_func7af9_normal'),('multica_knowledge_host_composite_20261101_func7af9_race')) owned(name)),'retained_databases',(SELECT jsonb_agg(datname ORDER BY datname) FROM pg_database WHERE datname IN ('multica_func7af9_admin_init_20261102','multica_func7af9_assist_20261102','multica_func7af9_cmd_redis_20261102','multica_func7af9_daemon_full_20261102','multica_func7af9_daemon_targeted_20261102','multica_func7af9_device_20261102','multica_func7af9_go06_full_20261102','multica_func7af9_go06_targeted_20261102','multica_func7af9_go_01_20261102','multica_func7af9_go_04_20261102','multica_func7af9_go_06_20261102','multica_func7af9_go_11_20261102','multica_func7af9_go_20_20261102','multica_func7af9_go_33_20261102','multica_func7af9_go_36_20261102','multica_func7af9_go_38_20261102','multica_func7af9_go_39_20261102','multica_func7af9_go_40_20261102','multica_func7af9_go_41_20261102','multica_func7af9_go_42_20261102','multica_func7af9_go_44_20261102','multica_func7af9_go_45_20261102','multica_func7af9_go_51_20261102','multica_func7af9_go_52_20261102','multica_func7af9_go_53_20261102','multica_func7af9_go_58_20261102','multica_func7af9_go_61_20261102','multica_func7af9_go_64_20261102','multica_func7af9_go_65_20261102','multica_func7af9_go_78_20261102','multica_func7af9_handler_claim_replay_20261102','multica_func7af9_handler_freshfixture_20261102','multica_func7af9_host_off_20261102','multica_func7af9_knowledge_host_normal_20261102','multica_func7af9_knowledge_host_race_20261102','multica_func7af9_knowledge_on_20261102','multica_func7af9_knowledge_ordinary_normal_20261102','multica_func7af9_knowledge_ordinary_race_20261102','multica_func7af9_next_cached_diag_1','multica_func7af9_next_cached_diag_2','multica_func7af9_next_perf_diag_1','multica_func7af9_next_read_semantics_1','multica_func7af9_next_read_semantics_service_1','multica_func7af9_next_sql_diag_1','multica_func7af9_next_webhook_lookup_1','multica_func7af9_password_20261102','multica_func7af9_recommend_20261102','multica_func7af9_resume_linux_1','multica_func7af9_resume_perf_1','multica_func7af9_resume_wire_live_1','multica_func7af9_template_20261102','multica_functional_7af9_legacy_20261102','multica_functional_7af9_legacy_full1_20261102','multica_knowledge_composite_20261101_func7af9_normal','multica_knowledge_composite_20261101_func7af9_race','multica_knowledge_host_composite_20261101_func7af9_normal','multica_knowledge_host_composite_20261101_func7af9_race')))"
+      ],
+      "started_at": "2026-11-02T10:29:22.541257+00:00",
+      "finished_at": "2026-11-02T10:29:22.612240+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "c927b9d3cdd4ca29b7a255473626598eef82f2d22b5099d3aae042b50cca2061",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_filtered_to_owned_scope": false
+    }
+  ],
+  "processes_stopped": 0,
+  "ports_created": 0,
+  "protocol_mutations": 0,
+  "mounts_created": 0,
+  "containers_started": 0,
+  "databases_dropped": 0,
+  "process_audit": {
+    "command": [
+      "ps",
+      "-axo",
+      "pid=,ppid=,command="
+    ],
+    "exit_code": 0,
+    "at": "2026-11-02T10:29:22.044791+00:00",
+    "filtered_to_owned_paths": true,
+    "excluded_ancestor_pids": [
+      0,
+      1,
+      7453,
+      29121
+    ],
+    "owned_output_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "owned_processes_remaining": [],
+  "process_audit_excludes": "This cleanup script and its launching shell; no process was signaled.",
+  "checked_ports": {
+    "18920": {
+      "exit_code": 1,
+      "closed": true
+    },
+    "13840": {
+      "exit_code": 1,
+      "closed": true
+    },
+    "19860": {
+      "exit_code": 1,
+      "closed": true
+    },
+    "16390": {
+      "exit_code": 1,
+      "closed": true
+    },
+    "58786": {
+      "exit_code": 1,
+      "closed": true
+    },
+    "60790": {
+      "exit_code": 1,
+      "closed": true
+    }
+  },
+  "protocol": {
+    "current": {
+      "defaultApplicationPath": "/Applications/Multica.app",
+      "registeredApplications": [
+        "/Applications/Multica.app",
+        "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/apps/desktop/dist/mac-arm64/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/apps/desktop/dist/mac-arm64/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/apps/desktop/dist/mac-arm64/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app"
+      ]
+    },
+    "original_exact_default_preserved": true,
+    "original_registration_set_preserved": true,
+    "owned_registrations_remaining": []
+  },
+  "owned_mounted_images_remaining": [],
+  "mount_audit": {
+    "command": [
+      "hdiutil",
+      "info",
+      "-plist"
+    ],
+    "started_at": "2026-11-02T10:29:22.311212+00:00",
+    "finished_at": "2026-11-02T10:29:22.328011+00:00",
+    "exit_code": 0,
+    "owned_output_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "filtered_to_owned_scope": true
+  },
+  "owned_containers_remaining": [],
+  "database_scope": {
+    "required_last_batch": [
+      "multica_func7af9_next_sql_diag_1",
+      "multica_func7af9_next_perf_diag_1",
+      "multica_func7af9_resume_perf_1",
+      "multica_func7af9_resume_wire_live_1",
+      "multica_func7af9_resume_linux_1",
+      "multica_func7af9_next_cached_diag_1",
+      "multica_func7af9_next_cached_diag_2",
+      "multica_func7af9_next_read_semantics_1",
+      "multica_func7af9_next_read_semantics_service_1",
+      "multica_func7af9_next_webhook_lookup_1"
+    ],
+    "historically_recorded_browser_and_tagged": [
+      "multica_func7af9_admin_init_20261102",
+      "multica_func7af9_assist_20261102",
+      "multica_func7af9_device_20261102",
+      "multica_func7af9_host_off_20261102",
+      "multica_func7af9_knowledge_on_20261102",
+      "multica_func7af9_password_20261102",
+      "multica_func7af9_recommend_20261102",
+      "multica_functional_7af9_legacy_20261102",
+      "multica_functional_7af9_legacy_full1_20261102",
+      "multica_knowledge_composite_20261101_func7af9_normal",
+      "multica_knowledge_composite_20261101_func7af9_race",
+      "multica_knowledge_host_composite_20261101_func7af9_normal",
+      "multica_knowledge_host_composite_20261101_func7af9_race"
+    ],
+    "ownership_prefix": "multica_func7af9_",
+    "retained_inventory": [
+      "multica_func7af9_admin_init_20261102",
+      "multica_func7af9_assist_20261102",
+      "multica_func7af9_cmd_redis_20261102",
+      "multica_func7af9_daemon_full_20261102",
+      "multica_func7af9_daemon_targeted_20261102",
+      "multica_func7af9_device_20261102",
+      "multica_func7af9_go06_full_20261102",
+      "multica_func7af9_go06_targeted_20261102",
+      "multica_func7af9_go_01_20261102",
+      "multica_func7af9_go_04_20261102",
+      "multica_func7af9_go_06_20261102",
+      "multica_func7af9_go_11_20261102",
+      "multica_func7af9_go_20_20261102",
+      "multica_func7af9_go_33_20261102",
+      "multica_func7af9_go_36_20261102",
+      "multica_func7af9_go_38_20261102",
+      "multica_func7af9_go_39_20261102",
+      "multica_func7af9_go_40_20261102",
+      "multica_func7af9_go_41_20261102",
+      "multica_func7af9_go_42_20261102",
+      "multica_func7af9_go_44_20261102",
+      "multica_func7af9_go_45_20261102",
+      "multica_func7af9_go_51_20261102",
+      "multica_func7af9_go_52_20261102",
+      "multica_func7af9_go_53_20261102",
+      "multica_func7af9_go_58_20261102",
+      "multica_func7af9_go_61_20261102",
+      "multica_func7af9_go_64_20261102",
+      "multica_func7af9_go_65_20261102",
+      "multica_func7af9_go_78_20261102",
+      "multica_func7af9_handler_claim_replay_20261102",
+      "multica_func7af9_handler_freshfixture_20261102",
+      "multica_func7af9_host_off_20261102",
+      "multica_func7af9_knowledge_host_normal_20261102",
+      "multica_func7af9_knowledge_host_race_20261102",
+      "multica_func7af9_knowledge_on_20261102",
+      "multica_func7af9_knowledge_ordinary_normal_20261102",
+      "multica_func7af9_knowledge_ordinary_race_20261102",
+      "multica_func7af9_next_cached_diag_1",
+      "multica_func7af9_next_cached_diag_2",
+      "multica_func7af9_next_perf_diag_1",
+      "multica_func7af9_next_read_semantics_1",
+      "multica_func7af9_next_read_semantics_service_1",
+      "multica_func7af9_next_sql_diag_1",
+      "multica_func7af9_next_webhook_lookup_1",
+      "multica_func7af9_password_20261102",
+      "multica_func7af9_recommend_20261102",
+      "multica_func7af9_resume_linux_1",
+      "multica_func7af9_resume_perf_1",
+      "multica_func7af9_resume_wire_live_1",
+      "multica_func7af9_template_20261102",
+      "multica_functional_7af9_legacy_20261102",
+      "multica_functional_7af9_legacy_full1_20261102",
+      "multica_knowledge_composite_20261101_func7af9_normal",
+      "multica_knowledge_composite_20261101_func7af9_race",
+      "multica_knowledge_host_composite_20261101_func7af9_normal",
+      "multica_knowledge_host_composite_20261101_func7af9_race"
+    ],
+    "missing_historical_supplemental": [],
+    "missing_supplemental_note": "Current catalog only; registry TTL may collect browser DBs. Does not alter historical results."
+  },
+  "database_audit_identity": {
+    "database": "multica_func7af9_next_sql_diag_1",
+    "backend_pid": 54406,
+    "server_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+    "read_only": "on"
+  },
+  "database_connections_after": {
+    "multica_func7af9_resume_perf_1": 0,
+    "multica_func7af9_go_01_20261102": 0,
+    "multica_func7af9_go_04_20261102": 0,
+    "multica_func7af9_go_06_20261102": 0,
+    "multica_func7af9_go_11_20261102": 0,
+    "multica_func7af9_go_20_20261102": 0,
+    "multica_func7af9_go_33_20261102": 0,
+    "multica_func7af9_go_36_20261102": 0,
+    "multica_func7af9_go_38_20261102": 0,
+    "multica_func7af9_go_39_20261102": 0,
+    "multica_func7af9_go_40_20261102": 0,
+    "multica_func7af9_go_41_20261102": 0,
+    "multica_func7af9_go_42_20261102": 0,
+    "multica_func7af9_go_44_20261102": 0,
+    "multica_func7af9_go_45_20261102": 0,
+    "multica_func7af9_go_51_20261102": 0,
+    "multica_func7af9_go_52_20261102": 0,
+    "multica_func7af9_go_53_20261102": 0,
+    "multica_func7af9_go_58_20261102": 0,
+    "multica_func7af9_go_61_20261102": 0,
+    "multica_func7af9_go_64_20261102": 0,
+    "multica_func7af9_go_65_20261102": 0,
+    "multica_func7af9_go_78_20261102": 0,
+    "multica_func7af9_resume_linux_1": 0,
+    "multica_func7af9_assist_20261102": 0,
+    "multica_func7af9_device_20261102": 0,
+    "multica_func7af9_next_sql_diag_1": 0,
+    "multica_func7af9_next_perf_diag_1": 0,
+    "multica_func7af9_host_off_20261102": 0,
+    "multica_func7af9_password_20261102": 0,
+    "multica_func7af9_template_20261102": 0,
+    "multica_func7af9_cmd_redis_20261102": 0,
+    "multica_func7af9_go06_full_20261102": 0,
+    "multica_func7af9_next_cached_diag_1": 0,
+    "multica_func7af9_next_cached_diag_2": 0,
+    "multica_func7af9_recommend_20261102": 0,
+    "multica_func7af9_resume_wire_live_1": 0,
+    "multica_func7af9_admin_init_20261102": 0,
+    "multica_func7af9_daemon_full_20261102": 0,
+    "multica_func7af9_knowledge_on_20261102": 0,
+    "multica_func7af9_next_read_semantics_1": 0,
+    "multica_func7af9_next_webhook_lookup_1": 0,
+    "multica_func7af9_go06_targeted_20261102": 0,
+    "multica_functional_7af9_legacy_20261102": 0,
+    "multica_func7af9_daemon_targeted_20261102": 0,
+    "multica_func7af9_knowledge_host_race_20261102": 0,
+    "multica_functional_7af9_legacy_full1_20261102": 0,
+    "multica_func7af9_handler_claim_replay_20261102": 0,
+    "multica_func7af9_handler_freshfixture_20261102": 0,
+    "multica_func7af9_next_read_semantics_service_1": 0,
+    "multica_func7af9_knowledge_host_normal_20261102": 0,
+    "multica_func7af9_knowledge_ordinary_race_20261102": 0,
+    "multica_knowledge_composite_20261101_func7af9_race": 0,
+    "multica_func7af9_knowledge_ordinary_normal_20261102": 0,
+    "multica_knowledge_composite_20261101_func7af9_normal": 0,
+    "multica_knowledge_host_composite_20261101_func7af9_race": 0,
+    "multica_knowledge_host_composite_20261101_func7af9_normal": 0
+  },
+  "retained_databases": [
+    "multica_func7af9_admin_init_20261102",
+    "multica_func7af9_assist_20261102",
+    "multica_func7af9_cmd_redis_20261102",
+    "multica_func7af9_daemon_full_20261102",
+    "multica_func7af9_daemon_targeted_20261102",
+    "multica_func7af9_device_20261102",
+    "multica_func7af9_go06_full_20261102",
+    "multica_func7af9_go06_targeted_20261102",
+    "multica_func7af9_go_01_20261102",
+    "multica_func7af9_go_04_20261102",
+    "multica_func7af9_go_06_20261102",
+    "multica_func7af9_go_11_20261102",
+    "multica_func7af9_go_20_20261102",
+    "multica_func7af9_go_33_20261102",
+    "multica_func7af9_go_36_20261102",
+    "multica_func7af9_go_38_20261102",
+    "multica_func7af9_go_39_20261102",
+    "multica_func7af9_go_40_20261102",
+    "multica_func7af9_go_41_20261102",
+    "multica_func7af9_go_42_20261102",
+    "multica_func7af9_go_44_20261102",
+    "multica_func7af9_go_45_20261102",
+    "multica_func7af9_go_51_20261102",
+    "multica_func7af9_go_52_20261102",
+    "multica_func7af9_go_53_20261102",
+    "multica_func7af9_go_58_20261102",
+    "multica_func7af9_go_61_20261102",
+    "multica_func7af9_go_64_20261102",
+    "multica_func7af9_go_65_20261102",
+    "multica_func7af9_go_78_20261102",
+    "multica_func7af9_handler_claim_replay_20261102",
+    "multica_func7af9_handler_freshfixture_20261102",
+    "multica_func7af9_host_off_20261102",
+    "multica_func7af9_knowledge_host_normal_20261102",
+    "multica_func7af9_knowledge_host_race_20261102",
+    "multica_func7af9_knowledge_on_20261102",
+    "multica_func7af9_knowledge_ordinary_normal_20261102",
+    "multica_func7af9_knowledge_ordinary_race_20261102",
+    "multica_func7af9_next_cached_diag_1",
+    "multica_func7af9_next_cached_diag_2",
+    "multica_func7af9_next_perf_diag_1",
+    "multica_func7af9_next_read_semantics_1",
+    "multica_func7af9_next_read_semantics_service_1",
+    "multica_func7af9_next_sql_diag_1",
+    "multica_func7af9_next_webhook_lookup_1",
+    "multica_func7af9_password_20261102",
+    "multica_func7af9_recommend_20261102",
+    "multica_func7af9_resume_linux_1",
+    "multica_func7af9_resume_perf_1",
+    "multica_func7af9_resume_wire_live_1",
+    "multica_func7af9_template_20261102",
+    "multica_functional_7af9_legacy_20261102",
+    "multica_functional_7af9_legacy_full1_20261102",
+    "multica_knowledge_composite_20261101_func7af9_normal",
+    "multica_knowledge_composite_20261101_func7af9_race",
+    "multica_knowledge_host_composite_20261101_func7af9_normal",
+    "multica_knowledge_host_composite_20261101_func7af9_race"
+  ],
+  "database_connections_diagnostic_dbs": {
+    "multica_func7af9_next_sql_diag_1": 0,
+    "multica_func7af9_next_perf_diag_1": 0,
+    "multica_func7af9_resume_perf_1": 0,
+    "multica_func7af9_resume_wire_live_1": 0,
+    "multica_func7af9_resume_linux_1": 0,
+    "multica_func7af9_next_cached_diag_1": 0,
+    "multica_func7af9_next_cached_diag_2": 0,
+    "multica_func7af9_next_read_semantics_1": 0,
+    "multica_func7af9_next_read_semantics_service_1": 0,
+    "multica_func7af9_next_webhook_lookup_1": 0
+  },
+  "sources": {
+    "/Volumes/artisan/code/2026/multica-0.4.37": {
+      "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "product_diff_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+      "frozen_test_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+      "same_as_before": true
+    },
+    "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102": {
+      "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "product_diff_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+      "frozen_test_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+      "same_as_before": true
+    },
+    "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102": {
+      "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "product_diff_sha256": "3ef8ec0f8841f4448237c0d3a99e466dbf817a143259b5916cd826d1f6a6a280",
+      "frozen_test_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+      "same_as_before": true
+    }
+  },
+  "finished_at": "2026-11-02T10:29:22.710269+00:00",
+  "original_p95_fail_retained": true,
+  "no_product_or_dependency_change": true,
+  "commercial_provider_calls": 0,
+  "remote_dispatches": 0
+}

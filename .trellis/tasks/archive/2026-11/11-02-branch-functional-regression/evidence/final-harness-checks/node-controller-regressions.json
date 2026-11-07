@@ -1,0 +1,17 @@
+{
+  "name": "node-controller-regressions",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "node",
+    "--test",
+    "e2e/fixtures/collaboration-installed-main.node-test.mjs",
+    "e2e/fixtures/collaboration-installed-layout.node-test.mjs",
+    "e2e/fixtures/collaboration-host-runtime.node-test.mjs"
+  ],
+  "started_at": "2026-11-02T01:44:01.961485+00:00",
+  "state": "complete",
+  "exit_code": 0,
+  "finished_at": "2026-11-02T01:44:02.201127+00:00"
+}

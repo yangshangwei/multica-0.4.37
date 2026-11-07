@@ -1,0 +1,119 @@
+{
+  "at": "2026-11-02T08:23:45.007768+00:00",
+  "reviewer": "independent native trellis-check /root/final_coordination_review",
+  "status": "PASS_WITH_NOTES_REQUIRED_ACCEPTANCE_GATES_OPEN",
+  "scope": "Narrow final document/integrity/cleanup review; trusts completed independently reviewed14000rawplans; no DB/test/build/service/account/remote action",
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "N1",
+      "status": "open_acceptance_gate",
+      "issue": "Original2171ms>2000msFAIL and remaining native/auth/updater/trust/Provider gates remain open; diagnosticPASS is not fullacceptance"
+    },
+    {
+      "id": "N2",
+      "status": "accurately_documented_scope_limit",
+      "issue": "No originaltailattribution/single-columnstatisticscause or future completeoptimizer scheduling/malformedtypeddecode/delayedRows.Err proof; six-table rollback excludesnotifications and physicalreset"
+    }
+  ],
+  "historical_files_checked": 5949,
+  "historical_missing": [],
+  "changed_historical_coordination_paths": [
+    ".trellis/tasks/11-02-branch-functional-regression/implement.md",
+    ".trellis/tasks/11-02-branch-functional-regression/report.md",
+    ".trellis/tasks/11-02-branch-functional-regression/task.json",
+    ".trellis/tasks/11-02-branch-functional-regression/progress.md",
+    ".trellis/tasks/11-02-branch-functional-regression/session-prompt.md",
+    ".trellis/tasks/11-02-branch-functional-regression/conditional-matrix.csv",
+    ".trellis/tasks/11-02-branch-functional-regression/defects.md",
+    ".trellis/tasks/11-02-branch-functional-regression/research/session-record.md"
+  ],
+  "unexpected_historical_changes": [],
+  "preserved_other_workspace_files": 36,
+  "changed_workspace_paths": [
+    ".trellis/spec/server/database-test-isolation.md",
+    ".trellis/workspace/artisan/index.md",
+    ".trellis/workspace/artisan/journal-2.md"
+  ],
+  "preexisting_spec_content_exact_prefix": true,
+  "e2e_rows": 439,
+  "e2e_current_pass": 439,
+  "matrix_rows": 31,
+  "matrix_statuses": {
+    "PASS": 21,
+    "BLOCKED": 6,
+    "FAIL": 1,
+    "NOT_RUN": 3
+  },
+  "original_p95_status": "FAIL2171ms>2000ms retained; not rerun",
+  "task_status": "in_progress",
+  "sources": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "product_diff_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+      "frozen_test_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "product_diff_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+      "frozen_test_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+      "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "product_diff_sha256": "3ef8ec0f8841f4448237c0d3a99e466dbf817a143259b5916cd826d1f6a6a280",
+      "frozen_test_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef"
+    }
+  ],
+  "latest_cleanup_saved_stream_hashes": true,
+  "database_connections_as_saved": {
+    "multica_func7af9_resume_perf_1": 0,
+    "multica_func7af9_resume_linux_1": 0,
+    "multica_func7af9_next_sql_diag_1": 0,
+    "multica_func7af9_next_perf_diag_1": 0,
+    "multica_func7af9_next_cached_diag_1": 0,
+    "multica_func7af9_next_cached_diag_2": 0,
+    "multica_func7af9_resume_wire_live_1": 0,
+    "multica_func7af9_next_read_semantics_1": 0,
+    "multica_func7af9_next_read_semantics_service_1": 0
+  },
+  "database_connected_by_reviewer": false,
+  "saved_resource_cleanup_complete": true,
+  "independent_raw_review_status": "PASS_WITH_NOTES_OPEN_ACCEPTANCE_GATES",
+  "reviewed_raw_artifact_hash_mismatches": [],
+  "artifact_sha256": {
+    "progress.md": "cf3036ec289ccb34e356a6a0cc6a8b5a328f6f63829fcf38431581c610b120c7",
+    "report.md": "3ac722daad7455188fd64a6affdba4148292498f8cdb9224a9cc4534d0148256",
+    "defects.md": "3d0fbbdcce1ce5f9f1804616ae26ad4a38ac1d680903a4054a294b2b141bdf42",
+    "conditional-matrix.csv": "78cf6766c29733d12c3c0099648a40f4dff76d633522f77c38635041499276c9",
+    "session-prompt.md": "bed6fcdf45e57b871ab623b07a9ddfb4519b6991272ab03a58e15c282d4d5853",
+    "task.json": "38638ea2d0a05d1c2b57f50af38e8e3af5e2c32cba7d118e5a63a01f5a76ffdf",
+    "implement.md": "1cc3e3d1106d5acf36575214eb724d1cdd93e5bc9e10efdd02ef6ca246a2685c",
+    "research/cached-semantics-evidence-review-1.md": "3f0e77941459a87d8de21268789069a1b6d345c66a0f39b33647340f304c3b72",
+    "research/cached-semantics-evidence-review-1.json": "07c0fb1ccf4c56416b0dba97a0683add3dff8226a224a50edc689ee14b94eb6b",
+    "research/perf-cached-plan-diagnosis-1.md": "d947cb3478ef93229b43d0b99618b461ca4841a729c77341f57df06a84343540",
+    "research/perf-cached-reprepare-diagnosis-1.md": "13b6f73ee9dfabba0e0a877fab6f4eb0cbc503042c22ed1f85ccf0f112381abd",
+    "research/read-semantics-diagnosis-1.md": "c5edb76bba327040127c6cc850bb34115f85e11fda85029ef06576118141c621",
+    "research/cached-final-verification-1.json": "648a6b417543e61c06943e1cd4cd3e1d9fec7a15c50bfaa459856b08203f4c17",
+    "evidence/next-cached-cleanup-2/run.json": "c3be5597a89504ad2d3c20efed355f3787877f6a38f4211876316c9460a5fed6"
+  },
+  "spec_sha256": "fa12c446750bbb2ab0a5ffca9d0a5dfc960bdcae08c8614bcd895175ec1dcb09",
+  "git_diff_check": "PASS",
+  "lint": "NOT_RERUN_NO_PRODUCT_CHANGE; narrow review only",
+  "typecheck": "NOT_RERUN_NO_PRODUCT_CHANGE; narrow review only",
+  "tests": "NOT_RERUN; saved2cacheddiagnostics plus12top+14subrace independently reviewed already; no completedgate repeated",
+  "no_product_sql_index_dependency_change": true,
+  "no_archive_commit_publication": true,
+  "preexisting_journal_content_exact_prefix": true,
+  "journal_preserved_prefix_bytes": 72500,
+  "workspace_change_explanation": "Spec has append-only prepared/stats contract; journal has appended no-commit session with original content exact prefix; generated index updated for that session. All other33preserved files identical.",
+  "workspace_current_sha256": {
+    ".trellis/spec/server/database-test-isolation.md": "fa12c446750bbb2ab0a5ffca9d0a5dfc960bdcae08c8614bcd895175ec1dcb09",
+    ".trellis/workspace/artisan/index.md": "bf2c3179a1527968d9005fb77a9838ff9230382cad9576622671103b741aef61",
+    ".trellis/workspace/artisan/journal-2.md": "c5b68f4b5e3defb96dfb41c4d52bd3e43cb7e4450017b4357648503efe189a48"
+  },
+  "review_report_sha256": "deb19dbfd4a1a032725445e9ef9576152d287aa00473e577911aa0c39ee42b73",
+  "finished_at": "2026-11-02T08:24:05.439655+00:00"
+}

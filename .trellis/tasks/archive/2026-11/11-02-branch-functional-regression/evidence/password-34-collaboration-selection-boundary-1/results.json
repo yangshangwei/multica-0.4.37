@@ -1,0 +1,116 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-34-collaboration-selection-boundary-1/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-selection-boundary.spec.ts",
+      "file": "collaboration-selection-boundary.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "AC87 Web and actual Electron hide subtask creation for shared body/comment selections while ordinary children retain it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7144,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:34:07.549Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "selection-boundary-identities",
+                      "contentType": "application/json",
+                      "body": "ewogICJjcml0ZXJpb24iOiAiQUM4NyIsCiAgImFjdG9yX2lkIjogIjRjNTdhNjU0LWMzYTUtNGUxNC1hNTE4LWJlNTdiODk4MjQ3NSIsCiAgImlzc3VlX2lkIjogIjAxYTE5OWU0LTcyZTctNzIxNy04YjhmLTk4NGJmMGY3ZTk3YiIsCiAgImNvbW1lbnRfaWQiOiAiMGYzNTZiZGEtMjUxNC00ZDhiLThlOWEtZjBmZjAwOGJmNzRlIiwKICAib3JkaW5hcnlfaXNzdWVfaWQiOiAiMDFhMTk5ZTQtNzMxOS03Nzg5LWFkNGUtODliYmFlZDBhOWQ2IiwKICAib3JkaW5hcnlfY29tbWVudF9pZCI6ICIwMWExOTllNC03MzJmLTc3N2QtOWU4Yy1mMzMyNjg3MTNhZWEiLAogICJlbnZpcm9ubWVudCI6IHsKICAgICJhcGkiOiAiaHR0cDovL2xvY2FsaG9zdDoxODkyMCIsCiAgICAid2ViIjogImh0dHA6Ly9sb2NhbGhvc3Q6MTM4NDAiLAogICAgInJlbmRlcmVyIjogImh0dHA6Ly9sb2NhbGhvc3Q6MTk4NjAiLAogICAgImVsZWN0cm9uX29zIjogImRhcndpbiIsCiAgICAicHJvdmlkZXJfc3RhcnRlZCI6IGZhbHNlCiAgfSwKICAic291cmNlIjogWwogICAgewogICAgICAicGF0aCI6ICJlMmUvY29sbGFib3JhdGlvbi1zZWxlY3Rpb24tYm91bmRhcnkuc3BlYy50cyIsCiAgICAgICJzaGEyNTYiOiAiOGQ5ZGI0OGYwZTE3MmM1ZmQ1NzI4M2JjZDA2YTc3MjVkOWEzOTQ1Zjg2NDNkMzM5Y2FhOGQxYmJjNTVlNDAzZiIKICAgIH0sCiAgICB7CiAgICAgICJwYXRoIjogImUyZS9maXh0dXJlcy9jb2xsYWJvcmF0aW9uLXNlbGVjdGlvbi1ib3VuZGFyeS50cyIsCiAgICAgICJzaGEyNTYiOiAiNjg0YTc4NjlmOWEzNjgwMzZmMTE5ODk1OThmMTVkYjkzZjI2NzQxZWY1MWEzYzBlZDAzN2U0NjMyYTFmYjEyYSIKICAgIH0KICBdLAogICJ3ZWJfc2hhcmVkIjogewogICAgImJvZHkiOiB7CiAgICAgICJtYXJrZXIiOiAiQUM4NyBzaGFyZWQgYm9keSBzZWxlY3Rpb24iLAogICAgICAic2VsZWN0ZWQiOiAiQUM4NyBzaGFyZWQgYm9keSBzZWxlY3Rpb24iLAogICAgICAiYm91bmRzIjogewogICAgICAgICJsZWZ0IjogMzg0LAogICAgICAgICJyaWdodCI6IDU3MC4zMjgxMjUsCiAgICAgICAgInkiOiA0MzIuNQogICAgICB9CiAgICB9LAogICAgImNvbW1lbnQiOiB7CiAgICAgICJtYXJrZXIiOiAiQUM4NyBzaGFyZWQgY29tbWVudCBzZWxlY3Rpb24iLAogICAgICAic2VsZWN0ZWQiOiAiQUM4NyBzaGFyZWQgY29tbWVudCBzZWxlY3Rpb24iLAogICAgICAiYm91bmRzIjogewogICAgICAgICJsZWZ0IjogMzg0LAogICAgICAgICJyaWdodCI6IDU5OC43ODEyNSwKICAgICAgICAieSI6IDQxNy4yNQogICAgICB9CiAgICB9LAogICAgImNyZWF0ZV9zdWJ0YXNrX2VudHJpZXMiOiAwCiAgfSwKICAiZWxlY3Ryb25fc2hhcmVkIjogewogICAgImJvZHkiOiB7CiAgICAgICJtYXJrZXIiOiAiQUM4NyBzaGFyZWQgYm9keSBzZWxlY3Rpb24iLAogICAgICAic2VsZWN0ZWQiOiAiQUM4NyBzaGFyZWQgYm9keSBzZWxlY3Rpb24iLAogICAgICAiYm91bmRzIjogewogICAgICAgICJsZWZ0IjogNDEyLjUsCiAgICAgICAgInJpZ2h0IjogNTk4LjgyODEyNSwKICAgICAgICAieSI6IDQ4MC41CiAgICAgIH0KICAgIH0sCiAgICAiY29tbWVudCI6IHsKICAgICAgIm1hcmtlciI6ICJBQzg3IHNoYXJlZCBjb21tZW50IHNlbGVjdGlvbiIsCiAgICAgICJzZWxlY3RlZCI6ICJBQzg3IHNoYXJlZCBjb21tZW50IHNlbGVjdGlvbiIsCiAgICAgICJib3VuZHMiOiB7CiAgICAgICAgImxlZnQiOiA0MTIuNSwKICAgICAgICAicmlnaHQiOiA2MjcuMjgxMjUsCiAgICAgICAgInkiOiA1NTcuMjUKICAgICAgfQogICAgfSwKICAgICJjcmVhdGVfc3VidGFza19lbnRyaWVzIjogMAogIH0sCiAgIndlYl9vcmRpbmFyeSI6IHsKICAgICJib2R5IjogewogICAgICAibWFya2VyIjogIkFDODcgb3JkaW5hcnkgYm9keSBzZWxlY3Rpb24iLAogICAgICAic2VsZWN0ZWQiOiAiQUM4NyBvcmRpbmFyeSBib2R5IHNlbGVjdGlvbiIsCiAgICAgICJib3VuZHMiOiB7CiAgICAgICAgImxlZnQiOiAyOTksCiAgICAgICAgInJpZ2h0IjogNDk0LjkwNjI1LAogICAgICAgICJ5IjogMjI3CiAgICAgIH0KICAgIH0sCiAgICAiY29tbWVudCI6IHsKICAgICAgIm1hcmtlciI6ICJBQzg3IG9yZGluYXJ5IGNvbW1lbnQgc2VsZWN0aW9uIiwKICAgICAgInNlbGVjdGVkIjogIkFDODcgb3JkaW5hcnkgY29tbWVudCBzZWxlY3Rpb24iLAogICAgICAiYm91bmRzIjogewogICAgICAgICJsZWZ0IjogMzU2LAogICAgICAgICJyaWdodCI6IDU4MC4zNzUsCiAgICAgICAgInkiOiA1NTUuNzUKICAgICAgfQogICAgfSwKICAgICJjcmVhdGVfc3VidGFza19lbnRyaWVzIjogMiwKICAgICJwcmV2aWV3IjogewogICAgICAic291cmNlX2lzc3VlX2lkIjogIjAxYTE5OWU0LTczMTktNzc4OS1hZDRlLTg5YmJhZWQwYTlkNiIsCiAgICAgICJzdGF0dXMiOiAyMDAKICAgIH0KICB9LAogICJlbGVjdHJvbl9vcmRpbmFyeSI6IHsKICAgICJib2R5IjogewogICAgICAibWFya2VyIjogIkFDODcgb3JkaW5hcnkgYm9keSBzZWxlY3Rpb24iLAogICAgICAic2VsZWN0ZWQiOiAiQUM4NyBvcmRpbmFyeSBib2R5IHNlbGVjdGlvbiIsCiAgICAgICJib3VuZHMiOiB7CiAgICAgICAgImxlZnQiOiA0MywKICAgICAgICAicmlnaHQiOiAyMzguOTA2MjUsCiAgICAgICAgInkiOiAyMTkKICAgICAgfQogICAgfSwKICAgICJjb21tZW50IjogewogICAgICAibWFya2VyIjogIkFDODcgb3JkaW5hcnkgY29tbWVudCBzZWxlY3Rpb24iLAogICAgICAic2VsZWN0ZWQiOiAiQUM4NyBvcmRpbmFyeSBjb21tZW50IHNlbGVjdGlvbiIsCiAgICAgICJib3VuZHMiOiB7CiAgICAgICAgImxlZnQiOiAxMDAsCiAgICAgICAgInJpZ2h0IjogMzI0LjM3NSwKICAgICAgICAieSI6IDU0Ny43NQogICAgICB9CiAgICB9LAogICAgImNyZWF0ZV9zdWJ0YXNrX2VudHJpZXMiOiAyLAogICAgInByZXZpZXciOiB7CiAgICAgICJzb3VyY2VfaXNzdWVfaWQiOiAiMDFhMTk5ZTQtNzMxOS03Nzg5LWFkNGUtODliYmFlZDBhOWQ2IiwKICAgICAgInN0YXR1cyI6IDIwMAogICAgfQogIH0sCiAgIndlYl9zb3VyY2VfY29udGV4dF9yZXF1ZXN0cyI6IFsKICAgIHsKICAgICAgIm1ldGhvZCI6ICJHRVQiLAogICAgICAicGF0aCI6ICIvYXBpL2NvbW1lbnRzLzAxYTE5OWU0LTczMmYtNzc3ZC05ZThjLWYzMzI2ODcxM2FlYS9zdWItaXNzdWUtcHJldmlldyIKICAgIH0KICBdLAogICJlbGVjdHJvbl9zaGFyZWRfc291cmNlX2NvbnRleHRfcmVxdWVzdHMiOiBbXSwKICAiZWxlY3Ryb25fb3JkaW5hcnlfc291cmNlX2NvbnRleHRfcmVxdWVzdHMiOiBbCiAgICB7CiAgICAgICJtZXRob2QiOiAiR0VUIiwKICAgICAgInBhdGgiOiAiL2FwaS9jb21tZW50cy8wMWExOTllNC03MzJmLTc3N2QtOWU4Yy1mMzMyNjg3MTNhZWEvc3ViLWlzc3VlLXByZXZpZXciCiAgICB9CiAgXSwKICAid2ViX2Vycm9ycyI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f1f9ccf487bccfab98fb-ff0ee90dad2517a8fd38",
+          "file": "collaboration-selection-boundary.spec.ts",
+          "line": 12,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T01:34:07.128Z",
+    "duration": 7975.539,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

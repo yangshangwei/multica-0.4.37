@@ -1,0 +1,445 @@
+// @vitest-environment node
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import type { BrowserWindow, WebContents } from "electron";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+type Handler = (...args: unknown[]) => void;
+type IpcHandler = (...args: unknown[]) => unknown;
+
+const ctx = vi.hoisted(() => ({
+  handlers: new Map<string, Handler[]>(),
+  ipcHandlers: new Map<string, IpcHandler>(),
+  ipcHandle: vi.fn(),
+  checkForUpdates: vi.fn(async () => ({
+    updateInfo: { version: "0.3.18" },
+    isUpdateAvailable: false,
+  })),
+  downloadUpdate: vi.fn(),
+  quitAndInstall: vi.fn(),
+  setFeedURL: vi.fn(),
+  getVersion: vi.fn(() => "0.3.17"),
+  userDataPath: "",
+}));
+
+vi.mock("electron-updater", () => {
+  let channel: string | null = null;
+  const autoUpdater = {
+    autoDownload: false,
+    autoInstallOnAppQuit: false,
+    get channel() {
+      return channel;
+    },
+    set channel(value: string | null) {
+      channel = value;
+      this.allowDowngrade = true;
+    },
+    allowDowngrade: false,
+    on: vi.fn((event: string, handler: Handler) => {
+      const handlers = ctx.handlers.get(event) ?? [];
+      handlers.push(handler);
+      ctx.handlers.set(event, handlers);
+      return autoUpdater;
+    }),
+    checkForUpdates: ctx.checkForUpdates,
+    downloadUpdate: ctx.downloadUpdate,
+    quitAndInstall: ctx.quitAndInstall,
+    setFeedURL: ctx.setFeedURL,
+  };
+  return { autoUpdater };
+});
+
+vi.mock("electron", () => ({
+  app: {
+    getVersion: ctx.getVersion,
+    getPath: vi.fn(() => ctx.userDataPath),
+  },
+  BrowserWindow: class BrowserWindow {},
+  ipcMain: {
+    handle: ctx.ipcHandle,
+  },
+}));
+
+import {
+  configureMacX64UpdateChannel,
+  configureWindowsIa32UpdateChannel,
+  setupAutoUpdater,
+} from "./updater";
+import { updaterPreferencesPath } from "./updater-preferences";
+
+describe("architecture update channels at startup", () => {
+  it.each([
+    ["win32", "arm64", "latest-arm64"],
+    ["win32", "ia32", "latest-ia32"],
+    ["darwin", "x64", "latest-x64"],
+  ] as const)(
+    "selects the %s/%s feed without enabling downgrades",
+    async (platform, arch, channel) => {
+      const platformDescriptor = Object.getOwnPropertyDescriptor(process, "platform")!;
+      const archDescriptor = Object.getOwnPropertyDescriptor(process, "arch")!;
+      try {
+        Object.defineProperty(process, "platform", { value: platform });
+        Object.defineProperty(process, "arch", { value: arch });
+        vi.resetModules();
+        const { autoUpdater } = await import("electron-updater");
+        autoUpdater.allowDowngrade = false;
+
+        await import("./updater");
+
+        expect(autoUpdater.channel).toBe(channel);
+        expect(autoUpdater.allowDowngrade).toBe(false);
+      } finally {
+        Object.defineProperty(process, "platform", platformDescriptor);
+        Object.defineProperty(process, "arch", archDescriptor);
+      }
+    },
+  );
+});
+
+describe("Windows ia32 update channel", () => {
+  it("uses the ia32 feed without permitting a downgrade", () => {
+    const updater = { channel: null, allowDowngrade: true };
+
+    configureWindowsIa32UpdateChannel(updater, "win32", "ia32");
+
+    expect(updater).toEqual({ channel: "latest-ia32", allowDowngrade: false });
+  });
+
+  it.each([
+    ["win32", "x64"],
+    ["win32", "arm64"],
+    ["darwin", "x64"],
+    ["darwin", "arm64"],
+    ["linux", "ia32"],
+  ] as const)("preserves the existing %s/%s update configuration", (platform, arch) => {
+    const updater = { channel: "existing-channel", allowDowngrade: true };
+
+    configureWindowsIa32UpdateChannel(updater, platform, arch);
+
+    expect(updater).toEqual({ channel: "existing-channel", allowDowngrade: true });
+  });
+});
+
+describe("macOS x64 update channel", () => {
+  it("does not touch established architecture paths", () => {
+    for (const [platform, arch] of [
+      ["darwin", "arm64"],
+      ["win32", "x64"],
+      ["win32", "arm64"],
+      ["linux", "arm64"],
+    ] as const) {
+      const updater = { channel: null, allowDowngrade: true };
+
+      configureMacX64UpdateChannel(updater, platform, arch);
+
+      expect(updater).toEqual({ channel: null, allowDowngrade: true });
+    }
+  });
+
+  it("does not enable downgrades when selecting an architecture feed", () => {
+    const updater = { channel: null, allowDowngrade: true };
+
+    configureMacX64UpdateChannel(updater, "darwin", "x64");
+
+    expect(updater).toEqual({
+      channel: "latest-x64",
+      allowDowngrade: false,
+    });
+  });
+});
+
+function emitUpdater(event: string, ...args: unknown[]) {
+  for (const handler of ctx.handlers.get(event) ?? []) {
+    handler(...args);
+  }
+}
+
+async function invokeIpc(channel: string, ...args: unknown[]) {
+  const handler = ctx.ipcHandlers.get(channel);
+  if (!handler) throw new Error(`Missing IPC handler: ${channel}`);
+  return handler({}, ...args);
+}
+
+function makeWindow() {
+  const send = vi.fn();
+  return {
+    win: {
+      isDestroyed: () => false,
+      webContents: {
+        isDestroyed: () => false,
+        send,
+      },
+    } as unknown as BrowserWindow,
+    send,
+  };
+}
+
+function makeDestroyedWindow() {
+  return {
+    isDestroyed: () => true,
+    get webContents(): WebContents {
+      throw new TypeError("Object has been destroyed");
+    },
+  } as unknown as BrowserWindow;
+}
+
+function makeWindowWithDestroyedWebContents() {
+  const send = vi.fn(() => {
+    throw new TypeError("Object has been destroyed");
+  });
+  return {
+    win: {
+      isDestroyed: () => false,
+      webContents: {
+        isDestroyed: () => true,
+        send,
+      },
+    } as unknown as BrowserWindow,
+    send,
+  };
+}
+
+function makeWindowWithThrowingSend(error: Error) {
+  const send = vi.fn(() => {
+    throw error;
+  });
+  return {
+    win: {
+      isDestroyed: () => false,
+      webContents: {
+        isDestroyed: () => false,
+        send,
+      },
+    } as unknown as BrowserWindow,
+    send,
+  };
+}
+
+describe("setupAutoUpdater", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    ctx.userDataPath = mkdtempSync(join(tmpdir(), "multica-updater-test-"));
+    ctx.handlers.clear();
+    ctx.ipcHandlers.clear();
+    ctx.ipcHandle.mockClear();
+    ctx.ipcHandle.mockImplementation((channel: string, handler: IpcHandler) => {
+      ctx.ipcHandlers.set(channel, handler);
+    });
+    ctx.checkForUpdates.mockClear();
+    ctx.downloadUpdate.mockClear();
+    ctx.quitAndInstall.mockClear();
+    ctx.setFeedURL.mockClear();
+    ctx.getVersion.mockClear();
+  });
+
+  afterEach(() => {
+    vi.clearAllTimers();
+    vi.useRealTimers();
+    rmSync(ctx.userDataPath, { recursive: true, force: true });
+  });
+
+  it("keeps the built-in publish feed when no updateUrl is configured", () => {
+    setupAutoUpdater(() => null);
+
+    expect(ctx.setFeedURL).not.toHaveBeenCalled();
+  });
+
+  it("points electron-updater at a configured generic updateUrl", () => {
+    setupAutoUpdater(() => null, { getUpdateUrl: () => "https://updates.example.com/desktop" });
+
+    expect(ctx.setFeedURL).toHaveBeenCalledTimes(1);
+    expect(ctx.setFeedURL).toHaveBeenCalledWith({
+      provider: "generic",
+      url: "https://updates.example.com/desktop",
+    });
+  });
+
+  it("waits for server setup and uses the saved update URL without restarting", async () => {
+    let updateUrl: string | undefined;
+    setupAutoUpdater(() => null, { getUpdateUrl: () => updateUrl });
+    await invokeIpc("updater:get-preferences");
+
+    await vi.advanceTimersByTimeAsync(60 * 60 * 1000 + 5_000);
+    expect(ctx.checkForUpdates).not.toHaveBeenCalled();
+    await expect(invokeIpc("updater:check")).resolves.toMatchObject({ ok: false });
+    expect(ctx.checkForUpdates).not.toHaveBeenCalled();
+
+    updateUrl = "http://10.10.10.20:18080/desktop";
+    await expect(invokeIpc("updater:check")).resolves.toMatchObject({ ok: true });
+    expect(ctx.setFeedURL).toHaveBeenLastCalledWith({ provider: "generic", url: updateUrl });
+    expect(ctx.checkForUpdates).toHaveBeenCalledTimes(1);
+
+    updateUrl = "http://10.10.10.30:18080/desktop";
+    await vi.advanceTimersByTimeAsync(60 * 60 * 1000);
+    expect(ctx.setFeedURL).toHaveBeenLastCalledWith({ provider: "generic", url: updateUrl });
+    expect(ctx.checkForUpdates).toHaveBeenCalledTimes(2);
+  });
+
+  it("waits for an old source's check and download before checking a new source", async () => {
+    let updateUrl = "http://old.example.com:18080/desktop";
+    setupAutoUpdater(() => null, { getUpdateUrl: () => updateUrl });
+    await invokeIpc("updater:get-preferences");
+    let finishDownload!: () => void;
+    const downloadPromise = new Promise<void>((resolve) => { finishDownload = resolve; });
+    const oldResult = { updateInfo: { version: "0.3.19" }, isUpdateAvailable: true, downloadPromise };
+    let finishCheck!: (value: typeof oldResult) => void;
+    ctx.checkForUpdates.mockReturnValueOnce(new Promise<typeof oldResult>((resolve) => { finishCheck = resolve; }));
+
+    const oldCheck = invokeIpc("updater:check");
+    const sameSourceCheck = invokeIpc("updater:check");
+    updateUrl = "http://new.example.com:18080/desktop";
+    const newCheck = invokeIpc("updater:check");
+    try {
+      expect(ctx.checkForUpdates).toHaveBeenCalledTimes(1);
+      expect(ctx.setFeedURL).toHaveBeenLastCalledWith({ provider: "generic", url: "http://old.example.com:18080/desktop" });
+
+      finishCheck(oldResult);
+      await expect(oldCheck).resolves.toMatchObject({ latestVersion: "0.3.19" });
+      await expect(sameSourceCheck).resolves.toMatchObject({ latestVersion: "0.3.19" });
+      expect(ctx.checkForUpdates).toHaveBeenCalledTimes(1);
+
+      finishDownload();
+      await expect(newCheck).resolves.toMatchObject({ latestVersion: "0.3.18" });
+      expect(ctx.checkForUpdates).toHaveBeenCalledTimes(2);
+      expect(ctx.setFeedURL).toHaveBeenLastCalledWith({ provider: "generic", url: updateUrl });
+    } finally {
+      finishCheck(oldResult);
+      finishDownload();
+      await Promise.all([oldCheck, sameSourceCheck, newCheck]);
+    }
+  });
+
+  it("enables automatic background updates by default", async () => {
+    setupAutoUpdater(() => null);
+
+    await expect(invokeIpc("updater:get-preferences")).resolves.toEqual({
+      automaticUpdates: true,
+    });
+
+    await vi.advanceTimersByTimeAsync(5_000);
+    expect(ctx.checkForUpdates).toHaveBeenCalledTimes(1);
+  });
+
+  it.each(["disabled", "server changed"])("drops a queued automatic check when %s", async (change) => {
+    let updateUrl = "http://old.example.com:18080/desktop";
+    setupAutoUpdater(() => null, { getUpdateUrl: () => updateUrl });
+    await invokeIpc("updater:get-preferences");
+    let finishCheck!: (value: { updateInfo: { version: string }; isUpdateAvailable: boolean }) => void;
+    ctx.checkForUpdates.mockReturnValueOnce(new Promise((resolve) => { finishCheck = resolve; }));
+    await vi.advanceTimersByTimeAsync(5_000);
+    updateUrl = "http://queued.example.com:18080/desktop";
+    await vi.advanceTimersByTimeAsync(60 * 60 * 1000);
+    try {
+      if (change === "disabled") {
+        await invokeIpc("updater:set-automatic-updates", false);
+      } else {
+        updateUrl = "http://current.example.com:18080/desktop";
+      }
+      finishCheck({ updateInfo: { version: "0.3.18" }, isUpdateAvailable: false });
+      await vi.advanceTimersByTimeAsync(0);
+      expect(ctx.checkForUpdates).toHaveBeenCalledTimes(1);
+      expect(ctx.setFeedURL).toHaveBeenLastCalledWith({ provider: "generic", url: "http://old.example.com:18080/desktop" });
+
+      await expect(invokeIpc("updater:check")).resolves.toMatchObject({ ok: true });
+      expect(ctx.setFeedURL).toHaveBeenLastCalledWith({ provider: "generic", url: updateUrl });
+    } finally {
+      finishCheck({ updateInfo: { version: "0.3.18" }, isUpdateAvailable: false });
+      await vi.advanceTimersByTimeAsync(0);
+    }
+  });
+
+  it("skips startup and periodic checks when automatic updates are disabled", async () => {
+    writeFileSync(
+      updaterPreferencesPath(ctx.userDataPath),
+      JSON.stringify({ automaticUpdates: false }),
+    );
+    setupAutoUpdater(() => null);
+
+    // Let the async preference load settle before advancing timers; otherwise
+    // the in-flight readFile can resolve after afterEach() removes the temp
+    // dir, default back to enabled=true, and fire a background check into the
+    // next test's freshly-cleared mock (flake on slow CI).
+    await invokeIpc("updater:get-preferences");
+
+    await vi.advanceTimersByTimeAsync(60 * 60 * 1000 + 5_000);
+
+    expect(ctx.checkForUpdates).not.toHaveBeenCalled();
+  });
+
+  it("persists the automatic update preference and stops future background checks", async () => {
+    setupAutoUpdater(() => null);
+
+    await expect(
+      invokeIpc("updater:set-automatic-updates", false),
+    ).resolves.toEqual({ automaticUpdates: false });
+    expect(
+      JSON.parse(
+        readFileSync(updaterPreferencesPath(ctx.userDataPath), "utf-8"),
+      ),
+    ).toEqual({ automaticUpdates: false });
+
+    await vi.advanceTimersByTimeAsync(60 * 60 * 1000 + 5_000);
+    expect(ctx.checkForUpdates).not.toHaveBeenCalled();
+  });
+
+  it("still allows an explicit manual check when automatic updates are disabled", async () => {
+    writeFileSync(
+      updaterPreferencesPath(ctx.userDataPath),
+      JSON.stringify({ automaticUpdates: false }),
+    );
+    setupAutoUpdater(() => null);
+
+    await expect(invokeIpc("updater:check")).resolves.toMatchObject({
+      ok: true,
+    });
+
+    expect(ctx.checkForUpdates).toHaveBeenCalledTimes(1);
+  });
+
+  it("forwards update progress to a live renderer", () => {
+    const { win, send } = makeWindow();
+    setupAutoUpdater(() => win);
+
+    emitUpdater("download-progress", { percent: 42 });
+
+    expect(send).toHaveBeenCalledWith("updater:download-progress", {
+      percent: 42,
+    });
+  });
+
+  it("skips update progress when the BrowserWindow has already been destroyed", () => {
+    setupAutoUpdater(() => makeDestroyedWindow());
+
+    expect(() => emitUpdater("download-progress", { percent: 42 })).not.toThrow();
+  });
+
+  it("skips update progress when the BrowserWindow webContents has already been destroyed", () => {
+    const { win, send } = makeWindowWithDestroyedWebContents();
+    setupAutoUpdater(() => win);
+
+    expect(() => emitUpdater("download-progress", { percent: 42 })).not.toThrow();
+    expect(send).not.toHaveBeenCalled();
+  });
+
+  it("skips update progress when webContents.send loses a destroy race", () => {
+    const { win, send } = makeWindowWithThrowingSend(
+      new TypeError("Object has been destroyed"),
+    );
+    setupAutoUpdater(() => win);
+
+    expect(() => emitUpdater("download-progress", { percent: 42 })).not.toThrow();
+    expect(send).toHaveBeenCalledWith("updater:download-progress", {
+      percent: 42,
+    });
+  });
+
+  it("rethrows non-destroy errors from webContents.send", () => {
+    const { win } = makeWindowWithThrowingSend(new Error("boom"));
+    setupAutoUpdater(() => win);
+
+    expect(() => emitUpdater("download-progress", { percent: 42 })).toThrow(
+      "boom",
+    );
+  });
+});

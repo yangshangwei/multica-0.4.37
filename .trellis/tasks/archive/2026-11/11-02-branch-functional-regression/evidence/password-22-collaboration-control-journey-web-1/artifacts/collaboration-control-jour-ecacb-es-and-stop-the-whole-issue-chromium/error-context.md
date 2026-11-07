@@ -1,0 +1,318 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation "Application navigation" [ref=e4]:
+        - button "Workspaces" [ref=e5]
+        - button "Collaboration" [ref=e6]
+    - main [ref=e8]:
+      - generic [ref=e9]:
+        - heading "Collaboration" [level=1] [ref=e10]
+        - navigation "Collaboration" [ref=e11]:
+          - link "Current handling" [ref=e12] [cursor=pointer]:
+            - /url: /account?view=current&issue=01a199cb-09d0-762a-86d9-9eedee90a4ac
+          - link "Participating" [ref=e13] [cursor=pointer]:
+            - /url: /account?view=participating&issue=01a199cb-09d0-762a-86d9-9eedee90a4ac
+        - button "New collaboration issue" [ref=e14]
+        - button "Notifications 0 unread" [ref=e16]:
+          - text: Notifications
+          - generic [ref=e17]: 0 unread
+      - generic [ref=e18]:
+        - region "Collaboration issues" [ref=e19]:
+          - generic [ref=e20]:
+            - textbox "Search loaded issues" [ref=e21]
+            - generic [ref=e22]:
+              - generic [ref=e23]: 1 issues
+              - combobox "Sort" [ref=e24]:
+                - option "Recently updated" [selected]
+                - option "Title"
+          - list [ref=e26]:
+            - listitem [ref=e27]:
+              - link "Independent control lanes 2070203e7fc745 Control source Todo Control handler · External collaborator" [ref=e28] [cursor=pointer]:
+                - /url: /account?view=participating&issue=01a199cb-09d0-762a-86d9-9eedee90a4ac
+                - generic [ref=e29]: Independent control lanes 2070203e7fc745
+                - generic [ref=e30]:
+                  - generic [ref=e31]: Control source
+                  - generic [ref=e32]: Todo
+                - generic [ref=e33]:
+                  - text: Control handler
+                  - generic [ref=e34]: · External collaborator
+        - region "Issue detail" [ref=e35]:
+          - generic [ref=e36]:
+            - generic [ref=e37]:
+              - generic [ref=e38]:
+                - heading "Independent control lanes 2070203e7fc745" [level=2] [ref=e39]
+                - button "Copy link" [ref=e40]:
+                  - img
+                  - text: Copy link
+              - generic [ref=e41]:
+                - generic [ref=e42]:
+                  - term [ref=e43]: Status
+                  - definition [ref=e44]: Todo
+                - generic [ref=e45]:
+                  - term [ref=e46]: Handler
+                  - definition [ref=e47]: Control handlerExternal collaborator
+                - generic [ref=e48]:
+                  - term [ref=e49]: Creator
+                  - definition [ref=e50]: Control creator
+                - generic [ref=e51]:
+                  - term [ref=e52]: Source workspace
+                  - definition [ref=e53]: Control source
+            - region "Issue actions" [ref=e54]:
+              - generic [ref=e55]:
+                - button "Add participant" [ref=e56]
+                - button "Transfer" [ref=e57]
+                - button "Request information" [ref=e58]
+                - button "Change status" [ref=e59]
+                - button "Complete issue" [ref=e60]
+                - button "Cancel issue" [ref=e61]
+                - button "Edit issue" [ref=e62]
+                - button "Edit source fields" [ref=e63]
+                - button "Change iteration" [ref=e64]
+              - button "Participants" [ref=e66]
+            - generic [ref=e67]:
+              - heading "Description" [level=3] [ref=e68]
+              - paragraph [ref=e70]: Synthetic remote Linux resources for human control checks. No provider or supervisor process executes AI.
+            - region "Issue fields" [ref=e71]:
+              - generic [ref=e72]:
+                - generic [ref=e73]:
+                  - term [ref=e74]: Priority
+                  - definition [ref=e75]: No priority
+                - generic [ref=e76]:
+                  - term [ref=e77]: Start date
+                  - definition [ref=e78]: None
+                - generic [ref=e79]:
+                  - term [ref=e80]: Due date
+                  - definition [ref=e81]: None
+                - generic [ref=e82]:
+                  - term [ref=e83]: Labels
+                  - definition [ref=e84]: None
+                - generic [ref=e85]:
+                  - term [ref=e86]: Project
+                  - definition [ref=e87]: None
+                - generic [ref=e88]:
+                  - term [ref=e89]: Parent issue
+                  - definition [ref=e90]: None
+                - generic [ref=e91]:
+                  - term [ref=e92]: Stage under parent
+                  - definition [ref=e93]: None
+                - generic [ref=e94]:
+                  - term [ref=e95]: Iteration
+                  - definition [ref=e96]: None
+            - region "Sub-issues" [ref=e97]:
+              - heading "Sub-issues" [level=3] [ref=e98]
+              - paragraph [ref=e99]: No sub-issues.
+            - region "Issue reactions" [ref=e100]:
+              - group "Thread and reactions" [ref=e102]:
+                - button "Choose a reaction" [ref=e103]:
+                  - img [ref=e104]
+            - region "Attachments" [ref=e107]:
+              - heading "Attachments" [level=3] [ref=e108]
+              - paragraph [ref=e109]: Delivered files remain on this issue when a comment or its file reference is removed.
+              - paragraph [ref=e110]: No files delivered yet.
+              - group [ref=e111]:
+                - generic "Attach files" [ref=e112] [cursor=pointer]
+            - region "AI execution" [ref=e113]:
+              - heading "AI execution" [level=3] [ref=e114]
+              - paragraph [ref=e115]: New AI execution is disabled.
+              - paragraph [ref=e116]: Stopping or resuming a target affects every target in its execution lane.
+              - paragraph [ref=e117]: Paused
+              - generic [ref=e118]:
+                - button "Stop all" [ref=e119]
+                - button "Resume all" [ref=e120]
+              - button "Manage AI resources" [ref=e122]
+              - generic [ref=e123]:
+                - generic [ref=e124]:
+                  - heading "Execution lane 1" [level=4] [ref=e125]
+                  - generic [ref=e126]: Paused
+                - list [ref=e127]:
+                  - listitem [ref=e128]:
+                    - generic [ref=e129]:
+                      - generic [ref=e130]: Agent
+                      - generic [ref=e131]: 42eb1fea-9e72-42c4-88a1-20fb4a1bc343
+                    - paragraph [ref=e132]: Awaiting initial authorization
+                    - generic [ref=e133]:
+                      - button "Stop target" [ref=e134]
+                      - button "Resume target" [ref=e135]
+                    - button "Switch proposals" [ref=e137]
+                - list
+                - list
+              - generic [ref=e138]:
+                - generic [ref=e139]:
+                  - heading "Execution lane 2" [level=4] [ref=e140]
+                  - generic [ref=e141]: Paused
+                - list [ref=e142]:
+                  - listitem [ref=e143]:
+                    - generic [ref=e144]:
+                      - generic [ref=e145]: Squad
+                      - generic [ref=e146]: 249278a6-806f-45c7-83ab-e97764397b80
+                    - paragraph [ref=e147]: Awaiting initial authorization
+                    - generic [ref=e148]:
+                      - button "Stop target" [ref=e149]
+                      - button "Resume target" [ref=e150]
+                    - button "Switch proposals" [ref=e152]
+                - list
+                - list
+              - generic [ref=e153]:
+                - generic [ref=e154]:
+                  - heading "Execution lane 3" [level=4] [ref=e155]
+                  - generic [ref=e156]: Paused
+                - list [ref=e157]:
+                  - listitem [ref=e158]:
+                    - generic [ref=e159]:
+                      - generic [ref=e160]: Agent
+                      - generic [ref=e161]: 069d584a-d55f-471f-abe8-2a649ae9bd08
+                    - paragraph [ref=e162]: Awaiting initial authorization
+                    - generic [ref=e163]:
+                      - button "Stop target" [ref=e164]
+                      - button "Resume target" [ref=e165]
+                    - button "Switch proposals" [ref=e167]
+                - list
+                - list
+              - heading "Command history" [level=4] [ref=e169]:
+                - button "Command history" [ref=e170]
+            - region "Shared context" [ref=e171]:
+              - generic [ref=e172]:
+                - heading "Shared context" [level=3] [ref=e173]
+                - paragraph [ref=e174]: The current state of this issue, kept up to date by agents across machines and accounts. Participants who can control AI may correct it.
+              - generic [ref=e175]:
+                - paragraph [ref=e176]: v0 · 0 of 131072 bytes
+                - button "Edit shared context" [ref=e177]
+              - paragraph [ref=e178]: No shared context yet. Agents add findings, decisions and next steps here as they work.
+              - button "Version history" [ref=e180]
+            - region "Knowledge candidates" [ref=e181]:
+              - generic [ref=e182]:
+                - generic [ref=e183]:
+                  - heading "Knowledge candidates" [level=3] [ref=e184]
+                  - paragraph [ref=e185]: Propose a reusable conclusion with sources. Human approval controls where it may be used.
+                - button "Propose knowledge" [ref=e186]
+              - paragraph [ref=e187]: No candidates yet. Propose a conclusion when its sources are ready.
+              - list
+            - region "Activity" [ref=e188]:
+              - heading "Activity" [level=3] [ref=e189]
+              - list [ref=e190]:
+                - listitem [ref=e191]:
+                  - generic [ref=e192]:
+                    - generic [ref=e193]: Activity recorded
+                    - generic [ref=e194]: Control owner
+                    - time [ref=e195]: 11/2/2026, 9:06:23 AM
+                  - paragraph [ref=e196]: Detailed records are unavailable for this event.
+                - listitem [ref=e197]:
+                  - generic [ref=e198]:
+                    - generic [ref=e199]: Activity recorded
+                    - generic [ref=e200]: Control owner
+                    - time [ref=e201]: 11/2/2026, 9:06:23 AM
+                  - paragraph [ref=e202]: Detailed records are unavailable for this event.
+                - listitem [ref=e203]:
+                  - generic [ref=e204]:
+                    - generic [ref=e205]: Activity recorded
+                    - generic [ref=e206]: Control creator
+                    - time [ref=e207]: 11/2/2026, 9:06:23 AM
+                  - paragraph [ref=e208]: Detailed records are unavailable for this event.
+                - listitem [ref=e209]:
+                  - generic [ref=e210]:
+                    - generic [ref=e211]: Activity recorded
+                    - generic [ref=e212]: Control creator
+                    - time [ref=e213]: 11/2/2026, 9:06:23 AM
+                  - paragraph [ref=e214]: Detailed records are unavailable for this event.
+                - listitem [ref=e215]:
+                  - generic [ref=e216]:
+                    - generic [ref=e217]: Activity recorded
+                    - generic [ref=e218]: Control owner
+                    - time [ref=e219]: 11/2/2026, 9:06:23 AM
+                  - paragraph [ref=e220]: Detailed records are unavailable for this event.
+                - listitem [ref=e221]:
+                  - generic [ref=e222]:
+                    - generic [ref=e223]: Activity recorded
+                    - generic [ref=e224]: Control owner
+                    - time [ref=e225]: 11/2/2026, 9:06:23 AM
+                  - paragraph [ref=e226]: Detailed records are unavailable for this event.
+                - listitem [ref=e227]:
+                  - generic [ref=e228]:
+                    - generic [ref=e229]: Activity recorded
+                    - generic [ref=e230]: Control creator
+                    - time [ref=e231]: 11/2/2026, 9:06:23 AM
+                  - paragraph [ref=e232]: Detailed records are unavailable for this event.
+                - listitem [ref=e233]:
+                  - generic [ref=e234]:
+                    - generic [ref=e235]: Activity recorded
+                    - generic [ref=e236]: Control creator
+                    - time [ref=e237]: 11/2/2026, 9:06:23 AM
+                  - paragraph [ref=e238]: Detailed records are unavailable for this event.
+                - listitem [ref=e239]:
+                  - generic [ref=e240]:
+                    - generic [ref=e241]: Activity recorded
+                    - generic [ref=e242]: Control owner
+                    - time [ref=e243]: 11/2/2026, 9:06:23 AM
+                  - paragraph [ref=e244]: Detailed records are unavailable for this event.
+                - listitem [ref=e245]:
+                  - generic [ref=e246]:
+                    - generic [ref=e247]: Activity recorded
+                    - generic [ref=e248]: Control owner
+                    - time [ref=e249]: 11/2/2026, 9:06:23 AM
+                  - paragraph [ref=e250]: Detailed records are unavailable for this event.
+                - listitem [ref=e251]:
+                  - generic [ref=e252]:
+                    - generic [ref=e253]: Activity recorded
+                    - generic [ref=e254]: Control creator
+                    - time [ref=e255]: 11/2/2026, 9:06:23 AM
+                  - paragraph [ref=e256]: Detailed records are unavailable for this event.
+                - listitem [ref=e257]:
+                  - generic [ref=e258]:
+                    - generic [ref=e259]: Activity recorded
+                    - generic [ref=e260]: Control creator
+                    - time [ref=e261]: 11/2/2026, 9:06:23 AM
+                  - paragraph [ref=e262]: Detailed records are unavailable for this event.
+                - listitem [ref=e263]:
+                  - generic [ref=e264]:
+                    - generic [ref=e265]: Activity recorded
+                    - generic [ref=e266]: Control owner
+                    - time [ref=e267]: 11/2/2026, 9:06:23 AM
+                  - paragraph [ref=e268]: Detailed records are unavailable for this event.
+                - listitem [ref=e269]:
+                  - generic [ref=e270]:
+                    - generic [ref=e271]: Participant added
+                    - generic [ref=e272]: Control creator
+                    - time [ref=e273]: 11/2/2026, 9:06:22 AM
+                  - paragraph [ref=e274]: Control owner
+                - listitem [ref=e275]:
+                  - generic [ref=e276]:
+                    - generic [ref=e277]: Issue created
+                    - generic [ref=e278]: Control creator
+                    - time [ref=e279]: 11/2/2026, 9:06:22 AM
+            - generic [ref=e280]:
+              - heading "Comments" [level=3] [ref=e281]
+              - paragraph [ref=e282]: No comments yet.
+              - paragraph [ref=e283]: Loaded 0 of 0 comments
+              - list
+              - form "Comments" [ref=e284]:
+                - generic [ref=e285]: Add comment
+                - textbox "Add comment" [ref=e286]:
+                  - /placeholder: Write a comment...
+                - group "Issue participants and AI targets" [ref=e287]:
+                  - group "People" [ref=e288]:
+                    - paragraph [ref=e289]: People
+                    - generic [ref=e290]:
+                      - button "@all · All participants" [ref=e291]
+                      - button "Control owner" [ref=e292]
+                      - button "Control handler" [ref=e293]
+                      - button "Control creator" [ref=e294]
+                  - group "AI targets" [ref=e295]:
+                    - paragraph [ref=e296]: AI targets
+                    - generic [ref=e297]:
+                      - button "Independent control squad S" [ref=e298]
+                      - button "Independent control agent A" [ref=e299]
+                      - button "Independent control agent B" [ref=e300]
+                - group "Attachments" [ref=e301]:
+                  - generic [ref=e302]: Attachments
+                  - paragraph [ref=e303]: Files stay private. Only selected files are shared when you submit.
+                  - generic [ref=e304]: Attach files
+                  - button "Attach files" [ref=e305]
+                - generic [ref=e306]:
+                  - button "Preview delivery" [disabled]
+                  - button "Send comment" [disabled]
+  - region "Notifications alt+T"
+  - alert [ref=e307]
+```

@@ -1,0 +1,35 @@
+{
+  "at": "2026-11-02T02:57:02.277796+00:00",
+  "status": "PARTIAL_PASS",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "baseline": "0.6.5-185-g61ff581d2-dirty",
+  "candidate_version": "0.6.8-rc.20261102",
+  "subgates": {
+    "distribution_integrity": "PASS",
+    "manual_file_install_upgrade": "PASS",
+    "synthetic_filesystem_state_retention": "PASS",
+    "actual_old_to_new_main_restart": "BLOCKED",
+    "actual_runtime_retained_state": "NOT_RUN",
+    "business_login_ipc_auto_update": "NOT_RUN",
+    "developer_id_notarized_delivery": "BLOCKED"
+  },
+  "assertions_passed": 24,
+  "evidence": "evidence/next-mac-upgrade-1/run.json",
+  "verification": "evidence/next-mac-upgrade-1/verification.json",
+  "runtime_blocker": "Both immutable bundled Main programs call app.setAsDefaultProtocolClient unconditionally before the single-instance lock. Acceptance HOME redirects file paths but does not isolate host LaunchServices registration. No safe OS/protocol boundary was proven; assigned scope forbids native host registration, so neither application was launched.",
+  "baseline_provenance_limit": "Historical0.6.5-185-g61ff581d2-dirty exact ZIP bytes validated; source commit and dirty source diff are not reconstructed. Result applies only to these exact artifact bytes.",
+  "application_processes_started": 0,
+  "external_requests": 0,
+  "product_changes": false,
+  "cleanup": {
+    "app_processes_started": 0,
+    "daemon_processes_started": 0,
+    "mounts_created": 0,
+    "external_requests": 0,
+    "host_applications_modified": false,
+    "user_profile_modified": false,
+    "task_files_retained": true,
+    "task_path_processes_remaining": [],
+    "task_path_mounts_remaining": []
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/linux-full-main-1/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-installed-main.spec.ts",
+      "file": "collaboration-installed-main.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 600000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 22164,
+                  "error": {
+                    "message": "TimeoutError: locator.fill: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('form').filter({ has: getByRole('heading', { name: 'Add participant', exact: true }) }).getByLabel('Exact recipient', { exact: true })\u001b[22m\n",
+                    "stack": "TimeoutError: locator.fill: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('form').filter({ has: getByRole('heading', { name: 'Add participant', exact: true }) }).getByLabel('Exact recipient', { exact: true })\u001b[22m\n\n    at webOperation (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-installed-main.spec.ts:56:61)\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-installed-main.spec.ts:165:17",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-installed-main.spec.ts",
+                      "column": 61,
+                      "line": 56
+                    },
+                    "snippet": "  54 |   await page.getByRole(\"button\", { name: label, exact: true }).click();\n  55 |   const form = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: label, exact: true }) });\n> 56 |   await form.getByLabel(\"Exact recipient\", { exact: true }).fill(userId);\n     |                                                             ^\n  57 |   await form.getByRole(\"button\", { name: \"Find account\", exact: true }).click();\n  58 |   await expect(form.getByText(`Selected account: ${name}`, { exact: true })).toBeVisible();\n  59 |   if (action === \"transfer\") await form.getByLabel(\"Note\", { exact: true }).fill(note);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-installed-main.spec.ts",
+                        "column": 61,
+                        "line": 56
+                      },
+                      "message": "TimeoutError: locator.fill: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('form').filter({ has: getByRole('heading', { name: 'Add participant', exact: true }) }).getByLabel('Exact recipient', { exact: true })\u001b[22m\n\n\n  54 |   await page.getByRole(\"button\", { name: label, exact: true }).click();\n  55 |   const form = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: label, exact: true }) });\n> 56 |   await form.getByLabel(\"Exact recipient\", { exact: true }).fill(userId);\n     |                                                             ^\n  57 |   await form.getByRole(\"button\", { name: \"Find account\", exact: true }).click();\n  58 |   await expect(form.getByText(`Selected account: ${name}`, { exact: true })).toBeVisible();\n  59 |   if (action === \"transfer\") await form.getByLabel(\"Note\", { exact: true }).fill(note);\n    at webOperation (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-installed-main.spec.ts:56:61)\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-installed-main.spec.ts:165:17"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:37:22.794Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/linux-full-main-1/artifacts/collaboration-installed-ma-ccdb4-d-reject-unconfirmed-Resume-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-installed-main.spec.ts",
+                    "column": 61,
+                    "line": 56
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6bb3c38027cdc912e0b7-7d0a58cb34e138e51c15",
+          "file": "collaboration-installed-main.spec.ts",
+          "line": 139,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T01:37:22.341Z",
+    "duration": 23039.24,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

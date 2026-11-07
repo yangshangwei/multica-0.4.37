@@ -1,0 +1,29 @@
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium] › e2e/collaboration-memory-runtime.spec.ts:45:1 › two native runtime profiles hand off shared context through the actual run-local CLI
+[1A[2K  1) [chromium] › e2e/collaboration-memory-runtime.spec.ts:45:1 › two native runtime profiles hand off shared context through the actual run-local CLI 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    Expected: [32m{"content": "Queued handoff decision: retain the source findings.", "version": 1}[39m
+    Received: [31mundefined[39m
+
+      79 |     const visitA = await first.daemon.waitForVisit(1) as MemoryVisit;
+      80 |     expect(visitA.resource_owner_id).toBe(first.webActor.id);
+    > 81 |     expect(visitA.memory_input).toEqual({ version: 1, content: seed });
+         |                                 ^
+      82 |     expect(visitA.memory_shown).toMatchObject({ issue_id: first.main.id, run_id: visitA.identity.run_id, version: "1", content: seed });
+      83 |     expect(visitA.memory_written).toMatchObject({ code: "memory_updated", issue_id: first.main.id, run_id: visitA.identity.run_id, version: "2" });
+      84 |     expect(visitA.instruction_files_clean).toBe(true);
+        at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-memory-runtime.spec.ts:81:33
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-19-collaboration-memory-runtime-1/artifacts/collaboration-memory-runti-eb04e-gh-the-actual-run-local-CLI-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-19-collaboration-memory-runtime-1/artifacts/collaboration-memory-runti-eb04e-gh-the-actual-run-local-CLI-chromium/error-context.md
+
+
+[1A[2K  1 failed
+    [chromium] › e2e/collaboration-memory-runtime.spec.ts:45:1 › two native runtime profiles hand off shared context through the actual run-local CLI 

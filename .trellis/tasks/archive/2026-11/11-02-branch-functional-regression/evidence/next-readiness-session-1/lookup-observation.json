@@ -1,0 +1,8 @@
+{
+  "at": "2026-11-02T09:37:58.935011+00:00",
+  "scope": "read-only lookup only",
+  "command": "rg with unexpanded webhook globs",
+  "exit_code": 1,
+  "stderr": "zsh:1: no matches found: server/internal/service/webhook*",
+  "recovery": "Use rg exact test names over server; no test/service/database mutation occurred."
+}

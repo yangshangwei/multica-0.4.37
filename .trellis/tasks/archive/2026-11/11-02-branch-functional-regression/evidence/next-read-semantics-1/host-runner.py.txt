@@ -1,0 +1,74 @@
+import collections,datetime,hashlib,json,os,shutil,subprocess,traceback
+from pathlib import Path
+from urllib.parse import parse_qs,unquote,urlsplit,urlunsplit
+ROOT=Path('/Volumes/artisan/code/2026/multica-0.4.37');SOURCE=ROOT.parent/'mc-functional-go-7af9ab990-20261102'
+TASK=ROOT/'.trellis/tasks/11-02-branch-functional-regression';CONTROL=ROOT/'.omx/private/branch-functional-regression-20261102';PRIVATE=Path(__file__).resolve().parent
+RUN=TASK/'evidence/next-read-semantics-1';PSQL='/opt/homebrew/opt/libpq/bin/psql';CANDIDATE='7af9ab9905c98c77bb091223ebe687c639475bb4'
+now=lambda:datetime.datetime.now(datetime.timezone.utc).isoformat()
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+RUN.mkdir(exist_ok=False);shutil.copyfile(__file__,RUN/'host-runner.py.txt')
+record=dict(started_at=now(),state='preflight',candidate=CANDIDATE,source_root=str(SOURCE),commercial_provider_calls=0,product_source_changed=False,original_p95_gate_executed=False,original_p95_status='FAIL2171ms>2000ms retained',automatic_retries=0,agent_cli_guard=True,race_enabled=True,steps=[],database_allocations=[])
+def persist():(RUN/'run.json').write_text(json.dumps(record,indent=2)+'\n')
+def invoke(name,command,env,timeout=600):
+ step=dict(name=name,command=command,cwd=str(SOURCE),started_at=now());record['steps'].append(step);persist()
+ with (RUN/(name+'.stdout')).open('w') as out,(RUN/(name+'.stderr')).open('w') as err:
+  p=subprocess.Popen(command,cwd=SOURCE,env=env,stdout=out,stderr=err,stdin=subprocess.DEVNULL);step['pid']=p.pid;persist()
+  try:code=p.wait(timeout=timeout)
+  except subprocess.TimeoutExpired:p.terminate();p.wait(timeout=15);raise
+ step.update(finished_at=now(),exit_code=code,stdout_sha256=sha(RUN/(name+'.stdout')),stderr_sha256=sha(RUN/(name+'.stderr')));persist();return code
+pg=None;created=[];before_diff=b''
+def sql(q,db=None):
+ name=db or pg['PGDATABASE'];p=subprocess.run([PSQL,'-X','-At','-v','ON_ERROR_STOP=1','-c',q],env=dict(pg,PGDATABASE=name),text=True,capture_output=True,timeout=25)
+ with (RUN/'database-operations.jsonl').open('a') as f:f.write(json.dumps(dict(at=now(),database=name,sql=q,exit_code=p.returncode,stdout=p.stdout,stderr=p.stderr))+'\n')
+ if p.returncode:raise RuntimeError('Task database operation failed; inspect sanitized evidence')
+ return p.stdout.strip()
+def allocate(name,template):
+ maximum,used=map(int,sql("SELECT current_setting('max_connections'),count(*) FROM pg_stat_activity").split('|'))
+ assert maximum-used>=25,'Insufficient shared connection budget'
+ assert sql('SELECT current_database()')==template
+ assert sql('SELECT (SELECT count(*) FROM "user"),(SELECT count(*) FROM workspace),(SELECT count(*) FROM issue)')=='0|0|0'
+ assert sql('SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid()')=='0'
+ assert sql("SELECT count(*) FROM pg_database WHERE datname='"+name+"'")=='0'
+ sql('CREATE DATABASE "'+name+'" TEMPLATE "'+template+'"','postgres');created.append(name)
+ assert sql('SELECT current_database()',name)==name
+ migrations=int(sql('SELECT count(*) FROM schema_migrations',name));assert migrations==751
+ record['database_allocations'].append(dict(database=name,template=template,migration_count=migrations,headroom_before=dict(maximum=maximum,used=used)));persist()
+try:
+ assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=SOURCE,text=True).strip()==CANDIDATE
+ before_diff=subprocess.check_output(['git','diff','--binary'],cwd=SOURCE);record['source_diff_sha256_before']=hashlib.sha256(before_diff).hexdigest();assert record['source_diff_sha256_before']=='f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe'
+ frozen=SOURCE/'server/internal/handler/iteration_i1_p95_test.go';record['frozen_test_sha256_before']=sha(frozen)
+ config=json.loads(subprocess.check_output(['node','-e','process.stdout.write(JSON.stringify(require("dotenv").parse(require("fs").readFileSync(process.argv[1]))))',str(CONTROL/'go-package-env/33.env')],cwd=ROOT,text=True))
+ allocation=json.loads((CONTROL/'go-permits.json').read_text());template=allocation['template_database'];base={k:os.environ[k] for k in ['PATH','LANG','LC_ALL','USER','LOGNAME','SHELL'] if k in os.environ}
+ home=PRIVATE/'home';home.mkdir(exist_ok=False);home.chmod(0o700);build=dict(base,HOME=str(home),GOTOOLCHAIN='local');build.update({k:config[k] for k in ['GOCACHE','GOMODCACHE','GOPATH'] if k in config});build.update(TMPDIR=allocation['build_tmp'],TMP=allocation['build_tmp'],TEMP=allocation['build_tmp'])
+ assert invoke('format-private-test',['gofmt','-w',str(PRIVATE/'diagnostic_test.go')],build)==0
+ target=SOURCE/'server/internal/handler/zz_task_private_read_semantics_test.go';assert not target.exists();overlay=PRIVATE/'overlay.json';overlay.write_text(json.dumps({'Replace':{str(target):str(PRIVATE/'diagnostic_test.go')}},indent=2)+'\n');shutil.copyfile(overlay,RUN/'overlay.json');shutil.copyfile(PRIVATE/'diagnostic_test.go',RUN/'diagnostic_test.go.txt');record.update(overlay_virtual_target=str(target),overlay_new_file_only=True,diagnostic_sha256=sha(PRIVATE/'diagnostic_test.go'),overlay_sha256=sha(overlay))
+ binaries={}
+ for package in ['handler','service']:
+  binary=PRIVATE/(package+'-read-semantics.test');cmd=['go','-C','server','test','-c','-race','-p','2']
+  if package=='handler':cmd+=['-overlay',str(overlay)]
+  cmd+=['-o',str(binary),'./internal/'+package]
+  assert invoke('compile-'+package,cmd,build)==0,'Compilation failed'
+  binaries[package]=binary;record[package+'_binary_sha256']=sha(binary)
+ u=urlsplit(config['DATABASE_URL']);pg=dict(base,PGHOST=u.hostname,PGPORT=str(u.port),PGUSER=unquote(u.username or ''),PGPASSWORD=unquote(u.password or ''),PGDATABASE=template,PGCONNECT_TIMEOUT='5',PGSSLMODE=parse_qs(u.query)['sslmode'][0])
+ selected={
+ 'handler':['TestIterationCanonicalReadSemanticsDiagnostic','TestIterationClosureRealMemberRevocationRaces','TestUpdateIssueIterationReadPipelineLockOrder','TestIterationPipelinePostFenceSnapshot'],
+ 'service':['TestIterationClosureBatchCASFailureRollsBackAllPhases','TestIterationClosureFinalSnapshotFailureRollsBackHandoff','TestIterationClosureBatchMultiTargetHandoff','TestIterationLifecycleBatchSwappedSources','TestIterationClosureManagementPreservesRunningTask','TestIterationClosureDaemonCompletionBarrierDoesNotRestartExecution','TestIterationClosureRolloverEventsMatchCommittedCounters','TestIterationClosurePreservesSampledClockAndFinalProcessingTime']}
+ for package in ['handler','service']:
+  database='multica_func7af9_next_read_semantics_'+('1' if package=='handler' else 'service_1');allocate(database,template)
+  env=dict(build,DATABASE_URL=urlunsplit(u._replace(path='/'+database)),MULTICA_READ_SEMANTICS_DIAGNOSTIC='1',MULTICA_READ_SEMANTICS_REPORT_DIR=str(RUN));env.update({k:config[k] for k in ['MULTICA_DSH_PATH','MULTICA_KNOWLEDGE_CONTEXT_ENABLED'] if k in config});private_env=PRIVATE/(package+'-environment.json');private_env.write_text(json.dumps(env,indent=2)+'\n');private_env.chmod(0o600);record[package+'_private_environment_sha256']=sha(private_env)
+  command=['bash','scripts/go-test-with-agent-cli-guard.sh','--','go','tool','test2json','-t','-p','github.com/multica-ai/multica/server/internal/'+package,str(binaries[package]),'-test.v','-test.run','^('+'|'.join(selected[package])+')$','-test.count=1','-test.parallel=1','-test.timeout=5m']
+  code=invoke('run-'+package,command,env)
+  events=[json.loads(l) for l in (RUN/('run-'+package+'.stdout')).read_text().splitlines() if l.startswith('{')];terminal={e['Test']:e['Action'] for e in events if e.get('Test') and e['Action'] in ['pass','fail','skip']};top={k:v for k,v in terminal.items() if '/' not in k}
+  record[package+'_outcomes']=terminal;record[package+'_top_counts']=dict(collections.Counter(top.values()));record[package+'_subtest_counts']=dict(collections.Counter(v for k,v in terminal.items() if '/' in k));record[package+'_exit_code']=code;record[package+'_connections_after']=int(sql('SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid()',database));persist()
+  assert set(top)==set(selected[package]),'Selected identities missing'
+  assert code==0 and all(v=='pass' for v in terminal.values()),'Focused diagnostics failed; no automatic retry'
+ record.update(state='complete',finished_at=now());persist();print(json.dumps({k:record[k] for k in ['state','handler_top_counts','handler_subtest_counts','service_top_counts','service_subtest_counts','handler_connections_after','service_connections_after']},indent=2))
+except Exception as e:
+ record.update(state='setup_or_diagnostic_failed',finished_at=now(),error_type=type(e).__name__,error=str(e),traceback=traceback.format_exc());persist();raise
+finally:
+ if pg:
+  for database in created:
+   try:record.setdefault('connections_final',{})[database]=int(sql('SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid()',database))
+   except Exception as e:record.setdefault('cleanup_errors',[]).append(str(e))
+ record['source_diff_unchanged']=subprocess.check_output(['git','diff','--binary'],cwd=SOURCE)==before_diff
+ record['frozen_test_sha256_after']=sha(SOURCE/'server/internal/handler/iteration_i1_p95_test.go');record['frozen_test_unchanged']=record.get('frozen_test_sha256_before')==record['frozen_test_sha256_after'];record['overlay_target_absent_after']=not (SOURCE/'server/internal/handler/zz_task_private_read_semantics_test.go').exists();record['cleanup_checked_at']=now();persist()

@@ -1,0 +1,30 @@
+{
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "started_at": "2026-11-02T01:24:16.447047+00:00",
+  "state": "complete",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout=40m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-json",
+    "./internal/auth"
+  ],
+  "scope": "Dedicated Redis sole-owner full auth package; no API database or external auth account",
+  "exit_code": 0,
+  "finished_at": "2026-11-02T01:24:24.723774+00:00",
+  "top_pass": 51,
+  "top_fail": 0,
+  "top_skip": 0,
+  "failed_tests": []
+}

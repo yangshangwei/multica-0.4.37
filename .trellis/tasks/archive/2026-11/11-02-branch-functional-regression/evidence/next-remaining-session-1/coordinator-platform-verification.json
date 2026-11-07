@@ -1,0 +1,53 @@
+{
+  "at": "2026-11-02T08:48:32.676353+00:00",
+  "reviewer": "coordinator verification; independent review pending",
+  "scope": "Native platform slice command streams/artifacts/source facts",
+  "status": "PASS_PREREQUISITE_AUDIT_GATES_OPEN",
+  "steps": 10,
+  "raw_mismatches": [],
+  "artifact_pins_checked": 4,
+  "recorder_ast": "PASS",
+  "no_new_runnable_gate": true,
+  "gates": {
+    "WIN-INSTALL-UPGRADE": {
+      "status": "BLOCKED",
+      "missing": "No provided disposable GitHub-hosted Windows x64 execution environment and no remote execution authorization. Remote pinned business baseline availability was not queried.",
+      "next": "Use remaining-platform-handoff-1.md with explicit candidate_version and remote/run HEAD identity when remote execution is authorized."
+    },
+    "LINUX-NATIVE-DESKTOP": {
+      "status": "BLOCKED",
+      "missing": "Current host is macOS; no provided Linux ARM64 VM/host with real X11/Wayland and window manager. Known DEB bytes do not provide a native desktop session.",
+      "next": "Provide native task session and verify same candidate DEB; current native controller is darwin/win32 only."
+    },
+    "IOS-UI": {
+      "status": "BLOCKED",
+      "missing": "Selected developer directory is CommandLineTools; simctl lookup exits72; bounded app inventory has no full Xcode.",
+      "next": "Use a target with full Xcode via command-local DEVELOPER_DIR, then record device/app/source/API identity before actual UI."
+    },
+    "MAC-AUTH-MIGRATION": {
+      "status": "NOT_RUN",
+      "missing": "No task-approved owned real business account/credential migration journey supplied; saved startup is synthetic and does not authenticate.",
+      "next": "Record approved owned account and stable auth mode for an actual installed old-to-new journey; do not inspect user credential stores."
+    },
+    "MAC-AUTOMATIC-UPDATER": {
+      "status": "NOT_RUN",
+      "missing": "Saved Main used automaticUpdates=false; no actual updater check/download/install/restart evidence. Candidate bytes exist, but manual replacement does not exercise updater.",
+      "next": "Prepare reviewed owned updater feed/profile and exact baseline/candidate artifacts for the real updater path."
+    },
+    "MAC-TRUST": {
+      "status": "BLOCKED",
+      "missing": "Known fixed candidate is ad-hoc signed; current display metadata has no Developer ID/Team identity. No separately supplied signed/notarized exact distribution.",
+      "next": "Validate exact signed distribution and notarization/trust on intended target; no private-key or notarization submission in this batch."
+    },
+    "REAL-PROVIDER": {
+      "status": "BLOCKED",
+      "missing": "No current account/provider/model/call-count/fee-cap authorization supplied; installed account files were not inspected.",
+      "next": "Use explicit current scope and quota limits before genuine account/model quality checks."
+    }
+  },
+  "product_tests_rerun": 0,
+  "accounts_accessed": 0,
+  "commercial_calls": 0,
+  "remote_dispatches": 0,
+  "child_self_verification": "evidence/next-remaining-platform-1/verification.json"
+}

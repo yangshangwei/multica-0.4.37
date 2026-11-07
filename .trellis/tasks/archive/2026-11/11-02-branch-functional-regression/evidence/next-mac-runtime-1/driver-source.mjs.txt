@@ -1,0 +1,203 @@
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
+import { createRequire } from "node:module";
+import { mkdirSync, readFileSync, writeFileSync, existsSync, renameSync, realpathSync } from "node:fs";
+import path from "node:path";
+import http from "node:http";
+
+const root = "/Volumes/artisan/code/2026/multica-0.4.37";
+const task = path.join(root, ".trellis/tasks/11-02-branch-functional-regression");
+const control = path.join(root, ".omx/private/branch-functional-regression-20261102");
+const privateDir = path.join(control, "next-mac-runtime-1");
+const evidence = path.join(task, "evidence/next-mac-runtime-1");
+assert(!existsSync(privateDir) && !existsSync(evidence));
+mkdirSync(privateDir, { recursive: true });
+mkdirSync(evidence);
+const { _electron: electron } = createRequire(path.join(root, "package.json"))("@playwright/test");
+const sha = file => createHash("sha256").update(readFileSync(file)).digest("hex");
+const home = path.join(privateDir, "home");
+const userData = path.join(home, ".config/Multica");
+const installed = path.join(privateDir, "installed/Multica.app");
+const oldSource = path.join(control, "next-mac-upgrade-1/baseline-extracted/Multica.app");
+const newSource = path.join(control, "next-mac-upgrade-1/candidate-extracted/Multica.app");
+const versions = { baseline: "0.6.5-185-g61ff581d2-dirty", candidate: "0.6.8-rc.20261102" };
+const expectedAsar = { baseline: "da566a4d55d35948fdf8150251e5980bbfcc6ffd0845f659f8f02737fe4201c6",
+  candidate: "128ff6f87dc18b78355ee5161171a86ec7828b18d5b87751d0f8142dd81b8485" };
+const record = { started_at: new Date().toISOString(), state: "preflight",
+  candidate: "7af9ab9905c98c77bb091223ebe687c639475bb4", source_changes: false,
+  commercial_provider_calls: 0, automatic_retries: 0, steps: [], runtime: [],
+  authentication_scope: "Synthetic local startup endpoint; no business login or real credential migration" };
+const save = () => writeFileSync(path.join(evidence, "run.json"), JSON.stringify(record, null, 2) + "\n");
+function command(name, executable, args, options = {}) {
+  const item = { name, executable, args, started_at: new Date().toISOString() };
+  record.steps.push(item); save();
+  try {
+    const out = execFileSync(executable, args, { encoding: "utf8", timeout: 30_000, ...options });
+    item.exit_code = 0;
+    item.finished_at = new Date().toISOString();
+    writeFileSync(path.join(evidence, name + ".stdout"), out);
+    save();
+    return out.trim();
+  } catch (error) {
+    item.exit_code = error.status ?? null;
+    item.error = String(error.message);
+    writeFileSync(path.join(evidence, name + ".stdout"), String(error.stdout ?? ""));
+    writeFileSync(path.join(evidence, name + ".stderr"), String(error.stderr ?? ""));
+    save();
+    throw error;
+  }
+}
+const handlerScript = [
+  'ObjC.import("AppKit");',
+  'const w=$.NSWorkspace.sharedWorkspace;',
+  'const current=w.URLForApplicationToOpenURL($.NSURL.URLWithString("multica://branch-functional-regression"));',
+  'let p=null;try{p=ObjC.unwrap(current.path)||null;}catch(e){}',
+  'const urls=w.URLsForApplicationsWithBundleIdentifier("ai.multica.desktop");',
+  'const paths=[];for(let i=0;i<urls.count;i++)paths.push(ObjC.unwrap(urls.objectAtIndex(i).path));',
+  'JSON.stringify({defaultApplicationPath:p,registeredApplications:paths});',
+].join("\n");
+const getHandler = name => JSON.parse(command(name, "osascript", ["-l", "JavaScript", "-e", handlerScript]));
+const serverRequests = [];
+const server = http.createServer((req, res) => {
+  const pathname = new URL(req.url, "http://127.0.0.1").pathname;
+  serverRequests.push({ method: req.method, path: pathname });
+  res.setHeader("content-type", "application/json");
+  if (pathname === "/api/config") {
+    res.end(JSON.stringify({ auth_method: "password", auth_mode: "password", mode: "password",
+      device_registration_enabled: false, cloud_enabled: false, allow_signup: false,
+      platform_admin_enabled: false, managed_installations_enabled: false }));
+  } else if (pathname === "/health" || pathname === "/healthz") {
+    res.end(JSON.stringify({ status: "ok", synthetic: true }));
+  } else { res.statusCode = 401; res.end(JSON.stringify({ error: "synthetic acceptance endpoint; no login" })); }
+});
+let app;
+let before;
+let marker;
+const nativeRequests = [];
+const env = Object.fromEntries(["PATH", "LANG", "LC_ALL", "USER", "LOGNAME", "SHELL", "TMPDIR"]
+  .filter(key => process.env[key] !== undefined).map(key => [key, process.env[key]]));
+Object.assign(env, { HOME: home, MULTICA_PACKAGED_ACCEPTANCE: "1", MULTICA_PACKAGED_ACCEPTANCE_HOME: home,
+  MULTICA_DSH_PATH: path.join(privateDir, "explicitly-missing-dsh") });
+
+async function launch(stage, origin) {
+  const asar = path.join(installed, "Contents/Resources/app.asar");
+  assert.equal(sha(asar), expectedAsar[stage]);
+  const executable = path.join(installed, "Contents/MacOS/Multica");
+  record.state = "launching-" + stage; save();
+  app = await electron.launch({ executablePath: executable, args: [], env, timeout: 60_000 });
+  const main = await app.evaluate(({ app }) => ({ version: app.getVersion(), appPath: app.getAppPath(),
+    home: app.getPath("home"), userData: app.getPath("userData"), packaged: app.isPackaged,
+    executable: process.execPath, platform: process.platform, arch: process.arch }));
+  assert.equal(main.version, versions[stage]);
+  assert.equal(main.home, home);
+  assert.equal(main.userData, userData);
+  assert.equal(realpathSync(main.appPath), realpathSync(asar));
+  assert.equal(main.packaged, true);
+  const page = await app.firstWindow({ timeout: 45_000 });
+  page.on("request", request => {
+    const url = new URL(request.url());
+    if (["http:", "https:"].includes(url.protocol)) nativeRequests.push({ stage, origin: url.origin, path: url.pathname });
+  });
+  await page.waitForFunction(() => window.desktopAPI?.runtimeConfig && window.daemonAPI?.getPrefs && window.updater?.getPreferences,
+    { timeout: 45_000 });
+  const native = await page.evaluate(async () => ({ appInfo: window.desktopAPI.appInfo,
+    config: window.desktopAPI.runtimeConfig, daemonPrefs: await window.daemonAPI.getPrefs(),
+    updatePrefs: await window.updater.getPreferences(), daemonStatus: await window.daemonAPI.getStatus() }));
+  assert.equal(native.config.ok, true);
+  assert.equal(native.config.source, "configured");
+  assert.equal(native.config.config.apiUrl, origin);
+  assert.equal(native.config.config.appUrl, origin);
+  assert.equal(native.daemonPrefs.autoStart, false);
+  assert.equal(native.updatePrefs.automaticUpdates, false);
+  assert.equal(native.daemonStatus.state, "stopped");
+  if (stage === "baseline") {
+    marker = JSON.stringify({ candidate: record.candidate, text: "synthetic old-client retained localStorage", seq: 1 });
+    await page.evaluate(value => { localStorage.setItem("functional-regression-upgrade", value); }, marker);
+  } else {
+    assert.equal(await page.evaluate(() => localStorage.getItem("functional-regression-upgrade")), marker);
+  }
+  await app.evaluate(({ session }) => { session.defaultSession.flushStorageData(); });
+  await page.screenshot({ path: path.join(evidence, stage + ".png") });
+  record.runtime.push({ stage, main, native, screenshot: stage + ".png", asar_sha256: sha(asar),
+    executable_sha256: sha(executable), retained_storage_checked: stage === "candidate",
+    handler_after_launch: getHandler(stage + "-handler") });
+  save();
+  await app.close(); app = undefined;
+}
+
+try {
+  assert(existsSync(oldSource) && existsSync(newSource));
+  assert.equal(sha(path.join(oldSource, "Contents/Resources/app.asar")), expectedAsar.baseline);
+  assert.equal(sha(path.join(newSource, "Contents/Resources/app.asar")), expectedAsar.candidate);
+  before = getHandler("protocol-before");
+  assert.equal(before.defaultApplicationPath, "/Applications/Multica.app");
+  record.protocol_before = before;
+  await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
+  const address = server.address();
+  const origin = "http://127.0.0.1:" + address.port;
+  record.synthetic_origin = origin;
+  mkdirSync(path.join(home, ".multica"), { recursive: true });
+  mkdirSync(userData, { recursive: true });
+  mkdirSync(path.dirname(installed), { recursive: true });
+  const config = { schemaVersion: 1, apiUrl: origin, appUrl: origin,
+    wsUrl: origin.replace("http:", "ws:") + "/ws", updateUrl: origin + "/desktop",
+    acceptanceUnknownField: "preserve" };
+  writeFileSync(path.join(home, ".multica/desktop.json"), JSON.stringify(config) + "\n", { mode: 0o600 });
+  writeFileSync(path.join(home, ".multica/desktop_prefs.json"), JSON.stringify({ autoStart: false, autoStop: false }) + "\n");
+  writeFileSync(path.join(userData, "updater-preferences.json"), JSON.stringify({ automaticUpdates: false }) + "\n");
+  record.profile_before_sha256 = sha(path.join(home, ".multica/desktop.json"));
+  record.runner_sha256 = sha(new URL(import.meta.url));
+  save();
+  command("baseline-install", "ditto", [oldSource, installed]);
+  await launch("baseline", origin);
+  renameSync(installed, path.join(privateDir, "retained-baseline.app"));
+  command("candidate-upgrade", "ditto", [newSource, installed]);
+  await launch("candidate", origin);
+  assert.equal(sha(path.join(home, ".multica/desktop.json")), record.profile_before_sha256);
+  assert(nativeRequests.every(request => request.origin === origin));
+  record.state = "complete";
+  record.status = "PASS";
+  record.filesystem_config_retained = true;
+  record.actual_main_versions = record.runtime.map(item => item.main.version);
+} catch (error) {
+  record.state = "failed";
+  record.status = "FAIL";
+  record.error = String(error.stack ?? error);
+} finally {
+  if (app) {
+    try { await app.close(); } catch (error) { record.close_error = String(error.message); }
+  }
+  server.closeAllConnections();
+  await new Promise(resolve => server.close(resolve));
+  if (before) {
+    try {
+      const after = getHandler("protocol-after-runtime");
+      const added = after.registeredApplications.filter(item => item.startsWith(privateDir + "/")
+        && !before.registeredApplications.includes(item));
+      const lsregister = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
+      for (const [index, item] of added.entries()) command("unregister-owned-" + index, lsregister, ["-u", item]);
+      const recovered = getHandler("protocol-after-cleanup");
+      record.protocol_after_cleanup = recovered;
+      record.task_registrations_unregistered = added;
+      if (recovered.defaultApplicationPath !== before.defaultApplicationPath) {
+        const swift = path.join(privateDir, "restore-handler.swift");
+        writeFileSync(swift, 'import AppKit\nimport Foundation\nlet target=URL(fileURLWithPath:CommandLine.arguments[1])\nNSWorkspace.shared.setDefaultApplication(at:target,toOpenURLsWithScheme:"multica"){ error in\n if let error=error { print(error); exit(1) }; print("restored"); exit(0)\n}\nRunLoop.main.run(until:Date(timeIntervalSinceNow:15))\nprint("restore completion not received; no OS prompt approved"); exit(2)\n');
+        command("restore-original-handler", "swift", ["-module-cache-path", path.join(privateDir, "swift-cache"), swift, before.defaultApplicationPath]);
+      }
+      record.protocol_final = getHandler("protocol-final");
+      assert.equal(record.protocol_final.defaultApplicationPath, before.defaultApplicationPath);
+      record.protocol_restored = true;
+    } catch (error) {
+      record.status = "FAIL"; record.state = "cleanup_failed";
+      record.protocol_cleanup_error = String(error.stack ?? error);
+    }
+  }
+  record.native_http_requests = nativeRequests;
+  record.synthetic_server_requests = serverRequests;
+  record.finished_at = new Date().toISOString();
+  record.remaining_scope = ["real business login/credential migration", "automatic updater", "Developer ID/notarization", "non-macOS native acceptance"];
+  save();
+  process.stdout.write(JSON.stringify({ status: record.status, state: record.state, runtime_versions: record.actual_main_versions,
+    protocol_restored: record.protocol_restored, error: record.error, cleanup_error: record.protocol_cleanup_error }) + "\n");
+}

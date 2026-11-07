@@ -1,0 +1,76 @@
+{
+  "fields": [
+    "title",
+    "description",
+    "priority",
+    "labels",
+    "project",
+    "assignee",
+    "start_date",
+    "due_date",
+    "source_url",
+    "external_id"
+  ],
+  "locales": {
+    "en": {
+      "filename": "triage-import-template.csv",
+      "headers": [
+        "title",
+        "description",
+        "priority",
+        "labels",
+        "project",
+        "assignee",
+        "start_date",
+        "due_date",
+        "source_url",
+        "external_id"
+      ],
+      "rows": [
+        [
+          "Example: Login button overlaps on small screens",
+          "Reproduce on a 375px-wide screen, then attach a screenshot",
+          "high",
+          "bug;frontend",
+          "Website redesign",
+          "member@example.com",
+          "2026-10-12",
+          "2026-10-16",
+          "https://example.com/feedback/1024",
+          "FB-1024"
+        ],
+        ["Example: Only the title is required", "", "", "", "", "", "", "", "", ""]
+      ]
+    },
+    "zh-Hans": {
+      "filename": "分拣台导入模板.csv",
+      "headers": [
+        "标题",
+        "描述",
+        "优先级",
+        "标签",
+        "项目",
+        "负责人",
+        "开始日期",
+        "截止日期",
+        "原始链接",
+        "外部编号"
+      ],
+      "rows": [
+        [
+          "示例：登录按钮在小屏幕上错位",
+          "在 375px 宽度下复现，附截图说明",
+          "high",
+          "缺陷;前端",
+          "官网改版",
+          "member@example.com",
+          "2026-10-12",
+          "2026-10-16",
+          "https://example.com/feedback/1024",
+          "FB-1024"
+        ],
+        ["示例：只有标题是必填的", "", "", "", "", "", "", "", "", ""]
+      ]
+    }
+  }
+}

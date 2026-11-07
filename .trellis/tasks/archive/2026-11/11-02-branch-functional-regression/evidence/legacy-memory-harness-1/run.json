@@ -1,0 +1,48 @@
+{
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "source_root": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+  "lane": "legacy",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-memory-web.spec.ts",
+    "e2e/collaboration-knowledge.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=line,json",
+    "--output=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/legacy-memory-harness-1/artifacts"
+  ],
+  "database": "multica_functional_7af9_legacy_full1_20261102",
+  "api_health": {
+    "status": "ok",
+    "pid": 68811,
+    "commit": "7af9ab990",
+    "started_at": "2026-11-02T00:12:54Z"
+  },
+  "web_build_id": "wYec8nnmn8Rukz4PiJAJ7",
+  "config_sha256": "5d45c7742f4969733abce5e7ac764d660034fa69e9b29dbe6edce0d56cefe323",
+  "started_at": "2026-11-02T00:41:51.046213+00:00",
+  "state": "complete",
+  "commercial_provider_calls": 0,
+  "agent_cli_guard": true,
+  "harness_patch_sha256": "85b0ec959becb5b3ec4b19c53d8ae7347ffe65399df85e47638085cf0626e12e",
+  "harness_dirty_paths": [
+    "e2e/collaboration-memory-web.spec.ts"
+  ],
+  "exit_code": 0,
+  "finished_at": "2026-11-02T00:43:01.063055+00:00",
+  "stats": {
+    "startTime": "2026-11-02T00:41:52.587Z",
+    "duration": 68432.267,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "collection_errors": []
+}

@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-02T01:06:37.014548+00:00",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "verification_source_root": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+  "file": "server/internal/handler/daemon_test.go",
+  "patch_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+  "changed_tests": [
+    "TestClaimTask_ProjectGithubReposOverrideWorkspaceRepos",
+    "TestClaimTask_ProjectDescriptionInjected",
+    "TestClaimTask_ProjectWithoutRepos_FallsBackToWorkspaceRepos",
+    "TestClaimTask_AutopilotRunOnly_PopulatesWorkspaceAndProjectContext",
+    "TestClaimTaskByRuntime_TaskWorkspaceMismatch_CancelsAndRejects"
+  ],
+  "product_code_changed": false,
+  "production_freshness_seconds_unchanged": 150,
+  "original_failure_evidence": "evidence/go/33-internal_handler",
+  "isolated_original_5_case_replay": "evidence/handler-claim-replay-1",
+  "scope": "Refresh only the intended-online shared runtime in five claim payload/mismatch tests; no global heartbeat loop or change to stale-runtime tests",
+  "root_branch_not_yet_changed": true,
+  "diagnostic": "First affected payload test records actual heartbeat age before refreshing it; no row assertions hidden in helper"
+}

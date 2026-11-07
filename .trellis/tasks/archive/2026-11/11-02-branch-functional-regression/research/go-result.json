@@ -1,0 +1,179 @@
+{
+  "state": "complete",
+  "result": "FAILED",
+  "at": "2026-11-02T01:02:24.107718+00:00",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "source_root": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+  "started_at": "2026-11-02T00:09:13.310930+00:00",
+  "finished_at": "2026-11-02T01:01:57.181349+00:00",
+  "toolchain": "go version go1.27.0 darwin/arm64",
+  "build": 0,
+  "vet": 0,
+  "planned_packages": 82,
+  "completed_packages": 82,
+  "package_command_exit0": 77,
+  "package_command_nonzero": 5,
+  "packages_with_named_tests": 73,
+  "no_named_tests": 9,
+  "test_package_exit0": 68,
+  "totals": {
+    "top_level": {
+      "pass": 10325,
+      "fail": 23,
+      "skip": 35
+    },
+    "subtests": {
+      "pass": 10487,
+      "fail": 0,
+      "skip": 1
+    }
+  },
+  "failed_packages": [
+    {
+      "run": "06-cmd_server",
+      "exit_code": 1,
+      "top_level": {
+        "pass": 363,
+        "fail": 3,
+        "skip": 7
+      },
+      "subtests": {
+        "pass": 365,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": [
+        "TestPoolSizing_DefaultsWhenNothingSet",
+        "TestPoolSizing_URLParamsHonoredWhenEnvUnset",
+        "TestPoolSizing_PartialURLParam"
+      ]
+    },
+    {
+      "run": "17-internal_cli",
+      "exit_code": 1,
+      "top_level": {
+        "pass": 71,
+        "fail": 4,
+        "skip": 1
+      },
+      "subtests": {
+        "pass": 250,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": [
+        "TestCLIConfig_BackwardCompat_OldFileLoadsWithNilBackends",
+        "TestCLIConfig_BackwardCompat_NilBackendsOmittedFromJSON",
+        "TestCLIConfig_OpenClawOverride_PartialFieldsOmitted",
+        "TestCLIConfig_ProfileCommandOverrides_OmittedWhenEmpty"
+      ]
+    },
+    {
+      "run": "20-internal_daemon",
+      "exit_code": 1,
+      "top_level": {
+        "pass": 890,
+        "fail": 7,
+        "skip": 2
+      },
+      "subtests": {
+        "pass": 817,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": [
+        "TestLoadConfig_BackendOverrides_BackwardCompat_NoConfigFile",
+        "TestPrepareReasonixTaskStateHome",
+        "TestPrepareDshTaskSessionRoot",
+        "TestEnsureDaemonID_Persists",
+        "TestEnsureDaemonID_PromotesPreChangeProfileFile",
+        "TestEnsureDaemonID_RegeneratesCorruptFile",
+        "TestLegacyDaemonUUIDs_ScansProfileDirs"
+      ]
+    },
+    {
+      "run": "22-internal_daemon_execenv",
+      "exit_code": 1,
+      "top_level": {
+        "pass": 656,
+        "fail": 4,
+        "skip": 0
+      },
+      "subtests": {
+        "pass": 685,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": [
+        "TestHermesMemoryStorePathLayout",
+        "TestPruneHermesMemoryStores",
+        "TestHermesSessionStorePathLayout",
+        "TestPruneHermesSessionStores"
+      ]
+    },
+    {
+      "run": "33-internal_handler",
+      "exit_code": 1,
+      "top_level": {
+        "pass": 2858,
+        "fail": 5,
+        "skip": 7
+      },
+      "subtests": {
+        "pass": 2462,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": [
+        "TestClaimTask_ProjectGithubReposOverrideWorkspaceRepos",
+        "TestClaimTask_ProjectDescriptionInjected",
+        "TestClaimTask_ProjectWithoutRepos_FallsBackToWorkspaceRepos",
+        "TestClaimTask_AutopilotRunOnly_PopulatesWorkspaceAndProjectContext",
+        "TestClaimTaskByRuntime_TaskWorkspaceMismatch_CancelsAndRejects"
+      ]
+    }
+  ],
+  "proven_original_environment_failures": [
+    "06-cmd_server",
+    "17-internal_cli",
+    "20-internal_daemon",
+    "22-internal_daemon_execenv"
+  ],
+  "proven_environment_failed_top_level_cases": 18,
+  "unresolved_package_failures": [
+    "33-internal_handler"
+  ],
+  "unresolved_failed_top_level_cases": 5,
+  "coordinator_environment_correction": "research/go-environment-correction-v2.json",
+  "corrected_environment_package_range": "23..82",
+  "subsequent_parent_owned_replays_not_merged_into_this_first_run": true,
+  "full_acceptance_pass": false,
+  "commercial_provider_calls": 0,
+  "product_code_changed_by_child": false,
+  "server_tracked_status_after": "",
+  "source_end_product_status": " M apps/web/next-env.d.ts\n M e2e/collaboration-memory-web.spec.ts\n",
+  "evidence_validation": {
+    "all_82_packages_completed": true,
+    "package_inventory_matches_permit": true,
+    "all_logged_stdout_stderr_hashes_match": true,
+    "all_go_json_lines_parse": true,
+    "all_per_package_outcome_counts_recomputed": true,
+    "all_DB_identities_match": true,
+    "candidate_unchanged": true,
+    "server_tracked_status": "",
+    "unaccounted_test_cases": 0,
+    "orchestrator_exit_zero_means_completion_only": true
+  },
+  "evidence_files": {
+    "runs": "evidence/go/progress.json",
+    "cases": "evidence/go/go-tests.csv",
+    "skips": "evidence/go/skips.json",
+    "failures": "evidence/go/failures.json",
+    "environment_findings": "evidence/go/environment-findings.md",
+    "handler_findings": "evidence/go/handler-unresolved-findings.md"
+  },
+  "agent_cli_guard_violations": [],
+  "counting_contract": "Top-level cases and nested subtests are separate hierarchical counts; never sum them as independent product behaviours.",
+  "coordinator_owned_concurrent_nonserver_changes": " M apps/web/next-env.d.ts\n M e2e/collaboration-memory-web.spec.ts\n",
+  "no_parent_owned_replay_result_adopted": true
+}

@@ -1,0 +1,157 @@
+{
+  "at": "2026-11-02T00:02:49.206987+00:00",
+  "candidate_sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "scope": "Mobile independent static/unit/script checks; no native rendering or device execution",
+  "result": "AUTOMATION_PASS_WITH_WARNINGS; IOS_RUNTIME_BLOCKED",
+  "commands": [
+    {
+      "name": "typecheck",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/mobile",
+        "typecheck"
+      ],
+      "started_at": "2026-11-02T00:01:16.721509+00:00",
+      "finished_at": "2026-11-02T00:01:22.928992+00:00",
+      "exit_code": 0,
+      "candidate_sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "candidate_sha_after": "7af9ab9905c98c77bb091223ebe687c639475bb4"
+    },
+    {
+      "name": "lint",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/mobile",
+        "lint"
+      ],
+      "started_at": "2026-11-02T00:01:22.948584+00:00",
+      "finished_at": "2026-11-02T00:01:25.322294+00:00",
+      "exit_code": 0,
+      "candidate_sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "candidate_sha_after": "7af9ab9905c98c77bb091223ebe687c639475bb4"
+    },
+    {
+      "name": "unit",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "pnpm",
+        "--filter",
+        "@multica/mobile",
+        "exec",
+        "vitest",
+        "run",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/mobile/vitest-results.json"
+      ],
+      "started_at": "2026-11-02T00:01:25.339079+00:00",
+      "finished_at": "2026-11-02T00:01:29.924811+00:00",
+      "exit_code": 0,
+      "candidate_sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "candidate_sha_after": "7af9ab9905c98c77bb091223ebe687c639475bb4"
+    },
+    {
+      "name": "ios-wrapper",
+      "command": [
+        "bash",
+        "apps/mobile/scripts/ios-run.test.sh"
+      ],
+      "started_at": "2026-11-02T00:01:29.942934+00:00",
+      "finished_at": "2026-11-02T00:01:30.446776+00:00",
+      "exit_code": 0,
+      "candidate_sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "candidate_sha_after": "7af9ab9905c98c77bb091223ebe687c639475bb4"
+    },
+    {
+      "name": "simulator-inventory",
+      "command": [
+        "xcrun",
+        "simctl",
+        "list",
+        "devices",
+        "available",
+        "--json"
+      ],
+      "started_at": "2026-11-02T00:01:30.463417+00:00",
+      "finished_at": "2026-11-02T00:01:30.475769+00:00",
+      "exit_code": 72,
+      "candidate_sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "candidate_sha_after": "7af9ab9905c98c77bb091223ebe687c639475bb4"
+    }
+  ],
+  "typecheck": {
+    "status": "PASS",
+    "exit_code": 0
+  },
+  "lint": {
+    "status": "PASS_WITH_WARNINGS",
+    "exit_code": 0,
+    "errors": 0,
+    "warnings": 7,
+    "default_expo_inputs": [
+      "app",
+      "components"
+    ],
+    "note": "Repository expo lint default scope; this is not an all-directory ESLint run"
+  },
+  "vitest": {
+    "status": "PASS",
+    "passed": 196,
+    "failed": 0,
+    "pending": 0,
+    "todo": 0,
+    "files": 28,
+    "reported_suites_including_nested": 70,
+    "framework_success": true,
+    "agent_cli_guard": "active; command exited 0; no unexpected CLI invocation reported"
+  },
+  "ios_wrapper": {
+    "status": "PASS",
+    "exit_code": 0,
+    "scenarios": 3,
+    "uses_fake_pnpm": true,
+    "native_build_executed": false
+  },
+  "ios_runtime": {
+    "status": "BLOCKED",
+    "inventory_exit_code": 72,
+    "selected_developer_directory": "/Library/Developer/CommandLineTools",
+    "simctl_available": false,
+    "xcode_app_found_in_standard_roots": false,
+    "simulator_started": false,
+    "device_accessed": false
+  },
+  "product_source_changes": [],
+  "dependency_or_configuration_changes": [],
+  "actual_commercial_provider_calls": 0,
+  "skipped_or_unexecuted_business_scope": [
+    "iOS simulator/device actual UI, navigation, login, workspace switching, notification counts and lifecycle flows",
+    "Mobile-to-Web/Desktop product semantic parity under an actual native runtime"
+  ],
+  "evidence_directory": "evidence/mobile",
+  "evidence_sha256": {
+    "ios-wrapper.stdout.txt": "8a7cab15a7f5e1e881699bea1c2f22b2e56f90a6d43e12f056c20df4f42e0790",
+    "lint.stdout.txt": "665fbf86a44267fc38e7523d62786f5dac59ae3cdd5ac2559cd20588adba75d7",
+    "simulator-inventory.json": "ce89033605a801f43cfa978e72da11a8ee90e03e2e09908a4b2f75f0e675a52d",
+    "typecheck.stdout.txt": "7160ed0df29a61f91121f69f0add970e635fb09238c31a10a4421360ba2a6025",
+    "simulator-inventory.stderr.txt": "99b8da8adc7e70feba56cd931740e16d0f5724d7515e98d84d2c8bf1bb63dec8",
+    "vitest-results.json": "9a5ad9528dc1ec39430f03eb929bf57c1936e157b28be28b681a3300edc8159c",
+    "unit.stdout.txt": "225672e91b5bc1be704efc92b45162c6ab3650e63a9d35a12b70e4d03362ddaf",
+    "commands.json": "501997f8141067aaa58ab3d310c9ea11da754eb59e7e4be600fa560d8876af36",
+    "run-checks.py": "3cad187f4ee0c814cf9379f49bc2d6cb5b081a6048c8a8c7e512dc4ff5a7b458",
+    "lint.json": "57a3c7e9996e6d9ac3f838ab2912e27bd4fd54efc35593de63292cd2472bfb58",
+    "ios-wrapper.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ios-wrapper.json": "4f27d190f51f3e103b16114cb25cd11693ea90b14d49cedc80a3994fc28df369",
+    "typecheck.stderr.txt": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+    "lint.stderr.txt": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+    "simulator-inventory.stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "typecheck.json": "3bfb94cf5d7ae6f87b163dc72ca33cb4e4bc61703c996dd35d57e46c1bc67972",
+    "ios-prerequisites.json": "78f56e1ea3b6a99ae4f8cf3f0b5b64d99951c1185aa1237a706c00e1f74b1399",
+    "unit.json": "d8b306dbdff5bfb2823eceaeb165451654f8b9912bbe0e5f44935dd2c0a48cbe",
+    "unit.stderr.txt": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+  }
+}

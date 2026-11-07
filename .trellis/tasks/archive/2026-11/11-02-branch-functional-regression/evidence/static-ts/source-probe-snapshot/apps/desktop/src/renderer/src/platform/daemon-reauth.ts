@@ -1,0 +1,47 @@
+import { useAuthStore } from "@multica/core/auth";
+import { daemonDiagnosticText, type DaemonSettingsT } from "./daemon-diagnostics";
+import { toast } from "sonner";
+
+/**
+ * Re-establish the local daemon's credentials from Settings or the
+ * "auth_expired" recovery action.
+ *
+ * The desktop owns the daemon's PAT, minted from the user's session and cached
+ * per profile. The main process mints a fresh token before replacing the cache
+ * and restarting the daemon, preserving the old credential if minting fails.
+ *
+ * Failure handling is deliberately conservative — we only force a full re-login
+ * when the session token itself is rejected (a real 401). A transient failure
+ * (mint 5xx, network blip, config write error, restart hiccup) keeps the user
+ * signed in and shows a retryable toast, so a momentary glitch never logs them
+ * out. The 401-vs-transient classification happens in the main process where the
+ * real HTTP status is available; here we just act on the verdict.
+ */
+export async function reauthenticateDaemon(t: DaemonSettingsT): Promise<void> {
+  const user = useAuthStore.getState().user;
+  const token = localStorage.getItem("multica_token");
+  if (!user || !token) {
+    // No usable session at all — the standard recovery is the login page.
+    useAuthStore.getState().logout();
+    return;
+  }
+
+  try {
+    const result = await window.daemonAPI.reauthenticate(token, user.id);
+    if (result.ok) return; // daemon restarting; status flips via onStatusChange
+    if (result.reason === "session_invalid") {
+      // The session token itself is rejected (401) — full re-login.
+      useAuthStore.getState().logout();
+      return;
+    }
+    // Transient failure — keep the user signed in and let them retry.
+    toast.error(t($ => $.desktop.daemon.diagnostic.reconnect_failed), {
+      description: daemonDiagnosticText(result.diagnostic, t).summary,
+    });
+  } catch {
+    // An unexpected IPC error is not an auth failure — never log out on it.
+    toast.error(t($ => $.desktop.daemon.diagnostic.reconnect_failed), {
+      description: daemonDiagnosticText(undefined, t).summary,
+    });
+  }
+}

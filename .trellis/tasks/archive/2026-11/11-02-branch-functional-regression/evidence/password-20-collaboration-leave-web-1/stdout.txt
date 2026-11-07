@@ -1,0 +1,39 @@
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium] › e2e/collaboration-leave-web.spec.ts:13:1 › Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing
+[1A[2K  1) [chromium] › e2e/collaboration-leave-web.spec.ts:13:1 › Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m503[39m
+
+       at fixtures/collaboration-control-journey.ts:292
+
+      290 |   const path = `${issuePath(fixture)}/control`;
+      291 |   const readResponse = async (response: Pick<APIResponse, "status" | "json">, request: Request): Promise<ObservedControl> => {
+    > 292 |     expect(response.status()).toBe(status);
+          |                               ^
+      293 |     const requestId = request.headers()["idempotency-key"];
+      294 |     if (!requestId) throw new Error("A UI control request omitted its original key");
+      295 |     const receipt: CollaborationControlReceipt = await response.json();
+        at readResponse (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:292:31)
+        at clickControl (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:304:27)
+        at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-leave-web.spec.ts:25:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-20-collaboration-leave-web-1/artifacts/collaboration-leave-web-We-37be9--rejoining-restores-nothing-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-20-collaboration-leave-web-1/artifacts/collaboration-leave-web-We-37be9--rejoining-restores-nothing-chromium/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-20-collaboration-leave-web-1/artifacts/collaboration-leave-web-We-37be9--rejoining-restores-nothing-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[1A[2K  1 failed
+    [chromium] › e2e/collaboration-leave-web.spec.ts:13:1 › Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing 

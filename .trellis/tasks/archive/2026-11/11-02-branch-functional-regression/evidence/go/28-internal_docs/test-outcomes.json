@@ -1,0 +1,18 @@
+{
+  "TestEmbeddedBundle": "pass",
+  "TestLookupsRejectAnythingOutsideManifest": "pass",
+  "TestResourceContentReturnsCopy": "pass",
+  "TestLoadBundleValidatesManifestAndResources/malformed_manifest": "pass",
+  "TestLoadBundleValidatesManifestAndResources/unknown_manifest_field": "pass",
+  "TestLoadBundleValidatesManifestAndResources/traversal_page_slug": "pass",
+  "TestLoadBundleValidatesManifestAndResources/backslash_page_slug": "pass",
+  "TestLoadBundleValidatesManifestAndResources/missing_page": "pass",
+  "TestLoadBundleValidatesManifestAndResources/page_identity_mismatch": "pass",
+  "TestLoadBundleValidatesManifestAndResources/traversal_asset_path": "pass",
+  "TestLoadBundleValidatesManifestAndResources/unlisted_asset_does_not_satisfy_listed_asset": "pass",
+  "TestLoadBundleValidatesManifestAndResources": "pass",
+  "TestLoadBundleUsesManifestAsWhitelist": "pass",
+  "TestOnlyServerEmbedsDocsBundle/../../cmd/multica": "pass",
+  "TestOnlyServerEmbedsDocsBundle/../../cmd/server": "pass",
+  "TestOnlyServerEmbedsDocsBundle": "pass"
+}

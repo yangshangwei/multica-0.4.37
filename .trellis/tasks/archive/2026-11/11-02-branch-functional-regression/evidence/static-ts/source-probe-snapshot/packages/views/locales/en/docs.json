@@ -1,0 +1,39 @@
+{
+  "title": "Docs",
+  "index": {
+    "description": "Documentation for the version of Multica this deployment is running.",
+    "empty": "This server published no documentation pages."
+  },
+  "toc": {
+    "heading": "On this page"
+  },
+  "content_language_notice": "Documentation is currently available in Chinese only.",
+  "server_version": "Docs for {{version}}",
+  "loading": "Loading documentation…",
+  "error": {
+    "title": "Could not load the documentation",
+    "description": "The request to this deployment's documentation failed. Check your connection to the server and try again.",
+    "retry": "Try again"
+  },
+  "unavailable": {
+    "title": "No documentation on this server",
+    "description": "This deployment is running a version of Multica that does not ship in-app documentation. Upgrade the server to read it here."
+  },
+  "not_found": {
+    "title": "Page not found",
+    "description": "This documentation page is not part of the version this server is running.",
+    "back": "Back to the docs index"
+  },
+  "video": {
+    "play": "Play: {{title}}",
+    "fallback_label": "Watch video",
+    "unavailable": "This video cannot be played here.",
+    "slow_prompt": "Slow to load or not playing?",
+    "watch_on": "Watch on {{site}}"
+  },
+  "community": {
+    "discord": "Discord",
+    "github": "GitHub",
+    "x": "X (Twitter)"
+  }
+}

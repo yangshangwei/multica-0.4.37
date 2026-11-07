@@ -1,0 +1,210 @@
+{
+  "page": {
+    "title": "Squads",
+    "new_button": "New Squad",
+    "template_button": "Create from template",
+    "empty_no_squads": "No squads yet. Create one to get started.",
+    "empty_no_match": "No squads match your filters.",
+    "table": {
+      "name": "Squad",
+      "leader": "Leader",
+      "members": "Members",
+      "creator": "Created by",
+      "created": "Created"
+    },
+    "no_matches": "No squads match",
+    "row_menu": "Squad actions",
+    "archive_action": "Archive",
+    "list_error": "Could not load squads.",
+    "tabs": {
+      "workspace": "Workspace",
+      "templates": "Templates"
+    },
+    "custom_button": "Create custom squad",
+    "sort_name": "Name"
+  },
+  "create_chooser": {
+    "description": "Choose how to create your squad.",
+    "template_description": "Start with a ready-made team and role assignments.",
+    "custom_description": "Choose a leader and members to build your own squad.",
+    "close": "Close"
+  },
+  "inspector": {
+    "details_section": "Details",
+    "archive_button": "Archive"
+  },
+  "member_type": {
+    "agent": "Agent",
+    "member": "Member"
+  },
+  "archive_dialog": {
+    "title": "Archive this squad?",
+    "description": "\"{{name}}\" will be archived. Issues currently assigned to this squad will be transferred to its leader. This can't be undone — create a new squad if you need the routing back.",
+    "cancel": "Cancel",
+    "confirm": "Archive",
+    "archiving": "Archiving…",
+    "success": "Squad archived"
+  },
+  "name_editor": {
+    "title": "Rename squad",
+    "placeholder": "Squad name",
+    "required": "Name is required",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saved": "Saved",
+    "save_failed": "Failed to save"
+  },
+  "add_member_dialog": {
+    "title": "Add Member",
+    "description": "Add a workspace member or agent to this squad.",
+    "label_member": "Member",
+    "label_role": "Role",
+    "label_optional": "(optional)",
+    "cancel": "Cancel",
+    "select_target": "Select a member or agent",
+    "search_placeholder": "Search members or agents...",
+    "members_section": "Members",
+    "agents_section": "Agents",
+    "role_placeholder": "e.g. Reviewer, Frontend Lead",
+    "add": "Add"
+  },
+  "role_editor": {
+    "empty": "Add role…",
+    "placeholder": "Role (e.g. Reviewer)"
+  },
+  "description_dialog": {
+    "title": "Edit description",
+    "placeholder_empty": "Add a description",
+    "cancel": "Cancel",
+    "responsibility_placeholder": "What is this squad responsible for?",
+    "save": "Save"
+  },
+  "discard_changes_dialog": {
+    "title": "Discard unsaved changes?",
+    "description": "You have unsaved changes on this tab. Switching tabs will discard them.",
+    "keep_editing": "Keep editing",
+    "discard_button": "Discard"
+  },
+  "members_tab": {
+    "section_title": "Members",
+    "section_count_one": "{{count}} member in this squad",
+    "section_count_other": "{{count}} members in this squad",
+    "add_member_button": "Add Member",
+    "create_agent_button": "Create Agent",
+    "leader_chip": "Leader",
+    "view_agent_tooltip": "Open agent detail",
+    "make_leader_tooltip": "Make squad leader",
+    "remove_member_tooltip": "Remove from squad",
+    "status_working": "Working",
+    "status_idle": "Idle",
+    "status_offline": "Offline",
+    "status_unstable": "Unstable",
+    "status_archived": "Archived",
+    "issue_status_blocked": "blocked",
+    "active_issue_more": "and {{count}} more",
+    "last_active_label": "last active {{time}}"
+  },
+  "detail_tabs": {
+    "members": "Members",
+    "instructions": "Instructions"
+  },
+  "details": {
+    "leader": "Leader",
+    "members": "Members",
+    "created_by": "Created by",
+    "created": "Created",
+    "updated": "Updated"
+  },
+  "toasts": {
+    "member_added": "Member added",
+    "member_add_failed": "Failed to add member",
+    "member_removed": "Member removed",
+    "member_remove_failed": "Failed to remove member",
+    "role_updated": "Role updated",
+    "role_update_failed": "Failed to update role",
+    "leader_updated": "Leader updated",
+    "leader_update_failed": "Failed to update leader",
+    "archive_failed": "Failed to archive squad",
+    "instructions_saved": "Instructions saved"
+  },
+  "profile_card": {
+    "unavailable": "Squad unavailable",
+    "detail_link": "Detail →",
+    "archived": "Archived",
+    "member_count_one": "{{count}} member",
+    "member_count_other": "{{count}} members",
+    "members_section": "Members",
+    "more_members_one": "+{{count}} more",
+    "more_members_other": "+{{count}} more"
+  },
+  "instructions_tab": {
+    "description": "Squad instructions are injected into the leader agent's prompt whenever it works on an issue assigned to this squad. Use them to give the leader squad-wide guidance, working agreements, or context the leader should follow on every task.",
+    "unsaved_changes": "Unsaved changes",
+    "save_button": "Save",
+    "placeholder": "e.g. Always start by writing a failing test. Prefer small, atomic commits."
+  },
+  "scope": {
+    "mine": "Created by me",
+    "all": "All"
+  },
+  "toolbar": {
+    "display": "Display",
+    "sort_by": "Sort by",
+    "direction_asc": "Ascending",
+    "direction_desc": "Descending",
+    "section_columns": "Columns",
+    "result_count_one": "{{visible}} of {{count}} squad",
+    "result_count_other": "{{visible}} of {{count}} squads",
+    "filter_summary": "{{label}}: {{names}}",
+    "value_separator": ", ",
+    "more_values": "{{names}}, +{{count}}",
+    "responsive_columns": "Some columns appear only in wider windows.",
+    "filter_label": "Filter",
+    "filter_active_count_one": "{{count}} filter",
+    "filter_active_count_other": "{{count}} filters",
+    "clear_filters": "Clear filters"
+  },
+  "catalog": {
+    "title": "Squad templates",
+    "description": "Choose a workflow and apply it to a new or existing project.",
+    "loading": "Loading squad templates...",
+    "error": "Could not load squad templates.",
+    "empty": "No squad templates are available.",
+    "retry": "Retry",
+    "use_for_project": "Apply to project",
+    "existing_squads": "In workspace:",
+    "summaries": {
+      "feature_delivery": "Take a feature from requirements through implementation and review.",
+      "bug_fix": "Reproduce a bug, find its cause, and verify the fix with regression tests.",
+      "review_gate": "Review a finished change for correctness, security, and test coverage.",
+      "discovery": "Clarify a request and assess feasibility before committing to implementation.",
+      "docs": "Keep release notes, API docs, and runbooks aligned with shipped code.",
+      "maintenance": "Upgrade dependencies and resolve security advisories or flaky tests.",
+      "security_remediation": "Triage security risks, repair them outside production, and verify with independent review.",
+      "release": "Verify a release and prepare its notes and rollback before human approval.",
+      "incident": "Restore service, verify recovery, then investigate the root cause."
+    }
+  },
+  "use_for_project": {
+    "title": "Use {{name}} for a project",
+    "description": "Set the default squad for future issues. Existing issues and customizations stay as they are.",
+    "project_label": "Project",
+    "new_project": "Create a project",
+    "no_projects": "Create a project to use this squad.",
+    "projects_loading": "Loading projects...",
+    "projects_error": "Could not load projects.",
+    "resources_loading": "Loading project resources...",
+    "resources_error": "Could not load the project's resources.",
+    "runtime_label": "Execution runtime",
+    "connect_later": "Connect later",
+    "runtime_hint": "Choose a runtime for this project, or save the squad choice and connect one later.",
+    "runtimes_error": "Could not load runtimes.",
+    "agents_error": "Could not check the workspace assistant runtime.",
+    "runtime_unavailable": "This runtime is no longer available. Choose another or connect later.",
+    "offline": "Offline",
+    "apply": "Use for project",
+    "applying": "Preparing squad...",
+    "cancel": "Cancel",
+    "failed": "Could not update the project's squad. Try again."
+  }
+}

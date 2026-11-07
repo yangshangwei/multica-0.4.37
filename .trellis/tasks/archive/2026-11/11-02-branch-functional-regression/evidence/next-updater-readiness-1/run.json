@@ -1,0 +1,202 @@
+{
+  "started_at": "2026-11-02T09:52:31.498670+00:00",
+  "state": "complete",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "candidate_version": "0.6.8-rc.20261102",
+  "scope": "Offline source-faithful updater readiness only",
+  "reviewer": "Native implement child self-check; coordinator and independent review separate",
+  "commands": [
+    {
+      "name": "candidate-head",
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "started_at": "2026-11-02T09:52:31.498946+00:00",
+      "finished_at": "2026-11-02T09:52:31.512738+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "233ebbcdbbe586452eed069d8c05735937f481f8a2dfab577cf3aadf5442cf3e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "source-diff",
+      "command": [
+        "git",
+        "diff",
+        "--",
+        "server",
+        "apps",
+        "packages"
+      ],
+      "started_at": "2026-11-02T09:52:31.512895+00:00",
+      "finished_at": "2026-11-02T09:52:31.542474+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "node-version",
+      "command": [
+        "node",
+        "--version"
+      ],
+      "started_at": "2026-11-02T09:52:34.251349+00:00",
+      "finished_at": "2026-11-02T09:52:34.316388+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "c42fcf0db5a550bda2f566fcdc21955df3e5a8ec3aeb90ac533f3776e7fce32a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "offline-validation",
+      "command": [
+        "node",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-updater-readiness-1/validate.mjs",
+        "/Volumes/artisan/code/2026/multica-0.4.37",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/next-updater-readiness-1",
+        "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/latest-mac.yml",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/baseline-app.asar",
+        "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Resources/app.asar"
+      ],
+      "started_at": "2026-11-02T09:52:34.316588+00:00",
+      "finished_at": "2026-11-02T09:52:34.642122+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "491da7cf2fb8bc43f942960fe48f3db684fed61affd1364dbc25997ae139c638",
+      "stderr_sha256": "673a1c70551728ba0b900de07956ecbff20b206b1708e9850cbf148b008d4ac6"
+    },
+    {
+      "name": "git-diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "started_at": "2026-11-02T09:52:34.665345+00:00",
+      "finished_at": "2026-11-02T09:52:34.689171+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "application_launches": 0,
+  "updater_runs": 0,
+  "network_calls": 0,
+  "services_started": 0,
+  "ports_created": 0,
+  "containers_started": 0,
+  "mounts_created": 0,
+  "protocol_mutations": 0,
+  "database_connections": 0,
+  "account_accesses": 0,
+  "commercial_calls": 0,
+  "remote_dispatches": 0,
+  "product_changes": 0,
+  "dependency_changes": 0,
+  "source_diff_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+  "frozen_p95_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+  "payload_identity": {
+    "baseline_asar_sha256": "da566a4d55d35948fdf8150251e5980bbfcc6ffd0845f659f8f02737fe4201c6",
+    "candidate_asar_sha256": "128ff6f87dc18b78355ee5161171a86ec7828b18d5b87751d0f8142dd81b8485"
+  },
+  "baseline_bundle_info": {
+    "CFBundleIdentifier": "ai.multica.desktop",
+    "CFBundleShortVersionString": "0.6.5-185-g61ff581d2-dirty"
+  },
+  "baseline_zip": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/multica-desktop-0.6.5-185-g61ff581d2-dirty-mac-arm64.zip",
+    "sha256": "807cf1adb72639dc696070de8c0e0a684386b5092daac1da48b8c2b56cc473a1",
+    "version": "0.6.5-185-g61ff581d2-dirty",
+    "provenance_limit": "0.6.5-185-g61ff581d2-dirty; exact dirty ZIP, source diff unreconstructed"
+  },
+  "source_sha256": {
+    "apps/desktop/src/main/updater.ts": "6e95d909d534bfd2e8c029734dd863cae1d20a5ecb5bd5c5e85fc10c925269ee",
+    "apps/desktop/src/main/updater-preferences.ts": "c13d4606d76963d29db0f5f5f82c04bed7799b103e8e6ad3ea7d735a48e0366c",
+    "apps/desktop/src/main/index.ts": "d05fea06767481958ee0b0be80ff72a7149c67b87cd48c91b94bb62345645f41",
+    "apps/desktop/src/main/packaged-acceptance-home.ts": "c4151d143a4a0ff362e0f7dada939979dffe24d6bc66d125c74afdd53b350aa6",
+    "apps/desktop/src/main/runtime-config-loader.ts": "ef290261cb679f3eb006f918d6a9880214ba51cc9fbe5f0d9ac55d3344c0f151",
+    "apps/desktop/src/shared/runtime-config.ts": "06a9def1bdb68ce113a30c6accfb87fdd030406f9c6cfa853f4cc00fe4f67da9",
+    "apps/desktop/src/preload/index.ts": "7e37e02111d76f015c7ede1a6f811d9540cdf215115c47874244e818a875feec",
+    "apps/desktop/electron-builder.yml": "962eea177f02bdfa75937312e339e042664724245086fbb6d24eeb387d6cf4d6",
+    "apps/desktop/scripts/update-artifacts.mjs": "3829bfeafe125838eae6cf5aa80590a8b46196cc2d9b3f025e1679e1ab45c61f",
+    "apps/desktop/scripts/configure-updates.mjs": "1123fb0a291f102f4d34aed5091072f87f24fd91abdb96c5ce14ae64e9bf078c",
+    "apps/desktop/scripts/windows-update-probe.mjs": "59e67f789d5219dc529683b7121d29de7cb64a470e924c861473564d8e31ce1a",
+    "apps/desktop/scripts/package.mjs": "690d75463c57593b926deed3d06e023ac6ca6f7656d757697b65d3af1c81aa6a"
+  },
+  "dependency_sha256": {
+    "package.json": "0c2b8e2b7a81902332cb13cb683730a4f4955b836acf8d157d46411f4afffa53",
+    "out/AppUpdater.js": "da6d8f1add2e0825bc1f09f1b1db1b115e099b0f82ec72999383e3fd658edeb8",
+    "out/MacUpdater.js": "47a521a1698333b83d4308b38c4a7bacda5f2ca6b5a3627b45bed3f4ee2549c6",
+    "out/AppAdapter.js": "2fd4359fe091d7a42e2e2df8327e03aa52e202cbf593b11d9bc891cefd09caa8",
+    "out/ElectronAppAdapter.js": "fa8fbf1de1c69924942aa3926878d391fba95007095836abe5f5b878506d4931",
+    "out/providers/GenericProvider.js": "c0d1f1aed62d7418e4d292118b3e079f9680914c554fe7604786b73771297d8a",
+    "out/providers/Provider.js": "48601c5ceb7aaaeec096b84186a1155964128e64bbe8c009dd2d9cb9afccda37"
+  },
+  "generated_metadata": {
+    "source": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/latest-mac.yml",
+    "filename": "latest-mac.yml",
+    "sha256": "addb8b0e3a3d31888bed89db52b02315d9b7c129da55296290f6643a79c59dbf",
+    "template_exact_bytes": true
+  },
+  "offline_validation": {
+    "status": "PASS_OFFLINE_PREPARATION_ONLY",
+    "parser_version": "6.8.3",
+    "generated_template_exact_bytes": true,
+    "channel": "latest-mac.yml",
+    "references": [
+      {
+        "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.zip",
+        "size": 223524090,
+        "sha512": "JWDSnUuNQmDKJQGa9PnhYPZ4j2gqDhlGPjMWUQ9ymS9q/QJ4Ge0b/wVh0rZfR9BrK9GhSUhpXJ8Iku31OgfTaQ=="
+      },
+      {
+        "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg",
+        "size": 233408426,
+        "sha512": "P7kbdU8Z5fW/S8eSWY1HzVmYKxIAlt7RQPSmZjX8lSQVmPKAcM8arDW7K+G8BwuRzS/az4evQfYiMCxdnlaUbA=="
+      }
+    ],
+    "selected_zip": "multica-desktop-0.6.8-rc.20261102-mac-arm64.zip",
+    "stable_only_rejects_rc": true,
+    "explicit_rc_opt_in_validates": true,
+    "appFacts": [
+      {
+        "role": "baseline",
+        "version": "0.6.5-185-g61ff581d2-dirty",
+        "main": "./out/main/index.js",
+        "main_sha256": "39bde0d10b61642148d78ec8ae3067c8b2d94794ad8ee8b99c5b7609b04695a5",
+        "bundled_updater_version": "6.8.3",
+        "packaged_acceptance_and_real_updater_ipc_present": true
+      },
+      {
+        "role": "candidate",
+        "version": "0.6.8-rc.20261102",
+        "main": "./out/main/index.js",
+        "main_sha256": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678",
+        "bundled_updater_version": "6.8.3",
+        "packaged_acceptance_and_real_updater_ipc_present": true
+      }
+    ],
+    "semver_order_only": true,
+    "runtime_parser_fixture": {
+      "scope": "Parser-only non-listening fixture, not an assigned environment",
+      "config": {
+        "schemaVersion": 1,
+        "apiUrl": "http://127.0.0.1:1",
+        "wsUrl": "ws://127.0.0.1:1/ws",
+        "appUrl": "http://127.0.0.1:1",
+        "updateUrl": "http://127.0.0.1:1/desktop"
+      }
+    },
+    "network_calls": 0,
+    "updater_instantiated": false,
+    "application_launched": false
+  },
+  "source_diff_unchanged": true,
+  "finished_at": "2026-11-02T09:52:34.689441+00:00",
+  "status": "PASS_OFFLINE_READINESS_ONLY",
+  "mac_automatic_updater": "NOT_RUN",
+  "mac_trust": "BLOCKED_ADHOC_NO_NOTARIZATION",
+  "original_performance": "2171ms>2000ms FAIL retained; not rerun",
+  "full_lint_typecheck_tests": "NOT_RERUN: evidence/private preparation only, no product/dependency change",
+  "readiness_manifest": "readiness-manifest.json",
+  "template_artifacts_created_at": "2026-11-02T09:55:46.601041+00:00"
+}

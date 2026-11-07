@@ -1,0 +1,13 @@
+{
+  "TestExecuteBackfillUpdatesOnlyEligibleCodexRowsAndRebuildsRollup": "pass",
+  "TestRollupWindowPadsDatabaseClockRange": "pass",
+  "TestCorrectedInputTokens/zero_cache_leaves_input_unchanged": "pass",
+  "TestCorrectedInputTokens/subtracts_cached_input": "pass",
+  "TestCorrectedInputTokens/clamps_negative_values": "pass",
+  "TestCorrectedInputTokens": "pass",
+  "TestConfigParseAndValidate/rejects_future_cutoff": "pass",
+  "TestConfigParseAndValidate/normalizes_cutoff_to_UTC": "pass",
+  "TestConfigParseAndValidate/requires_cutoff": "pass",
+  "TestConfigParseAndValidate/rejects_invalid_batch_size": "pass",
+  "TestConfigParseAndValidate": "pass"
+}

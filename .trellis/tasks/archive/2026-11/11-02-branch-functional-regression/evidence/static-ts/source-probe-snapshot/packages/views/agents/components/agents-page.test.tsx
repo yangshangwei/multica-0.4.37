@@ -1,0 +1,726 @@
+import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { fireEvent, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import type { Agent, AgentRoleTemplate, Squad, SquadTemplate, SquadMember } from "@multica/core/types";
+import type { AgentActivity } from "@multica/core/agents";
+import { renderWithI18n } from "../../test/i18n";
+import { NavigationProvider, type NavigationAdapter } from "../../navigation";
+import { AgentsPage } from "./agents-page";
+
+// These tests pin the `listReady` render gate (MUL-4511): the Agents list must
+// not paint real rows until the auxiliary queries the active sort field /
+// filter depends on have landed, or it sorts on placeholder values
+// (lastActiveDays null→Infinity, runCount 0) and visibly re-orders when each
+// query resolves. The gate waits per need — nothing for name/created,
+// run-counts for runs, activity + run-counts for the default lastActive,
+// presence when an availability filter is active — and never blocks the empty
+// state on those queries.
+
+const mocks = vi.hoisted(() => ({
+  agents: [] as Agent[],
+  agentsLoading: false,
+  squads: [] as Squad[] | undefined,
+  squadsPending: false,
+  squadsError: false,
+  squadTemplates: [] as SquadTemplate[] | undefined,
+  squadTemplatesError: false,
+  squadMembers: [] as SquadMember[],
+  membershipPending: false,
+  membershipError: false,
+  templates: [] as AgentRoleTemplate[] | undefined,
+  templatesError: false,
+  templatesPending: false,
+  refetchTemplates: vi.fn(),
+  runCounts: [] as Array<{ agent_id: string; run_count: number }>,
+  runCountsPending: false,
+  activity: {
+    byAgent: new Map<string, AgentActivity>(),
+    loading: false,
+  },
+  presence: {
+    byAgent: new Map<string, unknown>(),
+    loading: false,
+  },
+  viewState: {
+    scope: "all",
+    groupBy: "none",
+    setGroupBy: vi.fn(),
+    sortField: "lastActive" as string,
+    sortDirection: "desc" as string,
+    hiddenColumns: ["model", "created"] as string[],
+    filters: {
+      availability: [] as string[],
+      runtimes: [] as string[],
+      owners: [] as string[],
+      models: [] as string[],
+      access: [] as string[],
+      squads: [] as string[],
+      categories: [] as string[],
+    },
+    setScope: vi.fn(),
+    toggleSort: vi.fn(),
+    setSortField: vi.fn(),
+    setSortDirection: vi.fn(),
+    toggleColumn: vi.fn(),
+    toggleFilter: vi.fn(),
+    clearFilters: vi.fn(),
+  },
+}));
+
+vi.mock("../create/use-role-templates", () => ({
+  useSquadTemplates: () => ({ data: mocks.squadTemplates, isPending: false, isError: mocks.squadTemplatesError, refetch: vi.fn() }),
+  useRoleTemplates: () => ({
+    data: mocks.templates,
+    isLoading: false,
+    isPending: mocks.templatesPending,
+    isError: mocks.templatesError,
+    refetch: mocks.refetchTemplates,
+  }),
+}));
+
+vi.mock("@tanstack/react-query", () => ({
+  // Identity, which is what the real one is for our purposes: callers build an
+  // options object and hand it straight to the useQuery stub below. Needed because
+  // the header's approval-count query is declared with queryOptions().
+  queryOptions: (options: unknown) => options,
+  useQueries: ({ queries }: { queries: unknown[] }) => queries.map(() => ({
+    data: mocks.membershipPending || mocks.membershipError ? undefined : mocks.squadMembers,
+    isPending: mocks.membershipPending, isError: mocks.membershipError, refetch: vi.fn(),
+  })),
+  useQuery: (options: { queryKey?: readonly unknown[] }) => {
+    const key = options.queryKey?.[0];
+    if (key === "agents") {
+      return {
+        data: mocks.agents,
+        isLoading: mocks.agentsLoading,
+        error: null,
+        refetch: vi.fn(),
+      };
+    }
+    if (key === "squads") return { data: mocks.squads, isPending: mocks.squadsPending, isError: mocks.squadsError, refetch: vi.fn() };
+    if (key === "agent-run-counts") {
+      return { data: mocks.runCounts, isPending: mocks.runCountsPending };
+    }
+    return { data: [], isLoading: false, isPending: false };
+  },
+  useQueryClient: () => ({ invalidateQueries: vi.fn() }),
+}));
+
+// The list virtualizes; render every row so DOM order reflects sort order.
+vi.mock("@tanstack/react-virtual", () => ({
+  useVirtualizer: ({ count }: { count: number }) => ({
+    getVirtualItems: () =>
+      Array.from({ length: count }, (_, index) => ({
+        index,
+        key: index,
+        start: index * 64,
+        end: (index + 1) * 64,
+        size: 64,
+      })),
+    getTotalSize: () => count * 64,
+  }),
+}));
+
+vi.mock("sonner", () => ({
+  toast: { success: vi.fn(), error: vi.fn() },
+}));
+
+vi.mock("@multica/core/agents", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@multica/core/agents")>(),
+  isAgentRuntimeBound: (agent: { runtime_id: string; runtime_bound?: boolean }) =>
+    agent.runtime_bound !== false && agent.runtime_id.length > 0,
+  agentRunCounts30dOptions: () => ({ queryKey: ["agent-run-counts"] }),
+  useWorkspaceActivityMap: () => mocks.activity,
+  useWorkspacePresenceMap: () => mocks.presence,
+  VISIBILITY_TOOLTIP: { private: "Private", workspace: "Workspace" },
+  effectiveAccessScope: (pm: unknown, it: unknown) => {
+    if (pm !== "public_to") return "owner-only";
+    if ((Array.isArray(it) ? it : []).some((t) => (t as {target_type?: string})?.target_type === "workspace")) return "workspace";
+    return "specific-people";
+  },
+  ALL_ACCESS_SCOPES: ["workspace", "specific-people", "owner-only"],
+}));
+
+vi.mock("@multica/core/agents/stores", () => ({
+  useAgentsViewStore: (selector: (state: unknown) => unknown) =>
+    selector(mocks.viewState),
+  AGENT_DEFAULT_HIDDEN_COLUMNS: ["model", "created"],
+  AGENT_SCOPES: ["mine", "all", "archived"],
+}));
+
+vi.mock("@multica/core/api", () => ({
+  api: { archiveAgent: vi.fn(), restoreAgent: vi.fn() },
+}));
+
+vi.mock("@multica/core/auth", () => ({
+  useAuthStore: (selector: (state: unknown) => unknown) =>
+    selector({ user: { id: "user-1" } }),
+}));
+
+vi.mock("@multica/core/hooks", () => ({
+  useWorkspaceId: () => "workspace-1",
+}));
+
+// Derived from the real path factory rather than a hand-written literal: a
+// stub that lists only the routes this page used at the time silently breaks
+// when the page starts linking somewhere new.
+vi.mock("@multica/core/paths", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@multica/core/paths")>();
+  return {
+    ...actual,
+    useWorkspacePaths: () => actual.paths.workspace("test-workspace"),
+  };
+});
+
+vi.mock("@multica/core/workspace/queries", () => ({
+  agentListOptions: () => ({ queryKey: ["agents"] }),
+  memberListOptions: () => ({ queryKey: ["members"] }),
+  squadListOptions: () => ({ queryKey: ["squads"] }),
+  squadMembersOptions: (_ws: string, id: string) => ({ queryKey: ["squad-members", id] }),
+  workspaceKeys: { agents: (wsId: string) => ["agents", wsId] },
+}));
+
+vi.mock("@multica/core/runtimes", () => ({
+  runtimeListOptions: () => ({ queryKey: ["runtimes"] }),
+}));
+
+// View-layer children with heavy / portal deps — stub to keep the test focused
+// on the gate, not on avatars, row menus, the toolbar, or tooltip portals.
+vi.mock("../../common/actor-avatar", () => ({ ActorAvatar: () => null }));
+vi.mock("./agent-row-actions", () => ({ AgentRowActions: () => null }));
+vi.mock("./agent-list-toolbar", () => ({
+  AgentListToolbar: ({ search, onSearchChange }: { search: string; onSearchChange: (value: string) => void }) => (
+    <div data-testid="agent-list-toolbar">
+      <input aria-label="Search agents" value={search} onChange={(event) => onSearchChange(event.target.value)} />
+    </div>
+  ),
+  countActiveFilterDimensions: () => 0,
+}));
+vi.mock("../presence", () => ({ availabilityConfig: {} }));
+vi.mock("@multica/ui/components/ui/skeleton", () => ({
+  Skeleton: (props: Record<string, unknown>) => (
+    <div data-testid="skeleton" {...props} />
+  ),
+}));
+vi.mock("@multica/ui/components/ui/tooltip", () => ({
+  Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  TooltipTrigger: ({ render }: { render: React.ReactNode }) => <>{render}</>,
+  TooltipContent: ({ children }: { children: React.ReactNode }) => (
+    <div role="tooltip">{children}</div>
+  ),
+}));
+
+const BASE_AGENT: Agent = {
+  id: "agent-base",
+  workspace_id: "workspace-1",
+  runtime_id: "runtime-1",
+  name: "Base Agent",
+  description: "",
+  instructions: "",
+  avatar_url: null,
+  runtime_mode: "cloud",
+  runtime_config: {},
+  custom_args: [],
+  visibility: "workspace",
+  permission_mode: "private",
+  invocation_targets: [],
+  status: "idle",
+  max_concurrent_tasks: 1,
+  model: "claude",
+  owner_id: "user-1",
+  skills: [],
+  created_at: "2026-06-01T00:00:00Z",
+  updated_at: "2026-06-01T00:00:00Z",
+  archived_at: null,
+  archived_by: null,
+};
+
+function makeAgent(over: Partial<Agent>): Agent {
+  return { ...BASE_AGENT, ...over };
+}
+
+// Build a 30-bucket activity series whose most-recent bucket with runs is
+// `daysAgo` days back — `lastActiveDaysAgo` reads exactly this.
+function activityLastActive(daysAgo: number): AgentActivity {
+  const buckets = Array.from({ length: 30 }, () => ({ total: 0, failed: 0 }));
+  buckets[29 - daysAgo] = { total: 1, failed: 0 };
+  return { buckets, daysSinceCreated: 30 };
+}
+
+const ALPHA = makeAgent({ id: "a-alpha", name: "Alpha Agent" });
+const BETA = makeAgent({ id: "a-beta", name: "Beta Agent" });
+
+function makeAdapter(
+  overrides: Partial<NavigationAdapter> = {},
+): NavigationAdapter {
+  return {
+    push: vi.fn(),
+    replace: vi.fn(),
+    back: vi.fn(),
+    pathname: "/test-workspace/agents",
+    searchParams: new URLSearchParams(),
+    hash: "",
+    getShareableUrl: (p) => p,
+    ...overrides,
+  };
+}
+
+function renderPage(adapter = makeAdapter()) {
+  return renderWithI18n(
+    <NavigationProvider value={adapter}>
+      <AgentsPage />
+    </NavigationProvider>,
+  );
+}
+
+/** Beta before Alpha in document order? */
+function betaPrecedesAlpha(): boolean {
+  const alpha = screen.getByText("Alpha Agent");
+  const beta = screen.getByText("Beta Agent");
+  return Boolean(
+    beta.compareDocumentPosition(alpha) & Node.DOCUMENT_POSITION_FOLLOWING,
+  );
+}
+
+beforeEach(() => {
+  vi.clearAllMocks();
+  mocks.agents = [ALPHA, BETA];
+  mocks.agentsLoading = false;
+  mocks.squads = [];
+  mocks.squadsPending = false;
+  mocks.squadsError = false;
+  mocks.squadTemplates = [];
+  mocks.squadTemplatesError = false;
+  mocks.squadMembers = [];
+  mocks.membershipPending = false;
+  mocks.membershipError = false;
+  mocks.templates = [];
+  mocks.templatesError = false;
+  mocks.templatesPending = false;
+  mocks.runCounts = [];
+  mocks.runCountsPending = false;
+  mocks.activity = { byAgent: new Map(), loading: false };
+  mocks.presence = { byAgent: new Map(), loading: false };
+  mocks.viewState.scope = "all";
+  mocks.viewState.groupBy = "none";
+  mocks.viewState.sortField = "lastActive";
+  mocks.viewState.sortDirection = "desc";
+  mocks.viewState.hiddenColumns = ["model", "created"];
+  mocks.viewState.filters = {
+    availability: [],
+    runtimes: [],
+    owners: [],
+    models: [],
+    access: [],
+    squads: [],
+    categories: [],
+  };
+});
+
+describe("AgentsPage accessible selection", () => {
+  it("names the select-all scope and keeps filtered-out agents unselected", async () => {
+    const user = userEvent.setup();
+    const adapter = makeAdapter();
+    renderPage(adapter);
+    fireEvent.change(screen.getByRole("textbox", { name: "Search agents" }), { target: { value: "Alpha" } });
+    const all = screen.getByRole("checkbox", { name: "Select all listed agents" });
+    all.focus();
+    await user.keyboard(" ");
+    expect(screen.getByRole("checkbox", { name: "Select Alpha Agent" })).toBeChecked();
+    expect(screen.queryByRole("checkbox", { name: "Select Beta Agent" })).not.toBeInTheDocument();
+    fireEvent.change(screen.getByRole("textbox", { name: "Search agents" }), { target: { value: "" } });
+    expect(screen.getByRole("checkbox", { name: "Select Alpha Agent" })).toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Select Beta Agent" })).not.toBeChecked();
+    expect(all).toBePartiallyChecked();
+    expect(adapter.push).not.toHaveBeenCalled();
+  });
+
+  it("selects named rows and all filtered agents by keyboard without navigating", async () => {
+    const user = userEvent.setup();
+    const adapter = makeAdapter({ openInNewTab: vi.fn() });
+    renderPage(adapter);
+    const alpha = screen.getByRole("checkbox", { name: "Select Alpha Agent" });
+    const beta = screen.getByRole("checkbox", { name: "Select Beta Agent" });
+    const all = screen.getByRole("checkbox", { name: "Select all listed agents" });
+
+    expect(alpha.parentElement?.closest("button")).toBeNull();
+    expect(all.parentElement?.closest("button")).toBeNull();
+    expect(alpha).toHaveClass("focus-visible:opacity-100");
+    expect(all).toHaveClass("focus-visible:opacity-100");
+    alpha.focus();
+    await user.keyboard(" ");
+    expect(alpha).toBeChecked();
+    expect(beta).not.toBeChecked();
+    expect(all).toBePartiallyChecked();
+    expect(alpha).toHaveFocus();
+
+    all.focus();
+    await user.keyboard(" ");
+    expect(alpha).toBeChecked();
+    expect(beta).toBeChecked();
+    expect(all).toBeChecked();
+    await user.keyboard(" ");
+    expect(alpha).not.toBeChecked();
+    expect(beta).not.toBeChecked();
+    expect(all).not.toBeChecked();
+
+    fireEvent.click(alpha, { metaKey: true });
+    fireEvent(alpha, new MouseEvent("auxclick", { bubbles: true, button: 1 }));
+    expect(adapter.push).not.toHaveBeenCalled();
+    expect(adapter.openInNewTab).not.toHaveBeenCalled();
+  });
+});
+
+const REVIEW_TEMPLATE: AgentRoleTemplate = {
+  key: "code-reviewer", version: 1, name: "Reviewer", title: "Code reviewer",
+  description: "Review changes and report actionable findings.", instructions: "Review the diff.",
+  autonomy_level: "contributor", avatar_emoji: "", max_concurrent_tasks: 1, skill_names: [],
+};
+
+const RELEASE_SQUAD: Squad = {
+  id: "release", workspace_id: "workspace-1", name: "Release readiness", description: "", instructions: "",
+  avatar_url: null, leader_id: "lead", creator_id: "user-1", created_at: "2026-01-01", updated_at: "2026-01-01",
+  archived_at: null, archived_by: null, agent_member_ids: ["lead", "agent-alpha"],
+};
+
+describe("AgentsPage discovery", () => {
+  it("keeps explicit categories usable while fallback metadata is unavailable and recovers after retry", () => {
+    mocks.templates = undefined;
+    mocks.templatesError = true;
+    mocks.agents = [
+      makeAgent({ name: "Payments expert", template_key: "code-reviewer" }),
+      makeAgent({ ...ALPHA, category: "Specialists" }),
+      BETA,
+    ];
+    mocks.viewState.filters.categories = ["preset:specialist"];
+    const view = renderPage();
+
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+    expect(screen.queryByText("No matches")).not.toBeInTheDocument();
+    expect(screen.queryByText("Payments expert")).not.toBeInTheDocument();
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(screen.queryByText("Beta Agent")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^Specialists/ })).toHaveTextContent("1+");
+    fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+    expect(mocks.refetchTemplates).toHaveBeenCalledOnce();
+
+    mocks.templates = [REVIEW_TEMPLATE];
+    mocks.templatesError = false;
+    view.rerender(<NavigationProvider value={makeAdapter()}><AgentsPage /></NavigationProvider>);
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(screen.getByText("Payments expert")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^Specialists/ })).toHaveTextContent("2");
+    fireEvent.click(screen.getByRole("button", { name: "All categories" }));
+    expect(mocks.viewState.toggleFilter).toHaveBeenCalledWith("categories", "preset:specialist");
+  });
+
+  it("groups only unresolved template fallback as unavailable when the catalog fails", () => {
+    mocks.templates = [REVIEW_TEMPLATE];
+    mocks.squadTemplates = undefined;
+    mocks.squadTemplatesError = true;
+    mocks.squads = [RELEASE_SQUAD];
+    mocks.agents = [makeAgent({ name: "Delivery lead", template_key: "delivery-lead" }), ALPHA];
+    mocks.viewState.groupBy = "category";
+    renderPage();
+
+    expect(screen.getByText("Delivery lead")).toBeInTheDocument();
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(within(screen.getByRole("table")).getByText("Category unavailable")).toBeInTheDocument();
+    expect(within(screen.getByRole("table")).getByText("General-purpose agents")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "All categories" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "AI squads" })).toBeInTheDocument();
+    expect(mocks.viewState.setGroupBy).not.toHaveBeenCalled();
+  });
+
+  it("does not claim a role-name search has no matches when role metadata failed", () => {
+    mocks.templates = undefined;
+    mocks.templatesError = true;
+    mocks.agents = [makeAgent({ name: "Payments expert", template_key: "code-reviewer" })];
+    renderPage();
+    fireEvent.change(screen.getByRole("textbox", { name: "Search agents" }), { target: { value: "Code reviewer" } });
+
+    expect(screen.queryByText('No agents match "Code reviewer".')).not.toBeInTheDocument();
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+    fireEvent.change(screen.getByRole("textbox", { name: "Search agents" }), { target: { value: "Payments" } });
+    expect(screen.getByText("Payments expert")).toBeInTheDocument();
+  });
+
+  it("does not claim a squad-name search has no matches when squads failed", () => {
+    mocks.squads = undefined;
+    mocks.squadsError = true;
+    renderPage();
+    fireEvent.change(screen.getByRole("textbox", { name: "Search agents" }), { target: { value: "Release readiness" } });
+
+    expect(screen.queryByText('No agents match "Release readiness".')).not.toBeInTheDocument();
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+  });
+
+  it("renders a shared expert once with links to both squads", () => {
+    mocks.templates = [REVIEW_TEMPLATE];
+    mocks.agents = [makeAgent({ id: "agent-alpha", name: "Payments expert", template_key: "code-reviewer" })];
+    mocks.squads = [RELEASE_SQUAD, { ...RELEASE_SQUAD, id: "review", name: "Merge review" }];
+    mocks.viewState.groupBy = "category";
+    renderPage();
+    expect(screen.getAllByRole("link", { name: "Payments expert" })).toHaveLength(1);
+    expect(screen.getByRole("link", { name: "Release readiness" })).toHaveAttribute("href", "/test-workspace/squads/release");
+    expect(screen.getByRole("link", { name: "Merge review" })).toHaveAttribute("href", "/test-workspace/squads/review");
+    expect(screen.queryByText("Role template: Code reviewer")).not.toBeInTheDocument();
+  });
+
+  it("keeps extra squad links accessible without opening the agent", async () => {
+    mocks.agents = [makeAgent({ id: "agent-alpha", name: "Payments expert" })];
+    mocks.squads = [RELEASE_SQUAD,
+      { ...RELEASE_SQUAD, id: "review", name: "Merge review" },
+      { ...RELEASE_SQUAD, id: "incident", name: "Incident response" }];
+    const adapter = makeAdapter();
+    renderPage(adapter);
+
+    expect(screen.getByRole("columnheader", { name: "Squads" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Incident response" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Show more squads (1)" }));
+    const extraSquad = await screen.findByRole("link", { name: "Incident response" });
+    expect(extraSquad).toHaveAttribute("href", "/test-workspace/squads/incident");
+    expect(adapter.push).not.toHaveBeenCalled();
+    fireEvent.click(extraSquad);
+    expect(adapter.push).toHaveBeenCalledExactlyOnceWith("/test-workspace/squads/incident");
+  });
+
+  it("waits for a selected legacy squad roster and reports failure instead of no matches", () => {
+    mocks.squads = [{ ...RELEASE_SQUAD, agent_member_ids: undefined }];
+    mocks.viewState.filters.squads = ["release"];
+    mocks.membershipPending = true;
+    const view = renderPage();
+    expect(screen.queryByText("Alpha Agent")).not.toBeInTheDocument();
+    expect(screen.getAllByTestId("skeleton").length).toBeGreaterThan(0);
+    mocks.membershipPending = false;
+    mocks.membershipError = true;
+    view.rerender(<NavigationProvider value={makeAdapter()}><AgentsPage /></NavigationProvider>);
+    expect(screen.getByRole("alert")).toHaveTextContent("Could not load squad members.");
+    expect(screen.queryByText("Alpha Agent")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
+  });
+
+  it("keeps templates in the creation flow instead of the saved directory", () => {
+    mocks.templates = [REVIEW_TEMPLATE];
+    renderPage();
+    expect(screen.queryByRole("region", { name: "Built-in agents" })).not.toBeInTheDocument();
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+  });
+
+  it("keeps the empty directory focused on creating its first agent", () => {
+    mocks.agents = [];
+    mocks.templates = [REVIEW_TEMPLATE];
+    renderPage();
+    expect(screen.getByText("No agents yet")).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "Built-in agents" })).not.toBeInTheDocument();
+  });
+
+  it("describes the general-purpose group without inventing capabilities when no Mika is active", () => {
+    // Name alone never identifies Mika, and an archived Mika does not count.
+    mocks.agents = [
+      ALPHA,
+      makeAgent({ id: "a-fake", name: "Mika" }),
+      makeAgent({ id: "a-mika", name: "Ava", system_key: "mika", archived_at: "2026-06-02T00:00:00Z" }),
+    ];
+    renderPage();
+    const hint = screen.getByText(/General-purpose help across tasks/);
+    expect(screen.getByRole("button", { name: /^General-purpose agents/ })).toHaveAttribute("aria-describedby", hint.id);
+    expect(screen.queryByText(/Not sure who to ask/)).not.toBeInTheDocument();
+  });
+
+  it("points to the active Mika by its saved name in the general-purpose hint", () => {
+    mocks.agents = [ALPHA, makeAgent({ id: "a-mika", name: "Ava", system_key: "mika" })];
+    renderPage();
+    const hint = screen.getByText((_, element) => element?.tagName === "P" && !!element.textContent?.includes("Not sure who to ask? Start with Ava."));
+    expect(screen.getByRole("button", { name: /^General-purpose agents/ })).toHaveAttribute("aria-describedby", hint.id);
+    expect(screen.queryByText(/General-purpose help across tasks/)).not.toBeInTheDocument();
+  });
+
+  it("keeps the general-purpose hint for known template-free agents during metadata errors", () => {
+    mocks.templates = undefined;
+    mocks.templatesError = true;
+    mocks.agents = [ALPHA, makeAgent({ id: "a-mika", name: "Ava", system_key: "mika" })];
+    renderPage();
+    expect(screen.getByText(/Not sure who to ask/)).toBeInTheDocument();
+  });
+});
+
+describe("AgentsPage listReady gate", () => {
+  it("shows only a skeleton (no real rows) while lastActive deps are pending", () => {
+    // Default lastActive sort depends on activity + run-counts.
+    mocks.activity = { byAgent: new Map(), loading: true };
+    mocks.runCountsPending = true;
+
+    renderPage();
+
+    expect(screen.queryByText("Alpha Agent")).not.toBeInTheDocument();
+    expect(screen.queryByText("Beta Agent")).not.toBeInTheDocument();
+    expect(screen.getAllByTestId("skeleton").length).toBeGreaterThan(0);
+  });
+
+  it("renders rows in the resolved lastActive order once deps land", () => {
+    // Alpha active 5d ago, Beta active today → lastActive desc puts Beta first,
+    // the opposite of the name-order fallback the ungated list would show.
+    mocks.activity = {
+      byAgent: new Map<string, AgentActivity>([
+        [ALPHA.id, activityLastActive(5)],
+        [BETA.id, activityLastActive(0)],
+      ]),
+      loading: false,
+    };
+    mocks.runCounts = [
+      { agent_id: ALPHA.id, run_count: 0 },
+      { agent_id: BETA.id, run_count: 0 },
+    ];
+    mocks.runCountsPending = false;
+
+    renderPage();
+
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(screen.getByText("Beta Agent")).toBeInTheDocument();
+    expect(betaPrecedesAlpha()).toBe(true);
+  });
+
+  it("renders rows immediately for name sort without waiting on activity/run-counts", () => {
+    mocks.viewState.sortField = "name";
+    mocks.viewState.sortDirection = "asc";
+    // Auxiliary queries are still in flight — name sort must not wait on them.
+    mocks.activity = { byAgent: new Map(), loading: true };
+    mocks.runCountsPending = true;
+    mocks.presence = { byAgent: new Map(), loading: true };
+
+    renderPage();
+
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(screen.getByText("Beta Agent")).toBeInTheDocument();
+    // name asc → Alpha before Beta.
+    expect(betaPrecedesAlpha()).toBe(false);
+  });
+
+  it("shows a skeleton (not a false empty/false result) while an availability filter waits on presence", () => {
+    // Availability filter needs presence; sort by name so ONLY presence gates.
+    // Ungated, presence-null rows would all be filtered out → a false "no
+    // matches" state. Gated, we hold on a skeleton instead.
+    mocks.viewState.sortField = "name";
+    mocks.viewState.filters.availability = ["online"];
+    mocks.presence = { byAgent: new Map(), loading: true };
+
+    renderPage();
+
+    expect(screen.queryByText("Alpha Agent")).not.toBeInTheDocument();
+    expect(screen.queryByText("Beta Agent")).not.toBeInTheDocument();
+    expect(screen.getAllByTestId("skeleton").length).toBeGreaterThan(0);
+  });
+
+  it("shows the empty state without blocking on auxiliary queries when there are no agents", () => {
+    mocks.agents = [];
+    // All auxiliary queries pending — the empty state must not wait on them.
+    mocks.activity = { byAgent: new Map(), loading: true };
+    mocks.runCountsPending = true;
+    mocks.presence = { byAgent: new Map(), loading: true };
+
+    renderPage();
+
+    expect(screen.getByText("No agents yet")).toBeInTheDocument();
+    expect(screen.queryByTestId("skeleton")).not.toBeInTheDocument();
+  });
+});
+
+
+describe("custom category discovery", () => {
+  it("uses a manual preset for the default group, chip count and filter, then falls back when cleared", () => {
+    mocks.agents = [makeAgent({ ...ALPHA, category: "专业角色" }), BETA];
+    mocks.viewState.groupBy = "category";
+    const view = renderPage();
+    const table = within(screen.getByRole("table"));
+    expect(table.getByText("Specialists")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^Specialists/ })).toHaveTextContent("1");
+    fireEvent.click(screen.getByRole("button", { name: /^Specialists/ }));
+    expect(mocks.viewState.toggleFilter).toHaveBeenCalledWith("categories", "preset:specialist");
+    mocks.viewState.filters.categories = ["preset:specialist"];
+    view.rerender(<NavigationProvider value={makeAdapter()}><AgentsPage /></NavigationProvider>);
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(screen.queryByText("Beta Agent")).not.toBeInTheDocument();
+    mocks.agents = [ALPHA, BETA];
+    mocks.viewState.filters.categories = [];
+    view.rerender(<NavigationProvider value={makeAdapter()}><AgentsPage /></NavigationProvider>);
+    expect(screen.queryByRole("button", { name: /^Specialists/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^General-purpose agents/ })).toHaveTextContent("2");
+  });
+
+  it("moves a template specialist into a custom group and dropdown while preserving provenance", async () => {
+    mocks.templates = [REVIEW_TEMPLATE];
+    mocks.agents = [makeAgent({ ...ALPHA, template_key: "code-reviewer", category: "Research" }), BETA];
+    mocks.viewState.groupBy = "category";
+    renderPage();
+    expect(within(screen.getByRole("table")).getAllByText("Research")).toHaveLength(2);
+    expect(screen.queryByRole("button", { name: /^Specialists/ })).not.toBeInTheDocument();
+    expect(screen.queryByText("Role template: Code reviewer")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Category" }));
+    const option = await screen.findByRole("menuitemcheckbox", { name: /Research/ });
+    expect(option).toHaveTextContent("1");
+    fireEvent.click(option);
+    expect(mocks.viewState.toggleFilter).toHaveBeenCalledWith("categories", "custom:Research");
+  });
+
+  it("searches the localized effective category for manual and fallback classifications", () => {
+    mocks.templates = [REVIEW_TEMPLATE];
+    mocks.agents = [
+      makeAgent({ ...ALPHA, category: "专业角色" }),
+      makeAgent({ ...BETA, template_key: "code-reviewer" }),
+      makeAgent({ id: "custom", name: "Research Agent", template_key: "code-reviewer", category: "Research" }),
+    ];
+    renderPage();
+    fireEvent.change(screen.getByRole("textbox", { name: "Search agents" }), { target: { value: "Specialists" } });
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(screen.getByText("Beta Agent")).toBeInTheDocument();
+    expect(screen.queryByText("Research Agent")).not.toBeInTheDocument();
+  });
+
+  it("does not claim empty preset results when only unresolved fallback rows remain", () => {
+    mocks.templates = undefined;
+    mocks.templatesError = true;
+    mocks.agents = [makeAgent({ ...BETA, template_key: "code-reviewer" })];
+    mocks.viewState.filters.categories = ["preset:specialist"];
+    renderPage();
+    expect(screen.queryByText("Beta Agent")).not.toBeInTheDocument();
+    expect(screen.queryByText("No matches")).not.toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent("Counts and results may be incomplete.");
+    expect(screen.getByRole("button", { name: /^Specialists/ })).toHaveTextContent("0+");
+  });
+
+  it("keeps exact custom filters available when template fallback metadata is pending", () => {
+    mocks.templates = undefined;
+    mocks.templatesPending = true;
+    mocks.agents = [makeAgent({ ...ALPHA, category: "Research" }), makeAgent({ ...BETA, template_key: "code-reviewer" })];
+    mocks.viewState.groupBy = "category";
+    mocks.viewState.filters.categories = ["custom:Research"];
+    renderPage();
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(screen.queryByText("Beta Agent")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("skeleton")).not.toBeInTheDocument();
+  });
+
+  it("groups custom categories alongside template-free defaults without waiting for role metadata", () => {
+    mocks.agents = [makeAgent({ ...ALPHA, category: "研发" }), BETA];
+    mocks.viewState.groupBy = "category";
+    mocks.templatesPending = true;
+    renderPage();
+    expect(within(screen.getByRole("table")).getByText("General-purpose agents")).toBeInTheDocument();
+    expect(screen.getAllByText("研发")).toHaveLength(2);
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(screen.getByText("Beta Agent")).toBeInTheDocument();
+  });
+
+  it("keeps Mine scope while applying a custom category filter", () => {
+    mocks.agents = [makeAgent({ ...ALPHA, category: "研发" }),
+      makeAgent({ ...BETA, category: "研发", owner_id: "someone-else" })];
+    mocks.viewState.scope = "mine";
+    mocks.viewState.filters.categories = ["custom:研发"];
+    renderPage();
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(screen.queryByText("Beta Agent")).toBeNull();
+    expect(mocks.viewState.setScope).not.toHaveBeenCalled();
+  });
+});

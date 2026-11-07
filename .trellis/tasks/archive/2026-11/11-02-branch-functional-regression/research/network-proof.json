@@ -1,0 +1,12 @@
+{
+  "at": "2026-11-02T00:58:27.970777+00:00",
+  "cached_probe_image": "redis:7-alpine",
+  "host_dns_ipv6": "fdc4:f303:9324::254",
+  "host_dns_ipv4": "192.168.65.254",
+  "ipv4_api_health_verified": {
+    "status": "ok",
+    "pid": 18191,
+    "commit": "7af9ab990"
+  },
+  "purpose": "Pin the actually reachable IPv4 host gateway for owned Linux namespaces; no image pull"
+}

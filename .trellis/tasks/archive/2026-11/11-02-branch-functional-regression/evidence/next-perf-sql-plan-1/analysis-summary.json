@@ -1,0 +1,269 @@
+{
+  "at": "2026-11-02T06:16:38.144231+00:00",
+  "scope": "Coordinator analysis of completed task-private diagnostic; original P95 remains FAIL",
+  "canonical_sql_exact": true,
+  "groups": {
+    "JoinIterationParticipationBatch": {
+      "statement_count": 1000,
+      "execution_ms_sum": 221.459,
+      "execution_ms_min_median_max": [
+        0.2,
+        0.213,
+        0.613
+      ],
+      "planning_ms_sum": 32.546,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Nested Loop": 1000,
+        "Result": 1000,
+        "Limit": 1000,
+        "Sort": 1000,
+        "Bitmap Heap Scan": 1000,
+        "Bitmap Index Scan": 1000
+      },
+      "indexes_used": {
+        "iteration_event_sequence": 1000
+      },
+      "root_buffer_wal_totals": {
+        "Shared Hit Blocks": 117594,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 16,
+        "Shared Written Blocks": 16,
+        "WAL Records": 4034,
+        "WAL FPI": 0,
+        "WAL Bytes": 427702
+      },
+      "event_bitmap_actual_rows_sum": 1001000,
+      "event_bitmap_actual_rows_each": [
+        1001
+      ],
+      "artifact": "plans-JoinIterationParticipationBatch.json"
+    },
+    "LeaveDeletedIssueIterationParticipationBatch": {
+      "statement_count": 1000,
+      "execution_ms_sum": 651.403,
+      "execution_ms_min_median_max": [
+        0.582,
+        0.628,
+        2.21
+      ],
+      "planning_ms_sum": 32.674,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Limit": 1000,
+        "Sort": 1000,
+        "Bitmap Heap Scan": 1000,
+        "Bitmap Index Scan": 1000,
+        "Index Scan": 1000
+      },
+      "indexes_used": {
+        "iteration_event_sequence": 1000,
+        "iteration_participation_issue": 1000
+      },
+      "root_buffer_wal_totals": {
+        "Shared Hit Blocks": 349657,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 111,
+        "Shared Written Blocks": 111,
+        "WAL Records": 4025,
+        "WAL FPI": 0,
+        "WAL Bytes": 1173458
+      },
+      "event_bitmap_actual_rows_sum": 3003000,
+      "event_bitmap_actual_rows_each": [
+        3003
+      ],
+      "artifact": "plans-LeaveDeletedIssueIterationParticipationBatch.json"
+    },
+    "SetIssueCurrentIterationBatch": {
+      "statement_count": 1000,
+      "execution_ms_sum": 85.479,
+      "execution_ms_min_median_max": [
+        0.063,
+        0.0725,
+        0.373
+      ],
+      "planning_ms_sum": 40.58,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Index Scan": 1000
+      },
+      "indexes_used": {
+        "idx_issue_workspace_id_keyset": 1000
+      },
+      "root_buffer_wal_totals": {
+        "Shared Hit Blocks": 53344,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 111,
+        "Shared Written Blocks": 111,
+        "WAL Records": 22525,
+        "WAL FPI": 0,
+        "WAL Bytes": 2712509
+      },
+      "event_bitmap_actual_rows_sum": 0,
+      "event_bitmap_actual_rows_each": [],
+      "artifact": "plans-SetIssueCurrentIterationBatch.json"
+    },
+    "ListActiveTasksByIssue": {
+      "statement_count": 1000,
+      "execution_ms_sum": 8.962,
+      "execution_ms_min_median_max": [
+        0.008,
+        0.008,
+        0.121
+      ],
+      "planning_ms_sum": 108.38,
+      "node_counts": {
+        "Sort": 1000,
+        "Index Scan": 1000
+      },
+      "indexes_used": {
+        "idx_agent_task_queue_issue_id_keyset": 1000
+      },
+      "root_buffer_wal_totals": {
+        "Shared Hit Blocks": 2000,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 0,
+        "Shared Written Blocks": 0,
+        "WAL Records": 0,
+        "WAL FPI": 0,
+        "WAL Bytes": 0
+      },
+      "event_bitmap_actual_rows_sum": 0,
+      "event_bitmap_actual_rows_each": [],
+      "artifact": "plans-canonical-reads.json"
+    },
+    "LockIssueIterationParticipation": {
+      "statement_count": 2000,
+      "execution_ms_sum": 13.893,
+      "execution_ms_min_median_max": [
+        0.005,
+        0.007,
+        0.076
+      ],
+      "planning_ms_sum": 29.137,
+      "node_counts": {
+        "LockRows": 2000,
+        "Index Scan": 2000
+      },
+      "indexes_used": {
+        "iteration_participation_issue": 2000
+      },
+      "root_buffer_wal_totals": {
+        "Shared Hit Blocks": 7872,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 0,
+        "Shared Written Blocks": 0,
+        "WAL Records": 0,
+        "WAL FPI": 0,
+        "WAL Bytes": 0
+      },
+      "event_bitmap_actual_rows_sum": 0,
+      "event_bitmap_actual_rows_each": [],
+      "artifact": "plans-canonical-reads.json"
+    }
+  },
+  "transport": {
+    "serial_ms": [
+      641.409708,
+      746.561833
+    ],
+    "pipeline_ms": [
+      29.664792,
+      36.464833
+    ],
+    "serial_mean_ms": 693.9857705,
+    "pipeline_mean_ms": 33.0648125,
+    "difference_of_means_ms": 660.9209579999999,
+    "identical_ordered_results": true,
+    "limits": "Already locked, no concurrent writer, empty active-task set and absent target participation; replay uses generic row values, not production typed Scan/no-row error control flow; client spans include encoding/decoding and scheduling, not isolated wire RTT"
+  },
+  "write_phases": [
+    {
+      "after_fingerprint": "69f07deca235a88ab1d7762052819537",
+      "before_fingerprint": "69f07deca235a88ab1d7762052819537",
+      "explain_client_wall_ms": 1026.040917,
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "rollback_equal": true,
+      "statement_count": 1000
+    },
+    {
+      "after_fingerprint": "35ddaa0a23e6136cb0661440fb85abe8",
+      "before_fingerprint": "35ddaa0a23e6136cb0661440fb85abe8",
+      "explain_client_wall_ms": 613.035,
+      "phase": "JoinIterationParticipationBatch",
+      "rollback_equal": true,
+      "statement_count": 1000
+    },
+    {
+      "after_fingerprint": "5f5b4c12d083ea671158076c4381686e",
+      "before_fingerprint": "5f5b4c12d083ea671158076c4381686e",
+      "explain_client_wall_ms": 409.875334,
+      "phase": "SetIssueCurrentIterationBatch",
+      "rollback_equal": true,
+      "statement_count": 1000
+    }
+  ],
+  "index_counts": {
+    "issue": 22,
+    "agent_task_queue": 34,
+    "iteration_participation": 2,
+    "iteration_event": 2
+  },
+  "tables_at_inspection": [
+    {
+      "table": "issue",
+      "options": null,
+      "heap_bytes": 524288,
+      "total_bytes": 2711552,
+      "rows_estimate": -1
+    },
+    {
+      "table": "agent_task_queue",
+      "options": null,
+      "heap_bytes": 0,
+      "total_bytes": 294912,
+      "rows_estimate": -1
+    },
+    {
+      "table": "iteration_participation",
+      "options": null,
+      "heap_bytes": 1024000,
+      "total_bytes": 1368064,
+      "rows_estimate": -1
+    },
+    {
+      "table": "iteration_event",
+      "options": null,
+      "heap_bytes": 1916928,
+      "total_bytes": 2138112,
+      "rows_estimate": -1
+    }
+  ],
+  "settings": {
+    "jit": "on",
+    "enable_seqscan": "on",
+    "server_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+    "shared_buffers": "128MB",
+    "plan_cache_mode": "auto",
+    "track_io_timing": "off",
+    "enable_indexscan": "on",
+    "transaction_isolation": "read committed"
+  },
+  "limits": [
+    "EXPLAIN is a distinct prepared SQL text, not capture of the exact cached plan of the production batch.",
+    "All relevant relation row estimates were -1 in this new fixture; stats/cache behavior in original tail samples is unknown.",
+    "EXPLAIN ANALYZE changes cache, WAL and tuple versions despite savepoint business rollback; later phases are instrumented.",
+    "No isolated per-index CPU/WAL attribution or OS-level RTT capture; do not subtract sums from the prior closure.",
+    "One fixture, repeated ABBA transport, no contention or first-lock concurrency proof, no tail distribution.",
+    "PostgreSQL 17.11 x86_64 on the previously identified aarch64 Docker engine; shared load not reconstructed.",
+    "Closure checks exact target/rollover count; snapshot assertion checks 1000 entries with three labels and a non-null priority, not exact label IDs/priority values."
+  ],
+  "original_gate": {
+    "test": "TestIterationI1P95",
+    "p95_ms": 2171,
+    "threshold_ms": 2000,
+    "status": "FAIL",
+    "rerun": false
+  }
+}

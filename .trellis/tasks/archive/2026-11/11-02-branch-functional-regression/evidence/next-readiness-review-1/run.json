@@ -1,0 +1,80 @@
+{
+  "started_at": "2026-11-02T10:22:33.028556+00:00",
+  "state": "complete",
+  "reviewer": "native independent trellis-check /root/readiness_code_evidence_review",
+  "scope": "Once narrow staticGoVet for completed privateoverlay; no TestMain/test/DB/app/account action",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "vet",
+    "-p",
+    "2",
+    "-overlay",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-webhook-lookup-1/overlay.json",
+    "./internal/handler"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+  "private_environment_sha256": "a2c1637268f93eaf6b3dc3ef7444e301cc3ae498596f013460794cb78f607252",
+  "private_test_sha256": "70c3bb36b87541eae99ddd2e83b11f8d63d058fd252f177518a5be5f5971a925",
+  "overlay_sha256": "97ac3f537969e1d9b15ee22065441e1830b7be2b2e9ca69f49afd103a0d2e92d",
+  "frozen_test_sha256_before": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+  "source_diff_sha256_before": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+  "vet_attempts": 1,
+  "tests_executed_by_reviewer": 0,
+  "database_connections_by_reviewer": 0,
+  "pid": 27432,
+  "process_group": 27432,
+  "finished_at": "2026-11-02T10:22:36.970668+00:00",
+  "exit_code": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_diff_unchanged": true,
+  "frozen_test_sha256_after": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+  "virtual_overlay_target_absent_after": true,
+  "owned_vet_processes_remaining": [],
+  "static_checks": [
+    {
+      "name": "gofmt",
+      "command": [
+        "gofmt",
+        "-l",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-webhook-lookup-1/diagnostic_test.go"
+      ],
+      "started_at": "2026-11-02T10:28:36.184279+00:00",
+      "finished_at": "2026-11-02T10:28:36.199269+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "node-syntax",
+      "command": [
+        "node",
+        "--check",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-updater-readiness-1/validate.mjs"
+      ],
+      "started_at": "2026-11-02T10:28:36.199306+00:00",
+      "finished_at": "2026-11-02T10:28:36.218121+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "git-diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "started_at": "2026-11-02T10:28:36.218156+00:00",
+      "finished_at": "2026-11-02T10:28:36.266623+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "started_at": "2026-11-02T09:55:13.126664+00:00",
+  "finished_at": "2026-11-02T09:55:13.207013+00:00",
+  "command": [
+    "osascript",
+    "-l",
+    "JavaScript",
+    "-e",
+    "ObjC.import(\"AppKit\");\nconst w=$.NSWorkspace.sharedWorkspace;\nconst current=w.URLForApplicationToOpenURL($.NSURL.URLWithString(\"multica://branch-functional-regression\"));\nlet p=null;try{p=ObjC.unwrap(current.path)||null;}catch(e){}\nconst urls=w.URLsForApplicationsWithBundleIdentifier(\"ai.multica.desktop\");\nconst paths=[];for(let i=0;i<urls.count;i++)paths.push(ObjC.unwrap(urls.objectAtIndex(i).path));\nJSON.stringify({defaultApplicationPath:p,registeredApplications:paths});"
+  ],
+  "exit_code": 0,
+  "stdout_sha256": "2151fbce42f76f5cc8b11f4a58a9afa626658b26852d09b3c5447622867feacd",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "current": {
+    "defaultApplicationPath": "/Applications/Multica.app",
+    "registeredApplications": [
+      "/Applications/Multica.app",
+      "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/apps/desktop/dist/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/apps/desktop/dist/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/apps/desktop/dist/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app"
+    ]
+  },
+  "same_exact_default_as_prior_batch": true,
+  "same_registered_set_as_prior_batch": true,
+  "mutations": 0
+}

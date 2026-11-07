@@ -1,0 +1,65 @@
+{
+  "title": "Changelog",
+  "description": "Updates and improvements to Multica.",
+  "refresh": "Refresh",
+  "refreshing": "Refreshing...",
+  "loading": "Loading changelog...",
+  "navigation": "Browse releases",
+  "all_releases": "All releases",
+  "undated": "Date unavailable",
+  "versions": {
+    "desktop": "Installed desktop",
+    "server": "Running server",
+    "latest": "Latest stable release",
+    "unknown": "Unavailable",
+    "none": "No published fork release yet"
+  },
+  "source": {
+    "fork": "This fork",
+    "upstream": "Official Multica",
+    "unknown": "Other source"
+  },
+  "status": {
+    "published": "Published",
+    "prerelease": "Prerelease",
+    "unreleased": "Unreleased",
+    "unknown": "Status unavailable",
+    "latest": "Latest stable"
+  },
+  "category": {
+    "features": "New features",
+    "improvements": "Improvements",
+    "fixes": "Fixes",
+    "other": "Other changes"
+  },
+  "preview_notice": "Committed changes that have not been released yet.",
+  "upstream_notice": "From the official Multica changelog. This entry does not indicate a release of this fork.",
+  "no_details": "No change descriptions were provided for this entry.",
+  "refresh_error": "Unable to refresh. Previously loaded changes are still shown.",
+  "stale_warning": "The server could not refresh its release history. Showing the last available copy.",
+  "missing": {
+    "title": "This release is not in this deployment's history.",
+    "description": "You can still read all available updates below."
+  },
+  "empty": {
+    "title": "No changelog entries yet",
+    "description": "Published updates will appear here when they become available on this server."
+  },
+  "unavailable": {
+    "title": "Changelog is unavailable on this server",
+    "description": "This server version does not provide release history yet. You can try again after the server is updated."
+  },
+  "error": {
+    "title": "Unable to load changelog",
+    "description": "The server could not provide readable release history. Check your connection and try again.",
+    "retry": "Try again"
+  },
+  "desktop": {
+    "ready": "Update ready",
+    "description": "{{version}} will be applied on next launch.",
+    "changelog": "See changelog",
+    "restart": "Restart now",
+    "dismiss": "Dismiss update notification",
+    "workspace_required": "Open a workspace to read release notes."
+  }
+}

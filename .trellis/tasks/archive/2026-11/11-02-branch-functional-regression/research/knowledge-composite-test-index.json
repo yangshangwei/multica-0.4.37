@@ -1,0 +1,431 @@
+{
+  "scope": "Tagged suites are separate from default Go inventory; only completed current runs indexed",
+  "entries": [
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeHappyPath",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeOrdinarySurfaces/comment",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeOrdinarySurfaces/chat",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeOrdinarySurfaces/quick_create",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeOrdinarySurfaces/autopilot",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeOrdinarySurfaces",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeLiveWebSocketClaim",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeLostCommittedResponses/prepare",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeLostCommittedResponses/authorize",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeLostCommittedResponses/observations",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeLostCommittedResponses",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch/withdraw",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch/purge",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch/expiry",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch/gate",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeLostDisclosureThenWithdrawal",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeGateClosureKeepsObservationCleanup",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeZeroNativeStaleFence",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeLaterLaunchRefusal",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeExactResumeThenFreshReplacement",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeLegacyCannotReuseExposure",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeAccountabilityIsNotOriginator",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeSourceParticipationRevoked",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeDatabaseGuard/absent",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeDatabaseGuard/unowned",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-normal",
+      "test": "TestKnowledgeServerDaemonCompositeDatabaseGuard",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-normal/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeHappyPath",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeOrdinarySurfaces/comment",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeOrdinarySurfaces/chat",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeOrdinarySurfaces/quick_create",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeOrdinarySurfaces/autopilot",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeOrdinarySurfaces",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeLiveWebSocketClaim",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeLostCommittedResponses/prepare",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeLostCommittedResponses/authorize",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeLostCommittedResponses/observations",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeLostCommittedResponses",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch/withdraw",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch/purge",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch/expiry",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch/gate",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeLostDisclosureThenWithdrawal",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeGateClosureKeepsObservationCleanup",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeZeroNativeStaleFence",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeLaterLaunchRefusal",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeExactResumeThenFreshReplacement",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeLegacyCannotReuseExposure",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeAccountabilityIsNotOriginator",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeSourceParticipationRevoked",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeDatabaseGuard/absent",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeDatabaseGuard/unowned",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "ordinary-race",
+      "test": "TestKnowledgeServerDaemonCompositeDatabaseGuard",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/ordinary-race/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeLostMarkerCannotEnterTestMain",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeHappyPath",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/withdraw",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/purge",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/expiry",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/source_access",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity/prepare",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity/authorize",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeLostResponseRechecksWithdrawnSource",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeFreshRunsUseDifferentNativeNamespaces",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose/unnegotiated",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose/downgrade",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    },
+    {
+      "family": "host-normal",
+      "test": "TestCollaborationKnowledgeHostCompositePrivateStderrKeepsOnlyBoundedRunEvidence",
+      "outcome": "pass",
+      "evidence": "evidence/knowledge-tagged-2/host-normal/run.json"
+    }
+  ]
+}

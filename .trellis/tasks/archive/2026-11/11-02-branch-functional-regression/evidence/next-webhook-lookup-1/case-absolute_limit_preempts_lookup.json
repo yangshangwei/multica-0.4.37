@@ -1,0 +1,66 @@
+{
+  "case": "absolute_limit_preempts_lookup",
+  "started_at": "2026-11-02T10:08:17.602624Z",
+  "finished_at": "2026-11-02T10:08:17.639157Z",
+  "database": "multica_func7af9_next_webhook_lookup_1",
+  "owned_backend_pid": 47394,
+  "owned_search_path": "pg_catalog",
+  "owned_pool_closed": true,
+  "http_status": 429,
+  "response_body": "{\"error\":\"rate limit exceeded\"}\n",
+  "retry_after": "60",
+  "body_read_calls": 0,
+  "lookup_calls": 0,
+  "scan_calls": 0,
+  "scan_destination_types": null,
+  "exec_calls": 0,
+  "query_calls": 0,
+  "batch_calls": 0,
+  "canonical_sql": "",
+  "canonical_sql_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "argument_type": "",
+  "argument_valid": false,
+  "argument_bytes": 0,
+  "argument_sha256": "",
+  "argument_matches_synthetic_path": false,
+  "scan_error_type": "\u003cnil\u003e",
+  "scan_error_message": "",
+  "sqlstate": "",
+  "is_no_rows": false,
+  "bad_debt_before_allowed": true,
+  "bad_debt_after_allowed": true,
+  "absolute_precharged": true,
+  "persistence_before": {
+    "agent_task_queue": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "autopilot_run": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "webhook_delivery": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  },
+  "persistence_after": {
+    "agent_task_queue": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "autopilot_run": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "webhook_delivery": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  },
+  "persistence_unchanged": true,
+  "shared_pool_ping_after": true,
+  "shared_search_path_before": "\"$user\", public",
+  "shared_search_path_after": "\"$user\", public",
+  "test_failed": false
+}

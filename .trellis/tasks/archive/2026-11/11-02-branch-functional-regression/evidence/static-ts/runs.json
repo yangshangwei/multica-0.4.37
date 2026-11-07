@@ -1,0 +1,175 @@
+[
+  {
+    "id": "01-static",
+    "command": [
+      "pnpm",
+      "exec",
+      "turbo",
+      "run",
+      "lint",
+      "typecheck",
+      "--filter=!@multica/mobile",
+      "--concurrency=1",
+      "--force"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "candidate_before": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "started_at": "2026-11-02T00:03:49.937710+00:00",
+    "note": "",
+    "state": "complete",
+    "exit_code": 0,
+    "finished_at": "2026-11-02T00:07:06.132425+00:00",
+    "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "stdout_sha256": "0499f71b2c890437d0eff9cc59520971f7f7a9d302444b223c2334e5268a3355",
+    "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+  },
+  {
+    "id": "02-ui-exports",
+    "command": [
+      "pnpm",
+      "check:ui-exports"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "candidate_before": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "started_at": "2026-11-02T00:07:06.169526+00:00",
+    "note": "",
+    "state": "complete",
+    "exit_code": 0,
+    "finished_at": "2026-11-02T00:07:10.670071+00:00",
+    "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "stdout_sha256": "d1ec405229ae3151522cb033232558511f4b24c52bcdb96948f01a501f3cd78d",
+    "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+  },
+  {
+    "id": "03-typescript",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "pnpm",
+      "exec",
+      "turbo",
+      "run",
+      "test",
+      "--filter=!@multica/mobile",
+      "--concurrency=1",
+      "--force",
+      "--env-mode=loose",
+      "--",
+      "--maxWorkers=2"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "candidate_before": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "started_at": "2026-11-02T00:07:10.692743+00:00",
+    "note": "Minimal allowlisted process environment has no database/provider credentials. Loose Turbo forwarding retains only that environment plus the outer Agent CLI guard marker so any ambient command is recorded and fails the guard.",
+    "state": "complete",
+    "exit_code": 0,
+    "finished_at": "2026-11-02T00:22:10.338226+00:00",
+    "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "stdout_sha256": "ae27ea699dc0531072a0b39dc3e7a214f363827d259d2d0481976f4f45467b33",
+    "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+  },
+  {
+    "id": "04-test-go-script",
+    "command": [
+      "bash",
+      "scripts/test-go.test.sh"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "candidate_before": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "started_at": "2026-11-02T00:22:10.368736+00:00",
+    "note": "",
+    "state": "complete",
+    "exit_code": 0,
+    "finished_at": "2026-11-02T00:22:11.193356+00:00",
+    "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "stdout_sha256": "a01cbecf6343b7c02ca46a5116b40b28bcb6c0d6d53858ae111829b15066a43d",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "id": "05-dev-env-script",
+    "command": [
+      "bash",
+      "scripts/dev-env.test.sh"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "candidate_before": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "started_at": "2026-11-02T00:22:11.212738+00:00",
+    "note": "Inspected fixture uses temporary registry, fake psql and fake service launchers; only test-owned sleep processes are started.",
+    "state": "complete",
+    "exit_code": 0,
+    "finished_at": "2026-11-02T00:22:20.107493+00:00",
+    "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "stdout_sha256": "4d88b22f5dab8d66d6470d98508fbc9254c4d7792bcf9d9e9875b410ff8c0c5c",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "id": "06-check-script",
+    "command": [
+      "bash",
+      "scripts/check.test.sh"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "candidate_before": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "started_at": "2026-11-02T00:22:20.132163+00:00",
+    "note": "Inspected fixture replaces psql/Go/services; no real database or service startup.",
+    "state": "complete",
+    "exit_code": 0,
+    "finished_at": "2026-11-02T00:22:24.566247+00:00",
+    "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "stdout_sha256": "d65dfa4f30d263150e5c6993bf6be21a728c7ba9e72a775c05bf87cd6dd18873",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "id": "07-ui-exports-script",
+    "command": [
+      "bash",
+      "scripts/check-ui-wildcard-exports.test.sh"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/static-ts/source-probe-snapshot",
+    "candidate_before": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "started_at": "2026-11-02T00:22:27.224005+00:00",
+    "note": "Source-mutating probes run on pinned tracked-source snapshot entirely within this lane's evidence directory, never in the shared checkout.",
+    "state": "complete",
+    "exit_code": 0,
+    "finished_at": "2026-11-02T00:23:03.685749+00:00",
+    "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "stdout_sha256": "acf8fd90f43b99d756c64fb8c819e3c06c9f53cb99eff741eea577c06d0ea1fd",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "id": "08-native-checker-script",
+    "command": [
+      "node",
+      "--test",
+      "scripts/check-collaboration-native-tests.test.mjs"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "candidate_before": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "started_at": "2026-11-02T00:23:03.742168+00:00",
+    "note": "",
+    "state": "complete",
+    "exit_code": 0,
+    "finished_at": "2026-11-02T00:23:05.463244+00:00",
+    "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "stdout_sha256": "78b928430e57939a8c6009effc8ddb07f7c7d14ac59fefbc69f8aa3b16848951",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "id": "09-seed-script",
+    "command": [
+      "pnpm",
+      "test:seed"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "candidate_before": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "started_at": "2026-11-02T00:23:05.498212+00:00",
+    "note": "SEED_TEST_DATABASE_URL is absent in the allowlisted environment; database integration remains explicitly skipped.",
+    "state": "complete",
+    "exit_code": 0,
+    "finished_at": "2026-11-02T00:23:07.539617+00:00",
+    "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "stdout_sha256": "512c54c7f9e1597d029a02b711dcf386c7a336e75bb500c3f78e32205f981202",
+    "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+  }
+]

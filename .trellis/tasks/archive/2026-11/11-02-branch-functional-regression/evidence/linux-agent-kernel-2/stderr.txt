@@ -1,0 +1,20 @@
+2026/11/02 01:33:41 INFO agent command provider=codex exec=/tmp/TestCodexExecuteRetriesAfterSignaledProcessIsReaped1981947601/002/codex args="[app-server --listen <redacted>]" arg_count=3
+2026/11/02 01:33:41 INFO codex lifecycle phase=spawn task_id="" runtime_id="" pid=69 process_group=69 cwd="" attempt=1 active_launches=1 codex_version=unknown daemon_version=""
+2026/11/02 01:33:41 INFO codex lifecycle phase=initialize_sent task_id="" runtime_id="" pid=69 attempt=1 active_launches=1
+2026/11/02 01:33:41 INFO codex lifecycle phase=cleanup task_id="" runtime_id="" pid=69 process_group=69 attempt=1 latency=54ms reaped=true exit_status="signal: killed" wait_error="signal: killed" stderr_bytes=0 stderr_truncated=false
+2026/11/02 01:33:41 WARN codex lifecycle phase=initialize_failure task_id="" runtime_id="" pid=69 attempt=1 latency=52ms semantic_activity=false cleanup_confirmed=true retry_safe=true
+2026/11/02 01:33:41 WARN codex retry scheduled reason=initialize attempt=1 next_attempt=2 backoff=105ms
+2026/11/02 01:33:41 INFO agent command provider=codex exec=/tmp/TestCodexExecuteRetriesAfterSignaledProcessIsReaped1981947601/002/codex args="[app-server --listen <redacted>]" arg_count=3
+2026/11/02 01:33:41 INFO codex lifecycle phase=spawn task_id="" runtime_id="" pid=71 process_group=71 cwd="" attempt=2 active_launches=1 codex_version=unknown daemon_version=""
+2026/11/02 01:33:41 INFO codex lifecycle phase=initialize_sent task_id="" runtime_id="" pid=71 attempt=2 active_launches=1
+2026/11/02 01:33:41 INFO codex lifecycle phase=initialize_response task_id="" runtime_id="" pid=71 attempt=2 latency=1ms
+2026/11/02 01:33:41 INFO codex lifecycle phase=thread_start_sent task_id="" runtime_id="" pid=71 attempt=2 active_launches=1 method=thread/start
+2026/11/02 01:33:41 INFO codex lifecycle phase=thread_start_response task_id="" runtime_id="" pid=71 attempt=2 active_launches=1 method=thread/start latency=1ms latency_ms=0
+2026/11/02 01:33:41 INFO codex thread started thread_id=thr-signaled
+2026/11/02 01:33:41 INFO codex turn/start sent request_id=3 thread_id=thr-signaled
+2026/11/02 01:33:41 INFO codex turn/completed received thread_id=thr-signaled turn_id=turn-1 status=completed
+2026/11/02 01:33:41 INFO codex finished pid=71 status=completed duration=2ms
+2026/11/02 01:33:41 INFO codex lifecycle phase=cleanup task_id="" runtime_id="" pid=71 process_group=71 attempt=2 latency=2ms reaped=true exit_status="exit status 0" wait_error=<nil> stderr_bytes=0 stderr_truncated=false
+2026/11/02 01:33:41 INFO agent command provider=pi exec=/tmp/TestPiExecuteAttachesStdinPipe1611320748/001/pi args="[-p --mode <redacted> --session <redacted>]" arg_count=5
+2026/11/02 01:33:41 INFO pi started pid=75 cwd="" model=""
+2026/11/02 01:33:41 INFO pi finished pid=75 status=completed duration=7ms

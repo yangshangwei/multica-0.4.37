@@ -1,0 +1,8 @@
+{
+  "status": "PREFLIGHT_FAILED_NO_CONNECTION",
+  "exit_code": 2,
+  "attempt": "Read-only SELECT current_database(); URI supplied via PGDATABASE without explicit PGHOST",
+  "observed_failure": "Unavailable local Unix socket; no database connection established",
+  "correction": "Explicit PGHOST/PGPORT/PGUSER/PGPASSWORD and plain database name from the recorded private URL",
+  "corrected_evidence": "pg-readiness.json"
+}

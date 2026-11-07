@@ -1,0 +1,76 @@
+import assert from "node:assert/strict";
+import { createRequire } from "node:module";
+import { readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { pathToFileURL } from "node:url";
+import { basename, join } from "node:path";
+
+const [root, run, metadataPath, baselineAsar, candidateAsar] = process.argv.slice(2);
+assert(root && run && metadataPath && baselineAsar && candidateAsar);
+const require = createRequire(join(root, "apps/desktop/package.json"));
+const { parseUpdateInfo, findFile } = require("electron-updater/out/providers/Provider.js");
+const { GenericProvider } = require("electron-updater/out/providers/GenericProvider.js");
+const { getChannelFilename } = require("electron-updater/out/util.js");
+const asar = require("@electron/asar");
+const updaterRequire = createRequire(require.resolve("electron-updater/out/AppUpdater.js"));
+const semver = updaterRequire("semver");
+const { updateReferences } = await import(pathToFileURL(join(root, "apps/desktop/scripts/update-artifacts.mjs")));
+const { parseRuntimeConfig } = await import(pathToFileURL(join(root, "apps/desktop/src/shared/runtime-config.ts")));
+
+const source = await readFile(metadataPath, "utf8");
+const template = await readFile(join(run, "latest-mac.yml"), "utf8");
+assert.equal(template, source, "Feed template must preserve generated source bytes");
+const metadata = parseUpdateInfo(template, "latest-mac.yml", pathToFileURL(metadataPath));
+assert.equal(metadata.version, "0.6.8-rc.20261102");
+const refs = updateReferences(metadata, true);
+assert.equal(refs.length, 2);
+let stableOnlyRejected = false;
+try { updateReferences(metadata); } catch (error) {
+  stableOnlyRejected = /Stable versions only/.test(error.message);
+}
+assert(stableOnlyRejected, "Offline RC collection must explicitly opt in");
+const provider = new GenericProvider(
+  { provider: "generic", url: "http://127.0.0.1:1/desktop" },
+  { channel: null, isAddNoCacheQuery: false },
+  { platform: "darwin", executor: { request() { throw new Error("Network forbidden in offline preparation"); } } },
+);
+assert.equal(getChannelFilename(provider.channel), "latest-mac.yml");
+const resolved = provider.resolveFiles(metadata);
+const selectedZip = findFile(resolved, "zip", ["pkg", "dmg"]);
+assert.equal(basename(selectedZip.url.pathname), "multica-desktop-0.6.8-rc.20261102-mac-arm64.zip");
+
+const fingerprints = JSON.parse(await readFile(join(run, "artifact-fingerprints.json"), "utf8"));
+for (const ref of refs) {
+  const actual = fingerprints.find((item) => item.name === ref.name);
+  assert(actual, `Missing bound artifact ${ref.name}`);
+  assert.equal(ref.size, actual.bytes);
+  assert.equal(ref.sha512, actual.sha512);
+}
+const appFacts = [];
+for (const [role, path] of [["baseline", baselineAsar], ["candidate", candidateAsar]]) {
+  const pkg = JSON.parse(asar.extractFile(path, "package.json").toString("utf8"));
+  const updaterPkg = JSON.parse(asar.extractFile(path, "node_modules/electron-updater/package.json").toString("utf8"));
+  const main = asar.extractFile(path, pkg.main).toString("utf8");
+  assert(main.includes('"updater:check"') && main.includes('"updater:install"'));
+  assert(main.includes("configurePackagedAcceptanceHome"));
+  appFacts.push({ role, version: pkg.version, main: pkg.main,
+    main_sha256: createHash("sha256").update(main).digest("hex"),
+    bundled_updater_version: updaterPkg.version,
+    packaged_acceptance_and_real_updater_ipc_present: true });
+}
+assert.equal(appFacts[0].version, "0.6.5-185-g61ff581d2-dirty");
+assert.equal(appFacts[1].version, metadata.version);
+assert(semver.gt(metadata.version, appFacts[0].version));
+const parserFixture = parseRuntimeConfig(JSON.stringify({
+  schemaVersion: 1, apiUrl: "http://127.0.0.1:1", appUrl: "http://127.0.0.1:1",
+  wsUrl: "ws://127.0.0.1:1/ws", updateUrl: "http://127.0.0.1:1/desktop",
+}));
+assert.equal(parserFixture.updateUrl, "http://127.0.0.1:1/desktop");
+console.log(JSON.stringify({
+  status: "PASS_OFFLINE_PREPARATION_ONLY", parser_version: require("electron-updater/package.json").version,
+  generated_template_exact_bytes: true, channel: getChannelFilename(provider.channel),
+  references: refs, selected_zip: basename(selectedZip.url.pathname), stable_only_rejects_rc: true,
+  explicit_rc_opt_in_validates: true, appFacts, semver_order_only: true,
+  runtime_parser_fixture: { scope: "Parser-only non-listening fixture, not an assigned environment", config: parserFixture },
+  network_calls: 0, updater_instantiated: false, application_launched: false,
+}, null, 2));

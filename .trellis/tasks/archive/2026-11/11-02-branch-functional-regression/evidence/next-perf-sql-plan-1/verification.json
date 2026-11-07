@@ -1,0 +1,43 @@
+{
+  "at": "2026-11-02T06:16:38.306714+00:00",
+  "reviewer": "coordinator fallback after child 429; independent review separate",
+  "state": "PASS_DIAGNOSTIC_ONLY",
+  "canonical_sql_exact": true,
+  "groups": {
+    "JoinIterationParticipationBatch": 1000,
+    "LeaveDeletedIssueIterationParticipationBatch": 1000,
+    "SetIssueCurrentIterationBatch": 1000,
+    "ListActiveTasksByIssue": 1000,
+    "LockIssueIterationParticipation": 2000
+  },
+  "identical_3000_read_results_four_transports": true,
+  "savepoint_business_fingerprints_equal": true,
+  "command_stream_hashes_match": true,
+  "overlay_additive_only_and_target_absent": true,
+  "source_and_frozen_test_unchanged_as_recorded": true,
+  "connections_after_as_recorded": 0,
+  "original_p95_status": "FAIL",
+  "original_p95_rerun": false,
+  "artifact_sha256": {
+    "analysis-summary.json": "661459384ee8e39217d090b11fd87fadd647a0e96ebe70fb47b2c11863576ca4",
+    "canonical-ordered-reads.json": "01428c865d2fdd9d7404bae111a66733a984c0c320c89a6cf27091617e30353c",
+    "compile.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "database-operations.jsonl": "d3a3ab1dcf038a18d470d04082a4c2ee6fdc45ed183c11598752ebc1cc1f1813",
+    "diagnostic-metrics.json": "feb7fb4b268c052f49fe24a0c9d0fdf9fe6a28004d9f49bd36d9617307da73bb",
+    "diagnostic.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "diagnostic.stdout": "bbdad7f9729b3eff820614104f8f76290905efb0d4220b1b13ddb9448549809e",
+    "diagnostic_test.go.txt": "88e56d6b14836cff4553769a45a5321c83336788468230a51c1cbb0516959d7d",
+    "format-private-test.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "format-private-test.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "host-runner.py.txt": "a1caf56419e369b820ace2ee935ccc1f8e89aec8c05a3326fb8c13023a28bd34",
+    "overlay.json": "4dec1b518112776b883df979901124238b368bff39493d29a5191bcd49e34577",
+    "plans-JoinIterationParticipationBatch.json": "ebc4ae9a0ec1e7124b0d588955d1b96a81b4c8ae8df777ff3a2ad5445f89be2e",
+    "plans-LeaveDeletedIssueIterationParticipationBatch.json": "6585151ce3abe665745432f3db7c3bfb50ff9e85a1af710a9f5912e1ea091b54",
+    "plans-SetIssueCurrentIterationBatch.json": "a76b051ae5d3adf108f23aa9ee22264453c7fcea769115314fa763c7f8b30858",
+    "plans-canonical-reads.json": "59c2561e3376f7db8aff971ec5de76705a56a4c77473296eeb8ab71c7331317f",
+    "read-transport-abba.json": "31c6d81e5f16857b268a3ec5c9caf64a522786988bf6f39ce3a9036eb5134368",
+    "run.json": "13864115e41c9d69a78c5920e2760d2be656925906b6e728c5a83eabc76ded16",
+    "schema-indexes-triggers.json": "d30bfc4d2f36a6182c68373bff8019198a61b1172eb6e6acbb39b063d4cd9375"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "07-ui-exports-script",
+  "command": [
+    "bash",
+    "scripts/check-ui-wildcard-exports.test.sh"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/static-ts/source-probe-snapshot",
+  "candidate_before": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "started_at": "2026-11-02T00:22:27.224005+00:00",
+  "note": "Source-mutating probes run on pinned tracked-source snapshot entirely within this lane's evidence directory, never in the shared checkout.",
+  "state": "complete",
+  "exit_code": 0,
+  "finished_at": "2026-11-02T00:23:03.685749+00:00",
+  "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "stdout_sha256": "acf8fd90f43b99d756c64fb8c819e3c06c9f53cb99eff741eea577c06d0ea1fd",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

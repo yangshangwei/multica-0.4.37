@@ -1,0 +1,53 @@
+{
+  "status": "PASS_OFFLINE_PREPARATION_ONLY",
+  "parser_version": "6.8.3",
+  "generated_template_exact_bytes": true,
+  "channel": "latest-mac.yml",
+  "references": [
+    {
+      "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.zip",
+      "size": 223524090,
+      "sha512": "JWDSnUuNQmDKJQGa9PnhYPZ4j2gqDhlGPjMWUQ9ymS9q/QJ4Ge0b/wVh0rZfR9BrK9GhSUhpXJ8Iku31OgfTaQ=="
+    },
+    {
+      "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg",
+      "size": 233408426,
+      "sha512": "P7kbdU8Z5fW/S8eSWY1HzVmYKxIAlt7RQPSmZjX8lSQVmPKAcM8arDW7K+G8BwuRzS/az4evQfYiMCxdnlaUbA=="
+    }
+  ],
+  "selected_zip": "multica-desktop-0.6.8-rc.20261102-mac-arm64.zip",
+  "stable_only_rejects_rc": true,
+  "explicit_rc_opt_in_validates": true,
+  "appFacts": [
+    {
+      "role": "baseline",
+      "version": "0.6.5-185-g61ff581d2-dirty",
+      "main": "./out/main/index.js",
+      "main_sha256": "39bde0d10b61642148d78ec8ae3067c8b2d94794ad8ee8b99c5b7609b04695a5",
+      "bundled_updater_version": "6.8.3",
+      "packaged_acceptance_and_real_updater_ipc_present": true
+    },
+    {
+      "role": "candidate",
+      "version": "0.6.8-rc.20261102",
+      "main": "./out/main/index.js",
+      "main_sha256": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678",
+      "bundled_updater_version": "6.8.3",
+      "packaged_acceptance_and_real_updater_ipc_present": true
+    }
+  ],
+  "semver_order_only": true,
+  "runtime_parser_fixture": {
+    "scope": "Parser-only non-listening fixture, not an assigned environment",
+    "config": {
+      "schemaVersion": 1,
+      "apiUrl": "http://127.0.0.1:1",
+      "wsUrl": "ws://127.0.0.1:1/ws",
+      "appUrl": "http://127.0.0.1:1",
+      "updateUrl": "http://127.0.0.1:1/desktop"
+    }
+  },
+  "network_calls": 0,
+  "updater_instantiated": false,
+  "application_launched": false
+}

@@ -1,0 +1,9 @@
+{
+  "at": "2026-11-02T10:27:20.870405+00:00",
+  "scope": "Reviewer read-only source lookup; not a product/vet/test failure",
+  "failed_lookup": "Python regex expected receiver c on ConnConfig.Copy; actual receiver differs",
+  "exit_code": 1,
+  "stderr": "AttributeError: NoneType object has no attribute group",
+  "recovery": "Use rg actual Copy/Config symbols and read matched source; no DB or test rerun",
+  "corrected_lookup_warning": "Transient read-only lookup command used a non-raw Python regex string and emitted SyntaxWarning for escaped parenthesis. Actual source was read successfully; no durable implementation/recorder file used that command."
+}

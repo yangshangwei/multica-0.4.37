@@ -1,0 +1,127 @@
+import ast
+import datetime
+import hashlib
+import json
+import os
+import plistlib
+import shutil
+import subprocess
+from pathlib import Path
+
+ROOT = Path('/Volumes/artisan/code/2026/multica-0.4.37')
+TASK = ROOT / '.trellis/tasks/11-02-branch-functional-regression'
+RUN = TASK / 'evidence/next-remaining-platform-1'
+PRIVATE = Path(__file__).resolve().parent
+CANDIDATE = '7af9ab9905c98c77bb091223ebe687c639475bb4'
+RUN.mkdir(exist_ok=False)
+now = lambda: datetime.datetime.now(datetime.timezone.utc).isoformat()
+sha = lambda data: hashlib.sha256(data).hexdigest()
+record = {'started_at': now(), 'state': 'checking', 'reviewer': 'Native trellis-implement /root/remaining_platform_conditions self-verification; coordinator and independent review separate',
+          'scope': 'Read-only bounded local prerequisites and known artifact identities; no app/account/remote/DB action',
+          'candidate': CANDIDATE, 'candidate_version': '0.6.8-rc.20261102', 'steps': [], 'artifacts': [],
+          'resource_creations': {'processes_left': 0, 'services': 0, 'ports': 0, 'mounts': 0, 'protocol_mutations': 0, 'containers': 0, 'databases': 0, 'database_connections': 0},
+          'completed_acceptance_gates_rerun': 0, 'p95_reruns': 0, 'cached_fixture_reruns': 0,
+          'commercial_provider_calls': 0, 'remote_dispatches': 0, 'account_accesses': 0}
+
+def save():
+    (RUN / 'run.json').write_text(json.dumps(record, indent=2) + '\n')
+
+def command(name, args, expected=(0,)):
+    step = {'name': name, 'command': args, 'started_at': now(), 'expected_exit_codes': list(expected)}
+    record['steps'].append(step)
+    save()
+    executable = shutil.which(args[0])
+    step['resolved_executable'] = executable
+    if executable is None:
+        step.update(status='NOT_RUN_MISSING_EXECUTABLE', finished_at=now())
+        save()
+        return None
+    result = subprocess.run(args, cwd=ROOT, capture_output=True, timeout=30)
+    for suffix, data in [('stdout', result.stdout), ('stderr', result.stderr)]:
+        (RUN / (name + '.' + suffix)).write_bytes(data)
+        step[suffix + '_sha256'] = sha(data)
+    step.update(exit_code=result.returncode, finished_at=now(), status='RECORDED' if result.returncode in expected else 'UNEXPECTED_EXIT_RECORDED')
+    save()
+    return result
+
+def artifact(path, expected, role):
+    p = Path(path)
+    row = {'path': str(p), 'role': role, 'expected_sha256': expected, 'exists': p.is_file()}
+    if p.is_file():
+        digest = hashlib.sha256()
+        with p.open('rb') as stream:
+            for block in iter(lambda: stream.read(4 * 1024 * 1024), b''):
+                digest.update(block)
+        row.update(bytes=p.stat().st_size, sha256=digest.hexdigest(), matches_expected=digest.hexdigest() == expected)
+    record['artifacts'].append(row)
+    save()
+
+save()
+try:
+    head = command('candidate-head', ['git', 'rev-parse', 'HEAD'])
+    record['observed_head'] = head.stdout.decode().strip() if head else None
+    record['same_candidate_head'] = record['observed_head'] == CANDIDATE
+    command('os', ['uname', '-srm'])
+    command('mac-version', ['sw_vers', '-productVersion'])
+    selected = command('xcode-select', ['xcode-select', '-p'])
+    simctl = command('simctl-location', ['xcrun', '--find', 'simctl'], (0, 72))
+    record['ios'] = {'developer_directory': selected.stdout.decode().strip() if selected else None,
+                     'simctl_available': simctl is not None and simctl.returncode == 0,
+                     'simctl_find_exit': simctl.returncode if simctl else None,
+                     'command_developer_dir_override_present': bool(os.environ.get('DEVELOPER_DIR'))}
+    record['tool_paths'] = {name: shutil.which(name) for name in ['qemu-system-aarch64', 'qemu-system-x86_64', 'prlctl', 'VBoxManage', 'vmrun', 'tart', 'multipass', 'utmctl', 'pwsh', 'powershell', 'xprop', 'xdg-mime']}
+    app_roots = [Path('/Applications'), Path('/System/Applications'), Path('/Developer/Applications')]
+    record['bounded_application_inventory'] = {'roots': list(map(str, app_roots)),
+        'matches': [str(p) for root in app_roots if root.is_dir() for p in sorted(root.glob('*.app')) if any(token in p.name.lower() for token in ['xcode', 'parallels', 'vmware', 'utm', 'virtualbox'])],
+        'limit': 'Top-level named local roots only; no account files or remote hosts searched'}
+    record['windows_host_environment'] = {name: os.environ.get(name) for name in ['GITHUB_ACTIONS', 'RUNNER_ENVIRONMENT', 'RUNNER_OS', 'RUNNER_ARCH']}
+    record['linux_local_session'] = {'native_host': os.uname().sysname == 'Linux',
+        'XDG_SESSION_TYPE': os.environ.get('XDG_SESSION_TYPE'), 'XDG_CURRENT_DESKTOP': os.environ.get('XDG_CURRENT_DESKTOP'),
+        'DISPLAY_present': bool(os.environ.get('DISPLAY')), 'WAYLAND_DISPLAY_present': bool(os.environ.get('WAYLAND_DISPLAY'))}
+    command('docker-engine', ['docker', 'info', '--format', '{{json .Architecture}}'])
+    command('native-layout-boundary', ['rg', '-n', 'darwin|win32|Native packaged Main requires', 'e2e/fixtures/collaboration-installed-layout.mjs'])
+    command('windows-disposable-boundary', ['rg', '-n', 'Native Windows x64|disposable|GITHUB_ACTIONS|RUNNER_ENVIRONMENT|RUNNER_OS', 'apps/desktop/scripts/accept-windows-installer.ps1'])
+    command('windows-workflow-inputs', ['rg', '-n', 'candidate_version|0.5.3|36996436086|windows-x64-accepted-candidate|windows-business|windows_business_acceptance', '.github/workflows/desktop-smoke.yml'])
+    sources = ['.github/workflows/desktop-smoke.yml', 'apps/desktop/scripts/accept-windows-installer.ps1', 'e2e/fixtures/collaboration-installed-layout.mjs', 'apps/mobile/scripts/ios-run.sh', 'research/remaining-platform-handoff-1.md']
+    record['source_sha256'] = {s: sha(((TASK if s.startswith('research/') else ROOT) / s).read_bytes()) for s in sources}
+    original = json.loads((TASK / 'evidence/next-platform-preflight-2/run.json').read_text())
+    record['handoff_source_same_as_saved'] = {s: record['source_sha256'][s] == value for s, value in original['handoff_source_sha256'].items()}
+    build = json.loads((TASK / 'evidence/resume-linux-deb-1/build.json').read_text())
+    for row in build['packages']:
+        artifact(row['path'], row['sha256'], 'Known candidate ARM64 DEB; hash identity only, package-manager PASS not rerun')
+    artifact(build['baseline'], build['baseline_sha256'], 'Known ARM64 DEB upgrade baseline; bytes only, no install')
+    distribution = json.loads((TASK / 'evidence/resume-desktop-readiness-1/mac-distribution-integrity.json').read_text())
+    for row in distribution['artifacts']:
+        artifact(row['path'], row['sha256'], 'Known candidate Mac distribution; byte identity only')
+    payload = json.loads((TASK / 'evidence/resume-desktop-readiness-1/artifact-byte-verification.json').read_text())
+    app = Path(payload['checks'][0]['path']).parent.parent.parent
+    plist = app / 'Contents/Info.plist'
+    record['mac_app_info'] = {key: value for key, value in plistlib.loads(plist.read_bytes()).items() if key in ['CFBundleIdentifier', 'CFBundleExecutable', 'CFBundleShortVersionString', 'CFBundleVersion']}
+    command('mac-signature-metadata', ['codesign', '-d', '--verbose=4', str(app)])
+    runtime = json.loads((TASK / 'evidence/next-mac-runtime-2/run.json').read_text())
+    record['mac_saved_runtime_scope'] = {'evidence': 'evidence/next-mac-runtime-2/run.json', 'sha256': sha((TASK / 'evidence/next-mac-runtime-2/run.json').read_bytes()),
+        'basis': 'Completed synthetic configuration/localStorage and password-form retention only; no real logged-in upgrade or automatic updater completion in task handoff',
+        'current_account_files_inspected': False, 'new_account_authorization_supplied_in_dispatch': False,
+        'signed_distribution_supplied': False, 'runtime_repeated': False}
+    record['gates'] = {
+        'WIN-INSTALL-UPGRADE': {'status': 'BLOCKED', 'missing': 'No provided disposable GitHub-hosted Windows x64 execution environment and no remote execution authorization. Remote pinned business baseline availability was not queried.', 'next': 'Use remaining-platform-handoff-1.md with explicit candidate_version and remote/run HEAD identity when remote execution is authorized.'},
+        'LINUX-NATIVE-DESKTOP': {'status': 'BLOCKED', 'missing': 'Current host is macOS; no provided Linux ARM64 VM/host with real X11/Wayland and window manager. Known DEB bytes do not provide a native desktop session.', 'next': 'Provide native task session and verify same candidate DEB; current native controller is darwin/win32 only.'},
+        'IOS-UI': {'status': 'BLOCKED', 'missing': 'Selected developer directory is CommandLineTools; simctl lookup exits72; bounded app inventory has no full Xcode.', 'next': 'Use a target with full Xcode via command-local DEVELOPER_DIR, then record device/app/source/API identity before actual UI.'},
+        'MAC-AUTH-MIGRATION': {'status': 'NOT_RUN', 'missing': 'No task-approved owned real business account/credential migration journey supplied; saved startup is synthetic and does not authenticate.', 'next': 'Record approved owned account and stable auth mode for an actual installed old-to-new journey; do not inspect user credential stores.'},
+        'MAC-AUTOMATIC-UPDATER': {'status': 'NOT_RUN', 'missing': 'Saved Main used automaticUpdates=false; no actual updater check/download/install/restart evidence. Candidate bytes exist, but manual replacement does not exercise updater.', 'next': 'Prepare reviewed owned updater feed/profile and exact baseline/candidate artifacts for the real updater path.'},
+        'MAC-TRUST': {'status': 'BLOCKED', 'missing': 'Known fixed candidate is ad-hoc signed; current display metadata has no Developer ID/Team identity. No separately supplied signed/notarized exact distribution.', 'next': 'Validate exact signed distribution and notarization/trust on intended target; no private-key or notarization submission in this batch.'},
+        'REAL-PROVIDER': {'status': 'BLOCKED', 'missing': 'No current account/provider/model/call-count/fee-cap authorization supplied; installed account files were not inspected.', 'next': 'Use explicit current scope and quota limits before genuine account/model quality checks.'}}
+    record['runnable_unpassed_gate_found'] = False
+    record['limitations'] = ['Local discovery is bounded; does not assert absence of all remote hosts or signing/account credentials.', 'Saved trust/runtime results remain historical; current artifact hash and signature display are identity/prerequisite observations only.', 'No current statistics inspection or cached-plan diagnostic occurred in this slice.']
+    record['checks'] = {'recording_script_ast': 'PASS', 'all_recorded_stream_hashes': 'PASS', 'json_parse': 'PASS',
+        'lint': 'NOT_RERUN: task-only evidence and private recorder, no product/dependency change',
+        'typecheck': 'NOT_RERUN: no TypeScript/product change', 'product_tests': 'NOT_RERUN: completed gates preserved; unmet native/auth/trust conditions'}
+    record.update(state='complete', finished_at=now())
+    shutil.copyfile(__file__, RUN / 'record.py.txt')
+    record['recorder_sha256'] = sha(Path(__file__).read_bytes())
+    save()
+    print(json.dumps({'state': record['state'], 'gates': {key: row['status'] for key, row in record['gates'].items()}, 'runnable_unpassed_gate_found': False, 'artifact_matches': [row.get('matches_expected') for row in record['artifacts']]}))
+except Exception as error:
+    record.update(state='failed', finished_at=now(), error=str(error))
+    save()
+    raise

@@ -1,0 +1,361 @@
+package handler
+
+import (
+	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
+	"os"
+	"path/filepath"
+	"runtime"
+	"strings"
+	"testing"
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/multica-ai/multica/server/internal/iteration"
+	"github.com/multica-ai/multica/server/internal/service"
+	"github.com/multica-ai/multica/server/internal/testutil"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
+)
+
+type sqlProbeKey struct{}
+type sqlProbeStatement struct {
+	SQL  string `json:"sql"`
+	Args []any  `json:"args"`
+}
+type sqlProbeStarter struct {
+	pool   *pgxpool.Pool
+	t      *testing.T
+	report map[string]any
+	root   string
+	txs    []*sqlProbeTx
+}
+type sqlProbeTx struct {
+	pgx.Tx
+	owner    *sqlProbeStarter
+	active   bool
+	reads    []sqlProbeStatement
+	order    []string
+	measured bool
+	phases   []map[string]any
+}
+
+func sqlProbeName(q string) string {
+	if strings.HasPrefix(q, "-- name: ") {
+		return strings.Fields(q)[2]
+	}
+	return strings.Join(strings.Fields(q), " ")
+}
+func (s *sqlProbeStarter) Begin(ctx context.Context) (pgx.Tx, error) {
+	tx, e := s.pool.Begin(ctx)
+	if e != nil {
+		return nil, e
+	}
+	active, _ := ctx.Value(sqlProbeKey{}).(bool)
+	p := &sqlProbeTx{Tx: tx, owner: s, active: active}
+	s.txs = append(s.txs, p)
+	s.t.Cleanup(func() { _ = tx.Rollback(context.Background()) })
+	return p, nil
+}
+func (p *sqlProbeTx) note(q string, args []any) {
+	if !p.active {
+		return
+	}
+	name := sqlProbeName(q)
+	p.order = append(p.order, name)
+	if name == "ListActiveTasksByIssue" || name == "LockIssueIterationParticipation" {
+		p.reads = append(p.reads, sqlProbeStatement{q, append([]any(nil), args...)})
+	}
+}
+func (p *sqlProbeTx) Exec(ctx context.Context, q string, args ...any) (pgconn.CommandTag, error) {
+	p.note(q, args)
+	return p.Tx.Exec(ctx, q, args...)
+}
+func (p *sqlProbeTx) Query(ctx context.Context, q string, args ...any) (pgx.Rows, error) {
+	p.note(q, args)
+	return p.Tx.Query(ctx, q, args...)
+}
+func (p *sqlProbeTx) QueryRow(ctx context.Context, q string, args ...any) pgx.Row {
+	p.note(q, args)
+	return p.Tx.QueryRow(ctx, q, args...)
+}
+func (p *sqlProbeTx) fail(e error) {
+	if e != nil {
+		p.owner.t.Fatal(e)
+	}
+}
+func (p *sqlProbeTx) write(name string, value any) {
+	raw, e := json.MarshalIndent(value, "", "  ")
+	p.fail(e)
+	p.fail(os.WriteFile(filepath.Join(p.owner.root, name), append(raw, '\n'), 0600))
+}
+func (p *sqlProbeTx) fingerprint(ctx context.Context) string {
+	var out string
+	p.fail(p.Tx.QueryRow(ctx, `SELECT md5(jsonb_build_object(
+ 'issues',(SELECT jsonb_agg(to_jsonb(x) ORDER BY id) FROM issue x WHERE workspace_id=$1),
+ 'participation',(SELECT jsonb_agg(to_jsonb(x) ORDER BY iteration_id,issue_id) FROM iteration_participation x WHERE workspace_id=$1),
+ 'events',(SELECT jsonb_agg(to_jsonb(x) ORDER BY iteration_id,sequence) FROM iteration_event x WHERE workspace_id=$1),
+ 'iterations',(SELECT jsonb_agg(to_jsonb(x) ORDER BY id) FROM iteration x WHERE workspace_id=$1),
+ 'snapshots',(SELECT jsonb_agg(to_jsonb(x) ORDER BY iteration_id) FROM iteration_snapshot x WHERE workspace_id=$1)
+ )::text)`, parseUUID(testWorkspaceID)).Scan(&out))
+	return out
+}
+func (p *sqlProbeTx) inspectSchema(ctx context.Context) {
+	var raw []byte
+	p.fail(p.Tx.QueryRow(ctx, `SELECT jsonb_build_object(
+ 'indexes',(SELECT jsonb_agg(jsonb_build_object('table',t.relname,'index',i.relname,'definition',pg_get_indexdef(i.oid),'valid',x.indisvalid,'ready',x.indisready,'live',x.indislive,'unique',x.indisunique,'bytes',pg_relation_size(i.oid),'key_attributes',x.indnkeyatts,'attribute_numbers',x.indkey::text,'expression',pg_get_expr(x.indexprs,x.indrelid),'predicate',pg_get_expr(x.indpred,x.indrelid))) FROM pg_index x JOIN pg_class i ON i.oid=x.indexrelid JOIN pg_class t ON t.oid=x.indrelid WHERE t.relname IN ('iteration_participation','iteration_event','issue','agent_task_queue')),
+ 'columns',(SELECT jsonb_agg(jsonb_build_object('table',c.relname,'number',a.attnum,'name',a.attname,'type',format_type(a.atttypid,a.atttypmod))) FROM pg_attribute a JOIN pg_class c ON c.oid=a.attrelid WHERE c.relname IN ('iteration_participation','iteration_event','issue','agent_task_queue') AND a.attnum>0 AND NOT a.attisdropped),
+ 'triggers',(SELECT jsonb_agg(jsonb_build_object('table',c.relname,'name',t.tgname,'definition',pg_get_triggerdef(t.oid),'enabled',t.tgenabled,'function',pg_get_functiondef(t.tgfoid))) FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid WHERE c.relname IN ('iteration_participation','iteration_event','issue','agent_task_queue') AND NOT t.tgisinternal),
+ 'tables',(SELECT jsonb_agg(jsonb_build_object('table',c.relname,'rows_estimate',c.reltuples,'heap_bytes',pg_relation_size(c.oid),'total_bytes',pg_total_relation_size(c.oid),'options',c.reloptions)) FROM pg_class c WHERE c.relname IN ('iteration_participation','iteration_event','issue','agent_task_queue') AND c.relkind='r'),
+ 'settings',jsonb_build_object('plan_cache_mode',current_setting('plan_cache_mode'),'jit',current_setting('jit'),'shared_buffers',current_setting('shared_buffers'),'track_io_timing',current_setting('track_io_timing'),'transaction_isolation',current_setting('transaction_isolation'),'server_version',current_setting('server_version'),'enable_seqscan',current_setting('enable_seqscan'),'enable_indexscan',current_setting('enable_indexscan'))
+ )`).Scan(&raw))
+	p.write("schema-indexes-triggers.json", json.RawMessage(raw))
+}
+func (p *sqlProbeTx) explain(ctx context.Context, name string, statements []sqlProbeStatement) map[string]any {
+	before := p.fingerprint(ctx)
+	_, e := p.Tx.Exec(ctx, "SAVEPOINT task_sql_probe")
+	p.fail(e)
+	plans := make([]map[string]any, 0, len(statements))
+	elapsed := time.Now()
+	for i, s := range statements {
+		var raw []byte
+		p.fail(p.Tx.QueryRow(ctx, "EXPLAIN (ANALYZE, BUFFERS, WAL, SETTINGS, FORMAT JSON) "+s.SQL, s.Args...).Scan(&raw))
+		plans = append(plans, map[string]any{"index": i, "sql": s.SQL, "args": s.Args, "plan": json.RawMessage(raw)})
+	}
+	wall := float64(time.Since(elapsed).Nanoseconds()) / 1e6
+	_, e = p.Tx.Exec(ctx, "ROLLBACK TO SAVEPOINT task_sql_probe")
+	p.fail(e)
+	_, e = p.Tx.Exec(ctx, "RELEASE SAVEPOINT task_sql_probe")
+	p.fail(e)
+	after := p.fingerprint(ctx)
+	if before != after {
+		p.owner.t.Fatalf("EXPLAIN rollback changed business facts: %s", name)
+	}
+	p.write("plans-"+name+".json", plans)
+	out := map[string]any{"phase": name, "statement_count": len(statements), "explain_client_wall_ms": wall, "before_fingerprint": before, "after_fingerprint": after, "rollback_equal": true}
+	return out
+}
+func sqlProbeRows(rows pgx.Rows) ([]byte, int, error) {
+	defer rows.Close()
+	out := [][]any{}
+	for rows.Next() {
+		v, e := rows.Values()
+		if e != nil {
+			return nil, 0, e
+		}
+		out = append(out, v)
+	}
+	if e := rows.Err(); e != nil {
+		return nil, 0, e
+	}
+	raw, e := json.Marshal(out)
+	return raw, len(out), e
+}
+func (p *sqlProbeTx) transport(ctx context.Context) {
+	if len(p.reads) != 3000 {
+		p.owner.t.Fatalf("expected full ordered 3000 reads, got %d", len(p.reads))
+	}
+	p.inspectSchema(ctx)
+	p.write("canonical-ordered-reads.json", p.reads)
+	baseline := []string{}
+	samples := []map[string]any{}
+	for _, kind := range []string{"serial", "pipeline", "pipeline", "serial"} {
+		before := p.fingerprint(ctx)
+		_, e := p.Tx.Exec(ctx, "SAVEPOINT task_transport_probe")
+		p.fail(e)
+		start := time.Now()
+		digests := make([]string, len(p.reads))
+		counts := map[string]int{}
+		returned := 0
+		consume := func(i int, rows pgx.Rows) {
+			raw, n, e := sqlProbeRows(rows)
+			p.fail(e)
+			h := sha256.Sum256(raw)
+			digests[i] = hex.EncodeToString(h[:])
+			counts[sqlProbeName(p.reads[i].SQL)] += n
+			returned += n
+		}
+		if kind == "serial" {
+			for i, s := range p.reads {
+				rows, e := p.Tx.Query(ctx, s.SQL, s.Args...)
+				p.fail(e)
+				consume(i, rows)
+			}
+		} else {
+			batch := &pgx.Batch{}
+			for _, s := range p.reads {
+				batch.Queue(s.SQL, s.Args...)
+			}
+			br := p.Tx.SendBatch(ctx, batch)
+			for i := range p.reads {
+				rows, e := br.Query()
+				p.fail(e)
+				consume(i, rows)
+			}
+			p.fail(br.Close())
+		}
+		wall := float64(time.Since(start).Nanoseconds()) / 1e6
+		_, e = p.Tx.Exec(ctx, "ROLLBACK TO SAVEPOINT task_transport_probe")
+		p.fail(e)
+		_, e = p.Tx.Exec(ctx, "RELEASE SAVEPOINT task_transport_probe")
+		p.fail(e)
+		after := p.fingerprint(ctx)
+		if before != after {
+			p.owner.t.Fatal("read transport changed business facts")
+		}
+		if len(baseline) == 0 {
+			baseline = digests
+		} else {
+			for i := range digests {
+				if baseline[i] != digests[i] {
+					p.owner.t.Fatalf("read result changed at %d", i)
+				}
+			}
+		}
+		if returned != 1000 || counts["ListActiveTasksByIssue"] != 0 || counts["LockIssueIterationParticipation"] != 1000 {
+			p.owner.t.Fatalf("unexpected complete rows: %+v", counts)
+		}
+		samples = append(samples, map[string]any{"transport": kind, "statements": len(p.reads), "client_ms": wall, "result_digests": digests, "returned_rows": returned, "rows_by_query": counts, "rollback_equal": true, "before_fingerprint": before, "after_fingerprint": after})
+	}
+	p.write("read-transport-abba.json", samples)
+	p.owner.report["transport_samples"] = samples
+	p.owner.report["read_explain"] = p.explain(ctx, "canonical-reads", p.reads)
+}
+func (p *sqlProbeTx) SendBatch(ctx context.Context, b *pgx.Batch) pgx.BatchResults {
+	if p.active && b.Len() > 0 {
+		name := sqlProbeName(b.QueuedQueries[0].SQL)
+		p.order = append(p.order, fmt.Sprintf("BATCH %s %d", name, b.Len()))
+		if !p.measured {
+			p.transport(ctx)
+			p.measured = true
+		}
+		if name == "LeaveDeletedIssueIterationParticipationBatch" || name == "JoinIterationParticipationBatch" || name == "SetIssueCurrentIterationBatch" {
+			ss := make([]sqlProbeStatement, b.Len())
+			for i, q := range b.QueuedQueries {
+				if sqlProbeName(q.SQL) != name {
+					p.owner.t.Fatal("mixed batch")
+				}
+				ss[i] = sqlProbeStatement{q.SQL, append([]any(nil), q.Arguments...)}
+			}
+			if len(ss) != 1000 {
+				p.owner.t.Fatal("incomplete phase")
+			}
+			p.phases = append(p.phases, p.explain(ctx, name, ss))
+		}
+	}
+	return p.Tx.SendBatch(ctx, b)
+}
+
+func TestIterationCanonicalSQLPlanDiagnostic(t *testing.T) {
+	if os.Getenv("MULTICA_ITERATION_SQL_DIAGNOSTIC") != "1" {
+		t.Fatal("explicit task permit required")
+	}
+	base := lifecycleHTTPHandler(t)
+	cfg := testPool.Config()
+	cfg.ConnConfig.RuntimeParams["application_name"] = "i1-sql-plan-" + uuid.NewString()
+	pool, err := pgxpool.NewWithConfig(t.Context(), cfg)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(pool.Close)
+	owner := &sqlProbeStarter{pool: pool, t: t, report: map[string]any{}, root: os.Getenv("MULTICA_ITERATION_SQL_REPORT_DIR")}
+	h := *testHandler
+	h.Queries, h.DB, h.TxStarter, h.FeatureFlags = db.New(pool), pool, owner, base.FeatureFlags
+	dbfx.Cleanup(t, "DELETE FROM iteration_notification WHERE workspace_id=$1", testWorkspaceID)
+	var postgres string
+	dbfx.QueryRow(t, "SELECT version()").Scan(&postgres)
+	const count = 1000
+	first := lifecycleHTTPCreate(t, &h, "SQL probe source")
+	next := lifecycleHTTPCreate(t, &h, "SQL probe next")
+	projects := make([]string, 10)
+	for n := range projects {
+		projects[n] = dbfx.Project(t, fmt.Sprintf("SQL probe project %d", n))
+	}
+	labels := make([]string, 6)
+	for n := range labels {
+		labels[n] = dbfx.Insert(t, "issue_label", testutil.Cols{"workspace_id": testWorkspaceID, "name": fmt.Sprintf("SQL probe label %d", n), "resource_type": "issue", "color": "#123456"})
+	}
+	priorities := []string{"urgent", "high", "medium", "low", "none"}
+	ids := make([]string, 0, count)
+	moves := make([]iteration.Move, 0, count)
+	for n := range count {
+		id := dbfx.Issue(t, fmt.Sprintf("SQL probe work %04d", n), testutil.Cols{"project_id": projects[n%len(projects)], "assignee_type": "member", "assignee_id": testUserID, "priority": priorities[n%len(priorities)]})
+		for j := range 3 {
+			label := labels[(n+j)%len(labels)]
+			dbfx.InsertNoID(t, "issue_to_label", testutil.Cols{"issue_id": id, "label_id": label}, "issue_id=$1 AND label_id=$2", id, label)
+		}
+		ids = append(ids, id)
+		moves = append(moves, iteration.Move{IssueID: id, ExpectedIssueRevision: 1, TargetID: &first})
+	}
+	lifecycleHTTPApply(t, &h, iteration.Draft{Operation: "move", ExpectedSettingsRevision: 2, Moves: moves})
+	row, err := h.Queries.GetIteration(t.Context(), db.GetIterationParams{WorkspaceID: parseUUID(testWorkspaceID), ID: parseUUID(first)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	lifecycleHTTPApply(t, &h, iteration.Draft{Operation: "start", IterationID: &first, ExpectedIterationRevision: &row.Revision, ExpectedScopeRevision: &row.ScopeRevision, ExpectedSettingsRevision: 2, Start: &iteration.StartDraft{TargetID: first, Mode: "scheduled", TerminalChoices: []iteration.TerminalChoice{}}})
+	var detail struct {
+		Iteration  iteration.Iteration  `json:"iteration"`
+		Statistics iteration.Statistics `json:"statistics"`
+	}
+	testutil.Call(t, h.GetIteration, lifecycleHTTPRequest("GET", "iterations/"+first, first, nil)).Want(200).JSON(&detail)
+	if detail.Statistics.Original != count || detail.Statistics.Current != count {
+		t.Fatalf("diagnostic incomplete population: %+v", detail.Statistics)
+	}
+	moves = moves[:0]
+	for _, id := range ids {
+		issue, e := h.Queries.GetIssue(t.Context(), parseUUID(id))
+		if e != nil {
+			t.Fatal(e)
+		}
+		moves = append(moves, iteration.Move{IssueID: id, ExpectedIssueRevision: issue.Revision, ExpectedSourceID: &first, TargetID: &next})
+	}
+	reason := "Task-only canonical SQL cost attribution"
+	draft := iteration.Draft{Operation: "end", IterationID: &first, ExpectedIterationRevision: &detail.Iteration.Revision, ExpectedScopeRevision: &detail.Iteration.ScopeRevision, ExpectedSettingsRevision: 2, Reason: &reason, Moves: moves}
+	var preview iteration.Preview
+	testutil.Call(t, h.PreviewIterationOperation, lifecycleHTTPRequest("POST", "iteration-previews", "", draft)).Want(200).JSON(&preview)
+	if !preview.Complete || preview.TotalAffected != count || len(preview.InvalidItems) != 0 {
+		t.Fatalf("diagnostic incomplete preview: %+v", preview)
+	}
+
+	var result iteration.WriteResult
+	req := lifecycleHTTPRequest("POST", "iteration-operations", "", service.ApplyIterationInput{RequestID: uuid.NewString(), Draft: preview.Draft, PreviewHash: preview.PreviewHash})
+	req = req.WithContext(context.WithValue(req.Context(), sqlProbeKey{}, true))
+	testutil.Call(t, h.ApplyIterationOperation, req).Want(200).JSON(&result)
+	if got := dbfx.Count(t, "SELECT count(*) FROM issue WHERE current_iteration_id=$1 AND iteration_rollover_count=1", next); got != count {
+		t.Fatalf("only %d rolled exactly once", got)
+	}
+	if got := dbfx.Count(t, "SELECT count(*) FROM iteration_snapshot s, jsonb_array_elements(s.body->'scope') item WHERE s.iteration_id=$1 AND jsonb_array_length(item->'labels')=3 AND item->>'priority' IS NOT NULL", first); got != count {
+		t.Fatalf("only %d frozen facts", got)
+	}
+	var observed *sqlProbeTx
+	for _, p := range owner.txs {
+		if p.active {
+			if observed != nil {
+				t.Fatal("multiple closure transactions")
+			}
+			observed = p
+		}
+	}
+	if observed == nil || len(observed.phases) != 3 {
+		t.Fatal("missing original membership phase diagnostics")
+	}
+	owner.report["write_phases"] = observed.phases
+	owner.report["canonical_statement_order"] = observed.order
+	owner.report["scope"] = "Canonical SQL EXPLAIN ANALYZE with rollback at original phase; transport ABBA at fully locked boundary; instrumented closure wall is not measured as acceptance"
+	owner.report["tasks"] = count
+	owner.report["closure_operations"] = 1
+	owner.report["original_p95_status"] = "FAIL retained"
+	owner.report["original_p95_gate_executed"] = false
+	owner.report["postgres"] = postgres
+	owner.report["go"] = runtime.Version()
+	owner.report["os"] = runtime.GOOS
+	owner.report["arch"] = runtime.GOARCH
+	owner.report["assertions"] = map[string]any{"complete_preview": true, "exact_rollovers": 1000, "frozen_label_priority_facts": 1000, "three_write_phases": true, "all_explain_rollback_equal": true, "complete_read_results_equal": true}
+	observed.write("diagnostic-metrics.json", owner.report)
+	t.Log("Canonical SQL plans, exact params/schema and transport parity saved; original P95 FAIL retained")
+}

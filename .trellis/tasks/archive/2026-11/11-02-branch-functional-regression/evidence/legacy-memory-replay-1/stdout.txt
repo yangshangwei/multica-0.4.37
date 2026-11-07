@@ -1,0 +1,33 @@
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium] › e2e/collaboration-memory-web.spec.ts:7:1 › shared context keeps concurrent edits, restores versions, and permits historical purge after closure
+[1A[2K  1) [chromium] › e2e/collaboration-memory-web.spec.ts:7:1 › shared context keeps concurrent edits, restores versions, and permits historical purge after closure 
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#memory').getByRole('button', { name: 'Purge v2', exact: true })[22m
+
+
+      82 |     await expect(panel.getByRole("button", { name: /^Restore v/ })).toHaveCount(0);
+      83 |     await expect(panel).toContainText("This issue is closed, so its shared context is read-only.");
+    > 84 |     await panel.getByRole("button", { name: "Purge v2", exact: true }).click();
+         |                                                                        ^
+      85 |     const purge = page.getByRole("alertdialog", { name: "Purge the text of v2?", exact: true });
+      86 |     await expect(purge).toBeVisible();
+      87 |     await expect(purge.getByRole("button", { name: "Purge text", exact: true })).toBeDisabled();
+        at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-memory-web.spec.ts:84:72
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/legacy-memory-replay-1/artifacts/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/legacy-memory-replay-1/artifacts/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/legacy-memory-replay-1/artifacts/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/error-context.md
+
+
+[1A[2K  1 failed
+    [chromium] › e2e/collaboration-memory-web.spec.ts:7:1 › shared context keeps concurrent edits, restores versions, and permits historical purge after closure 

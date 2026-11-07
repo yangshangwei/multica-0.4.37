@@ -1,0 +1,24 @@
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium] › e2e/collaboration-installed-main.spec.ts:136:1 › installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume
+[1A[2K  1) [chromium] › e2e/collaboration-installed-main.spec.ts:136:1 › installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume 
+
+    Error: Installed Main container exited: code=1, signal=null, private stderr bytes=894
+
+       at fixtures/collaboration-installed-main.ts:100
+
+       98 |     this.child.on("close", (code, signal) => {
+       99 |       this.ended = true;
+    > 100 |       this.rejectAll(new Error(`Installed Main container exited: code=${code}, signal=${signal}, private stderr bytes=${this.stderrBytes}`));
+          |                      ^
+      101 |     });
+      102 |   }
+      103 |
+        at ChildProcess.<anonymous> (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-installed-main.ts:100:22)
+
+    Error Context: ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/linux-full-main-2/artifacts/collaboration-installed-ma-ccdb4-d-reject-unconfirmed-Resume-chromium/error-context.md
+
+
+[1A[2K  1 failed
+    [chromium] › e2e/collaboration-installed-main.spec.ts:136:1 › installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume 

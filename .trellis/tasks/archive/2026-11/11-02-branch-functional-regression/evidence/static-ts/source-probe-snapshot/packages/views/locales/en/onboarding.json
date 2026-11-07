@@ -1,0 +1,265 @@
+{
+  "step_nav": {
+    "wordmark": "Multica",
+    "label": "Onboarding steps",
+    "about_you": {
+      "label": "About you",
+      "description": "Your role, and what you want done."
+    },
+    "workspace": {
+      "label": "Workspace",
+      "description": "Name it and pick its URL."
+    },
+    "runtime": {
+      "label": "Connect a runtime",
+      "description": "Choose where your agents run."
+    },
+    "project": {
+      "label": "First project",
+      "description": "Create your first project."
+    }
+  },
+  "welcome": {
+    "wordmark": "Welcome to Multica",
+    "headline_line1": "Your AI teammates,",
+    "headline_line2": "in",
+    "headline_emphasis": "one workspace.",
+    "lede": "Assign them work like you'd assign a colleague — they pick it up, update status, and comment when done.",
+    "lede_web": "Desktop bundles the runtime — nothing to install. Continue on web to connect your own CLI.",
+    "lede_web_no_desktop": "Continue on web and connect this computer from the terminal.",
+    "lede_desktop": "Connect a runtime and create your first project. 小阿孚 is available when you need help.",
+    "download_desktop": "Download Desktop",
+    "continue_on_web": "Continue on web",
+    "start_exploring": "Start exploring",
+    "skip_existing": "I've done this before",
+    "illustration_caption": "From spec to ship, your team and agents hand off work in one shared context.",
+    "illustration": {
+      "card1_actor_name": "You",
+      "card1_actor_initial": "N",
+      "card1_body_prefix": " can you move us to resource-level permissions? Follow the model in ",
+      "card1_body_suffix": "'s design doc.",
+      "card1_mention_assignee": "@Dev Agent",
+      "card1_mention_source": "@Architect Agent",
+      "card2_actor_name": "Dev Agent",
+      "card2_body": "On it. Moving auth for all 37 endpoints into middleware first, then migrating existing roles…",
+      "card3_actor_name": "Architect Agent",
+      "card3_body": "Permission model done — resource, action, condition triples, compatible with all 5 existing roles.",
+      "card3_timestamp": "15 min ago",
+      "card4_actor_name": "Security Review Agent",
+      "card4_body": "First PR reviewed — 2 privilege-escalation risks, both in bulk endpoints. Will recheck once fixed.",
+      "card5_actor_name": "QA Agent",
+      "card5_body_prefix": "Added the 200 permission-matrix cases ",
+      "card5_body_suffix": " listed. All pass, and no existing role lost access.",
+      "card5_mention_you": "@you",
+      "card5_timestamp": "just now"
+    }
+  },
+  "common": {
+    "back": "Back",
+    "continue": "Continue",
+    "skip": "Skip",
+    "cancel": "Cancel",
+    "close": "Close",
+    "log_out": "Log out"
+  },
+  "questions": {
+    "about_you": {
+      "question": "From SDLC to ADLC. Build with agents.",
+      "description": "You set the direction and make the key decisions. Agents collaborate from requirements to delivery."
+    },
+    "role": {
+      "question": "What's your role in the development process?",
+      "hint": "Choose one",
+      "engineer": "Engineer",
+      "product": "Product manager",
+      "designer": "UI / UX designer",
+      "architect": "Software architect",
+      "qa": "QA engineer",
+      "devops": "DevOps / SRE",
+      "security": "Security engineer",
+      "tech_lead": "Engineering lead",
+      "project_manager": "Technical project manager",
+      "other": "Other",
+      "other_placeholder": "e.g. database engineer"
+    },
+    "use_case": {
+      "question": "What would you like to do with agents?",
+      "hint": "Choose any that apply",
+      "ship_code": "Code & test with agents",
+      "manage_team": "Coordinate team & agents",
+      "personal_tasks": "Organize personal tasks",
+      "plan_research": "Define requirements & PRD",
+      "write_publish": "Write docs & launch content",
+      "automate_ops": "Automate workflows",
+      "evaluate": "Explore ADLC",
+      "other": "Other",
+      "other_placeholder": "e.g. review code security"
+    }
+  },
+  "lifecycle": {
+    "label": "From traditional to agentic software development",
+    "sdlc": "SDLC",
+    "sdlc_description": "Software Development Lifecycle · People execute, tools assist",
+    "requirements": "Requirements",
+    "design": "Design",
+    "implementation": "Code",
+    "testing": "Test",
+    "deployment": "Deploy",
+    "maintenance": "Maintain",
+    "adlc": "ADLC",
+    "adlc_description": "Agentic Development Lifecycle · People direct, agents collaborate",
+    "goal": "Goals & PRD",
+    "context": "Context & skills",
+    "orchestration": "Orchestrate agents",
+    "direction": "You set direction",
+    "shared": "Shared by all agents",
+    "agent_review": "Agent review",
+    "decision": "You decide",
+    "coding": "Autonomous coding",
+    "validation": "Continuous testing",
+    "review": "Review & deliver",
+    "feedback": "Observe, give feedback, refine the goal",
+    "replay": "Replay transition"
+  },
+  "option_card": {
+    "other_label": "Other",
+    "other_aria": "Describe something else"
+  },
+  "step_question": {
+    "hint_pick": "Pick one to continue — or skip if you'd rather not say.",
+    "hint_continue": "Looks good. Hit Continue when you're ready."
+  },
+  "cli_install": {
+    "copy_aria": "Copy",
+    "intro": "You'll need an agent runtime on this computer (Claude Code, Codex, Cursor, …) for it to run your agent. Also works on servers and remote dev boxes.",
+    "step1_label": "Install the Multica CLI",
+    "step2_label": "Start the daemon"
+  },
+  "welcome_after_onboarding": {
+    "skip": {
+      "loading": "Setting up your workspace…",
+      "title": "Welcome to Multica!",
+      "subtitle": "We've added one issue to help you connect a runtime. When it's ready, start with 小阿孚 from Runtimes.",
+      "got_it": "Got it",
+      "status_in_progress": "In progress",
+      "error_title": "We couldn't set that up",
+      "error_body": "The runtime guide didn't get created. You can try again, or connect a runtime from the Runtimes page whenever you're ready.",
+      "retry": "Try again",
+      "dismiss": "Not now",
+      "cards": {
+        "install_runtime": {
+          "title": "Connect a runtime",
+          "subtitle": "Install Codex or Kimi, then start the guided 小阿孚 chat from Runtimes."
+        }
+      }
+    }
+  },
+  "step_workspace": {
+    "eyebrow_first": "Your first workspace",
+    "eyebrow_resume": "Pick up or start fresh",
+    "headline_first": "Name your workspace.",
+    "headline_resume": "Continue with {{name}}, or start another.",
+    "lede_first": "A workspace is where your issues, agents, and projects live. You can invite teammates or spin up more workspaces later.",
+    "lede_resume": "Resume setup with the workspace you already have, or create a new one alongside it — you can belong to any number of workspaces.",
+    "name_label": "Workspace name",
+    "name_placeholder": "Acme Inc, My Lab, Side Projects…",
+    "random_name": "Random",
+    "url_label": "URL",
+    "slug_placeholder": "acme",
+    "issue_prefix_label": "Issue prefix",
+    "issue_prefix_prefix": "Issues will look like ",
+    "issue_prefix_suffix": ". You can change this later in settings.",
+    "issue_prefix_pending": "Set the URL above and issue numbers will follow it — or type a prefix here.",
+    "create_new_title": "Create a new workspace",
+    "create_new_subtitle": "Start fresh — a separate space for a different side of your work.",
+    "hint_opening": "Opening {{name}}.",
+    "hint_creating": "Creating {{name}}.",
+    "hint_creating_pending": "Creating {{name}}…",
+    "hint_creating_fallback": "your workspace",
+    "hint_name_first": "Name your workspace to create it.",
+    "hint_pick": "Pick your workspace or start a new one.",
+    "cta_open": "Open {{name}}",
+    "cta_create_named": "Create {{name}}",
+    "cta_create_workspace": "Create workspace",
+    "cta_creating": "Creating…",
+    "slug_format_error": "Only lowercase letters, numbers, and hyphens",
+    "slug_taken_error": "That workspace URL is already taken.",
+    "slug_reserved_error": "That workspace URL is reserved and cannot be used.",
+    "slug_conflict_toast": "Choose a different workspace URL",
+    "create_failed_toast": "Failed to create workspace",
+    "creation_disabled_eyebrow": "Workspace creation is disabled",
+    "creation_disabled_headline": "Ask your administrator for an invitation.",
+    "creation_disabled_lede": "This Multica instance does not allow new workspaces to be created. Once an administrator invites you to a workspace, accept the invitation and refresh to continue.",
+    "creation_disabled_logout": "Log out",
+    "creation_disabled_eyebrow_resume": "Your workspace",
+    "creation_disabled_headline_resume": "Continue with {{name}}.",
+    "creation_disabled_lede_resume": "Workspace creation is disabled on this instance, so you'll continue into your existing workspace."
+  },
+  "step_runtime": {
+    "scanning_headline": "Connecting this computer…",
+    "scanning_lede_prefix": "Your agent works through an AI coding tool you already have — like ",
+    "scanning_lede_suffix": ", and others. We're checking this computer for ones you've installed.",
+    "found_headline": "Where should your agents run?",
+    "found_lede": "These are the agent runtimes we found on this computer. You can switch it or add more later.",
+    "runtime_count_one": "{{count}} agent runtime",
+    "runtime_count_other": "{{count}} agent runtimes",
+    "status_all_online": "all online",
+    "status_none_online": "none online",
+    "status_n_online": "{{count}} online",
+    "online_label": "online",
+    "offline_label": "offline",
+    "empty_headline": "No agent runtime found on this computer yet.",
+    "empty_lede_prefix": "An agent runtime is an AI coding tool we connect to — like ",
+    "empty_lede_suffix": ". Install one and refresh, or skip for now.",
+    "empty_skip_title": "Skip for now",
+    "empty_skip_subtitle": "Enter your workspace now. Your agent can't run tasks until an agent runtime is connected on this computer — but you can still browse, plan, and invite teammates.",
+    "empty_skip_action": "Skip",
+    "skip": "Skip for now",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing…",
+    "hint_selected": "Selected: {{name}}",
+    "hint_pick": "Pick a runtime, then create your first project.",
+    "hint_waiting": "Waiting for the first result…",
+    "hint_skip_or_refresh": "Refresh after installing one, or skip to enter your workspace.",
+    "continue": "Continue to projects"
+  },
+  "step_platform": {
+    "eyebrow": "Connect a computer",
+    "headline": "Connect a computer to run your agent.",
+    "lede": "小阿孚, your workspace's Chief of Staff, runs on a real computer that you connect to Multica. Pick how you want to connect one.",
+    "hint_default": "Pick a way to connect — or skip and connect a computer later.",
+    "download_title": "Use this computer",
+    "download_subtitle": "Install our desktop app to connect this computer. Opens in a new tab — pick your platform there.",
+    "download_button": "Download",
+    "cli_title": "Connect from the terminal",
+    "cli_subtitle": "Connect a server, remote dev box, or any headless computer. Terminal required.",
+    "cli_action": "Show steps",
+    "cli_dialog_title": "Connect from the terminal",
+    "cli_dialog_description": "Same connection as Desktop, set up from the terminal. Use it for servers, remote dev boxes, or any headless computer.",
+    "cli_dialog_pick_hint": "Pick a computer above.",
+    "cli_dialog_connect": "Connect & continue",
+    "runtimes_connected_one": "{{count}} computer connected",
+    "runtimes_connected_other": "{{count}} computers connected",
+    "live_listening": "Live · Waiting for your computer",
+    "stage_normal_prefix": "Run the command above. As soon as ",
+    "stage_normal_suffix": " finishes browser sign-in, your computer will appear here automatically (usually 10–30 seconds).",
+    "stage_midway_prefix": "Still listening. Make sure you finished the browser tab that ",
+    "stage_midway_suffix": " opened — it needs you to approve sign-in before your computer can connect.",
+    "stage_slow_prefix": "Taking longer than usual. Check the terminal where you ran ",
+    "stage_slow_suffix": " for errors.",
+    "stage_stalled_prefix": "Nothing coming through yet. If you're not comfortable with the terminal, ",
+    "stage_stalled_term": "Desktop",
+    "stage_stalled_suffix": " is the smoother path — one click and this computer is connected. Close this dialog and pick Desktop, or hit Skip to continue.",
+    "stage_stalled_no_desktop": "Nothing coming through yet. Check the terminal for errors and run the commands again, or hit Skip to continue."
+  },
+  "errors": {
+    "skip_failed": "Failed to finish onboarding",
+    "mika_setup_failed": "Couldn't start 小阿孚"
+  },
+  "mika_intro": {
+    "headline": "Meet 小阿孚, your first agent teammate.",
+    "name": "小阿孚",
+    "role": "Chief of Staff",
+    "blurb": "Tell 小阿孚 what you want done. It becomes an issue, with the right agent on it."
+  }
+}

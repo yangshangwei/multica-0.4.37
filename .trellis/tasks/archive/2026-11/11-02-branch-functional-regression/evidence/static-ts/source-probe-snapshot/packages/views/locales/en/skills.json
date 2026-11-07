@@ -1,0 +1,632 @@
+{
+  "builtin_role_skills": {
+    "multica-release-check": {
+      "name": "multica-release-check",
+      "description_v1": "Use before any release or production-affecting action: the gate, the rollback, and the approval request that must precede execution.",
+      "description": "Use when preparing a release or a high-risk action: choose the applicable checks, prepare recovery, and obtain human approval before execution.",
+      "summary": "Check release readiness, plan recovery, and request approval."
+    },
+    "multica-documentation-change": {
+      "name": "multica-documentation-change",
+      "description": "Use when a change needs documentation: deciding what to write, keeping it true to the code, and finding what the change made wrong.",
+      "summary": "Identify documentation gaps and keep guidance aligned with code."
+    },
+    "multica-security-review": {
+      "name": "multica-security-review",
+      "description": "Use when reviewing a change for security: the checklist, how to report a finding without writing an exploit, and when to stop.",
+      "summary": "Find security risks and report findings with supporting evidence."
+    },
+    "multica-architecture-decision-record": {
+      "name": "multica-architecture-decision-record",
+      "description_v1": "Use when a technical decision will constrain later work: writes an ADR with context, the decision, the rejected alternatives and the consequences.",
+      "description": "Use when a technical decision will constrain later work: drafts a proposed ADR in the issue comment for an Implementer or human to save, with context, the decision, rejected alternatives and consequences.",
+      "summary": "Draft an ADR explaining a technical decision and its tradeoffs."
+    },
+    "multica-code-review": {
+      "name": "multica-code-review",
+      "description": "Use when reviewing a diff: what to look for, how to state a finding so it is actionable, and what not to report.",
+      "summary": "Review changes for bugs, regressions, and compatibility."
+    },
+    "multica-debugging": {
+      "name": "multica-debugging",
+      "description": "Use to investigate an observed failure whose cause is unknown, including intermittent or currently unreproducible failures. Reproduce, minimize, and test hypotheses to deliver a root-cause conclusion graded by evidence and a suggested fix direction; do not submit the fix.",
+      "summary": "Investigate failures and establish the root cause with evidence."
+    },
+    "multica-requirement-clarification": {
+      "name": "multica-requirement-clarification",
+      "description": "Use when a request is too vague to build or accept: derives open questions, acceptance criteria, risks and a work split from what the issue already contains.",
+      "summary": "Clarify goals, acceptance criteria, risks, and the work needed."
+    },
+    "multica-test-report": {
+      "name": "multica-test-report",
+      "description": "Use when reporting that code was verified: what ran, the real result, what each new test proves, and what was not covered.",
+      "summary": "Report verification results, test evidence, and coverage gaps."
+    },
+    "multica-progress-report": {
+      "name": "multica-progress-report",
+      "description": "Use for daily or weekly workspace or project reports: verify issues and status history, then publish traceable progress, counts and data gaps on the current report issue without changing source issues.",
+      "summary": "Verify task progress and publish traceable periodic reports."
+    },
+    "multica-reliability-engineering": {
+      "name": "multica-reliability-engineering",
+      "description": "Use to turn runtime signals into SLI/SLO, error-budget, capacity, degradation and recovery evidence; mark missing signals unknown and leave production actions to approved operators.",
+      "summary": "Assess runtime signals, reliability targets, and recovery readiness."
+    },
+    "multica-agent-evaluation": {
+      "name": "multica-agent-evaluation",
+      "description": "Use to evaluate Agent, Skill and MCP changes with versioned cases for correctness, safety, cost, latency and drift, preserving redacted traces without changing production configuration.",
+      "summary": "Compare agent correctness, safety, cost, latency, and drift."
+    },
+    "multica-experience-validation": {
+      "name": "multica-experience-validation",
+      "description": "Use to validate critical browser/client journeys with accessibility and cross-platform evidence; mark missing evidence unknown and report outcome risk.",
+      "summary": "Validate key user journeys, accessibility, and platform behavior."
+    },
+    "multica-incident-learning": {
+      "name": "multica-incident-learning",
+      "description": "Use after recovery to separate redacted facts, hypotheses and unknowns, then create prevention tasks with owners, acceptance signals and duplicate links.",
+      "summary": "Turn incident evidence into prevention tasks with clear owners."
+    },
+    "multica-migration-review": {
+      "name": "multica-migration-review",
+      "description": "Use to review schema, API and client migrations for compatibility windows, validation, idempotency, retry and rollback evidence; hold when evidence is missing.",
+      "summary": "Review migration compatibility, retries, and rollback readiness."
+    },
+    "multica-rollout-and-canary-verification": {
+      "name": "multica-rollout-and-canary-verification",
+      "description": "Use after an approved rollout to verify one immutable artifact against its baseline over a fixed observation window, recording signals, thresholds and rollback outcome.",
+      "summary": "Compare a rollout with its baseline and record recovery outcomes."
+    }
+  },
+  "page": {
+    "title": "Skills",
+    "tagline": "Instructions any agent in this workspace can use.",
+    "learn_more": "Learn more →",
+    "new_skill": "New skill",
+    "search_placeholder": "Search skills…",
+    "scopes": {
+      "all": {
+        "label": "All",
+        "description": "All skills in this workspace"
+      },
+      "used": {
+        "label": "In use",
+        "description": "Skills assigned to at least one agent"
+      },
+      "unused": {
+        "label": "Unused",
+        "description": "Skills not assigned to any agent"
+      },
+      "mine": {
+        "label": "Created by me",
+        "description": "Skills you created"
+      }
+    },
+    "empty": {
+      "title": "No skills yet",
+      "description": "Create your first skill, import one from a URL or a local folder, or copy one from a connected runtime — and every agent in the workspace can use it."
+    },
+    "no_matches": {
+      "title": "No matches",
+      "with_query": "No skills match \"{{query}}\"{{filterSuffix}}.",
+      "with_query_filter_suffix": " in this filter",
+      "filter_only": "No skills match this filter.",
+      "try_different": " Try a different query.",
+      "clear_search": "Clear search"
+    },
+    "intro_banner": {
+      "title": "Shared with your workspace.",
+      "body": "Anyone can create a skill, import one from a URL or a local folder, or copy one from their local runtime — and every agent can use it.",
+      "highlight": "Local runtime skills stay private until you copy one here."
+    },
+    "list_error": {
+      "title": "Couldn't load skills",
+      "fallback": "Something went wrong fetching the skill list.",
+      "retry": "Try again"
+    },
+    "supporting_data_warning": "Some workspace data failed to load. Creator attribution, runtime names, or edit permissions may appear incomplete."
+  },
+  "table": {
+    "name": "Name",
+    "created_by": "Added by",
+    "used_by": "Used by",
+    "source": "Source",
+    "updated": "Updated",
+    "created": "Created",
+    "lock_tooltip": "Read-only — only creator or admin can edit",
+    "unused": "— unused",
+    "by_creator": "by {{name}}",
+    "source_manual": "Created manually",
+    "source_runtime_named": "From {{name}}",
+    "source_runtime_provider": "From {{provider}} runtime",
+    "source_runtime_unknown": "From a runtime",
+    "source_clawhub": "From ClawHub",
+    "source_skills_sh": "From Skills.sh",
+    "source_github": "From GitHub",
+    "category": "Category",
+    "labels": "Labels",
+    "labels_more": "+{{count}}",
+    "select_skill": "Select {{name}}",
+    "select_all": "Select all skills"
+  },
+  "actions": {
+    "row_menu": "Actions",
+    "add_to_agent": "Add to agent",
+    "refresh": "Update from source",
+    "my_agents": "My agents",
+    "other_agents": "Other agents",
+    "no_agents": "No agents available",
+    "search_placeholder": "Search agents…",
+    "no_agents_match": "No agents match your search.",
+    "has_partial": "{{owned}}/{{total}} added",
+    "added_toast": "Added to {{name}}",
+    "add_failed_toast": "Failed to add skill",
+    "delete": "Delete",
+    "selected": "{{count}} selected",
+    "clear_selection": "Clear selection",
+    "delete_no_permission": "Selection includes skills only their creator or an admin can delete",
+    "delete_dialog_title_one": "Delete {{count}} skill?",
+    "delete_dialog_title_other": "Delete {{count}} skills?",
+    "delete_dialog_desc_one": "This will permanently delete the selected skill and remove it from all agents.",
+    "delete_dialog_desc_other": "This will permanently delete the {{count}} selected skills and remove them from all agents.",
+    "deleted_toast_one": "Deleted {{count}} skill",
+    "deleted_toast_other": "Deleted {{count}} skills",
+    "delete_failed_toast": "Failed to delete skills",
+    "update": "Update",
+    "update_none": "Selection has no imported skills you can update",
+    "update_dialog_title": "Update skills from source?",
+    "update_summary_selected_one": "{{count}} skill will be updated from its source",
+    "update_summary_selected_other": "{{count}} skills will be updated from their sources",
+    "update_summary_skipped_one": "{{count}} can't be updated from a source — skipped",
+    "update_summary_skipped_other": "{{count}} can't be updated from a source — skipped",
+    "update_confirm": "Update {{count}}",
+    "update_updating": "Updating {{done}}/{{total}}…",
+    "updated_toast_one": "Updated {{count}} skill from source",
+    "updated_toast_other": "Updated {{count}} skills from source",
+    "update_partial_toast": "Updated {{count}}, {{failed}} failed",
+    "add_dialog_description": "Select the agents that should get the selected skills.",
+    "cancel": "Cancel",
+    "add_confirm": "Add ({{num}})",
+    "adding": "Adding...",
+    "added_multi_toast_one": "Added to {{count}} agent",
+    "added_multi_toast_other": "Added to {{count}} agents",
+    "set_category": "Set category",
+    "set_category_toast_one": "Category set on {{count}} skill",
+    "set_category_toast_other": "Category set on {{count}} skills",
+    "set_category_failed_toast": "Failed to set category",
+    "set_category_no_permission": "Selection has no skills you can edit",
+    "manage_labels": "Manage labels",
+    "manage_labels_search": "Search labels…",
+    "manage_labels_empty": "No skill labels in this workspace yet",
+    "manage_labels_no_results": "No labels match your search",
+    "manage_labels_no_permission": "Selection has no skills you can edit",
+    "manage_labels_added_toast_one": "Added \"{{name}}\" to {{count}} skill",
+    "manage_labels_added_toast_other": "Added \"{{name}}\" to {{count}} skills",
+    "manage_labels_removed_toast_one": "Removed \"{{name}}\" from {{count}} skill",
+    "manage_labels_removed_toast_other": "Removed \"{{name}}\" from {{count}} skills",
+    "manage_labels_partial_toast": "Updated {{count}}, {{failed}} failed"
+  },
+  "toolbar": {
+    "result_count_title": "Matching skills / all skills",
+    "filter_label": "Filter",
+    "filter_active_count_one": "{{count}} filter",
+    "filter_active_count_other": "{{count}} filters",
+    "clear_filters": "Clear filters",
+    "section_usage": "Usage",
+    "display": "Display",
+    "sort_by": "Sort by",
+    "direction_asc": "Ascending",
+    "direction_desc": "Descending",
+    "section_columns": "Columns",
+    "view_card": "Card view",
+    "view_list": "List view",
+    "section_categories": "Category",
+    "result_count": "{{visible}} of {{total}} skills"
+  },
+  "detail": {
+    "all_skills": "All skills",
+    "read_only": "Read-only",
+    "delete_aria": "Delete skill",
+    "delete_tooltip": "Delete skill",
+    "supporting_data_warning": "Some workspace data failed to load. Creator attribution, runtime names, or edit permissions may appear incomplete until the next refresh.",
+    "delete_file": "Delete file",
+    "name_placeholder": "skill-name",
+    "description_placeholder": "One sentence describing when an agent should use this skill…",
+    "subline": {
+      "origin_runtime_named": "Local runtime · {{name}}",
+      "origin_runtime_provider": "Local runtime · {{provider}}",
+      "origin_runtime_unknown": "Local runtime",
+      "origin_clawhub": "Imported · ClawHub",
+      "origin_skills_sh": "Imported · Skills.sh",
+      "origin_github": "Imported · GitHub",
+      "origin_workspace": "Created manually"
+    },
+    "conflict_banner": {
+      "title": "Someone else updated this skill",
+      "body": "Your edits are preserved. Discard to pull their changes, or Save to overwrite."
+    },
+    "save_bar": {
+      "changed_summary": "Changed: {{parts}}",
+      "changed_files_one": "{{count}} file",
+      "changed_files_other": "{{count}} files",
+      "discard": "Discard",
+      "save": "Save changes",
+      "saving": "Saving…"
+    },
+    "not_found": {
+      "title": "Skill not found",
+      "fallback": "This skill may have been deleted or you lost access.",
+      "back": "Back to Skills"
+    },
+    "toast_saved": "Skill saved",
+    "toast_save_failed": "Failed to save skill",
+    "toast_deleted": "Skill deleted",
+    "toast_delete_failed": "Failed to delete skill",
+    "refresh": {
+      "button": "Update",
+      "tooltip": "Re-download this skill from its source",
+      "source_github": "GitHub",
+      "source_skills_sh": "Skills.sh",
+      "source_clawhub": "ClawHub",
+      "toast_success": "Skill updated from {{source}}",
+      "toast_failed": "Failed to update skill",
+      "dialog": {
+        "title": "Update from source?",
+        "description": "This will re-download \"{{name}}\" from {{source}} and replace its name, description, SKILL.md, and files with the latest version.",
+        "warning": "Local edits to this skill will be overwritten. Agent assignments, labels, and creator are preserved.",
+        "cancel": "Cancel",
+        "confirm": "Update",
+        "refreshing": "Updating..."
+      }
+    },
+    "delete_dialog": {
+      "title": "Delete skill?",
+      "description_with_agents_one": "This will permanently delete \"{{name}}\" and remove it from {{count}} agent currently using it.",
+      "description_with_agents_other": "This will permanently delete \"{{name}}\" and remove it from {{count}} agents currently using it.",
+      "description_no_agents": "This will permanently delete \"{{name}}\" and remove it from all agents.",
+      "warning": "This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete permanently",
+      "deleting": "Deleting…"
+    },
+    "add_file": {
+      "placeholder": "templates/review.md",
+      "add": "Add",
+      "cancel": "Cancel",
+      "errors": {
+        "empty": "Path cannot be empty.",
+        "absolute": "Absolute paths are not allowed.",
+        "double_dot": "Paths cannot contain \"..\".",
+        "reserved": "SKILL.md is reserved for the main file.",
+        "exists": "A file at this path already exists.",
+        "is_directory": "A folder with this name already exists",
+        "under_file": "A file already exists at that location"
+      }
+    },
+    "header": {
+      "files_one": "{{count}} file",
+      "files_other": "{{count}} files",
+      "used_by_one": "{{count}} agent",
+      "used_by_other": "{{count}} agents",
+      "updated": "Updated {{when}}",
+      "updated_by": "Updated {{when}} by {{name}}"
+    },
+    "tabs": {
+      "aria": "Skill sections",
+      "overview": "Overview",
+      "files_one": "Files {{count}}",
+      "files_other": "Files {{count}}"
+    },
+    "overview": {
+      "properties": "Properties",
+      "properties_hint": "These fields stay in sync with the SKILL.md frontmatter.",
+      "name": "Name",
+      "description": "Description",
+      "description_hint": "{{count}} characters. Agents read this to decide whether to load the skill.",
+      "labels": "Labels",
+      "used_by_one": "Used by {{count}} agent",
+      "used_by_other": "Used by {{count}} agents",
+      "used_by_empty": "Not assigned to any agent yet. Open an agent's Skills tab to assign.",
+      "permissions_owner": "You can edit and delete this skill. Changes take effect on the next agent run.",
+      "permissions_locked_creator": "Only the creator ({{name}}) or a workspace admin can edit this skill.",
+      "permissions_locked": "Only the creator or a workspace admin can edit this skill."
+    },
+    "files": {
+      "list_aria": "Skill files",
+      "main": "Main file",
+      "supporting_one": "Supporting {{count}}",
+      "supporting_other": "Supporting {{count}}",
+      "supporting_empty": "No supporting files.",
+      "add_file": "New file",
+      "mode_aria": "File view",
+      "mode_preview": "Preview",
+      "mode_edit": "Edit",
+      "mode_raw": "Plain text"
+    }
+  },
+  "create": {
+    "back": "Back",
+    "back_aria": "Back to method chooser",
+    "close": "Close",
+    "close_aria": "Close",
+    "method": {
+      "chooser": {
+        "title": "New skill",
+        "desc": "Choose how to add a skill to this workspace."
+      },
+      "manual": {
+        "title": "Create manually",
+        "desc": "Start from a blank SKILL.md."
+      },
+      "template": {
+        "title": "Modify from template",
+        "desc": "Choose a template, then edit your own skill."
+      },
+      "local": {
+        "title": "Import from local",
+        "desc": "Pick a folder with SKILL.md, or a .skill / .zip archive."
+      },
+      "url": {
+        "title": "Import from URL",
+        "desc": "Fetch a published skill by URL."
+      },
+      "runtime": {
+        "title": "Copy from runtime",
+        "desc": "Promote a skill installed on your local runtime."
+      }
+    },
+    "manual": {
+      "name_label": "Name",
+      "name_placeholder": "e.g. review-helper",
+      "name_hint": "Must be unique within the workspace.",
+      "description_label": "Description",
+      "description_placeholder": "One sentence on when to assign this skill to an agent.",
+      "name_conflict_hint": " Try a different name and submit again.",
+      "fallback_error": "Failed to create skill",
+      "cancel": "Cancel",
+      "submit": "Create skill",
+      "submitting": "Creating…",
+      "toast_created": "Skill created"
+    },
+    "local": {
+      "choose_folder": "Choose folder",
+      "choose_archive": "Choose .skill / .zip",
+      "folder_label": "Folder",
+      "archive_label": "Archive",
+      "files_one": "{{count}} file",
+      "files_other": "{{count}} files",
+      "missing_skill_md": "This folder is not a skill — it has no SKILL.md.",
+      "too_large": "This skill is too large to import.",
+      "empty": "The folder is empty.",
+      "too_many_files": "This skill has too many files to import.",
+      "name_conflict_hint": " The imported skill's name already exists — delete the existing one before retrying.",
+      "fallback_error": "Import failed",
+      "cancel": "Cancel",
+      "import": "Import",
+      "importing": "Importing…",
+      "toast_imported": "Skill imported"
+    },
+    "url": {
+      "url_label": "Skill URL",
+      "supported_sources": "Supported sources",
+      "import": "Import",
+      "importing": "Importing…",
+      "importing_clawhub": "Importing from ClawHub…",
+      "importing_skills_sh": "Importing from Skills.sh…",
+      "importing_github": "Importing from GitHub…",
+      "name_conflict_hint": " The imported skill's name already exists — delete the existing one before retrying.",
+      "fallback_error": "Import failed",
+      "cancel": "Cancel",
+      "toast_imported": "Skill imported"
+    },
+    "template": {
+      "search_placeholder": "Search templates...",
+      "list_label": "Skill templates",
+      "preview_label": "Template preview",
+      "group_builtin": "Platform built-in",
+      "group_deployment": "Provided by this deployment ({{count}})",
+      "group_deployment_label": "Provided by this deployment",
+      "group_deployment_info": "These templates are placed by this deployment in the server's skill-template directory. Drop a folder in and it appears here automatically.",
+      "deployment_empty_hint": "This deployment can place shared templates in the server's skill-template directory to make them available to every workspace.",
+      "independent_hint": "Create an independent copy without changing the template.",
+      "use_template": "Use this template",
+      "loading": "Loading templates...",
+      "load_failed": "Could not load templates. Try again or create a skill manually.",
+      "empty": "No templates are available.",
+      "no_matches": "No matching templates.",
+      "retry": "Try again",
+      "back_to_methods": "Back to creation methods",
+      "back_to_templates": "Back to templates",
+      "choose_another": "Choose another template",
+      "source_template": "Based on {{name}}",
+      "name_hint": "Use a new name for your copy. It must be unique in this workspace.",
+      "name_required": "Enter a name for this skill.",
+      "reserved_name": "Use a different name. This name belongs to a built-in template.",
+      "body_label": "Instructions",
+      "body_required": "Add instructions before creating the skill.",
+      "view_label": "Instructions view",
+      "included_files": "Included files",
+      "invalid_template": "This template could not be read. Choose another template or try again.",
+      "create": "Create skill",
+      "creating": "Creating...",
+      "created": "Skill created",
+      "create_failed": "Could not create the skill. Your changes have been kept.",
+      "conflict": "A skill with this name already exists. Change the name and try again.",
+      "result_unknown": "The creation result is not confirmed. Check before creating another copy.",
+      "timeout_unknown": "The request took too long. The skill may have been created; check the result before trying again.",
+      "check_result": "Check creation result",
+      "checking": "Checking...",
+      "no_confirmed_result": "No result could be confirmed yet. Try checking again or inspect the workspace skill list.",
+      "matching_candidate": "Content and creator match the submitted copy.",
+      "different_candidate": "A skill has this name, but its content or creator differs. Review it before continuing.",
+      "open_skill": "Open skill",
+      "continue_editing": "Continue editing",
+      "retry_hint": "Before submitting again, check that this copy has not already been created.",
+      "discard_title": "Discard your changes?",
+      "discard_description": "Your changes to this copy have not been saved.",
+      "discard_unknown_description": "Your draft will be discarded. Closing does not cancel a request already sent to the server.",
+      "keep_editing": "Keep editing",
+      "discard": "Discard changes",
+      "refreshing": "Refreshing templates...",
+      "refresh_failed": "Could not refresh templates. Showing saved results.",
+      "clear_search": "Clear search",
+      "source_empty": "No templates from this source.",
+      "draft_title": "Create a copy",
+      "related_none": "No related skills in this workspace.",
+      "related_count_one": "{{count}} related skill in this workspace",
+      "related_count_other": "{{count}} related skills in this workspace",
+      "related_loading": "Loading related skills...",
+      "related_load_failed": "Could not load related skills.",
+      "related_refresh_failed": "Could not refresh related skills. Showing saved results.",
+      "preview_unavailable": "This template is no longer available. Choose another template."
+    }
+  },
+  "runtime_import": {
+    "runtime_label": "Runtime",
+    "runtime_placeholder": "Select a local runtime",
+    "no_local_runtimes_title": "No local runtimes available",
+    "no_local_runtimes_hint": "Connect a local runtime to browse and import its local skills.",
+    "choose_runtime": "Choose a runtime to continue",
+    "must_be_online": "Runtime must be online to browse local skills.",
+    "load_failed": "Failed to load runtime local skills",
+    "not_supported": "This runtime provider does not expose local skill inventory yet.",
+    "no_skills_title": "No local skills found",
+    "no_skills_hint": "This runtime does not have any discoverable local skills yet.",
+    "search_placeholder": "Search local skills",
+    "no_search_results_title": "No matching local skills",
+    "no_search_results_hint": "No local skills match \"{{query}}\".",
+    "ignored_files_hint": "Symlinks, unreadable files, oversized files, and very large bundles are ignored during import.",
+    "ready": "Ready to import",
+    "into_workspace": "into this workspace.",
+    "select_skill": "Select a skill to continue.",
+    "import_button": "Import to Workspace",
+    "importing": "Importing…",
+    "skill_files_one": "{{count}} file",
+    "skill_files_other": "{{count}} files",
+    "skill_name_label": "Workspace skill name",
+    "skill_description_label": "Description",
+    "skill_description_placeholder": "Optional — describe when an agent should use this skill.",
+    "toast_imported": "Skill imported",
+    "toast_import_failed": "Failed to import skill",
+    "select_all": "Select all ({{count}})",
+    "bulk_ready": "{{count}} skills selected",
+    "bulk_import_button": "Import {{count}} Skills",
+    "bulk_progress": "Importing {{completed}} / {{total}}…",
+    "bulk_cancel_button": "Cancel",
+    "bulk_complete_hint": "Import complete.",
+    "bulk_cancelled_hint": "Import cancelled.",
+    "bulk_done_button": "Done",
+    "bulk_summary_created": "Created",
+    "bulk_summary_updated": "Updated",
+    "bulk_summary_conflicts": "Conflicts",
+    "bulk_summary_skipped": "Skipped",
+    "bulk_summary_failed": "Failed",
+    "conflict_single_title": "A skill with this name already exists",
+    "conflict_bulk_title": "{{count}} skills need a decision",
+    "conflict_hint": "Choose whether to overwrite the existing workspace skill, import with a new name, or skip it.",
+    "conflict_locked_creator": "This skill was created by {{creator}}. Only the creator can overwrite it from local import; edit it from the Skill detail page if you need to change it.",
+    "conflict_locked": "Only the creator can overwrite this skill from local import; edit it from the Skill detail page if you need to change it.",
+    "conflict_overwrite": "Overwrite",
+    "conflict_rename": "Rename",
+    "conflict_skip": "Skip",
+    "conflict_cancel": "Cancel",
+    "conflict_overwrite_all": "Overwrite all",
+    "conflict_skip_all": "Skip all",
+    "conflict_rename_label": "New skill name",
+    "conflict_footer": "{{count}} conflict decisions pending.",
+    "conflict_apply_button": "Apply decisions",
+    "conflict_missing_resolution": "Choose how to resolve this conflict.",
+    "conflict_name_still_exists": "That name already exists. Choose another name or skip."
+  },
+  "file_tree": {
+    "no_files": "No files",
+    "actions": {
+      "label": "Actions for {{path}}",
+      "edit": "Edit",
+      "rename": "Rename",
+      "delete": "Delete"
+    }
+  },
+  "file_viewer": {
+    "no_content": "*No content yet*",
+    "markdown_placeholder": "Write markdown content...",
+    "raw_placeholder": "File content...",
+    "raw_aria": "Plain text content of {{path}}"
+  },
+  "catalog": {
+    "title": "Built-in skills",
+    "description": "Review the instructions, then create an editable copy.",
+    "loading": "Loading built-in skills...",
+    "error": "Could not load built-in skills.",
+    "empty": "No built-in skills are available.",
+    "retry": "Retry",
+    "view_template": "View template",
+    "open_instance": "Open skill"
+  },
+  "categories": {
+    "all": "All",
+    "research": "Planning & requirements",
+    "design": "Design & architecture",
+    "engineering": "Development & integration",
+    "quality": "Testing & quality",
+    "operations": "Release & operations",
+    "writing": "Collaboration & knowledge",
+    "data": "Data & automation",
+    "other": "General tools",
+    "empty_title": "No skills in \"{{category}}\" yet",
+    "empty_hint": "Move an existing skill into this category, or create one.",
+    "section_title": "Categories",
+    "section_sources": "Sources"
+  },
+  "presentation": {
+    "category_label": "Category",
+    "icon_label": "Icon",
+    "icon_follow_category": "Follow category",
+    "icon_pick": "Pick an icon",
+    "used_by_count_one": "{{count}} agent",
+    "used_by_count_other": "{{count}} agents",
+    "used_by_none": "Unused"
+  },
+  "market": {
+    "browse_market": "Browse capability marketplace",
+    "title": "Skill templates",
+    "workspace": "Workspace skills",
+    "views_label": "Skill library views",
+    "sources_label": "Template sources",
+    "source_all": "All",
+    "source_deployment": "Deployment-provided",
+    "source_builtin": "Platform built-ins",
+    "result_count_one": "{{count}} template found",
+    "result_count_other": "{{count}} templates found",
+    "search": "Search templates",
+    "search_placeholder": "Search templates...",
+    "from_template": "From template",
+    "workspace_search": "Search workspace skills...",
+    "preview": "Preview template",
+    "preview_label": "Preview {{name}}",
+    "browse_all": "Browse all templates",
+    "browse_builtin": "Browse platform templates",
+    "related_none": "No workspace copy yet",
+    "related_count_one": "{{count}} related skill in this workspace",
+    "related_count_other": "{{count}} related skills in this workspace",
+    "view_related": "View skills",
+    "open_created": "View skill",
+    "workspace_unknown": "Workspace skill status unavailable",
+    "deployment_empty": "This deployment has no shared templates yet.",
+    "builtin_empty": "No platform templates are available.",
+    "empty_title": "No templates available yet",
+    "empty_description": "Create a skill from scratch or import one through New skill.",
+    "search_empty": "No templates match \"{{query}}\".",
+    "filter_empty": "No templates match these filters.",
+    "clear_filters": "Clear filters"
+  },
+  "template_entry": {
+    "title": "Skill templates",
+    "description": "Preview a template, then create an independent workspace skill.",
+    "browse": "Browse templates",
+    "total_one": "{{count}} template",
+    "total_other": "{{count}} templates",
+    "builtin_count": "Platform {{count}}",
+    "deployment_count": "Deployment {{count}}"
+  }
+}

@@ -1,0 +1,3 @@
+# Static and TypeScript results
+
+Candidate `7af9ab990`. All nine recorded commands exited 0. TypeScript: 13,082 passed across 1,063 files, no failed packages; root tests exclude Mobile, whose separate result is retained. Lint/typecheck/UI exports and six script groups passed. Seed tests initially skipped their optional database integration; a new owned-database supplemental run is tracked separately. Source-probe regressions used a pinned archive snapshot. The agent hit HTTP429 after starting the runner; the coordinator verified completed commands directly. Raw commands/logs/hashes: `evidence/static-ts/`.

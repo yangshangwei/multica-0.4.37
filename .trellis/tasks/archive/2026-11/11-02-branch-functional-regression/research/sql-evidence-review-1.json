@@ -1,0 +1,240 @@
+{
+  "at": "2026-11-02T06:23:17.970090+00:00",
+  "reviewer": "independent trellis-check child /root/sql_evidence_review",
+  "status": "PASS_WITH_NOTES_OPEN_ACCEPTANCE_GATES",
+  "scope": "Read-only evidence/source review; reviewer writes only these review files; no test/build/database connection/service/account/remote operation",
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "N1",
+      "severity": "scope_note",
+      "status": "accurately_documented_not_product_fix",
+      "issue": "EXPLAIN uses distinct prepared text, instrumented execution and physical WAL/tuple/cache effects despite logical rollback; reltuples=-1; no original cached-tail plan or per-index attribution."
+    },
+    {
+      "id": "N2",
+      "severity": "scope_note",
+      "status": "accurately_documented_not_semantic_equivalence_proof",
+      "issue": "Transport replays already-held locks with empty active tasks/absent targets and generic Rows.Values; first-lock waiting, concurrency/fresh snapshots, typed Scan/ErrNoRows and nonempty results remain unverified."
+    },
+    {
+      "id": "N3",
+      "severity": "acceptance_gate",
+      "status": "open",
+      "issue": "Original P95 FAIL and real authenticated Mac migration/updater/trust, native Linux/Windows/iOS and real Provider gates remain open; no diagnostic result closes them."
+    }
+  ],
+  "artifact_sha256": {
+    "evidence/next-perf-sql-plan-1/diagnostic-metrics.json": "feb7fb4b268c052f49fe24a0c9d0fdf9fe6a28004d9f49bd36d9617307da73bb",
+    "evidence/next-perf-sql-plan-1/analysis-summary.json": "661459384ee8e39217d090b11fd87fadd647a0e96ebe70fb47b2c11863576ca4",
+    "evidence/next-perf-sql-plan-1/plans-SetIssueCurrentIterationBatch.json": "a76b051ae5d3adf108f23aa9ee22264453c7fcea769115314fa763c7f8b30858",
+    "evidence/next-perf-sql-plan-1/overlay.json": "4dec1b518112776b883df979901124238b368bff39493d29a5191bcd49e34577",
+    "evidence/next-perf-sql-plan-1/plans-JoinIterationParticipationBatch.json": "ebc4ae9a0ec1e7124b0d588955d1b96a81b4c8ae8df777ff3a2ad5445f89be2e",
+    "evidence/next-perf-sql-plan-1/read-transport-abba.json": "31c6d81e5f16857b268a3ec5c9caf64a522786988bf6f39ce3a9036eb5134368",
+    "evidence/next-perf-sql-plan-1/compile.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-perf-sql-plan-1/host-runner.py.txt": "a1caf56419e369b820ace2ee935ccc1f8e89aec8c05a3326fb8c13023a28bd34",
+    "evidence/next-perf-sql-plan-1/format-private-test.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-perf-sql-plan-1/diagnostic.stdout": "bbdad7f9729b3eff820614104f8f76290905efb0d4220b1b13ddb9448549809e",
+    "evidence/next-perf-sql-plan-1/plans-LeaveDeletedIssueIterationParticipationBatch.json": "6585151ce3abe665745432f3db7c3bfb50ff9e85a1af710a9f5912e1ea091b54",
+    "evidence/next-perf-sql-plan-1/database-operations.jsonl": "d3a3ab1dcf038a18d470d04082a4c2ee6fdc45ed183c11598752ebc1cc1f1813",
+    "evidence/next-perf-sql-plan-1/plans-canonical-reads.json": "59c2561e3376f7db8aff971ec5de76705a56a4c77473296eeb8ab71c7331317f",
+    "evidence/next-perf-sql-plan-1/verification.json": "2814ab6a04f8b1f953dede80b3581cf938b0d32ee7c9839f201422df58b4aecb",
+    "evidence/next-perf-sql-plan-1/canonical-ordered-reads.json": "01428c865d2fdd9d7404bae111a66733a984c0c320c89a6cf27091617e30353c",
+    "evidence/next-perf-sql-plan-1/diagnostic.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-perf-sql-plan-1/run.json": "13864115e41c9d69a78c5920e2760d2be656925906b6e728c5a83eabc76ded16",
+    "evidence/next-perf-sql-plan-1/schema-indexes-triggers.json": "d30bfc4d2f36a6182c68373bff8019198a61b1172eb6e6acbb39b063d4cd9375",
+    "evidence/next-perf-sql-plan-1/format-private-test.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-perf-sql-plan-1/diagnostic_test.go.txt": "88e56d6b14836cff4553769a45a5321c83336788468230a51c1cbb0516959d7d",
+    "evidence/next-perf-sql-plan-1/compile.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-platform-preflight-1/run.json": "28ad507efcedded6758a8bcd1d20d2bec3ddbee10244a208036e8aff1a2656b1",
+    "evidence/next-sql-cleanup-1/run.json": "7071dbb38895c314d1f99500b0f3669f190c1d73b74176a22f999bc31239f7e1",
+    "evidence/next-sql-parity-1/run.json": "3b5d17334df2e90712aec95c2a6b53fde754f0c0c17e683354e7438a39ae127a",
+    "research/perf-sql-plan-diagnosis-1.md": "8df270526be0c889cf2ff2e481fd2b0df599292b76a41a932bb8f4ad9f06224b",
+    "progress.md": "48531244b627e277cdf3a7fcef335dfe39482262e74adc46c7300b26554fa033",
+    "report.md": "0738e052d5f130f1056f56f430ede7bf96fe67eecc15de8942feeff9c8be8575",
+    "defects.md": "2922dd7504c37e4a7cbbade0362eec6708fbdb9d34c692cb346199ced3e53740",
+    "conditional-matrix.csv": "2ec3772c78c95e1ad0352bff040668992f26907784fb6f356f55bb5af5ed2724",
+    "session-prompt.md": "e8d8197f6fe78a4c2a176f7fbc0ac09d7d84bb83695e84a4419ade49327c5b34",
+    "task.json": "4d51c2873a633dc28b41ccd9dcbe9a220a1a4f587158505fdbc6084a013f8810"
+  },
+  "verification": {
+    "command_stream_and_recorded_hashes": true,
+    "diagnostic_terminal": {
+      "TestIterationCanonicalSQLPlanDiagnostic": "pass"
+    },
+    "canonical_generated_sql_exact": true,
+    "plans_recomputed": {
+      "JoinIterationParticipationBatch": {
+        "count": 1000,
+        "execution_sum_ms": 221.459,
+        "planning_sum_ms": 32.546,
+        "event_rows_visited": 1001000
+      },
+      "LeaveDeletedIssueIterationParticipationBatch": {
+        "count": 1000,
+        "execution_sum_ms": 651.403,
+        "planning_sum_ms": 32.674,
+        "event_rows_visited": 3003000
+      },
+      "SetIssueCurrentIterationBatch": {
+        "count": 1000,
+        "execution_sum_ms": 85.479,
+        "planning_sum_ms": 40.58,
+        "event_rows_visited": 0
+      },
+      "ListActiveTasksByIssue": {
+        "count": 1000,
+        "execution_sum_ms": 8.962,
+        "planning_sum_ms": 108.38,
+        "event_rows_visited": 0
+      },
+      "LockIssueIterationParticipation": {
+        "count": 2000,
+        "execution_sum_ms": 13.893,
+        "planning_sum_ms": 29.137,
+        "event_rows_visited": 0
+      }
+    },
+    "exact_parameter_and_lock_read_order": true,
+    "all_four_transport_result_vectors_equal": true,
+    "savepoint_business_fingerprints_equal": true,
+    "seven_original_batches_and_lock_order_preserved": true,
+    "index_valid_ready_live_counts": {
+      "issue": 22,
+      "agent_task_queue": 34,
+      "iteration_participation": 2,
+      "iteration_event": 2
+    },
+    "unchanged_source_patch_and_frozen_test": true,
+    "overlay_new_file_only_and_disk_target_absent": true,
+    "recorded_database_connections_after": {
+      "multica_func7af9_resume_perf_1": 0,
+      "multica_func7af9_resume_linux_1": 0,
+      "multica_func7af9_next_sql_diag_1": 0,
+      "multica_func7af9_next_perf_diag_1": 0,
+      "multica_func7af9_resume_wire_live_1": 0
+    },
+    "database_read_by_reviewer": false,
+    "saved_focused_sql_parity_test": "PASS; not rerun by reviewer",
+    "fresh_native_checks": [
+      {
+        "name": "fresh-protocol-query",
+        "command": [
+          "osascript",
+          "-l",
+          "JavaScript",
+          "-e",
+          "ObjC.import(\"AppKit\");\nconst w=$.NSWorkspace.sharedWorkspace;\nconst current=w.URLForApplicationToOpenURL($.NSURL.URLWithString(\"multica://branch-functional-regression\"));\nlet p=null;try{p=ObjC.unwrap(current.path)||null;}catch(e){}\nconst urls=w.URLsForApplicationsWithBundleIdentifier(\"ai.multica.desktop\");\nconst paths=[];for(let i=0;i<urls.count;i++)paths.push(ObjC.unwrap(urls.objectAtIndex(i).path));\nJSON.stringify({defaultApplicationPath:p,registeredApplications:paths});"
+        ],
+        "exit_code": 0,
+        "stdout": "{\"defaultApplicationPath\":\"/Applications/Multica.app\",\"registeredApplications\":[\"/Applications/Multica.app\",\"/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app\",\"/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app\",\"/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/apps/desktop/dist/mac-arm64/Multica.app\",\"/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/apps/desktop/dist/mac-arm64/Multica.app\",\"/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/apps/desktop/dist/mac-arm64/Multica.app\",\"/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app\"]}\n",
+        "stderr": ""
+      },
+      {
+        "name": "fresh-port-18920",
+        "command": [
+          "lsof",
+          "-nP",
+          "-iTCP:18920",
+          "-sTCP:LISTEN"
+        ],
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "name": "fresh-port-13840",
+        "command": [
+          "lsof",
+          "-nP",
+          "-iTCP:13840",
+          "-sTCP:LISTEN"
+        ],
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "name": "fresh-port-19860",
+        "command": [
+          "lsof",
+          "-nP",
+          "-iTCP:19860",
+          "-sTCP:LISTEN"
+        ],
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "name": "fresh-port-16390",
+        "command": [
+          "lsof",
+          "-nP",
+          "-iTCP:16390",
+          "-sTCP:LISTEN"
+        ],
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "name": "fresh-port-58786",
+        "command": [
+          "lsof",
+          "-nP",
+          "-iTCP:58786",
+          "-sTCP:LISTEN"
+        ],
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "name": "fresh-port-60790",
+        "command": [
+          "lsof",
+          "-nP",
+          "-iTCP:60790",
+          "-sTCP:LISTEN"
+        ],
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "name": "git-diff-check",
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    ],
+    "fresh_owned_processes_remaining": [],
+    "fresh_protocol_exact_default_and_registration_set_preserved": true,
+    "historical_files_checked": 5900,
+    "only_expected_coordination_paths_changed": [
+      ".trellis/tasks/11-02-branch-functional-regression/conditional-matrix.csv",
+      ".trellis/tasks/11-02-branch-functional-regression/defects.md",
+      ".trellis/tasks/11-02-branch-functional-regression/implement.md",
+      ".trellis/tasks/11-02-branch-functional-regression/progress.md",
+      ".trellis/tasks/11-02-branch-functional-regression/report.md",
+      ".trellis/tasks/11-02-branch-functional-regression/research/session-record.md",
+      ".trellis/tasks/11-02-branch-functional-regression/session-prompt.md",
+      ".trellis/tasks/11-02-branch-functional-regression/task.json"
+    ],
+    "all_historical_raw_evidence_and_439_inventory_unchanged": true,
+    "coordination_docs_match_scoped_results_and_original_fail": true,
+    "task_status": "in_progress",
+    "original_p95_status": "FAIL 2171ms > 2000ms; not rerun",
+    "git_diff_check": "PASS",
+    "lint": "NOT_RERUN_NO_PRODUCT_CHANGE",
+    "typecheck": "NOT_RERUN_NO_PRODUCT_CHANGE",
+    "tests": "Reviewer did not execute tests; independently verified saved diagnostic PASS and focused parity PASS"
+  },
+  "finished_at": "2026-11-02T06:23:19.639663+00:00"
+}

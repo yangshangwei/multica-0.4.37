@@ -1,0 +1,12 @@
+6:  if (!["darwin", "win32"].includes(platform)) throw new Error("Native packaged Main requires Windows or macOS");
+7:  const paths = platform === "win32" ? path.win32 : path.posix;
+10:  if (platform === "win32" ? paths.basename(executable).toLowerCase() !== "multica.exe"
+12:    throw new Error(platform === "win32" ? "The installed executable must be Multica.exe" : "The app must use Contents/MacOS/Multica");
+14:  const resources = platform === "win32" ? paths.join(paths.dirname(executable), "resources") : paths.resolve(executable, "../..", "Resources");
+16:  const rendererUrl = pathToFileURL(paths.join(asar, "out", "renderer", "index.html"), { windows: platform === "win32" });
+17:  return { resources, asar, cli: paths.join(`${asar}.unpacked`, "resources", "bin", platform === "win32" ? "multica.exe" : "multica"),
+18:    rendererUrl: rendererUrl.href, platform, apiOS: platform === "win32" ? "windows" : "macos" };
+22:  if (!["darwin", "win32"].includes(platform)) throw new Error("Native packaged Main requires Windows or macOS");
+23:  const paths = platform === "win32" ? path.win32 : path.posix;
+29:  if (typeof value !== "string" || /[\0\r\n]/.test(value) || (platform === "win32" ? !/^[a-z]:[\\/]/i.test(value) : !path.posix.isAbsolute(value))) {
+30:    throw new Error(`Native packaged Main requires an absolute local ${name}`);

@@ -1,0 +1,431 @@
+{
+  "platform": "electron",
+  "locale": "zh-Hans",
+  "workspaceId": "64e20df6-2f9a-4c24-a71a-73d17aace532",
+  "iterationId": "1d40d535-3927-4443-9ce5-1cb95e03771b",
+  "taskIds": {
+    "alpha": "01a199a3-60da-738a-b8d8-4d8f7a74d269",
+    "beta": "01a199a3-6124-7bb0-bd61-b16825150ee2",
+    "added": "01a199a3-6175-76b6-8894-35a2abe2407e"
+  },
+  "planned": {
+    "original": 0,
+    "current": 2,
+    "cancelled": 0,
+    "effective": 2,
+    "completed": 0,
+    "original_completed": 0,
+    "remaining": 2,
+    "added_unique": 0,
+    "removed_events": 0,
+    "reentry_events": 0,
+    "cancel_events": 0,
+    "reopen_events": 0,
+    "started": 0,
+    "initial_effective": 0,
+    "net_effective_change": 2,
+    "net_effective_change_ratio": null,
+    "effective_ratio": 0,
+    "original_ratio": null,
+    "chart": [],
+    "calculated_at": "2026-11-02T00:23:05.351789Z"
+  },
+  "active": {
+    "original": 2,
+    "current": 2,
+    "cancelled": 0,
+    "effective": 2,
+    "completed": 0,
+    "original_completed": 0,
+    "remaining": 2,
+    "added_unique": 1,
+    "removed_events": 3,
+    "reentry_events": 2,
+    "cancel_events": 2,
+    "reopen_events": 2,
+    "started": 1,
+    "initial_effective": 2,
+    "net_effective_change": 0,
+    "net_effective_change_ratio": 0,
+    "effective_ratio": 0,
+    "original_ratio": 0,
+    "chart": [
+      {
+        "date": "2026-11-02",
+        "effective": 2,
+        "completed": 0,
+        "original": 2
+      }
+    ],
+    "calculated_at": "2026-11-02T00:23:09.203579Z"
+  },
+  "frozen": {
+    "original": 2,
+    "current": 2,
+    "cancelled": 0,
+    "effective": 2,
+    "completed": 0,
+    "original_completed": 0,
+    "remaining": 2,
+    "added_unique": 1,
+    "removed_events": 3,
+    "reentry_events": 2,
+    "cancel_events": 2,
+    "reopen_events": 2,
+    "started": 1,
+    "initial_effective": 2,
+    "net_effective_change": 0,
+    "net_effective_change_ratio": 0,
+    "effective_ratio": 0,
+    "original_ratio": 0,
+    "chart": [
+      {
+        "date": "2026-11-02",
+        "effective": 2,
+        "completed": 0,
+        "original": 2
+      }
+    ],
+    "calculated_at": "2026-11-02T00:23:11.798113Z"
+  },
+  "removalEventIds": [
+    "668cd10d-fbe1-46c5-9b11-6087b360d80e",
+    "4fda56b3-c071-45a3-abe8-9bdbae4d3e7a",
+    "783532ac-42aa-4246-9126-3d98a37d179d"
+  ],
+  "uniqueRemovedTasks": 1,
+  "layouts": [
+    {
+      "name": "planned-zh-Hans-wide",
+      "expectedViewport": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewportAfterCapture": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "screenshotSize": {
+        "width": 1280,
+        "height": 1000
+      },
+      "overflow": [
+        {
+          "scrollWidth": 950,
+          "clientWidth": 950
+        }
+      ],
+      "targets": []
+    },
+    {
+      "name": "scope-added-zh-Hans-wide",
+      "expectedViewport": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewportAfterCapture": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "screenshotSize": {
+        "width": 1280,
+        "height": 1000
+      },
+      "overflow": [
+        {
+          "scrollWidth": 939,
+          "clientWidth": 939
+        },
+        {
+          "scrollWidth": 939,
+          "clientWidth": 939
+        }
+      ],
+      "targets": []
+    },
+    {
+      "name": "technical-audit-zh-Hans-wide",
+      "expectedViewport": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewportAfterCapture": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "screenshotSize": {
+        "width": 1280,
+        "height": 1000
+      },
+      "overflow": [
+        {
+          "scrollWidth": 939,
+          "clientWidth": 939
+        },
+        {
+          "scrollWidth": 939,
+          "clientWidth": 939
+        }
+      ],
+      "targets": []
+    },
+    {
+      "name": "scope-metric-zh-Hans-narrow",
+      "expectedViewport": {
+        "width": 680,
+        "height": 900,
+        "coarse": true,
+        "touchPoints": 5
+      },
+      "viewport": {
+        "width": 680,
+        "height": 900,
+        "coarse": true,
+        "touchPoints": 5
+      },
+      "viewportAfterCapture": {
+        "width": 680,
+        "height": 900,
+        "coarse": true,
+        "touchPoints": 5
+      },
+      "screenshotSize": {
+        "width": 680,
+        "height": 900
+      },
+      "overflow": [
+        {
+          "scrollWidth": 593,
+          "clientWidth": 593
+        },
+        {
+          "scrollWidth": 592,
+          "clientWidth": 592
+        }
+      ],
+      "targets": [
+        {
+          "name": "查看开始后新增任务：1 个任务",
+          "x": 29.5,
+          "y": -93,
+          "width": 72.828125,
+          "height": 44
+        },
+        {
+          "name": "技术审计",
+          "x": 55.0625,
+          "y": 985,
+          "width": 60.703125,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "scope-empty-zh-Hans-narrow",
+      "expectedViewport": {
+        "width": 680,
+        "height": 900,
+        "coarse": true,
+        "touchPoints": 5
+      },
+      "viewport": {
+        "width": 680,
+        "height": 900,
+        "coarse": true,
+        "touchPoints": 5
+      },
+      "viewportAfterCapture": {
+        "width": 680,
+        "height": 900,
+        "coarse": true,
+        "touchPoints": 5
+      },
+      "screenshotSize": {
+        "width": 680,
+        "height": 900
+      },
+      "overflow": [
+        {
+          "scrollWidth": 589,
+          "clientWidth": 589
+        }
+      ],
+      "targets": [
+        {
+          "name": "",
+          "x": 357,
+          "y": 740,
+          "width": 192,
+          "height": 44
+        },
+        {
+          "name": "移出▼",
+          "x": 287,
+          "y": 740,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "清除筛选",
+          "x": 555,
+          "y": 740,
+          "width": 74,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "frozen-current-separation-zh-Hans-wide",
+      "expectedViewport": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewportAfterCapture": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "screenshotSize": {
+        "width": 1280,
+        "height": 1000
+      },
+      "overflow": [
+        {
+          "scrollWidth": 939,
+          "clientWidth": 939
+        },
+        {
+          "scrollWidth": 939,
+          "clientWidth": 939
+        },
+        {
+          "scrollWidth": 939,
+          "clientWidth": 939
+        }
+      ],
+      "targets": []
+    },
+    {
+      "name": "frozen-historical-zh-Hans-narrow",
+      "expectedViewport": {
+        "width": 680,
+        "height": 900,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewport": {
+        "width": 680,
+        "height": 900,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewportAfterCapture": {
+        "width": 680,
+        "height": 900,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "screenshotSize": {
+        "width": 680,
+        "height": 900
+      },
+      "overflow": [
+        {
+          "scrollWidth": 589,
+          "clientWidth": 589
+        },
+        {
+          "scrollWidth": 589,
+          "clientWidth": 589
+        },
+        {
+          "scrollWidth": 589,
+          "clientWidth": 589
+        }
+      ],
+      "targets": []
+    },
+    {
+      "name": "frozen-current-zh-Hans-narrow",
+      "expectedViewport": {
+        "width": 680,
+        "height": 900,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewport": {
+        "width": 680,
+        "height": 900,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewportAfterCapture": {
+        "width": 680,
+        "height": 900,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "screenshotSize": {
+        "width": 680,
+        "height": 900
+      },
+      "overflow": [
+        {
+          "scrollWidth": 589,
+          "clientWidth": 589
+        },
+        {
+          "scrollWidth": 589,
+          "clientWidth": 589
+        },
+        {
+          "scrollWidth": 589,
+          "clientWidth": 589
+        }
+      ],
+      "targets": []
+    }
+  ],
+  "pageErrors": [],
+  "mockedBranches": [],
+  "realtime": "Observed start and post-start writes without reload; frozen navigation intentionally remounts."
+}

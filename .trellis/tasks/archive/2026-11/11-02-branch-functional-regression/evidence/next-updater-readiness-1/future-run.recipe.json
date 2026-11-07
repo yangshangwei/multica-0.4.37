@@ -1,0 +1,69 @@
+{
+  "scope": "Not an executable launcher; future protocol steps after all prerequisites and coordinator permit",
+  "current_acceptance_status": "NOT_RUN",
+  "framework_retries": 0,
+  "product_retry_behavior": "Leave current product behavior unchanged; GenericProvider internal ECONNREFUSED handling is not a harness retry override.",
+  "environment_template": {
+    "HOME": "__OWNED_RUN_HOME__",
+    "MULTICA_PACKAGED_ACCEPTANCE": "1",
+    "MULTICA_PACKAGED_ACCEPTANCE_HOME": "__OWNED_RUN_HOME__"
+  },
+  "derived_paths": {
+    "electron_home": "__OWNED_RUN_HOME__",
+    "electron_userData": "__OWNED_RUN_HOME__/.config/Multica",
+    "node_os_homedir": "__OWNED_RUN_HOME__",
+    "updater_cache": "__OWNED_RUN_HOME__/Library/Caches/@multicadesktop-updater",
+    "runtime_config": "__OWNED_RUN_HOME__/.multica/desktop.json",
+    "preferences": "__OWNED_RUN_HOME__/.config/Multica/updater-preferences.json"
+  },
+  "steps": [
+    {
+      "phase": "before_launch",
+      "action": "Validate versions/signature compatibility, original protocol state, profile/cache ownership and live owned feed/business endpoints; attach process/request observers before the first operation."
+    },
+    {
+      "phase": "baseline",
+      "action": "Launch exact unmodified baseline at stable task installation; verify packaged darwin/arm64, exact old version, Electron and Node home/cache paths, configuration and preferences."
+    },
+    {
+      "phase": "observe",
+      "action": "Attach real window.updater.onUpdateDownloaded and onDownloadProgress callbacks before triggering a check; retain synthetic sentinels using only task profile."
+    },
+    {
+      "phase": "check",
+      "ipc_api": "window.updater.checkForUpdates()",
+      "assertions": [
+        "ok === true",
+        "available === true",
+        "latestVersion === 0.6.8-rc.20261102"
+      ],
+      "meaning": "Actual manual check auto-downloads with current product even when automaticUpdates=false; not executed here."
+    },
+    {
+      "phase": "download",
+      "action": "Observe actual metadata/ZIP GETs, checksum/downloadedFile, wrapper download event and subsequent Squirrel native readiness/errors. Default first private-cache download uses full ZIP if no previous update.zip."
+    },
+    {
+      "phase": "install",
+      "ipc_api": "window.updater.installUpdate()",
+      "meaning": "Calls production updater:install; MacUpdater coordinates native Squirrel quit/install. No manual copy/rewrite substitute."
+    },
+    {
+      "phase": "restart",
+      "action": "Require actual installed candidate executable/ASAR/CLI hashes and restarted app version; attach/relaunch only the same owned installation as needed to collect proof. Re-read same profile configuration/preferences/sentinels."
+    },
+    {
+      "phase": "cleanup",
+      "action": "Close owned app/feed/native proxy, preserve owned raw evidence and caches for diagnosis, unregister only task-added scheme paths, and re-audit all owned process/port/mount/DB connections."
+    }
+  ],
+  "not_authorized_or_attempted": [
+    "real business login/credential migration",
+    "user installed application replacement",
+    "remote update feed or publication",
+    "commercial Provider invocation",
+    "private signing identity access",
+    "notarization"
+  ],
+  "template_placeholders_resolved": false
+}

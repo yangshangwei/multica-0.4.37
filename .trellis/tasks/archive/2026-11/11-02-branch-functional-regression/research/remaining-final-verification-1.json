@@ -1,0 +1,132 @@
+{
+  "at": "2026-11-02T08:57:57.084613+00:00",
+  "status": "PASS_SCOPED_CONTINUATION_REQUIRED_ACCEPTANCE_GATES_OPEN",
+  "reviewer": "coordinator; final independent review separate",
+  "historical_files_checked": 6113,
+  "historical_missing": [],
+  "allowed_changed_coordination_files": [
+    ".trellis/tasks/11-02-branch-functional-regression/conditional-matrix.csv",
+    ".trellis/tasks/11-02-branch-functional-regression/defects.md",
+    ".trellis/tasks/11-02-branch-functional-regression/implement.md",
+    ".trellis/tasks/11-02-branch-functional-regression/progress.md",
+    ".trellis/tasks/11-02-branch-functional-regression/report.md",
+    ".trellis/tasks/11-02-branch-functional-regression/research/session-record.md",
+    ".trellis/tasks/11-02-branch-functional-regression/session-prompt.md",
+    ".trellis/tasks/11-02-branch-functional-regression/task.json"
+  ],
+  "unexpected_historical_changes": [],
+  "preserved_workspace_files": 36,
+  "intentional_workspace_changes": [
+    ".trellis/workspace/artisan/index.md",
+    ".trellis/workspace/artisan/journal-2.md"
+  ],
+  "preexisting_journal_bytes_exact_prefix": 73608,
+  "journal_record": "session116 --no-commit; noarchive",
+  "e2e_inventory_rows": 439,
+  "e2e_current_pass": 439,
+  "matrix_rows": 31,
+  "matrix_statuses": {
+    "PASS": 21,
+    "BLOCKED": 6,
+    "FAIL": 1,
+    "NOT_RUN": 3
+  },
+  "sources": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "product_diff_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+      "frozen_test_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "product_diff_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+      "frozen_test_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+      "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "product_diff_sha256": "3ef8ec0f8841f4448237c0d3a99e466dbf817a143259b5916cd826d1f6a6a280",
+      "frozen_test_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef"
+    }
+  ],
+  "original_frozen_p95": "2171ms>2000ms FAIL retained; not rerun",
+  "new_genuine_symptom_evidence": [],
+  "new_runnable_platform_gates": [],
+  "latest_cleanup": "evidence/next-remaining-cleanup-1/run.json",
+  "owned_databases_current_connections_zero": 56,
+  "last_batch_9_connections_zero": true,
+  "ports_closed": 6,
+  "owned_processes_containers_mounts_protocol_registrations_remaining": 0,
+  "protocol_original_exact_default_and_set_preserved": true,
+  "new_json_files_parsed": [
+    "evidence/next-remaining-cleanup-1/owned-mounts.json",
+    "evidence/next-remaining-cleanup-1/owned-processes.json",
+    "evidence/next-remaining-cleanup-1/run.json",
+    "evidence/next-remaining-identity-1/historical-checks.json",
+    "evidence/next-remaining-identity-1/preserved-workspace-checks.json",
+    "evidence/next-remaining-identity-1/run.json",
+    "evidence/next-remaining-identity-1/source-0-file-manifest.json",
+    "evidence/next-remaining-identity-1/source-1-file-manifest.json",
+    "evidence/next-remaining-identity-1/source-2-file-manifest.json",
+    "evidence/next-remaining-identity-1/verification.json",
+    "evidence/next-remaining-platform-1/run.json",
+    "evidence/next-remaining-platform-1/setup-observation.json",
+    "evidence/next-remaining-platform-1/verification.json",
+    "evidence/next-remaining-session-1/agent-dispatch.json",
+    "evidence/next-remaining-session-1/before.json",
+    "evidence/next-remaining-session-1/coordinator-identity-verification.json",
+    "evidence/next-remaining-session-1/coordinator-platform-verification.json",
+    "research/remaining-identity-symptom-1.json",
+    "research/remaining-platform-conditions-1.json"
+  ],
+  "private_python_ast": "PASS",
+  "git_diff_check": "PASS",
+  "full_product_lint_typecheck_tests": "NOT_RERUN: no product/dependency change; completed gates and originalFAIL preserved",
+  "product_fixes": 0,
+  "new_dependencies": 0,
+  "commercial_calls": 0,
+  "remote_dispatches": 0,
+  "task_status": "in_progress",
+  "coordinator_slice_reviews": [
+    "evidence/next-remaining-session-1/coordinator-platform-verification.json",
+    "evidence/next-remaining-session-1/coordinator-identity-verification.json"
+  ],
+  "independent_review": "research/remaining-final-coordination-review-1.md/.json",
+  "coordination_sha256": {
+    ".trellis/tasks/11-02-branch-functional-regression/conditional-matrix.csv": "0cdc0304bfc91bed94468a215f6e997dcea3f3d8c4fa5a368253dd1fc7635d0b",
+    ".trellis/tasks/11-02-branch-functional-regression/defects.md": "c69298a98640b2f8aa595a152722e3b93c6bc05a875949b380a8857a573b803f",
+    ".trellis/tasks/11-02-branch-functional-regression/implement.md": "38960d0025fb555267e2e88f9ae412f908559708c2f0a499466e52d9a239f59a",
+    ".trellis/tasks/11-02-branch-functional-regression/progress.md": "6e9a02800d6bd41cf3884fecd425e57a2757b8e9652193206bc2f9bce3d511d8",
+    ".trellis/tasks/11-02-branch-functional-regression/report.md": "361197c9736dbbbd36e7791859c4516ead3ad937c3750d7ad93f61e39d5ca414",
+    ".trellis/tasks/11-02-branch-functional-regression/research/session-record.md": "802253050b05ecccf08aaad4c7608581d4758fa88ec8d1f6c38a254881fc6c1f",
+    ".trellis/tasks/11-02-branch-functional-regression/session-prompt.md": "b31fc0dea0ab28abd6120360f4ab0df2b8a50324c85274cde22a3c31edeb99a6",
+    ".trellis/tasks/11-02-branch-functional-regression/task.json": "b91d9ce89e38594258e3e9cb12e0d18cefb2515b7656fed64cc4276da2ee915b"
+  },
+  "original_evidence_and_439_inventory_unchanged": true,
+  "no_product_refactor_or_simplification": true,
+  "preexisting_index_content_exact_reconstruction": true,
+  "index116_only_delta_reconstructed_sha256": "bf2c3179a1527968d9005fb77a9838ff9230382cad9576622671103b741aef61",
+  "trellis_context_validation": {
+    "status": "PASS",
+    "implement_entries": 7,
+    "check_entries": 7,
+    "command": "python3 .trellis/scripts/task.py validate .trellis/tasks/11-02-branch-functional-regression",
+    "new_task_created": false
+  },
+  "independent_review_status": "PASS_WITH_NOTES_REQUIRED_ACCEPTANCE_GATES_OPEN",
+  "reviewed_raw_artifact_hash_mismatches": [],
+  "review_artifacts_sha256": {
+    "remaining-final-coordination-review-1.md": "c2e0f44c73b37e5809438780aa9b7122dfaf14c8d24ead4c150f68b41cd66f56",
+    "remaining-final-coordination-review-1.json": "7f6a0c360ad556d075d5ed8f7bb84cceb60df40fb20ee0ce332eef3af8b90906"
+  },
+  "final_updated_at": "2026-11-02T09:06:06.625975+00:00",
+  "after_review_scope": "Only review status/links/final hashes; no raw diagnostic/evidence/source/DB/native/resource or acceptance change.",
+  "batch_completed": true,
+  "full_acceptance_completed": false,
+  "post_review_raw_hash_mismatches": [],
+  "post_review_historical_missing": [],
+  "post_review_unexpected_historical_changes": [],
+  "post_review_git_diff_check": "PASS"
+}

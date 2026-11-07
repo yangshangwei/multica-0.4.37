@@ -1,0 +1,20 @@
+{
+  "at": "2026-11-02T01:42:10.940520+00:00",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "first_failure": "evidence/linux-full-main-1",
+  "changes": [
+    "e2e/collaboration-installed-main.spec.ts",
+    "e2e/fixtures/collaboration-installed-main.mjs",
+    "e2e/fixtures/collaboration-recipient-picker.mjs"
+  ],
+  "reason": "Installed full Main journeys retained obsolete Exact recipient UI; use same current exact-ID picker sequence as reviewed existing helper",
+  "patch_sha256": "5ff792a1ffb4ced0b82001563532b2372b6db64c2c90ac5222e18f9a6102f059",
+  "new_helper_sha256": "4f3ed8fcac50f7fdef4a35dbd4a9c0f2e92c3d64faffdffb23f8df047250bdb5",
+  "runtime_helper_boundary": "Plain Node packaged controller needs .mjs; TypeScript helper reused on Playwright side",
+  "product_code_changed": false,
+  "timeouts_or_retries_changed": false,
+  "business_receipt_revision_history_assertions_preserved": true,
+  "review": "installed-picker-review.md PASS WITH NOTES; post-selection form assertions restored and untracked helper hashes recorded per run",
+  "prior_directory_main_result": "linux-full-main-3:1pass; final stronger assertions rerun underway",
+  "root_branch_not_yet_changed": true
+}

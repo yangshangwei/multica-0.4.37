@@ -1,0 +1,40 @@
+{
+  "at": "2026-11-02T02:21:54.892997+00:00",
+  "records": [
+    {
+      "label": "identity",
+      "sql": "SELECT current_database(), inet_server_addr(), inet_server_port(), version()",
+      "exit_code": 0,
+      "stdout": "multica_func7af9_template_20261102|172.20.0.2|5432|PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit\n",
+      "stderr": ""
+    },
+    {
+      "label": "headroom",
+      "sql": "SELECT current_setting('max_connections'), count(*), count(*) FILTER (WHERE state='active') FROM pg_stat_activity",
+      "exit_code": 0,
+      "stdout": "100|43|1\n",
+      "stderr": ""
+    },
+    {
+      "label": "pristine",
+      "sql": "SELECT (SELECT count(*) FROM \"user\"), (SELECT count(*) FROM workspace), (SELECT count(*) FROM issue), (SELECT count(*) FROM schema_migrations)",
+      "exit_code": 0,
+      "stdout": "0|0|0|751\n",
+      "stderr": ""
+    },
+    {
+      "label": "extensions",
+      "sql": "SELECT name,default_version,installed_version FROM pg_available_extensions WHERE name IN ('pg_bigm','pg_trgm','vector')",
+      "exit_code": 0,
+      "stdout": "pg_trgm|1.6|1.6\nvector|0.8.7|\n",
+      "stderr": ""
+    },
+    {
+      "label": "connections",
+      "sql": "SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid()",
+      "exit_code": 0,
+      "stdout": "0\n",
+      "stderr": ""
+    }
+  ]
+}

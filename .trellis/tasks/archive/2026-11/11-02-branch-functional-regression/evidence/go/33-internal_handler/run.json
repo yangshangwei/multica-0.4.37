@@ -1,0 +1,110 @@
+{
+  "name": "33-internal_handler",
+  "kind": "package",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout=40m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-json",
+    "github.com/multica-ai/multica/server/internal/handler"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "started_at": "2026-11-02T00:22:21.344462+00:00",
+  "state": "complete",
+  "database": "multica_func7af9_go_33_20261102",
+  "environment_keys": [
+    "DATABASE_URL",
+    "GOCACHE",
+    "GOMODCACHE",
+    "GOPATH",
+    "GOTOOLCHAIN",
+    "HOME",
+    "LANG",
+    "LC_ALL",
+    "LOGNAME",
+    "MULTICA_DSH_PATH",
+    "MULTICA_KNOWLEDGE_CONTEXT_ENABLED",
+    "NVM_DIR",
+    "PATH",
+    "PGCONNECT_TIMEOUT",
+    "POSTGRES_DB",
+    "REDIS_TEST_URL",
+    "SHELL",
+    "TASK_DATABASE_NAME",
+    "TEMP",
+    "TMP",
+    "TMPDIR",
+    "USER"
+  ],
+  "real_provider_authorization": false,
+  "permit_env_sha256": "618c85da03d2475afb5395b7e5d96072778203a59ece893065e17d7990f8a96e",
+  "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/33.env",
+  "database_identity": "multica_func7af9_go_33_20261102",
+  "database_identity_exit": 0,
+  "exit_code": 1,
+  "finished_at": "2026-11-02T00:30:03.356807+00:00",
+  "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "top_level": {
+    "pass": 2858,
+    "fail": 5,
+    "skip": 7
+  },
+  "subtests": {
+    "pass": 2462,
+    "fail": 0,
+    "skip": 0
+  },
+  "package_outcome": "fail",
+  "no_named_tests": false,
+  "failed_tests": [
+    "TestClaimTask_ProjectGithubReposOverrideWorkspaceRepos",
+    "TestClaimTask_ProjectDescriptionInjected",
+    "TestClaimTask_ProjectWithoutRepos_FallsBackToWorkspaceRepos",
+    "TestClaimTask_AutopilotRunOnly_PopulatesWorkspaceAndProjectContext",
+    "TestClaimTaskByRuntime_TaskWorkspaceMismatch_CancelsAndRejects"
+  ],
+  "skips": [
+    {
+      "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+      "output": "=== RUN   TestWebhookHandler_DBErrorOnTokenLookupReturns500\n    autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant\n--- SKIP: TestWebhookHandler_DBErrorOnTokenLookupReturns500 (0.00s)\n"
+    },
+    {
+      "test": "TestIterationI1P95",
+      "output": "=== RUN   TestIterationI1P95\n    iteration_i1_p95_test.go:25: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL\n--- SKIP: TestIterationI1P95 (0.00s)\n"
+    },
+    {
+      "test": "TestIterationI1DisableP95",
+      "output": "=== RUN   TestIterationI1DisableP95\n    iteration_i1_p95_test.go:160: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL\n--- SKIP: TestIterationI1DisableP95 (0.00s)\n"
+    },
+    {
+      "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+      "output": "=== RUN   TestFetchFromSkillsSh_AnthropicPptxIntegration\n    skill_test.go:989: set MULTICA_RUN_SKILLS_SH_INTEGRATION=1 to run live GitHub integration test\n--- SKIP: TestFetchFromSkillsSh_AnthropicPptxIntegration (0.00s)\n"
+    },
+    {
+      "test": "TestTriageQueueScaleBaseline",
+      "output": "=== RUN   TestTriageQueueScaleBaseline\n    triage_performance_test.go:20: set MULTICA_TRIAGE_PERF=1 to measure 10k formal/2k pending\n--- SKIP: TestTriageQueueScaleBaseline (0.00s)\n"
+    },
+    {
+      "test": "TestTriageWireFixtures",
+      "output": "=== RUN   TestTriageWireFixtures\n    triage_test.go:566: wire fixture export requested only by cross-package verification\n--- SKIP: TestTriageWireFixtures (0.00s)\n"
+    },
+    {
+      "test": "TestMcpMarketPublicHTTPRecipeLifecycle",
+      "output": "=== RUN   TestMcpMarketPublicHTTPRecipeLifecycle\n    workspace_mcp_template_test.go:228: the catalog ships no HTTP recipes\n--- SKIP: TestMcpMarketPublicHTTPRecipeLifecycle (0.00s)\n"
+    }
+  ],
+  "stdout_sha256": "9847d7cd152065526a77af0b8afdb5ba927d1d870aae9d3a26c79be8190e5b61",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

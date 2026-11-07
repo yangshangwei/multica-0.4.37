@@ -1,0 +1,186 @@
+[
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestPoolSizing_DefaultsWhenNothingSet",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "06-cmd_server",
+    "evidence": "evidence/go/06-cmd_server/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestPoolSizing_URLParamsHonoredWhenEnvUnset",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "06-cmd_server",
+    "evidence": "evidence/go/06-cmd_server/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestPoolSizing_PartialURLParam",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "06-cmd_server",
+    "evidence": "evidence/go/06-cmd_server/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/cli",
+    "test": "TestCLIConfig_BackwardCompat_OldFileLoadsWithNilBackends",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "17-internal_cli",
+    "evidence": "evidence/go/17-internal_cli/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/cli",
+    "test": "TestCLIConfig_BackwardCompat_NilBackendsOmittedFromJSON",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "17-internal_cli",
+    "evidence": "evidence/go/17-internal_cli/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/cli",
+    "test": "TestCLIConfig_OpenClawOverride_PartialFieldsOmitted",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "17-internal_cli",
+    "evidence": "evidence/go/17-internal_cli/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/cli",
+    "test": "TestCLIConfig_ProfileCommandOverrides_OmittedWhenEmpty",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "17-internal_cli",
+    "evidence": "evidence/go/17-internal_cli/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon",
+    "test": "TestLoadConfig_BackendOverrides_BackwardCompat_NoConfigFile",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "20-internal_daemon",
+    "evidence": "evidence/go/20-internal_daemon/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon",
+    "test": "TestPrepareReasonixTaskStateHome",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "20-internal_daemon",
+    "evidence": "evidence/go/20-internal_daemon/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon",
+    "test": "TestPrepareDshTaskSessionRoot",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "20-internal_daemon",
+    "evidence": "evidence/go/20-internal_daemon/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon",
+    "test": "TestEnsureDaemonID_Persists",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "20-internal_daemon",
+    "evidence": "evidence/go/20-internal_daemon/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon",
+    "test": "TestEnsureDaemonID_PromotesPreChangeProfileFile",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "20-internal_daemon",
+    "evidence": "evidence/go/20-internal_daemon/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon",
+    "test": "TestEnsureDaemonID_RegeneratesCorruptFile",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "20-internal_daemon",
+    "evidence": "evidence/go/20-internal_daemon/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon",
+    "test": "TestLegacyDaemonUUIDs_ScansProfileDirs",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "20-internal_daemon",
+    "evidence": "evidence/go/20-internal_daemon/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+    "test": "TestHermesMemoryStorePathLayout",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "22-internal_daemon_execenv",
+    "evidence": "evidence/go/22-internal_daemon_execenv/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+    "test": "TestPruneHermesMemoryStores",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "22-internal_daemon_execenv",
+    "evidence": "evidence/go/22-internal_daemon_execenv/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+    "test": "TestHermesSessionStorePathLayout",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "22-internal_daemon_execenv",
+    "evidence": "evidence/go/22-internal_daemon_execenv/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+    "test": "TestPruneHermesSessionStores",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "22-internal_daemon_execenv",
+    "evidence": "evidence/go/22-internal_daemon_execenv/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestClaimTask_ProjectGithubReposOverrideWorkspaceRepos",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "33-internal_handler",
+    "evidence": "evidence/go/33-internal_handler/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestClaimTask_ProjectDescriptionInjected",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "33-internal_handler",
+    "evidence": "evidence/go/33-internal_handler/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestClaimTask_ProjectWithoutRepos_FallsBackToWorkspaceRepos",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "33-internal_handler",
+    "evidence": "evidence/go/33-internal_handler/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestClaimTask_AutopilotRunOnly_PopulatesWorkspaceAndProjectContext",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "33-internal_handler",
+    "evidence": "evidence/go/33-internal_handler/stdout.jsonl"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestClaimTaskByRuntime_TaskWorkspaceMismatch_CancelsAndRejects",
+    "level": "top_level",
+    "status": "FAIL",
+    "run_id": "33-internal_handler",
+    "evidence": "evidence/go/33-internal_handler/stdout.jsonl"
+  }
+]

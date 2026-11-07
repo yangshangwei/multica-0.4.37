@@ -1,0 +1,122 @@
+{
+  "started_at": "2026-11-02T07:53:04.490534+00:00",
+  "state": "complete",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "database": "multica_func7af9_next_cached_diag_1",
+  "source_root": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+  "commercial_provider_calls": 0,
+  "original_p95_failure_retained": true,
+  "original_p95_gate_executed": false,
+  "closure_operations_permit": 1,
+  "product_source_changed": false,
+  "automatic_retries": 0,
+  "agent_cli_guard": true,
+  "race_enabled": false,
+  "actual_prepared_capture": "backend-only auto_explain notice",
+  "statistics_experiment": "Task-only ANALYZE of four tables at source and target phases after two full baseline rollbacks",
+  "steps": [
+    {
+      "name": "format-private-test",
+      "command": [
+        "gofmt",
+        "-w",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-perf-cached-plan-1/diagnostic_test.go"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T07:53:04.580800+00:00",
+      "pid": 6157,
+      "finished_at": "2026-11-02T07:53:04.586754+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "compile",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-p",
+        "2",
+        "-overlay",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-perf-cached-plan-1/overlay.json",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-perf-cached-plan-1/handler-cached-plan.test",
+        "./internal/handler"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T07:53:04.591669+00:00",
+      "pid": 6158,
+      "finished_at": "2026-11-02T07:53:19.052656+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "diagnostic",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/internal/handler",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-perf-cached-plan-1/handler-cached-plan.test",
+        "-test.v",
+        "-test.run",
+        "^TestIterationCanonicalCachedPlanDiagnostic$",
+        "-test.count=1",
+        "-test.parallel=1",
+        "-test.timeout=5m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T07:53:19.766603+00:00",
+      "pid": 6221,
+      "finished_at": "2026-11-02T07:53:35.416639+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "3d21560d4c03f54e3ae282de14f8d211cafa79335b0236e0c6d77edcd40d6ac7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "preexisting_patch_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+  "frozen_test_sha256_before": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+  "product_trees": {
+    "server": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+    "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+    "packages": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292"
+  },
+  "template_database": "multica_func7af9_template_20261102",
+  "overlay_virtual_target": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102/server/internal/handler/zz_task_private_iteration_cached_diagnostic_test.go",
+  "overlay_target_exists_on_disk": false,
+  "diagnostic_test_sha256": "c059e7f23595d94a7542663a03e907569d014ae29f1bb711806285bf85a3945f",
+  "overlay_sha256": "60dc2d4fe5268cf134629f326184663ef348b2caf79e2026caeacfa76218fa7f",
+  "overlay_diff": "+ task-private zz_task_private_iteration_cached_diagnostic_test.go; all existing source files unchanged",
+  "test_binary_sha256": "17c681319fb7c135162a616532028fe33450efbc44a0da1168100ba2e4fb1872",
+  "pg_headroom_before": {
+    "maximum": 100,
+    "used": 45
+  },
+  "migration_count": 751,
+  "private_environment_sha256": "43be247f578e693192a73f6a7a832fe390dfa53ce1d02c3e1e2b903b360f3986",
+  "runner_sha256": "064872612af8a7a745f34ba7c0927e89e8ae8fc554c7d9562a3f42c6311c0576",
+  "finished_at": "2026-11-02T07:53:35.417173+00:00",
+  "exit_code": 0,
+  "outcomes": {
+    "TestIterationCanonicalCachedPlanDiagnostic": "pass"
+  },
+  "counts": {
+    "pass": 1
+  },
+  "metrics_sha256": "007ba7c8c27c635d2ecbd3dd1f2e4555473880a55d265c83dd07ebed8cf4993e",
+  "connections_after": 0,
+  "frozen_test_sha256_after": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+  "frozen_test_unchanged": true,
+  "source_diff_unchanged": true,
+  "overlay_target_absent_after": true,
+  "cleanup_checked_at": "2026-11-02T07:53:35.525811+00:00"
+}

@@ -1,0 +1,46 @@
+{
+  "at": "2026-11-02T02:56:10.526456+00:00",
+  "scope": "Read-only internal code and saved evidence; no tests/services/DB/Git operations",
+  "candidate_supplied_by_task": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "status": "PROVEN_SEQUENTIAL_READ_MECHANISM_CAUSAL_TIMING_UNRESOLVED",
+  "original_failure_preserved": true,
+  "derived_code_counts_per_successful_1000_task_carryover": {
+    "serial_active_task_queries": 1000,
+    "serial_participation_lock_queries": 2000,
+    "membership_batch_phase_invocations": 7,
+    "membership_batch_sql_statements": 7000
+  },
+  "recorded_aggregate_traced_statements": 643369,
+  "recorded_lock_sampler": {
+    "blocked_samples": 0,
+    "events": {},
+    "sampled_blocked_ms": 0,
+    "samples": 157298
+  },
+  "aggregate_tracer_is_per_closure": false,
+  "aggregate_tracer_counts_network_roundtrips": false,
+  "code_fingerprints": {
+    "server/internal/handler/iteration_i1_p95_test.go": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+    "server/internal/handler/iteration_capacity_benchmark_test.go": "6d038e63322ef8819b83a4392db0808438edd2aeceda99d8a52e70431244d930",
+    "server/internal/handler/iteration_management.go": "03b4bebebec2fc5b161e0ecac95df034f156c8fdd99359cc0fec7e2bdaf8562e",
+    "server/internal/service/iteration_lifecycle_preview.go": "ee377dc88778ffa6f2dc9d5fc77d720f422ba81ee43b1549d736424ad0cbcd25",
+    "server/internal/service/iteration_lifecycle_apply.go": "4617b15692793de8947b42db5c030f7dec50097b78e4293d3dfc65406906995e",
+    "server/internal/service/iteration_closure.go": "7f4989c6e3d6a684fc28bd4c5996a318296683d7e0ec5df5ee36b8045a0134b3",
+    "server/internal/iteration/membership.go": "163f21e0cb3f07dc26bf8d41abd3eb5073a73428094903a787c191025dd2df52",
+    "server/internal/iteration/membership_batch.go": "249502d7d24102be4c31acced82427e038fef224758243268d4a8759f3dd1e8b",
+    "server/internal/iteration/history.go": "4ab5fdcff067550b6df5b85dd16ad7c879788f68979611ff78eb7170acc5af36",
+    "server/internal/iteration/history_capture.go": "66a18fa7efe3227fc89aa3d7996c935a0cd40a421ec3150490520b6c2561b233",
+    "server/pkg/db/queries/iteration_membership_batch.sql": "032d0b48df0cbbe027a8f9b1fdf94da44bc4380245761a18fe56d64a21ef3c1b",
+    "server/pkg/db/queries/iteration.sql": "7cbf676e3d1d0773c48f82faf8c1342a4c58df2051dab720aed23c9478b9b0f1",
+    "server/pkg/db/queries/agent.sql": "4d900ec193fb94e9b3c8f4835224ab64035872a85788bb2b42526cd0ea3999a1"
+  },
+  "raw_evidence_sha256": "d1cc8478e2f2a98db8737f3d93dce4e9d13084de01386d3934b5d3b2e3708276",
+  "next_diagnostic": "One complete task-private 1000-task closure, new owned DB, query-group and batch-phase timings, pool/commit/residual separate; no threshold changes",
+  "measurement_architecture_difference": {
+    "historical_reference_postgres": "17.11 aarch64",
+    "current_recorded_postgres": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "current_go": "go1.27.0",
+    "emulation_proven": false
+  },
+  "research_file": "research/perf-code-diagnosis-1.md"
+}

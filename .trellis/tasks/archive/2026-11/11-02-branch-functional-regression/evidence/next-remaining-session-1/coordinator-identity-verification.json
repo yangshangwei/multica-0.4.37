@@ -1,0 +1,39 @@
+{
+  "at": "2026-11-02T08:54:46.557471+00:00",
+  "reviewer": "coordinator verification; independent review separate",
+  "status": "PASS_IDENTITY_AND_NEW_EVIDENCE_BOUNDARY",
+  "corrected_child_result": "evidence/next-remaining-identity-1/verification.json",
+  "original_checker_failure_retained": "evidence/next-remaining-identity-1/run.json",
+  "current_raw_hash_mismatches": [],
+  "no_new_source_identity": true,
+  "known_next_generated_import_exact_bytes": true,
+  "saved_child_raw_hash_checks": 158,
+  "current_new_runs": [
+    {
+      "path": "evidence/next-remaining-cleanup-1/run.json",
+      "started_at": "2026-11-02T08:50:26.211798+00:00",
+      "state": "complete",
+      "role": "current resource/connection audit; not symptom stats/plan evidence",
+      "sha256": "f838e07ef27061ea19a1e1b5135e18d27398b0697686c41c5f3b27718d0d4e5c"
+    },
+    {
+      "path": "evidence/next-remaining-identity-1/run.json",
+      "started_at": "2026-11-02T08:48:57.560615+00:00",
+      "state": "failed",
+      "role": "private identity checker with preserved mechanical classification failure",
+      "sha256": "e8e3bcb44cb198ad3ca0ada3c7b6b57071696482488c474be450ba7cc9e26c7c"
+    },
+    {
+      "path": "evidence/next-remaining-platform-1/run.json",
+      "started_at": "2026-11-02T08:44:47.441025+00:00",
+      "state": "complete",
+      "role": "current prerequisite observation",
+      "sha256": "ce5f0d6e4d128e1de9efd54822063748882a72cbba1a1cb9d4fcc73660e690bb"
+    }
+  ],
+  "new_genuine_symptom_runs": [],
+  "new_run_observation_note": "This later coordinator inventory includes cleanup/checker runs after the child observation; all are non-symptom verification. No current statistics were inferred as historical facts.",
+  "frozen_failure": "2171ms>2000ms FAIL retained; no rerun",
+  "commercial_calls": 0,
+  "remote_dispatches": 0
+}

@@ -1,0 +1,35 @@
+{
+  "started_at": "2026-11-02T06:15:07.347954+00:00",
+  "finished_at": "2026-11-02T06:15:09.798689+00:00",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-p",
+    "2",
+    "./internal/iteration",
+    "-run",
+    "^TestIterationMembershipBatchSQLMatchesCanonical$",
+    "-count=1",
+    "-json"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+  "exit_code": 0,
+  "outcomes": {
+    "TestIterationMembershipBatchSQLMatchesCanonical": "pass"
+  },
+  "database_url_removed": true,
+  "database_operations": 0,
+  "testmain_defined_in_iteration_package": false,
+  "original_p95_gate_executed": false,
+  "commercial_calls": 0,
+  "streams": {
+    "stdout.jsonl": "01b907040da10156e952cb9ab524e6af9e924a3afb4cd72a4e51863c8e2847df",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,76 @@
+TAP version 13
+# Subtest: Windows Host close delivers EOF and retains the graceful final summary without POSIX signals
+ok 1 - Windows Host close delivers EOF and retains the graceful final summary without POSIX signals
+  ---
+  duration_ms: 2.088208
+  type: 'test'
+  ...
+# Subtest: POSIX Host close still resumes a suspended daemon before EOF
+ok 2 - POSIX Host close still resumes a suspended daemon before EOF
+  ---
+  duration_ms: 0.154417
+  type: 'test'
+  ...
+# Subtest: Windows fallback remains bounded and an abrupt exit cannot become a graceful pass
+ok 3 - Windows fallback remains bounded and an abrupt exit cannot become a graceful pass
+  ---
+  duration_ms: 0.385709
+  type: 'test'
+  ...
+# Subtest: Windows suspend and resume helpers refuse before sending unsupported signals
+ok 4 - Windows suspend and resume helpers refuse before sending unsupported signals
+  ---
+  duration_ms: 0.367583
+  type: 'test'
+  ...
+# Subtest: Windows uses the installed EXE resources and bundled EXE with an encoded file URL
+ok 5 - Windows uses the installed EXE resources and bundled EXE with an encoded file URL
+  ---
+  duration_ms: 1.088708
+  type: 'test'
+  ...
+# Subtest: macOS preserves the app Contents layout and encodes package names
+ok 6 - macOS preserves the app Contents layout and encodes package names
+  ---
+  duration_ms: 0.407709
+  type: 'test'
+  ...
+# Subtest: native renderer URLs round-trip literal percent sequences, hashes and spaces as filesystem text
+ok 7 - native renderer URLs round-trip literal percent sequences, hashes and spaces as filesystem text
+  ---
+  duration_ms: 2.537792
+  type: 'test'
+  ...
+# Subtest: native layouts reject unsupported platforms and paths outside a supported package shape
+ok 8 - native layouts reject unsupported platforms and paths outside a supported package shape
+  ---
+  duration_ms: 0.325292
+  type: 'test'
+  ...
+# Subtest: native homes use platform path rules and reject network or relative roots
+ok 9 - native homes use platform path rules and reject network or relative roots
+  ---
+  duration_ms: 0.290333
+  type: 'test'
+  ...
+# Subtest: native controller shutdown preserves a failed close command after its owned child exits
+ok 10 - native controller shutdown preserves a failed close command after its owned child exits
+  ---
+  duration_ms: 0.592417
+  type: 'test'
+  ...
+# Subtest: already closed controller does not send another command or touch Docker
+ok 11 - already closed controller does not send another command or touch Docker
+  ---
+  duration_ms: 0.061084
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 82.822209

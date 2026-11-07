@@ -1,0 +1,81 @@
+{
+  "at": "2026-11-02T01:50:27.936252+00:00",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "scope": "Tagged knowledgeintegration only; controlled actual HTTP/WS/daemon/Runner processes, no commercial account",
+  "modes": [
+    "normal",
+    "race"
+  ],
+  "unique_top_level_cases": 23,
+  "top_level_executions": 46,
+  "subtest_executions": 42,
+  "failed": 0,
+  "skipped": 0,
+  "runs": [
+    {
+      "name": "ordinary-normal",
+      "database": "multica_knowledge_composite_20261101_func7af9_normal",
+      "exit_code": 0,
+      "top": {
+        "pass": 14,
+        "fail": 0,
+        "skip": 0
+      },
+      "subtests": {
+        "pass": 13,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "ordinary-race",
+      "database": "multica_knowledge_composite_20261101_func7af9_race",
+      "exit_code": 0,
+      "top": {
+        "pass": 14,
+        "fail": 0,
+        "skip": 0
+      },
+      "subtests": {
+        "pass": 13,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "host-normal",
+      "database": "multica_knowledge_host_composite_20261101_func7af9_normal",
+      "exit_code": 0,
+      "top": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "subtests": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "host-race",
+      "database": "multica_knowledge_host_composite_20261101_func7af9_race",
+      "exit_code": 0,
+      "top": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "subtests": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      }
+    }
+  ],
+  "first_wrong_prefix_setup_failures_retained": "evidence/knowledge-tagged",
+  "deployed_startup_switch_separate_proofs": [
+    "evidence/host-off-1",
+    "evidence/knowledge-on-1"
+  ]
+}

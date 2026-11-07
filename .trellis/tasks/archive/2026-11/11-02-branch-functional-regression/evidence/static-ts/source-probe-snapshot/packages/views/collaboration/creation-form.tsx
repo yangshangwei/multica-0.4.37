@@ -1,0 +1,184 @@
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { collaborationCreationOptions, collaborationDeliveryKey, collaborationDeliveryRevision,
+  CollaborationCreationRejectedError,
+  CollaborationCreationFieldsSchema, collaborationPropertyValueMatchesDefinition,
+  executeCollaborationCreation, isCollaborationScopeCurrent, prepareCollaborationCreation, readCollaborationDeliveryRecords,
+  subscribeCollaborationDelivery, useCollaborationDeliveryForm, type CollaborationCreationDraft, type CollaborationCreationOptions,
+  type CollaborationCreationFields, type CollaborationIssue, type CollaborationScope } from "@multica/core/collaboration";
+import type { IssuePropertyValue } from "@multica/core/types";
+import { accountPath } from "@multica/core/paths";
+import { Button } from "@multica/ui/components/ui/button";
+import { Input } from "@multica/ui/components/ui/input";
+import { Textarea } from "@multica/ui/components/ui/textarea";
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@multica/ui/components/ui/dialog";
+import { useNavigation } from "../navigation";
+import { useT } from "../i18n";
+import { CollaborationQueryState } from "./query-state";
+import { CollaborationAccountPicker } from "./account-picker";
+import { CollaborationAttachmentPicker } from "./attachment-picker";
+import { CollaborationIterationInput, CollaborationLabelInput, CollaborationPropertyInputs, CollaborationSourceInputs, collaborationSelectClass } from "./field-inputs";
+import { useCollaborationLabels } from "./labels";
+
+export function CollaborationCreationEntry({ scope, sourceWorkspaceId }: { scope: CollaborationScope; sourceWorkspaceId?: string }) {
+  const { t } = useT("collaboration");
+  const navigation = useNavigation();
+  const [open, setOpen] = useState(false);
+  return <Dialog open={open} onOpenChange={setOpen}>
+    <DialogTrigger render={<Button className="pointer-coarse:min-h-11" />}>{t(($) => $.creation.entry)}</DialogTrigger>
+    <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl" closeLabel={t(($) => $.creation.close)}>
+      <DialogTitle className="pr-8">{t(($) => $.creation.title)}</DialogTitle>
+      <DialogDescription>{t(($) => $.creation.help)}</DialogDescription>
+      {open && <CollaborationCreationPanel scope={scope} sourceWorkspaceId={sourceWorkspaceId} onCreated={(issue) => {
+        setOpen(false); navigation.push(accountPath({ view: "participating", issueId: issue.id }));
+      }} />}
+    </DialogContent>
+  </Dialog>;
+}
+
+export function CollaborationCreationPanel({ scope, sourceWorkspaceId, onCreated }: { scope: CollaborationScope; sourceWorkspaceId?: string; onCreated: (issue: CollaborationIssue) => void }) {
+  const { t } = useT("collaboration");
+  const client = useQueryClient();
+  const selectId = useId();
+  useSyncExternalStore(subscribeCollaborationDelivery, collaborationDeliveryRevision, () => 0);
+  let draftError = false;
+  let records: ReturnType<typeof readCollaborationDeliveryRecords> = [];
+  try { records = readCollaborationDeliveryRecords(scope); } catch { draftError = true; }
+  const previousSource = records.find((record) => record.scope.context.kind === "creation")?.scope.context.sourceWorkspaceId;
+  const pendingSource = records.find((record) => record.scope.context.kind === "creation" && (record.kind === "upload" || record.kind === "creation" && record.input !== null))?.scope.context.sourceWorkspaceId;
+  const [selection, setSelection] = useState(pendingSource ?? sourceWorkspaceId ?? previousSource ?? "");
+  const sources = useQuery(collaborationCreationOptions(client, scope));
+  const sourceId = selection || (sources.data?.sources.length === 1 ? sources.data.sources[0]!.id : "");
+  const recoveries = records.filter((record): record is CollaborationCreationDraft => record.kind === "creation" && record.input === null);
+  const recovery = useMutation({ mutationKey: [...collaborationDeliveryKey(scope, { kind: "creation", sourceWorkspaceId: sourceId }), "recover"], retry: false,
+    mutationFn: (draft: CollaborationCreationDraft) => executeCollaborationCreation(client, scope, draft, true),
+    onSuccess: (issue) => { if (isCollaborationScopeCurrent(scope)) onCreated(issue); } });
+  return <div className="min-w-0 space-y-5">
+    {sources.isPending && <p role="status">{t(($) => $.page.loading)}</p>}
+    {sources.error && <CollaborationQueryState error={sources.error} retry={() => void sources.refetch()} />}
+    {draftError && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
+    {recoveries.map((draft) => <div key={draft.requestId} className="space-y-2"><p className="text-caption text-muted-foreground">{t(($) => $.creation.recoveryOnly)}</p>
+      <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={recovery.isPending} onClick={() => recovery.mutate(draft)}>{t(($) => $.creation.recover)}</Button></div>)}
+    {recovery.error && <CollaborationQueryState error={recovery.error} />}
+    {sources.data && <>
+      <div className="space-y-2"><label htmlFor={selectId} className="block text-body font-medium">{t(($) => $.creation.source)}</label>
+        <select id={selectId} value={sourceId} onChange={(event) => setSelection(event.target.value)} className="min-h-11 w-full rounded-md border border-input bg-background px-3 text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+          <option value="">{t(($) => $.creation.chooseSource)}</option>{sources.data.sources.map((source) => <option key={source.id} value={source.id}>{source.name}</option>)}
+        </select>
+      </div>
+      {!sources.data.creation_enabled && <p role="status" className="text-body text-muted-foreground">{t(($) => $.creation.disabled)}</p>}
+      {sources.data.sources.length === 0 && <p className="text-body text-muted-foreground">{t(($) => $.creation.noSources)}</p>}
+      {!draftError && sources.data.sources.some((source) => source.id === sourceId) && <SelectedCreationSource key={`${scope.apiScope}:${scope.userId}:${sourceId}`} scope={scope} sourceId={sourceId} onCreated={onCreated} />}
+    </>}
+  </div>;
+}
+
+function SelectedCreationSource({ scope, sourceId, onCreated }: { scope: CollaborationScope; sourceId: string; onCreated: (issue: CollaborationIssue) => void }) {
+  const { t } = useT("collaboration");
+  const client = useQueryClient();
+  const [parentSearch, setParentSearch] = useState("");
+  const query = useQuery({ ...collaborationCreationOptions(client, scope, sourceId, parentSearch), placeholderData: keepPreviousData });
+  if (query.isPending) return <p role="status">{t(($) => $.page.loading)}</p>;
+  if (query.error || !query.data?.source) return <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />;
+  return <CreationForm scope={scope} options={query.data} onCreated={onCreated} parentSearch={parentSearch} onParentSearch={setParentSearch} optionsPending={query.isFetching} />;
+}
+
+function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch, optionsPending }: { scope: CollaborationScope; options: CollaborationCreationOptions; onCreated: (issue: CollaborationIssue) => void; parentSearch: string; onParentSearch: (search: string) => void; optionsPending: boolean }) {
+  const { t } = useT("collaboration");
+  const labels = useCollaborationLabels();
+  const client = useQueryClient();
+  const id = useId();
+  const sourceId = options.source!.id;
+  const context = { kind: "creation" as const, sourceWorkspaceId: sourceId };
+  const draft = useCollaborationDeliveryForm({ server: scope.server, userId: scope.userId, context }, "creation");
+  const { form } = draft;
+  const [uploading, setUploading] = useState(false);
+  const active = useRef(true);
+  useEffect(() => { active.current = true; return () => { active.current = false; }; }, []);
+  const create = useMutation({ mutationKey: [...collaborationDeliveryKey(scope, context), "create"], retry: false, networkMode: "always",
+    mutationFn: ({ value, recovery }: { value: CollaborationCreationDraft; recovery: boolean }) => executeCollaborationCreation(client, scope, value, recovery),
+    onSuccess: (issue) => { if (active.current && isCollaborationScopeCurrent(scope)) onCreated(issue); } });
+  const locked = create.isPending || draft.creations.length > 0 || Boolean(draft.error) || uploading || draft.uploads.length > 0;
+  const editable = !locked && options.creation_enabled;
+  const initial = form.initialFields ?? {};
+  const fields = options.fields;
+  const updateFields = (value: Partial<CollaborationCreationFields>) => draft.update({ initialFields: { ...initial, ...value } });
+  const updateProperty = (propertyId: string, value: IssuePropertyValue | undefined) => {
+    const next = { ...initial.properties };
+    if (value === undefined) delete next[propertyId]; else next[propertyId] = value;
+    updateFields({ properties: next });
+  };
+  const properties: Record<string, IssuePropertyValue> = {};
+  for (const [key, value] of Object.entries(initial.properties ?? {})) if (value !== null) properties[key] = value;
+  const initialValid = CollaborationCreationFieldsSchema.safeParse(initial).success && (fields === undefined ? Object.keys(initial).length === 0 :
+    (!initial.status || fields.statuses.some((item) => item.key === initial.status)) &&
+    (initial.label_ids ?? []).every((id) => fields.labels.some((item) => item.id === id)) &&
+    Object.entries(properties).every(([id, value]) => fields.properties.some((definition) => definition.id === id && collaborationPropertyValueMatchesDefinition(value, definition))) &&
+    (!initial.current_iteration_id || fields.source_options.iterations_enabled && fields.source_options.iterations.some((item) => item.id === initial.current_iteration_id)));
+  const iterationChanged = initial.current_iteration_id && fields?.source_options.iterations.some((item) => item.id === initial.current_iteration_id && item.revision !== initial.expected_iteration_revision);
+  const initialSection = useRef<HTMLDetailsElement>(null);
+  useEffect(() => { if (!initialValid && initialSection.current) initialSection.current.open = true; }, [initialValid, fields]);
+  return <form className="min-w-0 space-y-5" onSubmit={(event) => {
+    if (event.target !== event.currentTarget) return;
+    event.preventDefault(); if (!editable || !form.title.trim() || !initialValid) return;
+    create.mutate({ value: prepareCollaborationCreation(form, crypto.randomUUID()), recovery: false });
+  }}>
+    <div className="space-y-2"><label htmlFor={`${id}-title`} className="block text-body font-medium">{t(($) => $.creation.titleLabel)}</label>
+      <Input id={`${id}-title`} value={form.title} maxLength={1000} disabled={!editable} onChange={(event) => draft.update({ title: event.target.value })} required className="min-h-11" />
+    </div>
+    <div className="space-y-2"><label htmlFor={`${id}-description`} className="block text-body font-medium">{t(($) => $.creation.description)}</label>
+      <Textarea id={`${id}-description`} value={form.content} maxLength={1_000_000} disabled={!editable} onChange={(event) => draft.update({ content: event.target.value })} className="min-h-28" />
+    </div>
+    <fieldset className="min-w-0 space-y-3"><legend className="mb-2 text-body font-medium">{t(($) => $.creation.recipient)}</legend>
+      <div className="flex flex-wrap items-center gap-3"><p role="status" className="text-body [overflow-wrap:anywhere]">{form.recipient ? t(($) => $.creation.assignedTo, { name: form.recipient.name }) : t(($) => $.creation.assignedSelf)}</p></div>
+      <CollaborationAccountPicker scope={scope} context={context} selected={form.recipient} allowSelf selfName={t(($) => $.creation.self)} label={t(($) => $.creation.recipient)} disabled={!editable}
+        onSelect={(account) => draft.update({ recipient: account ? { ...account, external: account.external === true } : null, recipientQuery: "" })} />
+    </fieldset>
+    {fields && <details ref={initialSection} className="min-w-0 space-y-4"><summary className="cursor-pointer py-2 text-body font-medium pointer-coarse:min-h-11">{t(($) => $.fields.initial)}</summary>
+      <fieldset disabled={!editable} className="min-w-0 space-y-5">
+        <div className="grid min-w-0 gap-4 sm:grid-cols-2">
+          <div className="space-y-2"><label htmlFor={`${id}-status`} className="text-body">{t(($) => $.detail.status)}</label>
+            <select id={`${id}-status`} value={initial.status ?? fields.default_status} className={collaborationSelectClass} onChange={(event) => updateFields({ status: event.target.value })}>
+              {initial.status && !fields.statuses.some((item) => item.key === initial.status) && <option value={initial.status}>{t(($) => $.fields.unavailableSelection, { value: initial.status })}</option>}
+              {fields.statuses.map((status) => <option key={status.key} value={status.key}>{labels.status(status.key) === status.key ? status.name : labels.status(status.key)}</option>)}
+            </select>
+          </div>
+          <div className="space-y-2"><label htmlFor={`${id}-priority`} className="text-body">{t(($) => $.workflow.priority)}</label>
+            <select id={`${id}-priority`} value={initial.priority ?? "none"} className={collaborationSelectClass} onChange={(event) => updateFields({ priority: event.target.value as CollaborationCreationFields["priority"] })}>
+              {(["none", "low", "medium", "high", "urgent"] as const).map((value) => <option key={value} value={value}>{t(($) => $.priorities[value])}</option>)}
+            </select>
+          </div>
+          <div className="space-y-2"><label htmlFor={`${id}-start`} className="text-body">{t(($) => $.workflow.startDate)}</label><Input id={`${id}-start`} type="date" value={initial.start_date ?? ""} onChange={(event) => updateFields({ start_date: event.target.value || null })} className="pointer-coarse:min-h-11" /></div>
+          <div className="space-y-2"><label htmlFor={`${id}-due`} className="text-body">{t(($) => $.workflow.dueDate)}</label><Input id={`${id}-due`} type="date" value={initial.due_date ?? ""} onChange={(event) => updateFields({ due_date: event.target.value || null })} className="pointer-coarse:min-h-11" /></div>
+        </div>
+        <CollaborationLabelInput labels={fields.labels} selectedIds={initial.label_ids ?? []} onChange={(label_ids) => updateFields({ label_ids })} disabled={!editable} />
+        <CollaborationPropertyInputs scope={scope} sourceId={sourceId} definitions={fields.properties} values={properties} disabled={!editable}
+          onChange={updateProperty} />
+        {Object.keys(properties).filter((propertyId) => !fields.properties.some((definition) => definition.id === propertyId)).map((propertyId) => <div key={propertyId} className="flex min-w-0 flex-wrap items-center gap-2">
+          <p className="text-caption [overflow-wrap:anywhere]">{t(($) => $.fields.unavailableSelection, { value: propertyId })}</p>
+          <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={!editable} onClick={() => updateProperty(propertyId, undefined)}>{t(($) => $.fields.clear)}</Button>
+        </div>)}
+        <CollaborationSourceInputs options={fields.source_options} value={{ projectId: initial.project_id ?? null, parentIssueId: initial.parent_issue_id ?? null, stage: initial.stage ?? null }}
+          onChange={(value) => updateFields({ project_id: value.projectId, parent_issue_id: value.parentIssueId, stage: value.stage })} parentSearch={parentSearch} onParentSearch={onParentSearch} disabled={!editable} />
+        {initial.parent_issue_id && !initial.project_id && <p className="text-caption text-muted-foreground">{t(($) => $.fields.parentProjectHint)}</p>}
+        <CollaborationIterationInput options={fields.source_options} selectedId={initial.current_iteration_id ?? null} disabled={!editable || optionsPending} allowClearWhenDisabled
+          onChange={(iterationId) => updateFields({ current_iteration_id: iterationId, expected_iteration_revision: fields.source_options.iterations.find((period) => period.id === iterationId)?.revision })} />
+        {iterationChanged && <div className="space-y-2"><p role="status" className="text-caption">{t(($) => $.fields.changed)}</p><Button type="button" variant="outline" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11" disabled={!editable || optionsPending}
+          onClick={() => updateFields({ expected_iteration_revision: fields.source_options.iterations.find((period) => period.id === initial.current_iteration_id)?.revision })}>{t(($) => $.fields.useCurrentVersion)}</Button></div>}
+      </fieldset>
+    </details>}
+    {!initialValid && <div className="space-y-2"><p role="alert" className="text-body">{t(($) => $.fields.invalidSelection)}</p>
+      {!fields && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={!editable} onClick={() => draft.update({ initialFields: {} })}>{t(($) => $.fields.clearInitial)}</Button>}</div>}
+    <CollaborationAttachmentPicker scope={scope} form={form} update={draft.update} uploads={draft.uploads} disabled={create.isPending || draft.creations.length > 0 || Boolean(draft.error) || !options.creation_enabled} onBusyChange={setUploading} />
+    {Boolean(draft.error) && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
+    {create.error instanceof CollaborationCreationRejectedError && <p role="status" className="text-body text-muted-foreground">{t(($) => $.creation.rejected)}</p>}
+    {create.error && !(create.error instanceof CollaborationCreationRejectedError) && <p role="alert" className="text-body text-muted-foreground">{t(($) => $.creation.error)}</p>}
+    {create.isPending && <p role="status">{t(($) => $.creation.submitting)}</p>}
+    {draft.creations.map((value) => <div key={value.requestId} className="space-y-3"><p role="status" className="text-body text-muted-foreground">{t(($) => $.creation.unknown)}</p>
+      <div className="flex flex-wrap gap-2"><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={create.isPending} onClick={() => create.mutate({ value, recovery: true })}>{t(($) => $.creation.recover)}</Button>
+        <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={create.isPending || !options.creation_enabled} onClick={() => create.mutate({ value, recovery: false })}>{t(($) => $.creation.retry)}</Button></div>
+    </div>)}
+    <div className="flex flex-wrap items-center justify-between gap-3"><p className="text-caption text-muted-foreground">{t(($) => $.creation.saved)}</p>
+      <Button type="submit" disabled={!editable || !form.title.trim() || !initialValid} className="pointer-coarse:min-h-11">{t(($) => $.creation.submit)}</Button></div>
+  </form>;
+}

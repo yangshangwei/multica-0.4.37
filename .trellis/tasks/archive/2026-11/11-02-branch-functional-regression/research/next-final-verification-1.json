@@ -1,0 +1,17 @@
+{
+  "at": "2026-11-02T03:46:53.846626+00:00",
+  "status": "PASS_WITH_REQUIRED_ACCEPTANCE_GATES_OPEN",
+  "historical_fingerprints_checked": 4614,
+  "old_raw_evidence_and_439_inventory_unchanged": true,
+  "conditional_matrix_rows": 26,
+  "json_csv_driver_syntax_and_diff_check": "PASS",
+  "independent_review": "research/next-evidence-review-1.md including runtime2 supplement",
+  "review_findings_resolved": [
+    "Windows business-conditional baseline",
+    "Mac run1 fixture limitation preserved; newrun2 real password form visible"
+  ],
+  "cleanup": "evidence/next-cleanup-2/run.json",
+  "p95_fail_retained": true,
+  "task_status": "in_progress",
+  "full_product_lint_typecheck": "Not repeated because no product/dependency change; task-scoped diagnostic and native app checks executed"
+}

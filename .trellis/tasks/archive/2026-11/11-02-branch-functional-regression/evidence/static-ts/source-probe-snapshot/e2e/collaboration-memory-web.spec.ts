@@ -1,0 +1,143 @@
+import { expect, test } from "@playwright/test";
+import { saveMemoryInUI, seedMemoryIssue } from "./fixtures/collaboration-memory";
+
+const configured = () => Boolean(process.env.COLLABORATION_E2E_API_URL && process.env.DATABASE_URL && process.env.NEXT_PUBLIC_API_URL);
+test.use({ actionTimeout: 15_000, trace: "off", screenshot: "only-on-failure" });
+
+test("shared context keeps concurrent edits, restores versions, and permits historical purge after closure", async ({ page, browser }, info) => {
+  test.setTimeout(240_000);
+  test.skip(!configured(), "Requires the isolated memory API/database and production Web");
+  const fixture = await seedMemoryIssue();
+  const errors: string[] = [];
+  page.on("pageerror", error => errors.push(error.message));
+  await fixture.creator.authenticate(page);
+  await page.goto(fixture.path);
+  const panel = page.locator("#memory");
+  await expect(panel.getByRole("heading", { name: "Shared context", exact: true })).toBeVisible();
+  await expect(panel).toContainText("No shared context yet.");
+  expect(await fixture.read()).toMatchObject({ version: "0", content: "", bytes: 0 });
+  const firstContent = "Decision A: retain the shared handoff document.";
+  await saveMemoryInUI(page, firstContent, "0");
+  expect(await fixture.read()).toMatchObject({ version: "1", content: firstContent, author: { member: { user_id: fixture.creator.id } } });
+  const participantContext = await browser.newContext();
+  let releaseOriginal = () => {};
+  try {
+    const participant = await participantContext.newPage();
+    participant.on("pageerror", error => errors.push(error.message));
+    await fixture.participant.authenticate(participant);
+    await participant.goto(new URL(fixture.path, page.url()).href);
+    const otherPanel = participant.locator("#memory");
+    await expect(otherPanel.getByText(firstContent, { exact: true })).toBeVisible();
+    await otherPanel.getByRole("button", { name: "Version history", exact: true }).click();
+    await expect(otherPanel.getByRole("button", { name: /^Purge v/ })).toHaveCount(0);
+    const draft = "Creator draft must survive another participant's update.";
+    await panel.getByRole("button", { name: "Edit shared context", exact: true }).click();
+    await panel.getByLabel("Shared context (Markdown)", { exact: true }).fill(draft);
+    const hold = new Promise<void>(resolve => { releaseOriginal = resolve; });
+    let intercepted = false;
+    await page.route(`**${fixture.root}/memory`, async route => {
+      if (route.request().method() !== "PUT" || intercepted) return route.continue();
+      intercepted = true;
+      await hold;
+      await route.continue();
+    });
+    const staleResponse = page.waitForResponse(response => new URL(response.url()).pathname === `${fixture.root}/memory` && response.request().method() === "PUT");
+    await panel.getByRole("button", { name: "Save shared context", exact: true }).click();
+    const secondContent = "Decision B: the next owner must merge with decision A.";
+    await saveMemoryInUI(participant, secondContent, "1");
+    releaseOriginal();
+    const refused = await staleResponse;
+    await page.unroute(`**${fixture.root}/memory`);
+    expect(refused.status()).toBe(409);
+    expect(refused.request().postDataJSON()).toEqual({ expected_version: "1", content: draft });
+    await expect(panel.getByLabel("Shared context (Markdown)", { exact: true })).toHaveValue(draft);
+    await expect(panel.getByText(/Someone updated the shared context after you started/)).toBeVisible();
+    await panel.getByRole("button", { name: "Use current version", exact: true }).click();
+    await expect(panel.getByLabel("Shared context (Markdown)", { exact: true })).toHaveValue(draft);
+    const merged = `${secondContent}\n\n${draft}`;
+    await panel.getByLabel("Shared context (Markdown)", { exact: true }).fill(merged);
+    const mergedResponse = page.waitForResponse(response => new URL(response.url()).pathname === `${fixture.root}/memory` && response.request().method() === "PUT");
+    await panel.getByRole("button", { name: "Save shared context", exact: true }).click();
+    const accepted = await mergedResponse;
+    expect(accepted.status()).toBe(200);
+    expect(accepted.request().postDataJSON()).toEqual({ expected_version: "2", content: merged });
+    expect(accepted.request().headers()["idempotency-key"]).not.toBe(refused.request().headers()["idempotency-key"]);
+    await expect(panel.getByLabel("Shared context (Markdown)", { exact: true })).toHaveCount(0);
+    await expect(otherPanel.getByText("Creator draft must survive another participant's update.", { exact: false })).toBeVisible();
+    await panel.getByRole("button", { name: "Version history", exact: true }).click();
+    await panel.getByRole("button", { name: "Restore v1", exact: true }).click();
+    const restore = page.getByRole("alertdialog", { name: "Restore v1?", exact: true });
+    await expect(restore).toBeVisible();
+    expect(await fixture.read()).toMatchObject({ version: "3", content: merged });
+    await restore.getByRole("button", { name: "Restore as new version", exact: true }).click();
+    await expect.poll(fixture.read).toMatchObject({ version: "4", content: firstContent, restored_from_version: "1" });
+    const history = await fixture.creator.client.requestJSON<{ items: { version: string }[] }>(`${fixture.root}/memory/versions`);
+    expect(history.items.map(item => item.version)).toEqual(["4", "3", "2", "1"]);
+    await page.getByRole("button", { name: "Complete issue", exact: true }).click();
+    const completion = page.locator("form").filter({ has: page.getByRole("heading", { name: "Complete issue", exact: true }) });
+    await expect(completion.getByRole("button", { name: "Confirm", exact: true })).toBeEnabled();
+    await completion.getByRole("button", { name: "Confirm", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Reopen issue", exact: true })).toBeVisible();
+    await expect(panel.getByRole("button", { name: "Edit shared context", exact: true })).toHaveCount(0);
+    await expect(panel.getByRole("button", { name: /^Restore v/ })).toHaveCount(0);
+    await expect(panel).toContainText("This issue is closed, so its shared context is read-only.");
+    await panel.getByRole("button", { name: "Purge v2", exact: true }).click();
+    const purge = page.getByRole("alertdialog", { name: "Purge the text of v2?", exact: true });
+    await expect(purge).toBeVisible();
+    await expect(purge.getByRole("button", { name: "Purge text", exact: true })).toBeDisabled();
+    await purge.getByLabel("Reason", { exact: true }).fill("Synthetic historical content disposal after closure");
+    await purge.getByRole("button", { name: "Purge text", exact: true }).click();
+    await expect(purge).toHaveCount(0);
+    const purged = await fixture.creator.client.requestJSON<{ content: string | null; purged: boolean; version: string }>(`${fixture.root}/memory/versions/2`);
+    expect(purged).toMatchObject({ version: "2", content: null, purged: true });
+    expect(await fixture.read()).toMatchObject({ version: "4", content: firstContent, can_edit: false, can_purge: true });
+    await panel.scrollIntoViewIfNeeded();
+    await page.screenshot({ path: info.outputPath("memory-closed-with-history.png"), animations: "disabled" });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await panel.scrollIntoViewIfNeeded();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    await page.screenshot({ path: info.outputPath("memory-narrow.png"), animations: "disabled" });
+    expect(errors).toEqual([]);
+    await info.attach("memory-human-evidence", { contentType: "application/json", body: JSON.stringify({ issue_id: fixture.issue.id,
+      first_writer: fixture.creator.id, concurrent_writer: fixture.participant.id, refused_http_status: refused.status(),
+      original_key: refused.request().headers()["idempotency-key"], merged_key: accepted.request().headers()["idempotency-key"],
+      restored_version: "4", purged_version: "2", closed: true, page_errors: errors }, null, 2) });
+  } finally { releaseOriginal(); await participantContext.close(); }
+});
+
+test("shared context recovers a lost save response with its original request after reload", async ({ page }, info) => {
+  test.setTimeout(180_000);
+  test.skip(!configured(), "Requires the isolated memory API/database and production Web");
+  const fixture = await seedMemoryIssue();
+  await fixture.creator.authenticate(page);
+  await page.goto(fixture.path);
+  const panel = page.locator("#memory");
+  await panel.getByRole("button", { name: "Edit shared context", exact: true }).click();
+  const content = "Keep this exact write and request identity through an uncertain response.";
+  await panel.getByLabel("Shared context (Markdown)", { exact: true }).fill(content);
+  let writes = 0;
+  let key = "";
+  page.on("request", request => {
+    if (new URL(request.url()).pathname === `${fixture.root}/memory` && request.method() === "PUT") writes += 1;
+  });
+  await page.route(`**${fixture.root}/memory`, async route => {
+    if (route.request().method() !== "PUT") return route.continue();
+    key = route.request().headers()["idempotency-key"] ?? "";
+    await route.fulfill({ status: 599, contentType: "application/json", body: JSON.stringify({ error: "simulated lost response" }) });
+  });
+  await panel.getByRole("button", { name: "Save shared context", exact: true }).click();
+  await expect(panel.getByRole("button", { name: "Retry original request", exact: true })).toBeVisible();
+  expect(key).not.toBe("");
+  await page.unroute(`**${fixture.root}/memory`);
+  await page.reload();
+  const retry = page.waitForRequest(request => new URL(request.url()).pathname === `${fixture.root}/memory` && request.method() === "PUT");
+  await panel.getByRole("button", { name: "Retry original request", exact: true }).click();
+  const retried = await retry;
+  expect(retried.headers()["idempotency-key"]).toBe(key);
+  expect(retried.postDataJSON()).toEqual({ expected_version: "0", content });
+  await expect(panel.getByText(content, { exact: true })).toBeVisible();
+  await expect(panel.getByRole("button", { name: "Retry original request", exact: true })).toHaveCount(0);
+  expect(writes).toBe(2);
+  expect(await fixture.read()).toMatchObject({ version: "1", content });
+  await info.attach("memory-recovery-evidence", { contentType: "application/json", body: JSON.stringify({ issue_id: fixture.issue.id, key, writes, final_version: "1" }) });
+});

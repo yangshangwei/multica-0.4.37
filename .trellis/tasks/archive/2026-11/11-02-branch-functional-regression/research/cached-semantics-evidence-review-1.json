@@ -1,0 +1,981 @@
+{
+  "at": "2026-11-02T08:09:05.614756+00:00",
+  "reviewer": "independent trellis-check child /root/cached_semantics_evidence_review",
+  "status": "PASS_WITH_NOTES_OPEN_ACCEPTANCE_GATES",
+  "artifact_sha256": {
+    "evidence/next-perf-cached-plan-1/diagnostic-metrics.json": "007ba7c8c27c635d2ecbd3dd1f2e4555473880a55d265c83dd07ebed8cf4993e",
+    "evidence/next-perf-cached-plan-1/plans-after_analyze-JoinIterationParticipationBatch.json": "2121c9e56796452d0820e279b798a1744614bd15abde9fe7f1c3a0d02b9acbb2",
+    "evidence/next-perf-cached-plan-1/analysis-summary.json": "0c24bc9b5d0aa564148c29be8254147b566ba067ce44011dec4ba58d9bd728f4",
+    "evidence/next-perf-cached-plan-1/plans-original-LeaveDeletedIssueIterationParticipationBatch.json": "34c43cb717fb0b7cdc65ae63a1660d24dc90dbdf708944a76834e385f1c48e47",
+    "evidence/next-perf-cached-plan-1/state-after_analyze-JoinIterationParticipationBatch-pre-analyze.json": "e94b0ccdca791341213ac6d68cdbefe22a16f9d076d7cdd67d8d0998e66ee4a2",
+    "evidence/next-perf-cached-plan-1/overlay.json": "60dc2d4fe5268cf134629f326184663ef348b2caf79e2026caeacfa76218fa7f",
+    "evidence/next-perf-cached-plan-1/plans-after_analyze-LeaveDeletedIssueIterationParticipationBatch.json": "57dcd5ce7c729735668c95c85b380f0fbb4bb074f1d8ee4f2a07b2a4550bcce8",
+    "evidence/next-perf-cached-plan-1/rollback-original.json": "88cb68370287fea34b415aa3c5c2c64f80d1053b16c5ccd677ceda99df093f1f",
+    "evidence/next-perf-cached-plan-1/dispatch-observation.json": "9115a5b05b88a500c6935aa582f5580248f536df117c6b12a1d32ae797447f4d",
+    "evidence/next-perf-cached-plan-1/process-audit.json": "ef0ae8bf8f975c38d6254635f9da1a5dfb1dd69a7ec0e038870540d4ddd8d1e8",
+    "evidence/next-perf-cached-plan-1/state-initial.json": "38253f780ad5cb3036978dc559d763cbff9f1105574002098b3d31c1a57823c2",
+    "evidence/next-perf-cached-plan-1/state-original-before-rollback.json": "39dcb81218c9631793ef3d859e1dab7ef9ac5b70e94d72e6b44de8f299270909",
+    "evidence/next-perf-cached-plan-1/actual-plan-notices.json": "ad756728d8cb88bcaed6b41ecba37e4a87e23d1da0466a09d879f40a1db8b0aa",
+    "evidence/next-perf-cached-plan-1/state-cache_control-before-rollback.json": "5dcfb144f5817599d339b04ca22893099d34d9e7e76b5ec169aef6b873804806",
+    "evidence/next-perf-cached-plan-1/plans-cache_control-LeaveDeletedIssueIterationParticipationBatch.json": "3605476df4686567dd9bf503b8dc7dbe76b2f37df8390c6133a6e22b58e310eb",
+    "evidence/next-perf-cached-plan-1/compile.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-perf-cached-plan-1/host-runner.py.txt": "064872612af8a7a745f34ba7c0927e89e8ae8fc554c7d9562a3f42c6311c0576",
+    "evidence/next-perf-cached-plan-1/plans-original-JoinIterationParticipationBatch.json": "bc76bb91d1d82f7e7d227800b0ee055ff5a6c07de209ee4858ef6ba994896837",
+    "evidence/next-perf-cached-plan-1/format-private-test.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-perf-cached-plan-1/diagnostic.stdout": "3d21560d4c03f54e3ae282de14f8d211cafa79335b0236e0c6d77edcd40d6ac7",
+    "evidence/next-perf-cached-plan-1/rollback-cache_control.json": "89bd55265db420095fed500f587675f709993ff273bf180a5ad2a7f4868e2af5",
+    "evidence/next-perf-cached-plan-1/database-operations.jsonl": "512fcfd2fea5948f625ac71b0c71b42ba54719aae778ce69c780fc66c41a6cf3",
+    "evidence/next-perf-cached-plan-1/verification.json": "38409941b8769f7f685b65af41f315794b6044fb8e624db3ef6f707d4f5f6318",
+    "evidence/next-perf-cached-plan-1/diagnostic.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-perf-cached-plan-1/actual-batch-phases.json": "f828d3efd8b9e4cb12cf7b1df7e68b7d271c7f490f0c053600863205b1eac8bc",
+    "evidence/next-perf-cached-plan-1/plans-cache_control-JoinIterationParticipationBatch.json": "107e2f96df9aa38752997f578d348436b790abb84f6662da7f532bb147861a22",
+    "evidence/next-perf-cached-plan-1/canonical-command-sequence.json": "8d7b91e05aadaf030e09cb384a2f04000a829afec41150aa0645b7c475e4e62f",
+    "evidence/next-perf-cached-plan-1/rollback-after_analyze.json": "3b6c278858e74b4bb1ddb643d7afba038746dedd1e2ca193d50ff2be393af8e1",
+    "evidence/next-perf-cached-plan-1/run.json": "872686610868838348073ba58c97140beaad449e0d74c3be37540bdadec2160a",
+    "evidence/next-perf-cached-plan-1/analysis-driver.py.txt": "c600eb70e74c937a0bba31e7efa1268ad1e20fb9c04059e76eaaf8d16d34bd3e",
+    "evidence/next-perf-cached-plan-1/state-after_analyze-LeaveDeletedIssueIterationParticipationBatch-pre-analyze.json": "5207c562539a31827d196e793eb24b82e34186489c90d6cf2f76426300e22a91",
+    "evidence/next-perf-cached-plan-1/format-private-test.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-perf-cached-plan-1/diagnostic_test.go.txt": "c059e7f23595d94a7542663a03e907569d014ae29f1bb711806285bf85a3945f",
+    "evidence/next-perf-cached-plan-1/compile.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-perf-cached-plan-1/state-after_analyze-before-rollback.json": "5fc755b9b017baa3df57d29516a1840629472dc5a19f49a0ed98e82edc3f8c50",
+    "evidence/next-read-semantics-1/compile-handler.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-read-semantics-1/run-handler.stdout": "63755cf2b081a58f17cc82081eebfce58bd78e4c12cd3d30b548b52c077d1df7",
+    "evidence/next-read-semantics-1/first-lock-fresh-snapshot.json": "7f08c7e7ab122f7bc1214129581b0c9e93cf533dc51ec86693b90bb82ae5f92c",
+    "evidence/next-read-semantics-1/typed-result-parity.json": "5c58d8059f1aa72dd098e97da071d3ea7ec8a4e9ef1ff16273e7d31866ddfbe1",
+    "evidence/next-read-semantics-1/overlay.json": "08831b1f3b74902b370aaef2faf68a686b6149a986caff058da9828e705b20cf",
+    "evidence/next-read-semantics-1/run-handler.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-read-semantics-1/compile-handler.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-read-semantics-1/host-runner.py.txt": "0a225c0a12043be0eba5db4df527bdc96d16a61db0b310647200ae877b6ded57",
+    "evidence/next-read-semantics-1/run-service.stdout": "6c1ddd9621f5b2d71525cc980aa103829ba090347538dd2dba07c67157d14fdf",
+    "evidence/next-read-semantics-1/format-private-test.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-read-semantics-1/compile-service.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-read-semantics-1/database-operations.jsonl": "b2e2a138b142d184050e25bbc493baf1ff0e111c25b4e0e01b45ee53e353de90",
+    "evidence/next-read-semantics-1/canonical-reads.json": "42cf5529c1232b0ee834b1cfa3bcd0e2f790f9053f707a427c82600122324d5c",
+    "evidence/next-read-semantics-1/verification.json": "ba96c6ee1f7e1697fe69ffa7f6526882cbed0e6f7ae17fb6b48ab6637a9c61aa",
+    "evidence/next-read-semantics-1/compile-service.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-read-semantics-1/batch-error-rollback.json": "c766b2eee7ae4116580f727e34bdee194a0a78ec8c6484453c8ae915e35530c8",
+    "evidence/next-read-semantics-1/run.json": "af1c8f345449df4370ae900fee8de934a514d42910fc935b28d8fa5d6265b198",
+    "evidence/next-read-semantics-1/format-private-test.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-read-semantics-1/diagnostic_test.go.txt": "2a0adf9b4851e10ac1b60dbc7c78ff6e1c246b55ce478b184914aa2dc3d8555b",
+    "evidence/next-read-semantics-1/run-service.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/protocol-query.stdout": "2151fbce42f76f5cc8b11f4a58a9afa626658b26852d09b3c5447622867feacd",
+    "evidence/next-cached-cleanup-1/port-16390.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/port-13840.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/database-connections.stdout": "535f61c67820f3159f7278e967523ab90cbfb32f129fe56914f07bbb9a63200d",
+    "evidence/next-cached-cleanup-1/containers-query.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/port-19860.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/containers-query.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/port-19860.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/port-13840.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/database-connections.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/protocol-query.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/port-16390.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/port-60790.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/port-58786.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/owned-mounts.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "evidence/next-cached-cleanup-1/port-18920.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/port-18920.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/run.json": "04fa1892c089d99474520bae517a5339cca064615dd746cb5b739fa4b03199cc",
+    "evidence/next-cached-cleanup-1/port-58786.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-1/port-60790.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-platform-preflight-2/simctl-location.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-platform-preflight-2/simctl-location.stderr": "99b8da8adc7e70feba56cd931740e16d0f5724d7515e98d84d2c8bf1bb63dec8",
+    "evidence/next-platform-preflight-2/os.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-platform-preflight-2/protocol-readonly.stdout": "2151fbce42f76f5cc8b11f4a58a9afa626658b26852d09b3c5447622867feacd",
+    "evidence/next-platform-preflight-2/xcode-select.stdout": "a8044fec385da5d3d686b9c06000917f00d0f27ca72b7db5b47bfc277f748301",
+    "evidence/next-platform-preflight-2/host-runner.py.txt": "66803f7f22e066a28b6da8c1f73963ed5dfa25014d53d3b4cd5bc91a99651ef2",
+    "evidence/next-platform-preflight-2/docker-engine.stdout": "f83d27460d6dcc1136368a918a30a01c48eeb4546e2e9851085c955f41327fac",
+    "evidence/next-platform-preflight-2/run.json": "cb58cd97f17e6d147bdd574b7584ab02e4a6aaf452885819e9fa185beda36261",
+    "evidence/next-platform-preflight-2/xcode-select.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-platform-preflight-2/protocol-readonly.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-platform-preflight-2/os.stdout": "fbcf26fb9058bc45b68007bec15ae5998059197cd9b43dc1850894a44aae6878",
+    "evidence/next-platform-preflight-2/docker-engine.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "research/perf-cached-plan-diagnosis-1.md": "d947cb3478ef93229b43d0b99618b461ca4841a729c77341f57df06a84343540",
+    "research/read-semantics-diagnosis-1.md": "c5edb76bba327040127c6cc850bb34115f85e11fda85029ef06576118141c621",
+    "evidence/next-cached-session-1/before.json": "1ef1bef419a136ee26701845b7bacbd0c67ccf7542791540e4a29f3d64a98546",
+    "evidence/next-cached-session-1/initial-verification.json": "b9bb1f30e9fe60d619dc0100e3574b67841240e4a520e4f6e7b4ae8b99559767",
+    "evidence/next-cached-session-1/agent-dispatch.json": "0fd4ce50c79b8dab6ce0d8ec50f3cb0419c8c3eee6383e0f5b4692809723cb64",
+    "evidence/next-perf-cached-plan-2/rollback-reprepare_control.json": "ba418a114d0929a40c9d16f6d37fa3fed9f7566b700a72496d2576e81ce1d382",
+    "evidence/next-perf-cached-plan-2/diagnostic-metrics.json": "dbc5bc98e6b9e8ba4849df73b44f2155b63b0a14b4c34660e9e7e165e049e1cd",
+    "evidence/next-perf-cached-plan-2/plans-after_analyze-JoinIterationParticipationBatch.json": "05710bcc03d928e160c7c00bea65741401e02e22652aec041f917b7b236c3281",
+    "evidence/next-perf-cached-plan-2/analysis-summary.json": "09ce1e88f80464b580ded6a6dc34906976e9b02412e927dd6a2b2f1bd8819d3c",
+    "evidence/next-perf-cached-plan-2/plans-original-LeaveDeletedIssueIterationParticipationBatch.json": "7bd37c816093750d2bc8185ee106c6237904198389c3436a8c0c1b787fd93355",
+    "evidence/next-perf-cached-plan-2/state-after_analyze-JoinIterationParticipationBatch-pre-analyze.json": "c419f2d12553e059e21776501db590d36638323fe8eb2b202d6e9171bc335285",
+    "evidence/next-perf-cached-plan-2/overlay.json": "f7edefe5c100ba0bb64091ef664b7f8dc98d6865c314e3c579e6c439e3640fb1",
+    "evidence/next-perf-cached-plan-2/plans-after_analyze-LeaveDeletedIssueIterationParticipationBatch.json": "985cc2a94cb124b2023f6e733e705ffc132bcb2bddf78d4fb09498e1cfe4e709",
+    "evidence/next-perf-cached-plan-2/rollback-original.json": "fcc242ec1741810ca5cdaaeebfd26a04f622483ab5bd55d93d59b0620728caa8",
+    "evidence/next-perf-cached-plan-2/state-reprepare_control-before-rollback.json": "3ef2f0af45c6e74aef876a46ad6789bd098ebc5d3ec0d3ac4ea7251c8126c747",
+    "evidence/next-perf-cached-plan-2/plans-reprepare_control-LeaveDeletedIssueIterationParticipationBatch.json": "8bb448504e5880f73c5d35c0338b6b8df58d3dbe5943b95da02f5a562e92bc2f",
+    "evidence/next-perf-cached-plan-2/state-initial.json": "a3ae7dc8c2afddef314aa5b923f4ecbf18de293f5791d570166af2c303909c6a",
+    "evidence/next-perf-cached-plan-2/state-original-before-rollback.json": "1b96a61eb47a8e2c08e5a6e0a9596302ac1c4466655d4dcfe686f4f62c475829",
+    "evidence/next-perf-cached-plan-2/actual-plan-notices.json": "1e5c8d63d1a8533c7cf70c983f0b6e7f419d08cd1c37e01a0a9e64a03af47616",
+    "evidence/next-perf-cached-plan-2/state-cache_control-before-rollback.json": "93067992683424b5ee7d8ff571a5cc7b9960ae6f3f984338ab82a1d7fe95f248",
+    "evidence/next-perf-cached-plan-2/plans-cache_control-LeaveDeletedIssueIterationParticipationBatch.json": "4f2e24de4145bfdd104f31358cebf294e71f3667433733fa961f760dfa9ead6f",
+    "evidence/next-perf-cached-plan-2/compile.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-perf-cached-plan-2/host-runner.py.txt": "a62b9e6e9a27bb6dd69b45021390ebb04b14b66da0e24da9ab6d5f2079fa3d12",
+    "evidence/next-perf-cached-plan-2/plans-original-JoinIterationParticipationBatch.json": "de2f1547304b745603c8c925ca8718aa1d848af9690cbed95e80cb97fc6402cb",
+    "evidence/next-perf-cached-plan-2/format-private-test.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-perf-cached-plan-2/diagnostic.stdout": "07f621dee9c8a6dde4584c87db2219fb2db898e71ecb99693779a8d91ed2c82f",
+    "evidence/next-perf-cached-plan-2/rollback-cache_control.json": "00301cfefacf2d128347af179b3a7c4d7d424d2baf575bff2e0e2f05277125c8",
+    "evidence/next-perf-cached-plan-2/database-operations.jsonl": "b6fe7724ba95494794967c41a15024ba12649914d2477cc6ba60e673f045ed4c",
+    "evidence/next-perf-cached-plan-2/plans-reprepare_control-JoinIterationParticipationBatch.json": "e748912102c91cc47e7bd51da1d7884507fdf41403aa2512e67d96155b1b5af8",
+    "evidence/next-perf-cached-plan-2/verification.json": "23dc5615177ab3223cafdb3c9c038168abe61185346300a58c73545cb5a06a19",
+    "evidence/next-perf-cached-plan-2/diagnostic.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-perf-cached-plan-2/actual-batch-phases.json": "b49752e212879b82daf20a1d4bb5372da8b5f2a1a1219fe75b05570dd48f6fe4",
+    "evidence/next-perf-cached-plan-2/plans-cache_control-JoinIterationParticipationBatch.json": "da418f92a43e81a1c9dfd9827fffaa820e161d9f1819c0cdefe28a6fa81a7384",
+    "evidence/next-perf-cached-plan-2/canonical-command-sequence.json": "4238f76d1885111af66ac962c6c2bdb927dadbe2bf6cef1d799b154c5beed516",
+    "evidence/next-perf-cached-plan-2/rollback-after_analyze.json": "73b42c184dd93cc032f842e43b2d585b1bba56bf2dfd685d90cdc6eb77b55d8c",
+    "evidence/next-perf-cached-plan-2/run.json": "c6f5bafcd10f0320fdae7f91061c6e5865d6dad087f0aff3f1364e27ded2ffe8",
+    "evidence/next-perf-cached-plan-2/analysis-driver.py.txt": "66ada9d142ab458afbe942cb2fa71eed660afff069fcc0bf876c2a6e794f8fe1",
+    "evidence/next-perf-cached-plan-2/state-after_analyze-LeaveDeletedIssueIterationParticipationBatch-pre-analyze.json": "5eb18131b304ee77b012e9c4eb224818b1e567e00971866c1925d46996206f72",
+    "evidence/next-perf-cached-plan-2/format-private-test.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-perf-cached-plan-2/diagnostic_test.go.txt": "a488041c79df6024d2f66f101651b356722ff499e48f7f9d7759677195e5b33b",
+    "evidence/next-perf-cached-plan-2/prepared-reset.json": "8da16915529337390619b1555cc93aa28866050249f89a6a816e8d192e4e2cb5",
+    "evidence/next-perf-cached-plan-2/compile.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-perf-cached-plan-2/state-after_analyze-before-rollback.json": "385833f91d7801d87a5ceb4551e37734b6918ad820929bc97c8c5436dedf7584",
+    "progress.md": "9348b170267eec7429445ed322e7e3ad1839197a9c324efa9f670f42f1bdcff3",
+    "report.md": "15fd92025c96e097319c227749f3a6bce32bdf80fea679fa0f515534a2b31d4f",
+    "defects.md": "3d0fbbdcce1ce5f9f1804616ae26ad4a38ac1d680903a4054a294b2b141bdf42",
+    "conditional-matrix.csv": "78cf6766c29733d12c3c0099648a40f4dff76d633522f77c38635041499276c9",
+    "session-prompt.md": "f6f10ac403fc37e1474c4c4dc0e9cf9c2de0189cb974cf0f26c18896bbcc5086",
+    "task.json": "770e2e8436b3ca7c03288a007e0617c1197017d0471f01e4a0a093a357454187",
+    "implement.md": "535063f81dfbe667a27b2b7b2236f2fca500d6aeab03089cfde7547a9f8c6bf3",
+    "research/session-record.md": "b25bab8f80f4a9363aa0e7d0d3dae6ccf4323a306f6fa8e6d94179cc04bb1abf",
+    "research/perf-cached-reprepare-diagnosis-1.md": "13b6f73ee9dfabba0e0a877fab6f4eb0cbc503042c22ed1f85ccf0f112381abd",
+    "research/cached-reprepare-control-plan-1.md": "3dcc396b1f44daf488a9a22308a3875c59571984e2b4c07acf21a6fcb06cc889",
+    "evidence/next-cached-session-1/coordinator-verification.json": "0a9f9cde3a9e811afd708127255134f80cbff7e3318a79bc4770b819ea9aa3f3",
+    "evidence/next-cached-cleanup-2/protocol-query.stdout": "2151fbce42f76f5cc8b11f4a58a9afa626658b26852d09b3c5447622867feacd",
+    "evidence/next-cached-cleanup-2/port-16390.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-2/port-13840.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-2/database-connections.stdout": "66b405e0233db14d746563923a1645cb05961590fa15992281f9428ba2f93ef9",
+    "evidence/next-cached-cleanup-2/containers-query.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-2/port-19860.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-2/containers-query.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-2/port-19860.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-2/port-13840.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-2/database-connections.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-2/protocol-query.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-2/port-16390.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-2/port-60790.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-2/port-58786.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-2/owned-mounts.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "evidence/next-cached-cleanup-2/port-18920.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-2/port-18920.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-2/run.json": "c3be5597a89504ad2d3c20efed355f3787877f6a38f4211876316c9460a5fed6",
+    "evidence/next-cached-cleanup-2/port-58786.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-cached-cleanup-2/port-60790.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "verification": {
+    "saved_stream_artifact_hashes": true,
+    "actual_plan_count": 6000,
+    "actual_cached_phases": [
+      {
+        "mode": "original",
+        "phase": "LeaveDeletedIssueIterationParticipationBatch",
+        "statements": 1000,
+        "duration_sum_ms": 670.134,
+        "root_total_sum_ms": 669.739,
+        "event_rows": 3003000,
+        "node_counts": {
+          "ModifyTable": 1000,
+          "Limit": 1000,
+          "Sort": 1000,
+          "Bitmap Heap Scan": 1000,
+          "Bitmap Index Scan": 1000,
+          "Index Scan": 1000
+        },
+        "event_shapes": {
+          "Bitmap Heap Scan ": 1000
+        },
+        "counter_delta": {
+          "custom_plans": 5,
+          "generic_plans": 995
+        },
+        "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+        "prepare_time": "2026-11-02T07:53:28.054363+00:00",
+        "before_stats_rows": 0
+      },
+      {
+        "mode": "original",
+        "phase": "JoinIterationParticipationBatch",
+        "statements": 1000,
+        "duration_sum_ms": 249.11,
+        "root_total_sum_ms": 248.918,
+        "event_rows": 1001000,
+        "node_counts": {
+          "ModifyTable": 1000,
+          "Nested Loop": 1000,
+          "Result": 1000,
+          "Limit": 1000,
+          "Sort": 1000,
+          "Bitmap Heap Scan": 1000,
+          "Bitmap Index Scan": 1000
+        },
+        "event_shapes": {
+          "Bitmap Heap Scan ": 1000
+        },
+        "counter_delta": {
+          "custom_plans": 0,
+          "generic_plans": 1000
+        },
+        "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+        "prepare_time": "2026-11-02T07:53:24.259813+00:00",
+        "before_stats_rows": 0
+      },
+      {
+        "mode": "cache_control",
+        "phase": "LeaveDeletedIssueIterationParticipationBatch",
+        "statements": 1000,
+        "duration_sum_ms": 694.49,
+        "root_total_sum_ms": 694.102,
+        "event_rows": 3003000,
+        "node_counts": {
+          "ModifyTable": 1000,
+          "Limit": 1000,
+          "Sort": 1000,
+          "Bitmap Heap Scan": 1000,
+          "Bitmap Index Scan": 1000,
+          "Index Scan": 1000
+        },
+        "event_shapes": {
+          "Bitmap Heap Scan ": 1000
+        },
+        "counter_delta": {
+          "custom_plans": 0,
+          "generic_plans": 1000
+        },
+        "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+        "prepare_time": "2026-11-02T07:53:28.054363+00:00",
+        "before_stats_rows": 0
+      },
+      {
+        "mode": "cache_control",
+        "phase": "JoinIterationParticipationBatch",
+        "statements": 1000,
+        "duration_sum_ms": 248.412,
+        "root_total_sum_ms": 248.241,
+        "event_rows": 1001000,
+        "node_counts": {
+          "ModifyTable": 1000,
+          "Nested Loop": 1000,
+          "Result": 1000,
+          "Limit": 1000,
+          "Sort": 1000,
+          "Bitmap Heap Scan": 1000,
+          "Bitmap Index Scan": 1000
+        },
+        "event_shapes": {
+          "Bitmap Heap Scan ": 1000
+        },
+        "counter_delta": {
+          "custom_plans": 0,
+          "generic_plans": 1000
+        },
+        "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+        "prepare_time": "2026-11-02T07:53:24.259813+00:00",
+        "before_stats_rows": 0
+      },
+      {
+        "mode": "after_analyze",
+        "phase": "LeaveDeletedIssueIterationParticipationBatch",
+        "statements": 1000,
+        "duration_sum_ms": 23.32,
+        "root_total_sum_ms": 22.766,
+        "event_rows": 1000,
+        "node_counts": {
+          "ModifyTable": 1000,
+          "Limit": 1000,
+          "Index Scan": 2000
+        },
+        "event_shapes": {
+          "Index Scan Backward": 1000
+        },
+        "counter_delta": {
+          "custom_plans": 0,
+          "generic_plans": 1000
+        },
+        "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+        "prepare_time": "2026-11-02T07:53:28.054363+00:00",
+        "before_stats_rows": 53
+      },
+      {
+        "mode": "after_analyze",
+        "phase": "JoinIterationParticipationBatch",
+        "statements": 1000,
+        "duration_sum_ms": 12.105,
+        "root_total_sum_ms": 11.86,
+        "event_rows": 1000,
+        "node_counts": {
+          "ModifyTable": 1000,
+          "Nested Loop": 1000,
+          "Result": 1000,
+          "Limit": 1000,
+          "Index Scan": 1000
+        },
+        "event_shapes": {
+          "Index Scan Backward": 1000
+        },
+        "counter_delta": {
+          "custom_plans": 0,
+          "generic_plans": 1000
+        },
+        "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+        "prepare_time": "2026-11-02T07:53:24.259813+00:00",
+        "before_stats_rows": 53
+      }
+    ],
+    "same_backend_pid": 2643,
+    "explicit_analyze_after_both_controls": 8,
+    "rollbacks": [
+      {
+        "mode": "original",
+        "fingerprint": "d669678397a615f160bb8087c6580fbe",
+        "stats_rows": 0,
+        "actual_counts": {
+          "issue": 1000,
+          "iteration_event": 2003,
+          "agent_task_queue": 0,
+          "iteration_participation": 1000
+        },
+        "tables": [
+          {
+            "table": "agent_task_queue",
+            "reltuples": -1,
+            "relpages": 0,
+            "analyze_count": 0,
+            "autoanalyze_count": 0
+          },
+          {
+            "table": "issue",
+            "reltuples": -1,
+            "relpages": 0,
+            "analyze_count": 0,
+            "autoanalyze_count": 0
+          },
+          {
+            "table": "iteration_event",
+            "reltuples": -1,
+            "relpages": 0,
+            "analyze_count": 0,
+            "autoanalyze_count": 0
+          },
+          {
+            "table": "iteration_participation",
+            "reltuples": -1,
+            "relpages": 0,
+            "analyze_count": 0,
+            "autoanalyze_count": 0
+          }
+        ]
+      },
+      {
+        "mode": "cache_control",
+        "fingerprint": "d669678397a615f160bb8087c6580fbe",
+        "stats_rows": 0,
+        "actual_counts": {
+          "issue": 1000,
+          "iteration_event": 2003,
+          "agent_task_queue": 0,
+          "iteration_participation": 1000
+        },
+        "tables": [
+          {
+            "table": "agent_task_queue",
+            "reltuples": -1,
+            "relpages": 0,
+            "analyze_count": 0,
+            "autoanalyze_count": 0
+          },
+          {
+            "table": "issue",
+            "reltuples": -1,
+            "relpages": 0,
+            "analyze_count": 0,
+            "autoanalyze_count": 0
+          },
+          {
+            "table": "iteration_event",
+            "reltuples": -1,
+            "relpages": 0,
+            "analyze_count": 0,
+            "autoanalyze_count": 0
+          },
+          {
+            "table": "iteration_participation",
+            "reltuples": -1,
+            "relpages": 0,
+            "analyze_count": 0,
+            "autoanalyze_count": 0
+          }
+        ]
+      },
+      {
+        "mode": "after_analyze",
+        "fingerprint": "d669678397a615f160bb8087c6580fbe",
+        "stats_rows": 0,
+        "actual_counts": {
+          "issue": 1000,
+          "iteration_event": 2003,
+          "agent_task_queue": 0,
+          "iteration_participation": 1000
+        },
+        "tables": [
+          {
+            "table": "agent_task_queue",
+            "reltuples": 0,
+            "relpages": 0,
+            "analyze_count": 2,
+            "autoanalyze_count": 0
+          },
+          {
+            "table": "issue",
+            "reltuples": 1000,
+            "relpages": 134,
+            "analyze_count": 2,
+            "autoanalyze_count": 0
+          },
+          {
+            "table": "iteration_event",
+            "reltuples": 4004,
+            "relpages": 834,
+            "analyze_count": 2,
+            "autoanalyze_count": 0
+          },
+          {
+            "table": "iteration_participation",
+            "reltuples": 1000,
+            "relpages": 477,
+            "analyze_count": 2,
+            "autoanalyze_count": 0
+          }
+        ]
+      }
+    ],
+    "unchanged_valid_index_counts": {
+      "agent_task_queue": 34,
+      "issue": 22,
+      "iteration_event": 2,
+      "iteration_participation": 2
+    },
+    "canonical_typed_results_missing_empty_nonempty_and_waited_rc_visibility": true,
+    "server_error_close_and_marker_rollback": true,
+    "saved_go_terminals": {
+      "diagnostic.stdout": {
+        "top": 1,
+        "sub": 0,
+        "terminal": {
+          "TestIterationCanonicalCachedPlanDiagnostic": "pass"
+        }
+      },
+      "run-handler.stdout": {
+        "top": 4,
+        "sub": 6,
+        "terminal": {
+          "TestIterationClosureRealMemberRevocationRaces/end/closure_first": "pass",
+          "TestIterationClosureRealMemberRevocationRaces/end/revoke_first": "pass",
+          "TestIterationClosureRealMemberRevocationRaces/disable/closure_first": "pass",
+          "TestIterationClosureRealMemberRevocationRaces/disable/revoke_first": "pass",
+          "TestIterationClosureRealMemberRevocationRaces": "pass",
+          "TestIterationPipelinePostFenceSnapshot": "pass",
+          "TestUpdateIssueIterationReadPipelineLockOrder/join_behind_fence": "pass",
+          "TestUpdateIssueIterationReadPipelineLockOrder/iteration_before_issue": "pass",
+          "TestUpdateIssueIterationReadPipelineLockOrder": "pass",
+          "TestIterationCanonicalReadSemanticsDiagnostic": "pass"
+        }
+      },
+      "run-service.stdout": {
+        "top": 8,
+        "sub": 8,
+        "terminal": {
+          "TestIterationClosureFinalSnapshotFailureRollsBackHandoff": "pass",
+          "TestIterationClosurePreservesSampledClockAndFinalProcessingTime": "pass",
+          "TestIterationClosureBatchMultiTargetHandoff": "pass",
+          "TestIterationLifecycleBatchSwappedSources": "pass",
+          "TestIterationClosureBatchCASFailureRollsBackAllPhases": "pass",
+          "TestIterationClosureDaemonCompletionBarrierDoesNotRestartExecution": "pass",
+          "TestIterationClosureManagementPreservesRunningTask/end": "pass",
+          "TestIterationClosureManagementPreservesRunningTask/cancel": "pass",
+          "TestIterationClosureManagementPreservesRunningTask/handoff": "pass",
+          "TestIterationClosureManagementPreservesRunningTask/disable": "pass",
+          "TestIterationClosureManagementPreservesRunningTask": "pass",
+          "TestIterationClosureRolloverEventsMatchCommittedCounters/end/1": "pass",
+          "TestIterationClosureRolloverEventsMatchCommittedCounters/end/2": "pass",
+          "TestIterationClosureRolloverEventsMatchCommittedCounters/handoff/1": "pass",
+          "TestIterationClosureRolloverEventsMatchCommittedCounters/handoff/2": "pass",
+          "TestIterationClosureRolloverEventsMatchCommittedCounters": "pass"
+        }
+      }
+    },
+    "python_ast_and_go_format": "PASS",
+    "historical_files_checked": 5949,
+    "historical_missing": [],
+    "unexpected_historical_changes": [],
+    "allowed_coordination_changes": [],
+    "preserved_other_workspace_files": 36,
+    "source_checks": [
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37",
+        "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+        "product_diff_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+        "frozen_test_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+        "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+        "product_diff_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+        "frozen_test_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+        "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+        "product_diff_sha256": "3ef8ec0f8841f4448237c0d3a99e466dbf817a143259b5916cd826d1f6a6a280",
+        "frozen_test_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef"
+      }
+    ],
+    "additive_overlay_targets_absent": true,
+    "e2e_cases": 439,
+    "e2e_current_pass": 439,
+    "original_p95": "FAIL2171ms>2000ms; not rerun",
+    "task_status": "in_progress",
+    "matrix_statuses": {
+      "PASS": 18,
+      "BLOCKED": 6,
+      "FAIL": 1,
+      "NOT_RUN": 3
+    },
+    "reprepare_run2": {
+      "actual_plan_count": 8000,
+      "phases": [
+        {
+          "mode": "original",
+          "phase": "LeaveDeletedIssueIterationParticipationBatch",
+          "statements": 1000,
+          "duration_sum_ms": 710.095,
+          "root_total_sum_ms": 709.697,
+          "event_rows": 3003000,
+          "event_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "counter_delta": {
+            "custom_plans": 5,
+            "generic_plans": 995
+          },
+          "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+          "prepare_time": "2026-11-02T08:07:42.7741+00:00",
+          "before_stats_rows": 0
+        },
+        {
+          "mode": "original",
+          "phase": "JoinIterationParticipationBatch",
+          "statements": 1000,
+          "duration_sum_ms": 234.867,
+          "root_total_sum_ms": 234.686,
+          "event_rows": 1001000,
+          "event_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "counter_delta": {
+            "custom_plans": 0,
+            "generic_plans": 1000
+          },
+          "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+          "prepare_time": "2026-11-02T08:07:38.881343+00:00",
+          "before_stats_rows": 0
+        },
+        {
+          "mode": "cache_control",
+          "phase": "LeaveDeletedIssueIterationParticipationBatch",
+          "statements": 1000,
+          "duration_sum_ms": 690.996,
+          "root_total_sum_ms": 690.609,
+          "event_rows": 3003000,
+          "event_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "counter_delta": {
+            "custom_plans": 0,
+            "generic_plans": 1000
+          },
+          "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+          "prepare_time": "2026-11-02T08:07:42.7741+00:00",
+          "before_stats_rows": 0
+        },
+        {
+          "mode": "cache_control",
+          "phase": "JoinIterationParticipationBatch",
+          "statements": 1000,
+          "duration_sum_ms": 244.794,
+          "root_total_sum_ms": 244.601,
+          "event_rows": 1001000,
+          "event_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "counter_delta": {
+            "custom_plans": 0,
+            "generic_plans": 1000
+          },
+          "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+          "prepare_time": "2026-11-02T08:07:38.881343+00:00",
+          "before_stats_rows": 0
+        },
+        {
+          "mode": "reprepare_control",
+          "phase": "LeaveDeletedIssueIterationParticipationBatch",
+          "statements": 1000,
+          "duration_sum_ms": 667.284,
+          "root_total_sum_ms": 666.928,
+          "event_rows": 3003000,
+          "event_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "counter_delta": {
+            "custom_plans": 5,
+            "generic_plans": 995
+          },
+          "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+          "prepare_time": "2026-11-02T08:07:48.335758+00:00",
+          "before_stats_rows": 0
+        },
+        {
+          "mode": "reprepare_control",
+          "phase": "JoinIterationParticipationBatch",
+          "statements": 1000,
+          "duration_sum_ms": 236.153,
+          "root_total_sum_ms": 235.943,
+          "event_rows": 1001000,
+          "event_shapes": {
+            "Bitmap Heap Scan ": 1000
+          },
+          "counter_delta": {
+            "custom_plans": 5,
+            "generic_plans": 995
+          },
+          "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+          "prepare_time": "2026-11-02T08:07:49.2317+00:00",
+          "before_stats_rows": 0
+        },
+        {
+          "mode": "after_analyze",
+          "phase": "LeaveDeletedIssueIterationParticipationBatch",
+          "statements": 1000,
+          "duration_sum_ms": 16.908,
+          "root_total_sum_ms": 16.534,
+          "event_rows": 1000,
+          "event_shapes": {
+            "Index Scan Backward": 1000
+          },
+          "counter_delta": {
+            "custom_plans": 0,
+            "generic_plans": 1000
+          },
+          "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+          "prepare_time": "2026-11-02T08:07:48.335758+00:00",
+          "before_stats_rows": 53
+        },
+        {
+          "mode": "after_analyze",
+          "phase": "JoinIterationParticipationBatch",
+          "statements": 1000,
+          "duration_sum_ms": 11.184,
+          "root_total_sum_ms": 11.081,
+          "event_rows": 1000,
+          "event_shapes": {
+            "Index Scan Backward": 1000
+          },
+          "counter_delta": {
+            "custom_plans": 0,
+            "generic_plans": 1000
+          },
+          "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+          "prepare_time": "2026-11-02T08:07:49.2317+00:00",
+          "before_stats_rows": 53
+        }
+      ],
+      "prepared_reset_zero_selected_statements_and_new_prepare_times": true,
+      "unchanged_no_statistics_before_after_reset": true,
+      "explicit_analyze_after_three_controls": 8,
+      "rollbacks": [
+        {
+          "mode": "original",
+          "fingerprint": "7a9633d99145efd3737d6b87cd8bd2b0",
+          "stats_rows": 0,
+          "actual_counts": {
+            "issue": 1000,
+            "iteration_event": 2003,
+            "agent_task_queue": 0,
+            "iteration_participation": 1000
+          }
+        },
+        {
+          "mode": "cache_control",
+          "fingerprint": "7a9633d99145efd3737d6b87cd8bd2b0",
+          "stats_rows": 0,
+          "actual_counts": {
+            "issue": 1000,
+            "iteration_event": 2003,
+            "agent_task_queue": 0,
+            "iteration_participation": 1000
+          }
+        },
+        {
+          "mode": "reprepare_control",
+          "fingerprint": "7a9633d99145efd3737d6b87cd8bd2b0",
+          "stats_rows": 0,
+          "actual_counts": {
+            "issue": 1000,
+            "iteration_event": 2003,
+            "agent_task_queue": 0,
+            "iteration_participation": 1000
+          }
+        },
+        {
+          "mode": "after_analyze",
+          "fingerprint": "7a9633d99145efd3737d6b87cd8bd2b0",
+          "stats_rows": 0,
+          "actual_counts": {
+            "issue": 1000,
+            "iteration_event": 2003,
+            "agent_task_queue": 0,
+            "iteration_participation": 1000
+          }
+        }
+      ],
+      "saved_terminal": {
+        "TestIterationCanonicalCachedReprepareDiagnostic": "pass"
+      },
+      "source_and_overlay_preserved": true,
+      "python_ast_and_go_format": "PASS"
+    },
+    "fresh_checks": [
+      {
+        "name": "fresh-protocol",
+        "command": [
+          "osascript",
+          "-l",
+          "JavaScript",
+          "-e",
+          "ObjC.import(\"AppKit\");\nconst w=$.NSWorkspace.sharedWorkspace;\nconst current=w.URLForApplicationToOpenURL($.NSURL.URLWithString(\"multica://branch-functional-regression\"));\nlet p=null;try{p=ObjC.unwrap(current.path)||null;}catch(e){}\nconst urls=w.URLsForApplicationsWithBundleIdentifier(\"ai.multica.desktop\");\nconst paths=[];for(let i=0;i<urls.count;i++)paths.push(ObjC.unwrap(urls.objectAtIndex(i).path));\nJSON.stringify({defaultApplicationPath:p,registeredApplications:paths});"
+        ],
+        "exit_code": 0,
+        "stdout": "{\"defaultApplicationPath\":\"/Applications/Multica.app\",\"registeredApplications\":[\"/Applications/Multica.app\",\"/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app\",\"/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app\",\"/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/apps/desktop/dist/mac-arm64/Multica.app\",\"/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/apps/desktop/dist/mac-arm64/Multica.app\",\"/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/apps/desktop/dist/mac-arm64/Multica.app\",\"/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app\"]}\n",
+        "stderr": "",
+        "at": "2026-11-02T08:10:14.060906+00:00"
+      },
+      {
+        "name": "fresh-port-18920",
+        "command": [
+          "lsof",
+          "-nP",
+          "-iTCP:18920",
+          "-sTCP:LISTEN"
+        ],
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "",
+        "at": "2026-11-02T08:10:14.084958+00:00"
+      },
+      {
+        "name": "fresh-port-13840",
+        "command": [
+          "lsof",
+          "-nP",
+          "-iTCP:13840",
+          "-sTCP:LISTEN"
+        ],
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "",
+        "at": "2026-11-02T08:10:14.107304+00:00"
+      },
+      {
+        "name": "fresh-port-19860",
+        "command": [
+          "lsof",
+          "-nP",
+          "-iTCP:19860",
+          "-sTCP:LISTEN"
+        ],
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "",
+        "at": "2026-11-02T08:10:14.129591+00:00"
+      },
+      {
+        "name": "fresh-port-16390",
+        "command": [
+          "lsof",
+          "-nP",
+          "-iTCP:16390",
+          "-sTCP:LISTEN"
+        ],
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "",
+        "at": "2026-11-02T08:10:14.151953+00:00"
+      },
+      {
+        "name": "fresh-port-58786",
+        "command": [
+          "lsof",
+          "-nP",
+          "-iTCP:58786",
+          "-sTCP:LISTEN"
+        ],
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "",
+        "at": "2026-11-02T08:10:14.174841+00:00"
+      },
+      {
+        "name": "fresh-port-60790",
+        "command": [
+          "lsof",
+          "-nP",
+          "-iTCP:60790",
+          "-sTCP:LISTEN"
+        ],
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "",
+        "at": "2026-11-02T08:10:14.197616+00:00"
+      },
+      {
+        "name": "fresh-owned-containers",
+        "command": [
+          "docker",
+          "ps",
+          "-a",
+          "--filter",
+          "name=branch-functional-regression",
+          "--format",
+          "{{.ID}} {{.Names}} {{.Status}}"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "at": "2026-11-02T08:10:14.313556+00:00"
+      },
+      {
+        "name": "git-diff-check",
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "at": "2026-11-02T08:10:14.336192+00:00"
+      }
+    ],
+    "owned_processes_remaining": [],
+    "owned_mounts_remaining": [],
+    "protocol_exact_default_and_registration_set_equal": true,
+    "recorded_database_connections": {
+      "multica_func7af9_resume_perf_1": 0,
+      "multica_func7af9_resume_linux_1": 0,
+      "multica_func7af9_next_sql_diag_1": 0,
+      "multica_func7af9_next_perf_diag_1": 0,
+      "multica_func7af9_next_cached_diag_1": 0,
+      "multica_func7af9_resume_wire_live_1": 0,
+      "multica_func7af9_next_read_semantics_1": 0,
+      "multica_func7af9_next_read_semantics_service_1": 0
+    },
+    "database_connected_by_reviewer": false,
+    "lint": "NOT_RERUN_NO_PRODUCT_OR_DEPENDENCY_CHANGE",
+    "typecheck": "NOT_RERUN_NO_PRODUCT_OR_DEPENDENCY_CHANGE",
+    "tests": "No tests rerun by reviewer; saved 2 cached diagnostics plus12top+14sub race results and exact evidence recomputed.",
+    "coordination_docs": "PASS_CURRENT_BATCH_RESULTS_CONSISTENT; coordinator may update review-status links after completed review",
+    "final_coordination_review": {
+      "at": "2026-11-02T08:19:42.227015+00:00",
+      "current_results_consistent": true,
+      "read_current_progress_report_defects_matrix_session_prompt": true,
+      "original_p95_fail_and_required_gates_open": true,
+      "matrix_statuses": {
+        "PASS": 21,
+        "FAIL": 1,
+        "BLOCKED": 6,
+        "NOT_RUN": 3
+      },
+      "historical_files_checked": 5949,
+      "allowed_coordination_changes": [
+        ".trellis/tasks/11-02-branch-functional-regression/implement.md",
+        ".trellis/tasks/11-02-branch-functional-regression/report.md",
+        ".trellis/tasks/11-02-branch-functional-regression/task.json",
+        ".trellis/tasks/11-02-branch-functional-regression/progress.md",
+        ".trellis/tasks/11-02-branch-functional-regression/session-prompt.md",
+        ".trellis/tasks/11-02-branch-functional-regression/conditional-matrix.csv",
+        ".trellis/tasks/11-02-branch-functional-regression/defects.md",
+        ".trellis/tasks/11-02-branch-functional-regression/research/session-record.md"
+      ],
+      "unexpected_historical_changes": [],
+      "missing_historical_files": [],
+      "preserved_workspace_files": 36,
+      "workspace_unchanged_files": 35,
+      "intentional_coordinator_append_only_changes": [
+        {
+          "path": ".trellis/spec/server/database-test-isolation.md",
+          "original_bytes_preserved_as_prefix": 13147,
+          "appended_bytes": 3839,
+          "sha256": "fa12c446750bbb2ab0a5ffca9d0a5dfc960bdcae08c8614bcd895175ec1dcb09"
+        }
+      ],
+      "cleanup2_connections": {
+        "multica_func7af9_resume_perf_1": 0,
+        "multica_func7af9_resume_linux_1": 0,
+        "multica_func7af9_next_sql_diag_1": 0,
+        "multica_func7af9_next_perf_diag_1": 0,
+        "multica_func7af9_next_cached_diag_1": 0,
+        "multica_func7af9_next_cached_diag_2": 0,
+        "multica_func7af9_resume_wire_live_1": 0,
+        "multica_func7af9_next_read_semantics_1": 0,
+        "multica_func7af9_next_read_semantics_service_1": 0
+      },
+      "no_database_connection_by_reviewer": true,
+      "review_result_links_may_be_updated_by_coordinator_after_review": true
+    },
+    "original_frozen_gate_recomputed": {
+      "warmup": 5,
+      "measured": 30,
+      "p95_ms": 2171,
+      "threshold_ms": 2000,
+      "status": "FAIL",
+      "rerun": false
+    }
+  },
+  "scope": "Independent read-only evidence/source review of child cached-plan run1 and typed/protocol/race diagnostics plus coordinator reprepare run2; no database/test/build/service/account/remote action. Writes only these two review files.",
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "N1",
+      "severity": "scope_note",
+      "status": "accurately_documented",
+      "issue": "Observed no-statistics bitmap+sort survives both cache reuse and reprepare; ANALYZE plus replanning changes path using existing index. Does not identify original tail-sample cause or single marginal statistic; no product/index change justified."
+    },
+    {
+      "id": "N2",
+      "severity": "scope_note",
+      "status": "accurately_documented",
+      "issue": "First cached pass uses production typed mutation flow but task Commit rolls back. Replay uses generic Rows.Values and original write arguments despite fresh clock reads. No durable HTTP commit/optimized product equivalence claim."
+    },
+    {
+      "id": "N3",
+      "severity": "scope_note",
+      "status": "accurately_documented",
+      "issue": "Typed/protocol proof covers small first-acquisition/nonempty/ErrNoRows/fresh RC/server-error population and real existing handler/service regressions; malformed typed decode, delayed Rows.Err and full future optimizer scheduling still require implemented-path evidence."
+    },
+    {
+      "id": "N4",
+      "severity": "scope_note",
+      "status": "accurately_documented",
+      "issue": "Full logical fingerprints omit notifications and do not reset WAL/cache/dead tuples/reltuples/ANALYZE tracking. Instrumented plan spans are not endpoint P95 or additive predicted savings."
+    },
+    {
+      "id": "N5",
+      "severity": "acceptance_gate",
+      "status": "open",
+      "issue": "Original2171ms>2000msFAIL and required native/authentication/updater/trust/Provider gates remain open; task must stay in_progress."
+    }
+  ],
+  "finished_at": "2026-11-02T08:19:42.227243+00:00"
+}

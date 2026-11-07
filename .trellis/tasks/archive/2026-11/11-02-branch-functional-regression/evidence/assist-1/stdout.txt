@@ -1,0 +1,12 @@
+
+Running 8 tests using 1 worker
+
+[1A[2K[1/8] [chromium] › e2e/issue-assist-flow.spec.ts:58:3 › AI refinement through real server and task creation › refines a vague feature, preserves folded answers, merges and undoes, then persists exactly once
+[1A[2K[2/8] [chromium] › e2e/issue-assist-flow.spec.ts:101:5 › AI refinement through real server and task creation › handles 0 dynamic clarification questions and undo
+[1A[2K[3/8] [chromium] › e2e/issue-assist-flow.spec.ts:101:5 › AI refinement through real server and task creation › handles 1 dynamic clarification questions and undo
+[1A[2K[4/8] [chromium] › e2e/issue-assist-flow.spec.ts:116:3 › AI refinement through real server and task creation › preserves edits during generation, supports cancellation and real provider failure
+[1A[2K[5/8] [chromium] › e2e/issue-assist-flow.spec.ts:143:3 › AI refinement through real server and task creation › creates the unchanged manual draft after a refinement failure
+[1A[2K[6/8] [chromium] › e2e/issue-assist-flow.spec.ts:175:5 › AI refinement through real server and task creation › manual keeps creation reachable at desktop and phone widths with long content
+[1A[2K[7/8] [chromium] › e2e/issue-assist-flow.spec.ts:175:5 › AI refinement through real server and task creation › agent keeps creation reachable at desktop and phone widths with long content
+[1A[2K[8/8] [chromium] › e2e/issue-assist-flow.spec.ts:198:3 › AI refinement through real server and task creation › agent creation queues the refined prompt through the real API without executing a daemon
+[1A[2K  8 passed (27.7s)
