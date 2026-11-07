@@ -7,21 +7,29 @@ import { useOptimizeIssueDescription } from "@multica/core/issues/mutations";
 import type { Attachment } from "@multica/core/types";
 import { Button } from "@multica/ui/components/ui/button";
 import { Textarea } from "@multica/ui/components/ui/textarea";
+import { cn } from "@multica/ui/lib/utils";
 import type { ContentEditorRef } from "../editor/content-editor";
 import { ReadonlyContent } from "../editor/readonly-content";
 import { useT } from "../i18n";
 
-type AssistEditor = Pick<ContentEditorRef, "getMarkdown" | "flushPendingUpdate" | "adoptContent" | "focus">;
+export type IssueDescriptionAssistEditor = Pick<ContentEditorRef, "getMarkdown" | "flushPendingUpdate" | "adoptContent" | "focus">;
 
-// Match ContentEditor's persisted Markdown, including its trailing-paragraph normalization.
-function readMarkdown(editor: AssistEditor): string {
-  return editor.getMarkdown().trim();
+// Markdown matches ContentEditor persistence; plain textarea drafts retain exact whitespace.
+function readText(editor: IssueDescriptionAssistEditor, format: "markdown" | "plain"): string {
+  const text = editor.getMarkdown();
+  return format === "plain" ? text : text.trim();
 }
 
 interface IssueDescriptionAssistProps {
+  className?: string;
   wsId: string;
   mode: "manual" | "agent";
-  editorRef: RefObject<AssistEditor | null>;
+  editorRef: RefObject<IssueDescriptionAssistEditor | null>;
+  textFormat?: "markdown" | "plain";
+  actionLabel?: string;
+  // An input limit blocks generation, but undo/answer merging still uses the current draft.
+  disabledReason?: string;
+  isCurrent?: () => boolean;
   value: string;
   title?: string;
   attachments?: Attachment[];
@@ -47,16 +55,18 @@ interface UndoDraft {
 /** Streamed text stays provisional; validated completion updates the active draft. */
 export function IssueDescriptionAssist({
   wsId, mode, editorRef, value, title, attachments, onChange, uploading, isBlocked, submitting, onNeedsSpace, onRevealEditor,
+  textFormat = "markdown", actionLabel, disabledReason, isCurrent, className,
 }: IssueDescriptionAssistProps) {
   const { t } = useT("modals");
   const headingId = useId();
   const hintId = useId();
   const replacementHintId = useId();
+  const disabledHintId = useId();
   const assistRef = useRef<HTMLDivElement>(null);
   const { mutateAsync } = useOptimizeIssueDescription(wsId);
   const requestRef = useRef<AbortController | null>(null);
-  const latestRef = useRef({ submitting, uploading, isBlocked, onChange, onRevealEditor });
-  useLayoutEffect(() => { latestRef.current = { submitting, uploading, isBlocked, onChange, onRevealEditor }; });
+  const latestRef = useRef({ submitting, uploading, isBlocked, onChange, onRevealEditor, isCurrent, disabledReason });
+  useLayoutEffect(() => { latestRef.current = { submitting, uploading, isBlocked, onChange, onRevealEditor, isCurrent, disabledReason }; });
   const returnFocusRef = useRef(false);
   const [pending, setPending] = useState(false);
   const [partialText, setPartialText] = useState("");
@@ -73,11 +83,39 @@ export function IssueDescriptionAssist({
     requestRef.current = null;
   }, [wsId, mode]);
 
-  const writeDraft = (editor: AssistEditor, text: string, original: string, clarifications?: UndoDraft["clarifications"]) => {
+  const ownerCurrent = isCurrent?.() !== false;
+  const clearOwnerState = () => {
+    requestRef.current?.abort();
+    requestRef.current = null;
+    returnFocusRef.current = false;
+    setPending(false);
+    setPartialText("");
+    setSuggestion(null);
+    setQuestions([]);
+    setAnswers([]);
+    setUndo(null);
+    setError(null);
+    setNotice(null);
+  };
+  useEffect(() => {
+    if (!ownerCurrent) clearOwnerState();
+  }, [ownerCurrent]);
+
+  const ownsRequest = (controller: AbortController) => {
+    if (requestRef.current !== controller || controller.signal.aborted) return false;
+    if (latestRef.current.isCurrent?.() === false) {
+      clearOwnerState();
+      return false;
+    }
+    return true;
+  };
+
+  const writeDraft = (editor: IssueDescriptionAssistEditor, text: string, original: string, clarifications?: UndoDraft["clarifications"]) => {
+    if (latestRef.current.isCurrent?.() === false) return;
     const shouldReveal = assistRef.current?.contains(document.activeElement);
     editor.flushPendingUpdate();
     editor.adoptContent(text);
-    const adopted = readMarkdown(editor);
+    const adopted = readText(editor, textFormat);
     latestRef.current.onChange(adopted);
     setUndo({ original, adopted, clarifications, mergedCount: clarifications?.answers.filter((answer) => answer.trim()).length });
     if (shouldReveal) {
@@ -95,11 +133,12 @@ export function IssueDescriptionAssist({
   };
 
   const generate = async () => {
+    if (latestRef.current.disabledReason) return;
     const editor = editorRef.current;
-    if (!editor || submitting || uploading || isBlocked()) return;
+    if (!editor || submitting || uploading || isBlocked() || latestRef.current.isCurrent?.() === false) return;
     const flushed = editor.flushPendingUpdate();
     if (flushed !== null) onChange(flushed);
-    const source = readMarkdown(editor);
+    const source = readText(editor, textFormat);
     if (!source.trim()) return;
     requestRef.current?.abort();
     const controller = new AbortController();
@@ -118,16 +157,16 @@ export function IssueDescriptionAssist({
       const result = await mutateAsync({
         text: source, title, mode, signal: controller.signal,
         onText: (text) => {
-          if (requestRef.current === controller && !controller.signal.aborted) setPartialText(text);
+          if (ownsRequest(controller)) setPartialText(text);
         },
       });
-      if (requestRef.current !== controller) return;
+      if (!ownsRequest(controller)) return;
       const currentEditor = editorRef.current;
       const current = latestRef.current;
       const nextQuestions = (result.questions ?? []).slice(0, 2);
-      if (!currentEditor || readMarkdown(currentEditor) !== source || current.submitting || current.uploading || current.isBlocked()) {
+      if (!currentEditor || readText(currentEditor, textFormat) !== source || current.submitting || current.uploading || current.isBlocked()) {
         setSuggestion({ text: result.text });
-        setNotice(currentEditor && readMarkdown(currentEditor) !== source ? "stale" : "blocked");
+        setNotice(currentEditor && readText(currentEditor, textFormat) !== source ? "stale" : "blocked");
         return;
       }
       writeDraft(currentEditor, result.text, source);
@@ -135,7 +174,7 @@ export function IssueDescriptionAssist({
       setAnswers(nextQuestions.map(() => ""));
       setNotice("applied");
     } catch (cause) {
-      if (requestRef.current !== controller) return;
+      if (!ownsRequest(controller)) return;
       setError(cause instanceof ApiError && cause.status === 503 ? "unavailable" : "failed");
     } finally {
       if (requestRef.current === controller) {
@@ -148,13 +187,13 @@ export function IssueDescriptionAssist({
 
   const mergeAnswers = () => {
     const editor = editorRef.current;
-    if (!editor || submitting || uploading || isBlocked()) return;
+    if (!editor || submitting || uploading || isBlocked() || latestRef.current.isCurrent?.() === false) return;
     const answered = questions.flatMap((question, index) => {
       const answer = answers[index]?.trim();
       return answer ? [`${question}\n${answer}`] : [];
     });
     if (!answered.length) return;
-    const original = readMarkdown(editor);
+    const original = readText(editor, textFormat);
     const details = `${t(($) => $.create_issue.ai_optimize.details)}\n\n${answered.join("\n\n")}`;
     writeDraft(editor, `${original}\n\n${details}`, original, { questions, answers });
     const remaining = questions.filter((_, index) => !answers[index]?.trim());
@@ -165,15 +204,15 @@ export function IssueDescriptionAssist({
 
   const undoAdoption = () => {
     const editor = editorRef.current;
-    if (!editor || !undo || submitting || uploading || isBlocked()) return;
-    if (readMarkdown(editor) !== undo.adopted) {
+    if (!editor || !undo || submitting || uploading || isBlocked() || latestRef.current.isCurrent?.() === false) return;
+    if (readText(editor, textFormat) !== undo.adopted) {
       setUndo(null);
       setNotice("stale");
       return;
     }
     editor.flushPendingUpdate();
     editor.adoptContent(undo.original);
-    onChange(readMarkdown(editor));
+    onChange(readText(editor, textFormat));
     setUndo(null);
     setQuestions(undo.clarifications?.questions ?? []);
     setAnswers(undo.clarifications?.answers ?? []);
@@ -183,13 +222,14 @@ export function IssueDescriptionAssist({
     onRevealEditor?.("start");
   };
 
-  const blocked = uploading || submitting;
+  const blocked = uploading || submitting || isBlocked();
+  const generationBlocked = blocked || Boolean(disabledReason);
   const empty = !value.trim();
-  const label = mode === "manual"
+  const label = actionLabel ?? (mode === "manual"
     ? t(($) => $.create_issue.ai_optimize.description)
-    : t(($) => $.create_issue.ai_optimize.instructions);
+    : t(($) => $.create_issue.ai_optimize.instructions));
 
-  const draftMatches = !undo || !editorRef.current || readMarkdown(editorRef.current) === undo.adopted;
+  const draftMatches = !undo || !editorRef.current || readText(editorRef.current, textFormat) === undo.adopted;
   const status = pending ? t(($) => $.create_issue.ai_optimize.generating)
     : notice === "stale" ? t(($) => $.create_issue.ai_optimize.stale)
     : notice === "blocked" ? t(($) => $.create_issue.ai_optimize.blocked)
@@ -199,8 +239,10 @@ export function IssueDescriptionAssist({
     : notice === "undone" ? t(($) => $.create_issue.ai_optimize.undone)
     : null;
 
+  if (!ownerCurrent) return null;
+
   return (
-    <div ref={assistRef} className="min-w-0 shrink-0 space-y-2 py-2">
+    <div ref={assistRef} className={cn("min-w-0 shrink-0 space-y-2 py-2", className)}>
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
         {!suggestion && !error && (
           <Button
@@ -212,8 +254,8 @@ export function IssueDescriptionAssist({
               if (button.disabled) editorRef.current?.focus();
               else button.focus();
             }}
-            disabled={!pending && (blocked || empty)}
-            aria-describedby={pending ? undefined : empty ? hintId : replacementHintId}
+            disabled={!pending && (generationBlocked || empty)}
+            aria-describedby={pending ? undefined : disabledReason ? disabledHintId : empty ? hintId : replacementHintId}
             onClick={() => { if (pending) cancel(); else void generate(); }}
           >
             {pending
@@ -222,8 +264,9 @@ export function IssueDescriptionAssist({
             {pending ? t(($) => $.create_issue.ai_optimize.cancel) : label}
           </Button>
         )}
-        {empty && <span id={hintId} className="text-caption text-muted-foreground">{t(($) => $.create_issue.ai_optimize.empty_hint)}</span>}
-        <span id={replacementHintId} className={!empty && !status && !error && !suggestion && !pending ? "text-caption text-muted-foreground" : "sr-only"}>
+        {disabledReason && <span id={disabledHintId} className="text-caption text-muted-foreground">{disabledReason}</span>}
+        {empty && !disabledReason && <span id={hintId} className="text-caption text-muted-foreground">{t(($) => $.create_issue.ai_optimize.empty_hint)}</span>}
+        <span id={replacementHintId} className={!empty && !disabledReason && !status && !error && !suggestion && !pending ? "text-caption text-muted-foreground" : "sr-only"}>
           {t(($) => $.create_issue.ai_optimize.replacement_hint)}
         </span>
         <div className="ml-auto flex min-w-0 items-center gap-1">
@@ -278,7 +321,7 @@ export function IssueDescriptionAssist({
               ? t(($) => $.create_issue.ai_optimize.unavailable)
               : t(($) => $.create_issue.ai_optimize.failed)}
           </p>
-          <Button type="button" variant="outline" size="sm" className="min-h-11 sm:min-h-7" disabled={blocked} onClick={() => { void generate(); }}>
+          <Button type="button" variant="outline" size="sm" className="min-h-11 sm:min-h-7" disabled={generationBlocked || empty} aria-describedby={disabledReason ? disabledHintId : undefined} onClick={() => { void generate(); }}>
             {t(($) => $.create_issue.ai_optimize.retry)}
           </Button>
         </div>
@@ -288,14 +331,16 @@ export function IssueDescriptionAssist({
           <h3 id={headingId} className="text-caption font-medium">{t(($) => $.create_issue.ai_optimize.suggestion)}</h3>
           <div className="max-h-40 space-y-3 overflow-y-auto overscroll-contain break-words" tabIndex={0}>
             {suggestion ? (
-              <ReadonlyContent content={suggestion.text} attachments={attachments} />
+              textFormat === "plain"
+                ? <div className="whitespace-pre-wrap text-body">{suggestion.text}</div>
+                : <ReadonlyContent content={suggestion.text} attachments={attachments} />
             ) : (
               <div className="whitespace-pre-wrap text-body">{partialText}</div>
             )}
           </div>
           {suggestion && (
             <div className="flex flex-wrap gap-2">
-              <Button type="button" variant="ghost" size="sm" className="min-h-11 sm:min-h-7" disabled={blocked} onClick={() => { void generate(); }}>
+              <Button type="button" variant="ghost" size="sm" className="min-h-11 sm:min-h-7" disabled={generationBlocked || empty} aria-describedby={disabledReason ? disabledHintId : undefined} onClick={() => { void generate(); }}>
                 {t(($) => $.create_issue.ai_optimize.regenerate)}
               </Button>
               <Button type="button" variant="ghost" size="sm" className="min-h-11 sm:min-h-7" onClick={() => { returnFocusRef.current = true; setSuggestion(null); setNotice(null); }}>

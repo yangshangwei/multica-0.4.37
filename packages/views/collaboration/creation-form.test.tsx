@@ -705,7 +705,7 @@ it("restores the opener when creation closes before its initial focus frame", as
   await screen.findByLabelText("Title");
   await waitFor(() => expect(frames.size).toBeGreaterThan(0));
   const dialog = screen.getByRole("dialog", { name: "New collaboration issue" });
-  await user.click(screen.getByRole("button", { name: "Close", exact: true }));
+  await user.click(screen.getByRole("button", { name: "Close" }));
   await waitFor(async () => {
     await act(() => {
       const callbacks = [...frames.values()];

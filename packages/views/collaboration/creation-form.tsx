@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Maximize2, Minimize2, XIcon } from "lucide-react";
 import { keepPreviousData, useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationCreationOptions, collaborationDeliveryKey, collaborationDeliveryRevision, collaborationKeys,
   CollaborationCreationRejectedError,
@@ -13,7 +13,7 @@ import { isImeComposing } from "@multica/core/utils";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { Textarea } from "@multica/ui/components/ui/textarea";
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@multica/ui/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@multica/ui/components/ui/dialog";
 import { useNavigation } from "../navigation";
 import { useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
@@ -23,16 +23,33 @@ import { CollaborationIterationInput, CollaborationLabelInput, CollaborationProp
 import { useCollaborationLabels } from "./labels";
 import { collaborationFocusWithinClass } from "./form-styles";
 import { recoverFocus } from "./focus";
+import { CollaborationCreationDescriptionAssist } from "./creation-description-assist";
 
 export function CollaborationCreationEntry({ scope, sourceWorkspaceId }: { scope: CollaborationScope; sourceWorkspaceId?: string }) {
   const { t } = useT("collaboration");
   const navigation = useNavigation();
   const [open, setOpen] = useState(false);
+  const [size, setSize] = useState<"default" | "assist" | "expanded">("default");
+  const explicitlySized = useRef(false);
   const trigger = useRef<HTMLButtonElement>(null);
   const dialog = useRef<HTMLDivElement>(null);
-  return <Dialog open={open} onOpenChange={setOpen}>
+  const expanded = size === "expanded";
+  const resizeLabel = expanded ? t(($) => $.creation.collapse) : t(($) => $.creation.expand);
+  const headerActions = <div className="flex shrink-0 items-center gap-1">
+    <Button type="button" variant="ghost" size="icon-sm" className="max-sm:size-11 pointer-coarse:size-11"
+      aria-label={resizeLabel} title={resizeLabel} aria-pressed={expanded}
+      onClick={() => { explicitlySized.current = true; setSize(expanded ? "default" : "expanded"); }}>
+      {expanded ? <Minimize2 aria-hidden className="size-4" /> : <Maximize2 aria-hidden className="size-4" />}
+    </Button>
+    <DialogClose render={<Button variant="ghost" size="icon-sm" className="max-sm:size-11 pointer-coarse:size-11" />}
+      aria-label={t(($) => $.creation.close)} title={t(($) => $.creation.close)}><XIcon aria-hidden className="size-4" /></DialogClose>
+  </div>;
+  return <Dialog open={open} onOpenChange={(next) => {
+    if (next) { setSize("default"); explicitlySized.current = false; }
+    setOpen(next);
+  }}>
     <DialogTrigger ref={trigger} render={<Button className="pointer-coarse:min-h-11 focus-visible:ring-faint-foreground focus-visible:border-faint-foreground" />}>{t(($) => $.creation.entry)}</DialogTrigger>
-    <DialogContent ref={dialog}
+    <DialogContent ref={dialog} showCloseButton={false}
       initialFocus={() => {
         if (document.activeElement === trigger.current) dialog.current?.focus({ preventScroll: true });
         // Base UI otherwise queues an unconditional focus frame. Recover only
@@ -45,18 +62,19 @@ export function CollaborationCreationEntry({ scope, sourceWorkspaceId }: { scope
         });
         return false;
       }}
-      className={`flex h-[min(34rem,90dvh)] max-h-[90dvh] w-[calc(100vw-1.5rem)] flex-col gap-0 overflow-hidden bg-background p-0 sm:max-w-2xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11 ${collaborationFocusWithinClass}`} closeLabel={t(($) => $.creation.close)}>
+      className={`flex w-[calc(100vw-1.5rem)] max-w-[calc(100vw-1.5rem)] flex-col gap-0 overflow-hidden bg-background p-0 motion-reduce:animate-none ${expanded ? "h-[calc(100dvh-1.5rem)] max-h-[calc(100dvh-1.5rem)] sm:max-w-4xl" : `${size === "assist" ? "h-[min(600px,90dvh)]" : "h-[min(34rem,90dvh)]"} max-h-[90dvh] sm:max-w-2xl`} ${collaborationFocusWithinClass}`} closeLabel={t(($) => $.creation.close)}>
       <DialogTitle className="sr-only">{t(($) => $.creation.title)}</DialogTitle>
       <DialogDescription className="sr-only">{t(($) => $.creation.help)}</DialogDescription>
-      {open && <CollaborationCreationPanel scope={scope} sourceWorkspaceId={sourceWorkspaceId} constrained onCancel={() => setOpen(false)} onCreated={(issue) => {
+      {open && <CollaborationCreationPanel scope={scope} sourceWorkspaceId={sourceWorkspaceId} constrained headerActions={headerActions}
+        onNeedsSpace={() => { if (!explicitlySized.current) setSize((current) => current === "default" ? "assist" : current); }} onCancel={() => setOpen(false)} onCreated={(issue) => {
         setOpen(false); navigation.push(accountPath({ view: "participating", issueId: issue.id }));
       }} />}
     </DialogContent>
   </Dialog>;
 }
 
-export function CollaborationCreationPanel({ scope, sourceWorkspaceId, onCreated, constrained = false, onCancel }: {
-  scope: CollaborationScope; sourceWorkspaceId?: string; onCreated: (issue: CollaborationIssue) => void; constrained?: boolean; onCancel?: () => void;
+export function CollaborationCreationPanel({ scope, sourceWorkspaceId, onCreated, constrained = false, onCancel, headerActions, onNeedsSpace }: {
+  scope: CollaborationScope; sourceWorkspaceId?: string; onCreated: (issue: CollaborationIssue) => void; constrained?: boolean; onCancel?: () => void; headerActions?: ReactNode; onNeedsSpace?: () => void;
 }) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
@@ -101,8 +119,8 @@ export function CollaborationCreationPanel({ scope, sourceWorkspaceId, onCreated
   const availableSource = !draftError && sources.data?.sources.some((source) => source.id === sourceId);
   return <div className={`min-w-0 ${constrained ? "flex min-h-0 flex-1 flex-col" : "space-y-5"} ${collaborationFocusWithinClass}`}>
     {!constrained && notices}
-    <div className={constrained ? "shrink-0 px-5 pb-3 pt-3 pr-14" : undefined}>
-      <div className={constrained ? "flex min-w-0 flex-wrap items-center gap-1.5 text-caption" : "space-y-2"}>
+    <div className={constrained ? "flex shrink-0 items-start gap-2 px-5 pb-3 pt-3" : undefined}>
+      <div className={constrained ? "flex min-h-8 min-w-0 flex-1 flex-wrap items-center gap-1.5 text-caption max-sm:min-h-11 pointer-coarse:min-h-11" : "space-y-2"}>
         {sources.data && <>
           <label htmlFor={selectId} className={constrained ? "sr-only" : "block text-body font-medium"}>{t(($) => $.creation.source)}</label>
           <select ref={sourceSelect} data-creation-source-empty={!sourceId ? "" : undefined} id={selectId} value={sourceId} disabled={sourceLocked} onChange={(event) => { if (!sourceLocked) setSelection(event.target.value); }}
@@ -112,9 +130,10 @@ export function CollaborationCreationPanel({ scope, sourceWorkspaceId, onCreated
         </>}
         {constrained && <span className="flex min-w-0 items-center gap-1.5 font-medium"><ChevronRight aria-hidden className="size-3 shrink-0 text-faint-foreground" /><span>{t(($) => $.creation.title)}</span></span>}
       </div>
+      {headerActions}
     </div>
     {availableSource ? <SelectedCreationSource key={`${scope.apiScope}:${scope.userId}:${sourceId}`} scope={scope} sourceId={sourceId} onCreated={onCreated}
-      constrained={constrained} onCancel={onCancel} notices={constrained ? notices : null} />
+      constrained={constrained} onCancel={onCancel} onNeedsSpace={onNeedsSpace} notices={constrained ? notices : null} />
       : constrained && <CreationContents constrained actions={onCancel && <CancelCreation onCancel={onCancel} />}>{notices}</CreationContents>}
   </div>;
 }
@@ -141,8 +160,8 @@ function CancelCreation({ onCancel }: { onCancel: () => void }) {
   return <Button type="button" variant="outline" className="pointer-coarse:min-h-11" onClick={onCancel}>{t(($) => $.creation.cancel)}</Button>;
 }
 
-function SelectedCreationSource({ scope, sourceId, onCreated, constrained, onCancel, notices }: {
-  scope: CollaborationScope; sourceId: string; onCreated: (issue: CollaborationIssue) => void; constrained: boolean; onCancel?: () => void; notices: ReactNode;
+function SelectedCreationSource({ scope, sourceId, onCreated, constrained, onCancel, notices, onNeedsSpace }: {
+  scope: CollaborationScope; sourceId: string; onCreated: (issue: CollaborationIssue) => void; constrained: boolean; onCancel?: () => void; notices: ReactNode; onNeedsSpace?: () => void;
 }) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
@@ -164,13 +183,14 @@ function SelectedCreationSource({ scope, sourceId, onCreated, constrained, onCan
   </div>;
   return <CreationForm scope={scope} options={options} onCreated={onCreated} parentSearch={parentSearch} onParentSearch={setParentSearch}
     optionsPending={parentSearch.trim() !== parentQuery || query.isFetching || query.isPlaceholderData} optionsError={query.error} onRetryOptions={() => void query.refetch()}
-    constrained={constrained} onCancel={onCancel} notices={notices} />;
+    sourceAccessCurrent={() => !isCollaborationDenied(client.getQueryState(collaborationCreationOptions(client, scope, sourceId, parentQuery).queryKey)?.error)}
+    constrained={constrained} onCancel={onCancel} notices={notices} onNeedsSpace={onNeedsSpace} />;
 }
 
-function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch, optionsPending, optionsError, onRetryOptions, constrained, onCancel, notices }: {
+function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch, optionsPending, optionsError, onRetryOptions, sourceAccessCurrent, constrained, onCancel, notices, onNeedsSpace }: {
   scope: CollaborationScope; options: CollaborationCreationOptions; onCreated: (issue: CollaborationIssue) => void;
-  parentSearch: string; onParentSearch: (search: string) => void; optionsPending: boolean; optionsError: unknown; onRetryOptions: () => void;
-  constrained: boolean; onCancel?: () => void; notices: ReactNode;
+  parentSearch: string; onParentSearch: (search: string) => void; optionsPending: boolean; optionsError: unknown; onRetryOptions: () => void; sourceAccessCurrent: () => boolean;
+  constrained: boolean; onCancel?: () => void; notices: ReactNode; onNeedsSpace?: () => void;
 }) {
   const { t } = useT("collaboration");
   const labels = useCollaborationLabels();
@@ -182,6 +202,7 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
   const context = { kind: "creation" as const, sourceWorkspaceId: sourceId };
   const draft = useCollaborationDeliveryForm({ server: scope.server, userId: scope.userId, context }, "creation");
   const { form } = draft;
+  const descriptionInput = useRef<HTMLTextAreaElement>(null);
   const [uploading, setUploading] = useState(false);
   const active = useRef(true);
   useEffect(() => { active.current = true; return () => { active.current = false; }; }, []);
@@ -198,6 +219,21 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
   }, [constrained, create.isError, create.error, scope.server, scope.apiScope, scope.userId]);
   const locked = create.isPending || draft.creations.length > 0 || Boolean(draft.error) || uploading || draft.uploads.length > 0;
   const editable = !locked && options.creation_enabled;
+  const assistCurrent = () => {
+    if (!active.current || !isCollaborationScopeCurrent(scope)) return false;
+    if (isCollaborationDenied(optionsError) || !sourceAccessCurrent()) return false;
+    try {
+      const forms = readCollaborationDeliveryRecords(form.scope).filter((record) => record.kind === "form" && record.purpose === "creation");
+      // A new empty draft is not persisted until its first edit. Nonempty
+      // requests must still own a stored record, so retirement fences late AI.
+      return forms.some((record) => record.draftId === form.draftId) || forms.length === 0 && !form.content && !form.title;
+    } catch { return false; }
+  };
+  const assistBlocked = () => {
+    if (!editable || !assistCurrent()) return true;
+    try { return readCollaborationDeliveryRecords(form.scope).some((record) => record.draftId === form.draftId && (record.kind === "upload" || record.kind === "creation")); }
+    catch { return true; }
+  };
   const pendingRequest = draft.creations.find((value) => value.requestId === create.variables?.value.requestId);
   const initial = form.initialFields ?? {};
   const fields = options.fields;
@@ -253,7 +289,10 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
       <Input ref={titleInput} data-creation-title id={`${id}-title`} value={form.title} maxLength={1000} disabled={!editable} onChange={(event) => draft.update({ title: event.target.value })} required aria-describedby={submitHint ? `${id}-submit-hint` : undefined} placeholder={t(($) => $.creation.titlePlaceholder)} className="min-h-11 rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 text-title-lg font-semibold shadow-none focus-visible:border-faint-foreground focus-visible:ring-0 md:text-title-lg dark:bg-transparent" />
     </div>
     <div className="space-y-1"><label htmlFor={`${id}-description`} className="block text-caption text-muted-foreground">{t(($) => $.creation.description)}</label>
-      <Textarea id={`${id}-description`} value={form.content} maxLength={1_000_000} disabled={!editable} onChange={(event) => draft.update({ content: event.target.value })} placeholder={t(($) => $.creation.descriptionPlaceholder)} className="min-h-16 resize-none rounded-sm border-0 bg-transparent px-0 text-body shadow-none focus-visible:ring-2 focus-visible:ring-inset dark:bg-transparent" />
+      <Textarea ref={descriptionInput} id={`${id}-description`} value={form.content} maxLength={1_000_000} disabled={!editable} onChange={(event) => draft.update({ content: event.target.value })} placeholder={t(($) => $.creation.descriptionPlaceholder)} className="min-h-16 resize-none rounded-sm border-0 bg-transparent px-0 text-body shadow-none focus-visible:ring-2 focus-visible:ring-inset dark:bg-transparent" />
+      <CollaborationCreationDescriptionAssist key={form.draftId} textareaRef={descriptionInput} sourceId={sourceId} value={form.content} title={form.title}
+        uploading={uploading || draft.uploads.length > 0} submitting={create.isPending || draft.creations.length > 0}
+        isBlocked={assistBlocked} isCurrent={assistCurrent} onChange={(content) => draft.update({ content })} onNeedsSpace={onNeedsSpace} />
     </div>
     <div className="grid min-w-0 gap-x-4 gap-y-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)]">
       <p className="text-caption text-muted-foreground sm:col-span-2">{t(($) => $.creation.help)}</p>

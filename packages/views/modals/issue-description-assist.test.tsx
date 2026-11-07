@@ -23,13 +23,13 @@ function deferred() {
 }
 
 function setup(overrides: Partial<ComponentProps<typeof IssueDescriptionAssist>> = {}) {
-  let markdown = "Original request";
+  let markdown = overrides.value ?? "Original request";
   const onChange = vi.fn();
   const editorRef = { current: {
     getMarkdown: () => markdown,
     focus: vi.fn(),
     flushPendingUpdate: vi.fn((): string | null => markdown),
-    adoptContent: vi.fn((value: string) => { markdown = value.replace(/\n+$/, ""); }),
+    adoptContent: vi.fn((value: string) => { markdown = overrides.textFormat === "plain" ? value : value.replace(/\n+$/, ""); }),
   } };
   const props = {
     wsId: "workspace-1", mode: "manual" as const, value: markdown,
@@ -51,6 +51,118 @@ beforeEach(() => {
 });
 
 describe("IssueDescriptionAssist", () => {
+  it("preserves plain-text whitespace through adoption, clarification merging and undo", async () => {
+    const original = "  Original request\n\n";
+    const improved = " Improved request\n";
+    optimize.mockResolvedValue({ text: improved, questions: ["Which version?"] });
+    const view = setup({ textFormat: "plain", actionLabel: "Help me improve", value: original });
+    await userEvent.click(screen.getByRole("button", { name: "Help me improve" }));
+    expect(optimize).toHaveBeenCalledWith(expect.objectContaining({ text: original, mode: "manual" }));
+    expect(view.read()).toBe(improved);
+    expect(view.onChange).toHaveBeenLastCalledWith(improved);
+    await userEvent.click(screen.getByRole("button", { name: "Undo" }));
+    expect(view.read()).toBe(original);
+    await userEvent.click(screen.getByRole("button", { name: "Help me improve" }));
+    await userEvent.type(screen.getByRole("textbox", { name: "Which version?" }), "Version 2");
+    await userEvent.click(screen.getByRole("button", { name: "Add answers to draft" }));
+    expect(view.read()).toMatch(/^ Improved request\n/);
+    await userEvent.click(screen.getByRole("button", { name: "Undo" }));
+    expect(view.read()).toBe(improved);
+  });
+
+  it("treats whitespace-only newer edits as stale and keeps plain suggestions inert", async () => {
+    const response = deferred();
+    optimize.mockReturnValueOnce(response.promise);
+    const view = setup({ textFormat: "plain" });
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
+    view.type("Original request ");
+    const suggestion = "![private file](/uploads/private.png)\n[Open](https://example.test)";
+    await act(async () => { response.resolve({ text: suggestion, questions: [] }); });
+    expect(view.read()).toBe("Original request ");
+    expect(view.editorRef.current.adoptContent).not.toHaveBeenCalled();
+    expect(screen.getByText(suggestion, { exact: true, normalizer: (text) => text })).toBeInTheDocument();
+    expect(screen.queryByTestId("ai-readonly")).not.toBeInTheDocument();
+    expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
+  });
+
+  it.each(["delta", "done", "error"])("discards %s from a no-longer-current owner", async (event) => {
+    const response = deferred();
+    optimize.mockReturnValueOnce(response.promise);
+    let current = true;
+    const view = setup({ isCurrent: () => current });
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
+    const { onText, signal } = optimize.mock.calls[0]![0] as { onText: (text: string) => void; signal: AbortSignal };
+    act(() => { onText("Private provisional text"); });
+    current = false;
+    if (event === "delta") act(() => { onText("Private late delta"); });
+    await act(async () => {
+      if (event === "error") response.reject(new Error("Provider details"));
+      else response.resolve({ text: "Private completed text", questions: ["Private question?"] });
+    });
+    expect(signal.aborted).toBe(true);
+    expect(view.read()).toBe("Original request");
+    expect(view.editorRef.current.adoptContent).not.toHaveBeenCalled();
+    expect(screen.queryByText(/Private/)).not.toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
+  it("clears adopted-owner state and refuses undo or merges after ownership changes", async () => {
+    let current = true;
+    const view = setup({ isCurrent: () => current });
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
+    await userEvent.type(screen.getByRole("textbox", { name: "Which version?" }), "Version 2");
+    current = false;
+    await userEvent.click(screen.getByRole("button", { name: "Add answers to draft" }));
+    await userEvent.click(screen.getByRole("button", { name: "Undo" }));
+    expect(view.read()).toBe("Improved request");
+    view.rerender(view.element());
+    expect(screen.queryByText("Which version?")).not.toBeInTheDocument();
+    current = true;
+    view.rerender(view.element());
+    expect(screen.queryByRole("button", { name: "Undo" })).not.toBeInTheDocument();
+  });
+
+  it("explains AI-only limits while keeping adoption undo and clarification merging available", async () => {
+    const reason = "Description exceeds the AI input limit.";
+    const view = setup({ disabledReason: reason });
+    expect(screen.getByRole("button", { name: "Refine description" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Refine description" })).toHaveAccessibleDescription(reason);
+    expect(screen.getByText(reason)).toBeVisible();
+    expect(optimize).not.toHaveBeenCalled();
+    view.rerender(view.element({ ...view.props, disabledReason: undefined }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
+    view.rerender(view.element({ ...view.props, disabledReason: reason }));
+    expect(screen.getByRole("button", { name: "Refine description" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Undo" })).toBeEnabled();
+    await userEvent.type(screen.getByRole("textbox", { name: "Which version?" }), "Version 2");
+    await userEvent.click(screen.getByRole("button", { name: "Add answers to draft" }));
+    expect(view.read()).toContain("Version 2");
+    await userEvent.click(screen.getByRole("button", { name: "Undo" }));
+    expect(view.read()).toBe("Improved request");
+  });
+
+  it.each(["retry", "regenerate"])("prevents %s when a visible AI-only limit is reached", async (path) => {
+    const response = deferred();
+    optimize.mockReturnValueOnce(response.promise);
+    const view = setup();
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
+    await act(async () => {
+      if (path === "retry") response.reject(new Error("Unavailable"));
+      else {
+        view.type("Latest edit");
+        response.resolve({ text: "Suggested edit", questions: [] });
+      }
+    });
+    const reason = "Description exceeds the AI input limit.";
+    view.rerender(view.element({ ...view.props, disabledReason: reason }));
+    const button = screen.getByRole("button", { name: path === "retry" ? "Try again" : "Regenerate" });
+    expect(button).toBeDisabled();
+    expect(button).toHaveAccessibleDescription(reason);
+    await userEvent.click(button);
+    expect(optimize).toHaveBeenCalledTimes(1);
+  });
+
   it("preserves answers while collapsed and restores them after merging and undo", async () => {
     const view = setup();
     await userEvent.click(screen.getByRole("button", { name: "Refine description" }));

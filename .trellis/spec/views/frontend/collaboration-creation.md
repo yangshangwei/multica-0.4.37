@@ -184,3 +184,21 @@ give cancel/create the full available row before stacking individual buttons.
 Browser geometry and screenshots own these layout assertions, not unit tests
 that mirror Tailwind classes. Existing submission and recovery tests remain the
 behavioral regression gate.
+
+## Expanded composer and AI description help
+
+The creation dialog owns local default/assist/expanded sizing. Expand and
+collapse use one mounted form: draft fields, files and active AI generation
+survive resizing. Reopening resets size. Assistance may request more space once
+per opening, but explicit user sizing wins. Header controls and footer remain
+outside the scrolling body with viewport gutters and coarse targets >=44px.
+Standalone panels accept optional header/layout callbacks without a Dialog
+dependency.
+
+Description help reuses `IssueDescriptionAssist` through a plain-text adapter.
+Pass the selected source UUID and manual description mode, preserve exact raw
+undo text, and keep provisional output out of create payloads. Source/API/viewer
+or draft ownership changes discard output; upload/create/durable-recovery locks
+prevent adoption. AI unavailable/route-missing failures preserve drafts/files.
+Full contracts and shared default-caller tests live in
+[Issue Description Assist](./issue-description-assist.md).
