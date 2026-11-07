@@ -1457,7 +1457,7 @@
   "scope_boundary": "15 original failed browser cases nowPASS;2original installed gates stillBLOCKED. This is17 identities,not all441 current inventory or an all-green canonical full run. Other frontend and detail failures remain open.",
   "final_browser_ledger_crosscheck": {
     "path": ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-coverage.csv",
-    "sha256": "88bed9854d5d7ce3a4caa45d6aa71e8a3d50b4f29c225c2237a33b13c1ab50ba",
+    "sha256": "8d06ae8e28821b5ada671ffab48c0f9d6eba5c401679c53aca7a97f0ed39a2c4",
     "all15_current_passes_match": true,
     "two_installed_not_in_executed_ledger": true,
     "canonical_business_inventory": 68,
@@ -1466,5 +1466,14 @@
       "passed": 66
     },
     "diagnostic_variants_not_substituted_for_canonical_detail_failures": true
+  },
+  "csv_normalization": {
+    "at": "2026-11-07T06:07:57.147591+00:00",
+    "path": ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-coverage.csv",
+    "original_export_path": ".omx/private/branch-e2e-20261107/browser/browser-coverage-original-crlf.csv",
+    "original_export_sha256": "88bed9854d5d7ce3a4caa45d6aa71e8a3d50b4f29c225c2237a33b13c1ab50ba",
+    "tracked_lf_sha256": "8d06ae8e28821b5ada671ffab48c0f9d6eba5c401679c53aca7a97f0ed39a2c4",
+    "rows_unchanged": 68,
+    "change": "CRLF to LF only; committed Git blob already uses LF; no case or result changed"
   }
 }

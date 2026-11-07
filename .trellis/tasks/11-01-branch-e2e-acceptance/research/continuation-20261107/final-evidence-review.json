@@ -321,7 +321,7 @@
     ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/report.md": "c3f033514e5a2b16d20768b8113b9498c391a459a5b0e04405023820369aee5c",
     ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/defects-current.md": "973c71325fa2284c87fe733f4ca3c76b70df4f533a505dc46fc0b3d2a2a00275",
     ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-results.json": "145111bfa5c9ccdf59047eca8530db475d4ea34a4800067b8e13e773e76efca8",
-    ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-coverage.csv": "88bed9854d5d7ce3a4caa45d6aa71e8a3d50b4f29c225c2237a33b13c1ab50ba",
+    ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-coverage.csv": "8d06ae8e28821b5ada671ffab48c0f9d6eba5c401679c53aca7a97f0ed39a2c4",
     ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-report.md": "ccafaba69e8528f7b0dc8457489107c294474bbd02ac9e7a70744dd4102f4232",
     ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-provenance.json": "c3d4e484d6a32c36c80679d290d4610cc154bad3af4fe96bde0c496c7e60379e",
     ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-cleanup.json": "f87ca41fbd468a6e6c4c330573a83cc46b9d6685386ac7a054df212b61e94e19",
@@ -333,5 +333,14 @@
     ".omx/private/branch-e2e-20261107/browser/live-integration-final-15.json": "5f33329dc53013ad9d12a7ebf13b94118d3c8e0f3ecd4948ff9ee484de8aa516",
     ".omx/private/branch-e2e-20261107/browser/source-hashes.json": "2a8ff4687198675df67bf3be2c810ae90574f68407e619d14510c7911f9ab34d",
     ".omx/private/branch-e2e-20261107/browser/runs/inventory-full-final-15/results.json": "fff8e99c7452ee97fb71f38867ee694c03724f7a647ea2e62c28381278c087aa"
+  },
+  "csv_normalization": {
+    "at": "2026-11-07T06:07:57.147591+00:00",
+    "path": ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-coverage.csv",
+    "original_export_path": ".omx/private/branch-e2e-20261107/browser/browser-coverage-original-crlf.csv",
+    "original_export_sha256": "88bed9854d5d7ce3a4caa45d6aa71e8a3d50b4f29c225c2237a33b13c1ab50ba",
+    "tracked_lf_sha256": "8d06ae8e28821b5ada671ffab48c0f9d6eba5c401679c53aca7a97f0ed39a2c4",
+    "rows_unchanged": 68,
+    "change": "CRLF to LF only; committed Git blob already uses LF; no case or result changed"
   }
 }

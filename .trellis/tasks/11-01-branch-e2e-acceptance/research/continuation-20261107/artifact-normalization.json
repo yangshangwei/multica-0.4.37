@@ -1,0 +1,32 @@
+{
+  "at": "2026-11-07T06:07:57.147591+00:00",
+  "path": ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-coverage.csv",
+  "original_export_path": ".omx/private/branch-e2e-20261107/browser/browser-coverage-original-crlf.csv",
+  "original_export_sha256": "88bed9854d5d7ce3a4caa45d6aa71e8a3d50b4f29c225c2237a33b13c1ab50ba",
+  "tracked_lf_sha256": "8d06ae8e28821b5ada671ffab48c0f9d6eba5c401679c53aca7a97f0ed39a2c4",
+  "rows_unchanged": 68,
+  "change": "CRLF to LF only; committed Git blob already uses LF; no case or result changed",
+  "normalization_review": {
+    "reviewed_at": "2026-11-07T06:08:47.113339+00:00",
+    "reviewer": "/root/current_backend_acceptance",
+    "result": "PASS",
+    "commit": "c697b3477",
+    "raw_retained_hash_matches": true,
+    "working_equals_committed_and_indexed_bytes": true,
+    "change_is_only_69_crlf_to_lf_sequences": true,
+    "csv_rows_equal": 68,
+    "final_counts_unchanged": {
+      "passed": 66,
+      "failed": 2
+    },
+    "matches_final_browser_json": true,
+    "metadata_changes_limited_to_two_csv_hash_references_and_normalization_records": true,
+    "verified_reference_locations": {
+      "final-evidence-review.json": "input_sha256..trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-coverage.csv",
+      "original-case-current-status.json": "final_browser_ledger_crosscheck.sha256"
+    },
+    "csv_git_diff_empty": true,
+    "tests_rerun": false,
+    "source_or_database_changes": false
+  }
+}
