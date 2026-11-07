@@ -1,0 +1,1122 @@
+[
+  {
+    "nodeId": "4",
+    "ignored": false,
+    "role": {
+      "type": "role",
+      "value": "textbox"
+    },
+    "chromeRole": {
+      "type": "internalRole",
+      "value": 170
+    },
+    "name": {
+      "type": "computedString",
+      "value": "标题",
+      "sources": [
+        {
+          "type": "relatedElement",
+          "attribute": "aria-labelledby"
+        },
+        {
+          "type": "attribute",
+          "attribute": "aria-label"
+        },
+        {
+          "type": "relatedElement",
+          "value": {
+            "type": "computedString",
+            "value": "标题"
+          },
+          "nativeSource": "labelfor",
+          "nativeSourceValue": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 69,
+                "text": "标题"
+              }
+            ]
+          }
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        },
+        {
+          "type": "placeholder",
+          "value": {
+            "type": "computedString",
+            "value": "需要完成什么任务？"
+          },
+          "attribute": "placeholder",
+          "attributeValue": {
+            "type": "string",
+            "value": "需要完成什么任务？"
+          },
+          "superseded": true
+        },
+        {
+          "type": "placeholder",
+          "attribute": "aria-placeholder",
+          "superseded": true
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        }
+      ]
+    },
+    "value": {
+      "type": "string",
+      "value": "协作弹窗修复验证"
+    },
+    "properties": [
+      {
+        "name": "invalid",
+        "value": {
+          "type": "token",
+          "value": "false"
+        }
+      },
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "editable",
+        "value": {
+          "type": "token",
+          "value": "plaintext"
+        }
+      },
+      {
+        "name": "settable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "multiline",
+        "value": {
+          "type": "boolean",
+          "value": false
+        }
+      },
+      {
+        "name": "readonly",
+        "value": {
+          "type": "boolean",
+          "value": false
+        }
+      },
+      {
+        "name": "required",
+        "value": {
+          "type": "boolean",
+          "value": true
+        }
+      },
+      {
+        "name": "labelledby",
+        "value": {
+          "type": "nodeList",
+          "relatedNodes": [
+            {
+              "backendDOMNodeId": 69,
+              "text": "标题"
+            }
+          ]
+        }
+      }
+    ],
+    "parentId": "67",
+    "childIds": [
+      "70",
+      "71"
+    ],
+    "backendDOMNodeId": 4
+  },
+  {
+    "nodeId": "12",
+    "ignored": false,
+    "role": {
+      "type": "role",
+      "value": "textbox"
+    },
+    "chromeRole": {
+      "type": "internalRole",
+      "value": 170
+    },
+    "name": {
+      "type": "computedString",
+      "value": "描述",
+      "sources": [
+        {
+          "type": "relatedElement",
+          "attribute": "aria-labelledby"
+        },
+        {
+          "type": "attribute",
+          "attribute": "aria-label"
+        },
+        {
+          "type": "relatedElement",
+          "value": {
+            "type": "computedString",
+            "value": "描述"
+          },
+          "nativeSource": "labelfor",
+          "nativeSourceValue": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 73,
+                "text": "描述"
+              }
+            ]
+          }
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        },
+        {
+          "type": "placeholder",
+          "value": {
+            "type": "computedString",
+            "value": "补充背景和预期交付结果..."
+          },
+          "attribute": "placeholder",
+          "attributeValue": {
+            "type": "string",
+            "value": "补充背景和预期交付结果..."
+          },
+          "superseded": true
+        },
+        {
+          "type": "placeholder",
+          "attribute": "aria-placeholder",
+          "superseded": true
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "invalid",
+        "value": {
+          "type": "token",
+          "value": "false"
+        }
+      },
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "editable",
+        "value": {
+          "type": "token",
+          "value": "plaintext"
+        }
+      },
+      {
+        "name": "settable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "multiline",
+        "value": {
+          "type": "boolean",
+          "value": true
+        }
+      },
+      {
+        "name": "readonly",
+        "value": {
+          "type": "boolean",
+          "value": false
+        }
+      },
+      {
+        "name": "required",
+        "value": {
+          "type": "boolean",
+          "value": false
+        }
+      },
+      {
+        "name": "labelledby",
+        "value": {
+          "type": "nodeList",
+          "relatedNodes": [
+            {
+              "backendDOMNodeId": 73,
+              "text": "描述"
+            }
+          ]
+        }
+      }
+    ],
+    "parentId": "72",
+    "childIds": [
+      "74",
+      "75"
+    ],
+    "backendDOMNodeId": 12
+  },
+  {
+    "nodeId": "52",
+    "ignored": false,
+    "role": {
+      "type": "role",
+      "value": "option"
+    },
+    "chromeRole": {
+      "type": "internalRole",
+      "value": 127
+    },
+    "name": {
+      "type": "computedString",
+      "value": "选择工作空间",
+      "sources": [
+        {
+          "type": "relatedElement",
+          "attribute": "aria-labelledby"
+        },
+        {
+          "type": "attribute",
+          "attribute": "aria-label"
+        },
+        {
+          "type": "contents",
+          "value": {
+            "type": "computedString",
+            "value": "选择工作空间"
+          }
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "selected",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": false
+        }
+      }
+    ],
+    "parentId": "48",
+    "childIds": [],
+    "backendDOMNodeId": 52
+  },
+  {
+    "nodeId": "55",
+    "ignored": false,
+    "role": {
+      "type": "role",
+      "value": "option"
+    },
+    "chromeRole": {
+      "type": "internalRole",
+      "value": 127
+    },
+    "name": {
+      "type": "computedString",
+      "value": "产品研发",
+      "sources": [
+        {
+          "type": "relatedElement",
+          "attribute": "aria-labelledby"
+        },
+        {
+          "type": "attribute",
+          "attribute": "aria-label"
+        },
+        {
+          "type": "contents",
+          "value": {
+            "type": "computedString",
+            "value": "产品研发"
+          }
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "selected",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      }
+    ],
+    "parentId": "48",
+    "childIds": [],
+    "backendDOMNodeId": 55
+  },
+  {
+    "nodeId": "58",
+    "ignored": false,
+    "role": {
+      "type": "role",
+      "value": "option"
+    },
+    "chromeRole": {
+      "type": "internalRole",
+      "value": 127
+    },
+    "name": {
+      "type": "computedString",
+      "value": "客户协作",
+      "sources": [
+        {
+          "type": "relatedElement",
+          "attribute": "aria-labelledby"
+        },
+        {
+          "type": "attribute",
+          "attribute": "aria-label"
+        },
+        {
+          "type": "contents",
+          "value": {
+            "type": "computedString",
+            "value": "客户协作"
+          }
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "selected",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": false
+        }
+      }
+    ],
+    "parentId": "48",
+    "childIds": [],
+    "backendDOMNodeId": 58
+  },
+  {
+    "nodeId": "104",
+    "ignored": false,
+    "role": {
+      "type": "role",
+      "value": "option"
+    },
+    "chromeRole": {
+      "type": "internalRole",
+      "value": 127
+    },
+    "name": {
+      "type": "computedString",
+      "value": "手动处理",
+      "sources": [
+        {
+          "type": "relatedElement",
+          "attribute": "aria-labelledby"
+        },
+        {
+          "type": "attribute",
+          "attribute": "aria-label"
+        },
+        {
+          "type": "contents",
+          "value": {
+            "type": "computedString",
+            "value": "手动处理"
+          }
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "selected",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": false
+        }
+      }
+    ],
+    "parentId": "100",
+    "childIds": [],
+    "backendDOMNodeId": 104
+  },
+  {
+    "nodeId": "107",
+    "ignored": false,
+    "role": {
+      "type": "role",
+      "value": "option"
+    },
+    "chromeRole": {
+      "type": "internalRole",
+      "value": 127
+    },
+    "name": {
+      "type": "computedString",
+      "value": "AI 辅助",
+      "sources": [
+        {
+          "type": "relatedElement",
+          "attribute": "aria-labelledby"
+        },
+        {
+          "type": "attribute",
+          "attribute": "aria-label"
+        },
+        {
+          "type": "contents",
+          "value": {
+            "type": "computedString",
+            "value": "AI 辅助"
+          }
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "selected",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      }
+    ],
+    "parentId": "100",
+    "childIds": [],
+    "backendDOMNodeId": 107
+  },
+  {
+    "nodeId": "16",
+    "ignored": false,
+    "role": {
+      "type": "role",
+      "value": "textbox"
+    },
+    "chromeRole": {
+      "type": "internalRole",
+      "value": 170
+    },
+    "name": {
+      "type": "computedString",
+      "value": "筛选选项",
+      "sources": [
+        {
+          "type": "relatedElement",
+          "attribute": "aria-labelledby"
+        },
+        {
+          "type": "attribute",
+          "value": {
+            "type": "computedString",
+            "value": "筛选选项"
+          },
+          "attribute": "aria-label",
+          "attributeValue": {
+            "type": "string",
+            "value": "筛选选项"
+          }
+        },
+        {
+          "type": "relatedElement",
+          "superseded": true,
+          "nativeSource": "label"
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        },
+        {
+          "type": "placeholder",
+          "value": {
+            "type": "computedString",
+            "value": "搜索接收人"
+          },
+          "attribute": "placeholder",
+          "attributeValue": {
+            "type": "string",
+            "value": "搜索接收人"
+          },
+          "superseded": true
+        },
+        {
+          "type": "placeholder",
+          "attribute": "aria-placeholder",
+          "superseded": true
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "invalid",
+        "value": {
+          "type": "token",
+          "value": "false"
+        }
+      },
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "focused",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "editable",
+        "value": {
+          "type": "token",
+          "value": "plaintext"
+        }
+      },
+      {
+        "name": "settable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "hasPopup",
+        "value": {
+          "type": "token",
+          "value": "listbox"
+        }
+      },
+      {
+        "name": "multiline",
+        "value": {
+          "type": "boolean",
+          "value": false
+        }
+      },
+      {
+        "name": "readonly",
+        "value": {
+          "type": "boolean",
+          "value": false
+        }
+      },
+      {
+        "name": "required",
+        "value": {
+          "type": "boolean",
+          "value": false
+        }
+      },
+      {
+        "name": "activedescendant",
+        "value": {
+          "type": "idref",
+          "relatedNodes": [
+            {
+              "backendDOMNodeId": 257,
+              "idref": "_r_h_-accounts-1e486130-bb06-4e6e-8be9-dd58c8eb83be"
+            }
+          ]
+        }
+      },
+      {
+        "name": "controls",
+        "value": {
+          "type": "idrefList",
+          "value": "_r_h_-accounts",
+          "relatedNodes": [
+            {
+              "backendDOMNodeId": 253,
+              "idref": "_r_h_-accounts"
+            }
+          ]
+        }
+      }
+    ],
+    "parentId": "249",
+    "childIds": [
+      "250",
+      "251"
+    ],
+    "backendDOMNodeId": 16
+  },
+  {
+    "nodeId": "253",
+    "ignored": false,
+    "role": {
+      "type": "role",
+      "value": "listbox"
+    },
+    "chromeRole": {
+      "type": "internalRole",
+      "value": 112
+    },
+    "name": {
+      "type": "computedString",
+      "value": "接收人",
+      "sources": [
+        {
+          "type": "relatedElement",
+          "attribute": "aria-labelledby"
+        },
+        {
+          "type": "attribute",
+          "value": {
+            "type": "computedString",
+            "value": "接收人"
+          },
+          "attribute": "aria-label",
+          "attributeValue": {
+            "type": "string",
+            "value": "接收人"
+          }
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "multiselectable",
+        "value": {
+          "type": "boolean",
+          "value": false
+        }
+      },
+      {
+        "name": "orientation",
+        "value": {
+          "type": "token",
+          "value": "vertical"
+        }
+      },
+      {
+        "name": "required",
+        "value": {
+          "type": "boolean",
+          "value": false
+        }
+      }
+    ],
+    "parentId": "252",
+    "childIds": [
+      "254",
+      "267"
+    ],
+    "backendDOMNodeId": 253
+  },
+  {
+    "nodeId": "257",
+    "ignored": false,
+    "role": {
+      "type": "role",
+      "value": "option"
+    },
+    "chromeRole": {
+      "type": "internalRole",
+      "value": 113
+    },
+    "name": {
+      "type": "computedString",
+      "value": "分配给自己, 账号 ID：1e486130-bb06-4e6e-8be9-dd58c8eb83be",
+      "sources": [
+        {
+          "type": "relatedElement",
+          "attribute": "aria-labelledby"
+        },
+        {
+          "type": "attribute",
+          "value": {
+            "type": "computedString",
+            "value": "分配给自己, 账号 ID：1e486130-bb06-4e6e-8be9-dd58c8eb83be"
+          },
+          "attribute": "aria-label",
+          "attributeValue": {
+            "type": "string",
+            "value": "分配给自己, 账号 ID：1e486130-bb06-4e6e-8be9-dd58c8eb83be"
+          }
+        },
+        {
+          "type": "relatedElement",
+          "superseded": true,
+          "nativeSource": "label"
+        },
+        {
+          "type": "contents",
+          "value": {
+            "type": "computedString",
+            "value": "分配给自己 账号 ID：1e486130-bb06-4e6e-8be9-dd58c8eb83be"
+          },
+          "superseded": true
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "invalid",
+        "value": {
+          "type": "token",
+          "value": "false"
+        }
+      },
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "selected",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      }
+    ],
+    "parentId": "256",
+    "childIds": [
+      "258"
+    ],
+    "backendDOMNodeId": 257
+  },
+  {
+    "nodeId": "270",
+    "ignored": false,
+    "role": {
+      "type": "role",
+      "value": "option"
+    },
+    "chromeRole": {
+      "type": "internalRole",
+      "value": 113
+    },
+    "name": {
+      "type": "computedString",
+      "value": "李明, 账号 ID：00000000-0000-4000-8000-000000000004",
+      "sources": [
+        {
+          "type": "relatedElement",
+          "attribute": "aria-labelledby"
+        },
+        {
+          "type": "attribute",
+          "value": {
+            "type": "computedString",
+            "value": "李明, 账号 ID：00000000-0000-4000-8000-000000000004"
+          },
+          "attribute": "aria-label",
+          "attributeValue": {
+            "type": "string",
+            "value": "李明, 账号 ID：00000000-0000-4000-8000-000000000004"
+          }
+        },
+        {
+          "type": "relatedElement",
+          "superseded": true,
+          "nativeSource": "label"
+        },
+        {
+          "type": "contents",
+          "value": {
+            "type": "computedString",
+            "value": "李明 账号 ID：00000000-0000-4000-8000-000000000004"
+          },
+          "superseded": true
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "invalid",
+        "value": {
+          "type": "token",
+          "value": "false"
+        }
+      },
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "selected",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": false
+        }
+      }
+    ],
+    "parentId": "269",
+    "childIds": [
+      "271"
+    ],
+    "backendDOMNodeId": 270
+  },
+  {
+    "nodeId": "281",
+    "ignored": false,
+    "role": {
+      "type": "role",
+      "value": "option"
+    },
+    "chromeRole": {
+      "type": "internalRole",
+      "value": 113
+    },
+    "name": {
+      "type": "computedString",
+      "value": "李明, 账号 ID：00000000-0000-4000-8000-000000000005",
+      "sources": [
+        {
+          "type": "relatedElement",
+          "attribute": "aria-labelledby"
+        },
+        {
+          "type": "attribute",
+          "value": {
+            "type": "computedString",
+            "value": "李明, 账号 ID：00000000-0000-4000-8000-000000000005"
+          },
+          "attribute": "aria-label",
+          "attributeValue": {
+            "type": "string",
+            "value": "李明, 账号 ID：00000000-0000-4000-8000-000000000005"
+          }
+        },
+        {
+          "type": "relatedElement",
+          "superseded": true,
+          "nativeSource": "label"
+        },
+        {
+          "type": "contents",
+          "value": {
+            "type": "computedString",
+            "value": "李明 账号 ID：00000000-0000-4000-8000-000000000005"
+          },
+          "superseded": true
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "invalid",
+        "value": {
+          "type": "token",
+          "value": "false"
+        }
+      },
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "selected",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": false
+        }
+      }
+    ],
+    "parentId": "280",
+    "childIds": [
+      "282"
+    ],
+    "backendDOMNodeId": 281
+  },
+  {
+    "nodeId": "292",
+    "ignored": false,
+    "role": {
+      "type": "role",
+      "value": "option"
+    },
+    "chromeRole": {
+      "type": "internalRole",
+      "value": 113
+    },
+    "name": {
+      "type": "computedString",
+      "value": "客户张经理, 账号 ID：00000000-0000-4000-8000-000000000006, 外部",
+      "sources": [
+        {
+          "type": "relatedElement",
+          "attribute": "aria-labelledby"
+        },
+        {
+          "type": "attribute",
+          "value": {
+            "type": "computedString",
+            "value": "客户张经理, 账号 ID：00000000-0000-4000-8000-000000000006, 外部"
+          },
+          "attribute": "aria-label",
+          "attributeValue": {
+            "type": "string",
+            "value": "客户张经理, 账号 ID：00000000-0000-4000-8000-000000000006, 外部"
+          }
+        },
+        {
+          "type": "relatedElement",
+          "superseded": true,
+          "nativeSource": "label"
+        },
+        {
+          "type": "contents",
+          "value": {
+            "type": "computedString",
+            "value": "客户张经理 外部 账号 ID：00000000-0000-4000-8000-000000000006"
+          },
+          "superseded": true
+        },
+        {
+          "type": "attribute",
+          "attribute": "title",
+          "superseded": true
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "invalid",
+        "value": {
+          "type": "token",
+          "value": "false"
+        }
+      },
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "selected",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": false
+        }
+      }
+    ],
+    "parentId": "291",
+    "childIds": [
+      "293"
+    ],
+    "backendDOMNodeId": 292
+  }
+]

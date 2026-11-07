@@ -183,18 +183,22 @@ export function CollaborationAccountPicker({
     </div>}
   </div>;
 
+  const selectedIdentity = display && (!multiple || selectedAccounts.length <= 1)
+    ? <span className={`block text-caption text-muted-foreground [overflow-wrap:anywhere] ${compact ? "col-span-full" : ""}`}>{t(($) => $.recipientPicker.accountId, { id: accountIdentity(display) })}</span>
+    : null;
   return <div data-recipient-picker className={`min-w-0 ${collaborationFocusWithinClass}`}>
     <PropertyPicker open={isOpen} onOpenChange={(next) => { setOpen(next); if (!next) { setExactOpen(false); setExactText(""); setExactRequest(""); } }}
       width="w-96 max-w-[calc(100vw-24px)]" align="start" searchable searchPlaceholder={t(($) => $.recipientPicker.search)}
       navigationResetKey={navigationResetKey} onSearchChange={setInput} listboxId={listboxId} searchInputRef={searchInput}
       contentClassName={`${collaborationPickerContentClass} max-h-(--available-height) overflow-y-auto [&>div]:min-h-0 [&>div:has(>[role=listbox])]:shrink [&>div:not(:has(>[role=listbox]))]:shrink-0`}
-      triggerAriaLabel={label} triggerRender={<button type="button" aria-label={label} disabled={disabled} className={`flex min-h-11 w-full min-w-0 items-center gap-2 rounded-md px-3 py-2 text-left text-body hover:bg-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 ${compact ? "bg-muted/50" : "border border-input bg-background"}`} />} trigger={<span className="flex min-w-0 flex-1 items-center gap-2">
+      triggerAriaLabel={label} triggerRender={<button type="button" aria-label={label} disabled={disabled} className={`flex min-h-11 w-full min-w-0 items-center gap-2 rounded-md px-3 py-2 text-left text-body hover:bg-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 ${compact ? "bg-muted/50" : "border border-input bg-background"}`} />} trigger={<span className={compact ? "grid min-w-0 flex-1 grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-x-2 gap-y-1" : "flex min-w-0 flex-1 items-center gap-2"}>
         {display && <ActorAvatar name={display.name} initials={initials(display.name)} avatarUrl={display.avatar_url} size="sm" />}
         <span className="min-w-0 flex-1"><span className="block truncate">{multiple && selectedAccounts.length > 1 ? t(($) => $.recipientPicker.selectedCount, { count: selectedAccounts.length }) : displayName}</span>
-          {display && (!multiple || selectedAccounts.length <= 1) && <span className="block text-caption text-muted-foreground [overflow-wrap:anywhere]">{t(($) => $.recipientPicker.accountId, { id: accountIdentity(display) })}</span>}
+          {!compact && selectedIdentity}
         </span>
         {display?.external === true && <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 text-caption text-muted-foreground">{t(($) => $.recipientPicker.external)}</span>}
         <ChevronDown aria-hidden className="size-4 shrink-0 text-muted-foreground" />
+        {compact && selectedIdentity}
       </span>}
       footer={<>
         {!searchPending && search.isFetchingNextPage && <p role="status" className="px-2 py-2 text-caption text-muted-foreground"><LoaderCircle aria-hidden className="mr-1 inline size-3.5 animate-spin" />{t(($) => $.recipientPicker.loadingMore)}</p>}

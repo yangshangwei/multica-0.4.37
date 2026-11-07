@@ -652,6 +652,13 @@ it("keeps composing Enter out of native submission while plain Enter still creat
 });
 
 it.each([false, true])("focuses a delayed known-source title after touch open without stealing a live control: %s", async (keepControlFocus) => {
+  const frames = new Map<number, FrameRequestCallback>();
+  let frameId = 0;
+  vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => {
+    frames.set(++frameId, callback);
+    return frameId;
+  });
+  vi.stubGlobal("cancelAnimationFrame", (id: number) => { frames.delete(id); });
   setApiInstance(new ApiClient("https://server.example"));
   let resolveSource!: (response: Response) => void;
   vi.stubGlobal("fetch", vi.fn(async (input: string) => new URL(input).searchParams.has("source_workspace_id")
@@ -664,8 +671,49 @@ it.each([false, true])("focuses a delayed known-source title after touch open wi
   await user.pointer([{ keys: "[TouchA>]", target: trigger }, { keys: "[/TouchA]", target: trigger }]);
   const sourcePicker = await screen.findByLabelText("Source workspace");
   await waitFor(() => expect(resolveSource).toBeDefined());
+  // Keep the modal's initial focus frame pending until the user can interact.
+  await waitFor(() => expect(frames.size).toBeGreaterThan(0));
   if (keepControlFocus) sourcePicker.focus();
   await act(async () => { resolveSource(json({ ...options, source: sourceChoice })); });
   const title = await screen.findByLabelText("Title");
-  await waitFor(() => expect(keepControlFocus ? sourcePicker : title).toHaveFocus());
+  await waitFor(async () => {
+    await act(() => {
+      const callbacks = [...frames.values()];
+      frames.clear();
+      callbacks.forEach((callback) => callback(performance.now()));
+    });
+    expect(keepControlFocus ? sourcePicker : title).toHaveFocus();
+  });
+});
+
+it("restores the opener when creation closes before its initial focus frame", async () => {
+  const frames = new Map<number, FrameRequestCallback>();
+  let frameId = 0;
+  vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => {
+    frames.set(++frameId, callback);
+    return frameId;
+  });
+  vi.stubGlobal("cancelAnimationFrame", (id: number) => { frames.delete(id); });
+  setApiInstance(new ApiClient("https://server.example"));
+  vi.stubGlobal("fetch", vi.fn(async (input: string) => json({ ...options, source: new URL(input).searchParams.has("source_workspace_id") ? sourceChoice : null })));
+  const client = new QueryClient(); clients.push(client);
+  const navigation: NavigationAdapter = { push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/account", searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path };
+  renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={navigation}><CollaborationCreationEntry scope={collaborationScope(actor)} sourceWorkspaceId={source} /></NavigationProvider></QueryClientProvider>);
+  const trigger = screen.getByRole("button", { name: "New collaboration issue" });
+  const user = userEvent.setup();
+  await user.pointer([{ keys: "[TouchA>]", target: trigger }, { keys: "[/TouchA]", target: trigger }]);
+  await screen.findByLabelText("Title");
+  await waitFor(() => expect(frames.size).toBeGreaterThan(0));
+  const dialog = screen.getByRole("dialog", { name: "New collaboration issue" });
+  await user.click(screen.getByRole("button", { name: "Close", exact: true }));
+  await waitFor(async () => {
+    await act(() => {
+      const callbacks = [...frames.values()];
+      frames.clear();
+      callbacks.forEach((callback) => callback(performance.now()));
+    });
+    expect(screen.queryByRole("dialog", { name: "New collaboration issue" })).not.toBeInTheDocument();
+    expect(dialog).not.toHaveFocus();
+    expect(trigger).toHaveFocus();
+  });
 });

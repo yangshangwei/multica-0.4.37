@@ -126,6 +126,16 @@ of `document.body`. Treat only the owning dialog's root fallback as lost focus
 for compact attachment settlement; unrelated dialogs and live controls remain
 untouched. Coordinate initial modal focus explicitly for touch as well as
 keyboard opens, and avoid fighting asynchronous source-option rendering.
+Base UI resolves `initialFocus` before its queued animation frame and can apply
+that stale target after a user focuses a live control. Creation owns this initial
+handoff: move focus from its trigger to its popup synchronously, return `false`
+to suppress the library's unconditional frame, and use `recoverFocus` to resolve
+the title/empty source/popup only when focus is still lost at execution time.
+Queued recovery must reject a closed popup. Keep live controls and other dialogs
+untouched. The creation-form regression holds animation frames across touch open,
+source resolution and a user focus change; cover both retained focus and normal
+title focus, plus closing before the queued frame runs. Running only the failed
+case is insufficient because the original failure also depended on scheduling.
 For explicit compact upload cancellation, hand focus from the focused Cancel
 button to the persistent attachment trigger before abort removes Cancel. A
 post-settlement recovery alone can lose to Base UI's later restore-focus frame.
@@ -151,3 +161,26 @@ actual text ranges after scrolling and focus rings inside portaled content.
 Long translated breadcrumbs must not consume the source selector's usable
 width. A missing-title explanation belongs next to the title or visible
 actions, not at the far end of the scrolling form.
+
+## Composer visual density
+
+The empty composer keeps initial fields discoverable at the screenshot-sized
+desktop viewport without an unnecessary body scrollbar. Reduce empty editor
+space and redundant grouping before hiding useful identity or guidance. Title
+focus may use an opaque 2px bottom border rather than a full rectangular ring;
+verify that the border is actually painted, contrast is sufficient and it stays
+inside the visible editor region. The required-title explanation stays adjacent
+to the label/input and linked with `aria-describedby`.
+
+Compact selected identity may span the trigger's full width below the name row
+to reduce wrapping. Keep the complete ID and the separate selected-name status.
+The empty compact attachment group may visually hide its legend, but retains
+its accessible name and visible sharing explanation. Files, loading, errors,
+cancellation and unresolved upload states restore the visible details heading.
+Default picker callers keep their existing presentation.
+
+Group the attachment entry with draft status in the footer; on narrow screens,
+give cancel/create the full available row before stacking individual buttons.
+Browser geometry and screenshots own these layout assertions, not unit tests
+that mirror Tailwind classes. Existing submission and recovery tests remain the
+behavioral regression gate.

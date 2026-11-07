@@ -1,0 +1,24 @@
+{
+  "score": 72,
+  "verdict": "revise",
+  "category_match": true,
+  "differences": [
+    "User screenshot: empty description and repeated helper spacing push advanced fields below the fold.",
+    "Title focus rectangle gives a heavy form appearance.",
+    "Empty attachment heading and a separate full footer draft row add avoidable height.",
+    "Recipient ID wraps early because avatar/name column reduces its usable width."
+  ],
+  "suggestions": [
+    "Condense empty editor and group spacing while preserving required help.",
+    "Use an opaque bottom-border title focus indicator.",
+    "Flatten empty attachment chrome and combine footer grouping.",
+    "Let compact identity use full control width."
+  ],
+  "reasoning": "Option C remains the approved structure, but the latest user screenshot demonstrates a density and hierarchy gap that the earlier functional checks did not resolve.",
+  "threshold": 90,
+  "threshold_pass": false,
+  "round": 0,
+  "next_actions": [
+    "Implement bounded Impeccable refinement and verify actual screenshot-sized geometry."
+  ]
+}

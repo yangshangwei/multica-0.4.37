@@ -80,8 +80,10 @@ export function CollaborationAttachmentPicker({ scope, form, update, uploads, di
     </Button>
     {fileInput}
   </>;
-  const details = <fieldset className="min-w-0 space-y-3">
-    <legend className="mb-2 text-body font-medium">{t(($) => $.attachments.title)}</legend>
+  const emptyComposer = Boolean(renderComposer) && form.selectedAttachmentIds.length === 0 && uploads.length === 0
+    && !query.data?.attachments.length && !query.isFetching && !query.error && !upload.isPending && !upload.error;
+  const details = <fieldset className={emptyComposer ? "min-w-0" : "min-w-0 space-y-3"}>
+    <legend className={emptyComposer ? "sr-only" : "mb-2 text-body font-medium"}>{t(($) => $.attachments.title)}</legend>
     <p className="text-caption text-muted-foreground">{t(($) => $.attachments.help)}</p>
     {!renderComposer && <>
       <label htmlFor={inputId} className="block text-caption font-medium">{t(($) => $.attachments.add)}</label>

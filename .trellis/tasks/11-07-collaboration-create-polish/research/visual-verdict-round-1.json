@@ -1,0 +1,16 @@
+{
+  "score": 86,
+  "verdict": "revise",
+  "category_match": true,
+  "differences": [
+    "The empty722px composer now reveals advanced fields and has lighter title/identity/attachment treatment, but still leaves71px between the advanced summary and footer.",
+    "At English320px Cancel and Create remain separate rows; their measured widths plus8px gap total248.03px in248px available width.",
+    "The screenshot's long source name is visibly clipped in the fixed-width selector while the adjacent breadcrumb has space."
+  ],
+  "suggestions": [
+    "Reduce the default bounded height from36rem to34rem; current geometry leaves39px after the summary, preserving no-scroll acceptance without moving excess blank space to the bottom.",
+    "Use a slightly smaller action gap or a bounded two-column action row so English Cancel/Create stay together at320px and labels can wrap within their own button.",
+    "Review source select caption sizing or give its desktop max-width enough room for the supplied source name; preserve native selection and narrow wrapping."
+  ],
+  "reasoning": "The before/after screenshot is materially cleaner, but the remaining empty lower area and English action stacking still undermine the user's density request. Technical pass counts alone do not settle this visual judgement."
+}
