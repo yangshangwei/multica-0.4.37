@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-3.md`
-- **Total Sessions**: 132
-- **Last Active**: 2026-11-06
+- **Total Sessions**: 140
+- **Last Active**: 2026-11-07
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,8 +19,8 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-3.md` | ~156 | Active |
-| `journal-2.md` | ~1796 | Archived |
+| `journal-3.md` | ~738 | Active |
+| `journal-2.md` | ~1968 | Archived |
 | `journal-1.md` | ~2037 | Archived |
 <!-- @@@/auto:active-documents -->
 
@@ -31,10 +31,33 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 140 | 2026-11-07 | Archive branch functional regression | - | `codex/cross-workspace-collaboration` |
+| 139 | 2026-11-07 | Refine collaboration creation from user screenshot | `6afd432b7` | `codex/cross-workspace-collaboration` |
+| 138 | 2026-11-07 | Collaboration creation option C | `61dbbd527` | `codex/cross-workspace-collaboration` |
+| 137 | 2026-11-07 | 为使用文档增加可渲染流程与架构图 | `c15a55fae` | `codex/cross-workspace-collaboration` |
+| 136 | 2026-11-07 | 核对功能覆盖并补齐内置使用文档 | `213a2d685` | `codex/cross-workspace-collaboration` |
+| 135 | 2026-11-07 | 当前分支核心业务续验：原15项核销，保留三类回归 | `c697b3477`, `e54d09be4` | `codex/cross-workspace-collaboration` |
+| 134 | 2026-11-07 | 协作详情工具栏与资料抽屉 | `ba5b4bdd2` | `codex/cross-workspace-collaboration` |
+| 133 | 2026-11-07 | 协作详情主流程聚焦与操作弹框优化 | `4431f89d6` | `codex/cross-workspace-collaboration` |
 | 132 | 2026-11-06 | M1 targeted API CLI and real Codex validation | `467b857ac` | `codex/agent-rnd-m1-20261105` |
 | 131 | 2026-11-06 | M1 task scope, delegation receipts and critical-path CI | `f09cd96b8`, `cd95c8e40`, `5b7bfad9c` | `codex/agent-rnd-m1-20261105` |
-| 121 | 2026-11-05 | 智能体研发体系首批 P1 修复与后续路线 | `1cd9c1e60`, `5975edae9`, `028e93bb0`, `457a7de03` | `codex/agent-rnd-p1-20261105` |
+| 130 | 2026-11-05 | 智能体研发体系首批 P1 修复与后续路线 | `1cd9c1e60`, `5975edae9`, `028e93bb0`, `457a7de03` | `codex/agent-rnd-p1-20261105` |
+| 129 | 2026-11-05 | Linux daemon FD修复完成核心E2E闭环 | `76836fa8d`, `b16b74ac6` | `codex/cross-workspace-collaboration` |
+| 128 | 2026-11-05 | 单次E0b重试仍403，累计2次后停止 | `0fdb56632`, `c160ba334` | `codex/collaboration-knowledge-promotion-20261101` |
+| 127 | 2026-11-05 | Codex0.166验证完成，真实首轮网关403停止 | `079d6cc28`, `c1eb952fa` | `codex/collaboration-knowledge-promotion-20261101` |
+| 126 | 2026-11-05 | 核心业务端到端测试执行完成，Linux与性能门未通过 | - | `codex/cross-workspace-collaboration` |
+| 125 | 2026-11-05 | 跨工作空间协作体验审计与修复 | `5a7440952` | `codex/cross-workspace-collaboration` |
+| 124 | 2026-11-05 | 补齐H5仅引用零写回归并隔离验证 | `4d107f503`, `309ff1d76` | `codex/collaboration-context-resume-20261031` |
+| 123 | 2026-11-05 | Codex知识支持完成，真实验收等待共享窗口 | `429b1b6b4`, `88f1cc8d4`, `c6aabb27a` | `codex/collaboration-knowledge-promotion-20261101` |
+| 122 | 2026-11-05 | 首轮password7通过并保留E5 canary阻塞 | `f429823b5`, `00daa4158` | `codex/collaboration-context-resume-20261031` |
+| 121 | 2026-11-04 | #7独立关闭与#6知识框架完整fake验收 | `6c9e9d7582ec95961bd4a51e323fd2531a24400e`, `5e6a4e4962df86ef5033fe5d5fbe96fbdc9ceb12`, `da07e2e74bf9ba58ce84522b3dea020bc59bdd9b` | `codex/collaboration-knowledge-promotion-20261101` |
 | 120 | 2026-11-03 | 协作详情交付闭环与双端验收完成 | `cfccf883458daef58117ffc82139d13a0b850ff0`, `1d70602f0fc9e0d28e651f41da3025203419a9eb` | `codex/cross-workspace-collaboration` |
+| 119 | 2026-11-03 | 新建协作任务弹窗审计修复 | `55bb7802f7fb99434f15ad055fc406243e2c9068` | `codex/cross-workspace-collaboration` |
+| 118 | 2026-11-03 | Collaboration source picker and complete identifier search | `4ba3a868a02e2e1e00499447c67b0f61cf3307d7` | `codex/cross-workspace-collaboration` |
+| 117 | 2026-11-02 | Prove Webhook early errors and prepare source-faithful Mac updater inputs | - | `codex/cross-workspace-collaboration` |
+| 116 | 2026-11-02 | Continue fixed-candidate remaining gates without repeating completed diagnostics | - | `codex/cross-workspace-collaboration` |
+| 115 | 2026-11-02 | 固定候选实际缓存计划与读取语义诊断 | - | `codex/cross-workspace-collaboration` |
+| 114 | 2026-11-02 | 完成当前协作分支本地功能回归并交接剩余平台验收 | - | `codex/cross-workspace-collaboration` |
 | 113 | 2026-11-02 | Collaboration quiet fake and current platform proofs | `4085e5b38`, `64a9994ec` | `codex/cross-workspace-collaboration` |
 | 112 | 2026-11-01 | 联合验收在最终合并版本上补验 | `65cd0599b` | `codex/cross-workspace-collaboration` |
 | 111 | 2026-11-01 | 知识沉淀完成确定性集成验收 | `96cedf485`, `93093d2e9`, `8cb04e329` | `codex/collaboration-knowledge-promotion-20261101` |

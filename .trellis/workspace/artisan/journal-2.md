@@ -1794,3 +1794,175 @@ Archived password registration and the complete platform administration task tre
 
 - 网关429恢复后独立复核v5与RKI6结果，再启动准备好的64a9994ec完整check（API10/1，无其他API并发）；平台/账号/预算门保持未验。
 - 仅本地操作；runtime25消耗0，原冻结另余14/E3aftertrial2；默认业务库旧迁移事故缺前快照，未恢复。
+
+
+## Session 114: 完成当前协作分支本地功能回归并交接剩余平台验收
+<!-- trellis-session: v=2 fp=12d98232f395a3d1 -->
+
+**Date**: 2026-11-02
+**Task**: 完成当前协作分支本地功能回归并交接剩余平台验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+固定7af9ab990，439项E2E均有通过证据；TS13278通过；Go82包复验完成、保留条件跳过。只修测试与规范，清理自有环境，未提交推送。
+
+### Main Changes
+
+# 本轮测试记录
+
+固定产品候选7af9ab9905c98c77bb091223ebe687c639475bb4。用户已审阅测试计划并授权执行。
+
+- 439个E2E唯一身份均有当前通过证据，原349PASS/1FAIL/89SKIP整轮保持失败；588条逐次结果包含重跑与原始跳过。
+- 非Mobile13,082、Mobile196单元及静态/脚本、种子数据库13项通过。
+- Go82包按各包最新完整结果和明确条件补跑派生顶层10,365PASS/18SKIP、子例10,491PASS；原失败保留。knowledgeintegration额外23顶层分别normal/race全过。
+- 实际Web/Electron、两Linuxnamespace、Host运行/切换/小队、知识开关OFFON输入、Mac.app和Linux目录包完整Main均完成本次新执行。
+- memory交互、5个handler在线fixture和完整Main UUID picker测试修复经独立审阅与实际回归；只改测试与规范，无业务代码/依赖改动。
+- 所有测试结束，仅自有环境清理完成，9个browser库门恢复，4端口无监听，数据库/日志保留（browser registry有24hTTL）。未知默认环境未动。
+- 交付测试计划、报告、逐例矩阵、缺陷/前置、条件平台矩阵与新会话提示。任务保持in_progress承接Windows/iOS/安装升级/签名/真实商业Provider等缺口，不归档为发布通过，不提交或推送。
+
+后续先读本任务report/progress/session-prompt及最终独立证据审阅，按剩余平台/授权轴补证，不重跑439库存、不挪用历史付费额度。
+
+
+### Git Commits
+
+(No commits - planning session)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 读取任务报告和新会话引导语，补Windows/iOS/安装升级与真实Provider授权后的验收。
+
+
+## Session 115: 固定候选实际缓存计划与读取语义诊断
+<!-- trellis-session: v=2 fp=024332d9d73a9a85 -->
+
+**Date**: 2026-11-02
+**Task**: 固定候选实际缓存计划与读取语义诊断
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+14,000条实际计划区分无统计缓存复用/重准备与ANALYZE；typed读取和现有owner race12顶层14子例通过。独立审阅PASS WITH NOTES，原2171ms性能FAIL及剩余门开放，9库连接0。无产品改动，不提交不归档。
+
+### Main Changes
+
+- 新增两轮prepared/statistics/reprepare诊断、读取语义与回归证据，更新任务文档和验证规范；全部既有改动保留。
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] 2个独立缓存诊断PASS；race handler4顶层6子例、service8顶层8子例PASS；14,000计划参数独立复核；JSON/CSV/AST/gofmt/diffcheck通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 继续既有任务；按session-prompt仅推进新真实条件，不重复P95/439E2E/DEB/macOS已过子门；产品优化需明确新增范围。
+
+
+## Session 116: Continue fixed-candidate remaining gates without repeating completed diagnostics
+<!-- trellis-session: v=2 fp=de487d097ade67a0 -->
+
+**Date**: 2026-11-02
+**Task**: Continue fixed-candidate remaining gates without repeating completed diagnostics
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Existing functional-regression task resumed; native platform and identity slices completed; no new symptom or runnable gate; 56 owned database connections zero; original P95 FAIL and required gates remain open.
+
+### Main Changes
+
+- Updated existing progress/report/defects/conditional matrix/session prompt and task metadata; preserved prior evidence and source/test identities.
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] Native prerequisite audit 10 commands/4 pinned artifacts; source/frozen and 158 raw-hash comparisons; JSON/CSV/AST/diff checks; fresh owned-resource cleanup. No P95/E2E/DEB/Mac passed-gate reruns.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Complete independent current-document/history/cleanup review; continue only on genuine new symptom or actual unpassed-gate prerequisites; keep task in_progress.
+
+
+## Session 117: Prove Webhook early errors and prepare source-faithful Mac updater inputs
+<!-- trellis-session: v=2 fp=14b2ff5ac97b62a2 -->
+
+**Date**: 2026-11-02
+**Task**: Prove Webhook early errors and prepare source-faithful Mac updater inputs
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Private Webhook lookup diagnostic race1top4subPASS once; originalskips/P95FAIL retained; Mac updater offlinefeed and cache/nativephase boundaries prepared; independent quality/cleanup pending.
+
+### Main Changes
+
+- Added bounded research/private diagnostic/raw evidence and appended verification specs; updated existing task coordination documents.
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] Once guarded race compile and newWebhook diagnostic1top4subPASS; actualcanonicalSQL and PrepareError42P01/clientclosed/404/429 witnesses;5updaterofflinecommands/parser/reference/SHA512 checks; no priorgate repeats.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Finish independent code/raw review and narrow overlayvet, then fresh resource cleanup and final document/hash review; keep mandatory gates in_progress.
+
+
+## Session 118: Collaboration source picker and complete identifier search
+<!-- trellis-session: v=2 fp=29214f4358500297 -->
+
+**Date**: 2026-11-03
+**Task**: Collaboration source picker and complete identifier search
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Unified the optional source-parent picker, repaired displayed identifier search, and retained query-error drafts; production Chromium and scoped tests passed.
+
+### Main Changes
+
+- Click-open parent candidates, visible loading/empty/retry states, selected UUID retention and bilingual hints.
+- Match full source identifiers using the same actual numeric/legacy workspace prefix as display.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `4ba3a868a02e2e1e00499447c67b0f61cf3307d7` | fix(collaboration): let users choose source tasks without remembered IDs |
+
+### Testing
+
+- [OK] 95 views tests, 68 Core boundary tests, 13 service tests, lint/typecheck/build/vet; final 2 production Chromium cases and visual 96/pass.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No remaining work for this scoped repair; native installed Electron was not part of this acceptance.
