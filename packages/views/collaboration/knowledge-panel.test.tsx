@@ -765,3 +765,20 @@ it("renders supplied proposer, approval and latest decision facts without a dire
   await screen.findByText("Source material is unavailable. Its text and references are hidden.");
   expect(within(review).queryByText("Withdrawn after the later review")).not.toBeInTheDocument(); expect(within(review).getByText(decider)).toBeInTheDocument();
 });
+
+it("reports list failures and unresolved writes without inventing candidate totals", async () => {
+  const status = vi.fn();
+  vi.mocked(api.getCollaborationKnowledgeCandidates).mockRejectedValueOnce(new Error("Offline"));
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationKnowledgePanel scope={scope} issue={issue} onStatusChange={status} /></QueryClientProvider>);
+  await waitFor(() => expect(status).toHaveBeenLastCalledWith({ attention: true }));
+  await userEvent.click(screen.getByRole("button", { name: "Refresh" }));
+  await screen.findByRole("button", { name: /PRIVATE SUMMARY/ });
+  await waitFor(() => expect(status).toHaveBeenLastCalledWith({ attention: false }));
+  const send = vi.spyOn(api, "approveCollaborationKnowledge").mockRejectedValue(new TypeError("Lost response"));
+  await openReview(); await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
+  await userEvent.click(screen.getByRole("button", { name: "Approve exact version" }));
+  await screen.findByRole("button", { name: "Retry same request" });
+  expect(send).toHaveBeenCalledOnce();
+  await waitFor(() => expect(status).toHaveBeenLastCalledWith({ attention: true }));
+  expect(status.mock.calls.every(([value]) => !("count" in value))).toBe(true);
+});

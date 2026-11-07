@@ -63,10 +63,10 @@ for (const platform of ["web", "desktop"] as const) {
         expect((await readJourneyIssue(fixture.handler, id)).capabilities.edit_source_structure).toBe(false);
         await expect(handler.page.getByRole("button", { name: copy.actions.change_status, exact: true })).toBeVisible();
         await expect(handler.page.getByRole("region", { name: copy.ai, exact: true })).toHaveCount(0);
-        const context = handler.page.getByRole("complementary", { name: copy.context, exact: true });
-        await context.locator("summary").filter({ hasText: copy.context }).click();
+        await handler.page.getByRole("button", { name: copy.context, exact: true }).click();
+        const context = handler.page.getByRole("dialog", { name: copy.context, exact: true });
         await expect(context).toContainText(copy.manual);
-        await context.locator("summary").filter({ hasText: copy.context }).click();
+        await handler.page.keyboard.press("Escape");
         const participants = handler.page.getByRole("button", { name: "Participants", exact: true });
         await participants.focus();
         await participants.press("Enter");

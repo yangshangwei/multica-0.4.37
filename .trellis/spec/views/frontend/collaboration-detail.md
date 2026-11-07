@@ -31,9 +31,13 @@ Use the title, labelled status/current handler/due date and one primary action
 before the main content. Keep up to two secondary actions; the remaining current
 actions live in the portaled More menu. Participants shows a compact role summary;
 full permission context and the lazy roster appear only when opened.
-Render requirements → delivered result/decision → discussion/progress. Source metadata/fields and auxiliary records share full-width secondary disclosures
-below the main journey; empty properties belong in editing. Do not squeeze their
-editors into a permanent narrow sidebar. Long titles,
+Render requirements → delivered result/decision → discussion/progress. A compact
+labelled icon toolbar below the workflow opens one right-side auxiliary drawer
+for issue information, files, shared context, knowledge, children and activity.
+Use the existing Dialog primitive with keepMounted, fixed header/category
+navigation and independently scrolling content. It is bounded to 44rem on wide
+windows and full width below the small breakpoint. Empty properties belong in
+editing; no secondary disclosure stack remains below discussion. Long titles,
 names, result/basis and translated controls wrap without horizontal overflow.
 
 Preparing a result from a comment copies its current text/file identity into a
@@ -65,12 +69,29 @@ write response retains its original intent and offers original-key recovery.
 
 ### Auxiliary discovery, recovery and anchors
 
-Files, children, shared summary, knowledge and detailed audit are secondary
-disclosures. Keep their permissions, editing/history and pending operations.
-When an upload/file delivery, knowledge operation, pending memory request or
-explicit anchor needs attention, open **every enclosing details element** that
-would hide its controls. Opening only an inner panel leaves recovery unreachable.
-Reuse local attention/anchor effects; do not add a store or automatically resend.
+Keep all auxiliary panel instances mounted across drawer close and category
+changes; hide/inert inactive content so uploads, pending operations and unsaved
+memory/knowledge input survive without entering the keyboard/accessibility tree.
+Key the entire drawer by Server/viewer/issue identity and unmount on denied access.
+
+`CollaborationPanelStatus` reports only ephemeral `{attention, count?}` to stable
+callbacks. Errors and retained recovery requests appear in an actionable toolbar
+status without opening a modal or taking focus. Attachment count requires a
+successful current query; child count comes from the complete ordinary_children
+projection. Unknown counts stay absent. Knowledge is paginated and pending
+identities are account-wide: never label a page length or global request count as
+this issue's total or pending count. Activity query errors also report attention.
+Standalone panel disclosures retain their own ancestor-reveal effects.
+
+File reference links open the drawer and become its return-focus target. Memory
+and memoryVersion destinations route explicitly into the portaled drawer; its DOM
+is outside the detail root. Repeated navigation keys re-open the requested view;
+scope resume does not. Comment/run/description navigation closes the drawer and
+nested previews before focusing the main target. Await modal close completion,
+replace any queued callback with the latest navigation, and do not focus inert
+background content. Panels with nested portals receive `active`; hidden panels
+must not open previews or steal focus after async responses. A nested file preview
+closes on deactivation; ordinary nested Escape closes only that preview.
 
 Omit a large empty AI console only after supported execution and history discovery
 prove there are no meaningful targets/runs/inputs, selected run, error or pending
@@ -90,7 +111,7 @@ the shared adapter in both clients.
 A missing initial memory response is not an empty document. Keep the named
 `memory` region mounted through loading, unavailable and failed reads, with a
 protected-query retry. Render retained memory-request recovery independently
-of current memory content; denial still removes protected data. Open all
+of current memory content; denial still removes protected data. Report attention to the drawer toolbar; in standalone disclosure hosts, open all
 ancestor disclosures when a retained operation needs attention.
 
 `CollaborationCommentAttachments` must distinguish no attachment references
@@ -129,7 +150,9 @@ changing the selected issue. History/comment timestamps use `useLocale()`.
 | Exact submission/authority changed | Keep original/refused intent and show current revalidation path |
 | Completed result without initiator decision | Factual unaccepted-record caption; no Accepted label |
 | Current-only history page with another page | Keep More; no premature absence claim |
-| Pending operation under collapsed auxiliaries | Open all ancestors; expose original recovery without POST |
+| Pending operation in hidden auxiliary panel | Toolbar attention opens the correct recovery panel; no automatic POST |
+| Drawer close/category switch | Preserve editor/upload lifetime; hidden content inert |
+| Main anchor with nested preview open | Close all auxiliary overlays, then focus main target |
 | Empty manual current state with retained history/error | Keep AI entry/history/Stop/recovery accessible |
 | Protected Query denial | Remove private content and use existing scoped recovery |
 | Repeated explicit anchor versus scope resume | Fresh target focus versus saved scroll, respectively |
@@ -166,11 +189,12 @@ hashes. Installed Main, provider execution and native proof require separate tes
 
 ## 7. Wrong vs Correct
 
-Wrong: open an upload form's inner details while its file auxiliary ancestor
-remains closed, or assert only screenshot dimensions after requesting a scroll.
+Wrong: unmount an auxiliary panel when switching category, or leave its portaled
+preview open after hiding the panel. Correct: retain the panel instance, gate
+nested overlays with active, and expose recovery through an actionable toolbar.
 
-Correct: open every enclosing disclosure for recovery/anchors; capture after the
-new scroll is painted and validate the intended target geometry.
+Capture only after fonts, finite animations and scroll painting settle; verify
+main geometry and the intended visible target, not screenshot dimensions alone.
 
 Wrong: duplicate Server stage logic in Views or automatically submit prepared
 comment text as a result.

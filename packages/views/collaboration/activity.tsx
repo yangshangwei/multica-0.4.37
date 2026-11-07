@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationActivityOptions, type CollaborationScope } from "@multica/core/collaboration";
 import { accountPath, type AccountDestination } from "@multica/core/paths";
@@ -6,12 +7,14 @@ import { AppLink } from "../navigation";
 import { RichContent } from "../rich-content";
 import { useLocale, useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
+import type { CollaborationPanelStatusChange } from "./panel-status";
 
-export function CollaborationActivity({ scope, destination }: { scope: CollaborationScope; destination: AccountDestination }) {
+export function CollaborationActivity({ scope, destination, onStatusChange }: { scope: CollaborationScope; destination: AccountDestination; onStatusChange?: CollaborationPanelStatusChange }) {
   const { t } = useT("collaboration");
   const locale = useLocale();
   const client = useQueryClient();
   const query = useInfiniteQuery(collaborationActivityOptions(client, scope, destination.issueId!));
+  useEffect(() => { onStatusChange?.({ attention: query.isError }); }, [onStatusChange, query.isError]);
   const items = [...new Map((query.data?.pages.flatMap((page) => page.items) ?? []).map((item) => [item.id, item])).values()];
   return <section aria-label={t(($) => $.activity.title)} className="min-w-0 space-y-4">
     <h3 className="text-body font-semibold">{t(($) => $.activity.title)}</h3>

@@ -11,6 +11,7 @@ import { HtmlPreviewBody } from "../editor/html-preview-body";
 import { getPreviewKind } from "../editor/utils/preview";
 import { CollaborationAttachmentFailure, CollaborationAttachmentPicker } from "./attachment-picker";
 import { CollaborationQueryState } from "./query-state";
+import type { CollaborationPanelStatusChange } from "./panel-status";
 
 async function downloadNativeFile(url: string) {
   const bridge = (window as unknown as { desktopAPI?: { downloadURL?: (url: string) => Promise<void> | void } }).desktopAPI;
@@ -24,12 +25,12 @@ async function downloadNativeFile(url: string) {
 // other accounts, so PDFs are downloaded rather than embedded without a sandbox.
 const previewable = (file: CollaborationAttachment) => { const kind = getPreviewKind(file.content_type, file.name); return kind !== null && kind !== "pdf"; };
 
-export function CollaborationAttachmentList({ scope, issueId, files }: { scope: CollaborationScope; issueId: string; files: CollaborationAttachment[] }) {
+export function CollaborationAttachmentList({ scope, issueId, files, active = true }: { scope: CollaborationScope; issueId: string; files: CollaborationAttachment[]; active?: boolean }) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
   const [previewId, setPreviewId] = useState<string | null>(null);
   const preview = files.find((file) => file.id === previewId) ?? null;
-  useEffect(() => { if (previewId && !preview) setPreviewId(null); }, [previewId, preview]);
+  useEffect(() => { if (previewId && (!preview || !active)) setPreviewId(null); }, [previewId, preview, active]);
   const download = useMutation({ mutationKey: [...collaborationKeys.issue(scope, issueId), "attachment-download"], retry: false, networkMode: "always",
     mutationFn: async (file: CollaborationAttachment) => {
       const capability = await loadCollaborationAttachmentDownload(client, scope, file);
@@ -42,8 +43,8 @@ export function CollaborationAttachmentList({ scope, issueId, files }: { scope: 
         <Button type="button" variant="outline" className="pointer-coarse:min-h-11" aria-label={t(($) => $.attachments.download, { name: file.name })} disabled={download.isPending} onClick={() => download.mutate(file)}>{t(($) => $.attachments.downloadAction)}</Button></div>
     </li>)}</ul>
     {download.error && <CollaborationAttachmentFailure error={download.error} />}
-    <Dialog open={preview !== null} onOpenChange={(open) => { if (!open) setPreviewId(null); }}>
-      {preview && <DialogContent className="flex max-h-[90dvh] flex-col overflow-y-auto sm:max-w-4xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11" closeLabel={t(($) => $.attachments.close)}>
+    <Dialog open={active && preview !== null} onOpenChange={(open) => { if (!open) setPreviewId(null); }}>
+      {preview && <DialogContent finalFocus={active ? undefined : false} className="flex max-h-[90dvh] flex-col overflow-y-auto sm:max-w-4xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11" closeLabel={t(($) => $.attachments.close)}>
         <DialogTitle className="pr-8 [overflow-wrap:anywhere] pointer-coarse:pr-11">{preview.name}</DialogTitle>
         <DialogDescription>{t(($) => $.attachments.size, { size: preview.size_bytes.toLocaleString() })}</DialogDescription>
         <AttachmentPreview key={preview.id} scope={scope} issueId={issueId} file={preview} />
@@ -86,22 +87,26 @@ function AttachmentPreview({ scope, issueId, file }: { scope: CollaborationScope
   }
 }
 
-export function CollaborationAttachmentPanel({ scope, issue }: { scope: CollaborationScope; issue: CollaborationIssue }) {
+export function CollaborationAttachmentPanel({ scope, issue, active = true, onStatusChange }: { scope: CollaborationScope; issue: CollaborationIssue; active?: boolean; onStatusChange?: CollaborationPanelStatusChange }) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
   const query = useQuery(collaborationAttachmentsOptions(client, scope, issue.id));
+  const [deliveryAttention, setDeliveryAttention] = useState(false);
+  const attention = query.isError || deliveryAttention;
+  const count = query.isSuccess ? query.data.attachments.length : undefined;
+  useEffect(() => { onStatusChange?.({ attention, count }); }, [onStatusChange, attention, count]);
   return <section aria-label={t(($) => $.attachments.title)} className="min-w-0 space-y-4">
     <h3 className="text-body font-semibold">{t(($) => $.attachments.title)}</h3>
     <p className="text-caption text-muted-foreground">{t(($) => $.attachments.retained)}</p>
     {query.isPending && <p role="status">{t(($) => $.attachments.loading)}</p>}
     {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
-    {query.data && (query.data.attachments.length ? <CollaborationAttachmentList scope={scope} issueId={issue.id} files={query.data.attachments} />
+    {query.data && (query.data.attachments.length ? <CollaborationAttachmentList scope={scope} issueId={issue.id} files={query.data.attachments} active={active} />
       : <p className="text-body text-muted-foreground">{t(($) => $.attachments.empty)}</p>)}
-    {issue.capabilities.comment === true && <AttachmentDeliveryForm scope={scope} issue={issue} />}
+    {issue.capabilities.comment === true && <AttachmentDeliveryForm scope={scope} issue={issue} onAttentionChange={setDeliveryAttention} />}
   </section>;
 }
 
-function AttachmentDeliveryForm({ scope, issue }: { scope: CollaborationScope; issue: CollaborationIssue }) {
+function AttachmentDeliveryForm({ scope, issue, onAttentionChange }: { scope: CollaborationScope; issue: CollaborationIssue; onAttentionChange: (attention: boolean) => void }) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
   const draft = useCollaborationDeliveryForm({ server: scope.server, userId: scope.userId, context: { kind: "issue", issueId: issue.id, sourceWorkspaceId: issue.source_workspace.id } }, "attachment");
@@ -112,6 +117,8 @@ function AttachmentDeliveryForm({ scope, issue }: { scope: CollaborationScope; i
   const locked = send.isPending || uploading || draft.uploads.length > 0 || draft.deliveries.length > 0 || Boolean(draft.error);
   // Unfinished uploads, deliveries and storage errors must not hide in a collapsed section.
   const attention = draft.uploads.length > 0 || draft.deliveries.length > 0 || Boolean(draft.error) || send.isError;
+  useEffect(() => { onAttentionChange(attention); }, [onAttentionChange, attention]);
+  useEffect(() => () => onAttentionChange(false), [onAttentionChange]);
   const disclosure = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
     if (!attention || !disclosure.current) return;

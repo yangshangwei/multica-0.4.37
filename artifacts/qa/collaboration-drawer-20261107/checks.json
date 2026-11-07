@@ -1,0 +1,15 @@
+{
+  "checks": [
+    "Toolbar opens right drawer without shifting main content; Escape returns to trigger",
+    "Shared-context editor survives category switch and drawer dismissal; no write performed",
+    "Nested private attachment preview dismisses independently of drawer",
+    "Main navigation closes both drawer and nested file preview",
+    "Reference-files entry and repeated memory anchors open the correct drawer",
+    "Main requirement anchor closes drawer and restores main focus",
+    "Narrow drawer, keyboard containment and 150% text preserve navigation and avoid overflow"
+  ],
+  "errors": [],
+  "api": "http://localhost:18572",
+  "renderer": "http://localhost:5666",
+  "mutations": "No server writes; local memory draft cancelled"
+}

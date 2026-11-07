@@ -216,3 +216,41 @@ it("removes private editor content after access is revoked", async () => {
   await waitFor(() => expect(screen.queryByRole("textbox")).not.toBeInTheDocument());
   expect(screen.queryByText("PRIVATE_EDITOR")).not.toBeInTheDocument();
 });
+
+it("defers linked versions until visible and does not reopen a dismissed version on panel switching", async () => {
+  const version = vi.spyOn(api, "getCollaborationMemoryVersion").mockRejectedValue(new Error("Version unavailable in fixture"));
+  const view = (active: boolean, navigationKey: number) => <QueryClientProvider client={client}><CollaborationMemoryPanel scope={scope} issue={issue}
+    active={active} destination={{ view: "current", issueId: issue.id, commentId: null, memoryVersion: "1" }} navigationKey={navigationKey} /></QueryClientProvider>;
+  const mounted = renderWithI18n(view(false, 1));
+  await screen.findByText("Initial decision");
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  expect(version).not.toHaveBeenCalled();
+  mounted.rerender(view(true, 1));
+  expect(await screen.findByRole("dialog")).toBeVisible();
+  await userEvent.keyboard("{Escape}");
+  await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+  mounted.rerender(view(false, 1)); mounted.rerender(view(true, 1));
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  mounted.rerender(view(false, 2));
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  mounted.rerender(view(true, 2));
+  expect(await screen.findByRole("dialog")).toBeVisible();
+});
+
+it("keeps hidden anchors from taking focus while reporting pending recovery", async () => {
+  const requestId = "00000000-0000-4000-8000-000000000003";
+  saveCollaborationDraft(prepareCollaborationMemoryChange(scope, memory(), requestId, { action: "update", baseVersion: "1", content: "Original request text" }));
+  const status = vi.fn();
+  const view = (active: boolean) => <QueryClientProvider client={client}><button>Outside panel</button><div hidden={!active}>
+    <CollaborationMemoryPanel scope={scope} issue={issue} active={active} onStatusChange={status}
+      destination={{ view: "current", issueId: issue.id, commentId: null, anchor: "memory" }} />
+  </div></QueryClientProvider>;
+  const mounted = renderWithI18n(view(false));
+  const outside = screen.getByRole("button", { name: "Outside panel" }); outside.focus();
+  await waitFor(() => expect(status).toHaveBeenLastCalledWith({ attention: true }));
+  expect(outside).toHaveFocus();
+  expect(api.getCollaborationMemoryOperation).not.toHaveBeenCalled();
+  mounted.rerender(view(true));
+  expect(await screen.findByRole("button", { name: "Check original result" })).toBeVisible();
+  await waitFor(() => expect(document.getElementById("memory")).toHaveFocus());
+});

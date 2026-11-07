@@ -23,8 +23,9 @@ import { RichContent } from "../rich-content";
 import { useLocale, useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
 import { recoverFocus } from "./focus";
+import type { CollaborationPanelStatusChange } from "./panel-status";
 
-interface PanelProps { scope: CollaborationScope; issue: CollaborationIssue; destination?: AccountDestination; isScopeResume?: boolean; navigationKey?: number }
+interface PanelProps { scope: CollaborationScope; issue: CollaborationIssue; destination?: AccountDestination; isScopeResume?: boolean; navigationKey?: number; active?: boolean; onStatusChange?: CollaborationPanelStatusChange }
 interface Editor { baseVersion: string; content: string }
 interface Confirmation { action: "restore" | "purge"; version: string; snapshot: CollaborationMemory }
 
@@ -48,7 +49,7 @@ function MemoryAttribution({ author, createdAt, issueId }: { author: Collaborati
   </dl>;
 }
 
-function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigationKey = 0 }: PanelProps) {
+function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigationKey = 0, active = true, onStatusChange }: PanelProps) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
   const fieldId = useId();
@@ -61,7 +62,7 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
   const [editor, setEditor] = useState<Editor | null>(null);
   const [expanded, setExpanded] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
-  const [selectedVersion, setSelectedVersion] = useState<string | null>(isScopeResume ? null : destination?.memoryVersion ?? null);
+  const [selectedVersion, setSelectedVersion] = useState<string | null>(!active || isScopeResume ? null : destination?.memoryVersion ?? null);
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
   const [reason, setReason] = useState("");
   const [feedback, setFeedback] = useState<string | null>(null);
@@ -75,7 +76,7 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
     onSuccess: (receipt, { draft }) => {
       if (collaborationIssueAccessDenied(client, scope, issue.id)) return;
       const payload = parseCollaborationMemoryDraft(draft);
-      if (receipt.status < 400) { setEditor(null); setConfirmation(null); setReason(""); recoverFocus(() => editButton.current, () => root.current); }
+      if (receipt.status < 400) { setEditor(null); setConfirmation(null); setReason(""); if (active) recoverFocus(() => editButton.current, () => root.current); }
       else if (payload.action === "memory_update") setEditor({ baseVersion: payload.input.expected_version, content: payload.input.content });
       setFeedback(receiptMessage(receipt));
     },
@@ -86,6 +87,8 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
   });
   const locked = send.isPending || drafts.memory.length > 0 || drafts.error;
   const attention = drafts.memory.length > 0 || drafts.error;
+  const panelAttention = attention || memoryQuery.isError || memoryQuery.isSuccess && !memory || send.isError || send.data !== undefined && send.data.status >= 400;
+  useEffect(() => { onStatusChange?.({ attention: panelAttention }); }, [onStatusChange, panelAttention]);
   const resetSend = send.reset;
   const memoryVersion = memory?.version;
   const stale = editor !== null && (editor.baseVersion !== memory?.version || send.data?.code === "stale_memory_version");
@@ -131,11 +134,18 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
     if (!denied) return;
     setEditor(null); setConfirmation(null); setSelectedVersion(null); setReason(""); setFeedback(null); resetSend();
   }, [denied, resetSend]); // The access fence also removes retained requests and Query data.
-  useEffect(() => { if (!isScopeResume) setSelectedVersion(destination?.memoryVersion ?? null); }, [destination?.memoryVersion, isScopeResume, navigationKey]);
+  const consumedNavigation = useRef<string | null>(null);
   useEffect(() => {
-    if (isScopeResume || destination?.anchor !== "memory" || memoryVersion === undefined) return;
+    if (!active || isScopeResume) return;
+    const intent = `${navigationKey}:${destination?.memoryVersion ?? ""}`;
+    if (consumedNavigation.current === intent) return;
+    consumedNavigation.current = intent;
+    setSelectedVersion(destination?.memoryVersion ?? null);
+  }, [destination?.memoryVersion, isScopeResume, navigationKey, active]);
+  useEffect(() => {
+    if (!active || isScopeResume || destination?.anchor !== "memory" || memoryVersion === undefined) return;
     root.current?.scrollIntoView?.({ block: "start" }); root.current?.focus({ preventScroll: true });
-  }, [destination?.anchor, memoryVersion, isScopeResume, navigationKey]);
+  }, [destination?.anchor, memoryVersion, isScopeResume, navigationKey, active]);
   useEffect(() => {
     if (!attention || !root.current) return;
     for (let ancestor = root.current.parentElement; ancestor; ancestor = ancestor.parentElement) {
@@ -193,8 +203,8 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
         {historyQuery.hasNextPage && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={historyQuery.isFetchingNextPage} onClick={() => void historyQuery.fetchNextPage()}>{t(($) => $.memory.historyMore)}</Button>}
       </CollapsibleContent>
     </Collapsible>
-    <Dialog open={selectedVersion !== null} onOpenChange={open => { if (!open) setSelectedVersion(null); }}>
-      <DialogContent closeLabel={t(($) => $.memory.close)} finalFocus={() => root.current} className="max-h-[85dvh] overflow-y-auto sm:max-w-2xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11">
+    <Dialog open={active && selectedVersion !== null} onOpenChange={open => { if (!open) setSelectedVersion(null); }}>
+      <DialogContent closeLabel={t(($) => $.memory.close)} finalFocus={() => active ? root.current : false} className="max-h-[85dvh] overflow-y-auto sm:max-w-2xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11">
         <DialogTitle className="pointer-coarse:pr-11">{t(($) => $.memory.viewTitle, { version: selectedVersion ?? "" })}</DialogTitle>
         <DialogDescription>{selected?.purged ? t(($) => $.memory.viewPurged) : t(($) => $.memory.description)}</DialogDescription>
         {selectedQuery.isPending && <p role="status">{t(($) => $.memory.loading)}</p>}
@@ -204,8 +214,8 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
         </>}
       </DialogContent>
     </Dialog>
-    <AlertDialog open={confirmation !== null} onOpenChange={open => { if (!open && !send.isPending) { setConfirmation(null); setFeedback(null); } }}>
-      <AlertDialogContent finalFocus={() => root.current}>
+    <AlertDialog open={active && confirmation !== null} onOpenChange={open => { if (!open && !send.isPending) { setConfirmation(null); setFeedback(null); } }}>
+      <AlertDialogContent finalFocus={() => active ? root.current : false}>
         <AlertDialogHeader><AlertDialogTitle>{confirmation?.action === "restore" ? t(($) => $.memory.restoreTitle, { version: confirmation.version }) : t(($) => $.memory.purgeTitle, { version: confirmation?.version ?? "" })}</AlertDialogTitle><AlertDialogDescription>{confirmation?.action === "restore" ? t(($) => $.memory.restoreBody, { version: confirmation.version }) : t(($) => $.memory.purgeBody)}</AlertDialogDescription></AlertDialogHeader>
         {confirmation?.action === "purge" && <><Textarea aria-label={t(($) => $.memory.purgeReason)} aria-invalid={reasonInvalid || undefined} aria-describedby={reasonInvalid ? `${fieldId}-reason` : undefined} value={reason} onChange={event => setReason(event.target.value)} disabled={locked} className="min-h-20" />{reasonInvalid && <p id={`${fieldId}-reason`} role="alert" className="text-caption text-destructive">{t(($) => $.memory.purgeReasonRequired)}</p>}</>}
         {feedback && <p role="alert">{feedback}</p>}

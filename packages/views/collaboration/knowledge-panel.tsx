@@ -12,16 +12,17 @@ import { useT } from "../i18n";
 import { KnowledgeState } from "./knowledge-controls";
 import { KnowledgeProposalForm, type KnowledgeProposalMode } from "./knowledge-proposal";
 import { KnowledgeReview } from "./knowledge-review";
+import type { CollaborationPanelStatusChange } from "./panel-status";
 
-export function CollaborationKnowledgePanel({ scope, issue }: { scope: CollaborationScope; issue: CollaborationIssue }) {
-  return <SourceKnowledge key={`${scope.apiScope}:${scope.userId}:${issue.id}`} scope={scope} issue={issue} />;
+export function CollaborationKnowledgePanel({ scope, issue, onStatusChange }: { scope: CollaborationScope; issue: CollaborationIssue; onStatusChange?: CollaborationPanelStatusChange }) {
+  return <SourceKnowledge key={`${scope.apiScope}:${scope.userId}:${issue.id}`} scope={scope} issue={issue} onStatusChange={onStatusChange} />;
 }
-function SourceKnowledge({ scope, issue }: { scope: CollaborationScope; issue: CollaborationIssue }) {
+function SourceKnowledge({ scope, issue, onStatusChange }: { scope: CollaborationScope; issue: CollaborationIssue; onStatusChange?: CollaborationPanelStatusChange }) {
   const [page, setPage] = useState<KnowledgePageOptions>({});
   const query = useCollaborationKnowledgeCandidates(scope, issue.id, page);
   // cancelRefetch:false joins an in-flight refresh instead of restarting it.
   const refreshView = async () => (await query.refetch({ cancelRefetch: false })).data?.value;
-  return <KnowledgeCollection scope={scope} issue={issue} query={query} page={page} setPage={setPage} sourceView={query.data?.value} refreshView={refreshView} />;
+  return <KnowledgeCollection scope={scope} issue={issue} query={query} page={page} setPage={setPage} sourceView={query.data?.value} refreshView={refreshView} onStatusChange={onStatusChange} />;
 }
 export function ManagedKnowledgePanel({ workspaceId, projectId }: { workspaceId: string; projectId?: string }) {
   const scope = useCollaborationScope();
@@ -35,10 +36,11 @@ function TargetKnowledge({ scope, workspaceId, projectId }: { scope: Collaborati
 }
 
 type KnowledgePage = CollaborationKnowledgeCandidates | CollaborationKnowledgeTargetList;
-function KnowledgeCollection({ scope, issue, target, query, page, setPage, sourceView, refreshView }: {
+function KnowledgeCollection({ scope, issue, target, query, page, setPage, sourceView, refreshView, onStatusChange }: {
   scope: CollaborationScope; issue?: CollaborationIssue; target?: CollaborationKnowledgeTarget; query: UseQueryResult<AuthorizedKnowledgeProjection<KnowledgePage>, Error>;
   page: KnowledgePageOptions; setPage: (value: KnowledgePageOptions) => void; sourceView?: CollaborationKnowledgeCandidates;
   refreshView?: () => Promise<CollaborationKnowledgeCandidates | undefined>;
+  onStatusChange?: CollaborationPanelStatusChange;
 }) {
   const { t } = useT("collaboration"); const client = useQueryClient(); const id = useId(); const busy = useRef(false);
   const root = useRef<HTMLElement>(null);
@@ -62,6 +64,8 @@ function KnowledgeCollection({ scope, issue, target, query, page, setPage, sourc
   const current = query.data;
   const loadFailed = query.error !== null || !query.isFetching;
   const recoveryAttention = pending.length > 0 || storageError || cleanupFailed || feedback?.failed === true;
+  const panelAttention = recoveryAttention || query.isError || !current && loadFailed;
+  useEffect(() => { onStatusChange?.({ attention: panelAttention }); }, [onStatusChange, panelAttention]);
   useEffect(() => {
     if (!recoveryAttention) return;
     for (let ancestor = root.current?.parentElement; ancestor; ancestor = ancestor.parentElement) {

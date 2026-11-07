@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
-import { collaborationCommentsOptions, collaborationCommentOptions, collaborationIssueAccessDenied, deriveCollaborationDetailState, isCollaborationDenied, useCollaborationIssue, useCollaborationPendingDrafts, type CollaborationComment, type CollaborationScope } from "@multica/core/collaboration";
+import { collaborationCommentsOptions, collaborationCommentOptions, collaborationIssueAccessDenied, deriveCollaborationDetailState, isCollaborationDenied, useCollaborationIssue, type CollaborationComment, type CollaborationScope } from "@multica/core/collaboration";
 import { accountPath, type AccountDestination } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
 import { copyText } from "@multica/ui/lib/clipboard";
@@ -13,14 +13,9 @@ import { CollaborationQueryState } from "./query-state";
 import { CollaborationWorkflow } from "./workflow";
 import { CollaborationExecutionPanel } from "./execution-panel";
 import { CollaborationCommentComposer } from "./comment-composer";
-import { CollaborationActivity } from "./activity";
 import { CollaborationCommentList } from "./comment-list";
 import { CollaborationIssueReactions } from "./discussion-actions";
-import { CollaborationAttachmentPanel } from "./attachment-panel";
-import { CollaborationFieldSummary } from "./field-summary";
-import { CollaborationChildren } from "./children";
-import { CollaborationMemoryPanel } from "./memory-panel";
-import { CollaborationKnowledgePanel } from "./knowledge-panel";
+import { CollaborationDetailAuxiliary, type CollaborationDetailAuxiliaryHandle } from "./detail-auxiliary";
 import { CollaborationDeliveryPanel } from "./delivery-panel";
 import { useRestoredScrollRef } from "../platform";
 import { useNavigation } from "../navigation";
@@ -34,11 +29,11 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
   const issueId = destination.issueId!;
   const identity = `${scope.apiScope}:${scope.userId}:${issueId}`;
   const query = useCollaborationIssue(scope, issueId);
-  const pending = useCollaborationPendingDrafts({ ...scope, issueId });
   const comments = useInfiniteQuery({ ...collaborationCommentsOptions(client, scope, issueId), enabled: query.data?.capabilities.read === true });
   const linkedComment = useQuery({ ...collaborationCommentOptions(client, scope, issueId, destination.commentId ?? ""),
     enabled: query.data?.capabilities.read === true && destination.commentId !== null && !comments.data?.pages.some((page) => page.items.some((comment) => comment.id === destination.commentId)) });
   const root = useRef<HTMLDivElement>(null);
+  const auxiliary = useRef<CollaborationDetailAuxiliaryHandle>(null);
   const [replyTo, setReplyTo] = useState<{ identity: string; comment: CollaborationComment } | null>(null);
   const [resultComment, setResultComment] = useState<{ identity: string; comment: CollaborationComment } | null>(null);
   const consumedAnchor = useRef<string | null>(null);
@@ -61,9 +56,14 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
     for (let ancestor = element.parentElement; ancestor && ancestor !== root.current; ancestor = ancestor.parentElement) {
       if (ancestor instanceof HTMLDetailsElement) ancestor.open = true;
     }
-    container.scrollTop += element.getBoundingClientRect().top - container.getBoundingClientRect().top;
-    element.focus({ preventScroll: true });
     consumedAnchor.current = intent;
+    const focusTarget = () => {
+      if (!element.isConnected) return;
+      container.scrollTop += element.getBoundingClientRect().top - container.getBoundingClientRect().top;
+      element.focus({ preventScroll: true });
+    };
+    if (auxiliary.current) auxiliary.current.closeForNavigation(focusTarget);
+    else focusTarget();
   }, [destination.commentId, destination.runId, destination.anchor, query.data, comments.data, linkedComment.data, navigation.isScopeResume, navigation.navigationKey]);
   const denied = collaborationIssueAccessDenied(client, scope, issueId);
   if (!query.data || denied || isCollaborationDenied(query.error)) return query.isPending
@@ -97,14 +97,12 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
           const textarea = root.current?.querySelector<HTMLTextAreaElement>("#discussion textarea");
           textarea?.focus(); textarea?.scrollIntoView?.({ block: "nearest" });
         }} />
+      <CollaborationDetailAuxiliary key={`auxiliary:${identity}`} ref={auxiliary} scope={scope} issue={issue} destination={destination} isScopeResume={navigation.isScopeResume} navigationKey={navigation.navigationKey} />
     </header>
     <div className="min-w-0 space-y-8">
     <section id="description" tabIndex={-1} className="min-w-0 space-y-3"><h3 className="text-title-sm font-semibold">{t(($) => $.detail.description)}</h3>
       <div className="max-w-[75ch]"><RichContent resourcePolicy="restricted" content={issue.description} /></div>
-      <Button variant="link" size="sm" className="h-auto max-w-full whitespace-normal px-0 py-1 text-caption text-muted-foreground underline-offset-4 pointer-coarse:min-h-11" onClick={() => {
-        const files = root.current?.querySelector<HTMLDetailsElement>("#collaboration-files");
-        if (files) { files.open = true; files.scrollIntoView?.({ block: "nearest" }); files.querySelector("summary")?.focus(); }
-      }}>{t(($) => $.detail.referenceFiles)}</Button>
+      <Button variant="link" size="sm" className="h-auto max-w-full whitespace-normal px-0 py-1 text-caption text-muted-foreground underline-offset-4 pointer-coarse:min-h-11" onClick={(event) => auxiliary.current?.open("files", event.currentTarget)}>{t(($) => $.detail.referenceFiles)}</Button>
     </section>
     <CollaborationDeliveryPanel key={`delivery:${identity}`} scope={scope} issue={issue} />
     <CollaborationIssueReactions scope={scope} issue={issue} />
@@ -123,40 +121,6 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
     </section>
     <CollaborationExecutionPanel scope={scope} issue={issue} selectedRunId={destination.runId} />
     </div>
-    <aside aria-label={t(($) => $.detail.context)} className="min-w-0 space-y-2 border-t border-border pt-5">
-      <CollaborationDisclosure title={t(($) => $.detail.context)}>
-        <dl className="grid min-w-0 gap-x-8 gap-y-3 text-body @xl/collaboration-detail:grid-cols-2 [&_dt]:mb-1 [&_dt]:text-caption [&_dt]:text-muted-foreground [&_dd]:[overflow-wrap:anywhere]">
-          <div><dt>{t(($) => $.detail.creator)}</dt><dd>{issue.creator.name}</dd></div>
-          <div><dt>{t(($) => $.detail.source)}</dt><dd>{issue.source_workspace.name}</dd></div>
-          {state.stage !== "working" && <div><dt>{t(($) => $.detail.status)}</dt><dd>{labels.status(issue.status)}</dd></div>}
-          <div><dt>{t(($) => $.policy.title)}</dt><dd>{issue.ai_policy === "manual" ? t(($) => $.policy.manual) : issue.ai_policy === "assisted" ? t(($) => $.policy.assisted) : t(($) => $.policy.unknown)}</dd></div>
-        </dl>
-        <CollaborationFieldSummary issue={issue} />
-      </CollaborationDisclosure>
-      <CollaborationDisclosure id="collaboration-files" title={t(($) => $.attachments.title)} attention={pending.error}>
-        <CollaborationAttachmentPanel scope={scope} issue={issue} />
-      </CollaborationDisclosure>
-      <CollaborationDisclosure title={t(($) => $.memory.title)} attention={pending.memory.length > 0 || pending.error || !!destination.memoryVersion || destination.anchor === "memory"}>
-        <CollaborationMemoryPanel scope={scope} issue={issue} destination={destination} isScopeResume={navigation.isScopeResume} navigationKey={navigation.navigationKey} />
-      </CollaborationDisclosure>
-      <CollaborationDisclosure title={t(($) => $.knowledge.title)} attention={pending.error}>
-        <CollaborationKnowledgePanel scope={scope} issue={issue} />
-      </CollaborationDisclosure>
-      <CollaborationDisclosure title={t(($) => $.activity.title)}>
-        <CollaborationActivity scope={scope} destination={destination} />
-      </CollaborationDisclosure>
-      <CollaborationDisclosure title={t(($) => $.children.title)}>
-        <CollaborationChildren issue={issue} />
-      </CollaborationDisclosure>
-    </aside>
-  </div>;
-}
 
-function CollaborationDisclosure({ id, title, attention = false, children }: { id?: string; title: string; attention?: boolean; children: ReactNode }) {
-  const disclosure = useRef<HTMLDetailsElement>(null);
-  useEffect(() => { if (attention && disclosure.current) disclosure.current.open = true; }, [attention]);
-  return <details ref={disclosure} id={id} className="min-w-0 space-y-4">
-    <summary className="cursor-pointer rounded-sm py-2 text-body font-medium text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11">{title}</summary>
-    {children}
-  </details>;
+  </div>;
 }

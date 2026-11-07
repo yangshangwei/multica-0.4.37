@@ -127,6 +127,30 @@ it("closes a private preview and revokes its object URL when issue access is cle
   expect(screen.queryByRole("button", { name: "Download private.png" })).toBeNull();
 });
 
+it("closes a nested preview when its containing drawer becomes inactive without restoring hidden focus", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(actor);
+  const create = vi.fn(() => "blob:drawer-preview"), revoke = vi.fn();
+  vi.stubGlobal("URL", class extends URL { static createObjectURL = create; static revokeObjectURL = revoke; });
+  vi.stubGlobal("fetch", vi.fn(async (url: string) => url.endsWith("/content") ? new Response("bytes", { headers: { "content-type": "image/png" } })
+    : new Response(JSON.stringify({ issue_id: actor, attachments: [metadata] }))));
+  const issue = parseCollaborationIssue({ ...collaborationIssueFixture, capabilities: { ...collaborationIssueFixture.capabilities, comment: false } })!;
+  const view = (active: boolean) => <QueryClientProvider client={client}><h2 tabIndex={-1}>Main destination</h2><div hidden={!active} inert={!active}>
+    <CollaborationAttachmentPanel scope={scope} issue={issue} active={active} />
+  </div></QueryClientProvider>;
+  const mounted = renderWithI18n(view(true));
+  await userEvent.click(await screen.findByRole("button", { name: "Preview private.png" }));
+  expect(await screen.findByRole("img", { name: "private.png" })).toBeVisible();
+  mounted.rerender(view(false));
+  screen.getByRole("heading", { name: "Main destination" }).focus();
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  expect(screen.getByRole("heading", { name: "Main destination" })).toHaveFocus();
+  expect(revoke).toHaveBeenCalledWith("blob:drawer-preview");
+  mounted.rerender(view(true));
+  expect(screen.queryByRole("dialog")).toBeNull();
+  expect(await screen.findByRole("button", { name: "Preview private.png" })).toBeVisible();
+});
+
 // Chromium will not run its PDF viewer inside the sandboxed preview frame.
 it("offers PDFs for download only", async () => {
   setApiInstance(new ApiClient("https://server.example"));
@@ -157,11 +181,32 @@ it.each(["upload", "delivery"] as const)("opens the enclosing auxiliary disclosu
   });
   vi.stubGlobal("fetch", fetch);
   const issue = parseCollaborationIssue(collaborationIssueFixture)!;
+  const status = vi.fn();
   renderWithI18n(<QueryClientProvider client={client}><details><summary>Attachments</summary>
-    <CollaborationAttachmentPanel scope={scope} issue={issue} />
+    <CollaborationAttachmentPanel scope={scope} issue={issue} onStatusChange={status} />
   </details></QueryClientProvider>);
   expect(await screen.findByRole("button", { name: kind === "upload" ? "Check upload" : "Check file delivery" })).toBeInTheDocument();
   expect(screen.getByText("Attachments", { selector: "summary" }).closest("details")).toHaveAttribute("open");
+  await waitFor(() => expect(status).toHaveBeenLastCalledWith({ attention: true, count: 0 }));
   expect(readCollaborationDeliveryRecords(form.scope).find((record) => record.kind === kind)).toMatchObject({ requestId });
   expect(fetch.mock.calls.every(([, init]) => (init?.method ?? "GET") === "GET")).toBe(true);
+});
+
+it("reports only confirmed attachment counts and surfaces a failed read to its navigation entry", async () => {
+  const api = new ApiClient("https://server.example"); setApiInstance(api);
+  const scope = collaborationScope(actor);
+  let resolveRead!: (value: { issue_id: string; attachments: typeof metadata[] }) => void;
+  const getFiles = vi.spyOn(api, "getCollaborationAttachments").mockImplementationOnce(() => new Promise((resolve) => { resolveRead = resolve; }));
+  const status = vi.fn();
+  const issue = parseCollaborationIssue({ ...collaborationIssueFixture, capabilities: { ...collaborationIssueFixture.capabilities, comment: false } })!;
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationAttachmentPanel scope={scope} issue={issue} onStatusChange={status} /></QueryClientProvider>);
+  expect(status).toHaveBeenLastCalledWith({ attention: false, count: undefined });
+  await act(async () => resolveRead({ issue_id: actor, attachments: [metadata] }));
+  await waitFor(() => expect(status).toHaveBeenLastCalledWith({ attention: false, count: 1 }));
+  getFiles.mockRejectedValueOnce(new TypeError("Offline"));
+  await act(async () => { await client.invalidateQueries({ queryKey: [...collaborationKeys.issue(scope, actor), "attachments"] }); });
+  await waitFor(() => expect(status).toHaveBeenLastCalledWith({ attention: true, count: undefined }));
+  getFiles.mockResolvedValue({ issue_id: actor, attachments: [] });
+  await userEvent.click(screen.getByRole("button", { name: "Refresh" }));
+  await waitFor(() => expect(status).toHaveBeenLastCalledWith({ attention: false, count: 0 }));
 });

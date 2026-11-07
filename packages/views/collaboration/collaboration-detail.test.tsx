@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { afterEach, expect, it, vi } from "vitest";
-import { screen, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient } from "@tanstack/react-query";
 import { collaborationScope, parseCollaborationIssue, type CollaborationIssue } from "@multica/core/collaboration";
@@ -9,12 +9,12 @@ import { ApiClient, setApiInstance } from "@multica/core/api";
 import { renderWithI18n } from "../test/i18n";
 import { CollaborationDetail } from "./collaboration-detail";
 
-const state = vi.hoisted(() => ({ comments: [] as { id: string; created_at: string }[], total: undefined as number | undefined, pending: true, children: undefined as CollaborationIssue["ordinary_children"] }));
+const state = vi.hoisted(() => ({ comments: [] as { id: string; created_at: string }[], total: undefined as number | undefined, pending: true, available: true, children: undefined as CollaborationIssue["ordinary_children"] }));
 const navigation = vi.hoisted(() => ({ push: vi.fn(), prefetch: vi.fn(), isScopeResume: false, navigationKey: 0, getShareableUrl: (path: string) => `https://detail.example${path}` }));
 const restoreScroll = vi.hoisted(() => vi.fn());
 const client = new QueryClient();
 const issue = parseCollaborationIssue(collaborationIssueFixture)!;
-vi.mock("@multica/core/collaboration", async (original) => ({ ...await original<typeof import("@multica/core/collaboration")>(), useCollaborationIssue: (_scope: unknown, id: string) => ({ data: { ...issue, id, ordinary_children: state.children } }) }));
+vi.mock("@multica/core/collaboration", async (original) => ({ ...await original<typeof import("@multica/core/collaboration")>(), useCollaborationIssue: (_scope: unknown, id: string) => ({ data: state.available ? { ...issue, id, ordinary_children: state.children } : undefined }) }));
 vi.mock("../navigation/context", () => ({ useNavigation: () => navigation }));
 vi.mock("@tanstack/react-query", async (original) => ({ ...await original<typeof import("@tanstack/react-query")>(),
   useQueryClient: () => client,
@@ -40,23 +40,24 @@ vi.mock("./comment-composer", () => ({ CollaborationCommentComposer: function Co
   const [value, setValue] = useState("");
   return <form data-testid="comment-composer"><textarea aria-label="Composer draft" value={value} onChange={(event) => setValue(event.target.value)} /></form>;
 } }));
-afterEach(() => { client.clear(); state.comments = []; state.total = undefined; state.pending = true; state.children = undefined; navigation.push.mockClear(); navigation.prefetch.mockClear(); navigation.isScopeResume = false; navigation.navigationKey = 0; restoreScroll.mockReset(); vi.restoreAllMocks(); });
+afterEach(() => { client.clear(); state.comments = []; state.total = undefined; state.pending = true; state.available = true; state.children = undefined; navigation.push.mockClear(); navigation.prefetch.mockClear(); navigation.isScopeResume = false; navigation.navigationKey = 0; restoreScroll.mockReset(); vi.restoreAllMocks(); });
 
-it.each(["en", "zh-Hans"] as const)("keeps the main journey visible and task metadata behind a deliberate disclosure in %s", async (locale) => {
+it.each(["en", "zh-Hans"] as const)("keeps the main journey visible and task metadata in its resource drawer in %s", async (locale) => {
   setApiInstance(new ApiClient("https://detail.example"));
   const title = locale === "en" ? "Issue details" : "任务信息";
   renderWithI18n(<CollaborationDetail scope={collaborationScope(issue.creator.user_id)} destination={{ view: "participating", issueId: issue.id, commentId: null }} />, { locale });
   const requirements = document.getElementById("description")!;
   const delivery = document.getElementById("delivery")!;
   const discussion = document.getElementById("discussion")!;
-  const context = screen.getByRole("complementary", { name: title });
-  for (const [before, after] of [[requirements, delivery], [delivery, discussion], [discussion, context]]) {
+  const resources = screen.getByRole("group", { name: locale === "en" ? "Issue resources" : "任务资料" });
+  for (const [before, after] of [[resources, requirements], [requirements, delivery], [delivery, discussion]]) {
     expect(before!.compareDocumentPosition(after!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   }
   expect(screen.getByTestId("comment-composer")).toBeVisible();
   expect(screen.getByTestId("fields-mount")).not.toBeVisible();
   expect(screen.getByTestId("knowledge-mount")).not.toBeVisible();
-  await userEvent.click(within(context).getByText(title, { selector: "summary" }));
+  await userEvent.click(within(resources).getByRole("button", { name: title }));
+  const context = screen.getByRole("dialog", { name: title });
   expect(screen.getByTestId("fields-mount")).toBeVisible();
   expect(within(context).getByText(issue.source_workspace.name)).toBeVisible();
 });
@@ -67,24 +68,27 @@ it("opens reference files directly from requirements without exposing the other 
   expect(screen.getByTestId("files-mount")).not.toBeVisible();
   await userEvent.click(screen.getByRole("button", { name: "Files and reference material" }));
   expect(screen.getByTestId("files-mount")).toBeVisible();
-  expect(document.querySelector("#collaboration-files > summary")).toHaveFocus();
+  expect(screen.getByRole("dialog", { name: "Attachments" })).toBeVisible();
+  await userEvent.keyboard("{Escape}");
+  await waitFor(() => expect(screen.getByRole("button", { name: "Files and reference material" })).toHaveFocus());
   expect(screen.getByTestId("fields-mount")).not.toBeVisible();
   expect(screen.getByTestId("knowledge-mount")).not.toBeVisible();
 });
 
-it("reopens and focuses shared context on each explicit anchor navigation", () => {
+it("reopens and focuses shared context on each explicit anchor navigation", async () => {
   setApiInstance(new ApiClient("https://detail.example"));
   const view = () => <section data-tab-scroll-root="account-detail"><CollaborationDetail scope={collaborationScope(issue.creator.user_id)} destination={{ view: "participating", issueId: issue.id, commentId: null, anchor: "memory" }} /></section>;
   const mounted = renderWithI18n(view());
   const memory = screen.getByTestId("memory-mount");
   expect(memory).toBeVisible();
-  expect(memory).toHaveFocus();
-  memory.closest("details")!.open = false;
+  await waitFor(() => expect(memory).toHaveFocus());
+  await userEvent.keyboard("{Escape}");
+  await waitFor(() => expect(memory).not.toBeVisible());
   screen.getByLabelText("Composer draft").focus();
   navigation.navigationKey += 1;
   mounted.rerender(view());
   expect(memory).toBeVisible();
-  expect(memory).toHaveFocus();
+  await waitFor(() => expect(memory).toHaveFocus());
 });
 
 it("shows the loaded range and keeps an older server's unknown total explicit", () => {
@@ -130,7 +134,7 @@ it("opens ordinary children in their returned source workspace and downgrades to
   state.children = { source_workspace_slug: "actual-source", items: [child] };
   const view = () => <CollaborationDetail scope={scope} destination={{ view: "participating", issueId: issue.id, commentId: null }} />;
   const mounted = renderWithI18n(view());
-  await userEvent.click(screen.getByText("Sub-issues", { selector: "summary" }));
+  await userEvent.click(within(screen.getByRole("group", { name: "Issue resources" })).getByRole("button", { name: /^Sub-issues/ }));
   const section = screen.getByRole("region", { name: "Sub-issues" });
   const link = within(section).getByRole("link", { name: /SRC-9 Independent child/ });
   expect(link).toHaveAttribute("href", `/actual-source/issues/${child.id}`);
@@ -150,7 +154,7 @@ it("distinguishes missing child support from an explicitly empty projected list"
   const scope = collaborationScope(issue.creator.user_id);
   const view = () => <CollaborationDetail scope={scope} destination={{ view: "participating", issueId: issue.id, commentId: null }} />;
   const mounted = renderWithI18n(view());
-  await userEvent.click(screen.getByText("Sub-issues", { selector: "summary" }));
+  await userEvent.click(within(screen.getByRole("group", { name: "Issue resources" })).getByRole("button", { name: /^Sub-issues/ }));
   expect(screen.getByText("Sub-issue references are unavailable on this server.")).toBeInTheDocument();
   expect(screen.queryByText("No sub-issues.")).not.toBeInTheDocument();
   state.children = { source_workspace_slug: null, items: [] };
@@ -193,4 +197,18 @@ it("keeps one comment list and composer across loading, polling and first-commen
   mounted.rerender(view("00000000-0000-4000-8000-000000000003"));
   expect(screen.getByLabelText("Composer draft")).toHaveValue("");
   expect(screen.getAllByTestId("comment-list")).toHaveLength(1);
+});
+
+it("removes an open resource drawer when its protected issue is no longer available", async () => {
+  setApiInstance(new ApiClient("https://detail.example"));
+  const view = () => <CollaborationDetail scope={collaborationScope(issue.creator.user_id)} destination={{ view: "participating", issueId: issue.id, commentId: null }} />;
+  const mounted = renderWithI18n(view());
+  await userEvent.click(within(screen.getByRole("group", { name: "Issue resources" })).getByRole("button", { name: "Issue details" }));
+  expect(screen.getByRole("dialog")).toBeVisible();
+  expect(within(screen.getByRole("dialog")).getByText(issue.source_workspace.name)).toBeVisible();
+  state.available = false;
+  mounted.rerender(view());
+  expect(screen.queryByRole("dialog")).toBeNull();
+  expect(screen.queryByText(issue.source_workspace.name)).toBeNull();
+  expect(screen.queryByTestId("knowledge-mount")).toBeNull();
 });

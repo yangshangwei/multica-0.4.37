@@ -12,6 +12,13 @@ export async function revealCollaborationDisclosure(page: Page, name: Collaborat
     await expect(menu).toBeVisible();
     return menu;
   }
+  if (name !== "AI execution") {
+    const drawer = page.getByRole("dialog").filter({ has: page.getByRole("group", { name: "Browse issue resources", exact: true }) });
+    const controls = await drawer.isVisible() ? drawer.getByRole("group", { name: "Browse issue resources", exact: true }) : page.getByRole("group", { name: "Issue resources", exact: true });
+    await controls.getByRole("button", { name: new RegExp(`^${name}(?: \d+)?$`) }).click();
+    await expect(drawer).toHaveAccessibleName(name);
+    return drawer;
+  }
   const exactName = new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`);
   const summary = page.locator("details > summary:visible").filter({ hasText: exactName });
   await expect(summary).toBeVisible();
