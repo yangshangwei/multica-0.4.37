@@ -1,0 +1,1120 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-07T05:29:57.168866+00:00",
+  "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+  "mode": "read-onlydiagnosis using retainedfailures/screenshots/ARIA/trace/source;no newruntimeexperiment",
+  "skills": "diagnosing-bugs;freshreproduce/instrumentstepsdelegatedtoownedexecutionagent becausecurrentassignment forbidsruntime/actions/sourceedits",
+  "findings": [
+    {
+      "id": "DRAWER-01",
+      "priority": "P1",
+      "classification": "CONFIRMED_TEST_INTERACTION_MISMATCH",
+      "product_defect_confirmed": false,
+      "symptom": "Desktop account records times out finding Copy link;Web records same background click times out.",
+      "evidence": "Originalspec opensSub-issues and leavesDialog open;retained desktop screenshot shows modal still covering background;raw locators fail ataccountspec252 from428 andWebspec29.",
+      "source": "account-desktop426→428;records-web22→29;detail-auxiliary creates modal Dialog;collaboration-detail Copy link lives outside it.",
+      "minimal_test_only_change": "After verifying resource content, use visible Close resources or Escape and await exact named drawer hidden before background Copy link/Notifications/usage. Retain actual clipboard/API/link/history/permission assertions.",
+      "further_same_pattern_static_locations": [
+        "account-desktop sourcePopup Sub-issues→showRecordedUsage",
+        "account-desktop viewer Sub-issues→Notifications"
+      ],
+      "prohibited": "No force:true,DOM removal,global auto-close inside helper or weakened clipboard expectations.",
+      "remaining": "Repaired whole journeys must execute;confirmed interaction mismatch does not prove later assertions."
+    },
+    {
+      "id": "DETAIL-DELETE-01",
+      "priority": "P1",
+      "classification": "STALE_REVISION_GUARD_OBSERVED_FIXTURE_READINESS_RACE_LIKELY",
+      "product_defect_confirmed": false,
+      "symptom": "Desktop waits30s for DELETE,notPATCH.",
+      "evidence": "Raw failed atfixture641 after editcompleted;screenshot andARIA show changed-comment alert,Use latest version,Confirm deletion disabled.",
+      "source": "comment-actions72-73 invalidates withoutawait;comment-list88 closes editor onreceipt;begin delete captures currentlyrenderedrevision;stale95blocks submit. Fixture checked edit closed/focus but not new content before openingdelete.",
+      "minimal_test_only_change": "Wait for exact edited content visibly rendered in the same comment row before openingDelete;retain DELETE200,receipt,marker,andfocus assertions.",
+      "remaining": "Old/newrevision timing notcaptured in originaltraceoff run;new readiness probe/replay needed before claiming cause closed.",
+      "prohibited": "Do not autoaccept Use latest,force disabled confirmation,API-delete asfallback,or widen timeout."
+    },
+    {
+      "id": "DETAIL-SCROLL-01",
+      "priority": "P1",
+      "classification": "OBSERVED_ACCEPTANCE_FAILURE_ROOT_CAUSE_UNRESOLVED",
+      "product_defect_confirmed": false,
+      "symptom": "Web scope switch returns account-detail scrollTop476 instead ofsaved620 after5s.",
+      "evidence": "Originalraw fixture792;beforetest sets620 and twoframes;failure screenshot documents finalview only.Only one earlier widecapture recorded,no scrollgeometry/event history beforeleave.",
+      "hypotheses": [
+        {
+          "rank": 1,
+          "cause": "Capture suppression may ignore newlyrequested620 andretain earlier476.",
+          "source": "WebScrollRestorationProvider adapter.get refreshes1000ms suppressedUntil;onScroll discards duringthatwindow.",
+          "prediction": "Probe finds620scroll occurredwithin restorationwindow andnext restore assignsolder476;no laterlayout delta needed."
+        },
+        {
+          "rank": 2,
+          "cause": "Postrestore dynamiclayout/scrollanchoring changesoffset144.",
+          "source": "CollaborationDetail restoresonce onquery/comments data;auxiliary status/other querycontent maysettle later.",
+          "prediction": "Observedtop reaches620 then falls476 withsectiongeometry/scrollHeight change."
+        },
+        {
+          "rank": 3,
+          "cause": "Wrongscope/route memento oranchor focus intent.",
+          "source": "ScopeShell resume path,accountRouteKey andnavigation.isScopeResume controlrestore vsanchor.",
+          "prediction": "Route/anchor/activeelement orincomingrestorationkey differs fromsaved account identity."
+        }
+      ],
+      "next_probe": "Run originalassertions unchanged in external copiedfixture;capture performance timestamps,URL/hash,scrollTop/scrollHeight/clientHeight,sectionrectangles,activeelement andpassive scrollevents before620,aftertwoframes,beforeleave,aftereachscopecommit. Distinguish restoreassignment fromlatermovement;no arbitrary sleep or modifyingoriginal620/strict equality.",
+      "test_fix_authorized_by_evidence": false,
+      "latest_diagnostic": "Web passed;Desktop reproduced620→476 after actuallyrestoring620;contentheightchanges observed,maxscroll2333>620. Exactelement/rootcause stillopen."
+    },
+    {
+      "id": "KNOWLEDGE-RECOVERY-01",
+      "priority": "P0_acceptance",
+      "classification": "CURRENT_R4_ATTENTION_CONTRACT_MISMATCH_PRODUCT_DEFECT_NOT_CONFIRMED",
+      "product_defect_confirmed": false,
+      "symptom": "Afterreload existingtest166 expectsvisible Check original result withoutattentioninteraction.",
+      "evidence": "Visibleerror-context includesNeedsattention→Knowledgecandidates;finaltrace retainsoriginalrequestID andCheckoriginalresult inhidden/data-closedDialog andhidden/inert knowledgecontainer.",
+      "contract": "ArchiveddrawerPRD R4 anddesign expresslyrequire actionabletoolbarreminder withoutautomaticfocusstealing;detail-auxiliary unitexpects attentionnottoopenmodal.",
+      "root_cause": "OldE2E automaticdetails-reveal expectation survivedtransition tomodalattentionCTA;standaloneKnowledgePanel stillopensHTMLDetailsancestors butactualdrawer hasnone.",
+      "minimal_test_only_change": "Rootexplicitlyauthorized useofactualvisibleNeedsattention status andexactKnowledgecandidatesCTA,then originalCheckGET path. Do not callgenericdisclosurehelper.",
+      "required_invariants": [
+        "Before reload Summarylocked and exact same request retrybody preserved.",
+        "Afterreload visibleattentionCTA leads toKnowledgecandidatesdialog.",
+        "RecoveredrequestID andcandidateID matchoriginalidentity;CheckusesGET;Retrysamerequest absentafterremount.",
+        "NoadditionalPOST afterreload;persisted candidatecount1;recoveryclears pendingidentity."
+      ],
+      "measurement_note": "Tracecontains201 route.fetch,-1abortedouter,and403retryrecords for2UI submissions—not3business writes. Existingcalls[] ceasestrackingafterunroute;usepassiverequestobserver acrossthereload toprove noPOST.",
+      "remaining": "Current R4 CTA recovery now passed twice; final trace proves exact identity/GET and no POST after reload. Original failure retained.",
+      "prohibited": "No manualgenericdraweropen workaround,auto-openproductchange orremovingrequestidentity assertions."
+    }
+  ],
+  "original_run_stats": {
+    "detail-journey-first": {
+      "startTime": "2026-11-07T05:08:02.607Z",
+      "duration": 58031.454999999994,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 2,
+      "flaky": 0
+    },
+    "legacy-test-repair-1": {
+      "startTime": "2026-11-07T05:13:51.261Z",
+      "duration": 653484.505,
+      "expected": 37,
+      "skipped": 9,
+      "unexpected": 7,
+      "flaky": 0
+    }
+  },
+  "original_failures": [
+    {
+      "run": "detail-journey-first",
+      "file": "collaboration-detail-journey.spec.ts",
+      "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "status": "failed",
+      "retry": 0,
+      "error_messages": [
+        "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: 620\nReceived: 476\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n   at fixtures/collaboration-detail-journey.ts:792\n\n  790 |   await expect(nav.getByRole(\"button\", { name: copy.collaboration, exact: true })).toHaveAttribute(\"aria-current\", \"page\");\n  791 |   await expect(session.page.getByRole(\"heading\", { name: title, exact: true })).toBeVisible();\n> 792 |   await expect.poll(() => detail.evaluate((element) => element.scrollTop)).toBe(saved);\n      |   ^\n  793 |   if (session.native) {\n  794 |     await expect.poll(() => session.page.evaluate(() => {\n  795 |       const state = JSON.parse(localStorage.getItem(\"multica_tabs\") ?? \"null\")?.state;\n    at assertJourneyScopeRestoration (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/fixtures/collaboration-detail-journey.ts:792:3)\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-detail-journey.spec.ts:311:36\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-detail-journey.spec.ts:279:7"
+      ]
+    },
+    {
+      "run": "detail-journey-first",
+      "file": "collaboration-detail-journey.spec.ts",
+      "title": "Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "status": "failed",
+      "retry": 0,
+      "error_messages": [
+        "TimeoutError: page.waitForResponse: Timeout 30000ms exceeded while waiting for event \"response\"\n\n   at fixtures/collaboration-detail-journey.ts:641\n\n  639 |   await row.getByRole(\"button\", { name: copy.deleteComment, exact: true }).click();\n  640 |   const deletion = row.getByRole(\"form\", { name: copy.deleteComment, exact: true });\n> 641 |   const deletedPending = session.page.waitForResponse((response) => new URL(response.url()).pathname === `${issuePath(id)}/comments/${commentId}` && response.request().method() === \"DELETE\");\n      |                                       ^\n  642 |   await deletion.getByRole(\"button\", { name: copy.confirmDelete, exact: true }).press(\"Enter\");\n  643 |   const deletedResponse = await deletedPending;\n  644 |   expect(deletedResponse.status()).toBe(200);\n    at changeJourneySourceComment (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/fixtures/collaboration-detail-journey.ts:641:39)\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-detail-journey.spec.ts:193:25\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-detail-journey.spec.ts:189:7"
+      ]
+    },
+    {
+      "run": "legacy-test-repair-1",
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "status": "failed",
+      "retry": 0,
+      "error_messages": [
+        "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Copy link', exact: true })\n\n\n  250 |       return value === \"\" ? \"empty\" : \"other\";\n  251 |     }, { expected, expectedPath, sentinel });\n> 252 |     await page.getByRole(\"button\", { name: \"Copy link\", exact: true }).click();\n      |                                                                        ^\n  253 |     const immediate = await classify();\n  254 |     // A click does not await navigator.clipboard.writeText. Poll only a safe\n  255 |     // classification; arbitrary pre-existing clipboard text never enters logs.\n    at copyNativeAccountLink (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-account-desktop.spec.ts:252:72)\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-account-desktop.spec.ts:428:20"
+      ]
+    },
+    {
+      "run": "legacy-test-repair-1",
+      "file": "collaboration-delivery-web.spec.ts",
+      "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+      "status": "timedOut",
+      "retry": 0,
+      "error_messages": [
+        "Test timeout of 180000ms exceeded.",
+        "Error: browserContext.close: Target page, context or browser has been closed\n\n  185 |     await testInfo.attach(\"creation-delivery-evidence\", { body: JSON.stringify({ issueId: createdId, uploadKey, createKey, uploadPosts, createPosts,\n  186 |       sourceWorkspaceId: workspace.id, accountSocketCount: accountSockets.length, frames, noAmbientWorkspace: requestScopes.every(Boolean) }, null, 2), contentType: \"application/json\" });\n> 187 |   } finally { await recipientContext.close(); }\n      |               ^\n  188 |   expect(errors).toEqual([]);\n  189 |   expect(requestScopes.every(Boolean)).toBe(true);\n  190 |   // Collaboration records are retained by contract in this disposable database.\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-delivery-web.spec.ts:187:15"
+      ]
+    },
+    {
+      "run": "legacy-test-repair-1",
+      "file": "collaboration-knowledge.spec.ts",
+      "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+      "status": "failed",
+      "retry": 0,
+      "error_messages": [
+        "Error: expect(locator).toBeEnabled() failed\n\nLocator: getByRole('button', { name: 'Check original result', exact: true })\nExpected: enabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeEnabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Check original result', exact: true })\n\n\n  164 |     await page.unroute(url, intercept);\n  165 |     await page.reload();\n> 166 |     await expect(page.getByRole(\"button\", { name: \"Check original result\", exact: true })).toBeEnabled();\n      |                                                                                            ^\n  167 |     await expect(page.getByRole(\"button\", { name: \"Retry same request\", exact: true })).toHaveCount(0);\n  168 |     const recovered = page.waitForResponse(r => new URL(r.url()).pathname.endsWith(`/operations/${calls[0]!.request_id}`));\n  169 |     await page.getByRole(\"button\", { name: \"Check original result\", exact: true }).click();\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-knowledge.spec.ts:166:92"
+      ]
+    },
+    {
+      "run": "legacy-test-repair-1",
+      "file": "collaboration-knowledge.spec.ts",
+      "title": "Desktop native source review and independent project/workspace contributions",
+      "status": "failed",
+      "retry": 0,
+      "error_messages": [
+        "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('navigation', { name: 'Application navigation', exact: true }).getByRole('button', { name: 'Workspaces', exact: true })\n\n\n   at fixtures/collaboration-native.ts:66\n\n  64 | /** Workspace selection is contextual; the fixed shell switch first resumes it. */\n  65 | export async function selectDesktopWorkspace(page: Page, workspace: { name: string }) {\n> 66 |   await page.getByRole(\"navigation\", { name: \"Application navigation\", exact: true }).getByRole(\"button\", { name: \"Workspaces\", exact: true }).click();\n     |                                                                                                                                                ^\n  67 |   const trigger = page.locator('[data-sidebar=\"header\"] [data-sidebar=\"menu-button\"]').first();\n  68 |   await expect(trigger).toBeVisible();\n  69 |   await trigger.click();\n    at selectDesktopWorkspace (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/fixtures/collaboration-native.ts:66:144)\n    at openTarget (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/fixtures/collaboration-knowledge.ts:212:11)\n    at ownerVersions (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-knowledge.spec.ts:74:3)\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-knowledge.spec.ts:319:5"
+      ]
+    },
+    {
+      "run": "legacy-test-repair-1",
+      "file": "collaboration-memory-web.spec.ts",
+      "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+      "status": "failed",
+      "retry": 0,
+      "error_messages": [
+        "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Submit result', exact: true })\n\n\n  78 |     // The current external handler delivers through the UI before the creator\n  79 |     // accepts the exact result; shared-context writes alone are not delivery.\n> 80 |     await participant.getByRole(\"button\", { name: \"Submit result\", exact: true }).click();\n     |                                                                                   ^\n  81 |     const delivery = participant.getByRole(\"form\", { name: \"Submit result\", exact: true });\n  82 |     const resultText = \"The shared context has been reviewed and restored.\";\n  83 |     const basisText = \"Verified all four retained versions and the restored first decision.\";\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-memory-web.spec.ts:80:83"
+      ]
+    },
+    {
+      "run": "legacy-test-repair-1",
+      "file": "collaboration-records-web.spec.ts",
+      "title": "Web shares ordinary child references and retained run records through account notification links",
+      "status": "timedOut",
+      "retry": 0,
+      "error_messages": [
+        "Test timeout of 180000ms exceeded.",
+        "Error: locator.click: Test timeout of 180000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Copy link', exact: true })\n\n\n  27 |   await page.context().grantPermissions([\"clipboard-read\", \"clipboard-write\"]);\n  28 |   await page.bringToFront();\n> 29 |   await page.getByRole(\"button\", { name: \"Copy link\", exact: true }).click();\n     |                                                                      ^\n  30 |   const sharedLink = await page.evaluate(() => navigator.clipboard.readText());\n  31 |   expect(new URL(sharedLink).pathname + new URL(sharedLink).search).toBe(recordedAccountPath(fixture));\n  32 |   await page.screenshot({ path: testInfo.outputPath(\"web-record-source-children.png\"), animations: \"disabled\" });\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-records-web.spec.ts:29:70"
+      ]
+    },
+    {
+      "run": "legacy-test-repair-1",
+      "file": "collaboration-workbench-web.spec.ts",
+      "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+      "status": "failed",
+      "retry": 0,
+      "error_messages": [
+        "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Browser source owner', exact: true })\n\n\n  122 |\n  123 |   await page.getByLabel(\"Add comment\", { exact: true }).fill(\"Browser comment \");\n> 124 |   await page.getByRole(\"button\", { name: \"Browser source owner\", exact: true }).click();\n      |                                                                                 ^\n  125 |   await page.getByRole(\"button\", { name: \"Preview delivery\" }).click();\n  126 |   await expect(page.getByText(\"1 notification recipients\")).toBeVisible();\n  127 |   await page.getByRole(\"button\", { name: \"Send comment\" }).click();\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-workbench-web.spec.ts:124:81"
+      ]
+    }
+  ],
+  "knowledge_trace_analysis": {
+    "snapshot_name": "after@call@991",
+    "timestamp": 568273.567,
+    "check_button_ancestors": [
+      {
+        "tag": "HTML"
+      },
+      {
+        "tag": "BODY"
+      },
+      {
+        "tag": "DIV",
+        "id": "_r_j_"
+      },
+      {
+        "tag": "DIV",
+        "data-closed": "",
+        "id": "_r_g_",
+        "role": "dialog",
+        "hidden": ""
+      },
+      {
+        "tag": "DIV"
+      },
+      {
+        "tag": "DIV",
+        "hidden": "",
+        "inert": ""
+      },
+      {
+        "tag": "SECTION",
+        "id": "knowledge"
+      },
+      {
+        "tag": "DIV"
+      },
+      {
+        "tag": "DIV"
+      },
+      {
+        "tag": "BUTTON"
+      }
+    ],
+    "proposal_network_entries": [
+      {
+        "request_id": "4d3fcdde-dddd-4dd3-864b-0ba25031d465",
+        "candidate_id": "ebc2acb4-b914-4ce8-b633-ab1e968b2c3c",
+        "response_status": 201,
+        "request_id_retained_after_reload": true,
+        "body_sha256": "97a1383945cfde6f569efc73ae67cf40430de16ed79e582e6a446e8ec6ad5940"
+      },
+      {
+        "request_id": "4d3fcdde-dddd-4dd3-864b-0ba25031d465",
+        "candidate_id": "ebc2acb4-b914-4ce8-b633-ab1e968b2c3c",
+        "response_status": -1,
+        "request_id_retained_after_reload": true,
+        "body_sha256": "97a1383945cfde6f569efc73ae67cf40430de16ed79e582e6a446e8ec6ad5940"
+      },
+      {
+        "request_id": "4d3fcdde-dddd-4dd3-864b-0ba25031d465",
+        "candidate_id": "ebc2acb4-b914-4ce8-b633-ab1e968b2c3c",
+        "response_status": 403,
+        "request_id_retained_after_reload": true,
+        "body_sha256": "97a1383945cfde6f569efc73ae67cf40430de16ed79e582e6a446e8ec6ad5940"
+      }
+    ],
+    "visible_attention_CTA_in_error_context": true,
+    "claims_no_actual_postreload_recovery": true
+  },
+  "static_test_fix_review": {
+    "reviewed_patch": {
+      "path": ".omx/private/branch-e2e-20261107/browser/drawer-readiness.patch",
+      "sha256": "85dcb4ac655024bb6d6285c1c0203488def46c5ef4a4638cdb468cc649608ffc",
+      "bytes": 12222
+    },
+    "variant_manifest": {
+      "path": ".omx/private/branch-e2e-20261107/browser/drawer-readiness-variant.json",
+      "sha256": "15190249e4cc9038fa7b6a7905bcac16fa189de2ecc345679e96037a2d25c370",
+      "bytes": 1595
+    },
+    "verdict": "PASS_FOR_SCOPED_READINESS_ADDITIONS_PENDING_EXECUTION",
+    "reason": "OnlyEscape/hidden checks,attachment reopen beforepreview,and exactrenderedcommentreadiness added;originalbusinessassertions preserved.",
+    "remaining_static_transitions": [
+      "account-desktop sourcePopup Sub-issues→showRecordedUsage",
+      "account-desktop viewer Sub-issues→Notifications"
+    ],
+    "does_not_repair_scroll_or_change_knowledge_assertions": true,
+    "reviewed_patch_text": "diff --git a/e2e/collaboration-account-desktop.spec.ts b/e2e/collaboration-account-desktop.spec.ts\nindex c1b19ef94..1a96bab5e 100644\n--- a/e2e/collaboration-account-desktop.spec.ts\n+++ b/e2e/collaboration-account-desktop.spec.ts\n@@ -425,6 +425,8 @@ test(\"Desktop child links, recorded pages and result notifications survive popou\n     await deepLink(app, recordedAccountPath(records));\n     await revealCollaborationDisclosure(source.page, \"Sub-issues\");\n     await expect(childLink).toBeVisible();\n+    await source.page.keyboard.press(\"Escape\");\n+    await expect(source.page.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     const copied = await copyNativeAccountLink(app, source.page, recordedAccountPath(records), testInfo, \"source-account\");\n     expect(new URL(copied).pathname + new URL(copied).search).toBe(recordedAccountPath(records));\n     const sourcePopupReady = app.waitForEvent(\"window\");\n@@ -443,8 +445,11 @@ test(\"Desktop child links, recorded pages and result notifications survive popou\n     expect(copiedRun.pathname + copiedRun.search + copiedRun.hash).toBe(recordedAccountPath(records, true));\n     await revealCollaborationDisclosure(sourcePopup, \"Sub-issues\");\n     await expect(sourcePopup.getByRole(\"region\", { name: \"Sub-issues\", exact: true }).getByRole(\"link\", { name: `${records.child.identifier} ${records.child.title}`, exact: true })).toBeVisible();\n+    await sourcePopup.keyboard.press(\"Escape\");\n+    await expect(sourcePopup.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     await showRecordedUsage(sourcePopup, records.runId);\n     await nativeScreenshot(app, sourcePopup, testInfo.outputPath(\"desktop-record-source-popout.png\"));\n+    await revealCollaborationDisclosure(sourcePopup, \"Sub-issues\");\n     await sourcePopup.getByRole(\"region\", { name: \"Sub-issues\", exact: true }).getByRole(\"link\", { name: `${records.child.identifier} ${records.child.title}`, exact: true }).click();\n     await expect(sourcePopup.getByRole(\"button\", { name: \"Issue actions\", exact: true })).toBeVisible();\n     await expect(sourcePopup.getByText(records.child.title, { exact: true }).first()).toBeVisible();\n@@ -460,6 +465,8 @@ test(\"Desktop child links, recorded pages and result notifications survive popou\n     const outsideChildren = viewer.page.getByRole(\"region\", { name: \"Sub-issues\", exact: true });\n     await expect(outsideChildren.getByText(records.child.title, { exact: true })).toBeVisible();\n     await expect(outsideChildren.getByRole(\"link\")).toHaveCount(0);\n+    await viewer.page.keyboard.press(\"Escape\");\n+    await expect(viewer.page.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     await viewer.page.getByRole(\"button\", { name: /Notifications/ }).click();\n     const notification = viewer.page.getByRole(\"listitem\").filter({ has: viewer.page.getByText(\"AI execution failed\", { exact: true }) });\n     await notification.getByRole(\"link\", { name: records.issue.title, exact: true }).click();\ndiff --git a/e2e/collaboration-delivery-web.spec.ts b/e2e/collaboration-delivery-web.spec.ts\nindex 46dee5fec..3b04dd59c 100644\n--- a/e2e/collaboration-delivery-web.spec.ts\n+++ b/e2e/collaboration-delivery-web.spec.ts\n@@ -166,7 +166,10 @@ test(\"Web creates one private issue after lost upload/create responses and revok\n     await source.requestJSON(`/api/collaboration/issues/${createdId}/comments/${commentReceipt.comment_id}`, { method: \"PATCH\", headers: { \"Idempotency-Key\": randomUUID() },\n       body: { content: \"The comment no longer displays its file.\", expected_comment_revision: commentReceipt.comment_revision, attachment_ids: [] } });\n     expect(await viewer.requestJSON(`/api/collaboration/issues/${createdId}/attachments/${imageId}`)).toMatchObject({ id: imageId, issue_id: createdId });\n+    await recipientPage.keyboard.press(\"Escape\");\n+    await expect(recipientPage.getByRole(\"dialog\", { name: \"Attachments\", exact: true })).toBeHidden();\n     await recipientPage.getByRole(\"textbox\", { name: \"Add comment\", exact: true }).fill(\"Viewer unsent private draft\");\n+    await revealCollaborationDisclosure(recipientPage, \"Attachments\");\n     await recipientAttachments.getByRole(\"button\", { name: \"Preview comment-preview.png\", exact: true }).click();\n     await expect(recipientPage.getByRole(\"img\", { name: \"comment-preview.png\", exact: true })).toBeVisible();\n     await expect.poll(() => recipientPage.getByRole(\"img\", { name: \"comment-preview.png\", exact: true }).evaluate((image) => (image as HTMLImageElement).naturalWidth)).toBe(1);\ndiff --git a/e2e/collaboration-knowledge.spec.ts b/e2e/collaboration-knowledge.spec.ts\nindex 0a3c32e67..4abb5652d 100644\n--- a/e2e/collaboration-knowledge.spec.ts\n+++ b/e2e/collaboration-knowledge.spec.ts\n@@ -163,6 +163,9 @@ test(\"Web original-key recovery stays locked after ambiguity and recovers by GET\n     await expect(page.getByLabel(\"Summary\", { exact: true })).toBeDisabled();\n     await page.unroute(url, intercept);\n     await page.reload();\n+    const attention = page.getByRole(\"status\").filter({ hasText: \"Needs attention:\" });\n+    await expect(attention).toBeVisible();\n+    await attention.getByRole(\"button\", { name: \"Knowledge candidates\", exact: true }).click();\n     await expect(page.getByRole(\"button\", { name: \"Check original result\", exact: true })).toBeEnabled();\n     await expect(page.getByRole(\"button\", { name: \"Retry same request\", exact: true })).toHaveCount(0);\n     const recovered = page.waitForResponse(r => new URL(r.url()).pathname.endsWith(`/operations/${calls[0]!.request_id}`));\ndiff --git a/e2e/collaboration-memory-web.spec.ts b/e2e/collaboration-memory-web.spec.ts\nindex b76c04f8c..ca529b6b4 100644\n--- a/e2e/collaboration-memory-web.spec.ts\n+++ b/e2e/collaboration-memory-web.spec.ts\n@@ -77,6 +77,8 @@ test(\"shared context keeps concurrent edits, restores versions, and permits hist\n     expect(history.items.map(item => item.version)).toEqual([\"4\", \"3\", \"2\", \"1\"]);\n     // The current external handler delivers through the UI before the creator\n     // accepts the exact result; shared-context writes alone are not delivery.\n+    await participant.keyboard.press(\"Escape\");\n+    await expect(participant.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeHidden();\n     await participant.getByRole(\"button\", { name: \"Submit result\", exact: true }).click();\n     const delivery = participant.getByRole(\"form\", { name: \"Submit result\", exact: true });\n     const resultText = \"The shared context has been reviewed and restored.\";\n@@ -95,6 +97,9 @@ test(\"shared context keeps concurrent edits, restores versions, and permits hist\n     expect(await submissionResponse.json()).toMatchObject({ code: \"acceptance_submitted\", delivery_confirmation: { submission_id: submission.id, attachment_ids: [] } });\n     await expect(delivery).toHaveCount(0);\n     await page.reload();\n+    await expect(page.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeVisible();\n+    await page.keyboard.press(\"Escape\");\n+    await expect(page.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeHidden();\n     await page.getByRole(\"button\", { name: \"Accept and complete\", exact: true }).click();\n     const completion = page.getByRole(\"form\", { name: \"Accept and complete\", exact: true });\n     await expect(completion.locator(`[data-submission-id=\"${submission.id}\"]`)).toHaveCount(1);\n@@ -110,6 +115,9 @@ test(\"shared context keeps concurrent edits, restores versions, and permits hist\n       delivery: { current: null, latest: { id: submission.id, decision: { kind: \"accepted\", submission_id: submission.id, actor_user_id: fixture.creator.id } } } });\n     await revealCollaborationDisclosure(page, \"More actions\");\n     await expect(page.getByRole(\"button\", { name: \"Reopen issue\", exact: true }).or(page.getByRole(\"menuitem\", { name: \"Reopen issue\", exact: true }))).toBeVisible();\n+    await page.keyboard.press(\"Escape\");\n+    await expect(page.getByRole(\"menu\")).toHaveCount(0);\n+    await page.getByRole(\"group\", { name: \"Issue resources\", exact: true }).getByRole(\"button\", { name: \"Shared context\", exact: true }).click();\n     await expect(panel.getByRole(\"button\", { name: \"Edit shared context\", exact: true })).toHaveCount(0);\n     await expect(panel.getByRole(\"button\", { name: /^Restore v/ })).toHaveCount(0);\n     await expect(panel).toContainText(\"This issue is closed, so its shared context is read-only.\");\ndiff --git a/e2e/collaboration-records-web.spec.ts b/e2e/collaboration-records-web.spec.ts\nindex bc4adafaa..d2d8f22c8 100644\n--- a/e2e/collaboration-records-web.spec.ts\n+++ b/e2e/collaboration-records-web.spec.ts\n@@ -24,6 +24,8 @@ test(\"Web shares ordinary child references and retained run records through acco\n   const childLink = children.getByRole(\"link\", { name: `${fixture.child.identifier} ${fixture.child.title}`, exact: true });\n   await expect(childLink).toHaveAttribute(\"href\", `/${fixture.workspace.slug}/issues/${fixture.child.id}`);\n   await expect(page.getByRole(\"button\", { name: \"Edit source fields\", exact: true })).toHaveCount(0);\n+  await page.keyboard.press(\"Escape\");\n+  await expect(page.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n   await page.context().grantPermissions([\"clipboard-read\", \"clipboard-write\"]);\n   await page.bringToFront();\n   await page.getByRole(\"button\", { name: \"Copy link\", exact: true }).click();\n@@ -85,6 +87,8 @@ test(\"Web shares ordinary child references and retained run records through acco\n     await outside.reload();\n     await revealCollaborationDisclosure(outside, \"Sub-issues\");\n     await expect(outsideChildren.getByText(fixture.child.title, { exact: true })).toBeVisible();\n+    await outside.keyboard.press(\"Escape\");\n+    await expect(outside.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     await outside.getByRole(\"button\", { name: /Notifications/ }).click();\n     const notification = outside.getByRole(\"listitem\").filter({ has: outside.getByText(\"AI execution failed\", { exact: true }) });\n     await notification.getByRole(\"link\", { name: fixture.issue.title, exact: true }).click();\ndiff --git a/e2e/fixtures/collaboration-detail-journey.ts b/e2e/fixtures/collaboration-detail-journey.ts\nindex 90b0aa188..145ecdf6f 100644\n--- a/e2e/fixtures/collaboration-detail-journey.ts\n+++ b/e2e/fixtures/collaboration-detail-journey.ts\n@@ -636,6 +636,7 @@ export async function changeJourneySourceComment(session: DetailJourneySession,\n   const edited = CollaborationCommentReceiptSchema.parse(await editedResponse.json());\n   await expect(editor).toHaveCount(0);\n   await expect(row.getByRole(\"button\", { name: copy.editComment, exact: true })).toBeFocused();\n+  await expect(row.getByText(content, { exact: true })).toBeVisible();\n   await row.getByRole(\"button\", { name: copy.deleteComment, exact: true }).click();\n   const deletion = row.getByRole(\"form\", { name: copy.deleteComment, exact: true });\n   const deletedPending = session.page.waitForResponse((response) => new URL(response.url()).pathname === `${issuePath(id)}/comments/${commentId}` && response.request().method() === \"DELETE\");\ndiff --git a/e2e/fixtures/collaboration-knowledge.ts b/e2e/fixtures/collaboration-knowledge.ts\nindex 89c8ef92a..38c3499f6 100644\n--- a/e2e/fixtures/collaboration-knowledge.ts\n+++ b/e2e/fixtures/collaboration-knowledge.ts\n@@ -209,6 +209,11 @@ export async function openTarget(page: Page, f: KnowledgeFixture, kind: \"project\n     await window.evaluate(w => w.setContentSize(1380, 960));\n     await window.dispose();\n     await expect.poll(() => page.evaluate(() => innerWidth)).toBe(1380);\n+    const sourceDrawer = page.getByRole(\"dialog\", { name: \"Knowledge candidates\", exact: true });\n+    if (await sourceDrawer.isVisible()) {\n+      await page.keyboard.press(\"Escape\");\n+      await expect(sourceDrawer).toBeHidden();\n+    }\n     await selectDesktopWorkspace(page, f.workspace);\n     await page.getByRole(\"link\", { name: kind === \"project\" ? \"Projects\" : \"Settings\", exact: true }).and(page.locator('[data-sidebar=\"menu-button\"]')).click();\n     if (kind === \"project\") await page.getByText(f.project.title, { exact: true }).first().click();\n",
+    "superseded_by_final_patch_addendum": true,
+    "private_path_reuse_note": "The author later updated drawer-readiness.patch/variant in place as the bounded fix grew. The earlier reviewed patch text and recorded hash are embedded; use final_patch_addendum for the current approved eight-file bytes."
+  },
+  "source_blob_sha256": {
+    "e2e/collaboration-detail-journey.spec.ts": "c0d59582175e57040f058ca2f19eb7a595ed2ac789a53839349aa035518846e4",
+    "e2e/fixtures/collaboration-detail-journey.ts": "044c19dbec4241b9d9a816453353e356ebdd6ab545f3472402904b88bfed2898",
+    "e2e/collaboration-account-desktop.spec.ts": "0e20376018ab0225ea81a637ffc67fdafa4dd73f84a71dad25321e5524b4c328",
+    "e2e/collaboration-records-web.spec.ts": "5a3e3dc51da3a45d20b0e5b6befe01a329464fc02fdb57ff9f73f221f797a6a5",
+    "e2e/collaboration-knowledge.spec.ts": "5da7bfe9e0d7b3755e079b01eda7f6a71fcf0a8ee2f6559b57c75589937be4cb",
+    "packages/views/collaboration/comment-list.tsx": "b309aa7a0bfe7ac9dd69d7401ab12816ceb8b2e5aefe91d42cbc1d0c6e0579b2",
+    "packages/core/collaboration/comment-actions.ts": "da676e8d76c8c45a416574a9cc619f5d3efd1ec8c782a85ab7a85eb3e01a7833",
+    "packages/views/collaboration/detail-auxiliary.tsx": "3e9b61684e49ec31135f946acbc252d78dd8af61b820896934dbcd4799e5014a",
+    "packages/views/collaboration/knowledge-panel.tsx": "964fa0ca9025b1ff825ab49b44efd7343302d73145bf2c8e60fd625e7454cb60",
+    "apps/web/platform/scroll-restoration.tsx": "7d26f920ba69456fca88e09708e72a3d9d055cb8e4af155a3b29899eee36f3e1",
+    "packages/views/platform/scroll-restoration.tsx": "3a7b0bdecec4f1200f537866404a1fa7ea3a22c7fdf014ce9dd80a6964ed6787",
+    "packages/views/collaboration/collaboration-detail.tsx": "679d50e66930f0d34e460fcb12e88f9fa1d9ad71d140f96b2ff8dfef572820a9"
+  },
+  "evidence": [
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/detail-journey-first/results.json",
+      "sha256": "2f8b38f93409d6159e1142c090e3c6271ed571e9b1ee5d8ccb30b3b496626f81",
+      "bytes": 29956
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/detail-journey-first/run.json",
+      "sha256": "165a1c0e38fb0a936f15c74dc26236775ffc3e8d56ed4f45cec2934df6544822",
+      "bytes": 601
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json",
+      "sha256": "cfe3943af16350fe24b513116111b9be7d9ce21cc85383aba35d988a3529090c",
+      "bytes": 194981
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/run.json",
+      "sha256": "e1f20a0ab9c1ad1c96937942761182a72fde630edb5f87579b906cee7e87d578",
+      "bytes": 1285
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/artifacts/collaboration-knowledge-We-814ad-ecovers-by-GET-after-reload-chromium/trace.zip",
+      "sha256": "d922879ffeec510f32f0396f2848eb1273066f664570a8e881bfe07df0073024",
+      "bytes": 1864839
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/artifacts/collaboration-knowledge-We-814ad-ecovers-by-GET-after-reload-chromium/error-context.md",
+      "sha256": "13e0a78739c62122d19600ddea2989b7eec852b122abb3ab8692e7bc849486af",
+      "bytes": 6992
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/artifacts/collaboration-knowledge-We-814ad-ecovers-by-GET-after-reload-chromium/test-failed-1.png",
+      "sha256": "d6440963cc0e62c910e6fe80be726136a27bcab3c1c0a3d3cbe709a9113c8040",
+      "bytes": 89959
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/artifacts/collaboration-account-desk-fcee6-survive-popouts-and-restart-chromium/desktop-account-failure.png",
+      "sha256": "7fa7631f3b49a81f1753a1d36f53ac9529adf82bedacc077d597034e45a3d9a8",
+      "bytes": 112562
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/detail-journey-first/artifacts/collaboration-detail-journ-c170c-ission-and-exact-acceptance-chromium/desktop-failure-session-2.png",
+      "sha256": "19f850201d2bbd73ee54681ad17ed4d078456d7fb8cdaa3cbd260537edeb1c18",
+      "bytes": 100656
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/detail-journey-first/artifacts/collaboration-detail-journ-c170c-ission-and-exact-acceptance-chromium/desktop-failure-session-2.aria.txt",
+      "sha256": "2cb838d95edeca0e49fddb23941f1d295ce1475651887a61a409732147a6327e",
+      "bytes": 11404
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/detail-journey-first/artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/web-failure-session-1.png",
+      "sha256": "25d9a16278cfa195b840d1d62aab05be5a5c9ed5c3acad26d427ca53570fe116",
+      "bytes": 270324
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-07-collaboration-detail-drawer/prd.md",
+      "sha256": "caadcacc29bcfeadde808c22e8092d0ebdf8cf656d9a88adec89a402c3e53457",
+      "bytes": 2718
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-07-collaboration-detail-drawer/design.md",
+      "sha256": "8a224ea934b921d79a836385fd9ad09e81371ba0eee2f96514d09365dc530a2c",
+      "bytes": 1988
+    }
+  ],
+  "verification": {
+    "reviewer_executed_tests": 0,
+    "reviewer_runtime_requests": 0,
+    "database_actions": 0,
+    "provider_calls": 0,
+    "product_or_fixture_edits": 0,
+    "lint": "not_run_read_only",
+    "typecheck": "not_run_read_only",
+    "history_modified": false
+  },
+  "final_patch_addendum": {
+    "reviewed_at": "2026-11-07T05:35:11.862752+00:00",
+    "verdict": "APPROVED_TEST_ONLY_PATCH_FOR_INTEGRATION",
+    "blocking_patch_findings": [],
+    "files": [
+      {
+        "path": "e2e/collaboration-account-desktop.spec.ts",
+        "before_sha256": "0e20376018ab0225ea81a637ffc67fdafa4dd73f84a71dad25321e5524b4c328",
+        "after_sha256": "5fb058ef8cf9af36febdd00c23b78dbbf573a78bbb2ce283b0921ccb95c23762",
+        "added_lines": 7,
+        "deleted_lines": 0
+      },
+      {
+        "path": "e2e/collaboration-delivery-web.spec.ts",
+        "before_sha256": "11be1b7e11c08cd5212ffc0c1d345f5b28b50ed0b56325f1f0d36e916b63ca32",
+        "after_sha256": "faf267594e1238161bd8ff70576eeb1c31f230e6486a640de6c83baaab4d2ca0",
+        "added_lines": 3,
+        "deleted_lines": 0
+      },
+      {
+        "path": "e2e/collaboration-knowledge.spec.ts",
+        "before_sha256": "5da7bfe9e0d7b3755e079b01eda7f6a71fcf0a8ee2f6559b57c75589937be4cb",
+        "after_sha256": "78fb8c663e5b7ff1d5dc8f5e8989a724dd7d9ca04378ff29b7237ab8cdbfbeb7",
+        "added_lines": 8,
+        "deleted_lines": 0
+      },
+      {
+        "path": "e2e/collaboration-memory-web.spec.ts",
+        "before_sha256": "c02c1cfce0ad1a903a1f61795828692be96788dae805c04cc67d6a16ec0622bd",
+        "after_sha256": "212338c7d185a8dfdb29760e57b3e661b72ca8f950a5f43ec0e08f9dc007f7cb",
+        "added_lines": 11,
+        "deleted_lines": 0
+      },
+      {
+        "path": "e2e/collaboration-records-web.spec.ts",
+        "before_sha256": "5a3e3dc51da3a45d20b0e5b6befe01a329464fc02fdb57ff9f73f221f797a6a5",
+        "after_sha256": "14a4fd99ad0abb69a18a2f7e0ae7a4c1c75a80a3a11a05fd842968b8a580d662",
+        "added_lines": 4,
+        "deleted_lines": 0
+      },
+      {
+        "path": "e2e/fixtures/collaboration-detail-journey.ts",
+        "before_sha256": "044c19dbec4241b9d9a816453353e356ebdd6ab545f3472402904b88bfed2898",
+        "after_sha256": "0c0ef62cb1bdee7cb043727b80f95977ccddd584aadfbb7be6ad3e99139ab67e",
+        "added_lines": 1,
+        "deleted_lines": 0
+      },
+      {
+        "path": "e2e/fixtures/collaboration-disclosures.ts",
+        "before_sha256": "1774801a6860018c39c8c7204c67c16f57ca0dbf330dbb3c7defdbd9297665a7",
+        "after_sha256": "0dad80fa753db8b73db2622e45cbdf86fd8b91f4f7c00cf2e84186f9fc1075d9",
+        "added_lines": 1,
+        "deleted_lines": 1
+      },
+      {
+        "path": "e2e/fixtures/collaboration-knowledge.ts",
+        "before_sha256": "7a3f68f8a7213dbc40de3e7a8bf02222fb39d27411a0244b8ae2ea6ea89b1960",
+        "after_sha256": "0c22f72ef4379203c43437991db91df94b8110f38de2a5f2ebed9f6bff0ca3fa",
+        "added_lines": 5,
+        "deleted_lines": 0
+      }
+    ],
+    "patch_sha256": "2d0e8e00d4ec371bf903baedb880880adce31c1c4757e7460be34625b4e0a02d",
+    "reviewed_patch_text": "diff --git a/e2e/collaboration-account-desktop.spec.ts b/e2e/collaboration-account-desktop.spec.ts\nindex c1b19ef94..1a96bab5e 100644\n--- a/e2e/collaboration-account-desktop.spec.ts\n+++ b/e2e/collaboration-account-desktop.spec.ts\n@@ -425,6 +425,8 @@ test(\"Desktop child links, recorded pages and result notifications survive popou\n     await deepLink(app, recordedAccountPath(records));\n     await revealCollaborationDisclosure(source.page, \"Sub-issues\");\n     await expect(childLink).toBeVisible();\n+    await source.page.keyboard.press(\"Escape\");\n+    await expect(source.page.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     const copied = await copyNativeAccountLink(app, source.page, recordedAccountPath(records), testInfo, \"source-account\");\n     expect(new URL(copied).pathname + new URL(copied).search).toBe(recordedAccountPath(records));\n     const sourcePopupReady = app.waitForEvent(\"window\");\n@@ -443,8 +445,11 @@ test(\"Desktop child links, recorded pages and result notifications survive popou\n     expect(copiedRun.pathname + copiedRun.search + copiedRun.hash).toBe(recordedAccountPath(records, true));\n     await revealCollaborationDisclosure(sourcePopup, \"Sub-issues\");\n     await expect(sourcePopup.getByRole(\"region\", { name: \"Sub-issues\", exact: true }).getByRole(\"link\", { name: `${records.child.identifier} ${records.child.title}`, exact: true })).toBeVisible();\n+    await sourcePopup.keyboard.press(\"Escape\");\n+    await expect(sourcePopup.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     await showRecordedUsage(sourcePopup, records.runId);\n     await nativeScreenshot(app, sourcePopup, testInfo.outputPath(\"desktop-record-source-popout.png\"));\n+    await revealCollaborationDisclosure(sourcePopup, \"Sub-issues\");\n     await sourcePopup.getByRole(\"region\", { name: \"Sub-issues\", exact: true }).getByRole(\"link\", { name: `${records.child.identifier} ${records.child.title}`, exact: true }).click();\n     await expect(sourcePopup.getByRole(\"button\", { name: \"Issue actions\", exact: true })).toBeVisible();\n     await expect(sourcePopup.getByText(records.child.title, { exact: true }).first()).toBeVisible();\n@@ -460,6 +465,8 @@ test(\"Desktop child links, recorded pages and result notifications survive popou\n     const outsideChildren = viewer.page.getByRole(\"region\", { name: \"Sub-issues\", exact: true });\n     await expect(outsideChildren.getByText(records.child.title, { exact: true })).toBeVisible();\n     await expect(outsideChildren.getByRole(\"link\")).toHaveCount(0);\n+    await viewer.page.keyboard.press(\"Escape\");\n+    await expect(viewer.page.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     await viewer.page.getByRole(\"button\", { name: /Notifications/ }).click();\n     const notification = viewer.page.getByRole(\"listitem\").filter({ has: viewer.page.getByText(\"AI execution failed\", { exact: true }) });\n     await notification.getByRole(\"link\", { name: records.issue.title, exact: true }).click();\ndiff --git a/e2e/collaboration-delivery-web.spec.ts b/e2e/collaboration-delivery-web.spec.ts\nindex 46dee5fec..3b04dd59c 100644\n--- a/e2e/collaboration-delivery-web.spec.ts\n+++ b/e2e/collaboration-delivery-web.spec.ts\n@@ -166,7 +166,10 @@ test(\"Web creates one private issue after lost upload/create responses and revok\n     await source.requestJSON(`/api/collaboration/issues/${createdId}/comments/${commentReceipt.comment_id}`, { method: \"PATCH\", headers: { \"Idempotency-Key\": randomUUID() },\n       body: { content: \"The comment no longer displays its file.\", expected_comment_revision: commentReceipt.comment_revision, attachment_ids: [] } });\n     expect(await viewer.requestJSON(`/api/collaboration/issues/${createdId}/attachments/${imageId}`)).toMatchObject({ id: imageId, issue_id: createdId });\n+    await recipientPage.keyboard.press(\"Escape\");\n+    await expect(recipientPage.getByRole(\"dialog\", { name: \"Attachments\", exact: true })).toBeHidden();\n     await recipientPage.getByRole(\"textbox\", { name: \"Add comment\", exact: true }).fill(\"Viewer unsent private draft\");\n+    await revealCollaborationDisclosure(recipientPage, \"Attachments\");\n     await recipientAttachments.getByRole(\"button\", { name: \"Preview comment-preview.png\", exact: true }).click();\n     await expect(recipientPage.getByRole(\"img\", { name: \"comment-preview.png\", exact: true })).toBeVisible();\n     await expect.poll(() => recipientPage.getByRole(\"img\", { name: \"comment-preview.png\", exact: true }).evaluate((image) => (image as HTMLImageElement).naturalWidth)).toBe(1);\ndiff --git a/e2e/collaboration-knowledge.spec.ts b/e2e/collaboration-knowledge.spec.ts\nindex 0a3c32e67..feedba473 100644\n--- a/e2e/collaboration-knowledge.spec.ts\n+++ b/e2e/collaboration-knowledge.spec.ts\n@@ -162,7 +162,14 @@ test(\"Web original-key recovery stays locked after ambiguity and recovers by GET\n     expect(calls[1]).toEqual(calls[0]);\n     await expect(page.getByLabel(\"Summary\", { exact: true })).toBeDisabled();\n     await page.unroute(url, intercept);\n+    const postsAfterReload: string[] = [];\n+    page.on(\"request\", request => {\n+      if (request.method() === \"POST\" && new URL(request.url()).pathname === `${f.root}/knowledge-candidates`) postsAfterReload.push(request.url());\n+    });\n     await page.reload();\n+    const attention = page.getByRole(\"status\").filter({ hasText: \"Needs attention:\" });\n+    await expect(attention).toBeVisible();\n+    await attention.getByRole(\"button\", { name: \"Knowledge candidates\", exact: true }).click();\n     await expect(page.getByRole(\"button\", { name: \"Check original result\", exact: true })).toBeEnabled();\n     await expect(page.getByRole(\"button\", { name: \"Retry same request\", exact: true })).toHaveCount(0);\n     const recovered = page.waitForResponse(r => new URL(r.url()).pathname.endsWith(`/operations/${calls[0]!.request_id}`));\n@@ -172,6 +179,7 @@ test(\"Web original-key recovery stays locked after ambiguity and recovers by GET\n     await expect(page.getByRole(\"button\", { name: \"Check original result\", exact: true })).toHaveCount(0);\n     const list = await f.handler.requestJSON<{ items: unknown[] }>(`${f.root}/knowledge-candidates`);\n     expect(list.items).toHaveLength(1);\n+    expect(postsAfterReload).toEqual([]);\n     await info.attach(\"recovery-evidence\", { contentType: \"application/json\", body: JSON.stringify({ candidate_id: calls[0]!.candidate_id, request_id: calls[0]!.request_id,\n       attempts: calls.length, exact_replay: true, recovery_method: \"GET\", created_candidates: list.items.length }, null, 2) });\n   } finally { await page.unroute(url, intercept); }\ndiff --git a/e2e/collaboration-memory-web.spec.ts b/e2e/collaboration-memory-web.spec.ts\nindex b76c04f8c..d006f9e29 100644\n--- a/e2e/collaboration-memory-web.spec.ts\n+++ b/e2e/collaboration-memory-web.spec.ts\n@@ -77,6 +77,8 @@ test(\"shared context keeps concurrent edits, restores versions, and permits hist\n     expect(history.items.map(item => item.version)).toEqual([\"4\", \"3\", \"2\", \"1\"]);\n     // The current external handler delivers through the UI before the creator\n     // accepts the exact result; shared-context writes alone are not delivery.\n+    await participant.keyboard.press(\"Escape\");\n+    await expect(participant.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeHidden();\n     await participant.getByRole(\"button\", { name: \"Submit result\", exact: true }).click();\n     const delivery = participant.getByRole(\"form\", { name: \"Submit result\", exact: true });\n     const resultText = \"The shared context has been reviewed and restored.\";\n@@ -95,6 +97,9 @@ test(\"shared context keeps concurrent edits, restores versions, and permits hist\n     expect(await submissionResponse.json()).toMatchObject({ code: \"acceptance_submitted\", delivery_confirmation: { submission_id: submission.id, attachment_ids: [] } });\n     await expect(delivery).toHaveCount(0);\n     await page.reload();\n+    await expect(page.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeVisible();\n+    await page.keyboard.press(\"Escape\");\n+    await expect(page.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeHidden();\n     await page.getByRole(\"button\", { name: \"Accept and complete\", exact: true }).click();\n     const completion = page.getByRole(\"form\", { name: \"Accept and complete\", exact: true });\n     await expect(completion.locator(`[data-submission-id=\"${submission.id}\"]`)).toHaveCount(1);\n@@ -108,8 +113,14 @@ test(\"shared context keeps concurrent edits, restores versions, and permits hist\n     await expect(completion).toHaveCount(0);\n     expect(await fixture.creator.client.requestJSON<CollaborationIssue>(fixture.root)).toMatchObject({ status_category: \"done\", handler: { user_id: fixture.creator.id },\n       delivery: { current: null, latest: { id: submission.id, decision: { kind: \"accepted\", submission_id: submission.id, actor_user_id: fixture.creator.id } } } });\n+    await expect(page.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeVisible();\n+    await page.keyboard.press(\"Escape\");\n+    await expect(page.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeHidden();\n     await revealCollaborationDisclosure(page, \"More actions\");\n     await expect(page.getByRole(\"button\", { name: \"Reopen issue\", exact: true }).or(page.getByRole(\"menuitem\", { name: \"Reopen issue\", exact: true }))).toBeVisible();\n+    await page.keyboard.press(\"Escape\");\n+    await expect(page.getByRole(\"menu\")).toHaveCount(0);\n+    await page.getByRole(\"group\", { name: \"Issue resources\", exact: true }).getByRole(\"button\", { name: \"Shared context\", exact: true }).click();\n     await expect(panel.getByRole(\"button\", { name: \"Edit shared context\", exact: true })).toHaveCount(0);\n     await expect(panel.getByRole(\"button\", { name: /^Restore v/ })).toHaveCount(0);\n     await expect(panel).toContainText(\"This issue is closed, so its shared context is read-only.\");\ndiff --git a/e2e/collaboration-records-web.spec.ts b/e2e/collaboration-records-web.spec.ts\nindex bc4adafaa..d2d8f22c8 100644\n--- a/e2e/collaboration-records-web.spec.ts\n+++ b/e2e/collaboration-records-web.spec.ts\n@@ -24,6 +24,8 @@ test(\"Web shares ordinary child references and retained run records through acco\n   const childLink = children.getByRole(\"link\", { name: `${fixture.child.identifier} ${fixture.child.title}`, exact: true });\n   await expect(childLink).toHaveAttribute(\"href\", `/${fixture.workspace.slug}/issues/${fixture.child.id}`);\n   await expect(page.getByRole(\"button\", { name: \"Edit source fields\", exact: true })).toHaveCount(0);\n+  await page.keyboard.press(\"Escape\");\n+  await expect(page.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n   await page.context().grantPermissions([\"clipboard-read\", \"clipboard-write\"]);\n   await page.bringToFront();\n   await page.getByRole(\"button\", { name: \"Copy link\", exact: true }).click();\n@@ -85,6 +87,8 @@ test(\"Web shares ordinary child references and retained run records through acco\n     await outside.reload();\n     await revealCollaborationDisclosure(outside, \"Sub-issues\");\n     await expect(outsideChildren.getByText(fixture.child.title, { exact: true })).toBeVisible();\n+    await outside.keyboard.press(\"Escape\");\n+    await expect(outside.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     await outside.getByRole(\"button\", { name: /Notifications/ }).click();\n     const notification = outside.getByRole(\"listitem\").filter({ has: outside.getByText(\"AI execution failed\", { exact: true }) });\n     await notification.getByRole(\"link\", { name: fixture.issue.title, exact: true }).click();\ndiff --git a/e2e/fixtures/collaboration-detail-journey.ts b/e2e/fixtures/collaboration-detail-journey.ts\nindex 90b0aa188..145ecdf6f 100644\n--- a/e2e/fixtures/collaboration-detail-journey.ts\n+++ b/e2e/fixtures/collaboration-detail-journey.ts\n@@ -636,6 +636,7 @@ export async function changeJourneySourceComment(session: DetailJourneySession,\n   const edited = CollaborationCommentReceiptSchema.parse(await editedResponse.json());\n   await expect(editor).toHaveCount(0);\n   await expect(row.getByRole(\"button\", { name: copy.editComment, exact: true })).toBeFocused();\n+  await expect(row.getByText(content, { exact: true })).toBeVisible();\n   await row.getByRole(\"button\", { name: copy.deleteComment, exact: true }).click();\n   const deletion = row.getByRole(\"form\", { name: copy.deleteComment, exact: true });\n   const deletedPending = session.page.waitForResponse((response) => new URL(response.url()).pathname === `${issuePath(id)}/comments/${commentId}` && response.request().method() === \"DELETE\");\ndiff --git a/e2e/fixtures/collaboration-disclosures.ts b/e2e/fixtures/collaboration-disclosures.ts\nindex 17702b6a7..ccb68ffb8 100644\n--- a/e2e/fixtures/collaboration-disclosures.ts\n+++ b/e2e/fixtures/collaboration-disclosures.ts\n@@ -15,7 +15,7 @@ export async function revealCollaborationDisclosure(page: Page, name: Collaborat\n   if (name !== \"AI execution\") {\n     const drawer = page.getByRole(\"dialog\").filter({ has: page.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) });\n     const controls = await drawer.isVisible() ? drawer.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) : page.getByRole(\"group\", { name: \"Issue resources\", exact: true });\n-    await controls.getByRole(\"button\", { name: new RegExp(`^${name}(?: \\d+)?$`) }).click();\n+    await controls.getByRole(\"button\", { name: new RegExp(`^${name}(?: \\\\d+)?$`) }).click();\n     await expect(drawer).toHaveAccessibleName(name);\n     return drawer;\n   }\ndiff --git a/e2e/fixtures/collaboration-knowledge.ts b/e2e/fixtures/collaboration-knowledge.ts\nindex 89c8ef92a..38c3499f6 100644\n--- a/e2e/fixtures/collaboration-knowledge.ts\n+++ b/e2e/fixtures/collaboration-knowledge.ts\n@@ -209,6 +209,11 @@ export async function openTarget(page: Page, f: KnowledgeFixture, kind: \"project\n     await window.evaluate(w => w.setContentSize(1380, 960));\n     await window.dispose();\n     await expect.poll(() => page.evaluate(() => innerWidth)).toBe(1380);\n+    const sourceDrawer = page.getByRole(\"dialog\", { name: \"Knowledge candidates\", exact: true });\n+    if (await sourceDrawer.isVisible()) {\n+      await page.keyboard.press(\"Escape\");\n+      await expect(sourceDrawer).toBeHidden();\n+    }\n     await selectDesktopWorkspace(page, f.workspace);\n     await page.getByRole(\"link\", { name: kind === \"project\" ? \"Projects\" : \"Settings\", exact: true }).and(page.locator('[data-sidebar=\"menu-button\"]')).click();\n     if (kind === \"project\") await page.getByText(f.project.title, { exact: true }).first().click();\n",
+    "source_equivalence": {
+      "actual_changed_files": [
+        "apps/web/next-env.d.ts",
+        "e2e/collaboration-account-desktop.spec.ts",
+        "e2e/collaboration-delivery-web.spec.ts",
+        "e2e/collaboration-knowledge.spec.ts",
+        "e2e/collaboration-memory-web.spec.ts",
+        "e2e/collaboration-records-web.spec.ts",
+        "e2e/fixtures/collaboration-detail-journey.ts",
+        "e2e/fixtures/collaboration-disclosures.ts",
+        "e2e/fixtures/collaboration-knowledge.ts"
+      ],
+      "only_eight_test_files_plus_exact_generated_next_import": true,
+      "untracked_application_sources": [],
+      "production_changes": false
+    },
+    "contract_review": {
+      "account_records": "All three obstructing Sub-issues→background transitions now close exact drawer; sourcePopup reopens it before the later child click. Clipboard/history/permissions assertions retained.",
+      "delivery": "Close Attachments only for main comment draft; reopen for real preview and keep revoke/private-content assertions.",
+      "knowledge_recovery": "Uses actual visible R4 Needs attention CTA,not generic helper; adds passive observer and zeroPOST assertion afterreload; originalidentity/GET/lockedform/onecandidate retained.",
+      "knowledge_native": "Closes actual source Knowledge candidates drawer before real scope-navigation; keeps directtargetreview route.",
+      "memory": "Exact modal closes beforeSubmit/Accept/Moreactions and ordinarytoolbar reopen before read-only/history/purge; all business assertions retained.",
+      "detail": "Wait for rendered exact editedcomment beforeDelete; originalDELETE200/receipt/tombstone/focus and scroll620 equality unchanged.",
+      "helper": "Single escaping byte already independently approved; anchored countmatcher maintained."
+    },
+    "actual_runs": [
+      {
+        "run": "drawer-readiness-recheck-1",
+        "result": {
+          "path": ".omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json",
+          "sha256": "d404817d273ce105c86c9875aecbc6c6adefd618f406eae05d0cc228645ffdf4",
+          "bytes": 94258
+        },
+        "stats": {
+          "startTime": "2026-11-07T05:29:35.472Z",
+          "duration": 74899.02100000001,
+          "expected": 5,
+          "skipped": 0,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "cases": [
+          {
+            "file": "collaboration-account-desktop.spec.ts",
+            "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+            "status": "passed",
+            "retry": 0
+          },
+          {
+            "file": "collaboration-delivery-web.spec.ts",
+            "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+            "status": "passed",
+            "retry": 0
+          },
+          {
+            "file": "collaboration-knowledge.spec.ts",
+            "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+            "status": "passed",
+            "retry": 0
+          },
+          {
+            "file": "collaboration-knowledge.spec.ts",
+            "title": "Desktop native source review and independent project/workspace contributions",
+            "status": "passed",
+            "retry": 0
+          },
+          {
+            "file": "collaboration-memory-web.spec.ts",
+            "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+            "status": "failed",
+            "retry": 0
+          },
+          {
+            "file": "collaboration-records-web.spec.ts",
+            "title": "Web shares ordinary child references and retained run records through account notification links",
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "run": "final-memory-knowledge-recheck",
+        "result": {
+          "path": ".omx/private/branch-e2e-20261107/browser/runs/final-memory-knowledge-recheck/results.json",
+          "sha256": "8b1b465188bdc83bd814d5222a9886f10acb039c0cd5ef7eba7c3152dcf7180a",
+          "bytes": 6012
+        },
+        "stats": {
+          "startTime": "2026-11-07T05:32:40.298Z",
+          "duration": 13402.212000000001,
+          "expected": 2,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "cases": [
+          {
+            "file": "collaboration-knowledge.spec.ts",
+            "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+            "status": "passed",
+            "retry": 0
+          },
+          {
+            "file": "collaboration-memory-web.spec.ts",
+            "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "run": "detail-diagnostic-1",
+        "result": {
+          "path": ".omx/private/branch-e2e-20261107/browser/runs/detail-diagnostic-1/results.json",
+          "sha256": "130536b7689437db6f4b0002fd37bd608ef9e046ff519fecffeae7676ecb3388",
+          "bytes": 52060
+        },
+        "stats": {
+          "startTime": "2026-11-07T05:31:05.671Z",
+          "duration": 47791.554,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "cases": [
+          {
+            "file": "detail.spec.ts",
+            "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+            "status": "passed",
+            "retry": 0
+          },
+          {
+            "file": "detail.spec.ts",
+            "title": "Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+            "status": "failed",
+            "retry": 0
+          }
+        ]
+      }
+    ],
+    "dynamic_conclusion": "Six original failing drawer/knowledge/memory business cases each now have a complete PASS with no retries across two retained reruns. DetailWeb diagnostic completes;DetailDesktop passes edit/delete then stillfails exactscroll620→476. These are separate runs,not a single all-green suite.",
+    "knowledge_recovery_trace": {
+      "trace": {
+        "path": ".omx/private/branch-e2e-20261107/browser/runs/final-memory-knowledge-recheck/artifacts/collaboration-knowledge-We-814ad-ecovers-by-GET-after-reload-chromium/trace.zip",
+        "sha256": "f5e0bff68072a796e1181c3839f60065bd7e32fc10361589c352d3ef40b72869",
+        "bytes": 1976260
+      },
+      "reload_wall_time": 1794029564187,
+      "original_request_id": "4cca6324-3240-4401-9fe4-f1b33d6596c4",
+      "original_candidate_id": "baebb677-75bb-420e-bbbe-9b42a6108cf9",
+      "recovery_receipt": {
+        "request_id": "4cca6324-3240-4401-9fe4-f1b33d6596c4",
+        "candidate_id": "baebb677-75bb-420e-bbbe-9b42a6108cf9",
+        "code": "knowledge_proposed",
+        "action": "propose"
+      },
+      "postreload_network": [
+        {
+          "method": "GET",
+          "path": "/api/collaboration/issues/01a1b47e-ab09-7645-aac1-11a237ddeb63/knowledge-candidates",
+          "status": -1
+        },
+        {
+          "method": "GET",
+          "path": "/api/collaboration/issues/01a1b47e-ab09-7645-aac1-11a237ddeb63/knowledge-candidates",
+          "status": -1
+        },
+        {
+          "method": "GET",
+          "path": "/api/collaboration/issues/01a1b47e-ab09-7645-aac1-11a237ddeb63/knowledge-candidates",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/api/collaboration/knowledge-candidates/baebb677-75bb-420e-bbbe-9b42a6108cf9/operations/4cca6324-3240-4401-9fe4-f1b33d6596c4",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/api/collaboration/issues/01a1b47e-ab09-7645-aac1-11a237ddeb63/knowledge-candidates",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/api/collaboration/knowledge-candidates/baebb677-75bb-420e-bbbe-9b42a6108cf9",
+          "status": 200
+        }
+      ],
+      "postreload_POST_count": 0,
+      "exact_original_identity_matches": true
+    },
+    "scroll_diagnostic": {
+      "result": {
+        "path": ".omx/private/branch-e2e-20261107/browser/runs/detail-diagnostic-1/results.json",
+        "sha256": "130536b7689437db6f4b0002fd37bd608ef9e046ff519fecffeae7676ecb3388",
+        "bytes": 52060
+      },
+      "raw_log": {
+        "path": ".omx/private/branch-e2e-20261107/browser/runs/detail-diagnostic-1/stdout.txt",
+        "sha256": "8c83246802392a0e5abb5a6abcb5f3ca388b708c812917adaea38f8de07bc395",
+        "bytes": 23021
+      },
+      "samples": {
+        "path": ".omx/private/branch-e2e-20261107/browser/scroll-diagnostic.json",
+        "sha256": "a73a196a4a81b2a3a6297033cca1a2740662dabd5df2f4751264ebaef5efa20f",
+        "bytes": 20627
+      },
+      "summaries": [
+        {
+          "platform": "web",
+          "sample_count": 3,
+          "saved": 620,
+          "last": 620,
+          "min_recorded_max_scroll": 2955,
+          "offset_sequence": [
+            620,
+            660,
+            620
+          ],
+          "unique_event_states": [
+            {
+              "time": 2656.0999999940395,
+              "top": 620,
+              "height": 3939,
+              "client": 784
+            },
+            {
+              "time": 2968.2999999821186,
+              "top": 660,
+              "height": 3995,
+              "client": 784
+            }
+          ],
+          "description_document_coordinate_before": 465,
+          "description_document_coordinate_after": 609
+        },
+        {
+          "platform": "desktop",
+          "sample_count": 9,
+          "saved": 620,
+          "last": 476,
+          "min_recorded_max_scroll": 2333,
+          "offset_sequence": [
+            620,
+            660,
+            660,
+            660,
+            476,
+            476,
+            476,
+            476,
+            476
+          ],
+          "unique_event_states": [
+            {
+              "time": 3179.0999999940395,
+              "top": 3151,
+              "height": 3939,
+              "client": 788
+            },
+            {
+              "time": 3212.5,
+              "top": 620,
+              "height": 3939,
+              "client": 788
+            },
+            {
+              "time": 3487.800000011921,
+              "top": 620,
+              "height": 3955,
+              "client": 788
+            },
+            {
+              "time": 3512.0999999940395,
+              "top": 660,
+              "height": 3995,
+              "client": 788
+            },
+            {
+              "time": 3700.0999999940395,
+              "top": 620,
+              "height": 3385,
+              "client": 788
+            },
+            {
+              "time": 3712.300000011921,
+              "top": 660,
+              "height": 3425,
+              "client": 788
+            },
+            {
+              "time": 4028,
+              "top": 620,
+              "height": 3265,
+              "client": 788
+            },
+            {
+              "time": 4095.5999999940395,
+              "top": 476,
+              "height": 3121,
+              "client": 788
+            }
+          ],
+          "description_document_coordinate_before": 513,
+          "description_document_coordinate_after": 513
+        }
+      ],
+      "inference": "Desktop visibly restores620 beforelater movement;maxscroll remainswellabove620. Thisrulesout simplemaxscrollclamp andfailuretocapture620 ascompleteexplanationforthisdiagnostic. Movementcoincideswithcontentheightchange;exactresponsibleelementnotisolated.",
+      "remaining_status": "Current desktop restoration failure retained;noassertionrelaxation orproductrepairapproved."
+    },
+    "remaining_acceptance_blockers": [
+      "Diagnostic route bucketing failure stillopen.",
+      "Desktop exact scroll restoration620→476 stillopen.",
+      "Other current suites/platform/provider gates retain their explicitstatuses."
+    ],
+    "verification": {
+      "product_edits_by_reviewer": 0,
+      "new_tests_by_reviewer": 0,
+      "database_or_runtime_requests_by_reviewer": 0,
+      "raw_results_and_trace_independently_read": true,
+      "lint_typecheck": "No rerun by reviewer;test-only insertions inspected andactualselectedtests transpile/executed underowner."
+    },
+    "superseded_for_integration_by": "final_patch_addendum_14"
+  },
+  "final_patch_addendum_14": {
+    "reviewed_at": "2026-11-07T05:48:44.430234+00:00",
+    "verdict": "APPROVED_TEST_ONLY_PATCH_FOR_INTEGRATION",
+    "blocking_patch_findings": [],
+    "file_count": 14,
+    "files": {
+      "e2e/collaboration-account-desktop.spec.ts": {
+        "before_sha256": "0e20376018ab0225ea81a637ffc67fdafa4dd73f84a71dad25321e5524b4c328",
+        "after_sha256": "5fb058ef8cf9af36febdd00c23b78dbbf573a78bbb2ce283b0921ccb95c23762"
+      },
+      "e2e/collaboration-records-web.spec.ts": {
+        "before_sha256": "5a3e3dc51da3a45d20b0e5b6befe01a329464fc02fdb57ff9f73f221f797a6a5",
+        "after_sha256": "66aae27b72e98aae7022144afc142ddb18e4910533e2982bba8b4a2bd8715222"
+      },
+      "e2e/collaboration-delivery-web.spec.ts": {
+        "before_sha256": "11be1b7e11c08cd5212ffc0c1d345f5b28b50ed0b56325f1f0d36e916b63ca32",
+        "after_sha256": "faf267594e1238161bd8ff70576eeb1c31f230e6486a640de6c83baaab4d2ca0"
+      },
+      "e2e/fixtures/collaboration-detail-journey.ts": {
+        "before_sha256": "044c19dbec4241b9d9a816453353e356ebdd6ab545f3472402904b88bfed2898",
+        "after_sha256": "0c0ef62cb1bdee7cb043727b80f95977ccddd584aadfbb7be6ad3e99139ab67e"
+      },
+      "e2e/collaboration-knowledge.spec.ts": {
+        "before_sha256": "5da7bfe9e0d7b3755e079b01eda7f6a71fcf0a8ee2f6559b57c75589937be4cb",
+        "after_sha256": "78fb8c663e5b7ff1d5dc8f5e8989a724dd7d9ca04378ff29b7237ab8cdbfbeb7"
+      },
+      "e2e/fixtures/collaboration-knowledge.ts": {
+        "before_sha256": "7a3f68f8a7213dbc40de3e7a8bf02222fb39d27411a0244b8ae2ea6ea89b1960",
+        "after_sha256": "0c22f72ef4379203c43437991db91df94b8110f38de2a5f2ebed9f6bff0ca3fa"
+      },
+      "e2e/collaboration-memory-web.spec.ts": {
+        "before_sha256": "c02c1cfce0ad1a903a1f61795828692be96788dae805c04cc67d6a16ec0622bd",
+        "after_sha256": "e428641ee6299d1f5310145a26de81f1b8b11a8b0dbf9b2ef386ef5e3d15136f"
+      },
+      "e2e/fixtures/collaboration-disclosures.ts": {
+        "before_sha256": "1774801a6860018c39c8c7204c67c16f57ca0dbf330dbb3c7defdbd9297665a7",
+        "after_sha256": "d08b379a6ed288829f5b16a49c37533ec580a96db50fba08e2358b0ca7b403bb"
+      },
+      "e2e/fixtures/collaboration-control-gaps.ts": {
+        "before_sha256": "adccf52d7afecdc8540a0ecd8fbcbd295dd4d9762940944775d26f11483bd25d",
+        "after_sha256": "ebce66bbc362e41507a84d477a3589379bb0a002b0a7845740c4f604a75b14c9"
+      },
+      "e2e/fixtures/collaboration-mention-journeys.ts": {
+        "before_sha256": "1fe5fef06293779712f655fd9fb36aaca8027f75d8ed8bff40ee85b556781bdc",
+        "after_sha256": "d5308e4d846f8014dea6fdb1c6a0a4b61ecfd77742759d146232accd3c75eb47"
+      },
+      "e2e/fixtures/collaboration-retained-attachments.ts": {
+        "before_sha256": "5ee681aef743ed0d900785b198287ef83b61f0ec8225cf133e1847f4c6294013",
+        "after_sha256": "5ef7bae09da68d4340b2d2e42484afbf61f84937554af5f0ed39509e280f9bf2"
+      },
+      "e2e/fixtures/collaboration-resource-offers.ts": {
+        "before_sha256": "73f6005d8830877bec3b7c7710417ac6cd39fd6eb70dd17d18d3129136add4c4",
+        "after_sha256": "ad329102566e08d5a85c4bcb63138f8a660318432bc659c8d9f05cabb88ddb4a"
+      },
+      "e2e/collaboration-workbench-web.spec.ts": {
+        "before_sha256": "935b2231594760c76109bf4ebff1a0bb299761ffe2ec74f145c178835ac19e73",
+        "after_sha256": "7f1e418eb5aa00e1ed94600c2a1ac457ecdef41bd4fe1069f657f7ed628186b4"
+      },
+      "e2e/collaboration-leave-web.spec.ts": {
+        "before_sha256": "b9598adb68f7f727c6d456f3bc529eccfb5b1b3c95912fbe32b01ef0d7b8cbc9",
+        "after_sha256": "1d7c2de7535ccec42ad017db874139615e801e83fb54996325c9f78628de1dc5"
+      }
+    },
+    "patch_sha256": "0e3b05048a4db2f552a504cff6ee5a5fa26356e5073ffe1edf84e6ce849a2001",
+    "reviewed_patch_text": "diff --git a/e2e/collaboration-account-desktop.spec.ts b/e2e/collaboration-account-desktop.spec.ts\nindex c1b19ef94..1a96bab5e 100644\n--- a/e2e/collaboration-account-desktop.spec.ts\n+++ b/e2e/collaboration-account-desktop.spec.ts\n@@ -425,6 +425,8 @@ test(\"Desktop child links, recorded pages and result notifications survive popou\n     await deepLink(app, recordedAccountPath(records));\n     await revealCollaborationDisclosure(source.page, \"Sub-issues\");\n     await expect(childLink).toBeVisible();\n+    await source.page.keyboard.press(\"Escape\");\n+    await expect(source.page.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     const copied = await copyNativeAccountLink(app, source.page, recordedAccountPath(records), testInfo, \"source-account\");\n     expect(new URL(copied).pathname + new URL(copied).search).toBe(recordedAccountPath(records));\n     const sourcePopupReady = app.waitForEvent(\"window\");\n@@ -443,8 +445,11 @@ test(\"Desktop child links, recorded pages and result notifications survive popou\n     expect(copiedRun.pathname + copiedRun.search + copiedRun.hash).toBe(recordedAccountPath(records, true));\n     await revealCollaborationDisclosure(sourcePopup, \"Sub-issues\");\n     await expect(sourcePopup.getByRole(\"region\", { name: \"Sub-issues\", exact: true }).getByRole(\"link\", { name: `${records.child.identifier} ${records.child.title}`, exact: true })).toBeVisible();\n+    await sourcePopup.keyboard.press(\"Escape\");\n+    await expect(sourcePopup.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     await showRecordedUsage(sourcePopup, records.runId);\n     await nativeScreenshot(app, sourcePopup, testInfo.outputPath(\"desktop-record-source-popout.png\"));\n+    await revealCollaborationDisclosure(sourcePopup, \"Sub-issues\");\n     await sourcePopup.getByRole(\"region\", { name: \"Sub-issues\", exact: true }).getByRole(\"link\", { name: `${records.child.identifier} ${records.child.title}`, exact: true }).click();\n     await expect(sourcePopup.getByRole(\"button\", { name: \"Issue actions\", exact: true })).toBeVisible();\n     await expect(sourcePopup.getByText(records.child.title, { exact: true }).first()).toBeVisible();\n@@ -460,6 +465,8 @@ test(\"Desktop child links, recorded pages and result notifications survive popou\n     const outsideChildren = viewer.page.getByRole(\"region\", { name: \"Sub-issues\", exact: true });\n     await expect(outsideChildren.getByText(records.child.title, { exact: true })).toBeVisible();\n     await expect(outsideChildren.getByRole(\"link\")).toHaveCount(0);\n+    await viewer.page.keyboard.press(\"Escape\");\n+    await expect(viewer.page.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     await viewer.page.getByRole(\"button\", { name: /Notifications/ }).click();\n     const notification = viewer.page.getByRole(\"listitem\").filter({ has: viewer.page.getByText(\"AI execution failed\", { exact: true }) });\n     await notification.getByRole(\"link\", { name: records.issue.title, exact: true }).click();\ndiff --git a/e2e/collaboration-delivery-web.spec.ts b/e2e/collaboration-delivery-web.spec.ts\nindex 46dee5fec..3b04dd59c 100644\n--- a/e2e/collaboration-delivery-web.spec.ts\n+++ b/e2e/collaboration-delivery-web.spec.ts\n@@ -166,7 +166,10 @@ test(\"Web creates one private issue after lost upload/create responses and revok\n     await source.requestJSON(`/api/collaboration/issues/${createdId}/comments/${commentReceipt.comment_id}`, { method: \"PATCH\", headers: { \"Idempotency-Key\": randomUUID() },\n       body: { content: \"The comment no longer displays its file.\", expected_comment_revision: commentReceipt.comment_revision, attachment_ids: [] } });\n     expect(await viewer.requestJSON(`/api/collaboration/issues/${createdId}/attachments/${imageId}`)).toMatchObject({ id: imageId, issue_id: createdId });\n+    await recipientPage.keyboard.press(\"Escape\");\n+    await expect(recipientPage.getByRole(\"dialog\", { name: \"Attachments\", exact: true })).toBeHidden();\n     await recipientPage.getByRole(\"textbox\", { name: \"Add comment\", exact: true }).fill(\"Viewer unsent private draft\");\n+    await revealCollaborationDisclosure(recipientPage, \"Attachments\");\n     await recipientAttachments.getByRole(\"button\", { name: \"Preview comment-preview.png\", exact: true }).click();\n     await expect(recipientPage.getByRole(\"img\", { name: \"comment-preview.png\", exact: true })).toBeVisible();\n     await expect.poll(() => recipientPage.getByRole(\"img\", { name: \"comment-preview.png\", exact: true }).evaluate((image) => (image as HTMLImageElement).naturalWidth)).toBe(1);\ndiff --git a/e2e/collaboration-knowledge.spec.ts b/e2e/collaboration-knowledge.spec.ts\nindex 0a3c32e67..feedba473 100644\n--- a/e2e/collaboration-knowledge.spec.ts\n+++ b/e2e/collaboration-knowledge.spec.ts\n@@ -162,7 +162,14 @@ test(\"Web original-key recovery stays locked after ambiguity and recovers by GET\n     expect(calls[1]).toEqual(calls[0]);\n     await expect(page.getByLabel(\"Summary\", { exact: true })).toBeDisabled();\n     await page.unroute(url, intercept);\n+    const postsAfterReload: string[] = [];\n+    page.on(\"request\", request => {\n+      if (request.method() === \"POST\" && new URL(request.url()).pathname === `${f.root}/knowledge-candidates`) postsAfterReload.push(request.url());\n+    });\n     await page.reload();\n+    const attention = page.getByRole(\"status\").filter({ hasText: \"Needs attention:\" });\n+    await expect(attention).toBeVisible();\n+    await attention.getByRole(\"button\", { name: \"Knowledge candidates\", exact: true }).click();\n     await expect(page.getByRole(\"button\", { name: \"Check original result\", exact: true })).toBeEnabled();\n     await expect(page.getByRole(\"button\", { name: \"Retry same request\", exact: true })).toHaveCount(0);\n     const recovered = page.waitForResponse(r => new URL(r.url()).pathname.endsWith(`/operations/${calls[0]!.request_id}`));\n@@ -172,6 +179,7 @@ test(\"Web original-key recovery stays locked after ambiguity and recovers by GET\n     await expect(page.getByRole(\"button\", { name: \"Check original result\", exact: true })).toHaveCount(0);\n     const list = await f.handler.requestJSON<{ items: unknown[] }>(`${f.root}/knowledge-candidates`);\n     expect(list.items).toHaveLength(1);\n+    expect(postsAfterReload).toEqual([]);\n     await info.attach(\"recovery-evidence\", { contentType: \"application/json\", body: JSON.stringify({ candidate_id: calls[0]!.candidate_id, request_id: calls[0]!.request_id,\n       attempts: calls.length, exact_replay: true, recovery_method: \"GET\", created_candidates: list.items.length }, null, 2) });\n   } finally { await page.unroute(url, intercept); }\ndiff --git a/e2e/collaboration-leave-web.spec.ts b/e2e/collaboration-leave-web.spec.ts\nindex b1cfb6b4b..8dfbaed3f 100644\n--- a/e2e/collaboration-leave-web.spec.ts\n+++ b/e2e/collaboration-leave-web.spec.ts\n@@ -1,5 +1,5 @@\n import { test, expect } from \"@playwright/test\";\n-import { revealCollaborationDisclosure } from \"./fixtures/collaboration-disclosures\";\n+import { revealCollaborationDisclosure, revealCollaborationMentions } from \"./fixtures/collaboration-disclosures\";\n import type { CollaborationParticipants, CollaborationResources, CollaborationWorkbench } from \"@multica/core/collaboration\";\n import { clickControl, controlEnvironmentReady, panelFor, seedCollaborationControlJourney, targetRow } from \"./fixtures/collaboration-control-journey\";\n import {\n@@ -45,8 +45,12 @@ test(\"Web Leave issue refuses creator and handler; an owner's departure revokes\n     const handler = await openGapSession(browser, fixture, \"handler\", webUrl);\n     sessions.push(handler);\n     for (const session of [creator, handler]) {\n-      if (!await session.page.getByRole(\"button\", { name: \"Transfer\", exact: true }).isVisible()) await revealCollaborationDisclosure(session.page, \"More actions\");\n-      await expect(session.page.getByRole(\"button\", { name: \"Transfer\", exact: true })).toBeVisible();\n+      if (!await session.page.getByRole(\"button\", { name: \"Transfer\", exact: true }).or(session.page.getByRole(\"menuitem\", { name: \"Transfer\", exact: true })).isVisible()) await revealCollaborationDisclosure(session.page, \"More actions\");\n+      await expect(session.page.getByRole(\"button\", { name: \"Transfer\", exact: true }).or(session.page.getByRole(\"menuitem\", { name: \"Transfer\", exact: true }))).toBeVisible();\n+      if (await session.page.getByRole(\"button\", { name: \"More actions\", exact: true }).count() > 0) {\n+        await revealCollaborationDisclosure(session.page, \"More actions\");\n+        await expect(session.page.getByRole(\"menu\")).toBeVisible();\n+      }\n       await expect(session.page.getByRole(\"button\", { name: \"Leave issue\", exact: true }).or(session.page.getByRole(\"menuitem\", { name: \"Leave issue\", exact: true }))).toHaveCount(0);\n     }\n     if (!await owner.page.getByRole(\"button\", { name: \"Leave issue\", exact: true }).or(owner.page.getByRole(\"menuitem\", { name: \"Leave issue\", exact: true })).isVisible()) await revealCollaborationDisclosure(owner.page, \"More actions\");\n@@ -123,6 +127,7 @@ test(\"Web Leave issue refuses creator and handler; an owner's departure revokes\n     for (const target of fixture.targets) await expect(targetRow(creator.page, target).getByText(\"Resource authorization required\", { exact: true })).toBeVisible();\n     await expect(creator.page.locator(`[id=\"run-${pending.runId}\"]`)).toContainText(\"Termination unconfirmed\");\n     const composer = creator.page.getByRole(\"form\", { name: \"Comments\", exact: true });\n+    await revealCollaborationMentions(composer);\n     await expect(composer.getByRole(\"group\", { name: \"People\", exact: true })).toBeVisible();\n     await expect(composer.getByRole(\"group\", { name: \"AI targets\", exact: true })).toHaveCount(0);\n     const activity = await fixture.creator.requestJSON<{ items: { kind: string; actor: { user_id: string } | null }[] }>(`${root}/activity?limit=100`);\ndiff --git a/e2e/collaboration-memory-web.spec.ts b/e2e/collaboration-memory-web.spec.ts\nindex b76c04f8c..31698e37b 100644\n--- a/e2e/collaboration-memory-web.spec.ts\n+++ b/e2e/collaboration-memory-web.spec.ts\n@@ -77,6 +77,8 @@ test(\"shared context keeps concurrent edits, restores versions, and permits hist\n     expect(history.items.map(item => item.version)).toEqual([\"4\", \"3\", \"2\", \"1\"]);\n     // The current external handler delivers through the UI before the creator\n     // accepts the exact result; shared-context writes alone are not delivery.\n+    await participant.keyboard.press(\"Escape\");\n+    await expect(participant.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeHidden();\n     await participant.getByRole(\"button\", { name: \"Submit result\", exact: true }).click();\n     const delivery = participant.getByRole(\"form\", { name: \"Submit result\", exact: true });\n     const resultText = \"The shared context has been reviewed and restored.\";\n@@ -95,6 +97,9 @@ test(\"shared context keeps concurrent edits, restores versions, and permits hist\n     expect(await submissionResponse.json()).toMatchObject({ code: \"acceptance_submitted\", delivery_confirmation: { submission_id: submission.id, attachment_ids: [] } });\n     await expect(delivery).toHaveCount(0);\n     await page.reload();\n+    await expect(page.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeVisible();\n+    await page.keyboard.press(\"Escape\");\n+    await expect(page.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeHidden();\n     await page.getByRole(\"button\", { name: \"Accept and complete\", exact: true }).click();\n     const completion = page.getByRole(\"form\", { name: \"Accept and complete\", exact: true });\n     await expect(completion.locator(`[data-submission-id=\"${submission.id}\"]`)).toHaveCount(1);\n@@ -108,8 +113,15 @@ test(\"shared context keeps concurrent edits, restores versions, and permits hist\n     await expect(completion).toHaveCount(0);\n     expect(await fixture.creator.client.requestJSON<CollaborationIssue>(fixture.root)).toMatchObject({ status_category: \"done\", handler: { user_id: fixture.creator.id },\n       delivery: { current: null, latest: { id: submission.id, decision: { kind: \"accepted\", submission_id: submission.id, actor_user_id: fixture.creator.id } } } });\n+    await expect(page.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeVisible();\n+    await page.keyboard.press(\"Escape\");\n+    await expect(page.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeHidden();\n     await revealCollaborationDisclosure(page, \"More actions\");\n     await expect(page.getByRole(\"button\", { name: \"Reopen issue\", exact: true }).or(page.getByRole(\"menuitem\", { name: \"Reopen issue\", exact: true }))).toBeVisible();\n+    await page.keyboard.press(\"Escape\");\n+    await expect(page.getByRole(\"menu\")).toHaveCount(0);\n+    await page.getByRole(\"group\", { name: \"Issue resources\", exact: true }).getByRole(\"button\", { name: \"Shared context\", exact: true }).click();\n+    await expect(panel).toBeVisible();\n     await expect(panel.getByRole(\"button\", { name: \"Edit shared context\", exact: true })).toHaveCount(0);\n     await expect(panel.getByRole(\"button\", { name: /^Restore v/ })).toHaveCount(0);\n     await expect(panel).toContainText(\"This issue is closed, so its shared context is read-only.\");\ndiff --git a/e2e/collaboration-records-web.spec.ts b/e2e/collaboration-records-web.spec.ts\nindex bc4adafaa..25092c67c 100644\n--- a/e2e/collaboration-records-web.spec.ts\n+++ b/e2e/collaboration-records-web.spec.ts\n@@ -23,6 +23,8 @@ test(\"Web shares ordinary child references and retained run records through acco\n   const children = page.getByRole(\"region\", { name: \"Sub-issues\", exact: true });\n   const childLink = children.getByRole(\"link\", { name: `${fixture.child.identifier} ${fixture.child.title}`, exact: true });\n   await expect(childLink).toHaveAttribute(\"href\", `/${fixture.workspace.slug}/issues/${fixture.child.id}`);\n+  await page.keyboard.press(\"Escape\");\n+  await expect(page.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n   await expect(page.getByRole(\"button\", { name: \"Edit source fields\", exact: true })).toHaveCount(0);\n   await page.context().grantPermissions([\"clipboard-read\", \"clipboard-write\"]);\n   await page.bringToFront();\n@@ -85,6 +87,8 @@ test(\"Web shares ordinary child references and retained run records through acco\n     await outside.reload();\n     await revealCollaborationDisclosure(outside, \"Sub-issues\");\n     await expect(outsideChildren.getByText(fixture.child.title, { exact: true })).toBeVisible();\n+    await outside.keyboard.press(\"Escape\");\n+    await expect(outside.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     await outside.getByRole(\"button\", { name: /Notifications/ }).click();\n     const notification = outside.getByRole(\"listitem\").filter({ has: outside.getByText(\"AI execution failed\", { exact: true }) });\n     await notification.getByRole(\"link\", { name: fixture.issue.title, exact: true }).click();\ndiff --git a/e2e/collaboration-workbench-web.spec.ts b/e2e/collaboration-workbench-web.spec.ts\nindex d106c5de3..72075ca5a 100644\n--- a/e2e/collaboration-workbench-web.spec.ts\n+++ b/e2e/collaboration-workbench-web.spec.ts\n@@ -3,7 +3,7 @@ import pg from \"pg\";\n import { test, expect, type Page, type Request } from \"@playwright/test\";\n import { TestApiClient } from \"./fixtures\";\n import { selectHandoffRecipient } from \"./fixtures/collaboration-offline-handoff\";\n-import { revealCollaborationDisclosure } from \"./fixtures/collaboration-disclosures\";\n+import { revealCollaborationDisclosure, revealCollaborationMentions } from \"./fixtures/collaboration-disclosures\";\n import { leaveThroughUI } from \"./fixtures/collaboration-control-gaps\";\n import type { CollaborationIssue } from \"@multica/core/collaboration\";\n \n@@ -121,6 +121,7 @@ test(\"Web workbench keeps account scope through comments, uncertain cancellation\n   expect(cancelPosts).toBe(1);\n \n   await page.getByLabel(\"Add comment\", { exact: true }).fill(\"Browser comment \");\n+  await revealCollaborationMentions(page.getByRole(\"form\", { name: \"Comments\", exact: true }));\n   await page.getByRole(\"button\", { name: \"Browser source owner\", exact: true }).click();\n   await page.getByRole(\"button\", { name: \"Preview delivery\" }).click();\n   await expect(page.getByText(\"1 notification recipients\")).toBeVisible();\ndiff --git a/e2e/fixtures/collaboration-control-gaps.ts b/e2e/fixtures/collaboration-control-gaps.ts\nindex 247cfc42c..3c1bc34ce 100644\n--- a/e2e/fixtures/collaboration-control-gaps.ts\n+++ b/e2e/fixtures/collaboration-control-gaps.ts\n@@ -1,5 +1,5 @@\n import { randomUUID } from \"node:crypto\";\n-import { revealCollaborationDisclosure } from \"./collaboration-disclosures\";\n+import { revealCollaborationDisclosure, revealCollaborationMentions } from \"./collaboration-disclosures\";\n import { expect, type Browser, type Page } from \"@playwright/test\";\n import type {\n   CollaborationCommandHistory, CollaborationCommentReceipt, CollaborationIssue, CollaborationMentionTargets,\n@@ -94,6 +94,7 @@ export async function commentThroughUI(page: Page, issueId: string, marker: stri\n   const field = form.getByLabel(\"Add comment\", { exact: true });\n   await field.fill(`${prefix}${marker}`);\n   await expect(field).toHaveValue(`${prefix}${marker}`);\n+  if (targetNames.length > 0) await revealCollaborationMentions(form);\n   for (const name of targetNames) await form.getByRole(\"group\", { name: \"AI targets\", exact: true }).getByRole(\"button\", { name, exact: true }).click();\n   const content = await field.inputValue();\n   const previewPending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/comments/trigger-preview`\ndiff --git a/e2e/fixtures/collaboration-detail-journey.ts b/e2e/fixtures/collaboration-detail-journey.ts\nindex 90b0aa188..145ecdf6f 100644\n--- a/e2e/fixtures/collaboration-detail-journey.ts\n+++ b/e2e/fixtures/collaboration-detail-journey.ts\n@@ -636,6 +636,7 @@ export async function changeJourneySourceComment(session: DetailJourneySession,\n   const edited = CollaborationCommentReceiptSchema.parse(await editedResponse.json());\n   await expect(editor).toHaveCount(0);\n   await expect(row.getByRole(\"button\", { name: copy.editComment, exact: true })).toBeFocused();\n+  await expect(row.getByText(content, { exact: true })).toBeVisible();\n   await row.getByRole(\"button\", { name: copy.deleteComment, exact: true }).click();\n   const deletion = row.getByRole(\"form\", { name: copy.deleteComment, exact: true });\n   const deletedPending = session.page.waitForResponse((response) => new URL(response.url()).pathname === `${issuePath(id)}/comments/${commentId}` && response.request().method() === \"DELETE\");\ndiff --git a/e2e/fixtures/collaboration-disclosures.ts b/e2e/fixtures/collaboration-disclosures.ts\nindex 17702b6a7..c695fc146 100644\n--- a/e2e/fixtures/collaboration-disclosures.ts\n+++ b/e2e/fixtures/collaboration-disclosures.ts\n@@ -1,4 +1,4 @@\n-import { expect, type Page } from \"@playwright/test\";\n+import { expect, type Locator, type Page } from \"@playwright/test\";\n \n type CollaborationDisclosure = \"Attachments\" | \"Sub-issues\" | \"Knowledge candidates\" | \"AI execution\" | \"Activity\" | \"More actions\";\n \n@@ -15,7 +15,7 @@ export async function revealCollaborationDisclosure(page: Page, name: Collaborat\n   if (name !== \"AI execution\") {\n     const drawer = page.getByRole(\"dialog\").filter({ has: page.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) });\n     const controls = await drawer.isVisible() ? drawer.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) : page.getByRole(\"group\", { name: \"Issue resources\", exact: true });\n-    await controls.getByRole(\"button\", { name: new RegExp(`^${name}(?: \\d+)?$`) }).click();\n+    await controls.getByRole(\"button\", { name: new RegExp(`^${name}(?: \\\\d+)?$`) }).click();\n     await expect(drawer).toHaveAccessibleName(name);\n     return drawer;\n   }\n@@ -27,3 +27,10 @@ export async function revealCollaborationDisclosure(page: Page, name: Collaborat\n   await expect(disclosure).toHaveAttribute(\"open\", \"\");\n   return disclosure;\n }\n+\n+export async function revealCollaborationMentions(form: Locator) {\n+  const trigger = form.getByRole(\"button\", { name: \"Mention\", exact: true });\n+  if (await trigger.getAttribute(\"aria-expanded\") !== \"true\") await trigger.click();\n+  await expect(trigger).toHaveAttribute(\"aria-expanded\", \"true\");\n+  await expect(form.getByRole(\"group\", { name: \"Issue participants and AI targets\", exact: true })).toBeVisible();\n+}\ndiff --git a/e2e/fixtures/collaboration-knowledge.ts b/e2e/fixtures/collaboration-knowledge.ts\nindex 89c8ef92a..38c3499f6 100644\n--- a/e2e/fixtures/collaboration-knowledge.ts\n+++ b/e2e/fixtures/collaboration-knowledge.ts\n@@ -209,6 +209,11 @@ export async function openTarget(page: Page, f: KnowledgeFixture, kind: \"project\n     await window.evaluate(w => w.setContentSize(1380, 960));\n     await window.dispose();\n     await expect.poll(() => page.evaluate(() => innerWidth)).toBe(1380);\n+    const sourceDrawer = page.getByRole(\"dialog\", { name: \"Knowledge candidates\", exact: true });\n+    if (await sourceDrawer.isVisible()) {\n+      await page.keyboard.press(\"Escape\");\n+      await expect(sourceDrawer).toBeHidden();\n+    }\n     await selectDesktopWorkspace(page, f.workspace);\n     await page.getByRole(\"link\", { name: kind === \"project\" ? \"Projects\" : \"Settings\", exact: true }).and(page.locator('[data-sidebar=\"menu-button\"]')).click();\n     if (kind === \"project\") await page.getByText(f.project.title, { exact: true }).first().click();\ndiff --git a/e2e/fixtures/collaboration-mention-journeys.ts b/e2e/fixtures/collaboration-mention-journeys.ts\nindex 61c511d91..2ea566e54 100644\n--- a/e2e/fixtures/collaboration-mention-journeys.ts\n+++ b/e2e/fixtures/collaboration-mention-journeys.ts\n@@ -1,3 +1,4 @@\n+import { revealCollaborationMentions } from \"./collaboration-disclosures\";\n import { randomUUID } from \"node:crypto\";\n import { expect, type Locator, type Page, type Request, type Route } from \"@playwright/test\";\n import type {\n@@ -209,6 +210,7 @@ async function openCreator(page: Page, fixture: CollaborationMentionJourney, ada\n }\n async function selectMentions(page: Page, fixture: CollaborationMentionJourney, targets: MentionTarget[]) {\n   const composer = composerFor(page);\n+  await revealCollaborationMentions(composer);\n   await composer.getByRole(\"group\", { name: \"People\", exact: true }).getByRole(\"button\", { name: fixture.handlerName, exact: true }).click();\n   for (const target of targets) {\n     await composer.getByRole(\"group\", { name: \"AI targets\", exact: true }).getByRole(\"button\", { name: target.name, exact: true }).click();\ndiff --git a/e2e/fixtures/collaboration-resource-offers.ts b/e2e/fixtures/collaboration-resource-offers.ts\nindex 79abf4653..a27fb35d8 100644\n--- a/e2e/fixtures/collaboration-resource-offers.ts\n+++ b/e2e/fixtures/collaboration-resource-offers.ts\n@@ -3,7 +3,7 @@ import pg from \"pg\";\n import { expect, type Locator, type Page } from \"@playwright/test\";\n import { TestApiClient } from \"../fixtures\";\n import type { CollaborationResourceSnapshot } from \"./collaboration-resources\";\n-import { revealCollaborationDisclosure } from \"./collaboration-disclosures\";\n+import { revealCollaborationDisclosure, revealCollaborationMentions } from \"./collaboration-disclosures\";\n \n interface OfferIssue extends CollaborationResourceSnapshot {\n   session: { queue_state: string; control_version: string };\n@@ -304,6 +304,7 @@ export async function exerciseCollaborationResourceOffers(ownerPage: Page, organ\n   // This cross-slice happy path uses the real preview/comment/notification APIs.\n   // The explicit AI input stays waiting under the existing issue/target holds.\n   const composer = organizerPage.getByRole(\"form\", { name: \"Comments\", exact: true });\n+  await revealCollaborationMentions(composer);\n   await composer.getByRole(\"button\", { name: \"@all · All participants\", exact: true }).click();\n   await composer.getByRole(\"button\", { name: fixture.agentName, exact: true }).click();\n   await expect(composer.getByLabel(\"Add comment\", { exact: true })).toHaveValue(new RegExp(`mention://all/all.*mention://agent/${fixture.agentId}`));\ndiff --git a/e2e/fixtures/collaboration-retained-attachments.ts b/e2e/fixtures/collaboration-retained-attachments.ts\nindex 0d6fda50b..c49c06690 100644\n--- a/e2e/fixtures/collaboration-retained-attachments.ts\n+++ b/e2e/fixtures/collaboration-retained-attachments.ts\n@@ -1,4 +1,4 @@\n-import { revealCollaborationDisclosure } from \"./collaboration-disclosures\";\n+import { revealCollaborationDisclosure, revealCollaborationMentions } from \"./collaboration-disclosures\";\n import { createHash, randomUUID } from \"node:crypto\";\n import { expect, type Locator, type Page } from \"@playwright/test\";\n import type { TestApiClient } from \"../fixtures\";\n@@ -241,6 +241,8 @@ async function displayAndDownload(session: RetainedSession, file: CollaborationA\n   const panel = await attachmentsPanel(page);\n   await preview(session, panel, file, bytes);\n   const issueDownload = await session.download(panel.getByRole(\"button\", { name: `Download ${file.name}`, exact: true }), file.name, bytes, `${stage}-issue`);\n+  await page.keyboard.press(\"Escape\");\n+  await expect(page.getByRole(\"dialog\", { name: \"Attachments\", exact: true })).toBeHidden();\n   const history = await historyContainer(page, removedId);\n   await preview(session, history, file, bytes);\n   const historyDownload = await session.download(history.getByRole(\"button\", { name: `Download ${file.name}`, exact: true }).first(), file.name, bytes, `${stage}-history`);\n@@ -267,6 +269,7 @@ export async function exerciseRetainedAttachments(author: RetainedSession, reade\n   await expect(reader.page.getByRole(\"heading\", { name: fixture.title, exact: true })).toBeVisible();\n   const composer = author.page.getByRole(\"form\", { name: \"Comments\", exact: true });\n   await composer.getByLabel(\"Add comment\", { exact: true }).fill(\"Frozen file input\");\n+  await revealCollaborationMentions(composer);\n   await composer.getByRole(\"button\", { name: fixture.agent.name, exact: true }).click();\n   const content = await composer.getByLabel(\"Add comment\", { exact: true }).inputValue();\n   expect(content).toContain(`mention://agent/${fixture.agent.resource_id}`);\n@@ -352,6 +355,7 @@ export async function exerciseRetainedAttachments(author: RetainedSession, reade\n   const beforeRevoke = await fetch(capability.url, { redirect: \"error\" });\n   assertPrivateResponse(beforeRevoke, 200);\n   expect(Buffer.from(await beforeRevoke.arrayBuffer())).toEqual(bytes);\n+  await attachmentsPanel(reader.page);\n   await reader.page.getByRole(\"region\", { name: \"Attachments\", exact: true }).getByRole(\"button\", { name: `Preview ${file.name}`, exact: true }).click();\n   await expect(reader.page.getByRole(\"dialog\", { name: file.name, exact: true }).locator(\"pre\")).toHaveText(bytes.toString());\n   const removalReceipt = await fixture.creator.requestJSON<{ code: string; request_id: string }>(`${root}/participants/${fixture.handlerId}/remove`, {\n",
+    "scope_additions": [
+      "e2e/fixtures/collaboration-control-gaps.ts",
+      "e2e/fixtures/collaboration-mention-journeys.ts",
+      "e2e/fixtures/collaboration-retained-attachments.ts",
+      "e2e/fixtures/collaboration-resource-offers.ts",
+      "e2e/collaboration-workbench-web.spec.ts",
+      "e2e/collaboration-leave-web.spec.ts"
+    ],
+    "mention_review": "Opens actual Mention button only while collapsed; requires expanded state and actual target group visible; leaves exact target/preview/permission/receipt/file associations unchanged. No use for pending recovery.",
+    "leave_permission_review": {
+      "prior_observation": "Original creator trace found primary Transfer and checked absent Leave without opening More actions; handler did open menu. This limited old UI absence evidence.",
+      "final_change": "Preserves Transfer visibility for button/menuitem forms, then opens existing More actions and requires visible menu before forbidden Leave assertion. Handler whose menu is already open retains that proof.",
+      "server_assertions_unchanged": "capabilities.leave=false; actual409 creator_cannot_leave/handler_must_transfer; own receipt and unchanged revision/handler/execution/participants.",
+      "post_leave_target_absence": "New Mention open and visible People group precede AI-target absence, preventing collapsed panel from manufacturing the zero count."
+    },
+    "negative_assertion_review": {
+      "records_global_permission": "Existing Edit source fields count0 now runs after exact Sub-issues dialog hidden.",
+      "memory_closed_actions": "#memory panel visible before Edit/Restore count0.",
+      "other_checks": "Relevant child/review positive visibility or denial is established; getByText absence checks also inspect hidden DOM. No additional confirmed vacuous assertion introduced by this patch."
+    },
+    "retained_files_review": "Closes Attachments before actual comment history; reopens the existing attachment panel before final live preview/revocation. All downloaded bytes,immutableAI input,history,refresh/restart and postrevoke absence checks remain.",
+    "source_equivalence": "Exactly14 declared tests plus exact generated Next route import rewrite; no product source changes.",
+    "assertion_diff": "Deleted lines are imports,previous digit regex,and two Transfer button-only selectors replaced with same-label button-or-menuitem. All authority,receipt,state,scroll,time/retry assertions preserved.",
+    "dynamic_limits": "Campaign still finishing final Leave/retained and deployment cases. Integration approval is bounded to test maintenance; final acceptance uses actual raw outcomes.",
+    "supersedes_for_integration": "Earlier eight-file approval; all earlier results retain their own source variants.",
+    "final_file_hashes_reconfirmed": true,
+    "current_final_leave_and_retained_proof": {
+      "password-leave-final-proof": {
+        "path": ".omx/private/branch-e2e-20261107/browser/runs/password-leave-final-proof/results.json",
+        "sha256": "7175642d75c8988be43608d27c4d75146f52c5c5bab5bceea8f7cff9c443e91a",
+        "status": "PASS",
+        "note": "One complete original case,0skip/0retry; leave source now exposes availableMoreactions beforeabsence."
+      },
+      "password-retained-final-proof": {
+        "path": ".omx/private/branch-e2e-20261107/browser/runs/password-retained-final-proof/results.json",
+        "sha256": "99a3119def2dc8a5b8b6231b1b7f61a5f14dd9dac60a49469b6543a31bfce4fe",
+        "status": "PASS",
+        "note": "One complete original case,0skip/0retry; leave source now exposes availableMoreactions beforeabsence."
+      }
+    },
+    "superseded_for_integration_by": "final_patch_addendum_15"
+  },
+  "documentation_addendum": {
+    "path": ".trellis/spec/web/frontend/e2e-run-environment.md",
+    "sha256": "7291518382ee39167c73a953c45ae41a2d98bf6d6575cb5bedb8b6279920723d",
+    "added_lines": 32,
+    "removed_lines": 0,
+    "verdict": "PASS",
+    "contracts": [
+      "Dismiss modal before background action",
+      "Show relevant panel/menu/Mention group before forbidden-action absence",
+      "Use actual pending attention CTA and preserve exact identity GET with no new POST",
+      "Wait for rendered edited comment before delete",
+      "Retain scroll expectation and all failed runs"
+    ],
+    "no_api_schema_or_infrastructure_change": true
+  },
+  "final_patch_addendum_15": {
+    "reviewed_at": "2026-11-07T06:02:41.673382+00:00",
+    "verdict": "APPROVED_TEST_ONLY_PATCH_FOR_INTEGRATION",
+    "blocking_patch_findings": [],
+    "file_count": 15,
+    "files": {
+      "e2e/collaboration-account-desktop.spec.ts": {
+        "before_sha256": "0e20376018ab0225ea81a637ffc67fdafa4dd73f84a71dad25321e5524b4c328",
+        "after_sha256": "5fb058ef8cf9af36febdd00c23b78dbbf573a78bbb2ce283b0921ccb95c23762"
+      },
+      "e2e/collaboration-records-web.spec.ts": {
+        "before_sha256": "5a3e3dc51da3a45d20b0e5b6befe01a329464fc02fdb57ff9f73f221f797a6a5",
+        "after_sha256": "66aae27b72e98aae7022144afc142ddb18e4910533e2982bba8b4a2bd8715222"
+      },
+      "e2e/collaboration-delivery-web.spec.ts": {
+        "before_sha256": "11be1b7e11c08cd5212ffc0c1d345f5b28b50ed0b56325f1f0d36e916b63ca32",
+        "after_sha256": "faf267594e1238161bd8ff70576eeb1c31f230e6486a640de6c83baaab4d2ca0"
+      },
+      "e2e/fixtures/collaboration-detail-journey.ts": {
+        "before_sha256": "044c19dbec4241b9d9a816453353e356ebdd6ab545f3472402904b88bfed2898",
+        "after_sha256": "0c0ef62cb1bdee7cb043727b80f95977ccddd584aadfbb7be6ad3e99139ab67e"
+      },
+      "e2e/collaboration-knowledge.spec.ts": {
+        "before_sha256": "5da7bfe9e0d7b3755e079b01eda7f6a71fcf0a8ee2f6559b57c75589937be4cb",
+        "after_sha256": "78fb8c663e5b7ff1d5dc8f5e8989a724dd7d9ca04378ff29b7237ab8cdbfbeb7"
+      },
+      "e2e/fixtures/collaboration-knowledge.ts": {
+        "before_sha256": "7a3f68f8a7213dbc40de3e7a8bf02222fb39d27411a0244b8ae2ea6ea89b1960",
+        "after_sha256": "0c22f72ef4379203c43437991db91df94b8110f38de2a5f2ebed9f6bff0ca3fa"
+      },
+      "e2e/collaboration-memory-web.spec.ts": {
+        "before_sha256": "c02c1cfce0ad1a903a1f61795828692be96788dae805c04cc67d6a16ec0622bd",
+        "after_sha256": "e428641ee6299d1f5310145a26de81f1b8b11a8b0dbf9b2ef386ef5e3d15136f"
+      },
+      "e2e/fixtures/collaboration-disclosures.ts": {
+        "before_sha256": "1774801a6860018c39c8c7204c67c16f57ca0dbf330dbb3c7defdbd9297665a7",
+        "after_sha256": "d08b379a6ed288829f5b16a49c37533ec580a96db50fba08e2358b0ca7b403bb"
+      },
+      "e2e/fixtures/collaboration-control-gaps.ts": {
+        "before_sha256": "adccf52d7afecdc8540a0ecd8fbcbd295dd4d9762940944775d26f11483bd25d",
+        "after_sha256": "ebce66bbc362e41507a84d477a3589379bb0a002b0a7845740c4f604a75b14c9"
+      },
+      "e2e/fixtures/collaboration-mention-journeys.ts": {
+        "before_sha256": "1fe5fef06293779712f655fd9fb36aaca8027f75d8ed8bff40ee85b556781bdc",
+        "after_sha256": "d5308e4d846f8014dea6fdb1c6a0a4b61ecfd77742759d146232accd3c75eb47"
+      },
+      "e2e/fixtures/collaboration-retained-attachments.ts": {
+        "before_sha256": "5ee681aef743ed0d900785b198287ef83b61f0ec8225cf133e1847f4c6294013",
+        "after_sha256": "5ef7bae09da68d4340b2d2e42484afbf61f84937554af5f0ed39509e280f9bf2"
+      },
+      "e2e/fixtures/collaboration-resource-offers.ts": {
+        "before_sha256": "73f6005d8830877bec3b7c7710417ac6cd39fd6eb70dd17d18d3129136add4c4",
+        "after_sha256": "ad329102566e08d5a85c4bcb63138f8a660318432bc659c8d9f05cabb88ddb4a"
+      },
+      "e2e/collaboration-workbench-web.spec.ts": {
+        "before_sha256": "935b2231594760c76109bf4ebff1a0bb299761ffe2ec74f145c178835ac19e73",
+        "after_sha256": "40515c8f265eaf757ba097500ff665ad75bade24ec918ea643de59149963f1f0"
+      },
+      "e2e/collaboration-leave-web.spec.ts": {
+        "before_sha256": "b9598adb68f7f727c6d456f3bc529eccfb5b1b3c95912fbe32b01ef0d7b8cbc9",
+        "after_sha256": "1d7c2de7535ccec42ad017db874139615e801e83fb54996325c9f78628de1dc5"
+      },
+      "e2e/collaboration-boundaries-web.spec.ts": {
+        "before_sha256": "e9399cda456b136bae487a04450f60dfa04f7d7a957066e83d74fcf55c638745",
+        "after_sha256": "d95387c4ebc7c076ba2cc2cc94e64c966f7d0ded3b33f81375e9f8f59b4c074e"
+      }
+    },
+    "patch_sha256": "a3e173f02860547f7368b7ec9c7c71e77f66f62a19d694a6644db129ee2d5f39",
+    "reviewed_patch_text": "diff --git a/e2e/collaboration-account-desktop.spec.ts b/e2e/collaboration-account-desktop.spec.ts\nindex c1b19ef94..1a96bab5e 100644\n--- a/e2e/collaboration-account-desktop.spec.ts\n+++ b/e2e/collaboration-account-desktop.spec.ts\n@@ -425,6 +425,8 @@ test(\"Desktop child links, recorded pages and result notifications survive popou\n     await deepLink(app, recordedAccountPath(records));\n     await revealCollaborationDisclosure(source.page, \"Sub-issues\");\n     await expect(childLink).toBeVisible();\n+    await source.page.keyboard.press(\"Escape\");\n+    await expect(source.page.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     const copied = await copyNativeAccountLink(app, source.page, recordedAccountPath(records), testInfo, \"source-account\");\n     expect(new URL(copied).pathname + new URL(copied).search).toBe(recordedAccountPath(records));\n     const sourcePopupReady = app.waitForEvent(\"window\");\n@@ -443,8 +445,11 @@ test(\"Desktop child links, recorded pages and result notifications survive popou\n     expect(copiedRun.pathname + copiedRun.search + copiedRun.hash).toBe(recordedAccountPath(records, true));\n     await revealCollaborationDisclosure(sourcePopup, \"Sub-issues\");\n     await expect(sourcePopup.getByRole(\"region\", { name: \"Sub-issues\", exact: true }).getByRole(\"link\", { name: `${records.child.identifier} ${records.child.title}`, exact: true })).toBeVisible();\n+    await sourcePopup.keyboard.press(\"Escape\");\n+    await expect(sourcePopup.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     await showRecordedUsage(sourcePopup, records.runId);\n     await nativeScreenshot(app, sourcePopup, testInfo.outputPath(\"desktop-record-source-popout.png\"));\n+    await revealCollaborationDisclosure(sourcePopup, \"Sub-issues\");\n     await sourcePopup.getByRole(\"region\", { name: \"Sub-issues\", exact: true }).getByRole(\"link\", { name: `${records.child.identifier} ${records.child.title}`, exact: true }).click();\n     await expect(sourcePopup.getByRole(\"button\", { name: \"Issue actions\", exact: true })).toBeVisible();\n     await expect(sourcePopup.getByText(records.child.title, { exact: true }).first()).toBeVisible();\n@@ -460,6 +465,8 @@ test(\"Desktop child links, recorded pages and result notifications survive popou\n     const outsideChildren = viewer.page.getByRole(\"region\", { name: \"Sub-issues\", exact: true });\n     await expect(outsideChildren.getByText(records.child.title, { exact: true })).toBeVisible();\n     await expect(outsideChildren.getByRole(\"link\")).toHaveCount(0);\n+    await viewer.page.keyboard.press(\"Escape\");\n+    await expect(viewer.page.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     await viewer.page.getByRole(\"button\", { name: /Notifications/ }).click();\n     const notification = viewer.page.getByRole(\"listitem\").filter({ has: viewer.page.getByText(\"AI execution failed\", { exact: true }) });\n     await notification.getByRole(\"link\", { name: records.issue.title, exact: true }).click();\ndiff --git a/e2e/collaboration-boundaries-web.spec.ts b/e2e/collaboration-boundaries-web.spec.ts\nindex cfd03a07c..b8b56ed86 100644\n--- a/e2e/collaboration-boundaries-web.spec.ts\n+++ b/e2e/collaboration-boundaries-web.spec.ts\n@@ -3,7 +3,7 @@ import { expect, test, type Browser, type BrowserContext, type Page } from \"@pla\n import type { CollaborationIssue } from \"@multica/core/collaboration\";\n import { TestApiClient } from \"./fixtures\";\n import { authenticateCollaborationEditor, revealCollaborationEditingAction } from \"./fixtures/collaboration-editing\";\n-import { revealCollaborationDisclosure } from \"./fixtures/collaboration-disclosures\";\n+import { revealCollaborationDisclosure, revealCollaborationMentions } from \"./fixtures/collaboration-disclosures\";\n import { sql } from \"./fixtures/core-journeys\";\n \n // Collaboration boundaries no client spec proved (collab-audit.md §2 Gap 5,\n@@ -369,6 +369,7 @@ test(\"Gap 7: hidden manager actions POSTed by the wrong role are refused and cha\n     const memberPage = pages.member!.page;\n     const composer = memberPage.getByRole(\"form\", { name: \"Comments\", exact: true });\n     await composer.getByLabel(\"Add comment\", { exact: true }).fill(`Source member note ${fixture.key}`);\n+    await revealCollaborationMentions(composer);\n     await composer.getByRole(\"group\", { name: \"AI targets\", exact: true }).getByRole(\"button\", { name: agent.agentName, exact: true }).click();\n     await composer.getByRole(\"button\", { name: \"Preview delivery\", exact: true }).click();\n     await expect(composer.getByText(\"Only an active participant can submit AI input\", { exact: true })).toBeVisible();\ndiff --git a/e2e/collaboration-delivery-web.spec.ts b/e2e/collaboration-delivery-web.spec.ts\nindex 46dee5fec..3b04dd59c 100644\n--- a/e2e/collaboration-delivery-web.spec.ts\n+++ b/e2e/collaboration-delivery-web.spec.ts\n@@ -166,7 +166,10 @@ test(\"Web creates one private issue after lost upload/create responses and revok\n     await source.requestJSON(`/api/collaboration/issues/${createdId}/comments/${commentReceipt.comment_id}`, { method: \"PATCH\", headers: { \"Idempotency-Key\": randomUUID() },\n       body: { content: \"The comment no longer displays its file.\", expected_comment_revision: commentReceipt.comment_revision, attachment_ids: [] } });\n     expect(await viewer.requestJSON(`/api/collaboration/issues/${createdId}/attachments/${imageId}`)).toMatchObject({ id: imageId, issue_id: createdId });\n+    await recipientPage.keyboard.press(\"Escape\");\n+    await expect(recipientPage.getByRole(\"dialog\", { name: \"Attachments\", exact: true })).toBeHidden();\n     await recipientPage.getByRole(\"textbox\", { name: \"Add comment\", exact: true }).fill(\"Viewer unsent private draft\");\n+    await revealCollaborationDisclosure(recipientPage, \"Attachments\");\n     await recipientAttachments.getByRole(\"button\", { name: \"Preview comment-preview.png\", exact: true }).click();\n     await expect(recipientPage.getByRole(\"img\", { name: \"comment-preview.png\", exact: true })).toBeVisible();\n     await expect.poll(() => recipientPage.getByRole(\"img\", { name: \"comment-preview.png\", exact: true }).evaluate((image) => (image as HTMLImageElement).naturalWidth)).toBe(1);\ndiff --git a/e2e/collaboration-knowledge.spec.ts b/e2e/collaboration-knowledge.spec.ts\nindex 0a3c32e67..feedba473 100644\n--- a/e2e/collaboration-knowledge.spec.ts\n+++ b/e2e/collaboration-knowledge.spec.ts\n@@ -162,7 +162,14 @@ test(\"Web original-key recovery stays locked after ambiguity and recovers by GET\n     expect(calls[1]).toEqual(calls[0]);\n     await expect(page.getByLabel(\"Summary\", { exact: true })).toBeDisabled();\n     await page.unroute(url, intercept);\n+    const postsAfterReload: string[] = [];\n+    page.on(\"request\", request => {\n+      if (request.method() === \"POST\" && new URL(request.url()).pathname === `${f.root}/knowledge-candidates`) postsAfterReload.push(request.url());\n+    });\n     await page.reload();\n+    const attention = page.getByRole(\"status\").filter({ hasText: \"Needs attention:\" });\n+    await expect(attention).toBeVisible();\n+    await attention.getByRole(\"button\", { name: \"Knowledge candidates\", exact: true }).click();\n     await expect(page.getByRole(\"button\", { name: \"Check original result\", exact: true })).toBeEnabled();\n     await expect(page.getByRole(\"button\", { name: \"Retry same request\", exact: true })).toHaveCount(0);\n     const recovered = page.waitForResponse(r => new URL(r.url()).pathname.endsWith(`/operations/${calls[0]!.request_id}`));\n@@ -172,6 +179,7 @@ test(\"Web original-key recovery stays locked after ambiguity and recovers by GET\n     await expect(page.getByRole(\"button\", { name: \"Check original result\", exact: true })).toHaveCount(0);\n     const list = await f.handler.requestJSON<{ items: unknown[] }>(`${f.root}/knowledge-candidates`);\n     expect(list.items).toHaveLength(1);\n+    expect(postsAfterReload).toEqual([]);\n     await info.attach(\"recovery-evidence\", { contentType: \"application/json\", body: JSON.stringify({ candidate_id: calls[0]!.candidate_id, request_id: calls[0]!.request_id,\n       attempts: calls.length, exact_replay: true, recovery_method: \"GET\", created_candidates: list.items.length }, null, 2) });\n   } finally { await page.unroute(url, intercept); }\ndiff --git a/e2e/collaboration-leave-web.spec.ts b/e2e/collaboration-leave-web.spec.ts\nindex b1cfb6b4b..8dfbaed3f 100644\n--- a/e2e/collaboration-leave-web.spec.ts\n+++ b/e2e/collaboration-leave-web.spec.ts\n@@ -1,5 +1,5 @@\n import { test, expect } from \"@playwright/test\";\n-import { revealCollaborationDisclosure } from \"./fixtures/collaboration-disclosures\";\n+import { revealCollaborationDisclosure, revealCollaborationMentions } from \"./fixtures/collaboration-disclosures\";\n import type { CollaborationParticipants, CollaborationResources, CollaborationWorkbench } from \"@multica/core/collaboration\";\n import { clickControl, controlEnvironmentReady, panelFor, seedCollaborationControlJourney, targetRow } from \"./fixtures/collaboration-control-journey\";\n import {\n@@ -45,8 +45,12 @@ test(\"Web Leave issue refuses creator and handler; an owner's departure revokes\n     const handler = await openGapSession(browser, fixture, \"handler\", webUrl);\n     sessions.push(handler);\n     for (const session of [creator, handler]) {\n-      if (!await session.page.getByRole(\"button\", { name: \"Transfer\", exact: true }).isVisible()) await revealCollaborationDisclosure(session.page, \"More actions\");\n-      await expect(session.page.getByRole(\"button\", { name: \"Transfer\", exact: true })).toBeVisible();\n+      if (!await session.page.getByRole(\"button\", { name: \"Transfer\", exact: true }).or(session.page.getByRole(\"menuitem\", { name: \"Transfer\", exact: true })).isVisible()) await revealCollaborationDisclosure(session.page, \"More actions\");\n+      await expect(session.page.getByRole(\"button\", { name: \"Transfer\", exact: true }).or(session.page.getByRole(\"menuitem\", { name: \"Transfer\", exact: true }))).toBeVisible();\n+      if (await session.page.getByRole(\"button\", { name: \"More actions\", exact: true }).count() > 0) {\n+        await revealCollaborationDisclosure(session.page, \"More actions\");\n+        await expect(session.page.getByRole(\"menu\")).toBeVisible();\n+      }\n       await expect(session.page.getByRole(\"button\", { name: \"Leave issue\", exact: true }).or(session.page.getByRole(\"menuitem\", { name: \"Leave issue\", exact: true }))).toHaveCount(0);\n     }\n     if (!await owner.page.getByRole(\"button\", { name: \"Leave issue\", exact: true }).or(owner.page.getByRole(\"menuitem\", { name: \"Leave issue\", exact: true })).isVisible()) await revealCollaborationDisclosure(owner.page, \"More actions\");\n@@ -123,6 +127,7 @@ test(\"Web Leave issue refuses creator and handler; an owner's departure revokes\n     for (const target of fixture.targets) await expect(targetRow(creator.page, target).getByText(\"Resource authorization required\", { exact: true })).toBeVisible();\n     await expect(creator.page.locator(`[id=\"run-${pending.runId}\"]`)).toContainText(\"Termination unconfirmed\");\n     const composer = creator.page.getByRole(\"form\", { name: \"Comments\", exact: true });\n+    await revealCollaborationMentions(composer);\n     await expect(composer.getByRole(\"group\", { name: \"People\", exact: true })).toBeVisible();\n     await expect(composer.getByRole(\"group\", { name: \"AI targets\", exact: true })).toHaveCount(0);\n     const activity = await fixture.creator.requestJSON<{ items: { kind: string; actor: { user_id: string } | null }[] }>(`${root}/activity?limit=100`);\ndiff --git a/e2e/collaboration-memory-web.spec.ts b/e2e/collaboration-memory-web.spec.ts\nindex b76c04f8c..31698e37b 100644\n--- a/e2e/collaboration-memory-web.spec.ts\n+++ b/e2e/collaboration-memory-web.spec.ts\n@@ -77,6 +77,8 @@ test(\"shared context keeps concurrent edits, restores versions, and permits hist\n     expect(history.items.map(item => item.version)).toEqual([\"4\", \"3\", \"2\", \"1\"]);\n     // The current external handler delivers through the UI before the creator\n     // accepts the exact result; shared-context writes alone are not delivery.\n+    await participant.keyboard.press(\"Escape\");\n+    await expect(participant.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeHidden();\n     await participant.getByRole(\"button\", { name: \"Submit result\", exact: true }).click();\n     const delivery = participant.getByRole(\"form\", { name: \"Submit result\", exact: true });\n     const resultText = \"The shared context has been reviewed and restored.\";\n@@ -95,6 +97,9 @@ test(\"shared context keeps concurrent edits, restores versions, and permits hist\n     expect(await submissionResponse.json()).toMatchObject({ code: \"acceptance_submitted\", delivery_confirmation: { submission_id: submission.id, attachment_ids: [] } });\n     await expect(delivery).toHaveCount(0);\n     await page.reload();\n+    await expect(page.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeVisible();\n+    await page.keyboard.press(\"Escape\");\n+    await expect(page.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeHidden();\n     await page.getByRole(\"button\", { name: \"Accept and complete\", exact: true }).click();\n     const completion = page.getByRole(\"form\", { name: \"Accept and complete\", exact: true });\n     await expect(completion.locator(`[data-submission-id=\"${submission.id}\"]`)).toHaveCount(1);\n@@ -108,8 +113,15 @@ test(\"shared context keeps concurrent edits, restores versions, and permits hist\n     await expect(completion).toHaveCount(0);\n     expect(await fixture.creator.client.requestJSON<CollaborationIssue>(fixture.root)).toMatchObject({ status_category: \"done\", handler: { user_id: fixture.creator.id },\n       delivery: { current: null, latest: { id: submission.id, decision: { kind: \"accepted\", submission_id: submission.id, actor_user_id: fixture.creator.id } } } });\n+    await expect(page.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeVisible();\n+    await page.keyboard.press(\"Escape\");\n+    await expect(page.getByRole(\"dialog\", { name: \"Shared context\", exact: true })).toBeHidden();\n     await revealCollaborationDisclosure(page, \"More actions\");\n     await expect(page.getByRole(\"button\", { name: \"Reopen issue\", exact: true }).or(page.getByRole(\"menuitem\", { name: \"Reopen issue\", exact: true }))).toBeVisible();\n+    await page.keyboard.press(\"Escape\");\n+    await expect(page.getByRole(\"menu\")).toHaveCount(0);\n+    await page.getByRole(\"group\", { name: \"Issue resources\", exact: true }).getByRole(\"button\", { name: \"Shared context\", exact: true }).click();\n+    await expect(panel).toBeVisible();\n     await expect(panel.getByRole(\"button\", { name: \"Edit shared context\", exact: true })).toHaveCount(0);\n     await expect(panel.getByRole(\"button\", { name: /^Restore v/ })).toHaveCount(0);\n     await expect(panel).toContainText(\"This issue is closed, so its shared context is read-only.\");\ndiff --git a/e2e/collaboration-records-web.spec.ts b/e2e/collaboration-records-web.spec.ts\nindex bc4adafaa..25092c67c 100644\n--- a/e2e/collaboration-records-web.spec.ts\n+++ b/e2e/collaboration-records-web.spec.ts\n@@ -23,6 +23,8 @@ test(\"Web shares ordinary child references and retained run records through acco\n   const children = page.getByRole(\"region\", { name: \"Sub-issues\", exact: true });\n   const childLink = children.getByRole(\"link\", { name: `${fixture.child.identifier} ${fixture.child.title}`, exact: true });\n   await expect(childLink).toHaveAttribute(\"href\", `/${fixture.workspace.slug}/issues/${fixture.child.id}`);\n+  await page.keyboard.press(\"Escape\");\n+  await expect(page.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n   await expect(page.getByRole(\"button\", { name: \"Edit source fields\", exact: true })).toHaveCount(0);\n   await page.context().grantPermissions([\"clipboard-read\", \"clipboard-write\"]);\n   await page.bringToFront();\n@@ -85,6 +87,8 @@ test(\"Web shares ordinary child references and retained run records through acco\n     await outside.reload();\n     await revealCollaborationDisclosure(outside, \"Sub-issues\");\n     await expect(outsideChildren.getByText(fixture.child.title, { exact: true })).toBeVisible();\n+    await outside.keyboard.press(\"Escape\");\n+    await expect(outside.getByRole(\"dialog\", { name: \"Sub-issues\", exact: true })).toBeHidden();\n     await outside.getByRole(\"button\", { name: /Notifications/ }).click();\n     const notification = outside.getByRole(\"listitem\").filter({ has: outside.getByText(\"AI execution failed\", { exact: true }) });\n     await notification.getByRole(\"link\", { name: fixture.issue.title, exact: true }).click();\ndiff --git a/e2e/collaboration-workbench-web.spec.ts b/e2e/collaboration-workbench-web.spec.ts\nindex d106c5de3..7e274608b 100644\n--- a/e2e/collaboration-workbench-web.spec.ts\n+++ b/e2e/collaboration-workbench-web.spec.ts\n@@ -3,7 +3,7 @@ import pg from \"pg\";\n import { test, expect, type Page, type Request } from \"@playwright/test\";\n import { TestApiClient } from \"./fixtures\";\n import { selectHandoffRecipient } from \"./fixtures/collaboration-offline-handoff\";\n-import { revealCollaborationDisclosure } from \"./fixtures/collaboration-disclosures\";\n+import { revealCollaborationDisclosure, revealCollaborationMentions } from \"./fixtures/collaboration-disclosures\";\n import { leaveThroughUI } from \"./fixtures/collaboration-control-gaps\";\n import type { CollaborationIssue } from \"@multica/core/collaboration\";\n \n@@ -121,13 +121,16 @@ test(\"Web workbench keeps account scope through comments, uncertain cancellation\n   expect(cancelPosts).toBe(1);\n \n   await page.getByLabel(\"Add comment\", { exact: true }).fill(\"Browser comment \");\n+  await revealCollaborationMentions(page.getByRole(\"form\", { name: \"Comments\", exact: true }));\n   await page.getByRole(\"button\", { name: \"Browser source owner\", exact: true }).click();\n   await page.getByRole(\"button\", { name: \"Preview delivery\" }).click();\n   await expect(page.getByText(\"1 notification recipients\")).toBeVisible();\n   await page.getByRole(\"button\", { name: \"Send comment\" }).click();\n   await expect(page.getByText(\"Comment confirmed.\")).toBeVisible();\n \n-  await page.getByRole(\"button\", { name: \"Transfer\", exact: true }).click();\n+  const transferAction = page.getByRole(\"button\", { name: \"Transfer\", exact: true }).or(page.getByRole(\"menuitem\", { name: \"Transfer\", exact: true }));\n+  if (!await transferAction.isVisible()) await revealCollaborationDisclosure(page, \"More actions\");\n+  await transferAction.click();\n   const transfer = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: \"Transfer\", exact: true }) });\n   await selectHandoffRecipient(page, transfer, { id: recipientAccount.id, name: \"Browser recipient\" });\n   await transfer.getByLabel(\"Note\", { exact: true }).fill(\"Browser handoff note\");\n@@ -136,9 +139,18 @@ test(\"Web workbench keeps account scope through comments, uncertain cancellation\n   await expect(page.getByRole(\"heading\", { name: created.title, exact: true })).toBeVisible();\n   await revealCollaborationDisclosure(page, \"Activity\");\n   await expect(page.getByRole(\"region\", { name: \"Activity\", exact: true }).getByText(\"Browser handoff note\")).toBeVisible();\n+  await page.keyboard.press(\"Escape\");\n+  await expect(page.getByRole(\"dialog\", { name: \"Activity\", exact: true })).toBeHidden();\n   await page.getByRole(\"link\", { name: \"Participating\", exact: true }).click();\n   await expect(page.getByRole(\"region\", { name: \"Collaboration issues\" }).getByRole(\"link\", { name: new RegExp(created.title) })).toBeVisible();\n-  await expect(page.getByRole(\"button\", { name: \"Transfer\", exact: true, includeHidden: true })).toHaveCount(0);\n+  const moreActions = page.getByRole(\"button\", { name: \"More actions\", exact: true });\n+  if (await moreActions.isVisible()) await revealCollaborationDisclosure(page, \"More actions\");\n+  await expect(page.getByRole(\"button\", { name: \"Transfer\", exact: true, includeHidden: true })\n+    .or(page.getByRole(\"menuitem\", { name: \"Transfer\", exact: true, includeHidden: true }))).toHaveCount(0);\n+  if (await page.getByRole(\"menu\").isVisible()) {\n+    await page.keyboard.press(\"Escape\");\n+    await expect(page.getByRole(\"menu\")).toHaveCount(0);\n+  }\n   const incoming = await recipient.requestJSON<{ items: { id: string }[] }>(\"/api/me/workbench?view=current\");\n   expect(incoming.items.map((item) => item.id)).toContain(created.id);\n   const recipientPage = await browser.newPage();\n@@ -146,7 +158,9 @@ test(\"Web workbench keeps account scope through comments, uncertain cancellation\n     await authenticatePage(recipientPage, recipient.getToken()!);\n     await recipientPage.goto(new URL(account, page.url()).href);\n     await expect(recipientPage.getByRole(\"heading\", { name: created.title, exact: true })).toBeVisible();\n-    await expect(recipientPage.getByRole(\"button\", { name: \"Transfer\", exact: true })).toBeVisible();\n+    const recipientTransfer = recipientPage.getByRole(\"button\", { name: \"Transfer\", exact: true }).or(recipientPage.getByRole(\"menuitem\", { name: \"Transfer\", exact: true }));\n+    if (!await recipientTransfer.isVisible()) await revealCollaborationDisclosure(recipientPage, \"More actions\");\n+    await expect(recipientTransfer).toBeVisible();\n   } finally { await recipientPage.close(); }\n \n   await page.locator('[data-tab-scroll-root=\"account-detail\"]').evaluate((element) => { element.scrollTop = 0; });\ndiff --git a/e2e/fixtures/collaboration-control-gaps.ts b/e2e/fixtures/collaboration-control-gaps.ts\nindex 247cfc42c..3c1bc34ce 100644\n--- a/e2e/fixtures/collaboration-control-gaps.ts\n+++ b/e2e/fixtures/collaboration-control-gaps.ts\n@@ -1,5 +1,5 @@\n import { randomUUID } from \"node:crypto\";\n-import { revealCollaborationDisclosure } from \"./collaboration-disclosures\";\n+import { revealCollaborationDisclosure, revealCollaborationMentions } from \"./collaboration-disclosures\";\n import { expect, type Browser, type Page } from \"@playwright/test\";\n import type {\n   CollaborationCommandHistory, CollaborationCommentReceipt, CollaborationIssue, CollaborationMentionTargets,\n@@ -94,6 +94,7 @@ export async function commentThroughUI(page: Page, issueId: string, marker: stri\n   const field = form.getByLabel(\"Add comment\", { exact: true });\n   await field.fill(`${prefix}${marker}`);\n   await expect(field).toHaveValue(`${prefix}${marker}`);\n+  if (targetNames.length > 0) await revealCollaborationMentions(form);\n   for (const name of targetNames) await form.getByRole(\"group\", { name: \"AI targets\", exact: true }).getByRole(\"button\", { name, exact: true }).click();\n   const content = await field.inputValue();\n   const previewPending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/comments/trigger-preview`\ndiff --git a/e2e/fixtures/collaboration-detail-journey.ts b/e2e/fixtures/collaboration-detail-journey.ts\nindex 90b0aa188..145ecdf6f 100644\n--- a/e2e/fixtures/collaboration-detail-journey.ts\n+++ b/e2e/fixtures/collaboration-detail-journey.ts\n@@ -636,6 +636,7 @@ export async function changeJourneySourceComment(session: DetailJourneySession,\n   const edited = CollaborationCommentReceiptSchema.parse(await editedResponse.json());\n   await expect(editor).toHaveCount(0);\n   await expect(row.getByRole(\"button\", { name: copy.editComment, exact: true })).toBeFocused();\n+  await expect(row.getByText(content, { exact: true })).toBeVisible();\n   await row.getByRole(\"button\", { name: copy.deleteComment, exact: true }).click();\n   const deletion = row.getByRole(\"form\", { name: copy.deleteComment, exact: true });\n   const deletedPending = session.page.waitForResponse((response) => new URL(response.url()).pathname === `${issuePath(id)}/comments/${commentId}` && response.request().method() === \"DELETE\");\ndiff --git a/e2e/fixtures/collaboration-disclosures.ts b/e2e/fixtures/collaboration-disclosures.ts\nindex 17702b6a7..c695fc146 100644\n--- a/e2e/fixtures/collaboration-disclosures.ts\n+++ b/e2e/fixtures/collaboration-disclosures.ts\n@@ -1,4 +1,4 @@\n-import { expect, type Page } from \"@playwright/test\";\n+import { expect, type Locator, type Page } from \"@playwright/test\";\n \n type CollaborationDisclosure = \"Attachments\" | \"Sub-issues\" | \"Knowledge candidates\" | \"AI execution\" | \"Activity\" | \"More actions\";\n \n@@ -15,7 +15,7 @@ export async function revealCollaborationDisclosure(page: Page, name: Collaborat\n   if (name !== \"AI execution\") {\n     const drawer = page.getByRole(\"dialog\").filter({ has: page.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) });\n     const controls = await drawer.isVisible() ? drawer.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) : page.getByRole(\"group\", { name: \"Issue resources\", exact: true });\n-    await controls.getByRole(\"button\", { name: new RegExp(`^${name}(?: \\d+)?$`) }).click();\n+    await controls.getByRole(\"button\", { name: new RegExp(`^${name}(?: \\\\d+)?$`) }).click();\n     await expect(drawer).toHaveAccessibleName(name);\n     return drawer;\n   }\n@@ -27,3 +27,10 @@ export async function revealCollaborationDisclosure(page: Page, name: Collaborat\n   await expect(disclosure).toHaveAttribute(\"open\", \"\");\n   return disclosure;\n }\n+\n+export async function revealCollaborationMentions(form: Locator) {\n+  const trigger = form.getByRole(\"button\", { name: \"Mention\", exact: true });\n+  if (await trigger.getAttribute(\"aria-expanded\") !== \"true\") await trigger.click();\n+  await expect(trigger).toHaveAttribute(\"aria-expanded\", \"true\");\n+  await expect(form.getByRole(\"group\", { name: \"Issue participants and AI targets\", exact: true })).toBeVisible();\n+}\ndiff --git a/e2e/fixtures/collaboration-knowledge.ts b/e2e/fixtures/collaboration-knowledge.ts\nindex 89c8ef92a..38c3499f6 100644\n--- a/e2e/fixtures/collaboration-knowledge.ts\n+++ b/e2e/fixtures/collaboration-knowledge.ts\n@@ -209,6 +209,11 @@ export async function openTarget(page: Page, f: KnowledgeFixture, kind: \"project\n     await window.evaluate(w => w.setContentSize(1380, 960));\n     await window.dispose();\n     await expect.poll(() => page.evaluate(() => innerWidth)).toBe(1380);\n+    const sourceDrawer = page.getByRole(\"dialog\", { name: \"Knowledge candidates\", exact: true });\n+    if (await sourceDrawer.isVisible()) {\n+      await page.keyboard.press(\"Escape\");\n+      await expect(sourceDrawer).toBeHidden();\n+    }\n     await selectDesktopWorkspace(page, f.workspace);\n     await page.getByRole(\"link\", { name: kind === \"project\" ? \"Projects\" : \"Settings\", exact: true }).and(page.locator('[data-sidebar=\"menu-button\"]')).click();\n     if (kind === \"project\") await page.getByText(f.project.title, { exact: true }).first().click();\ndiff --git a/e2e/fixtures/collaboration-mention-journeys.ts b/e2e/fixtures/collaboration-mention-journeys.ts\nindex 61c511d91..2ea566e54 100644\n--- a/e2e/fixtures/collaboration-mention-journeys.ts\n+++ b/e2e/fixtures/collaboration-mention-journeys.ts\n@@ -1,3 +1,4 @@\n+import { revealCollaborationMentions } from \"./collaboration-disclosures\";\n import { randomUUID } from \"node:crypto\";\n import { expect, type Locator, type Page, type Request, type Route } from \"@playwright/test\";\n import type {\n@@ -209,6 +210,7 @@ async function openCreator(page: Page, fixture: CollaborationMentionJourney, ada\n }\n async function selectMentions(page: Page, fixture: CollaborationMentionJourney, targets: MentionTarget[]) {\n   const composer = composerFor(page);\n+  await revealCollaborationMentions(composer);\n   await composer.getByRole(\"group\", { name: \"People\", exact: true }).getByRole(\"button\", { name: fixture.handlerName, exact: true }).click();\n   for (const target of targets) {\n     await composer.getByRole(\"group\", { name: \"AI targets\", exact: true }).getByRole(\"button\", { name: target.name, exact: true }).click();\ndiff --git a/e2e/fixtures/collaboration-resource-offers.ts b/e2e/fixtures/collaboration-resource-offers.ts\nindex 79abf4653..a27fb35d8 100644\n--- a/e2e/fixtures/collaboration-resource-offers.ts\n+++ b/e2e/fixtures/collaboration-resource-offers.ts\n@@ -3,7 +3,7 @@ import pg from \"pg\";\n import { expect, type Locator, type Page } from \"@playwright/test\";\n import { TestApiClient } from \"../fixtures\";\n import type { CollaborationResourceSnapshot } from \"./collaboration-resources\";\n-import { revealCollaborationDisclosure } from \"./collaboration-disclosures\";\n+import { revealCollaborationDisclosure, revealCollaborationMentions } from \"./collaboration-disclosures\";\n \n interface OfferIssue extends CollaborationResourceSnapshot {\n   session: { queue_state: string; control_version: string };\n@@ -304,6 +304,7 @@ export async function exerciseCollaborationResourceOffers(ownerPage: Page, organ\n   // This cross-slice happy path uses the real preview/comment/notification APIs.\n   // The explicit AI input stays waiting under the existing issue/target holds.\n   const composer = organizerPage.getByRole(\"form\", { name: \"Comments\", exact: true });\n+  await revealCollaborationMentions(composer);\n   await composer.getByRole(\"button\", { name: \"@all · All participants\", exact: true }).click();\n   await composer.getByRole(\"button\", { name: fixture.agentName, exact: true }).click();\n   await expect(composer.getByLabel(\"Add comment\", { exact: true })).toHaveValue(new RegExp(`mention://all/all.*mention://agent/${fixture.agentId}`));\ndiff --git a/e2e/fixtures/collaboration-retained-attachments.ts b/e2e/fixtures/collaboration-retained-attachments.ts\nindex 0d6fda50b..c49c06690 100644\n--- a/e2e/fixtures/collaboration-retained-attachments.ts\n+++ b/e2e/fixtures/collaboration-retained-attachments.ts\n@@ -1,4 +1,4 @@\n-import { revealCollaborationDisclosure } from \"./collaboration-disclosures\";\n+import { revealCollaborationDisclosure, revealCollaborationMentions } from \"./collaboration-disclosures\";\n import { createHash, randomUUID } from \"node:crypto\";\n import { expect, type Locator, type Page } from \"@playwright/test\";\n import type { TestApiClient } from \"../fixtures\";\n@@ -241,6 +241,8 @@ async function displayAndDownload(session: RetainedSession, file: CollaborationA\n   const panel = await attachmentsPanel(page);\n   await preview(session, panel, file, bytes);\n   const issueDownload = await session.download(panel.getByRole(\"button\", { name: `Download ${file.name}`, exact: true }), file.name, bytes, `${stage}-issue`);\n+  await page.keyboard.press(\"Escape\");\n+  await expect(page.getByRole(\"dialog\", { name: \"Attachments\", exact: true })).toBeHidden();\n   const history = await historyContainer(page, removedId);\n   await preview(session, history, file, bytes);\n   const historyDownload = await session.download(history.getByRole(\"button\", { name: `Download ${file.name}`, exact: true }).first(), file.name, bytes, `${stage}-history`);\n@@ -267,6 +269,7 @@ export async function exerciseRetainedAttachments(author: RetainedSession, reade\n   await expect(reader.page.getByRole(\"heading\", { name: fixture.title, exact: true })).toBeVisible();\n   const composer = author.page.getByRole(\"form\", { name: \"Comments\", exact: true });\n   await composer.getByLabel(\"Add comment\", { exact: true }).fill(\"Frozen file input\");\n+  await revealCollaborationMentions(composer);\n   await composer.getByRole(\"button\", { name: fixture.agent.name, exact: true }).click();\n   const content = await composer.getByLabel(\"Add comment\", { exact: true }).inputValue();\n   expect(content).toContain(`mention://agent/${fixture.agent.resource_id}`);\n@@ -352,6 +355,7 @@ export async function exerciseRetainedAttachments(author: RetainedSession, reade\n   const beforeRevoke = await fetch(capability.url, { redirect: \"error\" });\n   assertPrivateResponse(beforeRevoke, 200);\n   expect(Buffer.from(await beforeRevoke.arrayBuffer())).toEqual(bytes);\n+  await attachmentsPanel(reader.page);\n   await reader.page.getByRole(\"region\", { name: \"Attachments\", exact: true }).getByRole(\"button\", { name: `Preview ${file.name}`, exact: true }).click();\n   await expect(reader.page.getByRole(\"dialog\", { name: file.name, exact: true }).locator(\"pre\")).toHaveText(bytes.toString());\n   const removalReceipt = await fixture.creator.requestJSON<{ code: string; request_id: string }>(`${root}/participants/${fixture.handlerId}/remove`, {\n",
+    "source_equivalence": "Exactly15 declared E2E test/fixture files plus previously verified generated Next import change in isolated candidate; product source unchanged.",
+    "latest_two_file_review": {
+      "e2e/collaboration-boundaries-web.spec.ts": "Gap7 opens actual Mention through reviewed helper before targetclick; wrong-role API refusals,no-enqueue,preview and unchanged-state assertions retained.",
+      "e2e/collaboration-workbench-web.spec.ts": "Transfer uses same label as button or menuitem with visible More actions disclosure. Activity closes and waits hidden before Participating link. Former handler absence retains includeHidden and now checks bothroles after available menu open; menu closes before later foreground actions. New handler Transfer is actually visible in supported location."
+    },
+    "negative_assertion_scope": "Prior records, memory andLeave visible-panel/menu/Mention safeguards remain intact. No genericpendingstate reveal,forceclick,timeoutor retry changes.",
+    "supersedes_for_integration": [
+      "final_patch_addendum",
+      "final_patch_addendum_14"
+    ],
+    "actual_incremental_runs": {
+      "legacy-two-final-proof": {
+        "evidence": {
+          "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-two-final-proof/results.json",
+          "sha256": "8e2846eb9ab184b2b1361c571447be11851fe661e642fc56ab324c5055fd8aa0",
+          "bytes": 10368
+        },
+        "stats": {
+          "startTime": "2026-11-07T05:56:25.492Z",
+          "duration": 34763.072,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "cases": [
+          {
+            "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+            "status": "passed",
+            "retry": 0
+          },
+          {
+            "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+            "status": "failed",
+            "retry": 0
+          }
+        ]
+      },
+      "workbench-final-proof": {
+        "evidence": {
+          "path": ".omx/private/branch-e2e-20261107/browser/runs/workbench-final-proof/results.json",
+          "sha256": "b511111244e72ca30986218d204c562354e41fc6a8cbcb7ea7b3fe24b11ddced",
+          "bytes": 2916
+        },
+        "stats": {
+          "startTime": "2026-11-07T05:58:55.018Z",
+          "duration": 10124.019,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "cases": [
+          {
+            "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      }
+    },
+    "original17_status_map": {
+      "path": ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/original-case-current-status.json",
+      "status_counts": {
+        "PASS": 15,
+        "BLOCKED": 2
+      },
+      "historical_passes_carried": false
+    },
+    "documentation": {
+      "path": ".trellis/spec/web/frontend/e2e-run-environment.md",
+      "sha256": "7291518382ee39167c73a953c45ae41a2d98bf6d6575cb5bedb8b6279920723d",
+      "added_lines": 32,
+      "removed_lines": 0,
+      "verdict": "PASS",
+      "contracts": [
+        "Dismiss modal before background action",
+        "Show relevant panel/menu/Mention group before forbidden-action absence",
+        "Use actual pending attention CTA and preserve exact identity GET with no new POST",
+        "Wait for rendered edited comment before delete",
+        "Retain scroll expectation and all failed runs"
+      ],
+      "no_api_schema_or_infrastructure_change": true
+    },
+    "root_live_checks": {
+      "e2e/collaboration-account-desktop.spec.ts": {
+        "sha256": "5fb058ef8cf9af36febdd00c23b78dbbf573a78bbb2ce283b0921ccb95c23762",
+        "matches_approved": true
+      },
+      "e2e/collaboration-records-web.spec.ts": {
+        "sha256": "66aae27b72e98aae7022144afc142ddb18e4910533e2982bba8b4a2bd8715222",
+        "matches_approved": true
+      },
+      "e2e/collaboration-delivery-web.spec.ts": {
+        "sha256": "faf267594e1238161bd8ff70576eeb1c31f230e6486a640de6c83baaab4d2ca0",
+        "matches_approved": true
+      },
+      "e2e/fixtures/collaboration-detail-journey.ts": {
+        "sha256": "0c0ef62cb1bdee7cb043727b80f95977ccddd584aadfbb7be6ad3e99139ab67e",
+        "matches_approved": true
+      },
+      "e2e/collaboration-knowledge.spec.ts": {
+        "sha256": "78fb8c663e5b7ff1d5dc8f5e8989a724dd7d9ca04378ff29b7237ab8cdbfbeb7",
+        "matches_approved": true
+      },
+      "e2e/fixtures/collaboration-knowledge.ts": {
+        "sha256": "0c22f72ef4379203c43437991db91df94b8110f38de2a5f2ebed9f6bff0ca3fa",
+        "matches_approved": true
+      },
+      "e2e/collaboration-memory-web.spec.ts": {
+        "sha256": "e428641ee6299d1f5310145a26de81f1b8b11a8b0dbf9b2ef386ef5e3d15136f",
+        "matches_approved": true
+      },
+      "e2e/fixtures/collaboration-disclosures.ts": {
+        "sha256": "d08b379a6ed288829f5b16a49c37533ec580a96db50fba08e2358b0ca7b403bb",
+        "matches_approved": true
+      },
+      "e2e/fixtures/collaboration-control-gaps.ts": {
+        "sha256": "ebce66bbc362e41507a84d477a3589379bb0a002b0a7845740c4f604a75b14c9",
+        "matches_approved": true
+      },
+      "e2e/fixtures/collaboration-mention-journeys.ts": {
+        "sha256": "d5308e4d846f8014dea6fdb1c6a0a4b61ecfd77742759d146232accd3c75eb47",
+        "matches_approved": true
+      },
+      "e2e/fixtures/collaboration-retained-attachments.ts": {
+        "sha256": "5ef7bae09da68d4340b2d2e42484afbf61f84937554af5f0ed39509e280f9bf2",
+        "matches_approved": true
+      },
+      "e2e/fixtures/collaboration-resource-offers.ts": {
+        "sha256": "ad329102566e08d5a85c4bcb63138f8a660318432bc659c8d9f05cabb88ddb4a",
+        "matches_approved": true
+      },
+      "e2e/collaboration-workbench-web.spec.ts": {
+        "sha256": "40515c8f265eaf757ba097500ff665ad75bade24ec918ea643de59149963f1f0",
+        "matches_approved": true
+      },
+      "e2e/collaboration-leave-web.spec.ts": {
+        "sha256": "1d7c2de7535ccec42ad017db874139615e801e83fb54996325c9f78628de1dc5",
+        "matches_approved": true
+      },
+      "e2e/collaboration-boundaries-web.spec.ts": {
+        "sha256": "d95387c4ebc7c076ba2cc2cc94e64c966f7d0ded3b33f81375e9f8f59b4c074e",
+        "matches_approved": true
+      }
+    },
+    "root_integration_complete": true,
+    "remaining_acceptance_limits": [
+      "Canonical detail2 failures retained;Web diagnosticPASS is separate.",
+      "Frontend4 failures and unexecutedplatform/provider scope remain.",
+      "This approval is for boundedtestmaintenance,not release or wholebranch acceptance."
+    ],
+    "live_integration_record": {
+      "path": ".omx/private/branch-e2e-20261107/browser/live-integration-final-15.json",
+      "sha256": "5f33329dc53013ad9d12a7ebf13b94118d3c8e0f3ecd4948ff9ee484de8aa516",
+      "bytes": 3490
+    }
+  }
+}

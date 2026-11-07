@@ -636,6 +636,7 @@ export async function changeJourneySourceComment(session: DetailJourneySession, 
   const edited = CollaborationCommentReceiptSchema.parse(await editedResponse.json());
   await expect(editor).toHaveCount(0);
   await expect(row.getByRole("button", { name: copy.editComment, exact: true })).toBeFocused();
+  await expect(row.getByText(content, { exact: true })).toBeVisible();
   await row.getByRole("button", { name: copy.deleteComment, exact: true }).click();
   const deletion = row.getByRole("form", { name: copy.deleteComment, exact: true });
   const deletedPending = session.page.waitForResponse((response) => new URL(response.url()).pathname === `${issuePath(id)}/comments/${commentId}` && response.request().method() === "DELETE");

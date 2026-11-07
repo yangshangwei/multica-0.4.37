@@ -3,7 +3,7 @@ import pg from "pg";
 import { test, expect, type Page, type Request } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
 import { selectHandoffRecipient } from "./fixtures/collaboration-offline-handoff";
-import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
+import { revealCollaborationDisclosure, revealCollaborationMentions } from "./fixtures/collaboration-disclosures";
 import { leaveThroughUI } from "./fixtures/collaboration-control-gaps";
 import type { CollaborationIssue } from "@multica/core/collaboration";
 
@@ -121,13 +121,16 @@ test("Web workbench keeps account scope through comments, uncertain cancellation
   expect(cancelPosts).toBe(1);
 
   await page.getByLabel("Add comment", { exact: true }).fill("Browser comment ");
+  await revealCollaborationMentions(page.getByRole("form", { name: "Comments", exact: true }));
   await page.getByRole("button", { name: "Browser source owner", exact: true }).click();
   await page.getByRole("button", { name: "Preview delivery" }).click();
   await expect(page.getByText("1 notification recipients")).toBeVisible();
   await page.getByRole("button", { name: "Send comment" }).click();
   await expect(page.getByText("Comment confirmed.")).toBeVisible();
 
-  await page.getByRole("button", { name: "Transfer", exact: true }).click();
+  const transferAction = page.getByRole("button", { name: "Transfer", exact: true }).or(page.getByRole("menuitem", { name: "Transfer", exact: true }));
+  if (!await transferAction.isVisible()) await revealCollaborationDisclosure(page, "More actions");
+  await transferAction.click();
   const transfer = page.locator("form").filter({ has: page.getByRole("heading", { name: "Transfer", exact: true }) });
   await selectHandoffRecipient(page, transfer, { id: recipientAccount.id, name: "Browser recipient" });
   await transfer.getByLabel("Note", { exact: true }).fill("Browser handoff note");
@@ -136,9 +139,18 @@ test("Web workbench keeps account scope through comments, uncertain cancellation
   await expect(page.getByRole("heading", { name: created.title, exact: true })).toBeVisible();
   await revealCollaborationDisclosure(page, "Activity");
   await expect(page.getByRole("region", { name: "Activity", exact: true }).getByText("Browser handoff note")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog", { name: "Activity", exact: true })).toBeHidden();
   await page.getByRole("link", { name: "Participating", exact: true }).click();
   await expect(page.getByRole("region", { name: "Collaboration issues" }).getByRole("link", { name: new RegExp(created.title) })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Transfer", exact: true, includeHidden: true })).toHaveCount(0);
+  const moreActions = page.getByRole("button", { name: "More actions", exact: true });
+  if (await moreActions.isVisible()) await revealCollaborationDisclosure(page, "More actions");
+  await expect(page.getByRole("button", { name: "Transfer", exact: true, includeHidden: true })
+    .or(page.getByRole("menuitem", { name: "Transfer", exact: true, includeHidden: true }))).toHaveCount(0);
+  if (await page.getByRole("menu").isVisible()) {
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("menu")).toHaveCount(0);
+  }
   const incoming = await recipient.requestJSON<{ items: { id: string }[] }>("/api/me/workbench?view=current");
   expect(incoming.items.map((item) => item.id)).toContain(created.id);
   const recipientPage = await browser.newPage();
@@ -146,7 +158,9 @@ test("Web workbench keeps account scope through comments, uncertain cancellation
     await authenticatePage(recipientPage, recipient.getToken()!);
     await recipientPage.goto(new URL(account, page.url()).href);
     await expect(recipientPage.getByRole("heading", { name: created.title, exact: true })).toBeVisible();
-    await expect(recipientPage.getByRole("button", { name: "Transfer", exact: true })).toBeVisible();
+    const recipientTransfer = recipientPage.getByRole("button", { name: "Transfer", exact: true }).or(recipientPage.getByRole("menuitem", { name: "Transfer", exact: true }));
+    if (!await recipientTransfer.isVisible()) await revealCollaborationDisclosure(recipientPage, "More actions");
+    await expect(recipientTransfer).toBeVisible();
   } finally { await recipientPage.close(); }
 
   await page.locator('[data-tab-scroll-root="account-detail"]').evaluate((element) => { element.scrollTop = 0; });

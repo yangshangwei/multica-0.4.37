@@ -1,4 +1,4 @@
-import { revealCollaborationDisclosure } from "./collaboration-disclosures";
+import { revealCollaborationDisclosure, revealCollaborationMentions } from "./collaboration-disclosures";
 import { createHash, randomUUID } from "node:crypto";
 import { expect, type Locator, type Page } from "@playwright/test";
 import type { TestApiClient } from "../fixtures";
@@ -241,6 +241,8 @@ async function displayAndDownload(session: RetainedSession, file: CollaborationA
   const panel = await attachmentsPanel(page);
   await preview(session, panel, file, bytes);
   const issueDownload = await session.download(panel.getByRole("button", { name: `Download ${file.name}`, exact: true }), file.name, bytes, `${stage}-issue`);
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog", { name: "Attachments", exact: true })).toBeHidden();
   const history = await historyContainer(page, removedId);
   await preview(session, history, file, bytes);
   const historyDownload = await session.download(history.getByRole("button", { name: `Download ${file.name}`, exact: true }).first(), file.name, bytes, `${stage}-history`);
@@ -267,6 +269,7 @@ export async function exerciseRetainedAttachments(author: RetainedSession, reade
   await expect(reader.page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
   const composer = author.page.getByRole("form", { name: "Comments", exact: true });
   await composer.getByLabel("Add comment", { exact: true }).fill("Frozen file input");
+  await revealCollaborationMentions(composer);
   await composer.getByRole("button", { name: fixture.agent.name, exact: true }).click();
   const content = await composer.getByLabel("Add comment", { exact: true }).inputValue();
   expect(content).toContain(`mention://agent/${fixture.agent.resource_id}`);
@@ -352,6 +355,7 @@ export async function exerciseRetainedAttachments(author: RetainedSession, reade
   const beforeRevoke = await fetch(capability.url, { redirect: "error" });
   assertPrivateResponse(beforeRevoke, 200);
   expect(Buffer.from(await beforeRevoke.arrayBuffer())).toEqual(bytes);
+  await attachmentsPanel(reader.page);
   await reader.page.getByRole("region", { name: "Attachments", exact: true }).getByRole("button", { name: `Preview ${file.name}`, exact: true }).click();
   await expect(reader.page.getByRole("dialog", { name: file.name, exact: true }).locator("pre")).toHaveText(bytes.toString());
   const removalReceipt = await fixture.creator.requestJSON<{ code: string; request_id: string }>(`${root}/participants/${fixture.handlerId}/remove`, {

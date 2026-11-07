@@ -209,6 +209,11 @@ export async function openTarget(page: Page, f: KnowledgeFixture, kind: "project
     await window.evaluate(w => w.setContentSize(1380, 960));
     await window.dispose();
     await expect.poll(() => page.evaluate(() => innerWidth)).toBe(1380);
+    const sourceDrawer = page.getByRole("dialog", { name: "Knowledge candidates", exact: true });
+    if (await sourceDrawer.isVisible()) {
+      await page.keyboard.press("Escape");
+      await expect(sourceDrawer).toBeHidden();
+    }
     await selectDesktopWorkspace(page, f.workspace);
     await page.getByRole("link", { name: kind === "project" ? "Projects" : "Settings", exact: true }).and(page.locator('[data-sidebar="menu-button"]')).click();
     if (kind === "project") await page.getByText(f.project.title, { exact: true }).first().click();

@@ -555,6 +555,38 @@ An absent-action assertion against collapsed content does not prove the closed
 state's authority. Preserve the original failed run when adapting that visible
 interaction; the observed collapsed state alone does not identify its cause.
 
+## Collaboration drawers and visible authorization assertions
+
+Resource drawers are modal. Before using background controls such as Copy link,
+Notifications, Submit result or application navigation, dismiss the active
+drawer with its real control or Escape and await its hidden state. Reopen the
+resource through its visible toolbar when the next assertion belongs there.
+Do not force clicks through the overlay.
+
+An absence assertion against an inaccessible background can pass without proving
+authorization. For example, close Sub-issues before checking that Edit source
+fields is absent. Open an available More actions menu before checking forbidden
+workflow actions, and show the Mention group before asserting revoked AI targets
+are absent. Assert the containing panel/group is visible first; retain separate
+API capability, refusal and unchanged-state assertions.
+
+Pending recovery follows the current drawer contract: after reload, assert the
+visible Needs attention status and activate its named resource button. Then
+exercise the original recovery control and request identity. Do not substitute
+the ordinary resource-discovery helper for this attention assertion. The
+knowledge recovery test observes requests after reload and requires zero POSTs
+while the original-operation GET resolves the retained candidate.
+
+After editing a comment, await its exact rendered new content before opening a
+version-bound deletion. A disabled confirmation showing Use latest version is
+evidence of a stale observation, not a DELETE request that the server lost.
+Keep scroll-restoration expectations unchanged when adjusting these controls;
+record layout/scroll measurements separately if restoration still fails.
+
+Evidence: `11-01-branch-e2e-acceptance/research/continuation-20261107/`.
+The fixture repairs preserve the failed original runs and unchanged product
+bytes; successful repaired journeys do not retroactively pass the originals.
+
 ## macOS updater isolation and phase evidence
 
 ### 1. Scope / trigger

@@ -1,0 +1,279 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-07T05:18:13.281413+00:00",
+  "reviewer": "native trellis-check /root/evidence_reconcile",
+  "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+  "verdict": "PASS_FOR_BOUNDED_TEST_FIX",
+  "blocking_findings": [],
+  "source_fix": {
+    "path": "e2e/fixtures/collaboration-disclosures.ts",
+    "before_sha256": "1774801a6860018c39c8c7204c67c16f57ca0dbf330dbb3c7defdbd9297665a7",
+    "after_sha256": "0dad80fa753db8b73db2622e45cbdf86fd8b91f4f7c00cf2e84186f9fc1075d9",
+    "before_matches_candidate_blob": true,
+    "after_matches_current_isolated_source": true,
+    "exact_change": "One additional backslash in the numeric count RegExp template string.",
+    "byte_delta": 1,
+    "business_assertions_changed": false,
+    "timeouts_changed": false,
+    "retries_changed": false,
+    "production_source_changed": false,
+    "other_changed_tracked_file": "apps/web/next-env.d.ts; exact documented .next/dev/types→.next/types import rewrite only",
+    "untracked_application_or_e2e_source_at_review": [],
+    "application_equivalence_scope": "git diff against frozen candidate for apps/packages/server/scripts/e2e; exact helper and generated-import changes only. This is source evidence,not a new complete runtime/build audit."
+  },
+  "root_cause": {
+    "before_runtime_pattern": "^Attachments(?: d+)?$",
+    "expected_runtime_pattern": "^Attachments(?: \\d+)?$",
+    "production_contract": "detail-auxiliary.tsx gives buttons accessible names as name or name+space+numeric count; drawer accessible name stays base name.",
+    "affected_branches": [
+      "closed Issue resources group",
+      "open Browse issue resources group"
+    ],
+    "unchanged_branches": [
+      "More actions menu",
+      "AI execution details"
+    ],
+    "name_safety": "Current union resource names contain no regex metacharacters requiring new escaping."
+  },
+  "original_e2e": {
+    "run": "legacy-first",
+    "record": {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json",
+      "sha256": "527331ef50c2711591452d292f2a90f4cb5b6d1807586ac4c0681a7135a5f46e",
+      "bytes": 62374
+    },
+    "run_exit": 130,
+    "framework_stats": {
+      "startTime": "2026-11-07T05:10:04.364Z",
+      "duration": 177807.25,
+      "expected": 7,
+      "skipped": 44,
+      "unexpected": 2,
+      "flaky": 0
+    },
+    "direct_terminal_count": {
+      "skipped": 3,
+      "failed": 2,
+      "passed": 7,
+      "no_results": 41
+    },
+    "interpreted": {
+      "pass": 7,
+      "fail": 2,
+      "explicit_conditional_skip": 2,
+      "not_run_after_authorized_interrupt": 42
+    },
+    "failed_cases": [
+      {
+        "file": "collaboration-account-desktop.spec.ts",
+        "title": "Desktop creates a private collaboration issue, downloads through native IPC and restores the same issue",
+        "status": "failed",
+        "retry": 0,
+        "error_message": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('group', { name: 'Issue resources', exact: true }).getByRole('button', { name: /^Attachments(?: d+)?$/ })\u001b[22m\n\n\n   at fixtures/collaboration-disclosures.ts:18\n\n  16 |     const drawer = page.getByRole(\"dialog\").filter({ has: page.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) });\n  17 |     const controls = await drawer.isVisible() ? drawer.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) : page.getByRole(\"group\", { name: \"Issue resources\", exact: true });\n> 18 |     await controls.getByRole(\"button\", { name: new RegExp(`^${name}(?: \\d+)?$`) }).click();\n     |                                                                                    ^\n  19 |     await expect(drawer).toHaveAccessibleName(name);\n  20 |     return drawer;\n  21 |   }\n    at revealCollaborationDisclosure (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/fixtures/collaboration-disclosures.ts:18:84)\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-account-desktop.spec.ts:359:5",
+        "helper_line": 18
+      },
+      {
+        "file": "collaboration-account-desktop.spec.ts",
+        "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+        "status": "failed",
+        "retry": 0,
+        "error_message": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('group', { name: 'Issue resources', exact: true }).getByRole('button', { name: /^Sub-issues(?: d+)?$/ })\u001b[22m\n\u001b[2m    - waiting for\" http://localhost:5979/\" navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"http://localhost:5979/\"\u001b[22m\n\n\n   at fixtures/collaboration-disclosures.ts:18\n\n  16 |     const drawer = page.getByRole(\"dialog\").filter({ has: page.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) });\n  17 |     const controls = await drawer.isVisible() ? drawer.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) : page.getByRole(\"group\", { name: \"Issue resources\", exact: true });\n> 18 |     await controls.getByRole(\"button\", { name: new RegExp(`^${name}(?: \\d+)?$`) }).click();\n     |                                                                                    ^\n  19 |     await expect(drawer).toHaveAccessibleName(name);\n  20 |     return drawer;\n  21 |   }\n    at revealCollaborationDisclosure (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/fixtures/collaboration-disclosures.ts:18:84)\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-account-desktop.spec.ts:412:5",
+        "helper_line": 18
+      }
+    ],
+    "explicit_skips": [
+      {
+        "title": "Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Requires the task-owned deployment with collaboration creation enabled",
+            "location": {
+              "file": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-account-desktop.spec.ts",
+              "line": 279,
+              "column": 8
+            }
+          }
+        ]
+      },
+      {
+        "title": "Desktop resource owners authorize, withdraw and commit a held configuration switch",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Requires a matching task-only runtime enrollment deployment",
+            "location": {
+              "file": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-account-desktop.spec.ts",
+              "line": 585,
+              "column": 8
+            }
+          }
+        ]
+      }
+    ],
+    "unrun_count_detail": "41 tests have no results;1 has zero-duration skipped and no skip annotation. Together42 not-run;do not report framework skipped44 as44 accepted feature exclusions.",
+    "history_preserved": true
+  },
+  "source_expression_verification": {
+    "executed_by_reviewer": true,
+    "method": "Read new RegExp expression verbatim from preserved before/after TypeScript and evaluate with Node Function(name); no copied regex substitute.",
+    "checks_before": 28,
+    "checks_after": 28,
+    "names": [
+      "Attachments",
+      "Sub-issues",
+      "Knowledge candidates",
+      "Activity"
+    ],
+    "accepted_after": [
+      "bare name",
+      "name 0",
+      "name 1",
+      "name 12"
+    ],
+    "refused_after": [
+      "name d",
+      "Other name 12",
+      "name 12 extra"
+    ],
+    "baseline_observation": "Bare name matched;numeric names failed;literal d matched.",
+    "outcome": "all56 assertions satisfied; before proves mismatch,after proves intended lexical contract"
+  },
+  "actual_helper_regression": {
+    "record": {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/helper-browser-regression-2/results.json",
+      "sha256": "40109a52e307d3d358c7dfa809c69280fbb93c133a87fa268d703589d4bdcee0",
+      "bytes": 5067
+    },
+    "source": {
+      "path": ".omx/private/branch-e2e-20261107/browser/helper-regression/helper.spec.ts",
+      "sha256": "35b5bba65f9a6b3e288468fe0ad08f3edc994ba477805f5563b4678049ab71df",
+      "bytes": 2049
+    },
+    "imports_actual_isolated_helper": true,
+    "helper_implementation_mocked": false,
+    "browser": "Chromium",
+    "workers": 1,
+    "retries": 0,
+    "cases": [
+      {
+        "title": "actual disclosure helper resolves accessible resource count ''",
+        "status": "passed",
+        "retry": 0,
+        "duration_ms": 408
+      },
+      {
+        "title": "actual disclosure helper resolves accessible resource count ' 12'",
+        "status": "passed",
+        "retry": 0,
+        "duration_ms": 312
+      },
+      {
+        "title": "actual helper preserves action menu and native details branches",
+        "status": "passed",
+        "retry": 0,
+        "duration_ms": 143
+      }
+    ],
+    "scope": "Real browser DOM and actual Playwright helper;four resource labels with no count/count12,closed/open drawer;More actions and AI execution closed/open branches. Synthetic DOM is not product E2E.",
+    "red_evidence": "Two original actual native E2E failures already execute actual pre-fix helper. No extra product run requested by reviewer.",
+    "first_control_attempt": {
+      "run": "helper-browser-regression",
+      "exit": 1,
+      "tests_entered": 0,
+      "classification": "Private harness TS quoting syntax error plus No tests found;raw retained,not product failure."
+    }
+  },
+  "acceptance_limits": [
+    "Full repaired production/native browser suite still owned by execution agent;this review does not claim it passed.",
+    "Original failed/interrupted results remain unchanged;new runs must identify test-only helper variant.",
+    "Current diagnostics route unit failure and detail scroll restoration failure are separate;this fix does not repair either.",
+    "No paid models/deployment/native target platforms authorized or proven here."
+  ],
+  "evidence": [
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/harness-variant.json",
+      "sha256": "7d8947708e2a2f464a7f3d83b7c7352caea6ab4127bcc11ed9e14d3950ae0223",
+      "bytes": 403
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/harness-product-equivalence.json",
+      "sha256": "a26eaccc6523939cc31a06bd38660319225e0106a9f4834022a45f2b97edbf1a",
+      "bytes": 301
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/disclosure-helper-before.ts",
+      "sha256": "1774801a6860018c39c8c7204c67c16f57ca0dbf330dbb3c7defdbd9297665a7",
+      "bytes": 1677
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/disclosure-helper-after.ts",
+      "sha256": "0dad80fa753db8b73db2622e45cbdf86fd8b91f4f7c00cf2e84186f9fc1075d9",
+      "bytes": 1678
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/disclosure-helper.patch",
+      "sha256": "5043727283029622401d7ed22cedb1763ca221779ffd9048c264e9421dac12bf",
+      "bytes": 957
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/disclosure-regression-control.txt",
+      "sha256": "56bb858cdb87094591036678594e076bf44cd7e770026223d14925c3d1067d50",
+      "bytes": 114
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/helper-regression/helper.spec.ts",
+      "sha256": "35b5bba65f9a6b3e288468fe0ad08f3edc994ba477805f5563b4678049ab71df",
+      "bytes": 2049
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/helper-regression/playwright.config.ts",
+      "sha256": "deea7c38fe897daf64137462bb4353873bd364f5c8f1fc4d85fde806c379e7e5",
+      "bytes": 238
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-first/run.json",
+      "sha256": "457b6ce458f4cc2ce6a7bd1ad0a11526998cbcb5d43828c92ce7e67646aa2ffb",
+      "bytes": 1279
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json",
+      "sha256": "527331ef50c2711591452d292f2a90f4cb5b6d1807586ac4c0681a7135a5f46e",
+      "bytes": 62374
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-first/interruption.json",
+      "sha256": "f12b422914c1f172515ec83f6f7cdf6cf01865d2febe5f1fd6c2667f2db6777b",
+      "bytes": 243
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/helper-browser-regression/run.json",
+      "sha256": "bf5eec09042060f4e899391c66b5e01ba34bcc7d6cf6bbbe497f5103648436b9",
+      "bytes": 696
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/helper-browser-regression/results.json",
+      "sha256": "b1ec2ae53418390f2f4fafa89e8c8774928829f26793477aa6d3dfe8505ab932",
+      "bytes": 7282
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/helper-browser-regression-2/run.json",
+      "sha256": "6d93d3e4361753e0d3bbf2ed8cc2173301ca2a48e18732f9b125819fc7a2993c",
+      "bytes": 698
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/helper-browser-regression-2/results.json",
+      "sha256": "40109a52e307d3d358c7dfa809c69280fbb93c133a87fa268d703589d4bdcee0",
+      "bytes": 5067
+    }
+  ],
+  "verification": {
+    "lint": "not_run_by_reviewer;no formatting or type API changed",
+    "typecheck": "not_run_by_reviewer;actual helper imported and transpiled in3passing browser controls",
+    "tests": "56 pure source-expression assertions executed by reviewer;3 actual-helper browser control passes independently inspected;2 original native E2E failures inspected",
+    "database_actions": 0,
+    "services_started": 0,
+    "provider_calls": 0,
+    "source_edits_by_reviewer": 0
+  }
+}

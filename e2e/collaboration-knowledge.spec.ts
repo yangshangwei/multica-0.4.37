@@ -162,7 +162,14 @@ test("Web original-key recovery stays locked after ambiguity and recovers by GET
     expect(calls[1]).toEqual(calls[0]);
     await expect(page.getByLabel("Summary", { exact: true })).toBeDisabled();
     await page.unroute(url, intercept);
+    const postsAfterReload: string[] = [];
+    page.on("request", request => {
+      if (request.method() === "POST" && new URL(request.url()).pathname === `${f.root}/knowledge-candidates`) postsAfterReload.push(request.url());
+    });
     await page.reload();
+    const attention = page.getByRole("status").filter({ hasText: "Needs attention:" });
+    await expect(attention).toBeVisible();
+    await attention.getByRole("button", { name: "Knowledge candidates", exact: true }).click();
     await expect(page.getByRole("button", { name: "Check original result", exact: true })).toBeEnabled();
     await expect(page.getByRole("button", { name: "Retry same request", exact: true })).toHaveCount(0);
     const recovered = page.waitForResponse(r => new URL(r.url()).pathname.endsWith(`/operations/${calls[0]!.request_id}`));
@@ -172,6 +179,7 @@ test("Web original-key recovery stays locked after ambiguity and recovers by GET
     await expect(page.getByRole("button", { name: "Check original result", exact: true })).toHaveCount(0);
     const list = await f.handler.requestJSON<{ items: unknown[] }>(`${f.root}/knowledge-candidates`);
     expect(list.items).toHaveLength(1);
+    expect(postsAfterReload).toEqual([]);
     await info.attach("recovery-evidence", { contentType: "application/json", body: JSON.stringify({ candidate_id: calls[0]!.candidate_id, request_id: calls[0]!.request_id,
       attempts: calls.length, exact_replay: true, recovery_method: "GET", created_candidates: list.items.length }, null, 2) });
   } finally { await page.unroute(url, intercept); }

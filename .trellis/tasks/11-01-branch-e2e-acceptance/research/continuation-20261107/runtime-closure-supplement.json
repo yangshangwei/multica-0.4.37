@@ -1,0 +1,158 @@
+{
+  "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+  "inventory": [
+    {
+      "package": "./pkg/protocol",
+      "expected_names": [
+        "TestCollaborationHandoffWireBoundsMemoryBaseVersion"
+      ],
+      "source_files": {
+        "TestCollaborationHandoffWireBoundsMemoryBaseVersion": "pkg/protocol/collaboration_handoff_decode_test.go"
+      }
+    },
+    {
+      "package": "./internal/service",
+      "expected_names": [
+        "TestCollaborationHandoffSnapshotPreservesMaximumAssignment",
+        "TestCollaborationRuntimeCommentsCarryMemberDisplayNames",
+        "TestCollaborationRecallRuntimePagesFulltextAndCurrentAuthority",
+        "TestCollaborationRecallChunksReassembleUTF8AndRejectCrossBinding"
+      ],
+      "source_files": {
+        "TestCollaborationHandoffSnapshotPreservesMaximumAssignment": "internal/service/collaboration_runtime_handoff_budget_test.go",
+        "TestCollaborationRuntimeCommentsCarryMemberDisplayNames": "internal/service/collaboration_comments_recall_test.go",
+        "TestCollaborationRecallRuntimePagesFulltextAndCurrentAuthority": "internal/service/collaboration_comments_recall_test.go",
+        "TestCollaborationRecallChunksReassembleUTF8AndRejectCrossBinding": "internal/service/collaboration_comments_recall_test.go"
+      }
+    },
+    {
+      "package": "./internal/cli",
+      "expected_names": [
+        "TestCollaborationRuntimeCommentKeepsOptionalDisplayName"
+      ],
+      "source_files": {
+        "TestCollaborationRuntimeCommentKeepsOptionalDisplayName": "internal/cli/collaboration_test.go"
+      }
+    }
+  ],
+  "packages": [
+    {
+      "package": "./pkg/protocol",
+      "database": null,
+      "exit_code": 0,
+      "top": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "TestCollaborationHandoffWireBoundsMemoryBaseVersion/live_base": "pass",
+        "TestCollaborationHandoffWireBoundsMemoryBaseVersion/live_empty_base": "pass",
+        "TestCollaborationHandoffWireBoundsMemoryBaseVersion/numeric_base": "pass",
+        "TestCollaborationHandoffWireBoundsMemoryBaseVersion/case_alias_base": "pass",
+        "TestCollaborationHandoffWireBoundsMemoryBaseVersion/snapshot_with_base": "pass",
+        "TestCollaborationHandoffWireBoundsMemoryBaseVersion/noncanonical_base": "pass",
+        "TestCollaborationHandoffWireBoundsMemoryBaseVersion/negative_base": "pass",
+        "TestCollaborationHandoffWireBoundsMemoryBaseVersion": "pass"
+      },
+      "missing": [],
+      "unexpected": [],
+      "package_actions": [
+        "pass"
+      ],
+      "source_matches": true,
+      "raw_path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/runtime-closure/pkg_protocol-race"
+    },
+    {
+      "package": "./internal/service",
+      "database": "branch_e2e_20261107_runtime_service_a3",
+      "exit_code": 0,
+      "top": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "TestCollaborationRecallChunksReassembleUTF8AndRejectCrossBinding": "pass",
+        "TestCollaborationRecallRuntimePagesFulltextAndCurrentAuthority": "pass",
+        "TestCollaborationRuntimeCommentsCarryMemberDisplayNames": "pass",
+        "TestCollaborationHandoffSnapshotPreservesMaximumAssignment/credential": "pass",
+        "TestCollaborationHandoffSnapshotPreservesMaximumAssignment/html": "pass",
+        "TestCollaborationHandoffSnapshotPreservesMaximumAssignment/ampersand": "pass",
+        "TestCollaborationHandoffSnapshotPreservesMaximumAssignment/control": "pass",
+        "TestCollaborationHandoffSnapshotPreservesMaximumAssignment/multibyte": "pass",
+        "TestCollaborationHandoffSnapshotPreservesMaximumAssignment": "pass"
+      },
+      "missing": [],
+      "unexpected": [],
+      "package_actions": [
+        "pass"
+      ],
+      "source_matches": true,
+      "raw_path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/runtime-closure/internal_service-race",
+      "remaining_connections": 0
+    },
+    {
+      "package": "./internal/cli",
+      "database": null,
+      "exit_code": 0,
+      "top": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "TestCollaborationRuntimeCommentKeepsOptionalDisplayName": "pass"
+      },
+      "missing": [],
+      "unexpected": [],
+      "package_actions": [
+        "pass"
+      ],
+      "source_matches": true,
+      "raw_path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/runtime-closure/internal_cli-race"
+    }
+  ],
+  "source_matches": true,
+  "real_provider_calls": 0,
+  "original_backend_audit": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/final-audit.json",
+  "original_ledger_unchanged": true,
+  "combined_totals": {
+    "top": {
+      "pass": 396,
+      "fail": 0,
+      "skip": 0
+    },
+    "all": {
+      "pass": 1014,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "finished_at": "2026-11-07T05:44:07.178752+00:00",
+  "limitations": [
+    "Canonical tests only; no full-suite or real-provider claim",
+    "Backend fingerprint intentionally excludes declared E2E fixture changes"
+  ],
+  "cleanup": {
+    "process_command_matches": [],
+    "retained_database": "branch_e2e_20261107_runtime_service_a3",
+    "database_connections": 0,
+    "checked_at": "2026-11-07T05:44:29.544560+00:00"
+  }
+}

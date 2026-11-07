@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
+import { revealCollaborationDisclosure, revealCollaborationMentions } from "./fixtures/collaboration-disclosures";
 import type { CollaborationParticipants, CollaborationResources, CollaborationWorkbench } from "@multica/core/collaboration";
 import { clickControl, controlEnvironmentReady, panelFor, seedCollaborationControlJourney, targetRow } from "./fixtures/collaboration-control-journey";
 import {
@@ -45,8 +45,12 @@ test("Web Leave issue refuses creator and handler; an owner's departure revokes 
     const handler = await openGapSession(browser, fixture, "handler", webUrl);
     sessions.push(handler);
     for (const session of [creator, handler]) {
-      if (!await session.page.getByRole("button", { name: "Transfer", exact: true }).isVisible()) await revealCollaborationDisclosure(session.page, "More actions");
-      await expect(session.page.getByRole("button", { name: "Transfer", exact: true })).toBeVisible();
+      if (!await session.page.getByRole("button", { name: "Transfer", exact: true }).or(session.page.getByRole("menuitem", { name: "Transfer", exact: true })).isVisible()) await revealCollaborationDisclosure(session.page, "More actions");
+      await expect(session.page.getByRole("button", { name: "Transfer", exact: true }).or(session.page.getByRole("menuitem", { name: "Transfer", exact: true }))).toBeVisible();
+      if (await session.page.getByRole("button", { name: "More actions", exact: true }).count() > 0) {
+        await revealCollaborationDisclosure(session.page, "More actions");
+        await expect(session.page.getByRole("menu")).toBeVisible();
+      }
       await expect(session.page.getByRole("button", { name: "Leave issue", exact: true }).or(session.page.getByRole("menuitem", { name: "Leave issue", exact: true }))).toHaveCount(0);
     }
     if (!await owner.page.getByRole("button", { name: "Leave issue", exact: true }).or(owner.page.getByRole("menuitem", { name: "Leave issue", exact: true })).isVisible()) await revealCollaborationDisclosure(owner.page, "More actions");
@@ -123,6 +127,7 @@ test("Web Leave issue refuses creator and handler; an owner's departure revokes 
     for (const target of fixture.targets) await expect(targetRow(creator.page, target).getByText("Resource authorization required", { exact: true })).toBeVisible();
     await expect(creator.page.locator(`[id="run-${pending.runId}"]`)).toContainText("Termination unconfirmed");
     const composer = creator.page.getByRole("form", { name: "Comments", exact: true });
+    await revealCollaborationMentions(composer);
     await expect(composer.getByRole("group", { name: "People", exact: true })).toBeVisible();
     await expect(composer.getByRole("group", { name: "AI targets", exact: true })).toHaveCount(0);
     const activity = await fixture.creator.requestJSON<{ items: { kind: string; actor: { user_id: string } | null }[] }>(`${root}/activity?limit=100`);

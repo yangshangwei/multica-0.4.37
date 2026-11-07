@@ -3,7 +3,7 @@ import pg from "pg";
 import { expect, type Locator, type Page } from "@playwright/test";
 import { TestApiClient } from "../fixtures";
 import type { CollaborationResourceSnapshot } from "./collaboration-resources";
-import { revealCollaborationDisclosure } from "./collaboration-disclosures";
+import { revealCollaborationDisclosure, revealCollaborationMentions } from "./collaboration-disclosures";
 
 interface OfferIssue extends CollaborationResourceSnapshot {
   session: { queue_state: string; control_version: string };
@@ -304,6 +304,7 @@ export async function exerciseCollaborationResourceOffers(ownerPage: Page, organ
   // This cross-slice happy path uses the real preview/comment/notification APIs.
   // The explicit AI input stays waiting under the existing issue/target holds.
   const composer = organizerPage.getByRole("form", { name: "Comments", exact: true });
+  await revealCollaborationMentions(composer);
   await composer.getByRole("button", { name: "@all · All participants", exact: true }).click();
   await composer.getByRole("button", { name: fixture.agentName, exact: true }).click();
   await expect(composer.getByLabel("Add comment", { exact: true })).toHaveValue(new RegExp(`mention://all/all.*mention://agent/${fixture.agentId}`));

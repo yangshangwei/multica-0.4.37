@@ -1,0 +1,739 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-07T05:10:33.003790+00:00",
+  "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+  "compared_base": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "review_scope": "Bounded source/coverage risk review,no execution,no product edits",
+  "changed_paths": [
+    ".github/workflows/agent-critical-path.yml",
+    ".github/workflows/ci.yml",
+    ".github/workflows/release.yml",
+    "apps/desktop/src/renderer/src/routes.tsx",
+    "apps/docs/content/docs/agents-create.mdx",
+    "apps/docs/content/docs/agents-create.zh.mdx",
+    "apps/docs/content/docs/autopilots.mdx",
+    "apps/docs/content/docs/autopilots.zh.mdx",
+    "apps/docs/content/docs/squads.mdx",
+    "apps/docs/content/docs/squads.zh.mdx",
+    "apps/web/app/[workspaceSlug]/(dashboard)/squads/new/manual/page.tsx",
+    "apps/web/app/[workspaceSlug]/(dashboard)/squads/new/page.tsx",
+    "apps/web/app/[workspaceSlug]/(dashboard)/squads/new/template/page.tsx",
+    "e2e/collaboration-boundaries-web.spec.ts",
+    "e2e/collaboration-delivery-web.spec.ts",
+    "e2e/collaboration-detail-journey.spec.ts",
+    "e2e/collaboration-handoff-chain-web.spec.ts",
+    "e2e/collaboration-host-installed.spec.ts",
+    "e2e/collaboration-installed-main.spec.ts",
+    "e2e/collaboration-leave-web.spec.ts",
+    "e2e/collaboration-memory-web.spec.ts",
+    "e2e/collaboration-recipient-picker-web.spec.ts",
+    "e2e/collaboration-terminal-reopen-web.spec.ts",
+    "e2e/collaboration-workbench-web.spec.ts",
+    "e2e/fixtures/collaboration-control-gaps.ts",
+    "e2e/fixtures/collaboration-detail-journey.ts",
+    "e2e/fixtures/collaboration-disclosures.ts",
+    "e2e/fixtures/collaboration-editing.ts",
+    "e2e/fixtures/collaboration-handoff-chain.ts",
+    "e2e/fixtures/collaboration-installed-main.mjs",
+    "e2e/fixtures/collaboration-installed-main.node-test.mjs",
+    "e2e/fixtures/collaboration-installed-main.ts",
+    "e2e/fixtures/collaboration-lane-close-controls.ts",
+    "e2e/fixtures/collaboration-offline-handoff.ts",
+    "e2e/fixtures/collaboration-offline-result-notifications.ts",
+    "e2e/fixtures/collaboration-retained-attachments.ts",
+    "e2e/localized-template-defaults.spec.ts",
+    "e2e/squads-audit.spec.ts",
+    "e2e/squads-design.spec.ts",
+    "packages/core/modals/store.ts",
+    "packages/core/paths/consistency.test.ts",
+    "packages/core/paths/paths.test.ts",
+    "packages/core/paths/paths.ts",
+    "packages/core/paths/tab-presentation.test.ts",
+    "packages/core/paths/tab-presentation.ts",
+    "packages/core/paths/tab-subject.test.ts",
+    "packages/core/paths/tab-subject.ts",
+    "packages/core/realtime/knowledge.test.ts",
+    "packages/core/realtime/knowledge.ts",
+    "packages/views/admin/collaboration/collaboration-page.test.tsx",
+    "packages/views/admin/collaboration/collaboration-page.tsx",
+    "packages/views/agents/create/create-shell.tsx",
+    "packages/views/collaboration/account-picker.test.tsx",
+    "packages/views/collaboration/account-picker.tsx",
+    "packages/views/collaboration/account-workbench-page.test.tsx",
+    "packages/views/collaboration/account-workbench-page.tsx",
+    "packages/views/collaboration/activity.test.tsx",
+    "packages/views/collaboration/activity.tsx",
+    "packages/views/collaboration/attachment-panel.test.tsx",
+    "packages/views/collaboration/attachment-panel.tsx",
+    "packages/views/collaboration/collaboration-detail.test.tsx",
+    "packages/views/collaboration/collaboration-detail.tsx",
+    "packages/views/collaboration/command-history.test.tsx",
+    "packages/views/collaboration/command-history.tsx",
+    "packages/views/collaboration/comment-composer.test.tsx",
+    "packages/views/collaboration/comment-composer.tsx",
+    "packages/views/collaboration/comment-history.tsx",
+    "packages/views/collaboration/comment-list.test.tsx",
+    "packages/views/collaboration/comment-list.tsx",
+    "packages/views/collaboration/detail-auxiliary.test.tsx",
+    "packages/views/collaboration/detail-auxiliary.tsx",
+    "packages/views/collaboration/field-editing.test.tsx",
+    "packages/views/collaboration/focus.test.tsx",
+    "packages/views/collaboration/focus.ts",
+    "packages/views/collaboration/knowledge-panel.test.tsx",
+    "packages/views/collaboration/knowledge-panel.tsx",
+    "packages/views/collaboration/knowledge-proposal.tsx",
+    "packages/views/collaboration/knowledge-review.tsx",
+    "packages/views/collaboration/memory-panel.test.tsx",
+    "packages/views/collaboration/memory-panel.tsx",
+    "packages/views/collaboration/notifications.tsx",
+    "packages/views/collaboration/panel-status.ts",
+    "packages/views/collaboration/participants.tsx",
+    "packages/views/collaboration/source-bridge.test.tsx",
+    "packages/views/collaboration/source-bridge.tsx",
+    "packages/views/collaboration/source-filter.tsx",
+    "packages/views/collaboration/workflow-upload.test.tsx",
+    "packages/views/collaboration/workflow.test.tsx",
+    "packages/views/collaboration/workflow.tsx",
+    "packages/views/common/create-page-shell.tsx",
+    "packages/views/locales/en/collaboration.json",
+    "packages/views/locales/en/layout.json",
+    "packages/views/locales/en/squads.json",
+    "packages/views/locales/zh-Hans/collaboration.json",
+    "packages/views/locales/zh-Hans/layout.json",
+    "packages/views/locales/zh-Hans/squads.json",
+    "packages/views/modals/registry-project-prefill.test.tsx",
+    "packages/views/modals/registry.tsx",
+    "packages/views/squads/components/create-squad-chooser.tsx",
+    "packages/views/squads/components/squads-page.test.tsx",
+    "packages/views/squads/components/squads-page.tsx",
+    "packages/views/squads/create/choose-create-squad-method-page.test.tsx",
+    "packages/views/squads/create/choose-create-squad-method-page.tsx",
+    "packages/views/squads/create/manual-create-squad-page.test.tsx",
+    "packages/views/squads/create/manual-create-squad-page.tsx",
+    "packages/views/squads/create/template-create-squad-page.test.tsx",
+    "packages/views/squads/create/template-create-squad-page.tsx",
+    "packages/views/squads/index.ts",
+    "playwright.agent-critical-path.config.mjs",
+    "scripts/agent-critical-path-workflow.test.mjs",
+    "scripts/agent-critical-path.mjs",
+    "scripts/agent-critical-path.sh",
+    "scripts/agent-critical-path.test.mjs",
+    "scripts/changelog-workflow.test.mjs",
+    "scripts/check-agent-critical-path.mjs",
+    "scripts/check-agent-critical-path.test.mjs",
+    "scripts/go-test-database-preconditions.test.mjs",
+    "scripts/test-go.sh",
+    "scripts/test-go.test.sh",
+    "server/cmd/multica/cmd_comment_trigger_outcomes.go",
+    "server/cmd/multica/cmd_comment_trigger_outcomes_test.go",
+    "server/cmd/multica/cmd_daemon.go",
+    "server/cmd/multica/cmd_issue.go",
+    "server/cmd/multica/daemon_fd_linux.go",
+    "server/cmd/multica/daemon_fd_linux_test.go",
+    "server/cmd/multica/daemon_fd_other.go",
+    "server/cmd/server/integration_test.go",
+    "server/cmd/server/rk1_entry_test.go",
+    "server/cmd/server/rk1_fake_test.go",
+    "server/cmd/server/rk1k_codex_controls_test.go",
+    "server/cmd/server/rk1k_codex_provider_test.go",
+    "server/cmd/server/rk1k_codex_registration_test.go",
+    "server/cmd/server/rk1k_codex_retry_controls_test.go",
+    "server/cmd/server/rk1k_codex_retry_test.go",
+    "server/cmd/server/rk1k_entry_test.go",
+    "server/cmd/server/rk1k_fixture_test.go",
+    "server/cmd/server/rk1k_provider_test.go",
+    "server/cmd/server/rk1k_scenarios_test.go",
+    "server/cmd/server/router.go",
+    "server/cmd/server/task_capability_review_test.go",
+    "server/cmd/server/task_capability_targeted_test.go",
+    "server/cmd/server/task_capability_test.go",
+    "server/internal/auth/task_capability.go",
+    "server/internal/auth/task_capability_test.go",
+    "server/internal/daemon/collaborationrun/host_config.go",
+    "server/internal/daemon/collaborationrun/host_handoff_codex_launch_test.go",
+    "server/internal/daemon/collaborationrun/host_knowledge.go",
+    "server/internal/daemon/collaborationrun/host_knowledge_codex_test.go",
+    "server/internal/daemon/collaborationrun/host_knowledge_test.go",
+    "server/internal/daemon/collaborationrun/host_runner.go",
+    "server/internal/daemon/daemon.go",
+    "server/internal/daemon/execenv/execenv_test.go",
+    "server/internal/daemon/execenv/runtime_config_sections.go",
+    "server/internal/daemon/execenv/runtime_config_test.go",
+    "server/internal/daemon/knowledge_codex_configuration_test.go",
+    "server/internal/daemon/knowledge_context.go",
+    "server/internal/daemon/rk1k_driver_agentintegration.go",
+    "server/internal/daemon/tool_output_preview_test.go",
+    "server/internal/docs/content/pages/agents-create.json",
+    "server/internal/docs/content/pages/autopilots.json",
+    "server/internal/docs/content/pages/squads.json",
+    "server/internal/handler/activity.go",
+    "server/internal/handler/agent.go",
+    "server/internal/handler/agent_access.go",
+    "server/internal/handler/agent_template_test.go",
+    "server/internal/handler/comment.go",
+    "server/internal/handler/daemon.go",
+    "server/internal/handler/handler.go",
+    "server/internal/handler/handler_test.go",
+    "server/internal/handler/issue.go",
+    "server/internal/handler/plugin_agent_hook.go",
+    "server/internal/handler/plugin_mcp.go",
+    "server/internal/handler/source_context.go",
+    "server/internal/handler/squad_briefing.go",
+    "server/internal/handler/squad_briefing_test.go",
+    "server/internal/handler/task_capability.go",
+    "server/internal/handler/task_capability_review_test.go",
+    "server/internal/handler/task_capability_test.go",
+    "server/internal/middleware/auth.go",
+    "server/internal/middleware/cloudfront.go",
+    "server/internal/middleware/cloudfront_test.go",
+    "server/internal/middleware/password_auth.go",
+    "server/internal/middleware/task_capability_auth_test.go",
+    "server/internal/migrations/task_capability_rollback_test.go",
+    "server/internal/service/builtin_agent_autonomy_test.go",
+    "server/internal/service/builtin_agent_templates/code-reviewer/INSTRUCTIONS.md",
+    "server/internal/service/builtin_agent_templates/migration-reviewer/INSTRUCTIONS.md",
+    "server/internal/service/builtin_agent_templates/progress-reporter/INSTRUCTIONS.md",
+    "server/internal/service/builtin_agent_templates/review-gate-lead/INSTRUCTIONS.md",
+    "server/internal/service/builtin_agent_templates/security-reviewer/INSTRUCTIONS.md",
+    "server/internal/service/builtin_agent_templates_roster.go",
+    "server/internal/service/builtin_agent_templates_test.go",
+    "server/internal/service/builtin_role_skills.go",
+    "server/internal/service/builtin_role_skills/multica-code-review/SKILL.md",
+    "server/internal/service/builtin_role_skills/multica-migration-review/SKILL.md",
+    "server/internal/service/builtin_role_skills/multica-progress-report/SKILL.md",
+    "server/internal/service/builtin_role_skills/multica-security-review/SKILL.md",
+    "server/internal/service/builtin_skills/multica-creating-agents/SKILL.md",
+    "server/internal/service/builtin_skills/multica-creating-agents/references/creating-agents-source-map.md",
+    "server/internal/service/builtin_skills/multica-mentioning/SKILL.md",
+    "server/internal/service/builtin_skills/multica-mentioning/references/mentioning-source-map.md",
+    "server/internal/service/builtin_skills/multica-squads/SKILL.md",
+    "server/internal/service/builtin_skills/multica-squads/references/squad-source-map.md",
+    "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+    "server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+    "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+    "server/internal/service/builtin_skills_test.go",
+    "server/internal/service/builtin_squad_templates.go",
+    "server/internal/service/collaboration_knowledge_runtime.go",
+    "server/internal/service/collaboration_knowledge_runtime_test.go",
+    "server/internal/service/task.go",
+    "server/internal/service/task_capability.go",
+    "server/internal/service/task_capability_test.go",
+    "server/internal/service/task_knowledge.go",
+    "server/internal/service/task_knowledge_codex_test.go",
+    "server/internal/service/task_knowledge_prepare.go",
+    "server/internal/testutil/db_test.go",
+    "server/migrations/765_task_api_capability.down.sql",
+    "server/migrations/765_task_api_capability.up.sql",
+    "server/pkg/agent/agent.go",
+    "server/pkg/agent/codex.go",
+    "server/pkg/agent/codex_knowledge.go",
+    "server/pkg/agent/codex_knowledge_test.go",
+    "server/pkg/agent/codex_test.go",
+    "server/pkg/agent/knowledge_launch.go",
+    "server/pkg/agent/launch_lifecycle.go",
+    "server/pkg/db/generated/comment.sql.go",
+    "server/pkg/db/generated/models.go",
+    "server/pkg/db/generated/task_knowledge.sql.go",
+    "server/pkg/db/generated/task_token.sql.go",
+    "server/pkg/db/queries/comment.sql",
+    "server/pkg/db/queries/task_token.sql",
+    "server/pkg/redact/redact.go",
+    "server/pkg/redact/redact_test.go",
+    "server/sqlc.yaml"
+  ],
+  "changed_path_count": 235,
+  "parent_plan_as_reported_not_independently_verified": {
+    "browser": [
+      "core-business3",
+      "task-lifecycle",
+      "old failure legacy/password",
+      "memory",
+      "workbench",
+      "handoff-chain",
+      "detail journey"
+    ],
+    "backend": "250 race tests service/handler/auth/middleware/router/collaborationrun inclTaskCapability",
+    "static": "parent reports all nonmobile lint/typecheck passed",
+    "unit": "parent reports all nonmobile units running"
+  },
+  "findings": [
+    {
+      "id": "GAP01",
+      "priority": "P1",
+      "topic": "Squad creation pages and shared creation shell",
+      "changed_source": [
+        "packages/views/squads/create/manual-create-squad-page.tsx",
+        "packages/views/squads/create/template-create-squad-page.tsx",
+        "apps/web/app/[workspaceSlug]/(dashboard)/squads/new/manual/page.tsx",
+        "apps/desktop/src/renderer/src/routes.tsx",
+        "packages/views/common/create-page-shell.tsx"
+      ],
+      "risk": "Modal replacement adds Web/Desktop routes and history; template creation/reuse and manual membership can fail despite unit mocks. Agent creation shares changed shell.",
+      "planned_coverage": "Root full units cover new components; described browser list omits new squad routes.",
+      "recommended_additions": [
+        {
+          "kind": "existing_e2e",
+          "files": [
+            "e2e/squads-design.spec.ts"
+          ],
+          "cases": [
+            "squad discovery keeps keyboard navigation, saved choices and project setup usable"
+          ],
+          "count": 1,
+          "covers": "Chooser navigation/back, list persistence, templates/project interaction and localization; not manual submission."
+        },
+        {
+          "kind": "existing_e2e",
+          "files": [
+            "e2e/localized-template-defaults.spec.ts"
+          ],
+          "grep": "Chinese squad staffing|a localized name collision",
+          "count": 2,
+          "covers": "Actual template page creation, localized role reuse, exact persisted roster,409 rollback and preserved draft."
+        },
+        {
+          "kind": "existing_e2e",
+          "files": [
+            "e2e/agent-role-template.spec.ts"
+          ],
+          "grep": "offers a template starting point and creates from a role",
+          "count": 1,
+          "covers": "Agent creation using newly shared shell."
+        },
+        {
+          "kind": "missing_existing_e2e",
+          "flow": "Manual squad create via new route, choose owned leader+member, submit, assert API roster and reload; exercise same route in real Desktop as well.",
+          "disposition": "No matching current e2e submit test found. Add bounded task-owned acceptance only if parent chooses, or mark not executed; do not claim existing chooser checks cover submit."
+        }
+      ],
+      "limits": "squads-audit is optional duplicate chooser/responsive coverage; if selected set SQUAD_AUDIT_PHASE=production-<unique> (before returns early; default after mislabels environment).",
+      "requirements": [
+        "R04",
+        "R05",
+        "AC01",
+        "AC03"
+      ],
+      "status": "GAP_OR_RAW_RESULT_CONFIRMATION_REQUIRED"
+    },
+    {
+      "id": "GAP02",
+      "priority": "P0",
+      "topic": "Knowledge review, realtime recovery and drawer remount",
+      "changed_source": [
+        "packages/core/realtime/knowledge.ts",
+        "packages/views/collaboration/knowledge-panel.tsx",
+        "packages/views/collaboration/knowledge-proposal.tsx",
+        "packages/views/collaboration/knowledge-review.tsx",
+        "packages/views/collaboration/detail-auxiliary.tsx"
+      ],
+      "risk": "Replacing a connection must not erase fresh data; erased queries/review state and ambiguous writes must remain recoverable after drawer close/reopen.",
+      "planned_coverage": "Units planned include focused socket/remount regressions; current described browser specs do not include full knowledge suite.",
+      "recommended_additions": [
+        {
+          "kind": "existing_e2e",
+          "files": [
+            "e2e/collaboration-knowledge.spec.ts"
+          ],
+          "count": 8,
+          "covers": "Web external proposal/exact approval/correction/derivation, purge, lost-response original-key recovery, refusal unlock, recorded source, target-only source removal, expiry under failed refresh, native review."
+        }
+      ],
+      "limits": "Legacy-only suite controls creation gate with execution disabled; serialize gate changes and require matching native renderer. Browser suite does not reproduce exact same-scope old-socket callback order; canonical realtime unit owns it. No paid model needed.",
+      "requirements": [
+        "R04",
+        "R06",
+        "AC03"
+      ],
+      "status": "GAP_OR_RAW_RESULT_CONFIRMATION_REQUIRED"
+    },
+    {
+      "id": "GAP03",
+      "priority": "P0",
+      "topic": "Recipient search and action/drawer authorization",
+      "changed_source": [
+        "packages/views/collaboration/account-picker.tsx",
+        "packages/views/collaboration/workflow.tsx",
+        "packages/views/collaboration/detail-auxiliary.tsx"
+      ],
+      "risk": "Self/recent/search selection, Escape nesting or stale selection may bypass intended recipient confirmation; terminal controls can accidentally resurrect work.",
+      "planned_coverage": "Old-failure suites cover exact picker path and delivery; added detail/memory/workbench/handoff cover many modal/disclosure interactions.",
+      "recommended_additions": [
+        {
+          "kind": "existing_e2e",
+          "files": [
+            "e2e/collaboration-recipient-picker-web.spec.ts"
+          ],
+          "count": 1,
+          "covers": "Persisted self/recent/search, minimal account data, nested Escape and stale recipient handling."
+        },
+        {
+          "kind": "existing_e2e",
+          "files": [
+            "e2e/collaboration-terminal-reopen-web.spec.ts"
+          ],
+          "count": 1,
+          "covers": "Closed @agent/Resume refusal; creator-only reopen; no execution resurrection; valid Stop barrier."
+        }
+      ],
+      "limits": "Terminal case needs explicit password/managed execution environment and controlled runtime. Detail manual journey explicitly asserts noAIWork, so it cannot substitute. Existing attachment/participants details largely covered by parent retained-attachment/detail runs.",
+      "requirements": [
+        "R04",
+        "R05",
+        "AC04"
+      ],
+      "status": "GAP_OR_RAW_RESULT_CONFIRMATION_REQUIRED"
+    },
+    {
+      "id": "GAP04",
+      "priority": "P0",
+      "topic": "Codex approved knowledge native session lifecycle",
+      "changed_source": [
+        "server/pkg/agent/codex.go",
+        "server/pkg/agent/codex_knowledge.go",
+        "server/internal/daemon/knowledge_context.go",
+        "server/internal/service/task_knowledge_prepare.go",
+        "server/internal/daemon/collaborationrun/host_knowledge.go"
+      ],
+      "risk": "Thread/turn identity, configuration fingerprint, continuation/withdrawal, private output or refusal could weaken approved knowledge boundaries.",
+      "planned_coverage": "Listed250-test package set covers service/host but does not name pkg/agent or ordinary internal/daemon.",
+      "recommended_additions": [
+        {
+          "kind": "go",
+          "package": "./pkg/agent",
+          "test_regex": "^TestKnowledgeCodex",
+          "covers": "11 canonical top-level tests using the test executable as fake provider; no installed account."
+        },
+        {
+          "kind": "go",
+          "package": "./internal/daemon",
+          "test_regex": "^Test(CodexKnowledgeNamespaceBindsSourceConfiguration|KnowledgeAllOrdinaryPromptBranchesReachActualStdin|KnowledgeOriginalReceiptSurvivesLostResponse|KnowledgeWrongIdentitiesNeverLaunch|KnowledgeNativeRefusalRetainsFailureEvidence|KnowledgeEmptyAuthorizedBundleKeepsBaseAndLaunchFence|KnowledgeFailuresNeverEnterFreshReplay|OrdinaryKnowledgeFirstLaunchRefusalIsTerminal|OrdinaryKnowledgeLaterLaunchRefusalDoesNotReplay)$",
+          "covers": "Ordinary provider config/actual stdin, lost receipt and no-fresh-replay boundaries."
+        },
+        {
+          "kind": "confirm_named_results",
+          "packages": [
+            "./internal/service",
+            "./internal/daemon/collaborationrun"
+          ],
+          "tests": [
+            "TestCodexKnowledgeInvocationRequiresBuiltinMatchingLocalRuntime",
+            "TestCodexKnowledgeNativeExposureResumeAndWithdrawal",
+            "TestCodexKnowledgeExposedHistoryRefusesLegacyAndChangedConfiguration",
+            "TestCodexCollaborationKnowledgeAuthorizesExactProviderAndRevokes",
+            "TestCodexCollaborationKnowledgeRefusesProviderChange",
+            "TestHostCodexKnowledgeRequiresEphemeralBeforePrivateTurn"
+          ],
+          "covers": "Avoid counting package selection as actual named execution."
+        }
+      ],
+      "limits": "Default fake tests only. Real RK1K tagged model execution and other task budgets remain outside authorization. A full deployed ON/OFF Host claim additionally requires collaboration-knowledge-deployed.spec.ts in each explicit configuration.",
+      "requirements": [
+        "R04",
+        "R06",
+        "R07"
+      ],
+      "status": "GAP_OR_RAW_RESULT_CONFIRMATION_REQUIRED"
+    },
+    {
+      "id": "GAP05",
+      "priority": "P0",
+      "topic": "Structured execution redaction",
+      "changed_source": [
+        "server/pkg/redact/redact.go",
+        "server/internal/daemon/daemon.go"
+      ],
+      "risk": "Credentials in sensitive structured keys or embedded JSON must be redacted before durable transcript/preview; preserving ordinary fields matters.",
+      "planned_coverage": "Changed pkg/redact and ordinary daemon omitted from described backend package list.",
+      "recommended_additions": [
+        {
+          "kind": "go",
+          "package": "./pkg/redact",
+          "test_regex": null,
+          "covers": "Full small canonical redaction package,including sensitive nested fields/JSON invalid/oversized input and token boundary controls."
+        },
+        {
+          "kind": "go",
+          "package": "./internal/daemon",
+          "test_regex": "^Test(ToolOutputPreview|ExecuteAndDrain_ToolOutputRedactedBeforePreview)",
+          "covers": "Actual output path redacts before truncating preview."
+        }
+      ],
+      "limits": "These source tests prove configured paths, not historical-log erasure or every external process log.",
+      "requirements": [
+        "R04",
+        "R06",
+        "R08"
+      ],
+      "status": "GAP_OR_RAW_RESULT_CONFIRMATION_REQUIRED"
+    },
+    {
+      "id": "GAP06",
+      "priority": "P0",
+      "topic": "Task capability migration and effective authorization",
+      "changed_source": [
+        "server/internal/auth/task_capability.go",
+        "server/internal/handler/task_capability.go",
+        "server/internal/middleware/cloudfront.go",
+        "server/internal/service/task_capability.go",
+        "server/migrations/765_task_api_capability.up.sql"
+      ],
+      "risk": "Reporter/reviewer scope may leak adjacent issue/project files, default to broader credentials, allow wildcard CDN access, or disappear on rollback.",
+      "planned_coverage": "Parent250 race selection includes TaskCapability across actual router/service/handler/auth/middleware.",
+      "recommended_additions": [
+        {
+          "kind": "confirm_named_results",
+          "packages": [
+            "./cmd/server",
+            "./internal/handler",
+            "./internal/middleware"
+          ],
+          "tests": [
+            "TestTaskCapabilityTargetedReporterListWindows",
+            "TestTaskCapabilityTargetedRuntimeOwnerAuthority",
+            "TestTaskCapabilityTargetedMutableRoleTextCannotChangeScope",
+            "TestTaskCapabilityReviewProductionRouter",
+            "TestTaskCapabilityReviewSourceContextDoesNotReadOutsideScope"
+          ],
+          "covers": "Current receipt must bind exact named windows, mutable-role and scope predicates; inspect CDN tests in raw inventory too."
+        },
+        {
+          "kind": "go",
+          "package": "./internal/migrations",
+          "test_regex": "^TestTaskCapabilityRollbackFence$",
+          "covers": "Actual765 UP/DOWN fence against concurrent mint and persisted capability; private schema."
+        }
+      ],
+      "limits": "Migration test requires explicit dedicated DB,never an API-serving/default DB. API grant is not host shell sandbox. Prior actual compiled CLI samples are historical,not current execution.",
+      "requirements": [
+        "R04",
+        "R06",
+        "AC03"
+      ],
+      "status": "GAP_OR_RAW_RESULT_CONFIRMATION_REQUIRED"
+    },
+    {
+      "id": "GAP07",
+      "priority": "P0",
+      "topic": "Delegation receipt semantics and human acceptance",
+      "changed_source": [
+        "server/cmd/multica/cmd_comment_trigger_outcomes.go",
+        "server/cmd/multica/cmd_issue.go",
+        "server/internal/handler/squad_briefing.go",
+        "server/internal/daemon/execenv/runtime_config_sections.go",
+        "server/internal/service/builtin_squad_templates.go"
+      ],
+      "risk": "Saved comments must not imply every mentioned target queued; blocked/malformed/duplicate receipt and lost response cannot cause blind repost. in_review must not release stage barrier.",
+      "planned_coverage": "CoreG6 provides normal comment admission; TaskCapability backend selections may not include CLI warning/schema preservation or briefing stage contract.",
+      "recommended_additions": [
+        {
+          "kind": "go",
+          "package": "./cmd/multica",
+          "test_regex": "^TestIssueCommentDelegationReceipts",
+          "covers": "Real Cobra add/update boundary with controlled HTTP; complete JSON untouched, separate warning,one request,table and uncertain write."
+        },
+        {
+          "kind": "go",
+          "package": "./internal/daemon/execenv",
+          "test_regex": "^Test(IssueWorkflowSeparatesDeliveryFromStageAcceptance|EveryBriefThatTeachesJSONOutputAlsoWarnsAgainstMergingStderr)$",
+          "covers": "Stage acceptance and stdout/stderr guidance."
+        },
+        {
+          "kind": "confirm_named_results",
+          "packages": [
+            "./internal/handler",
+            "./internal/service"
+          ],
+          "tests": [
+            "TestCreateComment_MixedMentionSurfacesPartialTriggerOutcomes",
+            "TestSquadOperatingProtocolChecksDelegationReceipts",
+            "TestSquadsSkillCoversLeaderRoutingContract",
+            "TestSquadTemplates_LifecycleEvidenceRouting"
+          ],
+          "covers": "Parent existing backend run may already contain these; confirm before rerunning."
+        },
+        {
+          "kind": "conditional_e2e",
+          "files": [
+            "e2e/collaboration-host-squad.spec.ts"
+          ],
+          "count": 1,
+          "covers": "Actual controlled host leader/member physical execution,coalescing and continuation; core3 uses HTTP test daemon rather than this full squad runtime."
+        }
+      ],
+      "limits": "No existing generic browser result proves a real model understands receipt instructions; current task forbids those paid calls. Controlled-executor M1 remainder is roadmap work and not silently added to acceptance scope.",
+      "requirements": [
+        "R04",
+        "R07",
+        "AC04"
+      ],
+      "status": "GAP_OR_RAW_RESULT_CONFIRMATION_REQUIRED"
+    },
+    {
+      "id": "GAP08",
+      "priority": "P1",
+      "topic": "Verification commands cannot accept absent/skipped coverage",
+      "changed_source": [
+        "scripts/test-go.sh",
+        "scripts/go-test-database-preconditions.test.mjs",
+        "scripts/agent-critical-path.mjs",
+        "scripts/check-agent-critical-path.mjs",
+        ".github/workflows/agent-critical-path.yml",
+        ".github/workflows/ci.yml",
+        ".github/workflows/release.yml",
+        "playwright.agent-critical-path.config.mjs"
+      ],
+      "risk": "EmptyDB setup,ignored exit or missing named smoke case must fail CI instead of reporting product green.",
+      "planned_coverage": "Root pnpm lint/typecheck/units do not automatically include Node shell workflow tests; core3 includes all4 canonical critical-path business tests already.",
+      "recommended_additions": [
+        {
+          "kind": "node",
+          "command": "node --test scripts/check-agent-critical-path.test.mjs scripts/agent-critical-path.test.mjs scripts/agent-critical-path-workflow.test.mjs scripts/changelog-workflow.test.mjs",
+          "covers": "Selection/result rejection, provenance/ownership and CI contract."
+        },
+        {
+          "kind": "shell",
+          "command": "bash scripts/test-go.test.sh",
+          "covers": "Go wrapper failure forwarding and database prerequisites."
+        },
+        {
+          "kind": "node_guarded",
+          "command": "bash scripts/go-test-with-agent-cli-guard.sh -- node --test scripts/go-test-database-preconditions.test.mjs",
+          "covers": "Offline missing/malformed/unreachable TestMain configuration with unreachable private sockets; requires non-Git TMPDIR."
+        }
+      ],
+      "limits": "Do not rerun whole critical-path launcher merely to duplicate4already scheduled cases; review its contract separately. No hosted GitHub workflow/CI run or release is established.",
+      "requirements": [
+        "R01",
+        "R03",
+        "R06",
+        "R07"
+      ],
+      "status": "GAP_OR_RAW_RESULT_CONFIRMATION_REQUIRED"
+    },
+    {
+      "id": "GAP09",
+      "priority": "P0",
+      "topic": "Linux daemon descriptor and installed lifecycle",
+      "changed_source": [
+        "server/cmd/multica/cmd_daemon.go",
+        "server/cmd/multica/daemon_fd_linux.go"
+      ],
+      "risk": "Detached daemon inheriting Electron FD can block close/restart and keep files locked.",
+      "planned_coverage": "Original-blocker installed-main scheduled only if matching current bundle available.",
+      "recommended_additions": [
+        {
+          "kind": "platform_go",
+          "package": "./cmd/multica",
+          "source": "server/cmd/multica/daemon_fd_linux_test.go",
+          "covers": "Actual Linux red/green-derived FD regression preserving parent and explicit streams."
+        },
+        {
+          "kind": "conditional_e2e",
+          "files": [
+            "e2e/collaboration-installed-main.spec.ts",
+            "e2e/collaboration-host-installed.spec.ts"
+          ],
+          "covers": "Matching package full Main/Stop/restart/Resume; fixture scope only."
+        }
+      ],
+      "limits": "Darwin compile or old1a32+FD package does not prove current Linux binary. Retain explicit BLOCKED when owned runner/package missing.",
+      "requirements": [
+        "R04",
+        "R07",
+        "AC03"
+      ],
+      "status": "GAP_OR_RAW_RESULT_CONFIRMATION_REQUIRED"
+    }
+  ],
+  "minimum_browser_additions_existing": {
+    "legacy": [
+      {
+        "files": [
+          "e2e/squads-design.spec.ts"
+        ],
+        "count": 1
+      },
+      {
+        "files": [
+          "e2e/localized-template-defaults.spec.ts"
+        ],
+        "grep": "Chinese squad staffing|a localized name collision",
+        "count": 2
+      },
+      {
+        "files": [
+          "e2e/agent-role-template.spec.ts"
+        ],
+        "grep": "offers a template starting point and creates from a role",
+        "count": 1
+      },
+      {
+        "files": [
+          "e2e/collaboration-knowledge.spec.ts"
+        ],
+        "count": 8
+      },
+      {
+        "files": [
+          "e2e/collaboration-recipient-picker-web.spec.ts"
+        ],
+        "count": 1
+      }
+    ],
+    "password_conditional": [
+      {
+        "files": [
+          "e2e/collaboration-terminal-reopen-web.spec.ts"
+        ],
+        "count": 1
+      }
+    ],
+    "total_static_declared": 14,
+    "count_limit": "Static source identities,not Playwright collection/execution totals; collect with actual candidate/environment."
+  },
+  "existing_e2e_gaps": [
+    "Manual squad form actual submit+API persistence+reload; Web and native Desktop routes.",
+    "Full R05 current projects/iterations/triage/resources/autopilot/admin flows not all scheduled by described subset; either select source-map cases or explicitly mark retained historical/not_run."
+  ],
+  "requirements_review": {
+    "R01": "Candidate frozen; final source/artifact/PID/config/BuildID checks still required after execution.",
+    "R02": "This supplement maps current diff to changed risks and exact existing tests; originals in prior reconciliation.",
+    "R03": "Preserve independent DBs; do not run migration test on API DB; serialize global gates.",
+    "R04": "Major gaps: knowledge, recipient selection, actual squad execution and changed nativeCodex/log/CLI paths.",
+    "R05": "Squad new route is changed; unchanged projects/iterations/triage/resource/admin coverage cannot be inferred from full unit pass.",
+    "R06": "Named raw results required; parent progress and suite presence are not test proof.",
+    "R07": "HTTP daemon/native renderer/installed app/OS/fake/real-provider explicitly separate.",
+    "R08": "These are coverage gaps,not confirmed product defects; preserve any new failures and report without product changes."
+  },
+  "full_pass_limit": "AC03 prevents full acceptance with missing agreed P0/P1/platform/provider prerequisites. Partial deterministic success is a valid scoped result but not complete branch acceptance.",
+  "reference_blob_sha256": {
+    "e2e/squads-design.spec.ts": "c689e6382ac92ad793e449cf7d26e6b65b8e5fae0269b85cdad87833432f1b76",
+    "e2e/localized-template-defaults.spec.ts": "2872ab819f410deb38315262231ec7c58a081d0bf64cb0ed3d32b48e40fc5a0a",
+    "e2e/collaboration-knowledge.spec.ts": "5da7bfe9e0d7b3755e079b01eda7f6a71fcf0a8ee2f6559b57c75589937be4cb",
+    "e2e/collaboration-recipient-picker-web.spec.ts": "1aa39decc01d857a403e5815d8cae2464b17b67869184a7dce7607a7d481f505",
+    "e2e/collaboration-terminal-reopen-web.spec.ts": "7178ee24e345789612dd63d02a3908ae9bc2104c0a1dd0696f041bb0155b0b9c",
+    "scripts/check-agent-critical-path.mjs": "ac74735ace622fcb20498ae7c4fdf956c18d5d5b2410e5b2c9ca35a615141cfe",
+    "server/pkg/agent/codex_knowledge_test.go": "376e0297fdad86ce8fe8660b83a7f02ebc7b0d266c0b3e7a031737eec068e1ea",
+    "server/cmd/multica/cmd_comment_trigger_outcomes_test.go": "5027312b7105af78a7351d9f808f20d99a0ed4885399ffb591b44d314ab05730",
+    "server/internal/migrations/task_capability_rollback_test.go": "d307489e8c098b9c4231f597ec70d67a31899d706a556c9cc654861258ca4d59",
+    "packages/views/squads/create/manual-create-squad-page.test.tsx": "4c070c55f5120b9bc71d166d50afadb66e1344309f98edc5eb7433d9c162d38e"
+  },
+  "verification": {
+    "read_only": true,
+    "executed_tests": 0,
+    "services_started": 0,
+    "database_actions": 0,
+    "provider_calls": 0,
+    "product_files_modified": 0,
+    "lint": "not_run_report_only",
+    "typecheck": "not_run_report_only",
+    "tests": "static test identity/source checks only"
+  },
+  "parent_updates_during_review": {
+    "source": "Parent message; this reviewer has not independently inspected new raw failures",
+    "core_unit_result": "4460 PASS /1 FAIL; independent reproduction14 PASS /1 FAIL",
+    "reported_issue": "diagnostics path mapping omits /squads/new/manual",
+    "browser_issue": "Original detail journey scroll restoration expected620,observed476; diagnosis pending",
+    "interpretation": "Retain failures; do not infer all manual creation navigation broken or classify scroll cause before diagnosis."
+  }
+}

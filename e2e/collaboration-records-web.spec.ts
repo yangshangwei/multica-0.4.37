@@ -23,6 +23,8 @@ test("Web shares ordinary child references and retained run records through acco
   const children = page.getByRole("region", { name: "Sub-issues", exact: true });
   const childLink = children.getByRole("link", { name: `${fixture.child.identifier} ${fixture.child.title}`, exact: true });
   await expect(childLink).toHaveAttribute("href", `/${fixture.workspace.slug}/issues/${fixture.child.id}`);
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog", { name: "Sub-issues", exact: true })).toBeHidden();
   await expect(page.getByRole("button", { name: "Edit source fields", exact: true })).toHaveCount(0);
   await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.bringToFront();
@@ -85,6 +87,8 @@ test("Web shares ordinary child references and retained run records through acco
     await outside.reload();
     await revealCollaborationDisclosure(outside, "Sub-issues");
     await expect(outsideChildren.getByText(fixture.child.title, { exact: true })).toBeVisible();
+    await outside.keyboard.press("Escape");
+    await expect(outside.getByRole("dialog", { name: "Sub-issues", exact: true })).toBeHidden();
     await outside.getByRole("button", { name: /Notifications/ }).click();
     const notification = outside.getByRole("listitem").filter({ has: outside.getByText("AI execution failed", { exact: true }) });
     await notification.getByRole("link", { name: fixture.issue.title, exact: true }).click();

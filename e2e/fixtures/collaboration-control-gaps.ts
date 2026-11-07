@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { revealCollaborationDisclosure } from "./collaboration-disclosures";
+import { revealCollaborationDisclosure, revealCollaborationMentions } from "./collaboration-disclosures";
 import { expect, type Browser, type Page } from "@playwright/test";
 import type {
   CollaborationCommandHistory, CollaborationCommentReceipt, CollaborationIssue, CollaborationMentionTargets,
@@ -94,6 +94,7 @@ export async function commentThroughUI(page: Page, issueId: string, marker: stri
   const field = form.getByLabel("Add comment", { exact: true });
   await field.fill(`${prefix}${marker}`);
   await expect(field).toHaveValue(`${prefix}${marker}`);
+  if (targetNames.length > 0) await revealCollaborationMentions(form);
   for (const name of targetNames) await form.getByRole("group", { name: "AI targets", exact: true }).getByRole("button", { name, exact: true }).click();
   const content = await field.inputValue();
   const previewPending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/comments/trigger-preview`

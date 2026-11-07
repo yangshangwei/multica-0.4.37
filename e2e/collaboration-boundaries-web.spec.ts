@@ -3,7 +3,7 @@ import { expect, test, type Browser, type BrowserContext, type Page } from "@pla
 import type { CollaborationIssue } from "@multica/core/collaboration";
 import { TestApiClient } from "./fixtures";
 import { authenticateCollaborationEditor, revealCollaborationEditingAction } from "./fixtures/collaboration-editing";
-import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
+import { revealCollaborationDisclosure, revealCollaborationMentions } from "./fixtures/collaboration-disclosures";
 import { sql } from "./fixtures/core-journeys";
 
 // Collaboration boundaries no client spec proved (collab-audit.md §2 Gap 5,
@@ -369,6 +369,7 @@ test("Gap 7: hidden manager actions POSTed by the wrong role are refused and cha
     const memberPage = pages.member!.page;
     const composer = memberPage.getByRole("form", { name: "Comments", exact: true });
     await composer.getByLabel("Add comment", { exact: true }).fill(`Source member note ${fixture.key}`);
+    await revealCollaborationMentions(composer);
     await composer.getByRole("group", { name: "AI targets", exact: true }).getByRole("button", { name: agent.agentName, exact: true }).click();
     await composer.getByRole("button", { name: "Preview delivery", exact: true }).click();
     await expect(composer.getByText("Only an active participant can submit AI input", { exact: true })).toBeVisible();

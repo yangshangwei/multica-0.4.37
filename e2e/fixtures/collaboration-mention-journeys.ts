@@ -1,3 +1,4 @@
+import { revealCollaborationMentions } from "./collaboration-disclosures";
 import { randomUUID } from "node:crypto";
 import { expect, type Locator, type Page, type Request, type Route } from "@playwright/test";
 import type {
@@ -209,6 +210,7 @@ async function openCreator(page: Page, fixture: CollaborationMentionJourney, ada
 }
 async function selectMentions(page: Page, fixture: CollaborationMentionJourney, targets: MentionTarget[]) {
   const composer = composerFor(page);
+  await revealCollaborationMentions(composer);
   await composer.getByRole("group", { name: "People", exact: true }).getByRole("button", { name: fixture.handlerName, exact: true }).click();
   for (const target of targets) {
     await composer.getByRole("group", { name: "AI targets", exact: true }).getByRole("button", { name: target.name, exact: true }).click();

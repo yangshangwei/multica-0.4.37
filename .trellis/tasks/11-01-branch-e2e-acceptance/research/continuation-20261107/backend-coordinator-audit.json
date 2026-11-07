@@ -1,0 +1,104 @@
+{
+  "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+  "result": "PASS",
+  "raw_terminals": 996,
+  "top_level": 390,
+  "runs": [
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/auth-race/run.json",
+      "exit_code": 0,
+      "terminals": 1,
+      "stdout_sha256": "373cb732d95dad86b358a2ed6478ebfb2a10f65e0b29fcd0012d4295794e533d"
+    },
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/cdn-race/run.json",
+      "exit_code": 0,
+      "terminals": 1,
+      "stdout_sha256": "bbbcdb04c6944a297c2a09684b61e1de3f464cb75d2e1610520dd4dcf4b626c2"
+    },
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/cmd_server-race/run.json",
+      "exit_code": 0,
+      "terminals": 50,
+      "stdout_sha256": "86cada2ffc374fe7a887bbea6b24898e573ce99ad2ebe913878ed67fe562e8bd"
+    },
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/daemon_collaborationrun-race/run.json",
+      "exit_code": 0,
+      "terminals": 118,
+      "stdout_sha256": "7a4e629eb3053a8ee35c33dbf4922b25731ab615574ee953627d91c5d0031fb6"
+    },
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/delta/cmd_multica-race/run.json",
+      "exit_code": 0,
+      "terminals": 60,
+      "stdout_sha256": "ad36cf0d6a3d352d9da2f99312cb84a10374dd0613b2b2ac162637e192d48922"
+    },
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/delta/internal_daemon-race/run.json",
+      "exit_code": 0,
+      "terminals": 138,
+      "stdout_sha256": "19f476b400713fc8d6bd4035661ffd25b0823884397fac438fcceeb3fe7f74c4"
+    },
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/delta/internal_daemon_collaborationrun-race/run.json",
+      "exit_code": 0,
+      "terminals": 7,
+      "stdout_sha256": "b35f599bd267262ce07296a617a0a8f365273fefb50d6b631d85775bc1fd01ea"
+    },
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/delta/internal_daemon_execenv-race/run.json",
+      "exit_code": 0,
+      "terminals": 10,
+      "stdout_sha256": "5678aa89aa28b2c1226c695aa7af36f61cf90f02d04796b685627cba1a33eec5"
+    },
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/delta/internal_handler-race/run.json",
+      "exit_code": 0,
+      "terminals": 2,
+      "stdout_sha256": "c4b29c5a8be6292881ca8fc8d6718768dbffe3ec38c6aeb98740d19a87463295"
+    },
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/delta/internal_migrations-race/run.json",
+      "exit_code": 0,
+      "terminals": 1,
+      "stdout_sha256": "075ee6c5915bf49bd78afdc22538d7886fb593fbd5a69851f95d9594490e7eda"
+    },
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/delta/internal_service-race/run.json",
+      "exit_code": 0,
+      "terminals": 7,
+      "stdout_sha256": "522f3cc0ff2a7a9a8219dff6a568bc5b5daeee8aa96681d1ca284a99258904e1"
+    },
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/delta/pkg_agent-race/run.json",
+      "exit_code": 0,
+      "terminals": 117,
+      "stdout_sha256": "5d1c879016faf158c23af1b76cf3cbb1c92d4ed1e6759a4595008174d5b3333d"
+    },
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/delta/pkg_redact-race/run.json",
+      "exit_code": 0,
+      "terminals": 77,
+      "stdout_sha256": "f9045db0b90adf8fbb54218c91d4f12cc9f6fb7a4d6596eca38773705273b414"
+    },
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/handler-race/run.json",
+      "exit_code": 0,
+      "terminals": 235,
+      "stdout_sha256": "c686176e61ccfc519a68b53ce2fdf58f6ca1aaada676dd44c87bd111f4370841"
+    },
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/middleware-race/run.json",
+      "exit_code": 0,
+      "terminals": 24,
+      "stdout_sha256": "6052a5324627f0d39612a32b337495e63c9e1620cfe22799d9acfac4169af317"
+    },
+    {
+      "run": ".omx/private/branch-e2e-20261107/backend/service-race/run.json",
+      "exit_code": 0,
+      "terminals": 148,
+      "stdout_sha256": "750543bca1eb9201d7f77b8f457f25a2f41817cc3ee8882f9943d0a3ce8fbcaa"
+    }
+  ]
+}

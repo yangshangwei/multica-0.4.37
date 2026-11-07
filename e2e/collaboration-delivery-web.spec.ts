@@ -166,7 +166,10 @@ test("Web creates one private issue after lost upload/create responses and revok
     await source.requestJSON(`/api/collaboration/issues/${createdId}/comments/${commentReceipt.comment_id}`, { method: "PATCH", headers: { "Idempotency-Key": randomUUID() },
       body: { content: "The comment no longer displays its file.", expected_comment_revision: commentReceipt.comment_revision, attachment_ids: [] } });
     expect(await viewer.requestJSON(`/api/collaboration/issues/${createdId}/attachments/${imageId}`)).toMatchObject({ id: imageId, issue_id: createdId });
+    await recipientPage.keyboard.press("Escape");
+    await expect(recipientPage.getByRole("dialog", { name: "Attachments", exact: true })).toBeHidden();
     await recipientPage.getByRole("textbox", { name: "Add comment", exact: true }).fill("Viewer unsent private draft");
+    await revealCollaborationDisclosure(recipientPage, "Attachments");
     await recipientAttachments.getByRole("button", { name: "Preview comment-preview.png", exact: true }).click();
     await expect(recipientPage.getByRole("img", { name: "comment-preview.png", exact: true })).toBeVisible();
     await expect.poll(() => recipientPage.getByRole("img", { name: "comment-preview.png", exact: true }).evaluate((image) => (image as HTMLImageElement).naturalWidth)).toBe(1);

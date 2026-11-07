@@ -77,6 +77,8 @@ test("shared context keeps concurrent edits, restores versions, and permits hist
     expect(history.items.map(item => item.version)).toEqual(["4", "3", "2", "1"]);
     // The current external handler delivers through the UI before the creator
     // accepts the exact result; shared-context writes alone are not delivery.
+    await participant.keyboard.press("Escape");
+    await expect(participant.getByRole("dialog", { name: "Shared context", exact: true })).toBeHidden();
     await participant.getByRole("button", { name: "Submit result", exact: true }).click();
     const delivery = participant.getByRole("form", { name: "Submit result", exact: true });
     const resultText = "The shared context has been reviewed and restored.";
@@ -95,6 +97,9 @@ test("shared context keeps concurrent edits, restores versions, and permits hist
     expect(await submissionResponse.json()).toMatchObject({ code: "acceptance_submitted", delivery_confirmation: { submission_id: submission.id, attachment_ids: [] } });
     await expect(delivery).toHaveCount(0);
     await page.reload();
+    await expect(page.getByRole("dialog", { name: "Shared context", exact: true })).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog", { name: "Shared context", exact: true })).toBeHidden();
     await page.getByRole("button", { name: "Accept and complete", exact: true }).click();
     const completion = page.getByRole("form", { name: "Accept and complete", exact: true });
     await expect(completion.locator(`[data-submission-id="${submission.id}"]`)).toHaveCount(1);
@@ -108,8 +113,15 @@ test("shared context keeps concurrent edits, restores versions, and permits hist
     await expect(completion).toHaveCount(0);
     expect(await fixture.creator.client.requestJSON<CollaborationIssue>(fixture.root)).toMatchObject({ status_category: "done", handler: { user_id: fixture.creator.id },
       delivery: { current: null, latest: { id: submission.id, decision: { kind: "accepted", submission_id: submission.id, actor_user_id: fixture.creator.id } } } });
+    await expect(page.getByRole("dialog", { name: "Shared context", exact: true })).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog", { name: "Shared context", exact: true })).toBeHidden();
     await revealCollaborationDisclosure(page, "More actions");
     await expect(page.getByRole("button", { name: "Reopen issue", exact: true }).or(page.getByRole("menuitem", { name: "Reopen issue", exact: true }))).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("menu")).toHaveCount(0);
+    await page.getByRole("group", { name: "Issue resources", exact: true }).getByRole("button", { name: "Shared context", exact: true }).click();
+    await expect(panel).toBeVisible();
     await expect(panel.getByRole("button", { name: "Edit shared context", exact: true })).toHaveCount(0);
     await expect(panel.getByRole("button", { name: /^Restore v/ })).toHaveCount(0);
     await expect(panel).toContainText("This issue is closed, so its shared context is read-only.");

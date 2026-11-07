@@ -1,0 +1,337 @@
+{
+  "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+  "reviewed_at": "2026-11-07T06:06:17.497284+00:00",
+  "reviewer": "/root/current_backend_acceptance",
+  "review_status": "PASS_FOR_EVIDENCE_REPORTING",
+  "acceptance_pass": false,
+  "blocking_evidence_findings": [],
+  "browser": {
+    "unique_business_identities": 68,
+    "repository_cases": 67,
+    "private_manual_cases": 1,
+    "passed": 66,
+    "failed": 2,
+    "skipped": 0,
+    "not_run": 0,
+    "raw_runs": 27,
+    "raw_case_rows": 157,
+    "raw_execution_statuses": {
+      "acceptance": {
+        "failed": 20,
+        "skipped": 12,
+        "passed": 76,
+        "not_run": 41,
+        "timedOut": 3
+      },
+      "helper": {
+        "passed": 3
+      },
+      "diagnostic": {
+        "passed": 1,
+        "failed": 1
+      }
+    },
+    "helper_collection_errors": [
+      {
+        "label": "helper-browser-regression",
+        "errors": 2
+      }
+    ],
+    "retries": 0,
+    "workers": 1,
+    "csv_matches_json": true,
+    "raw_hashes_match": true,
+    "latest_actual_acceptance_runs_match_final_rows": true,
+    "full_inventory": {
+      "collected_unique": 441,
+      "executed_by_list": 0,
+      "repository_cases_outside_selection": 374
+    },
+    "canonical_detail_outcome": "Original2FAIL retained; diagnosticWebPASS/DesktopFAIL separate; scroll cause unresolved"
+  },
+  "provenance": {
+    "source_manifest_files": 8169,
+    "declared_test_changes": 15,
+    "product_bytes_match": true,
+    "live_and_frozen_test_hashes_match": true,
+    "desktop_renderer_preload_files": 494,
+    "artifact_bytes_match": true,
+    "cli_sha256": "68d371ec5ee9116bbe29f9854d8b00f40e240abedff963cefa99d786d3b8aa73",
+    "test_patch_sha256": "a3e173f02860547f7368b7ec9c7c71e77f66f62a19d694a6644db129ee2d5f39",
+    "next_generated_import_normalization": "Disclosed in coordinator report; independent code reviewer owns allowed exact rewrite and15-file semantic review"
+  },
+  "cleanup": {
+    "record_matches_public_copy": true,
+    "independently_observed_ports": {
+      "19791": [],
+      "14711": [],
+      "19792": [],
+      "14712": [],
+      "5979": []
+    },
+    "independently_observed_state_processes": [],
+    "independently_observed_browser_db_connections": {
+      "multica_branch4c817_20261107_browser": 0,
+      "multica_branch4c817_20261107_password": 0,
+      "multica_branch4c817_20261107_deployment": 0
+    },
+    "retained_gates": "All3 retain creation_enabled=true; enabled=false and host_execution_enabled=false. No claim of all gates reset."
+  },
+  "other_gates": {
+    "frontend": "13320PASS/4FAIL over1074files; independent frontend review retained",
+    "backend": "396top+618sub=1014PASS over14packages; full build/vetPASS",
+    "static": "15PASS/30warnings/UIexportsPASS",
+    "scripts": "101NodePASS plus separate Go wrapper shellPASS"
+  },
+  "corrected_reporting_finding": {
+    "original_legacy": "Raw7PASS/2FAIL/3SKIP/41withoutresults; normalized7PASS/2FAIL/2conditionalSKIP/42unexecuted includes1interruption-skip",
+    "status": "corrected in final report and defects"
+  },
+  "remaining_acceptance_failures": [
+    "QA-20261107-001 diagnostic squad-route mapping",
+    "QA-20261107-003 progress-report localization defaults",
+    "Canonical Web/Desktop detail scroll restoration journey2FAIL; root cause not closed"
+  ],
+  "scope_limits": [
+    "374 repository cases not executed in this continuation",
+    "Two original installed-client cases remainBLOCKED; historical passes not counted",
+    "No real commercial Provider/account calls; fixtures do not prove model behavior",
+    "No signed package/full Main/otherOS UI or complete performance acceptance",
+    "Report-level review does not repeat semantic review of15fixturechanges or original17mapping"
+  ],
+  "raw_runs": [
+    {
+      "label": "detail-journey-first",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "case_rows": 2,
+      "result_sha256": "2f8b38f93409d6159e1142c090e3c6271ed571e9b1ee5d8ccb30b3b496626f81",
+      "run_sha256": "165a1c0e38fb0a936f15c74dc26236775ffc3e8d56ed4f45cec2934df6544822"
+    },
+    {
+      "label": "legacy-first",
+      "kind": "acceptance",
+      "exit_code": 130,
+      "case_rows": 53,
+      "result_sha256": "527331ef50c2711591452d292f2a90f4cb5b6d1807586ac4c0681a7135a5f46e",
+      "run_sha256": "457b6ce458f4cc2ce6a7bd1ad0a11526998cbcb5d43828c92ce7e67646aa2ffb"
+    },
+    {
+      "label": "legacy-test-repair-1",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "case_rows": 53,
+      "result_sha256": "cfe3943af16350fe24b513116111b9be7d9ce21cc85383aba35d988a3529090c",
+      "run_sha256": "e1f20a0ab9c1ad1c96937942761182a72fde630edb5f87579b906cee7e87d578"
+    },
+    {
+      "label": "helper-browser-regression",
+      "kind": "helper",
+      "exit_code": 1,
+      "case_rows": 0,
+      "result_sha256": "b1ec2ae53418390f2f4fafa89e8c8774928829f26793477aa6d3dfe8505ab932",
+      "run_sha256": "bf5eec09042060f4e899391c66b5e01ba34bcc7d6cf6bbbe497f5103648436b9"
+    },
+    {
+      "label": "helper-browser-regression-2",
+      "kind": "helper",
+      "exit_code": 0,
+      "case_rows": 3,
+      "result_sha256": "40109a52e307d3d358c7dfa809c69280fbb93c133a87fa268d703589d4bdcee0",
+      "run_sha256": "6d93d3e4361753e0d3bbf2ed8cc2173301ca2a48e18732f9b125819fc7a2993c"
+    },
+    {
+      "label": "extra-template-first",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "case_rows": 3,
+      "result_sha256": "befc354d2264c5e9280e9a75f47c68503794b48c87c973b5018a52b77895f693",
+      "run_sha256": "d94efe3f5f3824b2a198e04ec58a194a5ff9fdf0446bf4b6ea4c277e293de339"
+    },
+    {
+      "label": "manual-squad-first",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "case_rows": 1,
+      "result_sha256": "65f91e898699db898a698bff9e50dff4f0e335cf348b979bcb7945fe89c4664e",
+      "run_sha256": "1e9fac3aa52862bff2c47e5ccf976e0406d77130bc37ca515e1b60948a542c7e"
+    },
+    {
+      "label": "drawer-readiness-recheck-1",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "case_rows": 6,
+      "result_sha256": "d404817d273ce105c86c9875aecbc6c6adefd618f406eae05d0cc228645ffdf4",
+      "run_sha256": "820b3edd228084d3f280e2f212ea1f38d9ce46cf1f101b3cefa7f6aa1cd85274"
+    },
+    {
+      "label": "detail-diagnostic-1",
+      "kind": "diagnostic",
+      "exit_code": 1,
+      "case_rows": 2,
+      "result_sha256": "130536b7689437db6f4b0002fd37bd608ef9e046ff519fecffeae7676ecb3388",
+      "run_sha256": "3ffb79fdb8d5ef7789a3be1df7f0c6b0b5cf417e9ac28eaa9447abf188e70c3e"
+    },
+    {
+      "label": "final-memory-knowledge-recheck",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "case_rows": 2,
+      "result_sha256": "8b1b465188bdc83bd814d5222a9886f10acb039c0cd5ef7eba7c3152dcf7180a",
+      "run_sha256": "9e139626b965f064af0d73b49150819ed51bccfa4c5653bd914f4e5ae8e4f93c"
+    },
+    {
+      "label": "password-collaboration-runtime-handoff-web",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "case_rows": 2,
+      "result_sha256": "00dff59bc6e8244055a9376cece507067b240ff112bf8d0234758a3c37b16454",
+      "run_sha256": "46cbb1534bede0da3020a5786eadab9436e50f3f97e6830f9a194e7b8c5497e1"
+    },
+    {
+      "label": "password-collaboration-handoff-chain-web",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "case_rows": 1,
+      "result_sha256": "a790cfd6afdbd1378e7c03744a15f67d9191830de3a8b6fbf358deb7580a5957",
+      "run_sha256": "87983ade51e1e5ee24999372dbc7e6bbb9e53e74e16b271ebbf3126a3c25ac5a"
+    },
+    {
+      "label": "password-collaboration-leave-web",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "case_rows": 1,
+      "result_sha256": "e0fc1e032cabc2224e662cdaa36614b96b855ea37fed872b026d73dd7cef581f",
+      "run_sha256": "aa24ceb06613ae022ab4f8bb2829a1685332ba8af72e4bc9784d09bef063a154"
+    },
+    {
+      "label": "password-collaboration-retained-attachment",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "case_rows": 3,
+      "result_sha256": "8cea5c971c99f9a15da672eef072ba6f62f98e256c506cf0a2c21bb3e79e7b78",
+      "run_sha256": "82ecec8b8f92896fd063053325e2a4b813dcd0a0e5f3922a2f5c153f0d9c39d3"
+    },
+    {
+      "label": "password-collaboration-source-surface",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "case_rows": 1,
+      "result_sha256": "634df942fa8752d7a9654db67071e1c398c874221c81fecfdce5c685c701b74b",
+      "run_sha256": "aaabf6ee541a459dc8b53d2421d6890c6d43a9bc48b1853da54d04062fa896fd"
+    },
+    {
+      "label": "password-collaboration-terminal-reopen-web",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "case_rows": 1,
+      "result_sha256": "71013711e2601eac53f8e441307d5b4efd2f3877320b4afa6163fcd17b88a4d9",
+      "run_sha256": "31bba7ad49f9bda73da27542984bc0ce23f5141693efe70dc3633fd6c24cc8c2"
+    },
+    {
+      "label": "password-final-collaboration-leave-web",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "case_rows": 1,
+      "result_sha256": "0aa7df2d6c84ce0c984a7bafa72b7de7622eb77ee34751b774519f26503669cb",
+      "run_sha256": "fb91bde1f693adb279b551b4cdcec3b0444ae8bc40a1f663b8ed47fbdfb6d3c6"
+    },
+    {
+      "label": "password-final-collaboration-retained-attachment",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "case_rows": 1,
+      "result_sha256": "c58ede4047efae46d1d8765767834c76f6adfefb4e83efa792769e2f56518b20",
+      "run_sha256": "2bec46dc253cba6b61387d56ac621b774a5fb783fafe9988ce1ccfe922cbd7af"
+    },
+    {
+      "label": "password-final-collaboration-source-surface",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "case_rows": 1,
+      "result_sha256": "7dd24afc72102b594dd7227c488adf86b8a91bb852f57589c3277e0b031b5dad",
+      "run_sha256": "f3486481a37c361c7dfd99367d17c8ccc47f44fb340e2fdd9ec789154aab3b8d"
+    },
+    {
+      "label": "password-final-collaboration-terminal-reopen-web",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "case_rows": 1,
+      "result_sha256": "087c6141d2b4910da51ef3a79ae0484fbd781e2cb80560f677229569c75e6464",
+      "run_sha256": "7352647cbca9c9c88d31ec5d7e461840dd99943f1eda9c25f15a5c17f3184cab"
+    },
+    {
+      "label": "password-closure-collaboration-leave-web",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "case_rows": 1,
+      "result_sha256": "8b7d457757917c835bd7945aaa4adf7ba1cddca07de83281d42fc8cab27dda6e",
+      "run_sha256": "af414ec2e4bd4f9db058c70035e9def4a6bf4de41d45343e33ea4ac7eeddc14d"
+    },
+    {
+      "label": "password-closure-collaboration-retained-attachment",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "case_rows": 1,
+      "result_sha256": "adc053836007cd4fc3a270914a1d8dd46ca2e50fb26fa3b49073c9539726ad63",
+      "run_sha256": "9f00a847ff36f973726d904016f7214c42a51b4ed8971177facfd5cbd7f005fd"
+    },
+    {
+      "label": "password-leave-final-proof",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "case_rows": 1,
+      "result_sha256": "7175642d75c8988be43608d27c4d75146f52c5c5bab5bceea8f7cff9c443e91a",
+      "run_sha256": "67787bd14309a138df4fa411ba3391e3f62f0588ca123b55a5c7d1d7c936df86"
+    },
+    {
+      "label": "password-retained-final-proof",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "case_rows": 1,
+      "result_sha256": "99a3119def2dc8a5b8b6231b1b7f61a5f14dd9dac60a49469b6543a31bfce4fe",
+      "run_sha256": "6f7a2db0019ad09742051fa709d2de99fe74ca74cd81e10f6221496ecd472ad8"
+    },
+    {
+      "label": "legacy-deployment-final",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "case_rows": 12,
+      "result_sha256": "c5e75bb4d61d4239d7e2d7e7b409ad5c9b2a575b6c09c62bd8c5906e575c9a4f",
+      "run_sha256": "c17eb6ffec7b1df62bdf7132859b88015e8eafd56ce3990e779d195b41fbaa33"
+    },
+    {
+      "label": "legacy-two-final-proof",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "case_rows": 2,
+      "result_sha256": "8e2846eb9ab184b2b1361c571447be11851fe661e642fc56ab324c5055fd8aa0",
+      "run_sha256": "d17aeb93d897ec0e7bc216830f58d12163f5f9637f0d308d99d45990a1c5f3e1"
+    },
+    {
+      "label": "workbench-final-proof",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "case_rows": 1,
+      "result_sha256": "b511111244e72ca30986218d204c562354e41fc6a8cbcb7ea7b3fe24b11ddced",
+      "run_sha256": "f6e8f27f47164ee325bdea74eb2b4e8b7ba50a612bb1bb0e5484ab54365aed87"
+    }
+  ],
+  "input_sha256": {
+    ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/report.md": "c3f033514e5a2b16d20768b8113b9498c391a459a5b0e04405023820369aee5c",
+    ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/defects-current.md": "973c71325fa2284c87fe733f4ca3c76b70df4f533a505dc46fc0b3d2a2a00275",
+    ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-results.json": "145111bfa5c9ccdf59047eca8530db475d4ea34a4800067b8e13e773e76efca8",
+    ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-coverage.csv": "88bed9854d5d7ce3a4caa45d6aa71e8a3d50b4f29c225c2237a33b13c1ab50ba",
+    ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-report.md": "ccafaba69e8528f7b0dc8457489107c294474bbd02ac9e7a70744dd4102f4232",
+    ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-provenance.json": "c3d4e484d6a32c36c80679d290d4610cc154bad3af4fe96bde0c496c7e60379e",
+    ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-cleanup.json": "f87ca41fbd468a6e6c4c330573a83cc46b9d6685386ac7a054df212b61e94e19",
+    ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/frontend-result.json": "ec6f5364dfc026297478368f6de23010bd934c4d49e3e58170ada8731f3ed21a",
+    ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/frontend-review.json": "53ea586b593630067004369490bf254c75771960eb2ac7060b93a19ce39ecf11",
+    ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/backend-combined-audit.json": "4ff2373a0871db9aab0c2e137de80443c0332991996a796ea89fa88f61a8996c",
+    ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/drawer-failure-analysis.json": "5d6fbde17fb87e48b078a986a2ff1dcd7fe19bce3d63c9fd3b827b5f1a1464b8",
+    ".omx/private/branch-e2e-20261107/browser/final-equivalence.json": "42345fce281fa6f208f586d9e35e316c6f4b0ead2189b913cb2541c1ed772b85",
+    ".omx/private/branch-e2e-20261107/browser/live-integration-final-15.json": "5f33329dc53013ad9d12a7ebf13b94118d3c8e0f3ecd4948ff9ee484de8aa516",
+    ".omx/private/branch-e2e-20261107/browser/source-hashes.json": "2a8ff4687198675df67bf3be2c810ae90574f68407e619d14510c7911f9ab34d",
+    ".omx/private/branch-e2e-20261107/browser/runs/inventory-full-final-15/results.json": "fff8e99c7452ee97fb71f38867ee694c03724f7a647ea2e62c28381278c087aa"
+  }
+}

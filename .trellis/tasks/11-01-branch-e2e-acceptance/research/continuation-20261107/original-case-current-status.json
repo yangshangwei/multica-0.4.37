@@ -1,0 +1,1470 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-11-07T05:58:33.005728+00:00",
+  "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+  "finalized": true,
+  "campaign_state": "Original17 current-case map finalized after password and deployment runs. The broader campaign still has separately recorded outcomes and non-original follow-ups.",
+  "status_rule": "Current latest executed matching file+full-title wins; original2 installed cases BLOCKED because this campaign didnotprepare exact current artifacts. Historical passes never enter result.",
+  "original_set": {
+    "failed": 15,
+    "blocked": 2,
+    "total": 17
+  },
+  "current_counts": {
+    "PASS": 15,
+    "BLOCKED": 2
+  },
+  "cases": [
+    {
+      "old_case_key": "3dccc2100422",
+      "old_status": "FAIL",
+      "current_file": "e2e/collaboration-account-desktop.spec.ts",
+      "current_title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "original_title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "title_mapping": "exact title",
+      "current_status": "PASS",
+      "reason": "本轮最近一次完整具名结果；最初失败及环境/测试适配均保留。",
+      "selected_attempt": {
+        "run": "drawer-readiness-recheck-1",
+        "run_started_at": "2026-11-07T05:29:34.548051+00:00",
+        "run_finished_at": "2026-11-07T05:30:50.415447+00:00",
+        "run_exit": 1,
+        "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+        "file": "collaboration-account-desktop.spec.ts",
+        "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+        "framework_status": "passed",
+        "retry": 0,
+        "duration_ms": 15670,
+        "annotations": [],
+        "errors": [],
+        "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json"
+      },
+      "attempts": [
+        {
+          "run": "legacy-first",
+          "run_started_at": "2026-11-07T05:10:03.184011+00:00",
+          "run_finished_at": "2026-11-07T05:13:02.217037+00:00",
+          "run_exit": 130,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+          "framework_status": "failed",
+          "retry": 0,
+          "duration_ms": 32518,
+          "annotations": [],
+          "errors": [
+            "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('group', { name: 'Issue resources', exact: true }).getByRole('button', { name: /^Sub-issues(?: d+)?$/ })\n    - waiting for\" http://localhost:5979/\" navigation to finish...\n    - navigated to \"http://localhost:5979/\"\n\n\n   at fixtures/collaboration-disclosures.ts:18\n\n  16 |     const drawer = page.getByRole(\"dialog\").filter({ has: page.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) });\n  17 |     const controls = await drawer.isVisible() ? drawer.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) : page.getByRole(\"group\", { name: \"Issue resources\", exact: true });\n> 18 |     await controls.getByRole(\"button\", { name: new RegExp(`^${name}(?: \\d+)?$`) }).click();\n     |                                                                                    ^\n  19 |     await expect(drawer).toHaveAccessibleName(name);\n  20 |     return drawer;\n  21 |   }\n    at revealCollaborationDisclosure (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/fixtures/collaboration-disclosures.ts:18:84)\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-account-desktop.spec.ts:412:5"
+          ],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "run": "legacy-test-repair-1",
+          "run_started_at": "2026-11-07T05:13:50.168359+00:00",
+          "run_finished_at": "2026-11-07T05:24:44.776078+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+          "framework_status": "failed",
+          "retry": 0,
+          "duration_ms": 36392,
+          "annotations": [],
+          "errors": [
+            "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Copy link', exact: true })\n\n\n  250 |       return value === \"\" ? \"empty\" : \"other\";\n  251 |     }, { expected, expectedPath, sentinel });\n> 252 |     await page.getByRole(\"button\", { name: \"Copy link\", exact: true }).click();\n      |                                                                        ^\n  253 |     const immediate = await classify();\n  254 |     // A click does not await navigator.clipboard.writeText. Poll only a safe\n  255 |     // classification; arbitrary pre-existing clipboard text never enters logs.\n    at copyNativeAccountLink (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-account-desktop.spec.ts:252:72)\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-account-desktop.spec.ts:428:20"
+          ],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "run": "drawer-readiness-recheck-1",
+          "run_started_at": "2026-11-07T05:29:34.548051+00:00",
+          "run_finished_at": "2026-11-07T05:30:50.415447+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 15670,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json"
+        }
+      ],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "c919808d1d26",
+      "old_status": "FAIL",
+      "current_file": "e2e/collaboration-account-desktop.spec.ts",
+      "current_title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+      "original_title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+      "title_mapping": "exact title",
+      "current_status": "PASS",
+      "reason": "本轮最近一次完整具名结果；最初失败及环境/测试适配均保留。",
+      "selected_attempt": {
+        "run": "legacy-test-repair-1",
+        "run_started_at": "2026-11-07T05:13:50.168359+00:00",
+        "run_finished_at": "2026-11-07T05:24:44.776078+00:00",
+        "run_exit": 1,
+        "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+        "file": "collaboration-account-desktop.spec.ts",
+        "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+        "framework_status": "passed",
+        "retry": 0,
+        "duration_ms": 9836,
+        "annotations": [],
+        "errors": [],
+        "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+      },
+      "attempts": [
+        {
+          "run": "legacy-first",
+          "run_started_at": "2026-11-07T05:10:03.184011+00:00",
+          "run_finished_at": "2026-11-07T05:13:02.217037+00:00",
+          "run_exit": 130,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 11283,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "run": "legacy-test-repair-1",
+          "run_started_at": "2026-11-07T05:13:50.168359+00:00",
+          "run_finished_at": "2026-11-07T05:24:44.776078+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 9836,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        }
+      ],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "5a60ce5f71f0",
+      "old_status": "FAIL",
+      "current_file": "e2e/collaboration-boundaries-web.spec.ts",
+      "current_title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+      "original_title": "Smaller gaps: title/date edits leave attributed records, recipient lookup is exact-only, a source member resolves and reacts without notifications",
+      "title_mapping": "explicit reviewed rename in 1ecabb964",
+      "current_status": "PASS",
+      "reason": "本轮最近一次完整具名结果；最初失败及环境/测试适配均保留。",
+      "selected_attempt": {
+        "run": "legacy-test-repair-1",
+        "run_started_at": "2026-11-07T05:13:50.168359+00:00",
+        "run_finished_at": "2026-11-07T05:24:44.776078+00:00",
+        "run_exit": 1,
+        "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+        "file": "collaboration-boundaries-web.spec.ts",
+        "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+        "framework_status": "passed",
+        "retry": 0,
+        "duration_ms": 7197,
+        "annotations": [],
+        "errors": [],
+        "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+      },
+      "attempts": [
+        {
+          "run": "legacy-test-repair-1",
+          "run_started_at": "2026-11-07T05:13:50.168359+00:00",
+          "run_finished_at": "2026-11-07T05:24:44.776078+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-boundaries-web.spec.ts",
+          "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 7197,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        }
+      ],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "158a87f90c8f",
+      "old_status": "FAIL",
+      "current_file": "e2e/collaboration-delivery-web.spec.ts",
+      "current_title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+      "original_title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+      "title_mapping": "exact title",
+      "current_status": "PASS",
+      "reason": "本轮最近一次完整具名结果；最初失败及环境/测试适配均保留。",
+      "selected_attempt": {
+        "run": "drawer-readiness-recheck-1",
+        "run_started_at": "2026-11-07T05:29:34.548051+00:00",
+        "run_finished_at": "2026-11-07T05:30:50.415447+00:00",
+        "run_exit": 1,
+        "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+        "file": "collaboration-delivery-web.spec.ts",
+        "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+        "framework_status": "passed",
+        "retry": 0,
+        "duration_ms": 5835,
+        "annotations": [],
+        "errors": [],
+        "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json"
+      },
+      "attempts": [
+        {
+          "run": "legacy-test-repair-1",
+          "run_started_at": "2026-11-07T05:13:50.168359+00:00",
+          "run_finished_at": "2026-11-07T05:24:44.776078+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-delivery-web.spec.ts",
+          "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+          "framework_status": "timedOut",
+          "retry": 0,
+          "duration_ms": 180031,
+          "annotations": [],
+          "errors": [
+            "Test timeout of 180000ms exceeded.",
+            "Error: browserContext.close: Target page, context or browser has been closed\n\n  185 |     await testInfo.attach(\"creation-delivery-evidence\", { body: JSON.stringify({ issueId: createdId, uploadKey, createKey, uploadPosts, createPosts,\n  186 |       sourceWorkspaceId: workspace.id, accountSocketCount: accountSockets.length, frames, noAmbientWorkspace: requestScopes.every(Boolean) }, null, 2), contentType: \"application/json\" });\n> 187 |   } finally { await recipientContext.close(); }\n      |               ^\n  188 |   expect(errors).toEqual([]);\n  189 |   expect(requestScopes.every(Boolean)).toBe(true);\n  190 |   // Collaboration records are retained by contract in this disposable database.\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-delivery-web.spec.ts:187:15"
+          ],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "run": "drawer-readiness-recheck-1",
+          "run_started_at": "2026-11-07T05:29:34.548051+00:00",
+          "run_finished_at": "2026-11-07T05:30:50.415447+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-delivery-web.spec.ts",
+          "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 5835,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json"
+        }
+      ],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "72c1ec89998d",
+      "old_status": "FAIL",
+      "current_file": "e2e/collaboration-delivery-web.spec.ts",
+      "current_title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "original_title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "title_mapping": "exact title",
+      "current_status": "PASS",
+      "reason": "本轮最近一次完整具名结果；最初失败及环境/测试适配均保留。",
+      "selected_attempt": {
+        "run": "legacy-test-repair-1",
+        "run_started_at": "2026-11-07T05:13:50.168359+00:00",
+        "run_finished_at": "2026-11-07T05:24:44.776078+00:00",
+        "run_exit": 1,
+        "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+        "file": "collaboration-delivery-web.spec.ts",
+        "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+        "framework_status": "passed",
+        "retry": 0,
+        "duration_ms": 2251,
+        "annotations": [],
+        "errors": [],
+        "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+      },
+      "attempts": [
+        {
+          "run": "legacy-test-repair-1",
+          "run_started_at": "2026-11-07T05:13:50.168359+00:00",
+          "run_finished_at": "2026-11-07T05:24:44.776078+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-delivery-web.spec.ts",
+          "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 2251,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        }
+      ],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "187ee1881c81",
+      "old_status": "FAIL",
+      "current_file": "e2e/collaboration-editing-web.spec.ts",
+      "current_title": "Web source creation, field edits and discussion share one authorized issue",
+      "original_title": "Web source creation, field edits and discussion share one authorized issue",
+      "title_mapping": "exact title",
+      "current_status": "PASS",
+      "reason": "本轮最近一次完整具名结果；最初失败及环境/测试适配均保留。",
+      "selected_attempt": {
+        "run": "legacy-test-repair-1",
+        "run_started_at": "2026-11-07T05:13:50.168359+00:00",
+        "run_finished_at": "2026-11-07T05:24:44.776078+00:00",
+        "run_exit": 1,
+        "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+        "file": "collaboration-editing-web.spec.ts",
+        "title": "Web source creation, field edits and discussion share one authorized issue",
+        "framework_status": "passed",
+        "retry": 0,
+        "duration_ms": 11438,
+        "annotations": [],
+        "errors": [],
+        "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+      },
+      "attempts": [
+        {
+          "run": "legacy-test-repair-1",
+          "run_started_at": "2026-11-07T05:13:50.168359+00:00",
+          "run_finished_at": "2026-11-07T05:24:44.776078+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-editing-web.spec.ts",
+          "title": "Web source creation, field edits and discussion share one authorized issue",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 11438,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        }
+      ],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "860dfeffcf00",
+      "old_status": "BLOCKED",
+      "current_file": "e2e/collaboration-installed-clients.spec.ts",
+      "current_title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+      "original_title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+      "title_mapping": "exact title",
+      "current_status": "BLOCKED",
+      "reason": "本轮未构建/配置当前安装版或保留CLI组合的完整执行前置，没有本候选用例结果；不代表本机永远无法运行。",
+      "selected_attempt": null,
+      "attempts": [],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "8b009b887e43",
+      "old_status": "BLOCKED",
+      "current_file": "e2e/collaboration-installed-main.spec.ts",
+      "current_title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+      "original_title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+      "title_mapping": "exact title",
+      "current_status": "BLOCKED",
+      "reason": "本轮未构建/配置当前安装版或保留CLI组合的完整执行前置，没有本候选用例结果；不代表本机永远无法运行。",
+      "selected_attempt": null,
+      "attempts": [],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "535e317ad170",
+      "old_status": "FAIL",
+      "current_file": "e2e/collaboration-leave-web.spec.ts",
+      "current_title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+      "original_title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+      "title_mapping": "exact title",
+      "current_status": "PASS",
+      "reason": "本轮最近一次完整具名结果；最初失败及环境/测试适配均保留。",
+      "selected_attempt": {
+        "run": "password-leave-final-proof",
+        "run_started_at": "2026-11-07T05:47:31.189751+00:00",
+        "run_finished_at": "2026-11-07T05:47:55.221478+00:00",
+        "run_exit": 0,
+        "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+        "file": "collaboration-leave-web.spec.ts",
+        "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+        "framework_status": "passed",
+        "retry": 0,
+        "duration_ms": 20523,
+        "annotations": [],
+        "errors": [],
+        "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-leave-final-proof/results.json"
+      },
+      "attempts": [
+        {
+          "run": "password-collaboration-leave-web",
+          "run_started_at": "2026-11-07T05:36:43.347176+00:00",
+          "run_finished_at": "2026-11-07T05:37:04.419004+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-leave-web.spec.ts",
+          "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+          "framework_status": "failed",
+          "retry": 0,
+          "duration_ms": 18761,
+          "annotations": [],
+          "errors": [
+            "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('form', { name: 'Comments', exact: true }).getByRole('group', { name: 'AI targets', exact: true }).getByRole('button', { name: 'Independent control agent A', exact: true })\n\n\n   at fixtures/collaboration-control-gaps.ts:97\n\n   95 |   await field.fill(`${prefix}${marker}`);\n   96 |   await expect(field).toHaveValue(`${prefix}${marker}`);\n>  97 |   for (const name of targetNames) await form.getByRole(\"group\", { name: \"AI targets\", exact: true }).getByRole(\"button\", { name, exact: true }).click();\n      |                                                                                                                                                 ^\n   98 |   const content = await field.inputValue();\n   99 |   const previewPending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/comments/trigger-preview`\n  100 |     && response.request().method() === \"POST\");\n    at commentThroughUI (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/fixtures/collaboration-control-gaps.ts:97:145)\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-leave-web.spec.ts:32:28"
+          ],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-leave-web/results.json"
+        },
+        {
+          "run": "password-final-collaboration-leave-web",
+          "run_started_at": "2026-11-07T05:41:23.479452+00:00",
+          "run_finished_at": "2026-11-07T05:41:46.216481+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-leave-web.spec.ts",
+          "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+          "framework_status": "failed",
+          "retry": 0,
+          "duration_ms": 18171,
+          "annotations": [],
+          "errors": [
+            "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('button', { name: 'Transfer', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Transfer', exact: true })\n\n\n  47 |     for (const session of [creator, handler]) {\n  48 |       if (!await session.page.getByRole(\"button\", { name: \"Transfer\", exact: true }).isVisible()) await revealCollaborationDisclosure(session.page, \"More actions\");\n> 49 |       await expect(session.page.getByRole(\"button\", { name: \"Transfer\", exact: true })).toBeVisible();\n     |                                                                                         ^\n  50 |       await expect(session.page.getByRole(\"button\", { name: \"Leave issue\", exact: true }).or(session.page.getByRole(\"menuitem\", { name: \"Leave issue\", exact: true }))).toHaveCount(0);\n  51 |     }\n  52 |     if (!await owner.page.getByRole(\"button\", { name: \"Leave issue\", exact: true }).or(owner.page.getByRole(\"menuitem\", { name: \"Leave issue\", exact: true })).isVisible()) await revealCollaborationDisclosure(owner.page, \"More actions\");\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-leave-web.spec.ts:49:89"
+          ],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-leave-web/results.json"
+        },
+        {
+          "run": "password-closure-collaboration-leave-web",
+          "run_started_at": "2026-11-07T05:45:02.519796+00:00",
+          "run_finished_at": "2026-11-07T05:45:35.915184+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-leave-web.spec.ts",
+          "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+          "framework_status": "failed",
+          "retry": 0,
+          "duration_ms": 28167,
+          "annotations": [],
+          "errors": [
+            "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('form', { name: 'Comments', exact: true }).getByRole('group', { name: 'People', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('form', { name: 'Comments', exact: true }).getByRole('group', { name: 'People', exact: true })\n\n\n  124 |     await expect(creator.page.locator(`[id=\"run-${pending.runId}\"]`)).toContainText(\"Termination unconfirmed\");\n  125 |     const composer = creator.page.getByRole(\"form\", { name: \"Comments\", exact: true });\n> 126 |     await expect(composer.getByRole(\"group\", { name: \"People\", exact: true })).toBeVisible();\n      |                                                                                ^\n  127 |     await expect(composer.getByRole(\"group\", { name: \"AI targets\", exact: true })).toHaveCount(0);\n  128 |     const activity = await fixture.creator.requestJSON<{ items: { kind: string; actor: { user_id: string } | null }[] }>(`${root}/activity?limit=100`);\n  129 |     expect(activity.items.filter((item) => item.kind === \"participant_left\").map((item) => item.actor?.user_id)).toEqual([fixture.ownerId]);\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-leave-web.spec.ts:126:80"
+          ],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-closure-collaboration-leave-web/results.json"
+        },
+        {
+          "run": "password-leave-final-proof",
+          "run_started_at": "2026-11-07T05:47:31.189751+00:00",
+          "run_finished_at": "2026-11-07T05:47:55.221478+00:00",
+          "run_exit": 0,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-leave-web.spec.ts",
+          "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 20523,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-leave-final-proof/results.json"
+        }
+      ],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "4971c07b93b6",
+      "old_status": "FAIL",
+      "current_file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "current_title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "original_title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "title_mapping": "exact title",
+      "current_status": "PASS",
+      "reason": "本轮最近一次完整具名结果；最初失败及环境/测试适配均保留。",
+      "selected_attempt": {
+        "run": "legacy-deployment-final",
+        "run_started_at": "2026-11-07T05:49:43.996958+00:00",
+        "run_finished_at": "2026-11-07T05:55:54.623974+00:00",
+        "run_exit": 1,
+        "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+        "file": "collaboration-mention-journeys-desktop.spec.ts",
+        "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+        "framework_status": "passed",
+        "retry": 0,
+        "duration_ms": 9213,
+        "annotations": [],
+        "errors": [],
+        "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+      },
+      "attempts": [
+        {
+          "run": "legacy-test-repair-1",
+          "run_started_at": "2026-11-07T05:13:50.168359+00:00",
+          "run_finished_at": "2026-11-07T05:24:44.776078+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-mention-journeys-desktop.spec.ts",
+          "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "framework_status": "skipped",
+          "retry": 0,
+          "duration_ms": 0,
+          "annotations": [
+            {
+              "type": "skip",
+              "description": "Requires the task-owned API/DB, production native renderer and explicit enrollment deployment",
+              "location": {
+                "file": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-mention-journeys-desktop.spec.ts",
+                "line": 16,
+                "column": 8
+              }
+            }
+          ],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "run": "legacy-deployment-final",
+          "run_started_at": "2026-11-07T05:49:43.996958+00:00",
+          "run_finished_at": "2026-11-07T05:55:54.623974+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-mention-journeys-desktop.spec.ts",
+          "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 9213,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+        }
+      ],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "8e9c882cd544",
+      "old_status": "FAIL",
+      "current_file": "e2e/collaboration-mention-journeys-web.spec.ts",
+      "current_title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "original_title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "title_mapping": "exact title",
+      "current_status": "PASS",
+      "reason": "本轮最近一次完整具名结果；最初失败及环境/测试适配均保留。",
+      "selected_attempt": {
+        "run": "legacy-deployment-final",
+        "run_started_at": "2026-11-07T05:49:43.996958+00:00",
+        "run_finished_at": "2026-11-07T05:55:54.623974+00:00",
+        "run_exit": 1,
+        "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+        "file": "collaboration-mention-journeys-web.spec.ts",
+        "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+        "framework_status": "passed",
+        "retry": 0,
+        "duration_ms": 7250,
+        "annotations": [],
+        "errors": [],
+        "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+      },
+      "attempts": [
+        {
+          "run": "legacy-test-repair-1",
+          "run_started_at": "2026-11-07T05:13:50.168359+00:00",
+          "run_finished_at": "2026-11-07T05:24:44.776078+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-mention-journeys-web.spec.ts",
+          "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "framework_status": "skipped",
+          "retry": 0,
+          "duration_ms": 0,
+          "annotations": [
+            {
+              "type": "skip",
+              "description": "Requires task-owned loopback API/DB and a matching production Web build",
+              "location": {
+                "file": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-mention-journeys-web.spec.ts",
+                "line": 11,
+                "column": 8
+              }
+            }
+          ],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "run": "legacy-deployment-final",
+          "run_started_at": "2026-11-07T05:49:43.996958+00:00",
+          "run_finished_at": "2026-11-07T05:55:54.623974+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-mention-journeys-web.spec.ts",
+          "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 7250,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+        }
+      ],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "cd80f1b61840",
+      "old_status": "FAIL",
+      "current_file": "e2e/collaboration-records-web.spec.ts",
+      "current_title": "Web shares ordinary child references and retained run records through account notification links",
+      "original_title": "Web shares ordinary child references and retained run records through account notification links",
+      "title_mapping": "exact title",
+      "current_status": "PASS",
+      "reason": "本轮最近一次完整具名结果；最初失败及环境/测试适配均保留。",
+      "selected_attempt": {
+        "run": "legacy-deployment-final",
+        "run_started_at": "2026-11-07T05:49:43.996958+00:00",
+        "run_finished_at": "2026-11-07T05:55:54.623974+00:00",
+        "run_exit": 1,
+        "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+        "file": "collaboration-records-web.spec.ts",
+        "title": "Web shares ordinary child references and retained run records through account notification links",
+        "framework_status": "passed",
+        "retry": 0,
+        "duration_ms": 11809,
+        "annotations": [],
+        "errors": [],
+        "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+      },
+      "attempts": [
+        {
+          "run": "legacy-test-repair-1",
+          "run_started_at": "2026-11-07T05:13:50.168359+00:00",
+          "run_finished_at": "2026-11-07T05:24:44.776078+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-records-web.spec.ts",
+          "title": "Web shares ordinary child references and retained run records through account notification links",
+          "framework_status": "timedOut",
+          "retry": 0,
+          "duration_ms": 180033,
+          "annotations": [],
+          "errors": [
+            "Test timeout of 180000ms exceeded.",
+            "Error: locator.click: Test timeout of 180000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Copy link', exact: true })\n\n\n  27 |   await page.context().grantPermissions([\"clipboard-read\", \"clipboard-write\"]);\n  28 |   await page.bringToFront();\n> 29 |   await page.getByRole(\"button\", { name: \"Copy link\", exact: true }).click();\n     |                                                                      ^\n  30 |   const sharedLink = await page.evaluate(() => navigator.clipboard.readText());\n  31 |   expect(new URL(sharedLink).pathname + new URL(sharedLink).search).toBe(recordedAccountPath(fixture));\n  32 |   await page.screenshot({ path: testInfo.outputPath(\"web-record-source-children.png\"), animations: \"disabled\" });\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-records-web.spec.ts:29:70"
+          ],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "run": "drawer-readiness-recheck-1",
+          "run_started_at": "2026-11-07T05:29:34.548051+00:00",
+          "run_finished_at": "2026-11-07T05:30:50.415447+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-records-web.spec.ts",
+          "title": "Web shares ordinary child references and retained run records through account notification links",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 9101,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json"
+        },
+        {
+          "run": "legacy-deployment-final",
+          "run_started_at": "2026-11-07T05:49:43.996958+00:00",
+          "run_finished_at": "2026-11-07T05:55:54.623974+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-records-web.spec.ts",
+          "title": "Web shares ordinary child references and retained run records through account notification links",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 11809,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+        }
+      ],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "f390d53c1162",
+      "old_status": "FAIL",
+      "current_file": "e2e/collaboration-retained-attachment.spec.ts",
+      "current_title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "original_title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "title_mapping": "exact title",
+      "current_status": "PASS",
+      "reason": "本轮最近一次完整具名结果；最初失败及环境/测试适配均保留。",
+      "selected_attempt": {
+        "run": "password-collaboration-retained-attachment",
+        "run_started_at": "2026-11-07T05:37:08.220527+00:00",
+        "run_finished_at": "2026-11-07T05:37:41.410968+00:00",
+        "run_exit": 1,
+        "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+        "file": "collaboration-retained-attachment.spec.ts",
+        "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+        "framework_status": "passed",
+        "retry": 0,
+        "duration_ms": 5339,
+        "annotations": [],
+        "errors": [],
+        "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-retained-attachment/results.json"
+      },
+      "attempts": [
+        {
+          "run": "password-collaboration-retained-attachment",
+          "run_started_at": "2026-11-07T05:37:08.220527+00:00",
+          "run_finished_at": "2026-11-07T05:37:41.410968+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-retained-attachment.spec.ts",
+          "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 5339,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-retained-attachment/results.json"
+        }
+      ],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "18e4a6485b4d",
+      "old_status": "FAIL",
+      "current_file": "e2e/collaboration-retained-attachment.spec.ts",
+      "current_title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "original_title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "title_mapping": "exact title",
+      "current_status": "PASS",
+      "reason": "本轮最近一次完整具名结果；最初失败及环境/测试适配均保留。",
+      "selected_attempt": {
+        "run": "password-collaboration-retained-attachment",
+        "run_started_at": "2026-11-07T05:37:08.220527+00:00",
+        "run_finished_at": "2026-11-07T05:37:41.410968+00:00",
+        "run_exit": 1,
+        "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+        "file": "collaboration-retained-attachment.spec.ts",
+        "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+        "framework_status": "passed",
+        "retry": 0,
+        "duration_ms": 7355,
+        "annotations": [],
+        "errors": [],
+        "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-retained-attachment/results.json"
+      },
+      "attempts": [
+        {
+          "run": "password-collaboration-retained-attachment",
+          "run_started_at": "2026-11-07T05:37:08.220527+00:00",
+          "run_finished_at": "2026-11-07T05:37:41.410968+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-retained-attachment.spec.ts",
+          "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 7355,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-retained-attachment/results.json"
+        }
+      ],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "37ff666368df",
+      "old_status": "FAIL",
+      "current_file": "e2e/collaboration-retained-attachment.spec.ts",
+      "current_title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "original_title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "title_mapping": "exact title",
+      "current_status": "PASS",
+      "reason": "本轮最近一次完整具名结果；最初失败及环境/测试适配均保留。",
+      "selected_attempt": {
+        "run": "password-retained-final-proof",
+        "run_started_at": "2026-11-07T05:48:50.000735+00:00",
+        "run_finished_at": "2026-11-07T05:49:20.283984+00:00",
+        "run_exit": 0,
+        "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+        "file": "collaboration-retained-attachment.spec.ts",
+        "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+        "framework_status": "passed",
+        "retry": 0,
+        "duration_ms": 25990,
+        "annotations": [],
+        "errors": [],
+        "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-retained-final-proof/results.json"
+      },
+      "attempts": [
+        {
+          "run": "password-collaboration-retained-attachment",
+          "run_started_at": "2026-11-07T05:37:08.220527+00:00",
+          "run_finished_at": "2026-11-07T05:37:41.410968+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-retained-attachment.spec.ts",
+          "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+          "framework_status": "failed",
+          "retry": 0,
+          "duration_ms": 18475,
+          "annotations": [],
+          "errors": [
+            "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('form', { name: 'Comments', exact: true }).getByRole('button', { name: 'Independent control agent A', exact: true })\n\n\n   at fixtures/collaboration-retained-attachments.ts:270\n\n  268 |   const composer = author.page.getByRole(\"form\", { name: \"Comments\", exact: true });\n  269 |   await composer.getByLabel(\"Add comment\", { exact: true }).fill(\"Frozen file input\");\n> 270 |   await composer.getByRole(\"button\", { name: fixture.agent.name, exact: true }).click();\n      |                                                                                 ^\n  271 |   const content = await composer.getByLabel(\"Add comment\", { exact: true }).inputValue();\n  272 |   expect(content).toContain(`mention://agent/${fixture.agent.resource_id}`);\n  273 |   const bytes = Buffer.from(`Retained file bytes ${randomUUID()}`);\n    at exerciseRetainedAttachments (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/fixtures/collaboration-retained-attachments.ts:270:81)\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-retained-attachment.spec.ts:166:22"
+          ],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-retained-attachment/results.json"
+        },
+        {
+          "run": "password-final-collaboration-retained-attachment",
+          "run_started_at": "2026-11-07T05:41:50.232621+00:00",
+          "run_finished_at": "2026-11-07T05:42:24.742072+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-retained-attachment.spec.ts",
+          "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+          "framework_status": "failed",
+          "retry": 0,
+          "duration_ms": 30787,
+          "annotations": [],
+          "errors": [
+            "TimeoutError: locator.getAttribute: Timeout 15000ms exceeded.\nCall log:\n  - waiting for locator('[id=\"comment-990878cc-ef27-460d-864a-3b486741ee2f\"]').getByRole('button', { name: 'Comment history', exact: true })\n\n\n   at fixtures/collaboration-retained-attachments.ts:191\n\n  189 |   const comment = page.locator(`[id=\"comment-${commentId}\"]`);\n  190 |   const toggle = comment.getByRole(\"button\", { name: \"Comment history\", exact: true });\n> 191 |   if (await toggle.getAttribute(\"aria-expanded\") !== \"true\") await toggle.click();\n      |                    ^\n  192 |   const controls = await toggle.getAttribute(\"aria-controls\");\n  193 |   expect(controls).not.toBeNull();\n  194 |   return comment.locator(`[id=\"${controls}\"]`);\n    at historyContainer (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/fixtures/collaboration-retained-attachments.ts:191:20)\n    at displayAndDownload (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/fixtures/collaboration-retained-attachments.ts:244:25)\n    at exerciseRetainedAttachments (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/fixtures/collaboration-retained-attachments.ts:336:21)\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-retained-attachment.spec.ts:166:22"
+          ],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-retained-attachment/results.json"
+        },
+        {
+          "run": "password-closure-collaboration-retained-attachment",
+          "run_started_at": "2026-11-07T05:45:40.103302+00:00",
+          "run_finished_at": "2026-11-07T05:46:38.261685+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-retained-attachment.spec.ts",
+          "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+          "framework_status": "failed",
+          "retry": 0,
+          "duration_ms": 53988,
+          "annotations": [],
+          "errors": [
+            "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('region', { name: 'Attachments', exact: true }).getByRole('button', { name: 'Preview retained-comment.txt', exact: true })\n\n\n   at fixtures/collaboration-retained-attachments.ts:358\n\n  356 |   assertPrivateResponse(beforeRevoke, 200);\n  357 |   expect(Buffer.from(await beforeRevoke.arrayBuffer())).toEqual(bytes);\n> 358 |   await reader.page.getByRole(\"region\", { name: \"Attachments\", exact: true }).getByRole(\"button\", { name: `Preview ${file.name}`, exact: true }).click();\n      |                                                                                                                                                  ^\n  359 |   await expect(reader.page.getByRole(\"dialog\", { name: file.name, exact: true }).locator(\"pre\")).toHaveText(bytes.toString());\n  360 |   const removalReceipt = await fixture.creator.requestJSON<{ code: string; request_id: string }>(`${root}/participants/${fixture.handlerId}/remove`, {\n  361 |     method: \"POST\", headers: { \"Idempotency-Key\": randomUUID() }, body: observations(await readIssue(fixture.creator, fixture.issueId)),\n    at exerciseRetainedAttachments (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/fixtures/collaboration-retained-attachments.ts:358:146)\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-retained-attachment.spec.ts:166:22"
+          ],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-closure-collaboration-retained-attachment/results.json"
+        },
+        {
+          "run": "password-retained-final-proof",
+          "run_started_at": "2026-11-07T05:48:50.000735+00:00",
+          "run_finished_at": "2026-11-07T05:49:20.283984+00:00",
+          "run_exit": 0,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-retained-attachment.spec.ts",
+          "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 25990,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-retained-final-proof/results.json"
+        }
+      ],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "7b935d7ce8d5",
+      "old_status": "FAIL",
+      "current_file": "e2e/collaboration-source-surface.spec.ts",
+      "current_title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+      "original_title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+      "title_mapping": "exact title",
+      "current_status": "PASS",
+      "reason": "本轮最近一次完整具名结果；最初失败及环境/测试适配均保留。",
+      "selected_attempt": {
+        "run": "password-final-collaboration-source-surface",
+        "run_started_at": "2026-11-07T05:42:29.002919+00:00",
+        "run_finished_at": "2026-11-07T05:43:24.630426+00:00",
+        "run_exit": 0,
+        "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+        "file": "collaboration-source-surface.spec.ts",
+        "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+        "framework_status": "passed",
+        "retry": 0,
+        "duration_ms": 50244,
+        "annotations": [],
+        "errors": [],
+        "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-source-surface/results.json"
+      },
+      "attempts": [
+        {
+          "run": "password-collaboration-source-surface",
+          "run_started_at": "2026-11-07T05:37:45.261120+00:00",
+          "run_finished_at": "2026-11-07T05:37:53.167996+00:00",
+          "run_exit": 1,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-source-surface.spec.ts",
+          "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+          "framework_status": "failed",
+          "retry": 0,
+          "duration_ms": 5768,
+          "annotations": [],
+          "errors": [
+            "Error: Explicit freshly built source acceptance CLI is required\n\n   at fixtures/collaboration-source-surface.ts:229\n\n  227 | export async function runReorderCLI(fixture: SourceSurface, beforeId: string) {\n  228 |   const binary = process.env.COLLABORATION_SOURCE_CLI;\n> 229 |   if (!binary || !isAbsolute(binary) || !statSync(binary).isFile()) throw new Error(\"Explicit freshly built source acceptance CLI is required\");\n      |                                                                           ^\n  230 |   const isolated = mkdtempSync(join(tmpdir(), \"multica-source-cli-\"));\n  231 |   try {\n  232 |     mkdirSync(join(isolated, \".multica\"), { mode: 0o700 });\n    at runReorderCLI (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/fixtures/collaboration-source-surface.ts:229:75)\n    at inspect (/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-source-surface.spec.ts:105:23)\n    at /Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107/e2e/collaboration-source-surface.spec.ts:213:5"
+          ],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-source-surface/results.json"
+        },
+        {
+          "run": "password-final-collaboration-source-surface",
+          "run_started_at": "2026-11-07T05:42:29.002919+00:00",
+          "run_finished_at": "2026-11-07T05:43:24.630426+00:00",
+          "run_exit": 0,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-source-surface.spec.ts",
+          "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 50244,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-source-surface/results.json"
+        }
+      ],
+      "historical_pass_carried": false
+    },
+    {
+      "old_case_key": "QA-PRODUCT-001/ENV-1",
+      "old_status": "FAIL",
+      "current_file": "e2e/collaboration-runtime-handoff-web.spec.ts",
+      "current_title": "ENV-1 live latest shared context preserves the run's empty startup version",
+      "original_title": "ENV-1 a live latest memory v1 must not be labelled as the startup version of a run frozen at v0",
+      "title_mapping": "Promoted private reproduction to stronger canonical positive-and-negative test in 1ecabb964",
+      "current_status": "PASS",
+      "reason": "本轮最近一次完整具名结果；最初失败及环境/测试适配均保留。",
+      "selected_attempt": {
+        "run": "password-collaboration-runtime-handoff-web",
+        "run_started_at": "2026-11-07T05:36:14.476148+00:00",
+        "run_finished_at": "2026-11-07T05:36:22.222330+00:00",
+        "run_exit": 0,
+        "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+        "file": "collaboration-runtime-handoff-web.spec.ts",
+        "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+        "framework_status": "passed",
+        "retry": 0,
+        "duration_ms": 1760,
+        "annotations": [],
+        "errors": [],
+        "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-runtime-handoff-web/results.json"
+      },
+      "attempts": [
+        {
+          "run": "password-collaboration-runtime-handoff-web",
+          "run_started_at": "2026-11-07T05:36:14.476148+00:00",
+          "run_finished_at": "2026-11-07T05:36:22.222330+00:00",
+          "run_exit": 0,
+          "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+          "file": "collaboration-runtime-handoff-web.spec.ts",
+          "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+          "framework_status": "passed",
+          "retry": 0,
+          "duration_ms": 1760,
+          "annotations": [],
+          "errors": [],
+          "raw_report": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-runtime-handoff-web/results.json"
+        }
+      ],
+      "historical_pass_carried": false
+    }
+  ],
+  "admin_clock_regression_separate": {
+    "status": "PASS",
+    "tests": 8,
+    "raw_line": "@multica/views:test:  ✓ admin/executions/list-controls.test.tsx (8 tests) 246ms",
+    "source": "packages/views/admin/executions/list-controls.test.tsx",
+    "evidence": {
+      "path": ".omx/private/branch-e2e-20261107/frontend/units-remaining/stdout.txt",
+      "sha256": "ea0e79634129ffedce6f80991734ad5f9b3c10c878fc68e7d3e4c803b96352cf",
+      "bytes": 548791
+    },
+    "limit": "The whole views run still has3other failures;this file pass doesnotmakefrontendsgreen."
+  },
+  "runtime9_current": [
+    {
+      "audit_id": "REC-1",
+      "current_status": "PASS",
+      "current_named_terminals": [
+        {
+          "name": "TestHostCheckpointTransientFailureRetriesDuringRun",
+          "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+          "status": "pass",
+          "time": "2026-11-07T13:10:46.911608+08:00",
+          "run": {
+            "path": ".omx/private/branch-e2e-20261107/backend/daemon_collaborationrun-race/run.json",
+            "sha256": "c3d8ee9456bd5c0fa23daeda71f6fb7828e1c9ef7aa54ff42b75a0d49092ce13",
+            "bytes": 3993
+          },
+          "raw": {
+            "path": ".omx/private/branch-e2e-20261107/backend/daemon_collaborationrun-race/stdout.txt",
+            "sha256": "7a4e629eb3053a8ee35c33dbf4922b25731ab615574ee953627d91c5d0031fb6",
+            "bytes": 129633
+          }
+        },
+        {
+          "name": "TestHostOutcomeCarriesUndeliveredTail",
+          "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+          "status": "pass",
+          "time": "2026-11-07T13:10:47.6245+08:00",
+          "run": {
+            "path": ".omx/private/branch-e2e-20261107/backend/daemon_collaborationrun-race/run.json",
+            "sha256": "c3d8ee9456bd5c0fa23daeda71f6fb7828e1c9ef7aa54ff42b75a0d49092ce13",
+            "bytes": 3993
+          },
+          "raw": {
+            "path": ".omx/private/branch-e2e-20261107/backend/daemon_collaborationrun-race/stdout.txt",
+            "sha256": "7a4e629eb3053a8ee35c33dbf4922b25731ab615574ee953627d91c5d0031fb6",
+            "bytes": 129633
+          }
+        }
+      ],
+      "missing_current_canonical_tests": [],
+      "historical_pass_carried": false
+    },
+    {
+      "audit_id": "REC-2",
+      "current_status": "PASS",
+      "current_named_terminals": [
+        {
+          "name": "TestHostCheckpointUncommittedChunkRebindsToFallbackAttempt",
+          "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+          "status": "pass",
+          "time": "2026-11-07T13:10:47.92832+08:00",
+          "run": {
+            "path": ".omx/private/branch-e2e-20261107/backend/daemon_collaborationrun-race/run.json",
+            "sha256": "c3d8ee9456bd5c0fa23daeda71f6fb7828e1c9ef7aa54ff42b75a0d49092ce13",
+            "bytes": 3993
+          },
+          "raw": {
+            "path": ".omx/private/branch-e2e-20261107/backend/daemon_collaborationrun-race/stdout.txt",
+            "sha256": "7a4e629eb3053a8ee35c33dbf4922b25731ab615574ee953627d91c5d0031fb6",
+            "bytes": 129633
+          }
+        }
+      ],
+      "missing_current_canonical_tests": [],
+      "historical_pass_carried": false
+    },
+    {
+      "audit_id": "REC-3",
+      "current_status": "PASS",
+      "current_named_terminals": [
+        {
+          "name": "TestHostCheckpointRefusalNamesSealReason",
+          "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+          "status": "pass",
+          "time": "2026-11-07T13:10:49.207429+08:00",
+          "run": {
+            "path": ".omx/private/branch-e2e-20261107/backend/daemon_collaborationrun-race/run.json",
+            "sha256": "c3d8ee9456bd5c0fa23daeda71f6fb7828e1c9ef7aa54ff42b75a0d49092ce13",
+            "bytes": 3993
+          },
+          "raw": {
+            "path": ".omx/private/branch-e2e-20261107/backend/daemon_collaborationrun-race/stdout.txt",
+            "sha256": "7a4e629eb3053a8ee35c33dbf4922b25731ab615574ee953627d91c5d0031fb6",
+            "bytes": 129633
+          }
+        }
+      ],
+      "missing_current_canonical_tests": [],
+      "historical_pass_carried": false
+    },
+    {
+      "audit_id": "REC-4",
+      "current_status": "PASS",
+      "current_named_terminals": [
+        {
+          "name": "TestHostOutcomeCarriesUndeliveredTail",
+          "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+          "status": "pass",
+          "time": "2026-11-07T13:10:47.6245+08:00",
+          "run": {
+            "path": ".omx/private/branch-e2e-20261107/backend/daemon_collaborationrun-race/run.json",
+            "sha256": "c3d8ee9456bd5c0fa23daeda71f6fb7828e1c9ef7aa54ff42b75a0d49092ce13",
+            "bytes": 3993
+          },
+          "raw": {
+            "path": ".omx/private/branch-e2e-20261107/backend/daemon_collaborationrun-race/stdout.txt",
+            "sha256": "7a4e629eb3053a8ee35c33dbf4922b25731ab615574ee953627d91c5d0031fb6",
+            "bytes": 129633
+          }
+        },
+        {
+          "name": "TestHostOutcomeTailFitsRecordAndLedgerBounds",
+          "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+          "status": "pass",
+          "time": "2026-11-07T13:10:52.992602+08:00",
+          "run": {
+            "path": ".omx/private/branch-e2e-20261107/backend/daemon_collaborationrun-race/run.json",
+            "sha256": "c3d8ee9456bd5c0fa23daeda71f6fb7828e1c9ef7aa54ff42b75a0d49092ce13",
+            "bytes": 3993
+          },
+          "raw": {
+            "path": ".omx/private/branch-e2e-20261107/backend/daemon_collaborationrun-race/stdout.txt",
+            "sha256": "7a4e629eb3053a8ee35c33dbf4922b25731ab615574ee953627d91c5d0031fb6",
+            "bytes": 129633
+          }
+        }
+      ],
+      "missing_current_canonical_tests": [],
+      "historical_pass_carried": false
+    },
+    {
+      "audit_id": "ENV-1",
+      "current_status": "PASS",
+      "current_named_terminals": [
+        {
+          "name": "TestCollaborationLiveHandoffNamesTheRunsLaunchBase",
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "status": "pass",
+          "time": "2026-11-07T13:08:52.799663+08:00",
+          "run": {
+            "path": ".omx/private/branch-e2e-20261107/backend/service-race/run.json",
+            "sha256": "ca80c14e91d7085d315466e6c25a610f51de1effd6499238a93fadec9ed8cc0e",
+            "bytes": 5753
+          },
+          "raw": {
+            "path": ".omx/private/branch-e2e-20261107/backend/service-race/stdout.txt",
+            "sha256": "750543bca1eb9201d7f77b8f457f25a2f41817cc3ee8882f9943d0a3ce8fbcaa",
+            "bytes": 168925
+          }
+        },
+        {
+          "name": "TestCollaborationHandoffWireBoundsMemoryBaseVersion",
+          "package": "github.com/multica-ai/multica/server/pkg/protocol",
+          "status": "pass",
+          "time": "2026-11-07T13:42:28.080894+08:00",
+          "run": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/runtime-closure/pkg_protocol-race/run.json",
+            "sha256": "f4c638035210c5bc24c8e775c06d9172548f505693ee6af81d1dee66e8830cb7",
+            "bytes": 661
+          },
+          "raw": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/runtime-closure/pkg_protocol-race/stdout.txt",
+            "sha256": "b60befa9882bf6e87b2709f2389aab5ab229711fd897115c24c257701be4a296",
+            "bytes": 8841
+          }
+        }
+      ],
+      "missing_current_canonical_tests": [],
+      "historical_pass_carried": false
+    },
+    {
+      "audit_id": "ENV-2",
+      "current_status": "PASS",
+      "current_named_terminals": [
+        {
+          "name": "TestCollaborationHandoffSnapshotPreservesMaximumAssignment",
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "status": "pass",
+          "time": "2026-11-07T13:44:00.028929+08:00",
+          "run": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/runtime-closure/internal_service-race/run.json",
+            "sha256": "8b58822204396902f90aa4492173c66a63e9fd43996a2fabbe5ef68f8467a677",
+            "bytes": 856
+          },
+          "raw": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/runtime-closure/internal_service-race/stdout.txt",
+            "sha256": "ec2672801a9f825c6bf1f33a8cacd40c17e6c425517e6f59164e03865932706c",
+            "bytes": 10024
+          }
+        }
+      ],
+      "missing_current_canonical_tests": [],
+      "historical_pass_carried": false
+    },
+    {
+      "audit_id": "ENV-4",
+      "current_status": "PASS",
+      "current_named_terminals": [
+        {
+          "name": "TestCollaborationHandoffPreservesEveryMergedWakeCause",
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "status": "pass",
+          "time": "2026-11-07T13:08:50.750268+08:00",
+          "run": {
+            "path": ".omx/private/branch-e2e-20261107/backend/service-race/run.json",
+            "sha256": "ca80c14e91d7085d315466e6c25a610f51de1effd6499238a93fadec9ed8cc0e",
+            "bytes": 5753
+          },
+          "raw": {
+            "path": ".omx/private/branch-e2e-20261107/backend/service-race/stdout.txt",
+            "sha256": "750543bca1eb9201d7f77b8f457f25a2f41817cc3ee8882f9943d0a3ce8fbcaa",
+            "bytes": 168925
+          }
+        }
+      ],
+      "missing_current_canonical_tests": [],
+      "historical_pass_carried": false
+    },
+    {
+      "audit_id": "RECALL-1",
+      "current_status": "PASS",
+      "current_named_terminals": [
+        {
+          "name": "TestCollaborationRuntimeCommentsCarryMemberDisplayNames",
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "status": "pass",
+          "time": "2026-11-07T13:43:34.615299+08:00",
+          "run": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/runtime-closure/internal_service-race/run.json",
+            "sha256": "8b58822204396902f90aa4492173c66a63e9fd43996a2fabbe5ef68f8467a677",
+            "bytes": 856
+          },
+          "raw": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/runtime-closure/internal_service-race/stdout.txt",
+            "sha256": "ec2672801a9f825c6bf1f33a8cacd40c17e6c425517e6f59164e03865932706c",
+            "bytes": 10024
+          }
+        },
+        {
+          "name": "TestCollaborationRuntimeCommentKeepsOptionalDisplayName",
+          "package": "github.com/multica-ai/multica/server/internal/cli",
+          "status": "pass",
+          "time": "2026-11-07T13:44:05.831809+08:00",
+          "run": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/runtime-closure/internal_cli-race/run.json",
+            "sha256": "3b6358e65ac9bdca3c5a5c99aa31320e08285ba23b68b5a7ea46d86b5630cbdc",
+            "bytes": 665
+          },
+          "raw": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/runtime-closure/internal_cli-race/stdout.txt",
+            "sha256": "16f502c376126077a0009c708a610d60d010bfa558fc951780f2f3ca8eb80090",
+            "bytes": 1596
+          }
+        }
+      ],
+      "missing_current_canonical_tests": [],
+      "historical_pass_carried": false
+    },
+    {
+      "audit_id": "RECALL-2",
+      "current_status": "PASS",
+      "current_named_terminals": [
+        {
+          "name": "TestCollaborationRecallRuntimePagesFulltextAndCurrentAuthority",
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "status": "pass",
+          "time": "2026-11-07T13:43:32.284206+08:00",
+          "run": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/runtime-closure/internal_service-race/run.json",
+            "sha256": "8b58822204396902f90aa4492173c66a63e9fd43996a2fabbe5ef68f8467a677",
+            "bytes": 856
+          },
+          "raw": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/runtime-closure/internal_service-race/stdout.txt",
+            "sha256": "ec2672801a9f825c6bf1f33a8cacd40c17e6c425517e6f59164e03865932706c",
+            "bytes": 10024
+          }
+        },
+        {
+          "name": "TestCollaborationRecallChunksReassembleUTF8AndRejectCrossBinding",
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "status": "pass",
+          "time": "2026-11-07T13:43:25.381557+08:00",
+          "run": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/runtime-closure/internal_service-race/run.json",
+            "sha256": "8b58822204396902f90aa4492173c66a63e9fd43996a2fabbe5ef68f8467a677",
+            "bytes": 856
+          },
+          "raw": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/runtime-closure/internal_service-race/stdout.txt",
+            "sha256": "ec2672801a9f825c6bf1f33a8cacd40c17e6c425517e6f59164e03865932706c",
+            "bytes": 10024
+          }
+        }
+      ],
+      "missing_current_canonical_tests": [],
+      "historical_pass_carried": false
+    }
+  ],
+  "runtime9_current_counts": {
+    "PASS": 9
+  },
+  "backend390_reference": {
+    "path": ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/backend-final.json",
+    "sha256": "530acf140d9f9733d47db40f572e4c568f553f12171d9c4a9fce5a39a6c60a03",
+    "bytes": 95477
+  },
+  "runtime_supplement": {
+    "evidence": {
+      "path": ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/runtime-closure-supplement.json",
+      "sha256": "da6744cd15f98454046f91cce622109f3f4e0b8bfc8ecac09f8000e7102d0473",
+      "bytes": 5637
+    },
+    "current_canonical_unique_top_tests": 13,
+    "supplement_top": 6,
+    "supplement_named": 18,
+    "original390_ledger_unchanged": true,
+    "combined_backend_top": 396,
+    "combined_named": 1014,
+    "scope": "Canonical assertions for9 prior runtime findings only;not whole backend or real model acceptance."
+  },
+  "browser_evidence": [
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/run.json",
+      "sha256": "820b3edd228084d3f280e2f212ea1f38d9ce46cf1f101b3cefa7f6aa1cd85274",
+      "bytes": 981
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json",
+      "sha256": "d404817d273ce105c86c9875aecbc6c6adefd618f406eae05d0cc228645ffdf4",
+      "bytes": 94258
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/run.json",
+      "sha256": "c17eb6ffec7b1df62bdf7132859b88015e8eafd56ce3990e779d195b41fbaa33",
+      "bytes": 1089
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json",
+      "sha256": "c5e75bb4d61d4239d7e2d7e7b409ad5c9b2a575b6c09c62bd8c5906e575c9a4f",
+      "bytes": 153102
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-first/run.json",
+      "sha256": "457b6ce458f4cc2ce6a7bd1ad0a11526998cbcb5d43828c92ce7e67646aa2ffb",
+      "bytes": 1279
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json",
+      "sha256": "527331ef50c2711591452d292f2a90f4cb5b6d1807586ac4c0681a7135a5f46e",
+      "bytes": 62374
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/run.json",
+      "sha256": "e1f20a0ab9c1ad1c96937942761182a72fde630edb5f87579b906cee7e87d578",
+      "bytes": 1285
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json",
+      "sha256": "cfe3943af16350fe24b513116111b9be7d9ce21cc85383aba35d988a3529090c",
+      "bytes": 194981
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-closure-collaboration-leave-web/run.json",
+      "sha256": "af414ec2e4bd4f9db058c70035e9def4a6bf4de41d45343e33ea4ac7eeddc14d",
+      "bytes": 616
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-closure-collaboration-leave-web/results.json",
+      "sha256": "8b7d457757917c835bd7945aaa4adf7ba1cddca07de83281d42fc8cab27dda6e",
+      "bytes": 10853
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-closure-collaboration-retained-attachment/run.json",
+      "sha256": "9f00a847ff36f973726d904016f7214c42a51b4ed8971177facfd5cbd7f005fd",
+      "bytes": 689
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-closure-collaboration-retained-attachment/results.json",
+      "sha256": "adc053836007cd4fc3a270914a1d8dd46ca2e50fb26fa3b49073c9539726ad63",
+      "bytes": 8917
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-leave-web/run.json",
+      "sha256": "aa24ceb06613ae022ab4f8bb2829a1685332ba8af72e4bc9784d09bef063a154",
+      "bytes": 608
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-leave-web/results.json",
+      "sha256": "e0fc1e032cabc2224e662cdaa36614b96b855ea37fed872b026d73dd7cef581f",
+      "bytes": 8918
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-retained-attachment/run.json",
+      "sha256": "82ecec8b8f92896fd063053325e2a4b813dcd0a0e5f3922a2f5c153f0d9c39d3",
+      "bytes": 628
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-retained-attachment/results.json",
+      "sha256": "8cea5c971c99f9a15da672eef072ba6f62f98e256c506cf0a2c21bb3e79e7b78",
+      "bytes": 59041
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-runtime-handoff-web/run.json",
+      "sha256": "46cbb1534bede0da3020a5786eadab9436e50f3f97e6830f9a194e7b8c5497e1",
+      "bytes": 628
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-runtime-handoff-web/results.json",
+      "sha256": "00dff59bc6e8244055a9376cece507067b240ff112bf8d0234758a3c37b16454",
+      "bytes": 221347
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-source-surface/run.json",
+      "sha256": "aaabf6ee541a459dc8b53d2421d6890c6d43a9bc48b1853da54d04062fa896fd",
+      "bytes": 618
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-collaboration-source-surface/results.json",
+      "sha256": "634df942fa8752d7a9654db67071e1c398c874221c81fecfdce5c685c701b74b",
+      "bytes": 8696
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-leave-web/run.json",
+      "sha256": "fb91bde1f693adb279b551b4cdcec3b0444ae8bc40a1f663b8ed47fbdfb6d3c6",
+      "bytes": 614
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-leave-web/results.json",
+      "sha256": "0aa7df2d6c84ce0c984a7bafa72b7de7622eb77ee34751b774519f26503669cb",
+      "bytes": 10945
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-retained-attachment/run.json",
+      "sha256": "2bec46dc253cba6b61387d56ac621b774a5fb783fafe9988ce1ccfe922cbd7af",
+      "bytes": 687
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-retained-attachment/results.json",
+      "sha256": "c58ede4047efae46d1d8765767834c76f6adfefb4e83efa792769e2f56518b20",
+      "bytes": 7995
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-source-surface/run.json",
+      "sha256": "f3486481a37c361c7dfd99367d17c8ccc47f44fb340e2fdd9ec789154aab3b8d",
+      "bytes": 624
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-source-surface/results.json",
+      "sha256": "7dd24afc72102b594dd7227c488adf86b8a91bb852f57589c3277e0b031b5dad",
+      "bytes": 21220
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-leave-final-proof/run.json",
+      "sha256": "67787bd14309a138df4fa411ba3391e3f62f0588ca123b55a5c7d1d7c936df86",
+      "bytes": 602
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-leave-final-proof/results.json",
+      "sha256": "7175642d75c8988be43608d27c4d75146f52c5c5bab5bceea8f7cff9c443e91a",
+      "bytes": 19296
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-retained-final-proof/run.json",
+      "sha256": "6f7a2db0019ad09742051fa709d2de99fe74ca74cd81e10f6221496ecd472ad8",
+      "bytes": 668
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/browser/runs/password-retained-final-proof/results.json",
+      "sha256": "99a3119def2dc8a5b8b6231b1b7f61a5f14dd9dac60a49469b6543a31bfce4fe",
+      "bytes": 113180
+    }
+  ],
+  "limits": [
+    "No historical822c/7af9/1a32 pass imported into current status.",
+    "Test-only variants and original failed runs stay separate; no complete single-run pass asserted.",
+    "Current diagnostics/skill-presentation unit failures and detail scroll failure are additional to the original17.",
+    "Native installed/platform/provider conditions remain separate open gates."
+  ],
+  "verification": {
+    "reviewer_services_started": 0,
+    "reviewer_tests_executed": 0,
+    "database_actions": 0,
+    "provider_calls": 0,
+    "rows_unique": 17
+  },
+  "test_variant_limit": "Current product candidate4c817 is unchanged. Accepted test-only drawer/Mention/selector readiness variants are independently reviewed in drawer-failure-analysis;the original raw failures are never rewritten.",
+  "scope_boundary": "15 original failed browser cases nowPASS;2original installed gates stillBLOCKED. This is17 identities,not all441 current inventory or an all-green canonical full run. Other frontend and detail failures remain open.",
+  "final_browser_ledger_crosscheck": {
+    "path": ".trellis/tasks/11-01-branch-e2e-acceptance/research/continuation-20261107/browser-coverage.csv",
+    "sha256": "88bed9854d5d7ce3a4caa45d6aa71e8a3d50b4f29c225c2237a33b13c1ab50ba",
+    "all15_current_passes_match": true,
+    "two_installed_not_in_executed_ledger": true,
+    "canonical_business_inventory": 68,
+    "canonical_counts": {
+      "failed": 2,
+      "passed": 66
+    },
+    "diagnostic_variants_not_substituted_for_canonical_detail_failures": true
+  }
+}

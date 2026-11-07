@@ -1,0 +1,13 @@
+{
+  "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+  "package": "./internal/middleware",
+  "expected": "TestRefreshCloudFrontCookies_RestrictedTaskCannotMintWildcard",
+  "tests": {
+    "TestRefreshCloudFrontCookies_RestrictedTaskCannotMintWildcard": "pass"
+  },
+  "exit_code": 0,
+  "source_matches": true,
+  "database": "none; pure httptest signing fixture",
+  "real_provider_calls": 0,
+  "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/backend/cdn-race"
+}

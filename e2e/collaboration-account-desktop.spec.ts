@@ -425,6 +425,8 @@ test("Desktop child links, recorded pages and result notifications survive popou
     await deepLink(app, recordedAccountPath(records));
     await revealCollaborationDisclosure(source.page, "Sub-issues");
     await expect(childLink).toBeVisible();
+    await source.page.keyboard.press("Escape");
+    await expect(source.page.getByRole("dialog", { name: "Sub-issues", exact: true })).toBeHidden();
     const copied = await copyNativeAccountLink(app, source.page, recordedAccountPath(records), testInfo, "source-account");
     expect(new URL(copied).pathname + new URL(copied).search).toBe(recordedAccountPath(records));
     const sourcePopupReady = app.waitForEvent("window");
@@ -443,8 +445,11 @@ test("Desktop child links, recorded pages and result notifications survive popou
     expect(copiedRun.pathname + copiedRun.search + copiedRun.hash).toBe(recordedAccountPath(records, true));
     await revealCollaborationDisclosure(sourcePopup, "Sub-issues");
     await expect(sourcePopup.getByRole("region", { name: "Sub-issues", exact: true }).getByRole("link", { name: `${records.child.identifier} ${records.child.title}`, exact: true })).toBeVisible();
+    await sourcePopup.keyboard.press("Escape");
+    await expect(sourcePopup.getByRole("dialog", { name: "Sub-issues", exact: true })).toBeHidden();
     await showRecordedUsage(sourcePopup, records.runId);
     await nativeScreenshot(app, sourcePopup, testInfo.outputPath("desktop-record-source-popout.png"));
+    await revealCollaborationDisclosure(sourcePopup, "Sub-issues");
     await sourcePopup.getByRole("region", { name: "Sub-issues", exact: true }).getByRole("link", { name: `${records.child.identifier} ${records.child.title}`, exact: true }).click();
     await expect(sourcePopup.getByRole("button", { name: "Issue actions", exact: true })).toBeVisible();
     await expect(sourcePopup.getByText(records.child.title, { exact: true }).first()).toBeVisible();
@@ -460,6 +465,8 @@ test("Desktop child links, recorded pages and result notifications survive popou
     const outsideChildren = viewer.page.getByRole("region", { name: "Sub-issues", exact: true });
     await expect(outsideChildren.getByText(records.child.title, { exact: true })).toBeVisible();
     await expect(outsideChildren.getByRole("link")).toHaveCount(0);
+    await viewer.page.keyboard.press("Escape");
+    await expect(viewer.page.getByRole("dialog", { name: "Sub-issues", exact: true })).toBeHidden();
     await viewer.page.getByRole("button", { name: /Notifications/ }).click();
     const notification = viewer.page.getByRole("listitem").filter({ has: viewer.page.getByText("AI execution failed", { exact: true }) });
     await notification.getByRole("link", { name: records.issue.title, exact: true }).click();

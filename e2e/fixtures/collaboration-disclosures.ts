@@ -1,4 +1,4 @@
-import { expect, type Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 
 type CollaborationDisclosure = "Attachments" | "Sub-issues" | "Knowledge candidates" | "AI execution" | "Activity" | "More actions";
 
@@ -15,7 +15,7 @@ export async function revealCollaborationDisclosure(page: Page, name: Collaborat
   if (name !== "AI execution") {
     const drawer = page.getByRole("dialog").filter({ has: page.getByRole("group", { name: "Browse issue resources", exact: true }) });
     const controls = await drawer.isVisible() ? drawer.getByRole("group", { name: "Browse issue resources", exact: true }) : page.getByRole("group", { name: "Issue resources", exact: true });
-    await controls.getByRole("button", { name: new RegExp(`^${name}(?: \d+)?$`) }).click();
+    await controls.getByRole("button", { name: new RegExp(`^${name}(?: \\d+)?$`) }).click();
     await expect(drawer).toHaveAccessibleName(name);
     return drawer;
   }
@@ -26,4 +26,11 @@ export async function revealCollaborationDisclosure(page: Page, name: Collaborat
   if (await disclosure.getAttribute("open") === null) await summary.click();
   await expect(disclosure).toHaveAttribute("open", "");
   return disclosure;
+}
+
+export async function revealCollaborationMentions(form: Locator) {
+  const trigger = form.getByRole("button", { name: "Mention", exact: true });
+  if (await trigger.getAttribute("aria-expanded") !== "true") await trigger.click();
+  await expect(trigger).toHaveAttribute("aria-expanded", "true");
+  await expect(form.getByRole("group", { name: "Issue participants and AI targets", exact: true })).toBeVisible();
 }
