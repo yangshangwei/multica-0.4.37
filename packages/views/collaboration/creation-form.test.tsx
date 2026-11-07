@@ -607,3 +607,65 @@ for (const constrained of [true, false]) it(`reveals clipped body focus without 
   expect(scroll).toHaveBeenCalledTimes(constrained ? 1 : 0);
   expect(fetch.mock.calls.filter(([input]) => new URL(input).pathname === "/api/collaboration/issues")).toHaveLength(0);
 });
+
+
+it("summarizes retained non-default fields outside the collapsed details", async () => {
+  vi.stubGlobal("fetch", vi.fn(async (input: string) => new URL(input).searchParams.has("source_workspace_id") ? json(parentOptions()) : json(options)));
+  const user = userEvent.setup();
+  let view = mount(vi.fn(), source, "en", true);
+  await screen.findByLabelText("Title");
+  await user.click(screen.getByText("Initial fields"));
+  await user.selectOptions(screen.getByLabelText("Priority"), "high");
+  await user.type(screen.getByLabelText("Due date"), "2026-12-01");
+  view.unmount();
+  view = mount(vi.fn(), source, "en", true);
+  const summary = await screen.findByText("2 fields set");
+  expect(summary.closest("details")).not.toHaveAttribute("open");
+  expect(summary).toBeVisible();
+  await user.click(summary);
+  expect(screen.getByLabelText("Priority")).toHaveValue("high");
+  expect(screen.getByLabelText("Due date")).toHaveValue("2026-12-01");
+  await user.selectOptions(screen.getByLabelText("Priority"), "none");
+  await user.clear(screen.getByLabelText("Due date"));
+  expect(screen.queryByText(/fields? set/)).not.toBeInTheDocument();
+});
+
+it("keeps composing Enter out of native submission while plain Enter still creates", async () => {
+  const fetch = vi.fn(async (input: string) => {
+    const url = new URL(input);
+    if (url.pathname.endsWith("creation-options")) return json({ ...options, source: url.searchParams.has("source_workspace_id") ? sourceChoice : null });
+    return json(created);
+  });
+  vi.stubGlobal("fetch", fetch);
+  const user = userEvent.setup();
+  const { onCreated } = mount(vi.fn(), source);
+  const title = await screen.findByLabelText("Title");
+  await user.type(title, "中文协作任务");
+  fireEvent.compositionStart(title);
+  expect(fireEvent.keyDown(title, { key: "Enter", keyCode: 13, isComposing: true })).toBe(false);
+  expect(fireEvent.keyDown(title, { key: "Enter", keyCode: 229 })).toBe(false);
+  fireEvent.compositionEnd(title);
+  expect(onCreated).not.toHaveBeenCalled();
+  await user.keyboard("{Enter}");
+  await waitFor(() => expect(onCreated).toHaveBeenCalledOnce());
+  expect(fetch.mock.calls.filter(([input]) => new URL(input).pathname === "/api/collaboration/issues")).toHaveLength(1);
+});
+
+it.each([false, true])("focuses a delayed known-source title after touch open without stealing a live control: %s", async (keepControlFocus) => {
+  setApiInstance(new ApiClient("https://server.example"));
+  let resolveSource!: (response: Response) => void;
+  vi.stubGlobal("fetch", vi.fn(async (input: string) => new URL(input).searchParams.has("source_workspace_id")
+    ? new Promise<Response>((resolve) => { resolveSource = resolve; }) : json(options)));
+  const client = new QueryClient(); clients.push(client);
+  const navigation: NavigationAdapter = { push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/account", searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path };
+  renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={navigation}><CollaborationCreationEntry scope={collaborationScope(actor)} sourceWorkspaceId={source} /></NavigationProvider></QueryClientProvider>);
+  const trigger = screen.getByRole("button", { name: "New collaboration issue" });
+  const user = userEvent.setup();
+  await user.pointer([{ keys: "[TouchA>]", target: trigger }, { keys: "[/TouchA]", target: trigger }]);
+  const sourcePicker = await screen.findByLabelText("Source workspace");
+  await waitFor(() => expect(resolveSource).toBeDefined());
+  if (keepControlFocus) sourcePicker.focus();
+  await act(async () => { resolveSource(json({ ...options, source: sourceChoice })); });
+  const title = await screen.findByLabelText("Title");
+  await waitFor(() => expect(keepControlFocus ? sourcePicker : title).toHaveFocus());
+});

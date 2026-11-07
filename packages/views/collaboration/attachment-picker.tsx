@@ -1,4 +1,5 @@
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useId, useRef, type ReactNode } from "react";
+import { Paperclip } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationDeliveryKey, collaborationDraftAttachmentsOptions, CollaborationAttachmentError, executeCollaborationUpload,
   stageCollaborationUpload, type CollaborationDeliveryForm, type CollaborationScope, type CollaborationUploadDraft } from "@multica/core/collaboration";
@@ -19,14 +20,17 @@ export function CollaborationAttachmentFailure({ error }: { error: unknown }) {
   return <p role="alert" className="text-body text-muted-foreground">{message}</p>;
 }
 
-export function CollaborationAttachmentPicker({ scope, form, update, uploads, disabled = false, onBusyChange, onChange }: {
+export function CollaborationAttachmentPicker({ scope, form, update, uploads, disabled = false, onBusyChange, onChange, renderComposer }: {
   scope: CollaborationScope; form: CollaborationDeliveryForm;
   update: (fields: Partial<Pick<CollaborationDeliveryForm, "selectedAttachmentIds">>) => void;
   uploads: CollaborationUploadDraft[]; disabled?: boolean; onBusyChange?: (busy: boolean) => void; onChange?: () => void;
+  renderComposer?: (parts: { trigger: ReactNode; details: ReactNode }) => ReactNode;
 }) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
   const inputId = useId();
+  const input = useRef<HTMLInputElement>(null);
+  const triggerButton = useRef<HTMLButtonElement>(null);
   const originals = useRef(new Map<string, File>());
   const controller = useRef<AbortController | null>(null);
   const query = useQuery({ ...collaborationDraftAttachmentsOptions(client, scope, form), enabled: form.selectedAttachmentIds.length > 0 || uploads.length > 0 });
@@ -58,17 +62,31 @@ export function CollaborationAttachmentPicker({ scope, form, update, uploads, di
     },
     onSuccess: () => { onChange?.(); },
     // Cancel and the recovery buttons disappear when the attempt ends.
-    onSettled: () => { recoverFocus(() => document.getElementById(inputId)); },
+    onSettled: () => { recoverFocus(() => renderComposer ? triggerButton.current : input.current); },
   });
   useEffect(() => { onBusyChange?.(upload.isPending); return () => { onBusyChange?.(false); }; }, [onBusyChange, upload.isPending]);
   useEffect(() => { const files = originals.current; return () => { controller.current?.abort(); files.clear(); }; }, []);
   const locked = disabled || upload.isPending;
-  return <fieldset className="min-w-0 space-y-3">
+  const addDisabled = locked || uploads.length > 0;
+  const fileInput = <Input ref={input} id={inputId} type="file" multiple disabled={addDisabled}
+    aria-label={renderComposer ? t(($) => $.attachments.add) : undefined} hidden={Boolean(renderComposer)}
+    className={renderComposer ? "hidden" : "h-auto min-h-11 min-w-0 py-2 text-caption"}
+    onChange={(event) => { const files = Array.from(event.target.files ?? []); event.target.value = ""; if (files.length) upload.mutate({ files }); }} />;
+  const trigger = <>
+    <Button ref={triggerButton} type="button" size="sm" variant="ghost" aria-disabled={addDisabled} aria-busy={upload.isPending || undefined}
+      className="shrink-0 max-sm:min-h-11 pointer-coarse:min-h-11 aria-disabled:opacity-50 aria-disabled:cursor-not-allowed"
+      onClick={() => { if (!addDisabled) input.current?.click(); }}>
+      <Paperclip aria-hidden className="size-4" />{t(($) => $.attachments.add)}
+    </Button>
+    {fileInput}
+  </>;
+  const details = <fieldset className="min-w-0 space-y-3">
     <legend className="mb-2 text-body font-medium">{t(($) => $.attachments.title)}</legend>
     <p className="text-caption text-muted-foreground">{t(($) => $.attachments.help)}</p>
-    <label htmlFor={inputId} className="block text-caption font-medium">{t(($) => $.attachments.add)}</label>
-    <Input id={inputId} type="file" multiple disabled={locked || uploads.length > 0} className="h-auto min-h-11 min-w-0 py-2 text-caption"
-      onChange={(event) => { const files = Array.from(event.target.files ?? []); event.target.value = ""; if (files.length) upload.mutate({ files }); }} />
+    {!renderComposer && <>
+      <label htmlFor={inputId} className="block text-caption font-medium">{t(($) => $.attachments.add)}</label>
+      {fileInput}
+    </>}
     {query.isFetching && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.attachments.loading)}</p>}
     {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
     {query.data && <ul className="space-y-2">{query.data.attachments.map((file) => <li key={file.id} className="min-w-0">
@@ -88,8 +106,14 @@ export function CollaborationAttachmentPicker({ scope, form, update, uploads, di
       </label>}
     </div>)}
     {upload.isPending && <div className="flex flex-wrap items-center gap-3"><p role="status" className="text-caption text-muted-foreground">{t(($) => $.attachments.uploading)}</p>
-      <Button type="button" variant="outline" className="pointer-coarse:min-h-11" onClick={() => controller.current?.abort()}>{t(($) => $.attachments.cancelUpload)}</Button></div>}
+      <Button type="button" variant="outline" className="pointer-coarse:min-h-11" onClick={(event) => {
+        // Hand off before abort removes Cancel; otherwise the modal's later
+        // popup-focus restoration races settlement recovery back to the trigger.
+        if (renderComposer && document.activeElement === event.currentTarget) triggerButton.current?.focus({ preventScroll: true });
+        controller.current?.abort();
+      }}>{t(($) => $.attachments.cancelUpload)}</Button></div>}
     {upload.error?.name === "AbortError" ? <p role="status" className="text-caption text-muted-foreground">{t(($) => $.attachments.uploadCancelled)}</p>
       : upload.error && <CollaborationAttachmentFailure error={upload.error} />}
   </fieldset>;
+  return renderComposer ? renderComposer({ trigger, details }) : details;
 }

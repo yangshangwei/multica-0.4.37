@@ -1,0 +1,693 @@
+{
+  "mode": "final-focus",
+  "fixture": "Production build of original shared components/CSS/locales, synthetic API and memory StorageAdapter",
+  "provenance": {
+    "mode": "final-focus",
+    "output": "/tmp/collaboration-create-composer-final-focus-95198",
+    "builtAt": "2026-11-07T13:20:09.413Z",
+    "buildPid": 95198,
+    "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "sources": [
+      {
+        "path": "packages/views/collaboration/creation-form.tsx",
+        "sha256": "3df4412faafdd5f6e9e970f4280354c25e9523aabda4ea5e4bceffa4bf60ac16"
+      },
+      {
+        "path": "packages/views/collaboration/account-picker.tsx",
+        "sha256": "accea1d79d5261139f8fb6bda6f79d23192f70e29aa84cbc4effc51385177114"
+      },
+      {
+        "path": "packages/views/collaboration/attachment-picker.tsx",
+        "sha256": "a61fd618d4554db7bd524939096be638f1fd404812ff473cb3ae611beb56e334"
+      },
+      {
+        "path": "packages/views/collaboration/field-inputs.tsx",
+        "sha256": "823c7a6d1898eea6b85f39ff0b103fdec32b8858d70f85200c3f811049967987"
+      },
+      {
+        "path": "packages/views/collaboration/form-styles.ts",
+        "sha256": "fc42e560df3ce9a76db383e586a3a456f8c5e2c3596e7c58486452530ba74e8f"
+      },
+      {
+        "path": "packages/views/collaboration/focus.ts",
+        "sha256": "b9e0e438e5afcd5778e39b39991bdd49ff9b2bddb7af3c46f818083627fe4870"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/property-picker.tsx",
+        "sha256": "7ae19a5d2e4ea1d3c94caf29187f0a256dacb5bdfaf46a545acd432db0e8d6a7"
+      },
+      {
+        "path": "packages/views/locales/en/collaboration.json",
+        "sha256": "14686a1b176b3e6a75f00592d818104c848419f6e05f0a751b1323c110c5c94a"
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/collaboration.json",
+        "sha256": "66670fb842dc2d81655a0dc911c4c3daf2d9208543c1ef84ee89bb67d1c2f93d"
+      },
+      {
+        "path": "packages/ui/styles/tokens.css",
+        "sha256": "0ac7c9603d5bd945f26a46ebe6d3ea42594a45acadf8e88a9300898ce968dc3c"
+      },
+      {
+        "path": "packages/ui/styles/base.css",
+        "sha256": "c01e09bc563ff342966c1edfc0de756eff288ba4907680fd1c89e30748a6ab82"
+      },
+      {
+        "path": "packages/ui/components/ui/dialog.tsx",
+        "sha256": "35a8ac18ba129e7d90fe11e74fa2dfb5dc483d28424f39592e660884b99973cf"
+      },
+      {
+        "path": "packages/ui/components/ui/input.tsx",
+        "sha256": "7119bac8d69289dbf6c0fe81df25ff5102a474d98f8a7ebf05ae551f969f9749"
+      },
+      {
+        "path": "packages/ui/components/ui/textarea.tsx",
+        "sha256": "16c7355c309cf87ed3dcbd35d98fda8490cc0525d4e4d05534b01d0e3b3d385c"
+      },
+      {
+        "path": "packages/ui/components/ui/button.tsx",
+        "sha256": "132669be5d65af6b27bb492b5237b90c27c2869227251efc65a1d1f9b174da28"
+      },
+      {
+        "path": "packages/ui/components/ui/popover.tsx",
+        "sha256": "46d8d14a5637d48f6342f011027c2ac6e9e8cc53f6f4bbc41b633a773fd506e8"
+      },
+      {
+        "path": "packages/views/modals/create-issue.tsx",
+        "sha256": "16f154a27dc64ecd435b40d560a076546b7c90c27f0571e95d2f75b90b676b70"
+      },
+      {
+        "path": ".trellis/tasks/11-07-collaboration-create-composer/research/preview/main.tsx",
+        "sha256": "dbd057a2be2562b44e6b69f01a11f20398ba25edf3805e4f27b48a0061bf472d"
+      },
+      {
+        "path": ".trellis/tasks/11-07-collaboration-create-composer/research/preview/verify.mjs",
+        "sha256": "5de2977814513e5d85789ae0d52ae2849f7da036d812283141e7b85924dadf95"
+      },
+      {
+        "path": ".trellis/tasks/11-07-collaboration-create-composer/research/preview/build.mjs",
+        "sha256": "d19c7318df02fe6e8c420ee532ee7e467885f0347bc8f7117cda7070a6b804ac"
+      }
+    ]
+  },
+  "driverPid": 95371,
+  "startedAt": "2026-11-07T13:20:32.848Z",
+  "scenarios": {
+    "attachment-focus-light": {
+      "chooserCancelFocus": true,
+      "requestCountAfterCancel": 0,
+      "cancelFocus": {
+        "tag": "BUTTON",
+        "text": "Attach files",
+        "role": null,
+        "disabled": false,
+        "body": false
+      },
+      "cancelTriggerFocused": true,
+      "cancelTrace": [
+        {
+          "type": "before-cancel-focus",
+          "at": 1260.5,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "mutation",
+          "at": 1266.3999999761581,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1271.3999999761581,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "cancel-click-capture",
+          "at": 1273.3999999761581,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1274.2999999821186,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "mutation",
+          "at": 1295.2999999821186,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": false,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        }
+      ],
+      "recoveryFocus": true,
+      "recoveryGeometry": {
+        "width": 112.0625,
+        "height": 44,
+        "top": 355.59375,
+        "bottom": 399.59375,
+        "left": 36,
+        "right": 148.0625,
+        "visible": true
+      },
+      "recoveryPaint": {
+        "focusVisible": true,
+        "ringCSS": "oklch(60.6% .016 285.938)",
+        "ring": [
+          129,
+          129,
+          139,
+          255
+        ],
+        "background": [
+          251,
+          251,
+          251,
+          255
+        ],
+        "compositedRing": [
+          129,
+          129,
+          139,
+          255
+        ],
+        "ratio": 3.7261186965011373,
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+        "borderColor": "oklch(0.606 0.016 285.938)",
+        "ringPresent": true,
+        "outlinePresent": false,
+        "indicatorPainted": true
+      },
+      "retryFocus": true
+    },
+    "attachment-focus-dark": {
+      "chooserCancelFocus": true,
+      "requestCountAfterCancel": 0,
+      "cancelFocus": {
+        "tag": "BUTTON",
+        "text": "Attach files",
+        "role": null,
+        "disabled": false,
+        "body": false
+      },
+      "cancelTriggerFocused": true,
+      "cancelTrace": [
+        {
+          "type": "before-cancel-focus",
+          "at": 1099.4000000059605,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1107.0999999940395,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "cancel-click-capture",
+          "at": 1110,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1110.5,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "mutation",
+          "at": 1121.199999988079,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": false,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        }
+      ],
+      "recoveryFocus": true,
+      "recoveryGeometry": {
+        "width": 112.0625,
+        "height": 44,
+        "top": 355.59375,
+        "bottom": 399.59375,
+        "left": 36,
+        "right": 148.0625,
+        "visible": true
+      },
+      "recoveryPaint": {
+        "focusVisible": true,
+        "ringCSS": "oklch(60% .015 286.067)",
+        "ring": [
+          127,
+          127,
+          137,
+          255
+        ],
+        "background": [
+          17,
+          17,
+          20,
+          255
+        ],
+        "compositedRing": [
+          127,
+          127,
+          137,
+          255
+        ],
+        "ratio": 4.756584738536813,
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.6 0.015 286.067) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "outline": "oklab(0.552 0.00439355 -0.015385 / 0.5) none 0px",
+        "borderColor": "oklch(0.6 0.015 286.067)",
+        "ringPresent": true,
+        "outlinePresent": false,
+        "indicatorPainted": true
+      },
+      "retryFocus": true
+    }
+  },
+  "diagnostics": {
+    "attachment-focus-light": {
+      "chooserCancelFocus": true,
+      "requestCountAfterCancel": 0,
+      "cancelFocus": {
+        "tag": "BUTTON",
+        "text": "Attach files",
+        "role": null,
+        "disabled": false,
+        "body": false
+      },
+      "cancelTriggerFocused": true,
+      "cancelTrace": [
+        {
+          "type": "before-cancel-focus",
+          "at": 1260.5,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "mutation",
+          "at": 1266.3999999761581,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1271.3999999761581,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "cancel-click-capture",
+          "at": 1273.3999999761581,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1274.2999999821186,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "mutation",
+          "at": 1295.2999999821186,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": false,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        }
+      ],
+      "recoveryFocus": true,
+      "recoveryGeometry": {
+        "width": 112.0625,
+        "height": 44,
+        "top": 355.59375,
+        "bottom": 399.59375,
+        "left": 36,
+        "right": 148.0625,
+        "visible": true
+      },
+      "recoveryPaint": {
+        "focusVisible": true,
+        "ringCSS": "oklch(60.6% .016 285.938)",
+        "ring": [
+          129,
+          129,
+          139,
+          255
+        ],
+        "background": [
+          251,
+          251,
+          251,
+          255
+        ],
+        "compositedRing": [
+          129,
+          129,
+          139,
+          255
+        ],
+        "ratio": 3.7261186965011373,
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+        "borderColor": "oklch(0.606 0.016 285.938)",
+        "ringPresent": true,
+        "outlinePresent": false,
+        "indicatorPainted": true
+      },
+      "retryFocus": true
+    },
+    "attachment-focus-dark": {
+      "chooserCancelFocus": true,
+      "requestCountAfterCancel": 0,
+      "cancelFocus": {
+        "tag": "BUTTON",
+        "text": "Attach files",
+        "role": null,
+        "disabled": false,
+        "body": false
+      },
+      "cancelTriggerFocused": true,
+      "cancelTrace": [
+        {
+          "type": "before-cancel-focus",
+          "at": 1099.4000000059605,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1107.0999999940395,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "cancel-click-capture",
+          "at": 1110,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1110.5,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "mutation",
+          "at": 1121.199999988079,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": false,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        }
+      ],
+      "recoveryFocus": true,
+      "recoveryGeometry": {
+        "width": 112.0625,
+        "height": 44,
+        "top": 355.59375,
+        "bottom": 399.59375,
+        "left": 36,
+        "right": 148.0625,
+        "visible": true
+      },
+      "recoveryPaint": {
+        "focusVisible": true,
+        "ringCSS": "oklch(60% .015 286.067)",
+        "ring": [
+          127,
+          127,
+          137,
+          255
+        ],
+        "background": [
+          17,
+          17,
+          20,
+          255
+        ],
+        "compositedRing": [
+          127,
+          127,
+          137,
+          255
+        ],
+        "ratio": 4.756584738536813,
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.6 0.015 286.067) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "outline": "oklab(0.552 0.00439355 -0.015385 / 0.5) none 0px",
+        "borderColor": "oklch(0.6 0.015 286.067)",
+        "ringPresent": true,
+        "outlinePresent": false,
+        "indicatorPainted": true
+      },
+      "retryFocus": true
+    }
+  },
+  "failures": [],
+  "pageErrors": [],
+  "blockedExternalRequests": [],
+  "listener": {
+    "origin": "http://127.0.0.1:50323",
+    "pid": 95371,
+    "owned": true
+  },
+  "engine": "Playwright Chromium 145.0.7632.6",
+  "ownedBrowserProcesses": [
+    {
+      "id": 95390,
+      "type": "browser"
+    },
+    {
+      "id": 95398,
+      "type": "GPU"
+    },
+    {
+      "id": 95399,
+      "type": "network.mojom.NetworkService"
+    }
+  ],
+  "listenerClosed": true,
+  "browserClosed": true,
+  "finishedAt": "2026-11-07T13:20:40.577Z"
+}

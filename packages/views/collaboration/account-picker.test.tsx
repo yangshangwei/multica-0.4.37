@@ -33,7 +33,7 @@ afterEach(() => {
 });
 
 function mount(fetch: typeof globalThis.fetch, options: { allowSelf?: boolean; membersOnly?: boolean; onSelect?: (value: unknown) => void;
-  selected?: CollaborationRecipientAccount | readonly CollaborationRecipientAccount[] | null; multiple?: boolean; maxSelected?: number } = {}) {
+  selected?: CollaborationRecipientAccount | readonly CollaborationRecipientAccount[] | null; compact?: boolean; multiple?: boolean; maxSelected?: number } = {}) {
   setApiInstance(new ApiClient("https://server.example"));
   vi.stubGlobal("fetch", fetch);
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -41,17 +41,17 @@ function mount(fetch: typeof globalThis.fetch, options: { allowSelf?: boolean; m
   const ui = (disabled = false) => <QueryClientProvider client={client}>
     <CollaborationAccountPicker scope={collaborationScope(actor)} context={{ kind: "creation", sourceWorkspaceId: source }}
       selected={options.selected ?? null} allowSelf={options.allowSelf} membersOnly={options.membersOnly} multiple={options.multiple} maxSelected={options.maxSelected}
-      label="Recipient" disabled={disabled} onSelect={options.onSelect ?? vi.fn()} />
+      label="Recipient" compact={options.compact} disabled={disabled} onSelect={options.onSelect ?? vi.fn()} />
   </QueryClientProvider>;
   const view = renderWithI18n(ui());
   return { ...view, client, setDisabled: (disabled: boolean) => view.rerender(ui(disabled)),
     setSelected: (selected: CollaborationRecipientAccount) => { options.selected = selected; view.rerender(ui()); } };
 }
 
-it("distinguishes same-name accounts by full IDs and retains the chosen identity", async () => {
+it.each([false, true])("distinguishes same-name accounts and retains full identity with compact=%s", async (compact) => {
   const accounts = [recentId, directoryId].map((user_id) => ({ user_id, name: "李明", avatar_url: "", external: false }));
   const onSelect = vi.fn();
-  const { setSelected } = mount(vi.fn(async () => new Response(JSON.stringify({ ...page(), recent: [], recipients: accounts }))), { onSelect });
+  const { setSelected } = mount(vi.fn(async () => new Response(JSON.stringify({ ...page(), recent: [], recipients: accounts }))), { onSelect, compact });
   const user = userEvent.setup();
   const trigger = screen.getByRole("button", { name: "Recipient" });
   await user.click(trigger);

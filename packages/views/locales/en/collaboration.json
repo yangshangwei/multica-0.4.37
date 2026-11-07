@@ -175,7 +175,9 @@
     "changed": "This issue changed after you opened the form. Your input is preserved.",
     "useCurrentVersion": "Keep input and use current version",
     "initial": "Initial fields",
-    "clearInitial": "Clear initial fields"
+    "clearInitial": "Clear initial fields",
+    "configured_one": "{{count}} field set",
+    "configured_other": "{{count}} fields set"
   },
   "page": {
     "title": "Collaboration",
@@ -554,6 +556,10 @@
     "noSources": "You need a workspace you can create issues in. Shared issues remain available here.",
     "disabled": "Creating collaboration issues is not enabled on this server.",
     "titleLabel": "Title",
+    "titlePlaceholder": "What needs to be done?",
+    "descriptionPlaceholder": "Add context and the expected outcome...",
+    "uploadRecoveryHint": "Check unconfirmed uploads before creating the issue.",
+    "titleRequired": "Add a title to create the issue.",
     "description": "Description",
     "recipient": "Recipient",
     "self": "Assign to me",

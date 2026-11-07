@@ -103,3 +103,51 @@ same-query authorized cached rows available on background refresh errors.
 Keyboard Enter, pointer selection and pagination share this ownership rule;
 IME composition, exact lookup and full account identity labels remain intact.
 `account-picker.test.tsx` owns delayed-search and keyboard/pointer regressions.
+
+## Composer layout and attachment focus
+
+Creation uses the single-surface composer with recipient and AI participation
+after title/description in the scrollable body, outside advanced fields. The
+source context and footer remain in normal flow. Only the attachment entry,
+draft notice and cancel/create actions belong in the fixed footer: file lists,
+sharing help, upload progress, retry/reselect controls and long errors scroll
+with the body. A 32-file selection must not grow the fixed footer.
+
+Splitting attachment presentation must retain one upload owner. Optional
+composition props may place the trigger in the footer and details in the body;
+do not mount a second picker, add another store, or portal form actions. When
+compact mode hides its native file input, lost-focus recovery targets the
+visible attachment button. Default callers keep the visible native input as
+their recovery target. Never steal focus from another live control or leave an
+invisible file input in the keyboard tab order.
+
+Base UI may restore a disappearing control's focus to the modal root instead
+of `document.body`. Treat only the owning dialog's root fallback as lost focus
+for compact attachment settlement; unrelated dialogs and live controls remain
+untouched. Coordinate initial modal focus explicitly for touch as well as
+keyboard opens, and avoid fighting asynchronous source-option rendering.
+For explicit compact upload cancellation, hand focus from the focused Cancel
+button to the persistent attachment trigger before abort removes Cancel. A
+post-settlement recovery alone can lose to Base UI's later restore-focus frame.
+Only perform this handoff when Cancel owns focus; preserve another live target.
+
+Compact recipient presentation still displays the full account ID, permitted
+external marker and independent selected-name sentence. AI and selected-file
+sharing explanations remain available. The advanced-fields summary exposes
+retained user choices without counting revision/identity metadata; invalid
+values still open the disclosure automatically.
+
+Visual similarity does not change keyboard contracts: creation title Enter
+submits natively, description Enter inserts a newline, and recipient/IME Enter
+must not accidentally submit. Do not copy ordinary-task shortcut hints unless
+the shortcut is implemented. Regression coverage includes compact and default
+attachment focus after cancellation/recovery, no focus stealing, advanced
+summary/invalid values, complete recipient identities and the keyboard paths.
+
+Account popup content must fit the positioner's available anchor space, not
+just the viewport's total height. Keep its list shrinkable/scrollable so a
+320px layout exposes complete distinguishing IDs before selection. Verify
+actual text ranges after scrolling and focus rings inside portaled content.
+Long translated breadcrumbs must not consume the source selector's usable
+width. A missing-title explanation belongs next to the title or visible
+actions, not at the far end of the scrolling form.

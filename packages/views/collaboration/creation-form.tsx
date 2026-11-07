@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { ChevronRight } from "lucide-react";
 import { keepPreviousData, useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationCreationOptions, collaborationDeliveryKey, collaborationDeliveryRevision, collaborationKeys,
   CollaborationCreationRejectedError,
@@ -8,6 +9,7 @@ import { collaborationCreationOptions, collaborationDeliveryKey, collaborationDe
   type CollaborationCreationFields, type CollaborationIssue, type CollaborationScope } from "@multica/core/collaboration";
 import type { IssuePropertyValue } from "@multica/core/types";
 import { accountPath } from "@multica/core/paths";
+import { isImeComposing } from "@multica/core/utils";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { Textarea } from "@multica/ui/components/ui/textarea";
@@ -20,18 +22,21 @@ import { CollaborationAttachmentPicker } from "./attachment-picker";
 import { CollaborationIterationInput, CollaborationLabelInput, CollaborationPropertyInputs, CollaborationSourceInputs, collaborationSelectClass } from "./field-inputs";
 import { useCollaborationLabels } from "./labels";
 import { collaborationFocusWithinClass } from "./form-styles";
+import { recoverFocus } from "./focus";
 
 export function CollaborationCreationEntry({ scope, sourceWorkspaceId }: { scope: CollaborationScope; sourceWorkspaceId?: string }) {
   const { t } = useT("collaboration");
   const navigation = useNavigation();
   const [open, setOpen] = useState(false);
+  const dialog = useRef<HTMLDivElement>(null);
   return <Dialog open={open} onOpenChange={setOpen}>
     <DialogTrigger render={<Button className="pointer-coarse:min-h-11 focus-visible:ring-faint-foreground focus-visible:border-faint-foreground" />}>{t(($) => $.creation.entry)}</DialogTrigger>
-    <DialogContent className={`flex max-h-[90dvh] flex-col gap-0 overflow-hidden p-0 sm:max-w-2xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11 ${collaborationFocusWithinClass}`} closeLabel={t(($) => $.creation.close)}>
-      <div className="shrink-0 space-y-2 p-4 pr-12">
-        <DialogTitle>{t(($) => $.creation.title)}</DialogTitle>
-        <DialogDescription>{t(($) => $.creation.help)}</DialogDescription>
-      </div>
+    <DialogContent ref={dialog}
+      initialFocus={() => dialog.current?.querySelector<HTMLElement>('[data-creation-title]:not(:disabled)')
+        ?? dialog.current?.querySelector<HTMLElement>('[data-creation-source-empty]:not(:disabled)') ?? dialog.current}
+      className={`flex h-[min(640px,90dvh)] max-h-[90dvh] w-[calc(100vw-1.5rem)] flex-col gap-0 overflow-hidden bg-background p-0 sm:max-w-2xl pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11 ${collaborationFocusWithinClass}`} closeLabel={t(($) => $.creation.close)}>
+      <DialogTitle className="sr-only">{t(($) => $.creation.title)}</DialogTitle>
+      <DialogDescription className="sr-only">{t(($) => $.creation.help)}</DialogDescription>
       {open && <CollaborationCreationPanel scope={scope} sourceWorkspaceId={sourceWorkspaceId} constrained onCancel={() => setOpen(false)} onCreated={(issue) => {
         setOpen(false); navigation.push(accountPath({ view: "participating", issueId: issue.id }));
       }} />}
@@ -45,6 +50,7 @@ export function CollaborationCreationPanel({ scope, sourceWorkspaceId, onCreated
   const { t } = useT("collaboration");
   const client = useQueryClient();
   const selectId = useId();
+  const sourceSelect = useRef<HTMLSelectElement>(null);
   useSyncExternalStore(subscribeCollaborationDelivery, collaborationDeliveryRevision, () => 0);
   let draftError = false;
   let records: ReturnType<typeof readCollaborationDeliveryRecords> = [];
@@ -54,6 +60,9 @@ export function CollaborationCreationPanel({ scope, sourceWorkspaceId, onCreated
   const [selection, setSelection] = useState(pendingSource ?? sourceWorkspaceId ?? previousSource ?? "");
   const sources = useQuery(collaborationCreationOptions(client, scope));
   const sourceId = selection || (sources.data?.sources.length === 1 ? sources.data.sources[0]!.id : "");
+  useEffect(() => {
+    if (constrained && !sourceId) recoverFocus(() => sourceSelect.current);
+  }, [constrained, sourceId, sources.data]);
   const creationKey = [...collaborationKeys.scope(scope), "creation"];
   // Core retires records before onSuccess. Keep the owning form mounted through
   // that interval, as well as while a contentful request awaits confirmation.
@@ -81,13 +90,18 @@ export function CollaborationCreationPanel({ scope, sourceWorkspaceId, onCreated
   const availableSource = !draftError && sources.data?.sources.some((source) => source.id === sourceId);
   return <div className={`min-w-0 ${constrained ? "flex min-h-0 flex-1 flex-col" : "space-y-5"} ${collaborationFocusWithinClass}`}>
     {!constrained && notices}
-    {sources.data && <div className={constrained ? "shrink-0 px-4 pb-5" : undefined}>
-      <div className="space-y-2"><label htmlFor={selectId} className="block text-body font-medium">{t(($) => $.creation.source)}</label>
-        <select id={selectId} value={sourceId} disabled={sourceLocked} onChange={(event) => { if (!sourceLocked) setSelection(event.target.value); }} className="min-h-11 w-full rounded-md border border-input bg-background px-3 text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-          <option value="">{t(($) => $.creation.chooseSource)}</option>{sources.data.sources.map((source) => <option key={source.id} value={source.id}>{source.name}</option>)}
-        </select>
+    <div className={constrained ? "shrink-0 px-5 pb-3 pt-3 pr-14" : undefined}>
+      <div className={constrained ? "flex min-w-0 flex-wrap items-center gap-1.5 text-caption" : "space-y-2"}>
+        {sources.data && <>
+          <label htmlFor={selectId} className={constrained ? "sr-only" : "block text-body font-medium"}>{t(($) => $.creation.source)}</label>
+          <select ref={sourceSelect} data-creation-source-empty={!sourceId ? "" : undefined} id={selectId} value={sourceId} disabled={sourceLocked} onChange={(event) => { if (!sourceLocked) setSelection(event.target.value); }}
+            className={`min-w-0 rounded-md bg-background text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${constrained ? "min-h-8 min-w-32 max-w-full flex-1 basis-32 py-1 pr-1 text-caption sm:max-w-48 pointer-coarse:min-h-11" : "min-h-11 w-full border border-input px-3"}`}>
+            <option value="">{t(($) => $.creation.chooseSource)}</option>{sources.data.sources.map((source) => <option key={source.id} value={source.id}>{source.name}</option>)}
+          </select>
+        </>}
+        {constrained && <span className="flex min-w-0 items-center gap-1.5 font-medium"><ChevronRight aria-hidden className="size-3 shrink-0 text-faint-foreground" /><span>{t(($) => $.creation.title)}</span></span>}
       </div>
-    </div>}
+    </div>
     {availableSource ? <SelectedCreationSource key={`${scope.apiScope}:${scope.userId}:${sourceId}`} scope={scope} sourceId={sourceId} onCreated={onCreated}
       constrained={constrained} onCancel={onCancel} notices={constrained ? notices : null} />
       : constrained && <CreationContents constrained actions={onCancel && <CancelCreation onCancel={onCancel} />}>{notices}</CreationContents>}
@@ -96,7 +110,7 @@ export function CollaborationCreationPanel({ scope, sourceWorkspaceId, onCreated
 
 function CreationContents({ constrained, children, actions }: { constrained: boolean; children: ReactNode; actions?: ReactNode }) {
   return <>
-    <div data-collaboration-creation-body className={`min-w-0 space-y-5 ${constrained ? "min-h-0 flex-1 overflow-y-auto overscroll-contain scroll-py-1 px-4 pb-4 pt-1 [&_:is(input,textarea,select,button,summary)]:scroll-my-1" : ""}`}
+    <div data-collaboration-creation-body className={`min-w-0 space-y-5 ${constrained ? "min-h-0 flex-1 overflow-y-auto overscroll-contain scroll-py-1 px-5 pb-5 pt-1 [&_:is(input,textarea,select,button,summary)]:scroll-my-1" : ""}`}
       onFocusCapture={constrained ? (event) => {
         const body = event.currentTarget;
         const target = event.target;
@@ -107,7 +121,7 @@ function CreationContents({ constrained, children, actions }: { constrained: boo
         if (body.clientHeight <= 0 || visible.height <= 0 || focused.height <= 0) return;
         if (focused.top < visible.top + 4 || focused.bottom > visible.bottom - 4) target.scrollIntoView({ block: "nearest" });
       } : undefined}>{children}</div>
-    {actions && <div data-collaboration-creation-actions className={`flex flex-wrap items-center justify-between gap-3 ${constrained ? "shrink-0 px-4 py-4" : ""}`}>{actions}</div>}
+    {actions && <div data-collaboration-creation-actions className={`flex flex-wrap items-center justify-between gap-2 ${constrained ? "shrink-0 border-t px-5 py-3" : ""}`}>{actions}</div>}
   </>;
 }
 
@@ -151,6 +165,8 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
   const labels = useCollaborationLabels();
   const client = useQueryClient();
   const id = useId();
+  const titleInput = useRef<HTMLInputElement>(null);
+  useEffect(() => { if (constrained) recoverFocus(() => titleInput.current); }, [constrained]);
   const sourceId = options.source!.id;
   const context = { kind: "creation" as const, sourceWorkspaceId: sourceId };
   const draft = useCollaborationDeliveryForm({ server: scope.server, userId: scope.userId, context }, "creation");
@@ -190,37 +206,57 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
   const iterationChanged = initial.current_iteration_id && fields?.source_options.iterations.some((item) => item.id === initial.current_iteration_id && item.revision !== initial.expected_iteration_revision);
   const initialSection = useRef<HTMLDetailsElement>(null);
   useEffect(() => { if (!initialValid && initialSection.current) initialSection.current.open = true; }, [initialValid, fields]);
-  return <form className={`min-w-0 ${constrained ? "flex min-h-0 flex-1 flex-col" : "space-y-5"}`} onSubmit={(event) => {
+  const configuredCount = [
+    initial.status && initial.status !== fields?.default_status,
+    initial.priority && initial.priority !== "none",
+    initial.start_date, initial.due_date, initial.label_ids?.length,
+    initial.project_id, initial.parent_issue_id, initial.stage, initial.current_iteration_id,
+  ].filter(Boolean).length + Object.keys(properties).length;
+  const submitHint = draft.uploads.length > 0 && !uploading ? t(($) => $.creation.uploadRecoveryHint)
+    : editable && initialValid && !form.title.trim() ? t(($) => $.creation.titleRequired) : null;
+  return <form className={`min-w-0 ${constrained ? "flex min-h-0 flex-1 flex-col" : "space-y-5"}`}
+    onKeyDownCapture={(event) => { if (event.key === "Enter" && isImeComposing(event)) event.preventDefault(); }}
+    onSubmit={(event) => {
     if (event.target !== event.currentTarget) return;
     event.preventDefault(); if (!editable || !form.title.trim() || !initialValid) return;
     create.mutate({ value: prepareCollaborationCreation(form, crypto.randomUUID()), recovery: false });
   }}>
-    <CreationContents constrained={constrained} actions={<>
-      <p className="text-caption text-muted-foreground">{t(($) => $.creation.saved)}</p>
-      <div className="flex flex-wrap items-center gap-2">{onCancel && <CancelCreation onCancel={onCancel} />}
-        <Button type="submit" disabled={!editable || !form.title.trim() || !initialValid} className="pointer-coarse:min-h-11">{t(($) => $.creation.submit)}</Button>
-      </div>
-    </>}>
+    <CollaborationAttachmentPicker scope={scope} form={form} update={draft.update} uploads={draft.uploads}
+      disabled={create.isPending || draft.creations.length > 0 || Boolean(draft.error) || !options.creation_enabled} onBusyChange={setUploading}
+      renderComposer={({ trigger, details }) => <CreationContents constrained={constrained} actions={<>
+        {trigger}
+        <div className="flex min-w-0 flex-wrap items-center justify-end gap-2">{onCancel && <CancelCreation onCancel={onCancel} />}
+          <Button type="submit" disabled={!editable || !form.title.trim() || !initialValid} aria-describedby={submitHint ? `${id}-submit-hint` : undefined}
+            aria-busy={create.isPending || undefined} className="max-w-full whitespace-normal text-caption pointer-coarse:min-h-11">{t(($) => $.creation.submit)}</Button>
+        </div>
+        <p className="w-full text-caption text-muted-foreground">{t(($) => $.creation.saved)}</p>
+      </>}>
     {notices}
-    <div className="space-y-2"><label htmlFor={`${id}-title`} className="block text-body font-medium">{t(($) => $.creation.titleLabel)}</label>
-      <Input id={`${id}-title`} value={form.title} maxLength={1000} disabled={!editable} onChange={(event) => draft.update({ title: event.target.value })} required className="min-h-11" />
+    <div className="space-y-2"><label htmlFor={`${id}-title`} className="block text-caption text-muted-foreground">{t(($) => $.creation.titleLabel)}</label>
+      <Input ref={titleInput} data-creation-title id={`${id}-title`} value={form.title} maxLength={1000} disabled={!editable} onChange={(event) => draft.update({ title: event.target.value })} required aria-describedby={submitHint ? `${id}-submit-hint` : undefined} placeholder={t(($) => $.creation.titlePlaceholder)} className="min-h-11 rounded-sm border-0 bg-transparent px-0 text-title font-semibold shadow-none focus-visible:ring-2 focus-visible:ring-inset md:text-title dark:bg-transparent" />
+      {submitHint && <p id={`${id}-submit-hint`} className="text-caption text-muted-foreground">{submitHint}</p>}
     </div>
-    <div className="space-y-2"><label htmlFor={`${id}-description`} className="block text-body font-medium">{t(($) => $.creation.description)}</label>
-      <Textarea id={`${id}-description`} value={form.content} maxLength={1_000_000} disabled={!editable} onChange={(event) => draft.update({ content: event.target.value })} className="min-h-28" />
+    <div className="space-y-2"><label htmlFor={`${id}-description`} className="block text-caption text-muted-foreground">{t(($) => $.creation.description)}</label>
+      <Textarea id={`${id}-description`} value={form.content} maxLength={1_000_000} disabled={!editable} onChange={(event) => draft.update({ content: event.target.value })} placeholder={t(($) => $.creation.descriptionPlaceholder)} className="min-h-24 resize-none rounded-sm border-0 bg-transparent px-0 text-body shadow-none focus-visible:ring-2 focus-visible:ring-inset dark:bg-transparent" />
     </div>
-    <fieldset className="min-w-0 space-y-3"><legend className="mb-2 text-body font-medium">{t(($) => $.creation.recipient)}</legend>
-      <div className="flex flex-wrap items-center gap-3"><p role="status" className="text-body [overflow-wrap:anywhere]">{form.recipient ? t(($) => $.creation.assignedTo, { name: form.recipient.name }) : t(($) => $.creation.assignedSelf)}</p></div>
-      <CollaborationAccountPicker scope={scope} context={context} selected={form.recipient} allowSelf selfName={t(($) => $.creation.self)} label={t(($) => $.creation.recipient)} disabled={!editable}
-        onSelect={(account) => draft.update({ recipient: account ? { ...account, external: account.external === true } : null, recipientQuery: "" })} />
-    </fieldset>
-    <div className="space-y-2"><label htmlFor={`${id}-policy`} className="block text-body font-medium">{t(($) => $.policy.title)}</label>
-      <select id={`${id}-policy`} value={form.aiPolicy ?? "assisted"} disabled={!editable} className={collaborationSelectClass}
-        onChange={(event) => draft.update({ aiPolicy: event.target.value === "manual" ? "manual" : "assisted" })}>
-        <option value="manual">{t(($) => $.policy.manual)}</option><option value="assisted">{t(($) => $.policy.assisted)}</option>
-      </select>
-      <p className="text-caption text-muted-foreground">{t(($) => $.policy.creationHint)}</p>
+    <div className="grid min-w-0 gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)]">
+      <p className="text-caption text-muted-foreground sm:col-span-2">{t(($) => $.creation.help)}</p>
+      <fieldset className="min-w-0 space-y-2"><legend className="mb-2 text-caption text-muted-foreground">{t(($) => $.creation.recipient)}</legend>
+        <CollaborationAccountPicker scope={scope} context={context} selected={form.recipient} allowSelf compact selfName={t(($) => $.creation.self)} label={t(($) => $.creation.recipient)} disabled={!editable}
+          onSelect={(account) => draft.update({ recipient: account ? { ...account, external: account.external === true } : null, recipientQuery: "" })} />
+        <p role="status" className="text-caption text-muted-foreground [overflow-wrap:anywhere]">{form.recipient ? t(($) => $.creation.assignedTo, { name: form.recipient.name }) : t(($) => $.creation.assignedSelf)}</p>
+      </fieldset>
+      <div className="min-w-0 space-y-2"><label htmlFor={`${id}-policy`} className="block text-caption text-muted-foreground">{t(($) => $.policy.title)}</label>
+        <select id={`${id}-policy`} value={form.aiPolicy ?? "assisted"} disabled={!editable}
+          className="min-h-11 w-full min-w-0 rounded-md bg-muted/50 px-3 py-2 text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+          aria-describedby={`${id}-policy-help`} onChange={(event) => draft.update({ aiPolicy: event.target.value === "manual" ? "manual" : "assisted" })}>
+          <option value="manual">{t(($) => $.policy.manual)}</option><option value="assisted">{t(($) => $.policy.assisted)}</option>
+        </select>
+        <p id={`${id}-policy-help`} className="text-caption text-muted-foreground">{t(($) => $.policy.creationHint)}</p>
+      </div>
     </div>
-    {fields && <details ref={initialSection} className="min-w-0 space-y-4"><summary className="cursor-pointer py-2 text-body font-medium pointer-coarse:min-h-11">{t(($) => $.fields.initial)}</summary>
+    {details}
+    {fields && <details ref={initialSection} className="min-w-0 space-y-4"><summary className="cursor-pointer py-2 text-body font-medium pointer-coarse:min-h-11">{t(($) => $.fields.initial)}{configuredCount > 0 && <span className="ml-2 text-caption font-normal text-muted-foreground">{t(($) => $.fields.configured, { count: configuredCount })}</span>}</summary>
       <fieldset disabled={!editable} className="min-w-0 space-y-5">
         <div className="grid min-w-0 gap-4 sm:grid-cols-2">
           <div className="space-y-2"><label htmlFor={`${id}-status`} className="text-body">{t(($) => $.detail.status)}</label>
@@ -256,7 +292,6 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
     </details>}
     {!initialValid && <div className="space-y-2"><p role="alert" className="text-body">{t(($) => $.fields.invalidSelection)}</p>
       {!fields && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={!editable} onClick={() => draft.update({ initialFields: {} })}>{t(($) => $.fields.clearInitial)}</Button>}</div>}
-    <CollaborationAttachmentPicker scope={scope} form={form} update={draft.update} uploads={draft.uploads} disabled={create.isPending || draft.creations.length > 0 || Boolean(draft.error) || !options.creation_enabled} onBusyChange={setUploading} />
     {Boolean(draft.error) && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
     {(create.isPending || Boolean(create.error) || draft.creations.length > 0) && <div className="space-y-5">
     {create.error instanceof CollaborationCreationRejectedError && <div ref={feedback} role="status" className="space-y-2 text-body text-muted-foreground">
@@ -271,6 +306,6 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
         <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={create.isPending || !options.creation_enabled} onClick={() => create.mutate({ value, recovery: false })}>{t(($) => $.creation.retry)}</Button></div>
     </div>)}
     </div>}
-    </CreationContents>
+    </CreationContents>} />
   </form>;
 }

@@ -45,6 +45,29 @@ it("leaves focus that is still on a live control alone", async () => {
   expect(document.activeElement).toBe(current);
 });
 
+it("recovers from the owning modal's automatic popup fallback without crossing dialogs", async () => {
+  const modal = document.createElement("div");
+  modal.setAttribute("role", "dialog");
+  modal.dataset.slot = "dialog-content";
+  modal.tabIndex = -1;
+  const target = button("Attach files");
+  modal.append(target);
+  document.body.append(modal);
+  modal.focus();
+  recoverFocus(() => target);
+  await waitFor(() => expect(target).toHaveFocus());
+
+  const otherModal = document.createElement("div");
+  otherModal.setAttribute("role", "dialog");
+  otherModal.dataset.slot = "dialog-content";
+  otherModal.tabIndex = -1;
+  document.body.append(otherModal);
+  otherModal.focus();
+  recoverFocus(() => target);
+  await new Promise((resolve) => setTimeout(resolve, 50));
+  expect(otherModal).toHaveFocus();
+});
+
 it("keeps the default form opener through StrictMode effect replay", async () => {
   function Form({ close }: { close: () => void }) {
     const ref = useOpenedForm<HTMLFormElement>();

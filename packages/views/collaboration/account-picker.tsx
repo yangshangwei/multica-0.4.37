@@ -27,6 +27,7 @@ export interface CollaborationAccountPickerProps {
   onSelect: (account: CollaborationRecipientAccount | null) => void;
   label: string;
   disabled?: boolean;
+  compact?: boolean;
   allowSelf?: boolean;
   selfName?: string;
   membersOnly?: boolean;
@@ -57,6 +58,7 @@ export function CollaborationAccountPicker({
   onSelect,
   label,
   disabled = false,
+  compact = false,
   allowSelf = false,
   selfName,
   membersOnly = false,
@@ -184,8 +186,9 @@ export function CollaborationAccountPicker({
   return <div data-recipient-picker className={`min-w-0 ${collaborationFocusWithinClass}`}>
     <PropertyPicker open={isOpen} onOpenChange={(next) => { setOpen(next); if (!next) { setExactOpen(false); setExactText(""); setExactRequest(""); } }}
       width="w-96 max-w-[calc(100vw-24px)]" align="start" searchable searchPlaceholder={t(($) => $.recipientPicker.search)}
-      navigationResetKey={navigationResetKey} onSearchChange={setInput} listboxId={listboxId} searchInputRef={searchInput} contentClassName={collaborationPickerContentClass}
-      triggerAriaLabel={label} triggerRender={<button type="button" aria-label={label} disabled={disabled} className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-left text-body hover:bg-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" />} trigger={<span className="flex min-w-0 flex-1 items-center gap-2">
+      navigationResetKey={navigationResetKey} onSearchChange={setInput} listboxId={listboxId} searchInputRef={searchInput}
+      contentClassName={`${collaborationPickerContentClass} max-h-(--available-height) overflow-y-auto [&>div]:min-h-0 [&>div:has(>[role=listbox])]:shrink [&>div:not(:has(>[role=listbox]))]:shrink-0`}
+      triggerAriaLabel={label} triggerRender={<button type="button" aria-label={label} disabled={disabled} className={`flex min-h-11 w-full min-w-0 items-center gap-2 rounded-md px-3 py-2 text-left text-body hover:bg-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 ${compact ? "bg-muted/50" : "border border-input bg-background"}`} />} trigger={<span className="flex min-w-0 flex-1 items-center gap-2">
         {display && <ActorAvatar name={display.name} initials={initials(display.name)} avatarUrl={display.avatar_url} size="sm" />}
         <span className="min-w-0 flex-1"><span className="block truncate">{multiple && selectedAccounts.length > 1 ? t(($) => $.recipientPicker.selectedCount, { count: selectedAccounts.length }) : displayName}</span>
           {display && (!multiple || selectedAccounts.length <= 1) && <span className="block text-caption text-muted-foreground [overflow-wrap:anywhere]">{t(($) => $.recipientPicker.accountId, { id: accountIdentity(display) })}</span>}

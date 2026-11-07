@@ -2,9 +2,12 @@ import { useEffect, useRef, useState } from "react";
 
 type FocusTarget = () => HTMLElement | null | undefined;
 
-function focusLost() {
+function focusLost(target: HTMLElement) {
   const active = document.activeElement;
-  return !active || active === document.body || !active.isConnected || active.closest("[hidden]") !== null;
+  return !active || active === document.body || !active.isConnected || active.closest("[hidden]") !== null ||
+    // Base UI restores removed-control focus to its popup. Only recover within
+    // that same modal; an unrelated dialog or live control retains its focus.
+    active.matches('[data-slot="dialog-content"][role="dialog"]') && target.closest('[data-slot="dialog-content"]') === active;
 }
 
 /**
@@ -14,10 +17,9 @@ function focusLost() {
  */
 export function recoverFocus(...targets: FocusTarget[]) {
   setTimeout(() => requestAnimationFrame(() => {
-    if (!focusLost()) return;
     for (const target of targets) {
       const element = target();
-      if (!element?.isConnected) continue;
+      if (!element?.isConnected || !focusLost(element)) continue;
       element.focus({ preventScroll: true });
       if (document.activeElement === element) return;
     }

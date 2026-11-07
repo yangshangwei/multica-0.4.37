@@ -1,0 +1,12 @@
+{
+  "score": 88,
+  "verdict": "revise",
+  "category_match": true,
+  "differences": [
+    "After keyboard cancellation of an active upload, focus still settles on DIV role=dialog in both themes instead of the visible attachment trigger."
+  ],
+  "suggestions": [
+    "Resolve the remaining cancellation focus timing/disabled-trigger interaction without changing the now-passing source/header, picker, IME or upload recovery contracts; run a narrowly scoped cancellation confirmation."
+  ],
+  "reasoning": "The full confirmation batch passes 26 of 28 scenarios, including all viewport/theme geometry, full IDs, 32 attachments, initial focus and native Enter/IME. Both remaining failures are the same upload-cancel focus defect; recovery and retry success focus pass."
+}
