@@ -251,3 +251,35 @@ framework files, model, budget or scoring rule was changed by this disposition.
 7. **Wrong / correct:** filtering the full-series subtests breaks its15+3 summary
    and does not impose a one-process budget. Use the separate registered entry
    with the one-attempt ledger and independently reviewed sample instead.
+
+## Registered continuation and blocking experiment verdicts
+
+1. **Scope:** retain a separately authorized full Knowledge continuation after
+   the original and single retry each consumed one incomplete physical attempt.
+   Integrating this harness does not authorize a real provider run.
+2. **Signatures:** `TestRK1KnowledgeRealContinuation` still requires
+   `MULTICA_RUN_REAL_AGENT_SMOKE=1` and a hash-bound registration with
+   `mode=full_continuation`, `cap=17`, `attempt_limit=15`,
+   `prior_actual_starts=2` and `prior_debits=2`.
+3. **Contract:** validate both historical registrations and ledgers, preserving
+   their executable/configuration/account identity and immutable original
+   attempts. The new output namespace must be disjoint from both historical
+   output directories. Resolve existing symlinked ancestors and any uncreated
+   suffix; compare existing directory identities as well as cleaned paths.
+   Each reserved launch directory must also resolve strictly beneath the new
+   output root; a nested provider-directory symlink cannot escape into history.
+4. **Errors:** dot or symlink aliases, overlapping output trees, aliased history
+   files, incomplete predecessors, changed bindings and excess attempts refuse
+   reservation. A lexical path difference alone is not independent evidence
+   storage. No rejected reservation may change the current ledger.
+5. **Cases:** a fresh distinct output directory may retain a new authorized
+   series; a new spelling of an old output directory may not. Summary counters
+   distinguish prior attempts, new attempts, total actual starts and remaining
+   cap rather than resetting the historical counters.
+6. **Verification:** `TestRK1KnowledgeCodexContinuationControls` uses fake
+   fixtures to test history and budget refusal, output aliases/overlap and valid
+   fresh namespaces. Run normal and race controls without enabling real entry.
+7. **Blocking context verdict:** E5's registered canary result stops the series
+   immediately after retaining that trial. Non-E5 behavior failures retain the
+   registered trial schedule; incomplete execution remains a runtime error.
+   `host_context_experiment_stop_test.go` owns those distinctions.

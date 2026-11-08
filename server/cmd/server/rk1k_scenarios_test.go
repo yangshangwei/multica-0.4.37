@@ -709,9 +709,7 @@ func rk1kRunProof(t *testing.T) {
 	if measured != expectedFake || seed != 3 || paid != expectedPaid {
 		t.Fatalf("finite E0b/K1/K2/K3 counters: measured=%d seed=%d paid=%d", measured, seed, paid)
 	}
-	if err := rk1WriteJSON(filepath.Join(out, "summary.json"), map[string]any{
-		"schema_version": 1, "kind": map[bool]string{true: "real_codex_model", false: "fake_framework_proof"}[rk1kActiveReal != nil], "measured_fake_starts": measured, "fake_seed_starts": seed,
-		"paid_starts": paid, "knowledge_allocated": expectedPaid, "real_runnable": rk1kActiveReal != nil, "samples": samples}); err != nil {
+	if err := rk1WriteJSON(filepath.Join(out, "summary.json"), rk1kFullProofSummary(samples, rk1kActiveReal)); err != nil {
 		t.Fatal(err)
 	}
 }

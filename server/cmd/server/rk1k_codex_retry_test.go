@@ -18,7 +18,7 @@ func rk1kCodexEntryMode(registered, entry string) bool {
 	if entry == "full" {
 		return registered == "" || registered == "full"
 	}
-	return entry == rk1kE0bRetryMode && registered == entry
+	return (entry == rk1kE0bRetryMode || entry == rk1kFullContinuationMode) && registered == entry
 }
 
 func rk1kReadBoundJSON(path, digest string, value any) error {
@@ -40,6 +40,9 @@ func rk1kReadBoundJSON(path, digest string, value any) error {
 // bound to this retry. No caller-provided count can replace the retained facts.
 func rk1kValidateRetryHistory(r *rk1kCodexRegistration) error {
 	refuse := errors.New("invalid Codex retry history or mode")
+	if r.Mode == rk1kFullContinuationMode {
+		return rk1kValidateContinuationHistory(r)
+	}
 	if rk1kCodexEntryMode(r.Mode, "full") {
 		if r.AttemptLimit != 0 && r.AttemptLimit != 15 || r.PriorLedger != "" || r.PriorLedgerSHA256 != "" || r.PriorActualStarts != 0 || r.PriorDebits != 0 || r.PriorRegistration != "" || r.PriorRegistrationSHA256 != "" {
 			return refuse
@@ -75,6 +78,9 @@ func rk1kValidateRetryHistory(r *rk1kCodexRegistration) error {
 }
 
 func rk1kValidateLedgerMode(r *rk1kCodexRegistration, l *rk1kCodexLedger, id rk1kIdentity, launch string) error {
+	if r.Mode == rk1kFullContinuationMode {
+		return rk1kValidateContinuationLedger(r, l, id, launch)
+	}
 	if rk1kCodexEntryMode(r.Mode, "full") {
 		if !rk1kCodexEntryMode(l.Mode, "full") || l.AttemptLimit != 0 || l.PriorLedgerSHA256 != "" || l.PriorActualStarts != 0 || l.PriorDebits != 0 {
 			return errors.New("full series cannot spend retry ledger")

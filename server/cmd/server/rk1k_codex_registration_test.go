@@ -72,7 +72,7 @@ func rk1kLoadCodexRegistrationMode(path, digest, entryMode string) (*rk1kCodexRe
 		return nil, refuse
 	}
 	var r rk1kCodexRegistration
-	if json.Unmarshal(raw, &r) != nil || r.SchemaVersion != 1 || !r.Authorized || r.Provider != "codex" || r.Cap != 15 || r.Model == "" || (r.Version != "0.165.0" && r.Version != "0.166.0") || time.Now().After(r.ExpiresAt) {
+	if json.Unmarshal(raw, &r) != nil || r.SchemaVersion != 1 || !r.Authorized || r.Provider != "codex" || !rk1kCodexCapForMode(r.Mode, r.Cap) || r.Model == "" || (r.Version != "0.165.0" && r.Version != "0.166.0") || time.Now().After(r.ExpiresAt) {
 		return nil, refuse
 	}
 	if !filepath.IsAbs(r.Executable) || !filepath.IsAbs(r.ConfigPath) || !filepath.IsAbs(r.Ledger) || !filepath.IsAbs(r.Output) || !strings.HasPrefix(r.Database, rk1kDatabasePrefix) {
@@ -81,6 +81,7 @@ func rk1kLoadCodexRegistrationMode(path, digest, entryMode string) (*rk1kCodexRe
 	if entryMode != "" && !rk1kCodexEntryMode(r.Mode, entryMode) {
 		return nil, refuse
 	}
+	r.RegistrationPath, r.RegistrationSHA256 = path, digest
 	if err := rk1kValidateRetryHistory(&r); err != nil {
 		return nil, refuse
 	}
@@ -183,7 +184,7 @@ func rk1kWithCodexLedger(path string, change func(*rk1kCodexLedger) error) error
 		return err
 	}
 	var ledger rk1kCodexLedger
-	if json.Unmarshal(raw, &ledger) != nil || ledger.Cap != 15 {
+	if json.Unmarshal(raw, &ledger) != nil || !rk1kCodexCapForMode(ledger.Mode, ledger.Cap) {
 		return errors.New("invalid Codex execution ledger")
 	}
 	if err := change(&ledger); err != nil {
