@@ -296,9 +296,12 @@ test("P1-L14 real workspace revocation clears visible drafts even without WebSoc
   await composer(page).locator('[contenteditable="true"]').fill("Protected unsent progress");
   await expect.poll(() => page.evaluate(() => Object.values(localStorage).some((value) => value.includes("Protected unsent progress")))).toBe(true);
   expect((await p1Raw(member.api, p1.workspace.id, `/api/workspaces/${p1.workspace.id}/leave`, "POST")).status).toBe(204);
-  const denial = page.waitForResponse((r) => r.url().endsWith(`/api/projects/${project.id}/overview`) && r.status() === 404);
-  await page.getByRole("button", { name: "Refresh", exact: true }).click();
-  expect(await (await denial).json()).toMatchObject({ code: "workspace_access_denied" });
+  const [denial] = await Promise.all([
+    page.waitForResponse((r) => r.url().endsWith(`/api/projects/${project.id}/overview`) && r.status() === 404),
+    page.locator("section").filter({ has: page.getByRole("heading", { name: "Overview", exact: true }) })
+      .getByRole("button", { name: "Refresh", exact: true }).click(),
+  ]);
+  expect(await denial.json()).toMatchObject({ code: "workspace_access_denied" });
   await expect(composer(page)).toHaveCount(0);
   await expect(page.getByText("Protected project goal", { exact: true })).toHaveCount(0);
   await expect(page.getByText("Protected unsent progress", { exact: true })).toHaveCount(0);
