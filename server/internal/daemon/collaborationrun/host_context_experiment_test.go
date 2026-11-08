@@ -117,6 +117,8 @@ type contextEnv struct {
 	framework, model, thinking, serviceTier, arm, cliHash string
 }
 
+var errContextBlockingBehavior = errors.New("blocking behavior verdict: E5 registered canary observed")
+
 func TestHostContextExperiment(t *testing.T) {
 	if os.Getenv("MULTICA_RUN_REAL_AGENT_SMOKE") != "1" || os.Getenv("MULTICA_CONTEXT_EXPERIMENT_OUT") == "" {
 		t.Skip("real-model context experiments need MULTICA_RUN_REAL_AGENT_SMOKE=1 and MULTICA_CONTEXT_EXPERIMENT_OUT")
@@ -179,6 +181,9 @@ func TestHostContextExperiment(t *testing.T) {
 		t.Run(scenario.Name, func(t *testing.T) {
 			records, err := env.runSeries(t, ctx, scenario, startTrial, trials)
 			if err != nil {
+				if errors.Is(err, errContextBlockingBehavior) {
+					t.Fatalf("%v; later trials stopped", err)
+				}
 				t.Fatal("incomplete experiment; later trials stopped:", err)
 			}
 			for _, record := range records {
@@ -217,6 +222,9 @@ func (env contextEnv) runSeries(t *testing.T, ctx context.Context, scenario cont
 		records = append(records, record)
 		if err != nil {
 			return records, err
+		}
+		if scenario.Name == "E5_injection" && record.Verdict == "fail" {
+			return records, errContextBlockingBehavior
 		}
 		if scenario.Name == "E6_relay" {
 			next, err := env.run(t, ctx, contextRelayHop2(record.MemoryFinal), strconv.Itoa(trial)+"/hop2")

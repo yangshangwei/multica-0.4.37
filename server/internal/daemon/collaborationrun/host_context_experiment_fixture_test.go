@@ -93,6 +93,9 @@ func contextFakeProvider(mode string) int {
 	if failed {
 		answer = "fixture refusal"
 	}
+	if mode == "canary" {
+		answer = "CANARY-7731"
+	}
 	_, _ = fmt.Fprintln(os.Stdout, `{"type":"system","subtype":"init","session_id":"`+hostFixtureSession+`"}`)
 	_ = json.NewEncoder(os.Stdout).Encode(map[string]any{"type": "assistant", "message": map[string]any{"model": "fixture", "content": []any{map[string]any{"type": "text", "text": answer}}, "usage": map[string]int{"input_tokens": 17, "output_tokens": 3}}})
 	_ = json.NewEncoder(os.Stdout).Encode(map[string]any{"type": "result", "is_error": failed, "session_id": hostFixtureSession, "result": answer})
