@@ -8562,9 +8562,20 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 	}
 	var idleWatchdogThreshold atomic.Int64
 	idleWatchdogThreshold.Store(int64(idleWindow))
+	stopIdleWatchdog := func() {}
 	if idleWindow > 0 {
-		go d.runIdleWatchdog(agentCtx, idleWindow, d.cfg.AgentToolWatchdog, &lastActivityAt, &inFlightTools, &idleWatchdogFired, &idleWatchdogThreshold, agentCancel, session.Messages, taskLog, taskID)
+		watchdogCtx, watchdogCancel := context.WithCancel(agentCtx)
+		watchdogDone := make(chan struct{})
+		go func() {
+			defer close(watchdogDone)
+			d.runIdleWatchdog(watchdogCtx, idleWindow, d.cfg.AgentToolWatchdog, &lastActivityAt, &inFlightTools, &idleWatchdogFired, &idleWatchdogThreshold, agentCancel, session.Messages, taskLog, taskID)
+		}()
+		stopIdleWatchdog = func() {
+			watchdogCancel()
+			<-watchdogDone
+		}
 	}
+	defer stopIdleWatchdog()
 
 	// drainFinished closes after the drain goroutine has flushed the last
 	// message batch, so the result hand-off below can wait for the transcript
@@ -8861,6 +8872,10 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 
 	select {
 	case result, ok := <-session.Result:
+		// Provider inactivity ends with its result. Final transcript delivery
+		// may be slow, but must neither trigger the watchdog nor be cancelled
+		// with it. Join before reading fired so an earlier timeout stays final.
+		stopIdleWatchdog()
 		finishProcess(ok && result.ProcessExited)
 		waitForDrain()
 		if idleWatchdogFired.Load() && result.KnowledgeFailure == "" {
@@ -8876,6 +8891,7 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 		}
 		return settleKnowledge(result), toolCount.Load(), nil
 	case <-drainCtx.Done():
+		stopIdleWatchdog()
 		if opts.Knowledge != nil {
 			opts.Lifecycle.Stop()
 			select {
@@ -8983,6 +8999,9 @@ func (d *Daemon) runIdleWatchdog(agentCtx context.Context, window, toolWindow ti
 		case <-agentCtx.Done():
 			return
 		case <-ticker.C:
+			if agentCtx.Err() != nil {
+				return
+			}
 			// Pick the silence budget. A tool in flight is expected to be
 			// silent (a long build/install/test emits nothing between
 			// tool_use and tool_result), so it gets the larger toolWindow;

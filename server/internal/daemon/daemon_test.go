@@ -3729,6 +3729,116 @@ func TestExecuteAndDrain_IdleWatchdog_DoesNotFireDuringInFlightToolCall(t *testi
 	}
 }
 
+// A terminal provider result ends inactivity monitoring, but not transcript
+// delivery. A slow final HTTP response must preserve both provider disposition
+// and the messages still being drained after the result handoff.
+func TestExecuteAndDrain_IdleWatchdog_StopsBeforeFinalTranscriptFlush(t *testing.T) {
+	for _, status := range []string{"completed", "failed"} {
+		t.Run(status, func(t *testing.T) {
+			const idleWindow = 100 * time.Millisecond
+			entered := make(chan struct{})
+			var enteredOnce sync.Once
+			release := make(chan struct{})
+			var releaseOnce sync.Once
+			releaseFlush := func() { releaseOnce.Do(func() { close(release) }) }
+			rec := &transcriptRecorder{}
+			srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				if !strings.HasSuffix(r.URL.Path, "/messages") {
+					http.NotFound(w, r)
+					return
+				}
+				var body struct {
+					Messages []TaskMessageData `json:"messages"`
+				}
+				if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+					http.Error(w, err.Error(), http.StatusBadRequest)
+					return
+				}
+				rec.mu.Lock()
+				rec.messages = append(rec.messages, body.Messages...)
+				rec.mu.Unlock()
+				enteredOnce.Do(func() { close(entered) })
+				<-release
+				w.WriteHeader(http.StatusOK)
+			}))
+			t.Cleanup(srv.Close)
+			t.Cleanup(releaseFlush)
+			d := &Daemon{client: NewClient(srv.URL), logger: slog.Default()}
+			d.cfg.AgentIdleWatchdog = idleWindow
+
+			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			t.Cleanup(cancel)
+			msgCh := make(chan agent.Message)
+			resCh := make(chan agent.Result)
+			b := sessionBackend{session: &agent.Session{Messages: msgCh, Result: resCh}}
+			want := agent.Result{Status: status, Output: "provider output", SessionID: "terminal-session", ProcessExited: true}
+			if status == "failed" {
+				want.Error = "provider failure"
+			}
+			type returned struct {
+				result agent.Result
+				tools  int32
+				err    error
+			}
+			resultCh := make(chan returned, 1)
+			go func() {
+				result, tools, err := d.executeAndDrain(ctx, b, "p", agent.ExecOptions{}, slog.Default(), "terminal-flush", "", new(atomic.Int32))
+				resultCh <- returned{result, tools, err}
+			}()
+
+			// The unbuffered handoff proves the result has been received before
+			// the remaining transcript is delivered. Cancelling agentCtx here
+			// would also cancel the drain and lose these final messages.
+			select {
+			case resCh <- want:
+			case <-ctx.Done():
+				t.Fatal("provider result was not received")
+			}
+			for _, message := range []agent.Message{
+				{Type: agent.MessageToolUse, Tool: "Bash", CallID: "final-tool"},
+				{Type: agent.MessageToolResult, Tool: "Bash", CallID: "final-tool", Output: "tool output"},
+				{Type: agent.MessageText, Content: "transcript tail"},
+			} {
+				select {
+				case msgCh <- message:
+				case <-ctx.Done():
+					t.Fatal("terminal result cancelled the remaining transcript")
+				}
+			}
+			close(msgCh)
+			select {
+			case <-entered:
+			case <-ctx.Done():
+				t.Fatal("final transcript request did not arrive")
+			}
+			select {
+			case got := <-resultCh:
+				t.Fatalf("returned before the final transcript response: %+v", got)
+			case <-time.After(4 * idleWindow):
+			}
+			releaseFlush()
+			var got returned
+			select {
+			case got = <-resultCh:
+			case <-ctx.Done():
+				t.Fatal("did not return after final transcript delivery")
+			}
+			if got.err != nil || got.result.Status != want.Status || got.result.Error != want.Error || got.result.Output != want.Output || got.result.SessionID != want.SessionID || !got.result.ProcessExited || got.tools != 1 {
+				t.Fatalf("final delivery changed the provider result: got %+v, want %+v and one tool", got, want)
+			}
+			messages := rec.snapshot()
+			if len(messages) != 3 || messages[0].Type != "tool_use" || messages[1].Type != "tool_result" || messages[1].Output != "tool output" || messages[2].Type != "text" || messages[2].Content != "transcript tail" {
+				t.Fatalf("terminal transcript lost messages: %+v", messages)
+			}
+			for i, message := range messages {
+				if message.Seq != i+1 {
+					t.Fatalf("terminal transcript reordered messages: %+v", messages)
+				}
+			}
+		})
+	}
+}
+
 func TestExecuteAndDrain_IdleWatchdog_PerRunOverrideStillUsesToolWindow(t *testing.T) {
 	t.Parallel()
 
