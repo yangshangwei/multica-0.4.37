@@ -3827,7 +3827,7 @@ func (s *TaskService) FinalizeTaskClaim(
 		if err := ValidateManagedTaskBinding(ctx, task); err != nil {
 			return err
 		}
-		if err := finalizeTaskCapability(ctx, qtx, currentTask, &token, len(daemonTokens)); err != nil {
+		if err := s.finalizeTaskCapability(ctx, qtx, currentTask, &token, len(daemonTokens)); err != nil {
 			return err
 		}
 		if _, err := qtx.CreateTaskToken(ctx, token); err != nil {

@@ -3462,7 +3462,7 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 	}
 
 	if restrictedProfile != "" {
-		capability, err := auth.CurrentTaskCapability(r.Context(), h.Queries, *task, agent, uuidToString(runtime.OwnerID), runtimeWorkspaceID)
+		capability, err := auth.CurrentTaskCapability(r.Context(), h.Queries, h.runtimeLookup(obsmetrics.RuntimeLookupSourceDaemonAPI).Get, *task, agent, uuidToString(runtime.OwnerID), runtimeWorkspaceID)
 		if err != nil || capability.ProjectID != resp.ProjectID || capability.IssueID != resp.IssueID {
 			if err != nil && !errors.Is(err, auth.ErrTaskCapability) && !errors.Is(err, pgx.ErrNoRows) {
 				return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, &claimBuildFailure{outcome: "error_task_capability", status: http.StatusServiceUnavailable, message: "task capability authorization unavailable"}

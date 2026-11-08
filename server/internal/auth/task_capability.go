@@ -7,6 +7,8 @@ import (
 	"errors"
 	"io"
 
+	"github.com/jackc/pgx/v5/pgtype"
+
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
@@ -117,13 +119,15 @@ func AgentInvocationAllowed(agent db.Agent, targets []db.AgentInvocationTarget, 
 }
 
 // CurrentTaskCapability resolves authority from one caller-owned DB snapshot.
+// getRuntime must be the instrumented lookup bound to q, so runtime authority
+// shares that snapshot without importing the service layer into auth.
 // No fallback to the runtime owner is allowed when originator attribution is absent.
-func CurrentTaskCapability(ctx context.Context, q *db.Queries, task db.AgentTaskQueue, agent db.Agent, ownerID, workspaceID string) (TaskCapability, error) {
+func CurrentTaskCapability(ctx context.Context, q *db.Queries, getRuntime func(context.Context, pgtype.UUID) (db.AgentRuntime, error), task db.AgentTaskQueue, agent db.Agent, ownerID, workspaceID string) (TaskCapability, error) {
 	c := TaskCapability{Version: 1, Profile: TaskCapabilityProfile(agent.TemplateKey, agent.TemplateVersion), IssueID: util.UUIDToString(task.IssueID), OriginatorID: util.UUIDToString(task.OriginatorUserID), RuntimeID: util.UUIDToString(task.RuntimeID), ClaimGeneration: task.ClaimGeneration}
 	if c.Profile == "" || !task.IssueID.Valid || !task.OriginatorUserID.Valid || !task.RuntimeID.Valid || task.AgentID != agent.ID || agent.ArchivedAt.Valid || util.UUIDToString(agent.WorkspaceID) != workspaceID || (task.Status != "dispatched" && task.Status != "running") {
 		return c, ErrTaskCapability
 	}
-	runtime, err := q.GetAgentRuntime(ctx, task.RuntimeID)
+	runtime, err := getRuntime(ctx, task.RuntimeID)
 	if err != nil {
 		return c, err
 	}

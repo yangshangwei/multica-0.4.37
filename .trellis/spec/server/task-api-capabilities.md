@@ -6,6 +6,7 @@ Fresh server-created Progress Reporter/Code Reviewer/Security Reviewer v2 and Mi
 ## 2. Signatures
 - Migration765: nullable `task_token.api_capability jsonb`; sqlc hides this server-only field from JSON serialization.
 - `auth.TaskCapability`: version1/profile/issue_id/project_id/originator_id/runtime_id/claim_generation. Unknown/malformed profiles fail closed.
+- `auth.CurrentTaskCapability(ctx, q, getRuntime, task, agent, ownerID, workspaceID)` accepts the bound `RuntimeLookup.Get` function; `getRuntime` has signature `func(context.Context, pgtype.UUID) (db.AgentRuntime, error)`.
 - `auth.WithVerifiedTaskToken` context set only after real `mat_` verification in both legacy/password modes.
 - `Handler.TaskCapabilityGuard` immediately after Auth on each authenticated route group, before wildcard CDN-cookie refresh.
 - `TaskService.FinalizeTaskClaim` compares payload scope against locked current task/runtime/principals and inserts the token in the existing transaction.
@@ -17,6 +18,14 @@ Reporter may GET the current report and same frozen-project issues/comments/time
 The current originator must remain a member with invoke authority; runtime owner must remain a member. Disabled users, archived agent, changed issue/project/runtime/claim generation, terminal task, revoked/expired credential and missing required scope refuse access. Never replace runtime-owner identity with originator or borrow a resource creator's authority. Reuse the existing owner/private/public-to predicate; database uncertainty yields503, permission refusal403.
 
 GET handlers read actual data and authority through a repeatable read snapshot; the canonical issue loader enforces allowed scope on the consumed row. Source-context frozen captures stay readable, but live source issue/anchor projections require the same capability scope. Out-of-scope live changes, attachment deltas and author refreshes are withheld as unavailable; same-project reporter projections remain available. Comment writes lock/recheck live token, task, principals, invocation targets and issue, then insert the inert comment in that transaction. This provides a consistent request authorization point; it is not a claim that bytes already delivered can be revoked.
+
+Capability runtime reads use the existing instrumented lookup bound to the exact
+`q` used for authorization. Request validation uses the handler's snapshot
+queries; finalization uses `s.runtimeLookup(q).Get` on the claim transaction.
+These reads carry the `task` source; claim response construction uses `daemon_api`.
+The auth package accepts the bound getter to avoid importing service. Propagate
+lookup errors unchanged and retain existing fail-closed handling; never bypass
+instrumentation or substitute pool queries for a transaction snapshot.
 
 A restricted comment persists `dispatch_eligible=false`, publishes existing suppress_execution metadata and cannot trigger agents/plugins immediately or on completion reconciliation. Do not auto-unresolve a thread or cancel deferred escalations. Service-generated final-output comments and failure recovery respect the immutable role restriction after task-token cleanup. Human notifications and ordinary comment revision/activity remain part of comment delivery. Existing independently configured task lifecycle plugin subscriptions remain platform-authorized observers; comment non-dispatch does not disable those standing subscriptions.
 
@@ -43,9 +52,17 @@ Good: a project reporter gathers project issues and posts one report comment; an
 ## 6. Tests required
 Real router red/green for reviewer title mutation; actual claim both endpoints plus legacy/password Auth; exact UUID/human identifier and project/no-project list, unknown routes and writes; token lifecycle and current originator revoke; read/project-move snapshot and transactional write recheck; durable explicit/implicit/replay/final-output/plugin suppression; unchanged resolved threads/deferred escalations; tool/backstop and transaction refusal; wildcard-cookie refusal; saved-template controls. Migration tests use private schemas for empty/populated/concurrent down and retain actual named execution evidence. No model behavior claim follows from these tests.
 
+`TestNoDirectGetAgentRuntimeCalls` remains the scanner for unobserved reads.
+`TestTaskCapabilityFinalizationRecordsRuntimeLookup` proves the capability read
+is counted even when a changed project refuses finalization.
+`TestTaskCapabilityRuntimeLookupKeepsReadSnapshot` changes runtime ownership
+after snapshot establishment: snapshot authorization must still pass, a current
+read must refuse, and both reads must count. Auth tests preserve the original
+missing-row and database errors.
+
 ## 7. Wrong vs correct
 Wrong: check project once in middleware, then let the handler load a changed row; delete tokens and forget comment dispatch provenance.
-Correct: authorize the actual read snapshot/write transaction and keep dispatch eligibility on each persisted comment.
+Correct: authorize the actual read snapshot/write transaction and keep dispatch eligibility on each persisted comment. For runtime reads, pass `s.runtimeLookup(q).Get`; a raw query misses metrics, while a pool-bound getter escapes the authorization snapshot.
 
 Rollback requires ACCESS EXCLUSIVE NOWAIT, capability existence check and DROP inside the same DO block. Revoke restricted tokens before an operational rollback; reverting server code while keeping such credentials can weaken enforcement. Local validation is not authorization for deployment or rollback.
 

@@ -1,8 +1,15 @@
 package auth
 
 import (
+	"context"
 	"encoding/json"
+	"errors"
 	"testing"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/util"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
 func TestTaskCapabilityProfileAndStrictDecode(t *testing.T) {
@@ -32,5 +39,33 @@ func TestTaskCapabilityProfileAndStrictDecode(t *testing.T) {
 		if _, err := ParseTaskCapability(raw); err == nil {
 			t.Fatal("accepted invalid scope")
 		}
+	}
+}
+
+// Runtime read failures must propagate unchanged, before any further authority
+// read. Missing and unavailable runtimes have different HTTP error semantics.
+func TestCurrentTaskCapabilityPropagatesRuntimeLookupFailure(t *testing.T) {
+	id, err := util.ParseUUID("00000000-0000-4000-8000-000000000001")
+	if err != nil {
+		t.Fatal(err)
+	}
+	task := db.AgentTaskQueue{AgentID: id, RuntimeID: id, IssueID: id, OriginatorUserID: id, Status: "dispatched", ClaimGeneration: 1}
+	agent := db.Agent{ID: id, RuntimeID: id, WorkspaceID: id, TemplateKey: "progress-reporter", TemplateVersion: 2}
+	for _, want := range []error{pgx.ErrNoRows, errors.New("runtime database unavailable")} {
+		t.Run(want.Error(), func(t *testing.T) {
+			ctx := t.Context()
+			calls := 0
+			lookup := func(gotCtx context.Context, gotID pgtype.UUID) (db.AgentRuntime, error) {
+				calls++
+				if gotCtx != ctx || gotID != task.RuntimeID {
+					t.Fatal("runtime lookup lost caller context or task identity")
+				}
+				return db.AgentRuntime{}, want
+			}
+			_, err := CurrentTaskCapability(ctx, nil, lookup, task, agent, util.UUIDToString(id), util.UUIDToString(id))
+			if err != want || calls != 1 {
+				t.Fatalf("runtime failure = %v (%d reads), want original error (%v) and one read", err, calls, want)
+			}
+		})
 	}
 }

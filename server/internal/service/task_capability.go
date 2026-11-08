@@ -14,7 +14,7 @@ import (
 // Finalization compares the payload's frozen scope with the locked claim's
 // current authority. A payload assembled before a project or role change cannot
 // publish a credential with a different scope.
-func finalizeTaskCapability(ctx context.Context, q *db.Queries, task db.AgentTaskQueue, token *db.CreateTaskTokenParams, daemonTokens int) error {
+func (s *TaskService) finalizeTaskCapability(ctx context.Context, q *db.Queries, task db.AgentTaskQueue, token *db.CreateTaskTokenParams, daemonTokens int) error {
 	agent, err := q.GetAgent(ctx, task.AgentID)
 	if err != nil {
 		return err
@@ -43,7 +43,7 @@ func finalizeTaskCapability(ctx context.Context, q *db.Queries, task db.AgentTas
 	if err != nil {
 		return auth.ErrTaskCapability
 	}
-	current, err := auth.CurrentTaskCapability(ctx, q, task, agent, util.UUIDToString(token.UserID), util.UUIDToString(token.WorkspaceID))
+	current, err := auth.CurrentTaskCapability(ctx, q, s.runtimeLookup(q).Get, task, agent, util.UUIDToString(token.UserID), util.UUIDToString(token.WorkspaceID))
 	if errors.Is(err, pgx.ErrNoRows) {
 		return auth.ErrTaskCapability
 	}

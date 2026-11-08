@@ -11,6 +11,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/multica-ai/multica/server/internal/auth"
+	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -124,7 +125,7 @@ func (h *Handler) validateTaskCapability(ctx context.Context, token db.TaskToken
 	if err != nil {
 		return expected, err
 	}
-	current, err := auth.CurrentTaskCapability(ctx, h.Queries, task, agent, uuidToString(token.UserID), uuidToString(token.WorkspaceID))
+	current, err := auth.CurrentTaskCapability(ctx, h.Queries, h.runtimeLookup(obsmetrics.RuntimeLookupSourceTask).Get, task, agent, uuidToString(token.UserID), uuidToString(token.WorkspaceID))
 	if err != nil {
 		return expected, err
 	}
