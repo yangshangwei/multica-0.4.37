@@ -1,7 +1,7 @@
 "use client";
 
 import { IterationBatchAssignment } from "../../iterations/iteration-assignment";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { X, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -68,6 +68,7 @@ export function BatchActionToolbar({
   );
   const count = selectedIssues.length;
   const containsCollaboration = selectedIssues.some((issue) => issue.collaboration != null);
+  const reasonId = useId();
 
   // Reflect the real shared value of the selected issues in each picker; fall
   // back to an empty (no-checkmark) state when the selection is mixed, instead
@@ -88,6 +89,9 @@ export function BatchActionToolbar({
   const loading =
     surfaceActions?.isPending ?? (batchUpdate.isPending || batchDelete.isPending);
   const ids = selectedIssues.map((issue) => issue.id);
+  // Shared issues change only through their own workflow, so batch actions are
+  // disabled up front with the reason shown, not refused after a click.
+  const actionsDisabled = loading || containsCollaboration;
 
   useEffect(() => {
     if (count > 0) return;
@@ -97,11 +101,8 @@ export function BatchActionToolbar({
     setDeleteOpen(false);
   }, [count]);
 
-  const refuseCollaborationBatch = () => {
-    if (!containsCollaboration) return false;
-    toast.error(tCollaboration(($) => $.source.batchUnsupported));
-    return true;
-  };
+  // The controls are disabled; this only guards a handler reached another way.
+  const refuseCollaborationBatch = () => containsCollaboration;
 
   const handleBatchUpdate = async (updates: Partial<UpdateIssueRequest>) => {
     if (refuseCollaborationBatch()) return;
@@ -194,7 +195,7 @@ export function BatchActionToolbar({
             )}
           >
             <motion.div
-              className="flex items-center gap-1 rounded-lg border bg-background px-2 py-1.5 shadow-lg"
+              className="flex max-w-[calc(100vw-2rem)] flex-col gap-1 rounded-lg border bg-background px-2 py-1.5 shadow-lg"
               initial={{
                 opacity: 0,
                 transform: shouldReduceMotion
@@ -222,12 +223,14 @@ export function BatchActionToolbar({
                 },
               }}
             >
+        <div className="flex items-center gap-1">
         <div className="flex items-center gap-1.5 pl-1 pr-2 border-r mr-1">
           <span className="text-body font-medium">{t(($) => $.batch.selected, { count })}</span>
           <button
             type="button"
             onClick={clear}
             aria-label={t(($) => $.batch.clear_selection)}
+            aria-describedby={containsCollaboration ? reasonId : undefined}
             className="rounded p-0.5 hover:bg-accent transition-colors"
           >
             <X className="size-3.5 text-muted-foreground" />
@@ -240,7 +243,7 @@ export function BatchActionToolbar({
           onUpdate={handleBatchStatus}
           open={statusOpen}
           onOpenChange={setStatusOpen}
-          triggerRender={<Button variant="ghost" size="sm" disabled={loading} />}
+          triggerRender={<Button variant="ghost" size="sm" disabled={actionsDisabled} />}
           trigger={t(($) => $.batch.status)}
           align="center"
         />
@@ -251,7 +254,7 @@ export function BatchActionToolbar({
           onUpdate={handleBatchUpdate}
           open={priorityOpen}
           onOpenChange={setPriorityOpen}
-          triggerRender={<Button variant="ghost" size="sm" disabled={loading} />}
+          triggerRender={<Button variant="ghost" size="sm" disabled={actionsDisabled} />}
           trigger={t(($) => $.batch.priority)}
           align="center"
         />
@@ -264,7 +267,7 @@ export function BatchActionToolbar({
           onUpdate={handleBatchAssignee}
           open={assigneeOpen}
           onOpenChange={setAssigneeOpen}
-          triggerRender={<Button variant="ghost" size="sm" disabled={loading} />}
+          triggerRender={<Button variant="ghost" size="sm" disabled={actionsDisabled} />}
           trigger={t(($) => $.batch.assignee)}
           align="center"
         />
@@ -275,13 +278,15 @@ export function BatchActionToolbar({
         <Button
           variant="ghost"
           size="sm"
-          disabled={loading}
+          disabled={actionsDisabled}
           onClick={() => { if (!refuseCollaborationBatch()) setDeleteOpen(true); }}
           className="text-destructive hover:text-destructive"
         >
           <Trash2 className="size-3.5 mr-1" />
           {t(($) => $.batch.delete)}
         </Button>
+        </div>
+        {containsCollaboration && <p id={reasonId} data-slot="batch-disabled-reason" className="max-w-md px-1 pb-0.5 text-caption text-muted-foreground">{tCollaboration(($) => $.source.batchUnsupported)}</p>}
             </motion.div>
           </div>
         )}

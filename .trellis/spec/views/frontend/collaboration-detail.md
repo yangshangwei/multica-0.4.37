@@ -127,6 +127,12 @@ unknown receipt, return to the visible original-result recovery control instead.
 Mutation feedback and original-key recovery belong inside the open dialog, and
 remain outside when it closes. Source-workspace action dialogs pass `embedded`
 and forward `onDismiss` / `onBusyChange` so only one modal owns focus.
+Their optional `onApplied: () => void` callback reports a successful original
+receipt, including successful original-result recovery, before dismissal. The
+source bridge uses it for the success toast after its dialog unmounts. Do not
+attach success feedback to `onDismiss`: cancellation also calls that callback.
+Failures and unknown receipts never invoke `onApplied`. Keep tests for success,
+cancel, refusal and later successful recovery in the source-bridge suite.
 
 Active writes/uploads prevent dismissal. Keep the upload cancellation control
 enabled: the form's mutation/receipt lock must be separate from the toolbar and

@@ -43,7 +43,8 @@ it("restores selected labels and false property input after a lost response and 
     : init?.method === "PATCH" ? Promise.reject(new TypeError("Response lost"))
       : input.includes("/operations/") ? json({ status: 409, code: "stale_revision", collaboration_revision: "9007199254740994" }) : json({ ...issue, execution: undefined }));
   vi.stubGlobal("fetch", fetch);
-  const ui = (value: typeof issue) => <QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={value} /></QueryClientProvider>;
+  const applied = vi.fn();
+  const ui = (value: typeof issue) => <QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={value} onApplied={applied} /></QueryClientProvider>;
   const { rerender, unmount } = renderWithI18n(ui(issue));
   const user = userEvent.setup();
   await user.click(screen.getByRole("button", { name: "More actions" }));
@@ -56,10 +57,12 @@ it("restores selected labels and false property input after a lost response and 
   rerender(ui({ ...issue, collaboration_revision: "9007199254740994" }));
   await user.click(screen.getByRole("button", { name: "Confirm" }));
   await screen.findByRole("button", { name: "Check original result" });
+  expect(applied).not.toHaveBeenCalled();
   unmount();
   renderWithI18n(ui({ ...issue, collaboration_revision: "9007199254740994" }));
   await user.click(await screen.findByRole("button", { name: "Check original result" }));
   await screen.findByText(/The server did not apply this action/);
+  expect(applied).not.toHaveBeenCalled();
   const request = fetch.mock.calls.find(([, init]) => init?.method === "PATCH")?.[1];
   expect(JSON.parse(String(request?.body))).toMatchObject({ label_ids: [labelId], properties: { [propertyId]: false }, expected_collaboration_revision: issue.collaboration_revision });
   expect(screen.getByRole("button", { name: "Labels" })).toHaveTextContent("Needs review");
@@ -73,7 +76,8 @@ it("submits source structure and iteration through their separate versioned acti
   const fetch = vi.fn(async (input: string, init?: RequestInit) => input.includes("field-options") ? json(options)
     : init?.method === "PATCH" || init?.method === "PUT" ? json({ code: input.endsWith("/iteration") ? "iteration_changed" : "issue_edited", collaboration_revision: "9007199254740994" }) : json(issue));
   vi.stubGlobal("fetch", fetch);
-  const view = renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={issue} /></QueryClientProvider>);
+  const applied = vi.fn();
+  const view = renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={issue} onApplied={applied} /></QueryClientProvider>);
   const user = userEvent.setup();
   await user.click(screen.getByRole("button", { name: "More actions" }));
   await user.click(await screen.findByRole("menuitem", { name: "Edit source fields" }));
@@ -83,6 +87,7 @@ it("submits source structure and iteration through their separate versioned acti
   fireEvent.change(screen.getByLabelText("Subtask stage number (optional)"), { target: { value: "2" } });
   await user.click(screen.getByRole("button", { name: "Confirm" }));
   await screen.findByText("Action confirmed.");
+  expect(applied).toHaveBeenCalledOnce();
   expect(JSON.parse(String(fetch.mock.calls.find(([, init]) => init?.method === "PATCH")?.[1]?.body))).toMatchObject({ project_id: projectId, parent_issue_id: parentId, stage: 2 });
   view.unmount();
   const assigned = { ...issue, source_structure: { ...issue.source_structure!, iteration: { id: parentId, name: "Current period", revision: "3", status: "active" as const } } };
@@ -195,5 +200,19 @@ it("keeps a property draft during option refresh and does not submit the outer f
   await act(async () => { finish(json(textOptions)); await refreshing; });
   await user.type(screen.getByPlaceholderText(/Enter value/), "{Enter}");
   expect(screen.getByRole("button", { name: "Notes Keep this property draft" })).toBeInTheDocument();
+  expect(fetch.mock.calls.every(([, init]) => init?.method !== "PATCH")).toBe(true);
+});
+
+it("dismisses an embedded edit without reporting an applied action", async () => {
+  const { scope, client } = context();
+  const fetch = vi.fn<(input: string, init?: RequestInit) => Promise<Response>>(async () => json(options));
+  vi.stubGlobal("fetch", fetch);
+  const applied = vi.fn();
+  const dismiss = vi.fn();
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={scope} issue={issue} initialAction="edit" embedded onApplied={applied} onDismiss={dismiss} /></QueryClientProvider>);
+  const user = userEvent.setup();
+  await user.click(await screen.findByRole("button", { name: "Close" }));
+  expect(dismiss).toHaveBeenCalledOnce();
+  expect(applied).not.toHaveBeenCalled();
   expect(fetch.mock.calls.every(([, init]) => init?.method !== "PATCH")).toBe(true);
 });

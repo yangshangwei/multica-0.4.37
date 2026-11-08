@@ -3,6 +3,7 @@ import { cleanup, fireEvent, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { ApiError } from "@multica/core/api";
+import { toast } from "sonner";
 import { collaborationIssueFixture } from "@multica/core/collaboration/test-fixtures";
 import { renderWithI18n } from "../test/i18n";
 import { SourceCollaborationActionDialog, SourceCollaborationCreation, SourceCollaborationDetail } from "./source-bridge";
@@ -15,17 +16,18 @@ vi.mock("@multica/core/collaboration", async (original) => ({
     write_context: state.writeContext ? { actor_user_id: "viewer", authority_epoch: "1" } : null,
     capabilities: { ...collaborationIssueFixture.capabilities, transfer: state.transfer } } }),
 }));
+vi.mock("sonner", () => ({ toast: { success: vi.fn() } }));
 vi.mock("@multica/core/realtime", () => ({ useCollaborationRealtime: vi.fn() }));
 vi.mock("./creation-form", () => ({ CollaborationCreationEntry: ({ sourceWorkspaceId }: { sourceWorkspaceId?: string }) => <button>New collaboration in {sourceWorkspaceId}</button> }));
 vi.mock("./collaboration-detail", () => ({ CollaborationDetail: ({ destination }: { destination: { issueId: string; commentId?: string; runId?: string } }) => <p data-testid="shared-detail" data-run-id={destination.runId}>{destination.issueId}:{destination.commentId}</p> }));
-vi.mock("./workflow", () => ({ CollaborationWorkflow: ({ initialAction, initialStatus, embedded, onBusyChange }: { initialAction?: string; initialStatus?: string; embedded?: boolean; onBusyChange?: (busy: boolean) => void }) => {
+vi.mock("./workflow", () => ({ CollaborationWorkflow: ({ initialAction, initialStatus, embedded, onBusyChange, onApplied, onDismiss }: { initialAction?: string; initialStatus?: string; embedded?: boolean; onApplied?: () => void; onDismiss?: () => void; onBusyChange?: (busy: boolean) => void }) => {
   const [draft, setDraft] = useState("");
-  return <form aria-label="shared workflow" data-embedded={embedded}>{initialAction}:{initialStatus}<input aria-label="Workflow draft" value={draft} onChange={(event) => setDraft(event.target.value)} /><button type="button" onClick={() => onBusyChange?.(true)}>Begin request</button><button type="button" onClick={() => onBusyChange?.(false)}>Finish request</button></form>;
+  return <form aria-label="shared workflow" data-embedded={embedded}>{initialAction}:{initialStatus}<input aria-label="Workflow draft" value={draft} onChange={(event) => setDraft(event.target.value)} /><button type="button" onClick={() => onBusyChange?.(true)}>Begin request</button><button type="button" onClick={() => onBusyChange?.(false)}>Finish request</button><button type="button" onClick={() => { onApplied?.(); onDismiss?.(); }}>Apply action</button></form>;
 } }));
 vi.mock("../navigation", () => ({ AppLink: (props: ComponentProps<"a">) => <a {...props} /> }));
 
 describe("source collaboration bridge", () => {
-  beforeEach(() => { state.transfer = true; state.writeContext = true; state.error = null; state.refetch.mockClear(); });
+  beforeEach(() => { state.transfer = true; state.writeContext = true; state.error = null; state.refetch.mockClear(); vi.mocked(toast.success).mockClear(); });
   afterEach(cleanup);
   it("reuses creation with the explicit source workspace", () => {
     renderWithI18n(<SourceCollaborationCreation workspaceId="source-workspace" />);
@@ -50,6 +52,14 @@ describe("source collaboration bridge", () => {
     expect(screen.getByRole("form", { name: "shared workflow" })).toHaveAttribute("data-embedded", "true");
     expect(screen.getAllByRole("dialog")).toHaveLength(1);
     fireEvent.click(screen.getByRole("button", { name: "Close" }));
+    expect(close).toHaveBeenCalledOnce();
+    expect(toast.success).not.toHaveBeenCalled();
+  });
+  it("shows durable success feedback when the embedded action is applied", () => {
+    const close = vi.fn();
+    renderWithI18n(<SourceCollaborationActionDialog action={{ issueId: collaborationIssueFixture.id, action: "edit" }} close={close} />);
+    fireEvent.click(screen.getByRole("button", { name: "Apply action" }));
+    expect(toast.success).toHaveBeenCalledExactlyOnceWith("Action confirmed.");
     expect(close).toHaveBeenCalledOnce();
   });
   it("keeps the outer source dialog open during an embedded request", async () => {

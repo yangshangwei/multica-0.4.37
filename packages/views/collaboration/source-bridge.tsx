@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { toast } from "sonner";
 import { isCollaborationDenied, useCollaborationIssue, useCollaborationScope } from "@multica/core/collaboration";
 import type { SourceCollaborationAction } from "@multica/core/issues";
 import { useCollaborationRealtime } from "@multica/core/realtime";
@@ -71,6 +72,6 @@ function SourceAction({ scope, action, close, onBusyChange }: { scope: NonNullab
   if (allowed !== true || !issue.write_context) return <p role="alert" className="text-body">{t(($) => $.source.notAllowed)}</p>;
   return <>
     {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
-    <CollaborationWorkflow scope={scope} issue={issue} embedded onDismiss={close} onBusyChange={onBusyChange} initialAction={action.action === "lifecycle" ? undefined : action.action} initialStatus={action.status} />
+    <CollaborationWorkflow scope={scope} issue={issue} embedded onDismiss={close} onApplied={() => toast.success(t(($) => $.workflow.success))} onBusyChange={onBusyChange} initialAction={action.action === "lifecycle" ? undefined : action.action} initialStatus={action.status} />
   </>;
 }

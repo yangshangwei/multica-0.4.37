@@ -40,6 +40,7 @@ import remarkMath from "remark-math";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import { cn } from "@multica/ui/lib/utils";
+import { FileX, ImageOff, Unlink } from "lucide-react";
 import { useWorkspaceSlug } from "@multica/core/paths";
 import { useConfigStore } from "@multica/core/config";
 import type { Attachment } from "@multica/core/types";
@@ -69,6 +70,7 @@ import { highlightToHtml } from "../editor/utils/highlight-markdown";
 import { AttachmentDownloadProvider } from "../editor/attachment-download-context";
 import { Attachment as AttachmentRenderer } from "../editor/attachment";
 import { computeClosedFenceOffsets } from "./streaming-fence";
+import { useT } from "../i18n";
 import { remarkRepairCjkStrongTrailingWhitespace } from "./cjk-emphasis";
 import {
   CodeBlockShell,
@@ -206,6 +208,21 @@ function unfurlableEntityLink(
   return entity;
 }
 
+const RESTRICTED_ICONS = { link: Unlink, image: ImageOff, file: FileX } as const;
+
+/** Marks a resource restricted content withholds, so it reads as hidden rather than absent. */
+function RestrictedResource({ kind, name }: { kind: keyof typeof RESTRICTED_ICONS; name?: string }) {
+  const { t } = useT("editor");
+  const Icon = RESTRICTED_ICONS[kind];
+  const label = t(($) => $.restricted[kind]);
+  return (
+    <span className="rounded bg-muted px-1 py-px text-caption text-muted-foreground [overflow-wrap:anywhere]">
+      <Icon aria-hidden className="mr-1 inline size-3 align-[-0.125em]" />
+      {name ? t(($) => $.restricted.named, { label, name }) : label}
+    </span>
+  );
+}
+
 function RichLink({ href, children }: { href?: string; children?: ReactNode }) {
   const restricted = useContext(ResourcePolicyContext) === "restricted";
   const slug = useWorkspaceSlug();
@@ -216,7 +233,7 @@ function RichLink({ href, children }: { href?: string; children?: ReactNode }) {
   // real background tab.
   const desktopTabs = !!useOptionalNavigation()?.openInNewTab;
 
-  if (restricted) return <span>{children}</span>;
+  if (restricted) return <span>{children} <RestrictedResource kind="link" /></span>;
 
   if (href?.startsWith("slash://skill/")) {
     return <span className="slash-command">{children}</span>;
@@ -417,7 +434,7 @@ function RichPre({ children }: RichPreProps) {
 
 function RestrictedAwareImage({ src, alt }: ComponentPropsWithoutRef<"img">) {
   const restricted = useContext(ResourcePolicyContext) === "restricted";
-  if (restricted) return <span>{alt}</span>;
+  if (restricted) return <RestrictedResource kind="image" name={alt || undefined} />;
   return <AttachmentRenderer
       attachment={{
         kind: "url",
@@ -431,7 +448,7 @@ function RestrictedAwareImage({ src, alt }: ComponentPropsWithoutRef<"img">) {
 function RestrictedAwareDiv({ node, children, ...props }: ComponentPropsWithoutRef<"div"> & ExtraProps) {
     const restricted = useContext(ResourcePolicyContext) === "restricted";
     if (stringProperty(node, "dataType") === "fileCard") {
-      if (restricted) return <span>{stringProperty(node, "dataFilename")}</span>;
+      if (restricted) return <RestrictedResource kind="file" name={stringProperty(node, "dataFilename") || undefined} />;
       const rawHref = stringProperty(node, "dataHref");
       const href = isAllowedFileCardHref(rawHref) ? rawHref : "";
       return (

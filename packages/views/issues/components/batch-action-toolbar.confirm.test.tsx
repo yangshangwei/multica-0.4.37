@@ -44,22 +44,26 @@ vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 const ACTIVE_STATUSES = ["todo", "in_progress", "in_review", "blocked"] as const;
 const TERMINAL_STATUSES = ["done", "cancelled"] as const;
 vi.mock("./pickers", () => ({
-  StatusPicker: ({ onUpdate }: { onUpdate: (u: Partial<UpdateIssueRequest>) => void }) => (
+  StatusPicker: ({ onUpdate, triggerRender }: { onUpdate: (u: Partial<UpdateIssueRequest>) => void; triggerRender?: { props: { disabled?: boolean } } }) => (
     <div>
       {[...ACTIVE_STATUSES, ...TERMINAL_STATUSES, "backlog"].map((s) => (
         <button
           key={s}
           data-testid={`status-${s}`}
+          data-trigger-disabled={String(triggerRender?.props.disabled === true)}
           onClick={() => onUpdate({ status: s as UpdateIssueRequest["status"] })}
         />
       ))}
     </div>
   ),
-  PriorityPicker: ({ onUpdate }: { onUpdate: (u: Partial<UpdateIssueRequest>) => void }) => <button data-testid="priority-picker" onClick={() => onUpdate({ priority: "urgent" })} />,
-  AssigneePicker: ({ onUpdate }: { onUpdate: (u: Partial<UpdateIssueRequest>) => void }) => (
+  PriorityPicker: ({ onUpdate, triggerRender }: { onUpdate: (u: Partial<UpdateIssueRequest>) => void; triggerRender?: { props: { disabled?: boolean } } }) => (
+    <button data-testid="priority-picker" data-trigger-disabled={String(triggerRender?.props.disabled === true)} onClick={() => onUpdate({ priority: "urgent" })} />
+  ),
+  AssigneePicker: ({ onUpdate, triggerRender }: { onUpdate: (u: Partial<UpdateIssueRequest>) => void; triggerRender?: { props: { disabled?: boolean } } }) => (
     <div>
       <button
         data-testid="assign-agent"
+        data-trigger-disabled={String(triggerRender?.props.disabled === true)}
         onClick={() => onUpdate({ assignee_type: "agent", assignee_id: "agent-1" })}
       />
       <button
@@ -125,7 +129,19 @@ describe("BatchActionToolbar status routing (MUL-4155)", () => {
     expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
     expect(screen.queryByLabelText("Iteration batch selection")).not.toBeInTheDocument();
     expect(selection.clear).not.toHaveBeenCalled();
-    expect(toast.error).toHaveBeenCalled();
+    // Disabled up front with the reason shown, instead of a toast after the click.
+    expect(toast.error).not.toHaveBeenCalled();
+    expect(screen.getByTestId("priority-picker")).toHaveAttribute("data-trigger-disabled", "true");
+    expect(screen.getByText("label", { selector: "button.text-destructive" })).toBeDisabled();
+    const reason = document.querySelector('[data-slot="batch-disabled-reason"]');
+    expect(reason).toBeInTheDocument();
+    expect(screen.getByTestId("status-in_progress")).toHaveAttribute("data-trigger-disabled", "true");
+    expect(screen.getByTestId("assign-agent")).toHaveAttribute("data-trigger-disabled", "true");
+    const clear = screen.getByLabelText("label", { selector: "button" });
+    expect(clear).toBeEnabled();
+    expect(clear).toHaveAttribute("aria-describedby", reason!.id);
+    fireEvent.click(clear);
+    expect(selection.clear).toHaveBeenCalledOnce();
   });
   it("applies every status target directly, never opening the run-confirm modal", () => {
     for (const status of [...ACTIVE_STATUSES, ...TERMINAL_STATUSES, "backlog"]) {

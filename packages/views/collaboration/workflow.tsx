@@ -24,10 +24,10 @@ import { CollaborationIterationInput, CollaborationLabelInput, CollaborationProp
 type ActionName = CollaborationAction["action"];
 const successful = new Set(["participant_added", "already_participant", "transferred", "already_handler", "participant_left", "participant_removed", "information_requested", "information_returned", "acceptance_submitted", "acceptance_returned", "ai_policy_changed", "ai_policy_unchanged", "status_changed", "status_unchanged", "completed", "cancelled", "reopened", "issue_edited", "iteration_changed", "unchanged"]);
 
-export function CollaborationWorkflow({ scope, issue, initialAction, initialStatus, resultFromComment, onResultPrepared, onDiscuss, embedded = false, onDismiss, onBusyChange }: {
+export function CollaborationWorkflow({ scope, issue, initialAction, initialStatus, resultFromComment, onResultPrepared, onDiscuss, embedded = false, onDismiss, onApplied, onBusyChange }: {
   scope: CollaborationScope; issue: CollaborationIssue; initialAction?: "transfer" | "change_status" | "edit"; initialStatus?: string;
   resultFromComment?: CollaborationComment | null; onResultPrepared?: () => void; onDiscuss?: () => void;
-  embedded?: boolean; onDismiss?: () => void; onBusyChange?: (busy: boolean) => void;
+  embedded?: boolean; onDismiss?: () => void; onApplied?: () => void; onBusyChange?: (busy: boolean) => void;
 }) {
   const { t } = useT("collaboration");
   const labels = useCollaborationLabels();
@@ -51,7 +51,7 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
   const apply = useMutation({ mutationKey: [...collaborationKeys.issue(scope, issue.id), "human-action"], retry: false, networkMode: "always",
     mutationFn: ({ draft, recovery }: { draft: CollaborationDraft; recovery: boolean }) => executeCollaborationAction(client, scope, draft, recovery),
     onSuccess: (result, { draft, recovery }) => {
-      if (successful.has(result.code) && (result.status === undefined || result.status < 400)) { dismiss(); return; }
+      if (successful.has(result.code) && (result.status === undefined || result.status < 400)) { onApplied?.(); dismiss(); return; }
       if (recovery) {
         const original = parseCollaborationActionDraft(draft);
         if (original.action !== "remove") {
