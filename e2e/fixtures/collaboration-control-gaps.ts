@@ -198,9 +198,20 @@ export async function lifecycleThroughUI(page: Page, issueId: string, action: "c
   return { receipt, requestId, input, options };
 }
 export async function leaveThroughUI(page: Page, issueId: string) {
-  const actionButton = page.getByRole("button", { name: "Leave issue", exact: true }).or(page.getByRole("menuitem", { name: "Leave issue", exact: true }));
-  if (!await actionButton.isVisible()) await revealCollaborationDisclosure(page, "More actions");
-  await actionButton.click();
+  const directButton = page.getByRole("button", { name: "Leave issue", exact: true });
+  if (await directButton.count() > 0) {
+    await expect(directButton).toBeVisible();
+    await expect(directButton).toBeEnabled();
+    await directButton.click();
+  } else {
+    const moreActions = page.getByRole("button", { name: "More actions", exact: true });
+    await expect(moreActions).toBeVisible();
+    await expect(moreActions).toBeEnabled();
+    await revealCollaborationDisclosure(page, "More actions");
+    const menuItem = page.getByRole("menuitem", { name: "Leave issue", exact: true });
+    await expect(menuItem).toBeVisible();
+    await menuItem.click();
+  }
   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Leave issue", exact: true }) });
   const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${gapIssuePath(issueId)}/leave` && response.request().method() === "POST");
   await form.getByRole("button", { name: "Confirm", exact: true }).click();
