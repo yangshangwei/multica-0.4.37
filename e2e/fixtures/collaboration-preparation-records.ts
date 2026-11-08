@@ -337,7 +337,9 @@ export async function exercisePreparationRecords(viewer: Page, owner: Page, fixt
     expect(await summary.textContent()).not.toMatch(/not run|termination confirmed|exited_proven/);
     const more = records.getByRole("button", { name: "Load more records", exact: true });
     if (await more.count()) await more.click();
-    await expect(records.getByText(fixture.result, { exact: true })).toBeVisible();
+    // The asynchronously loaded handoff context may quote the same result;
+    // assert the recorded entry itself, as collaboration-records.ts does.
+    await expect(records.locator("li[data-record-id]").getByText(fixture.result, { exact: true })).toBeVisible();
     return summary;
   };
   await adapter.navigate(viewer, preparationAccountPath(fixture));
