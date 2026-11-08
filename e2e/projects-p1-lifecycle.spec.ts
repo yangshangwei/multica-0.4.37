@@ -184,7 +184,8 @@ test("P1-L09 refresh failure marks old statistics stale and disables risk naviga
   await p1.api.createIssue("Assigned healthy task", { project_id: project.id, assignee_type: "member", assignee_id: p1.owner.id });
   await openProject(page, p1, project);
   await page.route(`**/api/projects/${project.id}/overview`, (route) => route.fulfill({ status: 503, json: { error: "Fixture refresh unavailable" } }));
-  await page.getByRole("button", { name: "Refresh", exact: true }).click();
+  await page.locator("section").filter({ has: page.getByRole("heading", { name: "Overview", exact: true }) })
+    .getByRole("button", { name: "Refresh", exact: true }).click();
   await expect(page.getByText("Refresh failed. These are the last available statistics.", { exact: true })).toBeVisible();
   await expect(page.getByText("No current risk signals", { exact: true })).toHaveCount(0);
   await expect(page.getByRole("button", { name: /^Overdue / })).toBeDisabled();
@@ -340,9 +341,12 @@ for (const [revocation, revoke] of Object.entries(revocations)) {
       });
       expect((await revoke(p1, member)).status).toBe(204);
       const revokedAt = Date.now();
-      const denial = page.waitForResponse((r) => r.url().endsWith(`/api/projects/${project.id}/overview`) && r.status() === 404);
-      await page.getByRole("button", { name: "Refresh", exact: true }).click();
-      expect(await (await denial).json()).toMatchObject({ code: "workspace_access_denied" });
+      const [denial] = await Promise.all([
+        page.waitForResponse((r) => r.url().endsWith(`/api/projects/${project.id}/overview`) && r.status() === 404),
+        page.locator("section").filter({ has: page.getByRole("heading", { name: "Overview", exact: true }) })
+          .getByRole("button", { name: "Refresh", exact: true }).click(),
+      ]);
+      expect(await denial.json()).toMatchObject({ code: "workspace_access_denied" });
       await expect(page.getByText("Protected project goal", { exact: true })).toHaveCount(0);
       await page.waitForTimeout(20_000 - (Date.now() - revokedAt));
 
