@@ -118,7 +118,11 @@ export async function sendIterationCommand(
       return api.applyIterationOperation(wsId, command.body);
   }
 }
-export function useIterationCommand(wsId: string, scope: string) {
+export function useIterationCommand(
+  wsId: string,
+  scope: string,
+  options?: { onApplied?: () => void },
+) {
   useSyncExternalStore(
     subscribePendingIterations,
     pendingIterationRevision,
@@ -213,6 +217,7 @@ export function useIterationCommand(wsId: string, scope: string) {
         defaultStorage.removeItem(key);
         notifyPendingIterations();
         setPending(null);
+        options?.onApplied?.();
         await client.invalidateQueries({ queryKey: ["iterations", wsId] });
         assertCurrentContext();
         await refreshIterationSettingsDependents(client, wsId);

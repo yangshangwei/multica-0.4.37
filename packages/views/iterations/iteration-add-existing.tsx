@@ -73,7 +73,7 @@ export function IterationAddExisting({
   const browse = useQuery({ ...iterationUnplannedCandidatesOptions(wsId), enabled: open });
   const settings = useQuery(iterationSettingsOptions(wsId));
   const choices = useQuery(iterationChoicesOptions(wsId));
-  const apply = useIterationCommand(wsId, `assign:${iteration.id}`);
+  const apply = useIterationCommand(wsId, `assign:${iteration.id}`, { onApplied: onAdded });
   const pending = apply.pending;
   const openIterations = choices.data ? new Set(choices.data.map((item) => item.id)) : null;
   const classify = (issue: Issue) => classifyIterationCandidate(issue, iteration, openIterations);
@@ -150,7 +150,6 @@ export function IterationAddExisting({
     try {
       await apply.mutateAsync({ command, recover });
       reset();
-      onAdded();
     } catch {
       // apply.error shows the failure; an unknown outcome stays pending for
       // retry, and a rejection keeps the draft for the user to adjust.
