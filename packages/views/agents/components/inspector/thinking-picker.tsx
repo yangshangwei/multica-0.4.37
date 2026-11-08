@@ -69,7 +69,7 @@ export function ThinkingPicker({
   if (!canEdit) {
     if (variant === "field") {
       const control = (
-        <div className="flex min-h-10 items-center gap-2 rounded-lg border border-input bg-input/50 px-3 text-body text-muted-foreground">
+        <div className="flex min-h-10 items-center gap-2 rounded-lg border border-input-fill bg-input-fill/50 px-3 text-body text-muted-foreground">
           <Brain className="h-4 w-4 shrink-0" aria-hidden="true" />
           <span className="min-w-0 truncate">{triggerLabel}</span>
         </div>

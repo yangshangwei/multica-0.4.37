@@ -21,7 +21,7 @@ import { beforeAll, describe, expect, it } from "vitest";
  * was present as a class and still lost:
  *
  *   1. Brand classes layered over the `outline` variant. tailwind-merge keeps
- *      `dark:bg-input/30` (different modifier group, no conflict to resolve),
+ *      `dark:bg-input-fill/30` (different modifier group, no conflict to resolve),
  *      and `dark:` compiles to `&:is(.dark *)` — specificity (0,2,0) against
  *      a bare `.bg-brand`'s (0,1,0). The chip was grey in dark mode while
  *      every string assertion passed.
@@ -230,9 +230,9 @@ describe("brand Button variants resolve to brand colour in the real stylesheet",
 
       // tailwind-merge cannot drop outline's dark: rules — different modifier
       // group, so there is no conflict for it to resolve...
-      expect(layered).toContain("dark:bg-input/30");
+      expect(layered).toContain("dark:bg-input-fill/30");
       // ...and `:is(.dark *)` then outranks the bare .bg-brand.
-      expect(bg(layered, { dark: true })).toBe("dark:bg-input/30");
+      expect(bg(layered, { dark: true })).toBe("dark:bg-input-fill/30");
       // Light mode looks fine, which is exactly why this shipped unnoticed.
       expect(bg(layered, {})).toBe("bg-brand");
     });

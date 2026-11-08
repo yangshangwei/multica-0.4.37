@@ -12,11 +12,11 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
         outline:
-          "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
+          "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input-fill dark:bg-input-fill/30 dark:hover:bg-input-fill/50",
         // Brand-filled state for a control that is currently ON (an active
         // filter, a selected toggle). Self-contained on purpose: passing
         // brand classes through `className` on top of `outline` does NOT
-        // work — `outline` ships `dark:bg-input/30`, `hover:bg-muted` and
+        // work — `outline` ships `dark:bg-input-fill/30`, `hover:bg-muted` and
         // `aria-expanded:bg-muted`, and those win the cascade (the `dark:`
         // ones by specificity, since `dark` compiles to `&:is(.dark *)`),
         // repainting the chip neutral. That is what silently killed the

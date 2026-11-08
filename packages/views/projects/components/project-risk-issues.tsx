@@ -39,7 +39,7 @@ export function ProjectRiskIssues({ project, signal, version, onBack, onProtecte
   };
   const labels = { blocked: t(($) => $.management.blocked), overdue: t(($) => $.management.overdue), unassigned: t(($) => $.management.unassigned), in_review: t(($) => $.management.in_review) };
   return <section className="flex-1 min-h-0 overflow-y-auto p-6"><div className="mx-auto max-w-5xl space-y-4">
-    <div className="flex flex-wrap items-center gap-2"><Button variant="outline" size="sm" onClick={onBack}>{t(($) => $.management.overview)}</Button><h2 className="flex-1 text-heading font-medium">{labels[signal]}{query.data && ` · ${query.data.total}`}</h2>
+    <div className="flex flex-wrap items-center gap-2"><Button variant="outline" size="sm" onClick={onBack}>{t(($) => $.management.overview)}</Button><h2 className="flex-1 text-title-sm font-medium">{labels[signal]}{query.data && ` · ${query.data.total}`}</h2>
       <Button size="sm" variant={mode === "list" ? "secondary" : "ghost"} onClick={() => setMode("list")}>{t(($) => $.management.list)}</Button><Button size="sm" variant={mode === "table" ? "secondary" : "ghost"} onClick={() => setMode("table")}>{t(($) => $.management.table)}</Button>
     </div><p className="text-caption text-muted-foreground">{t(($) => $.management.risk_scope)}</p>
     {query.data && <p className="text-caption text-muted-foreground">{t(($) => $.management.calculated, { time: new Date(query.data.overview.statistics.calculated_at).toLocaleString(), date: query.data.overview.statistics.reference_date })}</p>}

@@ -708,7 +708,7 @@ export function ScheduleEditor({
             // text: it renders as a fixed addon drawn from the timezone picker, so
             // the zone cannot be half-deleted into a prefix robfig would panic on,
             // and the fields flow to the server exactly as typed.
-            <InputGroup className="bg-background dark:bg-input/30">
+            <InputGroup className="bg-background dark:bg-input-fill/30">
               {!ownPrefix && (
                 // Its own row above the fields, mirroring the closed readback:
                 // a long zone name and long fields truncate independently
@@ -1039,7 +1039,7 @@ function EveryTimeControls({
           disabled, and the minute segments are, by design, under a minute step —
           which does not make the row unavailable. A locked or advanced schedule
           still greys out, from the fieldset around the whole block. */}
-      <InputGroup className="min-w-fit has-disabled:bg-transparent has-disabled:opacity-100 dark:has-disabled:bg-input/30">
+      <InputGroup className="min-w-fit has-disabled:bg-transparent has-disabled:opacity-100 dark:has-disabled:bg-input-fill/30">
         {/* Leads the box, not focusable: the fields after it take the focus and
             the group's border. pr-0 lets the start field's own padding set the
             icon-to-digit gap, so it matches the gap between the two ends. */}

@@ -188,7 +188,7 @@ function IconPicker({
       <PopoverTrigger
         disabled={disabled}
         aria-label={t(($) => $.presentation.icon_pick)}
-        className="flex h-8 items-center gap-2 rounded-lg border border-input px-1.5 pr-2.5 text-body transition-colors hover:bg-accent/50 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30"
+        className="flex h-8 items-center gap-2 rounded-lg border border-input px-1.5 pr-2.5 text-body transition-colors hover:bg-accent/50 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input-fill/30"
       >
         <SkillPresentationIcon meta={value} size="sm" />
         <span className="text-caption text-muted-foreground">

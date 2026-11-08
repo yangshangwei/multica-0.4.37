@@ -272,7 +272,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   }, [project, deleteProject, router, wsPaths, t]);
 
   if (accessLost || revoked) return <div role="alert" className="p-6 text-muted-foreground">{t(($) => $.management.permission_lost)}</div>;
-  if (deletedTexts) return <div className="mx-auto max-w-3xl space-y-4 p-6"><h1 className="text-heading font-medium">{t(($) => $.management.project_deleted)}</h1><p className="text-caption text-muted-foreground">{t(($) => $.management.deleted_copy_hint)}</p>
+  if (deletedTexts) return <div className="mx-auto max-w-3xl space-y-4 p-6"><h1 className="text-title font-medium">{t(($) => $.management.project_deleted)}</h1><p className="text-caption text-muted-foreground">{t(($) => $.management.deleted_copy_hint)}</p>
     {deletedTexts.map((text, index) => <div key={index} className="space-y-2"><Textarea readOnly aria-label={t(($) => $.management.unsent_text)} value={text} /><Button variant="outline" onClick={() => void copyText(text)}>{t(($) => $.management.copy_text)}</Button></div>)}
   </div>;
 
