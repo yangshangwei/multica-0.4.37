@@ -1,0 +1,25 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-tags=agentintegration",
+    "./cmd/server",
+    "-run",
+    "^TestRK1KnowledgeCodex(ContinuationControls|E0bRetryControls|RegistrationGuard|RegistrationIntegrity|LedgerStopsAfterIncomplete|PhysicalBudget|RPCControls|SampleAcknowledgment)$",
+    "-count=1",
+    "-parallel=2",
+    "-timeout=5m",
+    "-json"
+  ],
+  "at": "2026-11-08T10:07:19.066472+08:00",
+  "exit_code": 0,
+  "seconds": 11.421792984008789,
+  "real_agent_gate": "0",
+  "database": "multica_merge_takeover_20261108_router_1",
+  "source_head": "7647d6eb853b0eb0d6fea3272e0eecd27012f578"
+}

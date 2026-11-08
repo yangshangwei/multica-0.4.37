@@ -1,0 +1,24 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestContextExperiment(E5CanaryStopsBeforeNextTrial|E5SafeOutputRetainsThreeTrials|E5IncompleteRemainsRuntimeError|NonE5BehaviorFailureKeepsRegisteredTrials)$",
+    "-count=1",
+    "-parallel=2",
+    "-timeout=5m",
+    "-json"
+  ],
+  "exit_code": 0,
+  "seconds": 20.42325496673584,
+  "real_agent_gate": "unset",
+  "database": "unset"
+}

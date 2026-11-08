@@ -1,0 +1,502 @@
+{
+  "verdict": {
+    "score": 96,
+    "verdict": "pass",
+    "category_match": true,
+    "differences": [
+      "Candidate input and textarea borders are more visible in light and dark themes, matching the intended source change.",
+      "Control fill colors, button colors, dimensions, spacing and switch tracks remain unchanged."
+    ],
+    "suggestions": [],
+    "reasoning": "Actual imported UI components were rendered with separately compiled baseline/candidate styles at375px and720px in both themes. Eight screenshots show no overflow; computed fill colors and control dimensions match baseline."
+  },
+  "metrics": [
+    {
+      "theme": "light",
+      "width": 720,
+      "mode": "baseline",
+      "overflow": false,
+      "controls": {
+        "#normal": {
+          "border": "oklch(0.92 0.004 286.32)",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 516,
+          "height": 32
+        },
+        "#focused": {
+          "border": "oklch(0.705 0.015 286.067)",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.705 0.00415142 -0.0144141 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "width": 516,
+          "height": 32
+        },
+        "#disabled": {
+          "border": "oklch(0.92 0.004 286.32)",
+          "background": "oklab(0.92 0.00112401 -0.00383883 / 0.5)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 516,
+          "height": 32
+        },
+        "#outline": {
+          "border": "oklch(0.945 0.003 286.32)",
+          "background": "oklch(0.988087 0 0)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 65.59375,
+          "height": 32
+        },
+        "#brand": {
+          "border": "oklch(0.55 0.16 255)",
+          "background": "oklch(0.55 0.16 255)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 110.734375,
+          "height": 32
+        },
+        "[data-slot=\"switch\"]": {
+          "border": "rgba(0, 0, 0, 0)",
+          "background": "oklch(0.92 0.004 286.32)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 32,
+          "height": 18.390625
+        }
+      }
+    },
+    {
+      "theme": "light",
+      "width": 720,
+      "mode": "candidate",
+      "overflow": false,
+      "controls": {
+        "#normal": {
+          "border": "oklch(0.625 0.004 286.32)",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 516,
+          "height": 32
+        },
+        "#focused": {
+          "border": "oklch(0.6 0.015 286.067)",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.6 0.00415142 -0.0144141 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "width": 516,
+          "height": 32
+        },
+        "#disabled": {
+          "border": "oklch(0.625 0.004 286.32)",
+          "background": "oklab(0.92 0.00112401 -0.00383883 / 0.5)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 516,
+          "height": 32
+        },
+        "#outline": {
+          "border": "oklch(0.945 0.003 286.32)",
+          "background": "oklch(0.988087 0 0)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 65.59375,
+          "height": 32
+        },
+        "#brand": {
+          "border": "oklch(0.55 0.16 255)",
+          "background": "oklch(0.55 0.16 255)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 110.734375,
+          "height": 32
+        },
+        "[data-slot=\"switch\"]": {
+          "border": "rgba(0, 0, 0, 0)",
+          "background": "oklch(0.92 0.004 286.32)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 32,
+          "height": 18.390625
+        }
+      }
+    },
+    {
+      "theme": "light",
+      "width": 375,
+      "mode": "baseline",
+      "overflow": false,
+      "controls": {
+        "#normal": {
+          "border": "oklch(0.92 0.004 286.32)",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 311,
+          "height": 32
+        },
+        "#focused": {
+          "border": "oklch(0.705 0.015 286.067)",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.705 0.00415142 -0.0144141 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "width": 311,
+          "height": 32
+        },
+        "#disabled": {
+          "border": "oklch(0.92 0.004 286.32)",
+          "background": "oklab(0.92 0.00112401 -0.00383883 / 0.5)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 311,
+          "height": 32
+        },
+        "#outline": {
+          "border": "oklch(0.945 0.003 286.32)",
+          "background": "oklch(0.988087 0 0)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 65.59375,
+          "height": 32
+        },
+        "#brand": {
+          "border": "oklch(0.55 0.16 255)",
+          "background": "oklch(0.55 0.16 255)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 110.734375,
+          "height": 32
+        },
+        "[data-slot=\"switch\"]": {
+          "border": "rgba(0, 0, 0, 0)",
+          "background": "oklch(0.92 0.004 286.32)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 32,
+          "height": 18.390625
+        }
+      }
+    },
+    {
+      "theme": "light",
+      "width": 375,
+      "mode": "candidate",
+      "overflow": false,
+      "controls": {
+        "#normal": {
+          "border": "oklch(0.625 0.004 286.32)",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 311,
+          "height": 32
+        },
+        "#focused": {
+          "border": "oklch(0.6 0.015 286.067)",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.6 0.00415142 -0.0144141 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "width": 311,
+          "height": 32
+        },
+        "#disabled": {
+          "border": "oklch(0.625 0.004 286.32)",
+          "background": "oklab(0.92 0.00112401 -0.00383883 / 0.5)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 311,
+          "height": 32
+        },
+        "#outline": {
+          "border": "oklch(0.945 0.003 286.32)",
+          "background": "oklch(0.988087 0 0)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 65.59375,
+          "height": 32
+        },
+        "#brand": {
+          "border": "oklch(0.55 0.16 255)",
+          "background": "oklch(0.55 0.16 255)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 110.734375,
+          "height": 32
+        },
+        "[data-slot=\"switch\"]": {
+          "border": "rgba(0, 0, 0, 0)",
+          "background": "oklch(0.92 0.004 286.32)",
+          "color": "oklch(0.141 0.005 285.823)",
+          "shadow": "none",
+          "width": 32,
+          "height": 18.390625
+        }
+      }
+    },
+    {
+      "theme": "dark",
+      "width": 720,
+      "mode": "baseline",
+      "overflow": false,
+      "controls": {
+        "#normal": {
+          "border": "oklch(1 0 0 / 0.15)",
+          "background": "oklab(1 0 0 / 0.045)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 516,
+          "height": 32
+        },
+        "#focused": {
+          "border": "oklch(0.552 0.016 285.938)",
+          "background": "oklab(1 0 0 / 0.045)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.552 0.00439355 -0.015385 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "width": 516,
+          "height": 32
+        },
+        "#disabled": {
+          "border": "oklch(1 0 0 / 0.15)",
+          "background": "oklab(1 0 0 / 0.12)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 516,
+          "height": 32
+        },
+        "#outline": {
+          "border": "oklch(1 0 0 / 0.15)",
+          "background": "oklab(1 0 0 / 0.045)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 65.59375,
+          "height": 32
+        },
+        "#brand": {
+          "border": "oklch(0.65 0.16 255)",
+          "background": "oklch(0.65 0.16 255)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 110.734375,
+          "height": 32
+        },
+        "[data-slot=\"switch\"]": {
+          "border": "rgba(0, 0, 0, 0)",
+          "background": "oklab(1 0 0 / 0.12)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 32,
+          "height": 18.390625
+        }
+      }
+    },
+    {
+      "theme": "dark",
+      "width": 720,
+      "mode": "candidate",
+      "overflow": false,
+      "controls": {
+        "#normal": {
+          "border": "oklch(1 0 0 / 0.36)",
+          "background": "oklab(1 0 0 / 0.045)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 516,
+          "height": 32
+        },
+        "#focused": {
+          "border": "oklch(0.552 0.016 285.938)",
+          "background": "oklab(1 0 0 / 0.045)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.552 0.00439355 -0.015385 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "width": 516,
+          "height": 32
+        },
+        "#disabled": {
+          "border": "oklch(1 0 0 / 0.36)",
+          "background": "oklab(1 0 0 / 0.12)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 516,
+          "height": 32
+        },
+        "#outline": {
+          "border": "oklch(1 0 0 / 0.15)",
+          "background": "oklab(1 0 0 / 0.045)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 65.59375,
+          "height": 32
+        },
+        "#brand": {
+          "border": "oklch(0.65 0.16 255)",
+          "background": "oklch(0.65 0.16 255)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 110.734375,
+          "height": 32
+        },
+        "[data-slot=\"switch\"]": {
+          "border": "rgba(0, 0, 0, 0)",
+          "background": "oklab(1 0 0 / 0.12)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 32,
+          "height": 18.390625
+        }
+      }
+    },
+    {
+      "theme": "dark",
+      "width": 375,
+      "mode": "baseline",
+      "overflow": false,
+      "controls": {
+        "#normal": {
+          "border": "oklch(1 0 0 / 0.15)",
+          "background": "oklab(1 0 0 / 0.045)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 311,
+          "height": 32
+        },
+        "#focused": {
+          "border": "oklch(0.552 0.016 285.938)",
+          "background": "oklab(1 0 0 / 0.045)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.552 0.00439355 -0.015385 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "width": 311,
+          "height": 32
+        },
+        "#disabled": {
+          "border": "oklch(1 0 0 / 0.15)",
+          "background": "oklab(1 0 0 / 0.12)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 311,
+          "height": 32
+        },
+        "#outline": {
+          "border": "oklch(1 0 0 / 0.15)",
+          "background": "oklab(1 0 0 / 0.045)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 65.59375,
+          "height": 32
+        },
+        "#brand": {
+          "border": "oklch(0.65 0.16 255)",
+          "background": "oklch(0.65 0.16 255)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 110.734375,
+          "height": 32
+        },
+        "[data-slot=\"switch\"]": {
+          "border": "rgba(0, 0, 0, 0)",
+          "background": "oklab(1 0 0 / 0.12)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 32,
+          "height": 18.390625
+        }
+      }
+    },
+    {
+      "theme": "dark",
+      "width": 375,
+      "mode": "candidate",
+      "overflow": false,
+      "controls": {
+        "#normal": {
+          "border": "oklch(1 0 0 / 0.36)",
+          "background": "oklab(1 0 0 / 0.045)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 311,
+          "height": 32
+        },
+        "#focused": {
+          "border": "oklch(0.552 0.016 285.938)",
+          "background": "oklab(1 0 0 / 0.045)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.552 0.00439355 -0.015385 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "width": 311,
+          "height": 32
+        },
+        "#disabled": {
+          "border": "oklch(1 0 0 / 0.36)",
+          "background": "oklab(1 0 0 / 0.12)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 311,
+          "height": 32
+        },
+        "#outline": {
+          "border": "oklch(1 0 0 / 0.15)",
+          "background": "oklab(1 0 0 / 0.045)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 65.59375,
+          "height": 32
+        },
+        "#brand": {
+          "border": "oklch(0.65 0.16 255)",
+          "background": "oklch(0.65 0.16 255)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 110.734375,
+          "height": 32
+        },
+        "[data-slot=\"switch\"]": {
+          "border": "rgba(0, 0, 0, 0)",
+          "background": "oklab(1 0 0 / 0.12)",
+          "color": "oklch(0.985 0 0)",
+          "shadow": "none",
+          "width": 32,
+          "height": 18.390625
+        }
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/visual/baseline-light-720.png",
+      "sha256": "296b6bb173724b01f65cd468862f8fe742bc5a1c1075193de128e39188efb11b"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/visual/baseline-dark-720.png",
+      "sha256": "5dd6d4648d72e99f853c41b25fbe3baf7fe4c99dc172b7f69a12f916de70818a"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/visual/candidate-light-375.png",
+      "sha256": "94b6fb52cdbf0717939e9a01686957b33a1e0051f12b18b1e57e6cb94ffa38ef"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/visual/candidate-dark-375.png",
+      "sha256": "b4b65c395f1613a4f6750925fa1b741b8c47ce4a5ead235910de1ef0652f5b7f"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/visual/baseline-dark-375.png",
+      "sha256": "64b5b1d83ffcbe7253b0f7bd939f9e84c836d0d4b635ce20dcfa08c7a26e957e"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/visual/candidate-light-720.png",
+      "sha256": "a8855fe98b5109b1f770c2b91f26f48a563599ece1b7d4f8a5eda6570787e8d3"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/visual/baseline-light-375.png",
+      "sha256": "d028f12cfdec11e393134f90cd170fba9838a1c46fff1c97f948908fd11784b4"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/visual/candidate-dark-720.png",
+      "sha256": "d85afe66636fec3f450a41e81439639a683bb6787b4d001c762e92d1179f3f2e"
+    }
+  ],
+  "limits": [
+    "No whole-app or installed desktop assertion from this fixture.",
+    "No WCAG ratio claim for alpha focus halo; text contrast tests do not cover it.",
+    "Preliminary fixture CSS-cache/theme-transition captures are retained separately and excluded."
+  ]
+}

@@ -1,0 +1,1414 @@
+{
+  "query": "Adjudicate staged recipient/UI source deltas against current target without source mutation",
+  "date": "2026-11-08T09:51:33.942991+08:00",
+  "source_patch": "/Volumes/artisan/code/2026/mc-merge-unmerged-archives-20261108/patches/recipient-integration-20261030-072838-a3fe.tracked.patch",
+  "scope": "43 code/test/locale paths plus 6 separately classified documentation paths",
+  "method": "Read preserved source-HEAD to source-working-tree patch, actual source/target bytes, verify each old hunk has a unique target preimage. No git operations or product tests executed by researcher.",
+  "counts": {
+    "input-boundary-fill-separation": 23,
+    "reaction-accessibility": 6,
+    "embedded-workflow-success-feedback": 4,
+    "collaboration-batch-affordance": 2,
+    "restricted-resource-placeholders": 4,
+    "project-heading-token": 4
+  },
+  "decisions": [
+    {
+      "path": "apps/web/app/brand-variant-cascade.test.ts",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "7367da877e6cc609c7532868807428a99f53394ff57eb4da63f931ef7051522b",
+      "target_sha256": "748ae944849ea622ecbb0c222ffc938b05ed1e99a3410b68818739f2e5b3dc63",
+      "hunks": [
+        {
+          "source_hunk": "@@ -21,7 +21,7 @@ import { beforeAll, describe, expect, it } from \"vitest\";",
+          "current_preimage_matches": [
+            21
+          ]
+        },
+        {
+          "source_hunk": "@@ -230,9 +230,9 @@ describe(\"brand Button variants resolve to brand colour in the real stylesheet\",",
+          "current_preimage_matches": [
+            230
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "apps/web/app/brand-variant-cascade.test.ts:21",
+        "apps/web/app/brand-variant-cascade.test.ts:230"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "e2e/collaboration-boundaries-web.spec.ts",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "bf63ae7eac9306903d24c5a143f9c67297603afb0f6afa2c2dfb94d368aa0ec6",
+      "target_sha256": "d95387c4ebc7c076ba2cc2cc94e64c966f7d0ded3b33f81375e9f8f59b4c074e",
+      "hunks": [
+        {
+          "source_hunk": "@@ -562,7 +562,7 @@ test(\"Smaller gaps: title/date edits leave attributed records, recipient lookup",
+          "current_preimage_matches": [
+            598
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "reaction-accessibility",
+      "decision": "defer",
+      "recommended_disposition": "drop_from_product_merge; preserve in source archive",
+      "reason": "Source removes localized Add/Remove reaction accessible names and count description, then weakens tests to emoji+count. Current discussion-actions.tsx:43-47 intentionally preserves action name, count association, and aria-pressed. No missing behavior requires this removal; retain current accessible names and tests.",
+      "current_evidence": [
+        "packages/views/collaboration/discussion-actions.tsx:43",
+        "packages/views/collaboration/comment-list.test.tsx:126",
+        "e2e/fixtures/collaboration-editing.ts:243"
+      ]
+    },
+    {
+      "path": "e2e/fixtures/collaboration-editing.ts",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "5c18eec21da60b34ccf5a2f41b6bbcf8bf98d7b0986d0a2cf58f8c6ab9c41cbb",
+      "target_sha256": "5fa6bf89cad00c04482aa878243c2aa66863eb79d76a28ec464f13721842b7bd",
+      "hunks": [
+        {
+          "source_hunk": "@@ -226,19 +226,19 @@ export async function exerciseCollaborationDiscussion(page: Page, source: TestAp",
+          "current_preimage_matches": [
+            240
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "reaction-accessibility",
+      "decision": "defer",
+      "recommended_disposition": "drop_from_product_merge; preserve in source archive",
+      "reason": "Source removes localized Add/Remove reaction accessible names and count description, then weakens tests to emoji+count. Current discussion-actions.tsx:43-47 intentionally preserves action name, count association, and aria-pressed. No missing behavior requires this removal; retain current accessible names and tests.",
+      "current_evidence": [
+        "packages/views/collaboration/discussion-actions.tsx:43",
+        "packages/views/collaboration/comment-list.test.tsx:126",
+        "e2e/fixtures/collaboration-editing.ts:243"
+      ]
+    },
+    {
+      "path": "packages/ui/components/ui/button.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "a440a1db53ad25cb9ebda46b182e43f329e4b32f668c76bf9512724fe5bbcaf5",
+      "target_sha256": "132669be5d65af6b27bb492b5237b90c27c2869227251efc65a1d1f9b174da28",
+      "hunks": [
+        {
+          "source_hunk": "@@ -12,11 +12,11 @@ const buttonVariants = cva(",
+          "current_preimage_matches": [
+            12
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/ui/components/ui/button.tsx:12"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/ui/components/ui/checkbox.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "84f49b5dc12993a97ed0ed88341566fbeb1c411b33c9131f0f6ad355205a36a7",
+      "target_sha256": "4f56053cdac9071b88865028134c8140ee2de935360df1d2419a7912ea360f56",
+      "hunks": [
+        {
+          "source_hunk": "@@ -11,7 +11,7 @@ function Checkbox({ className, indeterminate, ...props }: CheckboxPrimitive.Root",
+          "current_preimage_matches": [
+            11
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/ui/components/ui/checkbox.tsx:11"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/ui/components/ui/command.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "28ddb958e640335c398a0736caf916054fda3f0bd2cb788682f5d468517b32cb",
+      "target_sha256": "f2cb24061dd31e7f473c817308d4025c33338585c852a9cc8a22ab556dc3ea8b",
+      "hunks": [
+        {
+          "source_hunk": "@@ -73,7 +73,7 @@ function CommandInput({",
+          "current_preimage_matches": [
+            73
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/ui/components/ui/command.tsx:73"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/ui/components/ui/input-group.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "f7ec43c2fafb9d7f3d101844124644e19d050d682d039e34c2e055572a5cba99",
+      "target_sha256": "83a4869aa46b0698b5bd0972e26388edbad39d1fad717b12b7e18a695698c528",
+      "hunks": [
+        {
+          "source_hunk": "@@ -16,7 +16,7 @@ function InputGroup({ className, ...props }: React.ComponentProps<\"div\">) {",
+          "current_preimage_matches": [
+            16
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/ui/components/ui/input-group.tsx:16"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/ui/components/ui/input-otp.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "d9bb9b31b448d2b5140b75a9d8b7db4a952d49804a34b075b82e55b6c265e085",
+      "target_sha256": "998060a794fba1d0d0771abf109271952e7af9b49ddbea87027e818c4b235234",
+      "hunks": [
+        {
+          "source_hunk": "@@ -55,7 +55,7 @@ function InputOTPSlot({",
+          "current_preimage_matches": [
+            55
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/ui/components/ui/input-otp.tsx:55"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/ui/components/ui/input.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "a5ff3c99a2b9f302ee1291bb9d0a03300a4bbcc5fdbfa5d56421091ce5c7fcd4",
+      "target_sha256": "7119bac8d69289dbf6c0fe81df25ff5102a474d98f8a7ebf05ae551f969f9749",
+      "hunks": [
+        {
+          "source_hunk": "@@ -9,7 +9,7 @@ function Input({ className, type, ...props }: React.ComponentProps<\"input\">) {",
+          "current_preimage_matches": [
+            9
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/ui/components/ui/input.tsx:9"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/ui/components/ui/select.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "4af60a13a8a798d7aa82ea7943f81762dc593cb04cbfcceee2a11d64003c6b9c",
+      "target_sha256": "382ad5f2f311fcfc9a43042238fbc5c8e3c56ca90a24b9bbaedca99924548696",
+      "hunks": [
+        {
+          "source_hunk": "@@ -56,7 +56,7 @@ function SelectTrigger({",
+          "current_preimage_matches": [
+            56
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/ui/components/ui/select.tsx:56"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/ui/components/ui/switch.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "e4aceb655b67a84fd936e17288727cdf328a3b231af34c006b389e738f0945f5",
+      "target_sha256": "6446f78695601990e223ea6361ec16e380482e2bf0b6d025be7deafa1ed75612",
+      "hunks": [
+        {
+          "source_hunk": "@@ -16,7 +16,7 @@ function Switch({",
+          "current_preimage_matches": [
+            16
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/ui/components/ui/switch.tsx:16"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/ui/components/ui/tabs.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "2a933fa43cb47640df46bae73c11520d9054a8a216c905c43724f19fa03d64ed",
+      "target_sha256": "2b22cc14a1129b80fd87758794ffa2e49a104f540a004fd755bf625cf4fcfef6",
+      "hunks": [
+        {
+          "source_hunk": "@@ -63,7 +63,7 @@ function TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props) {",
+          "current_preimage_matches": [
+            63
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/ui/components/ui/tabs.tsx:63"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/ui/components/ui/textarea.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "81b3e8aba2f8c955466889f9349911f375b3396fabe995cd5f173ff4d91bfc94",
+      "target_sha256": "16c7355c309cf87ed3dcbd35d98fda8490cc0525d4e4d05534b01d0e3b3d385c",
+      "hunks": [
+        {
+          "source_hunk": "@@ -7,7 +7,7 @@ function Textarea({ className, ...props }: React.ComponentProps<\"textarea\">) {",
+          "current_preimage_matches": [
+            7
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/ui/components/ui/textarea.tsx:7"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/ui/components/ui/time-input.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "ebcbea77f6f71f1fb7ca2a86867c7003e7a5749c3ccb3fb6a637707daa91e50e",
+      "target_sha256": "26ae3e072d3c564c062179b92e4faf75f10cf748358bd17a7b862dd06904055a",
+      "hunks": [
+        {
+          "source_hunk": "@@ -211,7 +211,7 @@ export function TimeInput({",
+          "current_preimage_matches": [
+            211
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/ui/components/ui/time-input.tsx:211"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/ui/styles/base.css",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "3545cb8854b53302d614bcd01c86038f03a9e5253b836753ef8e70b6904192dd",
+      "target_sha256": "c01e09bc563ff342966c1edfc0de756eff288ba4907680fd1c89e30748a6ab82",
+      "hunks": [
+        {
+          "source_hunk": "@@ -657,7 +657,7 @@ html[data-dnd-dragging=\"true\"] * {",
+          "current_preimage_matches": [
+            657
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/ui/styles/base.css:657"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/ui/styles/tokens.css",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "18b70609b67a446cc76d251bef9ea689d7e046a0bdd3c5ab2e26c66edfb03b81",
+      "target_sha256": "0ac7c9603d5bd945f26a46ebe6d3ea42594a45acadf8e88a9300898ce968dc3c",
+      "hunks": [
+        {
+          "source_hunk": "@@ -29,6 +29,7 @@",
+          "current_preimage_matches": [
+            29
+          ]
+        },
+        {
+          "source_hunk": "@@ -202,8 +203,15 @@",
+          "current_preimage_matches": [
+            202
+          ]
+        },
+        {
+          "source_hunk": "@@ -222,7 +230,7 @@",
+          "current_preimage_matches": [
+            222
+          ]
+        },
+        {
+          "source_hunk": "@@ -293,7 +301,9 @@",
+          "current_preimage_matches": [
+            293
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/ui/styles/tokens.css:29",
+        "packages/ui/styles/tokens.css:202",
+        "packages/ui/styles/tokens.css:222",
+        "packages/ui/styles/tokens.css:293"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/views/admin/filter-feedback.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "173797a5ee56f6a0f6bdc29a98439bc0f040e9235f732a0f3c81a01d5b842716",
+      "target_sha256": "92ebcf3770bfb810e55d51199afc71de7c5f0cfe59995c0508520f336ac2df80",
+      "hunks": [
+        {
+          "source_hunk": "@@ -40,7 +40,7 @@ export function useAdminFilterFeedback(params: URLSearchParams) {",
+          "current_preimage_matches": [
+            40
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/views/admin/filter-feedback.tsx:40"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/views/agents/components/inspector/model-picker.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "4b9ff34f7f64db027ac0240e08842b718648498237b7df20792e216b6a56e821",
+      "target_sha256": "892624af86c88dcfb3fdfea09473a14a5fc28c454636ad89b01b44bcd56fefc2",
+      "hunks": [
+        {
+          "source_hunk": "@@ -105,7 +105,7 @@ export function ModelPicker({",
+          "current_preimage_matches": [
+            105
+          ]
+        },
+        {
+          "source_hunk": "@@ -130,7 +130,7 @@ export function ModelPicker({",
+          "current_preimage_matches": [
+            130
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/views/agents/components/inspector/model-picker.tsx:105",
+        "packages/views/agents/components/inspector/model-picker.tsx:130"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/views/agents/components/inspector/runtime-picker.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "db06e33f027efdade81cbb3e84bac293443b75dcdbc2e7a187556f45bfbf94c4",
+      "target_sha256": "a5226b8fd09dee79ac4955c1eff85230dba81f619b4de2d6f0bae7f52e852da7",
+      "hunks": [
+        {
+          "source_hunk": "@@ -138,7 +138,7 @@ export function RuntimePicker({",
+          "current_preimage_matches": [
+            138
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/views/agents/components/inspector/runtime-picker.tsx:138"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/views/agents/components/inspector/service-tier-setting-field.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "7ba60b3eaa4bb8422f58183e6bb95bdcedfc7a2f8a89aeb9c2af689da619869e",
+      "target_sha256": "b89a425fee82f1a28a9e9b3212af52847022a28305a3d89f2c8086ed46aaf90d",
+      "hunks": [
+        {
+          "source_hunk": "@@ -88,7 +88,7 @@ function ServiceTierPicker({",
+          "current_preimage_matches": [
+            88
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/views/agents/components/inspector/service-tier-setting-field.tsx:88"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/views/agents/components/inspector/thinking-picker.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "e33a6c8a5f5239d273bb9ac900ed204c484e41ffaa533552bec82f86f41490a0",
+      "target_sha256": "1f4bd3cbff2c6a59047cdd4d1a849744aa8cc856b4541eeabbc05d2770547e99",
+      "hunks": [
+        {
+          "source_hunk": "@@ -69,7 +69,7 @@ export function ThinkingPicker({",
+          "current_preimage_matches": [
+            69
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/views/agents/components/inspector/thinking-picker.tsx:69"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/views/autopilots/components/pickers/timezone-picker.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "191a82010094946356508562a362e969db6748cea67c04f1c738c009288f5e9f",
+      "target_sha256": "9dddec6d489f9af6d1fcc6debf4bc817c45c49aa1bd0a8d6e7cc73deca99235a",
+      "hunks": [
+        {
+          "source_hunk": "@@ -107,7 +107,7 @@ export function TimezonePicker({",
+          "current_preimage_matches": [
+            107
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/views/autopilots/components/pickers/timezone-picker.tsx:107"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/views/autopilots/components/schedule-editor/schedule-editor.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "aded98413fbda782d1d70eda943d68ca7d3de7a58f9bc4b270768734fb96ec55",
+      "target_sha256": "ecb3dec10a81a7b53f8c4e549dd9c5cbb04fb73676172976be6b998da0f02c1e",
+      "hunks": [
+        {
+          "source_hunk": "@@ -708,7 +708,7 @@ export function ScheduleEditor({",
+          "current_preimage_matches": [
+            708
+          ]
+        },
+        {
+          "source_hunk": "@@ -1039,7 +1039,7 @@ function EveryTimeControls({",
+          "current_preimage_matches": [
+            1039
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/views/autopilots/components/schedule-editor/schedule-editor.tsx:708",
+        "packages/views/autopilots/components/schedule-editor/schedule-editor.tsx:1039"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/views/collaboration/comment-list.test.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "63290d862ae5a72fa919f76ef354dca210c49c383add22a45b33dcbe1c434b3d",
+      "target_sha256": "ae8af1985025c4a82dc1cb6046de259948330f5a242652fa125d728af525ba2c",
+      "hunks": [
+        {
+          "source_hunk": "@@ -83,8 +83,9 @@ it(\"resolves a thread and removes only the viewer's reaction through dedicated a",
+          "current_preimage_matches": [
+            123
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "reaction-accessibility",
+      "decision": "defer",
+      "recommended_disposition": "drop_from_product_merge; preserve in source archive",
+      "reason": "Source removes localized Add/Remove reaction accessible names and count description, then weakens tests to emoji+count. Current discussion-actions.tsx:43-47 intentionally preserves action name, count association, and aria-pressed. No missing behavior requires this removal; retain current accessible names and tests.",
+      "current_evidence": [
+        "packages/views/collaboration/discussion-actions.tsx:43",
+        "packages/views/collaboration/comment-list.test.tsx:126",
+        "e2e/fixtures/collaboration-editing.ts:243"
+      ]
+    },
+    {
+      "path": "packages/views/collaboration/discussion-actions.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "35eff790fd8c47dfac47fdf0c78c5f6dff55b4b2857c45e860a2d4ece231a9c5",
+      "target_sha256": "305f7a85e3ba6b5b80d8de96f2c4f3e5a0f86f5ae82574fec9fc471bbe313525",
+      "hunks": [
+        {
+          "source_hunk": "@@ -1,4 +1,4 @@",
+          "current_preimage_matches": [
+            1
+          ]
+        },
+        {
+          "source_hunk": "@@ -11,7 +11,6 @@ export function CollaborationDiscussionActions({ scope, issue, comment, reaction",
+          "current_preimage_matches": [
+            11
+          ]
+        },
+        {
+          "source_hunk": "@@ -40,11 +39,10 @@ export function CollaborationDiscussionActions({ scope, issue, comment, reaction",
+          "current_preimage_matches": [
+            40
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "reaction-accessibility",
+      "decision": "defer",
+      "recommended_disposition": "drop_from_product_merge; preserve in source archive",
+      "reason": "Source removes localized Add/Remove reaction accessible names and count description, then weakens tests to emoji+count. Current discussion-actions.tsx:43-47 intentionally preserves action name, count association, and aria-pressed. No missing behavior requires this removal; retain current accessible names and tests.",
+      "current_evidence": [
+        "packages/views/collaboration/discussion-actions.tsx:43",
+        "packages/views/collaboration/comment-list.test.tsx:126",
+        "e2e/fixtures/collaboration-editing.ts:243"
+      ]
+    },
+    {
+      "path": "packages/views/collaboration/field-editing.test.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "14f3df1fe8adc2751431705ec1cb3918cce7fe331dff2838a098b9a14c2130be",
+      "target_sha256": "d27963a9755608d75972583c4dc3a5487163f663541c3f772c39b3ace08466a3",
+      "hunks": [
+        {
+          "source_hunk": "@@ -72,7 +72,8 @@ it(\"submits source structure and iteration through their separate versioned acti",
+          "current_preimage_matches": []
+        },
+        {
+          "source_hunk": "@@ -80,6 +81,8 @@ it(\"submits source structure and iteration through their separate versioned acti",
+          "current_preimage_matches": []
+        }
+      ],
+      "all_hunks_preimage_match": false,
+      "group": "embedded-workflow-success-feedback",
+      "decision": "merge",
+      "recommended_disposition": "selective adaptation only",
+      "reason": "Closing on successful receipt already exists via workflow dismiss()->onDismiss() and source bridge onDismiss={close}; source onDone API is obsolete. Source success toast is not present and is lost when the outer dialog unmounts. Preserve embedded/onBusyChange/denial/focus handling and adapt success-only notification rather than replacing whole files.",
+      "current_evidence": [
+        "packages/views/collaboration/workflow.tsx:40",
+        "packages/views/collaboration/workflow.tsx:48",
+        "packages/views/collaboration/source-bridge.tsx:72",
+        "packages/views/collaboration/source-bridge.test.tsx:57"
+      ],
+      "validation": "Test accepted action closes once and produces one toast; cancellation, failure, denied scope and unknown response do not produce success. Retain source bridge busy/Escape tests. Prefer onApplied/onDone triggered only by successful receipt, never toast in onDismiss."
+    },
+    {
+      "path": "packages/views/collaboration/source-bridge.test.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "9d516f646a5abbf5abbff00e04fa45ed5825c39a419a19a9066ab7c71bd4590f",
+      "target_sha256": "cdead585f72dc7b142d5faa59b110ea729d04c4db5426c853ca52f7dd6a2b185",
+      "hunks": [
+        {
+          "source_hunk": "@@ -17,9 +17,10 @@ vi.mock(\"@multica/core/collaboration\", async (original) => ({",
+          "current_preimage_matches": []
+        },
+        {
+          "source_hunk": "@@ -49,6 +50,14 @@ describe(\"source collaboration bridge\", () => {",
+          "current_preimage_matches": []
+        }
+      ],
+      "all_hunks_preimage_match": false,
+      "group": "embedded-workflow-success-feedback",
+      "decision": "merge",
+      "recommended_disposition": "selective adaptation only",
+      "reason": "Closing on successful receipt already exists via workflow dismiss()->onDismiss() and source bridge onDismiss={close}; source onDone API is obsolete. Source success toast is not present and is lost when the outer dialog unmounts. Preserve embedded/onBusyChange/denial/focus handling and adapt success-only notification rather than replacing whole files.",
+      "current_evidence": [
+        "packages/views/collaboration/workflow.tsx:40",
+        "packages/views/collaboration/workflow.tsx:48",
+        "packages/views/collaboration/source-bridge.tsx:72",
+        "packages/views/collaboration/source-bridge.test.tsx:57"
+      ],
+      "validation": "Test accepted action closes once and produces one toast; cancellation, failure, denied scope and unknown response do not produce success. Retain source bridge busy/Escape tests. Prefer onApplied/onDone triggered only by successful receipt, never toast in onDismiss."
+    },
+    {
+      "path": "packages/views/collaboration/source-bridge.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "0563c31ed5681eb1f34ab7e002de846262bac69f2ec60841d789baed7b9738ac",
+      "target_sha256": "ab57c31261c15fd9e2eb9631bd11a807857ddf97a090994172ae15ebd7c3a995",
+      "hunks": [
+        {
+          "source_hunk": "@@ -8,6 +8,7 @@ import { accountPath, type AccountDestination } from \"@multica/core/paths\";",
+          "current_preimage_matches": [
+            8
+          ]
+        },
+        {
+          "source_hunk": "@@ -54,12 +55,13 @@ export function SourceCollaborationActionDialog({ action, close }: { action: Sou",
+          "current_preimage_matches": []
+        },
+        {
+          "source_hunk": "@@ -70,6 +72,6 @@ function SourceAction({ scope, action }: { scope: NonNullable<ReturnType<typeof",
+          "current_preimage_matches": []
+        }
+      ],
+      "all_hunks_preimage_match": false,
+      "group": "embedded-workflow-success-feedback",
+      "decision": "merge",
+      "recommended_disposition": "selective adaptation only",
+      "reason": "Closing on successful receipt already exists via workflow dismiss()->onDismiss() and source bridge onDismiss={close}; source onDone API is obsolete. Source success toast is not present and is lost when the outer dialog unmounts. Preserve embedded/onBusyChange/denial/focus handling and adapt success-only notification rather than replacing whole files.",
+      "current_evidence": [
+        "packages/views/collaboration/workflow.tsx:40",
+        "packages/views/collaboration/workflow.tsx:48",
+        "packages/views/collaboration/source-bridge.tsx:72",
+        "packages/views/collaboration/source-bridge.test.tsx:57"
+      ],
+      "validation": "Test accepted action closes once and produces one toast; cancellation, failure, denied scope and unknown response do not produce success. Retain source bridge busy/Escape tests. Prefer onApplied/onDone triggered only by successful receipt, never toast in onDismiss."
+    },
+    {
+      "path": "packages/views/collaboration/workflow.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "7efbf6d77be17bb8c91a6cbf913c77e895b96ae5c4809dc5a3ab12bcd6c7e046",
+      "target_sha256": "f7c16a5a441ac3314cbe0b5899f8bc62133a4b043546e09c0b12349147360902",
+      "hunks": [
+        {
+          "source_hunk": "@@ -18,7 +18,8 @@ import { CollaborationIterationInput, CollaborationLabelInput, CollaborationProp",
+          "current_preimage_matches": []
+        },
+        {
+          "source_hunk": "@@ -68,7 +69,7 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat",
+          "current_preimage_matches": []
+        }
+      ],
+      "all_hunks_preimage_match": false,
+      "group": "embedded-workflow-success-feedback",
+      "decision": "merge",
+      "recommended_disposition": "selective adaptation only",
+      "reason": "Closing on successful receipt already exists via workflow dismiss()->onDismiss() and source bridge onDismiss={close}; source onDone API is obsolete. Source success toast is not present and is lost when the outer dialog unmounts. Preserve embedded/onBusyChange/denial/focus handling and adapt success-only notification rather than replacing whole files.",
+      "current_evidence": [
+        "packages/views/collaboration/workflow.tsx:40",
+        "packages/views/collaboration/workflow.tsx:48",
+        "packages/views/collaboration/source-bridge.tsx:72",
+        "packages/views/collaboration/source-bridge.test.tsx:57"
+      ],
+      "validation": "Test accepted action closes once and produces one toast; cancellation, failure, denied scope and unknown response do not produce success. Retain source bridge busy/Escape tests. Prefer onApplied/onDone triggered only by successful receipt, never toast in onDismiss."
+    },
+    {
+      "path": "packages/views/issues/components/batch-action-toolbar.confirm.test.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "0ddf8cf712a924eef4cd0e17141979fe7e252ba1a2846f82f068e1111a24d50a",
+      "target_sha256": "06cccda5aa3c30c090a6d100780180d89e02b1566cd6742a82713fabde89ca44",
+      "hunks": [
+        {
+          "source_hunk": "@@ -55,7 +55,9 @@ vi.mock(\"./pickers\", () => ({",
+          "current_preimage_matches": [
+            55
+          ]
+        },
+        {
+          "source_hunk": "@@ -125,7 +127,11 @@ describe(\"BatchActionToolbar status routing (MUL-4155)\", () => {",
+          "current_preimage_matches": [
+            125
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "collaboration-batch-affordance",
+      "decision": "merge",
+      "recommended_disposition": "apply source increment, retain transport guards",
+      "reason": "Current controls disable only for loading, then refuse mixed collaboration selection via toast after click. Source disables status/priority/assignee/delete up front and exposes persistent localized reason, while keeping containsCollaboration handler guards. Exact source preimage remains in target.",
+      "current_evidence": [
+        "packages/views/issues/components/batch-action-toolbar.tsx:100",
+        "packages/views/issues/components/batch-action-toolbar.tsx:243",
+        "packages/views/issues/components/batch-action-toolbar.tsx:278",
+        "packages/views/issues/components/batch-action-toolbar.confirm.test.tsx:112"
+      ],
+      "validation": "Run batch-action-toolbar.confirm and surface tests. Verify true disabled triggers and no API/confirm modal even when mocked handlers fire, reason accessible, clear selection remains available; retain current iteration selection guard."
+    },
+    {
+      "path": "packages/views/issues/components/batch-action-toolbar.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "1a69fd9e965196f9df786c390676d444b1c78e1f574986a8311371c00e21a1ae",
+      "target_sha256": "43871653d11cd6198f961d8ca9559b457c9273f4dd83a45526aa4bd50fe18db2",
+      "hunks": [
+        {
+          "source_hunk": "@@ -1,7 +1,7 @@",
+          "current_preimage_matches": [
+            1
+          ]
+        },
+        {
+          "source_hunk": "@@ -68,6 +68,7 @@ export function BatchActionToolbar({",
+          "current_preimage_matches": [
+            68
+          ]
+        },
+        {
+          "source_hunk": "@@ -88,6 +89,9 @@ export function BatchActionToolbar({",
+          "current_preimage_matches": [
+            88
+          ]
+        },
+        {
+          "source_hunk": "@@ -97,11 +101,8 @@ export function BatchActionToolbar({",
+          "current_preimage_matches": [
+            97
+          ]
+        },
+        {
+          "source_hunk": "@@ -194,7 +195,7 @@ export function BatchActionToolbar({",
+          "current_preimage_matches": [
+            194
+          ]
+        },
+        {
+          "source_hunk": "@@ -222,12 +223,14 @@ export function BatchActionToolbar({",
+          "current_preimage_matches": [
+            222
+          ]
+        },
+        {
+          "source_hunk": "@@ -240,7 +243,7 @@ export function BatchActionToolbar({",
+          "current_preimage_matches": [
+            240
+          ]
+        },
+        {
+          "source_hunk": "@@ -251,7 +254,7 @@ export function BatchActionToolbar({",
+          "current_preimage_matches": [
+            251
+          ]
+        },
+        {
+          "source_hunk": "@@ -264,7 +267,7 @@ export function BatchActionToolbar({",
+          "current_preimage_matches": [
+            264
+          ]
+        },
+        {
+          "source_hunk": "@@ -275,13 +278,15 @@ export function BatchActionToolbar({",
+          "current_preimage_matches": [
+            275
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "collaboration-batch-affordance",
+      "decision": "merge",
+      "recommended_disposition": "apply source increment, retain transport guards",
+      "reason": "Current controls disable only for loading, then refuse mixed collaboration selection via toast after click. Source disables status/priority/assignee/delete up front and exposes persistent localized reason, while keeping containsCollaboration handler guards. Exact source preimage remains in target.",
+      "current_evidence": [
+        "packages/views/issues/components/batch-action-toolbar.tsx:100",
+        "packages/views/issues/components/batch-action-toolbar.tsx:243",
+        "packages/views/issues/components/batch-action-toolbar.tsx:278",
+        "packages/views/issues/components/batch-action-toolbar.confirm.test.tsx:112"
+      ],
+      "validation": "Run batch-action-toolbar.confirm and surface tests. Verify true disabled triggers and no API/confirm modal even when mocked handlers fire, reason accessible, clear selection remains available; retain current iteration selection guard."
+    },
+    {
+      "path": "packages/views/issues/components/issue-usage-dialog.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "7c919d561f762061f5c9d9fa3e5c9f20b5fe3afac268eca00bc2e1bc1296d80e",
+      "target_sha256": "589d74219e8f836b1db79e2db66f5eef79e890d2c93a82816ea09a8174097367",
+      "hunks": [
+        {
+          "source_hunk": "@@ -308,7 +308,7 @@ function RunTable({ tasks, total }: { tasks: AgentTask[]; total: TaskUsageSummar",
+          "current_preimage_matches": [
+            308
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/views/issues/components/issue-usage-dialog.tsx:308"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    },
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "8986e41f52a7dcaa3f2487a914ad2cb1b7eb1c1bb13cb881ec031bc78b13f5f3",
+      "target_sha256": "e8c13afb0eea0849c13730510b5acde27e55833f722af3759fc0f6ba45bb4722",
+      "hunks": [
+        {
+          "source_hunk": "@@ -432,8 +432,6 @@",
+          "current_preimage_matches": [
+            471
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "reaction-accessibility",
+      "decision": "defer",
+      "recommended_disposition": "drop_from_product_merge; preserve in source archive",
+      "reason": "Source removes localized Add/Remove reaction accessible names and count description, then weakens tests to emoji+count. Current discussion-actions.tsx:43-47 intentionally preserves action name, count association, and aria-pressed. No missing behavior requires this removal; retain current accessible names and tests.",
+      "current_evidence": [
+        "packages/views/collaboration/discussion-actions.tsx:43",
+        "packages/views/collaboration/comment-list.test.tsx:126",
+        "e2e/fixtures/collaboration-editing.ts:243"
+      ]
+    },
+    {
+      "path": "packages/views/locales/en/editor.json",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "c655c87c9b8b59d6e674e37a688a392bdbcd0bfcc1c4f00ef3c0ff6bdc63e167",
+      "target_sha256": "392fb3d6de553247c48e854f17118235352f58f0d21f1fcae2882cab5d12f52b",
+      "hunks": [
+        {
+          "source_hunk": "@@ -110,6 +110,12 @@",
+          "current_preimage_matches": [
+            110
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "restricted-resource-placeholders",
+      "decision": "merge",
+      "recommended_disposition": "apply source increment, preserve current unrelated code",
+      "reason": "Current restricted link/image/file branches render only existing label/alt/filename; with empty alt/filename a withheld resource disappears. Source adds localized noninteractive placeholders without href or network resource creation. Exact source preimage remains in target.",
+      "current_evidence": [
+        "packages/views/rich-content/rich-content.tsx:219",
+        "packages/views/rich-content/rich-content.tsx:420",
+        "packages/views/rich-content/rich-content.tsx:434",
+        "packages/views/rich-content/rich-content-parity.test.tsx:198"
+      ],
+      "validation": "Run rich-content-parity and locale parity; preserve no img/iframe/private anchors/resolver calls. Cover empty image alt and file filename if changing placeholder cases."
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "63cd956ba919ccb419b08d97394a0f43716da6860333749bbe96ca3f1833174d",
+      "target_sha256": "415a3273a4b0abd4636b6d02fce3203591d9a0869f8dbb3181726142b3000269",
+      "hunks": [
+        {
+          "source_hunk": "@@ -432,8 +432,6 @@",
+          "current_preimage_matches": [
+            470
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "reaction-accessibility",
+      "decision": "defer",
+      "recommended_disposition": "drop_from_product_merge; preserve in source archive",
+      "reason": "Source removes localized Add/Remove reaction accessible names and count description, then weakens tests to emoji+count. Current discussion-actions.tsx:43-47 intentionally preserves action name, count association, and aria-pressed. No missing behavior requires this removal; retain current accessible names and tests.",
+      "current_evidence": [
+        "packages/views/collaboration/discussion-actions.tsx:43",
+        "packages/views/collaboration/comment-list.test.tsx:126",
+        "e2e/fixtures/collaboration-editing.ts:243"
+      ]
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/editor.json",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "4a1d8277c2b7787fa540f1241af75813786f7badf99853ce231a2031b2e78c56",
+      "target_sha256": "eb3be3ff5f1c899a3bef26da3225ced17f84722f9ad38368395cc8f96535edff",
+      "hunks": [
+        {
+          "source_hunk": "@@ -110,6 +110,12 @@",
+          "current_preimage_matches": [
+            110
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "restricted-resource-placeholders",
+      "decision": "merge",
+      "recommended_disposition": "apply source increment, preserve current unrelated code",
+      "reason": "Current restricted link/image/file branches render only existing label/alt/filename; with empty alt/filename a withheld resource disappears. Source adds localized noninteractive placeholders without href or network resource creation. Exact source preimage remains in target.",
+      "current_evidence": [
+        "packages/views/rich-content/rich-content.tsx:219",
+        "packages/views/rich-content/rich-content.tsx:420",
+        "packages/views/rich-content/rich-content.tsx:434",
+        "packages/views/rich-content/rich-content-parity.test.tsx:198"
+      ],
+      "validation": "Run rich-content-parity and locale parity; preserve no img/iframe/private anchors/resolver calls. Cover empty image alt and file filename if changing placeholder cases."
+    },
+    {
+      "path": "packages/views/projects/components/project-detail.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "bef64a02d88b7da9502c1c0567d35e9cbbd0651d330315fe11b1bee9fe44284e",
+      "target_sha256": "810e66ca07c7c08b8b99a2354809e1931b241f791bfcf3a2a5b20285a5dea4e8",
+      "hunks": [
+        {
+          "source_hunk": "@@ -271,7 +271,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {",
+          "current_preimage_matches": [
+            272
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "project-heading-token",
+      "decision": "merge",
+      "recommended_disposition": "apply source increment",
+      "reason": "Source replaces undefined text-heading with defined text-title/text-title-sm roles. Current target still uses text-heading; tokens.css defines title roles but no heading role. No behavioral code changes.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:120",
+        "packages/ui/styles/tokens.css:123",
+        "packages/views/projects/components/project-detail.tsx:272"
+      ],
+      "validation": "Typecheck/build and representative project page visual check; no new implementation-mirroring unit test necessary."
+    },
+    {
+      "path": "packages/views/projects/components/project-overview.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "a6ff82acdcd3846a62ac884df0cda1954441c89cc6805410765edfa21581da28",
+      "target_sha256": "a7d346e28de79553aa16cb599878d39869462f71109a98e80182b8e1ba4d85c4",
+      "hunks": [
+        {
+          "source_hunk": "@@ -96,7 +96,7 @@ export function ProjectOverviewPanel({ project, updatesSupported, onRisk, onProt",
+          "current_preimage_matches": [
+            96
+          ]
+        },
+        {
+          "source_hunk": "@@ -151,7 +151,7 @@ export function ProjectOverviewPanel({ project, updatesSupported, onRisk, onProt",
+          "current_preimage_matches": [
+            151
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "project-heading-token",
+      "decision": "merge",
+      "recommended_disposition": "apply source increment",
+      "reason": "Source replaces undefined text-heading with defined text-title/text-title-sm roles. Current target still uses text-heading; tokens.css defines title roles but no heading role. No behavioral code changes.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:120",
+        "packages/ui/styles/tokens.css:123",
+        "packages/views/projects/components/project-overview.tsx:96",
+        "packages/views/projects/components/project-overview.tsx:151"
+      ],
+      "validation": "Typecheck/build and representative project page visual check; no new implementation-mirroring unit test necessary."
+    },
+    {
+      "path": "packages/views/projects/components/project-progress.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "cb9d7722627a800c290a5975254b7b86a29df55dcc3bb20538a1f676f999d258",
+      "target_sha256": "3446b888cc6309d89a11b0ced1bb376d466dbe85b0aed6ec98999edfa809acde",
+      "hunks": [
+        {
+          "source_hunk": "@@ -233,7 +233,7 @@ export function ProjectProgress({ project, onProtectedError, targetUpdateId }: {",
+          "current_preimage_matches": [
+            233
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "project-heading-token",
+      "decision": "merge",
+      "recommended_disposition": "apply source increment",
+      "reason": "Source replaces undefined text-heading with defined text-title/text-title-sm roles. Current target still uses text-heading; tokens.css defines title roles but no heading role. No behavioral code changes.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:120",
+        "packages/ui/styles/tokens.css:123",
+        "packages/views/projects/components/project-progress.tsx:233"
+      ],
+      "validation": "Typecheck/build and representative project page visual check; no new implementation-mirroring unit test necessary."
+    },
+    {
+      "path": "packages/views/projects/components/project-risk-issues.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "d35978c1bcc9204a59f60e259dca2cc8bfc903f54a3ddadf9a41c25ecac8888d",
+      "target_sha256": "1b8c55894b2f8ae78fec5463ca817921c0b1506594ea4870049afa6de2ede2e4",
+      "hunks": [
+        {
+          "source_hunk": "@@ -39,7 +39,7 @@ export function ProjectRiskIssues({ project, signal, version, onBack, onProtecte",
+          "current_preimage_matches": [
+            39
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "project-heading-token",
+      "decision": "merge",
+      "recommended_disposition": "apply source increment",
+      "reason": "Source replaces undefined text-heading with defined text-title/text-title-sm roles. Current target still uses text-heading; tokens.css defines title roles but no heading role. No behavioral code changes.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:120",
+        "packages/ui/styles/tokens.css:123",
+        "packages/views/projects/components/project-risk-issues.tsx:39"
+      ],
+      "validation": "Typecheck/build and representative project page visual check; no new implementation-mirroring unit test necessary."
+    },
+    {
+      "path": "packages/views/rich-content/rich-content-parity.test.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "a417bedb8e477a6f40dc19e385b2978aa14d71fc70f641f44ae0ea4b0b171e01",
+      "target_sha256": "6e4f08f4814e55837c86bc5869e00878c4198837aa2e144e535fd871c1075e00",
+      "hunks": [
+        {
+          "source_hunk": "@@ -31,8 +31,9 @@ vi.mock(\"../i18n\", async () => {",
+          "current_preimage_matches": [
+            31
+          ]
+        },
+        {
+          "source_hunk": "@@ -207,6 +208,9 @@ it(\"renders private collaboration content without workspace lookups or public fi",
+          "current_preimage_matches": [
+            207
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "restricted-resource-placeholders",
+      "decision": "merge",
+      "recommended_disposition": "apply source increment, preserve current unrelated code",
+      "reason": "Current restricted link/image/file branches render only existing label/alt/filename; with empty alt/filename a withheld resource disappears. Source adds localized noninteractive placeholders without href or network resource creation. Exact source preimage remains in target.",
+      "current_evidence": [
+        "packages/views/rich-content/rich-content.tsx:219",
+        "packages/views/rich-content/rich-content.tsx:420",
+        "packages/views/rich-content/rich-content.tsx:434",
+        "packages/views/rich-content/rich-content-parity.test.tsx:198"
+      ],
+      "validation": "Run rich-content-parity and locale parity; preserve no img/iframe/private anchors/resolver calls. Cover empty image alt and file filename if changing placeholder cases."
+    },
+    {
+      "path": "packages/views/rich-content/rich-content.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "f3e970aaf3c0595e9c8c56c26aaa9d772819bb8c86d152fd0d10b086d25238bc",
+      "target_sha256": "c0ef326252486539e87ac6c3ef1109c9513567d37b6ed4d336f01770f11d48ee",
+      "hunks": [
+        {
+          "source_hunk": "@@ -40,6 +40,7 @@ import remarkMath from \"remark-math\";",
+          "current_preimage_matches": [
+            40
+          ]
+        },
+        {
+          "source_hunk": "@@ -69,6 +70,7 @@ import { highlightToHtml } from \"../editor/utils/highlight-markdown\";",
+          "current_preimage_matches": [
+            69
+          ]
+        },
+        {
+          "source_hunk": "@@ -206,6 +208,21 @@ function unfurlableEntityLink(",
+          "current_preimage_matches": [
+            206
+          ]
+        },
+        {
+          "source_hunk": "@@ -216,7 +233,7 @@ function RichLink({ href, children }: { href?: string; children?: ReactNode }) {",
+          "current_preimage_matches": [
+            216
+          ]
+        },
+        {
+          "source_hunk": "@@ -417,7 +434,7 @@ function RichPre({ children }: RichPreProps) {",
+          "current_preimage_matches": [
+            417
+          ]
+        },
+        {
+          "source_hunk": "@@ -431,7 +448,7 @@ function RestrictedAwareImage({ src, alt }: ComponentPropsWithoutRef<\"img\">) {",
+          "current_preimage_matches": [
+            431
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "restricted-resource-placeholders",
+      "decision": "merge",
+      "recommended_disposition": "apply source increment, preserve current unrelated code",
+      "reason": "Current restricted link/image/file branches render only existing label/alt/filename; with empty alt/filename a withheld resource disappears. Source adds localized noninteractive placeholders without href or network resource creation. Exact source preimage remains in target.",
+      "current_evidence": [
+        "packages/views/rich-content/rich-content.tsx:219",
+        "packages/views/rich-content/rich-content.tsx:420",
+        "packages/views/rich-content/rich-content.tsx:434",
+        "packages/views/rich-content/rich-content-parity.test.tsx:198"
+      ],
+      "validation": "Run rich-content-parity and locale parity; preserve no img/iframe/private anchors/resolver calls. Cover empty image alt and file filename if changing placeholder cases."
+    },
+    {
+      "path": "packages/views/skills/components/skill-presentation-fields.tsx",
+      "source_worktree": "/Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe",
+      "source_head": "2612465a016aa606cc7a2538e7890f1f4b76d995",
+      "target_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+      "source_sha256": "d4d4b47490c52b4e2879b0e1d5ad0455818299ff2f40a34f0e7d1f320110d074",
+      "target_sha256": "bead68ccc01b632c063d71203715c8b22c57df531ca07e078aa3595a9fceedcf",
+      "hunks": [
+        {
+          "source_hunk": "@@ -188,7 +188,7 @@ function IconPicker({",
+          "current_preimage_matches": [
+            188
+          ]
+        }
+      ],
+      "all_hunks_preimage_match": true,
+      "group": "input-boundary-fill-separation",
+      "decision": "merge",
+      "recommended_disposition": "apply as one coordinated token batch, validate visual/contrast claims",
+      "reason": "Source introduces input-fill to preserve existing input background tones while making input borders and light focus tokens stronger. Every relevant old hunk remains exactly in current target, proving the increment is absent. Preserve current unrelated primitives and all dependent fill consumers together.",
+      "current_evidence": [
+        "packages/ui/styles/tokens.css:31",
+        "packages/ui/styles/tokens.css:205",
+        "packages/ui/styles/tokens.css:296",
+        "packages/views/skills/components/skill-presentation-fields.tsx:188"
+      ],
+      "validation": "Run existing brand-variant-cascade and text-contrast suites plus typecheck. Existing text-contrast explicitly excludes input/ring (lines 37-39), so passing it does not prove new input/focus 3:1 claims. Verify actual border/focus composites across light/dark surfaces before asserting accessibility compliance. Keep fills coordinated; do not imply all ring-ring/50 states meet 3:1."
+    }
+  ],
+  "documentation": [
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-25-multica-introduction/check.jsonl",
+      "decision": "defer",
+      "recommended_disposition": "archive separately from product integration",
+      "reason": "Independent product-introduction documentation/task records; absent in target. Do not label equivalent. Parent can review whether user-facing PRODUCT.md/HTML belongs in docs batch; old task bookkeeping should not be blindly introduced."
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-25-multica-introduction/implement.jsonl",
+      "decision": "defer",
+      "recommended_disposition": "archive separately from product integration",
+      "reason": "Independent product-introduction documentation/task records; absent in target. Do not label equivalent. Parent can review whether user-facing PRODUCT.md/HTML belongs in docs batch; old task bookkeeping should not be blindly introduced."
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-25-multica-introduction/prd.md",
+      "decision": "defer",
+      "recommended_disposition": "archive separately from product integration",
+      "reason": "Independent product-introduction documentation/task records; absent in target. Do not label equivalent. Parent can review whether user-facing PRODUCT.md/HTML belongs in docs batch; old task bookkeeping should not be blindly introduced."
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-25-multica-introduction/task.json",
+      "decision": "defer",
+      "recommended_disposition": "archive separately from product integration",
+      "reason": "Independent product-introduction documentation/task records; absent in target. Do not label equivalent. Parent can review whether user-facing PRODUCT.md/HTML belongs in docs batch; old task bookkeeping should not be blindly introduced."
+    },
+    {
+      "path": "PRODUCT.md",
+      "decision": "defer",
+      "recommended_disposition": "archive separately from product integration",
+      "reason": "Independent product-introduction documentation/task records; absent in target. Do not label equivalent. Parent can review whether user-facing PRODUCT.md/HTML belongs in docs batch; old task bookkeeping should not be blindly introduced."
+    },
+    {
+      "path": "docs/multica-introduction.html",
+      "decision": "defer",
+      "recommended_disposition": "archive separately from product integration",
+      "reason": "Independent product-introduction documentation/task records; absent in target. Do not label equivalent. Parent can review whether user-facing PRODUCT.md/HTML belongs in docs batch; old task bookkeeping should not be blindly introduced."
+    }
+  ]
+}

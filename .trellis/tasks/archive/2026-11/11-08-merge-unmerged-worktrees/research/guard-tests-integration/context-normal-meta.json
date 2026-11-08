@@ -1,0 +1,23 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestContextExperiment",
+    "-count=1",
+    "-parallel=2",
+    "-timeout=5m",
+    "-json"
+  ],
+  "exit_code": 1,
+  "seconds": 17.454383850097656,
+  "real_agent_gate": "unset",
+  "database": "unset"
+}
