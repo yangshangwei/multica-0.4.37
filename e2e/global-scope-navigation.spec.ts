@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import pg from "pg";
-import { expect, test, type Page, type Route } from "@playwright/test";
+import { expect, test, type Page, type Request, type Route } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
 import { deepLink, nativeScreenshot, openDesktop } from "./fixtures/collaboration-native";
 
@@ -118,8 +118,9 @@ for (const platform of ["Web", "Desktop"] as const) {
       const issueUrl = (url: URL) => url.pathname === `/api/collaboration/issues/${selected.id}`;
       let recovering = false;
       let releaseRecovery!: () => void;
-      let recoveryRequested!: (route: Route) => void;
-      const recoveryReady = new Promise<Route>((resolve) => { recoveryRequested = resolve; });
+      let recoveryRequested!: () => void;
+      const recoveryReady = new Promise<void>((resolve) => { recoveryRequested = resolve; });
+      const recoveryRequests = new Set<Request>();
       const recoveryRelease = new Promise<void>((resolve) => { releaseRecovery = resolve; });
       const banner = detail.locator(":scope > div > [role=alert]");
       const activeRecoveries = new Set<Promise<void>>();
@@ -128,7 +129,10 @@ for (const platform of ["Web", "Desktop"] as const) {
           await route.abort("failed");
           return;
         }
-        recoveryRequested(route);
+        // Refresh and realtime invalidation can replace an in-flight read,
+        // including after release. Track the selected issue's actual transport.
+        recoveryRequests.add(route.request());
+        recoveryRequested();
         await recoveryRelease;
         // Continue the original renderer request so recovery uses its actual
         // transport response in both Chromium and Electron.
@@ -161,9 +165,17 @@ for (const platform of ["Web", "Desktop"] as const) {
         // refresh control; a pointer click would scroll its offscreen button in.
         await refresh.evaluate((element) => element.focus({ preventScroll: true }));
         recovering = true;
+        // Bound the entire explicit recovery window, including replacements.
+        // The barrier prevents a success before the saved offset is checked.
+        const recovered = page.waitForResponse((response) =>
+          response.status() === 200 && recoveryRequests.has(response.request()), { timeout: 10_000 });
         await refresh.press("Enter");
-        const recoveryRoute = await recoveryReady;
-        const recovered = page.waitForResponse((response) => response.request() === recoveryRoute.request());
+        await recoveryReady;
+        // A second real refresh cancels/replaces an in-flight query. Keep both
+        // held so the assertion cannot attach only to the superseded request.
+        const heldBeforeReplacement = recoveryRequests.size;
+        await refresh.press("Enter");
+        await expect.poll(() => recoveryRequests.size).toBeGreaterThan(heldBeforeReplacement);
         expect(await detail.evaluate((element) => element.scrollTop)).toBe(620);
         releaseRecovery();
         const response = await recovered;
