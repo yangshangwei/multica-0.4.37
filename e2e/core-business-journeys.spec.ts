@@ -118,7 +118,11 @@ test("G2 a teammate's status change and mention reach the owner's open page and 
     await openIssue(memberSide.page, owner.workspace, issue);
     await expect(ownerSide.page.getByRole("button", { name: "Todo", exact: true })).toBeVisible();
 
-    // The member changes status through their own browser.
+    // The member changes status through their own browser. Let the page finish
+    // its initial loads first: a picker opened within ~0.5s of render can be
+    // closed by the page's late initial refresh (a known UI race outside G2's
+    // realtime scope), which left the picker item missing for the full timeout.
+    await memberSide.page.waitForLoadState("networkidle");
     await memberSide.page.getByRole("button", { name: "Todo", exact: true }).click();
     await memberSide.page.locator("button[data-picker-item]").filter({ hasText: /^In Progress$/ }).click();
     await expect(ownerSide.page.getByRole("button", { name: "In Progress", exact: true })).toBeVisible();
