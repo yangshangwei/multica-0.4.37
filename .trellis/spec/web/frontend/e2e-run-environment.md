@@ -10,7 +10,7 @@ so the web server's build mode is part of the test contract, not an operator pre
 Run the Playwright suite against a production web server:
 
 ```bash
-make check                         # isolated API/Go databases; builds production Web
+make check                         # isolated API/Go databases; builds production Web and Desktop
 
 # For a task-owned, configured environment used by focused browser runs:
 make up C=api,web ARGS="--web-mode production"
@@ -25,8 +25,8 @@ measures webpack, not the product.
 `make check` uses the registry allocator to create a separate `check-*` environment.
 It copies the selected env file, sets legacy auth only in that task copy
 (`MULTICA_AUTH_MODE=legacy`, `MULTICA_DEVICE_AUTH_ENABLED=false`), and runs static checks, bounded TypeScript
-tests, isolated Go race tests, API startup, Web build/start, then Playwright in
-sequence. The Go database is never served by the API and is dropped without
+tests, isolated Go race tests, API startup, Desktop build/static preview and
+production Web build/start, then Playwright in sequence. The Go database is never served by the API and is dropped without
 forcing connections closed. API data and the environment record are retained
 for inspection until TTL collection. Only processes started by this run are
 stopped; an early failure or cleanup failure produces a nonzero exit.
@@ -40,36 +40,38 @@ Password administration requires its own production-Web run and synthetic actors
 Give independent specs distinct administrator accounts so login/reauth limits
 remain active without one shared fixture exhausting the account budget.
 
-### Optional native renderer origins in `make check`
+### Native renderer origins in `make check`
 
-1. **Scope:** an explicitly selected, separately built Electron renderer used
-   alongside the allocated production Web/API verification environment.
-2. **Signatures:** `prepare_check_environment(source_env)` derives the task-only
-   `CORS_ALLOWED_ORIGINS` and `ALLOWED_ORIGINS` from its allocated Web origin plus
-   the origins of optional `COLLABORATION_ELECTRON_RENDERER_URL` and
-   `CHANGELOG_ELECTRON_RENDERER_URL` values loaded before preparation.
-3. **Contract:** renderer URLs must use HTTP(S) on `localhost`, `127.0.0.1` or
-   `[::1]`, with no userinfo credentials and no port zero. Their paths do not
-   enter the allowlist. Deduplicate origins, keep the source env byte-identical,
-   and never carry arbitrary production CORS values or wildcard origins into
-   the test copy. The default without either renderer remains Web-only. These
-   values must exist before API configuration identity/provenance is computed;
-   adding a renderer only to a later Playwright child cannot configure the API.
+1. **Scope:** the default check builds Desktop and serves its renderer on the
+   registry-allocated loopback port, alongside production Web and the isolated
+   API. Optional separately configured native origins remain validated inputs.
+2. **Signatures:** `prepare_check_environment(source_env)` derives task-only
+   `CORS_ALLOWED_ORIGINS` and `ALLOWED_ORIGINS` from the allocated Web and Desktop
+   origins plus any explicit `COLLABORATION_ELECTRON_RENDERER_URL` or
+   `CHANGELOG_ELECTRON_RENDERER_URL` loaded before preparation. The task copy
+   then binds Collaboration API/WS and renderer/source-root to this allocation.
+3. **Contract:** input renderer URLs must use HTTP(S) on `localhost`, `127.0.0.1`
+   or `[::1]`, without credentials or port zero. Their paths do not enter the
+   allowlist. Deduplicate origins, keep the source env byte-identical, and
+   discard arbitrary production CORS/wildcards. Write the allocated
+   `DESKTOP_RENDERER_PORT` into the task copy before reloading it: a stale source
+   assignment must not separate the listener from the manifest and allowed
+   origins. Complete these bindings before computing API provenance.
 4. **Errors:** invalid, non-loopback, credentialed or unsupported-scheme input
-   stops preparation before services start, without echoing the rejected URL.
-   Server-side WebSocket checks still require exact allowed-origin membership;
-   Electron's disabled browser `webSecurity` is not a server-side exemption.
-5. **Cases:** an explicit second loopback renderer adds one origin; duplicate
-   renderer/Web origins add none; an unconfigured run retains its original
-   Web-only behavior. A remote renderer is refused even if source CORS allowed it.
-6. **Verification:** `scripts/check.test.sh` exercises the real preparation
-   function with fake allocation/services, both independent renderer variables,
-   shared origins, IPv6, source preservation and nonsecret rejection. These are
-   configuration contracts, not a native browser or WebSocket execution pass.
-7. **Wrong / correct:** do not widen production server CORS or secretly mutate
-   only a child server's environment after its identity was recorded. Set the
-   explicit task-owned renderer URLs before invoking `make check`; both task
-   allowlists then match the actual environment used to start its API.
+   stops preparation before services start without echoing the rejected URL.
+   WebSocket checks still require exact allowed-origin membership; Electron's
+   disabled browser `webSecurity` is not a server-side exemption.
+5. **Cases:** an unconfigured run gets the built native renderer automatically;
+   an explicit second loopback renderer adds its origin, and duplicate origins
+   add none. A remote renderer is refused even if source CORS allowed it.
+6. **Verification:** `scripts/check.test.sh` covers actual preparation with fake
+   allocation/services, stale source-file port/API/build paths, source
+   preservation, both optional origins, IPv6 and nonsecret rejection. Its helper
+   checks serve real built files, refuse missing output/busy ports and verify
+   shutdown. Browser and WebSocket acceptance remains a separate gate.
+7. **Wrong / correct:** do not widen production CORS or change only a later
+   Playwright child's environment. The copied env, manifest, allowed origins,
+   served build and owned listeners must describe the same check allocation.
 
 ### Password acceptance startup configuration
 
@@ -655,3 +657,28 @@ Wrong: set only MULTICA_PACKAGED_ACCEPTANCE_HOME and assume updater writes are
 isolated. Correct: also set process HOME, verify actual Node/cache paths and
 restarted-profile identity, then collect each production updater phase without
 changing its retry, download or install behavior.
+
+
+## Complete local gate: Desktop and Collaboration prerequisites
+
+`make check` owns the default native fixture environment as well as production
+Web. Its copied task env binds `COLLABORATION_E2E_API_URL` and the native WS URL
+to the newly allocated API, and records the current checkout as the native
+source root. Never carry a prior run's API port or build directory into the new
+environment; the source env remains unchanged.
+
+Build `@multica/desktop` before Playwright so the default native fixtures receive
+this checkout's `out/renderer` and `out/preload`. The check starts a loopback
+static preview on its registry-allocated renderer port, with Vite config loading
+disabled. It does not launch production Electron Main or the daemon. Include
+that exact renderer origin in API CORS/WS allowed origins, verify the served
+index matches the built file and the listener belongs to this check, and retain
+renderer PID/path/hash provenance. Cleanup stops only the recorded renderer,
+Web and API processes, including failure paths.
+
+Providing these endpoints makes human Collaboration Web/native suites runnable;
+keep their existing password/admin/provider/installed-agent opt-ins unchanged.
+An unconditional Knowledge native case needs the explicit renderer/source root;
+it must not acquire a new skip to compensate for missing preparation. The
+password-session persistence test has its own synthetic password API and needs
+only the same built Desktop assets, not a real password-mode server.

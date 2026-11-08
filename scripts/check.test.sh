@@ -14,6 +14,11 @@ MULTICA_AUTH_MODE=password
 MULTICA_MANAGED_INSTALLATIONS_ENABLED=true
 MULTICA_KNOWLEDGE_CONTEXT_ENABLED=true
 MULTICA_PLATFORM_ADMIN_ENABLED=true
+COLLABORATION_E2E_API_URL=http://localhost:19998
+COLLABORATION_ELECTRON_WS_URL=ws://localhost:19998/ws
+COLLABORATION_ELECTRON_SOURCE_ROOT=/stale/checkout
+MULTICA_E2E_DESKTOP_OUTPUT_DIR=/stale/build
+DESKTOP_RENDERER_PORT=19996
 ENV
 
 cat > "$test_dir/fixture.sh" <<'FIXTURE'
@@ -34,7 +39,11 @@ prepare_check_environment() {
   CHECK_GO_DB_NAME=go_fixture
   DB_NAME=api_fixture
 }
-pnpm() { record "pnpm $*"; [ "$phase" != ts-failure ] || return 17; }
+pnpm() {
+  record "pnpm $*"
+  [ "$phase" != ts-failure ] || return 17
+  if [ "$*" = '--filter @multica/desktop build' ]; then [ "$phase" != desktop-build-failure ] || return 37; fi
+}
 psql() { record "psql $*"; }
 lsof() { :; }
 go() { record "go $*"; }
@@ -46,6 +55,7 @@ ensure_database() { record database; [ "$phase" != database-failure ] || return 
 migrate_database() { record "migrate $DATABASE_URL"; }
 start_api() { record api; [ "$phase" != api-failure ] || return 23; }
 start_web() { record web; [ "$phase" != web-failure ] || return 29; }
+start_check_desktop_renderer() { record renderer; [ "$phase" != renderer-failure ] || return 41; }
 stop_component() { record "stop $1"; [ "$phase" != cleanup-failure ] || return 31; }
 print_status_json() { printf '{}\n'; }
 check_main
@@ -74,8 +84,22 @@ grep -Fxq 'stop api' "$test_dir/calls"
 run_case web-failure 29
 ! grep -Eq '^pnpm exec playwright' "$test_dir/calls" || { echo "Unexpected match in rejection assertion" >&2; exit 1; }
 grep -Fxq 'stop web' "$test_dir/calls"
+run_case desktop-build-failure 37
+! grep -Eq '^renderer$|^pnpm exec playwright' "$test_dir/calls" || { echo 'Browser ran after Desktop build failure'; exit 1; }
+run_case renderer-failure 41
+! grep -Eq '^pnpm exec playwright' "$test_dir/calls" || { echo 'Browser ran after renderer failure'; exit 1; }
+grep -Fxq 'stop desktop-renderer' "$test_dir/calls"
 run_case cleanup-failure 1
 run_case success 0
+grep -Fxq 'stop desktop-renderer' "$test_dir/calls"
+node - "$test_dir/calls" <<'JS'
+const fs = require('node:fs');
+const calls = fs.readFileSync(process.argv[2], 'utf8').trim().split('\n');
+const sequence = ['pnpm --filter @multica/desktop build', 'renderer', 'pnpm exec playwright test --workers=1 --retries=0', 'stop desktop-renderer'];
+for (let i = 1; i < sequence.length; i++) {
+  if (calls.indexOf(sequence[i - 1]) < 0 || calls.indexOf(sequence[i]) <= calls.indexOf(sequence[i - 1])) throw new Error('Desktop preparation/cleanup order is incorrect');
+}
+JS
 grep -Fxq 'pnpm exec playwright test --workers=1 --retries=0' "$test_dir/calls"
 grep -Fq -- '--concurrency=1 --force -- --maxWorkers=2' "$test_dir/calls"
 grep -Fxq 'migrate postgres://test:test@localhost:5432/go_fixture' "$test_dir/calls"
@@ -93,6 +117,7 @@ LOCK_DIR="$DEV_HOME/lock.d"
 load_env_file() { set -a; source "$1"; set +a; }
 allocate_offset() { printf 907; }
 load_env_file "$fixture_dir/source.env"
+DESKTOP_RENDERER_PORT=19997
 prepare_check_environment "$fixture_dir/source.env"
 [ "$MULTICA_DEVICE_AUTH_ENABLED" = false ]
 [ "$MULTICA_AUTH_MODE" = legacy ]
@@ -101,8 +126,21 @@ prepare_check_environment "$fixture_dir/source.env"
 [ "$MULTICA_PLATFORM_ADMIN_ENABLED" = false ]
 [ "$DATABASE_URL" != "$CHECK_GO_DATABASE_URL" ]
 [ "$WEB_MODE" = production ]
-[ "$CORS_ALLOWED_ORIGINS" = "http://localhost:$FRONTEND_PORT" ]
-[ "$ALLOWED_ORIGINS" = "http://localhost:$FRONTEND_PORT" ]
+[ "$DESKTOP_RENDERER_PORT" = "$(renderer_port_for_offset "$OFFSET")" ] || {
+  echo 'Reloading copied env restored a stale source-file renderer port'; exit 1;
+}
+[ "$CORS_ALLOWED_ORIGINS" = "http://localhost:$FRONTEND_PORT,http://127.0.0.1:$DESKTOP_RENDERER_PORT" ]
+[ "$ALLOWED_ORIGINS" = "$CORS_ALLOWED_ORIGINS" ]
+[ "$COLLABORATION_E2E_API_URL" = "$NEXT_PUBLIC_API_URL" ]
+[ "$COLLABORATION_ELECTRON_WS_URL" = "$NEXT_PUBLIC_WS_URL" ]
+[ "$COLLABORATION_ELECTRON_RENDERER_URL" = "http://127.0.0.1:$DESKTOP_RENDERER_PORT" ]
+[ "$COLLABORATION_ELECTRON_SOURCE_ROOT" = "$REPO_ROOT" ]
+[ "$MULTICA_E2E_DESKTOP_OUTPUT_DIR" = "$REPO_ROOT/apps/desktop/out" ]
+grep -Fxq 'COLLABORATION_E2E_API_URL=http://localhost:19998' "$fixture_dir/source.env"
+grep -Fxq 'COLLABORATION_ELECTRON_SOURCE_ROOT=/stale/checkout' "$fixture_dir/source.env"
+grep -Fxq 'MULTICA_E2E_DESKTOP_OUTPUT_DIR=/stale/build' "$fixture_dir/source.env"
+grep -Fxq 'DESKTOP_RENDERER_PORT=19996' "$fixture_dir/source.env"
+grep -Fxq "DESKTOP_RENDERER_PORT=$DESKTOP_RENDERER_PORT" "$STATE_DIR/manifest.env"
 grep -Fxq 'CORS_ALLOWED_ORIGINS=http://localhost:13000' "$fixture_dir/source.env"
 grep -Fxq 'ALLOWED_ORIGINS=http://localhost:13001' "$fixture_dir/source.env"
 grep -Fxq 'MULTICA_AUTH_MODE=password' "$fixture_dir/source.env"
@@ -139,6 +177,7 @@ write_manifest_value CHANGELOG_ELECTRON_RENDERER_URL "$CHANGELOG_ELECTRON_RENDER
 cp "$source_env" "$fixture_dir/source-before.env"
 load_env_file "$source_env"
 prepare_check_environment "$source_env"
+expected="$expected,http://127.0.0.1:$DESKTOP_RENDERER_PORT"
 [ "$CORS_ALLOWED_ORIGINS" = "$expected" ] || { echo 'Native HTTP fixture origin was not preserved'; exit 1; }
 [ "$ALLOWED_ORIGINS" = "$expected" ] || { echo 'Native WebSocket fixture origin was not preserved'; exit 1; }
 cmp "$source_env" "$fixture_dir/source-before.env"
@@ -223,5 +262,7 @@ FIXTURE
 make --no-print-directory -f "$test_dir/make-case/Makefile" verify \
   FIXTURE="$test_dir/make-case/fixture.sh" REPO="$root_dir" CASE_DIR="$test_dir/make-case" > "$test_dir/make-output" 2>&1 \
   || { cat "$test_dir/make-output"; exit 1; }
+
+node --test "$root_dir/scripts/check-desktop-renderer.test.mjs"
 
 echo 'check.test.sh: PASS'
