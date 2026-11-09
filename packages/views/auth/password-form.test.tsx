@@ -13,6 +13,26 @@ import zh from "../locales/zh-Hans/auth.json";
 import { PasswordForm } from "./password-form";
 
 describe('password form', () => {
+  it('keeps the restricted session and displays a failed sign-out without an unhandled rejection', async () => {
+    const api = new ApiClient('http://localhost');
+    const logout = vi.spyOn(api, 'logout').mockRejectedValueOnce(new Error('private network detail')).mockResolvedValueOnce(undefined);
+    const onLogout = vi.fn();
+    const store = createAuthStore({ api, cookieAuth: true, onLogout, storage: { getItem: () => null, setItem: vi.fn(), removeItem: vi.fn() } });
+    store.setState({ user: { ...EMPTY_USER, id: 'u1', name: 'Alice' }, status: 'password_change_required', isLoading: false });
+    setApiInstance(api); registerAuthStore(store);
+    render(<I18nProvider locale="en" resources={{ en: { auth: en } }}><QueryClientProvider client={new QueryClient()}><PasswordForm mode="change" onSuccess={vi.fn()} /></QueryClientProvider></I18nProvider>);
+    const user = userEvent.setup();
+    await user.click(screen.getByRole('button', { name: 'Sign out' }));
+    await screen.findByText(en.password.request_failed);
+    expect(store.getState().status).toBe('password_change_required');
+    expect(onLogout).not.toHaveBeenCalled();
+    expect(screen.queryByText('private network detail')).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Sign out' }));
+    await waitFor(() => expect(onLogout).toHaveBeenCalledOnce());
+    expect(logout).toHaveBeenCalledTimes(2);
+    expect(store.getState().status).toBe('unauthenticated');
+  });
+
   it('keeps deployment context separate from the sign-in action and creation guidance', async () => {
     const api = new ApiClient('http://localhost');
     const login = vi.spyOn(api, 'passwordLogin').mockResolvedValue({token: 'session', user: {...EMPTY_USER, id: 'u1'}});

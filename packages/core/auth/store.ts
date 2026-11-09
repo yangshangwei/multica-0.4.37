@@ -58,7 +58,7 @@ export interface AuthState {
   registerPassword: (username: string, password: string, name: string) => Promise<User>;
   setupPassword: (username: string, password: string, name: string) => Promise<User>;
   changePassword: (current: string, next: string) => Promise<User>;
-  logout: () => void;
+  logout: (beforeLogout?: () => void) => void | Promise<void>;
   sessionExpired: () => void;
   setUser: (user: User) => void;
   refreshMe: () => Promise<void>;
@@ -67,6 +67,8 @@ export interface AuthState {
 export function createAuthStore(options: AuthStoreOptions) {
   const { api, storage, onLogin, onLogout, onSessionExpired, cookieAuth } =
     options;
+
+  let pendingLogout: Promise<void> | null = null;
 
   return create<AuthState>((set, get) => {
     const accept = async (request: Promise<{token: string; user: User}>) => {
@@ -170,23 +172,31 @@ export function createAuthStore(options: AuthStoreOptions) {
     setupPassword: (username, password, name) => accept(api.setupPassword(username, password, name)),
     changePassword: (current, next) => accept(api.changePassword(current, next)),
 
-    logout: () => {
-      if (cookieAuth) {
-        // Clear server-side HttpOnly cookie.
-        api.logout().catch(() => {});
-      }
-      storage.removeItem("multica_token");
-      api.setToken(null);
-      setCurrentWorkspace(null, null);
-      resetAnalytics();
-      onLogout?.();
-      set({
-        user: null,
-        isLoading: false,
-        status: "unauthenticated",
-        expired: false,
-        recovery: null,
-      });
+    logout: (beforeLogout) => {
+      const finish = () => {
+        // The UI erases protected drafts/caches only after cookie teardown,
+        // before publishing the unauthenticated state that redirects the shell.
+        beforeLogout?.();
+        storage.removeItem("multica_token");
+        api.setToken(null);
+        setCurrentWorkspace(null, null);
+        resetAnalytics();
+        onLogout?.();
+        set({ user: null, isLoading: false, status: "unauthenticated", expired: false, recovery: null });
+      };
+      if (!cookieAuth) { finish(); return; }
+      if (pendingLogout) return pendingLogout;
+      const userId = get().user?.id;
+      const clearing = api.logout();
+      // ApiClient rotates its credential scope when logout starts. Capture that
+      // scope so a later login/server replacement cannot be cleared by this one.
+      const session = api.getSessionScope();
+      pendingLogout = clearing.then(() => {
+        if (api.getSessionScope() !== session || get().user?.id !== userId)
+          throw new Error("Session changed during logout");
+        finish();
+      }).finally(() => { pendingLogout = null; });
+      return pendingLogout;
     },
 
     /**

@@ -21,6 +21,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Global scope navigation](./global-scope-navigation.md) | Fixed Workspace/Collaboration switch, identity-owned resume and explicit focus | Active |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
+| [Confirmed cookie logout](./cookie-logout.md) | Awaited HttpOnly-cookie clearing, preserved failed logout drafts and session-fenced teardown | Active |
 | [ApiClient authEpoch](./api-client-auth-epoch.md) | Isolating a stale 401 from the current session | Active |
 | [Collaboration execution protocol](../../server/collaboration-targets.md) | v5 channel/input/reader history, exact hold/control receipts, original-key/access-epoch recovery and gated execution | Direct/squad foundation; full product pending |
 | [Collaboration recorded runs](../../server/collaboration-records.md) | Private record paging, exact usage, page-chain integrity, child hints and compatible run anchors | Current R51/R52 increment |

@@ -17,6 +17,9 @@ vi.mock("../analytics", () => ({
 
 const user = { id: "device-user", name: "Device user", email: "device@example.test", avatar_url: null };
 const deviceAuth = { deviceId: "a".repeat(32), deviceName: "Test device" };
+let CoreProvider: typeof import("./core-provider")["CoreProvider"];
+let useAuthStore: typeof import("../auth")["useAuthStore"];
+let getApi: typeof import("../api")["getApi"];
 
 function deferredResponse() {
   let resolve!: (response: Response) => void;
@@ -24,14 +27,11 @@ function deferredResponse() {
   return { promise, resolve };
 }
 
-async function mountCore({ cookieAuth = true, strictMode = false, storedToken }: {
+function mountCore({ cookieAuth = true, strictMode = false, storedToken }: {
   cookieAuth?: boolean;
   strictMode?: boolean;
   storedToken?: string;
 } = {}) {
-  const { CoreProvider } = await import("./core-provider");
-  const { useAuthStore } = await import("../auth");
-  const { getApi } = await import("../api");
   const values = new Map<string, string>(storedToken ? [["multica_token", storedToken]] : []);
   const storage: StorageAdapter = {
     getItem: (key) => values.get(key) ?? null,
@@ -57,7 +57,14 @@ async function mountCore({ cookieAuth = true, strictMode = false, storedToken }:
   return { api: getApi(), useAuthStore, storage, onLogin, onSessionExpired };
 }
 
-beforeEach(() => { vi.resetModules(); });
+beforeEach(async () => {
+  vi.resetModules();
+  // Cold module loading belongs to setup. A timed-out async mount can resume
+  // after cleanup and render the previous case into the next case's session.
+  ({ CoreProvider } = await import("./core-provider"));
+  ({ useAuthStore } = await import("../auth"));
+  ({ getApi } = await import("../api"));
+});
 afterEach(() => {
   cleanup();
   vi.unstubAllGlobals();
@@ -80,7 +87,7 @@ describe("CoreProvider authentication handoff", () => {
       if (url.endsWith("/api/workspaces")) return Promise.resolve(Response.json([]));
       throw new Error(`Unexpected request: ${url}`);
     }));
-    const { useAuthStore, onLogin, onSessionExpired } = await mountCore({ strictMode });
+    const { useAuthStore, onLogin, onSessionExpired } = mountCore({ strictMode });
     const signedOut = vi.fn();
     const unsubscribe = useAuthStore.subscribe((state) => {
       if (!state.isLoading && !state.user) signedOut();
@@ -108,7 +115,7 @@ describe("CoreProvider authentication handoff", () => {
       if (url.endsWith("/api/me")) return Promise.resolve(Response.json({ error: "unauthorized" }, { status: 401 }));
       throw new Error(`Unexpected request: ${url}`);
     }));
-    const { useAuthStore, storage, onSessionExpired } = await mountCore({ cookieAuth: false, storedToken: "rejected-token" });
+    const { useAuthStore, storage, onSessionExpired } = mountCore({ cookieAuth: false, storedToken: "rejected-token" });
     await waitFor(() => expect(screen.getByText("Sign in")).toBeTruthy());
     expect(useAuthStore.getState()).toMatchObject({ status: "unauthenticated", expired: true });
     expect(storage.getItem("multica_token")).toBeNull();
@@ -122,7 +129,7 @@ describe("CoreProvider authentication handoff", () => {
       if (url.endsWith("/auth/device")) return Promise.resolve(Response.json({ error: "device rejected" }, { status: 403 }));
       throw new Error(`Unexpected request: ${url}`);
     }));
-    const { useAuthStore, onLogin, onSessionExpired } = await mountCore();
+    const { useAuthStore, onLogin, onSessionExpired } = mountCore();
     await waitFor(() => expect(screen.getByText("Sign in")).toBeTruthy());
     expect(useAuthStore.getState().status).toBe("unauthenticated");
     expect(onLogin).not.toHaveBeenCalled();
@@ -138,7 +145,7 @@ describe("CoreProvider authentication handoff", () => {
         ? Response.json({ error: "unauthorized" }, { status: 401 }) : Response.json([]));
       throw new Error(`Unexpected request: ${url}`);
     }));
-    const { api, useAuthStore, onSessionExpired } = await mountCore();
+    const { api, useAuthStore, onSessionExpired } = mountCore();
     await waitFor(() => expect(screen.getByText("Signed in")).toBeTruthy());
     rejectWorkspace = true;
     await act(async () => { await expect(api.listWorkspaces()).rejects.toMatchObject({ status: 401 }); });

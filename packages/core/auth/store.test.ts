@@ -33,6 +33,59 @@ function makeApi(): ApiClient {
 }
 
 describe("authStore", () => {
+  it("waits for cookie logout before cleanup or publishing unauthenticated state", async () => {
+    let complete!: () => void;
+    const api = { setToken: vi.fn(), logout: vi.fn(() => new Promise<void>(resolve => { complete = resolve; })), getSessionScope: () => "session-a" } as unknown as ApiClient;
+    const storage = makeStorage({ multica_token: "retained" });
+    const onLogout = vi.fn(); const beforeLogout = vi.fn();
+    const store = createAuthStore({ api, storage, onLogout, cookieAuth: true });
+    store.setState({ user: fakeUser, status: "authenticated", isLoading: false });
+    const pending = store.getState().logout(beforeLogout);
+    expect(store.getState().status).toBe("authenticated");
+    expect(store.getState().user).toBe(fakeUser);
+    expect(beforeLogout).not.toHaveBeenCalled(); expect(onLogout).not.toHaveBeenCalled();
+    expect(storage.getItem("multica_token")).toBe("retained");
+    complete(); await pending;
+    expect(beforeLogout).toHaveBeenCalledOnce(); expect(onLogout).toHaveBeenCalledOnce();
+    expect(store.getState().status).toBe("unauthenticated");
+    expect(storage.getItem("multica_token")).toBeNull();
+  });
+
+  it("retains the session and cleanup data when cookie logout fails so the user can retry", async () => {
+    const api = { setToken: vi.fn(), logout: vi.fn().mockRejectedValueOnce(new Error("Offline")).mockResolvedValueOnce(undefined), getSessionScope: () => "session-a" } as unknown as ApiClient;
+    const storage = makeStorage({ multica_token: "retained" });
+    const beforeLogout = vi.fn(); const onLogout = vi.fn();
+    const store = createAuthStore({ api, storage, onLogout, cookieAuth: true });
+    store.setState({ user: fakeUser, status: "authenticated", isLoading: false });
+    await expect(store.getState().logout(beforeLogout)).rejects.toThrow("Offline");
+    expect(store.getState().user).toBe(fakeUser); expect(beforeLogout).not.toHaveBeenCalled(); expect(onLogout).not.toHaveBeenCalled();
+    expect(storage.getItem("multica_token")).toBe("retained");
+    await store.getState().logout(beforeLogout);
+    expect(beforeLogout).toHaveBeenCalledOnce(); expect(store.getState().status).toBe("unauthenticated");
+  });
+
+  it("does not clear a replacement session after a delayed cookie logout", async () => {
+    let complete!: () => void; let session = "session-a";
+    const api = { setToken: vi.fn(), logout: vi.fn(() => new Promise<void>(resolve => { complete = resolve; })), getSessionScope: () => session } as unknown as ApiClient;
+    const beforeLogout = vi.fn(); const onLogout = vi.fn();
+    const store = createAuthStore({ api, storage: makeStorage(), onLogout, cookieAuth: true });
+    store.setState({ user: fakeUser, status: "authenticated", isLoading: false });
+    const pending = store.getState().logout(beforeLogout);
+    session = "session-b"; const nextUser = { ...fakeUser, id: "u2" }; store.setState({ user: nextUser });
+    complete(); await expect(pending).rejects.toThrow("Session changed during logout");
+    expect(store.getState().user).toBe(nextUser); expect(beforeLogout).not.toHaveBeenCalled(); expect(onLogout).not.toHaveBeenCalled();
+  });
+
+  it("shares one pending cookie logout and applies cleanup once", async () => {
+    let complete!: () => void;
+    const api = { setToken: vi.fn(), logout: vi.fn(() => new Promise<void>(resolve => { complete = resolve; })), getSessionScope: () => "session-a" } as unknown as ApiClient;
+    const beforeLogout = vi.fn(); const store = createAuthStore({ api, storage: makeStorage(), cookieAuth: true });
+    store.setState({ user: fakeUser, status: "authenticated", isLoading: false });
+    const first = store.getState().logout(beforeLogout); const second = store.getState().logout(beforeLogout);
+    expect(api.logout).toHaveBeenCalledOnce(); complete(); await Promise.all([first, second]);
+    expect(beforeLogout).toHaveBeenCalledOnce();
+  });
+
   it("publishes a retry request instead of silently ignoring it", () => {
     const storage = makeStorage({ multica_token: "t" });
     const api = makeApi();
