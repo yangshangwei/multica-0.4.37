@@ -1,0 +1,159 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/playwright.qa.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-multi-account-20261109/run-01/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-multi-account-20261109/run-01/playwright.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-multi-account-closure.spec.ts",
+      "file": "collaboration-multi-account-closure.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "three account owners and three native agents close one cross-workspace issue after revision",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 600000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 20846,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoMatchObject\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 0\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"author_id\": \"2fc8a987-0e67-409b-bcae-51e0733553c9\",\u001b[39m\n\u001b[2m    \"author_type\": \"agent\",\u001b[22m\n\u001b[2m    \"content\": \"Synthetic result by agent 2fc8a987-0e67-409b-bcae-51e0733553c9: Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID.\",\u001b[22m\n\u001b[2m  }\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoMatchObject\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 0\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"author_id\": \"2fc8a987-0e67-409b-bcae-51e0733553c9\",\u001b[39m\n\u001b[2m    \"author_type\": \"agent\",\u001b[22m\n\u001b[2m    \"content\": \"Synthetic result by agent 2fc8a987-0e67-409b-bcae-51e0733553c9: Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID.\",\u001b[22m\n\u001b[2m  }\u001b[22m\n    at execute (/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/e2e/collaboration-multi-account-closure.spec.ts:189:80)\n    at /Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/e2e/collaboration-multi-account-closure.spec.ts:201:5",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/e2e/collaboration-multi-account-closure.spec.ts",
+                      "column": 80,
+                      "line": 189
+                    },
+                    "snippet": "  187 |       expect(after.version).toBe(visit.memory_written.version);\n  188 |       const comments = await P.client.requestJSON<CollaborationComments>(`${root}/comments`);\n> 189 |       expect(comments.items.find(item => item.id === visit.result_comment_id)).toMatchObject({ author_type: \"agent\", author_id: resource.agent.id, content: visit.result_text });\n      |                                                                                ^\n  190 |       const records = await P.client.requestJSON<CollaborationRunRecords>(versioned(`${root}/runs/${visit.identity.run_id}/records?limit=100`));\n  191 |       expect(records.resource).toMatchObject({ agent_id: resource.agent.id, runtime_id: resource.runtime.runtimeId, resource_owner_user_id: resource.actor.id, execution_workspace_id: resource.workspace.id });\n  192 |       expect(records.run).toMatchObject({ proof_state: \"host_exit_observed\", launch_count: \"1\" });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/e2e/collaboration-multi-account-closure.spec.ts",
+                        "column": 80,
+                        "line": 189
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoMatchObject\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 0\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"author_id\": \"2fc8a987-0e67-409b-bcae-51e0733553c9\",\u001b[39m\n\u001b[2m    \"author_type\": \"agent\",\u001b[22m\n\u001b[2m    \"content\": \"Synthetic result by agent 2fc8a987-0e67-409b-bcae-51e0733553c9: Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID.\",\u001b[22m\n\u001b[2m  }\u001b[22m\n\n  187 |       expect(after.version).toBe(visit.memory_written.version);\n  188 |       const comments = await P.client.requestJSON<CollaborationComments>(`${root}/comments`);\n> 189 |       expect(comments.items.find(item => item.id === visit.result_comment_id)).toMatchObject({ author_type: \"agent\", author_id: resource.agent.id, content: visit.result_text });\n      |                                                                                ^\n  190 |       const records = await P.client.requestJSON<CollaborationRunRecords>(versioned(`${root}/runs/${visit.identity.run_id}/records?limit=100`));\n  191 |       expect(records.resource).toMatchObject({ agent_id: resource.agent.id, runtime_id: resource.runtime.runtimeId, resource_owner_user_id: resource.actor.id, execution_workspace_id: resource.workspace.id });\n  192 |       expect(records.run).toMatchObject({ proof_state: \"host_exit_observed\", launch_count: \"1\" });\n    at execute (/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/e2e/collaboration-multi-account-closure.spec.ts:189:80)\n    at /Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/e2e/collaboration-multi-account-closure.spec.ts:201:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T05:47:52.488Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "multi-account-closure-evidence",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-multi-account-20261109/run-01/test-results/collaboration-multi-accoun-d2e5f-kspace-issue-after-revision-chromium/attachments/multi-account-closure-evidence-1e061dd36ffa931aaa7ca194a65878efa868afd2.json"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-multi-account-20261109/run-01/test-results/collaboration-multi-accoun-d2e5f-kspace-issue-after-revision-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-multi-account-20261109/run-01/test-results/collaboration-multi-accoun-d2e5f-kspace-issue-after-revision-chromium/test-failed-3.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-multi-account-20261109/run-01/test-results/collaboration-multi-accoun-d2e5f-kspace-issue-after-revision-chromium/test-failed-2.png"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/e2e/collaboration-multi-account-closure.spec.ts",
+                    "column": 80,
+                    "line": 189
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "7f6fc72c72ab8e0da549-24370a70f4356b84fb22",
+          "file": "collaboration-multi-account-closure.spec.ts",
+          "line": 22,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-09T05:47:51.801Z",
+    "duration": 22391.372,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

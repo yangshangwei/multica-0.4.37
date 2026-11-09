@@ -1,0 +1,79 @@
+{
+  "verdict": "passed_with_retained_harness_failure",
+  "final_cases": {
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0
+  },
+  "all_attempts": {
+    "passed": 4,
+    "failed": 1,
+    "skipped": 0
+  },
+  "main": {
+    "collaborating_accounts": 3,
+    "unrelated_accounts": 1,
+    "workspaces": 3,
+    "agents": 3,
+    "runtime_processes": 3,
+    "agent_runs": 5,
+    "memory_versions": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6"
+    ],
+    "delivery_submissions": 2,
+    "returns": 1,
+    "acceptances": 1,
+    "final_status": "done",
+    "issue_id": "01a1bedb-5453-710d-9824-59623f8d595a",
+    "page_errors": [],
+    "cleanup_failures": []
+  },
+  "successful_case_provider_launches": 13,
+  "all_attempt_provider_launches": 14,
+  "runs": [
+    {
+      "run": "run-01",
+      "startTime": "2026-11-09T05:47:51.801Z",
+      "duration": 22391.372,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    {
+      "run": "run-02-host",
+      "startTime": "2026-11-09T05:48:45.106Z",
+      "duration": 35666.477,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "run": "run-03-memory",
+      "startTime": "2026-11-09T05:49:28.607Z",
+      "duration": 15163.318,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "run": "run-04-closure",
+      "startTime": "2026-11-09T05:50:00.863Z",
+      "duration": 66851.156,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  ],
+  "model_reasoning_tested": false,
+  "product_code_changes": false
+}

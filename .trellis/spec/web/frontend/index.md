@@ -23,6 +23,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Agent critical-path CI](./agent-critical-path-ci.md) | Four production-Web paths, exact inventory and isolated launch contract | Active |
 | [E2E Run Environment](./e2e-run-environment.md) | The Playwright suite must target `next build` + `next start`, never `next dev` | Active |
+| [Collaboration closure QA](./collaboration-closure-qa.md) | Same-issue multi-owner execution, attribution, cleanup and honest synthetic evidence | Active |
 
 ---
 

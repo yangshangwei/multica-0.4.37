@@ -1,0 +1,93 @@
+{
+  "task": "collaboration-multi-account-qa",
+  "private_root": "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2",
+  "source_checkout": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "candidate_sha": "4d454bb2c2c945664fe73947ecaccf053909d55a",
+  "snapshot": "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source",
+  "database": "multica_qa_20261109_4f1375f76bad",
+  "api_port": 58765,
+  "web_port": 58766,
+  "renderer_port": 58767,
+  "created_by": "environment_setup",
+  "state": "stopped_database_retained",
+  "capacity_before": {
+    "database": "postgres",
+    "maximum": 100,
+    "used": 38
+  },
+  "database_created": true,
+  "database_verified": "multica_qa_20261109_4f1375f76bad",
+  "env_file": "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/environment.json",
+  "deployment_id": "a76529f9-ed09-4197-b75e-e24c6273d35c",
+  "api_url": "http://127.0.0.1:58765",
+  "web_url": "http://127.0.0.1:58766",
+  "renderer_url": "http://127.0.0.1:58767",
+  "api_config": {
+    "auth_mode": "password",
+    "deployment_id": "a76529f9-ed09-4197-b75e-e24c6273d35c",
+    "managed_installation_supported": true
+  },
+  "web_runtime_urls": {
+    "apiBaseUrl": "http://127.0.0.1:58765",
+    "wsUrl": "ws://127.0.0.1:58765/ws",
+    "observed_in_login_html": true
+  },
+  "services": {
+    "api": {
+      "pid": 67745,
+      "command": [
+        "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/bin/api"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/server",
+      "started_at": 1794203183.172587,
+      "listener_pid": 67745
+    },
+    "renderer": {
+      "pid": 67746,
+      "command": [
+        "node",
+        "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/scripts/check-desktop-renderer.mjs",
+        "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/apps/desktop/out/renderer",
+        "58767",
+        "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/state/renderer.running.json"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source",
+      "started_at": 1794203183.17378,
+      "listener_pid": 67746
+    },
+    "web": {
+      "pid": 67881,
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/web",
+        "exec",
+        "next",
+        "start",
+        "--hostname",
+        "127.0.0.1",
+        "--port",
+        "58766"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source",
+      "started_at": 1794203202.941247,
+      "listener_pid": 67892
+    }
+  },
+  "health": {
+    "status": "ok",
+    "pid": 67745,
+    "commit": "4d454bb2c2c945664fe73947ecaccf053909d55a",
+    "started_at": "2026-11-09T05:46:26Z"
+  },
+  "web_build_id": "3iIFVPCnhVORPEid8eW4f",
+  "binary_hashes": {
+    "host-provider": "9f7a52bf9667b10dd28c8a4acfc5c81185d567658980e1a999307cda217c03a2",
+    "multica": "211f217e7f66470b94dbb6db652b80101c2433157841f520c288ebdb1f111493",
+    "memory-provider": "364a709d2039673573ed64b4a00e96c72c98b6d6c4a9b402542a472fe697004c",
+    "api": "97f160d2029ab0ff94bd7e088fae01f5a98afa251ebd9130e54bc87f53936db0",
+    "closure-provider": "b36fdce0c29e16d6ad1d773ae6fb00466fcec59f1758d351af7d6c68863d912e",
+    "host-daemon": "52395262d38dd1586673a27b2d772a005de5cef26c69eb9791b66f983cbada9e"
+  },
+  "env_sha256": "6d7c557ff1405478fc446ef99dc0f7a06baea3ef85ef071438c08a39c6edb38c"
+}

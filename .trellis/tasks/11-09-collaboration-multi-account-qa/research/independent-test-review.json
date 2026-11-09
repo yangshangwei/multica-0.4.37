@@ -1,0 +1,115 @@
+{
+  "reviewed_at": "2026-11-09T05:53:29.469340+00:00",
+  "scope": "read-only independent source review and no-DB static verification",
+  "files": {
+    "e2e/collaboration-multi-account-closure.spec.ts": "a24f06c525371aca816f586136512274197601fda0d32a7057db7df35f667a56",
+    "e2e/fixtures/collaboration-multi-account-closure.ts": "91b8b4c5cbaab035b6c70c1e2a8034d6ea1cbefacdfe61f13c1747d8bc9cc166",
+    "e2e/fixtures/collaboration-multi-account-provider.go": "f0934a65b8233c5df68ff71005919aec55ea05657a8a51881748d984f040c8a8"
+  },
+  "blocking_findings_open": 0,
+  "fixed_by_implementer": [
+    {
+      "issue": "Evidence result was set to passed before cleanup verification, and gate/context exceptions could prevent failure evidence from being saved.",
+      "resolution": "Capture all cleanup failures, validate each real run local ledger proof_acknowledged/sealed/host_exit_observed, write evidence before throwing final cleanup assertion, derive result from body plus cleanup."
+    }
+  ],
+  "verification": [
+    {
+      "command": "pnpm exec tsc --noEmit --strict --target esnext --module esnext --moduleResolution bundler --jsx react-jsx --esModuleInterop --skipLibCheck --types node e2e/collaboration-multi-account-closure.spec.ts e2e/fixtures/collaboration-multi-account-closure.ts",
+      "exit_code": 0
+    },
+    {
+      "command": "pnpm exec eslint --config packages/eslint-config/base.js --rule import-x/no-extraneous-dependencies:[error,{devDependencies:true,peerDependencies:true}] <new spec> <new helper>",
+      "exit_code": 0,
+      "note": "Baseline rule includes *.spec.ts but excludes e2e/fixtures/*.ts from dev dependencies; narrow fixture lint allowed declared dev dependencies while retaining rule."
+    },
+    {
+      "command": "go -C server vet ../e2e/fixtures/collaboration-multi-account-provider.go",
+      "exit_code": 0
+    }
+  ],
+  "coverage_notes": [
+    "Three owners/workspaces/runtimes and 1+2+2 actual Provider runs are asserted; per-run context input, real CLI writes, exact server records and acknowledged local proof ledger are checked.",
+    "Same-key AI POST is replayed with original body/key and must preserve exact receipt and one command; final run/visit counts enforce no duplicate launch.",
+    "D/Q cannot access a real private P ordinary issue; its full JSON snapshot remains unchanged after closure.",
+    "Agent public comment author is null by current DTO contract; memory author and exact run comment/resource records establish attribution.",
+    "Actual-process Stop and configuration Switch are a separate passed host-switch regression."
+  ],
+  "runtime_verification": {
+    "reviewer_executed_db_operations": false,
+    "run_01": {
+      "passed": 0,
+      "failed": 1,
+      "classification": "test assertion used absent public author_id; corrected to current DTO plus exact source attribution",
+      "actual_provider_visits": 1
+    },
+    "run_02_host": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "squad_actual_provider_visits": 4,
+      "switch_actual_provider_visits": 2,
+      "switch_never_launched_continuation": 1
+    },
+    "run_03_memory": {
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "actual_provider_visits": 2,
+      "final_memory_version": "3"
+    },
+    "run_04_closure": {
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 66851.156,
+      "issue_id": "01a1bedb-5453-710d-9824-59623f8d595a",
+      "actual_provider_visits": 5,
+      "visits_by_owner": [
+        1,
+        2,
+        2
+      ],
+      "shared_context_versions": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "delivery_count": 2,
+      "decisions": [
+        "returned",
+        "accepted"
+      ],
+      "final_status": "done",
+      "page_errors": [],
+      "cleanup_failures": [],
+      "gate_restored": true,
+      "exact_local_ledgers": 5,
+      "evidence_sha256": "48c482f3576fb26b8c9615e768ff431d57e37b42e12573a4bd277bb4aeb4cfa6"
+    },
+    "latest_scenario_totals": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "actual_provider_processes": 13,
+      "note": "Primary5 + squad4 + switch2 + memory2. Retained run01 first-attempt harness failure is additional history, not part of latest pass count."
+    },
+    "visual_review": "Final Product screenshot shows Completed, second delivery, Accepted by Product. Lower comments/history are still loading at capture; do not use that screenshot alone to claim rendered full history."
+  },
+  "report_audit": {
+    "at": "2026-11-09T05:55:12.444355+00:00",
+    "results_json_counts_match_original_reports": true,
+    "relative_links_checked": 21,
+    "broken_relative_links": 0,
+    "source_and_cleanup_claims_match_artifacts": true,
+    "suite_rerun_by_reviewer": false,
+    "wording_corrections_requested": [
+      "psql setup failure should identify URI passed as PGDATABASE, matching environment README.",
+      "B06 empty target list refers to plain-comment receipt targets, not global registered resources."
+    ],
+    "product_blocking_findings": 0
+  }
+}

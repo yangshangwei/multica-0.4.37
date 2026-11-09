@@ -1,0 +1,258 @@
+{
+  "scope": "Two separately enrolled native runtime processes, user accounts, private workdirs and empty provider-account profiles on this host; test-owned ordinary Claude protocol only",
+  "exclusions": [
+    "physical second machine",
+    "commercial provider credentials or quota",
+    "other operating systems"
+  ],
+  "gate_before": {
+    "database_name": "multica_qa_20261109_4f1375f76bad",
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": "8"
+  },
+  "issue_id": "01a1beda-c6cd-7a93-a76a-b96811ad196b",
+  "runtime_ids": [
+    "aecd092a-ead8-40bc-b39c-5f0a9b55cafa",
+    "5f8a23d5-9b6d-4655-a5ad-565bac286490"
+  ],
+  "actor_ids": [
+    "a56c134b-3fa0-4785-a36f-ff3fa387a871",
+    "d10418d8-da20-4676-b29f-fd6797c41858"
+  ],
+  "runs": [
+    {
+      "id": "c0f58596-af4b-4989-aa87-3654913d7a90",
+      "agent_id": "eff9f88c-7a40-4724-a840-283e9b21c510",
+      "memory": {
+        "support": "supported",
+        "base_version": "1",
+        "written_version": "2"
+      }
+    },
+    {
+      "id": "15dc43e2-a04b-4488-9c1a-23ea13686fe4",
+      "agent_id": "b81ed9e7-306a-4cb9-917b-2e252c1625e6",
+      "memory": {
+        "support": "supported",
+        "base_version": "2",
+        "written_version": "3"
+      }
+    }
+  ],
+  "final_version": "3",
+  "second_daemon": {
+    "exit_code": 0,
+    "messages": [
+      {
+        "arch": "arm64",
+        "execution_mode": "host_process_supervision_v1",
+        "max_concurrent_tasks": 1,
+        "os": "darwin",
+        "preparation_version": 2,
+        "protocol_version": 3,
+        "ready": true,
+        "runtime_config_epoch": "2"
+      },
+      {
+        "active_tasks": 0,
+        "available_slots": 1,
+        "claims": 1,
+        "http": [
+          {
+            "operation": "claim",
+            "run_id": "15dc43e2-a04b-4488-9c1a-23ea13686fe4",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "status": 200
+          },
+          {
+            "operation": "permit",
+            "run_id": "15dc43e2-a04b-4488-9c1a-23ea13686fe4",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "attempt_seq": "1",
+            "launch_hash": "4f685f648c7f82df6c773f7eb2907abfe2a01bd987cbfb07950e435c2c709fdb",
+            "status": 200
+          },
+          {
+            "operation": "permit",
+            "run_id": "15dc43e2-a04b-4488-9c1a-23ea13686fe4",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "attempt_seq": "1",
+            "launch_hash": "4f685f648c7f82df6c773f7eb2907abfe2a01bd987cbfb07950e435c2c709fdb",
+            "status": 200
+          },
+          {
+            "operation": "termination",
+            "run_id": "15dc43e2-a04b-4488-9c1a-23ea13686fe4",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "attempt_seq": "1",
+            "launch_hash": "4f685f648c7f82df6c773f7eb2907abfe2a01bd987cbfb07950e435c2c709fdb",
+            "kind": "managed_launch_ended",
+            "status": 200
+          },
+          {
+            "operation": "proof",
+            "run_id": "15dc43e2-a04b-4488-9c1a-23ea13686fe4",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "launch_hash": "4f685f648c7f82df6c773f7eb2907abfe2a01bd987cbfb07950e435c2c709fdb",
+            "state": "host_exit_observed",
+            "status": 200
+          }
+        ],
+        "invalid_capacity": false
+      }
+    ],
+    "ledger": [
+      {
+        "version": 2,
+        "run_id": "15dc43e2-a04b-4488-9c1a-23ea13686fe4",
+        "issue_id": "01a1beda-c6cd-7a93-a76a-b96811ad196b",
+        "phase": "proof_acknowledged",
+        "session_key": "894dac9d11ddd07ef94cb873b9d8883603e2435e563563a8f02a0ad73c2deb97",
+        "namespace_present": false,
+        "sealed": true,
+        "proof_state": "host_exit_observed",
+        "cleanup": {
+          "state": "tracked_scope_complete",
+          "scope": "process_group",
+          "attempted": true
+        },
+        "launches": [
+          {
+            "attempt_seq": "1",
+            "kind": "provider",
+            "phase": "attempt_reaped",
+            "process_observed": true,
+            "scope": "process_group",
+            "terminal_accepted": true,
+            "authorized": true,
+            "terminal_kind": "managed_launch_ended",
+            "cleanup": {
+              "state": "tracked_scope_complete",
+              "scope": "process_group",
+              "attempted": true
+            }
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "stderr": ""
+  },
+  "first_daemon": {
+    "exit_code": 0,
+    "messages": [
+      {
+        "arch": "arm64",
+        "execution_mode": "host_process_supervision_v1",
+        "max_concurrent_tasks": 1,
+        "os": "darwin",
+        "preparation_version": 2,
+        "protocol_version": 3,
+        "ready": true,
+        "runtime_config_epoch": "2"
+      },
+      {
+        "active_tasks": 0,
+        "available_slots": 1,
+        "claims": 1,
+        "http": [
+          {
+            "operation": "claim",
+            "run_id": "c0f58596-af4b-4989-aa87-3654913d7a90",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "status": 200
+          },
+          {
+            "operation": "permit",
+            "run_id": "c0f58596-af4b-4989-aa87-3654913d7a90",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "attempt_seq": "1",
+            "launch_hash": "a52b0b69bb23dc071fe4465cbbdea33dff1bc08256db0bf3fe4939e7afa76e1b",
+            "status": 200
+          },
+          {
+            "operation": "permit",
+            "run_id": "c0f58596-af4b-4989-aa87-3654913d7a90",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "attempt_seq": "1",
+            "launch_hash": "a52b0b69bb23dc071fe4465cbbdea33dff1bc08256db0bf3fe4939e7afa76e1b",
+            "status": 200
+          },
+          {
+            "operation": "termination",
+            "run_id": "c0f58596-af4b-4989-aa87-3654913d7a90",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "attempt_seq": "1",
+            "launch_hash": "a52b0b69bb23dc071fe4465cbbdea33dff1bc08256db0bf3fe4939e7afa76e1b",
+            "kind": "managed_launch_ended",
+            "status": 200
+          },
+          {
+            "operation": "proof",
+            "run_id": "c0f58596-af4b-4989-aa87-3654913d7a90",
+            "protocol_version": 3,
+            "containment": "host_process_supervision_v1",
+            "launch_hash": "a52b0b69bb23dc071fe4465cbbdea33dff1bc08256db0bf3fe4939e7afa76e1b",
+            "state": "host_exit_observed",
+            "status": 200
+          }
+        ],
+        "invalid_capacity": false
+      }
+    ],
+    "ledger": [
+      {
+        "version": 2,
+        "run_id": "c0f58596-af4b-4989-aa87-3654913d7a90",
+        "issue_id": "01a1beda-c6cd-7a93-a76a-b96811ad196b",
+        "phase": "proof_acknowledged",
+        "session_key": "09aa8bc52ac60d11199ba333f0afdcb1f9b7cc9a3f0a1f0d10e23ae4da80336f",
+        "namespace_present": false,
+        "sealed": true,
+        "proof_state": "host_exit_observed",
+        "cleanup": {
+          "state": "tracked_scope_complete",
+          "scope": "process_group",
+          "attempted": true
+        },
+        "launches": [
+          {
+            "attempt_seq": "1",
+            "kind": "provider",
+            "phase": "attempt_reaped",
+            "process_observed": true,
+            "scope": "process_group",
+            "terminal_accepted": true,
+            "authorized": true,
+            "terminal_kind": "managed_launch_ended",
+            "cleanup": {
+              "state": "tracked_scope_complete",
+              "scope": "process_group",
+              "attempted": true
+            }
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "stderr": ""
+  },
+  "gate_after": {
+    "database_name": "multica_qa_20261109_4f1375f76bad",
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": "10"
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/playwright.qa.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-multi-account-20261109/run-04-closure/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-multi-account-20261109/run-04-closure/playwright.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-multi-account-closure.spec.ts",
+      "file": "collaboration-multi-account-closure.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "three account owners and three native agents close one cross-workspace issue after revision",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 600000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 65597,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T05:50:01.447Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "multi-account-closure-evidence",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-multi-account-20261109/run-04-closure/test-results/collaboration-multi-accoun-d2e5f-kspace-issue-after-revision-chromium/attachments/multi-account-closure-evidence-559f8d7998ea57d5f4bdfa0931426f0731d95992.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7f6fc72c72ab8e0da549-24370a70f4356b84fb22",
+          "file": "collaboration-multi-account-closure.spec.ts",
+          "line": 22,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-09T05:50:00.863Z",
+    "duration": 66851.156,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

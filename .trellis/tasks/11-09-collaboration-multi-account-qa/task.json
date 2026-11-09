@@ -1,0 +1,31 @@
+{
+  "id": "collaboration-multi-account-qa",
+  "name": "collaboration-multi-account-qa",
+  "title": "多账号多 Agent 跨空间协作闭环测试",
+  "description": "在隔离环境模拟多个账号与 Agent，验证跨空间任务创建、资源授权、执行交接、退回修改和最终验收，输出可追溯测试报告。",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-09",
+  "completedAt": null,
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "e2e/collaboration-multi-account-closure.spec.ts",
+    "e2e/fixtures/collaboration-multi-account-closure.ts",
+    "e2e/fixtures/collaboration-multi-account-provider.go",
+    "artifacts/qa/collaboration-multi-account-20261109/report.md"
+  ],
+  "notes": "Final four scenarios passed, zero skips; retained first harness failure. Five actual main Agent runs, exact second acceptance, private services stopped, DB retained.",
+  "meta": {}
+}

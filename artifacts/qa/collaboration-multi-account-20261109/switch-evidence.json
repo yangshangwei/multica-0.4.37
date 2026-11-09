@@ -1,0 +1,316 @@
+{
+  "exercised": [
+    "configuration change holds the live target and stops its work",
+    "Switch refused before the old runtime confirms termination",
+    "consent only by the resource owner",
+    "Switch refused before the new owner consents",
+    "switch_hold without execution",
+    "explicit Resume on the replacement runtime",
+    "stopped input not replayed",
+    "unread joined input returned to waiting by the stop (M11)",
+    "original typed target kept",
+    "explicit attachment delivered",
+    "old workdir and local file not moved"
+  ],
+  "exclusions": [
+    "commercial Provider accounts",
+    "Git preparation (Go: collaborationrun host_git_test.go)",
+    "Switch refused on an unheld queue (Go: CommitTargetSwitch target_pause_required)",
+    "a second human resource owner",
+    "Electron client"
+  ],
+  "identities": {
+    "issue_id": "01a1beda-6dc5-7b2b-903c-0b35390217e7",
+    "target_id": "6e19b786-d95c-487f-98d7-9f279f9e0785",
+    "squad_id": "91dc54b6-00af-4e1d-8f44-96f29774cd2d",
+    "old_leader": "c394dd0a-e435-4de1-8fdb-976bb21fe6a5",
+    "new_leader": "0d0526da-6e60-444c-8bdd-e57747e5b49c",
+    "first_runtime": "9ec46cfd-3ad7-4ecc-b99b-7cefc035abaa",
+    "second_runtime": "bb737db9-6519-484c-9a68-c7455ee87e68"
+  },
+  "daemons": [
+    {
+      "exit_code": 0,
+      "ledger": [
+        {
+          "version": 2,
+          "run_id": "9b4a8a23-d4db-4706-971a-e630354ae8e2",
+          "issue_id": "01a1beda-6dc5-7b2b-903c-0b35390217e7",
+          "phase": "proof_acknowledged",
+          "session_key": "1efb6084e13ea6c4be86bdeb62a2d243f33a0f08ba5b80a5be90eba125468a43",
+          "namespace_present": false,
+          "sealed": true,
+          "proof_state": "host_exit_observed",
+          "cleanup": {
+            "state": "tracked_scope_complete",
+            "scope": "process_group",
+            "attempted": true
+          },
+          "launches": [
+            {
+              "attempt_seq": "1",
+              "kind": "provider",
+              "phase": "attempt_reaped",
+              "process_observed": true,
+              "scope": "process_group",
+              "terminal_accepted": true,
+              "authorized": true,
+              "terminal_kind": "managed_launch_ended",
+              "cleanup": {
+                "state": "tracked_scope_complete",
+                "scope": "process_group",
+                "attempted": true
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exit_code": 0,
+      "ledger": [
+        {
+          "version": 2,
+          "run_id": "c75e7787-2185-4924-83c5-4fd49bbba587",
+          "issue_id": "01a1beda-6dc5-7b2b-903c-0b35390217e7",
+          "phase": "proof_acknowledged",
+          "session_key": "38f2b83808cbfd0cc1a724aa01f0ae3ab88e685fd2b05218be23b259e249c899",
+          "namespace_present": false,
+          "sealed": true,
+          "proof_state": "host_exit_observed",
+          "cleanup": {
+            "state": "tracked_scope_complete",
+            "scope": "process_group",
+            "attempted": true
+          },
+          "launches": [
+            {
+              "attempt_seq": "1",
+              "kind": "provider",
+              "phase": "attempt_reaped",
+              "process_observed": true,
+              "scope": "process_group",
+              "terminal_accepted": true,
+              "authorized": true,
+              "terminal_kind": "managed_launch_ended",
+              "cleanup": {
+                "state": "tracked_scope_complete",
+                "scope": "process_group",
+                "attempted": true
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "provider_observations": {
+    "first": [
+      {
+        "agent_id": "c394dd0a-e435-4de1-8fdb-976bb21fe6a5",
+        "agent_owner_id": "4298117b-2a96-4d02-bfe8-7f6a4c9d3225",
+        "attachment_hashes": {
+          "9d4b4960-aa04-45d0-96f6-c36cce004d62": "26b5cc751b8a3345b6906c70f05b7418d4ea9e2ef73cf3322213f03c088462e4"
+        },
+        "brief_hash": "1eea08711fd93a3612936e057e665ddb2236d4dcfd46f166bfeb4aa22f17b20e",
+        "cli_context": {
+          "issue_id": "01a1beda-6dc5-7b2b-903c-0b35390217e7",
+          "agent_id": "c394dd0a-e435-4de1-8fdb-976bb21fe6a5",
+          "title": "Host switch execution 8c7c4ccf13fa",
+          "description": "Test-owned switch context 8c7c4ccf13fa. Ordinary fake Claude on two native host runtimes.",
+          "inputs": [
+            {
+              "command_id": "3b7a1c1d-e1c4-462b-8173-43182793c7bf",
+              "author_user_id": "4298117b-2a96-4d02-bfe8-7f6a4c9d3225",
+              "participant_epoch": "1",
+              "account_epoch": "1",
+              "lifecycle_epoch": "1",
+              "body": "Owner asks squad S to start on runtime one [@Switch squad S 8c7c4ccf13fa](mention://squad/91dc54b6-00af-4e1d-8f44-96f29774cd2d)",
+              "attachment_ids": []
+            }
+          ],
+          "squad_id": "91dc54b6-00af-4e1d-8f44-96f29774cd2d",
+          "step_kind": "leader",
+          "roster": [
+            {
+              "agent_id": "c394dd0a-e435-4de1-8fdb-976bb21fe6a5",
+              "name": "Switch leader L1 8c7c4ccf13fa",
+              "role": "leader"
+            }
+          ],
+          "comments": [
+            {
+              "id": "5cfb81f1-a0f2-418c-a635-a2f66a689a65",
+              "author_type": "member",
+              "author_id": "4298117b-2a96-4d02-bfe8-7f6a4c9d3225",
+              "author_name": "Host collaborator Switch",
+              "content": "Owner asks squad S to start on runtime one [@Switch squad S 8c7c4ccf13fa](mention://squad/91dc54b6-00af-4e1d-8f44-96f29774cd2d)",
+              "parent_id": null,
+              "created_at": "2026-11-09T13:49:09.956158+08:00"
+            }
+          ],
+          "dispatch_comment": ""
+        },
+        "cli_hash": "211f217e7f66470b94dbb6db652b80101c2433157841f520c288ebdb1f111493",
+        "execution_mode": "host_process_supervision_v1",
+        "identity": {
+          "batch_id": "e98b4740-50b3-4ffe-ba0c-ca0acc65d29c",
+          "channel_id": "4c82a833-0615-4191-bac7-7efde8502e0e",
+          "claim_generation": "1",
+          "deployment_id": "a76529f9-ed09-4197-b75e-e24c6273d35c",
+          "fence": "1",
+          "group_id": "a10c33aa-4a05-49b0-a32e-b44a22f1e0b4",
+          "installation_id": "5e66e40a-15b0-45f3-bdf5-5263c6ce5167",
+          "issue_id": "01a1beda-6dc5-7b2b-903c-0b35390217e7",
+          "run_id": "9b4a8a23-d4db-4706-971a-e630354ae8e2",
+          "session_id": "134315a1-20db-4da1-aa12-8cce3082c288",
+          "target_id": "6e19b786-d95c-487f-98d7-9f279f9e0785"
+        },
+        "inputs": [
+          {
+            "command_id": "3b7a1c1d-e1c4-462b-8173-43182793c7bf",
+            "author_user_id": "4298117b-2a96-4d02-bfe8-7f6a4c9d3225",
+            "body": "Owner asks squad S to start on runtime one [@Switch squad S 8c7c4ccf13fa](mention://squad/91dc54b6-00af-4e1d-8f44-96f29774cd2d)",
+            "attachment_ids": []
+          }
+        ],
+        "knowledge_observation": {
+          "prompt_sha256": "dc28fa2a2deb7774b5dafe2265ecde3b71a814de67a14875c318b3757327af90",
+          "section_present": false,
+          "contributions": [],
+          "no_session_persistence": false
+        },
+        "protocol_version": 3,
+        "resource_owner_id": "4298117b-2a96-4d02-bfe8-7f6a4c9d3225",
+        "resumed": false,
+        "session_hash": "e7629f5179f236bd67f42631f5a9c67b50721544be7176a03f91e23b41ea0f0f",
+        "temp_hash": "7ec3ae90964ae5ed2d25d24c064693a4230f26b6cc6b481b40f1fda7a9429a78",
+        "workdir_files": {
+          "CLAUDE.md": "1eea08711fd93a3612936e057e665ddb2236d4dcfd46f166bfeb4aa22f17b20e",
+          "attachments/9d4b4960-aa04-45d0-96f6-c36cce004d62/1": "26b5cc751b8a3345b6906c70f05b7418d4ea9e2ef73cf3322213f03c088462e4"
+        },
+        "workdir_hash": "9e089f42725c076767a07708f9f87696fb810387e36379995452e7816e19d3eb",
+        "started_ms": 4590.12575,
+        "released_ms": null,
+        "closed_ms": 6939.371667,
+        "replies": [
+          {
+            "receipts": [
+              {
+                "kind": "write_file",
+                "request_id": "",
+                "sha256": "0eb688fdf9938d1c2ddbdcf638593262192f6dbf22535e694d3f047a589290cc"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "second": [
+      {
+        "agent_id": "0d0526da-6e60-444c-8bdd-e57747e5b49c",
+        "agent_owner_id": "4298117b-2a96-4d02-bfe8-7f6a4c9d3225",
+        "attachment_hashes": {
+          "9d4b4960-aa04-45d0-96f6-c36cce004d62": "26b5cc751b8a3345b6906c70f05b7418d4ea9e2ef73cf3322213f03c088462e4"
+        },
+        "brief_hash": "1eea08711fd93a3612936e057e665ddb2236d4dcfd46f166bfeb4aa22f17b20e",
+        "cli_context": {
+          "issue_id": "01a1beda-6dc5-7b2b-903c-0b35390217e7",
+          "agent_id": "0d0526da-6e60-444c-8bdd-e57747e5b49c",
+          "title": "Host switch execution 8c7c4ccf13fa",
+          "description": "Test-owned switch context 8c7c4ccf13fa. Ordinary fake Claude on two native host runtimes.",
+          "inputs": [
+            {
+              "command_id": "f32a58ab-4c66-4965-af3c-1319e4a83244",
+              "author_user_id": "ee345621-57be-42a3-b543-b4cb9a49c9df",
+              "participant_epoch": "1",
+              "account_epoch": "1",
+              "lifecycle_epoch": "1",
+              "body": "Handler continues the work after the first turn [@Switch squad S 8c7c4ccf13fa](mention://squad/91dc54b6-00af-4e1d-8f44-96f29774cd2d)",
+              "attachment_ids": []
+            }
+          ],
+          "squad_id": "91dc54b6-00af-4e1d-8f44-96f29774cd2d",
+          "step_kind": "leader",
+          "roster": [
+            {
+              "agent_id": "0d0526da-6e60-444c-8bdd-e57747e5b49c",
+              "name": "Switch leader L2 8c7c4ccf13fa",
+              "role": "leader"
+            },
+            {
+              "agent_id": "c394dd0a-e435-4de1-8fdb-976bb21fe6a5",
+              "name": "Switch leader L1 8c7c4ccf13fa",
+              "role": "member"
+            }
+          ],
+          "comments": [
+            {
+              "id": "5cfb81f1-a0f2-418c-a635-a2f66a689a65",
+              "author_type": "member",
+              "author_id": "4298117b-2a96-4d02-bfe8-7f6a4c9d3225",
+              "author_name": "Host collaborator Switch",
+              "content": "Owner asks squad S to start on runtime one [@Switch squad S 8c7c4ccf13fa](mention://squad/91dc54b6-00af-4e1d-8f44-96f29774cd2d)",
+              "parent_id": null,
+              "created_at": "2026-11-09T13:49:09.956158+08:00"
+            },
+            {
+              "id": "dc23325b-9b25-40ee-990b-93dc5efcfe0d",
+              "author_type": "member",
+              "author_id": "ee345621-57be-42a3-b543-b4cb9a49c9df",
+              "author_name": "Host collaborator Peer",
+              "content": "Handler continues the work after the first turn [@Switch squad S 8c7c4ccf13fa](mention://squad/91dc54b6-00af-4e1d-8f44-96f29774cd2d)",
+              "parent_id": null,
+              "created_at": "2026-11-09T13:49:12.256361+08:00"
+            }
+          ],
+          "dispatch_comment": ""
+        },
+        "cli_hash": "211f217e7f66470b94dbb6db652b80101c2433157841f520c288ebdb1f111493",
+        "execution_mode": "host_process_supervision_v1",
+        "identity": {
+          "batch_id": "5e828818-e0de-40f1-ad07-8c5aeac951a6",
+          "channel_id": "e5f71242-a9c1-44db-8f62-9850a74bd5e0",
+          "claim_generation": "1",
+          "deployment_id": "a76529f9-ed09-4197-b75e-e24c6273d35c",
+          "fence": "1",
+          "group_id": "1f484126-a5d0-494e-a8fb-f54748ff33c0",
+          "installation_id": "d0154cd9-9748-4955-9d69-2b929270274f",
+          "issue_id": "01a1beda-6dc5-7b2b-903c-0b35390217e7",
+          "run_id": "c75e7787-2185-4924-83c5-4fd49bbba587",
+          "session_id": "134315a1-20db-4da1-aa12-8cce3082c288",
+          "target_id": "6e19b786-d95c-487f-98d7-9f279f9e0785"
+        },
+        "inputs": [
+          {
+            "command_id": "f32a58ab-4c66-4965-af3c-1319e4a83244",
+            "author_user_id": "ee345621-57be-42a3-b543-b4cb9a49c9df",
+            "body": "Handler continues the work after the first turn [@Switch squad S 8c7c4ccf13fa](mention://squad/91dc54b6-00af-4e1d-8f44-96f29774cd2d)",
+            "attachment_ids": []
+          }
+        ],
+        "knowledge_observation": {
+          "prompt_sha256": "b030bfd75c8c69accaed519884bc33d759489c3b7bb9ef48424085b81f2d3ae6",
+          "section_present": false,
+          "contributions": [],
+          "no_session_persistence": false
+        },
+        "protocol_version": 3,
+        "resource_owner_id": "4298117b-2a96-4d02-bfe8-7f6a4c9d3225",
+        "resumed": false,
+        "session_hash": "fedf6eb5587000778311ab28c0be8291a743d4ab81d1951a8983b7de77659072",
+        "temp_hash": "104908a1fe6910c2c841a284995818eff05ef9dbc642af95e124c44a06e1c6da",
+        "workdir_files": {
+          "CLAUDE.md": "1eea08711fd93a3612936e057e665ddb2236d4dcfd46f166bfeb4aa22f17b20e",
+          "attachments/9d4b4960-aa04-45d0-96f6-c36cce004d62/1": "26b5cc751b8a3345b6906c70f05b7418d4ea9e2ef73cf3322213f03c088462e4"
+        },
+        "workdir_hash": "ef14d631048e987350e37defe35215c5f2e783355d052c762e92dd7b080b4a34",
+        "started_ms": 10222.359125,
+        "released_ms": 11097.586167,
+        "closed_ms": 11098.632917,
+        "replies": []
+      }
+    ]
+  },
+  "page_errors": []
+}
