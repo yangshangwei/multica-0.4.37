@@ -802,3 +802,38 @@ Archived 11-01-branch-e2e-acceptance at the user's request. Preserved the retain
 ### Next Steps
 
 - Continue any remaining platform or repair work in a separate active task if needed.
+
+
+## Session 146: 提交六项进度核对与三项业务闭环验收
+<!-- trellis-session: v=2 fp=9c528e586a21183e -->
+
+**Date**: 2026-11-10
+**Task**: 提交六项进度核对与三项业务闭环验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+提交模拟业务QA及证据、六项真实进度校准与M1受控制品规划；归档已验收QA，保留真实模型阻塞及其他会话修改。
+
+### Main Changes
+
+- 三项业务最终通过，四次历史失败保留；实际12次受控执行和12份退出证明
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `b6cf86433` | test(collaboration): prove outsourced delivery and recovery close correctly |
+| `30a3ba341` | docs(plan): separate real acceptance blockers from completed business work |
+
+### Testing
+
+- [OK] 沿用相同签名源码的定向TypeScript、ESLint和独立证据PASS；提交前范围、JSON、上下文及diff检查通过
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 实施独立复审已就绪的M1受控制品子任务；真实模型系列分别处理网关、CLI绑定和停止规则
