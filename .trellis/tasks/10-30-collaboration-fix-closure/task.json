@@ -49,7 +49,7 @@
       "includes_H2b": true,
       "H6_launches_per_trial": 2
     },
-    "next_action": "runtime_owner_completes_manifesthelper_controls_review_and_fresh_binding_window_beforeH1; originalE5remaining8paused",
+    "next_action": "Review E5 disposition while retaining its original scoring and stopped ledger.",
     "progress_phase": "blocked_on_registered_E5_output_canary",
     "experiment_next_arm": "baseline",
     "e2b_status": "3_valid_pass",
@@ -209,6 +209,10 @@
       "runtime_owner_disposition": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/disposition.json",
       "H1": "closed_pending_successorhelperreview_rebinding_window",
       "calls": 0
+    },
+    "progress_audit_2026_11_10": {
+      "report": "docs/plans/2026-11-10-business-progress-and-execution.zh-CN.md",
+      "finding": "E5 old-baseline trial1 is a valid canary-output failure, not a provider outage; 19 consumed and 8 remaining. H5 reference-only regression is already integrated; frozen overlay stop fixes must not be treated as forgotten product merges."
     }
   }
 }

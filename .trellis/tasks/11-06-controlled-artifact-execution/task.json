@@ -1,0 +1,43 @@
+{
+  "id": "controlled-artifact-execution",
+  "name": "controlled-artifact-execution",
+  "title": "M1 受控发布候选制品执行",
+  "description": "实现发布候选制品打包的受控高风险执行器：审批绑定 actor/resource/action/commit/artifact/environment/argv digest/expiry，一次性领取和执行回执，未知结果不得自动重跑；本地 synthetic adapter 验收。",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-06",
+  "completedAt": null,
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "codex/cross-workspace-collaboration",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "11-05-agent-squad-rnd-improvements",
+  "relatedFiles": [],
+  "notes": "2026-11-10：现有本地制品范围下已重写冲突设计；第二轮独立复审关闭锁序及workspace删除留证B1/B2，规划合同就绪。尚未实施，保持planning；不得将规划复审PASS计为产品验收。",
+  "meta": {
+    "implementation_status": "not_started",
+    "planning_status": "contracts_reviewed_ready_implementation_pending",
+    "reconciled_from_worktree": "/Volumes/artisan/code/2026/mc-agent-rnd-m1-20261105/",
+    "planning_source_head": "01becb2b0abf2508a6f5a4886cbae58560c9ec1c",
+    "next_action": "Activate existing reviewed local-synthetic implementation scope, then implement canonical spec, retained approval/receipt and confined tar adapter with concurrency/deletion matrix.",
+    "status_reconciliation_2026_11_09": {
+      "source_head": "b10da8fec9dab057f9830bd336369d42e27b8c85",
+      "report": "docs/audits/2026-11-09-active-task-reconciliation.zh-CN.md",
+      "archive_ready": false,
+      "previous_current_fields": {
+        "status": "in_progress",
+        "notes": "",
+        "meta": {}
+      }
+    },
+    "plan_recheck": "plan-recheck-2026-11-10.md"
+  }
+}

@@ -1053,7 +1053,12 @@
       "docs_updated": [
         "docs/offline-upgrade.zh-CN.md section 8.3: gate defaults after 744, closing creation after upgrade, read-only state query, no mixed old/new backends on one database"
       ]
-    }
+    },
+    "progress_audit_2026_11_10": {
+      "report": "docs/plans/2026-11-10-business-progress-and-execution.zh-CN.md",
+      "finding": "AC43 remains incomplete; historical frozen candidate differs in three pinned product files from HEAD. Existing business QA tests are implemented; first S2/S3 run failed, now repairing only harness."
+    },
+    "next_action": "Rebind current AC43 candidate before real acceptance; finish independent synthetic business QA without counting it as AC43."
   },
   "continuation_product_2026_10_18": {
     "status": "verified_product_increment",
