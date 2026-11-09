@@ -250,6 +250,23 @@ leaves before target joins and return every SQL error to the transaction owner.
 Transport failure injection must cover SendBatch as well as Exec/Query paths.
 The borrowed single-issue writer retains the original caller transaction.
 
+Lifecycle preview/apply resolve running execution counts in one query for the
+already authorized workspace and exact issue IDs. Count only `running`, not
+queued/dispatched/waiting or terminal tasks. Keep this read after the existing
+issue/reference locks; preview retains its repeatable-read snapshot and apply
+retains the fresh statement after its locks. Empty issue sets issue no count SQL.
+
+Closure membership preparation pipelines the canonical participation `SELECT
+... FOR UPDATE` for unique issues in the existing issue lock order, source before
+target per issue. The caller must already hold all iteration, issue and reference
+locks, including the status catalog. Preserve missing-source errors, missing or
+historical target semantics, current-participation validation and aligned results;
+consume all batch results and close before later queries or any writes. Duplicate
+inputs fail before SQL, empty sets do no SQL, and single-issue callers retain the
+original preparation path. Query parity and lifecycle rollback/concurrency tests
+must remain alongside the performance gate; do not increase latency thresholds or
+warmups to compensate for per-issue round trips.
+
 Notifications use the outbox ID as inbox ID; insertion, delivered marking and
 current-recipient authorization share one transaction. Revoke removes inbox
 content but keeps suppressed outbox tombstones so rejoin cannot reconstruct

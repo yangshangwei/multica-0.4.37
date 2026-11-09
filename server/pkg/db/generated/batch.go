@@ -274,6 +274,71 @@ func (b *LeaveDeletedIssueIterationParticipationBatchBatchResults) Close() error
 	return b.br.Close()
 }
 
+const lockIssueIterationParticipationBatch = `-- name: LockIssueIterationParticipationBatch :batchone
+SELECT workspace_id, iteration_id, issue_id, first_joined_at, current_joined_at, has_started_current_participation, last_left_at, in_original, original_facts FROM iteration_participation
+WHERE workspace_id=$1 AND iteration_id=$2 AND issue_id=$3
+FOR UPDATE
+`
+
+type LockIssueIterationParticipationBatchBatchResults struct {
+	br     pgx.BatchResults
+	tot    int
+	closed bool
+}
+
+type LockIssueIterationParticipationBatchParams struct {
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	IterationID pgtype.UUID `json:"iteration_id"`
+	IssueID     pgtype.UUID `json:"issue_id"`
+}
+
+func (q *Queries) LockIssueIterationParticipationBatch(ctx context.Context, arg []LockIssueIterationParticipationBatchParams) *LockIssueIterationParticipationBatchBatchResults {
+	batch := &pgx.Batch{}
+	for _, a := range arg {
+		vals := []interface{}{
+			a.WorkspaceID,
+			a.IterationID,
+			a.IssueID,
+		}
+		batch.Queue(lockIssueIterationParticipationBatch, vals...)
+	}
+	br := q.db.SendBatch(ctx, batch)
+	return &LockIssueIterationParticipationBatchBatchResults{br, len(arg), false}
+}
+
+func (b *LockIssueIterationParticipationBatchBatchResults) QueryRow(f func(int, IterationParticipation, error)) {
+	defer b.br.Close()
+	for t := 0; t < b.tot; t++ {
+		var i IterationParticipation
+		if b.closed {
+			if f != nil {
+				f(t, i, ErrBatchAlreadyClosed)
+			}
+			continue
+		}
+		row := b.br.QueryRow()
+		err := row.Scan(
+			&i.WorkspaceID,
+			&i.IterationID,
+			&i.IssueID,
+			&i.FirstJoinedAt,
+			&i.CurrentJoinedAt,
+			&i.HasStartedCurrentParticipation,
+			&i.LastLeftAt,
+			&i.InOriginal,
+			&i.OriginalFacts,
+		)
+		if f != nil {
+			f(t, i, err)
+		}
+	}
+}
+
+func (b *LockIssueIterationParticipationBatchBatchResults) Close() error {
+	b.closed = true
+	return b.br.Close()
+}
+
 const setIssueCurrentIterationBatch = `-- name: SetIssueCurrentIterationBatch :batchone
 UPDATE issue SET current_iteration_id = $1,
     iteration_rollover_count = $2, revision = revision + 1,

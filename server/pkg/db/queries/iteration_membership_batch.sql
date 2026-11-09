@@ -53,3 +53,8 @@ WHERE workspace_id = sqlc.arg('workspace_id') AND id = sqlc.arg('issue_id')
     AND revision = sqlc.arg('expected_revision')
     AND admission_status IN ('not_required', 'accepted')
 RETURNING *;
+
+-- name: LockIssueIterationParticipationBatch :batchone
+SELECT * FROM iteration_participation
+WHERE workspace_id=$1 AND iteration_id=$2 AND issue_id=$3
+FOR UPDATE;

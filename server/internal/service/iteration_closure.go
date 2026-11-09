@@ -40,6 +40,8 @@ func (s *IterationService) prepareClosure(ctx context.Context, tx pgx.Tx, ws pgt
 			choices[c.IssueID] = c.Retain
 		}
 	}
+	inputs := []iteration.MembershipInput{}
+	rollovers := []bool{}
 	for _, issue := range p.issues {
 		id := util.UUIDToString(issue.ID)
 		category := facts[id].StatusCategory
@@ -100,14 +102,20 @@ func (s *IterationService) prepareClosure(ctx context.Context, tx pgx.Tx, ws pgt
 			}
 		}
 		if lock {
-			change, e := iteration.PrepareMembershipChange(ctx, tx, issue, p.rows[issue.CurrentIterationID], target, false)
-			if e != nil {
-				return e
-			}
-			change.Reason = iterationClosureReason(draft)
-			change.Rollover = rollover
-			p.changes = append(p.changes, change)
+			inputs = append(inputs, iteration.MembershipInput{Before: issue, Source: p.rows[issue.CurrentIterationID], Target: target})
+			rollovers = append(rollovers, rollover)
 		}
+	}
+	if lock {
+		changes, err := iteration.PrepareMembershipChanges(ctx, tx, inputs)
+		if err != nil {
+			return err
+		}
+		for i, change := range changes {
+			change.Reason = iterationClosureReason(draft)
+			change.Rollover = rollovers[i]
+		}
+		p.changes = append(p.changes, changes...)
 	}
 	for id := range moves {
 		id := id
