@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
+import { StrictMode } from "react";
 import userEvent from "@testing-library/user-event";
 import { I18nProvider } from "@multica/core/i18n/react";
 import enCommon from "../locales/en/common.json";
@@ -13,6 +14,7 @@ const TEST_RESOURCES = {
 const mocks = vi.hoisted(() => ({
   questionnaire: {} as Record<string, unknown>,
   saveQuestionnaire: vi.fn(),
+  sessionScope: "session-1",
 }));
 
 vi.mock("../auth", () => ({ useLogout: () => vi.fn() }));
@@ -24,7 +26,7 @@ vi.mock("@multica/core/config", () => ({
 }));
 
 vi.mock("@multica/core/api", () => ({
-  api: { getBaseUrl: () => "https://multica.ai" },
+  api: { getBaseUrl: () => "https://multica.ai", getSessionScope: () => mocks.sessionScope },
 }));
 
 vi.mock("@multica/core/workspace/mutations", () => ({
@@ -74,7 +76,52 @@ function renderFlow(props: Record<string, unknown>) {
 describe("OnboardingFlow — new-workspace mode", () => {
   beforeEach(() => {
     mocks.questionnaire = {};
+    mocks.sessionScope = "session-1";
     mocks.saveQuestionnaire.mockReset().mockResolvedValue(undefined);
+  });
+
+  it("does not send queued answers using a replacement session", async () => {
+    let release!: () => void;
+    mocks.saveQuestionnaire.mockImplementationOnce(() => new Promise<void>((resolve) => { release = resolve; }));
+    const user = userEvent.setup();
+    renderFlow({ mode: "new_workspace", onCancel: vi.fn() });
+    await user.click(screen.getByRole("button", { name: "Start exploring" }));
+    await user.click(screen.getByRole("radio", { name: "Engineer" }));
+    await user.click(screen.getByRole("checkbox", { name: /code & test with agents/i }));
+    mocks.sessionScope = "replacement-session";
+    await act(async () => { release(); });
+    expect(mocks.saveQuestionnaire).toHaveBeenCalledTimes(1);
+  });
+
+  it("serializes whole-questionnaire snapshots so later answers cannot be overwritten", async () => {
+    let releaseFirst!: () => void;
+    const persisted: Record<string, unknown>[] = [];
+    mocks.saveQuestionnaire.mockImplementationOnce(async (answers) => {
+      await new Promise<void>((resolve) => { releaseFirst = resolve; });
+      persisted.push(answers);
+    }).mockImplementation(async (answers) => { persisted.push(answers); });
+    const user = userEvent.setup();
+    renderFlow({ mode: "new_workspace", onCancel: vi.fn() });
+    await user.click(screen.getByRole("button", { name: "Start exploring" }));
+    await user.click(screen.getByRole("radio", { name: "Engineer" }));
+    await user.click(screen.getByRole("checkbox", { name: /code & test with agents/i }));
+    await user.click(screen.getByRole("radio", { name: enOnboarding.questions.role.designer }));
+    expect(mocks.saveQuestionnaire).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("checkbox", { name: /code & test with agents/i })).toBeChecked();
+    await act(async () => { releaseFirst(); });
+    await waitFor(() => expect(persisted).toHaveLength(3));
+    expect(persisted.at(-1)).toMatchObject({ role: "designer", use_case: ["ship_code"] });
+  });
+
+  it("persists each selection once when React checks state updater purity", async () => {
+    const user = userEvent.setup();
+    render(<StrictMode><I18nProvider locale="en" resources={TEST_RESOURCES}>
+      <OnboardingFlow mode="new_workspace" onComplete={vi.fn()} />
+    </I18nProvider></StrictMode>);
+    await user.click(screen.getByRole("button", { name: "Start exploring" }));
+    await user.click(screen.getByRole("radio", { name: "Engineer" }));
+    await user.click(screen.getByRole("checkbox", { name: /code & test with agents/i }));
+    expect(mocks.saveQuestionnaire).toHaveBeenCalledTimes(2);
   });
 
   it("starts at Welcome and advances to About you", async () => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithI18n } from "../test/i18n";
 
@@ -12,6 +12,8 @@ const mocks = vi.hoisted(() => ({
   saveQuestionnaire: vi.fn(),
   welcome: vi.fn(),
 }));
+
+vi.mock("@multica/core/api", () => ({ api: { getSessionScope: () => "session-1" } }));
 
 vi.mock("@multica/core/auth", () => ({
   useAuthStore: Object.assign(
@@ -43,8 +45,8 @@ vi.mock("./components/step-shell", () => ({
 vi.mock("./components/onboarding-logout-button", () => ({ OnboardingLogoutButton: () => null }));
 // The real questionnaire and navigation are covered by onboarding-flow-mode.test.tsx.
 vi.mock("./steps/step-about-you", () => ({
-  StepAboutYou: ({ onAdvance }: { onAdvance: () => void }) => (
-    <button onClick={onAdvance}>Continue questionnaire</button>
+  StepAboutYou: ({ onAdvance, onChange }: { onAdvance: () => void; onChange: (patch: { role: "engineer"; use_case: ["ship_code"] }) => void }) => (
+    <button onClick={() => { onChange({ role: "engineer", use_case: ["ship_code"] }); onAdvance(); }}>Continue questionnaire</button>
   ),
 }));
 vi.mock("./steps/step-workspace", () => ({
@@ -71,6 +73,41 @@ beforeEach(() => {
 });
 
 describe("new workspace completion", () => {
+  it.each(["Use runtime", "Skip runtime"])("waits for the latest questionnaire before completing through %s", async (choice) => {
+    let release!: () => void;
+    mocks.saveQuestionnaire.mockImplementationOnce(() => new Promise<void>((resolve) => { release = resolve; }));
+    const user = userEvent.setup();
+    const onComplete = vi.fn();
+    renderWithI18n(<OnboardingFlow mode="new_workspace" onComplete={onComplete} />);
+    await user.click(screen.getByRole("button", { name: /Start exploring/ }));
+    await user.click(screen.getByRole("button", { name: "Continue questionnaire" }));
+    await user.click(screen.getByRole("button", { name: "Create workspace" }));
+    await user.click(screen.getByRole("button", { name: choice }));
+    expect(mocks.completeOnboarding).not.toHaveBeenCalled();
+    expect(mocks.saveQuestionnaire).toHaveBeenCalledTimes(1);
+    await act(async () => { release(); });
+    await waitFor(() => expect(onComplete).toHaveBeenCalled());
+    expect(mocks.saveQuestionnaire).toHaveBeenLastCalledWith(expect.objectContaining({ role: "engineer", use_case: ["ship_code"] }));
+    expect(mocks.saveQuestionnaire.mock.invocationCallOrder.at(-1)).toBeLessThan(mocks.completeOnboarding.mock.invocationCallOrder[0]!);
+  });
+
+  it("keeps runtime-skip completion available for retry when the final questionnaire save fails", async () => {
+    const user = userEvent.setup();
+    const onComplete = vi.fn();
+    renderWithI18n(<OnboardingFlow mode="new_workspace" onComplete={onComplete} />);
+    await user.click(screen.getByRole("button", { name: /Start exploring/ }));
+    await user.click(screen.getByRole("button", { name: "Continue questionnaire" }));
+    await user.click(screen.getByRole("button", { name: "Create workspace" }));
+    mocks.saveQuestionnaire.mockRejectedValueOnce(new Error("Questionnaire unavailable"));
+    await user.click(screen.getByRole("button", { name: "Skip runtime" }));
+    expect(mocks.completeOnboarding).not.toHaveBeenCalled();
+    expect(onComplete).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "Skip runtime" }));
+    await waitFor(() => expect(onComplete).toHaveBeenCalled());
+    expect(mocks.saveQuestionnaire).toHaveBeenLastCalledWith(expect.objectContaining({ role: "engineer", use_case: ["ship_code"] }));
+    expect(mocks.completeOnboarding).toHaveBeenCalledTimes(1);
+  });
+
   it.each([
     { locale: "en", language: "en", title: "Getting started with 小阿孚" },
     { locale: "zh-Hans", language: "zh", title: "开始使用小阿孚" },

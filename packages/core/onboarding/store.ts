@@ -18,7 +18,12 @@ import type { OnboardingCompletionPath, QuestionnaireAnswers } from "./types";
 export async function saveQuestionnaire(
   answers: Partial<QuestionnaireAnswers>,
 ): Promise<void> {
+  const scope = api.getSessionScope();
+  const userId = useAuthStore.getState().user?.id;
   const user = await api.patchOnboarding({ questionnaire: answers });
+  if (api.getSessionScope() !== scope || useAuthStore.getState().user?.id !== userId) {
+    throw new DOMException("Onboarding session changed", "AbortError");
+  }
   useAuthStore.getState().setUser(user);
   // Mirror the three cohort signals into person properties so every
   // PostHog event on this user can be broken down by source / role /
