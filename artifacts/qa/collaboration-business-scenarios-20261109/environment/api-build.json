@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/server",
+    "build",
+    "-ldflags",
+    "-X main.commit=b10da8fec9dab057f9830bd336369d42e27b8c85",
+    "-o",
+    "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/bin/api",
+    "./cmd/server"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source",
+  "exit_code": 0,
+  "seconds": 31.0
+}

@@ -1,0 +1,581 @@
+{
+  "scenario": "s1-outsourcing",
+  "result": "passed",
+  "topology": {
+    "client": {
+      "account_id": "e11228a5-1c10-4609-83c6-c420a167dcd2",
+      "workspace_id": "57e47b19-2ec6-4764-8094-5348038082b9"
+    },
+    "vendor_manager": {
+      "account_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+      "workspace_id": "d8977bf3-757d-4a59-973a-009a612f9fd2",
+      "runtime_id": "d05c78c0-a641-4a63-b8ee-006fa02d84d4",
+      "installation_id": "c9beb089-5756-494a-a32f-1de89360fe16",
+      "squad_id": "c10694b2-a83d-4cb4-84f2-ae3872dff146",
+      "leader_id": "d28fa90f-5599-4c77-9a81-d27376a7dfd5",
+      "member_id": "39090b77-0627-470f-a385-1f9738e4fcc3"
+    },
+    "vendor_engineer": {
+      "account_id": "7effcfee-7a96-4d16-9575-cf462cec1f1c",
+      "workspaces": []
+    },
+    "rival_account_id": "2c0627e1-6916-420b-8116-c0e594f63699"
+  },
+  "phase_two": {
+    "issue_id": "01a1c127-ae9b-70c7-814e-402de6139fd2",
+    "run_id": "f287c609-8d93-475d-8c36-80aeb798925e",
+    "knowledge_observation": {
+      "prompt_sha256": "09b9645d52891a0038701fbac2be6b62ef6bde469d11e56e2d40648355a2750f",
+      "section_present": true,
+      "contributions": [
+        {
+          "candidate_id": "e7f6900e-2de3-4ff0-bdbf-8882cf2f7a73",
+          "version": "1",
+          "source_issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45",
+          "content_sha256": "a1b1c3d26be430f600653430386ff2897f9a65a03f6fc0d4059afe0dccf5dcd9"
+        }
+      ],
+      "no_session_persistence": true
+    }
+  },
+  "page_errors": [],
+  "provider_observations": [
+    {
+      "owner_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+      "runtime_id": "d05c78c0-a641-4a63-b8ee-006fa02d84d4",
+      "visits": [
+        {
+          "identity": {
+            "batch_id": "261e77a0-ac96-4780-8460-497750abbd19",
+            "channel_id": "e7105576-457f-41b8-83c2-11bf96cfd432",
+            "claim_generation": "1",
+            "deployment_id": "dea2af91-a2e1-436d-b463-5a7bc7d56de0",
+            "fence": "1",
+            "group_id": "af425f2b-11e9-407c-866e-7271ce6788b8",
+            "installation_id": "c9beb089-5756-494a-a32f-1de89360fe16",
+            "issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45",
+            "run_id": "bc50f9a2-fca0-4759-b3a8-8b57cb659c9b",
+            "session_id": "8101d817-f6d6-4dc2-914e-e054d1d2eea0",
+            "target_id": "e1f7f459-4019-478b-aeb7-f79190e7a319"
+          },
+          "inputs": [
+            {
+              "command_id": "550a6264-8368-45b5-9ff6-443ec57c0e71",
+              "author_user_id": "7effcfee-7a96-4d16-9575-cf462cec1f1c",
+              "body": "Deliver paginated order exports per the attached requirements. [@Vendor delivery squad 32d0804abd](mention://squad/c10694b2-a83d-4cb4-84f2-ae3872dff146)",
+              "attachment_ids": []
+            }
+          ],
+          "agent_id": "d28fa90f-5599-4c77-9a81-d27376a7dfd5",
+          "agent_owner_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+          "resource_owner_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+          "step_kind": "leader",
+          "squad_id": "c10694b2-a83d-4cb4-84f2-ae3872dff146",
+          "dispatch_comment": "",
+          "attachment_hashes": {
+            "24af923a-24b0-4feb-9a27-1fb0b3a07084": "6a6b99844038464a6821e7a5931940cd879fa0f7936df880f5fc3250f91b0fce"
+          },
+          "knowledge_observation": {
+            "prompt_sha256": "0d5f9d01518c4de204cec084bd1540bb83ad0ededa11e6b296553929af797f07",
+            "section_present": true,
+            "contributions": [],
+            "no_session_persistence": true
+          },
+          "started_ms": 17933.349041,
+          "released_ms": 19263.007291,
+          "closed_ms": 19272.481375,
+          "replies": [
+            {
+              "receipts": [
+                {
+                  "kind": "comment",
+                  "request_id": "a80409e9-f66c-45fe-9174-a11b239384ed",
+                  "result": {
+                    "comment_id": "a80409e9-f66c-45fe-9174-a11b239384ed",
+                    "continuation_run_id": null,
+                    "run_ids": [
+                      "413a54ee-5a31-4d7e-bc78-d35f4133f180"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "identity": {
+            "batch_id": "261e77a0-ac96-4780-8460-497750abbd19",
+            "channel_id": "e7105576-457f-41b8-83c2-11bf96cfd432",
+            "claim_generation": "1",
+            "deployment_id": "dea2af91-a2e1-436d-b463-5a7bc7d56de0",
+            "fence": "1",
+            "group_id": "af425f2b-11e9-407c-866e-7271ce6788b8",
+            "installation_id": "c9beb089-5756-494a-a32f-1de89360fe16",
+            "issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45",
+            "run_id": "413a54ee-5a31-4d7e-bc78-d35f4133f180",
+            "session_id": "8101d817-f6d6-4dc2-914e-e054d1d2eea0",
+            "target_id": "e1f7f459-4019-478b-aeb7-f79190e7a319"
+          },
+          "inputs": [
+            {
+              "command_id": "550a6264-8368-45b5-9ff6-443ec57c0e71",
+              "author_user_id": "7effcfee-7a96-4d16-9575-cf462cec1f1c",
+              "body": "Deliver paginated order exports per the attached requirements. [@Vendor delivery squad 32d0804abd](mention://squad/c10694b2-a83d-4cb4-84f2-ae3872dff146)",
+              "attachment_ids": []
+            }
+          ],
+          "agent_id": "39090b77-0627-470f-a385-1f9738e4fcc3",
+          "agent_owner_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+          "resource_owner_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+          "step_kind": "member",
+          "squad_id": "c10694b2-a83d-4cb4-84f2-ae3872dff146",
+          "dispatch_comment": "[@Vendor developer 32d0804abd](mention://agent/39090b77-0627-470f-a385-1f9738e4fcc3) implement cursor pagination for the export and report back",
+          "attachment_hashes": {
+            "24af923a-24b0-4feb-9a27-1fb0b3a07084": "6a6b99844038464a6821e7a5931940cd879fa0f7936df880f5fc3250f91b0fce"
+          },
+          "knowledge_observation": {
+            "prompt_sha256": "ede7e5a69b55039050799e45cf8a0fedd7ac072d98de20ae239cf14d320ccfd5",
+            "section_present": true,
+            "contributions": [],
+            "no_session_persistence": true
+          },
+          "started_ms": 24084.553625,
+          "released_ms": 24505.504416,
+          "closed_ms": 24524.803208,
+          "replies": [
+            {
+              "receipts": [
+                {
+                  "kind": "comment",
+                  "request_id": "8c437680-fb89-48cc-a5f1-04b4ce16f506",
+                  "result": {
+                    "comment_id": "8c437680-fb89-48cc-a5f1-04b4ce16f506",
+                    "continuation_run_id": "76a2358d-fc19-4ca2-8da5-6691637a972e",
+                    "run_ids": []
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "identity": {
+            "batch_id": "261e77a0-ac96-4780-8460-497750abbd19",
+            "channel_id": "e7105576-457f-41b8-83c2-11bf96cfd432",
+            "claim_generation": "1",
+            "deployment_id": "dea2af91-a2e1-436d-b463-5a7bc7d56de0",
+            "fence": "1",
+            "group_id": "af425f2b-11e9-407c-866e-7271ce6788b8",
+            "installation_id": "c9beb089-5756-494a-a32f-1de89360fe16",
+            "issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45",
+            "run_id": "76a2358d-fc19-4ca2-8da5-6691637a972e",
+            "session_id": "8101d817-f6d6-4dc2-914e-e054d1d2eea0",
+            "target_id": "e1f7f459-4019-478b-aeb7-f79190e7a319"
+          },
+          "inputs": [
+            {
+              "command_id": "550a6264-8368-45b5-9ff6-443ec57c0e71",
+              "author_user_id": "7effcfee-7a96-4d16-9575-cf462cec1f1c",
+              "body": "Deliver paginated order exports per the attached requirements. [@Vendor delivery squad 32d0804abd](mention://squad/c10694b2-a83d-4cb4-84f2-ae3872dff146)",
+              "attachment_ids": []
+            }
+          ],
+          "agent_id": "d28fa90f-5599-4c77-9a81-d27376a7dfd5",
+          "agent_owner_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+          "resource_owner_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+          "step_kind": "continuation",
+          "squad_id": "c10694b2-a83d-4cb4-84f2-ae3872dff146",
+          "dispatch_comment": "",
+          "attachment_hashes": {
+            "24af923a-24b0-4feb-9a27-1fb0b3a07084": "6a6b99844038464a6821e7a5931940cd879fa0f7936df880f5fc3250f91b0fce"
+          },
+          "knowledge_observation": {
+            "prompt_sha256": "3a45419f05ba0904b421aeb20f2ede287658243090aaecbdc8369de280844ce5",
+            "section_present": true,
+            "contributions": [],
+            "no_session_persistence": true
+          },
+          "started_ms": 29002.404125,
+          "released_ms": 29736.170291,
+          "closed_ms": 29739.729333,
+          "replies": [
+            {
+              "receipts": [
+                {
+                  "kind": "comment",
+                  "request_id": "c628ca75-955b-4b93-a7de-af6efe74a8f1",
+                  "result": {
+                    "comment_id": "c628ca75-955b-4b93-a7de-af6efe74a8f1",
+                    "continuation_run_id": null,
+                    "run_ids": []
+                  }
+                },
+                {
+                  "kind": "squad_activity",
+                  "request_id": "93098c89-91b0-4db4-becd-009cf3452da7",
+                  "result": {
+                    "code": "squad_activity_recorded"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "identity": {
+            "batch_id": "f2be1ed0-e291-4ce1-a9a4-81e15bc5f6ec",
+            "channel_id": "e7105576-457f-41b8-83c2-11bf96cfd432",
+            "claim_generation": "1",
+            "deployment_id": "dea2af91-a2e1-436d-b463-5a7bc7d56de0",
+            "fence": "1",
+            "group_id": "65340893-bbf2-4244-a4b5-bdcd75e03e99",
+            "installation_id": "c9beb089-5756-494a-a32f-1de89360fe16",
+            "issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45",
+            "run_id": "2dc03a0e-6a35-48e4-89c2-9beefb87c40c",
+            "session_id": "8101d817-f6d6-4dc2-914e-e054d1d2eea0",
+            "target_id": "e1f7f459-4019-478b-aeb7-f79190e7a319"
+          },
+          "inputs": [
+            {
+              "command_id": "46b275e9-75b2-4849-b523-40e7f48a7641",
+              "author_user_id": "7effcfee-7a96-4d16-9575-cf462cec1f1c",
+              "body": "Add the accessibility acceptance notes the client asked for. [@Vendor delivery squad 32d0804abd](mention://squad/c10694b2-a83d-4cb4-84f2-ae3872dff146)",
+              "attachment_ids": []
+            }
+          ],
+          "agent_id": "d28fa90f-5599-4c77-9a81-d27376a7dfd5",
+          "agent_owner_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+          "resource_owner_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+          "step_kind": "leader",
+          "squad_id": "c10694b2-a83d-4cb4-84f2-ae3872dff146",
+          "dispatch_comment": "",
+          "attachment_hashes": {
+            "24af923a-24b0-4feb-9a27-1fb0b3a07084": "6a6b99844038464a6821e7a5931940cd879fa0f7936df880f5fc3250f91b0fce"
+          },
+          "knowledge_observation": {
+            "prompt_sha256": "90be0578672b607ed18c9e151beab63cfb8a9557d77a04de6846fcb341432487",
+            "section_present": true,
+            "contributions": [],
+            "no_session_persistence": true
+          },
+          "started_ms": 40865.809916,
+          "released_ms": 42572.232875,
+          "closed_ms": 42574.562041,
+          "replies": [
+            {
+              "receipts": [
+                {
+                  "kind": "comment",
+                  "request_id": "3fe16ea0-cb1e-43e1-8cc4-d5b34f377e25",
+                  "result": {
+                    "comment_id": "3fe16ea0-cb1e-43e1-8cc4-d5b34f377e25",
+                    "continuation_run_id": null,
+                    "run_ids": []
+                  }
+                },
+                {
+                  "kind": "squad_activity",
+                  "request_id": "08744895-8554-42c5-8530-edbb6427891e",
+                  "result": {
+                    "code": "squad_activity_recorded"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "identity": {
+            "batch_id": "e9df30f1-7cda-467a-9472-6f4556c864e5",
+            "channel_id": "02a38539-78a2-4c66-aac0-315cd2b2dc59",
+            "claim_generation": "1",
+            "deployment_id": "dea2af91-a2e1-436d-b463-5a7bc7d56de0",
+            "fence": "1",
+            "group_id": "659eff22-3314-4d05-b70f-cd2cd1d27815",
+            "installation_id": "c9beb089-5756-494a-a32f-1de89360fe16",
+            "issue_id": "01a1c127-ae9b-70c7-814e-402de6139fd2",
+            "run_id": "f287c609-8d93-475d-8c36-80aeb798925e",
+            "session_id": "c945732e-0839-4ea0-b5aa-fd047205e707",
+            "target_id": "28a0436e-025c-47fd-ae85-b860559b8670"
+          },
+          "inputs": [
+            {
+              "command_id": "390ba13a-49f4-4871-bc90-90b1e83745de",
+              "author_user_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+              "body": "Plan the refund export using our approved pagination rule. [@Vendor architect 32d0804abd](mention://agent/d28fa90f-5599-4c77-9a81-d27376a7dfd5)",
+              "attachment_ids": []
+            }
+          ],
+          "agent_id": "d28fa90f-5599-4c77-9a81-d27376a7dfd5",
+          "agent_owner_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+          "resource_owner_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+          "step_kind": "agent",
+          "squad_id": null,
+          "dispatch_comment": "",
+          "attachment_hashes": {},
+          "knowledge_observation": {
+            "prompt_sha256": "09b9645d52891a0038701fbac2be6b62ef6bde469d11e56e2d40648355a2750f",
+            "section_present": true,
+            "contributions": [
+              {
+                "candidate_id": "e7f6900e-2de3-4ff0-bdbf-8882cf2f7a73",
+                "version": "1",
+                "source_issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45",
+                "content_sha256": "a1b1c3d26be430f600653430386ff2897f9a65a03f6fc0d4059afe0dccf5dcd9"
+              }
+            ],
+            "no_session_persistence": true
+          },
+          "started_ms": 56353.090375,
+          "released_ms": 56624.023041,
+          "closed_ms": 56628.985208,
+          "replies": []
+        }
+      ]
+    }
+  ],
+  "cleanup": [
+    {
+      "owner_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+      "runtime_id": "d05c78c0-a641-4a63-b8ee-006fa02d84d4",
+      "exit_code": 0,
+      "errors": [],
+      "ledger": [
+        {
+          "version": 2,
+          "run_id": "413a54ee-5a31-4d7e-bc78-d35f4133f180",
+          "issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45",
+          "phase": "proof_acknowledged",
+          "session_key": "18974cb111d7783d8e720301822c4d83fb18fabd4c0016f681abe0cbea756d3a",
+          "namespace_present": false,
+          "sealed": true,
+          "proof_state": "host_exit_observed",
+          "cleanup": {
+            "state": "tracked_scope_complete",
+            "scope": "process_group",
+            "attempted": true
+          },
+          "launches": [
+            {
+              "attempt_seq": "1",
+              "kind": "provider",
+              "phase": "attempt_reaped",
+              "process_observed": true,
+              "scope": "process_group",
+              "terminal_accepted": true,
+              "authorized": true,
+              "terminal_kind": "managed_launch_ended",
+              "cleanup": {
+                "state": "tracked_scope_complete",
+                "scope": "process_group",
+                "attempted": true
+              }
+            }
+          ]
+        },
+        {
+          "version": 2,
+          "run_id": "bc50f9a2-fca0-4759-b3a8-8b57cb659c9b",
+          "issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45",
+          "phase": "proof_acknowledged",
+          "session_key": "586f83e960431c870ceed0efe0ebf2d16667e90bce09bdeca0d12d96380251fc",
+          "namespace_present": false,
+          "sealed": true,
+          "proof_state": "host_exit_observed",
+          "cleanup": {
+            "state": "tracked_scope_complete",
+            "scope": "process_group",
+            "attempted": true
+          },
+          "launches": [
+            {
+              "attempt_seq": "1",
+              "kind": "provider",
+              "phase": "attempt_reaped",
+              "process_observed": true,
+              "scope": "process_group",
+              "terminal_accepted": true,
+              "authorized": true,
+              "terminal_kind": "managed_launch_ended",
+              "cleanup": {
+                "state": "tracked_scope_complete",
+                "scope": "process_group",
+                "attempted": true
+              }
+            }
+          ]
+        },
+        {
+          "version": 2,
+          "run_id": "2dc03a0e-6a35-48e4-89c2-9beefb87c40c",
+          "issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45",
+          "phase": "proof_acknowledged",
+          "session_key": "4a71bdadc4daa39534bc14670d8cd5017735fb097a6c109839c893bd1c804d83",
+          "namespace_present": false,
+          "sealed": true,
+          "proof_state": "host_exit_observed",
+          "cleanup": {
+            "state": "tracked_scope_complete",
+            "scope": "process_group",
+            "attempted": true
+          },
+          "launches": [
+            {
+              "attempt_seq": "1",
+              "kind": "provider",
+              "phase": "attempt_reaped",
+              "process_observed": true,
+              "scope": "process_group",
+              "terminal_accepted": true,
+              "authorized": true,
+              "terminal_kind": "managed_launch_ended",
+              "cleanup": {
+                "state": "tracked_scope_complete",
+                "scope": "process_group",
+                "attempted": true
+              }
+            }
+          ]
+        },
+        {
+          "version": 2,
+          "run_id": "76a2358d-fc19-4ca2-8da5-6691637a972e",
+          "issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45",
+          "phase": "proof_acknowledged",
+          "session_key": "4cbb53b3ebcc11b841875c06b4052f4bfdc866c68ec7808b5061d4d53d32311d",
+          "namespace_present": false,
+          "sealed": true,
+          "proof_state": "host_exit_observed",
+          "cleanup": {
+            "state": "tracked_scope_complete",
+            "scope": "process_group",
+            "attempted": true
+          },
+          "launches": [
+            {
+              "attempt_seq": "1",
+              "kind": "provider",
+              "phase": "attempt_reaped",
+              "process_observed": true,
+              "scope": "process_group",
+              "terminal_accepted": true,
+              "authorized": true,
+              "terminal_kind": "managed_launch_ended",
+              "cleanup": {
+                "state": "tracked_scope_complete",
+                "scope": "process_group",
+                "attempted": true
+              }
+            }
+          ]
+        },
+        {
+          "version": 2,
+          "run_id": "f287c609-8d93-475d-8c36-80aeb798925e",
+          "issue_id": "01a1c127-ae9b-70c7-814e-402de6139fd2",
+          "phase": "proof_acknowledged",
+          "session_key": "83e4fbfc35b9e376c3749ff4e59c55b5dc42face24a27037b7ddf7904c607c83",
+          "namespace_present": false,
+          "sealed": true,
+          "proof_state": "host_exit_observed",
+          "cleanup": {
+            "state": "tracked_scope_complete",
+            "scope": "process_group",
+            "attempted": true
+          },
+          "launches": [
+            {
+              "attempt_seq": "1",
+              "kind": "provider",
+              "phase": "attempt_reaped",
+              "process_observed": true,
+              "scope": "process_group",
+              "terminal_accepted": true,
+              "authorized": true,
+              "terminal_kind": "managed_launch_ended",
+              "cleanup": {
+                "state": "tracked_scope_complete",
+                "scope": "process_group",
+                "attempted": true
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "cleanup_failures": [],
+  "gate_restored": true,
+  "steps": [
+    {
+      "step": "client assigned the vendor manager; the manager relayed to a workspace-less engineer",
+      "at": "2026-11-09T16:32:02.962Z",
+      "facts": {
+        "issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45"
+      }
+    },
+    {
+      "step": "vendor squad offered by its owner, adopted by the engineer, consented per resource, resumed",
+      "at": "2026-11-09T16:32:08.113Z",
+      "facts": {
+        "target_id": "e1f7f459-4019-478b-aeb7-f79190e7a319"
+      }
+    },
+    {
+      "step": "squad delegated, member wrote back, leader continued; business still open",
+      "at": "2026-11-09T16:32:25.777Z",
+      "facts": {
+        "runs": [
+          "bc50f9a2-fca0-4759-b3a8-8b57cb659c9b",
+          "413a54ee-5a31-4d7e-bc78-d35f4133f180",
+          "76a2358d-fc19-4ca2-8da5-6691637a972e"
+        ],
+        "group_id": "af425f2b-11e9-407c-866e-7271ce6788b8"
+      }
+    },
+    {
+      "step": "revision by the leader; engineer proposed knowledge to the client workspace; the vendor manager cannot approve it",
+      "at": "2026-11-09T16:32:41.385Z",
+      "facts": {
+        "candidate_id": "e7f6900e-2de3-4ff0-bdbf-8882cf2f7a73",
+        "target": {
+          "kind": "workspace",
+          "workspace_id": "57e47b19-2ec6-4764-8094-5348038082b9"
+        },
+        "sources": [
+          {
+            "kind": "memory",
+            "issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45",
+            "version": "1",
+            "sha256": "a1b1c3d26be430f600653430386ff2897f9a65a03f6fc0d4059afe0dccf5dcd9"
+          }
+        ],
+        "vendor_approval_status": 403,
+        "vendor_approval_code": "knowledge_permission_denied"
+      }
+    },
+    {
+      "step": "client approved the knowledge and accepted the revised delivery",
+      "at": "2026-11-09T16:32:45.638Z",
+      "facts": {
+        "accepted": "ca566416-70cb-4204-a1ee-0df8b6621499",
+        "final_status": "done"
+      }
+    },
+    {
+      "step": "phase-two run received the approved contribution",
+      "at": "2026-11-09T16:32:52.065Z",
+      "facts": {
+        "run_id": "f287c609-8d93-475d-8c36-80aeb798925e",
+        "contributions": [
+          {
+            "candidate_id": "e7f6900e-2de3-4ff0-bdbf-8882cf2f7a73",
+            "version": "1",
+            "source_issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45",
+            "content_sha256": "a1b1c3d26be430f600653430386ff2897f9a65a03f6fc0d4059afe0dccf5dcd9"
+          }
+        ]
+      }
+    }
+  ]
+}

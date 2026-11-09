@@ -1,0 +1,119 @@
+{
+  "api_config": {
+    "auth_mode": "password",
+    "deployment_id": "dea2af91-a2e1-436d-b463-5a7bc7d56de0",
+    "managed_installation_supported": true
+  },
+  "api_config_history": [
+    {
+      "at": "2026-11-10T00:25:32+0800",
+      "knowledge_context": "on"
+    },
+    {
+      "at": "2026-11-10T00:28:09+0800",
+      "knowledge_context": "off"
+    },
+    {
+      "at": "2026-11-10T00:31:47+0800",
+      "knowledge_context": "on"
+    },
+    {
+      "at": "2026-11-10T00:33:35+0800",
+      "knowledge_context": "off"
+    }
+  ],
+  "api_knowledge_context": "off",
+  "api_port": 59765,
+  "api_url": "http://127.0.0.1:59765",
+  "binary_hashes": {
+    "api": "0013085372c51d88d406c5e2f760a35b11d0861b6f9d072a0067c583af1f3a16",
+    "closure-provider": "97f63e3fea2d19f7adcff7c465c0972a1d3e05f0623a75a5b0c7de2bf51c5e48",
+    "host-daemon": "5704422b35d99128cd5a53f9fc5d05dcacfca727cf9c86059ec81495cdf2d01c",
+    "host-provider": "67b7140de0e9d7628c86e05ab2c959b4a869d8c1892f52abfe1dd20e84b3a92d",
+    "memory-provider": "8af163944fd448735142f54a7a94d7bfaede568b6a2fcb8f36b1dc268e2d024a",
+    "multica": "38c79f5e3b6194548951b28da503177eedb3540431c482b2559cb4d2d510f192"
+  },
+  "candidate_sha": "b10da8fec9dab057f9830bd336369d42e27b8c85",
+  "candidate_tree": "d53bae89c9894de1676d52a5797f680a7b469227",
+  "capacity_before": {
+    "maximum": 100,
+    "used": 54
+  },
+  "created_at": "2026-11-09T20:18:46+0800",
+  "database": "multica_qa_biz_20261109_b45ace53198f",
+  "database_created": true,
+  "deployment_id": "dea2af91-a2e1-436d-b463-5a7bc7d56de0",
+  "env_file": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/environment.json",
+  "env_sha256": "e54df4c238dcc496e222d4337ce5fa45d6818992250bd752373c13a397c28f87",
+  "gate_after_migrate": {
+    "creation_enabled": true,
+    "enabled": false,
+    "epoch": "2",
+    "host_execution_enabled": false
+  },
+  "health": {
+    "commit": "b10da8fec9dab057f9830bd336369d42e27b8c85",
+    "pid": 58916,
+    "started_at": "2026-11-09T16:33:36Z",
+    "status": "ok"
+  },
+  "listeners": {
+    "api": 58916,
+    "renderer": 58379,
+    "web": 58446
+  },
+  "private_root": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38",
+  "renderer_port": 59767,
+  "renderer_url": "http://127.0.0.1:59767",
+  "services": {
+    "api": {
+      "command": [
+        "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/bin/api"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/server",
+      "pid": 58916,
+      "started_at": 1794242016.015907
+    },
+    "renderer": {
+      "command": [
+        "node",
+        "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/scripts/check-desktop-renderer.mjs",
+        "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/apps/desktop/out/renderer",
+        "59767",
+        "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/state/renderer.running.json"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source",
+      "pid": 58379,
+      "started_at": 1794229209.5585952
+    },
+    "web": {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/web",
+        "exec",
+        "next",
+        "start",
+        "--hostname",
+        "127.0.0.1",
+        "--port",
+        "59766"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source",
+      "pid": 58364,
+      "started_at": 1794229209.528518
+    }
+  },
+  "snapshot": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source",
+  "state": "stopped_database_retained",
+  "stopped_at": "2026-11-10T00:33:49+0800",
+  "task": "11-09-collaboration-business-scenario-qa",
+  "web_build_id": "tc3lLXHYtcfmjlVYTFPa3",
+  "web_port": 59766,
+  "web_url": "http://127.0.0.1:59766",
+  "workspace_links": {
+    "core": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/packages/core",
+    "ui": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/packages/ui",
+    "views": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/packages/views"
+  }
+}

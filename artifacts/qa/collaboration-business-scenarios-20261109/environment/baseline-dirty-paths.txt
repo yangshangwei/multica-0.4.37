@@ -1,0 +1,156 @@
+ M apps/docs/content/docs/agents-create.zh.mdx
+ M apps/docs/content/docs/agents.zh.mdx
+ M apps/docs/content/docs/assigning-issues.zh.mdx
+ M apps/docs/content/docs/autopilots.zh.mdx
+ M apps/docs/content/docs/chat.zh.mdx
+ M apps/docs/content/docs/daemon-runtimes.zh.mdx
+ M apps/docs/content/docs/index.zh.mdx
+ M apps/docs/content/docs/issues.zh.mdx
+ M apps/docs/content/docs/members-roles.zh.mdx
+ M apps/docs/content/docs/mentioning-agents.zh.mdx
+ M apps/docs/content/docs/project-resources.zh.mdx
+ M apps/docs/content/docs/projects.zh.mdx
+ M apps/docs/content/docs/tasks.zh.mdx
+ M apps/docs/content/docs/troubleshooting.zh.mdx
+ M apps/docs/content/docs/tutorial.zh.mdx
+ M apps/docs/content/docs/workspaces.zh.mdx
+ M apps/web/next-env.d.ts
+ M server/internal/docs/content/manifest.json
+ M server/internal/docs/content/pages/agents-create.json
+ M server/internal/docs/content/pages/agents.json
+ M server/internal/docs/content/pages/assigning-issues.json
+ M server/internal/docs/content/pages/autopilots.json
+ M server/internal/docs/content/pages/chat.json
+ M server/internal/docs/content/pages/daemon-runtimes.json
+ M server/internal/docs/content/pages/index.json
+ M server/internal/docs/content/pages/issues.json
+ M server/internal/docs/content/pages/members-roles.json
+ M server/internal/docs/content/pages/mentioning-agents.json
+ M server/internal/docs/content/pages/project-resources.json
+ M server/internal/docs/content/pages/projects.json
+ M server/internal/docs/content/pages/tasks.json
+ M server/internal/docs/content/pages/troubleshooting.json
+ M server/internal/docs/content/pages/tutorial.json
+ M server/internal/docs/content/pages/workspaces.json
+?? .cursor/mcp.json
+?? D:/
+?? apps/docs/public/images/docs/agent-access-settings-zh.webp
+?? apps/docs/public/images/docs/assign-confirm-dialog-zh.webp
+?? apps/docs/public/images/docs/autopilot-schedule-zh.webp
+?? apps/docs/public/images/docs/chat-conversation-zh.webp
+?? apps/docs/public/images/docs/members-roster-zh.webp
+?? apps/docs/public/images/docs/mention-trigger-preview-zh.webp
+?? apps/docs/public/images/docs/project-detail-zh.webp
+?? apps/docs/public/images/docs/quickstart-new-agent-zh.webp
+?? apps/docs/public/images/docs/quickstart-run-result-zh.webp
+?? apps/docs/public/images/docs/runtime-machine-detail-zh.webp
+?? apps/docs/public/images/docs/task-transcript-zh.webp
+?? apps/docs/public/images/docs/tutorial-agent-detail-zh.webp
+?? apps/docs/public/images/docs/tutorial-autopilot-create-zh.webp
+?? apps/docs/public/images/docs/tutorial-autopilot-detail-zh.webp
+?? apps/docs/public/images/docs/tutorial-autopilot-issue-zh.webp
+?? apps/docs/public/images/docs/tutorial-chat-ask-in-issue-zh.webp
+?? apps/docs/public/images/docs/tutorial-chat-create-engineer-zh.webp
+?? apps/docs/public/images/docs/tutorial-chat-create-repo-zh.webp
+?? apps/docs/public/images/docs/tutorial-chat-engineer-reply-zh.webp
+?? apps/docs/public/images/docs/tutorial-chat-fab-zh.webp
+?? apps/docs/public/images/docs/tutorial-chat-update-instructions-zh.webp
+?? apps/docs/public/images/docs/tutorial-comment-mention-reviewer-zh.webp
+?? apps/docs/public/images/docs/tutorial-create-agent-form-zh.webp
+?? apps/docs/public/images/docs/tutorial-create-with-agent-zh.webp
+?? apps/docs/public/images/docs/tutorial-create-workspace-form-zh.webp
+?? apps/docs/public/images/docs/tutorial-create-workspace-menu-zh.webp
+?? apps/docs/public/images/docs/tutorial-empty-workspace-zh.webp
+?? apps/docs/public/images/docs/tutorial-engineer-fixed-zh.webp
+?? apps/docs/public/images/docs/tutorial-engineer-instructions-zh.webp
+?? apps/docs/public/images/docs/tutorial-engineer-updated-instructions-zh.webp
+?? apps/docs/public/images/docs/tutorial-execution-log-zh.webp
+?? apps/docs/public/images/docs/tutorial-helper-create-squad-zh.webp
+?? apps/docs/public/images/docs/tutorial-invite-member-zh.webp
+?? apps/docs/public/images/docs/tutorial-issue-done-zh.webp
+?? apps/docs/public/images/docs/tutorial-issue-engineer-working-zh.webp
+?? apps/docs/public/images/docs/tutorial-issue-pr-linked-zh.webp
+?? apps/docs/public/images/docs/tutorial-issue-review-comment-zh.webp
+?? apps/docs/public/images/docs/tutorial-issue-squad-created-zh.webp
+?? apps/docs/public/images/docs/tutorial-new-issue-agent-mode-zh.webp
+?? apps/docs/public/images/docs/tutorial-repo-settings-zh.webp
+?? apps/docs/public/images/docs/tutorial-reviewer-detail-zh.webp
+?? apps/docs/public/images/docs/tutorial-reviewer-findings-zh.webp
+?? apps/docs/public/images/docs/tutorial-reviewer-recheck-zh.webp
+?? apps/docs/public/images/docs/tutorial-runtime-detail-zh.webp
+?? apps/docs/public/images/docs/tutorial-runtimes-list-zh.webp
+?? apps/docs/public/images/docs/tutorial-site-localhost-zh.webp
+?? apps/docs/public/images/docs/tutorial-skill-detail-zh.webp
+?? apps/docs/public/images/docs/tutorial-skill-new-modal-zh.webp
+?? apps/docs/public/images/docs/tutorial-skills-list-zh.webp
+?? apps/docs/public/images/docs/tutorial-squad-delivery-zh.webp
+?? apps/docs/public/images/docs/tutorial-squad-detail-zh.webp
+?? apps/docs/public/images/docs/tutorial-squad-dispatch-zh.webp
+?? apps/docs/public/images/docs/workspace-overview-zh.webp
+?? apps/docs/public/images/docs/workspace-settings-zh.webp
+?? artifacts/qa/business-verification-20261107-session/
+?? artifacts/qa/collaboration-20261106/
+?? artifacts/qa/collaboration-business-scenarios-20261109/
+?? artifacts/qa/collaboration-drawer-20261107/results.json
+?? artifacts/qa/collaboration-focus-20261107/results.json
+?? artifacts/qa/core-business-20261107/
+?? artifacts/qa/focus-repair-20261107/
+?? docs/plans/2026-11-02-collaboration-fix-closure.md
+?? docs/plans/2026-11-03-collaboration-fix-closure.md
+?? server/cmd/server/ac43_fixture_test.go
+?? server/cmd/server/ac43_real_provider_test.go
+?? server/cmd/server/testdata/
+?? server/internal/docs/content/assets/images/docs/agent-access-settings-zh.webp
+?? server/internal/docs/content/assets/images/docs/assign-confirm-dialog-zh.webp
+?? server/internal/docs/content/assets/images/docs/autopilot-schedule-zh.webp
+?? server/internal/docs/content/assets/images/docs/chat-conversation-zh.webp
+?? server/internal/docs/content/assets/images/docs/members-roster-zh.webp
+?? server/internal/docs/content/assets/images/docs/mention-trigger-preview-zh.webp
+?? server/internal/docs/content/assets/images/docs/project-detail-zh.webp
+?? server/internal/docs/content/assets/images/docs/quickstart-new-agent-zh.webp
+?? server/internal/docs/content/assets/images/docs/quickstart-run-result-zh.webp
+?? server/internal/docs/content/assets/images/docs/runtime-machine-detail-zh.webp
+?? server/internal/docs/content/assets/images/docs/task-transcript-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-agent-detail-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-autopilot-create-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-autopilot-detail-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-autopilot-issue-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-chat-ask-in-issue-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-chat-create-engineer-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-chat-create-repo-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-chat-engineer-reply-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-chat-fab-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-chat-update-instructions-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-comment-mention-reviewer-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-create-agent-form-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-create-with-agent-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-create-workspace-form-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-create-workspace-menu-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-empty-workspace-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-engineer-fixed-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-engineer-instructions-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-engineer-updated-instructions-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-execution-log-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-helper-create-squad-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-invite-member-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-issue-done-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-issue-engineer-working-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-issue-pr-linked-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-issue-review-comment-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-issue-squad-created-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-new-issue-agent-mode-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-repo-settings-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-reviewer-detail-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-reviewer-findings-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-reviewer-recheck-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-runtime-detail-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-runtimes-list-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-site-localhost-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-skill-detail-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-skill-new-modal-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-skills-list-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-squad-delivery-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-squad-detail-zh.webp
+?? server/internal/docs/content/assets/images/docs/tutorial-squad-dispatch-zh.webp
+?? server/internal/docs/content/assets/images/docs/workspace-overview-zh.webp
+?? server/internal/docs/content/assets/images/docs/workspace-settings-zh.webp

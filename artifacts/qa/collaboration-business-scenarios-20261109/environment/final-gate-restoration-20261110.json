@@ -1,0 +1,23 @@
+{
+  "database": "multica_qa_biz_20261109_b45ace53198f",
+  "before": {
+    "enabled": true,
+    "creation_enabled": true,
+    "host_execution_enabled": true,
+    "epoch": "13"
+  },
+  "after": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": "14"
+  },
+  "baseline": {
+    "creation_enabled": true,
+    "enabled": false,
+    "epoch": "2",
+    "host_execution_enabled": false
+  },
+  "at": "2026-11-10T00:34:28.689168+08:00",
+  "reason": "Final audit found gate still enabled: per-test restore preserved inherited pre-run state. Owned services stopped; explicitly restored this task database to allocation gate_after_migrate, retaining monotonic epoch."
+}

@@ -1,0 +1,1004 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-11-10T00:42:17.366378+08:00",
+  "status": "verified_uncommitted",
+  "scope": "Deterministic provider business E2E on real local API/database/CLI/daemon; not real AI acceptance",
+  "candidate_sha": "b10da8fec9dab057f9830bd336369d42e27b8c85",
+  "candidate_tree": "d53bae89c9894de1676d52a5797f680a7b469227",
+  "environment": {
+    "allocation": "environment/allocation.json",
+    "database": "multica_qa_biz_20261109_b45ace53198f",
+    "ports": {
+      "api_port": 59765,
+      "web_port": 59766,
+      "renderer_port": 59767
+    },
+    "binary_hashes": {
+      "api": "0013085372c51d88d406c5e2f760a35b11d0861b6f9d072a0067c583af1f3a16",
+      "closure-provider": "97f63e3fea2d19f7adcff7c465c0972a1d3e05f0623a75a5b0c7de2bf51c5e48",
+      "host-daemon": "5704422b35d99128cd5a53f9fc5d05dcacfca727cf9c86059ec81495cdf2d01c",
+      "host-provider": "67b7140de0e9d7628c86e05ab2c959b4a869d8c1892f52abfe1dd20e84b3a92d",
+      "memory-provider": "8af163944fd448735142f54a7a94d7bfaede568b6a2fcb8f36b1dc268e2d024a",
+      "multica": "38c79f5e3b6194548951b28da503177eedb3540431c482b2559cb4d2d510f192"
+    },
+    "knowledge_configuration_history": [
+      {
+        "at": "2026-11-10T00:25:32+0800",
+        "knowledge_context": "on"
+      },
+      {
+        "at": "2026-11-10T00:28:09+0800",
+        "knowledge_context": "off"
+      },
+      {
+        "at": "2026-11-10T00:31:47+0800",
+        "knowledge_context": "on"
+      },
+      {
+        "at": "2026-11-10T00:33:35+0800",
+        "knowledge_context": "off"
+      }
+    ],
+    "final_service_state": "stopped_database_retained"
+  },
+  "reproduction": {
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "source_runs": [
+      "r1-closure",
+      "r2-host",
+      "r3-memory"
+    ],
+    "rerun_this_session": false
+  },
+  "business_scenarios": [
+    {
+      "id": "S1",
+      "selected_run": "b6-outsourcing-20261110",
+      "status": "passed",
+      "evidence": "b6-outsourcing-20261110/test-results/collaboration-business-sce-e8bed-nd-reuse-approved-knowledge-chromium/s1-outsourcing-evidence.json",
+      "evidence_sha256": "803281ebc63bfc110c729cd6c7ec17a9eb6d2aee86eea7ebe0681a853f594a5a",
+      "topology": {
+        "client": {
+          "account_id": "e11228a5-1c10-4609-83c6-c420a167dcd2",
+          "workspace_id": "57e47b19-2ec6-4764-8094-5348038082b9"
+        },
+        "vendor_manager": {
+          "account_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+          "workspace_id": "d8977bf3-757d-4a59-973a-009a612f9fd2",
+          "runtime_id": "d05c78c0-a641-4a63-b8ee-006fa02d84d4",
+          "installation_id": "c9beb089-5756-494a-a32f-1de89360fe16",
+          "squad_id": "c10694b2-a83d-4cb4-84f2-ae3872dff146",
+          "leader_id": "d28fa90f-5599-4c77-9a81-d27376a7dfd5",
+          "member_id": "39090b77-0627-470f-a385-1f9738e4fcc3"
+        },
+        "vendor_engineer": {
+          "account_id": "7effcfee-7a96-4d16-9575-cf462cec1f1c",
+          "workspaces": []
+        },
+        "rival_account_id": "2c0627e1-6916-420b-8116-c0e594f63699"
+      },
+      "steps": [
+        {
+          "step": "client assigned the vendor manager; the manager relayed to a workspace-less engineer",
+          "at": "2026-11-09T16:32:02.962Z",
+          "facts": {
+            "issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45"
+          }
+        },
+        {
+          "step": "vendor squad offered by its owner, adopted by the engineer, consented per resource, resumed",
+          "at": "2026-11-09T16:32:08.113Z",
+          "facts": {
+            "target_id": "e1f7f459-4019-478b-aeb7-f79190e7a319"
+          }
+        },
+        {
+          "step": "squad delegated, member wrote back, leader continued; business still open",
+          "at": "2026-11-09T16:32:25.777Z",
+          "facts": {
+            "runs": [
+              "bc50f9a2-fca0-4759-b3a8-8b57cb659c9b",
+              "413a54ee-5a31-4d7e-bc78-d35f4133f180",
+              "76a2358d-fc19-4ca2-8da5-6691637a972e"
+            ],
+            "group_id": "af425f2b-11e9-407c-866e-7271ce6788b8"
+          }
+        },
+        {
+          "step": "revision by the leader; engineer proposed knowledge to the client workspace; the vendor manager cannot approve it",
+          "at": "2026-11-09T16:32:41.385Z",
+          "facts": {
+            "candidate_id": "e7f6900e-2de3-4ff0-bdbf-8882cf2f7a73",
+            "target": {
+              "kind": "workspace",
+              "workspace_id": "57e47b19-2ec6-4764-8094-5348038082b9"
+            },
+            "sources": [
+              {
+                "kind": "memory",
+                "issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45",
+                "version": "1",
+                "sha256": "a1b1c3d26be430f600653430386ff2897f9a65a03f6fc0d4059afe0dccf5dcd9"
+              }
+            ],
+            "vendor_approval_status": 403,
+            "vendor_approval_code": "knowledge_permission_denied"
+          }
+        },
+        {
+          "step": "client approved the knowledge and accepted the revised delivery",
+          "at": "2026-11-09T16:32:45.638Z",
+          "facts": {
+            "accepted": "ca566416-70cb-4204-a1ee-0df8b6621499",
+            "final_status": "done"
+          }
+        },
+        {
+          "step": "phase-two run received the approved contribution",
+          "at": "2026-11-09T16:32:52.065Z",
+          "facts": {
+            "run_id": "f287c609-8d93-475d-8c36-80aeb798925e",
+            "contributions": [
+              {
+                "candidate_id": "e7f6900e-2de3-4ff0-bdbf-8882cf2f7a73",
+                "version": "1",
+                "source_issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45",
+                "content_sha256": "a1b1c3d26be430f600653430386ff2897f9a65a03f6fc0d4059afe0dccf5dcd9"
+              }
+            ]
+          }
+        }
+      ],
+      "page_errors": [],
+      "cleanup_failures": [],
+      "gate_restored": true,
+      "runs": [
+        {
+          "owner_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+          "runtime_id": "d05c78c0-a641-4a63-b8ee-006fa02d84d4",
+          "observed_runs": [
+            {
+              "run_id": "bc50f9a2-fca0-4759-b3a8-8b57cb659c9b",
+              "step_kind": "leader",
+              "released": true,
+              "closed": true
+            },
+            {
+              "run_id": "413a54ee-5a31-4d7e-bc78-d35f4133f180",
+              "step_kind": "member",
+              "released": true,
+              "closed": true
+            },
+            {
+              "run_id": "76a2358d-fc19-4ca2-8da5-6691637a972e",
+              "step_kind": "continuation",
+              "released": true,
+              "closed": true
+            },
+            {
+              "run_id": "2dc03a0e-6a35-48e4-89c2-9beefb87c40c",
+              "step_kind": "leader",
+              "released": true,
+              "closed": true
+            },
+            {
+              "run_id": "f287c609-8d93-475d-8c36-80aeb798925e",
+              "step_kind": "agent",
+              "released": true,
+              "closed": true
+            }
+          ]
+        }
+      ],
+      "termination": [
+        {
+          "owner_id": "deb165d2-78f9-46b2-9c25-58238a9a0dbe",
+          "exit_code": 0,
+          "errors": [],
+          "ledger": [
+            {
+              "run_id": "413a54ee-5a31-4d7e-bc78-d35f4133f180",
+              "phase": "proof_acknowledged",
+              "proof_state": "host_exit_observed"
+            },
+            {
+              "run_id": "bc50f9a2-fca0-4759-b3a8-8b57cb659c9b",
+              "phase": "proof_acknowledged",
+              "proof_state": "host_exit_observed"
+            },
+            {
+              "run_id": "2dc03a0e-6a35-48e4-89c2-9beefb87c40c",
+              "phase": "proof_acknowledged",
+              "proof_state": "host_exit_observed"
+            },
+            {
+              "run_id": "76a2358d-fc19-4ca2-8da5-6691637a972e",
+              "phase": "proof_acknowledged",
+              "proof_state": "host_exit_observed"
+            },
+            {
+              "run_id": "f287c609-8d93-475d-8c36-80aeb798925e",
+              "phase": "proof_acknowledged",
+              "proof_state": "host_exit_observed"
+            }
+          ]
+        }
+      ],
+      "phase_two": {
+        "issue_id": "01a1c127-ae9b-70c7-814e-402de6139fd2",
+        "run_id": "f287c609-8d93-475d-8c36-80aeb798925e",
+        "knowledge_observation": {
+          "prompt_sha256": "09b9645d52891a0038701fbac2be6b62ef6bde469d11e56e2d40648355a2750f",
+          "section_present": true,
+          "contributions": [
+            {
+              "candidate_id": "e7f6900e-2de3-4ff0-bdbf-8882cf2f7a73",
+              "version": "1",
+              "source_issue_id": "01a1c126-f40c-7d3e-a931-d13d36e92e45",
+              "content_sha256": "a1b1c3d26be430f600653430386ff2897f9a65a03f6fc0d4059afe0dccf5dcd9"
+            }
+          ],
+          "no_session_persistence": true
+        }
+      },
+      "screenshots": [
+        "b6-outsourcing-20261110/test-results/collaboration-business-sce-e8bed-nd-reuse-approved-knowledge-chromium/s1-first-delivery-returned.png",
+        "b6-outsourcing-20261110/test-results/collaboration-business-sce-e8bed-nd-reuse-approved-knowledge-chromium/s1-phase-one-accepted-client.png",
+        "b6-outsourcing-20261110/test-results/collaboration-business-sce-e8bed-nd-reuse-approved-knowledge-chromium/s1-phase-one-accepted-engineer.png"
+      ]
+    },
+    {
+      "id": "S2",
+      "selected_run": "b5-support-20261110",
+      "status": "passed",
+      "evidence": "b5-support-20261110/test-results/collaboration-business-sce-7a501-reopened-ticket-is-reworked-chromium/s2-support-ticket-evidence.json",
+      "evidence_sha256": "89ded312772ea0692dc6ce6d87bb3be4f86737cd37f294479b6a5cc82a2cef2c",
+      "topology": {
+        "support": {
+          "account_id": "f3d07d47-70f5-4eb0-9d82-d114a33c15a7",
+          "workspace_id": "6309ec57-a020-4e0d-9929-cbcaa6bfb43f"
+        },
+        "developer": {
+          "account_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+          "workspace_id": "5e78767c-9fa8-4d6a-82a0-ccbe9e1201a1",
+          "runtime_id": "2dc068ee-fbd7-4376-be9c-693752182002",
+          "installation_id": "ef782b66-86b2-48de-9b89-44b005c12eae",
+          "agent_id": "89adc37f-4837-46ab-a15f-583f22d9b640"
+        },
+        "unrelated_account_id": "8be9a910-58c5-4ba1-80ac-eafd6fff4661"
+      },
+      "steps": [
+        {
+          "step": "support creates a manual ticket for development with the customer log",
+          "at": "2026-11-09T16:28:18.411Z",
+          "facts": {
+            "issue_id": "01a1c123-9489-7265-b27c-46643d425201",
+            "ai_policy": "manual"
+          }
+        },
+        {
+          "step": "information requested and returned; sample shared as a comment file",
+          "at": "2026-11-09T16:28:21.252Z",
+          "facts": {
+            "requested": "information_requested",
+            "returned": "information_returned",
+            "files": [
+              {
+                "id": "e59b46ef-8177-4ae3-a90c-b45588d019d9",
+                "draft_id": "90c5a1c5-aabf-4171-bd2a-efe0f4e4db52",
+                "issue_id": "01a1c123-9489-7265-b27c-46643d425201",
+                "intended_issue_id": null,
+                "source_workspace_id": "6309ec57-a020-4e0d-9929-cbcaa6bfb43f",
+                "uploader_user_id": "f3d07d47-70f5-4eb0-9d82-d114a33c15a7",
+                "name": "customer-log.txt",
+                "content_type": "text/plain; charset=utf-8",
+                "size_bytes": 84,
+                "version": "1",
+                "created_at": "2026-11-10T00:28:16.741302+08:00",
+                "delivered_at": "2026-11-10T00:28:16.918303+08:00"
+              },
+              {
+                "id": "5db82254-695a-4ea5-bffe-586e989d1504",
+                "draft_id": "59e97fca-5220-45f0-aab7-2bd576c1432f",
+                "issue_id": "01a1c123-9489-7265-b27c-46643d425201",
+                "intended_issue_id": "01a1c123-9489-7265-b27c-46643d425201",
+                "source_workspace_id": "6309ec57-a020-4e0d-9929-cbcaa6bfb43f",
+                "uploader_user_id": "f3d07d47-70f5-4eb0-9d82-d114a33c15a7",
+                "name": "sample-export.csv",
+                "content_type": "text/plain; charset=utf-8",
+                "size_bytes": 41,
+                "version": "1",
+                "created_at": "2026-11-10T00:28:20.939953+08:00",
+                "delivered_at": "2026-11-10T00:28:21.208146+08:00"
+              }
+            ]
+          }
+        },
+        {
+          "step": "manual policy refuses resource offer",
+          "at": "2026-11-09T16:28:21.319Z",
+          "facts": {
+            "status": 409,
+            "code": "task_manual"
+          }
+        },
+        {
+          "step": "initiator switched to assisted; queue stays paused; the handler cannot change the policy",
+          "at": "2026-11-09T16:28:22.405Z",
+          "facts": {
+            "receipt": "ai_policy_changed",
+            "developer_status": 403
+          }
+        },
+        {
+          "step": "agent ran only after explicit Resume and received both shared files",
+          "at": "2026-11-09T16:28:32.771Z",
+          "facts": {
+            "run_id": "2869851f-f065-406f-a4a8-6f9db0cf000c",
+            "attachment_hashes": {
+              "5db82254-695a-4ea5-bffe-586e989d1504": "34bb700266603adef2f982a89f26ab5389e98a3ee871b487a977ccf71fe5f179",
+              "e59b46ef-8177-4ae3-a90c-b45588d019d9": "cc87dc751e096b7f0e517fc9aaf0538352b97d081e3a087c59a3e8e4266fa761"
+            }
+          }
+        },
+        {
+          "step": "first delivery accepted",
+          "at": "2026-11-09T16:28:34.329Z",
+          "facts": {
+            "submission_id": "8e64b2d2-6473-4243-972f-35d2ad4dc58c"
+          }
+        },
+        {
+          "step": "reopen preserved support's responsibility; support explicitly transferred rework to development without resuming AI",
+          "at": "2026-11-09T16:28:36.937Z",
+          "facts": {
+            "receipt": "transferred",
+            "from_user_id": "f3d07d47-70f5-4eb0-9d82-d114a33c15a7",
+            "to_user_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+            "prior_submission_id": "8e64b2d2-6473-4243-972f-35d2ad4dc58c"
+          }
+        },
+        {
+          "step": "reopened ticket reworked and accepted again; unrelated account denied",
+          "at": "2026-11-09T16:28:49.402Z",
+          "facts": {
+            "reopened": "reopened",
+            "final_status": "done"
+          }
+        }
+      ],
+      "page_errors": [],
+      "cleanup_failures": [],
+      "gate_restored": true,
+      "runs": [
+        {
+          "owner_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+          "runtime_id": "2dc068ee-fbd7-4376-be9c-693752182002",
+          "observed_runs": [
+            {
+              "run_id": "2869851f-f065-406f-a4a8-6f9db0cf000c",
+              "step_kind": "agent",
+              "released": true,
+              "closed": true
+            },
+            {
+              "run_id": "0aa8dc8e-8ec0-4ab6-8633-e09576f35b4a",
+              "step_kind": "agent",
+              "released": true,
+              "closed": true
+            }
+          ]
+        }
+      ],
+      "termination": [
+        {
+          "owner_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+          "exit_code": 0,
+          "errors": [],
+          "ledger": [
+            {
+              "run_id": "2869851f-f065-406f-a4a8-6f9db0cf000c",
+              "phase": "proof_acknowledged",
+              "proof_state": "host_exit_observed"
+            },
+            {
+              "run_id": "0aa8dc8e-8ec0-4ab6-8633-e09576f35b4a",
+              "phase": "proof_acknowledged",
+              "proof_state": "host_exit_observed"
+            }
+          ]
+        }
+      ],
+      "screenshots": [
+        "b5-support-20261110/test-results/collaboration-business-sce-7a501-reopened-ticket-is-reworked-chromium/s2-first-acceptance.png",
+        "b5-support-20261110/test-results/collaboration-business-sce-7a501-reopened-ticket-is-reworked-chromium/s2-reaccepted-developer.png",
+        "b5-support-20261110/test-results/collaboration-business-sce-7a501-reopened-ticket-is-reworked-chromium/s2-reaccepted-support.png"
+      ]
+    },
+    {
+      "id": "S3",
+      "selected_run": "b3-support-governance-20261110",
+      "status": "passed",
+      "evidence": "b3-support-governance-20261110/test-results/collaboration-business-sce-4837c--and-the-issue-still-closes-chromium/s3-governance-evidence.json",
+      "evidence_sha256": "a2e5142cbe9b64248657876c7d53e2e850632245dfc3b106a9be2ee8e0d06235",
+      "topology": {
+        "lead": {
+          "account_id": "e6bcf5be-6bc5-4a32-89e5-c258670328fd",
+          "workspace_id": "849461eb-a671-426f-bae9-8a43beba8b65"
+        },
+        "partners": [
+          {
+            "account_id": "5df7948f-d945-48f5-a58f-efba15d59a4d",
+            "workspace_id": "8d943f61-a1ed-4397-95ea-a2a7c9aa88a5",
+            "runtime_id": "dc88491a-c70d-4294-8957-dc393fef2783",
+            "agent_id": "65bb5c39-4112-4fca-bd61-25c79f0dce4e"
+          },
+          {
+            "account_id": "ac841497-c9ce-4fa7-97c8-9fb03528596f",
+            "workspace_id": "30a65bbe-bc6a-4228-9c2e-69e01a7fba73",
+            "runtime_id": "84b4758e-bcfa-4d30-b9f6-1fad4d34768e",
+            "agent_id": "92c1256c-4bbb-481b-b077-cb3a3519bb06"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "step": "lead created the issue; both partners offered, were adopted, consented; lead resumed",
+          "at": "2026-11-09T16:24:21.141Z",
+          "facts": {
+            "issue_id": "01a1c11f-e339-741a-8d85-2194936e1139",
+            "targets": [
+              "afb25104-bdca-47da-b07e-700293709cee",
+              "53650b79-87df-4d51-bf4a-f34d18b43c77"
+            ]
+          }
+        },
+        {
+          "step": "O1 withdrew during an actual run: stop requested, target held, queued input kept, O2 untouched",
+          "at": "2026-11-09T16:24:26.439Z",
+          "facts": {
+            "receipt": {
+              "status": 200,
+              "code": "grant_revoked",
+              "issue_id": "01a1c11f-e339-741a-8d85-2194936e1139",
+              "request_id": "12ae1ffa-3c93-4c98-9495-6400b821a150",
+              "action": "revoke_grant",
+              "protocol_version": 2,
+              "scope": "issue",
+              "target_id": null,
+              "grant_id": null,
+              "proposal_id": null,
+              "channel_id": null,
+              "batch_id": null,
+              "command_id": null,
+              "queue_state": "active",
+              "control_version": "2",
+              "target_set_version": "3",
+              "group_id": null,
+              "group_settled": false,
+              "targets": [
+                {
+                  "target_id": "afb25104-bdca-47da-b07e-700293709cee",
+                  "channel_id": "e3fbce9e-95f0-4a5f-b004-cbc4a1c6d310",
+                  "code": "stop_requested",
+                  "queue_state": "active",
+                  "control_version": "2",
+                  "group_generation": "1",
+                  "group_id": "7ebd4fd3-5be4-463c-9447-0f0afb067ec5",
+                  "group_settled": false,
+                  "stopped_runs": 1,
+                  "unsettled_runs": 1
+                }
+              ],
+              "channels": [
+                {
+                  "channel_id": "e3fbce9e-95f0-4a5f-b004-cbc4a1c6d310",
+                  "code": "stop_requested",
+                  "queue_state": "active",
+                  "control_version": "2",
+                  "group_generation": "1",
+                  "group_id": "7ebd4fd3-5be4-463c-9447-0f0afb067ec5",
+                  "group_settled": false,
+                  "stopped_runs": 1,
+                  "unsettled_runs": 1
+                }
+              ],
+              "target_holds": [
+                {
+                  "target_id": "afb25104-bdca-47da-b07e-700293709cee",
+                  "channel_id": "e3fbce9e-95f0-4a5f-b004-cbc4a1c6d310",
+                  "code": "grant_required",
+                  "hold_reason": "grant_required",
+                  "hold_version": "4"
+                }
+              ],
+              "run_id": null,
+              "run_settled": false
+            }
+          }
+        },
+        {
+          "step": "re-consent kept the hold; Resume before confirmed termination",
+          "at": "2026-11-09T16:24:31.961Z",
+          "facts": {
+            "status": 409,
+            "code": "stop_unconfirmed"
+          }
+        },
+        {
+          "step": "termination proven, explicit Resume ran the kept input once",
+          "at": "2026-11-09T16:24:39.145Z",
+          "facts": {
+            "stopped_run": "490f1ec3-180d-419a-a2bd-89ddc396c1d2",
+            "resumed_run": "32589d6b-a1be-473c-8f17-5d00427ea10c"
+          }
+        },
+        {
+          "step": "removing O2 stopped its run, cancelled its waiting input, revoked access; notice is content-free",
+          "at": "2026-11-09T16:24:45.664Z",
+          "facts": {
+            "receipt": "participant_removed",
+            "denied_status": 404,
+            "removed_notice": {
+              "id": "aaac711e-1e4e-426c-9e7b-647c7941be8d",
+              "issue_id": "01a1c11f-e339-741a-8d85-2194936e1139",
+              "event_seq": "50",
+              "kind": "removed",
+              "is_mention": false,
+              "source_kind": "issue",
+              "source_id": null,
+              "issue_title": null,
+              "can_open": false,
+              "created_at": "2026-11-10T00:24:43.976612+08:00",
+              "read_at": null,
+              "archived_at": null
+            }
+          }
+        },
+        {
+          "step": "cancelled: AI submission off, Resume refused, a partner cannot reopen",
+          "at": "2026-11-09T16:24:46.399Z",
+          "facts": {
+            "cancelled": "cancelled",
+            "resume_status": 409,
+            "resume_code": "issue_closed",
+            "partner_reopen_status": 403
+          }
+        },
+        {
+          "step": "reopened, resumed, delivered and accepted",
+          "at": "2026-11-09T16:24:54.209Z",
+          "facts": {
+            "final_status": "done"
+          }
+        }
+      ],
+      "page_errors": [],
+      "cleanup_failures": [],
+      "gate_restored": true,
+      "runs": [
+        {
+          "owner_id": "5df7948f-d945-48f5-a58f-efba15d59a4d",
+          "runtime_id": "dc88491a-c70d-4294-8957-dc393fef2783",
+          "observed_runs": [
+            {
+              "run_id": "490f1ec3-180d-419a-a2bd-89ddc396c1d2",
+              "step_kind": "agent",
+              "released": false,
+              "closed": true
+            },
+            {
+              "run_id": "32589d6b-a1be-473c-8f17-5d00427ea10c",
+              "step_kind": "agent",
+              "released": true,
+              "closed": true
+            },
+            {
+              "run_id": "68f91981-752f-40be-856e-8c0333eb3973",
+              "step_kind": "agent",
+              "released": true,
+              "closed": true
+            }
+          ]
+        },
+        {
+          "owner_id": "ac841497-c9ce-4fa7-97c8-9fb03528596f",
+          "runtime_id": "84b4758e-bcfa-4d30-b9f6-1fad4d34768e",
+          "observed_runs": [
+            {
+              "run_id": "f9f49a0b-163d-4164-9871-0ae4f5449dda",
+              "step_kind": "agent",
+              "released": true,
+              "closed": true
+            },
+            {
+              "run_id": "ac414130-c73a-4e36-a99e-a6c66ec92624",
+              "step_kind": "agent",
+              "released": false,
+              "closed": true
+            }
+          ]
+        }
+      ],
+      "termination": [
+        {
+          "owner_id": "ac841497-c9ce-4fa7-97c8-9fb03528596f",
+          "exit_code": 0,
+          "errors": [],
+          "ledger": [
+            {
+              "run_id": "f9f49a0b-163d-4164-9871-0ae4f5449dda",
+              "phase": "proof_acknowledged",
+              "proof_state": "host_exit_observed"
+            },
+            {
+              "run_id": "ac414130-c73a-4e36-a99e-a6c66ec92624",
+              "phase": "proof_acknowledged",
+              "proof_state": "host_exit_observed"
+            }
+          ]
+        },
+        {
+          "owner_id": "5df7948f-d945-48f5-a58f-efba15d59a4d",
+          "exit_code": 0,
+          "errors": [],
+          "ledger": [
+            {
+              "run_id": "32589d6b-a1be-473c-8f17-5d00427ea10c",
+              "phase": "proof_acknowledged",
+              "proof_state": "host_exit_observed"
+            },
+            {
+              "run_id": "490f1ec3-180d-419a-a2bd-89ddc396c1d2",
+              "phase": "proof_acknowledged",
+              "proof_state": "host_exit_observed"
+            },
+            {
+              "run_id": "68f91981-752f-40be-856e-8c0333eb3973",
+              "phase": "proof_acknowledged",
+              "proof_state": "host_exit_observed"
+            }
+          ]
+        }
+      ],
+      "screenshots": [
+        "b3-support-governance-20261110/test-results/collaboration-business-sce-4837c--and-the-issue-still-closes-chromium/s3-final-lead.png",
+        "b3-support-governance-20261110/test-results/collaboration-business-sce-4837c--and-the-issue-still-closes-chromium/s3-final-partner-one.png",
+        "b3-support-governance-20261110/test-results/collaboration-business-sce-4837c--and-the-issue-still-closes-chromium/s3-removed-partner-two.png"
+      ]
+    }
+  ],
+  "all_retained_runs": [
+    {
+      "id": "b1-support-governance",
+      "report": "b1-support-governance/playwright.json",
+      "sha256": "5a6b75e663715cbfb33f998109b1c3a9bf00b61b80221995958d1148307c32e0",
+      "stats": {
+        "startTime": "2026-11-09T15:49:13.092Z",
+        "duration": 28781.609999999997,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "title": "S2 support ticket: manual intake becomes AI-assisted, files reach the agent, and a reopened ticket is reworked",
+          "status": "failed",
+          "duration_ms": 8622,
+          "retry": 0
+        },
+        {
+          "title": "S3 governance: live withdrawal really stops work, removal and cancellation fence AI, and the issue still closes",
+          "status": "failed",
+          "duration_ms": 17897,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "id": "b3-support-governance-20261110",
+      "report": "b3-support-governance-20261110/playwright.json",
+      "sha256": "394d601db6995c61069f84b26a1dc90efa6343f5c911441eea5f9300d532a384",
+      "stats": {
+        "startTime": "2026-11-09T16:23:34.988Z",
+        "duration": 79459.202,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "title": "S2 support ticket: manual intake becomes AI-assisted, files reach the agent, and a reopened ticket is reworked",
+          "status": "failed",
+          "duration_ms": 33709,
+          "retry": 0
+        },
+        {
+          "title": "S3 governance: live withdrawal really stops work, removal and cancellation fence AI, and the issue still closes",
+          "status": "passed",
+          "duration_ms": 42857,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "id": "b4-outsourcing-20261110",
+      "report": "b4-outsourcing-20261110/playwright.json",
+      "sha256": "4f37f1881584b07611a4074cfffcbd84e823bc9f70334980c134181bfd6ad3f7",
+      "stats": {
+        "startTime": "2026-11-09T16:26:01.263Z",
+        "duration": 55682.918,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "title": "S1 outsourcing: client, vendor manager and workspace-less engineer close an issue with a vendor squad and reuse approved knowledge",
+          "status": "failed",
+          "duration_ms": 54402,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "id": "b5-support-20261110",
+      "report": "b5-support-20261110/playwright.json",
+      "sha256": "c1494c496b100c26b23368f61fdad27f811130d98b7d6c843270b73f2bb5f32b",
+      "stats": {
+        "startTime": "2026-11-09T16:28:12.323Z",
+        "duration": 37262.712,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "title": "S2 support ticket: manual intake becomes AI-assisted, files reach the agent, and a reopened ticket is reworked",
+          "status": "passed",
+          "duration_ms": 35939,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "id": "b6-outsourcing-20261110",
+      "report": "b6-outsourcing-20261110/playwright.json",
+      "sha256": "cab3bb27ff338c73b1065b1d582a6cf32c43dc99a240b307d4bea46f552006f3",
+      "stats": {
+        "startTime": "2026-11-09T16:31:50.344Z",
+        "duration": 62062.957,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "title": "S1 outsourcing: client, vendor manager and workspace-less engineer close an issue with a vendor squad and reuse approved knowledge",
+          "status": "passed",
+          "duration_ms": 60143,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "id": "r1-closure",
+      "report": "r1-closure/playwright.json",
+      "sha256": "0509585be2a86e30698752065b863565d4f6b3dcc4d1a32af65970fe9eac81d9",
+      "stats": {
+        "startTime": "2026-11-09T13:04:22.553Z",
+        "duration": 64509.863,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "title": "three account owners and three native agents close one cross-workspace issue after revision",
+          "status": "passed",
+          "duration_ms": 62811,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "id": "r2-host",
+      "report": "r2-host/playwright.json",
+      "sha256": "b0b2dae5ed354beb41fbc6c2170d07ec05c97f40cf51d55bb9ccfd26df8ff713",
+      "stats": {
+        "startTime": "2026-11-09T13:05:28.328Z",
+        "duration": 37886.471,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "title": "a capacity-one host squad merges @A with @S, delegates to its member, joins a later instruction and queues another squad",
+          "status": "passed",
+          "duration_ms": 21256,
+          "retry": 0
+        },
+        {
+          "title": "switching a squad to another native runtime waits for confirmed Stop and owner consent, then resumes there without moving local files",
+          "status": "passed",
+          "duration_ms": 15221,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "id": "r3-memory",
+      "report": "r3-memory/playwright.json",
+      "sha256": "1b2f2db59b877ed5b31bf88d4e1a40edc1222383242d101a10154accd59e5628",
+      "stats": {
+        "startTime": "2026-11-09T13:06:07.436Z",
+        "duration": 16158.246,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "title": "two native runtime profiles hand off shared context through the actual run-local CLI",
+          "status": "passed",
+          "duration_ms": 15055,
+          "retry": 0
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "classification": "test_fixture",
+      "scenario": "S2",
+      "failure_run": "b1-support-governance",
+      "cause": "Execution-only field was sent to strict human workflow request body",
+      "resolution": "Use workflowAuthority and retain exact 403 assertion",
+      "resolved_in": "b3-support-governance-20261110"
+    },
+    {
+      "id": "F2",
+      "classification": "test_fixture",
+      "scenario": "S3",
+      "failure_run": "b1-support-governance",
+      "cause": "Single-target helper used a duplicate Resume target locator; pending response failure obscured primary click failure",
+      "resolution": "New fixture scopes exact resource and awaits click with response",
+      "resolved_in": "b3-support-governance-20261110"
+    },
+    {
+      "id": "F3",
+      "classification": "test_scenario_contract",
+      "scenario": "S2",
+      "failure_run": "b3-support-governance-20261110",
+      "cause": "Reopen retains support as handler; test omitted explicit transfer back to development",
+      "resolution": "UI handback with handler and paused-lane assertions before rework",
+      "resolved_in": "b5-support-20261110"
+    },
+    {
+      "id": "F4",
+      "classification": "test_fixture",
+      "scenario": "S1",
+      "failure_run": "b4-outsourcing-20261110",
+      "cause": "Escape close transition raced one-shot drawer visibility selection",
+      "resolution": "Wait for drawer hidden before reopening knowledge via UI",
+      "resolved_in": "b6-outsourcing-20261110"
+    },
+    {
+      "id": "F5",
+      "classification": "test_environment_cleanup",
+      "cause": "Per-test restore inherited enabled state instead of allocation baseline",
+      "resolution": "Owned services stopped, database gate explicitly restored to baseline booleans while epoch remained monotonic",
+      "evidence": "environment/final-gate-restoration-20261110.json"
+    }
+  ],
+  "verification_gates": {
+    "source_final_audit": {
+      "status": "passed",
+      "evidence": "environment/source-audit-003345.json",
+      "tracked_files": 27607,
+      "drift_count": 0
+    },
+    "owned_environment_cleanup": {
+      "status": "passed",
+      "evidence": "environment/final-cleanup-20261110.json",
+      "gate_restoration": "environment/final-gate-restoration-20261110.json",
+      "ports_free": {
+        "api": true,
+        "web": true,
+        "renderer": true
+      },
+      "binaries_match_allocation": true,
+      "test_sources_match_snapshot": true,
+      "final_gate": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": "14"
+      },
+      "knowledge_context": "off",
+      "database_retained": true,
+      "per_test_restoration_only_restores_entry_state": true
+    },
+    "credential_scan": {
+      "status": "adjudicated_clear",
+      "raw_evidence": "credential-scan.json",
+      "adjudication_evidence": "credential-scan-adjudication-20261110.json",
+      "raw_reported_hits": 15,
+      "public_identifier_false_positives": 15,
+      "confirmed_credential_findings": 0,
+      "explanation": "Literal matching flagged public identifiers; each context reviewed separately. Original failure report retained. Final report byte scan performed by coordinator."
+    },
+    "independent_report_review": {
+      "status": "passed",
+      "evidence": "final-evidence-review-20261110.json",
+      "scope": "Raw counts, run/proof identity, source and binary bytes, final ports, exact-context credential review; final report and results hashes retained by independent reviewer."
+    },
+    "static_checks": {
+      "status": "passed_scoped",
+      "evidence": "static-validation-20261110.md"
+    }
+  },
+  "exclusions": [
+    "real or paid model inference",
+    "AC43 real cross-environment squad",
+    "E5 canary acceptance",
+    "H3a continuation",
+    "E0b/K1-K3 real knowledge acceptance",
+    "mixed-owner squad",
+    "native Electron/Desktop/mobile/installers",
+    "physical multiple machines or OS sandbox isolation",
+    "offline recovery",
+    "production deployment",
+    "performance or full accessibility audit"
+  ],
+  "product_code_changed": false,
+  "task_archive_ready": false,
+  "business_summary": {
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "selected_runs": [
+      "b3-support-governance-20261110",
+      "b5-support-20261110",
+      "b6-outsourcing-20261110"
+    ],
+    "one_combined_invocation": false,
+    "provider_visits": 12,
+    "successful_visits": 10,
+    "intentionally_stopped_visits": 2,
+    "all_final_visit_termination_proofs": 12
+  },
+  "source_syncs": {
+    "b3-support-governance-20261110": "environment/test-sync-002333.json",
+    "b5-support-20261110": "environment/test-sync-002811.json",
+    "b6-outsourcing-20261110": "environment/test-sync-003148.json"
+  },
+  "retained_attempt_totals": {
+    "passed": 7,
+    "failed": 4,
+    "skipped": 0,
+    "automatic_retries": 0
+  },
+  "acceptance_criteria": {
+    "AC1": "passed",
+    "AC2": "passed",
+    "AC3": "passed",
+    "AC4": "passed",
+    "AC5": "passed_selected_final_runs",
+    "AC6": "passed_historical_independent_reproduction",
+    "AC7": "passed"
+  },
+  "archive_pending_reason": "Task changes remain uncommitted in a shared working tree; no automatic archive or broad commit."
+}

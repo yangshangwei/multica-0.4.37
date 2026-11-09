@@ -1,0 +1,194 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/playwright.qa.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b3-support-governance-20261110/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b3-support-governance-20261110/playwright.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-business-scenarios.spec.ts",
+      "file": "collaboration-business-scenarios.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "S2 support ticket: manual intake becomes AI-assisted, files reach the agent, and a reopened ticket is reworked",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 600000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 33709,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at directedFormThroughUI (/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/fixtures/collaboration-handoff-chain.ts:43:41)\n    at /Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/collaboration-business-scenarios.spec.ts:218:25",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/fixtures/collaboration-handoff-chain.ts",
+                      "column": 41,
+                      "line": 43
+                    },
+                    "snippet": "   at fixtures/collaboration-handoff-chain.ts:43\n\n  41 | export async function directedFormThroughUI(page: Page, issueId: string, action: DirectedAction, note: string, recipient?: { id: string; name: string }, basis?: string) {\n  42 |   const baseline = await refreshDirectedIssue(page, issueId);\n> 43 |   expect(baseline.capabilities[action]).toBe(true);\n     |                                         ^\n  44 |   const label = { request_information: \"Request information\", return_information: \"Return information\", submit_acceptance: \"Submit result\" }[action];\n  45 |   const optionsPending = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/collaboration/issues/${issueId}/status-options`\n  46 |     && new URL(response.url()).searchParams.get(\"action\") === action && response.request().method() === \"GET\");"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/fixtures/collaboration-handoff-chain.ts",
+                        "column": 41,
+                        "line": 43
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   at fixtures/collaboration-handoff-chain.ts:43\n\n  41 | export async function directedFormThroughUI(page: Page, issueId: string, action: DirectedAction, note: string, recipient?: { id: string; name: string }, basis?: string) {\n  42 |   const baseline = await refreshDirectedIssue(page, issueId);\n> 43 |   expect(baseline.capabilities[action]).toBe(true);\n     |                                         ^\n  44 |   const label = { request_information: \"Request information\", return_information: \"Return information\", submit_acceptance: \"Submit result\" }[action];\n  45 |   const optionsPending = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/collaboration/issues/${issueId}/status-options`\n  46 |     && new URL(response.url()).searchParams.get(\"action\") === action && response.request().method() === \"GET\");\n    at directedFormThroughUI (/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/fixtures/collaboration-handoff-chain.ts:43:41)\n    at /Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/collaboration-business-scenarios.spec.ts:218:25"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:23:35.768Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "s2-support-ticket-evidence",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b3-support-governance-20261110/test-results/collaboration-business-sce-7a501-reopened-ticket-is-reworked-chromium/attachments/s2-support-ticket-evidence-836b606c3fb596cb48c7c097b2acdaae35f5a8d1.json"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b3-support-governance-20261110/test-results/collaboration-business-sce-7a501-reopened-ticket-is-reworked-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b3-support-governance-20261110/test-results/collaboration-business-sce-7a501-reopened-ticket-is-reworked-chromium/test-failed-2.png"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/fixtures/collaboration-handoff-chain.ts",
+                    "column": 41,
+                    "line": 43
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "63a5c4fa296e099a1451-cda28dfe98eb1d2a7d58",
+          "file": "collaboration-business-scenarios.spec.ts",
+          "line": 100,
+          "column": 1
+        },
+        {
+          "title": "S3 governance: live withdrawal really stops work, removal and cancellation fence AI, and the issue still closes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 600000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 42857,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:24:11.048Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "s3-governance-evidence",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b3-support-governance-20261110/test-results/collaboration-business-sce-4837c--and-the-issue-still-closes-chromium/attachments/s3-governance-evidence-44c4f7cfdf16c5c3592e01b181c32f8c8b5f77ef.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "63a5c4fa296e099a1451-0d8c7045854b15abdde4",
+          "file": "collaboration-business-scenarios.spec.ts",
+          "line": 239,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-09T16:23:34.988Z",
+    "duration": 79459.202,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/playwright.qa.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b4-outsourcing-20261110/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b4-outsourcing-20261110/playwright.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-business-scenarios.spec.ts",
+      "file": "collaboration-business-scenarios.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "S1 outsourcing: client, vendor manager and workspace-less engineer close an issue with a vendor squad and reuse approved knowledge",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 720000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 54402,
+                  "error": {
+                    "message": "TimeoutError: locator.click: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog').filter({ has: getByRole('group', { name: 'Browse issue resources', exact: true }) }).getByRole('group', { name: 'Browse issue resources', exact: true }).getByRole('button', { name: /^Knowledge candidates(?: \\d+)?$/ })\u001b[22m\n\u001b[2m    - locator resolved to <button tabindex=\"0\" type=\"button\" data-slot=\"button\" aria-pressed=\"false\" aria-label=\"Knowledge candidates\" class=\"group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding font-medium transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:b…>…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not stable\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    38 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+                    "stack": "TimeoutError: locator.click: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog').filter({ has: getByRole('group', { name: 'Browse issue resources', exact: true }) }).getByRole('group', { name: 'Browse issue resources', exact: true }).getByRole('button', { name: /^Knowledge candidates(?: \\d+)?$/ })\u001b[22m\n\u001b[2m    - locator resolved to <button tabindex=\"0\" type=\"button\" data-slot=\"button\" aria-pressed=\"false\" aria-label=\"Knowledge candidates\" class=\"group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding font-medium transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:b…>…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not stable\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    38 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at revealCollaborationDisclosure (/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/fixtures/collaboration-disclosures.ts:18:85)\n    at /Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/collaboration-business-scenarios.spec.ts:501:5",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/fixtures/collaboration-disclosures.ts",
+                      "column": 85,
+                      "line": 18
+                    },
+                    "snippet": "   at fixtures/collaboration-disclosures.ts:18\n\n  16 |     const drawer = page.getByRole(\"dialog\").filter({ has: page.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) });\n  17 |     const controls = await drawer.isVisible() ? drawer.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) : page.getByRole(\"group\", { name: \"Issue resources\", exact: true });\n> 18 |     await controls.getByRole(\"button\", { name: new RegExp(`^${name}(?: \\\\d+)?$`) }).click();\n     |                                                                                     ^\n  19 |     await expect(drawer).toHaveAccessibleName(name);\n  20 |     return drawer;\n  21 |   }"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/fixtures/collaboration-disclosures.ts",
+                        "column": 85,
+                        "line": 18
+                      },
+                      "message": "TimeoutError: locator.click: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog').filter({ has: getByRole('group', { name: 'Browse issue resources', exact: true }) }).getByRole('group', { name: 'Browse issue resources', exact: true }).getByRole('button', { name: /^Knowledge candidates(?: \\d+)?$/ })\u001b[22m\n\u001b[2m    - locator resolved to <button tabindex=\"0\" type=\"button\" data-slot=\"button\" aria-pressed=\"false\" aria-label=\"Knowledge candidates\" class=\"group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding font-medium transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:b…>…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not stable\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    38 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n   at fixtures/collaboration-disclosures.ts:18\n\n  16 |     const drawer = page.getByRole(\"dialog\").filter({ has: page.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) });\n  17 |     const controls = await drawer.isVisible() ? drawer.getByRole(\"group\", { name: \"Browse issue resources\", exact: true }) : page.getByRole(\"group\", { name: \"Issue resources\", exact: true });\n> 18 |     await controls.getByRole(\"button\", { name: new RegExp(`^${name}(?: \\\\d+)?$`) }).click();\n     |                                                                                     ^\n  19 |     await expect(drawer).toHaveAccessibleName(name);\n  20 |     return drawer;\n  21 |   }\n    at revealCollaborationDisclosure (/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/fixtures/collaboration-disclosures.ts:18:85)\n    at /Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/collaboration-business-scenarios.spec.ts:501:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T16:26:01.827Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "s1-outsourcing-evidence",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b4-outsourcing-20261110/test-results/collaboration-business-sce-e8bed-nd-reuse-approved-knowledge-chromium/attachments/s1-outsourcing-evidence-b77cca35232a4141773b4b4499982b0cb65e9820.json"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b4-outsourcing-20261110/test-results/collaboration-business-sce-e8bed-nd-reuse-approved-knowledge-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b4-outsourcing-20261110/test-results/collaboration-business-sce-e8bed-nd-reuse-approved-knowledge-chromium/test-failed-2.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b4-outsourcing-20261110/test-results/collaboration-business-sce-e8bed-nd-reuse-approved-knowledge-chromium/test-failed-3.png"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/fixtures/collaboration-disclosures.ts",
+                    "column": 85,
+                    "line": 18
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "63a5c4fa296e099a1451-198e4ec96b24149102ac",
+          "file": "collaboration-business-scenarios.spec.ts",
+          "line": 390,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-09T16:26:01.263Z",
+    "duration": 55682.918,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

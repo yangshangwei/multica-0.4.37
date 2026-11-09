@@ -565,6 +565,12 @@ drawer with its real control or Escape and await its hidden state. Reopen the
 resource through its visible toolbar when the next assertion belongs there.
 Do not force clicks through the overlay.
 
+The drawer can remain mounted and briefly visible during its closing animation.
+After Escape, await the resource dialog's hidden state before calling a helper
+that chooses between its inner navigation and the outer resource toolbar. A
+one-shot `isVisible()` can otherwise select a closing drawer and wait on a
+button that has become hidden. Keep the original failed run and use a new run ID.
+
 An absence assertion against an inaccessible background can pass without proving
 authorization. For example, close Sub-issues before checking that Edit source
 fields is absent. Open an available More actions menu before checking forbidden
@@ -588,6 +594,31 @@ record layout/scroll measurements separately if restoration still fails.
 Evidence: `11-01-branch-e2e-acceptance/research/continuation-20261107/`.
 The fixture repairs preserve the failed original runs and unchanged product
 bytes; successful repaired journeys do not retroactively pass the originals.
+
+### Business-scenario fixture contracts
+
+- Use `gapWorkflowObservations(issue)` for ordinary `/ai-policy` and `/lifecycle`
+  refusal probes. `hostAuthority()` also adds `execution_view_version`, which
+  those strict bodies reject with 400 before authorization. Preserve the exact
+  403 assertion; malformed input does not prove an authority boundary.
+- With multiple host targets, scope Resume to the row displaying the resource
+  UUID, then verify request and receipt target IDs. Join click and response
+  waiting with `Promise.all` so a rejected click does not leave an unhandled
+  response promise that later reports only page closure.
+- After accepted delivery, reopening retains the current handler. A creator
+  who wants the original developer to submit again must explicitly transfer
+  responsibility. Assert the developer's submit capability before/after that
+  transfer, retained delivery history, and the still-paused execution lane.
+- `openHostAcceptanceGate()` restores the state observed at test entry. That
+  state can already be enabled from an earlier interrupted run. Final cleanup
+  must compare the owned database's booleans with the original allocation,
+  restore that baseline explicitly if needed, and preserve the monotonic epoch.
+  Per-test `gate_restored=true` alone does not prove the deployment gate closed.
+
+Canonical examples: `e2e/collaboration-business-scenarios.spec.ts` and its
+task-local fixture. Evidence: `artifacts/qa/collaboration-business-scenarios-20261109/`.
+The selected three business passes use deterministic Provider output; they do
+not replace real-provider or model-behavior acceptance.
 
 ## macOS updater isolation and phase evidence
 

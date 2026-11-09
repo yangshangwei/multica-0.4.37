@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-10T00:43:59.528562+08:00",
+  "reviewer": "native independent audit_knowledge child",
+  "verdict": "pass",
+  "blocking_findings": [],
+  "scope": "Evidence review of deterministic business QA; no model calls, database access, service startup, product edits, or repeat E2E execution. Does not close the six parent businesses or real-provider gates.",
+  "final_byte_bindings": {
+    "report.md": "5f1fbd39f7f5f89a0095c8d7c1497bdb4a4a6c80c3657099aeb6c81bce602b7d",
+    "results.json": "aff6c02f46062b5b6876ce6128ac271f9b921d82cd224be4033b1d7b06fe3457",
+    "credential-scan-adjudication-20261110.json": "e86350e399c3e6d813c5bef203ae800ca73739cf8fe49c32ef3127ed71638061",
+    "credential-scan.json": "3a54af32b5067c9a2f096b46a79cc6881c6bd1ffa9c1abbd67d3e59ed26c0da9",
+    "credential-scan-raw-20261110.json": "3a54af32b5067c9a2f096b46a79cc6881c6bd1ffa9c1abbd67d3e59ed26c0da9",
+    "static-validation-20261110.md": "6858c3d90d9db86aa1fc60f73fda18dc0fb98a14281a0b72b63b5a298fd0f76d",
+    "environment/allocation.json": "ec34b3c2702546fdeaa5bf58bd79db07841ff3c6c1d5e3e1048815b529c83f7d",
+    "environment/final-cleanup-20261110.json": "9cc0f7b60f94a4f6820abfac6daf5e2c077d337af63a64e9604e413572787cd4",
+    "environment/final-gate-restoration-20261110.json": "cc8f2016428884f31797b6ad07843a4763e143f53ce0ad997004b8775672d273",
+    "environment/source-audit-003345.json": "def7b8358970e1f6f80a95eb120335fa16e3b1699696d4d270b9ded56e41d6d4"
+  },
+  "verified": {
+    "reproduction_passed": 4,
+    "business_scenarios_passed": 3,
+    "selected_runs": [
+      {
+        "scenario": "S1",
+        "run": "b6-outsourcing-20261110",
+        "evidence": "b6-outsourcing-20261110/test-results/collaboration-business-sce-e8bed-nd-reuse-approved-knowledge-chromium/s1-outsourcing-evidence.json",
+        "sha256": "803281ebc63bfc110c729cd6c7ec17a9eb6d2aee86eea7ebe0681a853f594a5a",
+        "provider_visits": 5,
+        "released": 5,
+        "intentionally_stopped_unreleased": 0,
+        "termination_proofs": 5,
+        "page_errors": [],
+        "cleanup_failures": [],
+        "daemon_exit_codes": [
+          0
+        ]
+      },
+      {
+        "scenario": "S2",
+        "run": "b5-support-20261110",
+        "evidence": "b5-support-20261110/test-results/collaboration-business-sce-7a501-reopened-ticket-is-reworked-chromium/s2-support-ticket-evidence.json",
+        "sha256": "89ded312772ea0692dc6ce6d87bb3be4f86737cd37f294479b6a5cc82a2cef2c",
+        "provider_visits": 2,
+        "released": 2,
+        "intentionally_stopped_unreleased": 0,
+        "termination_proofs": 2,
+        "page_errors": [],
+        "cleanup_failures": [],
+        "daemon_exit_codes": [
+          0
+        ]
+      },
+      {
+        "scenario": "S3",
+        "run": "b3-support-governance-20261110",
+        "evidence": "b3-support-governance-20261110/test-results/collaboration-business-sce-4837c--and-the-issue-still-closes-chromium/s3-governance-evidence.json",
+        "sha256": "a2e5142cbe9b64248657876c7d53e2e850632245dfc3b106a9be2ee8e0d06235",
+        "provider_visits": 5,
+        "released": 3,
+        "intentionally_stopped_unreleased": 2,
+        "termination_proofs": 5,
+        "page_errors": [],
+        "cleanup_failures": [],
+        "daemon_exit_codes": [
+          0,
+          0
+        ]
+      }
+    ],
+    "retained_attempts": {
+      "total": 11,
+      "passed": 7,
+      "failed": 4,
+      "skipped": 0,
+      "automatic_retries": 0,
+      "raw_playwright_reports": 8,
+      "all_report_hashes_stats_and_test_inventories_match": true
+    },
+    "provider_accounting": {
+      "visits": 12,
+      "released_successfully": 10,
+      "intentionally_stopped_unreleased": 2,
+      "matching_termination_proofs": 12,
+      "all_launches_reaped": true,
+      "all_daemon_exits_zero": true
+    },
+    "source": {
+      "candidate_sha": "b10da8fec9dab057f9830bd336369d42e27b8c85",
+      "candidate_tree": "d53bae89c9894de1676d52a5797f680a7b469227",
+      "independently_rehashed_tracked_files": 27607,
+      "drift": [],
+      "attribute_normalized": [
+        "scripts/uninstall-desktop-windows.bat"
+      ],
+      "binary_files_rehashed": 6,
+      "binary_hashes_match_allocation": true,
+      "two_new_test_files_match_snapshot": true,
+      "new_test_hashes": {
+        "e2e/collaboration-business-scenarios.spec.ts": {
+          "sha256": "f58d0ab26ac93c9535ab7618354a59b6069b4f0e2869d05dfaa4dddd89e94cea",
+          "matches_snapshot": true
+        },
+        "e2e/fixtures/collaboration-business-scenarios.ts": {
+          "sha256": "14d9be8fd6a6b60a85c8afd1d1b71aaa38744cf6b330c453631b60f98207e0d2",
+          "matches_snapshot": true
+        }
+      }
+    },
+    "cleanup": {
+      "independent_lsof_ports_free": [
+        59765,
+        59766,
+        59767
+      ],
+      "gate_restoration_record_matches_allocation_baseline_booleans": true,
+      "final_gate": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": "14"
+      },
+      "knowledge_context": "off",
+      "database_live_state_requeried_by_reviewer": false,
+      "database_retained_according_to_coordinator": true
+    },
+    "credential_scan": {
+      "original_raw_scan_preserved": true,
+      "original_raw_hit_files": 15,
+      "final_adjudication_manifest_files": 66,
+      "final_public_context_match_files": 17,
+      "all_66_manifest_hashes_match": true,
+      "independent_configured_value_review_unexpected_matches": 0,
+      "independent_credential_prefix_matches": 0,
+      "exemptions": "Only exact observed repository path, allocated database name, web/desktop package identifier, private CLI binary path, Go CLI package path, and JSON CLI binary-hash key spans. No blanket substring exemption.",
+      "secret_values_exported": false
+    },
+    "static_validation": "Executor record retained with matching final source hashes; scoped TypeScript, focused ESLint with disclosed e2e devDependency classification override, and Playwright collection. Reviewer did not rerun or broaden these checks."
+  },
+  "notes": [
+    "S1/S2/S3 selected from B6/B5/B3, not a single combined all-green invocation.",
+    "S1 phase two proves approved knowledge injection and Agent run success, not another completed delivery.",
+    "Per-scenario gate_restored means entry-state restoration; final cleanup separately restores the original deployment booleans with monotonic epoch.",
+    "Four failed attempts remain failed; no evidence of a confirmed product defect from those fixture/scenario failures.",
+    "Provider processes and application stack were real, but provider output and accounts were synthetic. Real AC43/E5/H3a/E0b/K1-K3 acceptance remains outside this review.",
+    "Report/results are verified but uncommitted; archive status remains false. Changing any signed input invalidates this exact byte binding."
+  ]
+}

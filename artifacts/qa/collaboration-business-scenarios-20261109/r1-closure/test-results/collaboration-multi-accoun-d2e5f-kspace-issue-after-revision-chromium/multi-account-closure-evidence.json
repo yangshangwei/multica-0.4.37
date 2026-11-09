@@ -1,0 +1,1213 @@
+{
+  "scope": "Three owners, three private workspaces, three actual host pollers and deterministic Provider processes; one shared issue",
+  "exclusions": [
+    "commercial model reasoning or credentials",
+    "physical second machine",
+    "OS sandbox",
+    "product repair"
+  ],
+  "steps": [
+    {
+      "name": "created and invited; unrelated access denied; source membership unchanged; original receipts recovered",
+      "at": "2026-11-09T13:04:35.168Z",
+      "facts": {
+        "id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+        "invitation": {
+          "code": "participant_added",
+          "collaboration_revision": "2"
+        },
+        "attachment_ids": [
+          "80c9b5a7-cd60-4936-ba73-98be0a30d084"
+        ]
+      }
+    },
+    {
+      "name": "unconsented targets unavailable and proxy owner consent denied",
+      "at": "2026-11-09T13:04:36.724Z",
+      "facts": {
+        "proxy_status": 403
+      }
+    },
+    {
+      "name": "all three actual owners authorized; explicit Resume enabled execution",
+      "at": "2026-11-09T13:04:41.105Z",
+      "facts": {
+        "target_ids": [
+          "b72e40b6-5d36-49fe-a2da-d7e5936cceb7",
+          "b809aa1b-2e0a-4f82-8d6b-de784b2e713c",
+          "82a85154-9ea7-4235-8841-28f83229591b"
+        ]
+      }
+    },
+    {
+      "name": "plain comment created no execution and stale memory update rejected",
+      "at": "2026-11-09T13:04:42.045Z",
+      "facts": {
+        "comment_id": "58949279-39cd-48d5-b425-e52f224b3a2c",
+        "stale_memory_status": 409
+      }
+    },
+    {
+      "name": "same-key AI comment replay retained the original command and receipt",
+      "at": "2026-11-09T13:04:43.169Z",
+      "facts": {
+        "request_id": "106dc865-b332-4ae0-8b43-df865e4f9fb9",
+        "command_id": "a3238556-d6ad-4716-a329-5018a176b057",
+        "replay_status": 201
+      }
+    },
+    {
+      "name": "actual Agent launch, CLI context/comment write and observed termination",
+      "at": "2026-11-09T13:04:47.024Z",
+      "facts": {
+        "run_id": "d33fb33b-0a36-4b5d-8900-1f0fd38f7a17",
+        "command_id": "a3238556-d6ad-4716-a329-5018a176b057",
+        "owner_id": "d669c214-f212-49e8-b018-2ef1d7629985",
+        "agent_id": "56adbc21-599d-41b1-a11a-7478076ee0e8",
+        "base_version": "1",
+        "written_version": "2",
+        "result": "Synthetic result by agent 56adbc21-599d-41b1-a11a-7478076ee0e8: Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID."
+      }
+    },
+    {
+      "name": "owner withdrawal blocked eligibility; re-consent retained hold until explicit Resume",
+      "at": "2026-11-09T13:04:51.962Z",
+      "facts": {
+        "target_id": "b72e40b6-5d36-49fe-a2da-d7e5936cceb7"
+      }
+    },
+    {
+      "name": "information requested and returned to original handler",
+      "at": "2026-11-09T13:04:54.562Z",
+      "facts": {
+        "requested": {
+          "code": "information_requested",
+          "collaboration_revision": "3"
+        },
+        "returned": {
+          "code": "information_returned",
+          "collaboration_revision": "4"
+        }
+      }
+    },
+    {
+      "name": "actual Agent launch, CLI context/comment write and observed termination",
+      "at": "2026-11-09T13:04:58.727Z",
+      "facts": {
+        "run_id": "7fe2d3f3-594f-413c-9fbd-9ea35961604c",
+        "command_id": "e9f67f74-17c6-4ae5-81dd-371e13e80ff5",
+        "owner_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+        "agent_id": "cd41241c-2c7b-4674-bfb9-bde815adb8f3",
+        "base_version": "2",
+        "written_version": "3",
+        "result": "Synthetic result by agent cd41241c-2c7b-4674-bfb9-bde815adb8f3: Implementation v1: deduplicate by order ID; callback audit evidence is still missing."
+      }
+    },
+    {
+      "name": "actual Agent launch, CLI context/comment write and observed termination",
+      "at": "2026-11-09T13:05:05.770Z",
+      "facts": {
+        "run_id": "844471e7-bb2e-4d76-8df6-6c417c980d72",
+        "command_id": "3e8b0fc7-9c0c-43dc-929f-76ecf1fc9b26",
+        "owner_id": "83ca10cb-7fd7-4cd5-a947-df31702fdce2",
+        "agent_id": "ce62e09f-1792-4353-933a-6ae7a9a15a14",
+        "base_version": "3",
+        "written_version": "4",
+        "result": "Synthetic result by agent ce62e09f-1792-4353-933a-6ae7a9a15a14: QA v1: duplicate charge prevention passes, but callback audit evidence is missing; revision required."
+      }
+    },
+    {
+      "name": "first delivery returned to development by initiator",
+      "at": "2026-11-09T13:05:10.113Z",
+      "facts": {
+        "first_submission_id": "d6e9dbd1-d120-4633-b7b9-bff4e3d19b0c",
+        "revision": {
+          "code": "acceptance_returned",
+          "collaboration_revision": "7"
+        }
+      }
+    },
+    {
+      "name": "actual Agent launch, CLI context/comment write and observed termination",
+      "at": "2026-11-09T13:05:14.890Z",
+      "facts": {
+        "run_id": "1bbe8d98-984e-4f25-aac5-c05d377db7df",
+        "command_id": "083ed65d-67dd-49a7-9c58-9b020c464c16",
+        "owner_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+        "agent_id": "cd41241c-2c7b-4674-bfb9-bde815adb8f3",
+        "base_version": "4",
+        "written_version": "5",
+        "result": "Synthetic result by agent cd41241c-2c7b-4674-bfb9-bde815adb8f3: Implementation v2: preserve callback ID and charge ID in audit evidence; duplicate replay remains idempotent."
+      }
+    },
+    {
+      "name": "actual Agent launch, CLI context/comment write and observed termination",
+      "at": "2026-11-09T13:05:20.265Z",
+      "facts": {
+        "run_id": "b286be62-cefa-417c-8b18-c44e4dcf3b85",
+        "command_id": "1350cc24-913a-4a65-8c59-e688a9e1992e",
+        "owner_id": "83ca10cb-7fd7-4cd5-a947-df31702fdce2",
+        "agent_id": "ce62e09f-1792-4353-933a-6ae7a9a15a14",
+        "base_version": "5",
+        "written_version": "6",
+        "result": "Synthetic result by agent ce62e09f-1792-4353-933a-6ae7a9a15a14: QA v2: duplicate replay and callback audit evidence both pass; ready for product acceptance."
+      }
+    },
+    {
+      "name": "unshared control issue remained byte-for-byte unchanged",
+      "at": "2026-11-09T13:05:26.814Z",
+      "facts": {
+        "issue_id": "01a1c068-fc78-7a16-9c6d-28ec5c38578a"
+      }
+    },
+    {
+      "name": "initiator accepted the exact second result; all three Web sessions agree",
+      "at": "2026-11-09T13:05:26.814Z",
+      "facts": {
+        "completion": {
+          "code": "completed",
+          "collaboration_revision": "9",
+          "delivery_confirmation": {
+            "submission_id": "f509df73-e406-411a-986d-2de26458e876",
+            "attachment_ids": []
+          }
+        },
+        "current_issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+        "run_count": 5
+      }
+    }
+  ],
+  "topology": [
+    {
+      "account_id": "d669c214-f212-49e8-b018-2ef1d7629985",
+      "account_name": "Host collaborator Product",
+      "workspace_id": "c10aa6f2-522c-4c98-8687-b2e0258325a0",
+      "agent_id": "56adbc21-599d-41b1-a11a-7478076ee0e8",
+      "runtime_id": "c49fc6b9-e51e-4452-bcf8-0e3f31b3bf36",
+      "installation_id": "94c89e9c-406c-48e9-bedf-0e0bd2ab7f5c"
+    },
+    {
+      "account_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+      "account_name": "Host collaborator Development",
+      "workspace_id": "3bb71c6c-96ab-4ca7-8550-00676c39af47",
+      "agent_id": "cd41241c-2c7b-4674-bfb9-bde815adb8f3",
+      "runtime_id": "e4e71729-afe0-4924-b889-c97f89c313f8",
+      "installation_id": "d7d3e362-2115-4776-b2eb-8f4a6e677403"
+    },
+    {
+      "account_id": "83ca10cb-7fd7-4cd5-a947-df31702fdce2",
+      "account_name": "Host collaborator Quality",
+      "workspace_id": "e889160e-aae0-4361-aec4-c9ddb994f0ee",
+      "agent_id": "ce62e09f-1792-4353-933a-6ae7a9a15a14",
+      "runtime_id": "2d3aadb8-1063-437a-81aa-bdab28a64051",
+      "installation_id": "96c93cf3-aede-4d82-be9a-80f7f72d306f"
+    }
+  ],
+  "unrelated_account_id": "864976f1-b2fb-4c79-8b3f-001f190ecf20",
+  "private_control_issue_id": "01a1c068-fc78-7a16-9c6d-28ec5c38578a",
+  "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+  "runs": [
+    {
+      "run_id": "d33fb33b-0a36-4b5d-8900-1f0fd38f7a17",
+      "command_id": "a3238556-d6ad-4716-a329-5018a176b057",
+      "owner_id": "d669c214-f212-49e8-b018-2ef1d7629985",
+      "agent_id": "56adbc21-599d-41b1-a11a-7478076ee0e8",
+      "base_version": "1",
+      "written_version": "2",
+      "result": "Synthetic result by agent 56adbc21-599d-41b1-a11a-7478076ee0e8: Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID."
+    },
+    {
+      "run_id": "7fe2d3f3-594f-413c-9fbd-9ea35961604c",
+      "command_id": "e9f67f74-17c6-4ae5-81dd-371e13e80ff5",
+      "owner_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+      "agent_id": "cd41241c-2c7b-4674-bfb9-bde815adb8f3",
+      "base_version": "2",
+      "written_version": "3",
+      "result": "Synthetic result by agent cd41241c-2c7b-4674-bfb9-bde815adb8f3: Implementation v1: deduplicate by order ID; callback audit evidence is still missing."
+    },
+    {
+      "run_id": "844471e7-bb2e-4d76-8df6-6c417c980d72",
+      "command_id": "3e8b0fc7-9c0c-43dc-929f-76ecf1fc9b26",
+      "owner_id": "83ca10cb-7fd7-4cd5-a947-df31702fdce2",
+      "agent_id": "ce62e09f-1792-4353-933a-6ae7a9a15a14",
+      "base_version": "3",
+      "written_version": "4",
+      "result": "Synthetic result by agent ce62e09f-1792-4353-933a-6ae7a9a15a14: QA v1: duplicate charge prevention passes, but callback audit evidence is missing; revision required."
+    },
+    {
+      "run_id": "1bbe8d98-984e-4f25-aac5-c05d377db7df",
+      "command_id": "083ed65d-67dd-49a7-9c58-9b020c464c16",
+      "owner_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+      "agent_id": "cd41241c-2c7b-4674-bfb9-bde815adb8f3",
+      "base_version": "4",
+      "written_version": "5",
+      "result": "Synthetic result by agent cd41241c-2c7b-4674-bfb9-bde815adb8f3: Implementation v2: preserve callback ID and charge ID in audit evidence; duplicate replay remains idempotent."
+    },
+    {
+      "run_id": "b286be62-cefa-417c-8b18-c44e4dcf3b85",
+      "command_id": "1350cc24-913a-4a65-8c59-e688a9e1992e",
+      "owner_id": "83ca10cb-7fd7-4cd5-a947-df31702fdce2",
+      "agent_id": "ce62e09f-1792-4353-933a-6ae7a9a15a14",
+      "base_version": "5",
+      "written_version": "6",
+      "result": "Synthetic result by agent ce62e09f-1792-4353-933a-6ae7a9a15a14: QA v2: duplicate replay and callback audit evidence both pass; ready for product acceptance."
+    }
+  ],
+  "delivery_history": {
+    "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+    "items": [
+      {
+        "id": "f509df73-e406-411a-986d-2de26458e876",
+        "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+        "event_seq": "86",
+        "lifecycle_epoch": "1",
+        "author_user_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+        "author": {
+          "user_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+          "name": "Host collaborator Development",
+          "avatar_url": "",
+          "external": true
+        },
+        "created_at": "2026-11-09T21:05:21.976714+08:00",
+        "result": "Version 2 complete: duplicate prevention and callback audit evidence pass synthetic QA.",
+        "basis": "Verification b286be62-cefa-417c-8b18-c44e4dcf3b85; revised implementation 1bbe8d98-984e-4f25-aac5-c05d377db7df; prior rejection retained.",
+        "attachment_ids": [],
+        "source_comment_id": null,
+        "evidence_state": "available",
+        "decision": {
+          "kind": "accepted",
+          "submission_id": "f509df73-e406-411a-986d-2de26458e876",
+          "event_seq": "87",
+          "actor_user_id": "d669c214-f212-49e8-b018-2ef1d7629985",
+          "actor": {
+            "user_id": "d669c214-f212-49e8-b018-2ef1d7629985",
+            "name": "Host collaborator Product",
+            "avatar_url": "",
+            "external": false
+          },
+          "created_at": "2026-11-09T21:05:23.687921+08:00",
+          "reason": null,
+          "target_user_id": null
+        }
+      },
+      {
+        "id": "d6e9dbd1-d120-4633-b7b9-bff4e3d19b0c",
+        "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+        "event_seq": "60",
+        "lifecycle_epoch": "1",
+        "author_user_id": "83ca10cb-7fd7-4cd5-a947-df31702fdce2",
+        "author": {
+          "user_id": "83ca10cb-7fd7-4cd5-a947-df31702fdce2",
+          "name": "Host collaborator Quality",
+          "avatar_url": "",
+          "external": true
+        },
+        "created_at": "2026-11-09T21:05:07.408752+08:00",
+        "result": "Version 1 implemented; QA found missing callback audit evidence.",
+        "basis": "Synthetic verification run 844471e7-bb2e-4d76-8df6-6c417c980d72; first three real simulated Agent runs and shared context are retained.",
+        "attachment_ids": [],
+        "source_comment_id": null,
+        "evidence_state": "available",
+        "decision": {
+          "kind": "returned",
+          "submission_id": "d6e9dbd1-d120-4633-b7b9-bff4e3d19b0c",
+          "event_seq": "61",
+          "actor_user_id": "d669c214-f212-49e8-b018-2ef1d7629985",
+          "actor": {
+            "user_id": "d669c214-f212-49e8-b018-2ef1d7629985",
+            "name": "Host collaborator Product",
+            "avatar_url": "",
+            "external": false
+          },
+          "created_at": "2026-11-09T21:05:09.084051+08:00",
+          "reason": "Add callback audit evidence and repeat QA before final delivery.",
+          "target_user_id": "306607ad-0edf-47df-b39b-a44a906e4dee"
+        }
+      }
+    ],
+    "next_cursor": null
+  },
+  "final_status": "done",
+  "final_status_category": "done",
+  "page_errors": [],
+  "provider_observations": [
+    {
+      "owner_id": "d669c214-f212-49e8-b018-2ef1d7629985",
+      "runtime_id": "c49fc6b9-e51e-4452-bcf8-0e3f31b3bf36",
+      "visits": [
+        {
+          "agent_id": "56adbc21-599d-41b1-a11a-7478076ee0e8",
+          "agent_owner_id": "d669c214-f212-49e8-b018-2ef1d7629985",
+          "attachment_hashes": {
+            "80c9b5a7-cd60-4936-ba73-98be0a30d084": "ff9e39e6f418eecfd4c01364286cb98236178c3959937fe7875baaa0a45fd560"
+          },
+          "brief_hash": "c64de9623c7748644e988776ce2cf56cbf86667bed3d39ecc9b1f02ef8aba302",
+          "cli_context": {
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "agent_id": "56adbc21-599d-41b1-a11a-7478076ee0e8",
+            "title": "Order duplicate-charge collaboration e981c2d2fb",
+            "description": "Synthetic acceptance: one order is charged at most once. Preserve duplicate-callback evidence and handoff notes. This fixture tests orchestration, not a real payment service.",
+            "inputs": [
+              {
+                "command_id": "a3238556-d6ad-4716-a329-5018a176b057",
+                "author_user_id": "d669c214-f212-49e8-b018-2ef1d7629985",
+                "participant_epoch": "1",
+                "account_epoch": "1",
+                "lifecycle_epoch": "1",
+                "body": "Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID. [@Host collaborator Product agent](mention://agent/56adbc21-599d-41b1-a11a-7478076ee0e8)",
+                "attachment_ids": []
+              }
+            ]
+          },
+          "cli_hash": "38c79f5e3b6194548951b28da503177eedb3540431c482b2559cb4d2d510f192",
+          "execution_mode": "host_process_supervision_v1",
+          "identity": {
+            "batch_id": "65205f58-fc59-4e39-aded-e0440c312978",
+            "channel_id": "a621fb3c-4777-40a0-a895-950eda001172",
+            "claim_generation": "1",
+            "deployment_id": "dea2af91-a2e1-436d-b463-5a7bc7d56de0",
+            "fence": "1",
+            "group_id": "6da117da-48a0-4ff8-a792-f4ad8ab668f0",
+            "installation_id": "94c89e9c-406c-48e9-bedf-0e0bd2ab7f5c",
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "run_id": "d33fb33b-0a36-4b5d-8900-1f0fd38f7a17",
+            "session_id": "768c056f-2975-4e63-810d-2e8554e6b36a",
+            "target_id": "b72e40b6-5d36-49fe-a2da-d7e5936cceb7"
+          },
+          "inputs": [
+            {
+              "command_id": "a3238556-d6ad-4716-a329-5018a176b057",
+              "author_user_id": "d669c214-f212-49e8-b018-2ef1d7629985",
+              "body": "Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID. [@Host collaborator Product agent](mention://agent/56adbc21-599d-41b1-a11a-7478076ee0e8)",
+              "attachment_ids": []
+            }
+          ],
+          "instruction_files_clean": true,
+          "memory_input": {
+            "version": 1,
+            "content": "Goal: prevent duplicate charges for synthetic ORDER-1. Acceptance needs callback replay evidence."
+          },
+          "memory_shown": {
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "run_id": "d33fb33b-0a36-4b5d-8900-1f0fd38f7a17",
+            "version": "1",
+            "content": "Goal: prevent duplicate charges for synthetic ORDER-1. Acceptance needs callback replay evidence."
+          },
+          "memory_written": {
+            "code": "memory_updated",
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "run_id": "d33fb33b-0a36-4b5d-8900-1f0fd38f7a17",
+            "version": "2"
+          },
+          "protocol_version": 3,
+          "resource_owner_id": "d669c214-f212-49e8-b018-2ef1d7629985",
+          "result_comment_id": "d33fb33b-0a36-4b5d-8900-1f0fd38f7a17",
+          "result_text": "Synthetic result by agent 56adbc21-599d-41b1-a11a-7478076ee0e8: Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID.",
+          "resumed": false,
+          "session_hash": "fd5a874481d68f11de72299d1138fbdc212b40c4bad62c4ef85f86ff89a6c7da",
+          "temp_hash": "88a30a8df90823e469ecdb39a41b334d4116af7b36e4bc075f220e217b8c810a",
+          "workdir_hash": "857f5643ee92df5eae42c720c563a5ff38664e30cc5a1a310c1baf5e0f36db00",
+          "started_ms": 20608.98725,
+          "released_ms": 20707.516292,
+          "closed_ms": 20709.650583,
+          "replies": []
+        }
+      ]
+    },
+    {
+      "owner_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+      "runtime_id": "e4e71729-afe0-4924-b889-c97f89c313f8",
+      "visits": [
+        {
+          "agent_id": "cd41241c-2c7b-4674-bfb9-bde815adb8f3",
+          "agent_owner_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+          "attachment_hashes": {
+            "80c9b5a7-cd60-4936-ba73-98be0a30d084": "ff9e39e6f418eecfd4c01364286cb98236178c3959937fe7875baaa0a45fd560"
+          },
+          "brief_hash": "c64de9623c7748644e988776ce2cf56cbf86667bed3d39ecc9b1f02ef8aba302",
+          "cli_context": {
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "agent_id": "cd41241c-2c7b-4674-bfb9-bde815adb8f3",
+            "title": "Order duplicate-charge collaboration e981c2d2fb",
+            "description": "Synthetic acceptance: one order is charged at most once. Preserve duplicate-callback evidence and handoff notes. This fixture tests orchestration, not a real payment service.",
+            "inputs": [
+              {
+                "command_id": "e9f67f74-17c6-4ae5-81dd-371e13e80ff5",
+                "author_user_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+                "participant_epoch": "1",
+                "account_epoch": "1",
+                "lifecycle_epoch": "1",
+                "body": "Implementation v1: deduplicate by order ID; callback audit evidence is still missing. [@Host collaborator Development agent](mention://agent/cd41241c-2c7b-4674-bfb9-bde815adb8f3)",
+                "attachment_ids": []
+              }
+            ]
+          },
+          "cli_hash": "38c79f5e3b6194548951b28da503177eedb3540431c482b2559cb4d2d510f192",
+          "execution_mode": "host_process_supervision_v1",
+          "identity": {
+            "batch_id": "4ac9e62d-03cf-48ee-b43c-031b39fe9e91",
+            "channel_id": "8dbff1a7-aeab-44a9-8522-74c0bd217708",
+            "claim_generation": "1",
+            "deployment_id": "dea2af91-a2e1-436d-b463-5a7bc7d56de0",
+            "fence": "1",
+            "group_id": "3f3c3b13-288b-468a-b295-c7e54e5d4b55",
+            "installation_id": "d7d3e362-2115-4776-b2eb-8f4a6e677403",
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "run_id": "7fe2d3f3-594f-413c-9fbd-9ea35961604c",
+            "session_id": "768c056f-2975-4e63-810d-2e8554e6b36a",
+            "target_id": "b809aa1b-2e0a-4f82-8d6b-de784b2e713c"
+          },
+          "inputs": [
+            {
+              "command_id": "e9f67f74-17c6-4ae5-81dd-371e13e80ff5",
+              "author_user_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+              "body": "Implementation v1: deduplicate by order ID; callback audit evidence is still missing. [@Host collaborator Development agent](mention://agent/cd41241c-2c7b-4674-bfb9-bde815adb8f3)",
+              "attachment_ids": []
+            }
+          ],
+          "instruction_files_clean": true,
+          "memory_input": {
+            "version": 2,
+            "content": "Goal: prevent duplicate charges for synthetic ORDER-1. Acceptance needs callback replay evidence.\n\nSynthetic result by agent 56adbc21-599d-41b1-a11a-7478076ee0e8: Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID."
+          },
+          "memory_shown": {
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "run_id": "7fe2d3f3-594f-413c-9fbd-9ea35961604c",
+            "version": "2",
+            "content": "Goal: prevent duplicate charges for synthetic ORDER-1. Acceptance needs callback replay evidence.\n\nSynthetic result by agent 56adbc21-599d-41b1-a11a-7478076ee0e8: Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID."
+          },
+          "memory_written": {
+            "code": "memory_updated",
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "run_id": "7fe2d3f3-594f-413c-9fbd-9ea35961604c",
+            "version": "3"
+          },
+          "protocol_version": 3,
+          "resource_owner_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+          "result_comment_id": "7fe2d3f3-594f-413c-9fbd-9ea35961604c",
+          "result_text": "Synthetic result by agent cd41241c-2c7b-4674-bfb9-bde815adb8f3: Implementation v1: deduplicate by order ID; callback audit evidence is still missing.",
+          "resumed": false,
+          "session_hash": "0baf8fcc8274cddd38de66749537d5f769f28650a51558a2e8cdfe0f241d3908",
+          "temp_hash": "f5a16fee1a0d1cb76a9f833d0a476a602aacd7602c2b32da05c88ff8233ead5b",
+          "workdir_hash": "511df3c47e22273214cacea44d6cde05d385518cc0899835a774b8511f8e4fd9",
+          "started_ms": 29985.828708,
+          "released_ms": 30639.280708,
+          "closed_ms": 30640.358917,
+          "replies": []
+        },
+        {
+          "agent_id": "cd41241c-2c7b-4674-bfb9-bde815adb8f3",
+          "agent_owner_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+          "attachment_hashes": {
+            "80c9b5a7-cd60-4936-ba73-98be0a30d084": "ff9e39e6f418eecfd4c01364286cb98236178c3959937fe7875baaa0a45fd560"
+          },
+          "brief_hash": "c64de9623c7748644e988776ce2cf56cbf86667bed3d39ecc9b1f02ef8aba302",
+          "cli_context": {
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "agent_id": "cd41241c-2c7b-4674-bfb9-bde815adb8f3",
+            "title": "Order duplicate-charge collaboration e981c2d2fb",
+            "description": "Synthetic acceptance: one order is charged at most once. Preserve duplicate-callback evidence and handoff notes. This fixture tests orchestration, not a real payment service.",
+            "inputs": [
+              {
+                "command_id": "083ed65d-67dd-49a7-9c58-9b020c464c16",
+                "author_user_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+                "participant_epoch": "1",
+                "account_epoch": "1",
+                "lifecycle_epoch": "1",
+                "body": "Implementation v2: preserve callback ID and charge ID in audit evidence; duplicate replay remains idempotent. [@Host collaborator Development agent](mention://agent/cd41241c-2c7b-4674-bfb9-bde815adb8f3)",
+                "attachment_ids": []
+              }
+            ]
+          },
+          "cli_hash": "38c79f5e3b6194548951b28da503177eedb3540431c482b2559cb4d2d510f192",
+          "execution_mode": "host_process_supervision_v1",
+          "identity": {
+            "batch_id": "80b85225-7a54-4d06-9d4d-15ac5c7d1554",
+            "channel_id": "8dbff1a7-aeab-44a9-8522-74c0bd217708",
+            "claim_generation": "1",
+            "deployment_id": "dea2af91-a2e1-436d-b463-5a7bc7d56de0",
+            "fence": "1",
+            "group_id": "b5c6050d-461c-4ba3-a729-2b58cb45f03d",
+            "installation_id": "d7d3e362-2115-4776-b2eb-8f4a6e677403",
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "run_id": "1bbe8d98-984e-4f25-aac5-c05d377db7df",
+            "session_id": "768c056f-2975-4e63-810d-2e8554e6b36a",
+            "target_id": "b809aa1b-2e0a-4f82-8d6b-de784b2e713c"
+          },
+          "inputs": [
+            {
+              "command_id": "083ed65d-67dd-49a7-9c58-9b020c464c16",
+              "author_user_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+              "body": "Implementation v2: preserve callback ID and charge ID in audit evidence; duplicate replay remains idempotent. [@Host collaborator Development agent](mention://agent/cd41241c-2c7b-4674-bfb9-bde815adb8f3)",
+              "attachment_ids": []
+            }
+          ],
+          "instruction_files_clean": true,
+          "memory_input": {
+            "version": 4,
+            "content": "Goal: prevent duplicate charges for synthetic ORDER-1. Acceptance needs callback replay evidence.\n\nSynthetic result by agent 56adbc21-599d-41b1-a11a-7478076ee0e8: Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID.\n\nSynthetic result by agent cd41241c-2c7b-4674-bfb9-bde815adb8f3: Implementation v1: deduplicate by order ID; callback audit evidence is still missing.\n\nSynthetic result by agent ce62e09f-1792-4353-933a-6ae7a9a15a14: QA v1: duplicate charge prevention passes, but callback audit evidence is missing; revision required."
+          },
+          "memory_shown": {
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "run_id": "1bbe8d98-984e-4f25-aac5-c05d377db7df",
+            "version": "4",
+            "content": "Goal: prevent duplicate charges for synthetic ORDER-1. Acceptance needs callback replay evidence.\n\nSynthetic result by agent 56adbc21-599d-41b1-a11a-7478076ee0e8: Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID.\n\nSynthetic result by agent cd41241c-2c7b-4674-bfb9-bde815adb8f3: Implementation v1: deduplicate by order ID; callback audit evidence is still missing.\n\nSynthetic result by agent ce62e09f-1792-4353-933a-6ae7a9a15a14: QA v1: duplicate charge prevention passes, but callback audit evidence is missing; revision required."
+          },
+          "memory_written": {
+            "code": "memory_updated",
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "run_id": "1bbe8d98-984e-4f25-aac5-c05d377db7df",
+            "version": "5"
+          },
+          "protocol_version": 3,
+          "resource_owner_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+          "result_comment_id": "1bbe8d98-984e-4f25-aac5-c05d377db7df",
+          "result_text": "Synthetic result by agent cd41241c-2c7b-4674-bfb9-bde815adb8f3: Implementation v2: preserve callback ID and charge ID in audit evidence; duplicate replay remains idempotent.",
+          "resumed": true,
+          "session_hash": "0baf8fcc8274cddd38de66749537d5f769f28650a51558a2e8cdfe0f241d3908",
+          "temp_hash": "eb5ae25dd83eb0f740c5683d8e426fcf6d2574d442691e97476a11938db730fe",
+          "workdir_hash": "511df3c47e22273214cacea44d6cde05d385518cc0899835a774b8511f8e4fd9",
+          "started_ms": 45859.93875,
+          "released_ms": 46348.756708,
+          "closed_ms": 46355.140625,
+          "replies": []
+        }
+      ]
+    },
+    {
+      "owner_id": "83ca10cb-7fd7-4cd5-a947-df31702fdce2",
+      "runtime_id": "2d3aadb8-1063-437a-81aa-bdab28a64051",
+      "visits": [
+        {
+          "agent_id": "ce62e09f-1792-4353-933a-6ae7a9a15a14",
+          "agent_owner_id": "83ca10cb-7fd7-4cd5-a947-df31702fdce2",
+          "attachment_hashes": {
+            "80c9b5a7-cd60-4936-ba73-98be0a30d084": "ff9e39e6f418eecfd4c01364286cb98236178c3959937fe7875baaa0a45fd560"
+          },
+          "brief_hash": "c64de9623c7748644e988776ce2cf56cbf86667bed3d39ecc9b1f02ef8aba302",
+          "cli_context": {
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "agent_id": "ce62e09f-1792-4353-933a-6ae7a9a15a14",
+            "title": "Order duplicate-charge collaboration e981c2d2fb",
+            "description": "Synthetic acceptance: one order is charged at most once. Preserve duplicate-callback evidence and handoff notes. This fixture tests orchestration, not a real payment service.",
+            "inputs": [
+              {
+                "command_id": "3e8b0fc7-9c0c-43dc-929f-76ecf1fc9b26",
+                "author_user_id": "83ca10cb-7fd7-4cd5-a947-df31702fdce2",
+                "participant_epoch": "1",
+                "account_epoch": "1",
+                "lifecycle_epoch": "1",
+                "body": "QA v1: duplicate charge prevention passes, but callback audit evidence is missing; revision required. [@Host collaborator Quality agent](mention://agent/ce62e09f-1792-4353-933a-6ae7a9a15a14)",
+                "attachment_ids": []
+              }
+            ]
+          },
+          "cli_hash": "38c79f5e3b6194548951b28da503177eedb3540431c482b2559cb4d2d510f192",
+          "execution_mode": "host_process_supervision_v1",
+          "identity": {
+            "batch_id": "b94da7cf-f4e2-4040-b962-c7dd0f296b3a",
+            "channel_id": "8f9ca533-40aa-4e9e-be48-3dcbc2521707",
+            "claim_generation": "1",
+            "deployment_id": "dea2af91-a2e1-436d-b463-5a7bc7d56de0",
+            "fence": "1",
+            "group_id": "dace31a3-0928-4a85-8a50-c34bab3a390b",
+            "installation_id": "96c93cf3-aede-4d82-be9a-80f7f72d306f",
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "run_id": "844471e7-bb2e-4d76-8df6-6c417c980d72",
+            "session_id": "768c056f-2975-4e63-810d-2e8554e6b36a",
+            "target_id": "82a85154-9ea7-4235-8841-28f83229591b"
+          },
+          "inputs": [
+            {
+              "command_id": "3e8b0fc7-9c0c-43dc-929f-76ecf1fc9b26",
+              "author_user_id": "83ca10cb-7fd7-4cd5-a947-df31702fdce2",
+              "body": "QA v1: duplicate charge prevention passes, but callback audit evidence is missing; revision required. [@Host collaborator Quality agent](mention://agent/ce62e09f-1792-4353-933a-6ae7a9a15a14)",
+              "attachment_ids": []
+            }
+          ],
+          "instruction_files_clean": true,
+          "memory_input": {
+            "version": 3,
+            "content": "Goal: prevent duplicate charges for synthetic ORDER-1. Acceptance needs callback replay evidence.\n\nSynthetic result by agent 56adbc21-599d-41b1-a11a-7478076ee0e8: Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID.\n\nSynthetic result by agent cd41241c-2c7b-4674-bfb9-bde815adb8f3: Implementation v1: deduplicate by order ID; callback audit evidence is still missing."
+          },
+          "memory_shown": {
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "run_id": "844471e7-bb2e-4d76-8df6-6c417c980d72",
+            "version": "3",
+            "content": "Goal: prevent duplicate charges for synthetic ORDER-1. Acceptance needs callback replay evidence.\n\nSynthetic result by agent 56adbc21-599d-41b1-a11a-7478076ee0e8: Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID.\n\nSynthetic result by agent cd41241c-2c7b-4674-bfb9-bde815adb8f3: Implementation v1: deduplicate by order ID; callback audit evidence is still missing."
+          },
+          "memory_written": {
+            "code": "memory_updated",
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "run_id": "844471e7-bb2e-4d76-8df6-6c417c980d72",
+            "version": "4"
+          },
+          "protocol_version": 3,
+          "resource_owner_id": "83ca10cb-7fd7-4cd5-a947-df31702fdce2",
+          "result_comment_id": "844471e7-bb2e-4d76-8df6-6c417c980d72",
+          "result_text": "Synthetic result by agent ce62e09f-1792-4353-933a-6ae7a9a15a14: QA v1: duplicate charge prevention passes, but callback audit evidence is missing; revision required.",
+          "resumed": false,
+          "session_hash": "98fd02465bf9b0449c8cba0f49c2ef2d538eb8d807f7c29c2f7764fe01661d7d",
+          "temp_hash": "a93a4f9a64bb1a942f8990a63b4bb03caa86906ea888e60e4c9488534b10de5c",
+          "workdir_hash": "2f701e938b7123708c14f89dea7e7f1fcdb08b760ceec997f53f1aaebac42a1f",
+          "started_ms": 36866.081709,
+          "released_ms": 37009.359459,
+          "closed_ms": 37012.025875,
+          "replies": []
+        },
+        {
+          "agent_id": "ce62e09f-1792-4353-933a-6ae7a9a15a14",
+          "agent_owner_id": "83ca10cb-7fd7-4cd5-a947-df31702fdce2",
+          "attachment_hashes": {
+            "80c9b5a7-cd60-4936-ba73-98be0a30d084": "ff9e39e6f418eecfd4c01364286cb98236178c3959937fe7875baaa0a45fd560"
+          },
+          "brief_hash": "c64de9623c7748644e988776ce2cf56cbf86667bed3d39ecc9b1f02ef8aba302",
+          "cli_context": {
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "agent_id": "ce62e09f-1792-4353-933a-6ae7a9a15a14",
+            "title": "Order duplicate-charge collaboration e981c2d2fb",
+            "description": "Synthetic acceptance: one order is charged at most once. Preserve duplicate-callback evidence and handoff notes. This fixture tests orchestration, not a real payment service.",
+            "inputs": [
+              {
+                "command_id": "1350cc24-913a-4a65-8c59-e688a9e1992e",
+                "author_user_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+                "participant_epoch": "1",
+                "account_epoch": "1",
+                "lifecycle_epoch": "1",
+                "body": "QA v2: duplicate replay and callback audit evidence both pass; ready for product acceptance. [@Host collaborator Quality agent](mention://agent/ce62e09f-1792-4353-933a-6ae7a9a15a14)",
+                "attachment_ids": []
+              }
+            ]
+          },
+          "cli_hash": "38c79f5e3b6194548951b28da503177eedb3540431c482b2559cb4d2d510f192",
+          "execution_mode": "host_process_supervision_v1",
+          "identity": {
+            "batch_id": "392b45c5-0943-4410-bab4-fbf0b802f31e",
+            "channel_id": "8f9ca533-40aa-4e9e-be48-3dcbc2521707",
+            "claim_generation": "1",
+            "deployment_id": "dea2af91-a2e1-436d-b463-5a7bc7d56de0",
+            "fence": "1",
+            "group_id": "e0212577-be4d-4ca7-97f1-5f1ae7df4d62",
+            "installation_id": "96c93cf3-aede-4d82-be9a-80f7f72d306f",
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "run_id": "b286be62-cefa-417c-8b18-c44e4dcf3b85",
+            "session_id": "768c056f-2975-4e63-810d-2e8554e6b36a",
+            "target_id": "82a85154-9ea7-4235-8841-28f83229591b"
+          },
+          "inputs": [
+            {
+              "command_id": "1350cc24-913a-4a65-8c59-e688a9e1992e",
+              "author_user_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+              "body": "QA v2: duplicate replay and callback audit evidence both pass; ready for product acceptance. [@Host collaborator Quality agent](mention://agent/ce62e09f-1792-4353-933a-6ae7a9a15a14)",
+              "attachment_ids": []
+            }
+          ],
+          "instruction_files_clean": true,
+          "memory_input": {
+            "version": 5,
+            "content": "Goal: prevent duplicate charges for synthetic ORDER-1. Acceptance needs callback replay evidence.\n\nSynthetic result by agent 56adbc21-599d-41b1-a11a-7478076ee0e8: Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID.\n\nSynthetic result by agent cd41241c-2c7b-4674-bfb9-bde815adb8f3: Implementation v1: deduplicate by order ID; callback audit evidence is still missing.\n\nSynthetic result by agent ce62e09f-1792-4353-933a-6ae7a9a15a14: QA v1: duplicate charge prevention passes, but callback audit evidence is missing; revision required.\n\nSynthetic result by agent cd41241c-2c7b-4674-bfb9-bde815adb8f3: Implementation v2: preserve callback ID and charge ID in audit evidence; duplicate replay remains idempotent."
+          },
+          "memory_shown": {
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "run_id": "b286be62-cefa-417c-8b18-c44e4dcf3b85",
+            "version": "5",
+            "content": "Goal: prevent duplicate charges for synthetic ORDER-1. Acceptance needs callback replay evidence.\n\nSynthetic result by agent 56adbc21-599d-41b1-a11a-7478076ee0e8: Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID.\n\nSynthetic result by agent cd41241c-2c7b-4674-bfb9-bde815adb8f3: Implementation v1: deduplicate by order ID; callback audit evidence is still missing.\n\nSynthetic result by agent ce62e09f-1792-4353-933a-6ae7a9a15a14: QA v1: duplicate charge prevention passes, but callback audit evidence is missing; revision required.\n\nSynthetic result by agent cd41241c-2c7b-4674-bfb9-bde815adb8f3: Implementation v2: preserve callback ID and charge ID in audit evidence; duplicate replay remains idempotent."
+          },
+          "memory_written": {
+            "code": "memory_updated",
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "run_id": "b286be62-cefa-417c-8b18-c44e4dcf3b85",
+            "version": "6"
+          },
+          "protocol_version": 3,
+          "resource_owner_id": "83ca10cb-7fd7-4cd5-a947-df31702fdce2",
+          "result_comment_id": "b286be62-cefa-417c-8b18-c44e4dcf3b85",
+          "result_text": "Synthetic result by agent ce62e09f-1792-4353-933a-6ae7a9a15a14: QA v2: duplicate replay and callback audit evidence both pass; ready for product acceptance.",
+          "resumed": true,
+          "session_hash": "98fd02465bf9b0449c8cba0f49c2ef2d538eb8d807f7c29c2f7764fe01661d7d",
+          "temp_hash": "9c2b52eb58687c67b64f8c31f26d1c73d4cce87bb06d178e061ad75f58f4d5e1",
+          "workdir_hash": "2f701e938b7123708c14f89dea7e7f1fcdb08b760ceec997f53f1aaebac42a1f",
+          "started_ms": 50562.283292,
+          "released_ms": 51206.555875,
+          "closed_ms": 51208.260292,
+          "replies": []
+        }
+      ]
+    }
+  ],
+  "gate_restored": true,
+  "cleanup": [
+    {
+      "owner_id": "83ca10cb-7fd7-4cd5-a947-df31702fdce2",
+      "summary": {
+        "exit_code": 0,
+        "messages": [
+          {
+            "arch": "arm64",
+            "execution_mode": "host_process_supervision_v1",
+            "max_concurrent_tasks": 1,
+            "os": "darwin",
+            "preparation_version": 2,
+            "protocol_version": 3,
+            "ready": true,
+            "runtime_config_epoch": "2"
+          },
+          {
+            "active_tasks": 0,
+            "available_slots": 1,
+            "claims": 2,
+            "http": [
+              {
+                "operation": "claim",
+                "run_id": "844471e7-bb2e-4d76-8df6-6c417c980d72",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "status": 200
+              },
+              {
+                "operation": "permit",
+                "run_id": "844471e7-bb2e-4d76-8df6-6c417c980d72",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "attempt_seq": "1",
+                "launch_hash": "d652460626345fe20b46cde6a03d22e9795424f2ec43684b5ad3f9821cc3b95e",
+                "status": 200
+              },
+              {
+                "operation": "permit",
+                "run_id": "844471e7-bb2e-4d76-8df6-6c417c980d72",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "attempt_seq": "1",
+                "launch_hash": "d652460626345fe20b46cde6a03d22e9795424f2ec43684b5ad3f9821cc3b95e",
+                "status": 200
+              },
+              {
+                "operation": "termination",
+                "run_id": "844471e7-bb2e-4d76-8df6-6c417c980d72",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "attempt_seq": "1",
+                "launch_hash": "d652460626345fe20b46cde6a03d22e9795424f2ec43684b5ad3f9821cc3b95e",
+                "kind": "managed_launch_ended",
+                "status": 200
+              },
+              {
+                "operation": "proof",
+                "run_id": "844471e7-bb2e-4d76-8df6-6c417c980d72",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "launch_hash": "d652460626345fe20b46cde6a03d22e9795424f2ec43684b5ad3f9821cc3b95e",
+                "state": "host_exit_observed",
+                "status": 200
+              },
+              {
+                "operation": "claim",
+                "run_id": "b286be62-cefa-417c-8b18-c44e4dcf3b85",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "status": 200
+              },
+              {
+                "operation": "permit",
+                "run_id": "b286be62-cefa-417c-8b18-c44e4dcf3b85",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "attempt_seq": "1",
+                "launch_hash": "a7c2a6bdd73ba15af9889c4cb52ae28e31a04ef9011a6f3ccfa538bb99f25a7c",
+                "status": 200
+              },
+              {
+                "operation": "permit",
+                "run_id": "b286be62-cefa-417c-8b18-c44e4dcf3b85",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "attempt_seq": "1",
+                "launch_hash": "a7c2a6bdd73ba15af9889c4cb52ae28e31a04ef9011a6f3ccfa538bb99f25a7c",
+                "status": 200
+              },
+              {
+                "operation": "termination",
+                "run_id": "b286be62-cefa-417c-8b18-c44e4dcf3b85",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "attempt_seq": "1",
+                "launch_hash": "a7c2a6bdd73ba15af9889c4cb52ae28e31a04ef9011a6f3ccfa538bb99f25a7c",
+                "kind": "managed_launch_ended",
+                "status": 200
+              },
+              {
+                "operation": "proof",
+                "run_id": "b286be62-cefa-417c-8b18-c44e4dcf3b85",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "launch_hash": "a7c2a6bdd73ba15af9889c4cb52ae28e31a04ef9011a6f3ccfa538bb99f25a7c",
+                "state": "host_exit_observed",
+                "status": 200
+              }
+            ],
+            "invalid_capacity": false
+          }
+        ],
+        "ledger": [
+          {
+            "version": 2,
+            "run_id": "b286be62-cefa-417c-8b18-c44e4dcf3b85",
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "phase": "proof_acknowledged",
+            "session_key": "ab140074fffd07af9dc74ded8dbeee3c72bc8719300d16068e4f547d41e8fce2",
+            "namespace_present": false,
+            "sealed": true,
+            "proof_state": "host_exit_observed",
+            "cleanup": {
+              "state": "tracked_scope_complete",
+              "scope": "process_group",
+              "attempted": true
+            },
+            "launches": [
+              {
+                "attempt_seq": "1",
+                "kind": "provider",
+                "phase": "attempt_reaped",
+                "process_observed": true,
+                "scope": "process_group",
+                "terminal_accepted": true,
+                "authorized": true,
+                "terminal_kind": "managed_launch_ended",
+                "cleanup": {
+                  "state": "tracked_scope_complete",
+                  "scope": "process_group",
+                  "attempted": true
+                }
+              }
+            ]
+          },
+          {
+            "version": 2,
+            "run_id": "844471e7-bb2e-4d76-8df6-6c417c980d72",
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "phase": "proof_acknowledged",
+            "session_key": "ab140074fffd07af9dc74ded8dbeee3c72bc8719300d16068e4f547d41e8fce2",
+            "namespace_present": false,
+            "sealed": true,
+            "proof_state": "host_exit_observed",
+            "cleanup": {
+              "state": "tracked_scope_complete",
+              "scope": "process_group",
+              "attempted": true
+            },
+            "launches": [
+              {
+                "attempt_seq": "1",
+                "kind": "provider",
+                "phase": "attempt_reaped",
+                "process_observed": true,
+                "scope": "process_group",
+                "terminal_accepted": true,
+                "authorized": true,
+                "terminal_kind": "managed_launch_ended",
+                "cleanup": {
+                  "state": "tracked_scope_complete",
+                  "scope": "process_group",
+                  "attempted": true
+                }
+              }
+            ]
+          }
+        ],
+        "errors": [],
+        "stderr": ""
+      }
+    },
+    {
+      "owner_id": "306607ad-0edf-47df-b39b-a44a906e4dee",
+      "summary": {
+        "exit_code": 0,
+        "messages": [
+          {
+            "arch": "arm64",
+            "execution_mode": "host_process_supervision_v1",
+            "max_concurrent_tasks": 1,
+            "os": "darwin",
+            "preparation_version": 2,
+            "protocol_version": 3,
+            "ready": true,
+            "runtime_config_epoch": "2"
+          },
+          {
+            "active_tasks": 0,
+            "available_slots": 1,
+            "claims": 2,
+            "http": [
+              {
+                "operation": "claim",
+                "run_id": "7fe2d3f3-594f-413c-9fbd-9ea35961604c",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "status": 200
+              },
+              {
+                "operation": "permit",
+                "run_id": "7fe2d3f3-594f-413c-9fbd-9ea35961604c",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "attempt_seq": "1",
+                "launch_hash": "17b20cd5400bb22502df4ade39c48bb2c337bebaf77c5ea62900ccadbb1de5af",
+                "status": 200
+              },
+              {
+                "operation": "permit",
+                "run_id": "7fe2d3f3-594f-413c-9fbd-9ea35961604c",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "attempt_seq": "1",
+                "launch_hash": "17b20cd5400bb22502df4ade39c48bb2c337bebaf77c5ea62900ccadbb1de5af",
+                "status": 200
+              },
+              {
+                "operation": "termination",
+                "run_id": "7fe2d3f3-594f-413c-9fbd-9ea35961604c",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "attempt_seq": "1",
+                "launch_hash": "17b20cd5400bb22502df4ade39c48bb2c337bebaf77c5ea62900ccadbb1de5af",
+                "kind": "managed_launch_ended",
+                "status": 200
+              },
+              {
+                "operation": "proof",
+                "run_id": "7fe2d3f3-594f-413c-9fbd-9ea35961604c",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "launch_hash": "17b20cd5400bb22502df4ade39c48bb2c337bebaf77c5ea62900ccadbb1de5af",
+                "state": "host_exit_observed",
+                "status": 200
+              },
+              {
+                "operation": "claim",
+                "run_id": "1bbe8d98-984e-4f25-aac5-c05d377db7df",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "status": 200
+              },
+              {
+                "operation": "permit",
+                "run_id": "1bbe8d98-984e-4f25-aac5-c05d377db7df",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "attempt_seq": "1",
+                "launch_hash": "f377c7d6e7afb3cf842560aee4051d058b9ea6cb3d006532b0409bc7a161ff3c",
+                "status": 200
+              },
+              {
+                "operation": "permit",
+                "run_id": "1bbe8d98-984e-4f25-aac5-c05d377db7df",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "attempt_seq": "1",
+                "launch_hash": "f377c7d6e7afb3cf842560aee4051d058b9ea6cb3d006532b0409bc7a161ff3c",
+                "status": 200
+              },
+              {
+                "operation": "termination",
+                "run_id": "1bbe8d98-984e-4f25-aac5-c05d377db7df",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "attempt_seq": "1",
+                "launch_hash": "f377c7d6e7afb3cf842560aee4051d058b9ea6cb3d006532b0409bc7a161ff3c",
+                "kind": "managed_launch_ended",
+                "status": 200
+              },
+              {
+                "operation": "proof",
+                "run_id": "1bbe8d98-984e-4f25-aac5-c05d377db7df",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "launch_hash": "f377c7d6e7afb3cf842560aee4051d058b9ea6cb3d006532b0409bc7a161ff3c",
+                "state": "host_exit_observed",
+                "status": 200
+              }
+            ],
+            "invalid_capacity": false
+          }
+        ],
+        "ledger": [
+          {
+            "version": 2,
+            "run_id": "7fe2d3f3-594f-413c-9fbd-9ea35961604c",
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "phase": "proof_acknowledged",
+            "session_key": "8d4e47ae861afd2accd6604fe46d67fbaa5955f9e7c9347e2d95e1644554b59e",
+            "namespace_present": false,
+            "sealed": true,
+            "proof_state": "host_exit_observed",
+            "cleanup": {
+              "state": "tracked_scope_complete",
+              "scope": "process_group",
+              "attempted": true
+            },
+            "launches": [
+              {
+                "attempt_seq": "1",
+                "kind": "provider",
+                "phase": "attempt_reaped",
+                "process_observed": true,
+                "scope": "process_group",
+                "terminal_accepted": true,
+                "authorized": true,
+                "terminal_kind": "managed_launch_ended",
+                "cleanup": {
+                  "state": "tracked_scope_complete",
+                  "scope": "process_group",
+                  "attempted": true
+                }
+              }
+            ]
+          },
+          {
+            "version": 2,
+            "run_id": "1bbe8d98-984e-4f25-aac5-c05d377db7df",
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "phase": "proof_acknowledged",
+            "session_key": "8d4e47ae861afd2accd6604fe46d67fbaa5955f9e7c9347e2d95e1644554b59e",
+            "namespace_present": false,
+            "sealed": true,
+            "proof_state": "host_exit_observed",
+            "cleanup": {
+              "state": "tracked_scope_complete",
+              "scope": "process_group",
+              "attempted": true
+            },
+            "launches": [
+              {
+                "attempt_seq": "1",
+                "kind": "provider",
+                "phase": "attempt_reaped",
+                "process_observed": true,
+                "scope": "process_group",
+                "terminal_accepted": true,
+                "authorized": true,
+                "terminal_kind": "managed_launch_ended",
+                "cleanup": {
+                  "state": "tracked_scope_complete",
+                  "scope": "process_group",
+                  "attempted": true
+                }
+              }
+            ]
+          }
+        ],
+        "errors": [],
+        "stderr": ""
+      }
+    },
+    {
+      "owner_id": "d669c214-f212-49e8-b018-2ef1d7629985",
+      "summary": {
+        "exit_code": 0,
+        "messages": [
+          {
+            "arch": "arm64",
+            "execution_mode": "host_process_supervision_v1",
+            "max_concurrent_tasks": 1,
+            "os": "darwin",
+            "preparation_version": 2,
+            "protocol_version": 3,
+            "ready": true,
+            "runtime_config_epoch": "2"
+          },
+          {
+            "active_tasks": 0,
+            "available_slots": 1,
+            "claims": 1,
+            "http": [
+              {
+                "operation": "claim",
+                "run_id": "d33fb33b-0a36-4b5d-8900-1f0fd38f7a17",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "status": 200
+              },
+              {
+                "operation": "permit",
+                "run_id": "d33fb33b-0a36-4b5d-8900-1f0fd38f7a17",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "attempt_seq": "1",
+                "launch_hash": "f14670091374cba435497cc79a74796e091b70ea586043178c152cd74e10f1e4",
+                "status": 200
+              },
+              {
+                "operation": "permit",
+                "run_id": "d33fb33b-0a36-4b5d-8900-1f0fd38f7a17",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "attempt_seq": "1",
+                "launch_hash": "f14670091374cba435497cc79a74796e091b70ea586043178c152cd74e10f1e4",
+                "status": 200
+              },
+              {
+                "operation": "termination",
+                "run_id": "d33fb33b-0a36-4b5d-8900-1f0fd38f7a17",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "attempt_seq": "1",
+                "launch_hash": "f14670091374cba435497cc79a74796e091b70ea586043178c152cd74e10f1e4",
+                "kind": "managed_launch_ended",
+                "status": 200
+              },
+              {
+                "operation": "proof",
+                "run_id": "d33fb33b-0a36-4b5d-8900-1f0fd38f7a17",
+                "protocol_version": 3,
+                "containment": "host_process_supervision_v1",
+                "launch_hash": "f14670091374cba435497cc79a74796e091b70ea586043178c152cd74e10f1e4",
+                "state": "host_exit_observed",
+                "status": 200
+              }
+            ],
+            "invalid_capacity": false
+          }
+        ],
+        "ledger": [
+          {
+            "version": 2,
+            "run_id": "d33fb33b-0a36-4b5d-8900-1f0fd38f7a17",
+            "issue_id": "01a1c069-0a4a-7603-ac7d-1c44654bc5e0",
+            "phase": "proof_acknowledged",
+            "session_key": "e0dbbe1c9f9756964a480254ea8160f46b45213c71d2439b49589557d848b19e",
+            "namespace_present": false,
+            "sealed": true,
+            "proof_state": "host_exit_observed",
+            "cleanup": {
+              "state": "tracked_scope_complete",
+              "scope": "process_group",
+              "attempted": true
+            },
+            "launches": [
+              {
+                "attempt_seq": "1",
+                "kind": "provider",
+                "phase": "attempt_reaped",
+                "process_observed": true,
+                "scope": "process_group",
+                "terminal_accepted": true,
+                "authorized": true,
+                "terminal_kind": "managed_launch_ended",
+                "cleanup": {
+                  "state": "tracked_scope_complete",
+                  "scope": "process_group",
+                  "attempted": true
+                }
+              }
+            ]
+          }
+        ],
+        "errors": [],
+        "stderr": ""
+      }
+    }
+  ],
+  "cleanup_failures": [],
+  "result": "passed"
+}
