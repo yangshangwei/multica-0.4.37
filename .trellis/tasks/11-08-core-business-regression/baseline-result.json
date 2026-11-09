@@ -1,0 +1,61 @@
+{
+  "run": "baseline-1",
+  "stats": {
+    "startTime": "2026-11-08T15:07:31.469Z",
+    "duration": 1556658.551,
+    "expected": 352,
+    "skipped": 84,
+    "unexpected": 5,
+    "flaky": 0
+  },
+  "source_head": "7253784066d51a53432687aeada8cc208a31a943",
+  "private_evidence": "/Users/artisan/.multica/qa/core-20261108/baseline-1",
+  "failures": [
+    {
+      "file": "collaboration-command-history-web.spec.ts",
+      "title": "cancelled waiting commands retain original content after comment changes, refresh and another account reads",
+      "project": "chromium",
+      "status": "unexpected",
+      "attempts": [
+        "failed"
+      ]
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "project": "chromium",
+      "status": "unexpected",
+      "attempts": [
+        "failed"
+      ]
+    },
+    {
+      "file": "collaboration-preview-web.spec.ts",
+      "title": "trigger preview explains shared and later batches before a suppressed target is sent",
+      "project": "chromium",
+      "status": "unexpected",
+      "attempts": [
+        "failed"
+      ]
+    },
+    {
+      "file": "collaboration-workbench-web.spec.ts",
+      "title": "Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry",
+      "project": "chromium",
+      "status": "unexpected",
+      "attempts": [
+        "failed"
+      ]
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "title": "P1-P10 changed goals require explicit description adoption before acceptance publication",
+      "project": "chromium",
+      "status": "unexpected",
+      "attempts": [
+        "failed"
+      ]
+    }
+  ],
+  "skips": 84
+}

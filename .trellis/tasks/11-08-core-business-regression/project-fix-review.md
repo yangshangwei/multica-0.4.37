@@ -1,0 +1,15 @@
+# Independent review: project acceptance description conflict
+
+Reviewed `packages/views/projects/components/project-progress.tsx` and the four new regressions in `project-management.test.tsx`, together with `projectDetailOptions`, `protectProjectRequest`, the draft patch path and access guard. No blocking finding in the reviewed diff. This was independent source review; no tests were rerun or source edited by the reviewer.
+
+The change addresses the observed cancellation boundary: the recovery UI now observes the authoritative workspace/project query instead of depending on one imperative fetch promise that realtime invalidation can replace. It removes the duplicated description server-data state. Query keys, API calls and access/session fences remain in the existing core query path.
+
+Checks against requested concerns:
+
+- **Repeated realtime replacement:** the new regression starts an abort-aware detail read, invalidates it twice, resolves the third read and verifies the user can explicitly adopt revision 3 without losing their acceptance explanation. This would fail when recovery depended on the cancelled first promise.
+- **Transient read failure:** query error is shown, the existing localized Retry action refetches only the description, and the regression proves the original preview is not automatically resubmitted. On access-denied/deletion errors the existing protected query/guard clears protected state; the new denial case verifies draft erasure and absence of adoption.
+- **Cached and same revision:** a cached newer description can be rendered for comparison, but adoption is disabled while the conflict read is fetching. The regression confirms revision 4 is adopted only after that read resolves. A successful read returning the same revision as the local acceptance does not expose a meaningless adoption control; the mutation conflict remains visible and the user may explicitly preview again. No automatic acceptance mutation is introduced.
+- **Explicit review:** neither cache updates nor refetch success change the draft revision. Only the user's adoption click patches `expected_description_revision`, updates the comparison baseline and resets the rejected mutation/preview. The text draft is retained. Pending adoption is disabled and a new preview is still required before publication.
+- **Session/access lifecycle:** `projectDetailOptions` continues through `protectProjectRequest`, which captures generation/epoch and rejects late session results. The new observer does not bypass that wrapper or copy its data into Zustand. The draft patch retains its captured-generation guard. Existing session reset removes project mutations/caches; this change does not mint or carry an old request into a new identity.
+
+Validation remains owned by the implementing/root agents: their targeted red/green regression run, lint/typecheck, fresh production rebuild and P1-P10 browser replay are required before claiming the product fix verified. This review does not substitute for those results.

@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "candidate": "6201a5810 plus final batch optimization",
+  "evidence": "/Users/artisan/.multica/qa/core-20261108/backend/performance-3",
+  "original_thresholds_unchanged": true,
+  "tests": 3,
+  "metrics_ms": {
+    "iteration_detail_p95": 93.67,
+    "iteration_preview_p95": 124.23,
+    "iteration_closure_p95": 1662.866,
+    "disable_preview_p95": 571.568,
+    "disable_apply_p95": 1937.854,
+    "triage_list_p95": 133.46,
+    "triage_filter_p95": 64.665,
+    "triage_action_p95": 13.987
+  },
+  "retained_failures": [
+    {
+      "run": "performance-1",
+      "disable_apply_p95": 4083.55,
+      "threshold": 3000
+    },
+    {
+      "run": "performance-2",
+      "closure_p95": 2041.992,
+      "threshold": 2000
+    }
+  ],
+  "log_sha256": "588bddc3cf113cb9270cc1450a578b6ad21ee4da3552239be0e231aa9d4c6807"
+}

@@ -1,0 +1,33 @@
+{
+  "id": "core-business-regression",
+  "name": "core-business-regression",
+  "title": "当前核心业务端到端测试与修复",
+  "status": "in_progress",
+  "createdAt": "2026-11-08",
+  "assignee": "artisan",
+  "parent": null,
+  "branch": "codex/cross-workspace-collaboration",
+  "execution_status": "complete",
+  "remaining": [],
+  "acceptance_status": "passed_multi_run_with_original_failures_retained",
+  "completedAt": "2026-11-09",
+  "result_summary": {
+    "e2e_unique_pass": 441,
+    "e2e_original_full_pass": 356,
+    "e2e_original_full_fail": 1,
+    "e2e_original_full_skip": 84,
+    "affected_final_pass": 12,
+    "frontend_unit_pass": 13398,
+    "mobile_unit_pass": 196,
+    "backend_top_level_pass": 10459,
+    "backend_top_level_skip": 20,
+    "performance_pass": 3
+  },
+  "work_commits": [
+    "c5289f646ecd977d21546472ee0dea08d27878f6",
+    "fbd19d3018d458ef9c854a3391541606ad864a01",
+    "93608baecf1b1aead066c21b8d3be5d64989401a",
+    "f1e1cb9bfc6e6b5bf96d7c790a55ba75d102dd37",
+    "338d571d0b008ec57d598f991e3aec3f66910a16"
+  ]
+}

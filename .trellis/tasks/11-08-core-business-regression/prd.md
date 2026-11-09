@@ -1,0 +1,3 @@
+# Current core-business acceptance
+
+Execute the user-authorized E01–E17 end-to-end scope on the current checkout. Preserve prior failures, all unrelated edits, and identify exact current source/configuration. Repair reproduced defects with regression evidence; no threshold weakening or retry-to-green. Run static checks, unit/backend suites and production Web/desktop business flows. Add password/admin and controlled-provider lanes for required skipped business scenarios. Real commercial models, external messages and production publication are excluded per existing scope. Report every PASS/FAIL/SKIP/NOT_RUN separately.

@@ -1,0 +1,21 @@
+{
+  "run": "baseline-final-3",
+  "stats": {
+    "startTime": "2026-11-08T23:27:56.331Z",
+    "duration": 1288802.527,
+    "expected": 356,
+    "skipped": 84,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "exit_code": 1,
+  "evidence": "/Users/artisan/.multica/qa/core-20261108/baseline-final-3",
+  "status": "original_failure_retained_closed_by_causal_fix_and_complete_affected_suite",
+  "closure": {
+    "causal_control": "/Users/artisan/.multica/qa/core-20261108/delete-stale-control1/results.json",
+    "affected_suite": "/Users/artisan/.multica/qa/core-20261108/delete-final12/results.json",
+    "passed": 12,
+    "retries": 0,
+    "skips": 0
+  }
+}
