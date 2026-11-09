@@ -16,7 +16,7 @@ async function captureSection(page: Page, focus: Locator, stage: string, testInf
   const geometry = [];
   for (const [size, viewport] of [["wide", { width: 1280, height: 1000 }], ["narrow", { width: 390, height: 844 }]] as const) {
     await page.setViewportSize(viewport);
-    await focus.scrollIntoViewIfNeeded();
+    await focus.evaluate((element) => element.scrollIntoView({ block: "center", inline: "nearest", behavior: "instant" }));
     await expect(focus).toBeVisible();
     await page.evaluate(async () => {
       await document.fonts.ready;

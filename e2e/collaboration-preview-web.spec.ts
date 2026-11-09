@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import type { CollaborationCommentReceipt, CollaborationComments, CollaborationIssue, CollaborationTriggerPreview } from "@multica/core/collaboration";
 import { authenticateCollaborationResourcesPage } from "./fixtures/collaboration-resources";
 import { seedCollaborationPreviewJourney } from "./fixtures/collaboration-preview";
+import { revealCollaborationMentions } from "./fixtures/collaboration-disclosures";
 
 test.use({ actionTimeout: 15_000, screenshot: "only-on-failure", trace: "retain-on-failure" });
 
@@ -19,6 +20,7 @@ test("trigger preview explains shared and later batches before a suppressed targ
   await page.goto(`/account?view=participating&issue=${fixture.issueId}`);
   await expect(page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
   const composer = page.getByRole("form", { name: "Comments", exact: true });
+  await revealCollaborationMentions(composer);
   for (const name of [fixture.agentName, buildSquad.name, reviewSquad.name]) {
     await composer.getByRole("button", { name, exact: true }).click();
   }

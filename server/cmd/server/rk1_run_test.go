@@ -16,6 +16,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
 	"github.com/multica-ai/multica/server/pkg/agent"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 func (f *rk1Fixture) control(stop bool) {
@@ -115,6 +116,27 @@ func (f *rk1Fixture) execute(run string, plan rk1Plan, during func(ctx context.C
 		duringErr = during(ctx, run)
 	}
 	runErr := <-done
+	// Recording has a bounded budget independent of outcome and exit proof.
+	// Match the daemon's later receipt-recovery round without giving it a Host
+	// or Controller that could launch another provider process.
+	if recordingReceiptRecoveryError(runErr) && ctx.Err() == nil {
+		retained, retainedErr := ledger.Retained()
+		if retainedErr != nil {
+			return errors.Join(runErr, retainedErr), duringErr
+		}
+		for _, entry := range retained {
+			if entry.Identity.RunID != run || !entry.CanProve || entry.Unconfirmed {
+				continue
+			}
+			recoveryCtx, recoveryCancel := context.WithTimeout(ctx, 10*time.Second)
+			recovery := &collaborationrun.Runner{Ledger: ledger, Client: f.client}
+			runErr = recovery.Run(recoveryCtx, run, protocol.CollaborationRunClaimRequest{
+				DeploymentID: entry.Identity.DeploymentID, InstallationID: entry.Identity.InstallationID,
+			})
+			recoveryCancel()
+			break
+		}
+	}
 	if work := rk1BriefPath(host.Directory); work != "" {
 		if brief, err := os.ReadFile(work); err == nil {
 			_ = rk1WriteFile(filepath.Join(f.dir, "brief-"+run+".md"), brief)

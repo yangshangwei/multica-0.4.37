@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log/slog"
@@ -213,6 +214,30 @@ type hostCompositeFixture struct {
 	inputs             []string
 	capture            string
 	log                *hostCompositeLog
+}
+
+// Complete successful runs through the daemon's bounded retained-receipt path.
+// Recovery deliberately has no executor, so it cannot start another provider.
+func (f *hostCompositeFixture) runToCompletion(t *testing.T, run string) error {
+	t.Helper()
+	err := f.runner.Run(t.Context(), run, f.request)
+	if !recordingReceiptRecoveryError(err) || t.Context().Err() != nil {
+		return err
+	}
+	retained, readErr := f.runner.Ledger.Retained()
+	if readErr != nil {
+		return errors.Join(err, readErr)
+	}
+	for _, entry := range retained {
+		if entry.Identity.RunID != run || !entry.CanProve || entry.Unconfirmed {
+			continue
+		}
+		ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)
+		defer cancel()
+		recovery := &collaborationrun.Runner{Ledger: f.runner.Ledger, Client: f.runner.Client}
+		return recovery.Run(ctx, run, protocol.CollaborationRunClaimRequest{DeploymentID: entry.Identity.DeploymentID, InstallationID: entry.Identity.InstallationID})
+	}
+	return err
 }
 
 func newHostCompositeFixture(t *testing.T, ttl ...time.Duration) *hostCompositeFixture {
@@ -476,7 +501,7 @@ func hostCompositePrompt(t *testing.T, c hostCompositeCapture) string {
 func TestCollaborationKnowledgeHostCompositeHappyPath(t *testing.T) {
 	f := newHostCompositeFixture(t)
 	run := f.nextRun(t)
-	if err := f.runner.Run(t.Context(), run, f.request); err != nil {
+	if err := f.runToCompletion(t, run); err != nil {
 		t.Fatal(err)
 	}
 	starts := f.captures(t)
@@ -599,23 +624,58 @@ func (f *hostCompositeFixture) invalidate(kind string) error {
 func TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch(t *testing.T) {
 	for _, kind := range []string{"withdraw", "purge", "expiry", "source_access"} {
 		t.Run(kind, func(t *testing.T) {
-			var ttl []time.Duration
-			if kind == "expiry" {
-				ttl = []time.Duration{5 * time.Second}
-			}
-			f := newHostCompositeFixture(t, ttl...)
+			f := newHostCompositeFixture(t)
 			first := f.nextRun(t)
-			if err := f.runner.Run(t.Context(), first, f.request); err != nil {
+			if err := f.runToCompletion(t, first); err != nil {
 				t.Fatal(err)
 			}
 			f.submit(t, f.owner, "Second explicit accepted input")
 			second := f.nextRun(t)
-			var once sync.Once
+			var once, prepareOnce sync.Once
 			var mutationErr error
 			f.transport.mu.Lock()
 			f.transport.before = func(path string, _ []byte) {
+				// Admit the expiring candidate immediately before the preparation that
+				// must contain it; setup and the earlier run cannot consume its TTL.
+				if kind == "expiry" && path == "/api/collaboration/runtime/runs/"+second+"/knowledge-context/prepare" {
+					prepareOnce.Do(func() {
+						p := f.proposals[0]
+						p.CandidateID, p.RequestID = uuid.NewString(), uuid.NewString()
+						expiry := time.Now().UTC().Add(5 * time.Second)
+						p.ExpiresAt = &expiry
+						if _, mutationErr = f.svc.ProposeKnowledge(f.owner, util.MustParseUUID(p.Sources[0].IssueID), p); mutationErr != nil {
+							return
+						}
+						_, mutationErr = f.svc.ApproveKnowledge(f.owner, util.MustParseUUID(p.CandidateID), protocol.CollaborationKnowledgeApproveRequest{ProtocolVersion: 1, RequestID: uuid.NewString(), ExpectedStateRevision: "1", ExpectedVersion: "1", ExpectedContentSHA256: protocol.CollaborationKnowledgeHash(p.Content)})
+						f.proposals[0] = p
+					})
+				}
 				if path == "/api/collaboration/runtime/runs/"+second+"/knowledge-context/authorize" {
-					once.Do(func() { mutationErr = f.invalidate(kind) })
+					once.Do(func() {
+						if kind == "expiry" {
+							var prepared bool
+							for _, call := range f.transport.snapshot() {
+								if call.Path != "/api/collaboration/runtime/runs/"+second+"/knowledge-context/prepare" || call.Status != 200 {
+									continue
+								}
+								var bundle protocol.CollaborationRunKnowledgeBundle
+								if json.Unmarshal(call.Response, &bundle) != nil {
+									mutationErr = fmt.Errorf("expiry preparation response is invalid")
+									return
+								}
+								for _, item := range bundle.Manifest.Entries {
+									if item.CandidateID == f.proposals[0].CandidateID && item.Version == "1" {
+										prepared = true
+									}
+								}
+							}
+							if !prepared || !time.Now().Before(*f.proposals[0].ExpiresAt) {
+								mutationErr = fmt.Errorf("expiry fixture did not prepare its live candidate before authorization")
+								return
+							}
+						}
+						mutationErr = f.invalidate(kind)
+					})
 				}
 			}
 			f.transport.mu.Unlock()
@@ -677,7 +737,7 @@ func TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity(t 
 			f.transport.mu.Lock()
 			f.transport.dropPath = path
 			f.transport.mu.Unlock()
-			if err := f.runner.Run(t.Context(), run, f.request); err != nil {
+			if err := f.runToCompletion(t, run); err != nil {
 				t.Fatal(err)
 			}
 			var calls []hostCompositeCall
@@ -734,12 +794,12 @@ func TestCollaborationKnowledgeHostCompositeLostResponseRechecksWithdrawnSource(
 func TestCollaborationKnowledgeHostCompositeFreshRunsUseDifferentNativeNamespaces(t *testing.T) {
 	f := newHostCompositeFixture(t)
 	first := f.nextRun(t)
-	if err := f.runner.Run(t.Context(), first, f.request); err != nil {
+	if err := f.runToCompletion(t, first); err != nil {
 		t.Fatal(err)
 	}
 	f.submit(t, f.owner, "A new explicit run, never a replay")
 	second := f.nextRun(t)
-	if err := f.runner.Run(t.Context(), second, f.request); err != nil {
+	if err := f.runToCompletion(t, second); err != nil {
 		t.Fatal(err)
 	}
 	starts := f.captures(t)

@@ -12,6 +12,7 @@ import type {
 } from "@multica/core/collaboration";
 import pg from "pg";
 import { TestApiClient } from "../fixtures";
+import { revealCollaborationMentions } from "./collaboration-disclosures";
 
 const execute = promisify(execFile);
 export const hostMode = "host_process_supervision_v1";
@@ -651,6 +652,7 @@ export async function hostControl(page: Page, issue: HostIssue, action: "stop" |
 export async function sendHostComment(page: Page, issue: HostIssue, marker: string, actorId: string) {
   const composer = page.getByRole("form", { name: "Comments", exact: true });
   await composer.getByLabel("Add comment", { exact: true }).fill(marker);
+  await revealCollaborationMentions(composer);
   await composer.getByRole("group", { name: "AI targets", exact: true }).getByRole("button", { name: issue.name, exact: true }).click();
   const content = await composer.getByLabel("Add comment", { exact: true }).inputValue();
   expect(content).toContain(`mention://agent/${issue.agentId}`);

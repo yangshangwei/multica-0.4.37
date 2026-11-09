@@ -557,6 +557,9 @@ async function dispatch(message) {
       const baseline = await refreshIssue(message.issueId);
       const form = page.getByRole("form", { name: "Comments", exact: true });
       await form.getByLabel("Add comment", { exact: true }).fill(message.marker);
+      const mention = form.getByRole("button", { name: "Mention", exact: true });
+      if (await mention.getAttribute("aria-expanded") !== "true") await mention.click();
+      await expect(form.getByRole("group", { name: "Issue participants and AI targets", exact: true })).toBeVisible();
       await form.getByRole("group", { name: "AI targets", exact: true }).getByRole("button", { name: message.targetName, exact: true }).click();
       const content = await form.getByLabel("Add comment", { exact: true }).inputValue();
       assert(content.includes(`mention://agent/${message.resourceId}`));

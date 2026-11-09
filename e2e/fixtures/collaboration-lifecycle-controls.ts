@@ -1,3 +1,4 @@
+import { revealCollaborationMentions } from "./collaboration-disclosures";
 import { createHash, randomUUID } from "node:crypto";
 import { createServer, request as httpRequest, type IncomingHttpHeaders } from "node:http";
 import { isIPv4, type Socket } from "node:net";
@@ -203,6 +204,7 @@ export async function lifecycleControl(page: Page, fixture: LifecycleFixture, ac
 export async function lifecycleComment(page: Page, fixture: LifecycleFixture, target: Target, actor: Actor, marker: string, client: "web" | "electron"): Promise<SentCrossClientComment> {
   const form = page.getByRole("form", { name: "Comments", exact: true });
   await form.getByLabel("Add comment", { exact: true }).fill(marker);
+  await revealCollaborationMentions(form);
   await form.getByRole("group", { name: "AI targets", exact: true }).getByRole("button", { name: target.name, exact: true }).click();
   const content = await form.getByLabel("Add comment", { exact: true }).inputValue();
   expect(content).toContain(`mention://agent/${target.resourceId}`);

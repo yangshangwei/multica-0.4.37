@@ -198,13 +198,16 @@ export async function lifecycleThroughUI(page: Page, issueId: string, action: "c
   return { receipt, requestId, input, options };
 }
 export async function leaveThroughUI(page: Page, issueId: string) {
+  // A completed submission can briefly remount the action bar. Wait for its
+  // actual primary action or disclosure before choosing where Leave lives.
   const directButton = page.getByRole("button", { name: "Leave issue", exact: true });
-  if (await directButton.count() > 0) {
+  const moreActions = page.getByRole("button", { name: "More actions", exact: true });
+  await expect(directButton.or(moreActions).first()).toBeVisible();
+  if (await directButton.isVisible()) {
     await expect(directButton).toBeVisible();
     await expect(directButton).toBeEnabled();
     await directButton.click();
   } else {
-    const moreActions = page.getByRole("button", { name: "More actions", exact: true });
     await expect(moreActions).toBeVisible();
     await expect(moreActions).toBeEnabled();
     await revealCollaborationDisclosure(page, "More actions");

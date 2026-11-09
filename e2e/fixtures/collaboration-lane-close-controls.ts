@@ -1,3 +1,4 @@
+import { revealCollaborationMentions } from "./collaboration-disclosures";
 import { randomUUID } from "node:crypto";
 import { lifecycleThroughUI, submitResultThroughUI } from "./collaboration-control-gaps";
 import { expect, type Locator, type Page } from "@playwright/test";
@@ -134,6 +135,7 @@ async function sendTypedLaneInput(page: Page, fixture: LifecycleFixture, target:
   if (kind === "agent") return lifecycleComment(page, fixture, target, actor, marker, client);
   const composer = page.getByRole("form", { name: "Comments", exact: true });
   await composer.getByLabel("Add comment", { exact: true }).fill(marker);
+  await revealCollaborationMentions(composer);
   await composer.getByRole("group", { name: "AI targets", exact: true }).getByRole("button", { name: target.name, exact: true }).click();
   const content = await composer.getByLabel("Add comment", { exact: true }).inputValue();
   expect(content).toContain(`mention://squad/${target.resourceId}`);

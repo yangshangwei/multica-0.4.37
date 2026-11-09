@@ -20,7 +20,7 @@ test("cancelled waiting commands retain original content after comment changes, 
     const capture = async (stage: string, current: Page, focus: Locator) => {
       for (const [size, viewport] of [["wide", { width: 1280, height: 1000 }], ["narrow", { width: 390, height: 844 }]] as const) {
         await current.setViewportSize(viewport);
-        await focus.scrollIntoViewIfNeeded();
+        await focus.evaluate((element) => element.scrollIntoView({ block: "center", inline: "nearest", behavior: "instant" }));
         await current.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
         await expect(focus).toBeInViewport({ ratio: 1 });
         expect(await current.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

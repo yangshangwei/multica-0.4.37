@@ -5,6 +5,7 @@ import { resourceOfferAccountPath, type CollaborationResourceOfferJourney } from
 export interface CommandHistoryJourneyAdapter {
   navigate(page: Page, path: string): Promise<void>;
   capture?(stage: "cancelled" | "deleted", page: Page, focus: Locator): Promise<void>;
+  inspectDeletion?(stage: "before-open" | "confirmation" | "failed", page: Page, comment: Locator): Promise<void>;
 }
 
 async function readEntry(fixture: CollaborationResourceOfferJourney, commandId: string) {
@@ -88,11 +89,38 @@ export async function exerciseCollaborationCommandHistory(
   expect(await readEntry(fixture, original.id)).toEqual(cancelled);
   await expect(row).not.toContainText(edited);
 
-  await comment.getByRole("button", { name: "Delete comment", exact: true }).click();
-  const deletePending = authorPage.waitForResponse((result) => new URL(result.url()).pathname === `${root}/comments/${identities.comment_id}`
-    && result.request().method() === "DELETE");
-  await comment.getByRole("button", { name: "Confirm deletion", exact: true }).click();
-  expect((await deletePending).status()).toBe(200);
+  await adapter.inspectDeletion?.("before-open", authorPage, comment);
+  let deletionUsedLatest = false;
+  try {
+    await comment.getByRole("button", { name: "Delete comment", exact: true }).click();
+    await adapter.inspectDeletion?.("confirmation", authorPage, comment);
+    const confirm = comment.getByRole("button", { name: "Confirm deletion", exact: true });
+    try {
+      await confirm.click({ trial: true, timeout: 5_000 });
+    } catch (error) {
+      // A delayed comment refresh can invalidate the opened confirmation.
+      // Review the actual retained text before explicitly adopting its version.
+      const latest = comment.getByRole("button", { name: "Use latest version", exact: true });
+      if (!await latest.isVisible()) throw error;
+      await expect(comment.getByText(edited, { exact: true })).toBeVisible();
+      await expect(confirm).toBeDisabled();
+      await latest.click();
+      deletionUsedLatest = true;
+      await expect(latest).toHaveCount(0);
+      await expect(confirm).toBeEnabled();
+    }
+    // Observe the response error immediately so a precondition/click failure
+    // cannot become an unhandled timeout that hides the actual UI state.
+    const deletePending = authorPage.waitForResponse((result) => new URL(result.url()).pathname === `${root}/comments/${identities.comment_id}`
+      && result.request().method() === "DELETE").then((response) => ({ response }), (error: unknown) => ({ error }));
+    await confirm.click();
+    const deletion = await deletePending;
+    if ("error" in deletion) throw deletion.error;
+    expect(deletion.response.status()).toBe(200);
+  } catch (error) {
+    await adapter.inspectDeletion?.("failed", authorPage, comment);
+    throw error;
+  }
   await expect(comment.getByText("Comment deleted", { exact: true })).toBeVisible();
   expect(await readEntry(fixture, original.id)).toEqual(cancelled);
 
@@ -108,7 +136,7 @@ export async function exerciseCollaborationCommandHistory(
   expect(issue.session.queue_state).toBe("paused");
   expect(issue.execution).toMatchObject({ runs: [], groups: [] });
   expect(await fixture.owner.countIssueDispatches(fixture.issueId)).toBe(0);
-  return { issue_id: fixture.issueId, command_id: original.id, comment_id: identities.comment_id,
+  return { issue_id: fixture.issueId, command_id: original.id, comment_id: identities.comment_id, deletion_used_latest: deletionUsedLatest,
     input_event_id: original.input_event_id, cancellation_event_id: cancelled.cancellation!.event_id,
     cancellation_request_id: key, entry: cancelled };
 }

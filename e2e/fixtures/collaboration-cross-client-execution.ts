@@ -11,6 +11,7 @@ import type {
   CollaborationResourceOptions, CollaborationResources, CollaborationRunRecords, CollaborationTriggerPreview,
 } from "@multica/core/collaboration";
 import { TestApiClient } from "../fixtures";
+import { revealCollaborationMentions } from "./collaboration-disclosures";
 
 interface Challenge { challenge_id: string; signature_payload: string; body_payload: string }
 interface ManagedCredential {
@@ -326,6 +327,7 @@ export async function readCrossClientIssue(fixture: CrossClientFixture) {
 export async function sendCrossClientComment(page: Page, fixture: CrossClientFixture, target: ExecutionTarget, marker: string, actorId: string, client: "web" | "electron") {
   const composer = page.getByRole("form", { name: "Comments", exact: true });
   await composer.getByLabel("Add comment", { exact: true }).fill(marker);
+  await revealCollaborationMentions(composer);
   await composer.getByRole("group", { name: "AI targets", exact: true }).getByRole("button", { name: target.name, exact: true }).click();
   const content = await composer.getByLabel("Add comment", { exact: true }).inputValue();
   expect(content).toContain(`mention://agent/${target.resourceId}`);

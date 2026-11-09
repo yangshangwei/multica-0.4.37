@@ -227,11 +227,27 @@ async function copyNativeAccountLink(app: ElectronApplication, page: Page, expec
     document: await page.evaluate(() => document.hasFocus()),
   });
   const beforeFocus = await focusState();
+  const focusAttempts: Record<string, unknown>[] = [];
   try {
     // CDP clicks alone do not activate a background macOS application.
-    await app.evaluate(({ app }) => app.focus({ steal: true }));
-    await window.evaluate((target) => target.focus());
-    await expect.poll(focusState).toEqual({ native: true, contents: true, document: true });
+    // Another native window can take focus between activation and observation.
+    // Re-establish only this readiness precondition within the original budget;
+    // the clipboard click below still happens exactly once.
+    await expect.poll(async () => {
+      await app.evaluate(({ app }) => app.focus({ steal: true }));
+      const visibility = await window.evaluate((target) => {
+        const before = { visible: target.isVisible(), minimized: target.isMinimized() };
+        if (before.minimized) target.restore();
+        if (!target.isVisible()) target.show();
+        target.focus();
+        target.webContents.focus();
+        return { before, after: { visible: target.isVisible(), minimized: target.isMinimized() } };
+      });
+      await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+      const focused = await focusState();
+      focusAttempts.push({ ...visibility, ...focused });
+      return focused;
+    }).toEqual({ native: true, contents: true, document: true });
     const publicAppUrl = await page.evaluate(() => {
       const config = (window as unknown as { desktopAPI: { runtimeConfig: { ok: boolean; config?: { appUrl: string } } } }).desktopAPI.runtimeConfig;
       return config.ok ? config.config?.appUrl : undefined;
@@ -257,9 +273,12 @@ async function copyNativeAccountLink(app: ElectronApplication, page: Page, expec
     const copied = await app.evaluate(({ clipboard }, value) => clipboard.readText() === value ? value : null, expected);
     if (copied === null) throw new Error("The clipboard changed before the test-owned link could be verified");
     expect(new URL(copied).origin).toBe(origin);
-    await testInfo.attach(`native-copy-${phase}`, { contentType: "application/json", body: JSON.stringify({ beforeFocus, afterFocus: await focusState(),
+    await testInfo.attach(`native-copy-${phase}`, { contentType: "application/json", body: JSON.stringify({ beforeFocus, focusAttempts, afterFocus: await focusState(),
       immediate, settled: "expected_absolute", configuredOrigin: origin, expectedPath }, null, 2) });
     return copied;
+  } catch (error) {
+    await testInfo.attach(`native-copy-${phase}-focus`, { contentType: "application/json", body: JSON.stringify({ beforeFocus, focusAttempts }, null, 2) });
+    throw error;
   } finally { await window.dispose(); }
 }
 
@@ -298,7 +317,18 @@ test("Desktop offers private resources, sends all plus AI mentions and preserves
     };
     const resources = await exerciseCollaborationResourceOffers(owner.page, handler.page, journey, { navigate, capture });
     await testInfo.attach("desktop-resource-offer-identities", { contentType: "application/json", body: JSON.stringify(resources, null, 2) });
-    const history = await exerciseCollaborationCommandHistory(handler.page, owner.page, journey, resources, { navigate, capture });
+    const inspectDeletion = async (stage: string, page: Page, comment: Locator) => {
+      if (stage !== "failed") return;
+      const state = await comment.evaluate((element) => ({
+        text: element.textContent,
+        focusedElement: document.activeElement?.outerHTML.slice(0, 1000),
+        buttons: [...element.querySelectorAll("button")].map((button) => ({ text: button.textContent, disabled: button.disabled })),
+        forms: [...element.querySelectorAll("form")].map((form) => ({ name: form.getAttribute("aria-label"), text: form.textContent })),
+      }));
+      await testInfo.attach(`author-delete-${stage}`, { contentType: "application/json", body: JSON.stringify(state, null, 2) });
+      if (stage === "failed") await page.screenshot({ path: testInfo.outputPath(`author-delete-${stage}.png`) });
+    };
+    const history = await exerciseCollaborationCommandHistory(handler.page, owner.page, journey, resources, { navigate, capture, inspectDeletion });
     await testInfo.attach("desktop-command-history-identities", { contentType: "application/json", body: JSON.stringify(history, null, 2) });
     await testInfo.attach("desktop-native-capture-geometry", { contentType: "application/json", body: JSON.stringify(captures, null, 2) });
     for (const native of [owner, handler]) {

@@ -270,7 +270,6 @@ test("Web stale lifecycle conflict immediately reports refusal and preserves inp
       await route.continue();
     }, { times: 1 });
     const originalRequest = page.waitForRequest((request) => new URL(request.url()).pathname === lifecycle && request.method() === "POST");
-    const originalResponse = page.waitForResponse((response) => new URL(response.url()).pathname === lifecycle && response.request().method() === "POST");
     await form.getByRole("button", { name: "Accept and complete", exact: true }).click();
     const original = await originalRequest;
     const originalKey = original.headers()["idempotency-key"];
@@ -291,6 +290,9 @@ test("Web stale lifecycle conflict immediately reports refusal and preserves inp
     expect(latest.status).toBe("in_review");
     expect(latest.delivery?.current).toEqual(submission);
 
+    // Start the response budget only after the concurrent actor has finished.
+    // Until this release the fixture deliberately prevents any server response.
+    const originalResponse = page.waitForResponse((response) => new URL(response.url()).pathname === lifecycle && response.request().method() === "POST");
     releaseOriginal();
     const refused = await originalResponse;
     expect(refused.status()).toBe(409);

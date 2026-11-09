@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import type { CollaborationResources } from "@multica/core/collaboration";
+import { revealCollaborationMentions } from "./fixtures/collaboration-disclosures";
 import { assertUntouchedLanes, clickControl, controlEnvironmentReady, panelFor, seedCollaborationControlJourney, targetRow } from "./fixtures/collaboration-control-journey";
 import {
   commentThroughUI, consentThroughUI, mentionNames, openGapSession, queuedInput, readGapHistory, readGapIssue, reloadGapPage,
@@ -71,7 +72,9 @@ test("Web withdrawing a grant during a permitted run stops that work, holds only
     // 3. A leaves the @ candidates and an old A selection is refused by the server (AC37).
     const catalogue = (await mentionNames(fixture.creator, fixture.issueId)).catalogue;
     expect(catalogue.targets.map((item) => item.target_id).sort()).toEqual([fixture.agentB.targetId, fixture.squadS.targetId].sort());
-    const aiTargets = creator.page.getByRole("form", { name: "Comments", exact: true }).getByRole("group", { name: "AI targets", exact: true });
+    const composer = creator.page.getByRole("form", { name: "Comments", exact: true });
+    await revealCollaborationMentions(composer);
+    const aiTargets = composer.getByRole("group", { name: "AI targets", exact: true });
     await expect(aiTargets.getByRole("button", { name: nameB, exact: true })).toBeVisible();
     await expect(aiTargets.getByRole("button", { name: nameS, exact: true })).toBeVisible();
     await expect(aiTargets.getByRole("button", { name: nameA, exact: true })).toHaveCount(0);

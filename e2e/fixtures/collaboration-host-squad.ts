@@ -1,3 +1,4 @@
+import { revealCollaborationMentions } from "./collaboration-disclosures";
 import { randomUUID } from "node:crypto";
 import { expect, type Locator, type Page } from "@playwright/test";
 import type { CollaborationCommentReceipt, CollaborationIssue, CollaborationResources, CollaborationTriggerPreview } from "@multica/core/collaboration";
@@ -86,6 +87,7 @@ export async function sendSquadComment(page: Page, fixture: { issue: { id: strin
   const root = issueRoot(fixture.issue.id);
   const composer = page.getByRole("form", { name: "Comments", exact: true });
   await composer.getByLabel("Add comment", { exact: true }).fill(marker);
+  await revealCollaborationMentions(composer);
   const choices = composer.getByRole("group", { name: "AI targets", exact: true });
   for (const pick of picks) await choices.getByRole("button", { name: pick.name, exact: true }).click();
   const content = await composer.getByLabel("Add comment", { exact: true }).inputValue();

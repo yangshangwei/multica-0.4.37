@@ -63,6 +63,10 @@ test("two native runtime profiles hand off shared context through the actual run
     await first.webActor.authenticateWeb(page);
     await page.addInitScript(() => { localStorage.setItem("multica-locale", "en"); localStorage.setItem("multica:chat:isOpen", "false"); });
     await page.goto(`/account?view=participating&issue=${first.main.id}#memory`);
+    const memoryDrawer = page.getByRole("dialog", { name: "Shared context", exact: true });
+    await expect(memoryDrawer).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(memoryDrawer).toBeHidden();
     await openHostConsent(page, first.main);
     await authorizeHostIssue(page, first, first.main);
     // Consent retains the initial target hold. Release it explicitly, then
@@ -74,7 +78,11 @@ test("two native runtime profiles hand off shared context through the actual run
     const initial = await sendHostComment(page, first.main, "Memory runtime A handoff begins after the queued document update", first.webActor.id);
     expect(first.daemon.visits).toHaveLength(0);
     const seed = "Queued handoff decision: retain the source findings.";
+    await page.getByRole("group", { name: "Issue resources", exact: true }).getByRole("button", { name: "Shared context", exact: true }).click();
+    await expect(memoryDrawer).toBeVisible();
     await saveMemoryInUI(page, seed, "0");
+    await page.keyboard.press("Escape");
+    await expect(memoryDrawer).toBeHidden();
     await hostControl(page, first.main, "resume", "issue");
     const visitA = await first.daemon.waitForVisit(1) as MemoryVisit;
     expect(visitA.resource_owner_id).toBe(first.webActor.id);
@@ -125,6 +133,10 @@ test("two native runtime profiles hand off shared context through the actual run
     await successor.webActor.authenticateWeb(successorPage);
     await successorPage.addInitScript(() => { localStorage.setItem("multica-locale", "en"); localStorage.setItem("multica:chat:isOpen", "false"); });
     await successorPage.goto(new URL(`/account?view=participating&issue=${first.main.id}#memory`, page.url()).href);
+    const successorMemory = successorPage.getByRole("dialog", { name: "Shared context", exact: true });
+    await expect(successorMemory).toBeVisible();
+    await successorPage.keyboard.press("Escape");
+    await expect(successorMemory).toBeHidden();
     await hostControl(successorPage, secondIssue, "resume", "issue");
     const followup = await sendHostComment(successorPage, secondIssue, "Memory runtime B preserves A's findings before its own decision", successor.webActor.id);
     const visitB = await successor.daemon.waitForVisit(1) as MemoryVisit;
@@ -149,6 +161,8 @@ test("two native runtime profiles hand off shared context through the actual run
     const recorded = (await successorRead()).execution!.runs;
     expect(recorded.find(run => run.id === visitA.identity.run_id)?.memory).toEqual({ support: "supported", base_version: "1", written_version: "2" });
     expect(recorded.find(run => run.id === visitB.identity.run_id)?.memory).toEqual({ support: "supported", base_version: "2", written_version: "3" });
+    await page.getByRole("group", { name: "Issue resources", exact: true }).getByRole("button", { name: "Shared context", exact: true }).click();
+    await expect(memoryDrawer).toBeVisible();
     await expect(page.locator("#memory").getByText(`Decision by agent ${agent.id}: preserve prior findings when handing off.`, { exact: false })).toBeVisible();
     await page.locator("#memory").getByRole("button", { name: "Version history", exact: true }).click();
     await page.locator("#memory").getByRole("button", { name: "View v2", exact: true }).click();
