@@ -497,8 +497,8 @@ describe("nav structure", () => {
       // Resources & connections
       "/acme/skills",
       "/acme/mcp",
-      "/acme/marketplace",
       "/acme/runtimes",
+      "/acme/marketplace",
       // footer
       "/acme/usage",
       "/acme/settings",

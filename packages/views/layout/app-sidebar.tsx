@@ -177,8 +177,8 @@ const aiTeamNav: NavItem[] = [
 const resourceNav: NavItem[] = [
   { key: "skills", labelKey: "skills" },
   { key: "mcp", labelKey: "mcp" },
-  { key: "marketplace", labelKey: "marketplace" },
   { key: "runtimes", labelKey: "runtimes" },
+  { key: "marketplace", labelKey: "marketplace" },
 ];
 
 // Analytics and Settings live in the footer, outside SidebarContent's scroll
