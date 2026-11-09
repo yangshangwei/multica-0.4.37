@@ -20,7 +20,7 @@
 从原仓库目录使用：
 
 ```sh
-python3 .trellis/tasks/11-09-collaboration-multi-account-qa/research/environment/run.py --provider closure env QA_RUN_ID=run-01 pnpm exec playwright test e2e/collaboration-multi-account-closure.spec.ts --config playwright.qa.config.ts --workers=1 --retries=0
+python3 artifacts/qa/collaboration-multi-account-20261109/environment/run.py --provider closure env QA_RUN_ID=run-01 pnpm exec playwright test e2e/collaboration-multi-account-closure.spec.ts --config playwright.qa.config.ts --workers=1 --retries=0
 ```
 
 该 launcher 在私有快照中执行，用 JSON 数据加载明确配置，不载入原仓库 .env。`--provider host` 供 squad/switch 用例；`--provider memory` 供上下文专项。
@@ -30,8 +30,8 @@ python3 .trellis/tasks/11-09-collaboration-multi-account-qa/research/environment
 ## 停止
 
 ```sh
-python3 .trellis/tasks/11-09-collaboration-multi-account-qa/research/environment/services.py verify
-python3 .trellis/tasks/11-09-collaboration-multi-account-qa/research/environment/services.py stop
+python3 artifacts/qa/collaboration-multi-account-20261109/environment/services.py verify
+python3 artifacts/qa/collaboration-multi-account-20261109/environment/services.py stop
 ```
 
 stop 只对 allocation 记录且仍匹配进程组身份的进程发送 SIGTERM，保留数据库、日志与快照。停止后应再次检查端口释放与 fixture gate 恢复。
