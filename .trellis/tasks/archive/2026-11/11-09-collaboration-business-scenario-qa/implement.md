@@ -10,7 +10,7 @@
 ## 1. 环境（约 30–40 分钟，主要花在构建）
 
 ```sh
-Q=.trellis/tasks/11-09-collaboration-business-scenario-qa/research/environment/qa_env.py
+Q=.trellis/tasks/archive/2026-11/11-09-collaboration-business-scenario-qa/research/environment/qa_env.py
 python3 $Q allocate      # 私有根、DB 名、端口复核
 python3 $Q snapshot      # git archive HEAD → source/，零漂移审计，pnpm install，workspace 链接核对
 python3 $Q build         # api/cli/host-daemon/三种 Provider/web/renderer，记录哈希
@@ -66,7 +66,7 @@ python3 $Q run --provider host QA_RUN_ID=b2-outsourcing QA_KNOWLEDGE_CONTEXT=on 
   - 未覆盖项和复现命令。
 - [x] `python3 $Q scan`：原15项公开标识符误报保留；精确上下文独立复核后实际凭据形态0命中，见credential-scan-adjudication-20261110.json。
 - [x] 独立复核：由另一个代理只读核对报告里的数字与证据文件。如果网关不稳定导致代理不可用，就由主会话逐项核对，并在报告里说明复核方式。
-- [ ] Phase 3：只提交本任务新增的测试文件、证据和任务目录，不夹带工作区里其他会话的修改。提交前再看一遍 `git status`、`git log`，确认没有同伴会话改过这些文件。
+- [x] Phase 3：只提交本任务新增的测试文件、证据和任务目录，不夹带工作区里其他会话的修改。提交前再看一遍 `git status`、`git log`，确认没有同伴会话改过这些文件。
 
 ## 风险与回退点
 
