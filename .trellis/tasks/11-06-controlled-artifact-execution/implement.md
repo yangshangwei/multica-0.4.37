@@ -1,13 +1,13 @@
 # Controlled artifact execution implementation plan
 
-Status: planning repair only, 2026-11-10. No product implementation has started. This child remains planning pending independent design review and main-session activation; parent remains in_progress. design.md is the current contract; plan-review.md remains intact.
+Status: implementation and independent verification passed, 2026-11-10. Final execution mapping and commands are in delivery.md and verification-2026-11-10.json; checkbox items below retain the original execution blueprint rather than claiming unrun full-package commands. Child is in_progress in codex/controlled-artifact-20261110; parent remains in_progress. design.md is the current contract; original reviews remain intact.
 
 ## 1. Review before activation
 
-- [ ] Independently review all six original blockers against design.md and the ten-case matrix below. Check canonical bytes, private detail versus broad queue, task/principal scope, and unclaimed versus result states.
-- [ ] Independently check the explicit source-backed graph in design.md against the actual SQL: workspace KEY SHARE NOWAIT -> verified task token when present -> joined task/agent/runtime/issue/originator/runtime-owner locks -> supplemental human user/member/credential locks -> managed-binding fences when present -> approval then execution. Check the separate cancellation graph and nonce-only finalization graph. No universal repository lock-order assumption or blocking substitute for NOWAIT is permitted.
-- [ ] Record baseline HEAD/dirty paths; isolate overlapping work without reverting another session. Load server security, task capability, database-isolation and migration guidelines.
-- [ ] Main activates the existing child only after planning review. No duplicate task, provider calls or shared business DB.
+- [x] Independently review all six original blockers against design.md and the ten-case matrix below. Check canonical bytes, private detail versus broad queue, task/principal scope, and unclaimed versus result states.
+- [x] Independently check the explicit source-backed graph in design.md against the actual SQL: workspace KEY SHARE NOWAIT -> verified task token when present -> joined task/agent/runtime/issue/originator/runtime-owner locks -> supplemental human user/member/credential locks -> managed-binding fences when present -> approval then execution. Check the separate cancellation graph and nonce-only finalization graph. No universal repository lock-order assumption or blocking substitute for NOWAIT is permitted.
+- [x] Record baseline HEAD/dirty paths; isolate overlapping work without reverting another session. Load server security, task capability, database-isolation and migration guidelines.
+- [x] Main activates the existing child only after planning review. No duplicate task, provider calls or shared business DB.
 
 ## 2. Canonical spec and deterministic adapter
 

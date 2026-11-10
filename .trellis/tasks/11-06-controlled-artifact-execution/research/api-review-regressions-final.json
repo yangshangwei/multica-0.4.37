@@ -1,0 +1,35 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-json",
+    "./internal/handler",
+    "-run",
+    "^TestControlledArtifact(AgentReadRechecksInvocation|FinalizationLockConflict)$",
+    "-count=1"
+  ],
+  "environment": "handler",
+  "database": "multica_artifact_20261110_handler",
+  "exit_code": 0,
+  "seconds": 23.914,
+  "finished_at": "2026-11-10T08:07:04.125416+08:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/api-review-regressions-final.log",
+  "log_sha256": "3e39326fc92a69f76b76fb3db0cdf25b230bb882235354978cf25272c1d22d57",
+  "named_test_counts": {
+    "pass": 2,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactAgentReadRechecksInvocation",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactFinalizationLockConflict"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "agent_cli_guard": true
+}

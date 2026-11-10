@@ -1,0 +1,43 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "./internal/handler",
+    "-run",
+    "^Test.*AgentApproval",
+    "-count=1"
+  ],
+  "environment": "baseline",
+  "database": "multica_artifact_20261110_baseline",
+  "exit_code": 0,
+  "seconds": 19.171,
+  "finished_at": "2026-11-10T07:41:28.395347+08:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/baseline-approvals-01.log",
+  "log_sha256": "612580d13f17d613c12d46926b64a3c39df3adfecb05db53159f0a047d70e901",
+  "named_test_counts": {
+    "pass": 11,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "github.com/multica-ai/multica/server/internal/handler:TestCreateAgentApproval_FilesAPendingRequest",
+      "github.com/multica-ai/multica/server/internal/handler:TestCreateAgentApproval_AgentIdentityComesFromTheToken",
+      "github.com/multica-ai/multica/server/internal/handler:TestCreateAgentApproval_ValidatesRiskClassAndSummary",
+      "github.com/multica-ai/multica/server/internal/handler:TestDecideAgentApproval_AgentCannotDecide",
+      "github.com/multica-ai/multica/server/internal/handler:TestDecideAgentApproval_HumanApprovesThenExecutionIsRecorded",
+      "github.com/multica-ai/multica/server/internal/handler:TestDecideAgentApproval_SecondDecisionConflicts",
+      "github.com/multica-ai/multica/server/internal/handler:TestDecideAgentApproval_RejectsUnknownDecision",
+      "github.com/multica-ai/multica/server/internal/handler:TestGetAgentApproval_AgentSeesOnlyItsOwn",
+      "github.com/multica-ai/multica/server/internal/handler:TestListAgentApprovals_AgentSeesOnlyItsOwnQueue",
+      "github.com/multica-ai/multica/server/internal/handler:TestListAgentApprovals_RejectsUnknownStatusFilter",
+      "github.com/multica-ai/multica/server/internal/handler:TestCancelAgentApproval_ByTheFilingAgent"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "agent_cli_guard": true
+}

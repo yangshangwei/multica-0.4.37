@@ -87,6 +87,8 @@ go test ./internal/service -run TestBuiltinSkillsConformToTemplate
 | Execution requires approval AND operator | `agent_approval.go` `RecordAgentApprovalExecution` | `MarkAgentApprovalRequestExecuted` matches only `status='approved'`; the level check rejects a contributor holding an approval | `go test ./internal/handler -run TestRecordExecution` |
 | Identity comes from the token | `agent_approval.go` `CreateAgentApproval` | An agent actor's `agent_id` is taken from the task token, never from the body | `go test ./internal/handler -run TestCreateAgentApproval_AgentIdentityComesFromTheToken` |
 | CLI has no approve command | `cmd_approval.go` | `request`, `list`, `get`, `executed`, `cancel` only — an approve command would fail by design for every caller holding a task token | `multica approval --help` |
+| Controlled package scope is frozen before approval | `handler/agent_artifact.go`, `internal/artifact/spec.go` | Dedicated typed local-synthetic request creates pending approval and unclaimed execution atomically; human decision requires exact spec digest | `go test ./internal/handler -run TestControlledArtifact` with an isolated migrated database |
+| Controlled side effects are never replayed | `handler/agent_artifact.go`, `internal/artifact/packager.go` | Durable unknown claim precedes one in-process packaging invocation; old self-report refuses bound approvals; failure/unknown never auto-run again | `go test ./internal/artifact`; isolated handler and router controlled-artifact suites |
 
 ## Copy command — `server/cmd/multica/cmd_agent_copy.go`
 

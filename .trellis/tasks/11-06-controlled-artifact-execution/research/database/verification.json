@@ -1,0 +1,243 @@
+{
+  "recorded_at": "2026-11-10T07:48:02.472727+08:00",
+  "scope": "Schema/query/SQL concurrency only; no API/model/adapter invocation claim",
+  "files": {
+    "server/cmd/migrate/main.go": "1c58438af72eb13bd9cc2ff154aa4422572afc1324eed8e55ec2d86983a3244f",
+    "server/cmd/migrate/artifact_execution_test.go": "6ed0c71393f1b9c5483f564fdfb40077039a1cba98a030602e1334f4c52582f2",
+    "server/internal/migrations/artifact_execution_test.go": "ee6431651db3b48f6b1b44b2bb14e7082e8e530d6c73ca1590d53d8d70440ff1",
+    "server/pkg/db/queries/agent_artifact_execution.sql": "f6273e79150bec4ef15cedf926b3b7cc3c96ad1232fbe2b5cae30584dad0b58f",
+    "server/pkg/db/queries/agent_approval.sql": "1cd00e0b2d579920e2ec65cef2b5dbb3dbf6e416bbb619406751b836eacb4c5d",
+    "server/pkg/db/queries/workspace_delete.sql": "560a154ca401d6e00aaf812548ed95d7f1bb5333fd8d8cff5df565773b4b601e",
+    "server/pkg/db/generated/agent_artifact_execution.sql.go": "51cb4849f74b5e502ed0f0e2b675bc55f31c17b819cd04d00c38f904f9dd83e3",
+    "server/pkg/db/generated/agent_approval.sql.go": "30b4ca93bd7503f34c8bc5a02ccd355d3a7e0cb5bd4c7d1b1279339f1c183fd4",
+    "server/pkg/db/generated/models.go": "644b0888b865d203415ee04329fadb7ccb74f30d792d09d4fd4ed1b517735205",
+    "server/pkg/db/generated/workspace_delete.sql.go": "3ae8d8468449c8e3361a506728d4cff42548dcadc34f5baa6a7118ced1422d05",
+    "server/migrations/768_agent_artifact_execution_approval.up.sql": "9f8ebc519a7f03e64f4b8e32c571bfb143a7669a1b5fe75807331fedcde07f45",
+    "server/migrations/769_agent_artifact_execution_idempotency.down.sql": "f2247958274be35c378012a892b61d5fd0f6287c06b8c5c400816e6a02bced86",
+    "server/migrations/770_agent_artifact_execution_ready.down.sql": "c34b3a1a32ef47afedaa9fe11461201542ce29be215b8ac4f353bab7da3f9ada",
+    "server/migrations/766_agent_artifact_execution.down.sql": "b3cd80706c3992d2894e4268a110d690ea3a26370dfcdf52bef6edde03fd0780",
+    "server/migrations/769_agent_artifact_execution_idempotency.up.sql": "ad19ee6ac1379c78264c73e60b95ee9e54d135ff4859ba3c9d82953badfb04c8",
+    "server/migrations/770_agent_artifact_execution_ready.up.sql": "372e94ccfdfa311dd77c2b219c518f74c6899290a022447438927d7e5b11492c",
+    "server/migrations/766_agent_artifact_execution.up.sql": "242f2c35ca6f918c59662ed6988622d071dd85bb7c9a5e79a3eacb45ea4446c4",
+    "server/migrations/767_agent_artifact_execution_id.down.sql": "df2e99e0faeb34a53b1e3a5e204900f9005528a28977c6d681a46e2472cf1527",
+    "server/migrations/768_agent_artifact_execution_approval.down.sql": "6a75dbde562d0e9a73565f44b61002ac2e449ff63716201607eb918797fae980",
+    "server/migrations/767_agent_artifact_execution_id.up.sql": "d0b8f9db9589f64e9cf49cbb5dafd87747d8f52ec2b695be9d903df7e5bc6867"
+  },
+  "checks": [
+    {
+      "evidence": "../db-static-01.json",
+      "result": {
+        "command": [
+          "go",
+          "-C",
+          "server",
+          "test",
+          "-json",
+          "./internal/migrations",
+          "-run",
+          "^TestArtifactExecutionMigrationFilesAreFailClosed$",
+          "-count=1"
+        ],
+        "environment": "migrations",
+        "database": "multica_artifact_20261110_migrations",
+        "exit_code": 0,
+        "seconds": 1.285,
+        "finished_at": "2026-11-10T07:41:26.485201+08:00",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/db-static-01.log",
+        "log_sha256": "c929ea9e4eb7766903ecfa46feae4e30c9705ded715b2eb878020230848afaf2",
+        "named_test_counts": {
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "test_names": {
+          "pass": [
+            "github.com/multica-ai/multica/server/internal/migrations:TestArtifactExecutionMigrationFilesAreFailClosed"
+          ],
+          "fail": [],
+          "skip": []
+        },
+        "agent_cli_guard": true
+      }
+    },
+    {
+      "evidence": "../db-live-01.json",
+      "result": {
+        "command": [
+          "go",
+          "-C",
+          "server",
+          "test",
+          "-json",
+          "./cmd/migrate",
+          "-run",
+          "^TestArtifactExecution",
+          "-count=1"
+        ],
+        "environment": "migrations",
+        "database": "multica_artifact_20261110_migrations",
+        "exit_code": 0,
+        "seconds": 3.789,
+        "finished_at": "2026-11-10T07:42:43.117899+08:00",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/db-live-01.log",
+        "log_sha256": "731bbf7fcd1e6a117c2e82f9f82f6bb536e4e1f43382f9ed017be12e8fb99603",
+        "named_test_counts": {
+          "pass": 8,
+          "fail": 0,
+          "skip": 0
+        },
+        "test_names": {
+          "pass": [
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionMigrationsPreserveEvidenceAndRollbackOrder",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionSchemaReadinessRejectsWrongIndex",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionClaimAndReceiptCAS/succeeded",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionClaimAndReceiptCAS/failed",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionClaimAndReceiptCAS/unknown",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionClaimAndReceiptCAS",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionConcurrentClaimAndIdempotency",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionRollbackBusyAndTerminalEvidence"
+          ],
+          "fail": [],
+          "skip": []
+        },
+        "agent_cli_guard": true
+      }
+    },
+    {
+      "evidence": "../db-race-01.json",
+      "result": {
+        "command": [
+          "go",
+          "-C",
+          "server",
+          "test",
+          "-race",
+          "-json",
+          "./cmd/migrate",
+          "-run",
+          "^TestArtifactExecution",
+          "-count=1"
+        ],
+        "environment": "migrations",
+        "database": "multica_artifact_20261110_migrations",
+        "exit_code": 0,
+        "seconds": 7.487,
+        "finished_at": "2026-11-10T07:43:47.426122+08:00",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/db-race-01.log",
+        "log_sha256": "d2c91d69ab751211eefb9aff495dfeaa46d204c076d236b95aaa6f12f1ec0e33",
+        "named_test_counts": {
+          "pass": 9,
+          "fail": 0,
+          "skip": 0
+        },
+        "test_names": {
+          "pass": [
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionMigrationsPreserveEvidenceAndRollbackOrder",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionSchemaReadinessRejectsWrongIndex",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionClaimAndReceiptCAS/succeeded",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionClaimAndReceiptCAS/failed",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionClaimAndReceiptCAS/unknown",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionClaimAndReceiptCAS",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionConcurrentClaimAndIdempotency",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionRollbackBusyAndTerminalEvidence",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionConstraintsRejectIncompleteAndInvalidStates"
+          ],
+          "fail": [],
+          "skip": []
+        },
+        "agent_cli_guard": true
+      }
+    },
+    {
+      "evidence": "../db-retry-01.json",
+      "result": {
+        "command": [
+          "go",
+          "-C",
+          "server",
+          "test",
+          "-race",
+          "-json",
+          "./cmd/migrate",
+          "-run",
+          "^TestArtifactExecutionConcurrentIndexRetryRecoversInvalidRelation$|^TestEveryConcurrentUpBuildHasCleanup$|^TestConcurrentIndexCleanupsMatchTheirMigrations$",
+          "-count=1"
+        ],
+        "environment": "migrations",
+        "database": "multica_artifact_20261110_migrations",
+        "exit_code": 0,
+        "seconds": 4.883,
+        "finished_at": "2026-11-10T07:45:13.009407+08:00",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/db-retry-01.log",
+        "log_sha256": "3c4044c96f930dfe45d5a2109ac985d75d02e817a5bf35a1aa4ca3b8571c17b6",
+        "named_test_counts": {
+          "pass": 3,
+          "fail": 0,
+          "skip": 0
+        },
+        "test_names": {
+          "pass": [
+            "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionConcurrentIndexRetryRecoversInvalidRelation",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestConcurrentIndexCleanupsMatchTheirMigrations",
+            "github.com/multica-ai/multica/server/cmd/migrate:TestEveryConcurrentUpBuildHasCleanup"
+          ],
+          "fail": [],
+          "skip": []
+        },
+        "agent_cli_guard": true
+      }
+    },
+    {
+      "evidence": "../db-migration-lint-01.json",
+      "result": {
+        "command": [
+          "go",
+          "-C",
+          "server",
+          "test",
+          "-json",
+          "./internal/migrations",
+          "-run",
+          "^TestArtifactExecution|^TestMigrationFilesHaveMatchingDirections$|^TestMigrationNumericPrefixesStayUniqueAfterLegacySet$|^TestNewMigrationPrefixesStartAfterLegacyRange$",
+          "-count=1"
+        ],
+        "environment": "migrations",
+        "database": "multica_artifact_20261110_migrations",
+        "exit_code": 0,
+        "seconds": 2.104,
+        "finished_at": "2026-11-10T07:45:48.603622+08:00",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/db-migration-lint-01.log",
+        "log_sha256": "7e5066beecdecd2018758a8b1c138d05f1d2caba36559f42dfcd9f665e6f250f",
+        "named_test_counts": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 0
+        },
+        "test_names": {
+          "pass": [
+            "github.com/multica-ai/multica/server/internal/migrations:TestArtifactExecutionMigrationFilesAreFailClosed",
+            "github.com/multica-ai/multica/server/internal/migrations:TestMigrationFilesHaveMatchingDirections",
+            "github.com/multica-ai/multica/server/internal/migrations:TestMigrationNumericPrefixesStayUniqueAfterLegacySet",
+            "github.com/multica-ai/multica/server/internal/migrations:TestNewMigrationPrefixesStartAfterLegacyRange"
+          ],
+          "fail": [],
+          "skip": []
+        },
+        "agent_cli_guard": true
+      }
+    }
+  ],
+  "sqlc_regeneration": {
+    "command": "go run github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1 generate",
+    "idempotent_generated_files": 131,
+    "exit_code": 0
+  },
+  "vet": {
+    "command": "go -C server vet ./pkg/db/generated ./internal/migrations ./cmd/migrate",
+    "exit_code": 0
+  },
+  "unverified": [
+    "API authority/credential/deletion races and actual adapter invocation counts remain owned by API/integration lane",
+    "No public schema rollback or database destruction executed"
+  ]
+}

@@ -1,0 +1,388 @@
+{
+  "reviewed_at": "2026-11-10T08:09:51.167928+08:00",
+  "reviewer": "native trellis-check artifact_review",
+  "verdict": "pass",
+  "scope": "Reviewed local-synthetic controlled artifact backend child only; no M1 parent, real-provider, production or client-UI acceptance claim.",
+  "blocking_findings": [],
+  "production_edits_by_reviewer": 0,
+  "reviewed_source_hashes": {
+    "server/cmd/migrate/artifact_execution_test.go": "6ed0c71393f1b9c5483f564fdfb40077039a1cba98a030602e1334f4c52582f2",
+    "server/cmd/migrate/main.go": "1c58438af72eb13bd9cc2ff154aa4422572afc1324eed8e55ec2d86983a3244f",
+    "server/cmd/server/agent_artifact_integration_test.go": "0b26d4afc5a3e44ecb8004572d0fd89a208271719c0b7b90072239e967af0085",
+    "server/cmd/server/router.go": "deeaf0a7cd0e56db2f7c0205d04ef17f54fa2b2f04c05be1e4c37b366017482b",
+    "server/internal/artifact/files_unix.go": "18bcac8ba8e5b925cb2d3dc5fa8b5673c5857aafc33ab333db95d6d8b277e681",
+    "server/internal/artifact/files_unsupported.go": "069f8de2e581046bcdcd09eed553a8cad20029737c74c1061292a1fff4144b0a",
+    "server/internal/artifact/packager.go": "97dea8fe35facef1261522006487f07320e8248b61186694d9a69b3a7d32913d",
+    "server/internal/artifact/packager_test.go": "1eb4ba68bb1b3f692d5d2d310ee404bcde17337ae193f186b410ab9dc3087578",
+    "server/internal/artifact/spec.go": "5db7aa8d8849ff2f989ecb4de7170f9beb5c4c6b53b6ad40dc65c4c8e78a8bc7",
+    "server/internal/artifact/spec_test.go": "286657f651599bfbbf7fc93b205a3cc8e18810de35fcf2561fd70929548b6466",
+    "server/internal/auth/password_session.go": "474bb0f6b60f535297a96a543d1f1986758fcf06598d3b68c459cff35ca9d5fa",
+    "server/internal/auth/principal.go": "98d96ce37a00a74153c344797ccbc4b8f053766bcf37696b5253d4a40cd3c538",
+    "server/internal/handler/agent_approval.go": "de934d0a66615b6de4a1ff798b4405a915f1660018497941fda41cb67931a5f6",
+    "server/internal/handler/agent_artifact.go": "fcbaf09de47f8a30a22a3790897e4947e991f1136eb0d2c44f439445e08c7027",
+    "server/internal/handler/agent_artifact_cancel_test.go": "4c10d7c01a347b790e1f8faa9c277142e7c8ac19b1727cd3d31bd5c0cac88edb",
+    "server/internal/handler/agent_artifact_test.go": "5560d7c46b1590fb1bea243b5c91983450156ae71d1dcb53d33044582d6e2bb6",
+    "server/internal/handler/handler.go": "d32dafc0efc4b8aa696dd8bbb443c68ef735b574d908763ee2d4379fc2779eec",
+    "server/internal/middleware/auth.go": "18392905c77f59897c63b4bc2490b20c95389bf49c88748e934643ca9b6e5dfe",
+    "server/internal/migrations/artifact_execution_test.go": "ee6431651db3b48f6b1b44b2bb14e7082e8e530d6c73ca1590d53d8d70440ff1",
+    "server/internal/service/builtin_skills/multica-creating-agents/SKILL.md": "e1eeaa9b3d939dab9d80c87308d67871b4ac12abb8ab75a6be17e266883a1d8d",
+    "server/internal/service/builtin_skills/multica-creating-agents/references/creating-agents-source-map.md": "d60c38171c15fa429678547748533755cf8d49fcdcf991ba6a74910fc76e88f6",
+    "server/migrations/766_agent_artifact_execution.down.sql": "b3cd80706c3992d2894e4268a110d690ea3a26370dfcdf52bef6edde03fd0780",
+    "server/migrations/766_agent_artifact_execution.up.sql": "242f2c35ca6f918c59662ed6988622d071dd85bb7c9a5e79a3eacb45ea4446c4",
+    "server/migrations/767_agent_artifact_execution_id.down.sql": "df2e99e0faeb34a53b1e3a5e204900f9005528a28977c6d681a46e2472cf1527",
+    "server/migrations/767_agent_artifact_execution_id.up.sql": "d0b8f9db9589f64e9cf49cbb5dafd87747d8f52ec2b695be9d903df7e5bc6867",
+    "server/migrations/768_agent_artifact_execution_approval.down.sql": "6a75dbde562d0e9a73565f44b61002ac2e449ff63716201607eb918797fae980",
+    "server/migrations/768_agent_artifact_execution_approval.up.sql": "9f8ebc519a7f03e64f4b8e32c571bfb143a7669a1b5fe75807331fedcde07f45",
+    "server/migrations/769_agent_artifact_execution_idempotency.down.sql": "f2247958274be35c378012a892b61d5fd0f6287c06b8c5c400816e6a02bced86",
+    "server/migrations/769_agent_artifact_execution_idempotency.up.sql": "ad19ee6ac1379c78264c73e60b95ee9e54d135ff4859ba3c9d82953badfb04c8",
+    "server/migrations/770_agent_artifact_execution_ready.down.sql": "c34b3a1a32ef47afedaa9fe11461201542ce29be215b8ac4f353bab7da3f9ada",
+    "server/migrations/770_agent_artifact_execution_ready.up.sql": "372e94ccfdfa311dd77c2b219c518f74c6899290a022447438927d7e5b11492c",
+    "server/pkg/db/generated/agent_approval.sql.go": "30b4ca93bd7503f34c8bc5a02ccd355d3a7e0cb5bd4c7d1b1279339f1c183fd4",
+    "server/pkg/db/generated/agent_artifact_execution.sql.go": "51cb4849f74b5e502ed0f0e2b675bc55f31c17b819cd04d00c38f904f9dd83e3",
+    "server/pkg/db/generated/models.go": "644b0888b865d203415ee04329fadb7ccb74f30d792d09d4fd4ed1b517735205",
+    "server/pkg/db/generated/workspace_delete.sql.go": "3ae8d8468449c8e3361a506728d4cff42548dcadc34f5baa6a7118ced1422d05",
+    "server/pkg/db/queries/agent_approval.sql": "1cd00e0b2d579920e2ec65cef2b5dbb3dbf6e416bbb619406751b836eacb4c5d",
+    "server/pkg/db/queries/agent_artifact_execution.sql": "f6273e79150bec4ef15cedf926b3b7cc3c96ad1232fbe2b5cae30584dad0b58f",
+    "server/pkg/db/queries/workspace_delete.sql": "560a154ca401d6e00aaf812548ed95d7f1bb5333fd8d8cff5df565773b4b601e"
+  },
+  "source_manifest_sha256": "f3c441831334a7ed16f6b955e43e4ea50662450e3638d1f02a0f6b8b390a146e",
+  "fixed_findings": [
+    {
+      "id": "R1",
+      "owner": "artifact_api",
+      "issue": "Agent detail/claimed replay omitted current originator invocation authority when full=false",
+      "resolution": "full-or-agent guard; real retained task-token detail/replay refuses after distinct originator target revocation; human audit access retained",
+      "test": "TestControlledArtifactAgentReadRechecksInvocation"
+    },
+    {
+      "id": "R2",
+      "owner": "artifact_api",
+      "issue": "Creation replay needed canonical stored-binding validation",
+      "resolution": "artifactSpec(old) validates frozen canonical and denormalized fields before replay; creation replay uses original binding and current read authorization",
+      "tests": [
+        "TestControlledArtifactStoredBindingDrift",
+        "TestControlledArtifactLifecycle",
+        "TestControlledArtifactSameKeyConcurrency"
+      ]
+    },
+    {
+      "id": "R3",
+      "owner": "artifact_api",
+      "issue": "Direct GetAgentRuntime bypassed required lookup instrumentation",
+      "resolution": "service.RuntimeLookup bound to same transaction and task source; canonical scanner passes",
+      "test": "TestNoDirectGetAgentRuntimeCalls"
+    },
+    {
+      "id": "R4",
+      "owner": "artifact_api",
+      "issue": "Post-Pack finalization lock failure looked like preclaim409",
+      "resolution": "503 status unknown with execution ID; claim remains unknown and next request never invokes again",
+      "test": "TestControlledArtifactFinalizationLockConflict"
+    }
+  ],
+  "final_checks": {
+    "final-handler-normal": {
+      "record_sha256": "35576f49db4fb448fd242cd41f43bf27e8e0dc7d2da4b3aaa3a6dffd621670ac",
+      "log_sha256": "036848a30c13596925a31abff5f1c047deab46cfe2ca194b10ebda7709050160",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "./internal/handler",
+        "-run",
+        "^Test(ControlledArtifact|.*AgentApproval|RecordExecution)",
+        "-count=1"
+      ],
+      "database": "multica_artifact_20261110_handler_final",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 84,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-handler-race": {
+      "record_sha256": "3c1cc8abee3590c11e2f38660827c2533e8d2ab09154826d226013e96c37e177",
+      "log_sha256": "6a1fb73ae8895c72d832e98390f42a7f296653368aab14db3030dfc66effcd8e",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "-json",
+        "./internal/handler",
+        "-run",
+        "^Test(ControlledArtifact|.*AgentApproval|RecordExecution)",
+        "-count=1"
+      ],
+      "database": "multica_artifact_20261110_handler_race_final",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 84,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-router-normal": {
+      "record_sha256": "a3a9c2b08931ce05f94585641103dd0147c63d0391066a6dc6959016d1cb7e37",
+      "log_sha256": "caa2872bd85ea0c6dffe2e7d85be3719476f011dda98269764d92ca3888f51c5",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "./cmd/server",
+        "-run",
+        "^TestControlledArtifactRouter",
+        "-count=1"
+      ],
+      "database": "multica_artifact_20261110_router_final",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-router-race": {
+      "record_sha256": "3c447a454e8c28732ac0406703b76fb2bed1b520190f6a6ba3ae9e78d7a7ead0",
+      "log_sha256": "696323f3dc74e51da6d80c776067fe5d3b1a97883052f6383fffc042fb2e50a6",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "-json",
+        "./cmd/server",
+        "-run",
+        "^TestControlledArtifactRouter",
+        "-count=1"
+      ],
+      "database": "multica_artifact_20261110_router_race_final",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-build": {
+      "record_sha256": "0a701f487dcb0b1adc8792996a4587621a1c3c31eb94efe5261135372577f7fe",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "build",
+        "./..."
+      ],
+      "database": null,
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-vet": {
+      "record_sha256": "eaa9c85f1584a9225afbbe5b4a5ddf367f32a355cf24cc98e4b95395ffc17310",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "./..."
+      ],
+      "database": null,
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "auth-compatibility-01": {
+      "record_sha256": "730c0dc9f647525fa9e37326fe3466f17c10d1cf6009873affb33aad8c3bdf8f",
+      "log_sha256": "c85418aa850d49772e6bdad6f829fcd83adfa6547efc021683e6a65e9326c6e7",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "./internal/auth",
+        "./internal/middleware",
+        "-run",
+        "^Test(Password(Hash|Input|Length)|NormalizeUsernameEmployeeID|AuthStampsTrustedPrincipalInsteadOfClientActorHeaders|AuthLegacyAgentHintsCannotAcquireCollaborationRights|Auth_(MissingHeader|NoBearerPrefix|InvalidToken|ExpiredToken|WrongSecret|WrongSigningMethod|ValidToken|TemporarilyDisabledJWTByUserID|TemporarilyDisabledJWTByEmail|MissingClaims|StripsClientSuppliedActorSource))$",
+        "-count=1"
+      ],
+      "database": null,
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 48,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "builtin-contracts-01": {
+      "record_sha256": "52e01706ebd96aafab7746158a144ba1f36701e173defb5824372d42b2ecec35",
+      "log_sha256": "3e77f767b49d6ce36d045b9669f6929faef4b6ab3f8aee5b2cfdca1937d8671c",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "./internal/service",
+        "-run",
+        "^Test(BuiltinSkillsConformToTemplate|BuiltinSkillsFrontmatterIsStrictYAML|CreatingAgentsSkillCoversAgentCreationContracts)$",
+        "-count=1"
+      ],
+      "database": null,
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "runtime-lookup-contract-01": {
+      "record_sha256": "5c03394eb71589e3c550d086904ddbb04ac13ef78983393ddc89c847bb92b8be",
+      "log_sha256": "ce565adbf92ac9e93e88bddfd16382e34e085d8747e326198cbbc496df868018",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "./internal/metrics",
+        "-run",
+        "^TestNoDirectGetAgentRuntimeCalls$",
+        "-count=1"
+      ],
+      "database": null,
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "db-race-01": {
+      "record_sha256": "3cf764562bc8ceb3ed2721bcb0c373b8a649bb0aa96dd781da28bc0d6509f91c",
+      "log_sha256": "d2c91d69ab751211eefb9aff495dfeaa46d204c076d236b95aaa6f12f1ec0e33",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "-json",
+        "./cmd/migrate",
+        "-run",
+        "^TestArtifactExecution",
+        "-count=1"
+      ],
+      "database": "multica_artifact_20261110_migrations",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "db-retry-01": {
+      "record_sha256": "c3c69577af428ca185215ba36788e647c8abc88a4c4ca338525fe4be455381f9",
+      "log_sha256": "3c4044c96f930dfe45d5a2109ac985d75d02e817a5bf35a1aa4ca3b8571c17b6",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "-json",
+        "./cmd/migrate",
+        "-run",
+        "^TestArtifactExecutionConcurrentIndexRetryRecoversInvalidRelation$|^TestEveryConcurrentUpBuildHasCleanup$|^TestConcurrentIndexCleanupsMatchTheirMigrations$",
+        "-count=1"
+      ],
+      "database": "multica_artifact_20261110_migrations",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "db-migration-lint-01": {
+      "record_sha256": "4bcee747d7677ff4cd6695dc56fe65927e968bf6ef9ad28278bb688727e5f9b4",
+      "log_sha256": "7e5066beecdecd2018758a8b1c138d05f1d2caba36559f42dfcd9f665e6f250f",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "./internal/migrations",
+        "-run",
+        "^TestArtifactExecution|^TestMigrationFilesHaveMatchingDirections$|^TestMigrationNumericPrefixesStayUniqueAfterLegacySet$|^TestNewMigrationPrefixesStartAfterLegacyRange$",
+        "-count=1"
+      ],
+      "database": "multica_artifact_20261110_migrations",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      }
+    }
+  },
+  "pure_package_evidence": {
+    "source_hashes_matched": 6,
+    "macos_normal_named_pass": 78,
+    "macos_race_named_pass": 78,
+    "linux_actual_container_named_pass": 78,
+    "fail": 0,
+    "skip": 0,
+    "windows": "unsupported adapter compiled only"
+  },
+  "matrix_mapping": {
+    "1": "Pure parser/canonical tests + Lifecycle, SameKeyConcurrency and actual SQL idempotency",
+    "2": "Real router legacy/password identity/scope/headers, restricted capabilities, cloudPAT; handler independent principals; live managed epoch/revocation/installation/organization checks",
+    "3": "Approval transitions and cancel-first/claim-first retained state; actual authority lock/refusal and precommit barriers",
+    "4": "OnePhysicalInvocation and actual concurrent SQL cardinality + exclusive deterministic filesystem output",
+    "5": "Pure request/manifest mutation, handler stored binding drift and correct-key conflict tests",
+    "6": "Expiry and denied/cancelled/revoked/failed/unknown retention; no automatic rerun; original receipt after task completion",
+    "7": "Pure filesystem symlink/hardlink/special files, root/parent/output inode mutation, limits/collisions and cleanup ownership",
+    "8": "Independent USTAR bytes/header/digest checks across equivalent input ordering; macOS and actual Linux pure tests",
+    "9": "Claim/receipt before-and-after commit fault injection; transaction atomicity; adapter panic; filesystem uncertainty; finalization contention503/no rerun",
+    "10": "Existing approval compatibility, guarded bound self-report/cancel, real workspace teardown eight states, restricted spec vs safe broad summary",
+    "C1-C2": "Actual Execute precommit barrier and counted real Pack; distinct initiator/current claimant and separate approver/originator revocation; member/user/password/PAT/task-token locks; managed real-router live fences. Shared authority SQL primitives are composed with targeted route proofs, not an exhaustive actor-role permutation matrix.",
+    "C3": "Workspace writer-first NOWAIT plus actual Create before DeleteWorkspace and actual claimed operation finishing after teardown",
+    "C4": "Production CancelTaskInTx before and after claim, retained cancel state and one Pack; finalization lock-conflict unknown/no retry",
+    "D1-D4": "Real DeleteWorkspace across pending/approved/succeeded/failed/unknown/cancelled/rejected/inflight; retained human decisions, bound receipt, no public access, unbound legacy deletion"
+  },
+  "verification_boundaries": [
+    "Named pass counts include subtests and are separate runs; do not sum them as unique cases.",
+    "Direct authority/SQL lock tests are supporting evidence; actual Execute barriers and physical Pack counts provide integration proof.",
+    "Reviewer rehashed and recounted existing raw results; no database writes, real model calls or redundant integration runs.",
+    "No frontend files changed: TypeScript checks are inapplicable; Go compilation/type checking and vet passed.",
+    "No general shell sandbox, deployment/publication, hostile same-UID/root defense, privileged mount injection, Linux race or native Windows execution is claimed.",
+    "Standalone declared source revision is not independently Git-verified; operator manifest binds bytes.",
+    "UI/CLI typed spec flow remains outside this backend child."
+  ],
+  "sqlc_evidence": {
+    "command": "go run github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1 generate",
+    "exit_code": 0,
+    "files": 131,
+    "identical": true,
+    "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/final-sqlc.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

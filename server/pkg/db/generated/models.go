@@ -180,6 +180,50 @@ type AgentApprovalRequest struct {
 	UpdatedAt     pgtype.Timestamptz `json:"updated_at"`
 }
 
+type AgentArtifactExecution struct {
+	ExecutionID           pgtype.UUID        `json:"execution_id"`
+	ApprovalID            pgtype.UUID        `json:"approval_id"`
+	WorkspaceID           pgtype.UUID        `json:"workspace_id"`
+	InitiatorKind         string             `json:"initiator_kind"`
+	InitiatorID           pgtype.UUID        `json:"initiator_id"`
+	OriginatorUserID      pgtype.UUID        `json:"originator_user_id"`
+	AgentID               pgtype.UUID        `json:"agent_id"`
+	TaskID                pgtype.UUID        `json:"task_id"`
+	RuntimeID             pgtype.UUID        `json:"runtime_id"`
+	TaskGeneration        int64              `json:"task_generation"`
+	ResourceKind          string             `json:"resource_kind"`
+	ResourceID            pgtype.UUID        `json:"resource_id"`
+	Action                string             `json:"action"`
+	IdempotencyKey        pgtype.UUID        `json:"idempotency_key"`
+	RequestDigest         string             `json:"request_digest"`
+	CanonicalSpec         []byte             `json:"canonical_spec"`
+	SpecDigest            string             `json:"spec_digest"`
+	SourceRevision        string             `json:"source_revision"`
+	StagingID             string             `json:"staging_id"`
+	StagingManifestDigest string             `json:"staging_manifest_digest"`
+	InputManifestDigest   string             `json:"input_manifest_digest"`
+	InvocationDigest      string             `json:"invocation_digest"`
+	PolicyVersion         string             `json:"policy_version"`
+	TargetEnvironment     string             `json:"target_environment"`
+	RootConfigIdentity    string             `json:"root_config_identity"`
+	CreatedAt             pgtype.Timestamptz `json:"created_at"`
+	ExpiresAt             pgtype.Timestamptz `json:"expires_at"`
+	UpdatedAt             pgtype.Timestamptz `json:"updated_at"`
+	ClaimedKind           pgtype.Text        `json:"claimed_kind"`
+	ClaimedBy             pgtype.UUID        `json:"claimed_by"`
+	ClaimNonce            pgtype.UUID        `json:"claim_nonce"`
+	ClaimedAt             pgtype.Timestamptz `json:"claimed_at"`
+	StartedAt             pgtype.Timestamptz `json:"started_at"`
+	FinishedAt            pgtype.Timestamptz `json:"finished_at"`
+	ResultStatus          pgtype.Text        `json:"result_status"`
+	ResultCode            string             `json:"result_code"`
+	ReceiptJson           []byte             `json:"receipt_json"`
+	ReceiptDigest         string             `json:"receipt_digest"`
+	OutputArtifactID      pgtype.UUID        `json:"output_artifact_id"`
+	OutputArtifactDigest  string             `json:"output_artifact_digest"`
+	OutputSize            pgtype.Int8        `json:"output_size"`
+}
+
 type AgentBuilderDraft struct {
 	ChatSessionID pgtype.UUID        `json:"chat_session_id"`
 	WorkspaceID   pgtype.UUID        `json:"workspace_id"`

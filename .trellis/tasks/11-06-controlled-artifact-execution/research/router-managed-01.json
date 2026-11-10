@@ -1,0 +1,40 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-json",
+    "./cmd/server",
+    "-run",
+    "^TestControlledArtifactRouterManagedBindingLiveFences$",
+    "-count=1"
+  ],
+  "environment": "router",
+  "database": "multica_artifact_20261110_router",
+  "exit_code": 0,
+  "seconds": 16.106,
+  "finished_at": "2026-11-10T08:01:42.018674+08:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/router-managed-01.log",
+  "log_sha256": "cbdcf353d2db08d8155319b98b62f74f6d47f04818c41284aad17fd910327e18",
+  "named_test_counts": {
+    "pass": 7,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterManagedBindingLiveFences/allowed",
+      "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterManagedBindingLiveFences/binding_epoch",
+      "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterManagedBindingLiveFences/binding_revoked",
+      "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterManagedBindingLiveFences/installation_retired",
+      "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterManagedBindingLiveFences/organization_mapping_removed",
+      "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterManagedBindingLiveFences/binding_lock_busy",
+      "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterManagedBindingLiveFences"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "agent_cli_guard": true
+}

@@ -1,0 +1,127 @@
+{
+  "at": "2026-11-10T07:51:11.842412+08:00",
+  "status": "implemented_focused_checks_passed_independent_review_pending",
+  "source_hashes": {
+    "server/internal/artifact/files_unix.go": "18bcac8ba8e5b925cb2d3dc5fa8b5673c5857aafc33ab333db95d6d8b277e681",
+    "server/internal/artifact/files_unsupported.go": "069f8de2e581046bcdcd09eed553a8cad20029737c74c1061292a1fff4144b0a",
+    "server/internal/artifact/packager.go": "97dea8fe35facef1261522006487f07320e8248b61186694d9a69b3a7d32913d",
+    "server/internal/artifact/packager_test.go": "1eb4ba68bb1b3f692d5d2d310ee404bcde17337ae193f186b410ab9dc3087578",
+    "server/internal/artifact/spec.go": "5db7aa8d8849ff2f989ecb4de7170f9beb5c4c6b53b6ad40dc65c4c8e78a8bc7",
+    "server/internal/artifact/spec_test.go": "286657f651599bfbbf7fc93b205a3cc8e18810de35fcf2561fd70929548b6466"
+  },
+  "checks": {
+    "packager-normal05": {
+      "pass": 78,
+      "fail": 0,
+      "skip": 0,
+      "top_level": 15
+    },
+    "packager-race02": {
+      "pass": 78,
+      "fail": 0,
+      "skip": 0,
+      "top_level": 15
+    },
+    "linux-native02": {
+      "named_pass": 78,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "vet_exit": 0,
+  "linux_compile_exit": 0,
+  "windows_compile_exit": 0,
+  "linux_execution_exit": 0,
+  "linux_architecture": "amd64 cached container under Docker on macOS arm64",
+  "historical_failures": [
+    "compile red: implementation absent",
+    "normal01: macOS refuses rename of sealed fixture directories; fixture chmod before adversarial rename corrected",
+    "output inode and case-alias regression red; both fixed",
+    "cleanup replacement regression red; fixed without deleting replacement",
+    "first Linux container exit125 before tests: private task path unavailable for host bind; second streams same binary into container-only tmpfs"
+  ],
+  "logs": [
+    {
+      "file": "packager-cleanup-identity-red.log",
+      "sha256": "409a5db2574037f6763fdb21f546aafeae56a7324bc5f8e71fd1908aa5f35065"
+    },
+    {
+      "file": "packager-linux-compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packager-linux-native.json",
+      "sha256": "4353ae639c08c45105bff5e3834d24c4b5f4fc566ac26cc11eca45c4e709535f"
+    },
+    {
+      "file": "packager-linux-native.log",
+      "sha256": "37ba57b3e52945d8b9f05b8736e5804954be3ea758a9f747a7a0316e375c2e23"
+    },
+    {
+      "file": "packager-linux-native02.json",
+      "sha256": "0cfdc27e88fca7821161f40f6a0af5ad63ccd53ba7fc7e9e982d0cfd737bc0dc"
+    },
+    {
+      "file": "packager-linux-native02.log",
+      "sha256": "03248ebed200babc54a759ba3de2d3a0d07d55a1f85430516f5eafb66aa6773f"
+    },
+    {
+      "file": "packager-normal01.log",
+      "sha256": "3802aafe4d8d1e472863ab7c1031085ff2e3582b330d0f5cd523dc23a7544435"
+    },
+    {
+      "file": "packager-normal02.log",
+      "sha256": "09a9d9a1b58a206f52bb75bf3c26e6b314ae850f15c306739b939a2ebcfbabc1"
+    },
+    {
+      "file": "packager-normal03.log",
+      "sha256": "d4ffddbdc2f8aba3a3c1e38b5ebb54bf147276e92e48031dc73282414332f150"
+    },
+    {
+      "file": "packager-normal04.log",
+      "sha256": "d47652a48da6dfb11024f10008aee6261a33c5444688cd3c6f121d97aeef0729"
+    },
+    {
+      "file": "packager-normal05.log",
+      "sha256": "f213d9dc4b5d96f53761f0424bc3b1713f01b4d677e90495693274149475ecb7"
+    },
+    {
+      "file": "packager-output-identity-red.log",
+      "sha256": "67254cced413dd2b129d8374294519f319b4a9c1e5d4397f49ee3fcc58ecf3c7"
+    },
+    {
+      "file": "packager-race01.log",
+      "sha256": "dcc71f6c1f2e029500f3f67e5d958ccaca354e8598a93a27c312c895ffb99091"
+    },
+    {
+      "file": "packager-race02.log",
+      "sha256": "74799ba4829e4debda877ba663311271e4f5547c94b3c6a1753cb7e3ceaa9869"
+    },
+    {
+      "file": "packager-red.log",
+      "sha256": "784064079aebeddda87a096f5a08479ef0ff730d05676010e2c1465963e28c2d"
+    },
+    {
+      "file": "packager-spec.log",
+      "sha256": "6e620cb371acff29f701ad7ab7838c24a5b7235778c5ab3cee701acb91432622"
+    },
+    {
+      "file": "packager-vet-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packager-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packager-windows-compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "limitations": [
+    "No DB/API/approval authorization verified by this package lane",
+    "No privileged mount injection or malicious root/same-UID defense claimed",
+    "Linux normal executed; Linux race not run; Windows compiled fail-closed stub only",
+    "No real Provider, account, network or production operation"
+  ]
+}

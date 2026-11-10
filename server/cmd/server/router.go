@@ -19,6 +19,7 @@ import (
 	"github.com/redis/go-redis/v9"
 
 	"github.com/multica-ai/multica/server/internal/analytics"
+	"github.com/multica-ai/multica/server/internal/artifact"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/cloudruntime"
 	"github.com/multica-ai/multica/server/internal/daemonws"
@@ -428,6 +429,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	origins := allowedOrigins()
 
 	signupConfig := handler.Config{
+		ArtifactConfig:                artifact.Config{StagingRoot: strings.TrimSpace(os.Getenv("MULTICA_ARTIFACT_STAGING_ROOT")), OutputRoot: strings.TrimSpace(os.Getenv("MULTICA_ARTIFACT_OUTPUT_ROOT")), Identity: strings.TrimSpace(os.Getenv("MULTICA_ARTIFACT_CONFIG_ID"))},
 		KnowledgeContextEnabled:       os.Getenv("MULTICA_KNOWLEDGE_CONTEXT_ENABLED") == "true",
 		ManagedInstallationsEnabled:   os.Getenv("MULTICA_MANAGED_INSTALLATIONS_ENABLED") == "true",
 		DeploymentID:                  auth.ManagedDeploymentID(),
@@ -2369,8 +2371,11 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 			r.Route("/api/agent-approvals", func(r chi.Router) {
 				r.Get("/", h.ListAgentApprovals)
 				r.Post("/", h.CreateAgentApproval)
+				r.Post("/artifact-package", h.CreateArtifactPackage)
 				r.Route("/{approvalId}", func(r chi.Router) {
 					r.Get("/", h.GetAgentApproval)
+					r.Get("/artifact-package", h.GetArtifactPackage)
+					r.Post("/artifact-package/execution", h.ExecuteArtifactPackage)
 					r.With(handler.RequireHumanActor).Post("/decision", h.DecideAgentApproval)
 					r.Post("/execution", h.RecordAgentApprovalExecution)
 					r.Post("/cancel", h.CancelAgentApproval)

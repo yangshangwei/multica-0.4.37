@@ -289,6 +289,34 @@ func (q *Queries) ListAgentApprovalRequestsByAgent(ctx context.Context, arg List
 	return items, nil
 }
 
+const lockAgentApprovalRequest = `-- name: LockAgentApprovalRequest :one
+SELECT id, workspace_id, agent_id, task_id, issue_id, risk_class, summary, plan, status, decided_by, decided_at, decision_note, executed_at, execution_note, created_at, updated_at FROM agent_approval_request WHERE id = $1 FOR UPDATE NOWAIT
+`
+
+func (q *Queries) LockAgentApprovalRequest(ctx context.Context, id pgtype.UUID) (AgentApprovalRequest, error) {
+	row := q.db.QueryRow(ctx, lockAgentApprovalRequest, id)
+	var i AgentApprovalRequest
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.AgentID,
+		&i.TaskID,
+		&i.IssueID,
+		&i.RiskClass,
+		&i.Summary,
+		&i.Plan,
+		&i.Status,
+		&i.DecidedBy,
+		&i.DecidedAt,
+		&i.DecisionNote,
+		&i.ExecutedAt,
+		&i.ExecutionNote,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
 const markAgentApprovalRequestExecuted = `-- name: MarkAgentApprovalRequestExecuted :one
 UPDATE agent_approval_request SET
     status = 'executed',

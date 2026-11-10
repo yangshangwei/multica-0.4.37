@@ -1,0 +1,44 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-json",
+    "./internal/handler",
+    "-run",
+    "^TestControlledArtifact(ActualAdmissionBeforeRevocation|CreateBeforeWorkspaceDelete)$",
+    "-count=1"
+  ],
+  "environment": "handler",
+  "database": "multica_artifact_20261110_handler",
+  "exit_code": 0,
+  "seconds": 24.329,
+  "finished_at": "2026-11-10T08:03:48.113168+08:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/api-admission-race-02.log",
+  "log_sha256": "e032c836253ba16f5258d6b32c546963d42ffdccb667463f17c3e3f634a63804",
+  "named_test_counts": {
+    "pass": 11,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactActualAdmissionBeforeRevocation/distinct_initiator_membership",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactActualAdmissionBeforeRevocation/current_claimer_membership",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactActualAdmissionBeforeRevocation/originator_membership",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactActualAdmissionBeforeRevocation/runtime_owner_membership",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactActualAdmissionBeforeRevocation/approver_membership",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactActualAdmissionBeforeRevocation/password",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactActualAdmissionBeforeRevocation/pat",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactActualAdmissionBeforeRevocation/task_token",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactActualAdmissionBeforeRevocation/workspace",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactActualAdmissionBeforeRevocation",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactCreateBeforeWorkspaceDelete"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "agent_cli_guard": true
+}

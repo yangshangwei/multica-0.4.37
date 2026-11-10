@@ -1,0 +1,36 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "./internal/migrations",
+    "-run",
+    "^TestArtifactExecution|^TestMigrationFilesHaveMatchingDirections$|^TestMigrationNumericPrefixesStayUniqueAfterLegacySet$|^TestNewMigrationPrefixesStartAfterLegacyRange$",
+    "-count=1"
+  ],
+  "environment": "migrations",
+  "database": "multica_artifact_20261110_migrations",
+  "exit_code": 0,
+  "seconds": 2.104,
+  "finished_at": "2026-11-10T07:45:48.603622+08:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/db-migration-lint-01.log",
+  "log_sha256": "7e5066beecdecd2018758a8b1c138d05f1d2caba36559f42dfcd9f665e6f250f",
+  "named_test_counts": {
+    "pass": 4,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "github.com/multica-ai/multica/server/internal/migrations:TestArtifactExecutionMigrationFilesAreFailClosed",
+      "github.com/multica-ai/multica/server/internal/migrations:TestMigrationFilesHaveMatchingDirections",
+      "github.com/multica-ai/multica/server/internal/migrations:TestMigrationNumericPrefixesStayUniqueAfterLegacySet",
+      "github.com/multica-ai/multica/server/internal/migrations:TestNewMigrationPrefixesStartAfterLegacyRange"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "agent_cli_guard": true
+}

@@ -14,6 +14,7 @@ import (
 )
 
 type PasswordSession struct {
+	ExpiresAt    time.Time
 	UserID       string
 	Version      int64
 	Kind         string
@@ -91,6 +92,9 @@ func CheckPasswordVersion(ctx context.Context, q *db.Queries, userID string, ver
 func CheckPasswordJWT(ctx context.Context, q *db.Queries, claims jwt.MapClaims) (PasswordSession, error) {
 	id, _ := claims["sub"].(string)
 	s := PasswordSession{UserID: id, Version: ClaimVersion(claims), Kind: "jwt"}
+	if expiry, err := claims.GetExpirationTime(); err == nil && expiry != nil {
+		s.ExpiresAt = expiry.Time
+	}
 	uid, err := util.ParseUUID(id)
 	if err != nil {
 		return s, ErrPasswordSession

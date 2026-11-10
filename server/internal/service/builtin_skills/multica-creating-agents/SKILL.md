@@ -230,6 +230,16 @@ every `/api/tokens` route — create, list, renew and revoke — so an agent can
 mint a JWT or personal access token in its owner's name and re-enter as a human
 caller. A recorded approval does not sandbox the daemon host.
 
+Controlled artifact packaging is a separate, default-disabled backend API at
+`POST /api/agent-approvals/artifact-package`. It supports only operator-staged
+`local-synthetic` tar packaging. A human decision binds the returned
+`spec_digest`; execution uses the dedicated artifact-package endpoint and a
+one-time durable claim. Ordinary `multica approval executed` cannot self-report
+success for a controlled request. Unknown results must never be automatically
+rerun. This path does not authorize deployment, shell commands, publication or
+production access; the existing CLI and approval UI do not implement its typed
+specification flow.
+
 ## Field contracts
 
 For an HTTP instruction update that must preserve concurrent edits, first read

@@ -75,7 +75,7 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 				if s, ok := passwordAuthenticate(w, r, queries); ok {
 					r = r.WithContext(auth.WithPasswordSession(r.Context(), s))
 					principal := auth.AuthenticatedPrincipal{
-						UserID: s.UserID, Kind: auth.CredentialKind(s.Kind), Restricted: s.Setup || s.Change,
+						UserID: s.UserID, Kind: auth.CredentialKind(s.Kind), Restricted: s.Setup || s.Change, ExpiresAt: s.ExpiresAt,
 					}
 					if s.Kind == "pat" {
 						token, _ := extractToken(r)
@@ -297,7 +297,11 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 				r.Header.Set("X-User-Email", email)
 			}
 
-			r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{UserID: sub, Kind: auth.CredentialJWT})
+			principal := auth.AuthenticatedPrincipal{UserID: sub, Kind: auth.CredentialJWT}
+			if expiry, err := claims.GetExpirationTime(); err == nil && expiry != nil {
+				principal.ExpiresAt = expiry.Time
+			}
+			r = withAuthenticatedRequestPrincipal(r, principal)
 			next.ServeHTTP(w, r)
 		})
 	}

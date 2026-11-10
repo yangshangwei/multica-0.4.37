@@ -20,6 +20,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/analytics"
+	"github.com/multica-ai/multica/server/internal/artifact"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/changelog"
 	"github.com/multica-ai/multica/server/internal/cloudruntime"
@@ -67,6 +68,7 @@ type dbExecutor interface {
 }
 
 type Config struct {
+	ArtifactConfig artifact.Config
 	// KnowledgeContextEnabled opts in to guarded private knowledge execution.
 	// Human candidate management remains separate; the zero value is closed.
 	KnowledgeContextEnabled bool
@@ -243,6 +245,7 @@ type DaemonPendingWorkNotifier interface {
 }
 
 type Handler struct {
+	ArtifactPackager       artifactExecutor
 	AdminHealthSnapshot    func(context.Context) AdminHealthSnapshot
 	AdminReadConfig        AdminReadConfig
 	PasswordLimiter        *auth.PasswordLimiter
@@ -590,7 +593,12 @@ func New(queries *db.Queries, txStarter txStarter, hub *realtime.Hub, bus *event
 	}
 	taskSvc.ResourcePublisher = resourcePublisher
 	mcpCatalog.Publisher = resourcePublisher
+	var packager artifactExecutor
+	if configured, err := artifact.New(cfg.ArtifactConfig); err == nil {
+		packager = configured
+	}
 	h := &Handler{
+		ArtifactPackager:             packager,
 		Queries:                      queries,
 		DB:                           executor,
 		TxStarter:                    txStarter,

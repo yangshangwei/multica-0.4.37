@@ -1,0 +1,34 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "./internal/handler",
+    "-run",
+    "^TestControlledArtifactTaskCancellation",
+    "-count=1"
+  ],
+  "environment": "handler",
+  "database": "multica_artifact_20261110_handler",
+  "exit_code": 0,
+  "seconds": 13.539,
+  "finished_at": "2026-11-10T08:05:14.385181+08:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/cancel-red-01.log",
+  "log_sha256": "e01cd8bd21b1e60e8852723b073b596c8e04662ec3e0bb7fb2ea8aa61618c616",
+  "named_test_counts": {
+    "pass": 2,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactTaskCancellationBeforeClaim",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactTaskCancellationAfterClaim"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "agent_cli_guard": true
+}

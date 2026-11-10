@@ -1,0 +1,33 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "./internal/migrations",
+    "-run",
+    "^TestArtifactExecutionMigrationFilesAreFailClosed$",
+    "-count=1"
+  ],
+  "environment": "migrations",
+  "database": "multica_artifact_20261110_migrations",
+  "exit_code": 0,
+  "seconds": 1.285,
+  "finished_at": "2026-11-10T07:41:26.485201+08:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/db-static-01.log",
+  "log_sha256": "c929ea9e4eb7766903ecfa46feae4e30c9705ded715b2eb878020230848afaf2",
+  "named_test_counts": {
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "github.com/multica-ai/multica/server/internal/migrations:TestArtifactExecutionMigrationFilesAreFailClosed"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "agent_cli_guard": true
+}

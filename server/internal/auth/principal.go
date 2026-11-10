@@ -1,6 +1,9 @@
 package auth
 
-import "context"
+import (
+	"context"
+	"time"
+)
 
 // CredentialKind records the credential actually verified by the server. It
 // must never be inferred from a client-supplied actor header or missing fields.
@@ -14,6 +17,7 @@ const (
 )
 
 type AuthenticatedPrincipal struct {
+	ExpiresAt  time.Time
 	UserID     string
 	Kind       CredentialKind
 	Restricted bool

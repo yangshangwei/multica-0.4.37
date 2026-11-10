@@ -338,10 +338,11 @@ deleted_draft_restores AS (
 deleted_agent_builder_drafts AS (
     DELETE FROM agent_builder_draft WHERE workspace_id = $1
 ),
--- Approval requests are workspace-keyed with no FK of their own, so teardown
--- has to name them explicitly or they outlive the workspace they audited.
+-- Bound approvals retain the human decision beside durable execution evidence.
+-- Match approval identity alone: a damaged execution workspace must not erase it.
 deleted_agent_approvals AS (
-    DELETE FROM agent_approval_request WHERE workspace_id = $1
+    DELETE FROM agent_approval_request a WHERE workspace_id = $1
+      AND NOT EXISTS (SELECT 1 FROM agent_artifact_execution e WHERE e.approval_id = a.id)
 ),
 deleted_comment_reactions AS (
     DELETE FROM comment_reaction WHERE workspace_id = $1

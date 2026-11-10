@@ -1,0 +1,42 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-json",
+    "./cmd/migrate",
+    "-run",
+    "^TestArtifactExecution",
+    "-count=1"
+  ],
+  "environment": "migrations",
+  "database": "multica_artifact_20261110_migrations",
+  "exit_code": 0,
+  "seconds": 7.487,
+  "finished_at": "2026-11-10T07:43:47.426122+08:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/db-race-01.log",
+  "log_sha256": "d2c91d69ab751211eefb9aff495dfeaa46d204c076d236b95aaa6f12f1ec0e33",
+  "named_test_counts": {
+    "pass": 9,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionMigrationsPreserveEvidenceAndRollbackOrder",
+      "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionSchemaReadinessRejectsWrongIndex",
+      "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionClaimAndReceiptCAS/succeeded",
+      "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionClaimAndReceiptCAS/failed",
+      "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionClaimAndReceiptCAS/unknown",
+      "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionClaimAndReceiptCAS",
+      "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionConcurrentClaimAndIdempotency",
+      "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionRollbackBusyAndTerminalEvidence",
+      "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionConstraintsRejectIncompleteAndInvalidStates"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "agent_cli_guard": true
+}

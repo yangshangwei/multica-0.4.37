@@ -1,0 +1,30 @@
+{
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "-i",
+    "--name",
+    "multica-artifact-pure-20261110-dd970f",
+    "--label",
+    "multica.task=controlled-artifact-20261110",
+    "--platform",
+    "linux/amd64",
+    "--network",
+    "none",
+    "--read-only",
+    "--memory",
+    "256m",
+    "--cpus",
+    "1",
+    "--tmpfs",
+    "/tmp:rw,exec,nosuid,nodev,mode=1777",
+    "--entrypoint",
+    "/bin/sh",
+    "pgvector/pgvector:pg17",
+    "-c",
+    "cat > /tmp/artifact.test && chmod 700 /tmp/artifact.test && exec /tmp/artifact.test -test.v -test.count=1"
+  ],
+  "binary_sha256": "167f30bbf0d87a047a91976459e603105632355b586b01939a3ac341d2cd074a",
+  "exit_code": 0
+}
