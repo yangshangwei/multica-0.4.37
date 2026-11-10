@@ -945,3 +945,29 @@ Archived 11-01-branch-e2e-acceptance at the user's request. Preserved the retain
 ### Next Steps
 
 - 提示/强制门禁覆盖普通、批量、创建done、GitHub及独立协作全部入口；skip权限另行收敛。
+
+
+## Session 151: 完成前证据提示通过独立验收，完整门禁继续开放
+<!-- trellis-session: v=2 fp=66f529eb3e28298f -->
+
+**Date**: 2026-11-10
+**Task**: 完成前证据提示通过独立验收，完整门禁继续开放
+**Branch**: `codex/delivery-completion-hints-20261110`
+
+### Summary
+
+显式human-only普通任务提示API复用现有政策/原评估恢复，custom done及当前权限复核；全部响应非完成许可。冻结13文件；handler普通/race各325、真实路由各103、合同50、build/vet/sqlc/format及独审PASS。4次失败保留，10库日志保留、专属PG零连接停止。无UI/CLI、skip或任何完成阻断；六业务及历史模型预算/停止规则不变，调用0。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `ca0c8efd3` | feat(delivery): explain evidence drift before human completion |
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 完整强制门禁先收敛跨主体证据、skip、create-done、已done编辑/移项目、协作R38及批量逐项语义；已核对全writer清单。

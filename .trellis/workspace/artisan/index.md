@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-3.md`
-- **Total Sessions**: 150
+- **Total Sessions**: 151
 - **Last Active**: 2026-11-10
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-3.md` | ~947 | Active |
+| `journal-3.md` | ~973 | Active |
 | `journal-2.md` | ~1968 | Archived |
 | `journal-1.md` | ~2037 | Archived |
 <!-- @@@/auto:active-documents -->
@@ -31,6 +31,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 151 | 2026-11-10 | 完成前证据提示通过独立验收，完整门禁继续开放 | `ca0c8efd3` | `codex/delivery-completion-hints-20261110` |
 | 150 | 2026-11-10 | 项目政策与持久评估通过独立验收 | `4ec66e93c` | `codex/delivery-policy-20261110` |
 | 149 | 2026-11-10 | 持久委派回执与离线观察通过独立验收 | `f4782b863` | `codex/durable-receipts-20261110` |
 | 148 | 2026-11-10 | M1交付证据观察增量通过独立验收 | `45af89016` | `codex/delivery-evidence-20261110` |
