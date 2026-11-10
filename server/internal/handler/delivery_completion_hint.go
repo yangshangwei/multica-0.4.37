@@ -149,7 +149,7 @@ func (h *Handler) deliveryCompletionHintInTx(r *http.Request, tx pgx.Tx, q *db.Q
 		}
 		id := uuidToString(project.ID)
 		out.ProjectID = &id
-		policy, err = currentDeliveryPolicy(ctx, q, issue.WorkspaceID, issue.ProjectID)
+		policy, err = currentDeliveryPolicy(ctx, tx, issue.WorkspaceID, issue.ProjectID)
 		if err != nil {
 			return out, err
 		}

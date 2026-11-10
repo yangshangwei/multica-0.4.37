@@ -4,8 +4,9 @@
 
 The `artifact-tar-v1` policy packages an operator-staged local synthetic release
 candidate. `internal/artifact` owns pure canonical specifications and filesystem
-packaging; `handler/agent_artifact.go` owns current authorization and transactional
-admission. It is a backend API contract, not a general shell sandbox, deployment
+packaging; `service/artifact_authority.go` owns the shared current-authorization
+checks, while `handler/agent_artifact.go` owns HTTP admission and execution
+transactions. It is a backend API contract, not a general shell sandbox, deployment
 adapter, artifact registry or new approval UI. Existing generic approvals remain
 self-reported and cannot be converted into controlled execution.
 

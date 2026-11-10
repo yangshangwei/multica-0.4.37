@@ -126,3 +126,17 @@ The stateless endpoint above still does not write an evaluation ledger.
 [Project delivery policy and durable evaluations](./delivery-policy-evaluations.md)
 adds separate human-only off/observe policy and immutable evaluation endpoints
 using this observer. That increment also leaves all completion writers ungated.
+
+## Shared transaction-local implementation
+
+`service/delivery_evidence.go` owns the single observation and canonical receipt
+algorithm. The handler retains strict request parsing, authenticated header
+checks and response/transaction ownership. `EvaluateDeliveryEvidenceInTx` takes
+the caller's `pgx.Tx` and explicit `ArtifactAccess`; it creates queries from that
+transaction and never begins, commits, rolls back or retries it.
+
+`service/artifact_authority.go` accepts explicit verified credential snapshots
+for current authority checks. Credential metadata is excluded from public JSON.
+Do not switch authentication contexts to impersonate another human or pair a
+borrowed transaction with queries from a pool. This extraction alone installs
+no completion interceptor and does not make historical observations permits.

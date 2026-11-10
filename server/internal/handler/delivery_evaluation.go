@@ -162,7 +162,7 @@ func (h *Handler) deliveryEvaluationInTx(r *http.Request, tx pgx.Tx, q *db.Queri
 	if !issue.ProjectID.Valid {
 		return out, artifactFailure{409, "delivery_project_required"}
 	}
-	policy, err := currentDeliveryPolicy(ctx, q, issue.WorkspaceID, issue.ProjectID)
+	policy, err := currentDeliveryPolicy(ctx, tx, issue.WorkspaceID, issue.ProjectID)
 	if err != nil {
 		return out, err
 	}
@@ -217,7 +217,7 @@ func (h *Handler) recoverDeliveryEvaluation(r *http.Request, tx pgx.Tx, q *db.Qu
 		liveRequest.ProjectID = &id
 		liveRequest.ProjectRevision = &revision
 		var err error
-		policy, err = currentDeliveryPolicy(r.Context(), q, issue.WorkspaceID, issue.ProjectID)
+		policy, err = currentDeliveryPolicy(r.Context(), tx, issue.WorkspaceID, issue.ProjectID)
 		if err != nil {
 			return out, err
 		}

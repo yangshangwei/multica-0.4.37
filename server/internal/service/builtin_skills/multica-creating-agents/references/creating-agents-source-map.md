@@ -87,9 +87,9 @@ go test ./internal/service -run TestBuiltinSkillsConformToTemplate
 | Execution requires approval AND operator | `agent_approval.go` `RecordAgentApprovalExecution` | `MarkAgentApprovalRequestExecuted` matches only `status='approved'`; the level check rejects a contributor holding an approval | `go test ./internal/handler -run TestRecordExecution` |
 | Identity comes from the token | `agent_approval.go` `CreateAgentApproval` | An agent actor's `agent_id` is taken from the task token, never from the body | `go test ./internal/handler -run TestCreateAgentApproval_AgentIdentityComesFromTheToken` |
 | CLI has no approve command | `cmd_approval.go` | `request`, `list`, `get`, `executed`, `cancel` only — an approve command would fail by design for every caller holding a task token | `multica approval --help` |
-| Controlled package scope is frozen before approval | `handler/agent_artifact.go`, `internal/artifact/spec.go` | Dedicated typed local-synthetic request creates pending approval and unclaimed execution atomically; human decision requires exact spec digest | `go test ./internal/handler -run TestControlledArtifact` with an isolated migrated database |
+| Controlled package scope is frozen before approval | `handler/agent_artifact.go`, `service/artifact_authority.go`, `internal/artifact/spec.go` | Dedicated typed local-synthetic request creates pending approval and unclaimed execution atomically; human decision requires exact spec digest | `go test ./internal/handler -run TestControlledArtifact` with an isolated migrated database |
 | Controlled side effects are never replayed | `handler/agent_artifact.go`, `internal/artifact/packager.go` | Durable unknown claim precedes one in-process packaging invocation; old self-report refuses bound approvals; failure/unknown never auto-run again | `go test ./internal/artifact`; isolated handler and router controlled-artifact suites |
-| Delivery evidence observation is not an execution grant | `handler/delivery_evidence.go`, `cmd/server/router.go` | Human-only fixed-policy read snapshot checks current lifecycle versions, original producer authority, canonical receipt and observed PR candidate; missing/unknown evidence never passes; no done mutation | Isolated `TestDeliveryEvidence` handler and actual router suites |
+| Delivery evidence observation is not an execution grant | `handler/delivery_evidence.go`, `service/delivery_evidence.go`, `service/artifact_authority.go`, `cmd/server/router.go` | Human-only fixed-policy read snapshot checks current lifecycle versions, original producer authority, canonical receipt and observed PR candidate; missing/unknown evidence never passes; no done mutation | Isolated `TestDeliveryEvidence` handler and actual router suites |
 
 ## Copy command — `server/cmd/multica/cmd_agent_copy.go`
 
@@ -254,7 +254,9 @@ new key; clients must never silently generate one after uncertainty. Deleted
 issue/workspace denies public recovery while history remains retained.
 
 Sources: `handler/delivery_policy.go`, `handler/delivery_evaluation.go`,
-`handler/delivery_evidence.go`, `pkg/db/queries/delivery_policy.sql`, migrations776–780.
+`handler/delivery_evidence.go`, `service/delivery_evidence.go`,
+`service/delivery_policy.go`, `service/artifact_authority.go`,
+`pkg/db/queries/delivery_policy.sql`, migrations776–780.
 Tests: owned `TestDeliveryPolicy` / `TestDeliveryEvaluation` handler and real router
 suites, real migrations and static migration contract. The original stateless
 `/evaluate` route stays ledger-free. These policy/evaluation routes do not

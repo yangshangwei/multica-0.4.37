@@ -4,21 +4,20 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"math"
 	"net/http"
 	"strings"
-	"time"
 	"unicode/utf8"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/auth"
+	"github.com/multica-ai/multica/server/internal/service"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
-const deliveryPolicyStage = "done"
+const deliveryPolicyStage = service.DeliveryPolicyStage
 
 type deliveryPolicyRequest struct {
 	ExpectedRevision int64  `json:"expected_policy_revision"`
@@ -28,16 +27,7 @@ type deliveryPolicyRequest struct {
 	Reason           string `json:"reason"`
 }
 
-type deliveryPolicyResponse struct {
-	ProjectID     string     `json:"project_id"`
-	Revision      int64      `json:"revision"`
-	Mode          string     `json:"mode"`
-	PolicyVersion string     `json:"policy_version"`
-	Stage         string     `json:"stage"`
-	Reason        string     `json:"reason"`
-	CreatedBy     *string    `json:"created_by"`
-	CreatedAt     *time.Time `json:"created_at"`
-}
+type deliveryPolicyResponse = service.DeliveryPolicy
 
 func decodeDeliveryPolicy(w http.ResponseWriter, r *http.Request) (deliveryPolicyRequest, bool) {
 	var req deliveryPolicyRequest
@@ -67,35 +57,16 @@ func (h *Handler) deliveryPolicyTx(ctx context.Context) (pgx.Tx, *db.Queries, er
 	if err != nil {
 		return nil, nil, err
 	}
-	ready, err := q.DeliveryPolicySchemaReady(ctx)
-	if err != nil || !ready.Valid || !ready.Bool {
+	if err = service.CheckDeliveryPolicySchema(ctx, tx); err != nil {
 		tx.Rollback(ctx)
-		if err == nil {
-			err = artifactFailure{503, "delivery_policy_schema_unavailable"}
-		}
-		return nil, nil, err
+		return nil, nil, artifactCoreError(err)
 	}
 	return tx, q, nil
 }
 
-func currentDeliveryPolicy(ctx context.Context, q *db.Queries, ws, project pgtype.UUID) (deliveryPolicyResponse, error) {
-	out := deliveryPolicyResponse{ProjectID: uuidToString(project), Mode: "off", PolicyVersion: deliveryEvidencePolicy, Stage: deliveryPolicyStage}
-	row, err := q.GetDeliveryPolicy(ctx, db.GetDeliveryPolicyParams{WorkspaceID: ws, ProjectID: project})
-	if errors.Is(err, pgx.ErrNoRows) {
-		return out, nil
-	}
-	if err != nil {
-		return out, err
-	}
-	out.Revision = row.Revision
-	out.Mode = row.Mode
-	out.PolicyVersion = row.PolicyVersion
-	out.Stage = row.Stage
-	out.Reason = row.Reason
-	actor, at := uuidToString(row.CreatedBy), row.CreatedAt.Time.UTC()
-	out.CreatedBy = &actor
-	out.CreatedAt = &at
-	return out, nil
+func currentDeliveryPolicy(ctx context.Context, tx pgx.Tx, ws, project pgtype.UUID) (deliveryPolicyResponse, error) {
+	policy, err := service.CurrentDeliveryPolicyInTx(ctx, tx, ws, project)
+	return policy, artifactCoreError(err)
 }
 
 func (h *Handler) GetDeliveryPolicy(w http.ResponseWriter, r *http.Request) {
@@ -168,7 +139,7 @@ func (h *Handler) deliveryPolicyInTx(r *http.Request, tx pgx.Tx, q *db.Queries, 
 	if err != nil {
 		return out, err
 	}
-	out, err = currentDeliveryPolicy(ctx, q, ws, projectID)
+	out, err = currentDeliveryPolicy(ctx, tx, ws, projectID)
 	if err != nil {
 		return out, err
 	}
@@ -180,7 +151,7 @@ func (h *Handler) deliveryPolicyInTx(r *http.Request, tx pgx.Tx, q *db.Queries, 
 		if err != nil {
 			return out, err
 		}
-		out, err = currentDeliveryPolicy(ctx, q, ws, projectID)
+		out, err = currentDeliveryPolicy(ctx, tx, ws, projectID)
 		if err != nil {
 			return out, err
 		}

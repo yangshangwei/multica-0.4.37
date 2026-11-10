@@ -136,3 +136,11 @@ It does not transfer evaluator identity or intercept any completion writer.
 Policy off suppresses this explicit hint's evidence consumption; original-key
 historical recovery through the existing evaluation API remains authorized and
 returns its existing stale applicability. No shared audit or skip was added.
+
+## Shared policy and observation core
+
+`service/delivery_policy.go` owns the transaction-local current-policy read and
+exact existing schema check. Complete validators accept only the borrowed
+`pgx.Tx` and create their own transaction queries. HTTP policy/immutable private
+evaluation handling remains in handler and delegates observation to the single
+service implementation. This extraction adds no mode, schema or permission.

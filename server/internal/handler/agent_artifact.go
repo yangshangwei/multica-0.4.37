@@ -9,7 +9,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"sort"
 	"strings"
 	"time"
 	"unicode/utf8"
@@ -20,7 +19,6 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/artifact"
 	"github.com/multica-ai/multica/server/internal/auth"
-	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -61,21 +59,40 @@ func writeArtifactError(w http.ResponseWriter, err error) {
 }
 func artifactPrincipal(r *http.Request) (auth.AuthenticatedPrincipal, string, string, error) {
 	p, ok := auth.AuthenticatedPrincipalFromContext(r.Context())
-	if !ok || p.Restricted {
+	if !ok {
 		return p, "", "", artifactDeny()
 	}
-	if p.Kind == auth.CredentialTask {
-		tok, ok := auth.VerifiedTaskTokenFromContext(r.Context())
-		if !ok || len(tok.ApiCapability) > 0 || uuidToString(tok.UserID) != p.UserID {
-			return p, "", "", artifactDeny()
-		}
-		return p, "agent", uuidToString(tok.AgentID), nil
+	kind, id, err := artifactCredentialSnapshot(r.Context(), p).Actor()
+	if err != nil {
+		return p, "", "", artifactCoreError(err)
 	}
-	if p.AgentActor || (p.Kind != auth.CredentialJWT && p.Kind != auth.CredentialPAT) || r.Header.Get("X-Agent-ID") != "" || r.Header.Get("X-Task-ID") != "" {
+	if kind == "human" && (r.Header.Get("X-Agent-ID") != "" || r.Header.Get("X-Task-ID") != "") {
 		return p, "", "", artifactDeny()
 	}
-	return p, "human", p.UserID, nil
+	return p, kind, id, nil
 }
+
+func artifactCredentialSnapshot(ctx context.Context, p auth.AuthenticatedPrincipal) service.ArtifactCredentialSnapshot {
+	out := service.ArtifactCredentialSnapshot{Principal: p}
+	if token, ok := auth.VerifiedTaskTokenFromContext(ctx); ok {
+		out.TaskToken = &token
+	}
+	if session, ok := auth.PasswordSessionFromContext(ctx); ok {
+		out.PasswordSession = &session
+	}
+	return out
+}
+
+// Keep the handler's established error type for its existing consumers, including
+// durable delegation, while the one shared core stays transport-independent.
+func artifactCoreError(err error) error {
+	var failure service.ArtifactError
+	if errors.As(err, &failure) {
+		return artifactFailure{failure.Status, failure.Code}
+	}
+	return err
+}
+
 func (h *Handler) artifactTx(ctx context.Context) (pgx.Tx, *db.Queries, error) {
 	if h.TxStarter == nil {
 		return nil, nil, errors.New("transaction unavailable")
@@ -84,276 +101,34 @@ func (h *Handler) artifactTx(ctx context.Context) (pgx.Tx, *db.Queries, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	if _, err = tx.Exec(ctx, "SET LOCAL lock_timeout='250ms'"); err != nil {
-		tx.Rollback(ctx)
-		return nil, nil, err
-	}
 	q := db.New(tx)
-	ready, err := q.ArtifactExecutionSchemaReady(ctx)
-	if err != nil || !ready {
+	if err = service.PrepareArtifactTransaction(ctx, tx); err != nil {
 		tx.Rollback(ctx)
-		if err == nil {
-			err = errors.New("schema unavailable")
-		}
-		return nil, nil, err
+		return nil, nil, artifactCoreError(err)
 	}
 	return tx, q, nil
 }
 func artifactFence(ctx context.Context, q *db.Queries, ws pgtype.UUID) error {
-	rows, err := q.TryLockCollaborationAuthorityWorkspaces(ctx, []pgtype.UUID{ws})
-	if err != nil {
-		return err
-	}
-	if len(rows) != 1 {
-		return pgx.ErrNoRows
-	}
-	return nil
+	return artifactCoreError(service.LockArtifactWorkspace(ctx, q, ws))
 }
 
-// Credential checks consume the originally verified identity under live locks.
 func artifactCredential(ctx context.Context, q *db.Queries, tx pgx.Tx, p auth.AuthenticatedPrincipal) error {
-	now, err := q.ArtifactExecutionDatabaseTime(ctx)
-	if err != nil {
-		return err
-	}
-	switch p.Kind {
-	case auth.CredentialJWT:
-		if p.ExpiresAt.IsZero() || !now.Time.Before(p.ExpiresAt) {
-			return artifactDeny()
-		}
-	case auth.CredentialPAT:
-		if p.PATTokenHash == "" {
-			return artifactDeny()
-		}
-		if _, err = q.LockArtifactPAT(ctx, db.LockArtifactPATParams{TokenHash: p.PATTokenHash, UserID: parseUUID(p.UserID)}); err != nil {
-			return err
-		}
-	case auth.CredentialTask:
-		token, ok := auth.VerifiedTaskTokenFromContext(ctx)
-		if !ok {
-			return artifactDeny()
-		}
-		if _, err = q.LockTaskCapabilityToken(ctx, token.ID); err != nil {
-			return err
-		}
-		live, e := q.GetTaskTokenByHash(ctx, token.TokenHash)
-		if e != nil {
-			return e
-		}
-		if live.ID != token.ID || live.TaskID != token.TaskID || live.AgentID != token.AgentID || live.UserID != token.UserID || live.WorkspaceID != token.WorkspaceID || live.AuthVersion != token.AuthVersion || live.InstallationBindingID != token.InstallationBindingID || live.InstallationBindingEpoch != token.InstallationBindingEpoch || !bytes.Equal(live.ApiCapability, token.ApiCapability) || !now.Time.Before(live.ExpiresAt.Time) {
-			return artifactDeny()
-		}
-	default:
-		return artifactDeny()
-	}
-	if s, ok := auth.PasswordSessionFromContext(ctx); ok {
-		if s.UserID != p.UserID || s.Setup || s.Change {
-			return artifactDeny()
-		}
-		if _, err = q.LockArtifactPasswordCredential(ctx, parseUUID(s.UserID)); err != nil {
-			return err
-		}
-		if s.BindingID != "" {
-			acquired, e := q.TryLockCollaborationAuthorityNamespace(ctx, "daemon:"+s.WorkspaceID+":"+s.DaemonID)
-			if e != nil {
-				return e
-			}
-			if !acquired {
-				return artifactFailure{409, "artifact_authority_busy"}
-			}
-			binding, e := q.TryLockCollaborationAuthorityBinding(ctx, parseUUID(s.BindingID))
-			if e != nil {
-				return e
-			}
-			if _, e = q.TryLockCollaborationAuthorityInstallation(ctx, binding.InstallationID); e != nil {
-				return e
-			}
-			var id pgtype.UUID
-			if e = tx.QueryRow(ctx, `SELECT ow.organization_id FROM organization_workspace ow JOIN organization o ON o.id=ow.organization_id WHERE ow.workspace_id=$1 FOR SHARE OF ow,o NOWAIT`, binding.WorkspaceID).Scan(&id); e != nil {
-				return e
-			}
-			if e = auth.CheckManagedBinding(ctx, q, s); e != nil {
-				return e
-			}
-		}
-		_, err = auth.CheckPasswordVersion(ctx, q, s.UserID, s.Version)
-		return err
-	}
-	if auth.PasswordMode() {
-		return artifactDeny()
-	}
-	return nil
+	return artifactCoreError(service.CheckArtifactCredentialInTx(ctx, tx, artifactCredentialSnapshot(ctx, p)))
 }
 
 func artifactUsers(ctx context.Context, q *db.Queries, ws pgtype.UUID, ids ...string) (map[string]db.Member, error) {
-	seen := map[string]bool{}
-	var sorted []string
-	for _, id := range ids {
-		if id != "" && !seen[id] {
-			if _, err := util.ParseUUID(id); err != nil {
-				return nil, artifactDeny()
-			}
-			seen[id] = true
-			sorted = append(sorted, id)
-		}
-	}
-	sort.Strings(sorted)
-	uuids := make([]pgtype.UUID, len(sorted))
-	for i, id := range sorted {
-		uuids[i] = parseUUID(id)
-	}
-	users, err := q.LockArtifactUsers(ctx, uuids)
-	if err != nil {
-		return nil, err
-	}
-	if len(users) != len(uuids) {
-		return nil, artifactDeny()
-	}
-	for _, u := range users {
-		if u.DisabledAt.Valid || auth.IsTemporarilyDisabledUser(uuidToString(u.ID), u.Email.String) {
-			return nil, artifactDeny()
-		}
-	}
-	members, err := q.LockArtifactMembers(ctx, db.LockArtifactMembersParams{WorkspaceID: ws, UserIds: uuids})
-	if err != nil {
-		return nil, err
-	}
-	if len(members) != len(uuids) {
-		return nil, artifactDeny()
-	}
-	out := map[string]db.Member{}
-	for _, m := range members {
-		out[uuidToString(m.UserID)] = m
-	}
-	return out, nil
-}
-func artifactManager(agent db.Agent, id string, members map[string]db.Member) bool {
-	m, ok := members[id]
-	return ok && (uuidToString(agent.OwnerID) == id || m.Role == "owner" || m.Role == "admin")
+	members, err := service.LockArtifactUsers(ctx, q, ws, ids...)
+	return members, artifactCoreError(err)
 }
 
-// full controls new authority; reads and human cancellation may outlive the task.
 func (h *Handler) artifactAuthority(r *http.Request, q *db.Queries, tx pgx.Tx, req artifact.Request, prior *db.AgentArtifactExecution, approver string, full bool, manage bool) (artifact.Binding, error) {
-	ctx := r.Context()
-	p, kind, id, err := artifactPrincipal(r)
+	p, _, _, err := artifactPrincipal(r)
 	if err != nil {
 		return artifact.Binding{}, err
 	}
-	wsText := h.resolveWorkspaceID(r)
-	if prior != nil {
-		wsText = uuidToString(prior.WorkspaceID)
-		if requested := h.resolveWorkspaceID(r); requested != "" && requested != wsText {
-			return artifact.Binding{}, pgx.ErrNoRows
-		}
-	}
-	ws, err := util.ParseUUID(wsText)
-	if err != nil {
-		return artifact.Binding{}, artifactDeny()
-	}
-	if err = artifactFence(ctx, q, ws); err != nil {
-		return artifact.Binding{}, err
-	}
-	if kind == "agent" {
-		tok, _ := auth.VerifiedTaskTokenFromContext(ctx)
-		if uuidToString(tok.TaskID) != req.TaskID || uuidToString(tok.AgentID) != req.AgentID || tok.WorkspaceID != ws {
-			return artifact.Binding{}, artifactDeny()
-		}
-		if _, err = q.LockTaskCapabilityToken(ctx, tok.ID); err != nil {
-			return artifact.Binding{}, err
-		}
-	}
-	binding := artifact.Binding{WorkspaceID: wsText, InitiatorKind: kind, InitiatorID: id}
-	if prior != nil {
-		binding.InitiatorKind = prior.InitiatorKind
-		binding.InitiatorID = uuidToString(prior.InitiatorID)
-		binding.OriginatorUserID = uuidToString(prior.OriginatorUserID)
-		binding.RuntimeID = uuidToString(prior.RuntimeID)
-		binding.TaskGeneration = prior.TaskGeneration
-	}
-	var task db.AgentTaskQueue
-	if full || kind == "agent" {
-		if _, err = q.LockTaskCapabilityPrincipals(ctx, parseUUID(req.TaskID)); err != nil {
-			return binding, err
-		}
-		task, err = q.GetAgentTask(ctx, parseUUID(req.TaskID))
-		if err != nil {
-			return binding, err
-		}
-		if task.Status != "dispatched" && task.Status != "running" || uuidToString(task.AgentID) != req.AgentID || uuidToString(task.IssueID) != req.ResourceID || !task.OriginatorUserID.Valid || !task.RuntimeID.Valid {
-			return binding, artifactDeny()
-		}
-		if prior != nil && (task.ClaimGeneration != prior.TaskGeneration || task.RuntimeID != prior.RuntimeID || task.OriginatorUserID != prior.OriginatorUserID) {
-			return binding, artifactConflict()
-		}
-		binding.OriginatorUserID = uuidToString(task.OriginatorUserID)
-		binding.RuntimeID = uuidToString(task.RuntimeID)
-		binding.TaskGeneration = task.ClaimGeneration
-	}
-	agents, err := q.TryLockCollaborationAuthorityAgents(ctx, []pgtype.UUID{parseUUID(req.AgentID)})
-	if err != nil {
-		return binding, err
-	}
-	if len(agents) != 1 {
-		return binding, artifactDeny()
-	}
-	agent := agents[0]
-	if agent.WorkspaceID != ws || agent.ArchivedAt.Valid || auth.TaskCapabilityProfile(agent.TemplateKey, agent.TemplateVersion) != "" {
-		return binding, artifactDeny()
-	}
-	issueScope, err := q.GetIssue(ctx, parseUUID(req.ResourceID))
-	if err != nil {
-		return binding, err
-	}
-	if issueScope.WorkspaceID != ws {
-		return binding, artifactDeny()
-	}
-	targets, err := q.LockTaskCapabilityInvocationTargets(ctx, agent.ID)
-	if err != nil {
-		return binding, err
-	}
-	ids := []string{p.UserID}
-	if binding.InitiatorKind == "human" {
-		ids = append(ids, binding.InitiatorID)
-	}
-	if approver != "" {
-		ids = append(ids, approver)
-	}
-	if full || kind == "agent" {
-		runtime, e := (service.RuntimeLookup{Queries: q, Metrics: h.Metrics, Source: obsmetrics.RuntimeLookupSourceTask}).Get(ctx, task.RuntimeID)
-		if e != nil {
-			return binding, e
-		}
-		issue, e := q.GetIssue(ctx, task.IssueID)
-		if e != nil {
-			return binding, e
-		}
-		if runtime.WorkspaceID != ws || issue.WorkspaceID != ws || agent.RuntimeID != runtime.ID {
-			return binding, artifactDeny()
-		}
-		if kind == "agent" && uuidToString(runtime.OwnerID) != p.UserID {
-			return binding, artifactDeny()
-		}
-		ids = append(ids, binding.OriginatorUserID, uuidToString(runtime.OwnerID))
-	}
-	members, err := artifactUsers(ctx, q, ws, ids...)
-	if err != nil {
-		return binding, err
-	}
-	if kind == "human" && (manage || prior == nil || binding.InitiatorKind != "human" || binding.InitiatorID != p.UserID) && !artifactManager(agent, p.UserID, members) {
-		return binding, artifactDeny()
-	}
-	if approver != "" && !artifactManager(agent, approver, members) {
-		return binding, artifactDeny()
-	}
-	if full || kind == "agent" {
-		if !auth.AgentInvocationAllowed(agent, targets, binding.OriginatorUserID, true, false) || kind == "human" && !auth.AgentInvocationAllowed(agent, targets, p.UserID, true, false) {
-			return binding, artifactDeny()
-		}
-	}
-	if err = artifactCredential(ctx, q, tx, p); err != nil {
-		return binding, err
-	}
-	return binding, nil
+	access := service.ArtifactAccess{Credential: artifactCredentialSnapshot(r.Context(), p), RequestedWorkspaceID: h.resolveWorkspaceID(r), Metrics: h.Metrics}
+	binding, err := service.CheckArtifactAuthorityInTx(r.Context(), tx, access, req, prior, approver, full, manage)
+	return binding, artifactCoreError(err)
 }
 
 type artifactResponse struct {
@@ -379,24 +154,9 @@ func artifactReply(a db.AgentApprovalRequest, e db.AgentArtifactExecution) artif
 	}
 	return artifactResponse{agentApprovalToResponse(a), uuidToString(e.ExecutionID), json.RawMessage(e.CanonicalSpec), e.SpecDigest, "declared_not_independently_git_verified", status, e.ResultCode, receipt, e.ReceiptDigest}
 }
-func artifactTimeMatches(raw string, value pgtype.Timestamptz) bool {
-	t, err := time.Parse(time.RFC3339Nano, raw)
-	return err == nil && value.Valid && t.Equal(value.Time)
-}
-
 func artifactSpec(e db.AgentArtifactExecution) (artifact.Spec, error) {
-	s, err := artifact.ParseSpec(e.CanonicalSpec)
-	if err != nil {
-		return s, err
-	}
-	_, digest, err := artifact.CanonicalSpec(s)
-	if err != nil {
-		return s, err
-	}
-	if digest != e.SpecDigest || s.Request.AgentID != uuidToString(e.AgentID) || s.Request.TaskID != uuidToString(e.TaskID) || s.Request.ResourceID != uuidToString(e.ResourceID) || s.Binding.WorkspaceID != uuidToString(e.WorkspaceID) || s.Binding.InitiatorKind != e.InitiatorKind || s.Binding.InitiatorID != uuidToString(e.InitiatorID) || s.Binding.OriginatorUserID != uuidToString(e.OriginatorUserID) || s.Binding.RuntimeID != uuidToString(e.RuntimeID) || s.Binding.TaskGeneration != e.TaskGeneration || s.RootIdentity != e.RootConfigIdentity || s.InvocationDigest != e.InvocationDigest || s.Request.ResourceKind != e.ResourceKind || s.Request.Action != e.Action || s.Request.SourceRevision != e.SourceRevision || s.Request.StagingID != e.StagingID || s.Request.InputManifestDigest != e.InputManifestDigest || s.Request.StagingManifestDigest != e.StagingManifestDigest || s.Request.TargetEnvironment != e.TargetEnvironment || s.Request.PolicyVersion != e.PolicyVersion || !artifactTimeMatches(s.CreatedAt, e.CreatedAt) || !artifactTimeMatches(s.ExpiresAt, e.ExpiresAt) {
-		return s, artifactConflict()
-	}
-	return s, nil
+	spec, err := service.ReadArtifactSpec(e)
+	return spec, artifactCoreError(err)
 }
 
 func (h *Handler) CreateArtifactPackage(w http.ResponseWriter, r *http.Request) {

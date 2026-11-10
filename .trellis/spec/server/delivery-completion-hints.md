@@ -98,3 +98,11 @@ Wrong: consume historical pass as a completion ticket, read someone else's
 private evaluation, duplicate the observer, or call this a global gate.
 Correct: recover the exact original human key under current authority, report a
 non-authorizing hint, and keep every completion interceptor explicitly pending.
+
+## Reused service implementation
+
+Policy reading and evidence validation now share the transaction-local service
+core (`service/delivery_policy.go`, `service/delivery_evidence.go` and
+`service/artifact_authority.go`). The explicit hint retains its original strict
+HTTP body, immutable private recovery, locks and non-authorizing response.
+Core extraction does not itself implement any completion writer gate.

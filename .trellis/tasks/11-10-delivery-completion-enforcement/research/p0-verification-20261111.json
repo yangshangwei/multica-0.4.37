@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-11-10T17:04:41.326887+00:00",
+  "scope": "P0 single observer/authority extraction only; not completion enforcement",
+  "source_sha256": {
+    "server/internal/service/artifact_authority.go": "c6cf948fe2a6eb87ab349cdebe237cfe12a2288ec55968476c099225f2bf20d1",
+    "server/internal/service/delivery_evidence.go": "34add212a607e2b10ed3bb4c2999fdd86ab5d0fb1bbd7e0f97a81515a9e7b4ed",
+    "server/internal/service/delivery_policy.go": "9107e5180612888ff91253c4c23ceee9d3c79e36650499588dc88201ea82f801",
+    "server/internal/handler/agent_artifact.go": "8a153b06bb7e462da2639cee19cb4af5862973f7fb7eb76f422d81089b874d5e",
+    "server/internal/handler/delivery_evidence.go": "ba97ee4b057f5bdfe86902e90b1b2daf6f57469ee7b6d236c555578db093e4b3",
+    "server/internal/handler/delivery_policy.go": "7d2b62f7022b605bd80b2d2c783ccb05871409ef0d89f780ab756c2120357fbd",
+    "server/internal/handler/delivery_evaluation.go": "4740444b675b5f17a39fe3cdedbd831f6caf07db6cf3ddcfdb2124bd885b8e62",
+    "server/internal/handler/delivery_completion_hint.go": "6f7ce829c64c8d21b1271759541974c0324eb3625550f4b4c562e0f8038ab44a"
+  },
+  "runs": {
+    "p0-baseline-handler-normal01": {
+      "record": "research/runs/p0-baseline-handler-normal01.json",
+      "sha256": "d33ffb7741170cd4709bc003e72b95aa92db627dbb38280b5ae411065963fd0f",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 325,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "95b9e8e915731dd7f47700609157b1625c41580336d38e27df25788aaea0842c"
+    },
+    "p0-baseline-router-normal01": {
+      "record": "research/runs/p0-baseline-router-normal01.json",
+      "sha256": "785897983baa4d038079a19035160d24b20c0e5f7b8801e6a308daa94e5c68a7",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 103,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "a77e4424e1374b2cfd9b3ebd8396b00ff3b2491f2ff54cb64ad32b8e4933db7f"
+    },
+    "p0-final-handler-normal01": {
+      "record": "research/runs/p0-final-handler-normal01.json",
+      "sha256": "c0000de252a551b936b4931ea21d6f52f17fcca795b1f57433814fdce1fa1eba",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 339,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "1ad6dede81e27439684201b7d3cc5960b23f7cb6ca9c9118e275fdbc7762b513"
+    },
+    "p0-final-handler-race01": {
+      "record": "research/runs/p0-final-handler-race01.json",
+      "sha256": "16063993a5249e61c2307b6981e8370e36679cec49e050ca86ed81a220e3eb5b",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 339,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "65eae670b610df048f3ebec5915a04a83fb2c65fa6b6fb078532583a217d6fa2"
+    },
+    "p0-final-router-normal01": {
+      "record": "research/runs/p0-final-router-normal01.json",
+      "sha256": "e7741613685fb47fcc102264c636269eb01e4fc1b9f7ac7bc141f04de2cba5c2",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 103,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "f3c26a8e1d04689ba899679877e7d60d69c77a30d8d0162da6b9a47d31775a01"
+    },
+    "p0-final-router-race01": {
+      "record": "research/runs/p0-final-router-race01.json",
+      "sha256": "61adbada2ea697da04ef4ceae1ae184319d11f560fce140778d240b449bb464a",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 103,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "7a281cade50526f502c9b9cf29d02683ca2888b5c067bfd144490e66a609f07b"
+    },
+    "p0-final-contracts01": {
+      "record": "research/runs/p0-final-contracts01.json",
+      "sha256": "a9cf16a6133693abca19fb2412673fc75be1e43909a4a595058f16b6fe58333b",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 50,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "9cc8032ae5ceea5b039c697b1e7f2e164cfdd3619e44cf008f4faf2e877840a2"
+    },
+    "p0-core-build02": {
+      "record": "research/runs/p0-core-build02.json",
+      "sha256": "833d64b475ab9bee34c441eeb8bbbf4ca82d6279bc0959f1c951aef050455a99",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "p0-core-vet02": {
+      "record": "research/runs/p0-core-vet02.json",
+      "sha256": "709360c7bf8f23bc2cf16c7ac2f8b80f37e57ef379f20eb3ef6ee94583099a60",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "format_diff_check": "pass",
+  "independent_review": "research/p0-independent-review-20261111.md",
+  "baseline_is_not_new_behavior_test": true,
+  "separate_fresh_database_each_package_and_round": true,
+  "normal_race_counts_not_added": true,
+  "full_delivery_gate_complete": false,
+  "full_m1_complete": false,
+  "next_packet": "P1 ledger and explicit issuer helper regression; P2 client in parallel",
+  "real_provider_calls": 0
+}
