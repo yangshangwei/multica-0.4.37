@@ -897,3 +897,25 @@ Archived 11-01-branch-e2e-acceptance at the user's request. Preserved the retain
 ### Next Steps
 
 - 完整证据policy与持久化委派分包；真实实验停止规则不变。
+
+
+## Session 149: 持久委派回执与离线观察通过独立验收
+<!-- trellis-session: v=2 fp=8a9b8ee34e826162 -->
+
+**Date**: 2026-11-10
+**Task**: 持久委派回执与离线观察通过独立验收
+**Branch**: `codex/durable-receipts-20261110`
+
+### Summary
+
+可选幂等无附件显式委派复用现有队列；真实任务/目标/离线观察与原回执恢复，unknown不重派及当前权限。最终handler普通/race各342、router各20、migration各5；CLI98、guidance33、build/vet/sqlc与36文件冻结及独审通过。23库日志保留、容器停止；真实模型0。完整M1证据政策/全入口门禁、M2/M3及AC43/E5/H3a/知识停止规则保持。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `f4782b863` | Prevent duplicate delegation while preserving original admission evidence |
+
+### Status
+
+[OK] **Completed**
