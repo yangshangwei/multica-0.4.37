@@ -72,3 +72,9 @@ Post-merge CI contracts72/72 pass,0skip. Reviewed product source hashes match re
 
 ## 2026-11-10 完成前证据提示增量
 独立子任务11-10-delivery-completion-hints复用现有政策/持久评估/current权限，提供普通任务human-only显式完成提示API，覆盖custom done、原观察不可变、缺失/失效/到期/撤权和并发拒绝。13文件冻结，handler普通/race各325、真实路由各103全通过，合同50及build/vet/sqlc/格式通过；保留4份失败。无新观察器/执行器/迁移。此为API提示基础，UI/CLI、skip及全部完成入口强制拦截仍未实施；六业务和M1/M2/M3不关闭。下一包按writer清单收敛跨主体证据、skip、create-done、done编辑/移项目、协作/R38与批量逐项语义。真实模型0，历史停止/预算不变。
+
+
+## 2026-11-10 完成门禁源码核对与规划检查点
+从 a37bee7cd 新建独立 worktree，确认没有后续业务提交；前序 18 个提交均为祖先，提示包 13 个冻结 HEAD 文件匹配。独立研究复核四个归档包 169 份原始运行记录及最新计数、失败、独审和留证，未重跑历史环境。完成入口研究绑定 45 个源码文件，补充协作项目编辑与项目删除解除关联：若已 done 换项目要求重验，这些入口也必须纳入。
+
+子任务 `11-10-delivery-completion-enforcement` 保持 planning，已落盘 PRD、设计边界、实施序列、D1–D7 待决登记和验收形状。首先等待最终人类验收责任及是否允许受限代办的回答；skip 推荐仍未批准。没有产品/迁移/依赖变化，不把研究检查点当门禁功能交付，不关闭 M1/M2/M3 或六业务。真实模型调用 0，AC43/E5/H3a/知识历史停止与预算不变。

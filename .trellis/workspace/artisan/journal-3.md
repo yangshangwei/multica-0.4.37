@@ -971,3 +971,27 @@ Archived 11-01-branch-e2e-acceptance at the user's request. Preserved the retain
 ### Next Steps
 
 - 完整强制门禁先收敛跨主体证据、skip、create-done、已done编辑/移项目、协作R38及批量逐项语义；已核对全writer清单。
+
+
+## Session 152: 完成门禁源码与归档核对，验收责任待决
+<!-- trellis-session: v=2 fp=083bc4542c957362 -->
+
+**Date**: 2026-11-10
+**Task**: 完成门禁源码与归档核对，验收责任待决
+**Branch**: `codex/delivery-completion-enforcement-20261110`
+
+### Summary
+
+从a37bee7cd核对无后续提交；18前序提交祖先、提示13文件及完成入口45源码匹配，独立复核四包169份运行记录。新强制门禁子任务保持planning，D1验收责任及受限代办已提问未答，skip等D2–D7未定；新增协作项目编辑/项目删除detach边界。没有产品变更、历史重跑或真实模型调用，不关闭M1与六业务。
+
+### Git Commits
+
+(No commits - planning session)
+
+### Status
+
+**Planning — 业务决策待定；本次仅完成源码和归档核对。**
+
+### Next Steps
+
+- 收到业务语义回答后收敛最小实现包，再使用Trellis implement/check和新专属DB验收。
