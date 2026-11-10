@@ -15,8 +15,8 @@ D1–D5 已由用户逐项确认，D6/D7/技术明细已按用户明确的推荐
 7. [x] P3：真实 VCS 消费者与信任修订，协作 exact ordinary-child/source/submission/self/R38 的原事务接入与正负实际回执。不得伪造普通 task 或使用另一个 observer。
 8. [x] P4：仅在全入口闭合后开放 enforce、评估/hint 模式兼容、内置技能/source map；全套 normal/race 各包新库，实际 tar/SHA、真实认证/状态/回执、竞态、rollback/unknown、迁移及客户端验证。
 9. [x] 冻结每个受影响文件、具名测试库存和全部原始日志；独立 Trellis check，主会话最终 build/vet/sqlc/format/static 及适用 lint/typecheck/测试。
-10. [ ] 主会话更新 spec、父子状态、六业务计划和 journal；仅本包 Lore 提交，独立检查 staged diff 成功后再提交；安全本地集成并复核主目录旧路径 byte/mode/existence。
-11. [ ] 仅将已独立验收的实现包记为交付；P4 前不得归档 enforcement。M1 与六业务保持开放，v1 skip 不可用及真实模型停止规则明确保留。停止仅本包资源并保留数据库/日志。
+10. [x] 主会话更新 spec、父子状态、六业务计划和 journal；仅本包 Lore 提交，独立检查 staged diff 成功后再提交；安全本地集成并复核主目录旧路径 byte/mode/existence。
+11. [x] 仅将已独立验收的实现包记为交付；P4 前不得归档 enforcement。M1 与六业务保持开放，v1 skip 不可用及真实模型停止规则明确保留。停止仅本包资源并保留数据库/日志。
 
 ## 文件所有权与并发
 

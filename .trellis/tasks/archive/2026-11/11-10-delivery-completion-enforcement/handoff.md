@@ -4,7 +4,7 @@
 
 v1全完成入口已实施，公共enforce已开启并通过实际认证/签名全链验收。最终110源码冻结：handler普通/race各620、router各166、service各272、migration各62，实际删除留证补充各4，全部0fail/skip；52合同、build/vet/sqlc134幂等和客户端Core63/Views91/typecheck/lint通过。完整结果见 delivery.md、verification-2026-11-11.json、research/final-source-manifest.json、final-named-inventory.json 和最终独审。
 
-本任务只剩Lore提交、安全本地集成、停止本包资源及日志状态收尾；不得把下方历史P1/P3进行中段落当实时状态。两个已提交增量c9a070551/fb0558881均在独立分支；主目录最新实时dirty已私有保护，集成需保留其spec/journal/其他任务修改，不能按旧快照回滚。
+v1产品与最终验收已在18b743291提交并安全本地集成；c9a070551/fb0558881两个增量均为其祖先。主目录1,057个不重叠dirty路径原样保留、15文档受控合并、110源码匹配；集成记录见research/local-integration-20261111.json。专属PG零连接后停止，65数据库与日志保留。本已验收子任务已归档，journal Session153已记录；不得把下方历史P1/P3进行中段落当实时状态。
 
 M1与六业务父任务仍in_progress，M2/M3仍planned；v1 skip_supported=false、没有真实可豁免检查，不宣称可用skip。AC43/E5/H3a/知识预算与停止规则保持，供应商调用0、未推送/部署/外部消息。任务是否归档与精确集成头以最终 task.json/归档路径及research/local-integration-20261111.json为准。
 

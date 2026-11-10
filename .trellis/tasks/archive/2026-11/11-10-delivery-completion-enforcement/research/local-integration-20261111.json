@@ -1,0 +1,143 @@
+{
+  "kind": "verified_v1_product_safe_local_integration",
+  "integrated_at": "2026-11-10T19:41:48.010408+00:00",
+  "baseline": "1ce4e81223be3397fe15e2649debfac40720ddd9",
+  "integrated_head": "18b743291d03c67ff519bea3151e166f96f72669",
+  "main_branch": "codex/cross-workspace-collaboration",
+  "source_branch": "codex/delivery-completion-enforcement-20261110",
+  "snapshot_dirty_paths": 1072,
+  "nonoverlap_byte_mode_existence_preserved": 1057,
+  "overlap_documents": [
+    {
+      "path": ".trellis/spec/server/index.md",
+      "original_sha256": "e6f1859cb7d6153439966571803bab87eebb495047a2b3140fe2259def7feae7",
+      "incoming_sha256": "f64949afa4eadd55c77b287f36dabf851a6e72e039308dc52f2697e2f1651187",
+      "merged_sha256": "8da3650da02b262ea0cde2f9f85327a310a9e1bf6f2277109b9137a34890173d",
+      "method": "three_way_text_merge",
+      "mode": 420
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/progress.md",
+      "original_sha256": "ed6d0394e1da63db572b8a3da2004392ea40e8e4c653754bddc2d8101331b5cc",
+      "incoming_sha256": "404c8019d81ca7062307f3d8fe73edffeec49acb9610fd5b2c47ca72c16096ca",
+      "merged_sha256": "f682aeb0d52a0a387a872eb7784e908d11b67fb451dd1989618f55402ce9aae7",
+      "method": "three_way_text_merge",
+      "mode": 420
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/task.json",
+      "original_sha256": "58166ba5c2f1897059b6a20ec151cfd666b9535f85357276930afdcfc00c4bd0",
+      "incoming_sha256": "ef550dd48f799d241d61886cb3127bd4d53b6b58bdb8a52a4ba2061f048b6210",
+      "merged_sha256": "ef4e70803854b90e8891bc3c82af3c3b8e040ad218b87c586a4f3b7b49ebbdae",
+      "method": "fieldwise_three_way_preserve_prior_parent_fields_children; latest verified next_action supersedes own prior D4 planning mirror",
+      "mode": 420
+    },
+    {
+      "path": ".trellis/tasks/11-10-delivery-completion-enforcement/design.md",
+      "original_sha256": "9e436a8fa33d61bdcebdc9d6677dec7fc08fb078a021368b75ff53768a3a8ec6",
+      "incoming_sha256": "614b36fdddf06435014e01871dc804fc7596b1c5917e60c095882105a2576a3b",
+      "merged_sha256": "614b36fdddf06435014e01871dc804fc7596b1c5917e60c095882105a2576a3b",
+      "method": "advance_same_task_D1_D4_planning_mirror_preserve_confirmed_decisions_and_history",
+      "mode": 420
+    },
+    {
+      "path": ".trellis/tasks/11-10-delivery-completion-enforcement/handoff.md",
+      "original_sha256": "dc1464b5795a59c9f1f264fb701240af2651c06ea948602c6c8e1028e2cf6309",
+      "incoming_sha256": "95263d32bedac8c199ba2c154ae41c6aee09e02669f1efd1b414a89ac4d3b1a0",
+      "merged_sha256": "95263d32bedac8c199ba2c154ae41c6aee09e02669f1efd1b414a89ac4d3b1a0",
+      "method": "advance_same_task_D1_D4_planning_mirror_preserve_confirmed_decisions_and_history",
+      "mode": 420
+    },
+    {
+      "path": ".trellis/tasks/11-10-delivery-completion-enforcement/implement.md",
+      "original_sha256": "a70e5cf41e19f4a1fe633eb875efb3258fa9844a2861447ba9d377629f72ae88",
+      "incoming_sha256": "a055b52400f97ad1f68aaf2238c68358a232481f6ce45b0f68b42ab0118a2288",
+      "merged_sha256": "a055b52400f97ad1f68aaf2238c68358a232481f6ce45b0f68b42ab0118a2288",
+      "method": "advance_same_task_D1_D4_planning_mirror_preserve_confirmed_decisions_and_history",
+      "mode": 420
+    },
+    {
+      "path": ".trellis/tasks/11-10-delivery-completion-enforcement/prd.md",
+      "original_sha256": "215f6f9b7b7d7cf721bade810c7ba694130e4420a88ed79bc302e1392535785b",
+      "incoming_sha256": "f95a8fc9628aeddfe16cf5eed85cb531febebe51d76b90c3077d9dd28ac360d5",
+      "merged_sha256": "f95a8fc9628aeddfe16cf5eed85cb531febebe51d76b90c3077d9dd28ac360d5",
+      "method": "advance_same_task_D1_D4_planning_mirror_preserve_confirmed_decisions_and_history",
+      "mode": 420
+    },
+    {
+      "path": ".trellis/tasks/11-10-delivery-completion-enforcement/progress.md",
+      "original_sha256": "325a83133544b173cd6bdc6dca97670cefbd45933e1177ff72ff53ea10088c0d",
+      "incoming_sha256": "35ca24c940e32f0728ea990eed4585fa3c37bb96d1e0c3db606f26705258096f",
+      "merged_sha256": "35ca24c940e32f0728ea990eed4585fa3c37bb96d1e0c3db606f26705258096f",
+      "method": "advance_same_task_D1_D4_planning_mirror_preserve_confirmed_decisions_and_history",
+      "mode": 420
+    },
+    {
+      "path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/decision-register.md",
+      "original_sha256": "b89eaba2b5576f6fc83e6b1da3c1749ec00fdfec6e9c14c3ce0ed072b8d75453",
+      "incoming_sha256": "88bb91ffad340f39dbbc9bce9fd61391344bdf3a4a2fdec4b5a44b88b5feac4f",
+      "merged_sha256": "88bb91ffad340f39dbbc9bce9fd61391344bdf3a4a2fdec4b5a44b88b5feac4f",
+      "method": "advance_same_task_D1_D4_planning_mirror_preserve_confirmed_decisions_and_history",
+      "mode": 420
+    },
+    {
+      "path": ".trellis/tasks/11-10-delivery-completion-enforcement/task.json",
+      "original_sha256": "a7e09cffca78c374ea51f3c898003c528e0e658fc222148db9a91607463c31f9",
+      "incoming_sha256": "6d4de997ca9acfca6584099818427e93a0c3b0a4b796bf664c0ff5a779878f76",
+      "merged_sha256": "6d4de997ca9acfca6584099818427e93a0c3b0a4b796bf664c0ff5a779878f76",
+      "method": "advance_same_task_D1_D4_planning_mirror_preserve_confirmed_decisions_and_history",
+      "mode": 420
+    },
+    {
+      "path": "docs/plans/2026-11-10-business-progress-and-execution.zh-CN.md",
+      "original_sha256": "130c4874286e76b1d39e391492fba8d3867290189f26c2d1c9d4351bf578db99",
+      "incoming_sha256": "75a9f057b4d5a4b145cfcc733c391e05c61c90c063cf4985dbb62a39a6254a51",
+      "merged_sha256": "4586909d6e78f9dc11ec9bba86b7884fca39baa28aefc83a8f29972a6c50cb90",
+      "method": "three_way_text_merge",
+      "mode": 420
+    },
+    {
+      "path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/archive-history-recheck-20261110.md",
+      "original_sha256": "7ffaaffa3058d1f5bc7ff0f8bc2432415a5f763281194af08b2caa1028b5e68d",
+      "incoming_sha256": "7ffaaffa3058d1f5bc7ff0f8bc2432415a5f763281194af08b2caa1028b5e68d",
+      "merged_sha256": "7ffaaffa3058d1f5bc7ff0f8bc2432415a5f763281194af08b2caa1028b5e68d",
+      "method": "identical_current_bytes",
+      "mode": 420
+    },
+    {
+      "path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/resume-check-20261110.md",
+      "original_sha256": "082686359fde59eaf071f2fbb0bfa0a5a9c2e2d2cb69d8483b15340e89e8dbeb",
+      "incoming_sha256": "082686359fde59eaf071f2fbb0bfa0a5a9c2e2d2cb69d8483b15340e89e8dbeb",
+      "merged_sha256": "082686359fde59eaf071f2fbb0bfa0a5a9c2e2d2cb69d8483b15340e89e8dbeb",
+      "method": "identical_current_bytes",
+      "mode": 420
+    },
+    {
+      "path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/resume-head-verification-20261110.json",
+      "original_sha256": "d57a48c512b3e1c1a6e7a9f07976b7412ff56721aabf9d56529c587eb3db0bc5",
+      "incoming_sha256": "d57a48c512b3e1c1a6e7a9f07976b7412ff56721aabf9d56529c587eb3db0bc5",
+      "merged_sha256": "d57a48c512b3e1c1a6e7a9f07976b7412ff56721aabf9d56529c587eb3db0bc5",
+      "method": "identical_current_bytes",
+      "mode": 420
+    },
+    {
+      "path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/source-recheck-20261110.md",
+      "original_sha256": "dab0d799cc2e32541c26324a17a6c2ae7933a12892dfd18bec12f806adfeae04",
+      "incoming_sha256": "dab0d799cc2e32541c26324a17a6c2ae7933a12892dfd18bec12f806adfeae04",
+      "merged_sha256": "dab0d799cc2e32541c26324a17a6c2ae7933a12892dfd18bec12f806adfeae04",
+      "method": "identical_current_bytes",
+      "mode": 420
+    }
+  ],
+  "main_index_empty": true,
+  "final_source_matches": 110,
+  "full_delivery_gate_complete": true,
+  "full_delivery_gate_scope": "accepted v1 transactional completion contract, skip unsupported",
+  "full_m1_complete": false,
+  "m2_status": "planned",
+  "m3_status": "planned",
+  "provider_calls": 0,
+  "push_deploy_external_messages": false,
+  "private_backup_not_committed": "/Volumes/artisan/code/2026/mc-delivery-completion-enforcement-20261110/.omx/private/enforcement-integration-20261111",
+  "verification": "Actual main worktree post-merge file hashes/modes/existence and HEAD checked; old nonoverlap content unchanged."
+}

@@ -103,3 +103,8 @@
 - 最终handler普通/race各620、真实router各166、service各272、实际migration各62；补真实issue/project/workspace删除新授权及consumed/revoked留证普通/race各4。均0fail/skip，分轮分包不相加作为独立覆盖。
 - 全后端build/vet、52合同、134生成文件sqlc幂等通过；客户端Core63/Views91与typecheck/独审lint通过。最终110源码冻结，256运行记录及原日志hash复核，47非零记录完整保留；这是尝试记录量，不是通过覆盖数。
 - 当前只剩最终独审签收、Lore提交、安全本地集成和日志收尾；未推送/部署/调用供应商。M1和六业务仍开放，M2/M3 planned，v1 skip明确不可用。
+
+## 2026-11-11 产品提交与安全本地集成
+
+- v1产品/验收提交18b743291已快进合入业务分支；P0 c9a070551和客户端fb0558881为祖先。最新主目录1072dirty路径私有快照，保留1057非重叠原字节/模式/存在性，15重叠文档精确合并，原父字段/child链接保留，main index空，110冻结源码匹配。
+- 专属PG零client连接后停止，65库/全部日志保留，无历史环境操作。完整集成证据独立写research/local-integration-20261111.json；随后归档仅本子任务并记录Session153，M1/六业务继续in_progress，M2/M3 planned。

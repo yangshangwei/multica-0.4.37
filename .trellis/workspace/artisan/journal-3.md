@@ -995,3 +995,31 @@ Archived 11-01-branch-e2e-acceptance at the user's request. Preserved the retain
 ### Next Steps
 
 - 收到业务语义回答后收敛最小实现包，再使用Trellis implement/check和新专属DB验收。
+
+
+## Session 153: 完成事务门禁v1通过全入口验收并本地集成
+<!-- trellis-session: v=2 fp=24fa68ec1049ae91 -->
+
+**Date**: 2026-11-11
+**Task**: 完成事务门禁v1通过全入口验收并本地集成
+**Branch**: `codex/delivery-completion-enforcement-20261110`
+
+### Summary
+
+人类明确验收、原事务一次消费覆盖普通/批量/创建/VCS/协作/R38与项目迁移；最终handler普通/race各620、router各166、service各272、迁移各62、删除留证各4，52合同及build/vet/sqlc/TS检查和最终独审通过。110源码冻结；256运行记录、47失败保留。产品18b743291已安全集成，1057旧路径原样保留、15文档合并。专属PG零连接停止、65库留存。仅v1子任务完成，M1/六业务仍开放，M2/M3 planned，skip不可用、供应商0且旧停止规则保持。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `c9a070551` | refactor(delivery): keep future completion writers on one authority core |
+| `fb0558881` | fix(issues): preserve partial batch outcomes in shared clients |
+| `18b743291` | feat(delivery): require current acceptance in every completion transaction |
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 按既有M1剩余范围推进；M2快照→父预算→能力负载，M3持续治理。不要重跑受停止规则限制的真实模型验收。

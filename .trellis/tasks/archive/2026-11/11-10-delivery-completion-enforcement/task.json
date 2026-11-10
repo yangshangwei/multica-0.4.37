@@ -3,7 +3,7 @@
   "name": "delivery-completion-enforcement",
   "title": "M1 完成事务强制门禁",
   "description": "核对既有证据与全部完成写入口，明确验收责任、skip、创建终态和协作合同后分包实现事务内门禁；不关闭M1父任务。",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": "backend",
   "scope": "server",
   "package": null,
@@ -11,17 +11,17 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-11-10",
-  "completedAt": null,
+  "completedAt": "2026-11-11",
   "branch": "codex/delivery-completion-enforcement-20261110",
   "base_branch": "codex/cross-workspace-collaboration",
   "worktree_path": "/Volumes/artisan/code/2026/mc-delivery-completion-enforcement-20261110",
-  "commit": null,
+  "commit": "18b743291d03c67ff519bea3151e166f96f72669",
   "pr_url": null,
   "subtasks": [],
   "children": [],
   "parent": "11-05-agent-squad-rnd-improvements",
   "relatedFiles": [],
-  "notes": "Accepted v1 transactional completion enforcement verified by independent review; full M1 and six businesses remain open. Safe local integration and archive/journal pending. Skip v1 unsupported; provider calls0.",
+  "notes": "Accepted v1 completion gate verified, independently reviewed, product locally integrated18b743291 and child archived. M1/six businesses remain open; M2/M3 planned. Skip v1 unavailable; provider calls0 and historical stop rules unchanged.",
   "meta": {
     "baseline_commit": "a37bee7cd1c05122383a6c40e157ef9ed5890bf4",
     "business_decisions": "resolved_by_explicit_answers_and_delegated_recommendations",
@@ -44,7 +44,7 @@
     "full_m1_complete": false,
     "real_model_calls": 0,
     "decision_authority": "User explicitly delegated all subsequent choices to recommended options on 2026-11-11; no further per-option confirmation required",
-    "current_packet": "verified_waiting_safe_local_integration",
+    "current_packet": "archived_verified_v1",
     "planning_review": "research/contract-review-20261111.md",
     "baseline_current_tests": {
       "handler_normal": 325,
@@ -64,6 +64,7 @@
     },
     "skip_supported": false,
     "full_delivery_gate_scope": "accepted v1 transactional completion contract; skip unsupported; not full M1",
-    "final_independent_review": "research/final-independent-review.json"
+    "final_independent_review": "research/final-independent-review.json",
+    "integration_status": "verified_merged_locally"
   }
 }
