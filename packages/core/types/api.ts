@@ -49,7 +49,41 @@ export type CreateCommentSubIssueRequest =
   | CreateCommentSubIssueManualRequest
   | CreateCommentSubIssueAgentRequest;
 
+export interface DeliveryCompletionBinding {
+  authorization_id: string;
+  operation_id: string;
+  expected_issue_revision: number;
+}
+
+export interface BatchDeliveryCompletionBinding extends DeliveryCompletionBinding {
+  issue_id: string;
+}
+
+export interface BatchUpdateIssuesOptions {
+  completion_bindings?: BatchDeliveryCompletionBinding[];
+}
+
+export type BatchUpdateIssueState = "committed" | "rejected" | "not_attempted" | "unknown";
+
+export interface BatchUpdateIssueResult {
+  index: number;
+  issue_id: string;
+  state: BatchUpdateIssueState;
+  code: string;
+  revision?: number;
+}
+
+export interface BatchUpdateIssuesResponse {
+  updated: number;
+  /** Older servers return only a count; never synthesize per-item results. */
+  results?: BatchUpdateIssueResult[];
+}
+
 export interface UpdateIssueRequest {
+  /** Explicit completion authorization, consumed only by this issue's writer. */
+  completion?: DeliveryCompletionBinding;
+  /** Reason for an authorized project scope change; never an Issue field. */
+  project_change_reason?: string;
   current_iteration_id?: string | null;
   iteration_reason?: string;
   allow_completed?: boolean;
@@ -101,6 +135,8 @@ export interface MoveIssueRequest
     | "assignee_id"
     | "parent_issue_id"
     | "project_id"
+    | "completion"
+    | "project_change_reason"
   > {
   before_id: string | null;
   after_id: string | null;

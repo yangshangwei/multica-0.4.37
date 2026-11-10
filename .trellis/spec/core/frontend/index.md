@@ -23,6 +23,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Confirmed cookie logout](./cookie-logout.md) | Awaited HttpOnly-cookie clearing, preserved failed logout drafts and session-fenced teardown | Active |
 | [ApiClient authEpoch](./api-client-auth-epoch.md) | Isolating a stale 401 from the current session | Active |
+| [Batch issue outcomes](./issue-batch-outcomes.md) | Ordered partial commits, strict parsing, optimistic ownership and shared counts | Client contract implemented; backend acceptance separate |
 | [Collaboration execution protocol](../../server/collaboration-targets.md) | v5 channel/input/reader history, exact hold/control receipts, original-key/access-epoch recovery and gated execution | Direct/squad foundation; full product pending |
 | [Collaboration recorded runs](../../server/collaboration-records.md) | Private record paging, exact usage, page-chain integrity, child hints and compatible run anchors | Current R51/R52 increment |
 | [Collaboration trigger previews](../../server/collaboration-preview-wakeup.md) | Additive grouping facts, strict peer validation and current-draft preview identity | Focused preview increment |

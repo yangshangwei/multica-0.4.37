@@ -34,6 +34,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [State Management](./state-management.md) | Local state, global state, server state | To fill |
 | [Global scope navigation](../../core/frontend/global-scope-navigation.md) | Persistent shell switch, restored collaboration state and direct-link focus | Active |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | Active |
+| [Batch issue outcomes](../../core/frontend/issue-batch-outcomes.md) | Shared batch adapters and truthful partial/zero-result feedback | Client contract implemented; backend acceptance separate |
 | [Desktop Core Interaction](./desktop-core-accessibility.md) | Hidden-chat focus/portals, collection recovery/selection, detail tabs, shell motion and bounded Gantt | Active |
 | [Triage History](./triage-history.md) | Date-grouped event identity, snapshot reuse, applied filters and truthful empty-page recovery | Active |
 | [Pending-task Creation](./triage-create-form.md) | Candidate fields, accessible names, validation, upload/retry preservation and scoped form IDs | Active |

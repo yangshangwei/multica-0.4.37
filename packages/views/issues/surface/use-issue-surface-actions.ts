@@ -161,11 +161,11 @@ export function useIssueSurfaceActions({
           errorMessage: t(($) => $.detail.toast_move_issue_failed),
           ...options,
         }),
-      batchUpdate: async (issueIds, updates) => {
+      batchUpdate: async (issueIds, updates, options) => {
         if (issueIds.some((id) => findSourceIssue(client, wsId, id)?.collaboration)) {
           throw new Error(tCollaboration(($) => $.source.batchUnsupported));
         }
-        await batchUpdateMutation.mutateAsync({ ids: issueIds, updates });
+        return batchUpdateMutation.mutateAsync({ ids: issueIds, updates, ...options });
       },
       batchDelete: async (issueIds) => {
         if (issueIds.some((id) => findSourceIssue(client, wsId, id)?.collaboration)) {

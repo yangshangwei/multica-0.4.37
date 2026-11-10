@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, type ReactNode } from "react";
-import type { Issue, UpdateIssueRequest } from "@multica/core/types";
+import type { BatchUpdateIssuesOptions, BatchUpdateIssuesResponse, Issue, UpdateIssueRequest } from "@multica/core/types";
 import type { SourceCollaborationAction } from "@multica/core/issues";
 import type { IssueCreateDefaults } from "./types";
 
@@ -29,7 +29,8 @@ export interface IssueSurfaceActions {
   batchUpdate: (
     issueIds: string[],
     updates: Partial<UpdateIssueRequest>,
-  ) => Promise<void>;
+    options?: BatchUpdateIssuesOptions,
+  ) => Promise<BatchUpdateIssuesResponse>;
   batchDelete: (issueIds: string[]) => Promise<void>;
 }
 

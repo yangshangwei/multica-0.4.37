@@ -3,7 +3,7 @@
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, QueryObserver } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 
 import { setApiInstance } from "../api";
@@ -744,6 +744,67 @@ describe("useBatchUpdateIssues — optimistic patch covers filtered boards too",
       expect(bucketIds(key, "todo")).toEqual(["issue-1"]);
       expect(bucketIds(key, "in_progress")).toEqual([]);
     }
+  });
+
+  it("forwards per-item completion controls without adding them to optimistic issue data", async () => {
+    let resolve!: (value: { updated: number }) => void;
+    batchUpdateIssues.mockReturnValue(new Promise((done) => { resolve = done; }));
+    const detailKey = issueKeys.detail(WS_ID, "issue-1");
+    qc.setQueryData<Issue>(detailKey, makeIssue(1, { revision: 6 }));
+    const { result } = renderHook(() => useBatchUpdateIssues(), { wrapper: createWrapper(qc) });
+    const binding = { issue_id: "issue-1", authorization_id: "authorization", operation_id: "operation", expected_issue_revision: 6 };
+    const updates = { status: "in_progress" as const, project_change_reason: "Scope correction", expected_revision: 6 };
+    let pending!: Promise<unknown>;
+    act(() => { pending = result.current.mutateAsync({ ids: ["issue-1"], updates, completion_bindings: [binding] }); });
+    await waitFor(() => expect(batchUpdateIssues).toHaveBeenCalledWith(["issue-1"], updates, { completion_bindings: [binding] }));
+    const cached = qc.getQueryData<Issue>(detailKey);
+    expect(cached?.status).toBe("in_progress");
+    for (const control of ["completion", "completion_bindings", "project_change_reason", "expected_revision"]) expect(cached).not.toHaveProperty(control);
+    await act(async () => { resolve({ updated: 1 }); await pending; });
+  });
+
+  it("refreshes actual committed state after a partial failure instead of retaining a full rollback", async () => {
+    for (const key of [wsKey, myKey]) {
+      qc.setQueryData(key, { byStatus: { todo: { issues: [makeIssue(1), makeIssue(2)], total: 2 }, in_progress: { issues: [], total: 0 } } });
+    }
+    for (const index of [1, 2]) qc.setQueryData(issueKeys.detail(WS_ID, `issue-${index}`), makeIssue(index));
+    const actual = { byStatus: { todo: { issues: [makeIssue(2)], total: 1 }, in_progress: { issues: [makeIssue(1, { status: "in_progress", revision: 2 })], total: 1 } } };
+    const readWorkspace = vi.fn().mockResolvedValue(actual);
+    const readMyList = vi.fn().mockResolvedValue(actual);
+    const subscriptions = [
+      new QueryObserver(qc, { queryKey: wsKey, queryFn: readWorkspace, staleTime: Infinity }).subscribe(() => {}),
+      new QueryObserver(qc, { queryKey: myKey, queryFn: readMyList, staleTime: Infinity }).subscribe(() => {}),
+    ];
+    batchUpdateIssues.mockRejectedValue(new Error("One item committed; another was rejected"));
+    const { result } = renderHook(() => useBatchUpdateIssues(), { wrapper: createWrapper(qc) });
+    try {
+      await act(async () => {
+        await result.current.mutateAsync({ ids: ["issue-1", "issue-2"], updates: { status: "in_progress" } }).catch(() => {});
+      });
+      await waitFor(() => {
+        expect(readWorkspace).toHaveBeenCalledOnce();
+        expect(readMyList).toHaveBeenCalledOnce();
+        expect(bucketIds(wsKey, "in_progress")).toEqual(["issue-1"]);
+        expect(bucketIds(myKey, "in_progress")).toEqual(["issue-1"]);
+      });
+      expect(batchUpdateIssues).toHaveBeenCalledOnce();
+    } finally { subscriptions.forEach((unsubscribe) => unsubscribe()); }
+  });
+
+  it("does not overwrite a newer server snapshot when a batch fails", async () => {
+    let reject!: (error: Error) => void;
+    batchUpdateIssues.mockReturnValue(new Promise((_resolve, rejectPromise) => { reject = rejectPromise; }));
+    const detailKey = issueKeys.detail(WS_ID, "issue-1");
+    qc.setQueryData<Issue>(detailKey, makeIssue(1, { revision: 1 }));
+    const { result } = renderHook(() => useBatchUpdateIssues(), { wrapper: createWrapper(qc) });
+    let pending!: Promise<unknown>;
+    act(() => { pending = result.current.mutateAsync({ ids: ["issue-1"], updates: { status: "in_progress" } }).catch(() => {}); });
+    await waitFor(() => expect(batchUpdateIssues).toHaveBeenCalledOnce());
+    const newer = makeIssue(1, { status: "done", revision: 8, title: "Another current edit" });
+    qc.setQueryData<Issue>(detailKey, newer);
+    await act(async () => { reject(new Error("Unknown commit")); await pending; });
+    expect(qc.getQueryData<Issue>(detailKey)).toEqual(newer);
+    expect(qc.getQueryState(detailKey)?.isInvalidated).toBe(true);
   });
 
   it("does not invalidate the board list on settle (no refetch flicker)", async () => {

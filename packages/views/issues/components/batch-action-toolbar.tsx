@@ -107,12 +107,12 @@ export function BatchActionToolbar({
   const handleBatchUpdate = async (updates: Partial<UpdateIssueRequest>) => {
     if (refuseCollaborationBatch()) return;
     try {
-      if (surfaceActions) {
-        await surfaceActions.batchUpdate(ids, updates);
-      } else {
-        await batchUpdate.mutateAsync({ ids, updates });
+      const result = surfaceActions
+        ? await surfaceActions.batchUpdate(ids, updates)
+        : await batchUpdate.mutateAsync({ ids, updates });
+      if (result.updated > 0) {
+        toast.success(t(($) => $.batch.update_success, { count: result.updated }));
       }
-      toast.success(t(($) => $.batch.update_success, { count }));
     } catch (err) {
       toast.error(
         err instanceof Error && err.message

@@ -2,7 +2,7 @@ vi.mock("../../iterations/iteration-assignment", () => ({
   IterationBatchAssignment: ({ issueIds }: { issueIds: string[] }) => <button aria-label="Iteration batch selection" data-issue-ids={issueIds.join(",")}>Iterations</button>,
 }));
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import type { Issue, UpdateIssueRequest } from "@multica/core/types";
 import { BatchActionToolbar } from "./batch-action-toolbar";
 import { toast } from "sonner";
@@ -22,7 +22,7 @@ vi.mock("@multica/core/issues/stores/selection-store", () => ({
   useIssueSelectionStore: (selector: (s: typeof selection) => unknown) => selector(selection),
 }));
 
-const batchUpdate = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
+const batchUpdate = vi.hoisted(() => vi.fn().mockResolvedValue({ updated: 1 }));
 const batchDelete = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
 const surface = vi.hoisted(() => ({ current: null as { batchUpdate: typeof batchUpdate; batchDelete: typeof batchDelete; isPending: boolean } | null }));
 vi.mock("../surface/actions-context", () => ({ useIssueSurfaceActionsOptional: () => surface.current }));
@@ -36,7 +36,8 @@ vi.mock("@multica/core/modals", () => ({
   useModalStore: (selector: (s: { open: typeof openModal }) => unknown) => selector({ open: openModal }),
 }));
 
-vi.mock("../../i18n", () => ({ useT: () => ({ t: () => "label" }) }));
+const translate = vi.hoisted(() => vi.fn((_key: unknown, _params?: unknown) => "label"));
+vi.mock("../../i18n", () => ({ useT: () => ({ t: translate }) }));
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 // Interactive picker stubs: each renders buttons that fire the real onUpdate the
@@ -104,15 +105,48 @@ function makeIssue(overrides: Partial<Issue> = {}): Issue {
 
 beforeEach(() => {
   selection.selectedIds = new Set(["a"]);
-  batchUpdate.mockClear();
+  batchUpdate.mockReset().mockResolvedValue({ updated: 1 });
   batchDelete.mockClear();
   openModal.mockClear();
   selection.clear.mockClear();
   surface.current = null;
   vi.mocked(toast.error).mockClear();
+  vi.mocked(toast.success).mockClear();
+  translate.mockClear();
 });
 
 describe("BatchActionToolbar status routing (MUL-4155)", () => {
+  it.each(["surface", "embedded"] as const)("does not report an update for a no-change %s result", async (placement) => {
+    batchUpdate.mockResolvedValue({ updated: 0 });
+    if (placement === "surface") surface.current = { batchUpdate, batchDelete, isPending: false };
+    render(<BatchActionToolbar issues={[makeIssue()]} />);
+    fireEvent.click(screen.getByTestId("priority-picker"));
+    await waitFor(() => expect(batchUpdate).toHaveBeenCalledOnce());
+    expect(toast.success).not.toHaveBeenCalled();
+    expect(selection.clear).not.toHaveBeenCalled();
+  });
+
+  it.each(["surface", "embedded"] as const)("uses the returned update count in the %s toolbar", async (placement) => {
+    selection.selectedIds = new Set(["a", "b"]);
+    batchUpdate.mockResolvedValue({ updated: 1 });
+    if (placement === "surface") surface.current = { batchUpdate, batchDelete, isPending: false };
+    render(<BatchActionToolbar issues={[makeIssue(), makeIssue({ id: "b" })]} />);
+    fireEvent.click(screen.getByTestId("priority-picker"));
+    await waitFor(() => expect(toast.success).toHaveBeenCalledOnce());
+    expect(translate).toHaveBeenLastCalledWith(expect.any(Function), { count: 1 });
+  });
+
+  it.each(["surface", "embedded"] as const)("preserves selection and shows only failure for an incomplete %s update", async (placement) => {
+    batchUpdate.mockRejectedValue(new Error("One update committed; refresh before continuing."));
+    if (placement === "surface") surface.current = { batchUpdate, batchDelete, isPending: false };
+    render(<BatchActionToolbar issues={[makeIssue()]} />);
+    fireEvent.click(screen.getByTestId("priority-picker"));
+    await waitFor(() => expect(toast.error).toHaveBeenCalledWith("One update committed; refresh before continuing."));
+    expect(toast.success).not.toHaveBeenCalled();
+    expect(selection.clear).not.toHaveBeenCalled();
+    expect(batchUpdate).toHaveBeenCalledOnce();
+  });
+
   it.each(["surface", "embedded"] as const)("blocks mixed shared selection before ordinary confirmation or transport in the %s toolbar", (placement) => {
     const account = { user_id: "user-1", name: "Outside", avatar_url: "", external: true };
     const shared = makeIssue({ id: "shared", collaboration: { creator: account, handler: account, has_external_collaborators: true } });

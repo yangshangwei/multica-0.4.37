@@ -312,6 +312,18 @@ describe("RunConfirmModal", () => {
     expect(mockToast.success).not.toHaveBeenCalled();
   });
 
+  it("keeps a batch confirmation open after a partial or unknown result", async () => {
+    const onClose = vi.fn();
+    mockBatch.mockRejectedValueOnce(new Error("Some updates may have committed; refresh before continuing."));
+    render(<RunConfirmModal onClose={onClose} data={{ ...single, issueIds: ["i1", "i2"] }} />);
+    fireEvent.click(confirmButton());
+    await waitFor(() => expect(mockToast.error).toHaveBeenCalledWith("Some updates may have committed; refresh before continuing."));
+    expect(onClose).not.toHaveBeenCalled();
+    expect(mockToast.success).not.toHaveBeenCalled();
+    expect(mockBatch).toHaveBeenCalledOnce();
+    expect(confirmButton()).not.toBeDisabled();
+  });
+
   // --- Send chord (MUL-5694) ------------------------------------------------
   // The note box is where the caret starts, so the dialog has to submit from
   // the keyboard there, the same way the issue composer creates.

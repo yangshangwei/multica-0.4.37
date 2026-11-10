@@ -196,7 +196,7 @@ describe("useIssueSurfaceController", () => {
     pruneIssueSurfaceViewStates([]);
     updateIssueMutate.mockClear();
     openModal.mockClear();
-    batchUpdateMutateAsync.mockResolvedValue(undefined);
+    batchUpdateMutateAsync.mockResolvedValue({ updated: 1 });
     batchDeleteMutateAsync.mockResolvedValue(undefined);
   });
 

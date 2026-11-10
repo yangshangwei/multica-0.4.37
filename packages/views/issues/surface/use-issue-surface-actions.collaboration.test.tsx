@@ -56,6 +56,15 @@ describe("collaboration source actions", () => {
     expect(calls.batchUpdate).not.toHaveBeenCalled();
     expect(calls.batchDelete).not.toHaveBeenCalled();
   });
+  it("returns the original ordinary batch result and preserves its refusal", async () => {
+    const { result } = setup();
+    const response = { updated: 1, results: [{ index: 0, issue_id: "ordinary", state: "committed", code: "updated" }] };
+    calls.batchUpdate.mockResolvedValueOnce(response);
+    await expect(result.current.actions.batchUpdate(["ordinary"], { status: "done" })).resolves.toBe(response);
+    const refusal = new Error("Batch incomplete");
+    calls.batchUpdate.mockRejectedValueOnce(refusal);
+    await expect(result.current.actions.batchUpdate(["ordinary"], { status: "done" })).rejects.toBe(refusal);
+  });
   it("retains ordinary relative drag writes", () => {
     const { client, result } = setup();
     client.setQueryData(issueKeys.detail("source", "ordinary"), { ...shared, id: "ordinary", collaboration: undefined });

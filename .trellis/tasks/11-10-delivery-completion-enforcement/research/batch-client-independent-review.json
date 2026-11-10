@@ -1,0 +1,867 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-10T17:18:17.533980+00:00",
+  "reviewer": "native trellis-check / check_resume_evidence",
+  "head": "c9a0705516240b65f6f6ccfc658144d463e974d4",
+  "scope": "P2 client only; 13 frozen frontend type/implementation/test files",
+  "verdict": "PASS_CLIENT_PROTOCOL_AND_CACHE_SCOPE",
+  "source_sha256": {
+    "packages/core/types/api.ts": "a4df60b596af6185721c4f624f68a63104845ac7877d2498592973964c96d609",
+    "packages/core/api/client.ts": "178e5b139a3d34e7bfa372549860b6458aaba02479fd2e8bf229eb5bdbe03087",
+    "packages/core/api/issue-batch-update.ts": "597e92d8f30fcf97d60e6bb01df86f4207caf3bfad14206c67b9426cf98347ed",
+    "packages/core/api/issue-batch-update.test.ts": "300e5170f048eb9ee7ad15cd44a42cb393f76efcc9ce232d32923e1321083d47",
+    "packages/core/issues/mutations.ts": "9b80961cb0414d0a2bc06647abe6a2230ee4a90d858792bbff5144c9006b4342",
+    "packages/core/issues/mutations.test.tsx": "c340869b288f3fb45626f91289d0cf84b30b8ad82ff9e49f0700d9ab481968a7",
+    "packages/views/issues/components/batch-action-toolbar.tsx": "d8ae26c591674a8d999d4747492aba9a7a0d84f82616f6cad05138bb136963c9",
+    "packages/views/issues/components/batch-action-toolbar.confirm.test.tsx": "2e574865976e4a0026c66a139a884b1f3862e5c3786110d5563565119c27c0f8",
+    "packages/views/issues/surface/actions-context.tsx": "a411a737118c546f49a3d58bd41c7733b5ea1ddc4019ca9c31a9086ac784673a",
+    "packages/views/issues/surface/use-issue-surface-actions.ts": "7c238bcc957a9722fa26c677258c63e6599cf90f23044778caa1bdb85bdda48c",
+    "packages/views/issues/surface/use-issue-surface-actions.collaboration.test.tsx": "a4adef8cb82299a457adabb974a449ab4298e25d4a5dba0fbaa00dc4cc307cba",
+    "packages/views/issues/surface/use-issue-surface-controller.test.tsx": "4737eb2cbd8f8312556f578673707779255147aae55da2916c885a7ef2c78128",
+    "packages/views/modals/run-confirm.test.tsx": "c9990bba6552676e590f7cea873dccaebde48a6c7ffd3908f879cb0762f85545"
+  },
+  "producer_report_sha256": "3b1e64e1c2105a2644d1ba1a84e148799a881218bef8e798a40b39161a514d9b",
+  "wire_contract_sha256": "375002503ca2e0011eec881e04e19a65a782e15bc7cedac472677ab7b9e1ea11",
+  "product_findings_fixed": [],
+  "product_findings_not_fixed": [],
+  "records": [
+    {
+      "run_id": "client-contract-red01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-contract-red01.json",
+      "record_sha256": "3317341b0b861bf1199786f3f1dcbf7bc2636d75501cb43cc35ae2a124a53120",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-contract-red01.log",
+      "log_sha256": "b11dc09f2ca2515fbdfe0d950b244214d2b16e8ed341a09149eb9d5c4e826549",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "api/issue-batch-update.test.ts",
+        "issues/mutations.test.tsx",
+        "--reporter=json"
+      ],
+      "exit_code": 1,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 2,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [
+        "packages/core/api/issue-batch-update.test.ts",
+        "packages/core/issues/mutations.test.tsx"
+      ],
+      "outside_client_changed_in_run": [],
+      "vitest": {
+        "counts": {
+          "passed": 29,
+          "failed": 29
+        },
+        "assertion_total": 58,
+        "unique_names": 58,
+        "reported_total": 58,
+        "reported_success": false,
+        "by_file": {
+          "packages/core/api/issue-batch-update.test.ts": {
+            "passed": 2,
+            "failed": 27
+          },
+          "packages/core/issues/mutations.test.tsx": {
+            "passed": 27,
+            "failed": 2
+          }
+        }
+      }
+    },
+    {
+      "run_id": "client-contract-red02",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-contract-red02.json",
+      "record_sha256": "82577e59a2072cdfef0e8440594e681ce637974b9952dbfc8eecdb93edc7342c",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-contract-red02.log",
+      "log_sha256": "828e7bfb3b1b144917f5685ca24ee82d7bc74c08b3f77078d30110c07a4cd174",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "api/issue-batch-update.test.ts",
+        "issues/mutations.test.tsx",
+        "--reporter=json"
+      ],
+      "exit_code": 1,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 2,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [
+        "packages/core/api/issue-batch-update.test.ts",
+        "packages/core/issues/mutations.test.tsx"
+      ],
+      "outside_client_changed_in_run": [],
+      "vitest": {
+        "counts": {
+          "passed": 30,
+          "failed": 28
+        },
+        "assertion_total": 58,
+        "unique_names": 58,
+        "reported_total": 58,
+        "reported_success": false,
+        "by_file": {
+          "packages/core/api/issue-batch-update.test.ts": {
+            "passed": 2,
+            "failed": 27
+          },
+          "packages/core/issues/mutations.test.tsx": {
+            "passed": 28,
+            "failed": 1
+          }
+        }
+      }
+    },
+    {
+      "run_id": "client-cache-red03",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-cache-red03.json",
+      "record_sha256": "fe11b33ed1e20bcd83aeada1167e04f53fb13d58130dca0083db94d9eeb46085",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-cache-red03.log",
+      "log_sha256": "0276acecdf2098aa5e4966fcd93d015c38a2c1715e7be09033bb48ce21df96b1",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "issues/mutations.test.tsx",
+        "-t",
+        "refreshes actual committed|newer server snapshot",
+        "--reporter=json"
+      ],
+      "exit_code": 1,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 2,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [
+        "packages/core/api/issue-batch-update.test.ts",
+        "packages/core/issues/mutations.test.tsx"
+      ],
+      "outside_client_changed_in_run": [],
+      "vitest": {
+        "counts": {
+          "skipped": 27,
+          "failed": 2
+        },
+        "assertion_total": 29,
+        "unique_names": 29,
+        "reported_total": 29,
+        "reported_success": false,
+        "by_file": {
+          "packages/core/issues/mutations.test.tsx": {
+            "skipped": 27,
+            "failed": 2
+          }
+        }
+      }
+    },
+    {
+      "run_id": "client-contract-green01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-contract-green01.json",
+      "record_sha256": "fa088c3cefe312494f52ad5d15789b4e20bf71be922026e3d8c5b9ae7810c6f0",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-contract-green01.log",
+      "log_sha256": "47aceb0d2b2b3d22b3e3e434fbb8b3a16a7692d786b7f6d42d37eb2dd7c81a8a",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "api/issue-batch-update.test.ts",
+        "issues/mutations.test.tsx",
+        "--reporter=json"
+      ],
+      "exit_code": 0,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 8,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [
+        "packages/core/api/client.ts",
+        "packages/core/api/issue-batch-update.ts",
+        "packages/core/api/issue-batch-update.test.ts",
+        "packages/core/issues/mutations.ts",
+        "packages/core/issues/mutations.test.tsx"
+      ],
+      "outside_client_changed_in_run": [],
+      "vitest": {
+        "counts": {
+          "passed": 58
+        },
+        "assertion_total": 58,
+        "unique_names": 58,
+        "reported_total": 58,
+        "reported_success": true,
+        "by_file": {
+          "packages/core/api/issue-batch-update.test.ts": {
+            "passed": 29
+          },
+          "packages/core/issues/mutations.test.tsx": {
+            "passed": 29
+          }
+        }
+      }
+    },
+    {
+      "run_id": "client-views-red01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-views-red01.json",
+      "record_sha256": "be4fa8225a13cf1eef3a0488d0b0cf0362e474f25427d6291b7bf0913aadf28b",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-views-red01.log",
+      "log_sha256": "a009dc37acc8ce6a14aab8a1fecf87d021ed6bfcd78cdf975a61634e76da4c9e",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "vitest",
+        "run",
+        "issues/components/batch-action-toolbar.confirm.test.tsx",
+        "issues/surface/use-issue-surface-actions.collaboration.test.tsx",
+        "--reporter=json"
+      ],
+      "exit_code": 1,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 8,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [
+        "packages/core/api/client.ts",
+        "packages/core/api/issue-batch-update.ts",
+        "packages/core/api/issue-batch-update.test.ts",
+        "packages/core/issues/mutations.ts",
+        "packages/core/issues/mutations.test.tsx"
+      ],
+      "outside_client_changed_in_run": [],
+      "vitest": {
+        "counts": {
+          "passed": 12,
+          "failed": 5
+        },
+        "assertion_total": 17,
+        "unique_names": 17,
+        "reported_total": 17,
+        "reported_success": false,
+        "by_file": {
+          "packages/views/issues/surface/use-issue-surface-actions.collaboration.test.tsx": {
+            "passed": 4,
+            "failed": 1
+          },
+          "packages/views/issues/components/batch-action-toolbar.confirm.test.tsx": {
+            "failed": 4,
+            "passed": 8
+          }
+        }
+      }
+    },
+    {
+      "run_id": "client-contract-green02",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-contract-green02.json",
+      "record_sha256": "7615eb2e698ee46ff3b9fe5655c1f9168c6ab33007fb97023d43b370bc6ea9f0",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-contract-green02.log",
+      "log_sha256": "2128f9964381f3595887f7efab51eecb88db3e9e5ac880d7db7e51bb42bc1444",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "api/issue-batch-update.test.ts",
+        "issues/mutations.test.tsx",
+        "--reporter=json"
+      ],
+      "exit_code": 0,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [
+        "packages/core/api/client.ts",
+        "packages/core/api/issue-batch-update.ts",
+        "packages/core/api/issue-batch-update.test.ts",
+        "packages/core/issues/mutations.ts"
+      ],
+      "outside_client_changed_in_run": [],
+      "vitest": {
+        "counts": {
+          "passed": 61
+        },
+        "assertion_total": 61,
+        "unique_names": 61,
+        "reported_total": 61,
+        "reported_success": true,
+        "by_file": {
+          "packages/core/api/issue-batch-update.test.ts": {
+            "passed": 31
+          },
+          "packages/core/issues/mutations.test.tsx": {
+            "passed": 30
+          }
+        }
+      }
+    },
+    {
+      "run_id": "client-views-green01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-views-green01.json",
+      "record_sha256": "498b60441ae1e80e0e051e9a891a5179d1dc75c228d5caf650492fdef3f1e184",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-views-green01.log",
+      "log_sha256": "66912b58d969813c68482f6324d58127477e1aa405969ff3e6ebff6c03accc5f",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "vitest",
+        "run",
+        "issues/components/batch-action-toolbar.confirm.test.tsx",
+        "issues/surface/use-issue-surface-actions.collaboration.test.tsx",
+        "issues/surface/use-issue-surface-controller.test.tsx",
+        "modals/run-confirm.test.tsx",
+        "--reporter=json"
+      ],
+      "exit_code": 0,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [
+        "packages/core/api/client.ts",
+        "packages/core/api/issue-batch-update.ts",
+        "packages/core/api/issue-batch-update.test.ts",
+        "packages/core/issues/mutations.ts"
+      ],
+      "outside_client_changed_in_run": [],
+      "vitest": {
+        "counts": {
+          "passed": 91
+        },
+        "assertion_total": 91,
+        "unique_names": 91,
+        "reported_total": 91,
+        "reported_success": true,
+        "by_file": {
+          "packages/views/modals/run-confirm.test.tsx": {
+            "passed": 20
+          },
+          "packages/views/issues/surface/use-issue-surface-actions.collaboration.test.tsx": {
+            "passed": 5
+          },
+          "packages/views/issues/surface/use-issue-surface-controller.test.tsx": {
+            "passed": 54
+          },
+          "packages/views/issues/components/batch-action-toolbar.confirm.test.tsx": {
+            "passed": 12
+          }
+        }
+      }
+    },
+    {
+      "run_id": "client-core-typecheck01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-core-typecheck01.json",
+      "record_sha256": "688f8e3a7f26efa107f1d545069c738a37c0eba5b0d2f10b2fd0fe43aae43ac2",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-core-typecheck01.log",
+      "log_sha256": "cea1ed17cc6ffe0f8fa1ad3daac9d842ef02b36b0f172e81b3a37451951bfc35",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "typecheck"
+      ],
+      "exit_code": 2,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [
+        "packages/core/api/client.ts",
+        "packages/core/api/issue-batch-update.ts",
+        "packages/core/api/issue-batch-update.test.ts",
+        "packages/core/issues/mutations.ts"
+      ],
+      "outside_client_changed_in_run": [],
+      "vitest": null
+    },
+    {
+      "run_id": "client-views-typecheck01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-views-typecheck01.json",
+      "record_sha256": "b2778f7d3f55f7d62a78357cfb458182430a32e25fc3057b1e1004d13a146c14",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-views-typecheck01.log",
+      "log_sha256": "da3111029ad36904e4f922cc6ac3115fc17f3b6c6510976e542949342eee8a71",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "typecheck"
+      ],
+      "exit_code": 2,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [
+        "packages/core/api/client.ts",
+        "packages/core/api/issue-batch-update.ts",
+        "packages/core/api/issue-batch-update.test.ts",
+        "packages/core/issues/mutations.ts"
+      ],
+      "outside_client_changed_in_run": [],
+      "vitest": null
+    },
+    {
+      "run_id": "client-core-lint01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-core-lint01.json",
+      "record_sha256": "badff915e1067ff3d4dc8dc366b7dfde11e210a33edab80dac95615b8eca5b94",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-core-lint01.log",
+      "log_sha256": "81c2bbe4aa4345434c23239970f6dabd5e265365f157c10ec8e98d66fbe2c45e",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "lint"
+      ],
+      "exit_code": 0,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [
+        "packages/core/api/client.ts",
+        "packages/core/api/issue-batch-update.ts",
+        "packages/core/api/issue-batch-update.test.ts",
+        "packages/core/issues/mutations.ts"
+      ],
+      "outside_client_changed_in_run": [],
+      "vitest": null
+    },
+    {
+      "run_id": "client-views-lint01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-views-lint01.json",
+      "record_sha256": "128e8c2b7cccc43c9d01d3a0e939f38f7b43716ecf50a6aa17823ee29d23ce13",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-views-lint01.log",
+      "log_sha256": "283a41e43809bfe476cdab8cf8e60a5e1fd7d09a77a170344410a950b0cb5e8a",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "lint"
+      ],
+      "exit_code": 0,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [
+        "packages/core/api/client.ts",
+        "packages/core/api/issue-batch-update.ts",
+        "packages/core/api/issue-batch-update.test.ts",
+        "packages/core/issues/mutations.ts"
+      ],
+      "outside_client_changed_in_run": [],
+      "vitest": null
+    },
+    {
+      "run_id": "client-core-typecheck02",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-core-typecheck02.json",
+      "record_sha256": "3a63c49e5a898dec4ca8d06f07bb59247905865029d918313171ce0492db6d49",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-core-typecheck02.log",
+      "log_sha256": "6792b21601c39c625beb29ee95f45ed19e41131661d344af73c3f199e6b4b827",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "typecheck"
+      ],
+      "exit_code": 0,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [
+        "packages/core/api/client.ts",
+        "packages/core/api/issue-batch-update.test.ts"
+      ],
+      "outside_client_changed_in_run": [],
+      "vitest": null
+    },
+    {
+      "run_id": "client-views-typecheck02",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-views-typecheck02.json",
+      "record_sha256": "d070aff5200dc9786e4e3899e120a638fc010723acc8b4e04f79947feb22bbc8",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-views-typecheck02.log",
+      "log_sha256": "ebecc0e3a9fe8f5406c712cc7922bbd1acea5bd806f8696cadeea11290caf373",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "typecheck"
+      ],
+      "exit_code": 0,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [
+        "packages/core/api/client.ts",
+        "packages/core/api/issue-batch-update.test.ts"
+      ],
+      "outside_client_changed_in_run": [],
+      "vitest": null
+    },
+    {
+      "run_id": "client-contract-final01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-contract-final01.json",
+      "record_sha256": "fcdc14ae066c752ac79ec20bd9e7728ff84a3e10080eabf71afabf68ee0e6ae8",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-contract-final01.log",
+      "log_sha256": "fac298c4b1f2dbe8812471132efdd61ee86a8401aa17ab62b75f013b2eaa1024",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "api/issue-batch-update.test.ts",
+        "issues/mutations.test.tsx",
+        "--reporter=json"
+      ],
+      "exit_code": 0,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [
+        "packages/core/api/client.ts",
+        "packages/core/api/issue-batch-update.test.ts"
+      ],
+      "outside_client_changed_in_run": [],
+      "vitest": {
+        "counts": {
+          "passed": 62
+        },
+        "assertion_total": 62,
+        "unique_names": 62,
+        "reported_total": 62,
+        "reported_success": true,
+        "by_file": {
+          "packages/core/api/issue-batch-update.test.ts": {
+            "passed": 32
+          },
+          "packages/core/issues/mutations.test.tsx": {
+            "passed": 30
+          }
+        }
+      }
+    },
+    {
+      "run_id": "client-contract-final02",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-contract-final02.json",
+      "record_sha256": "460ff5f106284c9aca179f2d4b9d4f5249d562b58a7f870b5ab5efce400dea87",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-contract-final02.log",
+      "log_sha256": "1d089e9596e44fba0067512ed26978e8eb35f5d773900ecc025a24929cc96d61",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "api/issue-batch-update.test.ts",
+        "issues/mutations.test.tsx",
+        "--reporter=json"
+      ],
+      "exit_code": 0,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [],
+      "outside_client_changed_in_run": [],
+      "vitest": {
+        "counts": {
+          "passed": 63
+        },
+        "assertion_total": 63,
+        "unique_names": 63,
+        "reported_total": 63,
+        "reported_success": true,
+        "by_file": {
+          "packages/core/api/issue-batch-update.test.ts": {
+            "passed": 33
+          },
+          "packages/core/issues/mutations.test.tsx": {
+            "passed": 30
+          }
+        }
+      }
+    },
+    {
+      "run_id": "client-core-lint-final02",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-core-lint-final02.json",
+      "record_sha256": "8defa07755b2cc151e5661b0bb48e207ba370f124d3b6722d44eaf5ee11b0a45",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-core-lint-final02.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "eslint",
+        "api/client.ts",
+        "api/issue-batch-update.ts",
+        "api/issue-batch-update.test.ts",
+        "issues/mutations.ts",
+        "issues/mutations.test.tsx",
+        "types/api.ts"
+      ],
+      "exit_code": 0,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [],
+      "outside_client_changed_in_run": [],
+      "vitest": null
+    },
+    {
+      "run_id": "client-core-typecheck-final03",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-core-typecheck-final03.json",
+      "record_sha256": "e5805d3e9c467165de5fb7c419e8a28b8c52df0379d39deea8bf4eafbe7de5d7",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-core-typecheck-final03.log",
+      "log_sha256": "6792b21601c39c625beb29ee95f45ed19e41131661d344af73c3f199e6b4b827",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "typecheck"
+      ],
+      "exit_code": 0,
+      "reviewer_executed": false,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [],
+      "outside_client_changed_in_run": [
+        "server/internal/service/artifact_authority.go",
+        "server/internal/service/delivery_evidence.go",
+        "server/internal/service/delivery_policy.go",
+        "server/internal/service/builtin_skills/multica-creating-agents/references/creating-agents-source-map.md"
+      ],
+      "vitest": null
+    },
+    {
+      "run_id": "client-review-core-typecheck01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-review-core-typecheck01.json",
+      "record_sha256": "9ff1bfc7c8f7388c7c5773cf3e3b59faaaafc2e1ef1a0e773bbe21eba9588ac8",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-review-core-typecheck01.log",
+      "log_sha256": "6792b21601c39c625beb29ee95f45ed19e41131661d344af73c3f199e6b4b827",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "typecheck"
+      ],
+      "exit_code": 0,
+      "reviewer_executed": true,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [],
+      "outside_client_changed_in_run": [],
+      "vitest": null
+    },
+    {
+      "run_id": "client-review-views-typecheck01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-review-views-typecheck01.json",
+      "record_sha256": "781a210de592e611b09d7a6a38a52acaae3455a61ac80822e6032be6b9b6c1a5",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-review-views-typecheck01.log",
+      "log_sha256": "ebecc0e3a9fe8f5406c712cc7922bbd1acea5bd806f8696cadeea11290caf373",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "typecheck"
+      ],
+      "exit_code": 0,
+      "reviewer_executed": true,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [],
+      "outside_client_changed_in_run": [
+        "server/internal/handler/workspace_delete_manifest_test.go"
+      ],
+      "vitest": null
+    },
+    {
+      "run_id": "client-review-core-lint01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-review-core-lint01.json",
+      "record_sha256": "716b6e426b459d8feac2178900d3464df772bbdf7b5633bf14e44ddff9f1c463",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-review-core-lint01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "eslint",
+        "api/client.ts",
+        "api/issue-batch-update.ts",
+        "api/issue-batch-update.test.ts",
+        "issues/mutations.ts",
+        "issues/mutations.test.tsx",
+        "types/api.ts"
+      ],
+      "exit_code": 0,
+      "reviewer_executed": true,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [],
+      "outside_client_changed_in_run": [],
+      "vitest": null
+    },
+    {
+      "run_id": "client-review-views-lint01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/client-review-views-lint01.json",
+      "record_sha256": "fce4f903abf98b5e4807968a3423f4c0000ec95813a6a1d85d73de1f01ac2ecb",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/client-review-views-lint01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_hash_matches_record": true,
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "eslint",
+        "issues/components/batch-action-toolbar.tsx",
+        "issues/components/batch-action-toolbar.confirm.test.tsx",
+        "issues/surface/actions-context.tsx",
+        "issues/surface/use-issue-surface-actions.ts",
+        "issues/surface/use-issue-surface-actions.collaboration.test.tsx",
+        "issues/surface/use-issue-surface-controller.test.tsx",
+        "modals/run-confirm.test.tsx"
+      ],
+      "exit_code": 0,
+      "reviewer_executed": true,
+      "database": null,
+      "client_paths_present": 13,
+      "client_source_unchanged_in_run": true,
+      "current_client_differences": [],
+      "outside_client_changed_in_run": [],
+      "vitest": null
+    }
+  ],
+  "validation": {
+    "owned_whitespace_diff": "pass",
+    "current_core_typecheck": "pass reviewer client-review-core-typecheck01",
+    "current_views_typecheck": "pass reviewer client-review-views-typecheck01",
+    "changed_core_lint": "pass reviewer client-review-core-lint01, no diagnostics",
+    "changed_views_lint": "pass reviewer client-review-views-lint01, no diagnostics",
+    "producer_full_views_lint_warning_count": 27,
+    "producer_full_views_warnings_all_untouched": true,
+    "current_final_core_tests": {
+      "passed": 63,
+      "failed": 0,
+      "excluded": 0,
+      "source": "client-contract-final02",
+      "split": {
+        "api_protocol": 33,
+        "mutation": 30
+      }
+    },
+    "views_tests": {
+      "passed": 91,
+      "failed": 0,
+      "excluded": 0,
+      "source": "client-views-green01",
+      "views_owned_source_unchanged": true,
+      "subsequent_core_changes_separately_tested_and_current_typechecked": true
+    },
+    "tests_rerun_by_reviewer": false
+  },
+  "assessment": {
+    "request_correlated_strict_results": true,
+    "legacy_count_noop_compatibility": true,
+    "partial_unknown_never_all_success": true,
+    "no_write_retry_or_key_replacement": true,
+    "request_ids_frozen_before_transport": true,
+    "error_status_body_and_dynamic_auth_epoch_preserved": true,
+    "mutation_control_fields_excluded": true,
+    "rollback_preserves_newer_query_value": true,
+    "failure_invalidates_authoritative_scope": true,
+    "toolbar_count_surface_promise_and_dialog_error_behavior": true
+  },
+  "remaining_integration": [
+    "Backend must emit frozen protocol and perform real per-item status/authorization transactions.",
+    "Main owns source/spec documentation and e2e exact-response update with real persisted-state assertions.",
+    "No actual backend/DB/browser/authorization/gate acceptance from these frontend tests."
+  ],
+  "read_failures": [
+    {
+      "path": "packages/core/issues/keys.ts",
+      "kind": "read-only missing guessed path; keys found in queries.ts; not product red"
+    },
+    {
+      "path": "packages/core/issues/move-mutation.ts",
+      "kind": "read-only missing guessed path; move handled by useUpdateIssue in mutations.ts; not product red"
+    }
+  ],
+  "reviewer_product_edits": 0,
+  "reviewer_db_container_provider_browser_actions": 0,
+  "reviewer_commits": 0,
+  "full_delivery_gate_complete": false,
+  "full_m1_complete": false
+}

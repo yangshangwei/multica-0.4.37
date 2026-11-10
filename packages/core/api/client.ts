@@ -1,3 +1,4 @@
+import { hasBatchIssueMutation, isBatchUpdateComplete, parseBatchUpdateOutcome, validBatchCompletionOptions } from "./issue-batch-update";
 import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, IterationListSchema, IterationDetailSchema, IterationIssuesSchema, IterationEventsSchema, IterationPreviewSchema, IterationWriteResultSchema, type IterationCreateInput, type IterationDraft, type IterationWriteInput } from "./iteration-schemas";
 import { z } from "zod";
 import { parseCollaborationActivity } from "../collaboration/activity-schema";
@@ -90,6 +91,8 @@ import type {
   CreateIssueRequest,
   MoveIssueRequest,
   UpdateIssueRequest,
+  BatchUpdateIssuesOptions,
+  BatchUpdateIssuesResponse,
   GroupedIssuesResponse,
   ListIssuesResponse,
   SearchIssuesResponse,
@@ -666,6 +669,22 @@ export class ApiError extends Error {
   // or while the rejection propagates to the caller.
   get isStaleAuthResponse(): boolean {
     return this.isAuthResponseCurrent?.() === false;
+  }
+}
+
+/** A batch can commit a prefix even when the request returns an error. */
+export class BatchUpdateError extends ApiError {
+  readonly outcomeUnknown: boolean;
+
+  constructor(
+    message: string,
+    readonly outcome?: BatchUpdateIssuesResponse,
+    source?: ApiError,
+  ) {
+    super(message, source?.status ?? 0, source?.statusText ?? "Unconfirmed batch update",
+      source?.body, source ? () => !source.isStaleAuthResponse : undefined, source?.retryAfterSeconds);
+    this.name = "BatchUpdateError";
+    this.outcomeUnknown = outcome?.results === undefined || outcome.results.some((item) => item.state === "unknown");
   }
 }
 
@@ -3121,11 +3140,30 @@ export class ApiClient {
     await this.fetch(`/api/issues/${id}`, { method: "DELETE" });
   }
 
-  async batchUpdateIssues(issueIds: string[], updates: UpdateIssueRequest): Promise<{ updated: number }> {
-    return this.fetch("/api/issues/batch-update", {
-      method: "POST",
-      body: JSON.stringify({ issue_ids: issueIds, updates }),
-    });
+  async batchUpdateIssues(issueIds: string[], updates: UpdateIssueRequest, options?: BatchUpdateIssuesOptions): Promise<BatchUpdateIssuesResponse> {
+    if (!validBatchCompletionOptions(issueIds, updates, options)) {
+      throw new ApiError("Invalid per-issue completion bindings", 400, "Bad Request", { code: "invalid_batch_update_request" });
+    }
+    const requestedIds = [...issueIds];
+    const hasMutation = hasBatchIssueMutation(updates);
+    let raw: unknown;
+    try {
+      raw = await this.fetch<unknown>("/api/issues/batch-update", {
+        method: "POST",
+        redirect: "error",
+        body: JSON.stringify({ issue_ids: requestedIds, updates, ...options }),
+      });
+    } catch (error) {
+      const source = error instanceof ApiError ? error : undefined;
+      const outcome = source ? parseBatchUpdateOutcome(source.body, requestedIds, hasMutation) : undefined;
+      throw new BatchUpdateError(source?.message ?? "Batch update could not be confirmed. Refresh before continuing.", outcome, source);
+    }
+    const outcome = parseBatchUpdateOutcome(raw, requestedIds, hasMutation);
+    if (outcome === undefined) throw new BatchUpdateError("Batch update could not be confirmed. Refresh before continuing.");
+    if (!isBatchUpdateComplete(outcome, requestedIds.length, hasMutation)) {
+      throw new BatchUpdateError("Batch update was incomplete. Refresh before continuing.", outcome);
+    }
+    return outcome;
   }
 
   async batchDeleteIssues(issueIds: string[]): Promise<{ deleted: number }> {
