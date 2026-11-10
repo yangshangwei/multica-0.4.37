@@ -56,3 +56,8 @@ User asked whether the commits were on the integration branch, then instructed c
 Preserved16 nonoverlapping dirty tracked files and8756 untracked files byte-for-byte/mode-for-mode. Reconciled only server spec index and developer journal index/body, preserving prior119–130 history and adding131–132. Original and merged overlapping files are backed up privately. No unrelated edits staged.
 
 Post-merge CI contracts72/72 pass,0skip. Reviewed product source hashes match retained manifests; the later capability-spec update exactly matches accepted targeted-test commit467b857ac. No DB/browser/real-model rerun because product bytes are unchanged; prior leader180s timeout remains a failed full-trial result. No remote push/deployment. Parent remainsin_progress.
+
+
+## 2026-11-10 M1 交付证据观察增量
+
+新子任务 `11-10-delivery-evidence-gate` 实现observe-only固定政策API，复用lifecycle/身份/受控制品回执。最终handler普通/race各140、真实路由各34均0fail/skip；全后端build/vet及技能合同通过。没有新依赖/迁移、done拦截或真实模型调用。完整项目政策/持久评估/全入口阻断、持久委派及M2/M3仍开放；子任务完成不关闭父任务。

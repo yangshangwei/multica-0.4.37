@@ -1,0 +1,425 @@
+{
+  "baseline": "a3b722a47",
+  "scope": "M1 observe-only controlled artifact evidence API; not full delivery enforcement",
+  "accepted": true,
+  "source_manifest": "research/final-source-manifest.json",
+  "final_checks": {
+    "final-handler-normal-02": {
+      "record": "research/runs/final-handler-normal-02.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 140,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "c722a6090003730bde98bc08d80e056213cd09cfbf9addca0bc9a5bf426eb545"
+    },
+    "final-handler-race-02": {
+      "record": "research/runs/final-handler-race-02.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 140,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "6e2bd543a487aaf57233defeca1c90bcba429a652c97022d61a6ee3a0ffb5225"
+    },
+    "final-router-normal-02": {
+      "record": "research/runs/final-router-normal-02.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 34,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "2390247449e911af974abfbe40f8af53c0b6ac4bdf3c16d4ce6b455912f213d4"
+    },
+    "final-router-race-02": {
+      "record": "research/runs/final-router-race-02.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 34,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "3b455f6b3fe36e7dd53cac2e345e2ee0fb509c44c9c782bb7ce5c2bf1c9889ef"
+    },
+    "final-build-02": {
+      "record": "research/runs/final-build-02.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-vet-02": {
+      "record": "research/runs/final-vet-02.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-builtin": {
+      "record": "research/runs/final-builtin.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "76bd3a69c79f4e4009ae00871befa7408c6441aed9a6ab634f9f38890675f4d5"
+    },
+    "final-runtime": {
+      "record": "research/runs/final-runtime.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "05b5c8b9e318f13c880bd9e6ce147e375f25be483737edf7294b385c29196485"
+    }
+  },
+  "all_runs": {
+    "final-build-02": {
+      "record": "research/runs/final-build-02.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-build": {
+      "record": "research/runs/final-build.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-builtin": {
+      "record": "research/runs/final-builtin.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "76bd3a69c79f4e4009ae00871befa7408c6441aed9a6ab634f9f38890675f4d5"
+    },
+    "final-handler-normal-02": {
+      "record": "research/runs/final-handler-normal-02.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 140,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "c722a6090003730bde98bc08d80e056213cd09cfbf9addca0bc9a5bf426eb545"
+    },
+    "final-handler-normal": {
+      "record": "research/runs/final-handler-normal.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 140,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "38146a8c5ddac4b5b21f91904dcf0160a210fa3ff41529ba334fddb3fc015d53"
+    },
+    "final-handler-race-02": {
+      "record": "research/runs/final-handler-race-02.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 140,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "6e2bd543a487aaf57233defeca1c90bcba429a652c97022d61a6ee3a0ffb5225"
+    },
+    "final-handler-race": {
+      "record": "research/runs/final-handler-race.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 140,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "ed0e05026aa373b59e9ef5b23d00ee41754cde76e32f4827a0bc5f2f3af2400c"
+    },
+    "final-router-normal-02": {
+      "record": "research/runs/final-router-normal-02.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 34,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "2390247449e911af974abfbe40f8af53c0b6ac4bdf3c16d4ce6b455912f213d4"
+    },
+    "final-router-normal": {
+      "record": "research/runs/final-router-normal.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 34,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "050b845f6fad03c35fa47f4ef3ff83ee70154ce49342d9b4f415166fca94e80a"
+    },
+    "final-router-race-02": {
+      "record": "research/runs/final-router-race-02.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 34,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "3b455f6b3fe36e7dd53cac2e345e2ee0fb509c44c9c782bb7ce5c2bf1c9889ef"
+    },
+    "final-router-race": {
+      "record": "research/runs/final-router-race.json",
+      "exit_code": 1,
+      "named_test_counts": {
+        "pass": 32,
+        "fail": 2,
+        "skip": 0
+      },
+      "log_sha256": "73412dac0023ab0882bb27f246bd96a9da52973992ff197895042fedde3abc9f"
+    },
+    "final-runtime": {
+      "record": "research/runs/final-runtime.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "05b5c8b9e318f13c880bd9e6ce147e375f25be483737edf7294b385c29196485"
+    },
+    "final-vet-02": {
+      "record": "research/runs/final-vet-02.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-vet": {
+      "record": "research/runs/final-vet.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "handler-01": {
+      "record": "research/runs/handler-01.json",
+      "exit_code": 1,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 35,
+        "skip": 0
+      },
+      "log_sha256": "7cfa6ec95ae9adb277599362b6c171bf6d7e721eed877f3f84c4b53c16b31c65"
+    },
+    "handler-02": {
+      "record": "research/runs/handler-02.json",
+      "exit_code": 1,
+      "named_test_counts": {
+        "pass": 32,
+        "fail": 5,
+        "skip": 0
+      },
+      "log_sha256": "079132f56f01220d95f590462651ee0f3e494c8ac1b1598c24f6e59b381a6988"
+    },
+    "handler-03": {
+      "record": "research/runs/handler-03.json",
+      "exit_code": 1,
+      "named_test_counts": {
+        "pass": 40,
+        "fail": 7,
+        "skip": 0
+      },
+      "log_sha256": "069fc74c845936e191a594af3e8be15bf53ccd069993fdc3a33882b1c5a5d4c3"
+    },
+    "handler-04": {
+      "record": "research/runs/handler-04.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 47,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "23c6ce5fd6598045510b7234aacedf8abe7fd5fec5955ea635c8cd760ad4bd2f"
+    },
+    "handler-05": {
+      "record": "research/runs/handler-05.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 56,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "daf4c8fceec81bece21ebccd1e6f0083c604522d463d2264cbd486caf9ccb475"
+    },
+    "handler-final-migrate": {
+      "record": "research/runs/handler-final-migrate.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "4a0c1ea6b38b350643e2f63538838f73bb18259f495282c92c42c9d1a9150ec0"
+    },
+    "handler-final2-migrate": {
+      "record": "research/runs/handler-final2-migrate.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "344d869437fb9220d258b6729025a502e9f746a75649b27a281be4913769fec0"
+    },
+    "handler-migrate-01": {
+      "record": "research/runs/handler-migrate-01.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "4d2ecb64a0a306a4f52a5e1dadb4d6c55046d769dc702c23989d7bd7c63fa504"
+    },
+    "handler-race-migrate": {
+      "record": "research/runs/handler-race-migrate.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "6b5697efc8e078181864cbdb570d2cec6d147c275aafc92bef7b57cb916384c8"
+    },
+    "handler-race2-migrate": {
+      "record": "research/runs/handler-race2-migrate.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "11d055b595e13e54fdabbb80464b48687837bf583c0bf1a7aeec25781ab9ce38"
+    },
+    "router-02": {
+      "record": "research/runs/router-02.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "d17110177855a915917b09de9a2e36b44c778138bd21fa9c568f12ae03b044f3"
+    },
+    "router-03": {
+      "record": "research/runs/router-03.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "20e07731a9e92d1e786bd36a7486f1af0f31dff161a4efdbd76cf66c9b1c22e7"
+    },
+    "router-final-migrate": {
+      "record": "research/runs/router-final-migrate.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e858fc9808ddcc6f02e1f779d1f8f474d7603e6b5885f8a64919d5d9d4f7ba37"
+    },
+    "router-final2-migrate": {
+      "record": "research/runs/router-final2-migrate.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "d961524dc046f862812df2c0dd0fdae4d0771912962e461fc026dba8ca659c27"
+    },
+    "router-migrate-01": {
+      "record": "research/runs/router-migrate-01.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "9e413a1085316dea29019135565cb2d2949b7490709b2e31fe7f8ecf38a82c10"
+    },
+    "router-race-migrate": {
+      "record": "research/runs/router-race-migrate.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "4988c1878aaa19433be1dd3fdb2c918a01210360f62698e0c863b0141940c3e1"
+    },
+    "router-race2-migrate": {
+      "record": "research/runs/router-race2-migrate.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "ab35eb04628bc81ea427131a2f285c40c594cbf23c13ff5fc706f8f08a523e7c"
+    },
+    "router-red-01": {
+      "record": "research/runs/router-red-01.json",
+      "exit_code": 1,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 11,
+        "skip": 0
+      },
+      "log_sha256": "f5ed048cd24aa40a6f41b70ff3fb216ddea27dea721909a27884406ca791bead"
+    }
+  },
+  "named_count_note": "Counts include subtests, do not sum separate runs as unique cases. Final handler includes 56 new + 84 existing; router11 new +23 existing.",
+  "source_drift": 0,
+  "gofmt": [],
+  "sqlc": "No SQL/schema/generated changes; regeneration not applicable",
+  "frontend": "No frontend changes; TS/lint suites not applicable",
+  "real_model_calls": 0,
+  "private_evidence_root": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70",
+  "limitations": [
+    "Observe only; no lifecycle enforcement or durable observation ledger",
+    "Database-observed PR head, not remote real-time HEAD",
+    "Global short PR table locks and PAT ancillary updates may cause409",
+    "Local backend scoped tests; not full repository, deployed clients or provider acceptance"
+  ],
+  "independent_review": "research/independent-review.json",
+  "cleanup": "research/cleanup.json"
+}

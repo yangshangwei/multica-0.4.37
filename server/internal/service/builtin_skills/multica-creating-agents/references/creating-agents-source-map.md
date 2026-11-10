@@ -89,6 +89,7 @@ go test ./internal/service -run TestBuiltinSkillsConformToTemplate
 | CLI has no approve command | `cmd_approval.go` | `request`, `list`, `get`, `executed`, `cancel` only — an approve command would fail by design for every caller holding a task token | `multica approval --help` |
 | Controlled package scope is frozen before approval | `handler/agent_artifact.go`, `internal/artifact/spec.go` | Dedicated typed local-synthetic request creates pending approval and unclaimed execution atomically; human decision requires exact spec digest | `go test ./internal/handler -run TestControlledArtifact` with an isolated migrated database |
 | Controlled side effects are never replayed | `handler/agent_artifact.go`, `internal/artifact/packager.go` | Durable unknown claim precedes one in-process packaging invocation; old self-report refuses bound approvals; failure/unknown never auto-run again | `go test ./internal/artifact`; isolated handler and router controlled-artifact suites |
+| Delivery evidence observation is not an execution grant | `handler/delivery_evidence.go`, `cmd/server/router.go` | Human-only fixed-policy read snapshot checks current lifecycle versions, original producer authority, canonical receipt and observed PR candidate; missing/unknown evidence never passes; no done mutation | Isolated `TestDeliveryEvidence` handler and actual router suites |
 
 ## Copy command — `server/cmd/multica/cmd_agent_copy.go`
 
@@ -219,3 +220,13 @@ go test ./internal/service -run TestBuiltinSkillsConformToTemplate
 deployment refresh and version-conflict contracts linked from `SKILL.md`.
 Both files are embedded by `loadBuiltinSkill`; the entrypoint stays within
 the 500-line L2 budget enforced by `TestBuiltinSkillsConformToTemplate`.
+
+
+## Delivery evidence observation
+
+The human-only evaluation endpoint binds current issue/project revisions, selected
+source/spec/artifact digests, original producer and approval identities, and the
+database-observed linked PR head. No remote HEAD verification is implied. The
+conservative observation horizon ends at artifact admission expiry; historical
+receipts remain retained. Observations never update issue status or trigger a
+new execution. No new UI/CLI flow is provided.

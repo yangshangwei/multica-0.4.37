@@ -1,0 +1,52 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "./internal/service",
+    "-run",
+    "^Test(BuiltinSkillsConformToTemplate|BuiltinSkillsFrontmatterIsStrictYAML|CreatingAgentsSkillCoversAgentCreationContracts)$",
+    "-count=1"
+  ],
+  "exit_code": 0,
+  "duration_seconds": 3.811,
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/final-builtin.log",
+  "log_sha256": "76bd3a69c79f4e4009ae00871befa7408c6441aed9a6ab634f9f38890675f4d5",
+  "named_test_counts": {
+    "pass": 21,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "TestBuiltinSkillsConformToTemplate/multica-autopilots",
+      "TestBuiltinSkillsConformToTemplate/multica-creating-agents",
+      "TestBuiltinSkillsConformToTemplate/multica-mentioning",
+      "TestBuiltinSkillsConformToTemplate/multica-onboarding",
+      "TestBuiltinSkillsConformToTemplate/multica-projects-and-resources",
+      "TestBuiltinSkillsConformToTemplate/multica-runtimes-and-repos",
+      "TestBuiltinSkillsConformToTemplate/multica-skill-importing",
+      "TestBuiltinSkillsConformToTemplate/multica-squads",
+      "TestBuiltinSkillsConformToTemplate/multica-working-on-issues",
+      "TestBuiltinSkillsConformToTemplate",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-autopilots",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-creating-agents",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-mentioning",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-onboarding",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-projects-and-resources",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-runtimes-and-repos",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-skill-importing",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-squads",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-working-on-issues",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML",
+      "TestCreatingAgentsSkillCoversAgentCreationContracts"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

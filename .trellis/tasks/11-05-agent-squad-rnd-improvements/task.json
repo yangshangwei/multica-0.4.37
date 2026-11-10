@@ -25,7 +25,8 @@
     "11-05-agent-task-least-privilege",
     "11-05-squad-delegation-receipts",
     "11-05-agent-critical-path-ci",
-    "11-06-agent-m1-targeted-validation"
+    "11-06-agent-m1-targeted-validation",
+    "11-10-delivery-evidence-gate"
   ],
   "parent": null,
   "relatedFiles": [],
@@ -61,6 +62,21 @@
       "commit": "f5b51d7be",
       "verified": "handler84 normal/race; router23 normal/race; pure macOS/Linux78; build/vet/sqlc; independent PASS",
       "parent_complete": false
+    },
+    "delivery_evidence_observation_2026_11_10": {
+      "status": "verified_observe_increment",
+      "task": "11-10-delivery-evidence-gate",
+      "handler_normal_race_named_pass_each": 140,
+      "router_normal_race_named_pass_each": 34,
+      "full_delivery_gate_complete": false,
+      "remaining": [
+        "project_policy_and_durable_evaluation",
+        "all_done_writer_enforcement",
+        "durable_delegation_receipts",
+        "M2",
+        "M3"
+      ],
+      "real_model_calls": 0
     }
   }
 }

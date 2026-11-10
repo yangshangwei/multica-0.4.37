@@ -1,0 +1,65 @@
+{
+  "scope": "Real authentication router integration for observe-only delivery evidence",
+  "source": "server/cmd/server/delivery_evidence_integration_test.go",
+  "sha256": "d50b65b821711bf424898f9f9bb52d9d5c4799a5cec8e26f5a5d99198db18032",
+  "attempts": [
+    {
+      "record": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/router-red-01.json",
+      "record_sha256": "a46cc6cf50449a7b0e9722388f0af880fe8d4ccd9bb58b4e520050c3219964b9",
+      "classification": "environment failure: inherited TMPDIR /var symlink correctly refused by existing no-follow packager",
+      "database": "multica_delivery_20261110_router",
+      "exit_code": 1,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 11,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/router-red-01.log",
+      "log_sha256": "f5ed048cd24aa40a6f41b70ff3fb216ddea27dea721909a27884406ca791bead"
+    },
+    {
+      "record": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/router-02.json",
+      "record_sha256": "b15c1ea4e177f861298dc1b8a66aff594acf16fdce2ba20ca192aaf88004ba8e",
+      "classification": "pass before added malformed null-pair regression",
+      "database": "multica_delivery_20261110_router",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/router-02.log",
+      "log_sha256": "d17110177855a915917b09de9a2e36b44c778138bd21fa9c568f12ae03b044f3"
+    },
+    {
+      "record": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/router-03.json",
+      "record_sha256": "6fe26293e3253ca1406dfea422474ea3612ec74a0f1bfcec0e6922ff68439830",
+      "classification": "pass final router source",
+      "database": "multica_delivery_20261110_router",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/router-03.log",
+      "log_sha256": "20e07731a9e92d1e786bd36a7486f1af0f31dff161a4efdbd76cf66c9b1c22e7"
+    }
+  ],
+  "physical_effect_proof": "Created, approved and executed real local deterministic tar; independently inspected archive entry, bytes and SHA256; repeated observation leaves issue/approval/execution/tasks/comments and archive unchanged.",
+  "real_provider_calls": 0,
+  "compile_static": {
+    "gofmt": "pass",
+    "go vet ./cmd/server": "exit 0",
+    "git diff --check": "exit 0"
+  },
+  "limits": [
+    "Final frozen fresh-database normal/race runs owned coordinator",
+    "No complete M1/mandatory completion/real model/deployment claim"
+  ],
+  "post_final_race_correction": {
+    "root_cause": "Legacy authentication asynchronously updates PAT last_used_at on every cache miss; nil Redis fixture always misses. UPDATE can conflict with evaluation FOR SHARE NOWAIT, correctly yielding 409.",
+    "change": "Same real request body waits for fresh token last_used_at commit before positive control; bounded 5 second context and checked SQL; no retry or accepted 409; exact post-auth revocation statuses unchanged.",
+    "verification": "Awaiting new dedicated final normal/race runs from coordinator; prior final-router-race retained."
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "./internal/metrics",
+    "-run",
+    "^TestNoDirectGetAgentRuntimeCalls$",
+    "-count=1"
+  ],
+  "exit_code": 0,
+  "duration_seconds": 2.349,
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/final-runtime.log",
+  "log_sha256": "05b5c8b9e318f13c880bd9e6ce147e375f25be483737edf7294b385c29196485",
+  "named_test_counts": {
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "TestNoDirectGetAgentRuntimeCalls"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

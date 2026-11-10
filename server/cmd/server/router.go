@@ -2234,6 +2234,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 					r.Get("/", h.GetIssue)
 					r.Put("/", h.UpdateIssue)
 					r.Post("/lifecycle-handoffs", h.CreateLifecycleHandoff)
+					r.With(handler.RequireHumanActor).Post("/delivery-evidence/evaluate", h.EvaluateDeliveryEvidence)
 					r.Post("/move", h.MoveIssue)
 					r.Delete("/", h.DeleteIssue)
 					r.Post("/comments/trigger-preview", h.PreviewCommentTriggers)

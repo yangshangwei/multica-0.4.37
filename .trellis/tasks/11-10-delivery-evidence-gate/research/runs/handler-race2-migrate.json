@@ -1,0 +1,27 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "run",
+    "./cmd/migrate",
+    "up"
+  ],
+  "database": "multica_delivery_20261110_handler_race2",
+  "exit_code": 0,
+  "duration_seconds": 4.005,
+  "finished_at": "2026-11-10T09:23:39.656587+08:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/handler-race2-migrate.log",
+  "log_sha256": "11d055b595e13e54fdabbb80464b48687837bf583c0bf1a7aeec25781ab9ce38",
+  "named_test_counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [],
+    "fail": [],
+    "skip": []
+  },
+  "agent_cli_guard": false
+}
