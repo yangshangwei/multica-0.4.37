@@ -919,3 +919,29 @@ Archived 11-01-branch-e2e-acceptance at the user's request. Preserved the retain
 ### Status
 
 [OK] **Completed**
+
+
+## Session 150: 项目政策与持久评估通过独立验收
+<!-- trellis-session: v=2 fp=4bb125f65e5d0630 -->
+
+**Date**: 2026-11-10
+**Task**: 项目政策与持久评估通过独立验收
+**Branch**: `codex/delivery-policy-20261110`
+
+### Summary
+
+项目off/observe政策追加修订与不可变幂等评估；owner/admin管理、当前权限恢复及失效标记，复用原观察器。冻结26文件；handler普通/race各236、真实路由各80、迁移各37、合同23及build/vet/sqlc通过，独审PASS。14库与日志保留、容器停止。无skip/提示/全入口阻断；M1/M2/M3及AC43/E5/H3a/知识停止规则保持，真实模型调用0。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `4ec66e93c` | feat(delivery): preserve policy decisions without reusing stale acceptance evidence |
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 提示/强制门禁覆盖普通、批量、创建done、GitHub及独立协作全部入口；skip权限另行收敛。
