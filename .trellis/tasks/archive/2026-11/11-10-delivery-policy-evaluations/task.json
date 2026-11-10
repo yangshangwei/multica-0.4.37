@@ -3,7 +3,7 @@
   "name": "delivery-policy-evaluations",
   "title": "M1 项目交付证据政策与持久评估",
   "description": "复用已验收观察器，持久项目政策版本与幂等评估；本包仅观察，不启用全入口阻断。",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": "backend",
   "scope": "delivery-policy-evaluations",
   "package": null,
@@ -11,11 +11,11 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-11-10",
-  "completedAt": null,
+  "completedAt": "2026-11-10",
   "branch": "codex/delivery-policy-20261110",
   "base_branch": "codex/cross-workspace-collaboration",
   "worktree_path": "/Volumes/artisan/code/2026/mc-delivery-policy-20261110",
-  "commit": null,
+  "commit": "4ec66e93c",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -33,6 +33,7 @@
     "final_handler_each": 236,
     "final_router_each": 80,
     "final_migrations_each": 37,
-    "cleanup": "stopped_connections0_databases14_retained"
+    "cleanup": "stopped_connections0_databases14_retained",
+    "integration_status": "implementation_committed_local_integration_pending"
   }
 }
