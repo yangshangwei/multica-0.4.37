@@ -127,3 +127,12 @@ Wrong: gate one done writer and call this a global gate, or return an old pass
 after the evaluator exits early on resource-version mismatch.
 Correct: keep this package observe-only, explicitly defer all done writers, and
 finish current authority validation before projecting historical applicability.
+
+## Later explicit hint consumer
+
+The ordinary-issue human completion hint API consumes this existing recovery
+contract without changing it. See [Completion evidence hints](./delivery-completion-hints.md).
+It does not transfer evaluator identity or intercept any completion writer.
+Policy off suppresses this explicit hint's evidence consumption; original-key
+historical recovery through the existing evaluation API remains authorized and
+returns its existing stale applicability. No shared audit or skip was added.

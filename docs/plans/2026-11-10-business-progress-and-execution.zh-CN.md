@@ -108,3 +108,12 @@
 最终冻结26文件，handler普通/race各236、真实认证路由各80、实际迁移/注册各37通过，均0失败/跳过；技能/迁移静态/runtime合同23通过，全后端build/vet/sqlc幂等及格式检查通过。失败原始记录保留，细节见[交付记录](../../.trellis/tasks/archive/2026-11/11-10-delivery-policy-evaluations/delivery.md)。
 
 下一包是提示与完整强制门禁：复核普通/批量更新、创建即完成、GitHub自动完成及独立协作所有入口，覆盖自定义done类别；政策转换、skip负责人/理由/权限、并发条件与旧客户端兼容须单独收敛。不能将本包历史pass/current作为可复用完成授权。M2保持确定性快照→父级总预算→能力/负载调度；M3保持持续NFR、模型评测、供应链、模板与知识治理。六项业务父任务不关闭，真实模型调用0、历史预算与停止规则不变。
+
+
+## 最新推进：完成前证据提示API基础
+
+从05de761de核对无后续提交后，新独立worktree交付human-only普通任务完成前提示，复用现有off/observe政策和原人类持久评估恢复。custom done与内置done同义；只有原pass/current提示matching，所有结果enforced/usable_for_completion均false。无key提醒，off/no-project/non-done不消费证据，撤权/丢失绑定/数据库错误明确拒绝。没有新观察器、执行器或迁移。
+
+最终13文件冻结，handler普通/race各325、真实认证路由各103，零失败/跳过；合同50和build/vet/sqlc/format通过，原4次失败保留。专属PG0连接后停止，10库/日志保留。具体交付与限制见[提示包交付](../../.trellis/tasks/archive/2026-11/11-10-delivery-completion-hints/delivery.md)。
+
+本包仅API提示基础，无UI/CLI自动展示、skip或任何完成写入阻断。全入口核查新增明确comment→child、move、批量逐项提交和R38管理员协作例外。后续完整强制门禁需先收敛原评估者与完成人/机器/跨账号证据、skip权限/绑定、创建done、done编辑/换项目及批量错误协议，在每个实际状态事务内复核。owner/admin政策管理已定；skip提问尚未收到答案，未据推荐自动实施。M2/M3顺序、六项业务状态及真实模型预算/停止规则保持；本批模型调用0，无推送/部署/消息。

@@ -1,0 +1,21 @@
+{
+  "command": [
+    "python3",
+    "-c",
+    "import json,pathlib,subprocess; m=json.loads(pathlib.Path(\".trellis/tasks/11-10-delivery-completion-hints/research/final-source-manifest.json\").read_text()); files=[p for p in m[\"files\"] if p.endswith(\".go\")]; output=subprocess.check_output([\"gofmt\",\"-l\",*files],text=True); print(output,end=\"\"); assert not output; subprocess.run([\"git\",\"diff\",\"--check\"],check=True)"
+  ],
+  "database": null,
+  "started_at": "2026-11-10T09:31:11.630743+00:00",
+  "worktree": "/Volumes/artisan/code/2026/mc-delivery-completion-hints-20261110",
+  "exit_code": 0,
+  "finished_at": "2026-11-10T09:31:11.821807+00:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/final-format01.log",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "inventory": [],
+  "packages": []
+}

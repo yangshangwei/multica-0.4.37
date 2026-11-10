@@ -1,0 +1,49 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "-p",
+    "1",
+    "./internal/handler",
+    "-run",
+    "^TestDeliveryCompletionHintStrictRequestAndStatus$/^nul_status$",
+    "-count=1",
+    "-timeout=10m"
+  ],
+  "database": "hint_handler_iter02",
+  "started_at": "2026-11-10T09:23:28.239311+00:00",
+  "worktree": "/Volumes/artisan/code/2026/mc-delivery-completion-hints-20261110",
+  "exit_code": 1,
+  "finished_at": "2026-11-10T09:23:47.727129+00:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/handler-nul-red01.log",
+  "log_sha256": "dd6f223c40765f57f9fa6ac6a7f16133fbeddd93ed58d94d242c150123fffb84",
+  "counts": {
+    "pass": 0,
+    "fail": 2,
+    "skip": 0
+  },
+  "inventory": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/nul_status",
+      "action": "fail"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus",
+      "action": "fail"
+    }
+  ],
+  "packages": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "action": "fail"
+    }
+  ]
+}

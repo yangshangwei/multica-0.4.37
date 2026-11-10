@@ -257,5 +257,35 @@ Sources: `handler/delivery_policy.go`, `handler/delivery_evaluation.go`,
 `handler/delivery_evidence.go`, `pkg/db/queries/delivery_policy.sql`, migrations776–780.
 Tests: owned `TestDeliveryPolicy` / `TestDeliveryEvaluation` handler and real router
 suites, real migrations and static migration contract. The original stateless
-`/evaluate` route stays ledger-free. This release does not intercept any done
-writer, implement skip/hints/enforcement, invoke a provider, or verify remote HEAD.
+`/evaluate` route stays ledger-free. These policy/evaluation routes do not
+intercept any done writer, implement skip/enforcement, invoke a provider, or
+verify remote HEAD.
+
+## Explicit completion evidence hints
+
+Human-only `POST /api/issues/{id}/delivery-evidence/completion-hint` accepts
+exactly `expected_issue_revision`, `target_status` and `evaluation_key` (the
+original evaluator's canonical UUID, or explicit null). It resolves the current
+ordinary issue, active target status category and project policy in one bounded
+transaction. Custom done categories have the same hint behavior as built-in
+done. Independent collaboration uses its own acceptance workflow and this
+ordinary endpoint returns `409 unsupported_collaboration_action`.
+
+With observe policy and a done target, missing key returns `attention` with
+`evaluation_required`. A supplied key uses the existing current-authority
+recovery: only original pass/current returns `matching`; stale, expired, hold
+and unknown return `attention`. Missing/other-subject keys, revoked authority,
+lock conflicts and database failures remain errors, not advisory success.
+An included evaluation retains its original observation; `checked_at` is the
+recovery's applicability check time. Off, no project and non-done targets return
+`not_applicable` without looking up the supplied key or exposing its evidence.
+
+Every result has `enforced: false` and `usable_for_completion: false`. Matching
+describes this read snapshot only. No new evaluation, execution, queue entry,
+comment or state change occurs. This is an explicit API foundation: no UI/CLI
+automatically requests it, and no ordinary, batch, create-done, VCS or independent
+collaboration completion is intercepted. Off is not skip or an execution grant.
+
+Sources: `handler/delivery_completion_hint.go`, existing policy/evaluation and
+status-catalog helpers, `cmd/server/router.go`. Tests: owned
+`TestDeliveryCompletionHint` handler and real authenticated router suites.

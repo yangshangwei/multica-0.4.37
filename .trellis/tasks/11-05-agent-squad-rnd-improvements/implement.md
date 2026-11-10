@@ -36,3 +36,7 @@
 
 ## 2026-11-10 项目政策与持久评估增量
 子任务11-10-delivery-policy-evaluations完成off/observe追加政策、owner/admin管理、不可变幂等评估与完整当前权限恢复；原unknown不升级、旧版本不绕过原制品授权。冻结26文件，最终handler236、真实路由80、迁移/注册37均普通/race零失败跳过；合同23及build/vet/sqlc通过。无skip/提示/全done入口阻断，父M1仍in_progress；下一包全入口提示/门禁，随后M2快照→总预算→调度、M3治理。历史模型停止/预算保持，调用0。
+
+
+## 2026-11-10 完成前证据提示增量
+独立子任务11-10-delivery-completion-hints复用现有政策/持久评估/current权限，提供普通任务human-only显式完成提示API，覆盖custom done、原观察不可变、缺失/失效/到期/撤权和并发拒绝。13文件冻结，handler普通/race各325、真实路由各103全通过，合同50及build/vet/sqlc/格式通过；保留4份失败。无新观察器/执行器/迁移。此为API提示基础，UI/CLI、skip及全部完成入口强制拦截仍未实施；六业务和M1/M2/M3不关闭。下一包按writer清单收敛跨主体证据、skip、create-done、done编辑/移项目、协作/R38与批量逐项语义。真实模型0，历史停止/预算不变。

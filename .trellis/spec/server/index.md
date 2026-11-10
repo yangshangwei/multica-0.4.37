@@ -9,6 +9,7 @@
 | [Security Boundaries](./security-boundaries.md) | Credential minting gates and automation authorization principals | Active |
 | [Task API capabilities](./task-api-capabilities.md) | Frozen reporter/reviewer scope, current authority, durable non-dispatch and claim limits | M1 increment; host sandbox separate |
 | [Controlled artifact execution](./controlled-artifact-execution.md) | Frozen package approval, one-time claim, confined tar output and durable uncertainty | Local synthetic adapter verified; deployment separate |
+| [Completion evidence hints](./delivery-completion-hints.md) | Explicit human ordinary-issue preflight using current-authority evaluation recovery | API foundation; no UI/CLI or completion enforcement |
 | [Project delivery policy and durable evaluations](./delivery-policy-evaluations.md) | Versioned off/observe policy and immutable current-authority recovery | Observe only; all completion enforcement separate |
 | [Delivery evidence observation](./delivery-evidence-observation.md) | Current-authority, version-bound artifact/PR observation | Observe only; full completion enforcement separate |
 | [Agent output redaction](./agent-output-redaction.md) | Structured credentials, native token formats and redaction before preview/transport | Active |

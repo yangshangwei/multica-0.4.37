@@ -28,7 +28,8 @@
     "11-06-agent-m1-targeted-validation",
     "11-10-delivery-evidence-gate",
     "11-10-durable-delegation-receipts",
-    "11-10-delivery-policy-evaluations"
+    "11-10-delivery-policy-evaluations",
+    "11-10-delivery-completion-hints"
   ],
   "parent": null,
   "relatedFiles": [],
@@ -57,7 +58,7 @@
       "report": "docs/plans/2026-11-10-business-progress-and-execution.zh-CN.md",
       "finding": "M0 and accepted M1 integrated. Controlled-artifact contradictory contracts and two subsequent authority/deletion findings resolved; planning independently ready, product not yet implemented. Other M1 and M2/M3 remain open."
     },
-    "next_action": "M1 hint/enforcement across ordinary/batch/create-done/GitHub/independent collaboration and custom done categories; independently decide skip authority/reason and compatibility. Policy/durable evaluation increment verified. M2 snapshots -> parent budget -> capability/load scheduling; M3 governance.",
+    "next_action": "M1 full enforcement: resolve evaluator sharing, skip authority/bindings, create-done, done edits/moves and collaboration/R38 semantics; then integrate all writers atomically. Explicit API hint foundation verified, UI/CLI prompting absent. M2 snapshot -> parent budget -> capability/load; M3 governance.",
     "m1_controlled_artifact_status": "verified_integrated_archived",
     "m1_controlled_artifact_commit": "f5b51d7be",
     "progress_2026_11_10_artifact": {
@@ -104,6 +105,16 @@
       "full_m1_complete": false,
       "real_model_calls": 0,
       "commit": "4ec66e93c"
+    },
+    "delivery_completion_hints_2026_11_10": {
+      "status": "verified_independent_review_pass",
+      "task": "11-10-delivery-completion-hints",
+      "baseline": "05de761de",
+      "scope": "explicit ordinary human completion-hint API; no skip/UI/CLI/enforcement",
+      "handler_normal_race_named_each": 325,
+      "router_normal_race_named_each": 103,
+      "real_model_calls": 0,
+      "full_m1_complete": false
     }
   }
 }

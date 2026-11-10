@@ -2237,6 +2237,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 					r.With(handler.RequireHumanActor).Post("/delivery-evidence/evaluate", h.EvaluateDeliveryEvidence)
 					r.With(handler.RequireHumanActor).Post("/delivery-evidence/evaluations", h.CreateDeliveryEvaluation)
 					r.With(handler.RequireHumanActor).Get("/delivery-evidence/evaluations/{key}", h.GetDeliveryEvaluation)
+					r.With(handler.RequireHumanActor).Post("/delivery-evidence/completion-hint", h.GetDeliveryCompletionHint)
 					r.Post("/move", h.MoveIssue)
 					r.Delete("/", h.DeleteIssue)
 					r.Post("/comments/trigger-preview", h.PreviewCommentTriggers)
