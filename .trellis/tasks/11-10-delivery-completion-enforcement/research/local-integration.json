@@ -1,0 +1,46 @@
+{
+  "kind": "documentation_only_planning_checkpoint_local_integration",
+  "baseline": "a37bee7cd1c05122383a6c40e157ef9ed5890bf4",
+  "integrated_head": "723ef1b8f28e5968e5f5aa35322da7dfaa619233",
+  "main_branch": "codex/cross-workspace-collaboration",
+  "source_branch": "codex/delivery-completion-enforcement-20261110",
+  "method": "precomputed narrow three-document merge; scoped reversible restore; ff-only; restore preserved local overlays",
+  "dirty_paths_before": 1052,
+  "nonoverlap_paths_preserved_byte_mode_existence": 1049,
+  "overlapping_documents": {
+    ".trellis/tasks/11-05-agent-squad-rnd-improvements/task.json": {
+      "original": "6baf6fb975eda349c8c683772746c8e70b28737165a2a4c4b90f6121f7db834d",
+      "incoming": "fcfe3778597752474f252c511953a03a0113f29a264141d12267c7dd068700c3",
+      "merged": "3d2deb441332385721d43aab521ac05398c92f0ce89adce0ffc2a3e08c8d23d8",
+      "mode": 420
+    },
+    ".trellis/workspace/artisan/journal-3.md": {
+      "original": "bfd9917c67ce4a9792bd28871e6dba4ef841fbbf80c992b088199fa4da78293a",
+      "incoming": "223aebcea6362f9df87d549ef1505a29e89f7379b06df4feb7ce393810b87467",
+      "merged": "bddb3a75cc23361f7e507d4d479474b4d796fe97389e9a8fb8dd91e1cfb61d74",
+      "mode": 420
+    },
+    ".trellis/workspace/artisan/index.md": {
+      "original": "5709a3fd834178cae5d72b4d8701db5acf8e6b4cd8077c833bddcec353332b59",
+      "incoming": "6410e5d91e97190b5d1d05d938b5796138f143ab79cde5a99453786212e72cdd",
+      "merged": "e90450dab7b05e3fd340a05afc494d048cfae767a58559680a4e8161428d322b",
+      "mode": 420
+    }
+  },
+  "old_journal_complete_byte_prefix_preserved": true,
+  "old_parent_fields_and_children_preserved": true,
+  "main_index_empty": true,
+  "prior_frozen_head_files_matched": 13,
+  "completion_source_worktree_files_matched": 45,
+  "product_changes": false,
+  "task_status": "planning",
+  "implementation_ready": false,
+  "full_delivery_gate_complete": false,
+  "full_m1_complete": false,
+  "database_actions": 0,
+  "real_model_calls": 0,
+  "push_deploy_external_messages": false,
+  "private_backup": "/Volumes/artisan/code/2026/mc-delivery-completion-enforcement-20261110/.omx/private/enforcement-intake",
+  "new_test_execution": "none; documentation checks and historical evidence audit only",
+  "format_failure_retained": "research/staged-diff-failure.json"
+}
