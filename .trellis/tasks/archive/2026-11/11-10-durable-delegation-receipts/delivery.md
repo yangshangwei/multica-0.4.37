@@ -32,3 +32,6 @@
 运行时观察是入队后对实际task.RuntimeID的时点采样，不保证连续在线。unknown需人工核查，不能自动重跑。迁移771–775无FK，两个索引各自CONCURRENTLY；回滚须全程停准入/维护且不能删证据来降级。
 
 专属PG容器已停止，连接0，23个数据库与原始日志保留（含6个未运行的保留库）；主工作区已有变更本地集成时逐项保护。真实模型调用0，无push/deploy/外部消息。M1完整项目政策/持久评估/全done入口门禁、M2快照→总预算→调度、M3仍开放；AC43/E5/H3a/知识停止规则及预算不变。
+
+## 本地提交与集成
+实现`f4782b863`，归档`da380717e`，交接日志`aa574d5d0`已本地快进合入codex/cross-workspace-collaboration。931个不重叠已有文件逐字节保留，4个重叠spec/parent/journal文件三方合并，旧日志完整保留；36份产品冻结hash与主工作区一致。详见research/local-integration.json；未push/deploy。
