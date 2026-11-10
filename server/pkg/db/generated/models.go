@@ -1298,6 +1298,23 @@ type Comment struct {
 	DeletedAt        pgtype.Timestamptz `json:"deleted_at"`
 }
 
+type CommentDelegationReceipt struct {
+	WorkspaceID   pgtype.UUID        `json:"workspace_id"`
+	ActorType     string             `json:"actor_type"`
+	ActorID       pgtype.UUID        `json:"actor_id"`
+	OriginatorID  pgtype.UUID        `json:"originator_id"`
+	RequestKey    pgtype.UUID        `json:"request_key"`
+	RequestDigest string             `json:"request_digest"`
+	IssueID       pgtype.UUID        `json:"issue_id"`
+	CommentID     pgtype.UUID        `json:"comment_id"`
+	SourceTaskID  pgtype.UUID        `json:"source_task_id"`
+	State         string             `json:"state"`
+	Targets       []byte             `json:"targets"`
+	Response      []byte             `json:"response"`
+	CreatedAt     pgtype.Timestamptz `json:"created_at"`
+	RecordedAt    pgtype.Timestamptz `json:"recorded_at"`
+}
+
 type CommentReaction struct {
 	ID          pgtype.UUID        `json:"id"`
 	CommentID   pgtype.UUID        `json:"comment_id"`

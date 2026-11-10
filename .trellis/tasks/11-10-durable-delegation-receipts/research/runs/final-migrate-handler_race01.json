@@ -1,0 +1,27 @@
+{
+  "name": "final-migrate-handler_race01",
+  "command": [
+    "go",
+    "run",
+    "-p",
+    "1",
+    "./cmd/migrate",
+    "up"
+  ],
+  "started_at": "2026-11-10T05:05:45.401761+00:00",
+  "finished_at": "2026-11-10T05:05:46.517233+00:00",
+  "exit_code": 0,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_final_handler_race01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/final-migrate-handler_race01.log",
+  "log_sha256": "f43571b527d3f8ff16b794e7ed6d10b5c80bc90b5575c4ac7d8b252eaff6ab6d",
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [],
+    "fail": [],
+    "skip": []
+  }
+}

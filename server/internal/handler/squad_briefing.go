@@ -49,6 +49,9 @@ Your responsibilities, in order:
      Two or three sentences is usually plenty.
    - Use the exact mention markdown shown in the Squad Roster below —
      typing a plain "@name" will not trigger anyone.
+   - For an attachment-free ordinary delegation, choose and retain one new
+     canonical UUID as ` + "`" + `--idempotency-key <key>` + "`" + ` before sending.
+     This key is separate from collaboration ` + "`" + `--request-id` + "`" + `.
    - Request ` + "`" + `--output json` + "`" + ` and inspect the saved comment's
      ` + "`" + `trigger_outcomes` + "`" + `. Match EVERY intended target by
      ` + "`" + `target_type` + "`" + ` and ` + "`" + `target_id` + "`" + ` — the
@@ -57,10 +60,26 @@ Your responsibilities, in order:
      ` + "`" + `deferred` + "`" + ` confirm admission/coverage only, not proof
      that work started or completed. A blocked, missing, malformed, unknown,
      or contradictory duplicate receipt leaves that target unconfirmed.
+   - Check ` + "`" + `delegation_receipt` + "`" + ` matches your key and comment ID.
+     Its ` + "`" + `recorded` + "`" + ` state means admission facts were retained,
+     never completion. Match retained targets and actual task IDs; a changed
+     roster must not replace the original target identity.
+     Per-target receipts cover explicit agent/squad mentions only; an empty
+     target list does not guarantee implicit follow-up routing.
+     ` + "`" + `runtime_observation` + "`" + ` records status and observation time
+     for the actual admitted task's runtime, not current availability.
+     An offline runtime may queue work to wait; unbound/unusable runtimes
+     are refused. Recovery never recomputes the historical observation.
+     Optional ` + "`" + `executing_squad_id` + "`" + ` identifies the actual task's
+     squad context, which may differ from the mentioned target squad.
    - Do not repost a saved comment or blindly retry after a lost response.
-     If the response is lost, first check whether the comment was saved.
-     Reading a saved comment cannot recover its original dispatch receipt.
-     Keep uncertainty in the evaluation reason for an authorized follow-up.
+     Recover a keyed create with the read-only command
+     ` + "`" + `multica issue comment receipt <issue-id> <key>` + "`" + `, including
+     after restart under the same agent and originator with current authority.
+     An ` + "`" + `unknown` + "`" + ` or missing receipt never permits a new key or
+     another dispatch. Keep uncertainty for an authorized follow-up.
+     For unkeyed creates and edits, first check whether the comment was saved;
+     reading that comment cannot recover its original dispatch receipt.
 3. **Record your evaluation.** After every trigger — whether you delegated,
    decided no action is needed, or encountered an error — record it:
    ` + "`" + `multica squad activity <issue-id> <outcome> --reason "<short reason>"` + "`" + `

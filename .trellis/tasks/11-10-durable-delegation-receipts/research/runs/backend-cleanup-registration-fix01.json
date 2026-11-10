@@ -1,0 +1,32 @@
+{
+  "name": "backend-cleanup-registration-fix01",
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "./cmd/migrate",
+    "-run",
+    "^TestConcurrentIndexCleanupsMatchTheirMigrations$",
+    "-count=1"
+  ],
+  "started_at": "2026-11-10T05:25:29.067559+00:00",
+  "finished_at": "2026-11-10T05:25:32.626341+00:00",
+  "exit_code": 0,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_migrations_01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/backend-cleanup-registration-fix01.log",
+  "log_sha256": "880af0052cf39ff7a74b3b91373cbe02f6fc6af97770cfd2a9f736208c333f50",
+  "counts": {
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "TestConcurrentIndexCleanupsMatchTheirMigrations"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "name": "final-router-normal03",
+  "command": [
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "./cmd/server",
+    "-run",
+    "^TestDurableDelegation",
+    "-count=1",
+    "-timeout=10m"
+  ],
+  "started_at": "2026-11-10T05:36:44.557331+00:00",
+  "finished_at": "2026-11-10T05:36:59.345221+00:00",
+  "exit_code": 0,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_final_router03?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/final-router-normal03.log",
+  "log_sha256": "1465c120402587e2cfcd258be7883bf7d7e228f4401114c5ec58f08c9c0f0043",
+  "counts": {
+    "pass": 20,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "TestDurableDelegationRouterJWTAndPATRecoverOriginalReceipt",
+      "TestDurableDelegationRouterConcurrentRetryDispatchesOnce",
+      "TestDurableDelegationRouterQueuedMergeAndDeferredHaveRealTask",
+      "TestDurableDelegationRouterTaskRestartKeepsActorAndOriginator",
+      "TestDurableDelegationRouterSquadReplacementDoesNotRewriteTarget",
+      "TestDurableDelegationRouterRejectedTargetsRemainTraceable/unbound",
+      "TestDurableDelegationRouterRejectedTargetsRemainTraceable/private",
+      "TestDurableDelegationRouterRejectedTargetsRemainTraceable",
+      "TestDurableDelegationRouterReadsRequireCurrentMembershipAndScope",
+      "TestDurableDelegationRouterUnknownNeverReplaysAndLegacyWritesWork",
+      "TestDurableDelegationRouterRejectsMalformedKeyWithoutEffects",
+      "TestDurableDelegationRouterCanceledRequestDoesNotCreateReceipt",
+      "TestDurableDelegationRouterRejectsAttachmentsBeforeCreatingComment",
+      "TestDurableDelegationRouterRevocationAfterAuthentication/membership",
+      "TestDurableDelegationRouterRevocationAfterAuthentication/pat",
+      "TestDurableDelegationRouterRevocationAfterAuthentication",
+      "TestDurableDelegationRouterHumanHeadersCannotImpersonateAgent",
+      "TestDurableDelegationRouterRestrictedCredentialRecoversOnlyOwnScope",
+      "TestDurableDelegationRouterOfflineQueuesAndRetainsObservation",
+      "TestDurableDelegationRouterUnusableRejectsWithoutRepeatNotice"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

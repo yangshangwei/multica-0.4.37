@@ -1,0 +1,34 @@
+{
+  "name": "router-race01",
+  "command": [
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "test",
+    "-race",
+    "-p",
+    "1",
+    "-json",
+    "./cmd/server",
+    "-run",
+    "^TestDurableDelegation",
+    "-count=1"
+  ],
+  "started_at": "2026-11-10T04:12:49.494899+00:00",
+  "finished_at": "2026-11-10T04:13:12.681519+00:00",
+  "exit_code": 1,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_router_race01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/router-race01.log",
+  "log_sha256": "e276c6494f8a7086e7939b9884d93ddd7563d89d3dd472032a08fbbeb12ae25a",
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [],
+    "fail": [],
+    "skip": []
+  }
+}

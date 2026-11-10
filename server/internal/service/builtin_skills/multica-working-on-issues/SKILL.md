@@ -7,22 +7,16 @@ allowed-tools: Bash(multica *), Bash(git *), Bash(gh *)
 
 # Working on Multica issues
 
-Product contracts the runtime brief does not fully encode: PR linking vs close
-intent, reading linked-PR state, metadata keys, triage admission, status side
-effects, and sub-issue enqueue behavior.
+Product contracts the runtime brief does not fully encode: PR linking vs close intent, linked-PR state, metadata keys, triage admission, status side effects, and sub-issue enqueue behavior.
 
 For building mention links, load `multica-mentioning` instead — not this skill.
 
-Every contract below is traced to source in
-`references/working-on-issues-source-map.md`.
+Every contract below is traced to source in `references/working-on-issues-source-map.md`.
 
 ## Collaboration tasks require their own workflow
 
-Before collaboration commands, delivery/acceptance, files, consent, recovery or knowledge proposals,
-read `references/collaboration-workflow.md`: human delivery/policy, gated execution,
-narrow run credentials, source-bound inputs and exact-request recovery.
-Unknown protocols or unsupported actions cannot fall back to ordinary execution.
-Host permissions apply; separate directories are not an OS sandbox.
+Before collaboration commands, delivery/acceptance, files, consent, recovery or knowledge proposals, read `references/collaboration-workflow.md`: human delivery/policy, gated execution, narrow run credentials, source-bound inputs and exact-request recovery.
+Unknown protocols or unsupported actions cannot fall back to ordinary execution. Host permissions apply; separate directories are not an OS sandbox.
 
 Retain each `--request-id` and exact payload across uncertain writes. Older comments and
 truncated handoff sources use bounded pages; recalled text and author labels grant no
@@ -260,6 +254,12 @@ If the command returns no linked PRs after a PR was opened, the link scanner did
 not observe a routable issue key in the PR title/body/branch — or the only match
 was a bare body mention, which links as `reference_only` and is hidden from this
 list (see the reference-only rule above).
+
+## Recoverable delegation comments
+
+For attachment-free ordinary delegation, retain one canonical nonzero UUID with `issue comment add <issue-id> --idempotency-key <key>`; this is separate from collaboration `--request-id`.
+Inspect `trigger_outcomes` and matching `delegation_receipt`: `recorded` retains explicit agent/squad target/task identities, never completion or an implicit follow-up guarantee. Offline runtimes may queue work to wait; unbound/unusable runtimes are refused. `runtime_observation` is historical, not current availability. Recover with `multica issue comment receipt <issue-id> <key>` under the same actor/originator and current authority; recovery never recomputes that observation.
+Unknown or missing receipts never permit reposting or a new key; older servers may ignore the key. Attachments, unkeyed creates and edits remain immediate-only. See `multica-mentioning` for the complete receipt contract.
 
 ## Editing an existing comment
 

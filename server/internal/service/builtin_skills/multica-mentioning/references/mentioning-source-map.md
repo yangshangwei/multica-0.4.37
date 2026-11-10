@@ -91,9 +91,11 @@ a pointer.
 
 | Contract | Source |
 | --- | --- |
-| Create/edit responses carry per-explicit-target `target_type`, `target_id`, `status`, `reason_code`; saved comment reads do not recover those outcomes | `server/internal/handler/comment.go` (`CommentTriggerOutcome`, `commentTriggerOutcomes`, `CreateComment`, `UpdateComment`) |
+| Create/edit responses carry per-explicit-target admission results; optional keyed creates retain original target/task identities for a separate authorized receipt read; ordinary comment reads and edits do not recover original outcomes | `server/internal/handler/comment.go` (`CommentTriggerOutcome`, `commentTriggerOutcomes`, `CreateComment`, `UpdateComment`) |
 | CLI warns for blocked, malformed, unknown and contradictory outcomes without changing saved-write exit semantics or JSON; absent array remains compatible with old servers | `server/cmd/multica/cmd_comment_trigger_outcomes.go` (`warnCommentTriggerOutcomes`); `cmd_issue.go` (`runIssueCommentAdd`, `runIssueCommentUpdate`) |
 | Leader matches every live-roster target, treats admission separately from completion, records partial/uncertain delegation as failed with the handled subset, and does not blindly repost | `server/internal/handler/squad_briefing.go` (`squadOperatingProtocolHeader`) |
+| Durable per-target receipts cover explicit agent/squad mentions only; runtime status/time and actual squad context are retained historical facts, never live availability or implicit follow-up guarantees | `server/internal/handler/comment.go` (`enqueueCommentAgentTriggers`, `commentTriggerOutcomes`); `comment_delegation.go` (`DelegationReceipt`, `DelegationRuntimeObservation`); `comment_delegation_test.go` |
+| Explicit `--idempotency-key` applies only to attachment-free ordinary creates; receipt command reads once, never reposts; unknown/missing acknowledgement stays unconfirmed | `server/cmd/multica/cmd_comment_durable_receipt.go`; `cmd_comment_durable_receipt_test.go`; `server/internal/cli/client.go` (`PostJSONWithIdempotencyKey`) |
 | Fake HTTP tests cover add/update JSON and table output, malformed receipts, exact single write and uncertain-response behavior; protocol tests cover owner/guest composition | `server/cmd/multica/cmd_comment_trigger_outcomes_test.go`; `server/internal/handler/squad_briefing_test.go` (`TestSquadOperatingProtocolChecksDelegationReceipts`) |
 
 ## Guards and outcomes for a parsed mention

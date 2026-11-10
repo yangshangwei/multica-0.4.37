@@ -1,0 +1,25 @@
+{
+  "name": "router-race-migrate01",
+  "command": [
+    "go",
+    "run",
+    "./cmd/migrate",
+    "up"
+  ],
+  "started_at": "2026-11-10T04:12:16.504278+00:00",
+  "finished_at": "2026-11-10T04:12:21.363362+00:00",
+  "exit_code": 0,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_router_race01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/router-race-migrate01.log",
+  "log_sha256": "fb2d5af0e06bfc61a76c7fca6842112ec4e8cc129ccbb607b45f20e12429fe5b",
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [],
+    "fail": [],
+    "skip": []
+  }
+}

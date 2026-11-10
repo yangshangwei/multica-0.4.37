@@ -494,6 +494,7 @@ func init() {
 	issueCommentCmd.AddCommand(issueCommentListCmd)
 	issueCommentCmd.AddCommand(issueCommentContentCmd)
 	issueCommentCmd.AddCommand(issueCommentAddCmd)
+	issueCommentCmd.AddCommand(issueCommentReceiptCmd)
 	issueCommentCmd.AddCommand(issueCommentUpdateCmd)
 	issueCommentCmd.AddCommand(issueCommentDeleteCmd)
 	issueCommentCmd.AddCommand(issueCommentResolveCmd)
@@ -621,6 +622,7 @@ func init() {
 	issueCommentAddCmd.Flags().StringSlice("attachment", nil, "File path(s) to attach (can be specified multiple times)")
 	issueCommentAddCmd.Flags().String("output", "json", "Output format: table or json")
 	issueCommentAddCmd.Flags().String("request-id", "", "Collaboration write UUID; reuse with the unchanged command after an uncertain result")
+	issueCommentAddCmd.Flags().String("idempotency-key", "", "Ordinary attachment-free comment UUID key; retain it for read-only receipt recovery after an uncertain result")
 
 	// issue comment update
 	issueCommentUpdateCmd.Flags().String("content", "", "New comment content (decodes \\n, \\r, \\t, \\\\; pipe via --content-stdin for multi-line bodies or to preserve literal backslashes)")
@@ -2053,6 +2055,15 @@ func runIssueCommentAdd(cmd *cobra.Command, args []string) error {
 	if handled, err := runCollaborationCLI(cmd, args, "issue comment add"); handled {
 		return err
 	}
+	idempotencyKey, _ := cmd.Flags().GetString("idempotency-key")
+	if cmd.Flags().Changed("idempotency-key") {
+		if !validDelegationKey(idempotencyKey) {
+			return fmt.Errorf("--idempotency-key must be a canonical nonzero UUID")
+		}
+		if attachments, _ := cmd.Flags().GetStringSlice("attachment"); len(attachments) > 0 {
+			return fmt.Errorf("--idempotency-key does not support attachments")
+		}
+	}
 	content, hasContent, err := resolveTextFlag(cmd, "content")
 	if err != nil {
 		return err
@@ -2113,12 +2124,16 @@ func runIssueCommentAdd(cmd *cobra.Command, args []string) error {
 		body["attachment_ids"] = attachmentIDs
 	}
 	var result map[string]any
-	if err := client.PostJSON(ctx, "/api/issues/"+issueID+"/comments", body, &result); err != nil {
+	if err := client.PostJSONWithIdempotencyKey(ctx, "/api/issues/"+issueID+"/comments", body, &result, idempotencyKey); err != nil {
 		return fmt.Errorf("add comment: %w", err)
 	}
 
 	fmt.Fprintf(os.Stderr, "Comment added to issue %s.\n", issueRef.Display)
 	warnCommentTriggerOutcomes(os.Stderr, result)
+	if idempotencyKey != "" {
+		commentID, _ := result["id"].(string)
+		warnDurableDelegationReceipt(os.Stderr, result["delegation_receipt"], idempotencyKey, commentID)
+	}
 
 	output, _ := cmd.Flags().GetString("output")
 	if output == "table" {

@@ -361,6 +361,17 @@ func (c *APIClient) DeleteJSONWithBody(ctx context.Context, path string, body an
 
 // PostJSON performs a POST request with a JSON body.
 func (c *APIClient) PostJSON(ctx context.Context, path string, body any, out any) error {
+	return c.postJSON(ctx, path, body, out, "")
+}
+
+// PostJSONWithIdempotencyKey sends one keyed request without automatic replay.
+// The caller retains the key and uses the resource's receipt endpoint after an
+// uncertain response; a key is never retained on the shared client.
+func (c *APIClient) PostJSONWithIdempotencyKey(ctx context.Context, path string, body any, out any, key string) error {
+	return c.postJSON(ctx, path, body, out, key)
+}
+
+func (c *APIClient) postJSON(ctx context.Context, path string, body any, out any, key string) error {
 	data, err := json.Marshal(body)
 	if err != nil {
 		return err
@@ -372,15 +383,29 @@ func (c *APIClient) PostJSON(ctx context.Context, path string, body any, out any
 	}
 	req.Header.Set("Content-Type", "application/json")
 	c.setHeaders(req)
+	if key != "" {
+		req.Header.Set("Idempotency-Key", key)
+		// net/http considers this header replayable. Removing GetBody keeps
+		// a failed connection or 307/308 redirect from resending this write.
+		req.GetBody = nil
+	}
 
-	resp, err := c.HTTPClient.Do(req)
+	requestClient := c.HTTPClient
+	if key != "" {
+		// Even a redirect that changes POST to GET must not turn a keyed
+		// write into a second request or expose its key to another endpoint.
+		oneRequest := *c.HTTPClient
+		oneRequest.CheckRedirect = func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }
+		requestClient = &oneRequest
+	}
+	resp, err := requestClient.Do(req)
 	err = wrapTransport(req, err)
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode >= 400 {
+	if resp.StatusCode >= 400 || (key != "" && resp.StatusCode >= 300) {
 		return newHTTPError(http.MethodPost, path, resp)
 	}
 	if out == nil {

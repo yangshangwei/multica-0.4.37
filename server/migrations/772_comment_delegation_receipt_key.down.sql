@@ -1,0 +1,1 @@
+DROP INDEX CONCURRENTLY IF EXISTS comment_delegation_receipt_key_idx;

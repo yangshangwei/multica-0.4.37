@@ -1,0 +1,37 @@
+{
+  "name": "backend-migration-tests03",
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "./cmd/migrate",
+    "./internal/migrations",
+    "-run",
+    "TestDelegationReceipt|TestEveryConcurrent",
+    "-count=1"
+  ],
+  "started_at": "2026-11-10T04:34:25.400014+00:00",
+  "finished_at": "2026-11-10T04:34:30.785942+00:00",
+  "exit_code": 0,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_migrations_01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/backend-migration-tests03.log",
+  "log_sha256": "8f224cc05266a2837d1c7d92e892bc120cd502243d3af32f4e32f6b6258cda60",
+  "counts": {
+    "pass": 5,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "TestDelegationReceiptMigrationsRetainEvidence",
+      "TestDelegationReceiptSchemaAndConcurrentRollback",
+      "TestEveryConcurrentDownBuildHasCleanup",
+      "TestEveryConcurrentUpBuildHasCleanup",
+      "TestDelegationReceiptMigrationContract"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

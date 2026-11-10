@@ -26,7 +26,8 @@
     "11-05-squad-delegation-receipts",
     "11-05-agent-critical-path-ci",
     "11-06-agent-m1-targeted-validation",
-    "11-10-delivery-evidence-gate"
+    "11-10-delivery-evidence-gate",
+    "11-10-durable-delegation-receipts"
   ],
   "parent": null,
   "relatedFiles": [],
@@ -55,7 +56,7 @@
       "report": "docs/plans/2026-11-10-business-progress-and-execution.zh-CN.md",
       "finding": "M0 and accepted M1 integrated. Controlled-artifact contradictory contracts and two subsequent authority/deletion findings resolved; planning independently ready, product not yet implemented. Other M1 and M2/M3 remain open."
     },
-    "next_action": "Plan and implement M1 delivery evidence gates and durable delegation receipts using accepted identity/artifact facts; then M2 snapshots/budgets/scheduling and M3 governance.",
+    "next_action": "M1 project policy version and durable evaluation, then hint/enforce across all done writers; M2 snapshots/budgets/scheduling; M3 governance. Opt-in durable explicit delegation increment verified; legacy edits/no-key outside guarantee.",
     "m1_controlled_artifact_status": "verified_integrated_archived",
     "m1_controlled_artifact_commit": "f5b51d7be",
     "progress_2026_11_10_artifact": {
@@ -77,6 +78,17 @@
         "M3"
       ],
       "real_model_calls": 0
+    },
+    "durable_delegation_receipts_2026_11_10": {
+      "status": "verified_increment",
+      "task": "11-10-durable-delegation-receipts",
+      "baseline": "38d07b6ed",
+      "scope": "opt-in idempotent ordinary comment creation and recovery",
+      "real_model_calls": 0,
+      "handler_normal_race_named_each": 342,
+      "router_normal_race_named_each": 20,
+      "migrations_normal_race_named_each": 5,
+      "full_m1_complete": false
     }
   }
 }

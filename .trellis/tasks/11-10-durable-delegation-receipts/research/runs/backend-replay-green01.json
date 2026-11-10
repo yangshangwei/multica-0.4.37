@@ -1,0 +1,73 @@
+{
+  "name": "backend-replay-green01",
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "./internal/handler",
+    "-run",
+    "TestDurableDelegation|TestCompleteTask_.*Reconcil|TestCreateComment_.*(Outcome|Mention)|TestComment(Merge|Trigger)",
+    "-count=1"
+  ],
+  "started_at": "2026-11-10T04:34:24.226937+00:00",
+  "finished_at": "2026-11-10T04:34:46.563289+00:00",
+  "exit_code": 1,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_handler_01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/backend-replay-green01.log",
+  "log_sha256": "3f95ef146995b837d123899a769dba0017f68270276fe7d266648c49fe0d28cd",
+  "counts": {
+    "pass": 37,
+    "fail": 4,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "TestCreateComment_AutopilotLeaderMentionEnqueuesPrivateWorker",
+      "TestCommentTriggers_NullByteHiddenMention_PreviewMatchesEnqueue",
+      "TestCommentMergeTerminalOutcome/real_merge_coalesces",
+      "TestCommentMergeTerminalOutcome/attribution_fail-closed_is_blocked,_not_success",
+      "TestCommentMergeTerminalOutcome/unknown_error_is_blocked,_not_success",
+      "TestCommentMergeTerminalOutcome/no_pending_task_defers_to_active-task_decision",
+      "TestCommentMergeTerminalOutcome",
+      "TestDurableDelegationActualQueueMergeDeferredAndRestart",
+      "TestDurableDelegationRejectionsAndFrozenTargets",
+      "TestDurableDelegationUnknownDoesNotRedispatch/claim_commit_after",
+      "TestDurableDelegationUnknownDoesNotRedispatch/finalization",
+      "TestDurableDelegationUnknownDoesNotRedispatch",
+      "TestDurableDelegationRejectsInvalidKeyAndAttachmentsBeforeWrite",
+      "TestDurableDelegationUnknownSurvivorIsNotRequeued",
+      "TestCompleteTask_ReconcilesMemberCommentPostedDuringRun",
+      "TestCompleteTask_NoReconcileWhenNoNewMemberComment",
+      "TestCompleteTask_ReconcilesAgentAuthoredMentionToCompletedAgent",
+      "TestCompleteTask_DoesNotReconcilePlainAgentReply",
+      "TestCompleteTask_DoesNotReconcilePlainWorkerReplyOnSquadIssue",
+      "TestCompleteTask_ReconcilesDispatchedWindowComment",
+      "TestCompleteTask_ReconcilesPreDispatchMergeRaceComment",
+      "TestCompleteTask_ReconcilesPlannedButUndeliveredComments/partial_receipt_replays_only_omitted_suffix",
+      "TestCompleteTask_ReconcilesPlannedButUndeliveredComments/legacy_trigger-only_receipt_replays_whole_coalesced_batch",
+      "TestCompleteTask_ReconcilesPlannedButUndeliveredComments",
+      "TestCreateComment_MixedMentionSurfacesPartialTriggerOutcomes",
+      "TestCreateComment_BlockedMentionReasonDoesNotEnumeratePrivateAgent",
+      "TestCreateComment_SquadLeaderSelfMentionCompletedTaskDoesNotFakeSuccess",
+      "TestCommentTriggers_PlainReplyToUnownedMemberRootSkipsAssigneeFallback/agent_assignee",
+      "TestCommentTriggers_PlainReplyToUnownedMemberRootSkipsAssigneeFallback/squad_assignee",
+      "TestCommentTriggers_PlainReplyToUnownedMemberRootSkipsAssigneeFallback",
+      "TestCreateComment_ExplicitMentionKeepsPendingRouteWithoutDuplicateTask",
+      "TestCreateComment_NoteMentionDoesNotQueueAgent",
+      "TestCreateComment_SquadPlainReplyToMemberParentKeepsRootMentionOwner",
+      "TestCreateComment_SquadLeaderMentionTaskDoesNotSelfTriggerAssignedFallback",
+      "TestCreateComment_SquadMentionPrivateLeaderBlocksPlainMember",
+      "TestCreateComment_SquadMentionTriggersLeader",
+      "TestCreateComment_SquadMentionStampsSquadIDOnLeaderTask"
+    ],
+    "fail": [
+      "TestDurableDelegationUnknownCannotReconcileOnCompletion/claim_commit_after",
+      "TestDurableDelegationUnknownCannotReconcileOnCompletion/finalization",
+      "TestDurableDelegationUnknownCannotReconcileOnCompletion",
+      "TestDurableDelegationReplayCannotAdoptReplacementLeader"
+    ],
+    "skip": []
+  }
+}

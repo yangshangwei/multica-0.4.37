@@ -69,13 +69,17 @@ func taskCapabilityRouteAllowed(r *http.Request, c auth.TaskCapability) bool {
 		return c.Profile == auth.TaskCapabilityReporter && c.ProjectID != "" && q.Get("project_id") == c.ProjectID
 	}
 	parts := strings.Split(strings.TrimPrefix(r.URL.Path, "/api/issues/"), "/")
-	if !strings.HasPrefix(r.URL.Path, "/api/issues/") || len(parts) > 2 || parts[0] == "" {
+	if !strings.HasPrefix(r.URL.Path, "/api/issues/") || len(parts) > 3 || parts[0] == "" {
 		return false
 	}
 	if _, err := util.ParseUUID(parts[0]); err != nil && splitIdentifier(parts[0]) == nil {
 		return false
 	}
 	if r.Method == http.MethodGet {
+		if len(parts) == 3 {
+			_, err := delegationKey(parts[2])
+			return parts[1] == "delegation-receipts" && err == nil
+		}
 		return len(parts) == 1 || parts[1] == "comments" || parts[1] == "timeline"
 	}
 	return r.Method == http.MethodPost && len(parts) == 2 && parts[1] == "comments"

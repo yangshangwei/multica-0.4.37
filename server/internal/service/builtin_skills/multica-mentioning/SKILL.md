@@ -137,10 +137,29 @@ its expected targets. On a squad leader's delegation-only turn, record partial o
 unconfirmed delegation as `failed`, with the handled subset and unresolved targets
 in the activity reason, without another comment. Other agents do not call the
 leader-only squad activity endpoint.
-Do not repost a saved comment or blindly retry a lost response. After response
-loss, first check whether the comment was saved. That read proves only that it
-exists; it cannot recover the original dispatch receipt. Leave uncertainty for
-an authorized follow-up.
+For an attachment-free ordinary delegation, choose and retain one canonical
+nonzero UUID before sending: `issue comment add <issue-id> --idempotency-key <key>`.
+Do not combine this flag with attachments or collaboration `--request-id`.
+Check `delegation_receipt` matches the key and comment ID. Its `recorded` state
+means admission facts were retained, never completed work; match its original
+target UUIDs and actual task IDs even if the roster later changes.
+
+Per-target receipts cover explicit agent/squad mentions only; an empty target
+list does not guarantee implicit follow-up routing. Optional `executing_squad_id`
+is the actual task's squad context, not necessarily the mentioned target squad.
+`runtime_observation.status` and `observed_at` are historical samples from that
+task's runtime, not current availability; recovery never recomputes them.
+An offline runtime may queue work to wait, not execute immediately. Unbound or
+unusable runtimes are refused. A missing observation does not prove online status.
+
+Do not repost a saved comment or blindly retry a lost response. Recover a keyed
+create with `multica issue comment receipt <issue-id> <key>`: one read, no dispatch.
+After restart, the same agent and originator still need current authority.
+`unknown`, missing or malformed receipts remain unconfirmed; never select a new
+key to bypass uncertainty. An older server may ignore the key, so missing receipt
+fields are not an idempotency guarantee. Unkeyed creates and edits remain
+immediate-only: reading the saved comment cannot recover their original receipt.
+Leave uncertainty for an authorized follow-up without another comment.
 
 - **A name where a UUID belongs.** `mention://member/Alice` is dead. The id
   group accepts only hex+dashes or `all`; the non-hex letters in a typical name

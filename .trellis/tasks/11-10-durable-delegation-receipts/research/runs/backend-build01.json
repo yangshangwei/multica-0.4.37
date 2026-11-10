@@ -1,0 +1,28 @@
+{
+  "name": "backend-build01",
+  "command": [
+    "go",
+    "build",
+    "-p",
+    "1",
+    "./internal/handler",
+    "./cmd/server",
+    "./cmd/migrate"
+  ],
+  "started_at": "2026-11-10T03:56:51.040087+00:00",
+  "finished_at": "2026-11-10T03:57:09.625779+00:00",
+  "exit_code": 0,
+  "database_url": "",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/backend-build01.log",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [],
+    "fail": [],
+    "skip": []
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "name": "router-offline01",
+  "command": [
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "./cmd/server",
+    "-run",
+    "^TestDurableDelegationRouter(Offline|Unusable|Rejected)",
+    "-count=1"
+  ],
+  "started_at": "2026-11-10T04:47:44.977565+00:00",
+  "finished_at": "2026-11-10T04:48:01.183297+00:00",
+  "exit_code": 1,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_router_01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/router-offline01.log",
+  "log_sha256": "48211ada91c4bb71c28f4768e9aad3279da9a7e742824ce04d392d63be2eaa10",
+  "counts": {
+    "pass": 4,
+    "fail": 1,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "TestDurableDelegationRouterRejectedTargetsRemainTraceable/unbound",
+      "TestDurableDelegationRouterRejectedTargetsRemainTraceable/private",
+      "TestDurableDelegationRouterRejectedTargetsRemainTraceable",
+      "TestDurableDelegationRouterUnusableRejectsWithoutRepeatNotice"
+    ],
+    "fail": [
+      "TestDurableDelegationRouterOfflineQueuesAndRetainsObservation"
+    ],
+    "skip": []
+  }
+}

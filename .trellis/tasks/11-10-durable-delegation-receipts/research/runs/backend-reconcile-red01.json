@@ -1,0 +1,34 @@
+{
+  "name": "backend-reconcile-red01",
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "./internal/handler",
+    "-run",
+    "^TestDurableDelegationUnknownCannotReconcileOnCompletion$",
+    "-count=1"
+  ],
+  "started_at": "2026-11-10T04:20:00.985483+00:00",
+  "finished_at": "2026-11-10T04:20:21.297641+00:00",
+  "exit_code": 1,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_handler_01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/backend-reconcile-red01.log",
+  "log_sha256": "b9a5ab664989c1183cf7fc0eadf9af3943bfa9f158c852d5fc01506903d10330",
+  "counts": {
+    "pass": 0,
+    "fail": 3,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [],
+    "fail": [
+      "TestDurableDelegationUnknownCannotReconcileOnCompletion/claim_commit_after",
+      "TestDurableDelegationUnknownCannotReconcileOnCompletion/finalization",
+      "TestDurableDelegationUnknownCannotReconcileOnCompletion"
+    ],
+    "skip": []
+  }
+}

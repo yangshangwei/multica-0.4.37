@@ -90,3 +90,12 @@
 最终源码冻结后handler普通/race各140、真实路由各34通过，均0fail/skip；build/vet、技能合同21与runtime扫描1通过。原始设施/断言/竞态失败全部保留，未计作通过。专属容器停止，10库与日志保留，真实模型调用0。详见本子任务delivery与verification记录；完成只覆盖observe阶段，不能宣称项目完整交付门禁已实施。
 
 观察增量实现提交 `45af89016`；[交付与剩余边界](../../.trellis/tasks/archive/2026-11/11-10-delivery-evidence-gate/delivery.md)、[独立审查](../../.trellis/tasks/archive/2026-11/11-10-delivery-evidence-gate/research/independent-review.md)。
+
+
+## 后续推进：持久委派回执增量
+
+从38d07b6ed建立独立worktree mc-durable-receipts-20261110，复用已有即时回执和实际派发，完成可选Idempotency-Key的无附件普通评论创建与恢复。保存显式target UUID、实际任务/执行者/覆盖小队、排队/合并/延后/拒绝；重启读取、同键重放及unknown不重派受到当前权限约束。用户明确选择暂时离线仍排队，并冻结当时观察，未绑定/不可用拒绝。
+
+最终handler普通/race各342、真实认证路由各20、迁移各5通过，均0fail/skip；CLI98、指令/技能33、build/vet/sqlc幂等及36文件冻结通过。保留原失败及独立审查修复。无键/编辑/quick-action不纳入持久幂等，空targets不保证隐式补偿；queued/recorded不代表完成。参见[交付记录](../../.trellis/tasks/archive/2026-11/11-10-durable-delegation-receipts/delivery.md)。
+
+下一包仍为M1项目政策版本与持久评估，再提示/阻断；必须覆盖单/批量更新、创建即完成、GitHub自动完成和独立协作流程。M2顺序保持快照→父总预算→能力/负载调度，M3持续治理；六项业务父任务不因本子项归档而完成。真实模型调用0，历史停止/预算不变，未推送/部署。

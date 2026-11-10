@@ -1,0 +1,41 @@
+{
+  "name": "final-migrations",
+  "command": [
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "./cmd/migrate",
+    "-run",
+    "TestDelegationReceipt|TestConcurrentIndexCleanupsMatchTheirMigrations|TestEveryConcurrent",
+    "-count=1",
+    "-timeout=10m"
+  ],
+  "started_at": "2026-11-10T05:20:05.434874+00:00",
+  "finished_at": "2026-11-10T05:20:11.690092+00:00",
+  "exit_code": 1,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_final_migration01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/final-migrations.log",
+  "log_sha256": "f0b9c9fabb700b568bc22fa97d871a532068bd57cf2b3edcebbb3a03f56aaea7",
+  "counts": {
+    "pass": 4,
+    "fail": 1,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "TestDelegationReceiptMigrationsRetainEvidence",
+      "TestDelegationReceiptSchemaAndConcurrentRollback",
+      "TestEveryConcurrentDownBuildHasCleanup",
+      "TestEveryConcurrentUpBuildHasCleanup"
+    ],
+    "fail": [
+      "TestConcurrentIndexCleanupsMatchTheirMigrations"
+    ],
+    "skip": []
+  }
+}

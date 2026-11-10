@@ -1,0 +1,35 @@
+{
+  "name": "final-migration-contract03",
+  "command": [
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "./internal/migrations",
+    "-run",
+    "^TestDelegationReceipt",
+    "-count=1"
+  ],
+  "started_at": "2026-11-10T05:45:11.325919+00:00",
+  "finished_at": "2026-11-10T05:45:13.087140+00:00",
+  "exit_code": 0,
+  "database_url": "",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/final-migration-contract03.log",
+  "log_sha256": "b494f77b4c804614c442de5e701e69c88c67f71fd38c5636f03b559e47646a6e",
+  "counts": {
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "TestDelegationReceiptMigrationContract"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

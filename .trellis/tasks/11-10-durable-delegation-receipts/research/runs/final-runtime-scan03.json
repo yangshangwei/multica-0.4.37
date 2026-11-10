@@ -1,0 +1,35 @@
+{
+  "name": "final-runtime-scan03",
+  "command": [
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "./internal/metrics",
+    "-run",
+    "^TestNoDirectGetAgentRuntimeCalls$",
+    "-count=1"
+  ],
+  "started_at": "2026-11-10T05:47:24.176516+00:00",
+  "finished_at": "2026-11-10T05:47:29.347364+00:00",
+  "exit_code": 0,
+  "database_url": "",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/final-runtime-scan03.log",
+  "log_sha256": "619cd11fcbcfa5d9fd216db7ed9c917b1ba743bc9d4ec3054e5d540cb4c133a5",
+  "counts": {
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "TestNoDirectGetAgentRuntimeCalls"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

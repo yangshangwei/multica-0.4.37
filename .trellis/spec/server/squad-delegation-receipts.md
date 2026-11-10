@@ -34,3 +34,12 @@ CLI fake HTTP tests exercise actual add/update commands, assert one request, com
 ## 7. Wrong vs correct
 Wrong: exit nonzero after a committed comment solely because a target is blocked, encouraging duplicate retries; or reconstruct the original receipt by reading the saved comment.
 Correct: retain successful write result and warn separately. Preserve immediate receipt JSON. Ordinary comment reads/broadcasts do not contain historical outcomes; persistent recovery needs a separately reviewed contract.
+
+## Later opt-in durable increment
+
+The existing immediate behavior above remains the no-key/edit contract. New
+attachment-free keyed ordinary creates can persist explicit target outcomes and
+recover them through a dedicated receipt read. See
+[durable delegation receipts](./durable-delegation-receipts.md) for identity,
+unknown/replay, current-authority and offline observation requirements. Ordinary
+comment reads still do not reconstruct the original immediate write response.

@@ -1,0 +1,48 @@
+{
+  "name": "router-red01",
+  "command": [
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "tool",
+    "test2json",
+    "-t",
+    "-p",
+    "cmd/server",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/router-compile01.test",
+    "-test.run",
+    "^TestDurableDelegation",
+    "-test.v"
+  ],
+  "started_at": "2026-11-10T04:04:59.772610+00:00",
+  "finished_at": "2026-11-10T04:05:02.761156+00:00",
+  "exit_code": 1,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_router_01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/router-red01.log",
+  "log_sha256": "c072a1be6e7f7d7baa28f293560f5483de0150891ebee78f688027249ef5b8ad",
+  "counts": {
+    "pass": 1,
+    "fail": 11,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "TestDurableDelegationRouterCanceledRequestDoesNotCreateReceipt"
+    ],
+    "fail": [
+      "TestDurableDelegationRouterJWTAndPATRecoverOriginalReceipt",
+      "TestDurableDelegationRouterConcurrentRetryDispatchesOnce",
+      "TestDurableDelegationRouterQueuedMergeAndDeferredHaveRealTask",
+      "TestDurableDelegationRouterTaskRestartKeepsActorAndOriginator",
+      "TestDurableDelegationRouterSquadReplacementDoesNotRewriteTarget",
+      "TestDurableDelegationRouterRejectedTargetsRemainTraceable/unbound",
+      "TestDurableDelegationRouterRejectedTargetsRemainTraceable/private",
+      "TestDurableDelegationRouterRejectedTargetsRemainTraceable",
+      "TestDurableDelegationRouterReadsRequireCurrentMembershipAndScope",
+      "TestDurableDelegationRouterUnknownNeverReplaysAndLegacyWritesWork",
+      "TestDurableDelegationRouterRejectsMalformedKeyWithoutEffects"
+    ],
+    "skip": []
+  }
+}

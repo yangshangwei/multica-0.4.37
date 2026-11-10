@@ -1,0 +1,30 @@
+{
+  "name": "backend-handler03",
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "./internal/handler",
+    "-run",
+    "^TestDurableDelegation",
+    "-count=1"
+  ],
+  "started_at": "2026-11-10T04:12:05.730707+00:00",
+  "finished_at": "2026-11-10T04:12:09.279566+00:00",
+  "exit_code": 1,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_handler_01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/backend-handler03.log",
+  "log_sha256": "badbf44b374b553798bdb72d453503d55587b1a5c7f53e6f034c5df85610015e",
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [],
+    "fail": [],
+    "skip": []
+  }
+}

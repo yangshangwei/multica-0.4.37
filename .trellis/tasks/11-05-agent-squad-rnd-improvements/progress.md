@@ -61,3 +61,6 @@ Post-merge CI contracts72/72 pass,0skip. Reviewed product source hashes match re
 ## 2026-11-10 M1 交付证据观察增量
 
 新子任务 `11-10-delivery-evidence-gate` 实现observe-only固定政策API，复用lifecycle/身份/受控制品回执。最终handler普通/race各140、真实路由各34均0fail/skip；全后端build/vet及技能合同通过。没有新依赖/迁移、done拦截或真实模型调用。完整项目政策/持久评估/全入口阻断、持久委派及M2/M3仍开放；子任务完成不关闭父任务。
+
+## 2026-11-10 持久委派最小增量
+新子任务11-10-durable-delegation-receipts实现可选幂等无附件普通评论创建、显式目标的真实task关联与恢复读取，复用原队列。离线入队并冻结观察；unknown禁止自动补偿重派；当前权限及原target身份固定。最终handler普通/race各342、真实路由各20、迁移各5通过；CLI98、guidance33、build/vet/sqlc及36文件冻结通过。完整验收与限制见子任务delivery。仅本包可归档，父M1/M2/M3及真实模型验收保持开放。
