@@ -7,3 +7,5 @@ Planning independent review resolved schema readiness and checked_at equality. N
 Final freeze13(9changed+4reused), handler325 and router103 each ordinary/race0fail0skip. Contracts50(37service+11status+1migration+1runtime), backendbuild/vet/sqlc/format allpass. Exact source/run inventory verified;4failed runs retained separately. DedicatedPG stopped at0connections,10DBs/logs retained. Original1052main paths still unchanged before integration. Independent final review and scoped commits/archive/integration follow.
 
 Independent trellis-check finalPASS, no remaining blockers.9final+4failed logs independently verified; all13source hashes and exact top-level inventories match. Preparing scoped Lore commit, archive/journal then protected local integration.
+
+Local integration actual complete at609219ed3:1048nonoverlap paths unchanged,4docs reconciled,13HEAD frozen hashes match; only working spec/index includes prior extra entries. Local integration proof committed separately. No push/deploy.

@@ -1,0 +1,33 @@
+{
+  "integrated_at": "2026-11-10T09:38:54.648937+00:00",
+  "base": "05de761de41a005dc0efa5d37af08dff4416b67f",
+  "integrated_head": "609219ed3a97c1cf30f784cadfa3690145a0ca36",
+  "implementation_commit": "ca0c8efd3",
+  "archive_commit": "d3b0b17db",
+  "journal_commit": "609219ed3",
+  "main_branch": "codex/cross-workspace-collaboration",
+  "main_snapshot": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/main-before.json",
+  "private_merge_backup": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/integration",
+  "protected_paths": 1052,
+  "nonoverlap_preserved": 1048,
+  "overlap_reconciled": [
+    ".trellis/spec/server/index.md",
+    ".trellis/tasks/11-05-agent-squad-rnd-improvements/task.json",
+    ".trellis/workspace/artisan/index.md",
+    ".trellis/workspace/artisan/journal-3.md"
+  ],
+  "merge_checks": {
+    "parent_task": "semantic three-way merge, all prior local-only fields and child link retained",
+    "journal_index": "recomputed merged journal line count; old session rows retained",
+    "journal_bytes_prefix_retained": true
+  },
+  "source_HEAD_manifest_match": 13,
+  "source_HEAD_drift": [],
+  "working_tree_manifest_differences": [
+    ".trellis/spec/server/index.md"
+  ],
+  "working_tree_difference_reason": "Only spec index carries preserved unrelated existing entries; every product/test/skill/helper byte matches frozen source. Original main journal retained as exact prefix plus Session151.",
+  "unrelated_changes_staged": false,
+  "push": false,
+  "deploy": false
+}

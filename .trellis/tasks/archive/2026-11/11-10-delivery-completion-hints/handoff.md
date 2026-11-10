@@ -1,6 +1,6 @@
 # 下一会话交接
 
-本包实现ca0c8efd3，在05de761de之后推进显式普通任务完成提示API；已独立验收，归档/交接/本地集成提交随后生成。先检查业务分支最新HEAD，不回退。来源mc-delivery-completion-hints-20261110已完成，不当待续实现。
+本包实现ca0c8efd3，在05de761de之后推进显式普通任务完成提示API；已独立验收，归档d3b0b17db、Session151交接609219ed3并已安全快进业务分支；其后有本地集成证据提交，先核对最新HEAD。先检查业务分支最新HEAD，不回退。来源mc-delivery-completion-hints-20261110已完成，不当待续实现。
 
 POST /api/issues/{id}/delivery-evidence/completion-hint，human-only，三个字段expected_issue_revision/target_status/evaluation_key（null或UUID）。复用原政策/评估/观察器/current artifact权限，不选latest、不重算原评估、不写状态。custom done按category；原pass+current才matching；off/no-project/non-done不适用；所有success enforced/usable_for_completion=false。无UI/CLI自动提示、skip或全入口阻断。独立协作返回原unsupported。
 

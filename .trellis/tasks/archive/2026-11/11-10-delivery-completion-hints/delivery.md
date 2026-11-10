@@ -38,3 +38,15 @@ M2保持确定性快照→父总预算→能力/负载调度；M3保持NFR/模�
 独立trellis-check最终PASS、零未解决阻塞；独立核对9份最终日志、4份失败日志、源码13/13及源码派生测试清单。sqlc后未出现源码或generated漂移。
 
 实现提交ca0c8efd3；本子任务可归档，随后单独记录安全本地集成。
+
+## 本地集成完成
+实现ca0c8efd3、归档d3b0b17db、Session151交接609219ed3已安全快进合入codex/cross-workspace-collaboration。1,048个不重叠既有路径字节/权限/存在状态全部保留；4个重叠文档三方合并，旧journal作为完整字节前缀保留，父任务旧本地字段和受控制品child链接保留。HEAD中13份冻结文件全部匹配；工作区仅spec/index保留用户原有额外条目，产品/测试/技能/复用helper全匹配。见research/local-integration.json。未夹带已有修改，未推送或部署。
+
+## 变更文件
+- server/internal/handler/delivery_completion_hint.go 与同名_test.go：提示与权限/失效/副作用合同。
+- server/cmd/server/router.go、delivery_completion_hint_integration_test.go：路由和真实认证验收。
+- server/internal/service/builtin_skills/multica-creating-agents/SKILL.md及references/creating-agents-source-map.md：提示消费与非授权边界。
+- .trellis/spec/server/delivery-completion-hints.md、delivery-policy-evaluations.md、index.md：可执行合同及复用关系。
+- 本归档、父任务、六业务计划和Session151：证据/未决语义/交接。
+
+简化点：复用既有评估恢复与状态校验，无重复观察器、执行引擎、SQL/迁移或依赖。剩余风险：提示只是事务快照；全writer原子阻断、跨主体证据、skip和客户端提示尚未交付。
