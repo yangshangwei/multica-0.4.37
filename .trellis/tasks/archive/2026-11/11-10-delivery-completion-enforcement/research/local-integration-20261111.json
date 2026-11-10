@@ -139,5 +139,24 @@
   "provider_calls": 0,
   "push_deploy_external_messages": false,
   "private_backup_not_committed": "/Volumes/artisan/code/2026/mc-delivery-completion-enforcement-20261110/.omx/private/enforcement-integration-20261111",
-  "verification": "Actual main worktree post-merge file hashes/modes/existence and HEAD checked; old nonoverlap content unchanged."
+  "verification": "Actual main worktree post-merge file hashes/modes/existence and HEAD checked; old nonoverlap content unchanged.",
+  "archive_journal_integration": {
+    "head": "3392ad552bb61df513018f3b5fbb08d81192562b",
+    "verified_at": "2026-11-10T19:44:47.795417+00:00",
+    "dirty_paths_before": 1061,
+    "nonoverlap_preserved_byte_mode_existence": 1058,
+    "merged_documents": [
+      ".trellis/tasks/11-05-agent-squad-rnd-improvements/task.json",
+      ".trellis/workspace/artisan/index.md",
+      ".trellis/workspace/artisan/journal-3.md"
+    ],
+    "old_main_journal_complete_prefix_preserved": true,
+    "session153_occurrences": 1,
+    "main_index_empty": true,
+    "source_files_matched": 110,
+    "task_status": "completed",
+    "full_m1_complete": false,
+    "unrelated_untracked_record_retained": ".trellis/tasks/11-10-delivery-completion-enforcement/research/progress-sync-20261111.json",
+    "known_verification_correction": "Initial post-merge assertion assumed old task directory entirely absent. It remains only for the preserved untracked parallel sync record; task.json moved to archive, all protected paths and source hashes matched. No product/test failure."
+  }
 }
