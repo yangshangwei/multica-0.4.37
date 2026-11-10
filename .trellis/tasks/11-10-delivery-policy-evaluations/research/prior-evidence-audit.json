@@ -1,0 +1,129 @@
+{
+  "verification-2026-11-10.json": {
+    "sha256": "15b6aa4de1ab2ddd3dcf65e513a2539539312ff6aff62de734eb318978e0ca28",
+    "accepted": true,
+    "failures_retained": 15,
+    "checks": {
+      "final-handler-normal03": {
+        "exit_code": 0,
+        "counts": {
+          "pass": 342,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "final-handler-race03": {
+        "exit_code": 0,
+        "counts": {
+          "pass": 342,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "final-router-normal03": {
+        "exit_code": 0,
+        "counts": {
+          "pass": 20,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "final-router-race03": {
+        "exit_code": 0,
+        "counts": {
+          "pass": 20,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "final-migrations03": {
+        "exit_code": 0,
+        "counts": {
+          "pass": 5,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "final-migrations-race03": {
+        "exit_code": 0,
+        "counts": {
+          "pass": 5,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "final-build03": {
+        "exit_code": 0,
+        "counts": {
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "final-vet03": {
+        "exit_code": 0,
+        "counts": {
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "final-sqlc03": {
+        "exit_code": 0,
+        "counts": {
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "final-cli03": {
+        "exit_code": 0,
+        "counts": {
+          "pass": 98,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "final-guidance03": {
+        "exit_code": 0,
+        "counts": {
+          "pass": 33,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "final-migration-contract03": {
+        "exit_code": 0,
+        "counts": {
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "final-runtime-scan03": {
+        "exit_code": 0,
+        "counts": {
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        }
+      }
+    }
+  },
+  "research/independent-review.json": {
+    "sha256": "5e55f3c05d1780bfb0d59c11e155606ab14c8ba078b6c3532d43995e869e9402",
+    "verdict": "pass",
+    "blocking_findings": []
+  },
+  "research/final-source-manifest.json": {
+    "sha256": "6346a7ae71ca920333ec548178acfb68f399b348d92523ad0941d6469e881c84",
+    "source_files": 36,
+    "drift": []
+  },
+  "research/local-integration.json": {
+    "sha256": "6185fc1decd15d47cf0792c5987ad6d744a5d9842672640c971fbeb016727a83"
+  },
+  "research/cleanup.json": {
+    "sha256": "23b0161973af840939eb43082095db934b7afca52bb6188a246792e6314f40a9"
+  }
+}

@@ -1366,6 +1366,20 @@ type DaemonToken struct {
 	InstallationBindingEpoch pgtype.Int8        `json:"installation_binding_epoch"`
 }
 
+type DeliveryEvidenceEvaluation struct {
+	WorkspaceID     pgtype.UUID        `json:"workspace_id"`
+	EvaluatorUserID pgtype.UUID        `json:"evaluator_user_id"`
+	RequestKey      pgtype.UUID        `json:"request_key"`
+	EvaluationID    pgtype.UUID        `json:"evaluation_id"`
+	IssueID         pgtype.UUID        `json:"issue_id"`
+	ProjectID       pgtype.UUID        `json:"project_id"`
+	PolicyRevision  int64              `json:"policy_revision"`
+	RequestDigest   string             `json:"request_digest"`
+	RequestJson     []byte             `json:"request_json"`
+	Observation     []byte             `json:"observation"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+}
+
 type DingtalkBotIdentity struct {
 	WorkspaceID      pgtype.UUID        `json:"workspace_id"`
 	InstallationID   pgtype.UUID        `json:"installation_id"`
@@ -2185,6 +2199,18 @@ type Project struct {
 	DescriptionRevision   int64              `json:"description_revision"`
 	InProgressSince       pgtype.Timestamptz `json:"in_progress_since"`
 	InProgressSinceSource pgtype.Text        `json:"in_progress_since_source"`
+}
+
+type ProjectDeliveryPolicy struct {
+	WorkspaceID   pgtype.UUID        `json:"workspace_id"`
+	ProjectID     pgtype.UUID        `json:"project_id"`
+	Revision      int64              `json:"revision"`
+	PolicyVersion string             `json:"policy_version"`
+	Mode          string             `json:"mode"`
+	Stage         string             `json:"stage"`
+	Reason        string             `json:"reason"`
+	CreatedBy     pgtype.UUID        `json:"created_by"`
+	CreatedAt     pgtype.Timestamptz `json:"created_at"`
 }
 
 type ProjectResource struct {

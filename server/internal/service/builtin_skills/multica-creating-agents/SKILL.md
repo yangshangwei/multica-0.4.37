@@ -495,6 +495,6 @@ State-changing (require an explicit instruction — do not run speculatively):
 `file:line` on the current tree, the runtime effect, and a safe read-only
 verification command.
 
-Human-only `POST /api/issues/{id}/delivery-evidence/evaluate` returns
-`delivery-artifact-observe-v1` receipt observations, never completion/execution
-authority. Missing or unknown evidence cannot pass; see the source map contract.
+Human-only delivery evidence observation, versioned project policy and durable
+evaluation APIs never grant completion/execution authority. Missing or unknown
+evidence cannot pass; see the source map for their distinct recovery contracts.

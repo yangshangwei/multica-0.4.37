@@ -32,3 +32,7 @@
 ## 2026-11-10 M1 交付证据观察增量
 
 新子任务 `11-10-delivery-evidence-gate` 实现observe-only固定政策API，复用lifecycle/身份/受控制品回执。最终handler普通/race各140、真实路由各34均0fail/skip；全后端build/vet及技能合同通过。没有新依赖/迁移、done拦截或真实模型调用。完整项目政策/持久评估/全入口阻断、持久委派及M2/M3仍开放；子任务完成不关闭父任务。
+
+
+## 2026-11-10 项目政策与持久评估增量
+子任务11-10-delivery-policy-evaluations完成off/observe追加政策、owner/admin管理、不可变幂等评估与完整当前权限恢复；原unknown不升级、旧版本不绕过原制品授权。冻结26文件，最终handler236、真实路由80、迁移/注册37均普通/race零失败跳过；合同23及build/vet/sqlc通过。无skip/提示/全done入口阻断，父M1仍in_progress；下一包全入口提示/门禁，随后M2快照→总预算→调度、M3治理。历史模型停止/预算保持，调用0。

@@ -1,0 +1,24 @@
+{
+  "name": "final-sqlc01",
+  "started_at": "2026-11-10T08:35:38.322246+00:00",
+  "finished_at": "2026-11-10T08:35:42.682851+00:00",
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "run",
+    "github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1",
+    "generate"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-delivery-policy-20261110",
+  "database": null,
+  "exit_code": 0,
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/final-sqlc01.log",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "tests": []
+}

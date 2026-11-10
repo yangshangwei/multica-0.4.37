@@ -1,0 +1,34 @@
+# Independent planning review — delivery policy and durable evaluations
+
+Reviewed 2026-11-10 in the isolated `mc-delivery-policy-20261110` worktree at baseline `c3bc9abd1`.
+
+**Technical plan: ready after the recorded corrections. One business decision remains pending: policy-management authority.** This is planning review, not implementation or acceptance approval. The user has already authorized task creation, implementation, dedicated environments and local integration; no further process approval is requested.
+
+## Findings resolved in the plan
+
+1. **Replay must precede new-admission restrictions.** The initial flow could have refused an existing key after policy was disabled/changed or the issue moved. `design.md:28` now explicitly branches on the authorized actor/key first. Same key and request take read-only recovery with current authorization; only an absent row must satisfy current project presence, observe mode and expected policy revision. Changed issue/body remains 409. This preserves recovery without weakening new admission.
+2. **A stale revision must not bypass current artifact authority.** `delivery_evidence.go:167` checks issue/project expectations before `artifactAuthority` at `:242`. The plan correctly uses current locked versions only for the temporary recheck and separately compares the immutable original versions/policy/bindings. Current authority failures deny recovery even if the old verdict was hold/unknown or the issue/policy is already stale. `design.md:30` also requires the exact execution/producer/task/generation/spec/artifact/receipt identities to match; two pass verdicts alone are insufficient.
+3. **Missing formerly retained execution cannot fall through to authorized unknown.** The existing evaluator returns early when no execution row exists (`delivery_evidence.go:201`), before producer/approver authorization. `design.md:19` now refuses returning a previously bound snapshot when that row disappears (`retained_binding_missing`, 404/409). An originally unbound missing-evidence unknown can remain unknown after current caller/resource authorization; if evidence later appears, its full scope and authority are checked. The stored verdict never upgrades.
+4. **New durable uniqueness needs its own runtime readiness guard.** `artifactTx` (`agent_artifact.go:79`) checks only the accepted artifact indexes. `design.md:29` now requires the new tables and exact usable unique-index shapes before policy/evaluation operations; incomplete or incorrect schema returns 503 with zero writes. Final migration validation alone cannot protect requests during partial concurrent-index deployment. New index cleanup registration and no-FK/single-statement CONCURRENTLY constraints remain mandatory.
+5. **Project deletion and issue deletion have different read outcomes.** The initial text both denied all deleted-project reads and allowed detached-issue recovery. `prd.md:20` and `design.md:19` now distinguish them: deleted project policy GET is 404; surviving detached issue may recover a stale evaluation only after full current artifact authorization; deleted issue/workspace public recovery refuses while durable rows remain. This matches actual project deletion, which detaches issues and increments their revisions (`project.go:978`, `project.sql:122`).
+
+The coordinator applied these planning corrections. This reviewer changed no product or test source.
+
+## Remaining business decision
+
+The pending user choice is whether project-policy PUT is restricted to workspace owner/admin or also permits the project lead. Existing administrator-only project operations are evidence for a recommendation, not an existing delivery-policy contract. The selected authority must be checked from locked current membership/project facts; an unlocked earlier role lookup cannot authorize the append. This decision remains the sole planning blocker, not a need to ask again for implementation permission.
+
+## Accepted boundaries and required verification
+
+- Two append-only histories are sufficient: policy revisions and immutable evaluations. Project FOR UPDATE NOWAIT serializes policy append/CAS; evaluation holds the existing project SHARE NOWAIT lock before looking up policy, including the absent-first-policy case. READ COMMITTED fresh queries avoid stale child snapshots; no general project model/pointer change is required.
+- Project configuration revision is distinct from the fixed observation algorithm. `stage: done` identifies the intended stage and does not require current done status or imply interception. Default revision 0/off is virtual. Every accepted PUT, even same-value, appends once; rollback is another revision. A lost PUT response is not proof of a successful policy change; GET shows current state and callers must not blindly advance expected revision.
+- The saved observation remains immutable. `applicability` is a fresh, timestamped projection and never completion/release authority. Original hold/unknown cannot become pass through replay; a later deliberate evaluation requires a new key. Evidence unknown is not an unfinished dispatch claim.
+- The acceptance matrix must prove actual tar bytes and persisted evaluation identities; actor/key isolation; same-key restart recovery; concurrent at-most-one insertion; policy CAS and off/observe/ABA invalidation; issue/project/PR mutation; expired/corrupt/missing bindings; revocation combined with stale versions; commit failure before and after durable commit; missing/invalid schema; retained deletion and guarded rollback. All HTTP auth positives use real credentials. Keep the known PAT last-used contention as a legitimate 409, not a successful positive control.
+- The stateless observe endpoint remains ledger-free. Ordinary/batch/create-done/GitHub/independent collaboration writers remain outside enforcement scope. No skip, UI/CLI, second engine, remote HEAD verification, new dependency or real-model call is included.
+- Freeze final code and parse each ordinary/race raw log independently; do not sum repeated runs as new coverage. Dedicated databases, external canonical temporary state, schema generation idempotence, backend build/vet, source formatting and independent final review remain coordinator gates. No tests have been claimed here.
+
+## Verification performed
+
+Read the task PRD/design/implementation plan and all check-manifest references; traced the observer/current-credential/artifact-authority implementation, issue loader, project locks/deletion, migration schema source and existing artifact/delegation migration patterns. Read the research source map and verified the critical source anchors above.
+
+Lint/type-check/tests: **not run; planning-only review, no product edits and no database execution authorized for this reviewer turn**. The final implementation and evidence review remains pending.

@@ -1,0 +1,434 @@
+{
+  "name": "final-router-normal01",
+  "started_at": "2026-11-10T08:29:24.696863+00:00",
+  "finished_at": "2026-11-10T08:29:45.435657+00:00",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "-p",
+    "1",
+    "./cmd/server",
+    "-run",
+    "^Test(DeliveryPolicyRouter|DeliveryEvaluationRouter|DeliveryEvidence|ControlledArtifact)",
+    "-count=1",
+    "-timeout=10m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-delivery-policy-20261110",
+  "database": "policy_final_router_normal01",
+  "exit_code": 0,
+  "counts": {
+    "pass": 80,
+    "fail": 0,
+    "skip": 0
+  },
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/final-router-normal01.log",
+  "log_sha256": "285a792b996a8a7687fd3d04fb7fff1a9ca35230bd0f7958febdda9cd501073d",
+  "tests": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterTaskIdentityAndHumanDecision/legacy",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterTaskIdentityAndHumanDecision/password",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterTaskIdentityAndHumanDecision",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterScopeAndHeaders/another_task_create",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterScopeAndHeaders/another_task_detail",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterScopeAndHeaders/another_task_execute",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterScopeAndHeaders/human_agent_header",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterScopeAndHeaders/human_task_header",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterScopeAndHeaders",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterRestrictedCapabilities/code-reviewer",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterRestrictedCapabilities/progress-reporter",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterRestrictedCapabilities",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterPasswordRevocationAndExpiry",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterCloudIdentityCannotBecomeHuman",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterPATRevocationAfterAuthentication",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterPrivateSpecStaysOutOfWorkspaceQueue",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterManagedBindingLiveFences/allowed",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterManagedBindingLiveFences/binding_epoch",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterManagedBindingLiveFences/binding_revoked",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterManagedBindingLiveFences/installation_retired",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterManagedBindingLiveFences/organization_mapping_removed",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterManagedBindingLiveFences/binding_lock_busy",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestControlledArtifactRouterManagedBindingLiveFences",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvidenceRouterActualPackageObservation/legacy",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvidenceRouterActualPackageObservation/password",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvidenceRouterActualPackageObservation",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvidenceRouterCurrentCandidateAndLegacyUpdate",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvidenceRouterProjectAndIssueRevisionBinding",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvidenceRouterRejectsMachineAndForgedIdentity",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvidenceRouterCredentialRevocationAfterAuthentication/password",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvidenceRouterCredentialRevocationAfterAuthentication/pat",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvidenceRouterCredentialRevocationAfterAuthentication/membership",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvidenceRouterCredentialRevocationAfterAuthentication",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvidenceRouterMissingEvidenceAndMalformedContract",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterManagementAndHistory/member",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterManagementAndHistory/project_lead",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterManagementAndHistory/admin",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterManagementAndHistory/owner",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterManagementAndHistory",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterRefusesMalformedAndNonhumanWrites/hint",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterRefusesMalformedAndNonhumanWrites/enforce",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterRefusesMalformedAndNonhumanWrites/skip",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterRefusesMalformedAndNonhumanWrites/wrong_stage",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterRefusesMalformedAndNonhumanWrites/wrong_algorithm",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterRefusesMalformedAndNonhumanWrites/missing_reason",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterRefusesMalformedAndNonhumanWrites/oversized_reason",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterRefusesMalformedAndNonhumanWrites/negative_revision",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterRefusesMalformedAndNonhumanWrites/claimed_authority",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterRefusesMalformedAndNonhumanWrites",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterRealPackageRestartAndLegacyCompatibility/legacy",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterRealPackageRestartAndLegacyCompatibility/password",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterRealPackageRestartAndLegacyCompatibility",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterIdentityAndRequestConflicts/expected_source_revision",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterIdentityAndRequestConflicts/expected_artifact_digest",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterIdentityAndRequestConflicts/expected_policy_revision",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterIdentityAndRequestConflicts",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterAdmissionAndMalformedContract",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterCurrentApplicabilityAndPolicyRecovery/policy_revision",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterCurrentApplicabilityAndPolicyRecovery/policy_off",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterCurrentApplicabilityAndPolicyRecovery/policy_aba",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterCurrentApplicabilityAndPolicyRecovery/issue_revision",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterCurrentApplicabilityAndPolicyRecovery/project_revision",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterCurrentApplicabilityAndPolicyRecovery/project_move",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterCurrentApplicabilityAndPolicyRecovery/project_detach",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterCurrentApplicabilityAndPolicyRecovery/head_changed",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterCurrentApplicabilityAndPolicyRecovery/head_missing",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterCurrentApplicabilityAndPolicyRecovery",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterNonpassIsNeverPromoted/unknown",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterNonpassIsNeverPromoted/hold",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterNonpassIsNeverPromoted",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryPolicyRouterRoleRevocationAfterAuthentication",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterStaleVersionStillChecksApproverAuthority",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterCredentialRevocationAfterAuthentication/password",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterCredentialRevocationAfterAuthentication/pat",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterCredentialRevocationAfterAuthentication/membership",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterCredentialRevocationAfterAuthentication",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterProjectDeletionRetainsHistory",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterConcurrentKeyHasOneCommittedObservation",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterOriginalPassExpiresWithoutRenewal",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeliveryEvaluationRouterMissingRetainedBindingRefusesHistory",
+      "action": "pass"
+    }
+  ]
+}

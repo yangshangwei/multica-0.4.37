@@ -64,3 +64,7 @@ Post-merge CI contracts72/72 pass,0skip. Reviewed product source hashes match re
 
 ## 2026-11-10 持久委派最小增量
 新子任务11-10-durable-delegation-receipts实现可选幂等无附件普通评论创建、显式目标的真实task关联与恢复读取，复用原队列。离线入队并冻结观察；unknown禁止自动补偿重派；当前权限及原target身份固定。最终handler普通/race各342、真实路由各20、迁移各5通过；CLI98、guidance33、build/vet/sqlc及36文件冻结通过。完整验收与限制见子任务delivery。仅本包可归档，父M1/M2/M3及真实模型验收保持开放。
+
+
+## 2026-11-10 项目政策与持久评估增量
+子任务11-10-delivery-policy-evaluations完成off/observe追加政策、owner/admin管理、不可变幂等评估与完整当前权限恢复；原unknown不升级、旧版本不绕过原制品授权。冻结26文件，最终handler236、真实路由80、迁移/注册37均普通/race零失败跳过；合同23及build/vet/sqlc通过。无skip/提示/全done入口阻断，父M1仍in_progress；下一包全入口提示/门禁，随后M2快照→总预算→调度、M3治理。历史模型停止/预算保持，调用0。

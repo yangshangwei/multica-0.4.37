@@ -78,6 +78,17 @@ func decodeDeliveryEvidence(w http.ResponseWriter, r *http.Request) (deliveryEvi
 	if !decodeCollaborationWorkflowBodyLimit(w, r, &fields, 4096) {
 		return req, false
 	}
+	req, valid := deliveryEvidenceFields(fields)
+	if !valid {
+		writeError(w, 400, "invalid_delivery_evidence_request")
+	}
+	return req, valid
+}
+
+// deliveryEvidenceFields is shared by the stateless and durable boundaries.
+// Both require the same exact original observation contract.
+func deliveryEvidenceFields(fields map[string]json.RawMessage) (deliveryEvidenceRequest, bool) {
+	var req deliveryEvidenceRequest
 	keys := []string{"policy_version", "expected_issue_revision", "expected_project_id", "expected_project_revision", "approval_id", "expected_source_revision", "expected_spec_digest", "expected_artifact_digest"}
 	valid := len(fields) == len(keys)
 	for _, key := range keys {
@@ -103,9 +114,6 @@ func decodeDeliveryEvidence(w http.ResponseWriter, r *http.Request) (deliveryEvi
 		if err != nil || uuidToString(id) != *req.ProjectID || req.ProjectRevision == nil || *req.ProjectRevision < 0 {
 			valid = false
 		}
-	}
-	if !valid {
-		writeError(w, 400, "invalid_delivery_evidence_request")
 	}
 	return req, valid
 }

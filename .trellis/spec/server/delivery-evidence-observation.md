@@ -119,3 +119,10 @@ or block only one done writer and call that an enforced project gate.
 Correct: recompute observation from retained receipts and current locked
 facts, report unknown when source facts are missing, and cover every terminal
 writer in a separate reviewed enforcement package.
+
+## Later persistent observation increment
+
+The stateless endpoint above still does not write an evaluation ledger.
+[Project delivery policy and durable evaluations](./delivery-policy-evaluations.md)
+adds separate human-only off/observe policy and immutable evaluation endpoints
+using this observer. That increment also leaves all completion writers ungated.

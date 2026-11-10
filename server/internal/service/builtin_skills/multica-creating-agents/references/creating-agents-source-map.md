@@ -230,3 +230,32 @@ database-observed linked PR head. No remote HEAD verification is implied. The
 conservative observation horizon ends at artifact admission expiry; historical
 receipts remain retained. Observations never update issue status or trigger a
 new execution. No new UI/CLI flow is provided.
+
+## Versioned project policy and retained evaluations
+
+Human-only `GET/PUT /api/projects/{id}/delivery-policy` reads the virtual revision0/off
+or appends a policy revision. Only current workspace owners/admins may PUT, with
+`expected_policy_revision`, `mode: off|observe`, `policy_version:
+delivery-artifact-observe-v1`, `stage: done` and a nonempty reason. Project lead
+status alone grants no policy-write permission. Every accepted PUT appends; after
+a lost response read the policy before deciding another change. Off stops new
+persistent evaluations and preserves history; it is neither skip nor approval.
+
+`POST /api/issues/{id}/delivery-evidence/evaluations` accepts the original observer
+body plus `expected_policy_revision` and one canonical UUID `Idempotency-Key`.
+It stores one immutable observation for the verified human evaluator's key.
+`GET /api/issues/{id}/delivery-evidence/evaluations/{key}` and same-key POST recover
+that observation only after current resource, credential and artifact authority
+checks. A changed request conflicts; recovery never rewrites the original verdict,
+identity or expiry. Policy/resource/receipt drift and expiry appear separately in
+`applicability`. Original unknown/hold cannot turn into pass by replay, and even
+`current` has `usable_for_completion: false`. A deliberate new evaluation needs a
+new key; clients must never silently generate one after uncertainty. Deleted
+issue/workspace denies public recovery while history remains retained.
+
+Sources: `handler/delivery_policy.go`, `handler/delivery_evaluation.go`,
+`handler/delivery_evidence.go`, `pkg/db/queries/delivery_policy.sql`, migrations776–780.
+Tests: owned `TestDeliveryPolicy` / `TestDeliveryEvaluation` handler and real router
+suites, real migrations and static migration contract. The original stateless
+`/evaluate` route stays ledger-free. This release does not intercept any done
+writer, implement skip/hints/enforcement, invoke a provider, or verify remote HEAD.

@@ -1,0 +1,24 @@
+{
+  "name": "baseline-migrate",
+  "started_at": "2026-11-10T07:14:26.687457+00:00",
+  "finished_at": "2026-11-10T07:14:33.572723+00:00",
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "run",
+    "./cmd/migrate",
+    "up"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-delivery-policy-20261110",
+  "database": "policy_baseline",
+  "exit_code": 0,
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/baseline-migrate.log",
+  "log_sha256": "530f4fc377e53970046ecd770f482b85a61787280d0051a9e08e0da6a6689855",
+  "tests": []
+}

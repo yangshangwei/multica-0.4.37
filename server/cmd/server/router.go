@@ -2235,6 +2235,8 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 					r.Put("/", h.UpdateIssue)
 					r.Post("/lifecycle-handoffs", h.CreateLifecycleHandoff)
 					r.With(handler.RequireHumanActor).Post("/delivery-evidence/evaluate", h.EvaluateDeliveryEvidence)
+					r.With(handler.RequireHumanActor).Post("/delivery-evidence/evaluations", h.CreateDeliveryEvaluation)
+					r.With(handler.RequireHumanActor).Get("/delivery-evidence/evaluations/{key}", h.GetDeliveryEvaluation)
 					r.Post("/move", h.MoveIssue)
 					r.Delete("/", h.DeleteIssue)
 					r.Post("/comments/trigger-preview", h.PreviewCommentTriggers)
@@ -2326,6 +2328,8 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				r.Route("/{id}", func(r chi.Router) {
 					r.Get("/", h.GetProject)
 					r.Get("/knowledge", h.GetProjectKnowledge)
+					r.With(handler.RequireHumanActor).Get("/delivery-policy", h.GetDeliveryPolicy)
+					r.With(handler.RequireHumanActor).Put("/delivery-policy", h.UpdateDeliveryPolicy)
 					r.Get("/delete-impact", h.GetProjectDeleteImpact)
 					r.Get("/overview", h.GetProjectOverview)
 					r.Get("/health/issues", h.GetProjectHealthIssues)

@@ -1,0 +1,725 @@
+{
+  "reviewed_at": "2026-11-10T08:37:02.497817+00:00",
+  "reviewer": "native trellis-check policy_review",
+  "verdict": "pass",
+  "scope": "owner/admin-only off/observe project policy and human-scoped immutable delivery evaluations; no lifecycle enforcement",
+  "business_decision": "owner/admin only resolved by user continuation; no additional process approval needed",
+  "blocking_product_findings": [],
+  "mechanical_fixes": [
+    {
+      "file": "server/cmd/migrate/delivery_policy_test.go",
+      "issue": "Generated insert now uses ON CONFLICT DO NOTHING, so duplicate writes yield pgx.ErrNoRows rather than PgError23505.",
+      "fix": "Assert ErrNoRows and exact unchanged retained-row/catalog snapshot after both duplicate key and duplicate evaluation-ID refusal; existing cardinality and isolated namespace positives retained.",
+      "verification": "Final fresh migrations normal/race each37 named pass0fail0skip; exact retained snapshot assertions executed; gofmt/diff clean.",
+      "prior_evidence": "Earlier migrations01 34 named passes predate the query/test contract change and cannot be final evidence."
+    }
+  ],
+  "reviewer_product_edits": 0,
+  "reviewer_test_edits": [
+    "server/cmd/migrate/delivery_policy_test.go"
+  ],
+  "reviewer_database_writes": 0,
+  "reviewer_real_model_calls": 0,
+  "pre_freeze_source_hashes": {
+    "server/internal/handler/delivery_policy.go": "b8dcb0e7f64307d8242d9f05a016276bac5ff4e7a2be9ad0cfe00e69e6b506af",
+    "server/internal/handler/delivery_evaluation.go": "f49d65948597d319706c19e2da4f1016e7a9622c3191cdc72c28a6e2c99eeb23",
+    "server/internal/handler/delivery_evidence.go": "82d8fadaf5ec0eb17b2e7890f46e8de178a13a1fb269772ad3b82b9592c2b5f1",
+    "server/pkg/db/queries/delivery_policy.sql": "3cdd43c157d89fa152d53cfbc887036d08a00bf30a76736da6852f56a9d1a6c8",
+    "server/cmd/migrate/delivery_policy_test.go": "45c276887489a847863e11f9e2453340d8428af943f7998d17afd4568bd6cb0d",
+    "server/internal/handler/delivery_policy_test.go": "9f6a3b45e67c146f7f8a0ac0005aa2f2a17608e995f56b48547cbdd93c68b12d",
+    "server/internal/handler/delivery_policy_schema_test.go": "96676a7adb2377e541a46a02393d242de4e05b53e5e0852d12f2146df64fdaae",
+    "server/cmd/server/delivery_policy_integration_test.go": "e0c88730cf4630293c5f802ff109a007df375c0c102d04f0a206461cbba974c4",
+    "server/internal/migrations/delivery_policy_test.go": "971b70fc6a0eff0d158f154dc833cb713ed9318e5bc88ae030c75533c6a7abbe",
+    "server/internal/handler/workspace_delete_manifest_test.go": "e39395283124eb8db21df9bef027eb89c1f69015d67b8574d9b2a199cd92c28e",
+    "server/migrations/776_delivery_policy_evaluation.down.sql": "76a96bbc13bbf157861e798ecac2d7ab61f44044d0503a8dbda0f35a27d9e042",
+    "server/migrations/776_delivery_policy_evaluation.up.sql": "27d2ebfde2fb590c497a486dcddcc88a63c6a86e18cb2a52c6c60f1e35c2e051",
+    "server/migrations/777_project_delivery_policy_revision.down.sql": "78417d095f3171778bc19a648dcda1fd962f6f17b3d9813ac864c863d0d1af18",
+    "server/migrations/777_project_delivery_policy_revision.up.sql": "c69b2e6d6fc1a7ea843bab3ae60fc65e97f8f8b89628e228205dc168a34889de",
+    "server/migrations/778_delivery_evaluation_key.down.sql": "78a75883324cbbf0ed329f3822283fd7c8c2574923ae155e3bfa2853e92c5d31",
+    "server/migrations/778_delivery_evaluation_key.up.sql": "542829e2e60bbfda07a5e848094727b9f726b0ffadd8d59b696708b0ec09ef89",
+    "server/migrations/779_delivery_evaluation_id.down.sql": "1ac1774b297abe111357c9d47333f236a8b3eb0a62b66a8427cae17b8ca736b4",
+    "server/migrations/779_delivery_evaluation_id.up.sql": "5b5f6c80973ba3b697aceb74c628a2f71a5d6bb8177c2bbe72790e147f9c5713",
+    "server/migrations/780_delivery_policy_evaluation_ready.down.sql": "9b27dd0cd220214406a88c2cd8f4f26d77c46dc80509880e20de1ca5c9db179a",
+    "server/migrations/780_delivery_policy_evaluation_ready.up.sql": "c6751061db210df4a4bf5ed458f0d24855e4d46e89b102848d4d7b41cee5eb0f"
+  },
+  "final_source_manifest": "research/final-source-manifest.json",
+  "final_checks": {
+    "final-build01": {
+      "record": "research/runs/final-build01.json",
+      "record_sha256": "5bb35a774f35a9d9af8c3289c6be63f1fd5736e1bb1af151926938e3209e56cc",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "build",
+        "./..."
+      ],
+      "database": null,
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/final-build01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-11-10T08:30:07.482207+00:00",
+      "finished_at": "2026-11-10T08:30:18.441103+00:00",
+      "package_terminals": []
+    },
+    "final-contracts01": {
+      "record": "research/runs/final-contracts01.json",
+      "record_sha256": "be1ee72adb5a2ef82861ec5d020a2445d7e4ca104cf538d9596a8f34d80ad747",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/service",
+        "./internal/migrations",
+        "./internal/metrics",
+        "-run",
+        "^Test(BuiltinSkillsConformToTemplate|BuiltinSkillsFrontmatterIsStrictYAML|CreatingAgentsSkillCoversAgentCreationContracts|DeliveryPolicyMigrationContract|NoDirectGetAgentRuntimeCalls)$",
+        "-count=1"
+      ],
+      "database": null,
+      "exit_code": 0,
+      "counts": {
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/final-contracts01.log",
+      "log_sha256": "fc884bfdf09dcf0d261b5f9654eb5540b26f7f69d86c78bcf3fdd6101a9ede04",
+      "started_at": "2026-11-10T08:33:16.973246+00:00",
+      "finished_at": "2026-11-10T08:33:28.849673+00:00",
+      "package_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/migrations",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/metrics",
+          "action": "pass"
+        }
+      ]
+    },
+    "final-handler-normal01": {
+      "record": "research/runs/final-handler-normal01.json",
+      "record_sha256": "2e50d96d4bc6f0f7b545c9caa8067b0b635fdcc7de9b19f0a1a47b3d780fbc68",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/handler",
+        "-run",
+        "^Test(DeliveryPolicy|DeliveryEvaluation|DeliveryEvidence|ControlledArtifact|.*AgentApproval|RecordExecution)|^TestWorkspaceDeletionManifestCoversPublicSchema$",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "policy_final_handler_normal01",
+      "exit_code": 0,
+      "counts": {
+        "pass": 236,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/final-handler-normal01.log",
+      "log_sha256": "02522f8f07da0236925e5e8aa7ad64657d70b0383b3d30e649491ae688cbb4e5",
+      "started_at": "2026-11-10T08:29:24.696733+00:00",
+      "finished_at": "2026-11-10T08:29:48.798905+00:00",
+      "package_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "action": "pass"
+        }
+      ],
+      "independent_top_level_inventory": {
+        "count": 64,
+        "matches_exactly": true,
+        "missing": [],
+        "unexpected": [],
+        "each_started_test_has_one_terminal": true
+      }
+    },
+    "final-handler-race01": {
+      "record": "research/runs/final-handler-race01.json",
+      "record_sha256": "a7452e37775befb477501f2d4c696279762d0ba46f707ee522a89068b4ca813a",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "-race",
+        "./internal/handler",
+        "-run",
+        "^Test(DeliveryPolicy|DeliveryEvaluation|DeliveryEvidence|ControlledArtifact|.*AgentApproval|RecordExecution)|^TestWorkspaceDeletionManifestCoversPublicSchema$",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "policy_final_handler_race01",
+      "exit_code": 0,
+      "counts": {
+        "pass": 236,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/final-handler-race01.log",
+      "log_sha256": "b6a56fb8f405853818d9debc79fa1c02d7b3757a8270c75a24cb48b655cf21b9",
+      "started_at": "2026-11-10T08:31:20.429750+00:00",
+      "finished_at": "2026-11-10T08:32:47.279384+00:00",
+      "package_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "action": "pass"
+        }
+      ],
+      "independent_top_level_inventory": {
+        "count": 64,
+        "matches_exactly": true,
+        "missing": [],
+        "unexpected": [],
+        "each_started_test_has_one_terminal": true
+      }
+    },
+    "final-migrations-normal01": {
+      "record": "research/runs/final-migrations-normal01.json",
+      "record_sha256": "9d094ea0c2086293d66fe21a72154db69929017f8015f3a7827e4617d5524dab",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./cmd/migrate",
+        "-run",
+        "^Test(DeliveryPolicy|DeliveryEvaluation|ConcurrentIndexCleanupsMatchTheirMigrations|EveryConcurrentDownBuildHasCleanup|EveryConcurrentUpBuildHasCleanup)",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "policy_final_migrations_normal01",
+      "exit_code": 0,
+      "counts": {
+        "pass": 37,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/final-migrations-normal01.log",
+      "log_sha256": "3c8d49a2109d73d2d89df1b6be6deb0ec141117bfaac1feb2870e9f5891768af",
+      "started_at": "2026-11-10T08:33:17.070869+00:00",
+      "finished_at": "2026-11-10T08:33:25.403025+00:00",
+      "package_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/migrate",
+          "action": "pass"
+        }
+      ],
+      "independent_top_level_inventory": {
+        "count": 9,
+        "matches_exactly": true,
+        "missing": [],
+        "unexpected": [],
+        "each_started_test_has_one_terminal": true
+      }
+    },
+    "final-migrations-race01": {
+      "record": "research/runs/final-migrations-race01.json",
+      "record_sha256": "6577b01560e35519b021b4afecca0279364a90d5ce79aaf5592085d8d11584b5",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "-race",
+        "./cmd/migrate",
+        "-run",
+        "^Test(DeliveryPolicy|DeliveryEvaluation|ConcurrentIndexCleanupsMatchTheirMigrations|EveryConcurrentDownBuildHasCleanup|EveryConcurrentUpBuildHasCleanup)",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "policy_final_migrations_race01",
+      "exit_code": 0,
+      "counts": {
+        "pass": 37,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/final-migrations-race01.log",
+      "log_sha256": "de122546870e7efc6a8ede86d1b007d8d8f5cb3d362187f6bc3fa9d3693e27a5",
+      "started_at": "2026-11-10T08:33:17.070871+00:00",
+      "finished_at": "2026-11-10T08:33:27.717796+00:00",
+      "package_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/migrate",
+          "action": "pass"
+        }
+      ],
+      "independent_top_level_inventory": {
+        "count": 9,
+        "matches_exactly": true,
+        "missing": [],
+        "unexpected": [],
+        "each_started_test_has_one_terminal": true
+      }
+    },
+    "final-router-normal01": {
+      "record": "research/runs/final-router-normal01.json",
+      "record_sha256": "4ae58710168e9118ca934670fcf14e204bb1bce2052465d3a7c09d379f2b0b82",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./cmd/server",
+        "-run",
+        "^Test(DeliveryPolicyRouter|DeliveryEvaluationRouter|DeliveryEvidence|ControlledArtifact)",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "policy_final_router_normal01",
+      "exit_code": 0,
+      "counts": {
+        "pass": 80,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/final-router-normal01.log",
+      "log_sha256": "285a792b996a8a7687fd3d04fb7fff1a9ca35230bd0f7958febdda9cd501073d",
+      "started_at": "2026-11-10T08:29:24.696863+00:00",
+      "finished_at": "2026-11-10T08:29:45.435657+00:00",
+      "package_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "action": "pass"
+        }
+      ],
+      "independent_top_level_inventory": {
+        "count": 28,
+        "matches_exactly": true,
+        "missing": [],
+        "unexpected": [],
+        "each_started_test_has_one_terminal": true
+      }
+    },
+    "final-router-race01": {
+      "record": "research/runs/final-router-race01.json",
+      "record_sha256": "7ea9fa5cfb993dbdf7c5a88e08e09e3a6d6a05a658ac19ae009a0ee16f193233",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "-race",
+        "./cmd/server",
+        "-run",
+        "^Test(DeliveryPolicyRouter|DeliveryEvaluationRouter|DeliveryEvidence|ControlledArtifact)",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "policy_final_router_race01",
+      "exit_code": 0,
+      "counts": {
+        "pass": 80,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/final-router-race01.log",
+      "log_sha256": "e7ef1fd2f8711677901d0b42c516e7e1b044a644532886cb4b8eeb80bbfaaacb",
+      "started_at": "2026-11-10T08:31:20.429765+00:00",
+      "finished_at": "2026-11-10T08:32:34.889587+00:00",
+      "package_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "action": "pass"
+        }
+      ],
+      "independent_top_level_inventory": {
+        "count": 28,
+        "matches_exactly": true,
+        "missing": [],
+        "unexpected": [],
+        "each_started_test_has_one_terminal": true
+      }
+    },
+    "final-sqlc01": {
+      "record": "research/runs/final-sqlc01.json",
+      "record_sha256": "dd597918315bc7d2a187ddc926138038440b342cf71d90cd80fa1881dcdbad1b",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "run",
+        "github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1",
+        "generate"
+      ],
+      "database": null,
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/final-sqlc01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-11-10T08:35:38.322246+00:00",
+      "finished_at": "2026-11-10T08:35:42.682851+00:00",
+      "package_terminals": []
+    },
+    "final-vet01": {
+      "record": "research/runs/final-vet01.json",
+      "record_sha256": "7d05758182275344b920bc6b297811b62b64012c3e3fecb8e5dee6b06fe472f9",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "./..."
+      ],
+      "database": null,
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/final-vet01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-11-10T08:31:20.336809+00:00",
+      "finished_at": "2026-11-10T08:31:46.421256+00:00",
+      "package_terminals": []
+    }
+  },
+  "remaining_gates": [
+    "Coordinator cleanup and local scoped commit/integration/archive; not product acceptance blockers"
+  ],
+  "limitations": [
+    "Independent reviewer read final code and audited frozen source/log hashes and actual test terminal inventories, without duplicating DB executions.",
+    "Handler236/router80/migrations37 each are ordinary and race counts including subtests; repeated runs are not summed into distinct coverage.",
+    "Migrations37 comprises34 new migration names and3 global concurrent-index registration guards. Contracts23 comprises21 builtin skill names,1 migration contract,1runtime lookup scan.",
+    "Original migration34 success predates changed ON CONFLICT semantics and is superseded by final migrations37 normal/race.",
+    "Six nonzero runs remain retained; compiler/fixture/schema-manifest failures are not relabeled successful behavior-red tests.",
+    "No browser/frontend, full-repository, deployed-client, remote HEAD, throughput or provider acceptance claim.",
+    "Real model calls0; historical AC43/E5/H3a/knowledge stop rules and budgets unchanged."
+  ],
+  "reviewed_source_hashes": {
+    "server/cmd/migrate/delivery_policy_test.go": "45c276887489a847863e11f9e2453340d8428af943f7998d17afd4568bd6cb0d",
+    "server/cmd/migrate/main.go": "9f6cfd69921187c25db91bbe5d59edf0a14145453785715161b5415713c0c9c0",
+    "server/cmd/server/delivery_policy_integration_test.go": "e0c88730cf4630293c5f802ff109a007df375c0c102d04f0a206461cbba974c4",
+    "server/cmd/server/router.go": "76e9d25f49d6c63487840e5f13fd6b96d5eda15116f9f785633b94a024e8bbb7",
+    "server/internal/handler/delivery_evaluation.go": "f49d65948597d319706c19e2da4f1016e7a9622c3191cdc72c28a6e2c99eeb23",
+    "server/internal/handler/delivery_evidence.go": "82d8fadaf5ec0eb17b2e7890f46e8de178a13a1fb269772ad3b82b9592c2b5f1",
+    "server/internal/handler/delivery_policy.go": "b8dcb0e7f64307d8242d9f05a016276bac5ff4e7a2be9ad0cfe00e69e6b506af",
+    "server/internal/handler/delivery_policy_schema_test.go": "96676a7adb2377e541a46a02393d242de4e05b53e5e0852d12f2146df64fdaae",
+    "server/internal/handler/delivery_policy_test.go": "9f6a3b45e67c146f7f8a0ac0005aa2f2a17608e995f56b48547cbdd93c68b12d",
+    "server/internal/handler/workspace_delete_manifest_test.go": "e39395283124eb8db21df9bef027eb89c1f69015d67b8574d9b2a199cd92c28e",
+    "server/internal/migrations/delivery_policy_test.go": "971b70fc6a0eff0d158f154dc833cb713ed9318e5bc88ae030c75533c6a7abbe",
+    "server/internal/service/builtin_skills/multica-creating-agents/SKILL.md": "d47b67083963c2642ff214ae08697db3a5ec4cefcef45ed8b923ad978f64ac88",
+    "server/internal/service/builtin_skills/multica-creating-agents/references/creating-agents-source-map.md": "8d38ca9eada336ad453c53530dacf7e91f46b06600209f7d97db3e1192b76949",
+    "server/migrations/776_delivery_policy_evaluation.down.sql": "76a96bbc13bbf157861e798ecac2d7ab61f44044d0503a8dbda0f35a27d9e042",
+    "server/migrations/776_delivery_policy_evaluation.up.sql": "27d2ebfde2fb590c497a486dcddcc88a63c6a86e18cb2a52c6c60f1e35c2e051",
+    "server/migrations/777_project_delivery_policy_revision.down.sql": "78417d095f3171778bc19a648dcda1fd962f6f17b3d9813ac864c863d0d1af18",
+    "server/migrations/777_project_delivery_policy_revision.up.sql": "c69b2e6d6fc1a7ea843bab3ae60fc65e97f8f8b89628e228205dc168a34889de",
+    "server/migrations/778_delivery_evaluation_key.down.sql": "78a75883324cbbf0ed329f3822283fd7c8c2574923ae155e3bfa2853e92c5d31",
+    "server/migrations/778_delivery_evaluation_key.up.sql": "542829e2e60bbfda07a5e848094727b9f726b0ffadd8d59b696708b0ec09ef89",
+    "server/migrations/779_delivery_evaluation_id.down.sql": "1ac1774b297abe111357c9d47333f236a8b3eb0a62b66a8427cae17b8ca736b4",
+    "server/migrations/779_delivery_evaluation_id.up.sql": "5b5f6c80973ba3b697aceb74c628a2f71a5d6bb8177c2bbe72790e147f9c5713",
+    "server/migrations/780_delivery_policy_evaluation_ready.down.sql": "9b27dd0cd220214406a88c2cd8f4f26d77c46dc80509880e20de1ca5c9db179a",
+    "server/migrations/780_delivery_policy_evaluation_ready.up.sql": "c6751061db210df4a4bf5ed458f0d24855e4d46e89b102848d4d7b41cee5eb0f",
+    "server/pkg/db/generated/delivery_policy.sql.go": "7cf3a60e58209f406dc55f909de0d527791aa7d72c70e2d5d1006df86ff79fdf",
+    "server/pkg/db/generated/models.go": "39468aaa0edf91d63e1054febe4350384aa059a3dbebe560329da1ac62aba174",
+    "server/pkg/db/queries/delivery_policy.sql": "3cdd43c157d89fa152d53cfbc887036d08a00bf30a76736da6852f56a9d1a6c8"
+  },
+  "source_drift": 0,
+  "source_manifest_sha256": "796fea66c86f3a0f4afdb7bf48ac0208a69b33106dfa5da1024b8da9ed905889",
+  "independent_checks": {
+    "gofmt": "PASS after sqlc regeneration; independently executed on all frozen Go files",
+    "diff_check": "PASS after sqlc regeneration; independently executed",
+    "changed_product_manifest_coverage": "all changed/untracked server files represented",
+    "source_inventory": "handler64/router28/migrations9 actual source top-level names exactly match manifests and final normal/race logs",
+    "all_retained_run_records_checked": 34,
+    "final_raw_logs_checked": 10,
+    "nonzero_raw_logs_checked": 6
+  },
+  "blocking_findings": [],
+  "source_manifest": "research/final-source-manifest.json",
+  "source_files_matched": 26,
+  "test_inventory_sha256": "68a336ec1af2f681edc37ef23f07d8e67923b15185c17a859f2a1e24449339a0",
+  "preserved_failures": {
+    "backend-build01": {
+      "record": "research/runs/backend-build01.json",
+      "record_sha256": "7755b9809bc8cba24e2830fbdee6ba79779a519eca057987f45fedd3a5d10864",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "build",
+        "./..."
+      ],
+      "database": null,
+      "exit_code": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/backend-build01.log",
+      "log_sha256": "92549e3fd1fcdae5e2020797c61310af3ecfbb7e9454c97e237b8c9cb8f7b6f8",
+      "started_at": "2026-11-10T08:09:15.433934+00:00",
+      "finished_at": "2026-11-10T08:09:21.263844+00:00",
+      "package_terminals": []
+    },
+    "backend-handler01": {
+      "record": "research/runs/backend-handler01.json",
+      "record_sha256": "e7376c397fd258f306b7769994ad38e727bc64e4697a38e8bf7cfe5abb078c53",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/handler",
+        "-run",
+        "^Test(DeliveryPolicy|DeliveryEvaluation)",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "policy_handler01",
+      "exit_code": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/backend-handler01.log",
+      "log_sha256": "044b7b1e20cc8673f41b588755d6a05de6b4e25c65219c04616cb543cf4d63ec",
+      "started_at": "2026-11-10T08:17:44.954825+00:00",
+      "finished_at": "2026-11-10T08:17:47.639322+00:00",
+      "package_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "action": "fail"
+        }
+      ]
+    },
+    "backend-handler02": {
+      "record": "research/runs/backend-handler02.json",
+      "record_sha256": "b60c2a4ea6211f983786b840e1defb5b5b3282c47dad9a8615a16cb79bebcf3e",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/handler",
+        "-run",
+        "^Test(DeliveryPolicy|DeliveryEvaluation)",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "policy_handler01",
+      "exit_code": 1,
+      "counts": {
+        "pass": 71,
+        "fail": 2,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/backend-handler02.log",
+      "log_sha256": "e63ed0a8924d05966155a470f98b01a1ff0ac810eefa3572fb5c8d84f16f32a3",
+      "started_at": "2026-11-10T08:20:00.715085+00:00",
+      "finished_at": "2026-11-10T08:20:28.773380+00:00",
+      "package_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "action": "fail"
+        }
+      ]
+    },
+    "manifest-baseline01": {
+      "record": "research/runs/manifest-baseline01.json",
+      "record_sha256": "90a23a6e53882a1c5874cd358cceae22948e0cc530f54fedba19fb6dee4002b2",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/handler",
+        "-run",
+        "^TestWorkspaceDeletionManifestCoversPublicSchema$",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "policy_manifest_baseline",
+      "exit_code": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/manifest-baseline01.log",
+      "log_sha256": "94620fea131c427c36b81d1e220acc1a7419d1c7f0b495f35de3688442760892",
+      "started_at": "2026-11-10T08:06:20.768756+00:00",
+      "finished_at": "2026-11-10T08:06:54.452125+00:00",
+      "package_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "action": "fail"
+        }
+      ]
+    },
+    "router-compile01": {
+      "record": "research/runs/router-compile01.json",
+      "record_sha256": "4c554b23296ed66676693fe030e30ddcf640ec3d3cba8b9f869be77a3e134b37",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-o",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/router-tests",
+        "./cmd/server"
+      ],
+      "database": null,
+      "exit_code": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/router-compile01.log",
+      "log_sha256": "92549e3fd1fcdae5e2020797c61310af3ecfbb7e9454c97e237b8c9cb8f7b6f8",
+      "started_at": "2026-11-10T08:13:44.549635+00:00",
+      "finished_at": "2026-11-10T08:13:45.937256+00:00",
+      "package_terminals": []
+    },
+    "router01": {
+      "record": "research/runs/router01.json",
+      "record_sha256": "e1a9b9a29cba7879f2160636e57d6456f906fbe8a420eb7cade48164c705f571",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./cmd/server",
+        "-run",
+        "^Test(DeliveryPolicyRouter|DeliveryEvaluationRouter)",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "policy_router01",
+      "exit_code": 1,
+      "counts": {
+        "pass": 44,
+        "fail": 1,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/router01.log",
+      "log_sha256": "fc5f70b33904f114d9eca9a6181cf5a30f05113ce250c8c0bc8d46246baf6dd9",
+      "started_at": "2026-11-10T08:15:31.687756+00:00",
+      "finished_at": "2026-11-10T08:16:02.221315+00:00",
+      "package_terminals": [
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "action": "fail"
+        }
+      ]
+    }
+  },
+  "failure_qualifications": {
+    "backend-build01": "Product compile mismatch: sqlc emits pgtype.Bool; code originally negated it as bool. Corrected to validity/value checks.",
+    "router-compile01": "Same product pgtype.Bool compilation failure reached during router compile; no router behavioral tests executed.",
+    "backend-handler01": "Test fixture field shadowing and Count integer type compile errors; no handler behavioral tests executed.",
+    "backend-handler02": "Unsupported guest member role violates existing member_role_check before product request; fixture corrected, historical71pass2fail retained.",
+    "manifest-baseline01": "Actual baseline deletion-manifest test fails on two previously retained audit tables absent from manifest; new retained_audit category preserves their actual retention semantics and includes the two new tables.",
+    "router01": "Distinct approver fixture initially lacked required invocation rights; refused by the existing artifact approval boundary before durable evaluation. Explicit permission fixture repair preserves final403 revocation assertion."
+  },
+  "verification_summary_bindings_match": true,
+  "full_scope_spec": {
+    "path": ".trellis/spec/server/delivery-policy-evaluations.md",
+    "sha256": "628588484993129086082322da2d5ee4d42968e08fea70acb2ec8158e4f68dd4",
+    "conclusion": "Matches reviewed final behavior and states all deferred done writers and real-model limitations."
+  },
+  "final_format_record": {
+    "path": "research/final-format.json",
+    "sha256": "e58d57563ba5c43a22d9743a956c3ab14f870db2be7d332001f8997d3c70f94a",
+    "independent_observations_match": true
+  },
+  "acceptance_mapping": {
+    "policy_authority_and_history": "Handler DefaultAppendAndCAS/ManagementAuthority/ConcurrentCAS and real router ManagementAndHistory/RoleRevocationAfterAuthentication prove current owner/admin, lead refusal, virtual off, same-value append, unchanged general project revision and CAS.",
+    "actual_execution_and_durable_identity": "RealPackageRestartAndLegacyCompatibility executes create/approval/task-auth packaging, reads tar contents and SHA, compares response with committed evaluator/key/evaluation/observation, reconstructs router and issues a new valid credential; original endpoint does not write ledger.",
+    "immutable_replay_and_no_false_current": "InvalidationAndImmutableRecovery + real CurrentApplicabilityAndPolicyRecovery cover policy off/revision/ABA, issue/project version/move/detach, PR changes/missing/ambiguous, receipt tamper and generation drift. NonpassIsNeverPromoted keeps original unknown/hold while explicit new key can observe repaired evidence.",
+    "current_authority": "Handler distinct originator/runtime_owner/initiator/approver/claimant/invoke_originator tests use separated principals and original task completed before evaluation, then drift revisions and revoke; real route tests cover independent approver and post-auth password/PAT/member revocation.",
+    "expiry_and_missing_binding": "Real OriginalPassExpiresWithoutRenewal executes an approved specification near its exact retained horizon, observes actual pass then waits database clock expiry and verifies unchanged row/archive with expired applicability. MissingRetainedBindingRefusesHistory denies old contents after execution disappears.",
+    "atomicity_and_concurrency": "Handler commit-before/after failures verify actual persistence and same-key recovery; ConcurrentSingleRow and real four-request concurrent route assert one immutable row. Policy/current fact writer-first and evaluation-first fences return actual conflict or55P03; no old-key takeover.",
+    "deletion_retention": "Actual handler project/issue/workspace deletion retains both histories; actual authenticated project DELETE detaches issue and denies policy GET while authorized history becomes stale. Workspace manifest classification is supplementary.",
+    "schema_and_rollback": "RuntimeSchemaRefusesPartialAndWrongIndexes sends all four endpoints to private incomplete/incorrect-index schemas and asserts503/zero writes. Actual migrations test empty rollback, each retained table independently, simultaneous uncommitted writers, index shape/invalid build cleanup and exact unchanged conflict state."
+  }
+}

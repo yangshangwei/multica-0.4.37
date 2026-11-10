@@ -20,12 +20,19 @@ const (
 	workspaceDeleteDetach workspaceDeleteAction = "detach"
 	workspaceDeleteKeep   workspaceDeleteAction = "keep"
 	workspaceDeleteSettle workspaceDeleteAction = "settle"
+	workspaceRetainAudit  workspaceDeleteAction = "retain_audit"
 )
 
 // workspaceDeletionManifest is the schema coverage contract for workspace
 // teardown. Adding a table requires an explicit ownership decision here; the
 // handler deletion graph must then implement that decision before CI passes.
 var workspaceDeletionManifest = map[string]workspaceDeleteAction{
+	// These workspace-owned audit facts survive teardown. Public reads still
+	// require a live workspace and current authority; retention grants no access.
+	"agent_artifact_execution":     workspaceRetainAudit,
+	"comment_delegation_receipt":   workspaceRetainAudit,
+	"project_delivery_policy":      workspaceRetainAudit,
+	"delivery_evidence_evaluation": workspaceRetainAudit,
 	// Collaboration identity, rollout and invalidation state belong to the
 	// deployment/accounts, rather than to the workspace being deleted.
 	"collaboration_account_fence":        workspaceDeleteKeep,
@@ -362,7 +369,7 @@ WHERE table_schema = 'public'
 			if hasWorkspaceID {
 				t.Errorf("KEEP table %s gained workspace_id; classify its teardown behavior", table)
 			}
-		case workspaceDeleteDetach, workspaceDeleteSettle:
+		case workspaceDeleteDetach, workspaceDeleteSettle, workspaceRetainAudit:
 			if !hasWorkspaceID {
 				t.Errorf("%s table %s lost workspace_id; update its teardown selector", action, table)
 			}

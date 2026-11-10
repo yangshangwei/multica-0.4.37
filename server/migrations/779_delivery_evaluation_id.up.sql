@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY delivery_evaluation_id_idx ON delivery_evidence_evaluation (evaluation_id);

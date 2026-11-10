@@ -1,0 +1,28 @@
+{
+  "stopped_at": "2026-11-10T08:37:38.761714+00:00",
+  "container": "multica-delivery-policy-20261110-pg",
+  "state": "exited",
+  "connections_before_stop": 0,
+  "databases_retained": [
+    "policy_baseline",
+    "policy_bootstrap",
+    "policy_final_handler_normal01",
+    "policy_final_handler_race01",
+    "policy_final_migrations_normal01",
+    "policy_final_migrations_race01",
+    "policy_final_router_normal01",
+    "policy_final_router_race01",
+    "policy_handler01",
+    "policy_handler02",
+    "policy_manifest_baseline",
+    "policy_migrations01",
+    "policy_router01",
+    "policy_router02"
+  ],
+  "database_count": 14,
+  "postgres_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+  "logs_retained": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs",
+  "deleted_databases": 0,
+  "real_model_calls": 0,
+  "historical_environments_untouched": true
+}
