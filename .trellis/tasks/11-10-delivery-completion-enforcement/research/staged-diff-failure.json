@@ -1,0 +1,13 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--check",
+    "a37bee7cd..HEAD"
+  ],
+  "head": "cdadbe4e415f7c22421034a40c5d3ad2a9aa1c2e",
+  "exit_code": 2,
+  "stdout": ".trellis/tasks/11-10-delivery-completion-enforcement/prd.md:45: new blank line at EOF.\n",
+  "stderr": "",
+  "classification": "planning_document_format_failure_not_product_red"
+}
