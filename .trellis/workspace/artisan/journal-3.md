@@ -871,3 +871,29 @@ Archived 11-01-branch-e2e-acceptance at the user's request. Preserved the retain
 ### Next Steps
 
 - M1交付证据门禁与持久化委派回执；再M2快照/预算/调度及M3治理。真实验收各自解阻。
+
+
+## Session 148: M1交付证据观察增量通过独立验收
+<!-- trellis-session: v=2 fp=bf0b078ef9b29126 -->
+
+**Date**: 2026-11-10
+**Task**: M1交付证据观察增量通过独立验收
+**Branch**: `codex/delivery-evidence-20261110`
+
+### Summary
+
+观察API与旧行为兼容；handler普通/race各140、真实路由各34通过，build/vet通过。归档仅观察增量，完整门禁/持久委派/M2/M3仍开放；真实模型0，主工作区修改保留。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `45af89016` | feat(agents): prevent stale evidence from receiving an unqualified delivery verdict |
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 完整证据policy与持久化委派分包；真实实验停止规则不变。
