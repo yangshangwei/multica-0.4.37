@@ -48,7 +48,7 @@
 - [首轮E5记录](../../.trellis/tasks/10-30-collaboration-fix-closure/verification-2026-11-05.md)
 - [H3a诊断](../../.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/h3a-entry/failure-diagnosis.md)、[13槽位续作提案](../../.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/continuation-proposal.md)
 - [知识预算和顺序](../../.trellis/tasks/10-30-collaboration-knowledge-promotion/continuation-plan-2026-11-05.md)、[104次模拟证据](../../.trellis/tasks/10-30-collaboration-knowledge-promotion/research/codex-real-20261105-plan/continuation-verification.md)、[119控制证据](../../.trellis/tasks/archive/2026-11/11-08-merge-unmerged-worktrees/research/guard-tests-integration.md)
-- [受控制品原始阻塞审查](../../.trellis/tasks/11-06-controlled-artifact-execution/plan-review.md)
+- [受控制品原始阻塞审查](../../.trellis/tasks/archive/2026-11/11-06-controlled-artifact-execution/plan-review.md)
 - [业务QA首轮失败](../../artifacts/qa/collaboration-business-scenarios-20261109/b1-support-governance/playwright.json)
 
 本轮执行结果随后追加到下方，历史失败文件保持原样。
@@ -59,7 +59,21 @@
 - 新业务QA最终选定结果：S3/B3、S2/B5、S1/B6共3/3通过；历史主线复现4/4另列。12次受控Provider运行、12份host退出证明；保留四次失败尝试。见[完整报告](../../artifacts/qa/collaboration-business-scenarios-20261109/report.md)。这些是确定性Provider场景，不提升AC43、E5、H3a、知识真实模型验收状态。
 - 仅修正两份本任务新测试：严格workflow请求字段、按目标定位、返工显式转交、抽屉关闭等待，并将知识权限拒绝收紧为精确403/code。定向TypeScript、ESLint和3项用例收集通过；没有产品代码改动。
 - 自有API/Web/renderer已停止，三端口释放，知识off、执行和host闸门关闭，数据库/日志保留。最终源码27,607文件零漂移、六二进制原哈希一致。原扫描15项公开标识符误报保留，按精确公开上下文逐项复核后实际凭据命中0；不冒称原扫描器零命中。
-- 受控制品design/implement已统一，补齐实际锁序、一次claim、未知结果、确定性打包、回滚先fence、工作区删除保留审批与回执。两轮独立复审后规划合同就绪，产品实现仍未开始。见[复审](../../.trellis/tasks/11-06-controlled-artifact-execution/plan-recheck-2026-11-10.md)。
+- 受控制品design/implement已统一，补齐实际锁序、一次claim、未知结果、确定性打包、回滚先fence、工作区删除保留审批与回执。两轮独立复审后规划合同就绪，产品实现仍未开始。见[复审](../../.trellis/tasks/archive/2026-11/11-06-controlled-artifact-execution/plan-recheck-2026-11-10.md)。
 - 六项业务继续保持in_progress；已同步知识当前入口与CLI漂移、研发M1下一步。未创建新总任务，未发送外部消息、未启动真实付费模型、未部署。
 
 下一批优先实施已审查的M1受控制品子任务；真实验收线并行完成CLI绑定/合法网关准入及E5、H3a停止规则的独立处置。
+
+
+## 后续推进实绩：受控制品子任务已完成
+
+`f5b51d7be`已提交并合入当前分支，受控制品子任务已独立验收归档。实现审批前冻结规格、当前权限复核、一次领取、确定性本地tar、未知结果不重跑、删除后审批回执留证。默认无配置不可执行；没有增加部署或真实模型能力。最终handler普通/race各84通过、router普通/race各23通过，macOS纯包普通/race及Linux各78通过，构建/vet/sqlc幂等和独审通过。详见[交付记录](../../.trellis/tasks/archive/2026-11/11-06-controlled-artifact-execution/delivery.md)。
+
+下一阶段按以下可验收交付推进，父任务子项8/8归档不等于M1或整个研发路线完成：
+
+1. **M1交付证据门禁**：以现有任务/项目lifecycle为入口，冻结policy版本、提交/制品摘要、证据生产者、结果和失效时间；先观察再提示/阻断。验收旧SHA绿灯不复用、缺失/过期/unknown不得当pass、撤权和并发变更不越过条件写入、旧客户端兼容。先确认现有lifecycle与artifact回执的接合点，再单独PRD/设计/实现。
+2. **M1持久化委派回执**：复用trigger_outcomes，将目标身份、触发评论、排队/合并/延后/拒绝结果持久关联；验证重复请求、成员替换、离线/私有拒绝、队长重启后的原回执读取，不以mention文本冒充实际派发。与证据门禁共享身份但不建立第二套执行引擎。
+3. **M2**：先确定报告scope/时区/[start,end)/水位和coverage，再实现只读确定性快照；总预算使用父根预留/结算/未知usage，验证重试不逃预算和并发不超发；最后接能力/负载调度。
+4. **M3**：固定环境的NFR/恢复、版本化模型评测、制品供应链证据、保留定制的模板升级与知识失效。依赖M1证据和M2预算后逐包验收。
+
+真实模型线继续独立：知识优先解决旧CLI字节绑定和合法网关准入；AC43重绑当前候选；E5/H3a分别保留原失败及明确停止例外要求。本次真实模型调用0，无新预算消耗。

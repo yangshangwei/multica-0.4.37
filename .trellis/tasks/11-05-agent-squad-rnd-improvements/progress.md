@@ -1,3 +1,9 @@
+## 2026-11-10 受控制品子任务完成
+
+`f5b51d7be`已快进合入当前分支，受控local-synthetic制品实现通过独立验收并归档。handler普通/race各84、router各23、纯包macOS普通/race和Linux各78通过；build/vet/sqlc幂等通过。该实现补齐审批前冻结、一次领取、unknown不重跑和删除后留证。
+
+所有既有子任务归档不代表路线完成。M1剩交付证据门禁与持久化委派回执；M2/M3仍待。真实模型验收未借用本次模拟结论，调用0。下一步与退出条件见`docs/plans/2026-11-10-business-progress-and-execution.zh-CN.md`末节。
+
 # Progress
 
 - User authorized task creation and first P1 implementation in this thread.
