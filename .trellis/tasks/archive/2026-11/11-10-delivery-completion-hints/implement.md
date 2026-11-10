@@ -8,6 +8,8 @@
 6. [x] 主会话独占环境创建/迁移/最终测试，专属容器、每包每轮新库；所有命令独立run ID及原始失败保留，不借用历史环境。编译/测试以私有runner记录。
 7. [x] trellis-check全范围源码、测试、授权、真实日志及manifest独立复核；机械问题可修，设计问题返主会话。
 8. [x] 最终冻结后handler/router普通及race，旧policy/evaluation/evidence/artifact/approval及status回归，build/vet/sqlc/format/builtin contracts；明确具名和顶层计数，不合并普通/race。
-9. [ ] 主会话更新spec、计划、父子任务、交接日志；Lore限定范围提交/归档，保护主目录安全本地集成；专属PG零连接后停止、DB/日志保留。
+9. [x] 主会话更新spec、计划、父子任务、交接日志；Lore限定范围提交/归档，保护主目录安全本地集成；专属PG零连接后停止、DB/日志保留。
 
 所有子代理知道并行共享代码，不能覆盖其他owner、不递归spawn、不commit、不调用供应商。独立协作和全部完成强制门禁不在本包实现范围。没有前端修改不运行或冒称前端/浏览器验收。父M1与六业务保持in_progress。
+
+Implementation ca0c8efd3; scoped verification and review complete. Archive and journal are separate Lore commits; local integration evidence is appended after actual safe fast-forward, not presumed complete.
