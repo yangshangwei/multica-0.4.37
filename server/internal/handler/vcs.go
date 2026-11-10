@@ -24,14 +24,15 @@ import (
 // Secrets are never included; the webhook secret is returned exactly once at
 // create time via VCSConnectResponse.
 type VCSConnectionResponse struct {
-	ID           string `json:"id"`
-	WorkspaceID  string `json:"workspace_id"`
-	Provider     string `json:"provider"`
-	InstanceURL  string `json:"instance_url"`
-	AccountLogin string `json:"account_login"`
-	WebhookURL   string `json:"webhook_url"`
-	WebhookPath  string `json:"webhook_path"`
-	CreatedAt    string `json:"created_at"`
+	ID            string `json:"id"`
+	WorkspaceID   string `json:"workspace_id"`
+	Provider      string `json:"provider"`
+	InstanceURL   string `json:"instance_url"`
+	AccountLogin  string `json:"account_login"`
+	WebhookURL    string `json:"webhook_url"`
+	WebhookPath   string `json:"webhook_path"`
+	CreatedAt     string `json:"created_at"`
+	TrustRevision int64  `json:"trust_revision"`
 }
 
 // VCSConnectResponse embeds the stored connection plus the one-time plaintext
@@ -66,14 +67,15 @@ func (h *Handler) vcsWebhookURL(connID string) string {
 func (h *Handler) vcsConnectionToResponse(c db.VcsConnection) VCSConnectionResponse {
 	id := uuidToString(c.ID)
 	return VCSConnectionResponse{
-		ID:           id,
-		WorkspaceID:  uuidToString(c.WorkspaceID),
-		Provider:     c.Provider,
-		InstanceURL:  c.InstanceUrl,
-		AccountLogin: c.AccountLogin,
-		WebhookURL:   h.vcsWebhookURL(id),
-		WebhookPath:  h.vcsWebhookPath(id),
-		CreatedAt:    timestampToString(c.CreatedAt),
+		ID:            id,
+		WorkspaceID:   uuidToString(c.WorkspaceID),
+		Provider:      c.Provider,
+		InstanceURL:   c.InstanceUrl,
+		AccountLogin:  c.AccountLogin,
+		WebhookURL:    h.vcsWebhookURL(id),
+		WebhookPath:   h.vcsWebhookPath(id),
+		CreatedAt:     timestampToString(c.CreatedAt),
+		TrustRevision: c.TrustRevision,
 	}
 }
 

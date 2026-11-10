@@ -162,7 +162,7 @@ func (h *Handler) deliveryCompletionHintInTx(r *http.Request, tx pgx.Tx, q *db.Q
 		out.Reason = "no_project"
 	case policy.Mode == "off":
 		out.Reason = "policy_off"
-	case policy.Mode != "observe" || policy.PolicyVersion != deliveryEvidencePolicy || policy.Stage != deliveryPolicyStage:
+	case (policy.Mode != "observe" && policy.Mode != "enforce") || policy.PolicyVersion != deliveryEvidencePolicy || policy.Stage != deliveryPolicyStage:
 		return out, artifactFailure{409, "delivery_policy_not_observing"}
 	case req.EvaluationKey == nil:
 		out.Hint, out.Reason = "attention", "evaluation_required"

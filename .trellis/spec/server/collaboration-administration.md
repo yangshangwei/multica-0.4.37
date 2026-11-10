@@ -83,3 +83,11 @@ shared views `admin/collaboration/`, and both
 changes under lock, required-write rollback, uncertain commits, original GET
 recovery, exact scope and native account-cache teardown. Browser evidence must
 come from an independent password/admin-enabled task environment.
+
+## Source delivery enforcement
+
+The later [transactional completion contract](./delivery-completion-enforcement.md)
+adds explicit authorizations and current checks in actual writers. The historical
+observe/hint increment above remains non-authorizing; its private evidence and
+original actor/retention boundaries remain. Current source-policy enforcement,
+project-change rules and distinct R38 handling follow that shared contract.

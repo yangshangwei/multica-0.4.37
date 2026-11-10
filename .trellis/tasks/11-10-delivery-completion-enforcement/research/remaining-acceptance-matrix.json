@@ -1,0 +1,66 @@
+{
+  "scope": "current remaining proof; never a full-gate acceptance claim",
+  "full_delivery_gate_complete": false,
+  "rows": [
+    {
+      "writer": "ordinary_update",
+      "cases": "human/task actual grant; missing/stale/revoked; custom done; mixed content; original receipt after reopen",
+      "status": "handler iteration34 covers selected cases; final normal/race/auth router pending"
+    },
+    {
+      "writer": "move",
+      "cases": "same actual writer; explicit completion forwarding; parent/project/current policy; no combined enforce move+done",
+      "status": "negative handler proof exists; granted real move positive pending"
+    },
+    {
+      "writer": "batch",
+      "cases": "ordered actual prefix/unknown/not_attempted; each grant consumed in own tx; parent stage notification once",
+      "status": "iteration34 selected cases; added parent/stage test pending final"
+    },
+    {
+      "writer": "create_and_comment_child",
+      "cases": "actual inherited project enforce done refusal; custom status; no partial side effects; off/observe positive",
+      "status": "ordinary iteration includes custom/comment-child; final auth router pending"
+    },
+    {
+      "writer": "project_change_and_delete",
+      "cases": "real actor owner/admin intersection; reason; current old/new policies; explicitoff delete; retained migration facts",
+      "status": "iteration34 selected cases; added migration4 and entrycases pending"
+    },
+    {
+      "writer": "github_and_vcs",
+      "cases": "real signed payload + actual controlled archive + exact trustrevision/integration/PR/head; refusal and same tx consume; disconnect/rotation/replay",
+      "status": "real signed internal-policy router17PASS + live signature/trust handler7PASS; added provider mismatch case/current18 and final public policy/race/review pending"
+    },
+    {
+      "writer": "collaboration_submission",
+      "cases": "exact existing submission, sourcechild sameparent/workspace/project/rev, current participants/issuer; same tx completion+consume",
+      "status": "real child artifact completion handler expanded18PASS; final 3 regression additions, authenticated public policy journeys/old compatibility/race/review pending"
+    },
+    {
+      "writer": "collaboration_self",
+      "cases": "readonly selfintent before gate; attachments untouched until after gate; actual generatedsubmission and accepted atomically",
+      "status": "real child artifact completion handler expanded18PASS; final 3 regression additions, authenticated public policy journeys/old compatibility/race/review pending"
+    },
+    {
+      "writer": "R38",
+      "cases": "actualpassword/admin/org/disabledcreator; exact adminintent/key; independent source authorization; no fabricated accepted",
+      "status": "real child artifact completion handler expanded18PASS; final 3 regression additions, authenticated public policy journeys/old compatibility/race/review pending"
+    },
+    {
+      "writer": "managed_consumer",
+      "cases": "real managedtask credential chain, explicit issuer isolation, current binding/namespace/absence/epoch revocation",
+      "status": "Contributor actual handler1PASS; managed auth/router10PASS with distinct issuer; tight HTTP assertions pending final normal/race"
+    },
+    {
+      "writer": "policy_activation",
+      "cases": "public owner/admin CAS; observe/enforce oldeval stale; no unsafe skip; off/history recovery; unknownmode/schemafailclosed",
+      "status": "publicenforce still closed; final P4 required"
+    },
+    {
+      "writer": "schema_and_retention",
+      "cases": "exact constraints/columns/indexes; downgrade no historydeletion; retained auth/terminal/projectchange",
+      "status": "P1 exact schema17PASS; policy rollback7PASS; project change and webhook trust actual migrations plus all final/race pending"
+    }
+  ]
+}

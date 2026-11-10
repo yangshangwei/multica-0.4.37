@@ -123,3 +123,11 @@
 从 a37bee7cd 新建独立 worktree，确认没有后续业务提交；前序 18 个提交均为祖先，提示包 13 个冻结 HEAD 文件匹配。独立研究复核四个归档包 169 份原始运行记录及最新计数、失败、独审和留证，未重跑历史环境。完成入口研究绑定 45 个源码文件，补充协作项目编辑与项目删除解除关联：若已 done 换项目要求重验，这些入口也必须纳入。
 
 子任务 `11-10-delivery-completion-enforcement` 保持 planning，已落盘 PRD、设计边界、实施序列、D1–D7 待决登记和验收形状。首先等待最终人类验收责任及是否允许受限代办的回答；skip 推荐仍未批准。没有产品/迁移/依赖变化，不把研究检查点当门禁功能交付，不关闭 M1/M2/M3 或六业务。真实模型调用 0，AC43/E5/H3a/知识历史停止与预算不变。
+
+## 2026-11-11 完成事务强制门禁 v1 最终验收
+
+D1–D5由用户逐项确认，之后明确授权所有推荐选择自主执行。复用唯一service观察/当前权限核验，完成显式人类授权、原事务一次消费/撤销/恢复，接入普通/move/逐项batch/create/comment-child、真实GitHub/VCS、协作精确submission/self及R38；项目迁移/删除控制、公开enforce CAS和旧observe兼容同时完成。协作证据为明确同源同项目普通child实际制品，不伪造parent task；R38不伪造发起人验收。
+
+最终冻结110源码，handler普通/race各620、真实认证路由各166、service各272、实际迁移各62，真实删除留证补充各4，均零失败/跳过；52合同及build/vet/sqlc134幂等、客户端Core63/Views91/typecheck/独审lint通过。全Views既有27warnings未压制；失败原始记录与精确库存留存，不跨轮相加。最终交付/独审/本地集成另见本子任务delivery、verification与research记录。
+
+本包不是完整M1、M2/M3或六业务完成。v1现有检查全属不可豁免硬检查，因此skip_supported=false/空清单，未提供可用skip或自动UI/CLI提示；local-synthetic与数据库已观察PR head边界保持。M1父任务仍in_progress，M2/M3 planned；次序保持快照→父总预算→能力负载，M3持续治理。真实供应商调用0，AC43/E5/H3a/知识的停止/预算不变；未推送、部署、发送外部消息。

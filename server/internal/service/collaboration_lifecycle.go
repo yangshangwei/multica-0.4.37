@@ -23,12 +23,13 @@ type CollaborationLifecycleParams struct {
 	Action               string
 	TargetStatus         string
 	StatusOptionsVersion string
-	SubmissionID         *pgtype.UUID  `json:",omitempty"`
-	Note                 string        `json:",omitempty"`
-	Basis                string        `json:",omitempty"`
-	DraftID              *pgtype.UUID  `json:",omitempty"`
-	AttachmentIDs        []pgtype.UUID `json:",omitempty"`
-	SourceCommentID      *pgtype.UUID  `json:",omitempty"`
+	SubmissionID         *pgtype.UUID               `json:",omitempty"`
+	Note                 string                     `json:",omitempty"`
+	Basis                string                     `json:",omitempty"`
+	DraftID              *pgtype.UUID               `json:",omitempty"`
+	AttachmentIDs        []pgtype.UUID              `json:",omitempty"`
+	SourceCommentID      *pgtype.UUID               `json:",omitempty"`
+	Completion           *DeliveryCompletionBinding `json:",omitempty"`
 }
 
 type CollaborationStatusParams struct {
@@ -359,13 +360,36 @@ func (s *CollaborationService) ChangeLifecycle(ctx context.Context, p Collaborat
 			}
 			return CollaborationWorkflowReceipt{}, err
 		}
+		var prepared DeliveryPrepareResult
 		if p.Action == "complete" {
-			if refusal, err := t.prepareCompletion(ctx, p); refusal != nil || err != nil {
+			if p.Completion != nil && (p.Completion.OperationID != p.RequestID || p.Completion.Validate() != nil) {
+				return t.result("invalid_delivery_completion_request", 400), nil
+			}
+			if refusal, err := t.prepareCompletionMode(ctx, p, false); refusal != nil || err != nil {
 				if refusal != nil {
 					return *refusal, nil
 				}
 				return CollaborationWorkflowReceipt{}, err
 			}
+			candidate := t.access.Issue
+			candidate.Status = p.TargetStatus
+			intent := completionCollaborationTargetFromWorkflow(t, p)
+			var err error
+			prepared, err = PrepareDeliveryMutationInTx(ctx, t.tx, DeliveryMutationIntent{Before: t.access.Issue, Candidate: candidate, Completion: p.Completion, Credential: completionRequestCredential(ctx), Collaboration: &intent})
+			if err != nil {
+				return completionWorkflowRefusal(t, err)
+			}
+			if prepared.State != DeliveryNotApplicable && (prepared.State != DeliveryPrepared || prepared.Prepared == nil) {
+				return t.result("delivery_completion_conflict", 409), nil
+			}
+			if refusal, err := t.prepareCompletion(ctx, p); refusal != nil || err != nil {
+				if refusal != nil {
+					return CollaborationWorkflowReceipt{}, collaborationError(refusal.Status, refusal.Code)
+				}
+				return CollaborationWorkflowReceipt{}, err
+			}
+		} else if p.Completion != nil {
+			return t.result("invalid_delivery_completion_request", 400), nil
 		} else if p.SubmissionID != nil || p.Basis != "" || p.DraftID != nil || len(p.AttachmentIDs) > 0 || p.SourceCommentID != nil {
 			return t.result("invalid_workflow_request", http.StatusBadRequest), nil
 		} else if p.Action == "cancel" {
@@ -378,7 +402,20 @@ func (s *CollaborationService) ChangeLifecycle(ctx context.Context, p Collaborat
 					LifecycleEpoch: t.access.LifecycleEpoch, Kind: "cancelled"}
 			}
 		}
-		return t.changeLifecycle(ctx, p.Action, p.TargetStatus)
+		receipt, err := t.changeLifecycle(ctx, p.Action, p.TargetStatus)
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if prepared.State == DeliveryPrepared {
+			result := DeliveryWriterResult{CollaborationOperationID: t.operation.ID, CollaborationRevision: t.access.Revision}
+			if t.deliveryDecision != nil {
+				result.SubmissionID = t.deliveryDecision.SubmissionID
+			}
+			if _, err = FinishDeliveryMutationInTx(ctx, t.tx, prepared.Prepared, t.access.Issue, result); err != nil {
+				return CollaborationWorkflowReceipt{}, err
+			}
+		}
+		return receipt, nil
 	})
 }
 
@@ -422,6 +459,9 @@ func (s *CollaborationService) ChangeStatus(ctx context.Context, p Collaboration
 }
 
 func (t *collaborationWorkflowTx) prepareCompletion(ctx context.Context, p CollaborationLifecycleParams) (*CollaborationWorkflowReceipt, error) {
+	return t.prepareCompletionMode(ctx, p, true)
+}
+func (t *collaborationWorkflowTx) prepareCompletionMode(ctx context.Context, p CollaborationLifecycleParams, write bool) (*CollaborationWorkflowReceipt, error) {
 	refuse := func(code string, status int) (*CollaborationWorkflowReceipt, error) {
 		r := t.result(code, status)
 		return &r, nil
@@ -466,8 +506,11 @@ func (t *collaborationWorkflowTx) prepareCompletion(ctx context.Context, p Colla
 		return refuse("delivery_required", http.StatusConflict)
 	}
 	input := collaborationDeliveryInput{note: p.Note, basis: p.Basis, draft: p.DraftID, attachments: p.AttachmentIDs, sourceComment: p.SourceCommentID}
-	if refusal, err := t.prepareDelivery(ctx, input); refusal != nil || err != nil {
+	if refusal, err := t.prepareDeliveryMode(ctx, input, write); refusal != nil || err != nil {
 		return refusal, err
+	}
+	if !write {
+		return nil, nil
 	}
 	handoff, err := t.recordSelfDelivery(ctx, input)
 	if err != nil {

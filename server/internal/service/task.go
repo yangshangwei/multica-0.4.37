@@ -5954,7 +5954,7 @@ func (s *TaskService) HandleFailedTasks(ctx context.Context, tasks []db.AgentTas
 				effectiveStatus := issuestatus.Effective(ctx, s.Queries, issue.WorkspaceID, issue.Status)
 				if effectiveStatus == "in_progress" && !processedIssues[issueKey] && !retriedIssues[issueKey] {
 					processedIssues[issueKey] = true
-					before, updatedIssue, changed, updateErr := WriteIssueStatus(ctx, s.TxStarter, s.Queries, issue, "todo", "failed_task_reset", resetFailedIssuePolicy)
+					before, updatedIssue, changed, updateErr := WriteIssueStatus(ctx, s.TxStarter, s.Queries, issue, "todo", "failed_task_reset", resetFailedIssuePolicy, nil)
 					if updateErr != nil {
 						slog.Warn("handle failed tasks: reset stuck issue failed", "issue_id", issueKey, "error", updateErr)
 					} else if changed {

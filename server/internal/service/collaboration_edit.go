@@ -23,12 +23,13 @@ type CollaborationEditParams struct {
 	SetDueDate   bool
 	// Omit absent new fields from the digest so pre-R42 metadata operations
 	// retain their original payload identity. A present empty label set clears.
-	Priority      *string                    `json:"Priority,omitempty"`
-	LabelIDs      *[]pgtype.UUID             `json:"LabelIDs,omitempty"`
-	Properties    map[string]json.RawMessage `json:"Properties,omitempty"`
-	ProjectID     *pgtype.UUID               `json:"ProjectID,omitempty"`
-	ParentIssueID *pgtype.UUID               `json:"ParentIssueID,omitempty"`
-	Stage         *pgtype.Int4               `json:"Stage,omitempty"`
+	Priority            *string                    `json:"Priority,omitempty"`
+	LabelIDs            *[]pgtype.UUID             `json:"LabelIDs,omitempty"`
+	Properties          map[string]json.RawMessage `json:"Properties,omitempty"`
+	ProjectID           *pgtype.UUID               `json:"ProjectID,omitempty"`
+	ParentIssueID       *pgtype.UUID               `json:"ParentIssueID,omitempty"`
+	Stage               *pgtype.Int4               `json:"Stage,omitempty"`
+	ProjectChangeReason string                     `json:"ProjectChangeReason,omitempty"`
 }
 
 func (s *CollaborationService) EditIssue(ctx context.Context, p CollaborationEditParams) (CollaborationWorkflowReceipt, error) {
@@ -93,6 +94,11 @@ func (s *CollaborationService) EditIssue(ctx context.Context, p CollaborationEdi
 			return t.result("unchanged", http.StatusOK), nil
 		}
 
+		if before.ProjectID != after.ProjectID {
+			if err := CheckDeliveryProjectChangeInTx(ctx, t.tx, before, after, completionRequestCredential(ctx), p.ProjectChangeReason, t.operation.ID); err != nil {
+				return completionWorkflowRefusal(t, err)
+			}
+		}
 		record, err := iteration.PrepareIssueRecord(ctx, t.tx, before, t.iteration)
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err

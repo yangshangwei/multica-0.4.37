@@ -56,7 +56,7 @@ func TestSystemStatusWriterSkipsCollaborationIssue(t *testing.T) {
 	if err != nil {
 		t.Fatalf("load collaboration issue: %v", err)
 	}
-	if _, _, changed, err := service.WriteIssueStatus(ctx, testHandler.TxStarter, testHandler.Queries, issue, "done", "pull_request_close_aggregate", allow); err != nil || changed {
+	if _, _, changed, err := service.WriteIssueStatus(ctx, testHandler.TxStarter, testHandler.Queries, issue, "done", "pull_request_close_aggregate", allow, nil); err != nil || changed {
 		t.Fatalf("system writer moved a collaboration issue: changed=%v err=%v", changed, err)
 	}
 	var status string
@@ -71,7 +71,7 @@ func TestSystemStatusWriterSkipsCollaborationIssue(t *testing.T) {
 	if err != nil {
 		t.Fatalf("load ordinary issue: %v", err)
 	}
-	if _, updated, changed, err := service.WriteIssueStatus(ctx, testHandler.TxStarter, testHandler.Queries, issue, "done", "pull_request_close_aggregate", allow); err != nil || !changed || updated.Status != "done" {
+	if _, updated, changed, err := service.WriteIssueStatus(ctx, testHandler.TxStarter, testHandler.Queries, issue, "done", "pull_request_close_aggregate", allow, nil); err != nil || !changed || updated.Status != "done" {
 		t.Fatalf("ordinary issue not advanced: changed=%v status=%s err=%v", changed, updated.Status, err)
 	}
 }

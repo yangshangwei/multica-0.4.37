@@ -152,7 +152,7 @@ func TestDeliveryPolicyRouterRefusesMalformedAndNonhumanWrites(t *testing.T) {
 		name, field string
 		value       any
 	}{
-		{"hint", "mode", "hint"}, {"enforce", "mode", "enforce"}, {"skip", "mode", "skip"},
+		{"hint", "mode", "hint"}, {"unknown_mode", "mode", "future-mode"}, {"skip", "mode", "skip"},
 		{"wrong_stage", "stage", "in_review"}, {"wrong_algorithm", "policy_version", "future-policy"},
 		{"missing_reason", "reason", "   "}, {"oversized_reason", "reason", strings.Repeat("x", 1001)},
 		{"negative_revision", "expected_policy_revision", -1}, {"claimed_authority", "created_by", f.user},

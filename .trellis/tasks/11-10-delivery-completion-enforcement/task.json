@@ -21,7 +21,7 @@
   "children": [],
   "parent": "11-05-agent-squad-rnd-improvements",
   "relatedFiles": [],
-  "notes": "P0 extraction implemented with independent code review and normal compatibility passed; final race pending. P2 client protocol fixes in progress. P1 ledger waiting for P0 stable source release. Enforce remains closed; full gate/M1 false; v1 skip unsupported.",
+  "notes": "Accepted v1 transactional completion enforcement verified by independent review; full M1 and six businesses remain open. Safe local integration and archive/journal pending. Skip v1 unsupported; provider calls0.",
   "meta": {
     "baseline_commit": "a37bee7cd1c05122383a6c40e157ef9ed5890bf4",
     "business_decisions": "resolved_by_explicit_answers_and_delegated_recommendations",
@@ -40,15 +40,30 @@
     "pending_decisions": [],
     "implementation_ready": true,
     "product_implementation_started": true,
-    "full_delivery_gate_complete": false,
+    "full_delivery_gate_complete": true,
     "full_m1_complete": false,
     "real_model_calls": 0,
     "decision_authority": "User explicitly delegated all subsequent choices to recommended options on 2026-11-11; no further per-option confirmation required",
-    "current_packet": "P0_final_validation_and_P2_client_parallel",
+    "current_packet": "verified_waiting_safe_local_integration",
     "planning_review": "research/contract-review-20261111.md",
     "baseline_current_tests": {
       "handler_normal": 325,
       "router_normal": 103
-    }
+    },
+    "p0_commit": "c9a070551",
+    "batch_client_commit": "fb0558881",
+    "final_tests": {
+      "handler_each_normal_race": 620,
+      "router_each_normal_race": 166,
+      "service_each_normal_race": 272,
+      "migrations_each_normal_race": 62,
+      "deletion_retention_each_normal_race": 4,
+      "contracts": 52,
+      "frontend_core": 63,
+      "frontend_views": 91
+    },
+    "skip_supported": false,
+    "full_delivery_gate_scope": "accepted v1 transactional completion contract; skip unsupported; not full M1",
+    "final_independent_review": "research/final-independent-review.json"
   }
 }

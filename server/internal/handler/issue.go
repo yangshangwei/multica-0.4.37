@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -14,12 +15,15 @@ import (
 	"strings"
 	"time"
 	"unicode"
+	"unicode/utf8"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/admission"
+	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/channelmedia"
 	"github.com/multica-ai/multica/server/internal/dispatch"
 	"github.com/multica-ai/multica/server/internal/issueguard"
@@ -37,15 +41,16 @@ import (
 
 // IssueResponse is the JSON response for an issue.
 type IssueResponse struct {
-	Collaboration   *sourceIssueCollaboration `json:"collaboration,omitempty"`
-	AdmissionStatus string                    `json:"admission_status"`
-	ID              string                    `json:"id"`
-	WorkspaceID     string                    `json:"workspace_id"`
-	Number          int32                     `json:"number"`
-	Identifier      string                    `json:"identifier"`
-	Title           string                    `json:"title"`
-	Description     *string                   `json:"description"`
-	Status          string                    `json:"status"`
+	CompletionReceipt *service.DeliveryCompletionReceipt `json:"completion_receipt,omitempty"`
+	Collaboration     *sourceIssueCollaboration          `json:"collaboration,omitempty"`
+	AdmissionStatus   string                             `json:"admission_status"`
+	ID                string                             `json:"id"`
+	WorkspaceID       string                             `json:"workspace_id"`
+	Number            int32                              `json:"number"`
+	Identifier        string                             `json:"identifier"`
+	Title             string                             `json:"title"`
+	Description       *string                            `json:"description"`
+	Status            string                             `json:"status"`
 	// StatusCategory is the canonical status whose platform behavior Status
 	// carries — identical to Status for the 7 built-ins, and the inherited
 	// category for a custom status. Omitted when the endpoint does not resolve
@@ -3244,6 +3249,9 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		},
 	})
 
+	if writeIssueDeliveryError(w, err) {
+		return
+	}
 	if writeIssueIterationOperationError(w, err) {
 		return
 	}
@@ -3409,6 +3417,8 @@ func (h *Handler) prepareIssueCreationInTx(r *http.Request, tx pgx.Tx, params *s
 }
 
 type UpdateIssueRequest struct {
+	Completion          *service.DeliveryCompletionBinding `json:"completion,omitempty"`
+	ProjectChangeReason *string                            `json:"project_change_reason,omitempty"`
 	// Explicit iteration writes require the confirmed operation protocol.
 	CurrentIterationID     json.RawMessage `json:"current_iteration_id,omitempty"`
 	IterationRolloverCount json.RawMessage `json:"iteration_rollover_count,omitempty"`
@@ -3451,6 +3461,145 @@ type UpdateIssueRequest struct {
 	// MUL-3375). Only consumed when a run actually starts: SuppressRun=true or
 	// a parked/non-triggering write drops it. Never fabricates a comment.
 	HandoffNote string `json:"handoff_note,omitempty"`
+}
+
+// New delivery controls are strict even though legacy issue fields retain their
+// established decoding behavior. Only these controls are checked for duplicates
+// here; old batch update objects still merge as before.
+func issueDeliveryControlFields(raw []byte, controls map[string]json.RawMessage) error {
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	token, err := decoder.Token()
+	if err != nil || token != json.Delim('{') {
+		return service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+	}
+	for decoder.More() {
+		keyToken, err := decoder.Token()
+		if err != nil {
+			return err
+		}
+		key, ok := keyToken.(string)
+		if !ok {
+			return service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+		}
+		var value json.RawMessage
+		if err = decoder.Decode(&value); err != nil {
+			return err
+		}
+		lower := strings.ToLower(key)
+		if lower != "completion" && lower != "project_change_reason" && lower != "skip" {
+			continue
+		}
+		if key != lower {
+			return service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+		}
+		if _, seen := controls[key]; seen {
+			return service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+		}
+		controls[key] = value
+	}
+	if _, err = decoder.Token(); err != nil {
+		return err
+	}
+	if _, err = decoder.Token(); err != io.EOF {
+		return service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+	}
+	return nil
+}
+func parseIssueDeliveryControls(fields map[string]json.RawMessage) (*service.DeliveryCompletionBinding, string, error) {
+	if _, ok := fields["skip"]; ok {
+		return nil, "", service.DeliveryCompletionError{Status: 409, Code: "delivery_skip_not_supported"}
+	}
+	var completion *service.DeliveryCompletionBinding
+	if raw, ok := fields["completion"]; ok {
+		binding, err := service.ParseDeliveryCompletionBinding(raw)
+		if err != nil {
+			return nil, "", err
+		}
+		completion = &binding
+	}
+	reason := ""
+	if raw, ok := fields["project_change_reason"]; ok {
+		if bytes.Equal(bytes.TrimSpace(raw), []byte("null")) || json.Unmarshal(raw, &reason) != nil {
+			return nil, "", service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+		}
+		reason = strings.TrimSpace(reason)
+		if reason == "" || !utf8.ValidString(reason) || strings.ContainsRune(reason, 0) || utf8.RuneCountInString(reason) > 1000 {
+			return nil, "", service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+		}
+	}
+	return completion, reason, nil
+}
+func validateIssueDeliveryControls(raw []byte, req *UpdateIssueRequest) error {
+	fields := map[string]json.RawMessage{}
+	if err := issueDeliveryControlFields(raw, fields); err != nil {
+		return err
+	}
+	completion, reason, err := parseIssueDeliveryControls(fields)
+	if err != nil {
+		return err
+	}
+	if completion != nil && req.ExpectedRevision != nil && *req.ExpectedRevision != completion.ExpectedIssueRevision {
+		return service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+	}
+	req.Completion = completion
+	if _, ok := fields["project_change_reason"]; ok {
+		req.ProjectChangeReason = &reason
+	}
+	return nil
+}
+
+type issueUpdateOutcome struct {
+	AttachmentsChanged bool
+	CompletionReceipt  *service.DeliveryCompletionReceipt
+	Replayed           bool
+}
+
+// A commit error is deliberately not unwrapped into the old safe lock retry.
+// The caller must retain uncertainty instead of trying another write.
+type issueUpdateCommitUnknown struct{ cause error }
+
+func (e *issueUpdateCommitUnknown) Error() string { return "issue update commit outcome is unknown" }
+func writeIssueDeliveryError(w http.ResponseWriter, err error) bool {
+	var failure service.DeliveryCompletionError
+	var unknown *issueUpdateCommitUnknown
+	if errors.As(err, &unknown) {
+		writeDeliveryCompletionError(w, err, true)
+		return true
+	}
+	if errors.As(err, &failure) {
+		writeDeliveryCompletionError(w, err, false)
+		return true
+	}
+	return false
+}
+func deliveryCredentialForIssueRequest(r *http.Request) service.ArtifactCredentialSnapshot {
+	p, _ := auth.AuthenticatedPrincipalFromContext(r.Context())
+	if p.Kind != auth.CredentialTask && (r.Header.Get("X-Agent-ID") != "" || r.Header.Get("X-Task-ID") != "") {
+		p.AgentActor = true
+	}
+	return artifactCredentialSnapshot(r.Context(), p)
+}
+func issueDeliveryCandidate(before db.Issue, params db.UpdateIssueParams) db.Issue {
+	after := before
+	if params.Title.Valid {
+		after.Title = params.Title.String
+	}
+	if params.Description.Valid {
+		after.Description = params.Description
+	}
+	if params.Status.Valid {
+		after.Status = params.Status.String
+	}
+	if params.Priority.Valid {
+		after.Priority = params.Priority.String
+	}
+	if params.Position.Valid {
+		after.Position = params.Position.Float64
+	}
+	after.AssigneeType, after.AssigneeID = params.AssigneeType, params.AssigneeID
+	after.StartDate, after.DueDate = params.StartDate, params.DueDate
+	after.ParentIssueID, after.ProjectID, after.Stage = params.ParentIssueID, params.ProjectID, params.Stage
+	return after
 }
 
 func mergeIssueChannelMediaDescription(current, incoming string, base *string, attachments []db.Attachment) string {
@@ -3568,18 +3717,29 @@ func writeIssueProjectAssociationError(w http.ResponseWriter, err error) bool {
 	return false
 }
 
-func (h *Handler) updateIssueAtomically(r *http.Request, workspaceID pgtype.UUID, params db.UpdateIssueParams, rawFields map[string]json.RawMessage, titleBase, descriptionBase *string, attachmentIDs []pgtype.UUID, statusKey string) (db.Issue, db.Issue, bool, error) {
+func (h *Handler) updateIssueAtomically(r *http.Request, workspaceID pgtype.UUID, params db.UpdateIssueParams, rawFields map[string]json.RawMessage, titleBase, descriptionBase *string, attachmentIDs []pgtype.UUID, statusKey string) (db.Issue, db.Issue, issueUpdateOutcome, error) {
 	ctx := r.Context()
+	completion, reason, err := parseIssueDeliveryControls(rawFields)
+	if err != nil {
+		return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
+	}
+	credential := deliveryCredentialForIssueRequest(r)
 	actorType, actorID := h.resolveActor(r, requestUserID(r), uuidToString(workspaceID))
 	actor, err := json.Marshal(map[string]string{"type": actorType, "id": actorID, "user_id": requestUserID(r)})
 	if err != nil {
-		return db.Issue{}, db.Issue{}, false, err
+		return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
 	}
 	userID, err := util.ParseUUID(requestUserID(r))
 	if err != nil {
-		return db.Issue{}, db.Issue{}, false, err
+		return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
 	}
 	operationID := pgtype.UUID{Bytes: uuid.New(), Valid: true}
+	if completion != nil {
+		operationID, err = util.ParseUUID(completion.OperationID)
+		if err != nil {
+			return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
+		}
+	}
 	authorize := func(tx pgx.Tx, params db.UpdateIssueParams) error {
 		scoped := *h
 		scoped.Queries = h.Queries.WithTx(tx)
@@ -3678,12 +3838,17 @@ func (h *Handler) updateIssueAtomically(r *http.Request, workspaceID pgtype.UUID
 	}
 
 	var issue, current db.Issue
-	var attachmentsChanged bool
-	err = service.RetryProjectAssociationTransaction(ctx, func() error {
-		issue, current, attachmentsChanged, err = h.updateIssueAtomicallyOnce(ctx, workspaceID, params, rawFields, titleBase, descriptionBase, attachmentIDs, statusKey, userID, actor, operationID, authorize)
+	var outcome issueUpdateOutcome
+	attempt := func() error {
+		issue, current, outcome, err = h.updateIssueAtomicallyOnce(ctx, workspaceID, params, rawFields, titleBase, descriptionBase, attachmentIDs, statusKey, userID, actor, operationID, authorize, completion, credential, reason)
 		return err
-	})
-	return issue, current, attachmentsChanged, err
+	}
+	if completion != nil {
+		err = attempt()
+	} else {
+		err = service.RetryProjectAssociationTransaction(ctx, attempt)
+	}
+	return issue, current, outcome, err
 }
 
 // The five statements are pipelined, not merged: PostgreSQL executes them in
@@ -3768,69 +3933,72 @@ func lockIssueReadRows(ctx context.Context, tx pgx.Tx, workspaceID, issueID pgty
 	return lockedIteration, current, nil
 }
 
-func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgtype.UUID, params db.UpdateIssueParams, rawFields map[string]json.RawMessage, titleBase, descriptionBase *string, attachmentIDs []pgtype.UUID, statusKey string, userID pgtype.UUID, actor json.RawMessage, operationID pgtype.UUID, authorize func(pgx.Tx, db.UpdateIssueParams) error) (db.Issue, db.Issue, bool, error) {
+func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgtype.UUID, params db.UpdateIssueParams, rawFields map[string]json.RawMessage, titleBase, descriptionBase *string, attachmentIDs []pgtype.UUID, statusKey string, userID pgtype.UUID, actor json.RawMessage, operationID pgtype.UUID, authorize func(pgx.Tx, db.UpdateIssueParams) error, completion *service.DeliveryCompletionBinding, credential service.ArtifactCredentialSnapshot, projectReason string) (db.Issue, db.Issue, issueUpdateOutcome, error) {
 	if h.TxStarter == nil {
-		return db.Issue{}, db.Issue{}, false, errors.New("atomic issue update requires transaction starter")
+		return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, errors.New("atomic issue update requires transaction starter")
 	}
 	tx, err := h.TxStarter.Begin(ctx)
 	if err != nil {
-		return db.Issue{}, db.Issue{}, false, fmt.Errorf("begin atomic issue update: %w", err)
+		return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, fmt.Errorf("begin atomic issue update: %w", err)
 	}
 	defer tx.Rollback(ctx)
 
 	qtx := h.Queries.WithTx(tx)
 	if err := lockIssueWriteFences(ctx, tx, workspaceID, userID); err != nil {
-		return db.Issue{}, db.Issue{}, false, err
+		return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
 	}
 	if len(rawFields["current_iteration_id"]) > 0 {
 		issue, current, err := h.updateIssueIterationInTx(ctx, tx, workspaceID, params, rawFields, actor, operationID, authorize)
 		if err != nil {
-			return db.Issue{}, current, false, err
+			return db.Issue{}, current, issueUpdateOutcome{}, err
 		}
 		if err = tx.Commit(ctx); err != nil {
-			return db.Issue{}, current, false, err
+			return db.Issue{}, current, issueUpdateOutcome{}, &issueUpdateCommitUnknown{cause: err}
 		}
-		return issue, current, false, nil
+		return issue, current, issueUpdateOutcome{}, nil
 	}
 
 	// This path opens its own transaction, so it carries the archive-race guard
 	// itself rather than going through runWithIssueStatusGuard. The catalog lock
 	// must precede both attachment and issue row locks everywhere. (MUL-6243)
 	if err := assertIssueStatusStillActive(ctx, qtx, workspaceID, statusKey); err != nil {
-		return db.Issue{}, db.Issue{}, false, err
+		return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
 	}
 	var lockedIteration db.Iteration
 	var current db.Issue
+	auxiliaryChanges := false
 	if len(attachmentIDs) == 0 {
 		lockedIteration, current, err = lockIssueReadRows(ctx, tx, workspaceID, params.ID)
 		if err != nil {
-			return db.Issue{}, db.Issue{}, false, err
+			return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
 		}
 	} else {
 		lockedIteration, err = iteration.LockIssueIteration(ctx, tx, workspaceID, params.ID)
 		if err != nil {
-			return db.Issue{}, db.Issue{}, false, err
+			return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
 		}
-		if _, err := qtx.LockAttachmentsForIssueLink(ctx, db.LockAttachmentsForIssueLinkParams{
+		if eligible, err := qtx.LockAttachmentsForIssueLink(ctx, db.LockAttachmentsForIssueLinkParams{
 			WorkspaceID:   workspaceID,
 			AttachmentIds: attachmentIDs,
 		}); err != nil {
-			return db.Issue{}, db.Issue{}, false, fmt.Errorf("lock issue attachments: %w", err)
+			return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, fmt.Errorf("lock issue attachments: %w", err)
+		} else {
+			auxiliaryChanges = len(eligible) > 0
 		}
 		current, err = qtx.LockIssueForDescriptionUpdate(ctx, db.LockIssueForDescriptionUpdateParams{
 			ID:          params.ID,
 			WorkspaceID: workspaceID,
 		})
 		if err != nil {
-			return db.Issue{}, db.Issue{}, false, fmt.Errorf("lock issue for update: %w", err)
+			return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, fmt.Errorf("lock issue for update: %w", err)
 		}
 	}
 
 	if err := issueAdmissionMutation(current, rawFields); err != nil {
-		return db.Issue{}, current, false, err
+		return db.Issue{}, current, issueUpdateOutcome{}, err
 	}
 	if params.Title.Valid && titleBase != nil && current.Title != *titleBase && current.Title != params.Title.String {
-		return db.Issue{}, current, false, errIssueFieldConflict
+		return db.Issue{}, current, issueUpdateOutcome{}, errIssueFieldConflict
 	}
 
 	if params.Description.Valid {
@@ -3839,7 +4007,7 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 			WorkspaceID: current.WorkspaceID,
 		})
 		if listErr != nil {
-			return db.Issue{}, current, false, fmt.Errorf("list issue attachments for description merge: %w", listErr)
+			return db.Issue{}, current, issueUpdateOutcome{}, fmt.Errorf("list issue attachments for description merge: %w", listErr)
 		}
 		currentDescription := ""
 		if current.Description.Valid {
@@ -3849,7 +4017,7 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 		if descriptionBase != nil && currentDescription != *descriptionBase && currentDescription != incomingDescription {
 			baseWithLateMedia := mergeIssueChannelMediaDescription(currentDescription, *descriptionBase, descriptionBase, attachments)
 			if currentDescription != baseWithLateMedia {
-				return db.Issue{}, current, false, errIssueFieldConflict
+				return db.Issue{}, current, issueUpdateOutcome{}, errIssueFieldConflict
 			}
 		}
 		params.Description = pgtype.Text{
@@ -3863,28 +4031,76 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 	if params.ProjectID.Valid {
 		if _, err := qtx.LockProjectForAssociationNowait(ctx, db.LockProjectForAssociationNowaitParams{ID: params.ProjectID, WorkspaceID: workspaceID}); err != nil {
 			if errors.Is(err, pgx.ErrNoRows) {
-				return db.Issue{}, current, false, service.ErrProjectNotFound
+				return db.Issue{}, current, issueUpdateOutcome{}, service.ErrProjectNotFound
 			}
-			return db.Issue{}, current, false, err
+			return db.Issue{}, current, issueUpdateOutcome{}, err
 		}
 	}
 	if params.ParentIssueID.Valid && params.ParentIssueID != current.ParentIssueID {
 		if err := admission.Check(ctx, qtx, params.ParentIssueID); err != nil {
-			return db.Issue{}, current, false, err
+			return db.Issue{}, current, issueUpdateOutcome{}, err
 		}
 	}
 
 	if err := authorize(tx, params); err != nil {
-		return db.Issue{}, current, false, err
+		return db.Issue{}, current, issueUpdateOutcome{}, err
+	}
+	candidate := issueDeliveryCandidate(current, params)
+	if completion == nil {
+		if err = service.CheckDeliveryProjectChangeInTx(ctx, tx, current, candidate, credential, projectReason, operationID); err != nil {
+			return db.Issue{}, current, issueUpdateOutcome{}, err
+		}
+	}
+	var prepared service.DeliveryPrepareResult
+	if completion != nil || (params.Status.Valid && params.Status.String != current.Status) {
+		var position *float64
+		if params.Position.Valid {
+			value := params.Position.Float64
+			position = &value
+		}
+		prepared, err = service.PrepareDeliveryMutationInTx(ctx, tx, service.DeliveryMutationIntent{Before: current, Candidate: candidate, Completion: completion, Credential: credential, RequestedPosition: position, AuxiliaryChanges: auxiliaryChanges, Metrics: h.Metrics})
+		if err != nil {
+			return db.Issue{}, current, issueUpdateOutcome{}, err
+		}
+		switch prepared.State {
+		case service.DeliveryNotApplicable:
+			if completion != nil {
+				return db.Issue{}, current, issueUpdateOutcome{}, service.DeliveryCompletionError{Status: 503, Code: "delivery_completion_unavailable"}
+			}
+		case service.DeliveryPrepared:
+			if prepared.Prepared == nil {
+				return db.Issue{}, current, issueUpdateOutcome{}, service.DeliveryCompletionError{Status: 503, Code: "delivery_completion_unavailable"}
+			}
+		case service.DeliveryReplayed:
+			if prepared.Receipt == nil {
+				return db.Issue{}, current, issueUpdateOutcome{}, service.DeliveryCompletionError{Status: 503, Code: "delivery_completion_unavailable"}
+			}
+		default:
+			return db.Issue{}, current, issueUpdateOutcome{}, service.DeliveryCompletionError{Status: 503, Code: "delivery_completion_unavailable"}
+		}
+		if prepared.State == service.DeliveryReplayed {
+			if err = tx.Commit(ctx); err != nil {
+				return db.Issue{}, current, issueUpdateOutcome{}, &issueUpdateCommitUnknown{cause: err}
+			}
+			return current, current, issueUpdateOutcome{Replayed: true, CompletionReceipt: prepared.Receipt}, nil
+		}
+	}
+	if completion != nil {
+		if err = service.CheckDeliveryProjectChangeInTx(ctx, tx, current, candidate, credential, projectReason, operationID); err != nil {
+			return db.Issue{}, current, issueUpdateOutcome{}, err
+		}
+	}
+	if completion != nil {
+		params.ExpectedRevision = pgtype.Int8{Int64: completion.ExpectedIssueRevision, Valid: true}
 	}
 	record, err := iteration.PrepareIssueRecord(ctx, tx, current, lockedIteration)
 	if err != nil {
-		return db.Issue{}, current, false, err
+		return db.Issue{}, current, issueUpdateOutcome{}, err
 	}
 
 	issue, err := qtx.UpdateIssue(ctx, params)
 	if err != nil {
-		return db.Issue{}, current, false, fmt.Errorf("update locked issue: %w", err)
+		return db.Issue{}, current, issueUpdateOutcome{}, fmt.Errorf("update locked issue: %w", err)
 	}
 
 	attachmentsChanged := false
@@ -3896,7 +4112,7 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 			BumpRevision:  issue.Revision == current.Revision,
 		})
 		if linkErr != nil {
-			return db.Issue{}, current, false, fmt.Errorf("link issue attachments: %w", linkErr)
+			return db.Issue{}, current, issueUpdateOutcome{}, fmt.Errorf("link issue attachments: %w", linkErr)
 		}
 		attachmentsChanged = linked.LinkedCount > 0
 		if linked.IssueRevision > 0 {
@@ -3905,21 +4121,29 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 				WorkspaceID: issue.WorkspaceID,
 			})
 			if err != nil {
-				return db.Issue{}, current, false, fmt.Errorf("reload issue after attachment link: %w", err)
+				return db.Issue{}, current, issueUpdateOutcome{}, fmt.Errorf("reload issue after attachment link: %w", err)
 			}
 		}
 	}
 	if err := iteration.RecordIssueChange(ctx, tx, record, issue, actor, operationID); err != nil {
-		return db.Issue{}, current, false, err
+		return db.Issue{}, current, issueUpdateOutcome{}, err
 	}
 
+	outcome := issueUpdateOutcome{AttachmentsChanged: attachmentsChanged}
+	if prepared.State == service.DeliveryPrepared {
+		receipt, e := service.FinishDeliveryMutationInTx(ctx, tx, prepared.Prepared, issue, service.DeliveryWriterResult{})
+		if e != nil {
+			return db.Issue{}, current, issueUpdateOutcome{}, e
+		}
+		outcome.CompletionReceipt = &receipt
+	}
 	if err := tx.Commit(ctx); err != nil {
-		return db.Issue{}, current, false, fmt.Errorf("commit atomic issue update: %w", err)
+		return db.Issue{}, current, issueUpdateOutcome{}, &issueUpdateCommitUnknown{cause: err}
 	}
 	if issue.ParentIssueID != current.ParentIssueID || issue.Title != current.Title || issue.AdmissionStatus != current.AdmissionStatus {
 		h.IssueService.PublishCollaborationChildrenChanged(ctx, current.ParentIssueID, issue.ParentIssueID)
 	}
-	return issue, current, attachmentsChanged, nil
+	return issue, current, outcome, nil
 }
 
 func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
@@ -3941,6 +4165,10 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 	var req UpdateIssueRequest
 	if err := json.Unmarshal(bodyBytes, &req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
+		return
+	}
+	if err := validateIssueDeliveryControls(bodyBytes, &req); err != nil {
+		writeDeliveryCompletionError(w, err, false)
 		return
 	}
 	if h.handleLegacyCollaborationUpdate(w, r, prevIssue, bodyBytes, req) {
@@ -3992,7 +4220,7 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 			writeError(w, http.StatusBadRequest, "expected_revision must be a positive integer")
 			return
 		}
-		if prevIssue.Revision != *req.ExpectedRevision {
+		if req.Completion == nil && prevIssue.Revision != *req.ExpectedRevision {
 			writeRevisionConflict(w, "issue", prevIssue.ID, *req.ExpectedRevision, prevIssue.Revision)
 			return
 		}
@@ -4169,14 +4397,17 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var issue db.Issue
-	attachmentsChanged := false
+	var outcome issueUpdateOutcome
 	var lockedPrev db.Issue
-	issue, lockedPrev, attachmentsChanged, err = h.updateIssueAtomically(r, prevIssue.WorkspaceID, params, rawFields, req.TitleBase, req.DescriptionBase, attachmentIDs, statusKeyForGuard)
+	issue, lockedPrev, outcome, err = h.updateIssueAtomically(r, prevIssue.WorkspaceID, params, rawFields, req.TitleBase, req.DescriptionBase, attachmentIDs, statusKeyForGuard)
 	if lockedPrev.ID.Valid {
 		prevIssue = lockedPrev
 	}
 
 	if err != nil {
+		if writeIssueDeliveryError(w, err) {
+			return
+		}
 		if writeIssueUpdateAccessError(w, err) || writeIssueAdmissionError(w, err) || writeIssueProjectAssociationError(w, err) {
 			return
 		}
@@ -4204,6 +4435,12 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 
 	prefix := h.getIssuePrefix(r.Context(), issue.WorkspaceID)
 	resp := issueToResponse(issue, prefix)
+	resp.CompletionReceipt = outcome.CompletionReceipt
+	if outcome.Replayed {
+		h.fillStatusCategory(r.Context(), issue.WorkspaceID, &resp)
+		writeJSON(w, http.StatusOK, resp)
+		return
+	}
 	slog.Info("issue updated", append(logger.RequestAttrs(r), "issue_id", id, "workspace_id", workspaceID)...)
 
 	h.fillStatusCategory(r.Context(), issue.WorkspaceID, &resp)
@@ -4247,7 +4484,7 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 		"creator_type":        prevIssue.CreatorType,
 		"creator_id":          uuidToString(prevIssue.CreatorID),
 	})
-	if attachmentsChanged {
+	if outcome.AttachmentsChanged {
 		// The full owner snapshot must be admitted before an auxiliary event at
 		// the same revision. Otherwise clients advance only the revision here and
 		// reject issue:updated as non-increasing, stranding the old issue fields.
@@ -4809,8 +5046,190 @@ func (h *Handler) publishDetachedChildren(ctx context.Context, children []db.Iss
 // ---------------------------------------------------------------------------
 
 type BatchUpdateIssuesRequest struct {
-	IssueIDs []string           `json:"issue_ids"`
-	Updates  UpdateIssueRequest `json:"updates"`
+	IssueIDs           []string                         `json:"issue_ids"`
+	Updates            UpdateIssueRequest               `json:"updates"`
+	CompletionBindings []BatchDeliveryCompletionBinding `json:"completion_bindings,omitempty"`
+}
+type BatchDeliveryCompletionBinding struct {
+	IssueID string `json:"issue_id"`
+	service.DeliveryCompletionBinding
+}
+type BatchUpdateIssueResult struct {
+	Index    int    `json:"index"`
+	IssueID  string `json:"issue_id"`
+	State    string `json:"state"`
+	Code     string `json:"code"`
+	Revision *int64 `json:"revision,omitempty"`
+}
+type BatchUpdateIssuesResponse struct {
+	Updated   int                      `json:"updated"`
+	Results   []BatchUpdateIssueResult `json:"results"`
+	Code      string                   `json:"code,omitempty"`
+	CauseCode string                   `json:"cause_code,omitempty"`
+	Error     string                   `json:"error,omitempty"`
+	Message   string                   `json:"message,omitempty"`
+}
+
+func batchDeliveryResults(ids []string, code string) []BatchUpdateIssueResult {
+	results := make([]BatchUpdateIssueResult, len(ids))
+	for i, id := range ids {
+		results[i] = BatchUpdateIssueResult{Index: i, IssueID: id, State: "not_attempted", Code: code}
+	}
+	return results
+}
+func batchDeliveryFailure(err error) (int, string, bool) {
+	var unknown *issueUpdateCommitUnknown
+	var delivery service.DeliveryCompletionError
+	var access *issueUpdateAccessError
+	var blocked *admission.Blocked
+	var postgres *pgconn.PgError
+	switch {
+	case errors.As(err, &unknown):
+		return 503, "commit_unknown", true
+	case errors.As(err, &delivery):
+		switch delivery.Code {
+		case "delivery_completion_authorization_required", "delivery_project_change_denied", "delivery_project_change_reason_required", "delivery_project_change_conflict", "delivery_skip_not_supported":
+			return delivery.Status, delivery.Code, false
+		}
+		if delivery.Status == 403 || delivery.Status == 404 {
+			return delivery.Status, "delivery_completion_denied", false
+		}
+		if delivery.Status == 400 {
+			return 400, "invalid_issue_update", false
+		}
+		if delivery.Status == 409 || delivery.Status == 410 {
+			return 409, "delivery_completion_conflict", false
+		}
+		return 503, "dependency_unavailable", false
+	case errors.As(err, &access):
+		if access.status == 400 {
+			return 400, "invalid_issue_update", false
+		}
+		return 403, "access_denied", false
+	case errors.As(err, &blocked):
+		return 409, "triage_review_required", false
+	case errors.Is(err, errIssueStatusArchivedRace):
+		return 409, "status_conflict", false
+	case errors.Is(err, errIssueFieldConflict), errors.Is(err, pgx.ErrNoRows):
+		return 409, "revision_conflict", false
+	case errors.Is(err, service.ErrProjectNotFound):
+		return 409, "project_conflict", false
+	case errors.As(err, &postgres) && (postgres.Code == "55P03" || postgres.Code == "40P01" || postgres.Code == "40001"):
+		return 409, "project_conflict", false
+	default:
+		return 503, "dependency_unavailable", false
+	}
+}
+func validateBatchDeliveryControls(body []byte, req *BatchUpdateIssuesRequest) (map[string]service.DeliveryCompletionBinding, error) {
+	invalid := func() error {
+		return service.DeliveryCompletionError{Status: 400, Code: "invalid_batch_update_request"}
+	}
+	decoder := json.NewDecoder(bytes.NewReader(body))
+	token, err := decoder.Token()
+	if err != nil || token != json.Delim('{') {
+		return nil, invalid()
+	}
+	controls := map[string]json.RawMessage{}
+	var bindingsRaw json.RawMessage
+	seenBindings := false
+	for decoder.More() {
+		rawKey, err := decoder.Token()
+		if err != nil {
+			return nil, invalid()
+		}
+		key, ok := rawKey.(string)
+		if !ok {
+			return nil, invalid()
+		}
+		var raw json.RawMessage
+		if decoder.Decode(&raw) != nil {
+			return nil, invalid()
+		}
+		switch strings.ToLower(key) {
+		case "updates":
+			if !rawJSONNull(raw) {
+				if err = issueDeliveryControlFields(raw, controls); err != nil {
+					return nil, err
+				}
+			}
+		case "completion_bindings":
+			if key != "completion_bindings" || seenBindings || rawJSONNull(raw) {
+				return nil, invalid()
+			}
+			bindingsRaw = raw
+			seenBindings = true
+		case "completion":
+			return nil, invalid()
+		case "skip":
+			return nil, service.DeliveryCompletionError{Status: 409, Code: "delivery_skip_not_supported"}
+		}
+	}
+	if _, err = decoder.Token(); err != nil {
+		return nil, invalid()
+	}
+	if _, err = decoder.Token(); err != io.EOF {
+		return nil, invalid()
+	}
+	if _, present := controls["completion"]; present {
+		return nil, invalid()
+	}
+	_, reason, err := parseIssueDeliveryControls(controls)
+	if err != nil {
+		return nil, err
+	}
+	if _, present := controls["project_change_reason"]; present {
+		req.Updates.ProjectChangeReason = &reason
+	}
+	bindings := map[string]service.DeliveryCompletionBinding{}
+	if !seenBindings {
+		return bindings, nil
+	}
+	var entries []json.RawMessage
+	if json.Unmarshal(bindingsRaw, &entries) != nil {
+		return nil, invalid()
+	}
+	requested := map[string]int{}
+	for _, id := range req.IssueIDs {
+		requested[id]++
+	}
+	authorizations := map[string]bool{}
+	operations := map[string]bool{}
+	for _, raw := range entries {
+		if err = iteration.ValidateObjectJSON(raw); err != nil {
+			return nil, invalid()
+		}
+		var fields map[string]json.RawMessage
+		if json.Unmarshal(raw, &fields) != nil || len(fields) != 4 {
+			return nil, invalid()
+		}
+		var id string
+		if json.Unmarshal(fields["issue_id"], &id) != nil {
+			return nil, invalid()
+		}
+		parsed, e := delegationKey(id)
+		if e != nil || uuidToString(parsed) != id || requested[id] != 1 {
+			return nil, invalid()
+		}
+		if _, duplicate := bindings[id]; duplicate {
+			return nil, invalid()
+		}
+		delete(fields, "issue_id")
+		encoded, _ := json.Marshal(fields)
+		binding, e := service.ParseDeliveryCompletionBinding(encoded)
+		if e != nil {
+			return nil, invalid()
+		}
+		if authorizations[binding.AuthorizationID] || operations[binding.OperationID] {
+			return nil, invalid()
+		}
+		if req.Updates.ExpectedRevision != nil && *req.Updates.ExpectedRevision != binding.ExpectedIssueRevision {
+			return nil, invalid()
+		}
+		authorizations[binding.AuthorizationID] = true
+		operations[binding.OperationID] = true
+		bindings[id] = binding
+	}
+	return bindings, nil
 }
 
 // batchIssueUpdateFields merges repeated objects the same way the Updates struct
@@ -4838,6 +5257,11 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	bindings, err := validateBatchDeliveryControls(bodyBytes, &req)
+	if err != nil {
+		writeDeliveryCompletionError(w, err, false)
+		return
+	}
 	if rejectUnconfirmedIterationWrite(w, req.Updates.CurrentIterationID, req.Updates.IterationRolloverCount) {
 		return
 	}
@@ -4886,7 +5310,15 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if !hasMutation {
-		writeJSON(w, http.StatusOK, map[string]any{"updated": 0})
+		writeJSON(w, http.StatusOK, BatchUpdateIssuesResponse{Results: batchDeliveryResults(req.IssueIDs, "no_changes")})
+		return
+	}
+	if req.Updates.ExpectedRevision != nil && *req.Updates.ExpectedRevision < 1 {
+		writeDeliveryCompletionError(w, service.DeliveryCompletionError{Status: 400, Code: "invalid_batch_update_request"}, false)
+		return
+	}
+	if len(req.Updates.AttachmentIDs) > 0 {
+		writeDeliveryCompletionError(w, service.DeliveryCompletionError{Status: 400, Code: "invalid_batch_update_request"}, false)
 		return
 	}
 	if req.Updates.Priority != nil {
@@ -4950,7 +5382,19 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		batchProjectID = projectUUID
 	}
 
-	updated := 0
+	response := BatchUpdateIssuesResponse{Results: batchDeliveryResults(req.IssueIDs, "previous_item_failed")}
+	responseStatus := http.StatusOK
+	reject := func(index, status int, code string, unknown bool) {
+		state, top := "rejected", "batch_update_incomplete"
+		if unknown {
+			state, top = "unknown", "batch_update_outcome_unknown"
+		}
+		response.Results[index].State, response.Results[index].Code = state, code
+		responseStatus = status
+		response.Code, response.CauseCode = top, code
+		response.Error = fmt.Sprintf("%d items committed; batch stopped. Refresh before continuing.", response.Updated)
+		response.Message = response.Error
+	}
 	// One Resolver for the whole batch — a per-issue filler would query the
 	// catalog once per custom-status row. (MUL-6243)
 	fillBatch := h.newStatusCategoryFiller(r.Context(), wsUUID)
@@ -4958,17 +5402,24 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 	// the parent/stage notification is evaluated once against the final state
 	// after the loop (MUL-4155) rather than per-child mid-batch.
 	var childDoneCompleted []db.Issue
-	for _, issueID := range req.IssueIDs {
+itemLoop:
+	for index, issueID := range req.IssueIDs {
 		issueUUID, err := util.ParseUUID(issueID)
 		if err != nil {
-			continue
+			reject(index, 400, "invalid_issue_id", false)
+			break itemLoop
 		}
 		prevIssue, err := h.Queries.GetIssueInWorkspace(r.Context(), db.GetIssueInWorkspaceParams{
 			ID:          issueUUID,
 			WorkspaceID: wsUUID,
 		})
 		if err != nil {
-			continue
+			if errors.Is(err, pgx.ErrNoRows) {
+				reject(index, 404, "issue_not_found", false)
+			} else {
+				reject(index, 503, "dependency_unavailable", false)
+			}
+			break itemLoop
 		}
 
 		params := db.UpdateIssueParams{
@@ -5008,7 +5459,8 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 			if req.Updates.AssigneeID != nil {
 				assigneeUUID, err := util.ParseUUID(*req.Updates.AssigneeID)
 				if err != nil {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				params.AssigneeID = assigneeUUID
 			} else {
@@ -5019,7 +5471,8 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 			if req.Updates.StartDate != nil && *req.Updates.StartDate != "" {
 				d, err := util.ParseCalendarDate(*req.Updates.StartDate)
 				if err != nil {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				params.StartDate = d
 			} else {
@@ -5030,7 +5483,8 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 			if req.Updates.DueDate != nil && *req.Updates.DueDate != "" {
 				d, err := util.ParseCalendarDate(*req.Updates.DueDate)
 				if err != nil {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				params.DueDate = d
 			} else {
@@ -5042,25 +5496,32 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 			if req.Updates.ParentIssueID != nil {
 				newParentID, err := util.ParseUUID(*req.Updates.ParentIssueID)
 				if err != nil {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				// Cannot set self as parent.
 				if newParentID == prevIssue.ID {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				// Validate parent exists in the same workspace.
 				if _, err := h.Queries.GetIssueInWorkspace(r.Context(), db.GetIssueInWorkspaceParams{
 					ID:          newParentID,
 					WorkspaceID: prevIssue.WorkspaceID,
 				}); err != nil {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				// Cycle detection: walk up from the new parent to ensure we don't reach this issue.
 				cycleDetected := false
 				cursor := newParentID
 				for depth := 0; depth < 10; depth++ {
 					ancestor, err := h.Queries.GetIssue(r.Context(), cursor)
-					if err != nil || !ancestor.ParentIssueID.Valid {
+					if err != nil {
+						reject(index, 503, "dependency_unavailable", false)
+						break itemLoop
+					}
+					if !ancestor.ParentIssueID.Valid {
 						break
 					}
 					if ancestor.ParentIssueID == prevIssue.ID {
@@ -5070,7 +5531,8 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 					cursor = ancestor.ParentIssueID
 				}
 				if cycleDetected {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				params.ParentIssueID = newParentID
 			} else {
@@ -5084,7 +5546,8 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		if _, ok := rawUpdates["stage"]; ok {
 			if req.Updates.Stage != nil {
 				if *req.Updates.Stage < 1 {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				params.Stage = pgtype.Int4{Int32: *req.Updates.Stage, Valid: true}
 			} else {
@@ -5093,11 +5556,11 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Validate the resulting assignee pair when this batch update touches
-		// either assignee field. Skip the issue silently on failure.
+		// either assignee field. Refuse this item and preserve the committed prefix.
 		//
 		// Scoped PER ISSUE (prevIssue is this iteration's row), so one bound
 		// issue in the batch can never lend its authority to the others: an
-		// unbound entry simply fails the check and is skipped. This IS a real
+		// unbound entry fails the check and stops the batch. This IS a real
 		// agent-reachable authorization point — a task token authenticates as its
 		// bound workspace member, so requireUserID above is satisfied and
 		// resolveActor still classifies the caller as an agent (MUL-6691).
@@ -5105,33 +5568,52 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		_, batchTouchedID := rawUpdates["assignee_id"]
 		if batchTouchedType || batchTouchedID {
 			if status, _ := h.validateAssigneePair(r.Context(), r, workspaceID, params.AssigneeType, params.AssigneeID); status != 0 {
-				continue
+				code := "invalid_issue_update"
+				if status == 403 {
+					code = "access_denied"
+				}
+				reject(index, status, code, false)
+				break itemLoop
 			}
 		}
 
-		if writeIssueAdmissionError(w, issueAdmissionMutation(prevIssue, rawUpdates)) {
-			return
+		if err := issueAdmissionMutation(prevIssue, rawUpdates); err != nil {
+			status, code, unknown := batchDeliveryFailure(err)
+			reject(index, status, code, unknown)
+			break itemLoop
 		}
 		// Re-read every untouched nullable field while holding the issue lock.
 		// A content-only batch may have loaded its snapshot before acceptance.
 		var issue, lockedPrev db.Issue
-		issue, lockedPrev, _, err = h.updateIssueAtomically(r, prevIssue.WorkspaceID, params, rawUpdates, nil, nil, nil, batchStatusKey)
+		itemFields := make(map[string]json.RawMessage, len(rawUpdates)+1)
+		for key, raw := range rawUpdates {
+			itemFields[key] = raw
+		}
+		if binding, ok := bindings[issueID]; ok {
+			itemFields["completion"], _ = json.Marshal(binding)
+		}
+		if req.Updates.ExpectedRevision != nil {
+			params.ExpectedRevision = pgtype.Int8{Int64: *req.Updates.ExpectedRevision, Valid: true}
+		}
+		var outcome issueUpdateOutcome
+		issue, lockedPrev, outcome, err = h.updateIssueAtomically(r, prevIssue.WorkspaceID, params, itemFields, req.Updates.TitleBase, req.Updates.DescriptionBase, nil, batchStatusKey)
 		if err == nil {
 			prevIssue = lockedPrev
 		}
 
 		if err != nil {
-			if writeIssueUpdateAccessError(w, err) || writeIssueAdmissionError(w, err) || writeIssueProjectAssociationError(w, err) {
-				return
-			}
-			// The archive race is a property of the batch's shared target
-			// status, not of one issue, so every remaining item would fail the
-			// same way. Abort with 409 instead of reporting a partial update.
-			if writeIssueStatusRaceError(w, err) {
-				return
-			}
-			slog.Warn("batch update issue failed", "issue_id", issueID, "error", err)
-			continue
+			status, code, unknown := batchDeliveryFailure(err)
+			reject(index, status, code, unknown)
+			break itemLoop
+		}
+		revision := issue.Revision
+		if outcome.Replayed && outcome.CompletionReceipt != nil {
+			revision = outcome.CompletionReceipt.CompletedRevision
+		}
+		response.Results[index] = BatchUpdateIssueResult{Index: index, IssueID: issueID, State: "committed", Code: "updated", Revision: &revision}
+		response.Updated++
+		if outcome.Replayed {
+			continue itemLoop
 		}
 
 		prefix := h.getIssuePrefix(r.Context(), issue.WorkspaceID)
@@ -5202,7 +5684,6 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		updated++
 	}
 
 	// Aggregate parent/stage notification over the whole batch's final state so
@@ -5211,8 +5692,8 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 	// batch. Single-issue UpdateIssue is unchanged and still notifies inline.
 	h.notifyParentsOfBatchChildDone(r.Context(), childDoneCompleted)
 
-	slog.Info("batch update issues", append(logger.RequestAttrs(r), "count", updated)...)
-	writeJSON(w, http.StatusOK, map[string]any{"updated": updated})
+	slog.Info("batch update issues", append(logger.RequestAttrs(r), "count", response.Updated)...)
+	writeJSON(w, responseStatus, response)
 }
 
 type BatchDeleteIssuesRequest struct {

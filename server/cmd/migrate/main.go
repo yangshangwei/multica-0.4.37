@@ -120,6 +120,13 @@ var commentContentBigramIndex = usableIndexRequirement{
 // they are still pending: a fresh self-hosted install, which is exactly where an
 // interrupted build would otherwise leave a permanently unusable index.
 var concurrentIndexCleanups = map[string]string{
+	"790_delivery_project_change_operation": "delivery_project_change_operation_idx",
+	"782_delivery_completion_id":            "delivery_completion_id_idx",
+	"783_delivery_completion_request":       "delivery_completion_request_idx",
+	"784_delivery_completion_operation":     "delivery_completion_operation_idx",
+	"785_delivery_completion_terminal_id":   "delivery_completion_terminal_id_idx",
+	"786_delivery_completion_candidate":     "delivery_completion_candidate_idx",
+
 	"777_project_delivery_policy_revision": "project_delivery_policy_revision_idx",
 	"778_delivery_evaluation_key":          "delivery_evaluation_key_idx",
 	"779_delivery_evaluation_id":           "delivery_evaluation_id_idx",

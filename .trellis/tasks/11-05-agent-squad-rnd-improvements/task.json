@@ -59,7 +59,7 @@
       "report": "docs/plans/2026-11-10-business-progress-and-execution.zh-CN.md",
       "finding": "M0 and accepted M1 integrated. Controlled-artifact contradictory contracts and two subsequent authority/deletion findings resolved; planning independently ready, product not yet implemented. Other M1 and M2/M3 remain open."
     },
-    "next_action": "M1 full enforcement: resolve evaluator sharing, skip authority/bindings, create-done, done edits/moves and collaboration/R38 semantics; then integrate all writers atomically. Explicit API hint foundation verified, UI/CLI prompting absent. M2 snapshot -> parent budget -> capability/load; M3 governance.",
+    "next_action": "Finish local integration of verified completion enforcement v1; keep M1 open for remaining scope/usable optional-check skip and UI/CLI delivery as separately scoped. M2 snapshot -> parent budget -> capability/load; M3 continuous governance. Real-provider stop rules unchanged.",
     "m1_controlled_artifact_status": "verified_integrated_archived",
     "m1_controlled_artifact_commit": "f5b51d7be",
     "progress_2026_11_10_artifact": {
@@ -126,6 +126,20 @@
       "completion_source_files_verified": 45,
       "product_changes": false,
       "full_delivery_gate_complete": false,
+      "full_m1_complete": false,
+      "real_model_calls": 0
+    },
+    "delivery_completion_enforcement_2026_11_11": {
+      "status": "v1_verified_final_review_local_integration_pending",
+      "task": "11-10-delivery-completion-enforcement",
+      "baseline": "1ce4e81223be3397fe15e2649debfac40720ddd9",
+      "source_files": 110,
+      "handler_each_normal_race": 620,
+      "router_each_normal_race": 166,
+      "service_each_normal_race": 272,
+      "migrations_each_normal_race": 62,
+      "retention_each_normal_race": 4,
+      "skip_supported": false,
       "full_m1_complete": false,
       "real_model_calls": 0
     }

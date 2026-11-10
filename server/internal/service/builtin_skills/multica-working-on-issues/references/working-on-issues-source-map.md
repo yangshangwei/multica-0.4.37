@@ -370,3 +370,70 @@ grep -n 'func notifyParentOfChildDone'       internal/handler/issue_child_done.g
 | Lost responses recover the original operation; complete sets and all writes share one transaction | `TestIterationClosureHTTPRecoversLostCommitResponse`, `TestIterationClosureBatchCASFailureRollsBackAllPhases`, `TestIterationClosureFinalSnapshotFailureRollsBackHandoff` |
 | In-app outbox delivery reauthorizes and commits stable inbox ID with delivered status; overdue reminders use saved timezone and never advance periods | `server/internal/service/iteration_notifications.go`, `iteration_notifications_test.go`, `server/internal/handler/iteration_notifications.go`, `server/cmd/server/main.go` |
 | Agent create provenance and assigned-agent rights are checked from locked references | `server/internal/handler/issue.go` (`prepareIssueCreationInTx`), `issue_create_authorization_test.go` |
+
+## Explicit completion authorization and batch facts
+
+| Contract | Source |
+| --- | --- |
+| Current project policy and explicit human authority remain separate from hints/evaluations | `handler/delivery_policy.go`, `handler/delivery_evaluation.go`, `handler/delivery_completion_hint.go`, `service/delivery_policy.go` |
+| One immutable acceptance binds exact target/consumer/evidence; one terminal fact consumes or revokes it in the real transaction | `handler/delivery_completion_authorization.go`, `service/delivery_completion.go`, `service/delivery_completion_authorization.go`, migrations781–788 |
+| Ordinary PUT/move/batch and CreateInTx use real completion/category checks; create-done and uncontrolled enforced migration refuse | `handler/issue.go`, `handler/issue_move.go`, `handler/source_context.go`, `service/issue.go`, `service/delivery_project_change.go` |
+| Partial batches retain committed prefix, explicit refusal/unknown and unattempted suffix, with no automatic whole-batch replay | `handler/issue.go` (`BatchUpdateIssues`), `packages/core/api/issue-batch-update.ts`, `packages/core/issues/mutations.ts` |
+| Collaboration preserves exact submission/self-result/current initiator; R38 keeps real admin and source evidence | `service/delivery_completion_collaboration.go`, `service/collaboration_lifecycle.go`, `service/admin_collaboration.go` |
+| Webhook consumers bind the actual verified integration/PR/trust revision; system actor never impersonates issuer | `service/delivery_completion_webhook.go`, `service/issue_status_write.go`, `handler/github.go`, `handler/vcs_webhook.go` |
+| Contributor completion and distinct managed owner revalidate real current credentials; artifact production remains Operator | `handler/delivery_completion_consumer_test.go`, `cmd/server/delivery_completion_managed_integration_test.go`, `service/delivery_evidence.go` |
+
+These source contracts do not prove production rollout, provider behavior or full
+M1 completion. Exact current verification and deployment prerequisites remain in
+the active completion-enforcement task; historical pass is never a new permit.
+
+## Completion authority and partial batch outcomes
+
+A completion hint, private evaluation, successful agent run or merged PR is not
+permission to mark an issue done. When the project's current delivery policy is
+`enforce`, entering any done-category status requires an explicit human
+acceptance authorization for that exact issue/version/evidence and designated
+consumer. A task consumer keeps its ordinary Contributor status-write boundary;
+the controlled artifact producer still requires Operator authority. The final
+writer checks both subjects, current credentials, policy, exact source/receipt
+and expiry in its own transaction and consumes the authorization once.
+
+Missing completion binding returns HTTP 428
+`delivery_completion_authorization_required`. Do not retry with another actor,
+remove the project, reuse somebody else's evaluation key or manufacture a new
+operation key. Keep the original authorization and operation IDs. On an unknown
+commit, read the original minimal receipt; an empty read does not authorize a
+replacement write. No automatic retry or continuation follows uncertainty.
+
+Use the explicit authenticated completion-authorization API only when the human
+has actually accepted the precise candidate. Existing CLI status commands do not
+automatically create that human decision or obtain another person's private
+observation. An agent may consume only its explicitly designated task/generation
+authorization within current permissions. Independent collaboration remains its
+own exact-submission/self-result/initiator workflow; ordinary agent or VCS
+completion does not gain collaboration authority. R38 administrative disposition
+retains the real administrator and never means the initiator accepted a result.
+
+The fixed v1 policy has no waivable quality checks:
+`skip_supported=false`, `waivable_checks=[]`. Do not turn unknown, missing,
+expired, revoked or mismatched evidence into a skip. Explicit skip requests are
+refused. A workspace owner/admin can change policy with a reason and revision
+CAS, but off retains history and does not approve dangerous execution.
+
+Enforced projects reject creation directly as done, including comment-to-child
+creation and inherited projects. Save non-completed work first, prepare evidence,
+then request acceptance. Save substantive edits before obtaining a completion
+authorization; a new completion cannot silently include unreviewed content.
+Already-completed non-project edits preserve the original frozen acceptance and
+do not certify the edited version. Reopening and completing again is a new gate.
+Moving out of an enforce project requires the current owner/admin personally,
+a reason and retained adjustment; a done issue must first reopen when either
+project is enforced, and migration cannot be combined with completion.
+
+Batch updates commit per item, not atomically as a group. Inspect every ordered
+`results` entry: `committed`, `rejected`, `not_attempted` or `unknown`. `updated`
+counts only confirmed commits. The first refusal/unknown stops later items;
+partial results use a non-success HTTP status. Refresh the actual affected
+issues, preserve the committed prefix and never report every requested item as
+updated or automatically replay the batch. Old unkeyed requests do not acquire
+a durable whole-batch receipt.

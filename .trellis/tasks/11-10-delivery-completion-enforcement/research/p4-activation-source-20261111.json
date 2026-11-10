@@ -1,0 +1,50 @@
+{
+  "kind": "P4 implementation snapshot pending root final suites",
+  "files": {
+    "server/internal/handler/delivery_policy.go": "97bde61992f28bb278c5ec27ae71b361ed6a371ad27cc49649dc28bebbb366f8",
+    "server/internal/handler/delivery_evaluation.go": "7825c68529c6e64a53a982d1a5ad4b12d33cb4295fafa50540e1b8adea004c57",
+    "server/internal/handler/delivery_completion_hint.go": "93694105a77f0f6a6e7ef2c0c983cc163ab09cf86b5ad7e8f91d9b1eaf1eff0b",
+    "server/internal/service/delivery_policy.go": "c794c984afdde0bd5323581a9da3fdbd548efc221bc8cf8c023e7149aaec4082",
+    "server/internal/handler/delivery_completion_activation_test.go": "98ce60c923f145813333d7e8b723c5ac8cc3977cae87b74b1ef2fc6c018907b0",
+    "server/cmd/server/delivery_completion_enforcement_integration_test.go": "52e38dc789f7dc419629a478aa92a66a698b684ca0c8b6272f9097a9dfc654db",
+    "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md": "5689b0157654b8549486ed405103775e11dae62ac64f990a204fa9e35e5bacea",
+    "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md": "ce2b8d9858340f93974143503ccc20127d87af05e91e401fd0da96153baeb5e7"
+  },
+  "binaries": [
+    {
+      "compile_record": "runs/activation-handler-compile-green01.json",
+      "binary": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/activation-handler-green.test",
+      "sha256": "00391157597822dde03b50788f9a535d2d23dae8bb7489414a3c8c56efece958",
+      "run_record": "runs/activation-handler-green01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "8955c8cda7c855be135b8bdc7e2b7d801674190132f5d2c9883beb636bab0665"
+    },
+    {
+      "compile_record": "runs/activation-router-compile-green01.json",
+      "binary": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/activation-router-green.test",
+      "sha256": "567eb85e10d217563f3a083816de6cd11776c97daa21fea4090d1846e90e9ae4",
+      "run_record": "runs/activation-router-green01.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 12,
+        "fail": 1,
+        "skip": 0
+      },
+      "log_sha256": "4f15503492a557dd2e4125cb92222cae17b794e1f363c71131c0afd346df1619"
+    },
+    {
+      "compile_record": "runs/activation-router-compile-green02.json",
+      "binary": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/activation-router-green-corrected.test",
+      "sha256": "971d7bb8d676851cc61679821b75a1c9f7d70143dca932f74f6869c8f1f0dbad",
+      "run_record": null
+    }
+  ],
+  "public_enforce_opened_after_root_signal": true,
+  "skip_supported": false,
+  "full_delivery_gate_verified": false
+}

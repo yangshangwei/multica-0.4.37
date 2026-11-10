@@ -29,10 +29,13 @@ const (
 var workspaceDeletionManifest = map[string]workspaceDeleteAction{
 	// These workspace-owned audit facts survive teardown. Public reads still
 	// require a live workspace and current authority; retention grants no access.
-	"agent_artifact_execution":     workspaceRetainAudit,
-	"comment_delegation_receipt":   workspaceRetainAudit,
-	"project_delivery_policy":      workspaceRetainAudit,
-	"delivery_evidence_evaluation": workspaceRetainAudit,
+	"agent_artifact_execution":          workspaceRetainAudit,
+	"comment_delegation_receipt":        workspaceRetainAudit,
+	"project_delivery_policy":           workspaceRetainAudit,
+	"delivery_evidence_evaluation":      workspaceRetainAudit,
+	"delivery_completion_authorization": workspaceRetainAudit,
+	"delivery_completion_terminal":      workspaceRetainAudit,
+	"delivery_project_change":           workspaceRetainAudit,
 	// Collaboration identity, rollout and invalidation state belong to the
 	// deployment/accounts, rather than to the workspace being deleted.
 	"collaboration_account_fence":        workspaceDeleteKeep,
@@ -364,6 +367,18 @@ WHERE table_schema = 'public'
 
 	for table, action := range workspaceDeletionManifest {
 		_, hasWorkspaceID := withWorkspaceID[table]
+		// Completion terminal facts retain scope through their immutable
+		// authorization, rather than duplicating its workspace column.
+		if table == "delivery_completion_terminal" && action == workspaceRetainAudit {
+			var exactRelation bool
+			if err := testPool.QueryRow(context.Background(), `SELECT
+			 EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='delivery_completion_terminal' AND column_name='authorization_id' AND data_type='uuid' AND is_nullable='NO')
+			 AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='delivery_completion_authorization' AND column_name='id' AND data_type='uuid' AND is_nullable='NO')
+			 AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='delivery_completion_authorization' AND column_name='workspace_id' AND data_type='uuid' AND is_nullable='NO')`).Scan(&exactRelation); err != nil || !exactRelation {
+				t.Errorf("retained completion terminal lost its authorization scope: %v", err)
+			}
+			continue
+		}
 		switch action {
 		case workspaceDeleteKeep:
 			if hasWorkspaceID {

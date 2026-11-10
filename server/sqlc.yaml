@@ -19,3 +19,24 @@ sql:
             go_struct_tag: 'json:"-"'
           - column: "*.api_capability"
             go_struct_tag: 'json:"-"'
+
+          - column: "delivery_completion_authorization.issuer_pat_hash"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.issuer_pat_id"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.issuer_password_version"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.issuer_password_kind"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.issuer_binding_id"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.issuer_binding_epoch"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.issuer_binding_workspace_id"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.issuer_binding_daemon_id"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.request_json"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.observation"
+            go_struct_tag: 'json:"-"'

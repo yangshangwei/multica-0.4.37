@@ -1366,6 +1366,107 @@ type DaemonToken struct {
 	InstallationBindingEpoch pgtype.Int8        `json:"installation_binding_epoch"`
 }
 
+type DeliveryCompletionAuthorization struct {
+	ID                        pgtype.UUID        `json:"id"`
+	WorkspaceID               pgtype.UUID        `json:"workspace_id"`
+	IssuerUserID              pgtype.UUID        `json:"issuer_user_id"`
+	RequestKey                pgtype.UUID        `json:"request_key"`
+	OperationID               pgtype.UUID        `json:"operation_id"`
+	ContractVersion           string             `json:"contract_version"`
+	RequestDigest             string             `json:"request_digest"`
+	RequestJson               []byte             `json:"-"`
+	CreatedAt                 pgtype.Timestamptz `json:"created_at"`
+	ExpiresAt                 pgtype.Timestamptz `json:"expires_at"`
+	Reason                    string             `json:"reason"`
+	TargetKind                string             `json:"target_kind"`
+	IssueID                   pgtype.UUID        `json:"issue_id"`
+	IssueRevision             int64              `json:"issue_revision"`
+	ExpectedStatus            string             `json:"expected_status"`
+	TargetStatus              string             `json:"target_status"`
+	TargetPosition            pgtype.Float8      `json:"target_position"`
+	ProjectID                 pgtype.UUID        `json:"project_id"`
+	ProjectRevision           int64              `json:"project_revision"`
+	PolicyRevision            int64              `json:"policy_revision"`
+	EvidenceIssueID           pgtype.UUID        `json:"evidence_issue_id"`
+	EvidenceIssueRevision     int64              `json:"evidence_issue_revision"`
+	ApprovalID                pgtype.UUID        `json:"approval_id"`
+	ExecutionID               pgtype.UUID        `json:"execution_id"`
+	ProducerAgentID           pgtype.UUID        `json:"producer_agent_id"`
+	ProducerTaskID            pgtype.UUID        `json:"producer_task_id"`
+	ProducerGeneration        int64              `json:"producer_generation"`
+	SpecDigest                string             `json:"spec_digest"`
+	ArtifactDigest            string             `json:"artifact_digest"`
+	ReceiptDigest             string             `json:"receipt_digest"`
+	SourceRevision            string             `json:"source_revision"`
+	EvidenceExpiresAt         pgtype.Timestamptz `json:"evidence_expires_at"`
+	Observation               []byte             `json:"-"`
+	ConsumerKind              string             `json:"consumer_kind"`
+	ConsumerUserID            pgtype.UUID        `json:"consumer_user_id"`
+	ConsumerAgentID           pgtype.UUID        `json:"consumer_agent_id"`
+	ConsumerTaskID            pgtype.UUID        `json:"consumer_task_id"`
+	ConsumerTaskGeneration    pgtype.Int8        `json:"consumer_task_generation"`
+	ConsumerRuntimeID         pgtype.UUID        `json:"consumer_runtime_id"`
+	ConsumerOriginatorUserID  pgtype.UUID        `json:"consumer_originator_user_id"`
+	ConsumerBindingID         pgtype.UUID        `json:"consumer_binding_id"`
+	ConsumerBindingEpoch      pgtype.Int8        `json:"consumer_binding_epoch"`
+	IntegrationID             pgtype.UUID        `json:"integration_id"`
+	IntegrationTrustRevision  pgtype.Int8        `json:"integration_trust_revision"`
+	GithubInstallationID      pgtype.Int8        `json:"github_installation_id"`
+	VcsProvider               pgtype.Text        `json:"vcs_provider"`
+	VcsInstanceUrl            pgtype.Text        `json:"vcs_instance_url"`
+	WebhookConfigIdentity     pgtype.Text        `json:"webhook_config_identity"`
+	PullRequestID             pgtype.UUID        `json:"pull_request_id"`
+	RepoOwner                 pgtype.Text        `json:"repo_owner"`
+	RepoName                  pgtype.Text        `json:"repo_name"`
+	PrNumber                  pgtype.Int4        `json:"pr_number"`
+	PrHeadSha                 pgtype.Text        `json:"pr_head_sha"`
+	CollaborationRevision     pgtype.Int8        `json:"collaboration_revision"`
+	LifecycleEpoch            pgtype.Int8        `json:"lifecycle_epoch"`
+	ParticipantEpoch          pgtype.Int8        `json:"participant_epoch"`
+	AccountEpoch              pgtype.Int8        `json:"account_epoch"`
+	StatusOptionsVersion      pgtype.Text        `json:"status_options_version"`
+	SubmissionID              pgtype.UUID        `json:"submission_id"`
+	SubmissionEventSeq        pgtype.Int8        `json:"submission_event_seq"`
+	DeliveryIntentDigest      pgtype.Text        `json:"delivery_intent_digest"`
+	AdminOrganizationID       pgtype.UUID        `json:"admin_organization_id"`
+	IssuerCredentialKind      string             `json:"issuer_credential_kind"`
+	IssuerCredentialExpiresAt pgtype.Timestamptz `json:"issuer_credential_expires_at"`
+	IssuerPatID               pgtype.UUID        `json:"-"`
+	IssuerPatHash             pgtype.Text        `json:"-"`
+	IssuerPasswordMode        bool               `json:"issuer_password_mode"`
+	IssuerPasswordVersion     pgtype.Int8        `json:"-"`
+	IssuerPasswordKind        pgtype.Text        `json:"-"`
+	IssuerBindingID           pgtype.UUID        `json:"-"`
+	IssuerBindingEpoch        pgtype.Int8        `json:"-"`
+	IssuerBindingWorkspaceID  pgtype.UUID        `json:"-"`
+	IssuerBindingDaemonID     pgtype.Text        `json:"-"`
+}
+
+type DeliveryCompletionTerminal struct {
+	AuthorizationID             pgtype.UUID        `json:"authorization_id"`
+	Kind                        string             `json:"kind"`
+	RecordedAt                  pgtype.Timestamptz `json:"recorded_at"`
+	ActorKind                   string             `json:"actor_kind"`
+	ActorUserID                 pgtype.UUID        `json:"actor_user_id"`
+	ActorAgentID                pgtype.UUID        `json:"actor_agent_id"`
+	IntegrationID               pgtype.UUID        `json:"integration_id"`
+	OperationID                 pgtype.UUID        `json:"operation_id"`
+	MutationDigest              pgtype.Text        `json:"mutation_digest"`
+	IssueRevisionBefore         pgtype.Int8        `json:"issue_revision_before"`
+	IssueRevisionAfter          pgtype.Int8        `json:"issue_revision_after"`
+	StatusAfter                 pgtype.Text        `json:"status_after"`
+	CollaborationOperationID    pgtype.UUID        `json:"collaboration_operation_id"`
+	AdminOperationID            pgtype.UUID        `json:"admin_operation_id"`
+	ResultSubmissionID          pgtype.UUID        `json:"result_submission_id"`
+	ResultCollaborationRevision pgtype.Int8        `json:"result_collaboration_revision"`
+	ProviderEventID             pgtype.Text        `json:"provider_event_id"`
+	ProviderEventDigest         pgtype.Text        `json:"provider_event_digest"`
+	RevokerUserID               pgtype.UUID        `json:"revoker_user_id"`
+	RevocationRequestKey        pgtype.UUID        `json:"revocation_request_key"`
+	RevocationReason            pgtype.Text        `json:"revocation_reason"`
+	RevocationDigest            pgtype.Text        `json:"revocation_digest"`
+}
+
 type DeliveryEvidenceEvaluation struct {
 	WorkspaceID     pgtype.UUID        `json:"workspace_id"`
 	EvaluatorUserID pgtype.UUID        `json:"evaluator_user_id"`
@@ -1378,6 +1479,24 @@ type DeliveryEvidenceEvaluation struct {
 	RequestJson     []byte             `json:"request_json"`
 	Observation     []byte             `json:"observation"`
 	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+}
+
+type DeliveryProjectChange struct {
+	WorkspaceID         pgtype.UUID        `json:"workspace_id"`
+	OperationID         pgtype.UUID        `json:"operation_id"`
+	IssueID             pgtype.UUID        `json:"issue_id"`
+	IssueRevision       int64              `json:"issue_revision"`
+	ActorKind           string             `json:"actor_kind"`
+	ActorID             pgtype.UUID        `json:"actor_id"`
+	ActorUserID         pgtype.UUID        `json:"actor_user_id"`
+	FromProjectID       pgtype.UUID        `json:"from_project_id"`
+	ToProjectID         pgtype.UUID        `json:"to_project_id"`
+	FromProjectRevision int64              `json:"from_project_revision"`
+	ToProjectRevision   int64              `json:"to_project_revision"`
+	FromPolicyRevision  int64              `json:"from_policy_revision"`
+	ToPolicyRevision    int64              `json:"to_policy_revision"`
+	Reason              string             `json:"reason"`
+	RecordedAt          pgtype.Timestamptz `json:"recorded_at"`
 }
 
 type DingtalkBotIdentity struct {
@@ -1434,6 +1553,7 @@ type GithubInstallation struct {
 	ConnectedByID    pgtype.UUID        `json:"connected_by_id"`
 	CreatedAt        pgtype.Timestamptz `json:"created_at"`
 	UpdatedAt        pgtype.Timestamptz `json:"updated_at"`
+	TrustRevision    int64              `json:"trust_revision"`
 }
 
 type GithubPendingCheckSuite struct {
@@ -2650,6 +2770,7 @@ type VcsConnection struct {
 	ConnectedByID          pgtype.UUID        `json:"connected_by_id"`
 	CreatedAt              pgtype.Timestamptz `json:"created_at"`
 	UpdatedAt              pgtype.Timestamptz `json:"updated_at"`
+	TrustRevision          int64              `json:"trust_revision"`
 }
 
 type VcsPullRequest struct {

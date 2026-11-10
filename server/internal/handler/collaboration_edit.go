@@ -3,6 +3,8 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
+	"unicode/utf8"
 
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/service"
@@ -20,6 +22,7 @@ type collaborationEditBody struct {
 	LabelIDs             json.RawMessage `json:"label_ids"`
 	Properties           json.RawMessage `json:"properties"`
 	ProjectID            json.RawMessage `json:"project_id"`
+	ProjectChangeReason  json.RawMessage `json:"project_change_reason"`
 	ParentIssueID        json.RawMessage `json:"parent_issue_id"`
 	Stage                json.RawMessage `json:"stage"`
 	Status               json.RawMessage `json:"status"`
@@ -39,13 +42,20 @@ func (h *Handler) UpdateCollaborationIssue(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	metadata := len(body.Title) > 0 || len(body.Description) > 0 || len(body.StartDate) > 0 || len(body.DueDate) > 0 ||
-		len(body.Priority) > 0 || len(body.LabelIDs) > 0 || len(body.Properties) > 0 || len(body.ProjectID) > 0 || len(body.ParentIssueID) > 0 || len(body.Stage) > 0
+		len(body.Priority) > 0 || len(body.LabelIDs) > 0 || len(body.Properties) > 0 || len(body.ProjectID) > 0 || len(body.ParentIssueID) > 0 || len(body.Stage) > 0 || len(body.ProjectChangeReason) > 0
 	status := len(body.Status) > 0 || len(body.StatusOptionsVersion) > 0
 	if metadata && status {
 		writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_request", "error": "Status and content edits require separate requests"})
 		return
 	}
 	params := service.CollaborationEditParams{CollaborationWorkflowRequest: request, SetStartDate: len(body.StartDate) > 0, SetDueDate: len(body.DueDate) > 0}
+	if len(body.ProjectChangeReason) > 0 {
+		if json.Unmarshal(body.ProjectChangeReason, &params.ProjectChangeReason) != nil || strings.TrimSpace(params.ProjectChangeReason) == "" || !utf8.ValidString(params.ProjectChangeReason) || strings.ContainsRune(params.ProjectChangeReason, 0) || utf8.RuneCountInString(strings.TrimSpace(params.ProjectChangeReason)) > 1000 {
+			writeJSON(w, 400, map[string]string{"code": "invalid_request"})
+			return
+		}
+		params.ProjectChangeReason = strings.TrimSpace(params.ProjectChangeReason)
+	}
 	params.ProjectID, ok = collaborationNullableUUID(w, body.ProjectID, "project_id")
 	if !ok {
 		return

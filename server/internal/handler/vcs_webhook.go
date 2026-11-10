@@ -1,7 +1,10 @@
 package handler
 
 import (
+	"bytes"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"errors"
 	"io"
 	"log/slog"
@@ -12,6 +15,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/integrations/vcs"
 	"github.com/multica-ai/multica/server/internal/issuestatus"
+	"github.com/multica-ai/multica/server/internal/service"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
@@ -141,7 +145,30 @@ func (h *Handler) HandleVCSWebhook(w http.ResponseWriter, r *http.Request) {
 		if pr, err := provider.ParsePullRequest(body); err != nil {
 			slog.Warn("vcs: bad pull_request payload", "provider", conn.Provider, "err", err)
 		} else {
-			h.mirrorVCSPullRequest(r.Context(), conn, pr)
+			raw, headers := bytes.Clone(body), r.Header.Clone()
+			digest := sha256.Sum256(raw)
+			eventDigest := hex.EncodeToString(digest[:])
+			eventID := headers.Get("X-Gitea-Delivery")
+			if conn.Provider == "gitlab" {
+				eventID = headers.Get("X-Gitlab-Event-UUID")
+			}
+			if eventID == "" {
+				eventID = "sha256:" + eventDigest
+			}
+			proof := &service.DeliveryWebhookProof{
+				Kind: "vcs", WorkspaceID: conn.WorkspaceID, IntegrationID: conn.ID, TrustRevision: conn.TrustRevision,
+				Provider: conn.Provider, InstanceURL: conn.InstanceUrl,
+				RepoOwner: pr.RepoOwner, RepoName: pr.RepoName, PRNumber: pr.Number, HeadSHA: pr.HeadSHA, State: pr.State, Action: pr.Action,
+				EventID: eventID, EventDigest: eventDigest,
+				VerifySignature: func(currentEncryptedSecret string) (string, bool) {
+					if !h.isVCSAvailable() || !h.isVCSConfigured() {
+						return "", false
+					}
+					current, err := h.openVCSSecret(currentEncryptedSecret)
+					return "", err == nil && current != "" && provider.VerifySignature(current, headers, raw)
+				},
+			}
+			h.mirrorVCSPullRequest(r.Context(), conn, pr, proof)
 		}
 	case vcs.EventCIStatus:
 		if st, err := provider.ParseCIStatus(body); err != nil {
@@ -155,7 +182,7 @@ func (h *Handler) HandleVCSWebhook(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusAccepted)
 }
 
-func (h *Handler) mirrorVCSPullRequest(ctx context.Context, conn db.VcsConnection, ev vcs.PullRequestEvent) {
+func (h *Handler) mirrorVCSPullRequest(ctx context.Context, conn db.VcsConnection, ev vcs.PullRequestEvent, proof *service.DeliveryWebhookProof) {
 	if ev.RepoOwner == "" || ev.RepoName == "" || ev.Number == 0 {
 		slog.Warn("vcs: pull_request missing repo identity", "provider", conn.Provider)
 		return
@@ -187,6 +214,7 @@ func (h *Handler) mirrorVCSPullRequest(ctx context.Context, conn db.VcsConnectio
 		slog.Warn("vcs: upsert pr failed", "err", err)
 		return
 	}
+	proof.PullRequestID = pr.ID
 
 	// Out-of-order guard for the link metadata. UpsertVCSPullRequest keeps the
 	// newer persisted row on a stale redelivery, so `pr` may reflect a newer
@@ -271,7 +299,7 @@ func (h *Handler) mirrorVCSPullRequest(ctx context.Context, conn db.VcsConnectio
 				continue
 			}
 			if counts.OpenCount == 0 && counts.MergedWithCloseIntentCount > 0 {
-				h.advanceIssueToDone(ctx, issue, workspaceID)
+				h.advanceIssueToDone(ctx, issue, workspaceID, proof)
 			}
 		}
 	}

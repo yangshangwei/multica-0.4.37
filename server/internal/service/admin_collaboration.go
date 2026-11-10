@@ -38,6 +38,7 @@ type AdminCollaborationLifecycleParams struct {
 	StatusOptionsVersion                    string
 	Reason, RequestID                       string
 	SuccessorUserID                         *pgtype.UUID
+	Completion                              *DeliveryCompletionBinding `json:",omitempty"`
 }
 
 type AdminCollaborationReceipt struct {
@@ -112,17 +113,18 @@ func adminCollaborationHash(p AdminCollaborationLifecycleParams) (string, error)
 	// RequestID is the transport trace, not caller intent. Enumerate the
 	// non-secret payload, including the optional successor's exact identity.
 	payload, err := json.Marshal(struct {
-		OrganizationID       pgtype.UUID  `json:"organization_id"`
-		IssueID              pgtype.UUID  `json:"issue_id"`
-		Action               string       `json:"action"`
-		Revision             int64        `json:"expected_collaboration_revision"`
-		ExpectedStatus       string       `json:"expected_status"`
-		TargetStatus         string       `json:"target_status"`
-		StatusOptionsVersion string       `json:"status_options_version"`
-		Reason               string       `json:"reason"`
-		SuccessorUserID      *pgtype.UUID `json:"successor_user_id,omitempty"`
+		OrganizationID       pgtype.UUID                `json:"organization_id"`
+		IssueID              pgtype.UUID                `json:"issue_id"`
+		Action               string                     `json:"action"`
+		Revision             int64                      `json:"expected_collaboration_revision"`
+		ExpectedStatus       string                     `json:"expected_status"`
+		TargetStatus         string                     `json:"target_status"`
+		StatusOptionsVersion string                     `json:"status_options_version"`
+		Reason               string                     `json:"reason"`
+		SuccessorUserID      *pgtype.UUID               `json:"successor_user_id,omitempty"`
+		Completion           *DeliveryCompletionBinding `json:"completion,omitempty"`
 	}{p.OrganizationID, p.IssueID, p.Action, p.ExpectedCollaborationRevision, p.ExpectedStatus, p.TargetStatus,
-		p.StatusOptionsVersion, strings.TrimSpace(p.Reason), p.SuccessorUserID})
+		p.StatusOptionsVersion, strings.TrimSpace(p.Reason), p.SuccessorUserID, p.Completion})
 	if err != nil {
 		return "", err
 	}
@@ -131,6 +133,10 @@ func adminCollaborationHash(p AdminCollaborationLifecycleParams) (string, error)
 }
 
 func adminCollaborationServiceError(err error) error {
+	var gate DeliveryCompletionError
+	if errors.As(err, &gate) {
+		return platformError(gate.Status, gate.Code, "Completion authorization is required or no longer valid")
+	}
 	var collaborationErr *CollaborationError
 	if errors.As(err, &collaborationErr) {
 		return platformError(collaborationErr.Status, collaborationErr.Code, "The collaboration action is unavailable in its current state")
@@ -222,9 +228,43 @@ func (s *AdminCollaborationService) ChangeLifecycle(ctx context.Context, p Admin
 			return out, err
 		}
 	}
+	var prepared DeliveryPrepareResult
+	if p.Action == "complete" {
+		if p.Completion != nil && (p.Completion.Validate() != nil || p.Completion.OperationID != util.UUIDToString(p.IdempotencyKey)) {
+			return out, completionInvalid()
+		}
+		var intent *DeliveryCompletionTarget
+		if p.Completion != nil {
+			current, err := t.currentDelivery(ctx)
+			if err != nil {
+				return out, err
+			}
+			bound := completionAdminTarget(t, p, current)
+			intent = &bound
+		}
+		candidate := t.access.Issue
+		candidate.Status = p.TargetStatus
+		// Without an explicit binding the common gate checks the current policy:
+		// enforce refuses, while off/observe retain administrative disposition
+		// without treating legacy delivery history as initiator acceptance.
+		prepared, err = PrepareDeliveryMutationInTx(ctx, tx, DeliveryMutationIntent{Before: t.access.Issue, Candidate: candidate, Completion: p.Completion, Credential: completionRequestCredential(ctx), Collaboration: intent})
+		if err != nil {
+			return out, err
+		}
+		if prepared.State != DeliveryNotApplicable && (prepared.State != DeliveryPrepared || prepared.Prepared == nil) {
+			return out, completionConflict()
+		}
+	} else if p.Completion != nil {
+		return out, completionInvalid()
+	}
 	receipt, err := t.changeLifecycle(ctx, p.Action, p.TargetStatus)
 	if err != nil {
 		return out, err
+	}
+	if prepared.State == DeliveryPrepared {
+		if _, err = FinishDeliveryMutationInTx(ctx, tx, prepared.Prepared, t.access.Issue, DeliveryWriterResult{CollaborationOperationID: t.operation.ID, AdminOperationID: op.ID, CollaborationRevision: t.access.Revision}); err != nil {
+			return out, err
+		}
 	}
 	unsettled, err := t.q.CountAdminCollaborationUnsettledRuns(ctx, t.session.ID)
 	if err != nil {
@@ -355,7 +395,7 @@ func (s *AdminCollaborationService) lockLifecycle(ctx context.Context, tx pgx.Tx
 		return nil, platformError(503, "admin_unavailable", "The collaboration identity is unavailable")
 	}
 	t.access = CollaborationIssueAccess{Issue: issue, Revision: state.Revision, LifecycleEpoch: state.LifecycleEpoch,
-		AuthorityEpoch: state.AuthorityEpoch, SessionID: t.session.ID, QueueState: t.session.QueueState,
+		AuthorityEpoch: state.AuthorityEpoch, EventSequence: t.session.EventSeq, SessionID: t.session.ID, QueueState: t.session.QueueState,
 		ControlVersion: t.session.ControlVersion, StatusCategory: current.StatusCategory, InformationRequestID: state.ActiveInformationRequestID}
 	return t, nil
 }

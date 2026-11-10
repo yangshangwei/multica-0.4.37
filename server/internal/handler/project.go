@@ -905,6 +905,9 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 			}
 			return err
 		}
+		if err := service.CheckDeliveryProjectDeleteInTx(r.Context(), tx, project); err != nil {
+			return err
+		}
 		if input.ExpectedRevision != nil && *input.ExpectedRevision != project.Revision {
 			return &projectAPIError{Status: 409, Code: "project_revision_conflict", Message: "project changed since deletion preview", Current: projectToResponse(project)}
 		}
@@ -1012,6 +1015,9 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 		return q.DeleteProject(r.Context(), db.DeleteProjectParams{ID: id, WorkspaceID: ws})
 	})
 	if err != nil {
+		if writeIssueDeliveryError(w, err) {
+			return
+		}
 		writeProjectAPIError(w, err)
 		return
 	}

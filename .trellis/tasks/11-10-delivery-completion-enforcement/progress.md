@@ -62,3 +62,44 @@
 - 修改前 baseline：handler325、router103，两个独立新库。初次下沉 normal325/103；随后按独审建议收紧 tx-only API，最终 normal/race 各新库 handler各339（325旧合同+14具名持久委派兼容）、router各103，均0fail/skip，不能跨轮累计覆盖。
 - P0 build/vet02通过，独立代码对比无阻塞；最终技能/状态/runtime合同仍执行中，未提前宣称通过。source-map和四份 owning spec已同步service所有权，无新增产品模式声明。
 - P1授权/一次消费/撤销由独立implement lane开始；P2客户端依固定D6协议并行，已保留真实行为red及两条初始测试夹具归属失败。完整writer、schema/路由启用、最终全门禁验收仍待。
+
+## 2026-11-11 后续分包实进度
+
+- P0 已按 Lore 提交 c9a070551；D6 客户端13源文件及独审/原始失败证据以 fb0558881 提交。客户端Core63/Views91、两包typecheck与独审范围lint通过；全Views lint有27条未改文件警告，未压制。两个提交只在独立分支，尚未集成主目录。
+- 显式issuer前置bug使用真实password/managed凭据复现：red01为1失败子例+父、6通过；同测试修复后新库green8通过。旧ambient adapter仍复核自身binding，显式service不读取另一消费者会话。一次vet因并行ledger未完整定义失败保留。
+- P1首轮真实制品+同事务授权消费/撤销/恢复11通过；第二轮22通过（含issuer8、task消费者/竞争/late evidence与done兼容）。managed binding新增冻结路径尚需单独正反验收，不借unmanaged通过结论。
+- P2原始writer13项red中3个create子例是workspace编号夹具冲突，修成实际POST创建父后新库create red02得到enforce预期409实际201、off/observe两对照通过。writer接入后新库green13通过，下一批真实tar授权/恢复/custom/评论子任务/未知提交待做。
+- P1实际迁移iter01为6通过1夹具缺id失败，改fixture后新库重跑；路由iter01是并行unused import编译失败，iter02是新测试未用import，均0实际测试，已保留且compile-only通过，不能称路由验收通过。
+- 主目录HEAD仍1ce4e8122，另有12个原快照路径被其他并行活动修改；本任务未写主目录。最终集成必须重新保护实时内容，不能按会话开头快照覆盖。
+- 本轮主会话读取猜测的788迁移后缀readiness路径失败，rg --files确认实际为ready；只读失败不属于产品red。无供应商调用/推送/部署/外部消息。
+
+## 2026-11-11 P1 独审修正与 P3 启动
+
+- P1实际授权router编译快照11/11通过；追加完整producer task行不变断言后待最终重新编译验收。P1实际迁移修复夹具后7/7通过。P2普通writer第二轮34项通过；之后新增父阶段通知/移入政策/789–791迁移测试仅编译，未提前算通过。
+- P1独审发现readiness只验证CHECK名字而非定义，实际弱化schema red7case全部错误放行（含父8fail）已保留；内部typed expiry纳秒/非UTC接受后无法恢复，实际纯red两子例（含父3fail）已保留。独审正在修精确schema与时间入口。
+- 独审另发现Finish早期consumer凭据检查到最终INSERT之间存在到期窗口；SQL最后消费需结合DB时钟且consumer最终复核。分工：check agent拥有query/generated和负例，P3 core整合owner拥有Finish，禁止并发同文件编辑。
+- P3 VCS owner新增真实signed webhook缺授权red测试并test-c，尚待新库运行；792–793信任revision与查询已准备。P3协作owner接入精确ordinary-child及submission/self/R38，同时拥有P1 union core整合，核心仍单一observer。公共enforce未开放。
+
+## 2026-11-11 后续真实身份与完成事务证明
+
+- P3真实signed webhook red两provider无授权todo→done已保留；接入后router17通过（Github/Forgejo/Gitlab正负），当前追加provider失配拒绝负例至18待最终；handler7通过含入站验签后配置/密文secret改变而实际status事务拒绝。
+- 协作普通child实际CreateIssue→实际制品tar→源方授权→外部发起人self/submission或真实R38行政完成、原key恢复已通过4具名；扩展18通过（附件不预绑定、7当前权限/关联/版本负例及D4b）。最后增加锁争用/terminal故障全回滚/admincfg关闭测试待新库验证。
+- P1独审修复3类问题：精确schemagreen17，typedexpiry/静态合同green23，最后SQL到期窗口green3；真实红均保留。ConsumerContributor额外Operator门槛实际红（plainbinarylog1fail；launcherGoJSONcount0不代表没执行）→修正仅两消费者门槛后green1，制品生产者仍Operator。
+- 真实managedtask完整认证+实际UpdateIssue首轮10通过，issuer与managedowner为不同人，7post-auth失效回调真正执行；之后仅收紧明确HTTP状态断言，当前源码需最终normal/race复验，不能把旧快照当新快照。
+- 信任迁移首轮5fail因冻结binary从repo根运行而既有相对迁移路径失配，未进入DDL断言；同binary在正确package cwd的新库重跑中，保留原运行失败。无更改旧判据、供应商调用或外部动作。
+
+## 2026-11-11 P4 先红与整体独审
+
+- 完成前旧协作service兼容集合当前254具名PASS，非最终冻结轮。P3最新collab22具名通过；VCStrust实际迁移正确cwd重跑7通过，首次cwd5fail保留。
+- P4公共启用旧实现red已实际认证复现：owner/admin PUT enforce期望200实际400，3fail含父；handler能力/当前enforce评估/readiness red7保留。兼容capabilities/evaluation/hint已实现，decode公共enforce仍关闭，等待P3独审和真实Auth-only协作route。
+- 整体独审发现union消费receipt丢失原authorization/before/after递增等不变量，纯反例18fail已保留，修复中。最初怀疑R38off损坏交付兼容回归，实际no-project/off/observe/enforce基线5PASS，并非该假设red；进一步发现adminaccess漏EventSequence导致enforce绑定真实pending submission却消费意图为nil，正在用实际pending例验证，不能错误归因。
+- 新真实NewRouter协作首轮11fail均在fixture状态目录/内部organization前置，未达完成门禁；已按既有fixture建真实目录/组织，不放宽断言。新的11case编译后新库复验。
+- 真实managedtask最新编译收紧状态断言仍待最终normal/race，原10pass不覆盖后改快照；Contributor实际1pass已确认交集修正。
+
+## 2026-11-11 最终冻结验收
+
+- 公共enforce开启后真实全部writer链已接通；第一轮final handler615pass/1fail（terminal留证表通过authorization间接scope，manifest未覆盖）、router162pass/4fail（旧enforce非法负例与已确认404失权映射断言）已保留，精确更新测试合同而不放宽权限。
+- 最终独审另找到batch expectedrevision0误拒、重复authorization/operation未请求级拒绝；实际red4fail（错误首项提交也保留证明），改严格JSON验证并提前去重后最终普通/race全部通过。
+- 最终handler普通/race各620、真实router各166、service各272、实际migration各62；补真实issue/project/workspace删除新授权及consumed/revoked留证普通/race各4。均0fail/skip，分轮分包不相加作为独立覆盖。
+- 全后端build/vet、52合同、134生成文件sqlc幂等通过；客户端Core63/Views91与typecheck/独审lint通过。最终110源码冻结，256运行记录及原日志hash复核，47非零记录完整保留；这是尝试记录量，不是通过覆盖数。
+- 当前只剩最终独审签收、Lore提交、安全本地集成和日志收尾；未推送/部署/调用供应商。M1和六业务仍开放，M2/M3 planned，v1 skip明确不可用。

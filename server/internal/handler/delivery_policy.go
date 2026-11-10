@@ -45,7 +45,7 @@ func decodeDeliveryPolicy(w http.ResponseWriter, r *http.Request) (deliveryPolic
 		valid = false
 	}
 	req.Reason = strings.TrimSpace(req.Reason)
-	valid = valid && req.ExpectedRevision >= 0 && req.ExpectedRevision < math.MaxInt64 && (req.Mode == "off" || req.Mode == "observe") && req.PolicyVersion == deliveryEvidencePolicy && req.Stage == deliveryPolicyStage && utf8.ValidString(req.Reason) && utf8.RuneCountInString(req.Reason) >= 1 && utf8.RuneCountInString(req.Reason) <= 1000
+	valid = valid && req.ExpectedRevision >= 0 && req.ExpectedRevision < math.MaxInt64 && (req.Mode == "off" || req.Mode == "observe" || req.Mode == "enforce") && req.PolicyVersion == deliveryEvidencePolicy && req.Stage == deliveryPolicyStage && utf8.ValidString(req.Reason) && utf8.RuneCountInString(req.Reason) >= 1 && utf8.RuneCountInString(req.Reason) <= 1000
 	if !valid {
 		writeError(w, 400, "invalid_delivery_policy_request")
 	}
@@ -146,6 +146,11 @@ func (h *Handler) deliveryPolicyInTx(r *http.Request, tx pgx.Tx, q *db.Queries, 
 	if write {
 		if out.Revision != req.ExpectedRevision {
 			return out, artifactFailure{409, "delivery_policy_revision_conflict"}
+		}
+		if req.Mode == "enforce" {
+			if err = service.CheckDeliveryEnforcementActivationSchema(ctx, tx); err != nil {
+				return out, artifactCoreError(err)
+			}
 		}
 		_, err = q.CreateDeliveryPolicy(ctx, db.CreateDeliveryPolicyParams{WorkspaceID: ws, ProjectID: projectID, Revision: out.Revision + 1, PolicyVersion: req.PolicyVersion, Mode: req.Mode, Stage: req.Stage, Reason: req.Reason, CreatedBy: parseUUID(p.UserID)})
 		if err != nil {

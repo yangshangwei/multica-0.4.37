@@ -185,6 +185,7 @@ func (h *Handler) AdminCollaborationLifecycle(w http.ResponseWriter, r *http.Req
 		StatusOptionsVersion          string          `json:"status_options_version"`
 		Reason                        string          `json:"reason"`
 		SuccessorUserID               json.RawMessage `json:"successor_user_id"`
+		Completion                    json.RawMessage `json:"completion"`
 	}
 	if !decodeCollaborationWorkflowBodyLimit(w, r, &body, 4096) {
 		return
@@ -197,6 +198,14 @@ func (h *Handler) AdminCollaborationLifecycle(w http.ResponseWriter, r *http.Req
 	p := service.AdminCollaborationLifecycleParams{OrganizationID: actor.OrganizationID, IssueID: id, IdempotencyKey: key,
 		ExpectedCollaborationRevision: revision, ExpectedStatus: body.ExpectedStatus, TargetStatus: body.TargetStatus,
 		Action: body.Action, StatusOptionsVersion: body.StatusOptionsVersion, Reason: body.Reason, RequestID: adminRequestID(r)}
+	if len(body.Completion) > 0 {
+		binding, err := service.ParseDeliveryCompletionBinding(body.Completion)
+		if err != nil {
+			writeDeliveryCompletionError(w, err, false)
+			return
+		}
+		p.Completion = &binding
+	}
 	if len(body.SuccessorUserID) != 0 {
 		var value string
 		if json.Unmarshal(body.SuccessorUserID, &value) != nil || value == "" {

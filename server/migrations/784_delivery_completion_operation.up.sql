@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY delivery_completion_operation_idx ON delivery_completion_authorization (workspace_id, operation_id);

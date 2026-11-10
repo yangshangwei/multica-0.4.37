@@ -133,6 +133,10 @@ func collaborationDeliveryProseCode(note, basis string) string {
 }
 
 func (t *collaborationWorkflowTx) prepareDelivery(ctx context.Context, input collaborationDeliveryInput) (*CollaborationWorkflowReceipt, error) {
+	return t.prepareDeliveryMode(ctx, input, true)
+}
+
+func (t *collaborationWorkflowTx) prepareDeliveryMode(ctx context.Context, input collaborationDeliveryInput, bind bool) (*CollaborationWorkflowReceipt, error) {
 	if code := collaborationDeliveryProseCode(input.note, input.basis); code != "" {
 		r := t.result(code, http.StatusBadRequest)
 		return &r, nil
@@ -151,7 +155,11 @@ func (t *collaborationWorkflowTx) prepareDelivery(ctx context.Context, input col
 			return nil, err
 		}
 	}
-	_, err := bindCollaborationAttachments(ctx, t.q, t.access.Issue.ID, t.access.Issue.WorkspaceID, t.actor,
+	selection := validateCollaborationAttachments
+	if bind {
+		selection = bindCollaborationAttachments
+	}
+	_, err := selection(ctx, t.q, t.access.Issue.ID, t.access.Issue.WorkspaceID, t.actor,
 		input.draft, input.attachments, false)
 	var domain *CollaborationError
 	if errors.As(err, &domain) {

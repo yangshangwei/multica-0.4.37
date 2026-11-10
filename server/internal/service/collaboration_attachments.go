@@ -519,7 +519,7 @@ func collaborationCommentAttachmentIDs(ctx context.Context, q *db.Queries, issue
 	return ids, nil
 }
 
-func bindCollaborationAttachments(ctx context.Context, q *db.Queries, issue, source, actor pgtype.UUID, draft *pgtype.UUID, ids []pgtype.UUID, creating bool) ([]db.CollaborationAttachment, error) {
+func validateCollaborationAttachments(ctx context.Context, q *db.Queries, issue, source, actor pgtype.UUID, draft *pgtype.UUID, ids []pgtype.UUID, creating bool) ([]db.CollaborationAttachment, error) {
 	if err := validateCollaborationAttachmentIDs(ids); err != nil {
 		return nil, err
 	}
@@ -563,6 +563,14 @@ func bindCollaborationAttachments(ctx context.Context, q *db.Queries, issue, sou
 		if _, err = checkCollaborationAttachmentDraft(ctx, q, actor, *draft, source, intended); err != nil {
 			return nil, err
 		}
+	}
+	return rows, nil
+}
+
+func bindCollaborationAttachments(ctx context.Context, q *db.Queries, issue, source, actor pgtype.UUID, draft *pgtype.UUID, ids []pgtype.UUID, creating bool) ([]db.CollaborationAttachment, error) {
+	rows, err := validateCollaborationAttachments(ctx, q, issue, source, actor, draft, ids, creating)
+	if err != nil {
+		return nil, err
 	}
 	for i, row := range rows {
 		if row.IssueID.Valid {

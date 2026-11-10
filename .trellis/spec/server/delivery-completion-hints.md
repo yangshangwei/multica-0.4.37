@@ -106,3 +106,11 @@ core (`service/delivery_policy.go`, `service/delivery_evidence.go` and
 `service/artifact_authority.go`). The explicit hint retains its original strict
 HTTP body, immutable private recovery, locks and non-authorizing response.
 Core extraction does not itself implement any completion writer gate.
+
+## Subsequent completion enforcement
+
+The later [transactional completion contract](./delivery-completion-enforcement.md)
+adds explicit authorizations and current checks in actual writers. The historical
+observe/hint increment above remains non-authorizing; its private evidence and
+original actor/retention boundaries remain. Current source-policy enforcement,
+project-change rules and distinct R38 handling follow that shared contract.

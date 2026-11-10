@@ -2,7 +2,7 @@
 
 ## 当前合同与门禁
 
-D1–D5 已由用户逐项确认，D6/D7/技术明细已按用户明确的推荐执行委托收敛。PRD 完成一次去重收敛，研究绑定真实源码与兼容消费者。先由独立 Trellis check 审查合同，再 task start；不再申请已有流程许可。
+D1–D5 已由用户逐项确认，D6/D7/技术明细已按用户明确的推荐执行委托收敛。PRD 完成一次去重收敛，研究绑定真实源码与兼容消费者。合同已独审并启动实施；当前P0–P4与最终普通/race、源码/具名库存已验证，剩最终签收、提交集成与日志。不再申请已有流程许可。
 
 ## 顺序
 
@@ -10,11 +10,11 @@ D1–D5 已由用户逐项确认，D6/D7/技术明细已按用户明确的推荐
 2. [x] D1–D7 与 skip 明细、普通子任务协作证据适配、逐项 batch/旧客户端合同收敛。
 3. [x] 独立合同审查与 context validate；确认所有产品范围与公开版本/权限限制。
 4. [x] P0：专属 PG 与独立 baseline handler/router DB，先运行既有真实制品/观察/评估/提示回归。然后唯一核心下沉至 service，原 HTTP 适配器保持契约，normal/race 与 build/vet/格式验证。
-5. [ ] P1：冻结 typed issuer/consumer/grant/Prepare/Finish 接口；新增授权/消费/撤销/迁移事实、schema readiness 与留证迁移，真实认证/实际 tar 证明一次消费和原恢复；仍禁止生产启用 enforce。
-6. [ ] P2：普通 update/move/batch、CreateInTx/comment-child、项目调整/删除与 core/views 部分结果恢复；先记录真实失败测试，再实现并逐包验证。
-7. [ ] P3：真实 VCS 消费者与信任修订，协作 exact ordinary-child/source/submission/self/R38 的原事务接入与正负实际回执。不得伪造普通 task 或使用另一个 observer。
-8. [ ] P4：仅在全入口闭合后开放 enforce、评估/hint 模式兼容、内置技能/source map；全套 normal/race 各包新库，实际 tar/SHA、真实认证/状态/回执、竞态、rollback/unknown、迁移及客户端验证。
-9. [ ] 冻结每个受影响文件、具名测试库存和全部原始日志；独立 Trellis check，主会话最终 build/vet/sqlc/format/static 及适用 lint/typecheck/测试。
+5. [x] P1：冻结 typed issuer/consumer/grant/Prepare/Finish 接口；新增授权/消费/撤销/迁移事实、schema readiness 与留证迁移，真实认证/实际 tar 证明一次消费和原恢复；仍禁止生产启用 enforce。
+6. [x] P2：普通 update/move/batch、CreateInTx/comment-child、项目调整/删除与 core/views 部分结果恢复；先记录真实失败测试，再实现并逐包验证。
+7. [x] P3：真实 VCS 消费者与信任修订，协作 exact ordinary-child/source/submission/self/R38 的原事务接入与正负实际回执。不得伪造普通 task 或使用另一个 observer。
+8. [x] P4：仅在全入口闭合后开放 enforce、评估/hint 模式兼容、内置技能/source map；全套 normal/race 各包新库，实际 tar/SHA、真实认证/状态/回执、竞态、rollback/unknown、迁移及客户端验证。
+9. [x] 冻结每个受影响文件、具名测试库存和全部原始日志；独立 Trellis check，主会话最终 build/vet/sqlc/format/static 及适用 lint/typecheck/测试。
 10. [ ] 主会话更新 spec、父子状态、六业务计划和 journal；仅本包 Lore 提交，独立检查 staged diff 成功后再提交；安全本地集成并复核主目录旧路径 byte/mode/existence。
 11. [ ] 仅将已独立验收的实现包记为交付；P4 前不得归档 enforcement。M1 与六业务保持开放，v1 skip 不可用及真实模型停止规则明确保留。停止仅本包资源并保留数据库/日志。
 

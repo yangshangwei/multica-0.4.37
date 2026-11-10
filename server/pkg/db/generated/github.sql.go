@@ -11,6 +11,17 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+const advanceGitHubInstallationTrust = `-- name: AdvanceGitHubInstallationTrust :exec
+UPDATE github_installation SET trust_revision=trust_revision+1, updated_at=now()
+WHERE installation_id=$1
+`
+
+// A permission grant/restore is a new trust observation, not display metadata.
+func (q *Queries) AdvanceGitHubInstallationTrust(ctx context.Context, installationID int64) error {
+	_, err := q.db.Exec(ctx, advanceGitHubInstallationTrust, installationID)
+	return err
+}
+
 const createGitHubInstallation = `-- name: CreateGitHubInstallation :one
 INSERT INTO github_installation (
     workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id
@@ -22,8 +33,9 @@ ON CONFLICT (workspace_id, installation_id) DO UPDATE SET
     account_type = EXCLUDED.account_type,
     account_avatar_url = EXCLUDED.account_avatar_url,
     connected_by_id = EXCLUDED.connected_by_id,
+    trust_revision = github_installation.trust_revision + 1,
     updated_at = now()
-RETURNING id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at
+RETURNING id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at, trust_revision
 `
 
 type CreateGitHubInstallationParams struct {
@@ -55,6 +67,7 @@ func (q *Queries) CreateGitHubInstallation(ctx context.Context, arg CreateGitHub
 		&i.ConnectedByID,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.TrustRevision,
 	)
 	return i, err
 }
@@ -116,7 +129,7 @@ func (q *Queries) DeletePendingGitHubInstallation(ctx context.Context, installat
 }
 
 const getGitHubInstallationByID = `-- name: GetGitHubInstallationByID :one
-SELECT id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at FROM github_installation
+SELECT id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at, trust_revision FROM github_installation
 WHERE id = $1
 `
 
@@ -133,6 +146,7 @@ func (q *Queries) GetGitHubInstallationByID(ctx context.Context, id pgtype.UUID)
 		&i.ConnectedByID,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.TrustRevision,
 	)
 	return i, err
 }
@@ -339,7 +353,7 @@ func (q *Queries) LinkIssueToPullRequest(ctx context.Context, arg LinkIssueToPul
 }
 
 const listGitHubInstallationsByInstallationID = `-- name: ListGitHubInstallationsByInstallationID :many
-SELECT id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at FROM github_installation
+SELECT id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at, trust_revision FROM github_installation
 WHERE installation_id = $1
 ORDER BY created_at ASC, id ASC
 `
@@ -366,6 +380,7 @@ func (q *Queries) ListGitHubInstallationsByInstallationID(ctx context.Context, i
 			&i.ConnectedByID,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.TrustRevision,
 		); err != nil {
 			return nil, err
 		}
@@ -379,7 +394,7 @@ func (q *Queries) ListGitHubInstallationsByInstallationID(ctx context.Context, i
 
 const listGitHubInstallationsByWorkspace = `-- name: ListGitHubInstallationsByWorkspace :many
 
-SELECT id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at FROM github_installation
+SELECT id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at, trust_revision FROM github_installation
 WHERE workspace_id = $1
 ORDER BY created_at ASC
 `
@@ -406,6 +421,7 @@ func (q *Queries) ListGitHubInstallationsByWorkspace(ctx context.Context, worksp
 			&i.ConnectedByID,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.TrustRevision,
 		); err != nil {
 			return nil, err
 		}
@@ -592,6 +608,46 @@ func (q *Queries) ListPullRequestsByIssue(ctx context.Context, issueID pgtype.UU
 	return items, nil
 }
 
+const refreshGitHubInstallationDisplay = `-- name: RefreshGitHubInstallationDisplay :one
+UPDATE github_installation
+SET account_login=$3, account_type=$4, account_avatar_url=$5, updated_at=now()
+WHERE id=$1 AND workspace_id=$2
+RETURNING id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at, trust_revision
+`
+
+type RefreshGitHubInstallationDisplayParams struct {
+	ID               pgtype.UUID `json:"id"`
+	WorkspaceID      pgtype.UUID `json:"workspace_id"`
+	AccountLogin     string      `json:"account_login"`
+	AccountType      string      `json:"account_type"`
+	AccountAvatarUrl pgtype.Text `json:"account_avatar_url"`
+}
+
+// Display enrichment is not a reconnect and must not renew completion trust.
+func (q *Queries) RefreshGitHubInstallationDisplay(ctx context.Context, arg RefreshGitHubInstallationDisplayParams) (GithubInstallation, error) {
+	row := q.db.QueryRow(ctx, refreshGitHubInstallationDisplay,
+		arg.ID,
+		arg.WorkspaceID,
+		arg.AccountLogin,
+		arg.AccountType,
+		arg.AccountAvatarUrl,
+	)
+	var i GithubInstallation
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.InstallationID,
+		&i.AccountLogin,
+		&i.AccountType,
+		&i.AccountAvatarUrl,
+		&i.ConnectedByID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.TrustRevision,
+	)
+	return i, err
+}
+
 const unlinkIssueFromPullRequest = `-- name: UnlinkIssueFromPullRequest :exec
 DELETE FROM issue_pull_request
 WHERE issue_id = $1 AND pull_request_id = $2
@@ -614,7 +670,7 @@ SET account_login = $2,
     account_avatar_url = $4,
     updated_at = now()
 WHERE installation_id = $1
-RETURNING id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at
+RETURNING id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at, trust_revision
 `
 
 type UpdateGitHubInstallationAccountByInstallationIDParams struct {
@@ -651,6 +707,7 @@ func (q *Queries) UpdateGitHubInstallationAccountByInstallationID(ctx context.Co
 			&i.ConnectedByID,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.TrustRevision,
 		); err != nil {
 			return nil, err
 		}

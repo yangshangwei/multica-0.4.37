@@ -28,8 +28,8 @@ must not close confirmation dialogs or report full success. Do not infer a
 historical write from the current issue state or implement automatic recovery
 POSTs. The completion receipt API owns authorized historical recovery separately.
 
-On mutation error, roll back only fields still equal to this mutation's own
-optimistic values; preserve newer WebSocket or fetched values. Then invalidate
+On mutation error, roll back only when the cached value is still this mutation's optimistic
+snapshot; preserve newer WebSocket or fetched values. Then invalidate
 all relevant workspace list/detail/children/derived caches to read actual server
 state. Rolling back every item without refetch can permanently hide a committed
 prefix. Successful complete batches retain the existing surgical refresh path.

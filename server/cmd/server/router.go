@@ -2122,6 +2122,16 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 			r.Delete("/{id}", h.RevokePersonalAccessToken)
 		})
 
+		// Completion receipts are account-scoped: an explicitly designated
+		// collaboration participant or administrator may be outside the source
+		// workspace. Each transaction rechecks its exact source/target authority.
+		r.Route("/api/delivery-completion-authorizations", func(r chi.Router) {
+			r.With(handler.RequireHumanActor).Post("/", h.CreateDeliveryCompletionAuthorization)
+			r.With(handler.RequireHumanActor).Get("/by-request-key/{requestKey}", h.GetDeliveryCompletionAuthorizationByRequestKey)
+			r.Get("/{authorizationId}", h.GetDeliveryCompletionAuthorization)
+			r.With(handler.RequireHumanActor).Post("/{authorizationId}/revocations", h.RevokeDeliveryCompletionAuthorization)
+		})
+
 		// Cloud Billing proxy. Same upstream service / port as
 		// cloud-runtime — multica-cloud's Fleet and Billing share
 		// :8080 and the same chi router. All routes here forward

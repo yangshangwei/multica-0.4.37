@@ -474,6 +474,10 @@ func (s *IssueService) CreateInTx(ctx context.Context, tx pgx.Tx, p IssueCreateP
 		}
 	}
 
+	if err := CheckDeliveryCreateInTx(ctx, tx, p.WorkspaceID, projectID, p.Status); err != nil {
+		return IssueCreateResult{}, err
+	}
+
 	// Validate labels before we increment the issue counter so a stale or
 	// wrong-scope selection fails the create cheaply. The de-duplicated rows
 	// are attached to the issue below, inside this same transaction, and

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"bytes"
 	"context"
 	"crypto/hmac"
 	"crypto/rand"
@@ -60,6 +61,7 @@ type GitHubInstallationResponse struct {
 	AccountType      string  `json:"account_type"`
 	AccountAvatarURL *string `json:"account_avatar_url"`
 	CreatedAt        string  `json:"created_at"`
+	TrustRevision    int64   `json:"trust_revision"`
 }
 
 type GitHubPullRequestResponse struct {
@@ -170,6 +172,7 @@ func githubInstallationToResponse(i db.GithubInstallation) GitHubInstallationRes
 		AccountType:      i.AccountType,
 		AccountAvatarURL: textToPtr(i.AccountAvatarUrl),
 		CreatedAt:        timestampToString(i.CreatedAt),
+		TrustRevision:    i.TrustRevision,
 	}
 }
 
@@ -581,13 +584,12 @@ func (h *Handler) consumePendingGitHubInstallation(ctx context.Context, inst db.
 		}
 		return inst, err
 	}
-	refreshed, err := h.Queries.CreateGitHubInstallation(ctx, db.CreateGitHubInstallationParams{
+	refreshed, err := h.Queries.RefreshGitHubInstallationDisplay(ctx, db.RefreshGitHubInstallationDisplayParams{
+		ID:               inst.ID,
 		WorkspaceID:      inst.WorkspaceID,
-		InstallationID:   inst.InstallationID,
 		AccountLogin:     pending.AccountLogin,
 		AccountType:      coalesce(pending.AccountType, "User"),
 		AccountAvatarUrl: pending.AccountAvatarUrl,
-		ConnectedByID:    inst.ConnectedByID,
 	})
 	if err != nil {
 		return inst, err
@@ -1080,7 +1082,7 @@ func (h *Handler) HandleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
 	case "installation":
 		h.handleInstallationEvent(ctx, body)
 	case "pull_request":
-		h.handlePullRequestEvent(ctx, body)
+		h.handlePullRequestEvent(ctx, body, sigHeader, r.Header.Get("X-GitHub-Delivery"))
 	case "check_suite", "check_run", "status":
 		// CI events are pure triggers under Plan C (MUL-5265): their payload is
 		// never read for display. Each just asks the API pipeline to re-fetch
@@ -1187,6 +1189,12 @@ func (h *Handler) handleInstallationEvent(ctx context.Context, body []byte) {
 			}
 			return
 		}
+		if p.Action == "new_permissions_accepted" || p.Action == "unsuspend" {
+			if err := h.Queries.AdvanceGitHubInstallationTrust(ctx, p.Installation.ID); err != nil {
+				slog.Warn("github: refresh installation trust failed", "err", err)
+				return
+			}
+		}
 		// Refresh the account display metadata across every workspace binding;
 		// workspace_id and connected_by_id are left untouched.
 		refreshed, err := h.Queries.UpdateGitHubInstallationAccountByInstallationID(ctx, db.UpdateGitHubInstallationAccountByInstallationIDParams{
@@ -1255,7 +1263,7 @@ type ghPullRequestPayload struct {
 	} `json:"installation"`
 }
 
-func (h *Handler) handlePullRequestEvent(ctx context.Context, body []byte) {
+func (h *Handler) handlePullRequestEvent(ctx context.Context, body []byte, signature, deliveryID string) {
 	var p ghPullRequestPayload
 	if err := json.Unmarshal(body, &p); err != nil {
 		slog.Warn("github: bad pull_request payload", "err", err)
@@ -1289,8 +1297,27 @@ func (h *Handler) handlePullRequestEvent(ctx context.Context, body []byte) {
 	// links, and treat that verdict as authoritative for the whole delivery, so
 	// the mirror pass cannot re-derive a different answer. See closeIntentPolicy.
 	closePolicy := h.resolveCloseIntentPolicy(ctx, insts, &p)
+	raw := bytes.Clone(body)
+	digest := sha256.Sum256(raw)
+	eventDigest := hex.EncodeToString(digest[:])
+	if deliveryID == "" {
+		// Some installations omit the provider delivery header. The authenticated
+		// raw body still supplies a deterministic original-event identity.
+		deliveryID = "sha256:" + eventDigest
+	}
 	for _, inst := range insts {
-		h.mirrorPullRequestForWorkspace(ctx, inst.WorkspaceID, inst.InstallationID, &p, closePolicy)
+		proof := &service.DeliveryWebhookProof{
+			Kind: "github", WorkspaceID: inst.WorkspaceID, IntegrationID: inst.ID,
+			TrustRevision: inst.TrustRevision, GitHubInstallationID: inst.InstallationID,
+			RepoOwner: p.Repository.Owner.Login, RepoName: p.Repository.Name, PRNumber: p.PullRequest.Number,
+			HeadSHA: p.PullRequest.Head.SHA, State: derivePRState(p.PullRequest.State, p.PullRequest.Draft, p.PullRequest.Merged), Action: p.Action,
+			ConfigIdentity: service.DeliveryWebhookConfigIdentity(githubWebhookSecret()), EventID: deliveryID, EventDigest: eventDigest,
+			VerifySignature: func(_ string) (string, bool) {
+				current := githubWebhookSecret()
+				return service.DeliveryWebhookConfigIdentity(current), current != "" && verifyWebhookSignature(current, signature, raw)
+			},
+		}
+		h.mirrorPullRequestForWorkspace(ctx, inst.WorkspaceID, inst.InstallationID, &p, closePolicy, proof)
 	}
 	// The PR row(s) now carry the new head; ask the API pipeline for the
 	// authoritative CI + mergeability snapshot for that head. The webhook is
@@ -1532,7 +1559,7 @@ func (h *Handler) triggerPRRefreshFromCIEvent(ctx context.Context, body []byte) 
 // carry close_intent, so they can never advance an issue to done. This function
 // only ever narrows that verdict — it cannot grant close intent the policy
 // withheld.
-func (h *Handler) mirrorPullRequestForWorkspace(ctx context.Context, wsID pgtype.UUID, installationID int64, p *ghPullRequestPayload, closePolicy closeIntentPolicy) {
+func (h *Handler) mirrorPullRequestForWorkspace(ctx context.Context, wsID pgtype.UUID, installationID int64, p *ghPullRequestPayload, closePolicy closeIntentPolicy, proof *service.DeliveryWebhookProof) {
 	state := derivePRState(p.PullRequest.State, p.PullRequest.Draft, p.PullRequest.Merged)
 	mergeable, clearMergeable := derivePRMergeableState(p.Action, p.PullRequest.MergeableState, baseRefChanged(p.Changes))
 	pr, err := h.Queries.UpsertGitHubPullRequest(ctx, db.UpsertGitHubPullRequestParams{
@@ -1562,6 +1589,7 @@ func (h *Handler) mirrorPullRequestForWorkspace(ctx context.Context, wsID pgtype
 		slog.Warn("github: upsert pr failed", "err", err)
 		return
 	}
+	proof.PullRequestID = pr.ID
 
 	workspaceID := uuidToString(wsID)
 	resp := githubPullRequestToResponse(pr, h.PRRefresh.Enabled())
@@ -1683,7 +1711,7 @@ func (h *Handler) mirrorPullRequestForWorkspace(ctx context.Context, wsID pgtype
 					continue
 				}
 				if counts.OpenCount == 0 && counts.MergedWithCloseIntentCount > 0 {
-					h.advanceIssueToDone(ctx, issue, workspaceID)
+					h.advanceIssueToDone(ctx, issue, workspaceID, proof)
 				}
 			}
 		}
@@ -1894,7 +1922,7 @@ func (h *Handler) lookupIssueByIdentifier(ctx context.Context, workspaceID pgtyp
 	return issue, true
 }
 
-func (h *Handler) advanceIssueToDone(ctx context.Context, issue db.Issue, workspaceID string) {
+func (h *Handler) advanceIssueToDone(ctx context.Context, issue db.Issue, workspaceID string, proof *service.DeliveryWebhookProof) {
 	before, updated, changed, err := service.WriteIssueStatus(ctx, h.TxStarter, h.Queries, issue, "done", "pull_request_close_aggregate", func(ctx context.Context, q *db.Queries, current db.Issue) (bool, error) {
 		category, err := service.IssueStatusCategory(ctx, q, current)
 		if err != nil {
@@ -1908,7 +1936,7 @@ func (h *Handler) advanceIssueToDone(ctx context.Context, issue db.Issue, worksp
 			return false, err
 		}
 		return counts.OpenCount == 0 && counts.MergedWithCloseIntentCount > 0, nil
-	})
+	}, proof)
 	if err != nil {
 		slog.Warn("github: advance issue to done failed", "err", err)
 		return

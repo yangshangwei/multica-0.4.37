@@ -30,8 +30,21 @@ ON CONFLICT (workspace_id, installation_id) DO UPDATE SET
     account_type = EXCLUDED.account_type,
     account_avatar_url = EXCLUDED.account_avatar_url,
     connected_by_id = EXCLUDED.connected_by_id,
+    trust_revision = github_installation.trust_revision + 1,
     updated_at = now()
 RETURNING *;
+
+-- name: RefreshGitHubInstallationDisplay :one
+-- Display enrichment is not a reconnect and must not renew completion trust.
+UPDATE github_installation
+SET account_login=$3, account_type=$4, account_avatar_url=sqlc.narg('account_avatar_url'), updated_at=now()
+WHERE id=$1 AND workspace_id=$2
+RETURNING *;
+
+-- name: AdvanceGitHubInstallationTrust :exec
+-- A permission grant/restore is a new trust observation, not display metadata.
+UPDATE github_installation SET trust_revision=trust_revision+1, updated_at=now()
+WHERE installation_id=$1;
 
 -- name: DeleteGitHubInstallation :exec
 DELETE FROM github_installation WHERE id = $1 AND workspace_id = $2;

@@ -1,0 +1,72 @@
+{
+  "kind": "consumer_contributor_and_managed_router_regression",
+  "current_test_files": {
+    "server/internal/handler/delivery_completion_consumer_test.go": "ab5851afde9c6a375b7d4817db563fc61fad9bef9c517b00f376ba7e37a810cf",
+    "server/cmd/server/delivery_completion_managed_integration_test.go": "e2ac439277279f7f4b59b4f5285ad665fae4c0b5f64e0fde371fb4498fe78a12"
+  },
+  "binary_runs": [
+    {
+      "compile_record": "runs/p1-consumer-compile01.json",
+      "compile_exit": 0,
+      "binary": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/p1-consumer-red.test",
+      "binary_sha256": "22a807c83b4226de4f14d45567c544d84445dce4a538f1349692e5d17cc68572",
+      "source_snapshot_in_compile_record": true,
+      "execution_record": "runs/p1-consumer-red01.json",
+      "execution_pending": false,
+      "exit_code": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "dc0c551ffcf057a3a3820d61c956a939c647dca75bcd33d302c601325917d0c0",
+      "actual_plain_log_named_failures": 1,
+      "parser_note": "plain test binary -test.v had no JSON terminals; record named_counts zero is not the execution count"
+    },
+    {
+      "compile_record": "runs/p1-consumer-green-compile01.json",
+      "compile_exit": 0,
+      "binary": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/p1-consumer-green.test",
+      "binary_sha256": "f46fddfebe785085e45f39170f5f88cd02603dad14ab4a78a956c7be4d24f275",
+      "source_snapshot_in_compile_record": true,
+      "execution_record": "runs/p1-consumer-green01.json",
+      "execution_pending": false,
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "8be04492524933cdacdd484bc4c40f3baa24c3e7377eb70642852d4a6784dfa0"
+    },
+    {
+      "compile_record": "runs/p1-managed-router-compile02.json",
+      "compile_exit": 0,
+      "binary": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/p1-managed-router-current.test",
+      "binary_sha256": "f5c5bf0f537316276c90a96a54f02ec3a6e062f7e858e310850f962d4658668c",
+      "source_snapshot_in_compile_record": true,
+      "execution_record": "runs/p1-managed-router01.json",
+      "execution_pending": false,
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "8b4ffcb36b64687a2935be98162ec227104ff8507caf7576a1f530a3b3be57b5"
+    },
+    {
+      "compile_record": "runs/p1-managed-router-compile03.json",
+      "compile_exit": 0,
+      "binary": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/p1-managed-router-final.test",
+      "binary_sha256": "c4a70e2d94cfe9e4b5aa4d826ea7b0262dac72407b010e3880081b03d71d47ab",
+      "source_snapshot_in_compile_record": true,
+      "execution_record": null,
+      "execution_pending": true
+    }
+  ],
+  "current_managed_expected_status_tightening": "compile03 only; pending root final normal/race",
+  "real_provider_calls": 0,
+  "new_dependency_changes": 0,
+  "product_edits_by_this_test_lane": 0
+}

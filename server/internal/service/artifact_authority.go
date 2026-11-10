@@ -62,6 +62,9 @@ type ArtifactAccess struct {
 	Credential           ArtifactCredentialSnapshot
 	RequestedWorkspaceID string
 	Metrics              *obsmetrics.BusinessMetrics
+	// Supplied only by the server's current GitHub webhook configuration.
+	GitHubWebhookConfigIdentity        string `json:"-"`
+	CollaborationAdministrationEnabled bool   `json:"-"`
 }
 
 // PrepareArtifactTransaction retains the controlled-action timeout and exact
@@ -175,7 +178,7 @@ func CheckArtifactCredentialInTx(ctx context.Context, tx pgx.Tx, credential Arti
 				return e
 			}
 		}
-		_, err = auth.CheckPasswordVersion(ctx, q, s.UserID, s.Version)
+		_, err = auth.CheckPasswordSessionVersion(ctx, q, s)
 		return err
 	}
 	if auth.PasswordMode() {

@@ -140,3 +140,11 @@ for current authority checks. Credential metadata is excluded from public JSON.
 Do not switch authentication contexts to impersonate another human or pair a
 borrowed transaction with queries from a pool. This extraction alone installs
 no completion interceptor and does not make historical observations permits.
+
+## Subsequent transactional consumer
+
+The later [transactional completion contract](./delivery-completion-enforcement.md)
+adds explicit authorizations and current checks in actual writers. The historical
+observe/hint increment above remains non-authorizing; its private evidence and
+original actor/retention boundaries remain. Current source-policy enforcement,
+project-change rules and distinct R38 handling follow that shared contract.

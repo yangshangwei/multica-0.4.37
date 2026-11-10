@@ -245,3 +245,11 @@ history. `TestCollaborationSourceStageTransferBothCommitOrders` and
 barriers to reject old roles and source membership in both orders; fresh old-role
 keys remain denied. Ordinary best-effort parent stage wakeup remains its existing
 handler owner and is not a durable delivery contract.
+
+## Enforced project association changes
+
+The later [transactional completion contract](./delivery-completion-enforcement.md)
+adds explicit authorizations and current checks in actual writers. The historical
+observe/hint increment above remains non-authorizing; its private evidence and
+original actor/retention boundaries remain. Current source-policy enforcement,
+project-change rules and distinct R38 handling follow that shared contract.

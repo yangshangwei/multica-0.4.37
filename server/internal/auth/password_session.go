@@ -53,7 +53,24 @@ func ClaimVersion(claims jwt.MapClaims) int64 {
 	return 0
 }
 
+// CheckPasswordVersion validates the requested subject and preserves any managed
+// binding from the current authentication context for existing request callers.
 func CheckPasswordVersion(ctx context.Context, q *db.Queries, userID string, version int64) (db.UserPasswordCredential, error) {
+	var source *PasswordSession
+	if session, ok := PasswordSessionFromContext(ctx); ok {
+		source = &session
+	}
+	return checkPasswordVersion(ctx, q, userID, version, source)
+}
+
+// CheckPasswordSessionVersion validates only the explicitly supplied verified
+// session. Retained authority checks must use their own session metadata rather
+// than inheriting a different consumer's managed binding from ctx.
+func CheckPasswordSessionVersion(ctx context.Context, q *db.Queries, session PasswordSession) (db.UserPasswordCredential, error) {
+	return checkPasswordVersion(ctx, q, session.UserID, session.Version, &session)
+}
+
+func checkPasswordVersion(ctx context.Context, q *db.Queries, userID string, version int64, source *PasswordSession) (db.UserPasswordCredential, error) {
 	if q == nil {
 		return db.UserPasswordCredential{}, errors.New("authentication database unavailable")
 	}
@@ -78,11 +95,11 @@ func CheckPasswordVersion(ctx context.Context, q *db.Queries, userID string, ver
 	if version <= 0 || c.SessionVersion != version || c.MustChangePassword {
 		return c, ErrPasswordSession
 	}
-	if source, ok := PasswordSessionFromContext(ctx); ok && source.BindingID != "" {
+	if source != nil && source.BindingID != "" {
 		if source.UserID != userID || source.Version != version {
 			return c, ErrPasswordSession
 		}
-		if err := CheckManagedBinding(ctx, q, source); err != nil {
+		if err := CheckManagedBinding(ctx, q, *source); err != nil {
 			return c, err
 		}
 	}

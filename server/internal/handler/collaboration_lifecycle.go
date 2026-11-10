@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -16,8 +17,9 @@ type collaborationStatusBody struct {
 type collaborationLifecycleBody struct {
 	collaborationStatusBody
 	collaborationResultBody
-	Action       string  `json:"action"`
-	SubmissionID *string `json:"submission_id"`
+	Action       string          `json:"action"`
+	SubmissionID *string         `json:"submission_id"`
+	Completion   json.RawMessage `json:"completion"`
 }
 
 func (h *Handler) GetCollaborationStatusOptions(w http.ResponseWriter, r *http.Request) {
@@ -60,6 +62,14 @@ func (h *Handler) ChangeCollaborationLifecycle(w http.ResponseWriter, r *http.Re
 	p := service.CollaborationLifecycleParams{CollaborationWorkflowRequest: request,
 		Action: body.Action, TargetStatus: body.Status, StatusOptionsVersion: body.StatusOptionsVersion,
 		Note: body.Note, Basis: body.Basis, DraftID: draft, AttachmentIDs: attachments, SourceCommentID: comment}
+	if len(body.Completion) > 0 {
+		binding, err := service.ParseDeliveryCompletionBinding(body.Completion)
+		if err != nil {
+			writeDeliveryCompletionError(w, err, false)
+			return
+		}
+		p.Completion = &binding
+	}
 	if body.SubmissionID != nil {
 		id, valid := parseUUIDOrBadRequest(w, *body.SubmissionID, "submission_id")
 		if !valid {

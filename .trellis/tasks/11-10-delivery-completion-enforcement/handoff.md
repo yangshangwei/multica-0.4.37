@@ -1,8 +1,30 @@
 # 完成门禁当前交接
 
-## 当前阶段（2026-11-11）
+## 当前阶段（2026-11-11 最终验收后）
 
-D1–D5 已逐项确认，用户明确授权后续推荐执行；D6/D7 与技术合同已按该委托收敛，最新 PRD/design/implement 为准。独立 P0 readiness PASS，task 已 in_progress，先跑修改前回归再唯一核心下沉；P1–P4 仍待实施及最终全入口验收。v1 skip_supported=false，不能宣称可用 skip 或完整 M1。专属验收环境与日志见 progress/research/runs，私有 registry 不提交。
+v1全完成入口已实施，公共enforce已开启并通过实际认证/签名全链验收。最终110源码冻结：handler普通/race各620、router各166、service各272、migration各62，实际删除留证补充各4，全部0fail/skip；52合同、build/vet/sqlc134幂等和客户端Core63/Views91/typecheck/lint通过。完整结果见 delivery.md、verification-2026-11-11.json、research/final-source-manifest.json、final-named-inventory.json 和最终独审。
+
+本任务只剩Lore提交、安全本地集成、停止本包资源及日志状态收尾；不得把下方历史P1/P3进行中段落当实时状态。两个已提交增量c9a070551/fb0558881均在独立分支；主目录最新实时dirty已私有保护，集成需保留其spec/journal/其他任务修改，不能按旧快照回滚。
+
+M1与六业务父任务仍in_progress，M2/M3仍planned；v1 skip_supported=false、没有真实可豁免检查，不宣称可用skip。AC43/E5/H3a/知识预算与停止规则保持，供应商调用0、未推送/部署/外部消息。任务是否归档与精确集成头以最终 task.json/归档路径及research/local-integration-20261111.json为准。
+
+## 历史进行中阶段（保留当时记录）
+
+任务 in_progress，用户已逐项批准 D1–D5 并明确「后续如果有选择，请默认按照推荐执行」。D6/D7/技术推荐已收敛，不再问流程或选择许可。主线目标是完整完成事务门禁；未完成前持续实施，子包不算 M1 或六业务完成。
+
+独立分支现有本轮提交 c9a070551（P0唯一service观察/authority下沉）与 fb0558881（D6客户端13文件）。尚未本地集成主目录，主目录仍1ce4e8122且并行修改在继续；最后集成必须做新实时私有保护，不能覆盖旧快照后他人变更。
+
+P0最终handler普通/race各339、router各103、合同50/build/vet/独审通过。客户端Core63/Views91及两包typecheck、scope lint独审通过；全Views既有27warnings未压制。P1普通授权handler迭代22、真实router中间编译快照11、迁移修夹具后7通过。P2普通writer迭代34通过，后来新增父通知/移入与迁移测试仍待最终跑。
+
+当前并行所有权：check_resume_evidence负责P1 exact schema/typedexpiry/late-consumption SQL修复和独审，含query/generated与相关tests；implement_collaboration_completion负责协作/R38及P1 core union（delivery_completion.go/authorization.go）接合；implement_authorization_router_tests负责VCS/GitHub/systemwriter/792–793信任revision及真实signed测试。新core must compile before shared tests；可冻结test-c二进制单独跑real红绿，必须绑定原compile源码而非冒充当前全源码。
+
+P1独审实际红：弱schema7case（8fail含parent）→严格readinessgreen17；typed expiry非UTC/纳秒两case（3fail含parent）已修入口，最终纯/完整回归待；late-consume两case在真实最后INSERT前过期仍成功（3fail含parent），当前修SQL消费窗口并由coreowner最后复核consumer。原历史失败全部保留。
+
+P3实际红：Github/Forgejo无授权完成（3fail含parent）；普通协作self/submission及R38无授权完成（4fail含parent）。已冻结对应binary/原始日志，绿/完整正路径仍待。协作必须显式exactordinary-child证据，不能伪造parent task；self prepareDelivery还会绑定附件，已授权拆只读validate与真正bind，gate失败不能部分写。全部writer未验收前公共enforce必须保持关闭。
+
+私有验收registry `.omx/private/enforcement-implementation-20261111/environment.json`，私有launcher `run.py`（不提交）只操本包新PG `mc-completion-enforcement-20261111-315f96e0`，loopback55757，state/log/binaries位于 `/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro`。每包/每normal-race新库；原始日志和JSONrunrecords保留。已有旧database/容器从未启动/借用。root唯一分配/迁移，子代理按exactpermit测试。
+
+继续：收口P1late expiry/schema修复；完成P3VCS+协作/R38真实正负链；真实managedtask grant+consume正反验收；跑P2旧兼容/parentnotifications/789–793迁移；独审修复后P4最后开放policy enforce及evaluation/hint兼容，actualpublicauth端到端所有writer；最后全库normal/race、build/vet/sqlc/format/TSchecks和具名源码冻结独审，Lore提交、安全本地集成、spec/六业务父状态/journal。v1 skip没有可豁免硬检查，明确unsupported，不建无用skip引擎或宣称已提供skip。供应商调用0，AC43/E5/H3a/知识停止预算保持，不推送/部署/外部消息。
 
 ## 逐次历史决定（2026-11-10）
 

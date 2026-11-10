@@ -1,0 +1,181 @@
+# Transactional delivery completion enforcement
+
+## Scope and activation
+
+`delivery-completion-enforcement-v1` joins every real new completion transaction.
+It reuses the single `delivery-artifact-observe-v1` observer and existing controlled
+local-synthetic archives. It proves database-observed PR head identity, not a live
+remote Git fetch, deployment success or general quality. Human acceptance remains
+explicit. This increment does not complete the wider M1 roadmap or model gates.
+
+Projects default to off. Current workspace owner/admin may append off/observe/
+enforce via the existing reason + policy-revision CAS API. Project leadership
+alone grants no policy authority. Enforce activation checks the exact artifact,
+policy, authorization/terminal, project-adjustment and integration-trust schema;
+missing or unknown state is not off. Same-value writes create a new revision.
+Never enable while older writer processes lacking these gates still serve writes.
+
+Current observe/enforce revisions permit fresh private evaluations and explicit
+hints; neither is authorization. All successful hints retain enforced=false and
+usable_for_completion=false: these describe the hint action. Old observations,
+expiry, failure and unknown facts never change on recovery. Policy changes make
+old unconsumed authorizations stale. Off/observe rollback is explicit and retains
+all history; it cannot disable other authority checks or approve dangerous work.
+
+## Explicit authorization API
+
+Auth-only `/api/delivery-completion-authorizations` exposes human POST, own
+GET by authorization ID, original-human GET by-request-key with source workspace,
+and human POST revocations. Conflicting workspace selectors refuse. JSON rejects
+unknown/duplicate/case-alias fields, missing required values, invalid UUIDs and
+variant ambiguity. Task credentials cannot sign human acceptance.
+
+The immutable request binds contract/source workspace, original operation UUID,
+target issue/revision/expected and target status, project/revision/policy revision,
+exact evidence issue/approval/source/spec/artifact and consumer, reason and UTC
+microsecond expiry. A human signs a new current observation, never another
+person's private evaluation key. The requested expiry must not exceed 24 hours, the evidence horizon or finite
+issuer-credential expiry. An over-limit request is rejected, not silently shortened.
+
+Target variants are ordinary, collaboration_submission, collaboration_self and
+collaboration_admin. Consumers are human, exact ordinary task generation,
+GitHub installation, VCS connection or real R38 administrator as applicable.
+The retained issuer credential metadata is server-only and never contains bearer
+secrets. Consumption explicitly checks that snapshot and the current actual
+consumer separately; never synthesize an issuer authentication context.
+
+One authorization has at most one append-only terminal fact: consumed or revoked.
+No persistent pre-consumption claim exists. An unconsumed authorization may be
+revoked by its currently authorized original issuer or source owner/admin with a
+reason and original key. Consumption and revocation serialize on the same locked
+authorization row. Neither expiry nor recovery renews or rewrites the grant.
+
+Own minimal GET and original-key creation recovery recheck current access but do
+not repeat completion or disclose observations, source-child contents, issuer
+credential metadata or private evaluation keys. A consumed receipt binds exact
+authorization/operation/before/after, actual actor and variant-specific original
+workflow/admin/submission facts. After must advance before. Current issue state
+may differ after reopen; a historical receipt is never projected as current done.
+
+## Borrowed transaction contract
+
+Complete service validators accept the actual `pgx.Tx` and derive queries from
+it. They do not Begin/Commit/Rollback/retry or accept a pool query alongside it.
+Prepare returns an explicit not_applicable/replayed/prepared state. A prepared
+value is private and bound to that transaction; unknown/nil results cannot allow.
+Finish checks the actual persisted after-state, current policy, issuer, consumer,
+source and original receipt again. SQL itself fences consumed insertion by current
+DB time for grant, evidence, issuer and actual consumer expiry.
+
+The real writer commits status, ordinary iteration or collaboration/Stop facts,
+authorization consumption and original receipt together. Late errors roll back
+all writes. Commit ambiguity is unknown/non-success, never automatically retried.
+Recovery of the same semantic operation precedes ordinary done-to-done editing;
+no second notification, queue mutation, status write or consumption follows.
+
+Keep original workspace/user/member/catalog/W01/iteration/issue lock prefixes.
+New source/target projects and exact source child use deterministic NOWAIT locks;
+all current credentials, retained producer/approver/runtime identities and schema
+are checked. The observer's four PR/link SHARE NOWAIT table locks remain through
+the writer commit. Contention is refusal, not a passing snapshot or a retry of
+uncertain effects. Caller-provided metadata cannot substitute for these facts.
+
+## Writer-specific rules
+
+- Ordinary update/move and each batch item enter the same actual writer. A new
+  completion is any non-done to done-category transition, including reopen then
+  complete. Custom done is determined by category. Enforce requires exact binding:
+  authorization_id, operation_id, expected_issue_revision. Missing binding is428.
+- Enforce completion permits only actual status and optional exact explicit
+  position changes. Save content/attachments/assignee/structure changes first,
+  then obtain acceptance. Omitted position still permits existing automatic
+  status-column ordering; replays never recompute it as another write.
+- Done-to-done, custom done switches and non-project editing do not create a new
+  acceptance or consume a grant. Original acceptance proves only its frozen
+  version. Existing status/action/iteration permissions remain in force.
+- CreateInTx resolves the actual project, including parent inheritance, before
+  policy checks. Enforce rejects create-as-done, including comment-to-child and
+  custom done. It does not silently choose todo or accept a parent artifact.
+- Moving out of enforce/clearing its project requires current owner/admin in
+  person and a retained reason, intersected with the original edit authority.
+  If either side is enforce, a done task must first reopen; move and completion
+  cannot occur in one request. Target policy governs later acceptance; old grants
+  do not rebind. Delete requires prior explicit policy-off and checks it again
+  in its transaction. Existing collaboration-project deletion refusal remains.
+
+## Collaboration and R38
+
+Source policy and original exact submission acceptance both apply. Ordinary
+collaboration is still completed by its current human initiator; general proxy
+or machine completion is not added. Outside participation gives no source
+workspace membership or private evaluation visibility.
+
+Collaboration artifacts explicitly come from one real ordinary child under that
+collaboration, in the same workspace and actual project. Freeze and recheck child
+ID/revision/current parent plus target issue/collaboration/lifecycle epochs and
+exact submission, self-result or administrative intent. The artifact remains the
+child's artifact; do not fabricate ordinary tasks for collaboration runtime runs.
+
+Self-result and attachments have a read-only validation phase before the gate.
+Only after admission may the original writer bind attachments, generate the real
+submission, record acceptance and close the queue. Late failures roll everything
+back. Exact current result/participant/account epochs and optional source-comment
+and attachment versions remain part of the binding.
+
+R38 retains the real password administrator, organization and disabled-creator
+rules, plus exact source evidence/authorization under enforce. It does not create
+an initiator accepted decision. Current retained submission identity uses the
+locked session event sequence. Off/observe administrative closure keeps its old
+behavior even with legacy or malformed delivery history. Original administrator
+receipt recovery remains separate from permission for a new exception write.
+
+## GitHub and VCS
+
+Actual signed events retain source workspace, local integration UUID, monotonic
+trust revision, exact PR/repository/head/provider, event identity and body digest.
+Reconnect/credential or secret rotation changes trust revision; display refresh
+alone does not. Consumption locks the current installation/connection and checks
+this identity plus the current signature again. The required narrow verifier
+checks only the original event authentication, never an injected business policy.
+
+The existing combined PR close aggregate is still required and is reread after
+observation locks. Match exactly one applicable authorization; none or ambiguity
+refuses. Actual actor remains system, with human issuer responsibility separately
+retained. A202 webhook receipt only acknowledges the event, never proves done.
+
+## Batch, errors and skip
+
+Batch remains sequential per-item transactions. Ordered results distinguish
+committed/rejected/not_attempted/unknown; stop at first refusal or uncertainty,
+retain the committed prefix, and notify parents only for committed items.
+Partial results are non-2xx; unknown commit is503. `updated` counts known committed
+items only. There is no full-batch durable ledger or automatic replay/resume.
+See core/frontend/issue-batch-outcomes.md for schema parsing and cache recovery.
+
+v1 has no optional quality checks that can safely be waived. Report
+skip_supported=false and waivable_checks=[]; reject explicit skip requests.
+Never label unknown, missing, stale, expired, revoked, corrupt or mismatched
+mandatory evidence as passed. The approved limited skip governance remains a
+future contract when a real independently waivable check exists, not a claim that
+usable skip is implemented now.
+
+## Migrations, verification and recovery
+
+Migrations781–788 retain immutable authorizations/terminal facts;789–791 retain
+project changes;792–793 add integration trust revisions. No foreign keys; each
+new index is a separate CONCURRENTLY migration. Exact readiness checks columns,
+constraints and live/valid/ready index shapes. The authorization runtime predicate
+is shared verbatim with its migration readiness validation. Do not treat names or
+schema_migrations alone as proof of an enforced constraint.
+
+Resource deletion retains audit facts. Down refuses retained grants/terminals,
+project-adjustment history, enforced policy history or relevant integration grants;
+never delete evidence to permit rollback. Stop admission across multi-file rollback.
+Prefer explicit policy off/observe while keeping guarded readers and retained data.
+
+Require task-owned fresh databases per package and normal/race, real authentication,
+actual tar bytes/SHA, final persisted status/receipt, current-authority races,
+unknown commit and retained original-key recovery. Preserve every failed fixture,
+compile, behavior or migration attempt with its own raw log and source identity.
+Final all-writer proof, client protocol validation and independent review are
+separate from baseline compatibility tests, provider/model or deployed acceptance.

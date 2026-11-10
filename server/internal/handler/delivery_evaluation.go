@@ -169,7 +169,7 @@ func (h *Handler) deliveryEvaluationInTx(r *http.Request, tx pgx.Tx, q *db.Queri
 	if policy.Revision != req.PolicyRevision {
 		return out, artifactFailure{409, "delivery_policy_revision_conflict"}
 	}
-	if policy.Mode != "observe" || policy.PolicyVersion != deliveryEvidencePolicy || policy.Stage != deliveryPolicyStage {
+	if (policy.Mode != "observe" && policy.Mode != "enforce") || policy.PolicyVersion != deliveryEvidencePolicy || policy.Stage != deliveryPolicyStage {
 		return out, artifactFailure{409, "delivery_policy_not_observing"}
 	}
 	observation, err := h.evaluateDeliveryEvidence(r, tx, q, p, issue, req.deliveryEvidenceRequest)
@@ -241,7 +241,7 @@ func deliveryEvaluationApplicability(saved, live deliveryEvidenceResponse, polic
 	switch {
 	case saved.IssueRevision != live.IssueRevision || !sameDeliveryPointer(saved.ProjectID, live.ProjectID) || !sameDeliveryPointer(saved.ProjectRevision, live.ProjectRevision):
 		out.Reason = "resource_revision_changed"
-	case policy.Revision != revision || policy.Mode != "observe" || policy.PolicyVersion != deliveryEvidencePolicy || policy.Stage != deliveryPolicyStage:
+	case policy.Revision != revision || (policy.Mode != "observe" && policy.Mode != "enforce") || policy.PolicyVersion != deliveryEvidencePolicy || policy.Stage != deliveryPolicyStage:
 		out.Reason = "policy_changed"
 	case saved.ValidUntil != nil && !live.ObservedAt.Before(*saved.ValidUntil):
 		out.Status = "expired"

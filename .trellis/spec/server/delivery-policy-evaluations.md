@@ -144,3 +144,11 @@ exact existing schema check. Complete validators accept only the borrowed
 `pgx.Tx` and create their own transaction queries. HTTP policy/immutable private
 evaluation handling remains in handler and delegates observation to the single
 service implementation. This extraction adds no mode, schema or permission.
+
+## Subsequent enforcement mode
+
+The later [transactional completion contract](./delivery-completion-enforcement.md)
+adds explicit authorizations and current checks in actual writers. The historical
+observe/hint increment above remains non-authorizing; its private evidence and
+original actor/retention boundaries remain. Current source-policy enforcement,
+project-change rules and distinct R38 handling follow that shared contract.
