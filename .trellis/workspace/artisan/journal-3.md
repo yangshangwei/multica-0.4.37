@@ -837,3 +837,37 @@ Archived 11-01-branch-e2e-acceptance at the user's request. Preserved the retain
 ### Next Steps
 
 - 实施独立复审已就绪的M1受控制品子任务；真实模型系列分别处理网关、CLI绑定和停止规则
+
+
+## Session 147: 受控制品执行实现与独立验收
+<!-- trellis-session: v=2 fp=9f5434c22cbba26b -->
+
+**Date**: 2026-11-10
+**Task**: 受控制品执行实现与独立验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+在独立worktree实现并验收M1 local-synthetic制品打包，快进集成当前分支并归档子任务；真实模型0。
+
+### Main Changes
+
+- 审批前冻结、一次claim、当前权限复核、确定性tar、未知不重跑、删除后审批回执留证
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `f5b51d7be` | feat(agents): bind artifact side effects to one approved immutable request |
+
+### Testing
+
+- [OK] 新库handler normal/race各84与router各23；纯包macOS normal/race和Linux各78；全后端build/vet、sqlc幂等、独审PASS
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- M1交付证据门禁与持久化委派回执；再M2快照/预算/调度及M3治理。真实验收各自解阻。
