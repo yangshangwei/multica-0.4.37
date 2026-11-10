@@ -551,8 +551,15 @@
     "AC43/E5/H3a/knowledge stops/budgets unchanged"
   ],
   "operational_handoff": [
-    "Coordinator owns container cleanup/database retention/local Lore commits/integration/archive",
+    "Coordinator owns local Lore commits, protected integration and archive",
     "No push/deploy/real provider execution performed",
-    "This increment does not close M1 full delivery gate,M2/M3 or six business roadmap"
-  ]
+    "This increment does not close M1 full delivery gate, M2/M3 or six business roadmap"
+  ],
+  "operational_cleanup_record": "research/cleanup.json",
+  "operational_cleanup_observed": {
+    "container_state": "exited",
+    "connections_before_stop": 0,
+    "retained_database_count": 23,
+    "deleted_databases": 0
+  }
 }
