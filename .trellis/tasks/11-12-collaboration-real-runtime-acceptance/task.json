@@ -1,0 +1,48 @@
+{
+  "id": "collaboration-real-runtime-acceptance",
+  "name": "collaboration-real-runtime-acceptance",
+  "title": "协作与知识真实运行验收",
+  "description": "承接六项工程阶段归档后的AC43、Runtime、原E5/E6、知识K1-K3和真实小队可靠性验收；保留各自历史结论、预算、停止规则与默认关闭准入，不自动运行真实Provider。",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-12",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "prd.md",
+    "handoff.md",
+    "source-map.json"
+  ],
+  "notes": "2026-11-12：承接用户批准的阶段归档；仅建立后续待办，未启动后续功能开发或真实调用。历史授权、失败与预算按原记录保留。",
+  "meta": {
+    "created_from_delivered_stage_archive": true,
+    "scope_authorization": {
+      "date": "2026-11-12",
+      "user_instruction": "归档已交付阶段",
+      "accepted_plan": "Archive six delivered stages and retain remaining product work and real-runtime acceptance as follow-up backlog."
+    },
+    "planning_readiness": "inherited_scope_only_slice_design_and_execution_plan_needed",
+    "new_implementation_started": false,
+    "new_provider_calls": 0,
+    "source_archives": [
+      ".trellis/tasks/archive/2026-11/11-05-agent-squad-rnd-improvements",
+      ".trellis/tasks/archive/2026-11/10-10-cross-workspace-collaboration",
+      ".trellis/tasks/archive/2026-11/10-30-collaboration-context-handoff",
+      ".trellis/tasks/archive/2026-11/10-30-collaboration-context-handoff-runtime",
+      ".trellis/tasks/archive/2026-11/10-30-collaboration-fix-closure",
+      ".trellis/tasks/archive/2026-11/10-30-collaboration-knowledge-promotion"
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "agent-squad-followup-roadmap",
+  "name": "agent-squad-followup-roadmap",
+  "title": "智能体与 AI 小队后续能力建设",
+  "description": "承接2026-11-12阶段归档后的M1剩余交付与授权交互、M2报告快照/父级预算/能力负载调度、M3持续治理；已交付能力不重做，待办规划不自动启动实现。",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-12",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "prd.md",
+    "handoff.md",
+    "source-map.json"
+  ],
+  "notes": "2026-11-12：承接用户批准的阶段归档；仅建立后续待办，未启动后续功能开发或真实调用。历史授权、失败与预算按原记录保留。",
+  "meta": {
+    "created_from_delivered_stage_archive": true,
+    "scope_authorization": {
+      "date": "2026-11-12",
+      "user_instruction": "归档已交付阶段",
+      "accepted_plan": "Archive six delivered stages and retain remaining product work and real-runtime acceptance as follow-up backlog."
+    },
+    "planning_readiness": "inherited_scope_only_slice_design_and_execution_plan_needed",
+    "new_implementation_started": false,
+    "new_provider_calls": 0,
+    "source_archives": [
+      ".trellis/tasks/archive/2026-11/11-05-agent-squad-rnd-improvements"
+    ]
+  }
+}
