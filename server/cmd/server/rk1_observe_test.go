@@ -22,6 +22,7 @@ import (
 type rk1Env struct {
 	real, version, model, wrapper, cli string
 	sim                                bool
+	continuation                       *rk1RuntimeContinuationPlanBinding
 }
 
 type rk1Launch struct {

@@ -34,11 +34,13 @@ const (
 )
 
 type rk1Plan struct {
-	Mode     string            `json:"mode"` // fake | real
-	Behavior string            `json:"behavior,omitempty"`
-	Fault    string            `json:"fault,omitempty"`
-	Real     string            `json:"real_executable,omitempty"`
-	Params   map[string]string `json:"params,omitempty"`
+	Mode                 string            `json:"mode"` // fake | real
+	Behavior             string            `json:"behavior,omitempty"`
+	Fault                string            `json:"fault,omitempty"`
+	Real                 string            `json:"real_executable,omitempty"`
+	Params               map[string]string `json:"params,omitempty"`
+	ContinuationLedger   string            `json:"continuation_ledger,omitempty"`
+	ContinuationSequence int               `json:"continuation_sequence,omitempty"`
 }
 
 func init() {
@@ -79,6 +81,11 @@ func rk1ProviderMain(dir string) int {
 		return 29
 	}
 	rk1LaunchDir = launch
+	if plan.ContinuationLedger != "" {
+		if err := rk1RuntimeContinuationMarkStartedPath(plan.ContinuationLedger, plan.ContinuationSequence); err != nil {
+			return 33
+		}
+	}
 	cwd, _ := os.Getwd()
 	meta := rk1LaunchMeta{Args: os.Args[1:], Cwd: cwd, Mode: plan.Mode, Behavior: plan.Behavior, Fault: plan.Fault,
 		RemovedEnv: rk1RemovedEnv(), StartedAt: time.Now().UTC().Format(time.RFC3339Nano), EvidenceState: "started"}

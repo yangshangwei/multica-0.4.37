@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "kind": "runtime_stage_archive_check",
+  "recorded_at_utc": "2026-11-12T07:36:11.179178+00:00",
+  "scope": "Runtime continuation preparation only; full real H6 continuation is not delivered",
+  "head": "45ec006d96445b41d02c5d26acd5b8c574ea0289",
+  "source_files": [
+    {
+      "path": "server/cmd/server/rk1_runtime_continuation_test.go",
+      "sha256": "fbae83316f2505864b35f7b65bd4c911a2a96e262d0736cbcdf12fbe1187316f",
+      "bytes": 62412
+    },
+    {
+      "path": "server/cmd/server/rk1_observe_test.go",
+      "sha256": "e85de98f057ef6b1723cade4bac7523238f3c9cfea22afc997cba514ae774cbc",
+      "bytes": 7986
+    },
+    {
+      "path": "server/cmd/server/rk1_provider_test.go",
+      "sha256": "46b31225b353b00775f84d8e1cef17f90ec2ed83b24cbd2a71c62f3082d1be94",
+      "bytes": 7108
+    },
+    {
+      "path": "server/cmd/server/rk1_trial_test.go",
+      "sha256": "e3c84fa5c73374b94f5a1d3e422d4257a29a08cbb731dc6f4a54cc5f7a2b8508",
+      "bytes": 12373
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261112/run_continuation.py",
+      "sha256": "6d6911cefb409baef7c41efa83cb3dcf46cce2f32dda4769dde420f685a809c2",
+      "bytes": 11214
+    }
+  ],
+  "findings_fixed": [
+    {
+      "id": "RC1",
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261112/run_continuation.py",
+      "line": 214,
+      "issue": "--check-only could dispatch the real Go entry when future gates were all open",
+      "fix": "Return after the persisted successful preflight, before real opt-in, output creation or invocation",
+      "regression": "5 mocked launcher modes: before 3 passed/2 failed; after 5 passed; subprocess execution mocked throughout"
+    }
+  ],
+  "findings_not_fixed": [
+    {
+      "id": "RC2",
+      "severity": "blocks_future_real_h6",
+      "path": "server/cmd/server/rk1_runtime_continuation_test.go",
+      "lines": [
+        582,
+        752,
+        978,
+        993,
+        1001,
+        1016,
+        1079
+      ],
+      "issue": "H6 needs two measured starts per trial; the second reservation requires the first Complete, but real-trial acceptance only occurs after the entire series. The multi-start finalizer also indexes a one-element per-run launches list using the run index, and finish() only accepts the last sequence.",
+      "disposition": "Transfer lifecycle integration and fake two-hop regression to successor; real gate remains closed; not counted as delivered continuation behavior"
+    },
+    {
+      "id": "RC3",
+      "severity": "requires_successor_binding",
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261112/run_continuation.py",
+      "lines": [
+        25,
+        28,
+        151
+      ],
+      "issue": "Archiving changes HERE.parents[4] root and old task-relative references; Go Real/Controls also contain the old task path. Existing registration pins old absolute paths and launcher bytes.",
+      "disposition": "Preserve historical registration/approval/results byte-for-byte; successor must introduce an archive-aware entry plus fresh binding without resetting ledger or enabling old gates"
+    },
+    {
+      "id": "RC4",
+      "severity": "expected_stale_binding",
+      "issue": "Local check-only fix intentionally changes launcher SHA, so the frozen 11-12 registration no longer matches the launcher.",
+      "old_launcher_sha256": "4b3799485dfbe4103b7f44ab130920e0a0a1ad5607a70573c6d09de671ece54e",
+      "new_launcher_sha256": "6d6911cefb409baef7c41efa83cb3dcf46cce2f32dda4769dde420f685a809c2",
+      "disposition": "Do not rewrite frozen registration; current binding and future Controls loading it refuse by source contract. No DB-backed Controls invocation was attempted in this review."
+    }
+  ],
+  "verification": {
+    "gofmt": {
+      "exit_code": 0,
+      "output": "empty",
+      "scope": "four owned Go files"
+    },
+    "compile_only": {
+      "command": "go -C server test -tags=agentintegration -c -o /tmp/multica-runtime-stage-archive-normal.test ./cmd/server",
+      "exit_code": 0,
+      "test_main_executed": false
+    },
+    "go_vet": {
+      "command": "go -C server vet -tags=agentintegration ./cmd/server",
+      "exit_code": 0,
+      "log": "go-vet.log"
+    },
+    "python_parse": "pass",
+    "python_regression": {
+      "script": "check_only_regression.py",
+      "before_log": "check-only-red.log",
+      "before_exit": 1,
+      "before_tests": 5,
+      "before_failures": 2,
+      "after_log": "check-only-green.log",
+      "after_exit": 0,
+      "after_tests": 5,
+      "after_failures": 0,
+      "external_processes": "mocked"
+    },
+    "go_controls_current": {
+      "executed": false,
+      "reason": "Frozen registration intentionally unchanged; launcher fix invalidates its digest. Tests require a DB via TestMain and cannot load the now-stale registration; no fixture or historical DB touched."
+    },
+    "fake_normal_race": {
+      "executed_this_review": false,
+      "basis": "All 19 Go framework files exactly match the frozen digest, and previous normal/race logs match their recorded SHA256; no Go source edit in this review. These are historical evidence, not new test passes.",
+      "framework_sha256": "71f7ca86b99d1e12cc71980d4f5c506e5c6d15b6e56ebab8731ea0d43609bad8",
+      "integrity_report": "runtime-integrity.json"
+    },
+    "whole_repo_tests": {
+      "executed": false,
+      "reason": "Outside bounded runtime archival review; known historical frontend timeout is not relabelled as pass"
+    },
+    "go_version": "go version go1.27.0 darwin/arm64"
+  },
+  "preservation": {
+    "historical_hashes_match": true,
+    "registration_sidecar_matches": true,
+    "all_real_gates_false": true,
+    "historical_cap": 25,
+    "historical_consumed": 12,
+    "historical_remaining": 13,
+    "provider_calls": 0,
+    "database_access": false,
+    "permit_used": false,
+    "window_claimed": false
+  },
+  "archive_disposition": "Core Runtime delivered stage may be archived after recording successor ownership. Preserve continuation implementation as preparation, with RC2/RC3/RC4 explicitly open; this report is not real-runtime acceptance."
+}

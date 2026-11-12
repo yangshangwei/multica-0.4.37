@@ -95,13 +95,19 @@ type rk1Trial struct {
 // executable: the model can read this file, so no answer parameter may be in
 // it. A sim plan is a real plan whose stand-in CLI needs the fake behavior.
 func (f *rk1Fixture) plan(m rk1Mode, behavior string, params map[string]string) rk1Plan {
+	var plan rk1Plan
 	switch {
 	case m.real && f.env.sim:
-		return rk1Plan{Mode: "real", Real: f.sim, Behavior: behavior, Fault: m.fault, Params: params}
+		plan = rk1Plan{Mode: "real", Real: f.sim, Behavior: behavior, Fault: m.fault, Params: params}
 	case m.real:
-		return rk1Plan{Mode: "real", Real: f.env.real}
+		plan = rk1Plan{Mode: "real", Real: f.env.real}
+	default:
+		plan = rk1Plan{Mode: "fake", Behavior: behavior, Fault: m.fault, Params: params}
 	}
-	return rk1Plan{Mode: "fake", Behavior: behavior, Fault: m.fault, Params: params}
+	if m.real && !f.env.sim && f.env.continuation != nil {
+		plan = f.env.continuation.bind(plan)
+	}
+	return plan
 }
 
 // seed is an unmeasured setup run. Against the real CLI it is always fake; in
