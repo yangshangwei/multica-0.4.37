@@ -10,6 +10,8 @@ export type IssueSurfaceMutationOptions = {
   onSuccess?: (issue: Issue) => void;
   onError?: (err: unknown) => void;
   onSettled?: () => void;
+  /** Internal: the caller already ran the shared completion-hint gate. */
+  skipCompletionHint?: boolean;
 };
 
 export interface IssueSurfaceActions {

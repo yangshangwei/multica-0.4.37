@@ -1448,6 +1448,11 @@ func runIssueUpdate(cmd *cobra.Command, args []string) error {
 	if noStart {
 		body["suppress_run"] = true
 	}
+	if statusChanged && issueUpdateIsStatusOnly(cmd) && issueStatusMayNeedCompletionHint(statusFlag) {
+		if err := runIssueCompletionHint(ctx, client, issueRef.ID, statusFlag); err != nil {
+			return fmt.Errorf("update issue: %w", err)
+		}
+	}
 
 	var result map[string]any
 	if err := client.PutJSON(ctx, "/api/issues/"+issueRef.ID, body, &result); err != nil {
@@ -1559,6 +1564,11 @@ func runIssueStatus(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("resolve issue: %w", err)
 	}
+	if issueStatusMayNeedCompletionHint(status) {
+		if err := runIssueCompletionHint(ctx, client, issueRef.ID, status); err != nil {
+			return fmt.Errorf("update status: %w", err)
+		}
+	}
 
 	body := map[string]any{"status": status}
 	if noStart {
@@ -1576,6 +1586,166 @@ func runIssueStatus(cmd *cobra.Command, args []string) error {
 		return cli.PrintJSON(os.Stdout, result)
 	}
 	return nil
+}
+
+// issueCompletionHintResponse is intentionally private to the CLI. The hint
+// is an advisory read and never carries an authorization, binding, operation
+// ID or evaluation key for a later status write.
+type issueCompletionHintResponse struct {
+	IssueID             string          `json:"issue_id"`
+	IssueRevision       *int64          `json:"issue_revision"`
+	TargetStatus        string          `json:"target_status"`
+	TargetCategory      string          `json:"target_category"`
+	ProjectID           json.RawMessage `json:"project_id"`
+	PolicyRevision      *int64          `json:"policy_revision"`
+	PolicyMode          string          `json:"policy_mode"`
+	Hint                string          `json:"hint"`
+	Reason              string          `json:"reason"`
+	CheckedAt           *time.Time      `json:"checked_at"`
+	Enforced            *bool           `json:"enforced"`
+	UsableForCompletion *bool           `json:"usable_for_completion"`
+}
+
+type issueCompletionHintIssue struct {
+	Revision *int64 `json:"revision"`
+}
+
+func issueUpdateIsStatusOnly(cmd *cobra.Command) bool {
+	for _, name := range []string{
+		"title", "description", "description-stdin", "description-file", "priority",
+		"assignee", "assignee-id", "project", "start-date", "due-date", "parent",
+		"stage", "position",
+	} {
+		if cmd.Flags().Changed(name) {
+			return false
+		}
+	}
+	return cmd.Flags().Changed("status")
+}
+
+func issueStatusMayNeedCompletionHint(status string) bool {
+	normalized := strings.ToLower(strings.TrimSpace(status))
+	if normalized == "done" {
+		return true
+	}
+	for _, builtIn := range validIssueStatuses {
+		if normalized == builtIn {
+			return false
+		}
+	}
+	// A custom status may be an active done category, so the server must
+	// resolve its category before a status-only write proceeds.
+	return true
+}
+
+func runIssueCompletionHint(ctx context.Context, client *cli.APIClient, issueID, targetStatus string) error {
+	revision, err := fetchIssueCompletionRevision(ctx, client, issueID)
+	if err != nil {
+		return err
+	}
+
+	body := struct {
+		ExpectedIssueRevision int64   `json:"expected_issue_revision"`
+		TargetStatus          string  `json:"target_status"`
+		EvaluationKey         *string `json:"evaluation_key"`
+	}{
+		ExpectedIssueRevision: revision,
+		TargetStatus:          targetStatus,
+		EvaluationKey:         nil,
+	}
+	var hint issueCompletionHintResponse
+	if err := client.PostJSON(ctx, "/api/issues/"+url.PathEscape(issueID)+"/delivery-evidence/completion-hint", body, &hint); err != nil {
+		if isLegacyCompletionHintError(err) {
+			return nil
+		}
+		return formatCompletionHintError(err)
+	}
+	if err := validateIssueCompletionHintResponse(hint, revision, targetStatus); err != nil {
+		return err
+	}
+	switch hint.Hint {
+	case "not_applicable":
+		return nil
+	case "attention":
+		fmt.Fprintf(os.Stderr, "Completion hint: current delivery evidence needs attention (%s). This read does not grant completion; continuing with status update.\n", hint.Reason)
+		return nil
+	case "matching":
+		fmt.Fprintf(os.Stderr, "Completion hint: the current observation still matches (%s), but this read does not grant completion; continuing with status update.\n", hint.Reason)
+		return nil
+	default:
+		return fmt.Errorf("completion hint returned unknown hint %q; status was not changed", hint.Hint)
+	}
+}
+
+func fetchIssueCompletionRevision(ctx context.Context, client *cli.APIClient, issueID string) (int64, error) {
+	var issue issueCompletionHintIssue
+	if err := client.GetJSON(ctx, "/api/issues/"+url.PathEscape(issueID), &issue); err != nil {
+		return 0, fmt.Errorf("read issue revision: %w", err)
+	}
+	if issue.Revision == nil || *issue.Revision < 0 {
+		return 0, fmt.Errorf("completion hint unavailable: issue response is missing a valid revision")
+	}
+	return *issue.Revision, nil
+}
+
+func validateIssueCompletionHintResponse(hint issueCompletionHintResponse, expectedRevision int64, targetStatus string) error {
+	if hint.IssueID == "" || hint.IssueRevision == nil || *hint.IssueRevision < 0 || hint.TargetStatus == "" || hint.TargetCategory == "" || len(hint.ProjectID) == 0 ||
+		hint.PolicyMode == "" || hint.Hint == "" || hint.Reason == "" || hint.CheckedAt == nil || hint.CheckedAt.IsZero() ||
+		hint.PolicyRevision == nil || hint.Enforced == nil || hint.UsableForCompletion == nil {
+		return fmt.Errorf("completion hint returned an incomplete response; status was not changed")
+	}
+	if *hint.IssueRevision != expectedRevision {
+		return fmt.Errorf("completion hint returned revision %d for expected revision %d; refresh the issue before retrying", *hint.IssueRevision, expectedRevision)
+	}
+	if hint.TargetStatus != strings.ToLower(strings.TrimSpace(targetStatus)) {
+		return fmt.Errorf("completion hint returned target status %q for requested %q; refresh the issue before retrying", hint.TargetStatus, targetStatus)
+	}
+	if *hint.Enforced || *hint.UsableForCompletion {
+		return fmt.Errorf("completion hint returned an authorization-like result; status was not changed")
+	}
+	if hint.Hint == "attention" || hint.Hint == "matching" {
+		if hint.TargetCategory != "done" {
+			return fmt.Errorf("completion hint returned %q for non-done target category %q; status was not changed", hint.Hint, hint.TargetCategory)
+		}
+	}
+	return nil
+}
+
+func isLegacyCompletionHintError(err error) bool {
+	var httpErr *cli.HTTPError
+	if !errors.As(err, &httpErr) || (httpErr.StatusCode != http.StatusNotFound && httpErr.StatusCode != http.StatusMethodNotAllowed) {
+		return false
+	}
+	var payload map[string]json.RawMessage
+	if json.Unmarshal([]byte(httpErr.Body), &payload) != nil {
+		return true
+	}
+	if len(payload) == 0 {
+		return true
+	}
+	for _, key := range []string{"code", "error_code", "resource", "resource_type", "resource_id", "permission", "permission_code", "delivery", "delivery_code"} {
+		if _, ok := payload[key]; ok {
+			return false
+		}
+	}
+	return true
+}
+
+func formatCompletionHintError(err error) error {
+	var httpErr *cli.HTTPError
+	if errors.As(err, &httpErr) {
+		var payload map[string]json.RawMessage
+		if json.Unmarshal([]byte(httpErr.Body), &payload) == nil {
+			if rawCode, ok := payload["code"]; ok {
+				var code string
+				if json.Unmarshal(rawCode, &code) == nil && code != "" {
+					return fmt.Errorf("completion hint refused: %s", code)
+				}
+			}
+		}
+		return fmt.Errorf("completion hint request failed with HTTP %d", httpErr.StatusCode)
+	}
+	return fmt.Errorf("completion hint request failed: %v", err)
 }
 
 // ---------------------------------------------------------------------------

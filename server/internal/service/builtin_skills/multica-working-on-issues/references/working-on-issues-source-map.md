@@ -269,6 +269,7 @@ away, so no task is left orphaned.
 | Behavior | Source |
 |---|---|
 | `issue assign --no-start`, `issue update --no-start`, and `issue status --no-start` send `suppress_run=true` | `server/cmd/multica/cmd_issue.go` (`runIssueAssign`, `runIssueUpdate`, `runIssueStatus`) |
+| CLI status-only completion targets read the full issue revision and request the non-authorizing completion hint with `evaluation_key:null`; attention/matching warn then continue, refusal/unknown stop before PUT, and only unstructured 404/405 bypass an older hint route | `server/cmd/multica/cmd_issue.go` (`runIssueCompletionHint`, `runIssueStatus`, `runIssueUpdate`) |
 | Update and batch-update apply ownership while skipping dispatch when `suppress_run` is true | `server/internal/handler/issue.go` (`UpdateIssue`, `BatchUpdateIssues`) |
 | Trusted direct self-assignment suppresses enqueue only when the target `(issue, agent)` already has a non-terminal task | `server/internal/service/issue_trigger.go` (`WillEnqueueRun`), `server/internal/handler/issue_trigger.go` (`shouldSuppressActiveSelfAssignment`) |
 | Claim responses expose a bounded, workspace-scoped snapshot of the same agent's other dispatched/running/waiting issue tasks; queued tasks are excluded | `server/pkg/db/queries/agent.sql` (`ListActiveSiblingIssueTasks`), `server/internal/handler/daemon.go` (`buildClaimedTaskResponse`) |

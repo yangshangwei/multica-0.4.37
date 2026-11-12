@@ -4,6 +4,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { buildIssueStatusCatalog } from "@multica/core/issue-statuses";
 import type { Issue, IssueStatusEntry } from "@multica/core/types";
 
+const { mockCompletionHint } = vi.hoisted(() => ({ mockCompletionHint: vi.fn() }));
+vi.mock("@multica/core/api", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@multica/core/api")>();
+  return { ...actual, api: { getDeliveryCompletionHint: mockCompletionHint } };
+});
+
 vi.mock("@multica/core/hooks", () => ({
   useWorkspaceId: () => "ws-1",
 }));
@@ -172,6 +178,55 @@ describe("useIssueActions", () => {
       { id: "issue-1", status: "done" },
       expect.any(Object),
     );
+  });
+
+  it("keeps success continuations for detail actions until the mutation succeeds", () => {
+    const onSuccess = vi.fn();
+    const { result } = renderHook(() => useIssueActions(mockIssue), { wrapper });
+
+    act(() => {
+      result.current.updateField({ status: "done" }, { onSuccess });
+    });
+
+    const options = mockUpdateMutate.mock.calls[0]?.[1] as { onSuccess?: (issue: Issue) => void };
+    expect(onSuccess).not.toHaveBeenCalled();
+    const updated = { ...mockIssue, status: "done" } as Issue;
+    options.onSuccess?.(updated);
+    expect(onSuccess).toHaveBeenCalledWith(updated);
+  });
+
+  it("keeps one completion in flight until the actual mutation settles", async () => {
+    const hint = mockCompletionHint.mockResolvedValue({
+      issue_id: mockIssue.id,
+      issue_revision: 4,
+      target_status: "done",
+      target_category: "done",
+      project_id: "project-1",
+      policy_revision: 1,
+      policy_mode: "observe",
+      hint: "attention",
+      reason: "evaluation_required",
+      checked_at: "2026-11-12T00:00:00Z",
+      enforced: false,
+      usable_for_completion: false,
+    });
+    try {
+      const { result } = renderHook(() => useIssueActions({
+        ...mockIssue, project_id: "project-1", revision: 4, status_category: "todo",
+      }), { wrapper });
+      act(() => result.current.updateField({ status: "done" }));
+      await waitFor(() => expect(mockOpenModal).toHaveBeenCalledWith("issue-completion-hint", expect.anything()));
+      const data = mockOpenModal.mock.calls[0]?.[1] as { onConfirm: () => Promise<void> };
+      let confirmation!: Promise<void>;
+      act(() => { confirmation = data.onConfirm(); });
+      expect(mockUpdateMutate).toHaveBeenCalledTimes(1);
+      act(() => result.current.updateField({ status: "done" }));
+      expect(hint).toHaveBeenCalledTimes(1);
+      const options = mockUpdateMutate.mock.calls[0]?.[1] as { onSettled: () => void };
+      await act(async () => { options.onSettled(); await confirmation; });
+    } finally {
+      hint.mockReset();
+    }
   });
 
   it("assigning an agent routes through the run-confirm modal instead of mutating directly", () => {

@@ -21,6 +21,7 @@ import {
 import type { IssueCreateDefaults } from "./types";
 import { mergeIssueCreateDefaults } from "./create-defaults";
 import { useT } from "../../i18n";
+import { useCompletionHintGate } from "../actions/completion-hint-gate";
 
 export type MoveIssueUpdates = Pick<
   UpdateIssueRequest,
@@ -62,6 +63,7 @@ export function useIssueSurfaceActions({
   const updateIssueMutation = useUpdateIssue();
   const batchUpdateMutation = useBatchUpdateIssues();
   const batchDeleteMutation = useBatchDeleteIssues();
+  const runCompletionHint = useCompletionHintGate();
 
   const updateIssue = useCallback(
     (
@@ -70,37 +72,65 @@ export function useIssueSurfaceActions({
       options?: IssueSurfaceMutationOptions,
     ) => {
       const issue = findSourceIssue(client, wsId, issueId);
-      if (issue?.collaboration) {
-        const category = statuses.find((status) => status.key === updates.status)?.category;
-        const action = sourceCollaborationAction(issue, updates, category);
-        if (action) {
-          setCollaborationAction(action);
-          options?.onSettled?.();
-          return;
+      const applyUpdate = () => {
+        if (issue?.collaboration) {
+          const category = statuses.find((status) => status.key === updates.status)?.category;
+          const action = sourceCollaborationAction(issue, updates, category);
+          if (action) {
+            setCollaborationAction(action);
+            options?.onSettled?.();
+            return;
+          }
+          if (updates.position === undefined) { options?.onSettled?.(); return; }
+          updates = { position: updates.position, expected_revision: issue.revision };
         }
-        if (updates.position === undefined) { options?.onSettled?.(); return; }
-        updates = { position: updates.position, expected_revision: issue.revision };
+        return new Promise<void>((resolve) => {
+          updateIssueMutation.mutate(
+            { id: issueId, ...updates },
+            {
+              onSuccess: (updated) => options?.onSuccess?.(updated),
+              onError: (err) => {
+                toast.error(
+                  errorCode(err) === "revision_conflict"
+                    ? tIssues(($) => $.revision.conflict)
+                    : err instanceof Error && err.message
+                    ? err.message
+                    : (options?.errorMessage ??
+                        t(($) => $.detail.toast_move_issue_failed)),
+                );
+                options?.onError?.(err);
+              },
+              onSettled: () => {
+                try {
+                  options?.onSettled?.();
+                } finally {
+                  resolve();
+                }
+              },
+            },
+          );
+        });
+      };
+
+      if (
+        !options?.skipCompletionHint &&
+        issue &&
+        !issue.collaboration &&
+        updates.status &&
+        Object.keys(updates).length === 1
+      ) {
+        runCompletionHint({
+          issue,
+          targetStatus: updates.status,
+          targetCategory: statuses.find((status) => status.key === updates.status)?.category,
+          updates,
+          continueMutation: applyUpdate,
+        });
+        return;
       }
-      updateIssueMutation.mutate(
-        { id: issueId, ...updates },
-        {
-          onSuccess: (issue) => options?.onSuccess?.(issue),
-          onError: (err) => {
-            toast.error(
-              errorCode(err) === "revision_conflict"
-                ? tIssues(($) => $.revision.conflict)
-                : err instanceof Error && err.message
-                ? err.message
-                : (options?.errorMessage ??
-                    t(($) => $.detail.toast_move_issue_failed)),
-            );
-            options?.onError?.(err);
-          },
-          onSettled: () => options?.onSettled?.(),
-        },
-      );
+      applyUpdate();
     },
-    [client, wsId, statuses, t, tIssues, updateIssueMutation],
+    [client, wsId, statuses, t, tIssues, updateIssueMutation, runCompletionHint],
   );
 
   const moveIssue = useCallback(

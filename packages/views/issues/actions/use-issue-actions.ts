@@ -18,6 +18,7 @@ import { useT } from "../../i18n";
 import { runConfirmIntent } from "./run-confirm-gate";
 import { useIssueSurfaceActionsOptional } from "../surface/actions-context";
 import type { IssueSurfaceMutationOptions } from "../surface/actions-context";
+import { useCompletionHintGate } from "./completion-hint-gate";
 
 export interface UseIssueActionsResult {
   isPinned: boolean;
@@ -80,12 +81,78 @@ export function useIssueActions(issue: Issue | null): UseIssueActionsResult {
   const issueAssigneeType = issue?.assignee_type ?? null;
   const issueAssigneeId = issue?.assignee_id ?? null;
   const { entryOf } = useIssueStatuses(wsId);
+  const runCompletionHint = useCompletionHintGate();
   const updateField = useCallback(
     (
       updates: Partial<UpdateIssueRequest>,
       options?: IssueSurfaceMutationOptions,
     ) => {
       if (!issueId) return;
+      const applyUpdate = () => {
+        // The two writes that can hand work to an agent — giving it an owner, and
+        // promoting it out of the parking lot — confirm first, through the shared
+        // gate every single-issue entry point routes on (runConfirmIntent). The
+        // modal applies the change itself; everything else applies directly.
+        const intent = issue && runConfirmIntent(issue, updates, { entryOf });
+        if (intent) {
+          openModal("issue-run-confirm", {
+            ...intent,
+            ...(options?.onSuccess ? { onSuccess: options.onSuccess } : {}),
+          });
+          return;
+        }
+        return new Promise<void>((resolve) => {
+          const onSettled = () => {
+            try {
+              options?.onSettled?.();
+            } finally {
+              resolve();
+            }
+          };
+          if (surfaceActions) {
+            surfaceActions.updateIssue(issueId, updates, {
+              errorMessage: t(($) => $.detail.update_failed),
+              ...options,
+              onSettled,
+              skipCompletionHint: true,
+            });
+          } else {
+            updateIssue.mutate(
+              { id: issueId, ...updates },
+              {
+                onSuccess: options?.onSuccess,
+                onError: (err) => {
+                  toast.error(
+                    errorCode(err) === "revision_conflict"
+                      ? t(($) => $.revision.conflict)
+                      : err instanceof Error && err.message
+                      ? err.message
+                      : t(($) => $.detail.update_failed),
+                  );
+                  options?.onError?.(err);
+                },
+                onSettled,
+              },
+            );
+          }
+        });
+      };
+
+      if (updates.status && Object.keys(updates).length === 1) {
+        if (!issue) {
+          applyUpdate();
+          return;
+        }
+        const targetCategory = entryOf(updates.status)?.category;
+        runCompletionHint({
+          issue,
+          targetStatus: updates.status,
+          targetCategory,
+          updates,
+          continueMutation: applyUpdate,
+        });
+        return;
+      }
       // The two writes that can hand work to an agent — giving it an owner, and
       // promoting it out of the parking lot — confirm first, through the shared
       // gate every single-issue entry point routes on (runConfirmIntent). The
@@ -95,37 +162,9 @@ export function useIssueActions(issue: Issue | null): UseIssueActionsResult {
       // directly. That is the existing split, not a new one: a drop is direct
       // manipulation whose card has already moved, and batch status was made
       // deliberately dialog-free in MUL-4155.
-      const intent = issue && runConfirmIntent(issue, updates, { entryOf });
-      if (intent) {
-        openModal("issue-run-confirm", intent);
-        return;
-      }
-      if (surfaceActions) {
-        surfaceActions.updateIssue(issueId, updates, {
-          errorMessage: t(($) => $.detail.update_failed),
-          ...options,
-        });
-      } else {
-        updateIssue.mutate(
-          { id: issueId, ...updates },
-          {
-            onSuccess: options?.onSuccess,
-            onError: (err) => {
-              toast.error(
-                errorCode(err) === "revision_conflict"
-                  ? t(($) => $.revision.conflict)
-                  : err instanceof Error && err.message
-                  ? err.message
-                  : t(($) => $.detail.update_failed),
-              );
-              options?.onError?.(err);
-            },
-            onSettled: () => options?.onSettled?.(),
-          },
-        );
-      }
+      applyUpdate();
     },
-    [issue, issueId, entryOf, surfaceActions, updateIssue, openModal, t],
+    [issue, issueId, entryOf, surfaceActions, updateIssue, openModal, t, runCompletionHint],
   );
 
   const openInCurrentTab = useCallback(() => {

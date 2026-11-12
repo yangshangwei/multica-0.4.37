@@ -284,9 +284,12 @@ recovery's applicability check time. Off, no project and non-done targets return
 
 Every result has `enforced: false` and `usable_for_completion: false`. Matching
 describes this read snapshot only. No new evaluation, execution, queue entry,
-comment or state change occurs. This is an explicit API foundation: no UI/CLI
-automatically requests it, and no ordinary, batch, create-done, VCS or independent
-collaboration completion is intercepted. Off is not skip or an execution grant.
+comment or state change occurs. Web/Desktop and CLI status-only consumers may
+request this read before an ordinary done-category PUT, but they always send
+`evaluation_key: null`, never expose private evaluation data, and never treat
+the result as authorization. Batch, create-done, VCS or independent
+collaboration completion is not intercepted. Off is not skip or an execution
+grant.
 
 Sources: `handler/delivery_completion_hint.go`, existing policy/evaluation and
 status-catalog helpers, `cmd/server/router.go`. Tests: owned

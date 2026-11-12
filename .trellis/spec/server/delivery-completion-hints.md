@@ -1,10 +1,12 @@
 # Completion evidence hints
 
 ## 1. Scope / trigger
-Explicit human-only pre-completion hints for ordinary issues. This adds an API
-consumer of existing policy and evaluation recovery, not an observer, engine,
-transition interceptor, UI/CLI prompt or global completion gate. Independent
-collaboration remains under its own exact-submission/initiator/R38 contracts.
+Explicit human-only pre-completion hints for ordinary issues reuse existing
+policy and evaluation recovery. The API remains non-authorizing. Shared
+Web/Desktop and CLI status-only consumers now request it before an ordinary
+done-category update; actual completion enforcement follows the separate
+transactional contract. Independent collaboration retains its own
+exact-submission/initiator/R38 contracts.
 
 ## 2. Signatures
 `POST /api/issues/{id}/delivery-evidence/completion-hint` accepts exactly:
@@ -97,7 +99,7 @@ browser/deployment/full-repo or real-model conclusion follows.
 Wrong: consume historical pass as a completion ticket, read someone else's
 private evaluation, duplicate the observer, or call this a global gate.
 Correct: recover the exact original human key under current authority, report a
-non-authorizing hint, and keep every completion interceptor explicitly pending.
+non-authorizing hint, and require the separate writer transaction to authorize actual completion.
 
 ## Reused service implementation
 
@@ -114,3 +116,45 @@ adds explicit authorizations and current checks in actual writers. The historica
 observe/hint increment above remains non-authorizing; its private evidence and
 original actor/retention boundaries remain. Current source-policy enforcement,
 project-change rules and distinct R38 handling follow that shared contract.
+
+## Ordinary UI/CLI consumers (2026-11-12)
+
+### Scope and signatures
+
+Shared issue detail/actions/surface/subissue status-only updates and CLI
+`issue status` / status-only `issue update` consume the existing POST endpoint.
+They send exactly `expected_issue_revision`, `target_status`, and
+`evaluation_key: null`; private evaluation data is not exposed through the
+consumer DTO. Batch, move, create-done, mixed-field updates and independent
+collaboration/R38 prompts are outside this increment.
+
+### Consumer contract and validation
+
+- Resolve custom done categories from the current catalog/server response.
+- `attention` can show a UI confirmation or CLI stderr advisory; it grants no
+  completion permission. The actual PUT remains authoritative.
+- Missing revision/category, malformed success, unknown response flags or
+  transport failure cannot silently proceed. Only unstructured legacy 404/405
+  may bypass the hint; structured resource/permission/delivery codes remain
+  refusals, including `error_code`, `resource`, `permission_code`, and
+  `delivery_code` fields.
+- A retry reads the current issue/revision and releases the stale dialog.
+  Unmounted owners cannot confirm an old hint; duplicate confirmation is
+  single-flight through actual mutation settlement.
+- Detail `onDone` and run-confirm continuations execute only after the real
+  mutation succeeds. Cancellation, hint refusal, unknown result or failed PUT
+  does not navigate or report completion.
+
+### Examples and regression assertions
+
+Good: a stale-revision retry reloads the issue, confirms the new hint, then
+waits for one successful PUT. Base: an unstructured old-server 404 preserves
+the old update flow. Bad: a structured 404 is treated as route absence, an
+unmounted dialog mutates an issue, or `matching` is consumed as authorization.
+
+Core tests assert strict null-key requests and structured-error classification.
+Shared gate tests assert latest revision on retry, zero mutation after unmount,
+one mutation for duplicate confirmation and release only after settlement.
+CLI tests assert stderr-only advisory, rejection before PUT and success output
+only after PUT succeeds. Existing backend hint and enforcement matrices remain
+independent; consumer checks do not replace them.

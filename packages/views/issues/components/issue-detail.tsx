@@ -77,6 +77,7 @@ import { maxSiblingStage } from "./pickers/stage-picker";
 import { CustomPropertyValueEditor, CustomPropertyValueDisplay } from "./pickers/custom-property-picker";
 import { Switch } from "@multica/ui/components/ui/switch";
 import { IssueActionsDropdown, useIssueActions, IssueActionsContextMenu, IssueContextMenuProvider } from "../actions";
+import { useCompletionHintGate } from "../actions/completion-hint-gate";
 import { LabelChip } from "../../labels/label-chip";
 import { IssueAgentActivityIndicator } from "./issue-agent-activity-indicator";
 import { SubIssuesAgentWorkingChip } from "./sub-issues-agent-working-chip";
@@ -689,6 +690,9 @@ function SubIssueRow({
   const { t } = useT("issues");
   const paths = useWorkspacePaths();
   const updateIssue = useUpdateIssue();
+  const wsId = useWorkspaceId();
+  const { entryOf } = useIssueStatuses(wsId);
+  const runCompletionHint = useCompletionHintGate();
   const selected = useIssueSelectionStore((s) => s.selectedIds.has(child.id));
   const toggleSelected = useIssueSelectionStore((s) => s.toggle);
   // Category, not key: a custom status in the done/cancelled categories is
@@ -706,22 +710,38 @@ function SubIssueRow({
 
   const handleUpdate = useCallback(
     (updates: Partial<UpdateIssueRequest>) => {
-      updateIssue.mutate(
-        {
-          id: child.id,
-          ...updates,
-        },
-        {
-          onError: (err) =>
-            toast.error(
-              err instanceof Error && err.message
-                ? err.message
-                : t(($) => $.detail.update_failed),
-            ),
-        },
-      );
+      const applyUpdate = () => {
+        return new Promise<void>((resolve) => {
+          updateIssue.mutate(
+            {
+              id: child.id,
+              ...updates,
+            },
+            {
+              onError: (err) =>
+                toast.error(
+                  err instanceof Error && err.message
+                    ? err.message
+                    : t(($) => $.detail.update_failed),
+                ),
+              onSettled: () => resolve(),
+            },
+          );
+        });
+      };
+      if (updates.status && Object.keys(updates).length === 1) {
+        runCompletionHint({
+          issue: child,
+          targetStatus: updates.status,
+          targetCategory: entryOf(updates.status)?.category,
+          updates,
+          continueMutation: applyUpdate,
+        });
+        return;
+      }
+      applyUpdate();
     },
-    [child.id, updateIssue, t],
+    [child, entryOf, runCompletionHint, updateIssue, t],
   );
 
   // AppLink wraps only the title/identifier area. Pickers and checkbox are
@@ -2866,7 +2886,12 @@ function OrdinaryIssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = t
                       variant="ghost"
                       size="icon-sm"
                       className="text-muted-foreground"
-                      onClick={() => { handleUpdateField({ status: "done" }); onDone?.(); }}
+                      onClick={() => {
+                        handleUpdateField(
+                          { status: "done" },
+                          { onSuccess: () => onDone?.() },
+                        );
+                      }}
                       aria-label={t(($) => $.detail.mark_done_tooltip)}
                     >
                       <CircleCheck />

@@ -20,3 +20,8 @@ export {
 } from "./status-category";
 
 export { resolveQuickCreateCreator, type CreatorSelectionInput } from "./creator-selection";
+export {
+  classifyCompletionHintIntent,
+  isLegacyCompletionHintError,
+  type CompletionHintIntent,
+} from "./completion-hint";

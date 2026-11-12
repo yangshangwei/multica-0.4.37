@@ -377,8 +377,8 @@ close intent writes the literal `done` key.
   later re-trigger confirms the overall goal is met.
 - **`in_review`** records delivery awaiting acceptance; moving to it is an
   explicit mutation. A child in `in_review` still awaits acceptance and does not close the stage.
-- **`done`** is confirmed by a human or existing integration. A merged PR with
-  close intent (`Closes MUL-XXXX`) can advance the issue to `done`;
+- **`done`** is confirmed by a human or existing integration; status-only CLI done/custom writes first read the non-authorizing hint (`evaluation_key:null`) and only the actual PUT decides success.
+- A merged PR with close intent (`Closes MUL-XXXX`) can advance the issue to `done`;
   child `done`/`cancelled` transitions notify the parent only when the stage closes.
 - **`cancelled`** is a terminal, user-driven decision to close the issue. Like
   `done`, it starts no new work on the closed issue; a child may close its parent's

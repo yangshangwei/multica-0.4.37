@@ -11,6 +11,7 @@ type ModalType =
   | "issue-add-child"
   | "issue-delete-confirm"
   | "issue-run-confirm"
+  | "issue-completion-hint"
   | null;
 
 interface ModalStore {

@@ -91,6 +91,8 @@ import type {
   CreateIssueRequest,
   MoveIssueRequest,
   UpdateIssueRequest,
+  DeliveryCompletionHintRequest,
+  DeliveryCompletionHintResponse,
   BatchUpdateIssuesOptions,
   BatchUpdateIssuesResponse,
   GroupedIssuesResponse,
@@ -442,6 +444,7 @@ import {
   UNREADABLE_CRON_PREVIEW_RESPONSE,
   ListIssuesResponseSchema,
   CreateIssueResponseSchema,
+  DeliveryCompletionHintResponseSchema,
   IssueSchema,
   AgentTaskSchema,
   SourceContextPreviewSchema,
@@ -3084,6 +3087,49 @@ export class ApiClient {
       method: "PUT",
       body: JSON.stringify(data),
     });
+  }
+
+  /**
+   * Read the current, non-authorizing completion hint for one issue. The
+   * response is deliberately parsed into public facts only; a private
+   * evaluation object from a newer server is stripped by the schema.
+   */
+  async getDeliveryCompletionHint(
+    issueId: string,
+    input: DeliveryCompletionHintRequest,
+    options?: ApiRequestOptions,
+  ): Promise<DeliveryCompletionHintResponse> {
+    // Construct the wire shape explicitly so a JavaScript caller cannot add
+    // fields or smuggle a private evaluation key through an object cast.
+    const body: DeliveryCompletionHintRequest = {
+      expected_issue_revision: input.expected_issue_revision,
+      target_status: input.target_status,
+      evaluation_key: null,
+    };
+    const raw = await this.fetchBounded<unknown>(
+      `/api/issues/${encodeURIComponent(issueId)}/delivery-evidence/completion-hint`,
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+        cache: "no-store",
+      },
+      options,
+    );
+    const parsed = parseWithFallback<DeliveryCompletionHintResponse | null>(
+      raw,
+      DeliveryCompletionHintResponseSchema,
+      null,
+      { endpoint: "POST /api/issues/:id/delivery-evidence/completion-hint", redact: true },
+    );
+    if (!parsed) {
+      throw new ApiError(
+        "Invalid completion hint response",
+        502,
+        "Bad Gateway",
+        { code: "invalid_delivery_completion_hint_response" },
+      );
+    }
+    return parsed;
   }
 
   async moveIssue(id: string, data: MoveIssueRequest): Promise<Issue> {

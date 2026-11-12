@@ -440,6 +440,19 @@
       "next": "Next match",
       "close": "Close find"
     },
+    "completion_hint": {
+      "attention_title": "Review completion evidence",
+      "attention_description": "The current evidence needs attention. This check only describes the current read and does not grant permission to complete the issue.",
+      "matching_title": "Completion evidence still matches",
+      "matching_description": "The current observation still matches, but it is not completion permission. Continue only if you want to submit the status change.",
+      "refusal_title": "Completion check refused",
+      "refusal_description": "The completion check could not approve this status change. Refresh the issue and try again.",
+      "unknown_title": "Completion check unavailable",
+      "unknown_description": "The completion check could not be confirmed. No status change was sent.",
+      "continue": "Continue",
+      "cancel": "Cancel",
+      "retry": "Retry"
+    },
     "update_failed": "Failed to update issue",
     "link_copied": "Link copied",
     "link_copy_failed": "Failed to copy link",

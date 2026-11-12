@@ -79,6 +79,34 @@ export interface BatchUpdateIssuesResponse {
   results?: BatchUpdateIssueResult[];
 }
 
+/**
+ * A human-only, non-authorizing read performed before an ordinary completion.
+ * The client never creates or forwards an evaluation key; the explicit null
+ * keeps that boundary visible in the wire contract.
+ */
+export interface DeliveryCompletionHintRequest {
+  expected_issue_revision: number;
+  target_status: IssueStatus;
+  evaluation_key: null;
+}
+
+/** Public completion-hint facts. Private evaluation recovery is intentionally
+ * omitted from this DTO even when an older server includes it in the JSON. */
+export interface DeliveryCompletionHintResponse {
+  issue_id: string;
+  issue_revision: number;
+  target_status: IssueStatus;
+  target_category: IssueStatusCategory | (string & {});
+  project_id: string | null;
+  policy_revision: number;
+  policy_mode: string;
+  hint: string;
+  reason: string;
+  checked_at: string;
+  enforced: false;
+  usable_for_completion: false;
+}
+
 export interface UpdateIssueRequest {
   /** Explicit completion authorization, consumed only by this issue's writer. */
   completion?: DeliveryCompletionBinding;

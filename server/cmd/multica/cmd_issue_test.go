@@ -3376,6 +3376,345 @@ func TestRunIssueStatusNoStartSendsSuppressRun(t *testing.T) {
 	}
 }
 
+func TestRunIssueStatusCompletionHintAttentionContinuesWithExactPayload(t *testing.T) {
+	var methods []string
+	var hintBody map[string]any
+	var putBody map[string]any
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		methods = append(methods, r.Method+" "+r.URL.Path)
+		switch {
+		case r.Method == http.MethodGet && (r.URL.Path == "/api/issues/MUL-1" || r.URL.Path == "/api/issues/issue-1"):
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "revision": 4, "status": "todo"})
+		case r.Method == http.MethodPost && r.URL.Path == "/api/issues/issue-1/delivery-evidence/completion-hint":
+			if err := json.NewDecoder(r.Body).Decode(&hintBody); err != nil {
+				t.Errorf("decode hint body: %v", err)
+			}
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"issue_id": "issue-1", "issue_revision": 4, "target_status": "done", "target_category": "done", "project_id": nil,
+				"policy_revision": 2, "policy_mode": "observe", "hint": "attention", "reason": "evaluation_required",
+				"checked_at": "2026-11-12T00:00:00Z", "enforced": false, "usable_for_completion": false,
+			})
+		case r.Method == http.MethodPut && r.URL.Path == "/api/issues/issue-1":
+			if err := json.NewDecoder(r.Body).Decode(&putBody); err != nil {
+				t.Errorf("decode PUT body: %v", err)
+			}
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "status": "done"})
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer srv.Close()
+	setCLITestServerEnv(t, srv.URL)
+
+	stderr := captureStderr(t)
+	defer stderr.restore()
+	cmd := newIssueStatusTestCmd()
+	if err := runIssueStatus(cmd, []string{"MUL-1", "done"}); err != nil {
+		t.Fatalf("runIssueStatus: %v", err)
+	}
+	if got, want := fmt.Sprint(methods), "[GET /api/issues/MUL-1 GET /api/issues/issue-1 POST /api/issues/issue-1/delivery-evidence/completion-hint PUT /api/issues/issue-1]"; got != want {
+		t.Fatalf("request order = %s, want %s", got, want)
+	}
+	if got := hintBody["expected_issue_revision"]; got != float64(4) {
+		t.Fatalf("expected_issue_revision = %#v, want 4", got)
+	}
+	if got := hintBody["target_status"]; got != "done" {
+		t.Fatalf("target_status = %#v, want done", got)
+	}
+	if value, ok := hintBody["evaluation_key"]; !ok || value != nil {
+		t.Fatalf("evaluation_key = %#v (present=%v), want explicit null", value, ok)
+	}
+	if got := putBody["status"]; got != "done" {
+		t.Fatalf("PUT status = %#v, want done", got)
+	}
+	if warning := stderr.read(); !strings.Contains(warning, "attention") || !strings.Contains(warning, "does not grant") {
+		t.Fatalf("stderr = %q, want non-authorizing attention warning", warning)
+	}
+}
+
+func TestRunIssueStatusCompletionHintStructuredRefusalDoesNotPut(t *testing.T) {
+	putCount := 0
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case r.Method == http.MethodGet && (r.URL.Path == "/api/issues/MUL-1" || r.URL.Path == "/api/issues/issue-1"):
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "revision": 4, "status": "todo"})
+		case r.Method == http.MethodPost && r.URL.Path == "/api/issues/issue-1/delivery-evidence/completion-hint":
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusConflict)
+			_, _ = io.WriteString(w, `{"code":"delivery_issue_revision_conflict"}`)
+		case r.Method == http.MethodPut:
+			putCount++
+			http.Error(w, "unexpected PUT", http.StatusInternalServerError)
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer srv.Close()
+	setCLITestServerEnv(t, srv.URL)
+
+	cmd := newIssueStatusTestCmd()
+	err := runIssueStatus(cmd, []string{"MUL-1", "done"})
+	if err == nil || !strings.Contains(err.Error(), "completion hint") {
+		t.Fatalf("error = %v, want completion hint refusal", err)
+	}
+	if putCount != 0 {
+		t.Fatalf("PUT count = %d, want 0 after structured refusal", putCount)
+	}
+}
+
+func TestRunIssueStatusCompletionHintLegacy404ContinuesPut(t *testing.T) {
+	putCount := 0
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case r.Method == http.MethodGet && (r.URL.Path == "/api/issues/MUL-1" || r.URL.Path == "/api/issues/issue-1"):
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "revision": 4, "status": "todo"})
+		case r.Method == http.MethodPost && r.URL.Path == "/api/issues/issue-1/delivery-evidence/completion-hint":
+			w.WriteHeader(http.StatusNotFound)
+			_, _ = io.WriteString(w, "route missing")
+		case r.Method == http.MethodPut && r.URL.Path == "/api/issues/issue-1":
+			putCount++
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "status": "done"})
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer srv.Close()
+	setCLITestServerEnv(t, srv.URL)
+
+	cmd := newIssueStatusTestCmd()
+	if err := runIssueStatus(cmd, []string{"MUL-1", "done"}); err != nil {
+		t.Fatalf("runIssueStatus: %v", err)
+	}
+	if putCount != 1 {
+		t.Fatalf("PUT count = %d, want 1 after legacy bypass", putCount)
+	}
+}
+
+func TestRunIssueStatusCompletionHintLegacy405ContinuesPut(t *testing.T) {
+	putCount := 0
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case r.Method == http.MethodGet && (r.URL.Path == "/api/issues/MUL-1" || r.URL.Path == "/api/issues/issue-1"):
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "revision": 4, "status": "todo"})
+		case r.Method == http.MethodPost && r.URL.Path == "/api/issues/issue-1/delivery-evidence/completion-hint":
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			_, _ = io.WriteString(w, "method unavailable")
+		case r.Method == http.MethodPut && r.URL.Path == "/api/issues/issue-1":
+			putCount++
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "status": "done"})
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer srv.Close()
+	setCLITestServerEnv(t, srv.URL)
+
+	cmd := newIssueStatusTestCmd()
+	if err := runIssueStatus(cmd, []string{"MUL-1", "done"}); err != nil {
+		t.Fatalf("runIssueStatus: %v", err)
+	}
+	if putCount != 1 {
+		t.Fatalf("PUT count = %d, want 1 after legacy 405 bypass", putCount)
+	}
+}
+
+func TestRunIssueStatusStructured404DoesNotBypassHint(t *testing.T) {
+	putCount := 0
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case r.Method == http.MethodGet && (r.URL.Path == "/api/issues/MUL-1" || r.URL.Path == "/api/issues/issue-1"):
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "revision": 4, "status": "todo"})
+		case r.Method == http.MethodPost && r.URL.Path == "/api/issues/issue-1/delivery-evidence/completion-hint":
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusNotFound)
+			_, _ = io.WriteString(w, `{"code":"delivery_issue_not_found","resource_type":"issue","resource_id":"issue-1"}`)
+		case r.Method == http.MethodPut:
+			putCount++
+			http.Error(w, "unexpected PUT", http.StatusInternalServerError)
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer srv.Close()
+	setCLITestServerEnv(t, srv.URL)
+
+	cmd := newIssueStatusTestCmd()
+	err := runIssueStatus(cmd, []string{"MUL-1", "done"})
+	if err == nil || !strings.Contains(err.Error(), "completion hint") {
+		t.Fatalf("error = %v, want structured 404 refusal", err)
+	}
+	if putCount != 0 {
+		t.Fatalf("PUT count = %d, want 0 for structured 404", putCount)
+	}
+}
+
+func TestRunIssueStatusCompletionHintUsesCustomDoneTarget(t *testing.T) {
+	var hintBody map[string]any
+	var putBody map[string]any
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case r.Method == http.MethodGet && (r.URL.Path == "/api/issues/MUL-1" || r.URL.Path == "/api/issues/issue-1"):
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "revision": 7, "status": "todo"})
+		case r.Method == http.MethodPost && r.URL.Path == "/api/issues/issue-1/delivery-evidence/completion-hint":
+			if err := json.NewDecoder(r.Body).Decode(&hintBody); err != nil {
+				t.Errorf("decode hint body: %v", err)
+			}
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"issue_id": "issue-1", "issue_revision": 7, "target_status": "ready_for_ship", "target_category": "done", "project_id": nil,
+				"policy_revision": 1, "policy_mode": "observe", "hint": "attention", "reason": "evaluation_required",
+				"checked_at": "2026-11-12T00:00:00Z", "enforced": false, "usable_for_completion": false,
+			})
+		case r.Method == http.MethodPut && r.URL.Path == "/api/issues/issue-1":
+			if err := json.NewDecoder(r.Body).Decode(&putBody); err != nil {
+				t.Errorf("decode PUT body: %v", err)
+			}
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "status": "ready_for_ship"})
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer srv.Close()
+	setCLITestServerEnv(t, srv.URL)
+
+	cmd := newIssueStatusTestCmd()
+	if err := runIssueStatus(cmd, []string{"MUL-1", "ready_for_ship"}); err != nil {
+		t.Fatalf("runIssueStatus: %v", err)
+	}
+	if got := hintBody["target_status"]; got != "ready_for_ship" {
+		t.Fatalf("hint target_status = %#v, want exact custom key", got)
+	}
+	if got := putBody["status"]; got != "ready_for_ship" {
+		t.Fatalf("PUT status = %#v, want exact custom key", got)
+	}
+}
+
+func TestRunIssueUpdateStatusOnlyUsesCompletionHint(t *testing.T) {
+	var methods []string
+	var putBody map[string]any
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		methods = append(methods, r.Method+" "+r.URL.Path)
+		switch {
+		case r.Method == http.MethodGet && (r.URL.Path == "/api/issues/MUL-1" || r.URL.Path == "/api/issues/issue-1"):
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "revision": 3, "status": "todo"})
+		case r.Method == http.MethodPost && r.URL.Path == "/api/issues/issue-1/delivery-evidence/completion-hint":
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"issue_id": "issue-1", "issue_revision": 3, "target_status": "done", "target_category": "done", "project_id": nil,
+				"policy_revision": 1, "policy_mode": "off", "hint": "not_applicable", "reason": "policy_off",
+				"checked_at": "2026-11-12T00:00:00Z", "enforced": false, "usable_for_completion": false,
+			})
+		case r.Method == http.MethodPut && r.URL.Path == "/api/issues/issue-1":
+			if err := json.NewDecoder(r.Body).Decode(&putBody); err != nil {
+				t.Errorf("decode PUT body: %v", err)
+			}
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "status": "done"})
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer srv.Close()
+	setCLITestServerEnv(t, srv.URL)
+
+	cmd := newIssueUpdateTestCmd()
+	_ = cmd.Flags().Set("status", "done")
+	_ = cmd.Flags().Set("output", "table")
+	if err := runIssueUpdate(cmd, []string{"MUL-1"}); err != nil {
+		t.Fatalf("runIssueUpdate: %v", err)
+	}
+	if got, want := fmt.Sprint(methods), "[GET /api/issues/MUL-1 GET /api/issues/issue-1 POST /api/issues/issue-1/delivery-evidence/completion-hint PUT /api/issues/issue-1]"; got != want {
+		t.Fatalf("request order = %s, want %s", got, want)
+	}
+	if got := putBody["status"]; got != "done" {
+		t.Fatalf("PUT status = %#v, want done", got)
+	}
+}
+
+func TestRunIssueUpdateMixedStatusSkipsCompletionHint(t *testing.T) {
+	var methods []string
+	var putBody map[string]any
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		methods = append(methods, r.Method+" "+r.URL.Path)
+		switch {
+		case r.Method == http.MethodGet && (r.URL.Path == "/api/issues/MUL-1" || r.URL.Path == "/api/issues/issue-1"):
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "status": "todo"})
+		case r.Method == http.MethodPut && r.URL.Path == "/api/issues/issue-1":
+			if err := json.NewDecoder(r.Body).Decode(&putBody); err != nil {
+				t.Errorf("decode PUT body: %v", err)
+			}
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "status": "done", "title": "renamed"})
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer srv.Close()
+	setCLITestServerEnv(t, srv.URL)
+
+	cmd := newIssueUpdateTestCmd()
+	_ = cmd.Flags().Set("status", "done")
+	_ = cmd.Flags().Set("title", "renamed")
+	_ = cmd.Flags().Set("output", "table")
+	if err := runIssueUpdate(cmd, []string{"MUL-1"}); err != nil {
+		t.Fatalf("runIssueUpdate: %v", err)
+	}
+	if got, want := fmt.Sprint(methods), "[GET /api/issues/MUL-1 PUT /api/issues/issue-1]"; got != want {
+		t.Fatalf("request order = %s, want %s", got, want)
+	}
+	if putBody["status"] != "done" || putBody["title"] != "renamed" {
+		t.Fatalf("PUT body = %#v, want mixed status/title update", putBody)
+	}
+}
+
+func TestRunIssueStatusCompletionHintMalformedDoesNotPut(t *testing.T) {
+	putCount := 0
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case r.Method == http.MethodGet && (r.URL.Path == "/api/issues/MUL-1" || r.URL.Path == "/api/issues/issue-1"):
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "revision": 4, "status": "todo"})
+		case r.Method == http.MethodPost && r.URL.Path == "/api/issues/issue-1/delivery-evidence/completion-hint":
+			_ = json.NewEncoder(w).Encode(map[string]any{"hint": "unexpected", "enforced": false, "usable_for_completion": false})
+		case r.Method == http.MethodPut:
+			putCount++
+			http.Error(w, "unexpected PUT", http.StatusInternalServerError)
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer srv.Close()
+	setCLITestServerEnv(t, srv.URL)
+
+	cmd := newIssueStatusTestCmd()
+	err := runIssueStatus(cmd, []string{"MUL-1", "done"})
+	if err == nil || !strings.Contains(err.Error(), "completion hint") {
+		t.Fatalf("error = %v, want malformed hint error", err)
+	}
+	if putCount != 0 {
+		t.Fatalf("PUT count = %d, want 0 after malformed hint", putCount)
+	}
+}
+
+func TestRunIssueStatusMissingRevisionDoesNotWrite(t *testing.T) {
+	var methods []string
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		methods = append(methods, r.Method+" "+r.URL.Path)
+		switch {
+		case r.Method == http.MethodGet && (r.URL.Path == "/api/issues/MUL-1" || r.URL.Path == "/api/issues/issue-1"):
+			_ = json.NewEncoder(w).Encode(map[string]any{"id": "issue-1", "identifier": "MUL-1", "status": "todo"})
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer srv.Close()
+	setCLITestServerEnv(t, srv.URL)
+
+	cmd := newIssueStatusTestCmd()
+	err := runIssueStatus(cmd, []string{"MUL-1", "done"})
+	if err == nil || !strings.Contains(err.Error(), "missing a valid revision") {
+		t.Fatalf("error = %v, want missing-revision refusal", err)
+	}
+	if got, want := fmt.Sprint(methods), "[GET /api/issues/MUL-1 GET /api/issues/issue-1]"; got != want {
+		t.Fatalf("request order = %s, want %s", got, want)
+	}
+}
+
 func TestRunIssueAssignNoStartSendsSuppressRun(t *testing.T) {
 	const agentID = "5fb87ac7-23b5-4a7a-81fa-ed295a54545d"
 	var body map[string]any

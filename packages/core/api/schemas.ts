@@ -92,6 +92,7 @@ import type {
   User,
   WebhookDelivery,
   WorkspaceMcpServer,
+  DeliveryCompletionHintResponse,
 } from "../types";
 import type { ListVCSConnectionsResponse, VCSProvider } from "../types/vcs";
 import type {
@@ -1356,6 +1357,29 @@ export const IssueSchema = z.object({
   // erase an otherwise usable issue returned by a mixed-version server.
   source_context: IssueSourceContextSchema.optional().catch(undefined),
 }).loose();
+
+/**
+ * Public fields returned by the human-only completion-hint read.
+ *
+ * Keep this schema intentionally strict about identity, revisions and the two
+ * non-authorizing flags. The server may include a private `evaluation` object
+ * when a caller supplies a key, but this client contract strips unknown fields
+ * so UI/CLI consumers cannot read or print evaluator material accidentally.
+ */
+export const DeliveryCompletionHintResponseSchema = z.object({
+  issue_id: z.string().min(1),
+  issue_revision: z.number().int().nonnegative(),
+  target_status: z.string().min(1),
+  target_category: z.string().min(1),
+  project_id: z.string().nullable(),
+  policy_revision: z.number().int().nonnegative(),
+  policy_mode: z.string().min(1),
+  hint: z.string().min(1),
+  reason: z.string().min(1),
+  checked_at: z.string().min(1),
+  enforced: z.literal(false),
+  usable_for_completion: z.literal(false),
+}) satisfies z.ZodType<DeliveryCompletionHintResponse>;
 
 export const ListIssuesResponseSchema = z.object({
   issues: z.array(IssueSchema).default([]),
