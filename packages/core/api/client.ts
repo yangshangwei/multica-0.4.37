@@ -1,6 +1,13 @@
 import { hasBatchIssueMutation, isBatchUpdateComplete, parseBatchUpdateOutcome, validBatchCompletionOptions } from "./issue-batch-update";
 import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, IterationListSchema, IterationDetailSchema, IterationIssuesSchema, IterationEventsSchema, IterationPreviewSchema, IterationWriteResultSchema, type IterationCreateInput, type IterationDraft, type IterationWriteInput } from "./iteration-schemas";
 import { z } from "zod";
+import {
+  CompletionAuthorizationSchema, CompletionAuthorizationRequestSchema, CompletionBindingSchema,
+  CompletionCandidatesSchema, CompletionPreviewInputSchema, CompletionPreviewSchema, CompletionReceiptSchema,
+  completionUUID, completionRevision, completionReason, matchesCompletionAuthorization, matchesCompletionReceipt,
+  type CompletionAuthorization, type CompletionAuthorizationRequest, type CompletionCandidates, type CompletionPreview,
+  type CompletionPreviewInput, type CompletionWriteResult,
+} from "../issues/completion-schema";
 import { parseCollaborationActivity } from "../collaboration/activity-schema";
 import { collaborationDeliveryRefusalStatus, parseCollaborationDeliveryHistory } from "../collaboration/delivery-schema";
 import { parseCollaborationRunRecords } from "../collaboration/run-records-schema";
@@ -49,6 +56,7 @@ import { CollaborationResourceInputSchema, collaborationResourceRequest, matches
 import { parseCollaborationResourceOffer, parseCollaborationResourceOffersPage } from "../collaboration/resource-offer-schema";
 import { parseCollaborationCommandHistory } from "../collaboration/command-history-schema";
 export type { ApiRequestOptions } from "./request-lifecycle";
+export type CompletionRequestOptions = ApiRequestOptions & { workspaceId: string };
 import type { ProjectUpdateDraft, ProjectUpdateWriteInput, ProjectRiskSignal } from "../types/project-p1";
 import { parseProjectP1, ProjectCapabilitiesSchema, ProjectPlanningTimezoneSchema, ProjectOverviewSchema,
   ProjectRiskPageSchema, ProjectUpdatesPageSchema, ProjectUpdateRevisionsPageSchema, ProjectUpdatePreviewSchema,
@@ -92,6 +100,7 @@ import type {
   MoveIssueRequest,
   UpdateIssueRequest,
   DeliveryCompletionHintRequest,
+  DeliveryCompletionBinding,
   DeliveryCompletionHintResponse,
   BatchUpdateIssuesOptions,
   BatchUpdateIssuesResponse,
@@ -2307,7 +2316,7 @@ export class ApiClient {
     const start = Date.now();
     const method = init?.method ?? "GET";
     const collaborationRequest = path.startsWith("/api/collaboration/") || /^\/api\/me\/(?:workbench|collaboration-notifications)(?:[/?]|$)/.test(path);
-    const sourceIssueRequest = /^\/api\/issues(?:[/?]|$)/.test(path);
+    const sourceIssueRequest = /^\/api\/(?:issues|delivery-completion-authorizations)(?:[/?]|$)/.test(path);
     // Target knowledge stays workspace-scoped for headers, but its cursor and
     // server error text need the same private logging boundary as source reads.
     const targetKnowledgeRequest = /^\/api\/(?:projects|workspaces)\/[^/?]+\/knowledge(?:[/?]|$)/.test(path);
@@ -2402,7 +2411,7 @@ export class ApiClient {
       data = await res.json();
     } catch (error) {
       // JSON syntax errors can quote source issue bodies before schema redaction.
-      if (/^\/api\/issues(?:[/?]|$)/.test(path) && error instanceof SyntaxError) {
+      if (/^\/api\/(?:issues|delivery-completion-authorizations)(?:[/?]|$)/.test(path) && error instanceof SyntaxError) {
         throw new Error("Issue response could not be decoded");
       }
       throw error;
@@ -3089,6 +3098,94 @@ export class ApiClient {
     });
   }
 
+  private async completionRequest<T>(path: string, schema: z.ZodType, init: RequestInit, options: CompletionRequestOptions): Promise<T> {
+    completionUUID.parse(options.workspaceId);
+    const session = this.getSessionScope(), authEpoch = this.authEpoch;
+    const workspace = workspaceRequestInit(options);
+    const raw = await this.fetchBounded<unknown>(path, {
+      ...init, cache: "no-store", headers: { ...workspace.headers, ...init.headers },
+    }, { timeoutMs: RECOVERY_REQUEST_TIMEOUT_MS, ...options });
+    if (session !== this.getSessionScope() || authEpoch !== this.authEpoch) throw new DOMException("Completion session changed", "AbortError");
+    const value = parseWithFallback<T | null>(raw, schema, null, { endpoint: path.split("?", 1)[0]!, redact: true });
+    if (value === null) throw this.invalidCompletionResponse();
+    return value;
+  }
+
+  private invalidCompletionResponse(): ApiError {
+    return new ApiError("Completion response could not be verified", 502, "Bad Gateway", { code: "invalid_delivery_completion_response" });
+  }
+
+  async listDeliveryCompletionCandidates(issueId: string, params: { limit?: number; cursor?: string } = {}, options: CompletionRequestOptions): Promise<CompletionCandidates> {
+    completionUUID.parse(issueId);
+    const parsed = z.strictObject({ limit: z.number().int().min(1).max(50).optional(), cursor: z.string().min(1).optional() }).parse(params);
+    const query = new URLSearchParams();
+    if (parsed.limit !== undefined) query.set("limit", String(parsed.limit));
+    if (parsed.cursor !== undefined) query.set("cursor", parsed.cursor);
+    const value = await this.completionRequest<CompletionCandidates>(`/api/issues/${issueId}/delivery-evidence/candidates${query.size ? `?${query}` : ""}`, CompletionCandidatesSchema, {}, options);
+    if (value.issue_id !== issueId) throw this.invalidCompletionResponse();
+    return value;
+  }
+
+  async previewDeliveryCompletion(issueId: string, input: CompletionPreviewInput, options: CompletionRequestOptions): Promise<CompletionPreview> {
+    completionUUID.parse(issueId);
+    const body = CompletionPreviewInputSchema.parse(input);
+    const value = await this.completionRequest<CompletionPreview>(`/api/issues/${issueId}/delivery-evidence/completion-preview`, CompletionPreviewSchema, { method: "POST", body: JSON.stringify(body) }, options);
+    if (value.issue_id !== issueId || value.issue_revision !== body.expected_issue_revision || value.target_status !== body.target_status ||
+      (value.observation && value.observation.approval_id !== body.approval_id) ||
+      (value.authorization_binding && value.authorization_binding.source_workspace_id !== options.workspaceId)) throw this.invalidCompletionResponse();
+    return value;
+  }
+
+  async createDeliveryCompletionAuthorization(requestKey: string, input: CompletionAuthorizationRequest, options: CompletionRequestOptions): Promise<CompletionAuthorization> {
+    completionUUID.parse(requestKey);
+    const body = CompletionAuthorizationRequestSchema.parse(input);
+    if (body.source_workspace_id !== options.workspaceId) throw new Error("Completion workspace mismatch");
+    const value = await this.completionRequest<CompletionAuthorization>("/api/delivery-completion-authorizations", CompletionAuthorizationSchema,
+      { method: "POST", headers: { "Idempotency-Key": requestKey }, body: JSON.stringify(body) }, options);
+    if (!matchesCompletionAuthorization(value, body)) throw this.invalidCompletionResponse();
+    return value;
+  }
+
+  async getDeliveryCompletionAuthorization(authorizationId: string, options: CompletionRequestOptions): Promise<CompletionAuthorization> {
+    completionUUID.parse(authorizationId);
+    const value = await this.completionRequest<CompletionAuthorization>(`/api/delivery-completion-authorizations/${authorizationId}`, CompletionAuthorizationSchema, {}, options);
+    if (value.authorization_id !== authorizationId) throw this.invalidCompletionResponse();
+    return value;
+  }
+
+  async getDeliveryCompletionAuthorizationByKey(requestKey: string, options: CompletionRequestOptions): Promise<CompletionAuthorization> {
+    completionUUID.parse(requestKey);
+    const query = new URLSearchParams({ workspace_id: completionUUID.parse(options.workspaceId) });
+    return this.completionRequest(`/api/delivery-completion-authorizations/by-request-key/${requestKey}?${query}`, CompletionAuthorizationSchema, {}, options);
+  }
+
+  async revokeDeliveryCompletionAuthorization(authorizationId: string, requestKey: string, reason: string, options: CompletionRequestOptions): Promise<CompletionAuthorization> {
+    completionUUID.parse(authorizationId); completionUUID.parse(requestKey);
+    const value = await this.completionRequest<CompletionAuthorization>(`/api/delivery-completion-authorizations/${authorizationId}/revocations`, CompletionAuthorizationSchema,
+      { method: "POST", headers: { "Idempotency-Key": requestKey }, body: JSON.stringify({ reason: completionReason.parse(reason) }) }, options);
+    if (value.authorization_id !== authorizationId) throw this.invalidCompletionResponse();
+    return value;
+  }
+
+  async getDeliveryCompletionIssue(issueId: string, options: CompletionRequestOptions): Promise<Issue> {
+    completionUUID.parse(issueId);
+    const value = await this.completionRequest<Issue>(`/api/issues/${issueId}`, IssueSchema.extend({ id: completionUUID, workspace_id: completionUUID, revision: completionRevision }).strip(), {}, options);
+    if (value.id !== issueId || value.workspace_id !== options.workspaceId) throw this.invalidCompletionResponse();
+    return value;
+  }
+
+  async submitDeliveryCompletion(issueId: string, input: { status: string; completion: DeliveryCompletionBinding }, options: CompletionRequestOptions): Promise<CompletionWriteResult> {
+    completionUUID.parse(issueId);
+    const body = z.strictObject({ status: z.string().min(1), completion: CompletionBindingSchema }).parse(input);
+    const schema = IssueSchema.extend({ id: completionUUID, workspace_id: completionUUID, revision: completionRevision, completion_receipt: CompletionReceiptSchema }).strip();
+    const value = await this.completionRequest<Issue & { completion_receipt: z.infer<typeof CompletionReceiptSchema> }>(`/api/issues/${issueId}`, schema,
+      { method: "PUT", body: JSON.stringify(body) }, options);
+    if (value.id !== issueId || value.workspace_id !== options.workspaceId || !matchesCompletionReceipt(value.completion_receipt, issueId, body.status, body.completion) ||
+      value.revision === undefined || value.revision < value.completion_receipt.completed_revision) throw this.invalidCompletionResponse();
+    const { completion_receipt, ...issue } = value;
+    return { issue, receipt: completion_receipt };
+  }
+
   /**
    * Read the current, non-authorizing completion hint for one issue. The
    * response is deliberately parsed into public facts only; a private
@@ -3097,7 +3194,7 @@ export class ApiClient {
   async getDeliveryCompletionHint(
     issueId: string,
     input: DeliveryCompletionHintRequest,
-    options?: ApiRequestOptions,
+    options?: ApiRequestOptions & { workspaceId?: string },
   ): Promise<DeliveryCompletionHintResponse> {
     // Construct the wire shape explicitly so a JavaScript caller cannot add
     // fields or smuggle a private evaluation key through an object cast.
@@ -3109,6 +3206,7 @@ export class ApiClient {
     const raw = await this.fetchBounded<unknown>(
       `/api/issues/${encodeURIComponent(issueId)}/delivery-evidence/completion-hint`,
       {
+        ...workspaceRequestInit(options),
         method: "POST",
         body: JSON.stringify(body),
         cache: "no-store",

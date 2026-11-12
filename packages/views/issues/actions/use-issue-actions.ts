@@ -81,7 +81,7 @@ export function useIssueActions(issue: Issue | null): UseIssueActionsResult {
   const issueAssigneeType = issue?.assignee_type ?? null;
   const issueAssigneeId = issue?.assignee_id ?? null;
   const { entryOf } = useIssueStatuses(wsId);
-  const runCompletionHint = useCompletionHintGate();
+  const runCompletionHint = useCompletionHintGate(issueId);
   const updateField = useCallback(
     (
       updates: Partial<UpdateIssueRequest>,
@@ -150,6 +150,7 @@ export function useIssueActions(issue: Issue | null): UseIssueActionsResult {
           targetCategory,
           updates,
           continueMutation: applyUpdate,
+          options,
         });
         return;
       }

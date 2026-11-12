@@ -1,0 +1,14 @@
+{
+  "label": "handler-race-1",
+  "package": "./internal/handler",
+  "database": "m1s1_handler_race_1_e8844397",
+  "private_environment": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1s1-ej0f62mu/environment.json",
+  "state": "not_run_environment_replaced",
+  "cluster_before": "postgres|17.11 (Debian 17.11-1.pgdg12+2)|100|29",
+  "source_head": "ade2298e24c3e99aa1982f9c6ddcbb1dc3bd29d3",
+  "runner_sha256": "5837d5d6746e42198f0137aad2db5562010dac4b3cb984f75034bc7ceb2a26a1",
+  "created_at": "2026-11-12T09:59:53.637953+00:00",
+  "migration_exit": 0,
+  "schema_migrations_count": "781",
+  "reason": "Private TMP used noncanonical macOS /var symlink ancestry, rejected by controlled artifact roots. Preserve DB; allocate new canonical-path run."
+}

@@ -147,106 +147,9 @@ func EvaluateDeliveryEvidenceInTx(ctx context.Context, tx pgx.Tx, access Artifac
 	if err != nil {
 		return out, err
 	}
-	if e.WorkspaceID != issue.WorkspaceID || e.ResourceID != issue.ID {
-		return out, pgx.ErrNoRows
-	}
-	spec, err := ReadArtifactSpec(e)
+	e, task, approval, err := lockDeliveryArtifactInTx(ctx, tx, access, issue, e)
 	if err != nil {
 		return out, err
-	}
-	digest, err := artifact.RequestDigest(spec.Request, spec.Binding)
-	if err != nil || digest != e.RequestDigest {
-		return out, artifactConflict()
-	}
-	initialApproval, err := q.GetAgentApprovalRequest(ctx, e.ApprovalID)
-	if err != nil {
-		return out, err
-	}
-	// Historical producer tasks may be completed. Their scope, generation and all
-	// current principals remain mandatory; the running-only claim gate is not reused.
-	if _, err = q.LockTaskCapabilityPrincipals(ctx, e.TaskID); err != nil {
-		return out, err
-	}
-	task, err := q.GetAgentTask(ctx, e.TaskID)
-	if err != nil {
-		return out, err
-	}
-	if task.AgentID != e.AgentID || task.IssueID != e.ResourceID || task.RuntimeID != e.RuntimeID || task.OriginatorUserID != e.OriginatorUserID || task.ClaimGeneration != e.TaskGeneration {
-		return out, artifactConflict()
-	}
-	if _, err = CheckArtifactAuthorityInTx(ctx, tx, access, spec.Request, &e, util.UUIDToString(initialApproval.DecidedBy), false, false); err != nil {
-		return out, err
-	}
-	runtime, err := (RuntimeLookup{Queries: q, Metrics: access.Metrics, Source: obsmetrics.RuntimeLookupSourceTask}).Get(ctx, task.RuntimeID)
-	if err != nil {
-		return out, err
-	}
-	agent, err := q.GetAgent(ctx, e.AgentID)
-	if err != nil {
-		return out, err
-	}
-	if runtime.WorkspaceID != e.WorkspaceID || agent.RuntimeID != runtime.ID {
-		return out, artifactConflict()
-	}
-	if _, err = LockArtifactUsers(ctx, q, e.WorkspaceID, util.UUIDToString(e.OriginatorUserID), util.UUIDToString(runtime.OwnerID)); err != nil {
-		return out, err
-	}
-	targets, err := q.LockTaskCapabilityInvocationTargets(ctx, agent.ID)
-	if err != nil {
-		return out, err
-	}
-	if !auth.AgentInvocationAllowed(agent, targets, util.UUIDToString(e.OriginatorUserID), true, false) {
-		return out, artifactDeny()
-	}
-	if e.InitiatorKind == "human" {
-		initiator := util.UUIDToString(e.InitiatorID)
-		members, e2 := LockArtifactUsers(ctx, q, e.WorkspaceID, initiator)
-		if e2 != nil {
-			return out, e2
-		}
-		if !artifactManager(agent, initiator, members) || !auth.AgentInvocationAllowed(agent, targets, initiator, true, false) {
-			return out, artifactDeny()
-		}
-	}
-	approval, err := q.LockAgentApprovalRequest(ctx, e.ApprovalID)
-	if err != nil {
-		return out, err
-	}
-	if approval.DecidedBy != initialApproval.DecidedBy || approval.WorkspaceID != e.WorkspaceID || approval.TaskID != e.TaskID || approval.AgentID != e.AgentID || approval.IssueID != e.ResourceID {
-		return out, artifactConflict()
-	}
-	live, err := q.LockAgentArtifactExecutionByApproval(ctx, e.ApprovalID)
-	if err != nil {
-		return out, err
-	}
-	if live.RequestDigest != digest || live.SpecDigest != e.SpecDigest || !bytes.Equal(live.CanonicalSpec, e.CanonicalSpec) {
-		return out, artifactConflict()
-	}
-	if _, err = ReadArtifactSpec(live); err != nil {
-		return out, err
-	}
-	e = live
-	if !AutonomyAtLeast(agent.AutonomyLevel, AutonomyOperator) {
-		return out, artifactDeny()
-	}
-	if e.ClaimedKind.Valid {
-		switch e.ClaimedKind.String {
-		case "agent":
-			if e.ClaimedBy != e.AgentID {
-				return out, artifactConflict()
-			}
-		case "human":
-			claimant := util.UUIDToString(e.ClaimedBy)
-			members, e2 := LockArtifactUsers(ctx, q, e.WorkspaceID, claimant)
-			if e2 != nil {
-				return out, e2
-			}
-			if !artifactManager(agent, claimant, members) || !auth.AgentInvocationAllowed(agent, targets, claimant, true, false) {
-				return out, artifactDeny()
-			}
-		default:
-			return out, artifactConflict()
-		}
 	}
 	now, err := q.ArtifactExecutionDatabaseTime(ctx)
 	if err != nil {
@@ -310,6 +213,115 @@ func EvaluateDeliveryEvidenceInTx(ctx context.Context, tx pgx.Tx, access Artifac
 		out.Reason = "evidence_verified"
 	}
 	return out, nil
+}
+
+// lockDeliveryArtifactInTx shares the observer's retained/current artifact
+// authority with candidate discovery. It does not observe PRs or create evidence.
+func lockDeliveryArtifactInTx(ctx context.Context, tx pgx.Tx, access ArtifactAccess, issue db.Issue, execution db.AgentArtifactExecution) (e db.AgentArtifactExecution, task db.AgentTaskQueue, approval db.AgentApprovalRequest, err error) {
+	e = execution
+	q := db.New(tx)
+	if e.WorkspaceID != issue.WorkspaceID || e.ResourceID != issue.ID {
+		return e, task, approval, pgx.ErrNoRows
+	}
+	spec, err := ReadArtifactSpec(e)
+	if err != nil {
+		return e, task, approval, err
+	}
+	digest, err := artifact.RequestDigest(spec.Request, spec.Binding)
+	if err != nil || digest != e.RequestDigest {
+		return e, task, approval, artifactConflict()
+	}
+	initialApproval, err := q.GetAgentApprovalRequest(ctx, e.ApprovalID)
+	if err != nil {
+		return e, task, approval, err
+	}
+	// Historical producer tasks may be completed. Their scope, generation and all
+	// current principals remain mandatory; the running-only claim gate is not reused.
+	if _, err = q.LockTaskCapabilityPrincipals(ctx, e.TaskID); err != nil {
+		return e, task, approval, err
+	}
+	task, err = q.GetAgentTask(ctx, e.TaskID)
+	if err != nil {
+		return e, task, approval, err
+	}
+	if task.AgentID != e.AgentID || task.IssueID != e.ResourceID || task.RuntimeID != e.RuntimeID || task.OriginatorUserID != e.OriginatorUserID || task.ClaimGeneration != e.TaskGeneration {
+		return e, task, approval, artifactConflict()
+	}
+	if _, err = CheckArtifactAuthorityInTx(ctx, tx, access, spec.Request, &e, util.UUIDToString(initialApproval.DecidedBy), false, false); err != nil {
+		return e, task, approval, err
+	}
+	runtime, err := (RuntimeLookup{Queries: q, Metrics: access.Metrics, Source: obsmetrics.RuntimeLookupSourceTask}).Get(ctx, task.RuntimeID)
+	if err != nil {
+		return e, task, approval, err
+	}
+	agent, err := q.GetAgent(ctx, e.AgentID)
+	if err != nil {
+		return e, task, approval, err
+	}
+	if runtime.WorkspaceID != e.WorkspaceID || agent.RuntimeID != runtime.ID {
+		return e, task, approval, artifactConflict()
+	}
+	if _, err = LockArtifactUsers(ctx, q, e.WorkspaceID, util.UUIDToString(e.OriginatorUserID), util.UUIDToString(runtime.OwnerID)); err != nil {
+		return e, task, approval, err
+	}
+	targets, err := q.LockTaskCapabilityInvocationTargets(ctx, agent.ID)
+	if err != nil {
+		return e, task, approval, err
+	}
+	if !auth.AgentInvocationAllowed(agent, targets, util.UUIDToString(e.OriginatorUserID), true, false) {
+		return e, task, approval, artifactDeny()
+	}
+	if e.InitiatorKind == "human" {
+		initiator := util.UUIDToString(e.InitiatorID)
+		members, e2 := LockArtifactUsers(ctx, q, e.WorkspaceID, initiator)
+		if e2 != nil {
+			return e, task, approval, e2
+		}
+		if !artifactManager(agent, initiator, members) || !auth.AgentInvocationAllowed(agent, targets, initiator, true, false) {
+			return e, task, approval, artifactDeny()
+		}
+	}
+	approval, err = q.LockAgentApprovalRequest(ctx, e.ApprovalID)
+	if err != nil {
+		return e, task, approval, err
+	}
+	if approval.DecidedBy != initialApproval.DecidedBy || approval.WorkspaceID != e.WorkspaceID || approval.TaskID != e.TaskID || approval.AgentID != e.AgentID || approval.IssueID != e.ResourceID {
+		return e, task, approval, artifactConflict()
+	}
+	live, err := q.LockAgentArtifactExecutionByApproval(ctx, e.ApprovalID)
+	if err != nil {
+		return e, task, approval, err
+	}
+	if live.RequestDigest != digest || live.SpecDigest != e.SpecDigest || !bytes.Equal(live.CanonicalSpec, e.CanonicalSpec) {
+		return e, task, approval, artifactConflict()
+	}
+	if _, err = ReadArtifactSpec(live); err != nil {
+		return e, task, approval, err
+	}
+	e = live
+	if !AutonomyAtLeast(agent.AutonomyLevel, AutonomyOperator) {
+		return e, task, approval, artifactDeny()
+	}
+	if e.ClaimedKind.Valid {
+		switch e.ClaimedKind.String {
+		case "agent":
+			if e.ClaimedBy != e.AgentID {
+				return e, task, approval, artifactConflict()
+			}
+		case "human":
+			claimant := util.UUIDToString(e.ClaimedBy)
+			members, e2 := LockArtifactUsers(ctx, q, e.WorkspaceID, claimant)
+			if e2 != nil {
+				return e, task, approval, e2
+			}
+			if !artifactManager(agent, claimant, members) || !auth.AgentInvocationAllowed(agent, targets, claimant, true, false) {
+				return e, task, approval, artifactDeny()
+			}
+		default:
+			return e, task, approval, artifactConflict()
+		}
+	}
+	return e, task, approval, nil
 }
 
 func deliveryReceiptValid(e db.AgentArtifactExecution) bool {

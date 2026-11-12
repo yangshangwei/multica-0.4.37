@@ -3,16 +3,16 @@
   "name": "agent-squad-followup-roadmap",
   "title": "智能体与 AI 小队后续能力建设",
   "description": "承接2026-11-12阶段归档后的M1剩余交付与授权交互、M2报告快照/父级预算/能力负载调度、M3持续治理；已交付能力不重做，待办规划不自动启动实现。",
-  "status": "planning",
-  "dev_type": null,
-  "scope": null,
+  "status": "in_progress",
+  "dev_type": "fullstack",
+  "scope": "M1-S1 ordinary single-issue completion",
   "package": null,
   "priority": "P1",
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-11-12",
   "completedAt": null,
-  "branch": null,
+  "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
   "commit": null,
@@ -23,9 +23,23 @@
   "relatedFiles": [
     "prd.md",
     "handoff.md",
-    "source-map.json"
+    "source-map.json",
+    "requirements.md",
+    "design.md",
+    "implement.md",
+    "implement.jsonl",
+    "check.jsonl",
+    "research/m1-backend-current-contract.md",
+    "research/m1-clients-current-contract.md",
+    "research/m1-planning-review.md",
+    "research/m1-planning-validation.json",
+    "research/resume-check-2026-11-12.json",
+    "research/m1-backend-resume.md",
+    "research/m1-clients-resume.md",
+    "research/m1-cli-resume.md",
+    "research/m1-final-check.md"
   ],
-  "notes": "2026-11-12：承接用户批准的阶段归档；仅建立后续待办，未启动后续功能开发或真实调用。历史授权、失败与预算按原记录保留。",
+  "notes": "2026-11-12：承接用户批准的阶段归档；后续真实调用授权、历史失败与系列预算按原记录保留。\n2026-11-12：用户批准 M1-S1 规划并启动 implementation。\n2026-11-13：M1-S1 backend、Core、共享 Web/Desktop、CLI 已实现；专属 DB 后端 normal/race 与 CLI/Core/Views 定向验证通过。Final check 修复 CLI 收据绑定/applicability/expiry 缺口。仍缺 enforcing Web/Desktop renderer 视觉与人工完整流程验收；全量 Views 在修复后未重跑。POLA-1 的本地 UI 检查状态已恢复 todo，但历史有两条 status events。禁止将其作为继续 UI fixture。真实 Provider、知识注入、发布、Hosted CI、部署与账单对账均未开放。",
   "meta": {
     "created_from_delivered_stage_archive": true,
     "scope_authorization": {
@@ -33,11 +47,67 @@
       "user_instruction": "归档已交付阶段",
       "accepted_plan": "Archive six delivered stages and retain remaining product work and real-runtime acceptance as follow-up backlog."
     },
-    "planning_readiness": "inherited_scope_only_slice_design_and_execution_plan_needed",
-    "new_implementation_started": false,
+    "planning_readiness": "m1_s1_approved",
+    "new_implementation_started": true,
     "new_provider_calls": 0,
     "source_archives": [
       ".trellis/tasks/archive/2026-11/11-05-agent-squad-rnd-improvements"
-    ]
+    ],
+    "planning_scope": "M1-S1 only; M1 other entrypoints and F2-F5 remain subsequent separately accepted packages",
+    "implementation_approval": {
+      "date": "2026-11-12",
+      "user_message": "批准",
+      "scope": "Latest M1-S1 requirements/design/implement and final summary",
+      "approved_artifact_sha256": {
+        "prd.md": "e63cb492caa260aab7fbd13ef45828ae57a1a4c98e536d29a390ba1cd526b39d",
+        "requirements.md": "0d9394d6f114ba10c2d72d79d05c0f3476bfec4be9057cc8c5acae172246b5e9",
+        "design.md": "921544c70db44566ca0685ce0af2079af01f2dd355eed0db1f54782ed5ef6127",
+        "implement.md": "6425ceb736e48098dcb2163ecae5cc89374b42821e2f35a98ae810235bacd962"
+      },
+      "approved_artifact_hashes_are_historical": true,
+      "execution_artifact_sha256": {
+        "prd.md": "64b2fc83377b33af27579f15e93b74dac846077ea719da84df51c0d83c1777d1",
+        "requirements.md": "77a5c9fbcac24d6253f6c344d7369e2d4f2b38ae7bf5aec709bee01e00120b24",
+        "design.md": "69e91fb94ee94cc8aff647e09e726cf3e7aa3867b35ef3ad5374d165c7efc6d2",
+        "implement.md": "7915a699539302eaa64d9fef0bca10172f34f6c17dd3a1f658c680b4aba9ad8e"
+      },
+      "does_not_enable": [
+        "real_provider",
+        "knowledge_injection",
+        "release",
+        "hosted_ci",
+        "deployment"
+      ]
+    },
+    "continuation_2026_11_12": {
+      "request": "Continue existing task, verify current gaps and prepare M1-S1 requirements/design/implement/context; no new task",
+      "source_head": "ade2298e24c3e99aa1982f9c6ddcbb1dc3bd29d3",
+      "initial_status": "planning",
+      "initial_active_task": null,
+      "initial_design_present": false,
+      "initial_implement_present": false,
+      "initial_context_entries": {
+        "implement": 0,
+        "check": 0
+      },
+      "product_tests_run": false,
+      "task_activated": false,
+      "real_runtime_task": ".trellis/tasks/11-12-collaboration-real-runtime-acceptance/"
+    },
+    "planning_review": {
+      "status": "findings_resolved",
+      "artifact": "research/m1-planning-review.md",
+      "product_validation_performed": false
+    },
+    "implementation_progress": {
+      "stage": "M1-S1 P1-P4 implemented; focused final quality checks passed; enforcing renderer acceptance pending",
+      "started_after_user_approval": true,
+      "current_api_contract": "research/m1-wire-contract.md",
+      "test_environment": "research/test-environments",
+      "new_provider_calls": 0,
+      "final_check": "research/m1-final-check.md",
+      "visual_acceptance": "not_verified_demo_project_policy_off_or_observe",
+      "views_full_suite_after_fixes": false
+    }
   }
 }

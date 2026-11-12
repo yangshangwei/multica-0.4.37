@@ -129,11 +129,22 @@ export function useUpdateIssue() {
   const wsId = useWorkspaceId();
   return useMutation({
     mutationFn: ({ id, move_intent: moveIntent, ...data }: UpdateIssueMutationInput) => {
+      if (!moveIntent && data.completion) {
+        if (typeof data.status !== "string" || Object.keys(data).some(key => key !== "status" && key !== "completion")) {
+          return Promise.reject(new Error("Bound completion only accepts a status change"));
+        }
+        return api.submitDeliveryCompletion(id, { status: data.status, completion: data.completion }, { workspaceId: wsId }).then(result => result.issue);
+      }
       if (!moveIntent) return api.updateIssue(id, data);
       const { position: _optimisticPosition, ...target } = data;
       return api.moveIssue(id, { ...target, ...moveIntent });
     },
     onMutate: ({ id, move_intent: _moveIntent, ...data }) => {
+      // A completion receipt, not a predicted done status, establishes success.
+      // Keep the actual issue visible while the transaction may be uncertain.
+      if (data.completion) {
+        return { change: null, prevChildren: undefined, parentId: qc.getQueryData<Issue>(issueKeys.detail(wsId, id))?.parent_issue_id ?? null, id };
+      }
       // suppress_run / handoff_note are write-time control fields, not Issue
       // columns. description_base is merge metadata, while description itself
       // is resolved against that base on the server and therefore is not safe
@@ -220,7 +231,7 @@ export function useUpdateIssue() {
       return { change, prevChildren, parentId, id };
     },
     onError: (_err, vars, ctx) => {
-      if (ctx) {
+      if (ctx?.change) {
         rollbackIssueChange(qc, wsId, ctx.id, ctx.change);
       }
       if (ctx?.parentId && ctx.prevChildren !== undefined) {
@@ -307,7 +318,7 @@ export function useUpdateIssue() {
           Object.prototype.hasOwnProperty.call(vars, "project_id"),
       });
       qc.invalidateQueries({ queryKey: issueKeys.tableAll(wsId) });
-      if (ctx) {
+      if (ctx?.change) {
         invalidateStaleListKeys(qc, ctx.change.staleKeys);
       }
       // Refresh the issue's attachments cache when the description editor

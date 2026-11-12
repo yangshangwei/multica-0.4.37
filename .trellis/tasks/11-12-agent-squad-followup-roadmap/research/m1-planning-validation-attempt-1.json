@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-12",
+  "scope": "planning documents only",
+  "passed": false,
+  "errors": [
+    ".trellis/tasks/11-12-agent-squad-followup-roadmap/handoff.md: missing link research/m1-planning-validation.json",
+    ".trellis/tasks/11-12-agent-squad-followup-roadmap/research/m1-backend-current-contract.md:88: trailing whitespace"
+  ],
+  "local_markdown_links_checked": 24,
+  "existing_json_files_parsed": 3,
+  "context_entries": {
+    "implement": 11,
+    "check": 14
+  },
+  "acceptance_ids": [
+    "S1-01",
+    "S1-02",
+    "S1-03",
+    "S1-04",
+    "S1-05",
+    "S1-06",
+    "S1-07",
+    "S1-08",
+    "S1-09",
+    "S1-10",
+    "S1-11",
+    "S1-12",
+    "S1-13",
+    "S1-14",
+    "S1-15",
+    "S1-16"
+  ],
+  "implementation_matrix_covers_all_acceptance_ids": true,
+  "independent_review": "research/m1-planning-review.md",
+  "review_unresolved_findings": 0,
+  "git_diff_check_exit": 0,
+  "task_status": "planning",
+  "implementation_approved": false,
+  "product_tests_run": false,
+  "database_or_real_provider_run": false,
+  "unrelated_tracked_changes_audit": "research/resume-check-2026-11-12.json",
+  "file_sha256": {
+    "check.jsonl": "0801a7d8ca9c0df05bc0663942545478c7fe031e4ba9cb2d4a85b88434efe04c",
+    "design.md": "921544c70db44566ca0685ce0af2079af01f2dd355eed0db1f54782ed5ef6127",
+    "handoff.md": "74378c7c38e71fd3630f26fced88afc871d59b4010abc24572f0afbff210cad1",
+    "implement.jsonl": "6b83dda6ddff517a73ce7fc1c8dfc9520a1434078cb87a917c66386871afa7df",
+    "implement.md": "6425ceb736e48098dcb2163ecae5cc89374b42821e2f35a98ae810235bacd962",
+    "prd.md": "e63cb492caa260aab7fbd13ef45828ae57a1a4c98e536d29a390ba1cd526b39d",
+    "requirements.md": "0d9394d6f114ba10c2d72d79d05c0f3476bfec4be9057cc8c5acae172246b5e9",
+    "research/m1-backend-current-contract.md": "f0ac432b2c433d5683eb5f9673425929cf2820e358ee2f6e180b11c4c2410d26",
+    "research/m1-clients-current-contract.md": "93ff1f7478af4f5c9b83c8f3ab9a8b359b0ea3d5dbd70fb4c423709a5aaf1a4c",
+    "research/m1-planning-review.md": "fb73932b8ef269cd45be72fe95c8bfcfda1da33266e8724c581c2acd8ac9f5b3",
+    "research/resume-check-2026-11-12.json": "ef25a02d70b47f3b01c78381b24bc6bc92f822400b2b210a70878c4b4036eb18",
+    "source-map.json": "c2e6b133340db71c3240eb2f8bcdc3c3e1463e9db229001f41ecfdbc118b41b5",
+    "task.json": "73f1f6446495cdaefaef590c1c45ca7987f8e8beb478d7f6c662406081966969"
+  }
+}

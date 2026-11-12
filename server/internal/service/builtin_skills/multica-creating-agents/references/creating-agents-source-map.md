@@ -263,6 +263,27 @@ suites, real migrations and static migration contract. The original stateless
 intercept any done writer, implement skip/enforcement, invoke a provider, or
 verify remote HEAD.
 
+## Ordinary completion authorization CLI
+
+`multica issue completion prepare <issue> --status <key>` reads current
+issue-scoped evidence candidates. Adding `--approval <uuid> --operation-file
+<path>` requests a fresh preview and writes a private local intent; it does not
+sign. `authorize --accept --reason --expires-at` is the dedicated human
+decision. `submit` sends only the target status and exact
+authorization/operation/revision binding through the existing issue writer.
+Normal `issue status` and status-only `issue update` keep their non-authorizing
+hint behavior.
+
+`show` reports the retained authorization/receipt separately from the current
+issue. When completion may have been dispatched, `issued/not_checked` remains
+unknown. Repeating authorize/submit/revoke queries the original request key or
+authorization and never resends a possibly committed write. The operation file
+is mode 0600, scoped to its Server/human/workspace, locked while in use, and
+contains neither bearer credentials nor private evaluation keys. `submit` has
+no `--no-start` or mixed-field updates. Implementation and fake-server tests:
+`server/cmd/multica/cmd_issue_completion.go` and
+`server/cmd/multica/cmd_issue_completion_test.go`.
+
 ## Explicit completion evidence hints
 
 Human-only `POST /api/issues/{id}/delivery-evidence/completion-hint` accepts

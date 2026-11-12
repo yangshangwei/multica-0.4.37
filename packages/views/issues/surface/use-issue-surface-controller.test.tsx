@@ -74,9 +74,10 @@ vi.mock("@multica/core/issues/mutations", () => ({
 }));
 
 vi.mock("@multica/core/modals", () => ({
-  useModalStore: {
-    getState: () => ({ open: openModal }),
-  },
+  useModalStore: Object.assign(
+    (selector: (state: { open: typeof openModal }) => unknown) => selector({ open: openModal }),
+    { getState: () => ({ open: openModal }) },
+  ),
 }));
 
 vi.mock("../../i18n", () => ({

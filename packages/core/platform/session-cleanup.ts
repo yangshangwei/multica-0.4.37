@@ -3,6 +3,7 @@ import { resetProjectAccessSession } from "../projects/access";
 import { resetAllRegisteredDrafts } from "../drafts/cleanup-registry";
 import { clearAdminControlDrafts } from "../admin/operation-draft";
 import { clearCollaborationDrafts } from "../collaboration/draft";
+import { clearCompletionDrafts } from "../issues/completion-draft";
 import type { StorageAdapter } from "../types/storage";
 import type { Workspace } from "../types";
 import { workspaceKeys } from "../workspace/queries";
@@ -44,6 +45,7 @@ export function clearClientSessionData(
   resetAllRegisteredDrafts();
   clearAdminControlDrafts(storage);
   clearCollaborationDrafts(storage);
+  clearCompletionDrafts(storage);
 
   // Then clear workspace-scoped storage, BEFORE clearing the React Query cache
   // (which holds the workspace list). Otherwise per-workspace drafts/chat/etc

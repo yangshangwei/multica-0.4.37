@@ -692,7 +692,7 @@ function SubIssueRow({
   const updateIssue = useUpdateIssue();
   const wsId = useWorkspaceId();
   const { entryOf } = useIssueStatuses(wsId);
-  const runCompletionHint = useCompletionHintGate();
+  const runCompletionHint = useCompletionHintGate(child.id);
   const selected = useIssueSelectionStore((s) => s.selectedIds.has(child.id));
   const toggleSelected = useIssueSelectionStore((s) => s.toggle);
   // Category, not key: a custom status in the done/cancelled categories is

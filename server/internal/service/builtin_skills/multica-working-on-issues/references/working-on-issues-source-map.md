@@ -390,6 +390,24 @@ the active completion-enforcement task; historical pass is never a new permit.
 
 ## Completion authority and partial batch outcomes
 
+### Ordinary CLI authorization flow
+
+| Behavior | Source |
+|---|---|
+| `issue completion prepare`, `authorize --accept`, `submit`, `show`, and `revoke` are separate human-only actions; ordinary status/update never sign automatically | `server/cmd/multica/cmd_issue_completion.go` (`runIssueCompletionPrepare`, `runIssueCompletionAuthorize`, `runIssueCompletionSubmit`, `runIssueCompletionShow`, `runIssueCompletionRevoke`); `cmd_issue.go` registration |
+| Prepare reads issue-scoped candidates and a fresh selected preview; it never chooses the newest candidate automatically | `server/cmd/multica/cmd_issue_completion.go` (`runIssueCompletionPrepare`); `server/internal/handler/delivery_completion_preview.go` |
+| Authorization binds exact issue/project/policy/evidence, current human and expiry; the dedicated `--accept` supplies the human decision | `server/cmd/multica/cmd_issue_completion.go` (`completionCLIClient`, `runIssueCompletionAuthorize`); `server/internal/service/delivery_completion_authorization.go` |
+| The operation file is identity-scoped, private, integrity-checked and locked; original stage markers and keys are saved before write dispatch | `server/cmd/multica/cmd_issue_completion.go` (`createCompletionOperation`, `lockCompletionOperation`, `saveCompletionOperation`, `verifyCompletionOperation`) |
+| Create uncertainty looks up the original key with `workspace_id`; exact issued recovery does not auto-submit. Completion/revoke uncertainty never resends, and issued/not_checked after a possible PUT stays unknown | `server/cmd/multica/cmd_issue_completion.go` (`runIssueCompletionAuthorize`, `runIssueCompletionSubmit`, `runIssueCompletionRevoke`, `recoverCompletionCLI`, `showCompletionOperation`) |
+| Completion uses one non-redirected PUT with only status and the exact completion binding; retained receipt is shown separately from current issue state | `server/cmd/multica/cmd_issue_completion.go` (`completionPutOnce`, `recoverCompletionCLI`, `showCompletionOperation`); `server/internal/handler/issue.go` (`UpdateIssue`) |
+| Fake-server regressions protect explicit signing, original-key recovery, no-resend unknowns, current-vs-historical state, file privacy/integrity/locking, candidates-only reads and redirect refusal | `server/cmd/multica/cmd_issue_completion_test.go` (`TestIssueCompletion*`) |
+
+A `show` of a revoked authorization reads the retained terminal fact; it does
+not mean this command revoked it. An issued authorization is not proof that a
+possibly dispatched completion PUT did not commit. The completion command does
+not accept `--no-start` or mixed updates. Private evaluation keys and bearer
+tokens are never copied into the operation file.
+
 A completion hint, private evaluation, successful agent run or merged PR is not
 permission to mark an issue done. When the project's current delivery policy is
 `enforce`, entering any done-category status requires an explicit human

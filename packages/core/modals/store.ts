@@ -12,6 +12,7 @@ type ModalType =
   | "issue-delete-confirm"
   | "issue-run-confirm"
   | "issue-completion-hint"
+  | "issue-completion-authorization"
   | null;
 
 interface ModalStore {

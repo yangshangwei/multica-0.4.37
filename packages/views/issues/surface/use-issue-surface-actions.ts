@@ -63,7 +63,7 @@ export function useIssueSurfaceActions({
   const updateIssueMutation = useUpdateIssue();
   const batchUpdateMutation = useBatchUpdateIssues();
   const batchDeleteMutation = useBatchDeleteIssues();
-  const runCompletionHint = useCompletionHintGate();
+  const runCompletionHint = useCompletionHintGate(wsId);
 
   const updateIssue = useCallback(
     (
@@ -125,6 +125,7 @@ export function useIssueSurfaceActions({
           targetCategory: statuses.find((status) => status.key === updates.status)?.category,
           updates,
           continueMutation: applyUpdate,
+          options,
         });
         return;
       }

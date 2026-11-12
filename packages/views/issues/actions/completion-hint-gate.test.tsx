@@ -4,16 +4,26 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Issue } from "@multica/core/types";
 
-const { mockOpenModal, mockHint, mockGetIssue, mockToastError } = vi.hoisted(() => ({
+const { mockOpenModal, mockHint, mockGetIssue, mockToastError, authState } = vi.hoisted(() => ({
   mockOpenModal: vi.fn(),
   mockHint: vi.fn(),
   mockGetIssue: vi.fn(),
   mockToastError: vi.fn(),
+  authState: { ready: true },
 }));
 
 vi.mock("@multica/core/modals", () => ({
   useModalStore: (selector: (state: { open: typeof mockOpenModal }) => unknown) =>
     selector({ open: mockOpenModal }),
+}));
+vi.mock("@multica/core/auth", () => ({
+  useAuthStore: Object.assign((selector: (state: { user: { id: string } }) => unknown) => {
+    if (!authState.ready) throw new Error("Auth store not initialised");
+    return selector({ user: { id: "user-1" } });
+  }, { getState: () => {
+    if (!authState.ready) throw new Error("Auth store not initialised");
+    return { user: { id: "user-1" } };
+  } }),
 }));
 
 vi.mock("@multica/core/api", () => ({
@@ -37,6 +47,7 @@ vi.mock("@multica/core/issues", () => ({
   isLegacyCompletionHintError: (error: unknown) =>
     typeof error === "object" && error !== null && "legacy" in error,
   issueStatusCategory: (issue: Issue) => issue.status_category ?? issue.status,
+  deliveryCompletionScope: (userId: string, workspaceId: string, issueId: string) => ({ userId, workspaceId, issueId, server: "test", apiScope: "session" }),
 }));
 
 vi.mock("@multica/core/issue-statuses", () => ({
@@ -82,6 +93,7 @@ beforeEach(() => {
   mockHint.mockReset();
   mockGetIssue.mockReset();
   mockToastError.mockReset();
+  authState.ready = true;
 });
 
 function runGate(
@@ -102,6 +114,53 @@ function runGate(
 }
 
 describe("useCompletionHintGate", () => {
+  it("does not require the auth store for ordinary surface initialization", () => {
+    authState.ready = false;
+    expect(() => renderHook(() => useCompletionHintGate("issue-1"))).not.toThrow();
+  });
+
+  it("routes enforce to explicit authorization and forwards settlement without a second PUT", async () => {
+    mockHint.mockResolvedValue({ policy_mode: "enforce", hint: "attention", target_category: "done", enforced: false, usable_for_completion: false });
+    const { result } = renderHook(() => useCompletionHintGate("issue-1"));
+    const onContinue = vi.fn(), onSuccess = vi.fn(), onSettled = vi.fn();
+    act(() => result.current({ issue: issue(), targetStatus: "done", targetCategory: "done", updates: { status: "done" },
+      continueMutation: onContinue, options: { onSuccess, onSettled } }));
+    await waitFor(() => expect(mockOpenModal).toHaveBeenCalledWith("issue-completion-authorization", expect.anything()));
+    const data = mockOpenModal.mock.calls[0]?.[1] as { onCompleted: (issue: Issue) => void };
+    const completedIssue = issue({ status: "done", status_category: "done", revision: 5 });
+    act(() => { data.onCompleted(completedIssue); data.onCompleted(completedIssue); });
+    expect(onContinue).not.toHaveBeenCalled();
+    expect(onSuccess).toHaveBeenCalledExactlyOnceWith(completedIssue);
+    expect(onSettled).toHaveBeenCalledTimes(1);
+    expect(mockHint.mock.calls[0]?.[2]).toMatchObject({ workspaceId: "ws-1" });
+  });
+
+  it("settles the waiting caller when the authorization flow is cancelled", async () => {
+    mockHint.mockResolvedValue({ policy_mode: "enforce", hint: "attention", target_category: "done", enforced: false, usable_for_completion: false });
+    const { result } = renderHook(() => useCompletionHintGate("issue-1"));
+    const onContinue = vi.fn(), onSettled = vi.fn();
+    act(() => result.current({ issue: issue(), targetStatus: "done", targetCategory: "done", updates: { status: "done" },
+      continueMutation: onContinue, options: { onSettled } }));
+    await waitFor(() => expect(mockOpenModal).toHaveBeenCalledWith("issue-completion-authorization", expect.anything()));
+
+    const data = mockOpenModal.mock.calls[0]?.[1] as { onCancel: () => void };
+    act(() => data.onCancel());
+    expect(onContinue).not.toHaveBeenCalled();
+    expect(onSettled).toHaveBeenCalledTimes(1);
+  });
+
+  it("aborts the authorization owner when the displayed issue changes", async () => {
+    mockHint.mockResolvedValue({ policy_mode: "enforce", hint: "attention", target_category: "done", enforced: false, usable_for_completion: false });
+    const { result, rerender } = renderHook(({ owner }) => useCompletionHintGate(owner), { initialProps: { owner: "issue-1" } });
+    const onContinue = runGate(result);
+    await waitFor(() => expect(mockOpenModal).toHaveBeenCalledTimes(1));
+    const data = mockOpenModal.mock.calls[0]?.[1] as { ownerSignal: AbortSignal; onCompleted: (issue: Issue) => void };
+    rerender({ owner: "issue-2" });
+    expect(data.ownerSignal.aborted).toBe(true);
+    act(() => data.onCompleted(issue({ status: "done" })));
+    expect(onContinue).not.toHaveBeenCalled();
+  });
+
   it("leaves collaboration source completion to its existing workflow", () => {
     const account = { user_id: "user-1", name: "Handler", avatar_url: "", external: true };
     const { result } = renderHook(() => useCompletionHintGate());

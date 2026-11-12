@@ -501,3 +501,4 @@ cannot pass; see the source map for recovery and explicit hint boundaries.
 Web/Desktop and CLI status-only consumers may request a completion hint before
 an ordinary done-category PUT, but they always send `evaluation_key: null`,
 never expose private evaluation data, and never treat the read as authorization.
+The source map documents the separate human-only ordinary completion CLI and original-key recovery; hints never authorize, and agents cannot reuse another person's private evaluation key.

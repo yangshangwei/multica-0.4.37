@@ -11,7 +11,7 @@ Product contracts the runtime brief does not fully encode: PR linking vs close i
 
 For building mention links, load `multica-mentioning` instead — not this skill.
 
-Every contract below is traced to source in `references/working-on-issues-source-map.md`. Read the [completion and batch contract](references/working-on-issues-source-map.md#completion-authority-and-partial-batch-outcomes): enforce needs exact human authorization; unknown never retries, skip is unsupported, and batch success is per item.
+Every contract below is traced to source in `references/working-on-issues-source-map.md`. Read the [completion and batch contract](references/working-on-issues-source-map.md#completion-authority-and-partial-batch-outcomes): enforce needs exact human authorization; unknown never retries, skip is unsupported, and batch success is per item. The source map also documents the explicit ordinary completion CLI flow; hints never authorize.
 
 ## Collaboration tasks require their own workflow
 

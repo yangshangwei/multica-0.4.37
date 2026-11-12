@@ -44,6 +44,26 @@ describe("ApiClient.getDeliveryCompletionHint", () => {
     expect(String(fetchMock.mock.calls[0]?.[0])).toContain("/api/issues/issue-1/delivery-evidence/completion-hint");
   });
 
+  it("pins an explicitly scoped hint read to its workspace", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(response(matching));
+    vi.stubGlobal("fetch", fetchMock);
+    await new ApiClient("https://api.example.test").getDeliveryCompletionHint("issue-1", {
+      expected_issue_revision: 4,
+      target_status: "done",
+      evaluation_key: null,
+    }, { workspaceId: "workspace-1" });
+
+    expect(fetchMock.mock.calls[0]?.[1]?.headers).toMatchObject({
+      "X-Workspace-ID": "workspace-1",
+      "X-Workspace-Slug": "",
+    });
+    expect(JSON.parse(String(fetchMock.mock.calls[0]?.[1]?.body))).toEqual({
+      expected_issue_revision: 4,
+      target_status: "done",
+      evaluation_key: null,
+    });
+  });
+
   it("does not forward runtime-only extra fields or a smuggled key", async () => {
     const fetchMock = vi.fn().mockResolvedValue(response(matching));
     vi.stubGlobal("fetch", fetchMock);

@@ -7,6 +7,10 @@ export * from "./ws-updaters";
 export * from "./workdir";
 export * from "./config";
 export * from "./stores";
+export * from "./completion-schema";
+export * from "./completion-draft";
+export * from "./completion";
+export * from "./completion-queries";
 
 export {
   issueBehavesAs,

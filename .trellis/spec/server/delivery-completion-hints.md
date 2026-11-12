@@ -158,3 +158,102 @@ one mutation for duplicate confirmation and release only after settlement.
 CLI tests assert stderr-only advisory, rejection before PUT and success output
 only after PUT succeeds. Existing backend hint and enforcement matrices remain
 independent; consumer checks do not replace them.
+
+## Ordinary explicit authorization consumers (M1-S1)
+
+### 1. Scope / trigger
+
+This flow covers one ordinary explicit status-only transition from a non-done
+category into an active done category under current `enforce` policy. Web and
+Desktop share one business flow; the CLI uses separate explicit commands.
+Off/observe/non-done/done-to-done behavior and the non-authorizing hint remain
+unchanged. Drag, batch, create-as-done, mixed updates, collaboration and R38
+remain separate work.
+
+### 2. Signatures
+
+Core uses workspace-scoped candidate and preview reads, existing human
+authorization POST/by-request-key/ID GET/revocation POST, current issue GET,
+and the existing issue PUT with
+`completion:{authorization_id,operation_id,expected_issue_revision}`. New
+responses pass a schema before UI use. Reads are no-store and explicitly carry
+the source workspace.
+
+CLI exposes `issue completion prepare`, `authorize --accept`, `submit`, `show`
+and `revoke`, with JSON or explicit table output. Authorize uses its saved
+request key; key recovery uses `?workspace_id=<source UUID>`. A local operation
+file is created exclusively with mode 0600, rejects symlinks and widened
+permissions, is integrity checked, and is locked during each action.
+
+### 3. Contracts
+
+The hint gate routes to the authorization UI only when the current response is
+`policy_mode=enforce` and the resolved target category is `done`. It never calls
+the old plain mutation after the modal submits its bound PUT. The modal displays
+current issue/revision, status labels, candidate summary, source/digests,
+observation and expiry. Evidence selection is explicit; an expired candidate
+may remain visible but is disabled. Pass is an observation, not consent. The
+human provides a non-empty reason, selects an expiry within the preview
+horizon, presses `Authorize`, then separately presses `Submit`.
+
+Core stores the immutable request/operation before dispatch, reads it back,
+and refuses network writes on storage failure. It scopes client data by
+server/session, user, source workspace and issue; session changes and denied
+reads clear the protected projection. Bound completion is not optimistically
+patched to `done`. Only a matching original terminal receipt proves the
+historical operation; current issue is read separately and may already be
+reopened.
+
+CLI `prepare` only lists candidates or writes a selected preview file. Old
+`issue status`/`issue update` never auto-sign and retain the old hint and
+`--no-start` contracts. `submit` accepts no `--no-start` or mixed fields. It
+persists a dispatch marker before one non-redirected bound PUT. Before submit,
+the grant must be `issued/not_checked` and locally unexpired. An uncertain
+create may query the original key; if that lookup verifies the exact issued
+grant, the command may report `authorized` but never submits in that
+invocation. After possible submit/revoke, `issued/not_checked` remains unknown
+and only the original authorization is queried. A consumed receipt must match
+authorization, operation, issue, target and advance the expected issue
+revision. `show` may successfully report a revoked terminal; this does not
+prove that a revoke in the current invocation caused it. Unknown/refused submit
+and revoke are non-zero results with a recovery locator.
+
+### 4. Validation / error matrix
+
+| Condition | Client behavior |
+|---|---|
+| Hint attention/matching | Advisory only; never authorization |
+| Enforce + active done target | Open explicit shared authorization flow |
+| Storage failure, malformed 2xx or unknown protocol/state | Do not dispatch or authorize |
+| Create write uncertain | Query original request key only; never mint another key automatically |
+| Submit/revoke write uncertain | Query original authorization only; never repeat PUT/POST |
+| `issued/not_checked` after possible PUT | Unknown, non-success; do not submit again |
+| Expired/inapplicable grant before first submit | Refuse before dispatch marker or PUT; a refresh is a new explicit review |
+| Consumed receipt with reopened current issue | Show historical completed revision and separate current status/revision |
+| Current issue denied after historical receipt | Retain history, report current state unavailable; do not project done |
+
+### 5. Good / base / bad
+
+Good: repeated `show` after a lost PUT reads one matching receipt and a newer
+reopened issue without another status write. Base: normal status commands keep
+the existing null-key hint in off/observe. Bad: use a hint confirmation or
+another human's evaluation key as the grant, retry a possibly committed PUT
+because authorization still says issued, or project a historical receipt as
+current state.
+
+### 6. Required tests
+
+Core tests own schema/safe-integer, draft durability, single-flight and
+create/submit/revoke unknown recovery matrices. Shared Views tests own enforce
+routing, bound mutation wiring, cancellation/unmount/identity settlement and
+accessibility. CLI tests use fake HTTP only and assert flags, JSON/table,
+exit behavior, exact key/workspace, single writes, redirect refusal, file mode,
+integrity/locking, expired refusal, receipt mismatch and historical/current
+separation. Embedded skill tests ensure command and field guidance remains
+paired with executable contracts.
+
+### 7. Wrong vs correct
+
+Wrong: after an unknown PUT, `show` finds an issued authorization and reports
+permission to retry. Correct: once the PUT dispatch marker exists, that read
+remains unknown until the matching consumed/revoked terminal proves the result.

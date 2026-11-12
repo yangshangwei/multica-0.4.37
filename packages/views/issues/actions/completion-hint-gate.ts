@@ -3,12 +3,14 @@
 import { useCallback, useEffect, useRef } from "react";
 import type { Issue, IssueStatusCategory, UpdateIssueRequest } from "@multica/core/types";
 import { api, ApiError, errorCode } from "@multica/core/api";
-import { classifyCompletionHintIntent, isLegacyCompletionHintError, issueStatusCategory } from "@multica/core/issues";
+import { useAuthStore } from "@multica/core/auth";
+import { classifyCompletionHintIntent, deliveryCompletionScope, isLegacyCompletionHintError, issueStatusCategory } from "@multica/core/issues";
 import { isIssueStatusCategory } from "@multica/core/issue-statuses";
 import { useModalStore } from "@multica/core/modals";
 import { toast } from "sonner";
 import { useT } from "../../i18n";
 import type { IssueCompletionHintModalData } from "../../modals/issue-completion-hint";
+import type { IssueCompletionAuthorizationModalData } from "../../modals/issue-completion-authorization";
 
 export interface CompletionHintMutationOptions {
   errorMessage?: string;
@@ -43,11 +45,12 @@ function errorMessage(error: unknown, fallback: string): string {
  * The continuation is never called until the hint is either not applicable,
  * explicitly confirmed by the user, or unavailable on an old server.
  */
-export function useCompletionHintGate() {
+export function useCompletionHintGate(ownerKey?: string | null) {
   const { t } = useT("issues");
   const openModal = useModalStore((state) => state.open);
   const pendingIssueIds = useRef(new Set<string>());
   const controllers = useRef(new Map<string, AbortController>());
+  const authorizationSettlers = useRef(new Map<string, () => void>());
 
   const clearPending = useCallback((issueId: string) => {
     pendingIssueIds.current.delete(issueId);
@@ -56,7 +59,7 @@ export function useCompletionHintGate() {
   }, []);
 
   const run = useCallback(
-    ({ issue, targetStatus, targetCategory, updates, continueMutation }: CompletionHintGateIssue) => {
+    ({ issue, targetStatus, targetCategory, updates, continueMutation, options }: CompletionHintGateIssue) => {
       if (!isStatusOnlyUpdate(updates) || updates.status === issue.status) {
         void continueMutation();
         return;
@@ -110,7 +113,7 @@ export function useCompletionHintGate() {
           });
           if (controller.signal.aborted) return;
           clearPending(issue.id);
-          run({ issue: currentIssue, targetStatus, targetCategory, updates, continueMutation });
+          run({ issue: currentIssue, targetStatus, targetCategory, updates, continueMutation, options });
         } catch (error) {
           if (controller.signal.aborted) return;
           showModal({
@@ -144,9 +147,42 @@ export function useCompletionHintGate() {
               target_status: targetStatus,
               evaluation_key: null,
             },
-            { signal: controller.signal },
+            { workspaceId: issue.workspace_id, signal: controller.signal },
           );
           if (controller.signal.aborted) return;
+          if (response.policy_mode === "enforce" && response.target_category === "done") {
+            const userId = useAuthStore.getState().user?.id;
+            if (!userId || useAuthStore.getState().user?.id !== userId) throw new Error(t($ => $.detail.completion_authorization.session_changed));
+            let settled = false;
+            const settle = () => {
+              if (settled) return;
+              settled = true;
+              authorizationSettlers.current.delete(issue.id);
+              options?.onSettled?.();
+            };
+            authorizationSettlers.current.set(issue.id, settle);
+            const data: IssueCompletionAuthorizationModalData = {
+              issue,
+              scope: deliveryCompletionScope(userId, issue.workspace_id, issue.id),
+              targetStatus,
+              ownerSignal: controller.signal,
+              onRefresh: retry,
+              onCancel: () => {
+                clearPending(issue.id);
+                settle();
+              },
+              onCompleted: (completedIssue) => {
+                if (controller.signal.aborted || consumed || useAuthStore.getState().user?.id !== userId) return;
+                consumed = true;
+                // The core completion action already submitted the bound PUT.
+                // Forward settlement only; never invoke the old plain writer.
+                try { options?.onSuccess?.(completedIssue); }
+                finally { settle(); }
+              },
+            };
+            openModal("issue-completion-authorization", data as unknown as Record<string, unknown>);
+            return;
+          }
           if (response.hint === "not_applicable") {
             await confirm();
             return;
@@ -214,8 +250,10 @@ export function useCompletionHintGate() {
       for (const controller of controllers.current.values()) controller.abort();
       controllers.current.clear();
       pendingIssueIds.current.clear();
+      for (const settle of authorizationSettlers.current.values()) settle();
+      authorizationSettlers.current.clear();
     },
-    [],
+    [ownerKey],
   );
 
   return run;

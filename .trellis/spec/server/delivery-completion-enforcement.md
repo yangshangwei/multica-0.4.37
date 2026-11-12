@@ -179,3 +179,91 @@ unknown commit and retained original-key recovery. Preserve every failed fixture
 compile, behavior or migration attempt with its own raw log and source identity.
 Final all-writer proof, client protocol validation and independent review are
 separate from baseline compatibility tests, provider/model or deployed acceptance.
+
+## Ordinary human preparation reads (M1-S1)
+
+### 1. Scope / trigger
+
+These reads let the current human inspect artifact candidates and the exact
+ordinary issue/project/policy binding before creating the existing human
+authorization. They add no writer, durable authorization, evaluation, queue
+entry, notification or provider call. Existing authorization creation,
+transactional completion consumption and terminal receipts remain authoritative.
+
+### 2. Signatures
+
+- `GET /api/issues/{issueId}/delivery-evidence/candidates?limit=1..50&cursor=...`
+  returns `{protocol_version, issue_id, issue_revision, project_id, checked_at,
+  items, next_cursor, has_more}`. Each item contains only current-authority
+  metadata: approval/execution ID, source revision, spec/artifact/receipt
+  digests, creation/expiry times, summary, status/result code and selectable.
+- `POST /api/issues/{issueId}/delivery-evidence/completion-preview` accepts
+  exactly `{expected_issue_revision, target_status, approval_id}`. It returns
+  current issue/status/category, project and policy revisions, checked_at, the
+  current observation, optional canonical ordinary/human authorization
+  binding, `max_expires_at`, and explicit non-permission fields
+  `enforced:false`, `usable_for_completion:false`, `skip_supported:false`.
+- Neither endpoint accepts an evaluation key. Creation remains
+  `POST /api/delivery-completion-authorizations` with `Idempotency-Key`; by-key
+  recovery remains scoped by query `workspace_id`; ordinary completion remains
+  `PUT /api/issues/{id}` with `{status, completion}`.
+
+### 3. Contracts
+
+Candidate scans are issue/workspace scoped, human-only and bounded to at most
+200 rows per request. Every candidate is filtered through live artifact
+authority; approval-list visibility does not confer artifact visibility.
+Filtered records must not affect visible counts, cursor placement or
+`has_more`. If the scan bound is reached before enough visible candidates can
+be proven, return unavailable rather than a false empty page. Cursors are
+opaque request snapshots bound to issue revision, source workspace and viewer;
+stale binding is refused.
+
+Each read uses the existing artifact transaction preparation and lock order,
+current credential fence, issue lifecycle lock and current project/policy
+read. Selected preview repeats the actual artifact observer with current PR,
+task, issuer and credential authority and calculates the maximum expiry from
+the evidence and finite credential horizons under the existing 24-hour cap.
+The response is not a grant: the human must review and call the existing
+authorization endpoint, which observes and validates again. Custom active done
+statuses use server category resolution; archived/unknown status is refused.
+Both responses are `Cache-Control: no-store` and have zero business writes.
+The routes keep the existing minimum task-capability guard; do not widen
+Reporter/Reviewer credentials to use them.
+
+### 4. Validation / error matrix
+
+| Condition | Result |
+|---|---|
+| Invalid/duplicate/unknown query or strict malformed preview body | 400 |
+| Hidden workspace or issue | Existing resource-hiding 404 |
+| Non-human or current artifact access denied | 403/404 per existing boundary |
+| Stale issue, project, evidence, policy or cursor binding | 409 |
+| Lock contention | 409; no retry |
+| Bounded scan cannot classify enough visible candidates | 503 unavailable; never false empty |
+| Current pass with canonical binding | `authorization_available`; still not permission |
+| Off/observe, no project, already done or non-done target | Non-authorizing reason branch |
+
+### 5. Good / base / bad
+
+Good: the human selects one visible candidate, sees its current observation
+and expiry horizon, then separately accepts the exact binding. Base: an empty
+authorized list reveals no hidden row count. Bad: select the newest approval
+automatically, filter only after a broad first page, or treat preview pass as
+completion permission.
+
+### 6. Required tests
+
+Use fresh task-owned handler/router databases in normal and race runs. Assert
+pagination and visible-set cursors, hidden count/has-more privacy, bounded
+scan refusal, selected binding/credential horizon, custom status and stale
+branches, cache-control, no evaluation/authorization/status/comment/queue
+writes, legacy/password router access and Reporter/Reviewer refusal. Keep
+failed allocations/logs and bind results to changed source bytes.
+
+### 7. Wrong vs correct
+
+Wrong: read the newest approval or infer signing permission from `pass`.
+Correct: resolve only candidates visible under original artifact authority, let
+a human choose one, then obtain a new issuer observation when the existing
+authorization is explicitly created.
