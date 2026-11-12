@@ -1023,3 +1023,41 @@ Archived 11-01-branch-e2e-acceptance at the user's request. Preserved the retain
 ### Next Steps
 
 - 按既有M1剩余范围推进；M2快照→父预算→能力负载，M3持续治理。不要重跑受停止规则限制的真实模型验收。
+
+
+## Session 154: 归档六个已交付阶段并移交后续功能与真实验收
+<!-- trellis-session: v=2 fp=e8e0fad741aa89fc -->
+
+**Date**: 2026-11-12
+**Task**: 归档六个已交付阶段并移交后续功能与真实验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+用户确认阶段归档。保存Runtime准备与UI/CLI提示，六任务按阶段归档，未完范围承接到两个planning待办。
+
+### Main Changes
+
+- 六阶段归档提交 f6401dad044cf51755c41b97bb1d005f70e4c58a；原完整范围未宣称全部完成。
+- 完成提示五类局部回归及check-only安全返回已修复；H6续作框架缺口明确保留到后续。
+- 历史失败、独立预算和默认关闭准入不变；没有真实Provider调用、部署或外部消息。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `e08ab34ce228cf11a39c153ccd33d61626ebd75b` | test(runtime): preserve continuation preparation without enabling real execution |
+| `c5c6fd29a74deee2b52726c92d6c05fbfc289748` | feat(delivery): make completion hints safe for ordinary UI and CLI flows |
+
+### Testing
+
+- [OK] Core22、Views131、完整CLI测试、lint/typecheck/vet/builtin合同通过；Runtime纯mock5/5、编译/vet通过。
+- [OK] 3844个历史文件字节不变，967条无关初始脏路径保留，35个新链接通过；六completed阶段与两个planning继任状态核对。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 后续能力建设承接M1剩余流程、M2/M3；真实运行验收先修复H6并建立归档感知入口与当前绑定，预算不重置。
