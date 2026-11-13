@@ -1061,3 +1061,39 @@ Archived 11-01-branch-e2e-acceptance at the user's request. Preserved the retain
 ### Next Steps
 
 - 后续能力建设承接M1剩余流程、M2/M3；真实运行验收先修复H6并建立归档感知入口与当前绑定，预算不重置。
+
+
+## Session 155: S1 具体 Agent 身份与闭环回归验收
+<!-- trellis-session: v=2 fp=8724b87d1aecea22 -->
+
+**Date**: 2026-11-13
+**Task**: S1 具体 Agent 身份与闭环回归验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成可信 Agent 作者最小投影、兼容解析与共享列表/回复展示；B01–B10 和独立终审通过，归档 S1，父任务完整24项与S2–S5保持开放。
+
+### Main Changes
+
+- 服务端批量作者投影、Core安全解析、Web/Desktop共享作者选择；不新增依赖或迁移。
+- 扩展三账号五运行闭环与108字符窄屏/200% Electron验证，保留全部原失败。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `eafe68109` | feat(collaboration): make Agent authors identifiable without changing authority |
+
+### Testing
+
+- [OK] Core146；Views四文件50及最终列表19；Service53/Handler9；race6+1；go vet通过。
+- [OK] 完整typecheck9/9、lint6/6；五个必需浏览器场景通过，无跳过；最终根工作区编译与定向7项通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- PAY-241父任务继续S2–S5；TC20完整审计仍为PARTIAL。
