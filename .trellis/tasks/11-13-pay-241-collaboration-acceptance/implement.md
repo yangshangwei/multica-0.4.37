@@ -1,6 +1,6 @@
 # 分阶段执行草案
 
-当前阶段：planning。用户已确认S1首包；实际执行计划见 [S1子任务](../archive/2026-11/11-13-collaboration-agent-identity-baseline/implement.md)，其最终摘要已获用户批准，子任务已激活。父任务不直接启动产品实现。
+当前阶段：planning。用户已确认S1首包；实际执行计划见 [S1子任务](../archive/2026-11/11-13-collaboration-agent-identity-baseline/implement.md)，其最终摘要已获用户批准，子任务现已验收归档。父任务不直接启动产品实现。
 
 ## 0. 规划与基线
 
