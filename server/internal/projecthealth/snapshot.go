@@ -93,10 +93,11 @@ type Input struct {
 }
 
 type Collection struct {
-	Statistics  StatisticsSnapshot
-	Risks       map[string][]string
-	Categories  map[string]string
-	StatusNames map[string]string
+	EnvironmentUnavailableIDs []string
+	Statistics                StatisticsSnapshot
+	Risks                     map[string][]string
+	Categories                map[string]string
+	StatusNames               map[string]string
 }
 
 // CanonicalJSON sorts nested object keys and preserves JSON integer precision.
@@ -120,16 +121,47 @@ func CanonicalJSON(value any) ([]byte, error) {
 	return bytes.TrimSuffix(out.Bytes(), []byte{'\n'}), nil
 }
 
+// CalendarFacts is the resolved calendar input used by the health rules.
+// Snapshot consumers retain these dates instead of reinterpreting old instants
+// after a timezone database update.
+type CalendarFacts struct {
+	ReferenceDate       string
+	LatestUpdateDate    *string
+	InProgressSinceDate *string
+}
+
 func Compute(in Input) (Collection, error) {
-	zone := util.DefaultPlanningTimezone
-	if in.Timezone != nil {
-		zone = *in.Timezone
-	}
+	zone := effectiveTimezone(in)
 	loc, err := time.LoadLocation(zone)
 	if err != nil || zone == "" || zone == "Local" {
 		return Collection{}, fmt.Errorf("invalid planning timezone %q", zone)
 	}
-	day := in.Now.In(loc).Format(time.DateOnly)
+	calendar := CalendarFacts{ReferenceDate: in.Now.In(loc).Format(time.DateOnly)}
+	if in.LatestUpdateAt != nil {
+		calendar.LatestUpdateDate = ptr(in.LatestUpdateAt.In(loc).Format(time.DateOnly))
+	}
+	if in.Project.InProgressSince != nil {
+		calendar.InProgressSinceDate = ptr(in.Project.InProgressSince.In(loc).Format(time.DateOnly))
+	}
+	return ComputeWithCalendar(in, calendar)
+}
+
+// ComputeWithCalendar runs the same health rules using already resolved dates.
+// The caller must bind these dates to its retained time provenance. This entry
+// point deliberately does not load the current timezone database.
+func ComputeWithCalendar(in Input, calendar CalendarFacts) (Collection, error) {
+	zone := effectiveTimezone(in)
+	if zone == "" || zone == "Local" || !validCalendarDate(calendar.ReferenceDate) ||
+		(in.LatestUpdateAt == nil) != (calendar.LatestUpdateDate == nil) ||
+		(in.Project.InProgressSince == nil) != (calendar.InProgressSinceDate == nil) {
+		return Collection{}, fmt.Errorf("invalid frozen planning calendar")
+	}
+	for _, date := range []*string{calendar.LatestUpdateDate, calendar.InProgressSinceDate} {
+		if date != nil && !validCalendarDate(*date) {
+			return Collection{}, fmt.Errorf("invalid frozen planning date")
+		}
+	}
+	day := calendar.ReferenceDate
 	statuses := append([]Status(nil), in.Statuses...)
 	sort.Slice(statuses, func(i, j int) bool { return statuses[i].Key < statuses[j].Key })
 	issues := append([]Issue(nil), in.Issues...)
@@ -141,84 +173,24 @@ func Compute(in Input) (Collection, error) {
 		}
 		return refs[i].ID < refs[j].ID
 	})
-	categories := statusCategories(statuses)
+	categories := StatusCategories(statuses)
 	reference := map[string]Reference{}
 	for _, r := range refs {
 		reference[r.Kind+":"+r.ID] = r
 	}
 	valid := func(kind, id string) bool { return kind != "" && id != "" && reference[kind+":"+id].Valid }
-	byStatus := map[string]int64{}
+	signals := SignalInput{ProjectStatus: in.Project.Status, ProjectDueDate: in.Project.DueDate, LeadValid: valid(in.Project.LeadType, in.Project.LeadID), InProgressSince: in.Project.InProgressSince, LatestUpdateAt: in.LatestUpdateAt, Calendar: calendar}
 	for _, issue := range issues {
-		byStatus[issue.Status]++
+		signals.Issues = append(signals.Issues, IssueSignal{ID: issue.ID, Status: issue.Status, Category: categories[issue.Status], DueDate: issue.DueDate, AssignmentValid: valid(issue.AssigneeType, issue.AssigneeID), EnvironmentUnavailable: reference[issue.AssigneeType+":"+issue.AssigneeID].EnvironmentUnavailable})
 	}
-	counts := countScope(byStatus, categories)
-	counts.Blocked, counts.Overdue, counts.Unassigned, counts.InReview, counts.RiskUnion, counts.ExecutionEnvironmentUnavailable = ptr(int64(0)), ptr(int64(0)), ptr(int64(0)), ptr(int64(0)), ptr(int64(0)), ptr(int64(0))
-	out := Collection{Risks: map[string][]string{"blocked": {}, "overdue": {}, "unassigned": {}, "in_review": {}}, Categories: categories}
-	seen := map[string]bool{}
-	for _, i := range issues {
-		if seen[i.ID] {
-			return Collection{}, fmt.Errorf("duplicate formal issue %s", i.ID)
-		}
-		seen[i.ID] = true
-		category := categories[i.Status]
-		if category == "done" || category == "cancelled" {
-			continue
-		}
-		hits := map[string]bool{"blocked": category == "blocked", "overdue": i.DueDate != nil && *i.DueDate < day, "unassigned": !valid(i.AssigneeType, i.AssigneeID), "in_review": category == "in_review"}
-		risk := false
-		for signal, hit := range hits {
-			if hit {
-				out.Risks[signal] = append(out.Risks[signal], i.ID)
-				risk = true
-			}
-		}
-		if risk {
-			*counts.RiskUnion++
-		}
-		if valid(i.AssigneeType, i.AssigneeID) && reference[i.AssigneeType+":"+i.AssigneeID].EnvironmentUnavailable {
-			*counts.ExecutionEnvironmentUnavailable++
-		}
+	out, err := ComputeSignals(signals)
+	if err != nil {
+		return Collection{}, err
 	}
-	*counts.Blocked = int64(len(out.Risks["blocked"]))
-	*counts.Overdue = int64(len(out.Risks["overdue"]))
-	*counts.Unassigned = int64(len(out.Risks["unassigned"]))
-	*counts.InReview = int64(len(out.Risks["in_review"]))
-	ended := in.Project.Status == "completed" || in.Project.Status == "cancelled"
-	overdue := in.Project.DueDate != nil && *in.Project.DueDate < day && !ended
-	lead := valid(in.Project.LeadType, in.Project.LeadID)
-	snapshot := StatisticsSnapshot{WorkspaceID: in.Project.WorkspaceID, ProjectID: in.Project.ID, ProjectRevision: in.Project.Revision, CalculatedAt: in.Now.UTC(), ReferenceDate: day, Timezone: zone, TimezoneConfigured: in.Timezone != nil, Complete: *counts.UnknownStatus == 0, IncompleteReasons: []string{}, Counts: counts, ProjectOverdue: &overdue, LeadValid: &lead, LatestUpdateAt: in.LatestUpdateAt, Reasons: []string{}, Health: "clear"}
-	if *counts.Total > 0 {
-		snapshot.ClosureRatio = ptr(float64(*counts.Completed+*counts.Cancelled) / float64(*counts.Total))
-	}
-	anchor := in.LatestUpdateAt
-	if anchor != nil {
-		age := calendarDays(*anchor, in.Now, loc)
-		snapshot.ProgressAgeDays = &age
-	} else {
-		anchor = in.Project.InProgressSince
-	}
-	stale := in.Project.Status == "in_progress" && anchor != nil && calendarDays(*anchor, in.Now, loc) >= 7
-	for _, reason := range []struct {
-		hit  bool
-		code string
-	}{
-		{*counts.Blocked > 0, "blocked_issues"}, {*counts.Overdue > 0, "overdue_issues"}, {overdue, "project_overdue"}, {*counts.Unassigned > 0, "unassigned_issues"}, {*counts.InReview > 0, "in_review_issues"}, {!lead, "invalid_project_lead"}, {stale, "stale_progress"}, {ended && *counts.Open > 0, "ended_project_open_issues"}, {*counts.ExecutionEnvironmentUnavailable > 0, "execution_environment_unavailable"},
-	} {
-		if reason.hit {
-			snapshot.Reasons = append(snapshot.Reasons, reason.code)
-		}
-	}
-	switch {
-	case !snapshot.Complete:
-		snapshot.Health = "unavailable"
-		snapshot.IncompleteReasons = append(snapshot.IncompleteReasons, "unknown_status")
-	case *counts.Total == 0:
-		snapshot.Health = "empty"
-	case *counts.Blocked > 0 || *counts.Overdue > 0 || overdue:
-		snapshot.Health = "risk"
-	case *counts.Unassigned > 0 || *counts.InReview > 0 || !lead || stale:
-		snapshot.Health = "attention"
-	}
+	out.Categories = categories
+	snapshot := out.Statistics
+	snapshot.WorkspaceID, snapshot.ProjectID, snapshot.ProjectRevision = in.Project.WorkspaceID, in.Project.ID, in.Project.Revision
+	snapshot.CalculatedAt, snapshot.Timezone, snapshot.TimezoneConfigured = in.Now.UTC(), zone, in.Timezone != nil
 	canonical, err := CanonicalJSON(struct {
 		Version           int
 		Project           Project
@@ -240,12 +212,23 @@ func Compute(in Input) (Collection, error) {
 }
 
 func ptr[T any](v T) *T { return &v }
-func calendarDays(from, to time.Time, loc *time.Location) int {
-	date := func(t time.Time) time.Time {
-		y, m, d := t.In(loc).Date()
-		return time.Date(y, m, d, 0, 0, 0, 0, time.UTC)
+
+func effectiveTimezone(in Input) string {
+	if in.Timezone != nil {
+		return *in.Timezone
 	}
-	days := int(date(to).Sub(date(from)) / (24 * time.Hour))
+	return util.DefaultPlanningTimezone
+}
+
+func validCalendarDate(s string) bool {
+	value, err := time.Parse(time.DateOnly, s)
+	return err == nil && value.Format(time.DateOnly) == s
+}
+
+func calendarDateDays(from, to string) int {
+	a, _ := time.Parse(time.DateOnly, from)
+	b, _ := time.Parse(time.DateOnly, to)
+	days := int(b.Sub(a) / (24 * time.Hour))
 	if days < 0 {
 		return 0
 	}

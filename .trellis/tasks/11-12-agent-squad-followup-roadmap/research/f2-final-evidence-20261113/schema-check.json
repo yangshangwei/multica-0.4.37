@@ -1,0 +1,28 @@
+{
+  "database": "f2_f2_router_race_01_04e6d847",
+  "foreign_keys": 0,
+  "valid_unique_indexes": [
+    "report_snapshot|report_snapshot_correction_key|true|true",
+    "report_snapshot|report_snapshot_cycle_key|true|true",
+    "report_snapshot|report_snapshot_id_key|true|true",
+    "report_snapshot|report_snapshot_request_key|true|true",
+    "report_snapshot|report_snapshot_sequence_key|true|true",
+    "report_snapshot_control|report_snapshot_control_identity_key|true|true",
+    "report_snapshot_control|report_snapshot_withdrawal_identity_key|true|true",
+    "report_snapshot_control|report_snapshot_withdrawal_request_key|true|true"
+  ],
+  "migration_files_checked": [
+    "server/migrations/794_report_snapshot.up.sql",
+    "server/migrations/795_report_snapshot_id.up.sql",
+    "server/migrations/796_report_snapshot_request.up.sql",
+    "server/migrations/797_report_snapshot_sequence.up.sql",
+    "server/migrations/798_report_snapshot_cycle.up.sql",
+    "server/migrations/799_report_snapshot_correction.up.sql",
+    "server/migrations/800_report_snapshot_control.up.sql",
+    "server/migrations/801_report_snapshot_control_identity.up.sql",
+    "server/migrations/802_report_snapshot_withdrawal_request.up.sql",
+    "server/migrations/803_report_snapshot_withdrawal_identity.up.sql",
+    "server/migrations/804_report_snapshot_seal_binding.up.sql"
+  ],
+  "mutation_performed": false
+}

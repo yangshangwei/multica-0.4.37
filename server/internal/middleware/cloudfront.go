@@ -17,6 +17,12 @@ func RefreshCloudFrontCookies(signer *auth.CloudFrontSigner) func(http.Handler) 
 			return next
 		}
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// Snapshot reads and receipts must not mint unrelated credentials,
+			// including human or legacy-token requests refused by a later gate.
+			if _, snapshot := ReportSnapshotOriginalHeaders(r.Context()); snapshot {
+				next.ServeHTTP(w, r)
+				return
+			}
 			// A wildcard CDN cookie would turn a scoped issue read into access
 			// to unrelated storage. Resource-specific signed URLs remain valid.
 			if token, ok := auth.VerifiedTaskTokenFromContext(r.Context()); ok && len(token.ApiCapability) > 0 {

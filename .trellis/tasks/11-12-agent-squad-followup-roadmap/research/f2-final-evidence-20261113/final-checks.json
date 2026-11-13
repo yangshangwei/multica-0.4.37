@@ -1,0 +1,118 @@
+[
+  {
+    "name": "engine-health-race-final",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/reportsnapshot",
+      "./internal/projecthealth",
+      "-count=1",
+      "-race",
+      "-json"
+    ],
+    "exit": 0,
+    "counts": {
+      "pass": 53,
+      "fail": 0,
+      "skip": 0
+    },
+    "top_level_counts": {
+      "pass": 38,
+      "fail": 0,
+      "skip": 0
+    },
+    "log": ".trellis/tasks/11-12-agent-squad-followup-roadmap/research/f2-final-evidence-20261113/engine-health-race-final.jsonl",
+    "sha256": "93339636dbd857bc8c1b24a6250d8a1cf61221bf2bd64cb57bccdf39cf76b887"
+  },
+  {
+    "name": "cli-full-final",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./cmd/multica",
+      "-count=1",
+      "-json"
+    ],
+    "exit": 0,
+    "counts": {
+      "pass": 1283,
+      "fail": 0,
+      "skip": 0
+    },
+    "top_level_counts": {
+      "pass": 487,
+      "fail": 0,
+      "skip": 0
+    },
+    "log": ".trellis/tasks/11-12-agent-squad-followup-roadmap/research/f2-final-evidence-20261113/cli-full-final.jsonl",
+    "sha256": "46dcf4e8e86ae856ad4a0102027eb1cab69e6b19262629e774b51498c2437602"
+  },
+  {
+    "name": "affected-vet",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "./internal/reportsnapshot",
+      "./internal/projecthealth",
+      "./internal/service",
+      "./internal/handler",
+      "./internal/middleware",
+      "./cmd/server",
+      "./cmd/multica"
+    ],
+    "exit": 0,
+    "counts": {
+      "pass": 0,
+      "fail": 0,
+      "skip": 0
+    },
+    "top_level_counts": {
+      "pass": 0,
+      "fail": 0,
+      "skip": 0
+    },
+    "log": ".trellis/tasks/11-12-agent-squad-followup-roadmap/research/f2-final-evidence-20261113/affected-vet.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "affected-build",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "build",
+      "./internal/reportsnapshot",
+      "./internal/projecthealth",
+      "./internal/service",
+      "./internal/handler",
+      "./internal/middleware",
+      "./cmd/server",
+      "./cmd/multica"
+    ],
+    "exit": 0,
+    "counts": {
+      "pass": 0,
+      "fail": 0,
+      "skip": 0
+    },
+    "top_level_counts": {
+      "pass": 0,
+      "fail": 0,
+      "skip": 0
+    },
+    "log": ".trellis/tasks/11-12-agent-squad-followup-roadmap/research/f2-final-evidence-20261113/affected-build.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

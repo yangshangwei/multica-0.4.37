@@ -1,6 +1,8 @@
 # M1-S1：普通单事项完成授权
 
-日期：2026-11-12。状态：M1-S1 已批准并执行中。归属 PRD 的 F1；不表示已实现或重新验收 v1。
+> 当前F2状态：最小首包已按本线程明确授权实现并通过确定性验收，见 [F2验收](research/f2-acceptance-20261113.md)。以下设计/待授权文字保留为历史；task仍in_progress，M1其他入口及F3/F4/F5、真实运行禁区不变。
+
+日期：2026-11-12，2026-11-13 续接。M1-S1 已按原批准实现并完成验收（463b201fa；证据见 research/m1-final-check.md）；下列首包条款保留为已交付合同。本轮仅补充 F2 设计/验收，不重做 M1-S1。
 
 ## 目标与首包范围
 
@@ -59,7 +61,7 @@ S2 → S3 → S4 → S5 → S6 是这些入口内部的建议顺序，不把全�
 
 | ID | 结果合同 | 最低独立验收与依赖 |
 | --- | --- | --- |
-| F2 | 固定 `snapshot_id`、protocol/semantics version、精确 scope、timezone、半开 `[start,end)`、DB read cut `as_of`、来源身份/版本、来源 watermark/cursor 定义、materialized source-ID/digest manifest、coverage/gap manifest 与规范结果 digest；模型只解释已冻结结果。 | 首先在同一 scope/window/read cut 与现有 project-health/progress-report 只读双向比对，逐 metric 明确权威，不双写业务状态。分页、迟到、重开、取消、移入/移出、报告自排除、source truncation 和历史缺失均有确定性结果；有 Reporter 权限时重读原快照不重跑当前查询、不静默采用新来源。采集阶段 source 不可读为显式 gap/nonzero unknown；请求者 Reporter 权限撤销后 replay 是 deny 且无快照正文。`eligible/included/excluded/unknown` 可复核，unknown 不是 0。Reporter 新 route 只能 exact current-report/frozen-project GET，在同一 repeatable-read scope snapshot 校验；无项目时只能读当前报告，跨项目/枚举/附件/写方法/凭据交换/签发完成授权一律拒绝。 |
+| F2 | 保存不可变结果、精确 scope/time/version、可重算的最小事实 payload、来源/水位/排序/coverage/gaps；模型只解释。 | F2-01–12 与 research A01–A16 独立验收；逐指标权威与只读双向对照明确。来源不可读为 gap/unknown，reader replay 前失权则 deny 无正文；新增能力仅 exact current-report/frozen-project GET。D1–D6 仍待审阅，未批准实现。 |
 | F3 | 一个父任务预算根覆盖子执行与所有重试；reserved/actual/unknown 分离，整数计量和价格版本可追溯 | 并发预留、重复/迟到用量、取消/超时释放、未知结算与恢复不超发、不重复扣减。先观察再强制；项目/小队预算是后包。没有账单对账范围。 |
 | F4 | readiness、能力与当前可观察负载形成候选，领取事务再次核验权限/容量/预算 | 撤权、容量耗尽、取消、离线、并发领取可解释拒绝；原运行时身份保持，换身份必须另有授权；依赖 F3 的预算根。 |
 | F5-A | 固定负载 SLO 与恢复演练 | 环境/负载/阈值/观察窗口固定，超时、断网、取消、恢复与备份场景保留失败样本；未测为 unknown。真实 Provider 部分移交独立真实运行任务。 |
@@ -68,6 +70,62 @@ S2 → S3 → S4 → S5 → S6 是这些入口内部的建议顺序，不把全�
 | F5-D | 模板升级 | base/current/candidate 版本与差异可见，保留实例定制，CAS 合并和条件回滚；同名不同模板不误覆盖，权限/工具不兼容不升级。 |
 | F5-E | 知识持续复核与失效治理 | 复用已有版本、审批、撤回和到期；补持续复核触发、适用版本变化、复核责任与失效传播。已撤回/过期材料不继续被视为有效，注入默认关闭。 |
 
+## F2 需求与可观察验收（提案，未实现）
+
+目标：同一报告快照在来源后来变化时仍可核对原结果；读者只能在当前权限下读取其获准范围，数据不完整时能辨认已核实部分和未知总数。技术细节在 design.md §8，手算 oracle、来源锚点与 D1–D6 在 F2 research。本表不替代 F1/F3/F4/F5 未完成项。
+
+| ID | 需求 | 可观察验收 / research 场景 |
+| --- | --- | --- |
+| F2-01 | 不可变且可重放 | 原 ID 重读一致；输入内容、来源身份/版本、结果/digest 可复核，只有查询参数或 hash 不合格；乱序/页大小不改结果。A01 |
+| F2-02 | 明确时间与范围 | scope、timezone、[start,end)、as_of、版本及时间依据可见；start 包含/end 排除，自然周期与滚动周期分开；stock_as_of 不冒充 end 状态。A02 |
+| F2-03 | 完整分页与 cut | 2,001+、同时间戳、重复页和并发提交不漏/重计；排序 cursor 不冒充 producer watermark；不能跨 cut 拼页。A03/A04 |
+| F2-04 | 迟到与来源缺口 | 旧快照只保存当时所知 gap，迟到修正需新快照；无历史/producer 完整性证明时如实 unknown。A05 |
+| F2-05 | 生命周期与范围变更 | 完成、取消、关闭、重开按明确集合计数；移入/出影响新 cohort，不改旧结果；归属/因果不明不推断。A06/A07 |
+| F2-06 | 报告自排除可审计 | 当前 ID/可靠 provenance 排除本次及历史报告；标题相同的业务任务不误排，分类不明列 unknown。A08 |
+| F2-07 | 可复核 coverage | eligible/included/excluded/unknown 单位与分母明确；已知缺一项和不知缺多少分别表达；unknown 不折0、失败不冒充空项目。A09 |
+| F2-08 | 冻结事实与当前读分开 | source 后变/删时仍按获准保留合同读原事实；当前 live 读独立验权；内容丢失/版本不支持不重算或换 latest。A10/A11；保留边界待 D3 |
+| F2-09 | 指标权威与只读对照 | 同 cut 对现有 project-health/progress-report 规则做双向集合/数值差分；逐指标说明来源与差异，不双写，不拿无来源旧数字做 oracle。A12 |
+| F2-10 | Reporter 最小读取权限 | verified Reporter、exact 当前报告/frozen project，在本次同一 RR scope 校验实际返回内容；撤权在读取 cut 前则 deny 无正文；不扩大 workspace/其他报告读取。A13/A14 |
+| F2-11 | 重读和生成分离 | current GET 只查已封存指针，指定 ID 保持不可变；原周期重试与新 correction 区分，不因 GET/刷新自动采集。A15；生成准入待 D5 |
+| F2-12 | 零新增业务副作用 | 快照 GET 不写 issue/project/comment/policy，不生成凭据/完成授权，不触发 Provider/dispatch；原 Reporter inert comment 合同不扩展。A16 |
+
+仍需审阅的产品/技术选择：D1 范围/时间，D2 全历史与报告身份来源，D3 保留/大小，D4 exact GET/错误/分页，D5 采集主体/幂等/原子发布，D6 数值口径及验收证据。当前提案不把这些待决项标为已通过或实现就绪。
+
 ## 验收范围与审批状态
 
 M1-S1 的 requirements/design/implement 已按 task.json 中保存的用户批准进入实现并完成验收。M1-S2–S6 与 F2–F5 仍是后续包；F2 的 design-only 规划见 design.md §8 与 `research/f2-deterministic-report-snapshot-planning-20261113.md`，不属于 M1-S1 批准，也没有实现授权。五个 M3 包保持独立验收。真实 Provider、知识注入、发布、Hosted CI 和部署继续关闭，由相应原任务与审批单独承接。
+
+## F2 后续实现批准
+
+用户随后明确“F2 授权 ，请推进”。本批准独立于 M1-S1，覆盖 F2 实现与任务自有验证。前述 design-only/未授权文字属于上一轮历史状态；当前按 [F2 execution contract](research/f2-execution-contract-20261113.md) 收敛 D1–D6 并执行。来源不能证明的历史继续 unknown，不扩充真实 Provider、POLA-1、共享策略或其他 roadmap 包。task 保持 in_progress，不新建或归档。
+
+## 本次续接：F2 验收细化（仅设计）
+
+上一节保留并行记录。本次用户只要求设计与验收，不运行或修改其实现。F2-01–12 不换号、不删旧场景；以下细化以 [F2 research §8](research/f2-deterministic-report-snapshot-planning-20261113.md) 的数字oracle、拒绝矩阵和D1–D6为准，全部尚非本次产品通过证据。
+
+| 需求 | 追加的可观察验收 |
+| --- | --- |
+| F2-01/02 | 原输入/结果独立可重放；scope/classification/semantics/calendar/coverage版本可定位。时区库或配置改变后，窗口及reference/update/anchor当地日期、age/health均不变；禁止仅保存IANA名称再按新规则求值。A02-calendar |
+| F2-03/04 | 2,001条与恰好整页均确认EOF；页大小与重复页不改变结果；排序游标不代表producer完整水位。迟提交的小tuple不得在旧cut漏计后伪装“无迟到”，新补证不改旧gap。A03-boundary/A04-cut |
+| F2-05/06 | terminal互转与关闭/重开分别去重；移入/出及期末状态必须有当时归属/类别证明。当前报告、历史报告、有正面证明的同名业务、无分类普通任务分开；formal_stock不能冒充business stock。A06-terminal/A07-membership/A08-taxonomy |
+| F2-07 | I包含已核实贡献0；X仅为证实排除；多个gap不重复计U，未知尾部E/U/ratio为null。已知空、来源失败、无update和update不可读分别可辨；未知下界0不是总数0。A09-dependency |
+| F2-08 | 当前report仅revision/status改变时，仍有权的fresh claim可读原seal；producer claim不充当reader限制。report变项目/读者失权则deny；源删除按保留合同处理，不改旧结果。A10-version |
+| F2-09 | old_only/new_only/common解释collaboration、报告排除与unknown/open差异；与固定HEAD旧规则及手算对照，不能只让两侧调用同一修改后helper。无update时age为null；in_progress项目的stale可用8天前anchor；empty及environment reason遵守旧优先级。A12-health |
+| F2-10 | exact current-report/frozen-project GET按首次RR数据查询建立R；Auth后、R前撤权必须deny无正文，R后撤权的下一请求必须deny。公开envelope/manifest/gap/headers也做字段级最小化；失败路径无源ID/hash/计数泄漏且no-store。A13-disclosure/A14-first-read |
+| F2-11/12 | current只查seal；取消/断线/响应丢失不能错误宣称未提交，旧key/ID不跟随后继current。GET成功与错误均零业务/凭据/授权/Provider副作用，HEAD/query/编码路径不获得读取能力。A15-cancel/A16-errors |
+
+首包是否接受广泛unknown、来源保留与当前报告准入变化、公开字段和容量/分页、采集主体仍需按D1–D6审阅并取得独立证据。没有从M1-S1、任务in_progress或本次引导语推导F2实施权；M1-S2–S6及F3/F4/F5-A–E保持未完成。
+
+## 最小首包已确认选择与验收补充
+
+用户已依次确认“接受最小首包”“继续保留”“人工显式采集”。因此上节的广泛unknown、源删除/移出后保留和采集主体三项产品选择已收敛；完整合同及D1–D6最新状态见 [最小首包合同](research/f2-minimum-contract-20261113.md)。这些是设计确认，不是本轮F2实施许可。
+
+- F2-01/07/09：normal fixture须能精确复现正式存量；business/window因生产来源不足为unknown时是符合首包的结果，不能为得到complete而伪造历史。公共安全facts必须足以独立计算公开指标，不把结果包装成输入；内部来源真实性与公开重放分别证明。
+- F2-08/10：源任务删除/移出后继续读获准保留的原seal；owning report/工作空间删除清理，明确撤回内容停止旧正文读取；当前reader失权始终deny。公开对象不包含created_by/request_key/read_cut、runtime/roster等内部身份；safe validity和gap为明确typed事实。
+- F2-11/12：采集需要当前human且具有普通报告编辑权限，Reporter仅exact GET；原key恢复不重采，correction是新意图。自动周期不在首包；撤回/清除仍须给出技术执行与验收方案，不能用源普通删除代替撤回保留权。
+
+新增验收细化命名：A01-public-replay（公共事实复算）、A13-public-fields（逐字段披露）、A15-human-admission（编辑权限与只读身份）、A10-withdrawal（源删除与明确撤回分开）；仍归属原F2-01–12/A01–A16。预期结果见最小合同§3/5/6/8，尚未运行。
+
+## F2 最小首包验收状态
+
+上节“尚未运行”为设计时记录。当前F2-01–12/A01–A16按已确认最小范围完成实现与验证，对应命名用例及限制见 [F2验收](research/f2-acceptance-20261113.md)。handler17/30与router6/42均在独立normal/race数据库通过；engine/health38/53、CLI487/1283及相关审计/中间件/builtin合同通过，零最终失败或跳过。完整历史、真实Provider、生产负载、部署和新增UI不计作已验收能力。

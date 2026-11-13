@@ -482,6 +482,7 @@ func init() {
 	issueCmd.AddCommand(issueAssignCmd)
 	issueCmd.AddCommand(issueStatusCmd)
 	issueCmd.AddCommand(issueCompletionCmd)
+	issueCmd.AddCommand(issueReportSnapshotCmd)
 	issueCmd.AddCommand(issueReorderCmd)
 	issueCmd.AddCommand(issueCommentCmd)
 	issueCmd.AddCommand(issueSubscriberCmd)

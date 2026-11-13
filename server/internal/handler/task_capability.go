@@ -76,6 +76,11 @@ func taskCapabilityRouteAllowed(r *http.Request, c auth.TaskCapability) bool {
 		return false
 	}
 	if r.Method == http.MethodGet {
+		if len(parts) == 3 && parts[1] == "report-snapshots" {
+			return c.Profile == auth.TaskCapabilityReporter && r.URL.RawQuery == "" && !r.URL.ForceQuery &&
+				parts[0] == c.IssueID && canonicalReportSnapshotUUID(parts[0]) &&
+				(parts[2] == "current" || canonicalReportSnapshotUUID(parts[2]))
+		}
 		if len(parts) == 3 {
 			_, err := delegationKey(parts[2])
 			return parts[1] == "delegation-receipts" && err == nil

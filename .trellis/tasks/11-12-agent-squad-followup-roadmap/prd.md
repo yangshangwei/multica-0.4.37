@@ -1,5 +1,7 @@
 # 智能体与 AI 小队后续能力建设
 
+> 当前F2状态：最小首包已按本线程明确授权实现并通过确定性验收，见 [F2验收](research/f2-acceptance-20261113.md)。以下设计/待授权文字保留为历史；task仍in_progress，M1其他入口及F3/F4/F5、真实运行禁区不变。
+
 状态：in_progress。M1-S1 已按 task.json 中 2026-11-12 的明确批准启动；本 PRD 继续约束首包范围和后续路线，不代表其余路线获批或完成。
 
 ## 来源与目标
@@ -31,7 +33,7 @@ F1 的首包为 M1-S1：普通单事项“查看当前交付证据 → 明确授
 
 - 首包需求与逐项验收：[requirements.md](requirements.md)。覆盖 Web/Desktop 共享的普通单事项显式 status-only 入口，以及 CLI 合同；其他入口的现状与后续顺序单列。
 - 当前事实及缺口：[后端研究](research/m1-backend-current-contract.md)、[客户端研究](research/m1-clients-current-contract.md)。历史测试不代表本轮测试。
-- 技术设计：[design.md](design.md)；执行顺序、测试归属和门禁：[implement.md](implement.md)。二者仅详设 M1-S1。
+- 技术设计：[design.md](design.md)；执行顺序、测试归属和门禁：[implement.md](implement.md)。M1-S1 保留既有设计/完成记录；design §8、implement §9 承接 F2 规划，尚未获实现授权。
 - 后续顺序保持 M1-S1 → F2 报告快照 → F3 单一父任务预算 → F4 能力/负载调度。F1 其他入口在各自设计收口后安排，不作为启动 F2 的隐含全量前置。
 - M3 五包的独立结果与依赖见 requirements；本轮不建立新的父子任务、不改变真实运行验收授权。
 
@@ -41,4 +43,38 @@ F1 的首包为 M1-S1：普通单事项“查看当前交付证据 → 明确授
 
 后端只读候选/预览、Core 原操作协调器、共享 Web/Desktop modal/gate 及 CLI 首包均已实现。后端 handler/router normal/race、Core 全量、M1/surface 定向测试与 CLI 全量定向验证见 `research/m1-backend-resume.md`、`research/m1-clients-resume.md`、`research/m1-cli-resume.md` 与 `research/m1-final-check.md`。最终复核修复了 CLI receipt/applicability/expiry 的 fail-closed 缺口。
 
-尚未完成的验收：当前本地 Desktop Test 项目不在 enforce，未验证真实 enforcing modal 的 renderer/键盘/窄屏视觉路径；Views 全量套件未在定向修复后重跑。POLA-1 在只读 UI 检查误操作期间曾 `todo → done → todo`，当前状态已恢复，但历史保留两条状态事件。该事项不再用于额外 UI 检查。本任务保持 `in_progress`，直到能在隔离并明确允许的 enforcing 测试环境中完成用户流程验收。
+M1-S1 实现提交为 `463b201fa`，验收/规划记录提交为 `c79dfe304`。两项旧缺口已完成：修复后 Views 全量通过 602 files / 7,332 tests，task-owned production Web 与 Electron renderer E2E 通过 2/2。证据见 [最终检查](research/m1-final-check.md)、[全量 Views](research/m1-views-full-suite-20261113.md)、[renderer 收据与截图](research/m1-renderer-evidence-20261113/README.md)。本轮只核对历史证据，不重跑、不重新实现。POLA-1 早先两条状态事件仍保留历史记录，不再作为 fixture。
+
+### 本轮 F2 规划范围与待决项
+
+F2 的需求/验收在 [requirements.md 的 F2-01–12](requirements.md)，技术提案在 [design.md §8](design.md)，源码依据、指标权威、coverage 示例及 A01–A16 在 [F2 research](research/f2-deterministic-report-snapshot-planning-20261113.md)。只有保存可重放的最小事实及原结果，才满足确定性；来源缺口不得折为0，当前 reader 失权不得返回历史正文。
+
+提案已细化但仍需 D1 范围/时间、D2 历史/报告身份、D3 保留/大小、D4 GET/错误/分页、D5 采集主体/幂等/原子发布、D6 口径与对照证据。当前没有 F2 产品运行通过记录。此轮只更新现有任务规划，不实现代码、迁移或路由；task 的 in_progress 与 M1-S1 批准不构成 F2 实现权。M1-S2–S6、F3/F4/F5 继续保留未完成，整个 roadmap 不标完成或归档。
+
+### F2 独立实现批准（2026-11-13）
+
+用户随后明确“F2 授权 ，请推进”。本批准独立于 M1-S1，覆盖 F2 实现与任务自有验证。前述 design-only/未授权文字属于上一轮历史状态；当前按 [F2 execution contract](research/f2-execution-contract-20261113.md) 收敛 D1–D6 并执行。来源不能证明的历史继续 unknown，不扩充真实 Provider、POLA-1、共享策略或其他 roadmap 包。task 保持 in_progress，不新建或归档。
+
+### 本次 F2 设计审阅交付
+
+本次用户限定只补设计与验收；上一节保留另一轮记录，本次不据此执行。设计应让读者分别辨认“采集时正式任务存量”“已证明属于业务的存量/窗口事件”“来源仍未知的部分”。正式任务存量可完整，不代表历史报告已排除或窗口吞吐完整；来源不可读不得折0，读取者当前失权必须拒绝且不返回正文。
+
+F2-01–12 保留，新增细化验收见 requirements 的本次续接节、design §10 和 [F2 research §8](research/f2-deterministic-report-snapshot-planning-20261113.md)：冻结计算所需的当地日期、逐指标依赖/来源、分页与producer完整性分别证明、同cut旧规则只读对照、最小公开投影及首次RR查询前后撤权矩阵。
+
+尚需审阅的产品取舍包括：是否接受as-of cohort不计已移出任务、严格分类导致多数业务/窗口指标unknown的首包、冻结事实的保留/删除和公开字段边界、限额及是否外部分页、独立采集主体。D1–D6 的技术和运行证据仍须补齐；本次仅文档检查，不宣称F2产品验收通过或实现就绪。
+
+### 已确认的 F2 最小首包（2026-11-13）
+
+用户回答“接受最小首包”：先提供可重放的正式任务存量，业务分类或窗口历史缺乏权威证据时明确保留unknown；不把完整业务分类/全历史体系作为本首包前置。这项确认收敛上一节的首包可用性问题，不表示F2实现、迁移、路由或真实运行已获本轮批准。正式存量不改称业务吞吐，unknown不折0，其余保留/权限/采集及验收证据仍分别收敛。
+
+用户随后回答“继续保留”：源任务后来删除或移出项目时，已获准冻结的最小事实继续随原报告保留，读取仍受当前报告/项目权限约束；owning report/工作空间删除时清理，明确撤回内容时停止读取。源删除与撤回保留权分开，不动态改写原快照。此项为保留行为的设计确认，不是执行删除、部署或F2实施许可。
+
+用户再确认“人工显式采集”：由当前具有报告编辑权限的人显式发起；Reporter仅GET读取已封存结果，GET不采集/刷新；原请求可恢复，correction是新的明确意图；自动周期采集不纳入首包。这项确认仅固定生成方式的设计，不启动F2代码/迁移/路由实施。
+
+收敛后的结果范围、公共/内部事实边界、来源writer矩阵、保留/撤回/恢复条件与候选测试证据见 [最小首包合同](research/f2-minimum-contract-20261113.md)。完整历史建设已明确后置，不再重复询问是否接受unknown；仍需落实公共投影、编辑权限准入、明确撤回机制以及实际验证证据。本PRD前三项用户选择为当前产品方向，历史待决列表按该合同解释。
+
+用户已明确授权F2实现与验证，并随后选择撤回“本报告全部快照”：当前有权的人明确撤回后，该报告全部快照正文不可读，禁止继续采集/修正，不提供恢复；原撤回请求可恢复最小收据。源任务普通删除/移出不触发该终止动作。精确wire和事务要求见 [当前授权合同](research/f2-authorized-resume-20261113.md)，不扩展到跨报告来源治理或真实业务操作。
+
+### F2 最小首包已实现并验证
+
+人工采集、公共安全事实重放、逐来源缺口、当前Reporter精确读取、原请求恢复和本报告全部快照终止撤回均已完成。最终结果见 [F2验收](research/f2-acceptance-20261113.md)，现行可执行合同见 [report-snapshots spec](../../spec/server/report-snapshots.md)。生产历史不足保持unknown、完整历史/自动周期/跨报告治理不属于此首包。F1其他入口及F3/F4/F5继续待办；本任务保持in_progress，不归档。

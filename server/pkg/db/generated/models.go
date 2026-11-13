@@ -2428,6 +2428,42 @@ type QuickAction struct {
 	UpdatedAt     pgtype.Timestamptz `json:"updated_at"`
 }
 
+type ReportSnapshot struct {
+	ID             pgtype.UUID        `json:"id"`
+	WorkspaceID    pgtype.UUID        `json:"workspace_id"`
+	ReportIssueID  pgtype.UUID        `json:"report_issue_id"`
+	ProjectID      pgtype.UUID        `json:"project_id"`
+	ReportRevision int64              `json:"report_revision"`
+	Sequence       int64              `json:"sequence"`
+	CreatedBy      pgtype.UUID        `json:"created_by"`
+	RequestKey     pgtype.UUID        `json:"request_key"`
+	RequestDigest  string             `json:"request_digest"`
+	CycleDigest    string             `json:"cycle_digest"`
+	CorrectionOf   pgtype.UUID        `json:"correction_of"`
+	CapturedAt     pgtype.Timestamptz `json:"captured_at"`
+	SnapshotJson   []byte             `json:"snapshot_json"`
+	FactsDigest    string             `json:"facts_digest"`
+	ResultDigest   string             `json:"result_digest"`
+	SnapshotDigest string             `json:"snapshot_digest"`
+	SealDigest     pgtype.Text        `json:"seal_digest"`
+}
+
+type ReportSnapshotControl struct {
+	WorkspaceID                  pgtype.UUID        `json:"workspace_id"`
+	ReportIssueID                pgtype.UUID        `json:"report_issue_id"`
+	Revision                     int64              `json:"revision"`
+	CurrentSnapshotID            pgtype.UUID        `json:"current_snapshot_id"`
+	CurrentSequence              int64              `json:"current_sequence"`
+	WithdrawalID                 pgtype.UUID        `json:"withdrawal_id"`
+	WithdrawnBy                  pgtype.UUID        `json:"withdrawn_by"`
+	WithdrawalRequestKey         pgtype.UUID        `json:"withdrawal_request_key"`
+	WithdrawalRequestDigest      pgtype.Text        `json:"withdrawal_request_digest"`
+	WithdrawalExpectedSnapshotID pgtype.UUID        `json:"withdrawal_expected_snapshot_id"`
+	WithdrawalReportRevision     pgtype.Int8        `json:"withdrawal_report_revision"`
+	WithdrawalReason             pgtype.Text        `json:"withdrawal_reason"`
+	WithdrawnAt                  pgtype.Timestamptz `json:"withdrawn_at"`
+}
+
 type RuntimeProfile struct {
 	ID             pgtype.UUID        `json:"id"`
 	WorkspaceID    pgtype.UUID        `json:"workspace_id"`

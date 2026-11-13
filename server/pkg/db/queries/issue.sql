@@ -346,6 +346,12 @@ LIMIT 1;
 WITH target AS (
     SELECT issue.id FROM issue WHERE issue.id = $1 AND issue.workspace_id = $2
 ),
+cleared_report_snapshots AS (
+    DELETE FROM report_snapshot WHERE workspace_id=$2 AND report_issue_id IN (SELECT target.id FROM target)
+),
+cleared_report_snapshot_control AS (
+    DELETE FROM report_snapshot_control WHERE workspace_id=$2 AND report_issue_id IN (SELECT target.id FROM target)
+),
 cleared_triage AS (
     DELETE FROM issue_triage WHERE issue_id IN (SELECT target.id FROM target)
 ),

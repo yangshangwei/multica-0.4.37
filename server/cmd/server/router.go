@@ -1634,6 +1634,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 
 	r.Group(func(r chi.Router) {
 		r.Use(handler.PlatformAdminNoStore)
+		r.Use(middleware.PreserveReportSnapshotHeaders)
 		r.Use(middleware.Auth(queries, patCache, cloudPATVerifier))
 		r.Use(h.TaskCapabilityGuard)
 		r.Use(middleware.InstallationMetadata(queries))
@@ -2244,6 +2245,10 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 					r.Get("/", h.GetIssue)
 					r.Put("/", h.UpdateIssue)
 					r.Post("/lifecycle-handoffs", h.CreateLifecycleHandoff)
+					r.With(handler.RequireHumanActor).Post("/report-snapshots", h.CreateReportSnapshot)
+					r.With(handler.RequireHumanActor).Post("/report-snapshots/withdrawals", h.WithdrawReportSnapshots)
+					r.Get("/report-snapshots/current", h.GetReportSnapshot)
+					r.Get("/report-snapshots/{snapshotId}", h.GetReportSnapshot)
 					r.With(handler.RequireHumanActor).Post("/delivery-evidence/evaluate", h.EvaluateDeliveryEvidence)
 					r.With(handler.RequireHumanActor).Post("/delivery-evidence/evaluations", h.CreateDeliveryEvaluation)
 					r.With(handler.RequireHumanActor).Get("/delivery-evidence/evaluations/{key}", h.GetDeliveryEvaluation)

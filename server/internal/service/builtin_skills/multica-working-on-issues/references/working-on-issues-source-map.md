@@ -301,6 +301,22 @@ comment explicitly asks for `multica issue status <parent-id> in_review`. Any
 turn may move the status on its own too, judged from what the work changes
 about the issue — there is no assignee gate (MUL-6417).
 
+## Deterministic report-snapshot CLI
+
+Use [Frozen report snapshots](report-snapshots.md) for the capture/read/withdrawal workflow, public projection, human receipts and Reporter restrictions.
+
+| Contract | Source |
+| --- | --- |
+| Explicit human `issue report-snapshot capture` requires the original request key, expected revision and fixed timezone/window/period; no key generation, automatic retry, redirect, publishing or status write | `server/cmd/multica/cmd_issue_report_snapshot.go` (`runIssueReportSnapshotCapture`, `reportSnapshotCaptureOptions`, `reportSnapshotRequest`) |
+| `show` uses only the exact report UUID and current or explicit snapshot UUID; no workspace/project enumeration or generation fallback | `server/cmd/multica/cmd_issue_report_snapshot.go` (`runIssueReportSnapshotShow`) |
+| Success requires explicit envelope protocol/replayed fields, strict public projection validation and exact report/workspace/snapshot binding; human capture additionally verifies an own receipt commitment to the original key and canonical typed request | `server/cmd/multica/cmd_issue_report_snapshot.go` (`decodeReportSnapshotEnvelope`, `reportSnapshotCaptureDigest`); `server/internal/reportsnapshot/` (`DecodePublic`) |
+| Public GET refuses human receipts and internal identity fields; projection digests cover public saved facts/results, not private collector identities or source manifests | `server/cmd/multica/cmd_issue_report_snapshot.go` (`runIssueReportSnapshotShow`, `reportSnapshotResponseFields`); `server/internal/reportsnapshot/public_model.go` |
+| Human `withdraw` requires `--accept`, original key, expected report revision, reviewed current snapshot and exact bounded reason; it terminates all content reads and future capture/correction on that report without deleting the issue or claiming backup erasure | `server/cmd/multica/cmd_issue_report_snapshot.go` (`runIssueReportSnapshotWithdraw`); `server/internal/handler/report_snapshot.go` |
+| Withdrawal recovery verifies only the original human receipt and canonical request commitment; no snapshot content, automatic retry, redirect, second key or restore path | `server/cmd/multica/cmd_issue_report_snapshot.go` (`decodeReportSnapshotWithdrawal`, `reportSnapshotIntentDigest`, `reportSnapshotRequest`) |
+| Saved formal cohort facts and unknown qualified business/history results remain distinct; each metric retains its type, quality, coverage and gap | `server/internal/reportsnapshot/`; active F2 execution contract in `.trellis/tasks/11-12-agent-squad-followup-roadmap/research/f2-execution-contract-20261113.md` |
+| Reporter consumes an existing sealed public snapshot with GET; missing/unavailable/withdrawn results require human follow-up, never capture, withdrawal, wider workspace reads or a replacement report to bypass withdrawal | `server/internal/service/builtin_role_skills/multica-progress-report/SKILL.md`; `server/internal/handler/task_capability.go` |
+| Fake HTTP regressions verify explicit capture/withdrawal, same-intent receipt replay, one-request reads, no response-loss retry, redirect refusal, strict public/private boundaries, malformed receipts, original commitments and preserved unknown values | `server/cmd/multica/cmd_issue_report_snapshot_test.go` |
+
 ## Metadata CLI
 
 | Behavior | File:line |

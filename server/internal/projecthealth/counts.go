@@ -6,7 +6,8 @@ import (
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
-func statusCategories(statuses []Status) map[string]string {
+// StatusCategories resolves built-in and custom keys without exposing the catalog.
+func StatusCategories(statuses []Status) map[string]string {
 	out := map[string]string{}
 	for _, key := range []string{"backlog", "todo", "in_progress", "in_review", "done", "blocked", "cancelled"} {
 		out[key] = key
@@ -56,7 +57,7 @@ func CollectProjectCounts(ctx context.Context, q *db.Queries, workspaceID pgtype
 	for _, s := range statuses {
 		catalog = append(catalog, Status{Key: s.Key, Category: s.Category})
 	}
-	categories := statusCategories(catalog)
+	categories := StatusCategories(catalog)
 	groups := map[string]map[string]int64{}
 	for _, id := range projectIDs {
 		groups[uuid(id)] = map[string]int64{}

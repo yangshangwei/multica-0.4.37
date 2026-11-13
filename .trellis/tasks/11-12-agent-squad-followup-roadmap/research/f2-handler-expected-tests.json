@@ -1,0 +1,22 @@
+{
+  "package": "./internal/handler",
+  "tests": [
+    "TestF2ReportSnapshotActivityScanBeyondTimelineCap",
+    "TestF2ReportSnapshotCancelStopsCollectionWithoutRestart",
+    "TestF2ReportSnapshotCaptureReplayCorrectionAndFrozenSources",
+    "TestF2ReportSnapshotConcurrentOriginalRequest",
+    "TestF2ReportSnapshotConcurrentWithdrawalReturnsOneReceipt",
+    "TestF2ReportSnapshotOnlyLiveSerializationConflictRestarts",
+    "TestF2ReportSnapshotOwnedDeleteCleanup",
+    "TestF2ReportSnapshotReportOnlyGapKeepsSourceUnknown",
+    "TestF2ReportSnapshotReportWithdrawalIsTerminalAndRecoverable",
+    "TestF2ReportSnapshotRequiresBoundStoredPublicProjection",
+    "TestF2ReportSnapshotRetainedPagesKeepOneCutAndConfirmEOF",
+    "TestF2ReportSnapshotRowSealBindsPublicAndCollectionAudit",
+    "TestF2ReportSnapshotSourceGapAndFailedSeal",
+    "TestF2ReportSnapshotStrictRequestAndHeaderBoundaries",
+    "TestF2ReportSnapshotUpdateGapDoesNotDiscardProjectFacts",
+    "TestF2ReportSnapshotWithdrawalAndCorrectionSerializeBothOrders",
+    "TestF2ReportSnapshotWithdrawalRejectsMalformedAndStaleIntent"
+  ]
+}

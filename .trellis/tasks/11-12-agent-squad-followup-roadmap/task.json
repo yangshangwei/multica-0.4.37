@@ -5,7 +5,7 @@
   "description": "承接2026-11-12阶段归档后的M1剩余交付与授权交互、M2报告快照/父级预算/能力负载调度、M3持续治理；已交付能力不重做，待办规划不自动启动实现。",
   "status": "in_progress",
   "dev_type": "fullstack",
-  "scope": "M1-S1 ordinary single-issue completion",
+  "scope": "F2 minimum report snapshots implemented and deterministically verified; roadmap remains in_progress with other M1/F3/F4/F5 pending",
   "package": null,
   "priority": "P1",
   "creator": "artisan",
@@ -45,9 +45,18 @@
     "research/m1-renderer-evidence-20261113/final-playwright-last-run.json",
     "research/m1-renderer-fixture-20261113.mjs",
     "research/f2-deterministic-report-snapshot-planning-20261113.md",
-    "e2e/issue-completion-authorization.spec.ts"
+    "e2e/issue-completion-authorization.spec.ts",
+    "research/f2-execution-contract-20261113.md",
+    "research/f2-minimum-contract-20261113.md",
+    "research/f2-authorized-resume-20261113.md",
+    "research/f2-acceptance-20261113.md",
+    "research/f2-final-evidence-20261113/runtime-run-summary.json",
+    "research/f2-final-evidence-20261113/final-checks.json",
+    "research/f2-final-evidence-20261113/schema-check.json",
+    "research/f2-handler-expected-tests.json",
+    "research/f2-router-expected-tests.json"
   ],
-  "notes": "2026-11-12：承接用户批准的阶段归档；后续真实调用授权、历史失败与系列预算按原记录保留。\n2026-11-12：用户批准 M1-S1 规划并启动 implementation。\n2026-11-13：M1-S1 backend、Core、共享 Web/Desktop、CLI 已实现并提交于 463b201fa。修复后 Views 全量套件通过 602 files / 7,332 tests。真实 enforcing Web production 与 Electron renderer 在 task-owned DB/project/local-synthetic artifact 上均完成候选→明确授权→提交→原 authorization receipt/current issue 查询；收据 consumed、当前 status done revision 2；键盘与 390x844/680x900 截图见 research/m1-renderer-evidence-20261113。provider_calls=0、daemon_starts=0、skip_supported=false。未操作 POLA-1 或共享 project policy。\n2026-11-13：按既定顺序开始 F2 确定性报告快照设计/验收规划，见 research/f2-deterministic-report-snapshot-planning-20261113.md；仅设计，不授权实现。roadmap 保持 in_progress。真实 Provider、知识注入、发布、Hosted CI、部署与账单对账仍未开放。",
+  "notes": "2026-11-12：承接用户批准的阶段归档；后续真实调用授权、历史失败与系列预算按原记录保留。\n2026-11-12：用户批准 M1-S1 规划并启动 implementation。\n2026-11-13：M1-S1 backend、Core、共享 Web/Desktop、CLI 已实现并提交于 463b201fa。修复后 Views 全量套件通过 602 files / 7,332 tests。真实 enforcing Web production 与 Electron renderer 在 task-owned DB/project/local-synthetic artifact 上均完成候选→明确授权→提交→原 authorization receipt/current issue 查询；收据 consumed、当前 status done revision 2；键盘与 390x844/680x900 截图见 research/m1-renderer-evidence-20261113。provider_calls=0、daemon_starts=0、skip_supported=false。未操作 POLA-1 或共享 project policy。\n2026-11-13：按既定顺序开始 F2 确定性报告快照设计/验收规划，见 research/f2-deterministic-report-snapshot-planning-20261113.md；仅设计，不授权实现。roadmap 保持 in_progress。真实 Provider、知识注入、发布、Hosted CI、部署与账单对账仍未开放。\n2026-11-13 F2续接：HEAD c79dfe304，原session指针为空、任务目录干净、工作区374项并行改动；恢复原任务指针，状态保持in_progress。只补充F2设计、F2-01–12/A01–A16与D1–D6；更正PRD过期M1验收描述。仍无F2实现授权，不修改代码/迁移/路由，不调用Provider、不操作POLA-1、不改变共享策略，不新建或归档任务。\n2026-11-13：用户明确“F2 授权 ，请推进”，F2 获得独立实现授权；按已审阅建议收敛 D1–D6，来源能力不足保留 unknown，真实 Provider/POLA-1/共享策略及其他 roadmap 包不在授权内。\n2026-11-13 本次设计续接：用户明确仅F2设计/验收，不实施。入口425项并行改动含F2执行草稿；保留既有独立授权/代码/测试记录，不据此扩展本轮范围。恢复同一session任务指针，status保持in_progress；补充冻结日历、formal/business scope、来源完整性、coverage、逐指标旧规则只读parity、exact Reporter首次RR查询与拒绝/最小披露矩阵。D1–D6见research §8；M1-S1不重做、其他M1/F3/F4/F5不关闭，不新建/归档、不调用Provider、不操作POLA-1或共享策略。\n2026-11-13 F2实现验收：用户明确授权并选择本报告全部快照终止撤回。最小首包代码/CLI/来源审计/当前权限完成；handler与router独立normal/race均通过，pure/CLI/builtin/build/vet通过。原fixture与文档预算失败保留。M1其他入口/F3–F5未完成，task仍in_progress，不归档，不调用Provider或操作POLA-1/共享策略。",
   "meta": {
     "created_from_delivered_stage_archive": true,
     "scope_authorization": {
@@ -55,13 +64,13 @@
       "user_instruction": "归档已交付阶段",
       "accepted_plan": "Archive six delivered stages and retain remaining product work and real-runtime acceptance as follow-up backlog."
     },
-    "planning_readiness": "m1_s1_approved",
+    "planning_readiness": "f2_minimum_verified",
     "new_implementation_started": true,
     "new_provider_calls": 0,
     "source_archives": [
       ".trellis/tasks/archive/2026-11/11-05-agent-squad-rnd-improvements"
     ],
-    "planning_scope": "M1-S1 only; M1 other entrypoints and F2-F5 remain subsequent separately accepted packages",
+    "planning_scope": "F2 minimum slice delivered; remaining M1 entrypoints and F3–F5 pending",
     "implementation_approval": {
       "date": "2026-11-12",
       "user_message": "批准",
@@ -127,11 +136,288 @@
         "e2e_lint": "passed_with_existing_pages_path_warning"
       },
       "f2_planning": {
-        "status": "design_and_acceptance_draft_only",
+        "status": "authorized_execution",
         "artifact": "research/f2-deterministic-report-snapshot-planning-20261113.md",
-        "implementation_authorized": false,
-        "reporter_scope": "current_report_and_exact_frozen_project_read_only"
+        "implementation_authorized": true,
+        "reporter_scope": "current_report_and_exact_frozen_project_read_only",
+        "requirements": "requirements.md",
+        "acceptance_cases": "A01–A16",
+        "open_decisions": [],
+        "source_head": "c79dfe304",
+        "product_tests_run_this_turn": false,
+        "execution_contract": "research/f2-execution-contract-20261113.md",
+        "historical_open_decisions": [
+          "D1_scope_time",
+          "D2_history_report_provenance",
+          "D3_retention_size",
+          "D4_exact_get_errors_pagination",
+          "D5_capture_admission_idempotency_seal",
+          "D6_coverage_parity_evidence"
+        ],
+        "decision_resolution": "research/f2-execution-contract-20261113.md",
+        "remaining_evidence": [
+          "A01-A16 implemented tests and named results",
+          "source/DB identity",
+          "independent check",
+          "document production history/classification unknown limits"
+        ]
+      },
+      "f2_execution": {
+        "status": "implementing",
+        "engine": "f2_engine",
+        "backend": "f2_backend",
+        "cli": "f2_cli",
+        "provider_calls": 0
       }
+    },
+    "f2_implementation_approval": {
+      "date": "2026-11-13",
+      "user_message": "F2 授权 ，请推进",
+      "scope": "F2 deterministic report snapshots; implement reviewed recommendations with explicit unknown gaps, exact current authority and task-owned tests; preserve M1/F3/F4/F5 and runtime exclusions",
+      "approved_artifact_sha256": {
+        "prd.md": "0ad9b764c3d9435fb7fcb19af0bf7e3225bef21898e8c9494af7ce909df4f2d5",
+        "design.md": "930df4a59a835a625f6efcf02027055621031bf5acf2ce929568394ae8665371",
+        "requirements.md": "8254bcd6ebe714be391318caf5f79fb530874053056c370a3516689367d5d9a0",
+        "implement.md": "5c12d334464891fa5618c1493e7ea15c0edd9f71bb4cf1c978b96c16f5f912c6",
+        "research/f2-deterministic-report-snapshot-planning-20261113.md": "c7d5a238f1349e4eff244792280bc0c08bebfd8687844a58474d217085ecb02b"
+      },
+      "does_not_enable": [
+        "real_provider",
+        "knowledge_injection",
+        "POLA-1",
+        "shared_project_policy_changes",
+        "release",
+        "hosted_ci",
+        "deployment",
+        "billing_reconciliation"
+      ]
+    },
+    "f2_design_review_continuation": {
+      "date": "2026-11-13",
+      "scope": "Current user turn: F2 design and acceptance only; preserve parallel implementation records without executing them",
+      "implementation_authorized_this_turn": false,
+      "product_code_changed_this_turn": false,
+      "product_tests_run_this_turn": false,
+      "source_head": "c79dfe304",
+      "branch": "codex/cross-workspace-collaboration",
+      "initial_dirty_entries": 425,
+      "initial_current_task": null,
+      "restored_current_task": ".trellis/tasks/11-12-agent-squad-followup-roadmap",
+      "status_kept": "in_progress",
+      "design_artifact": "research/f2-deterministic-report-snapshot-planning-20261113.md",
+      "requirements": "F2-01–12 with A01–A16 supplemental cases",
+      "decisions_and_evidence_gates": [
+        "D1_scope_calendar",
+        "D2_classification_history",
+        "D3_retention_projection_limits",
+        "D4_exact_get_authority_errors",
+        "D5_capture_seal_recovery",
+        "D6_independent_parity_acceptance"
+      ],
+      "parallel_records_preserved": [
+        "meta.f2_implementation_approval",
+        "meta.implementation_progress.f2_execution",
+        "research/f2-execution-contract-20261113.md",
+        "implement.jsonl",
+        "check.jsonl",
+        "all pre-existing product code and test artifacts"
+      ],
+      "new_provider_calls": 0,
+      "new_tasks": 0,
+      "archived_tasks": 0,
+      "verification": {
+        "status": "passed_docs_only",
+        "local_markdown_targets": 61,
+        "baseline_paths": 30003,
+        "files_changed_this_turn": 7,
+        "outside_owned_files_changed": 0,
+        "prior_task_docs_and_metadata_preserved": true,
+        "index_unchanged": true,
+        "product_tests_run": false,
+        "git_diff_check": "passed",
+        "task_validate_entries": {
+          "implement": 14,
+          "check": 20
+        },
+        "independent_read_only_reviews": [
+          "source_metrics_coverage",
+          "reporter_authority_rr"
+        ],
+        "evidence": "handoff.md / 本次最终文档验证"
+      },
+      "previous_task_scope": "F2 deterministic report snapshots implementation; M1-S1 delivered",
+      "design_section": "8"
+    },
+    "f2_minimum_scope_convergence": {
+      "date": "2026-11-13",
+      "user_message": "接受最小首包",
+      "decision_scope": "Replayable formal stock first; business classification/window history unknown remains unknown; no complete-history prerequisite",
+      "product_scope_accepted": true,
+      "implementation_authorized_this_turn": false,
+      "product_tests_run_this_turn": false,
+      "status": "design_reviewed_with_remaining_technical_evidence_gates",
+      "source_head": "c79dfe304",
+      "retention_decision": {
+        "user_message": "继续保留",
+        "scope": "Keep authorized minimum frozen facts after source deletion/move; require current report/project reader authority; owning report/workspace deletion cleans snapshots; explicit content withdrawal stops reads",
+        "implementation_authorized": false
+      },
+      "capture_decision": {
+        "user_message": "人工显式采集",
+        "scope": "Current human with report-edit authority explicitly captures; Reporter GET only; original request recovery and explicit correction; automatic cycle generation deferred",
+        "implementation_authorized": false
+      },
+      "artifact": "research/f2-minimum-contract-20261113.md",
+      "initial_paths": 30123,
+      "unresolved_evidence": [
+        "public_projection_replay",
+        "human_report_edit_admission",
+        "explicit_withdrawal_fence_cleanup",
+        "report_eligibility_and_scope_restore",
+        "capacity_boundaries",
+        "first_RR_read_barriers_and_read_only_parity"
+      ],
+      "product_code_changed_this_turn": false,
+      "new_provider_calls": 0,
+      "new_tasks": 0,
+      "archived_tasks": 0,
+      "verification": {
+        "status": "passed_docs_only",
+        "local_markdown_targets": 68,
+        "owned_documents_changed": 8,
+        "product_source_paths_changed": 0,
+        "index_unchanged": true,
+        "concurrent_external_document_paths_observed": 11,
+        "external_task": "11-13-pay-241-collaboration-acceptance",
+        "external_paths_modified_by_this_session": 0,
+        "task_validate_entries": {
+          "implement": 14,
+          "check": 20
+        },
+        "independent_reviews": [
+          "public_projection_authority_retention",
+          "source_metrics_test_evidence"
+        ],
+        "product_tests_run": false,
+        "evidence": "handoff.md / 最小首包文档验证"
+      }
+    },
+    "f2_current_implementation_authorization": {
+      "date": "2026-11-13",
+      "user_message": "授权",
+      "context": "Explicit answer to whether to enter F2 code implementation and verification under the reviewed minimum contract",
+      "approved_artifacts": {
+        "prd.md": "5bdfd4cec322e7660c799477fdc8caac281d476c7e89e47f3d55e085b5bb3b5a",
+        "requirements.md": "2cda2ffb6399e4082ddfb8c9f8a5cb15bb549c51225807b48bb96144934ea7bc",
+        "design.md": "1df8ab7b6f582d6093ebf8f55a8547b8cfdbbc2fd9af7fc0d21cef479e5e56e5",
+        "implement.md": "f96cb84cf4c3878974731b10f83e7cfb493816e0770c8c47808c07cba0ccf248",
+        "research/f2-minimum-contract-20261113.md": "78d683fdeffd00e9cdb10312c82b73414a3af68d01cf608243a2e709b61e1627"
+      },
+      "does_not_enable": [
+        "real_provider",
+        "POLA-1",
+        "shared_project_policy_changes",
+        "knowledge_injection",
+        "release",
+        "hosted_ci",
+        "deployment",
+        "billing_reconciliation",
+        "M1-S2-S6",
+        "F3-F5",
+        "roadmap_completion_or_archive"
+      ]
+    },
+    "f2_current_execution": {
+      "status": "verified",
+      "baseline_dir": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-f2-implementation-nkvrmcwg",
+      "source_head": "c79dfe304",
+      "withdrawal_scope": {
+        "user_message": "本报告全部快照",
+        "scope": "report-wide terminal withdrawal; no restore or future capture/correction; original receipt recovery",
+        "implementation_authorized": true
+      },
+      "provider_calls": 0,
+      "lanes": {
+        "engine": "f2_public_engine",
+        "backend": "f2_backend_finish",
+        "test_admission": "f2_test_admission",
+        "cli": "f2_cli_public",
+        "sources": "f2_public_engine (after engine verification; collector/audit/source SQL only)",
+        "initial_check": "f2_independent_check (public/CLI only; backend/source still active)"
+      },
+      "public_wire": "research/f2-authorized-resume-20261113.md",
+      "toolchain": {
+        "go": "go1.27.0 darwin/arm64",
+        "postgres": "17.11",
+        "max_connections": 100,
+        "connections_preflight": 24
+      },
+      "db_allocated_this_turn": true,
+      "test_admission": "14 pure Python tests passed; DB execution pending final source/schema",
+      "engine_checks": "guarded reportsnapshot/projecthealth normal+race, build/vet passed; final evidence to collect",
+      "backend_checks": "handler/router compile-only passed; real DB cases prepared, not run",
+      "cli_checks": {
+        "status": "passed",
+        "top_level_tests": 485,
+        "named_test_results": 1277,
+        "fail": 0,
+        "skip": 0,
+        "build": "passed",
+        "vet": "passed",
+        "evidence_dir": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/f2-cli-public-9syibzf7"
+      },
+      "backend_progress": "control/terminal withdrawal skeleton and race fixtures implemented; source generation integrating; DB tests not run",
+      "migrations_reserved_used": [
+        800,
+        801,
+        802,
+        803
+      ],
+      "db_runs": [
+        {
+          "label": "f2-handler-final-01",
+          "result": "failed_one_fixture_oracle",
+          "source_stable": true,
+          "failed_test": "TestF2ReportSnapshotSourceGapAndFailedSeal",
+          "evidence": "research/f2-test-environments/f2-handler-final-01.json"
+        },
+        {
+          "label": "f2-handler-final-02",
+          "result": "passed",
+          "record": "research/f2-test-environments/f2-handler-final-02.json"
+        },
+        {
+          "label": "f2-router-final-01",
+          "result": "passed",
+          "record": "research/f2-test-environments/f2-router-final-01.json"
+        },
+        {
+          "label": "f2-handler-race-01",
+          "result": "passed",
+          "record": "research/f2-test-environments/f2-handler-race-01.json"
+        },
+        {
+          "label": "f2-router-race-01",
+          "result": "passed",
+          "record": "research/f2-test-environments/f2-router-race-01.json"
+        }
+      ],
+      "final_pure_results": "research/f2-final-evidence-20261113/pure-results.json",
+      "final_pure_checks": {
+        "engine_health": "38 roots / 53 results passed race",
+        "source_audit": "3 roots / 9 results passed race",
+        "middleware": "7 roots / 17 results passed",
+        "cli": "487 roots / 1283 results passed",
+        "fail": 0,
+        "skip": 0
+      },
+      "acceptance_artifact": "research/f2-acceptance-20261113.md",
+      "spec": ".trellis/spec/server/report-snapshots.md",
+      "builtin_checks": "5 roots / 25 results passed after one-level supporting-doc split; initial failure retained",
+      "final_source_manifest": "research/f2-final-evidence-20261113/final-source-sha256.json",
+      "final_ownership_check": "research/f2-final-evidence-20261113/ownership-check.json",
+      "commit_manifest": "research/f2-commit-manifest.json",
+      "next_scope": "No automatic next implementation: other M1 entrypoints and F3–F5 remain pending"
     }
   }
 }

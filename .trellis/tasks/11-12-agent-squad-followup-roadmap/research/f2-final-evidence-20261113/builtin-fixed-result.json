@@ -1,0 +1,39 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/service",
+    "-run",
+    "^(TestBuiltinSkillsConformToTemplate|TestBuiltinSkillsFrontmatterIsStrictYAML|TestWorkingOnIssuesSkillCoversIssueLoopContracts|TestAgentRoleTemplate_ProgressReporterDefaults|TestProgressReporter_EvidenceAndCloseoutContract)$",
+    "-count=1",
+    "-json"
+  ],
+  "exit": 0,
+  "expected_tests": [
+    "TestAgentRoleTemplate_ProgressReporterDefaults",
+    "TestBuiltinSkillsConformToTemplate",
+    "TestBuiltinSkillsFrontmatterIsStrictYAML",
+    "TestProgressReporter_EvidenceAndCloseoutContract",
+    "TestWorkingOnIssuesSkillCoversIssueLoopContracts"
+  ],
+  "top_level_passed": [
+    "TestAgentRoleTemplate_ProgressReporterDefaults",
+    "TestBuiltinSkillsConformToTemplate",
+    "TestBuiltinSkillsFrontmatterIsStrictYAML",
+    "TestProgressReporter_EvidenceAndCloseoutContract",
+    "TestWorkingOnIssuesSkillCoversIssueLoopContracts"
+  ],
+  "counts": {
+    "pass": 25,
+    "fail": 0,
+    "skip": 0
+  },
+  "accepted": true,
+  "provider_calls": 0,
+  "database_calls": 0
+}

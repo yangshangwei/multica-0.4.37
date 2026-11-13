@@ -554,7 +554,9 @@ WITH deleted_notifications AS (
 DELETE FROM workspace_iteration_settings WHERE workspace_iteration_settings.workspace_id = $1;
 
 -- name: DeleteWorkspaceIssueRoots :exec
-WITH triage_settings AS (DELETE FROM workspace_triage_settings WHERE workspace_id=$1),
+WITH report_snapshots AS (DELETE FROM report_snapshot WHERE workspace_id=$1),
+report_snapshot_controls AS (DELETE FROM report_snapshot_control WHERE workspace_id=$1),
+triage_settings AS (DELETE FROM workspace_triage_settings WHERE workspace_id=$1),
 triage_items AS (DELETE FROM issue_triage WHERE workspace_id=$1),
 triage_intake AS (DELETE FROM triage_intake_request WHERE workspace_id=$1),
 triage_actions AS (DELETE FROM triage_action WHERE workspace_id=$1),

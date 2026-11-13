@@ -1,5 +1,7 @@
 # M1-S1 实现与验收计划
 
+> 当前F2状态：最小首包已按本线程明确授权实现并通过确定性验收，见 [F2验收](research/f2-acceptance-20261113.md)。以下设计/待授权文字保留为历史；task仍in_progress，M1其他入口及F3/F4/F5、真实运行禁区不变。
+
 状态：in_progress；用户已批准 M1-S1，执行与验证进度按下列清单和 research 记录。目标是完成普通单事项的证据查看、人工授权、精确完成和原操作查询；技术采用现有 Go/Chi/sqlc writer、React Query/core/views 与 Go CLI，不加依赖。
 
 ## 0. 实现前门禁
@@ -166,13 +168,78 @@ go -C server test -race ./cmd/server -run 'Test.*DeliveryCompletion' -count=1 -j
 
 Views 全量套件已在修复后重跑并通过 602 files / 7,332 tests。M1-S1 的产品实现、确定性测试和 task-owned enforcing renderer 验收均完成；真实 Provider、发布、Hosted CI、部署和其他 M1/F2/F3/F4/F5 实现仍未开放。
 
-## 9. F2 规划门（design only）
+## 9. F2 规划与未来验收门（design only）
 
-F2 的规划记录在 [f2-deterministic-report-snapshot-planning-20261113.md](research/f2-deterministic-report-snapshot-planning-20261113.md)。本阶段只冻结设计与验收条件，不推导实现授权：
+当前只维护规划；不派实现代理、不运行产品/DB/Provider 测试，不修改 migration/router/source code。本节不是执行批准。研究见 [F2 research](research/f2-deterministic-report-snapshot-planning-20261113.md)，技术见 design §8，结果需求见 requirements F2-01–12。
 
-- [x] 冻结结果合同：snapshot identity、semantics version、scope、timezone、`[start,end)`、`as_of` 和可重放的物化事实。
-- [x] 冻结来源合同：每个 source identity/revision、单调 watermark/cursor、分页排序、迟到数据和 source gap。
-- [x] 冻结 coverage 合同：eligible/included/excluded/unknown、gap 明细和 coverage formula/version；unknown 不能折算为 0。
-- [x] 冻结生命周期验收：分页、迟到、重开、取消、移入/移出、报告自排除、当前失权和重读原快照不重跑当前查询。
-- [x] 冻结 Reporter 最小权限验收：仅 verified `progress-reporter` 的 exact frozen-project/current-report GET；拒绝 workspace 枚举、跨项目、写方法、重复 query/path ambiguity、附件和 credential exchange；新增 route 不 mint/consume completion authorization。
-- [x] 明确 F2 仍未获实现授权；M1-S1 批准、renderer 证据和本引导语均不能启动 F2 代码或迁移。
+本轮文档工作：
+
+- [x] 接续原任务、核对 HEAD c79dfe304/分支/374 项并行改动；原任务目录干净；恢复 session 指针，status 保持 in_progress。
+- [x] 核对 M1-S1 历史通过证据，更正 PRD 中已过期的两项验收缺口，不重做已提交产品实现。
+- [x] 对照 archived 设计与当前 projecthealth/update/activity/Reporter 源码，列出来源事实、限制和旧模板差异。
+- [x] 提出 frozen envelope/payload/digest、两个读 cut、cursor 与 watermark 区分、coverage-v1、逐指标权威与只读 parity 合同。
+- [x] 增补 F2-01–12 / A01–A16、exact GET 拒绝矩阵和 D1–D6；只读独立权限审阅已纳入。
+- [x] 明确没有 F2 实现授权；M1-S1 批准、renderer 通过、task 指针都不能越过此边界。
+
+仍未完成的规划门（不能因文档已有描述而打勾）：
+
+- [ ] D1：审阅 as-of cohort / event-time 项目归属、时间 anchor/滚动/自然周期、end 状态需要。
+- [ ] D2：全 writer/历史/删除/导入/状态类别/报告 provenance 的证据清单；确定可承诺指标与必须 unknown 的指标。
+- [ ] D3：保留期、大小、源删除后的 frozen 读取、合法撤回/删除和兼容恢复边界。
+- [ ] D4：锁定 exact GET/错误码/strict header ingress/是否外部分页；fresh claim 与撤权线性化合同。
+- [ ] D5：采集主体及准入、原周期幂等/correction、失败/取消/断线恢复、seal/current 发布原子性；必要 schema/index 另做设计。
+- [ ] D6：审阅每 metric 权威与 coverage 公式；准备只读 oracle 和验证方案，不把手算表当已运行证据。
+- [ ] 最终 F2 规划摘要收敛并独立审阅；随后获得明确的 F2 实现批准。roadmap 的既有 in_progress 不替代这一门。
+
+若将来获批，验证计划按依赖推进（本轮不执行）：
+
+1. reducer/时间/coverage：A01/A02/A06/A08/A09，固定事实手算，未知与0、比例/去重的主矩阵只放一层。
+2. source/持久化：A03–A05/A07/A10/A11/A15，用独立 task-owned DB 验证 cut、跨页并发、producer gap、seal/重读/损坏/恢复；先证明采集主体与 schema，再写迁移。
+3. real Auth/router：A13/A14/A16，验证同 tx q/实际 row scope、初始 Auth 后撤权、commit failure 零正文、跨快照/角色/路由/header/cursor sentinel、零业务写。既有权限测试只是参考。
+4. read-only parity：A12，以同一 cut 的旧 Compute/candidate 和固定 skill 规则对照每 metric；保存双向集合差异、unknown 与 old update not_replayable，不调用真实模型或发布报告。
+5. 当前 JSONL 仍为 M1-S1 历史上下文。获批实施前再按最终 F2 scope 单独增补所需 spec/research 与具体文件 ownership，不提前改成实现授权。质量检查按实际改动的包选择，不借本节运行宽泛测试。
+
+本轮只验证 Markdown/链接/JSON、task 状态与限定 diff；未运行 lint/typecheck/产品测试，因为没有代码改动。文档检查结果见 handoff 的本轮记录；M1 历史测试数字不计为 F2 通过。
+
+## 10. F2 已授权执行（2026-11-13）
+
+用户随后明确“F2 授权 ，请推进”。本批准独立于 M1-S1，覆盖 F2 实现与任务自有验证。前述 design-only/未授权文字属于上一轮历史状态；当前按 [F2 execution contract](research/f2-execution-contract-20261113.md) 收敛 D1–D6 并执行。来源不能证明的历史继续 unknown，不扩充真实 Provider、POLA-1、共享策略或其他 roadmap 包。task 保持 in_progress，不新建或归档。
+
+## 11. 本次续接计划：设计审阅，非实施
+
+第10节保留并行执行记录。本次只拥有本任务prd/design/requirements/implement/handoff、F2 planning research和task.json的本轮说明；不编辑已有代码、迁移、路由、测试脚本、F2执行合同或JSONL，不暂存/回退任何并行改动。
+
+- [x] 阅读所需指南、现有规划、F2 research和M1历史验收；确认HEAD c79dfe304/同分支、425项初始dirty状态、任务in_progress及空session指针。
+- [x] 保存全工作副本文件摘要及任务diff的临时基线；task.py validate通过后恢复同一任务指针，没有新建/归档或状态降级。
+- [x] 主会话核对archived设计；两个只读原生子代理分别核对来源/指标与exact Reporter/RR权限。未派实现代理，未运行产品/数据库/Provider验证。
+- [x] 在research §8、design §10及requirements补充日历物化、formal/business scope、producer/read/retention完整性、coverage、只读parity、字段披露、首次RR查询与拒绝矩阵。
+- [x] 本次最终文档验证：JSON/61个本地链接/验收映射、限定diff通过；相对30,003个路径的入口摘要仅7个本任务文件改变，暂存区不变；撤去本次增补可逐字节还原原任务规划和元数据。结果见handoff本次验证记录，仅证明文档检查。
+
+未来执行门保持未完成：D1–D6产品取舍与技术证据；当前ordinary/formal报告准入变化的读取规则；公开字段/retention/容量审阅；A01–A16及本次子场景的实际named结果。顺序仍为固定oracle/reducer → 来源及事务 → exact Auth/router拒绝/竞争 → 同cut只读parity → 独立整体验证。每步先核对当时授权与文件ownership；本节不允许本轮执行这些步骤。
+
+本次不重跑M1-S1，也不调用lint/typecheck/Go/Views/E2E来替代设计评审；仅文档变更，应明确报告产品测试未运行。完成本次文档审阅后，整个roadmap及M1-S2–S6/F3/F4/F5-A–E继续保留未完成。
+
+## 12. 最小首包规划收敛（仍不实施）
+
+- [x] 接续原任务及相同HEAD/分支；保存本次30,123个路径的工作副本摘要与任务原文，保护并行代码/迁移/测试/暂存区。
+- [x] 用户选择最小首包、来源变化后继续保留、人工显式采集；每次回答立即进入PRD/task元数据，没有把设计选择写成实施授权。
+- [x] 只读核对主要writer、局部iteration/triage、公开字段与内部manifest；补 [最小首包合同](research/f2-minimum-contract-20261113.md)，用当前候选测试源码区分已有断言与未取得证据。
+- [x] 复核本次合同与三项用户选择、原F2验收映射一致；68个本地链接、JSON/限定diff通过。8个本任务文档改变，产品源码/JSONL/暂存区未变；检测到另一任务11个并行文档变化并单列保留，不错误宣称整个工作副本无变化。记录见handoff。
+
+实施前仍需落实：公共DTO与纯公开重放；当前human报告编辑权限的事务准入；明确撤回/清除/读fence机制；report准入/移回条件；候选容量边界；A01–A16及A01-public-replay/A13-public-fields/A15-human-admission/A10-withdrawal证据。先审阅这份合同相对并行execution draft的差异，后续按有效明确实施指令执行；本轮不派implement/check代码代理，不运行DB/产品测试。
+
+## 13. 待实施确认的具体边界
+
+后续“请推进F2”的实施确认已询问，答复前不修改代码或运行产品/DB测试。只读核对已将engine/backend/CLI文件责任、公共DTO与human receipt、版本化内部/公共封存包、撤回RR竞争约束补入 [最小合同§10](research/f2-minimum-contract-20261113.md)。若获准实施，先处理这些与并行草稿的明确差异；不重新实现M1，不将原JSONL中的旧execution记录当本次授权。
+
+## 14. 已授权F2实现与验证结果
+
+- [x] 本线程明确“授权”，并确认“本报告全部快照”撤回；更新当前上下文，独立engine/source/backend/CLI责任范围。
+- [x] 完成公共事实重放、内部/公共/audit整体绑定、来源/分页审计、独立gap、当前权限及终止撤回；M1产品代码不重做。
+- [x] 独立trellis-check指出的seal错配、coverage分母、birth依赖、Cloud PAT本地拦截、project_reasons全部修复并复核。
+- [x] 新DB normal/race：handler17根/30结果，router6根/42结果，各自零失败/skip；pure engine/health38/53、audit3/9、middleware7/17、CLI487/1283、builtin5/25通过；受影响Go build/vet通过。
+- [x] 保留初次handler fixture/oracle失败与builtin545行超限失败；分别用新的DB运行与单层文档修正证明通过，不改生产语义求绿。
+- [x] 更新report-snapshots code-spec及索引；记录scope/来源哈希、文档后续差异、schema0FK/8有效唯一索引。
+- [x] 最终限定文件/文档审计通过；按f2-commit-manifest列出的明确文件及spec索引单行准备本任务提交，不整体暂存并行工作，不归档或关闭roadmap。
+
+验收与A映射：[research/f2-acceptance-20261113.md](research/f2-acceptance-20261113.md)。无需重跑M1 Web/Desktop或未改前端的lint/typecheck；本次Go边界已验证。F1其他入口、F3/F4/F5及真实运行任务保留未完成。
