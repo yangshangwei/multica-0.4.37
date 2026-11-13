@@ -1,6 +1,6 @@
 # 技术设计草案
 
-状态：用户已确认首包S1；其最终设计由 [S1子任务](../11-13-collaboration-agent-identity-baseline/design.md) 承接。本文保留整体路线，不授权后续业务阶段模型。
+状态：用户已确认首包S1；其最终设计由 [S1子任务](../archive/2026-11/11-13-collaboration-agent-identity-baseline/design.md) 承接。本文保留整体路线，不授权后续业务阶段模型。
 
 ## 1. 复用边界
 

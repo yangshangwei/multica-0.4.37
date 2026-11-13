@@ -76,4 +76,4 @@ PAY-241 是用户提供的场景编号。现有本地演练主任务实际为 PA
 
 ## S1 验收进展（2026-11-13）
 
-具体 Agent 作者展示与当前闭环基线已通过 B01–B10 和独立审阅。首包报告见 [S1 report](../11-13-collaboration-agent-identity-baseline/report.md)。TC20 仅补齐身份展示子断言，仍为 PARTIAL；其余原始用例不继承首包通过结论。S2–S5 尚未执行。
+具体 Agent 作者展示与当前闭环基线已通过 B01–B10 和独立审阅。首包报告见 [S1 report](../archive/2026-11/11-13-collaboration-agent-identity-baseline/report.md)。TC20 仅补齐身份展示子断言，仍为 PARTIAL；其余原始用例不继承首包通过结论。S2–S5 尚未执行。
