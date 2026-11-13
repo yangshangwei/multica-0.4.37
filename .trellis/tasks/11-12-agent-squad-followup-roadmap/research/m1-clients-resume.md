@@ -38,6 +38,22 @@ The earlier broad command `pnpm --filter @multica/views test` completed in 307.6
 
 The coordinator later reported a separate Vite cache containing `authority-selection.test.tsx` and an external `/tmp/.../authority-selection.test.tsx`. Neither file is owned by or present in this client lane, and this lane did not execute or classify those external results.
 
+## Post-fix full-suite and renderer handoff
+
+After the focused fixes, the full package suite was rerun from the current
+checkout: `pnpm --filter @multica/views test` passed 602 files / 7,332 tests in
+208.94s. The command log and classification are in
+`research/m1-views-full-suite-20261113.md` and
+`research/m1-views-full-suite-20261113.log`.
+
+The coordinator then completed the real task-owned Web and Electron renderer
+flow. Both surfaces used the shared modal, keyboard activation, a fresh
+local-synthetic receipt and a separate current issue read; both produced one
+authorization and one bound completion write, then reported `consumed` plus
+current `done` revision 2. The visual artifacts are linked from
+`research/m1-renderer-evidence-20261113/`; this client lane still owns no
+production deployment or Provider evidence.
+
 ## File identity
 
 SHA-256 values are for the current full files, which can contain earlier in-progress M1 work as well as this lane's edits.

@@ -1,0 +1,104 @@
+{
+  "date": "2026-11-13",
+  "source_head": "463b201fa",
+  "api": {
+    "base_url": "http://localhost:18573",
+    "health_pid": 10062,
+    "health_commit": "463b201fa",
+    "database": "multica_multica_0_4_37_493",
+    "provider_calls": 0,
+    "artifact_environment": "local-synthetic"
+  },
+  "web_build": {
+    "base_url": "http://localhost:13493",
+    "mode": "production",
+    "build_id": "M-WGkBlRRSxxdDC6L3KVT",
+    "result": "passed"
+  },
+  "fixture": {
+    "workspace_id": "4bcb260a-a4db-4716-b4b1-a40c2c58c802",
+    "workspace_slug": "m1-renderer-a7e3a664-518",
+    "project_id": "47b2c240-bfc1-45d0-a65b-289c833b604e",
+    "policy_mode": "enforce",
+    "policy_revision": 1,
+    "issues": [
+      {
+        "surface": "web",
+        "issue_id": "01a1d299-7e77-7e05-9ab5-efc08eb816cb",
+        "identifier": "M1RE-1",
+        "initial_revision": 1,
+        "approval_id": "956a4988-7bb6-4d7a-867a-89e69ef08713",
+        "execution_id": "01a1d299-7f33-7a02-b0eb-f7f88eff3f72",
+        "receipt_digest": "343ee026b280e65b15c109de9b9a94b2e38a0b93c813c571b79c3f245ad03671"
+      },
+      {
+        "surface": "desktop",
+        "issue_id": "01a1d299-7e8f-760e-b476-8952d8c6b045",
+        "identifier": "M1RE-2",
+        "initial_revision": 1,
+        "approval_id": "3c32bc35-1b52-4d50-b5d2-3a89a99be55f",
+        "execution_id": "01a1d299-7f83-7591-909c-532d627ce0c5",
+        "receipt_digest": "e7b0744915bd83a4debb88dbe8bef39b4234e37ee975996d16692f462af289a9"
+      }
+    ]
+  },
+  "web": {
+    "runner": "Playwright Chromium against production Web",
+    "result": "passed",
+    "preview_status": 200,
+    "authorization_status": 201,
+    "completion_put_status": 200,
+    "authorization_query_status": 200,
+    "authorization_id": "01a1d29a-b8ff-7b89-9931-15dc30e09ae7",
+    "operation_id": "7f70e13e-b839-47a3-8376-fc19078f5ed5",
+    "completion_receipt_state": "consumed",
+    "completion_receipt": {
+      "authorization_id": "01a1d29a-b8ff-7b89-9931-15dc30e09ae7",
+      "operation_id": "7f70e13e-b839-47a3-8376-fc19078f5ed5",
+      "issue_id": "01a1d299-7e77-7e05-9ab5-efc08eb816cb",
+      "completed_revision": 2,
+      "target_status": "done",
+      "replayed": false
+    },
+    "completion_revision": 2,
+    "current_status": "done",
+    "current_issue": { "status": "done", "revision": 2 },
+    "keyboard_controls": true,
+    "narrow_viewport": "390x844",
+    "screenshots": ["web/review-wide.png", "web/review-narrow.png", "web/authorized.png", "web/current-done.png"]
+  },
+  "desktop": {
+    "runner": "Electron real renderer/preload through loopback proxy",
+    "renderer_origin": "http://127.0.0.1:5668",
+    "cors_preflight": "passed",
+    "result": "passed",
+    "preview_status": 200,
+    "authorization_status": 201,
+    "completion_put_status": 200,
+    "authorization_query_status": 200,
+    "authorization_id": "01a1d29a-c638-7c8a-a7b3-1c72759bdf22",
+    "operation_id": "ebf8307b-16c4-46c1-9cfc-573d9b6b0aa9",
+    "completion_receipt_state": "consumed",
+    "completion_receipt": {
+      "authorization_id": "01a1d29a-c638-7c8a-a7b3-1c72759bdf22",
+      "operation_id": "ebf8307b-16c4-46c1-9cfc-573d9b6b0aa9",
+      "issue_id": "01a1d299-7e8f-760e-b476-8952d8d6b045",
+      "completed_revision": 2,
+      "target_status": "done",
+      "replayed": false
+    },
+    "completion_revision": 2,
+    "current_status": "done",
+    "current_issue": { "status": "done", "revision": 2 },
+    "keyboard_controls": true,
+    "narrow_window": "680x900",
+    "daemon_starts": 0,
+    "screenshots": ["desktop/review-wide.png", "desktop/review-narrow.png", "desktop/authorized.png", "desktop/current-done.png"]
+  },
+  "playwright": { "tests": 2, "passed": 2, "failed": 0, "retries": 0, "workers": 1 },
+  "limits": [
+    "Evidence is local-synthetic and database-observed; no real Provider, remote Git head, release, deployment, or Hosted CI was used.",
+    "The fixture project is task-owned; POLA-1 and shared project policy were not read or mutated.",
+    "The API continued to enforce skip_supported=false; hint/preview reads did not create an authorization before the explicit keyboard action."
+  ]
+}

@@ -1,6 +1,6 @@
 # M1-S1 技术与交互设计
 
-2026-11-12 规划提案；尚未批准进入实现。只详设 [requirements](requirements.md) 的 S1-01–S1-16，F2–F5 保留路线而非提前实现。
+2026-11-12 M1-S1 规划提案，后按 task.json 所记范围获批并实现。第 1–7 节是 M1-S1 设计；第 8 节是 2026-11-13 新增的 F2 planning-only 结果/验收边界，不是实现设计或实现授权。
 
 ## 1. 选择与复用边界
 
@@ -177,3 +177,31 @@ JSON 使用独立 `protocol_version:1` envelope：`outcome`、`operation`（原�
 - 回退 UI/CLI 新入口即可停止新增签发；保留原授权/终结记录与查询，不回滚 v1、不删除审计数据。不能通过自动切 off/observe 解决兼容或测试失败。真实运行条件另见独立任务 PRD。
 
 本设计的剩余风险是多窗口竞争、权限受限后的不可恢复读和当前证据的时效；分别由服务端事务、明确 unknown/denied 和提交时重检约束。task.json 记录了对当前 M1-S1 规划版本的明确批准及授权哈希；此批准仅覆盖该首包。实施中若发现需要改变 wire、权限或数据边界，先回到规划审阅。真实 Provider、知识注入、发布、Hosted CI 和部署不在本设计授权内。
+
+## 8. F2 确定性报告快照：规划边界（design only）
+
+本节只在现有 M2 roadmap 上冻结结果/数据源/覆盖率/权限的规划条件。F2 不在 2026-11-12 M1-S1 批准范围内；本节不授权 endpoint、schema/migration、Reporter token capability、model call、rollout 或业务实现。细节与验收清单见 [F2 planning research](research/f2-deterministic-report-snapshot-planning-20261113.md)。
+
+### 已知代码边界与缺口
+
+- `projecthealth.StatisticsSnapshot` 已含 `calculated_at`、timezone/reference date、project revision、aggregate counts、`snapshot_version` 与 incomplete reasons；目前 `complete` 只检查 `unknown_status`。它不是来源清单完整性证明。
+- `project_update_revision.statistics_snapshot` 是版本化进度更新的内嵌统计结果，可作 read-only parity baseline；它不是单独可查询/重放的完整 report snapshot。
+- `activity_log` 可提供生命周期 activity 的 `(created_at,id)` 稳定顺序。公共 issue Timeline 有 2,000 activity row cap 并带 `X-Timeline-Truncated`，不能当无损报表来源。该 tuple 也不是全局提交序列；必须把 source cut 与一个 repeatable-read 事务绑定，并将不能证明完整的来源标 `unknown/gap`。
+- 当前 `issue` 与 `project` 行只表示当前值，不能重建整个窗口的历史 status/project membership。缺少所需历史事件时，不根据 `updated_at` 推断。
+
+### 候选快照合同
+
+不可变快照至少保存：`snapshot_id`、`protocol_version`、`semantics_version`、精确 `workspace/project` scope、timezone、半开 `[start,end)`、DB read cut 对应的 `as_of`、当前报告 issue 自排除规则、source identity/revision、每源 watermark/cursor 及排序定义、materialized source IDs/digests、结果事实、coverage/gap manifest 和 canonical result digest。重读用 snapshot identity 取回保存的结果；不能重新运行当前查询来重构历史结果。
+
+覆盖率显式分解 `eligible/included/excluded/unknown`，并保存每个 exclusion/gap 的 reason 与 source boundary。快照采集时读不到 source、cursor/row count 不一致、出现截断、来源读权不足或 source 不支持所需历史时，结果必须 incomplete/unknown；unknown 不是 0。读取者的 Reporter capability/当前 issue/project 权限若在 replay 前撤销，则 deny 且不返回快照正文；不得把读者失权当作 snapshot data gap。迟到数据不改变旧快照，属于更晚的 `as_of` 或 source watermark。
+
+### Reporter 最小权限门
+
+候选能力仅是 verified `progress-reporter` task 对当前报告 issue 及其 frozen project 的只读投影。Reporter 不能枚举 workspace，也不能通过改变 path/query 读取其他 project；无 frozen project 时只允许当前报告自身读。新增 current/historical snapshot read 必须与 `TaskCapabilityGuard` 的 closed exact-GET allowlist 一起设计，使用同一 repeatable-read scope 读取，不接受 caller-supplied actor/project authority。附件、评论创建、状态写入、policy 管理、completion authorization 签发/消费和 credential exchange 均不在该权限内。当前 guard 还不放行任何新 report route，未来实现必须新增专门且精确的 route predicate 与负向测试。
+
+### F2 规划验收门
+
+- 用同一 scope/window/as-of 只读双向比较候选结果与现有 project-health/progress-report 结果，逐 metric 确认差异与权威来源；不得 dual-write issue/project 状态。
+- 在 Reporter 仍有当前读取权限时，重读快照于分页、晚到事件、issue reopen/cancel、project move、report self-exclusion 后仍复现原 digest、source revisions、水位、coverage 和 gap manifest。Reporter capability/issue/project 访问权撤销时必须 deny 且不返回快照正文；快照采集阶段 source 失权/不可用则记录 gap 与 nonzero unknown coverage。二者不得混成同一种 `unknown` 响应。
+- 针对 Reporter 能力测试 exact current issue/frozen project、无项目、跨项目 UUID、伪造 workspace/project header、重复 query、编码路由、未知 path、所有写方法及 credential exchange；只读权限不扩到发布或完成授权。
+- 在 route contract、retention/source completeness、watermark generation、coverage formula 和回放测试均经审阅前，F2 保持 planning；这些条件通过本身也不构成实现授权。

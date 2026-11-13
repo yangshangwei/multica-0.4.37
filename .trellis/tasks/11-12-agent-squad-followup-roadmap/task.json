@@ -37,9 +37,17 @@
     "research/m1-backend-resume.md",
     "research/m1-clients-resume.md",
     "research/m1-cli-resume.md",
-    "research/m1-final-check.md"
+    "research/m1-final-check.md",
+    "research/m1-views-full-suite-20261113.md",
+    "research/m1-views-full-suite-20261113.txt",
+    "research/m1-renderer-evidence-20261113/README.md",
+    "research/m1-renderer-evidence-20261113/acceptance.json",
+    "research/m1-renderer-evidence-20261113/final-playwright-last-run.json",
+    "research/m1-renderer-fixture-20261113.mjs",
+    "research/f2-deterministic-report-snapshot-planning-20261113.md",
+    "e2e/issue-completion-authorization.spec.ts"
   ],
-  "notes": "2026-11-12：承接用户批准的阶段归档；后续真实调用授权、历史失败与系列预算按原记录保留。\n2026-11-12：用户批准 M1-S1 规划并启动 implementation。\n2026-11-13：M1-S1 backend、Core、共享 Web/Desktop、CLI 已实现；专属 DB 后端 normal/race 与 CLI/Core/Views 定向验证通过。Final check 修复 CLI 收据绑定/applicability/expiry 缺口。仍缺 enforcing Web/Desktop renderer 视觉与人工完整流程验收；全量 Views 在修复后未重跑。POLA-1 的本地 UI 检查状态已恢复 todo，但历史有两条 status events。禁止将其作为继续 UI fixture。真实 Provider、知识注入、发布、Hosted CI、部署与账单对账均未开放。",
+  "notes": "2026-11-12：承接用户批准的阶段归档；后续真实调用授权、历史失败与系列预算按原记录保留。\n2026-11-12：用户批准 M1-S1 规划并启动 implementation。\n2026-11-13：M1-S1 backend、Core、共享 Web/Desktop、CLI 已实现并提交于 463b201fa。修复后 Views 全量套件通过 602 files / 7,332 tests。真实 enforcing Web production 与 Electron renderer 在 task-owned DB/project/local-synthetic artifact 上均完成候选→明确授权→提交→原 authorization receipt/current issue 查询；收据 consumed、当前 status done revision 2；键盘与 390x844/680x900 截图见 research/m1-renderer-evidence-20261113。provider_calls=0、daemon_starts=0、skip_supported=false。未操作 POLA-1 或共享 project policy。\n2026-11-13：按既定顺序开始 F2 确定性报告快照设计/验收规划，见 research/f2-deterministic-report-snapshot-planning-20261113.md；仅设计，不授权实现。roadmap 保持 in_progress。真实 Provider、知识注入、发布、Hosted CI、部署与账单对账仍未开放。",
   "meta": {
     "created_from_delivered_stage_archive": true,
     "scope_authorization": {
@@ -100,14 +108,30 @@
       "product_validation_performed": false
     },
     "implementation_progress": {
-      "stage": "M1-S1 P1-P4 implemented; focused final quality checks passed; enforcing renderer acceptance pending",
+      "stage": "M1-S1 P1-P4 and acceptance complete at 463b201fa; post-fix Views full suite and isolated enforcing Web/Electron renderer flows passed; F2 design/acceptance drafted only",
       "started_after_user_approval": true,
       "current_api_contract": "research/m1-wire-contract.md",
       "test_environment": "research/test-environments",
       "new_provider_calls": 0,
       "final_check": "research/m1-final-check.md",
-      "visual_acceptance": "not_verified_demo_project_policy_off_or_observe",
-      "views_full_suite_after_fixes": false
+      "visual_acceptance": "passed_task_owned_web_production_and_electron_renderer; local_synthetic_only; no_POLA-1",
+      "views_full_suite_after_fixes": true,
+      "views_full_suite_result": "602_files_7332_tests_passed",
+      "renderer_evidence": "research/m1-renderer-evidence-20261113/acceptance.json",
+      "final_verification": {
+        "api_pid": 10062,
+        "api_commit": "463b201fa",
+        "production_web_build_id": "M-WGkBlRRSxxdDC6L3KVT",
+        "database": "multica_multica_0_4_37_493",
+        "playwright": "2_passed_0_failed",
+        "e2e_lint": "passed_with_existing_pages_path_warning"
+      },
+      "f2_planning": {
+        "status": "design_and_acceptance_draft_only",
+        "artifact": "research/f2-deterministic-report-snapshot-planning-20261113.md",
+        "implementation_authorized": false,
+        "reporter_scope": "current_report_and_exact_frozen_project_read_only"
+      }
     }
   }
 }

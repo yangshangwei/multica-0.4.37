@@ -59,7 +59,7 @@ S2 → S3 → S4 → S5 → S6 是这些入口内部的建议顺序，不把全�
 
 | ID | 结果合同 | 最低独立验收与依赖 |
 | --- | --- | --- |
-| F2 | 固定结果、来源编号/版本、scope/timezone/[start,end)/as_of、水位、覆盖率、缺口和口径版本；模型仅解释 | 分页、迟到、重开、取消、移入移出、报告自排除和失权有确定性结果；重读原快照不重跑当前查询。新增 Reporter 路由按冻结 project/current-report 最小权限验收，未知不是 0。 |
+| F2 | 固定 `snapshot_id`、protocol/semantics version、精确 scope、timezone、半开 `[start,end)`、DB read cut `as_of`、来源身份/版本、来源 watermark/cursor 定义、materialized source-ID/digest manifest、coverage/gap manifest 与规范结果 digest；模型只解释已冻结结果。 | 首先在同一 scope/window/read cut 与现有 project-health/progress-report 只读双向比对，逐 metric 明确权威，不双写业务状态。分页、迟到、重开、取消、移入/移出、报告自排除、source truncation 和历史缺失均有确定性结果；有 Reporter 权限时重读原快照不重跑当前查询、不静默采用新来源。采集阶段 source 不可读为显式 gap/nonzero unknown；请求者 Reporter 权限撤销后 replay 是 deny 且无快照正文。`eligible/included/excluded/unknown` 可复核，unknown 不是 0。Reporter 新 route 只能 exact current-report/frozen-project GET，在同一 repeatable-read scope snapshot 校验；无项目时只能读当前报告，跨项目/枚举/附件/写方法/凭据交换/签发完成授权一律拒绝。 |
 | F3 | 一个父任务预算根覆盖子执行与所有重试；reserved/actual/unknown 分离，整数计量和价格版本可追溯 | 并发预留、重复/迟到用量、取消/超时释放、未知结算与恢复不超发、不重复扣减。先观察再强制；项目/小队预算是后包。没有账单对账范围。 |
 | F4 | readiness、能力与当前可观察负载形成候选，领取事务再次核验权限/容量/预算 | 撤权、容量耗尽、取消、离线、并发领取可解释拒绝；原运行时身份保持，换身份必须另有授权；依赖 F3 的预算根。 |
 | F5-A | 固定负载 SLO 与恢复演练 | 环境/负载/阈值/观察窗口固定，超时、断网、取消、恢复与备份场景保留失败样本；未测为 unknown。真实 Provider 部分移交独立真实运行任务。 |
@@ -70,4 +70,4 @@ S2 → S3 → S4 → S5 → S6 是这些入口内部的建议顺序，不把全�
 
 ## 验收范围与审批状态
 
-M1-S1 的 requirements/design/implement 已按 task.json 中保存的用户批准进入实现。M1-S2–S6 与 F2–F5 仍是后续规划项，不属于该批准；五个 M3 包保持独立验收。真实 Provider、知识注入、发布、Hosted CI 和部署继续关闭，由相应原任务与审批单独承接。
+M1-S1 的 requirements/design/implement 已按 task.json 中保存的用户批准进入实现并完成验收。M1-S2–S6 与 F2–F5 仍是后续包；F2 的 design-only 规划见 design.md §8 与 `research/f2-deterministic-report-snapshot-planning-20261113.md`，不属于 M1-S1 批准，也没有实现授权。五个 M3 包保持独立验收。真实 Provider、知识注入、发布、Hosted CI 和部署继续关闭，由相应原任务与审批单独承接。

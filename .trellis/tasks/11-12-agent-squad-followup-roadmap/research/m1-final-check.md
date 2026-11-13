@@ -46,18 +46,41 @@ HTTP service was corrected to echo the exact requested expiry; its earlier
   suite 4,546 passed; M1 and affected surface tests 84/84; Views typecheck and
   lint passed. Eight unrelated timed-out suites passed 319/319 when rerun alone.
 
+## Post-fix full Views and renderer acceptance
+
+- `pnpm --filter @multica/views test`: 602 files and 7,332 tests passed after
+  the focused fixes. The command completed in 208.94s with no failed tests.
+  The existing jsdom canvas/navigation warnings did not fail the run. Full-run
+  output is retained in `research/m1-views-full-suite-20261113.log`.
+- The task-owned renderer fixture used source HEAD `463b201fa`, API commit
+  `463b201fa` (health pid `10062`), production Web build
+  `M-WGkBlRRSxxdDC6L3KVT`, database `multica_multica_0_4_37_493`, one new
+  enforce project at policy revision 1, two new issues, and two actual
+  local-synthetic artifact receipts. Provider calls were zero. Full
+  machine-readable evidence and
+  screenshots are in [m1-renderer-evidence-20261113](m1-renderer-evidence-20261113/).
+- Web production renderer: candidate selection, preview `pass`, keyboard
+  authorize, keyboard submit, receipt query, and separate current issue read
+  passed. Authorization creation returned `201`; bound completion PUT returned
+  `200`; receipt state was `consumed`; current issue was `done` at revision 2.
+- Electron real renderer/preload: the same flow passed through the loopback
+  proxy origin `http://127.0.0.1:5668`, with CORS preflight accepted. The
+  window was reduced to 680x900, keyboard activation passed, and the fixture
+  recorded zero daemon starts. The modal kept receipt and current status
+  visibly separate after completion.
+- Final verified combined Playwright command:
+  `M1_FIXTURE_FILE=<task-owned fixture> NEXT_PUBLIC_API_URL=http://localhost:18573 FRONTEND_ORIGIN=http://localhost:13493 PLAYWRIGHT_BASE_URL=http://localhost:13493 pnpm exec playwright test e2e/issue-completion-authorization.spec.ts --workers=1 --retries=0`
+  Result: 2 passed / 0 failed; combined marker is
+  `research/m1-renderer-evidence-20261113/final-playwright-last-run.json`.
+- POLA-1 was not used. The fixture project and issue identities are task-owned;
+  no shared policy or project was modified.
+
 ## Remaining verification limits
 
-- The full Views suite was not rerun after the focused fixes. Its earlier run
-  had 78 failures: surface failures from the subsequently fixed auth-store
-  access/mock issues and timeouts in eight unrelated suites, which passed in
-  isolation. This is recorded in the client lane report.
-- The running Desktop was connected to the local `Test` project whose policy
-  did not enforce completion. No authorization modal could be reached there, so
-  visual/modal end-to-end validation remains unproven. During this inspection,
-  `POLA-1` was moved from `todo` to `done` by its ordinary allowed flow, then
-  restored to `todo`; its status history retains both changes. No additional UI
-  mutation was made.
+- The historical pre-fix Views run still had 78 failures; the post-fix full run
+  above is the authoritative result for this checkout. The historical run is
+  retained only to explain the bounded repair and is not counted as current
+  failure evidence.
 - No real Provider, knowledge injection, publish, Hosted CI, deployment or
   release behavior was exercised. The accepted `skip_supported=false`
   restriction remains unchanged.

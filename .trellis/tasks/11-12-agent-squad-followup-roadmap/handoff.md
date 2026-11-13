@@ -35,4 +35,24 @@
 
 实现和测试合同见 [implement.md](implement.md)；lane 证据分别见 [backend](research/m1-backend-resume.md)、[clients](research/m1-clients-resume.md)、[CLI](research/m1-cli-resume.md)。
 
-仍待完成 enforcing Web/Desktop renderer 的人工流程/键盘/窄屏视觉验证。现运行 Desktop 的 Test 项目为 off/observe，未能打开授权弹窗；期间 POLA-1 曾由 `todo` 变 `done` 后恢复为 `todo`，两条历史事件仍在本地数据库。不要在此事项上继续测试，也不要为触发弹窗直接调整共享项目策略。Views 全包在修复前有 78 failures，其中回归及 timeout suites 后续定向通过；全包未在修复后重跑。
+## M1-S1 验收完成（2026-11-13）
+
+两项验收缺口均已在当前 HEAD `463b201fa` 的 task-owned 环境中完成：
+
+- 修复后完整 Views 套件 `pnpm --filter @multica/views test` 通过 602 files / 7,332 tests；日志见 [m1-views-full-suite-20261113.md](research/m1-views-full-suite-20261113.md)。
+- Web production renderer 与真实 Electron renderer 均走通“候选证据 → 明确授权 → 提交 → 查询 receipt/当前状态”。两端都用新建 enforce project、固定 local-synthetic artifact receipt 和数据库观测 PR head；preview `200`、authorization `201`、bound PUT `200`、原 authorization 查询 `200`，receipt 为 `consumed`，当前任务为 `done` revision 2。键盘动作、Web 390x844、Desktop 680x900、截图和 CORS/daemon=0 证据见 [m1-renderer-evidence-20261113](research/m1-renderer-evidence-20261113/)。
+- 截图 fixture 不使用 POLA-1，也未修改共享项目策略；真实 Provider、知识注入、发布、Hosted CI、部署和账单对账仍关闭。
+
+历史的 off/observe Demo 检查和 POLA-1 的两条状态事件仍是历史事实，不作为本轮 renderer 证据。后续不得把共享 Demo 或 POLA-1 当作 UI fixture。
+
+## F2 规划交接（design only）
+
+M1-S1 验收后已按既定顺序开始 F2“确定性报告快照”的规划，记录在 [f2-deterministic-report-snapshot-planning-20261113.md](research/f2-deterministic-report-snapshot-planning-20261113.md)。规划先冻结：
+
+- 结果身份、语义版本、scope、timezone、`[start,end)`、`as_of` 和可重放的物化事实；
+- 来源 identity/revision、水位/cursor、分页排序、迟到数据和 gap；
+- eligible/included/excluded/unknown coverage 及 coverage formula/version，unknown 不折算为 0；
+- 分页、迟到、重开、取消、移入/移出、报告自排除、失权和原快照重读验收；
+- Reporter 仅允许 verified `progress-reporter` 的 exact frozen-project/current-report GET，拒绝 workspace 枚举、跨项目、写方法、附件、重复 query/path ambiguity 和 credential exchange；采集阶段 source 失权记 gap，读取者 Reporter 权限撤销后的 replay 则 deny 且不披露快照正文。
+
+这只是设计与验收条件，不授权 F2 实现、迁移、新路由、Reporter 能力或任何 Provider 调用。roadmap/task 继续保持 `in_progress`，其他 M1 入口和 F3–F5 仍保留未完成状态。

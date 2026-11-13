@@ -64,7 +64,7 @@
 2. [x] 接入本包所有显式普通 status-only 入口，复用一个选择/预览/授权/提交界面；排除 drag/batch/create/mixed/collaboration。
 3. [x] 加两个明确动作、当前证据/期限/理由、关闭与撤销区别、原操作查询入口、缺证/拒绝/未知/历史完成但已重开状态。
 4. [x] 覆盖重复动作、unmount、scope/身份变化、存储失败、迟到响应、callback 不提前执行。
-5. [ ] 完成实际 enforcing Web/Desktop renderer 的键盘/焦点/窄窗与视觉验证。当前已运行 Desktop 使用 off/observe Demo 项目，授权弹窗不能安全地通过现有数据触发；禁止为截图擅自修改共享策略/事项。
+5. [x] 完成实际 enforcing Web/Desktop renderer 的键盘/焦点/窄窗与视觉验证。使用 task-owned project/DB 和 local-synthetic receipt；不操作 Demo 项目或 POLA-1。
 6. [x] views 定向测试、lint/typecheck 通过；共享代码无 next/react-router-dom，Core 保持 package 边界。
 
 ## 4. CLI 与内置指导合同
@@ -148,9 +148,9 @@ go -C server test -race ./cmd/server -run 'Test.*DeliveryCompletion' -count=1 -j
 
 - [x] 本包验收结果链接、失败/跳过与限制写到任务 research；不得引用旧阶段测试数字作为本包通过。
 - [x] 更新完成 evidence/hints spec 与 CLI 内置合同，只记已验证行为；保留 skip=false 与独立协作/R38 语义。
-- [ ] 保留其他工作区改动；提交仅列本包明确文件，遵循 Lore intent/约束/验证 trailers。不提交其他代理材料，不整体 git add。
+- [x] 保留其他工作区改动；本轮仅提交明确列出的 acceptance/F2 planning artifacts 与 task-scoped E2E 验收，不重提 M1-S1 产品代码 `463b201fa`；使用 Lore intent/约束/验证 trailers，不提交其他代理材料，不整体 git add。
 - [x] 任一包失败可回退本包客户端/只读入口接线；原 v1、授权终结和私有证据不删除。不切 off 绕过 gate。
-- [ ] M1-S1 验收后回到本任务更新剩余矩阵，继续 F2 报告快照规划；不能把 roadmap 或独立真实运行任务整体关闭。
+- [x] M1-S1 验收后回到本任务更新剩余矩阵，开始 F2 报告快照的设计与验收条件规划；不能把 roadmap 或独立真实运行任务整体关闭。
 
 实际执行使用 Trellis 原生 implement/check 子代理并注入本任务 jsonl；每个 dispatch 以当时 `task.py current` 的路径开头并明确唯一 ownership。用户批准后激活任务；P1 后端、P2 Core、P3 共享 UI、P4 CLI 和最终检查均已完成各自实现/检查。实现报告见 `research/m1-backend-resume.md`、`research/m1-clients-resume.md`、`research/m1-cli-resume.md` 和 `research/m1-final-check.md`。
 
@@ -162,6 +162,17 @@ go -C server test -race ./cmd/server -run 'Test.*DeliveryCompletion' -count=1 -j
 | P2 Core | 全量 338 files / 4,546 tests；当前复验 4 files / 21 tests；lint/typecheck 通过 | `research/m1-clients-resume.md` 与本轮复验 |
 | P3 Shared Views | 当前复验 5 files / 84 tests；typecheck、受影响文件 lint 通过 | `research/m1-clients-resume.md` |
 | P4 CLI | `go test ./cmd/multica`, vet/build、3 项内置 skill 合同测试通过；未知提交后的 `issued/not_checked`、错误收据和过期授权 fail closed | `research/m1-cli-resume.md`、`research/m1-final-check.md` |
-| Visual/renderer | 未验证：当前 Desktop Demo 项目策略不为 enforce，未到达授权 modal；不可用该环境宣称 UI 通过 | `research/m1-final-check.md` |
+| Visual/renderer | task-owned production Web 与 real Electron renderer 均通过；键盘、窄屏、候选/preview/授权/提交/receipt/current 分离均有证据 | `research/m1-renderer-evidence-20261113/` |
 
-Views 全包只在修复前运行一次，78 项失败中受影响 gate/modal/surface 与八个 timeout suites 后续单独通过；全包未在修复后重跑。M1-S1 产品实现和确定性测试已完成，但实际 enforcing renderer 验收仍是阻止将首包标为完全接受的事项。
+Views 全量套件已在修复后重跑并通过 602 files / 7,332 tests。M1-S1 的产品实现、确定性测试和 task-owned enforcing renderer 验收均完成；真实 Provider、发布、Hosted CI、部署和其他 M1/F2/F3/F4/F5 实现仍未开放。
+
+## 9. F2 规划门（design only）
+
+F2 的规划记录在 [f2-deterministic-report-snapshot-planning-20261113.md](research/f2-deterministic-report-snapshot-planning-20261113.md)。本阶段只冻结设计与验收条件，不推导实现授权：
+
+- [x] 冻结结果合同：snapshot identity、semantics version、scope、timezone、`[start,end)`、`as_of` 和可重放的物化事实。
+- [x] 冻结来源合同：每个 source identity/revision、单调 watermark/cursor、分页排序、迟到数据和 source gap。
+- [x] 冻结 coverage 合同：eligible/included/excluded/unknown、gap 明细和 coverage formula/version；unknown 不能折算为 0。
+- [x] 冻结生命周期验收：分页、迟到、重开、取消、移入/移出、报告自排除、当前失权和重读原快照不重跑当前查询。
+- [x] 冻结 Reporter 最小权限验收：仅 verified `progress-reporter` 的 exact frozen-project/current-report GET；拒绝 workspace 枚举、跨项目、写方法、重复 query/path ambiguity、附件和 credential exchange；新增 route 不 mint/consume completion authorization。
+- [x] 明确 F2 仍未获实现授权；M1-S1 批准、renderer 证据和本引导语均不能启动 F2 代码或迁移。
