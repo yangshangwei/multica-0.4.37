@@ -1,0 +1,1013 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-13T10:16:43.798Z",
+  "reviewer": "trellis-check /root/s3_final_check",
+  "task": ".trellis/tasks/11-13-pay-241-s3-timeout-proof",
+  "status": "pass",
+  "code_findings": [],
+  "source_code_changes_by_reviewer": [],
+  "scope_files": [
+    "server/internal/daemon/collaborationrun/host_runner_test.go",
+    "server/internal/daemon/collaborationrun/host_timeout_recovery_test.go",
+    "server/internal/daemon/collaboration_host_router_test.go",
+    "server/internal/daemon/collaboration_host_router_boundary_test.go",
+    "e2e/fixtures/collaboration-host-runtime.ts",
+    "e2e/collaboration-timeout-recovery.spec.ts"
+  ],
+  "spec_review": {
+    "file": ".trellis/spec/web/frontend/collaboration-closure-qa.md",
+    "sha256": "f8d0a8ab8e38c558f067b392323ed4ef146dfdff2643566a5b066ec5e3f2f3ce",
+    "section": "Controlled timeout and restart acceptance",
+    "status": "pass",
+    "additional_spec_sync_required": false,
+    "production_platform_template_or_public_config_change": false
+  },
+  "findings_fixed": [
+    {
+      "id": "F01",
+      "file": "research/targeted-static-check.json",
+      "classification": "verification metadata",
+      "issue": "Historical targeted E2E tsc/ESLint records omitted actual argv and effective config.",
+      "fix": "Execute fresh strict noEmit checks, retain actual argv, tool versions, effective settings, import graph and hashes; retain and classify the first declaration-mode configuration failure. No runtime or source change."
+    }
+  ],
+  "findings_not_fixed": [
+    {
+      "classification": "pre-existing lint warnings outside scope",
+      "count": 31,
+      "reason": "The task owns six test/fixture files. The retained full lint invocation passes under repository rules; product hook and unused-disable warnings are unrelated to this increment and are not safe scope expansions.",
+      "locations": [
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/agents/agents-i18n-parity.test.ts",
+          "line": 150,
+          "column": 9,
+          "message": "Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')",
+          "rule": "unused-eslint-disable",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/agents/agents-i18n-parity.test.ts",
+          "line": 166,
+          "column": 9,
+          "message": "Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')",
+          "rule": "unused-eslint-disable",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/agents/components/tabs/mcp-config-tab.tsx",
+          "line": 112,
+          "column": 9,
+          "message": "The 'assignedServers' logical expression could make the dependencies of useMemo Hook (at line 115) change on every render. To fix this, wrap the initialization of 'assignedServers' in its own useMemo() Hook",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/agents/components/tabs/mcp-config-tab.tsx",
+          "line": 112,
+          "column": 9,
+          "message": "The 'assignedServers' logical expression could make the dependencies of useMemo Hook (at line 132) change on every render. To fix this, wrap the initialization of 'assignedServers' in its own useMemo() Hook",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/attachments/use-html-preview-scroll-restore.ts",
+          "line": 211,
+          "column": 5,
+          "message": "React Hook useCallback has an unnecessary dependency: 'sendRequestSync'. Either exclude it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/common/single-row-fit.ts",
+          "line": 64,
+          "column": 3,
+          "message": "Unused eslint-disable directive (no problems were reported from 'react-hooks/exhaustive-deps')",
+          "rule": "unused-eslint-disable",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/editor/zoom-canvas.tsx",
+          "line": 161,
+          "column": 5,
+          "message": "React Hook useCallback has a missing dependency: 'canvas'. Either include it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/issues/components/execution-log-section.tsx",
+          "line": 250,
+          "column": 5,
+          "message": "React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/issues/components/issue-usage-dialog.tsx",
+          "line": 72,
+          "column": 5,
+          "message": "React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/issues/components/issue-usage-dialog.tsx",
+          "line": 85,
+          "column": 5,
+          "message": "React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/issues/components/issue-usage-dialog.tsx",
+          "line": 231,
+          "column": 6,
+          "message": "React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/issues/components/swimlane-view.tsx",
+          "line": 964,
+          "column": 6,
+          "message": "React Hook useMemo has a missing dependency: 'categoryOf'. Either include it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/issues/components/table-view.tsx",
+          "line": 1848,
+          "column": 5,
+          "message": "React Hook useCallback has a missing dependency: 'resolveStatusLabel'. Either include it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/issues/surface/use-issue-group-branches.ts",
+          "line": 331,
+          "column": 6,
+          "message": "React Hook useMemo has a missing dependency: 'secondaryIsCategory'. Either include it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/onboarding/onboarding-flow.tsx",
+          "line": 243,
+          "column": 6,
+          "message": "React Hook useCallback has a missing dependency: 't'. Either include it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/projects/components/project-detail.tsx",
+          "line": 153,
+          "column": 6,
+          "message": "React Hook useEffect has a missing dependency: 'project'. Either include it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/projects/components/project-detail.tsx",
+          "line": 261,
+          "column": 5,
+          "message": "React Hook useCallback has a missing dependency: 'updateProject'. Either include it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/runtimes/components/charts/activity-heatmap.tsx",
+          "line": 204,
+          "column": 6,
+          "message": "React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/runtimes/components/usage-section.tsx",
+          "line": 373,
+          "column": 5,
+          "message": "React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/runtimes/components/usage-section.tsx",
+          "line": 383,
+          "column": 5,
+          "message": "React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/runtimes/components/usage-section.tsx",
+          "line": 699,
+          "column": 5,
+          "message": "React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/runtimes/components/usage-section.tsx",
+          "line": 703,
+          "column": 5,
+          "message": "React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/runtimes/utils.test.ts",
+          "line": 1079,
+          "column": 5,
+          "message": "Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')",
+          "rule": "unused-eslint-disable",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/runtimes/utils.test.ts",
+          "line": 1089,
+          "column": 5,
+          "message": "Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')",
+          "rule": "unused-eslint-disable",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/runtimes/utils.test.ts",
+          "line": 1101,
+          "column": 5,
+          "message": "Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')",
+          "rule": "unused-eslint-disable",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/runtimes/utils.test.ts",
+          "line": 1123,
+          "column": 5,
+          "message": "Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')",
+          "rule": "unused-eslint-disable",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/runtimes/utils.test.ts",
+          "line": 1133,
+          "column": 5,
+          "message": "Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')",
+          "rule": "unused-eslint-disable",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/src/renderer/src/components/tab-content.tsx",
+          "line": 54,
+          "column": 6,
+          "message": "React Hook useEffect has a missing dependency: 'group'. Either include it or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/ui/components/ui/stepper.tsx",
+          "line": 144,
+          "column": 5,
+          "message": "React Hook useMemo has missing dependencies: 'focusFirst', 'focusLast', 'focusNext', 'focusPrev', and 'indicators'. Either include them or remove the dependency array",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/ui/components/ui/stepper.tsx",
+          "line": 249,
+          "column": 6,
+          "message": "React Hook useEffect has a missing dependency: 'registerTrigger'. Either include it or remove the dependency array. Mutable values like 'btnRef.current' aren't valid dependencies because mutating them doesn't re-render the component",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        },
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/ui/components/ui/stepper.tsx",
+          "line": 255,
+          "column": 5,
+          "message": "React Hook useMemo has an unnecessary dependency: 'btnRef.current'. Either exclude it or remove the dependency array. Mutable values like 'btnRef.current' aren't valid dependencies because mutating them doesn't re-render the component",
+          "rule": "react-hooks/exhaustive-deps",
+          "disposition": "Outside the six implementation files; retain unchanged."
+        }
+      ]
+    }
+  ],
+  "criteria": [
+    {
+      "id": "T01",
+      "status": "pass",
+      "evidence": [
+        "server/internal/daemon/collaborationrun/host_timeout_recovery_test.go:19",
+        "server/pkg/agent/claude.go:64",
+        "server/pkg/agent/stream_json_result.go:129",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/s3-timeout-run2/collaboration-timeout-reco-d3dde-after-a-same-ledger-restart-chromium/timeout-recovery-evidence.json"
+      ],
+      "finding": "A real test-owned executable reaches the configured deadline. Unit cases use 1500 ms; actual API/Web/Electron acceptance uses 15000 ms with a still-unreleased 150000 ms callback. The retained result is exactly claude timed out after 15s and an actual managed-launch observation supports host_exit_observed."
+    },
+    {
+      "id": "T02",
+      "status": "pass",
+      "evidence": [
+        "server/internal/daemon/collaborationrun/host_timeout_recovery_test.go:12",
+        "e2e/fixtures/collaboration-host-runtime.ts:371",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/s3-timeout-run2/collaboration-timeout-reco-d3dde-after-a-same-ledger-restart-chromium/timeout-recovery-evidence.json"
+      ],
+      "finding": "Separate lost outcome/proof/both cases reopen the original disk ledger. In final E2E the old process 95242 exits with the same pending ledger and new process 95353 replays only the identical original proof/outcome. Original run/attempt/launch hashes, event, receipt and payload digests are unchanged; no recovery claim, permit or additional launch."
+    },
+    {
+      "id": "T03",
+      "status": "pass",
+      "evidence": [
+        "server/internal/daemon/collaborationrun/host_timeout_recovery_test.go:106",
+        "server/internal/daemon/collaborationrun/host_runner_test.go:352",
+        "e2e/collaboration-timeout-recovery.spec.ts:160"
+      ],
+      "finding": "Both controlled orders pass normally and under race. Timeout-before-Stop retains one accepted failure. Stop-before-timeout retains no accepted business outcome, with one terminal proof and launch. Explicit human retry creates a new command/run and leaves the old failed command, original failure records and proof intact."
+    },
+    {
+      "id": "T04",
+      "status": "pass",
+      "evidence": [
+        "server/internal/daemon/collaboration_host_router_test.go:34",
+        "server/internal/daemon/collaboration_host_router_test.go:150",
+        "server/internal/daemon/collaboration_host_router_boundary_test.go:16",
+        "e2e/fixtures/collaboration-host-runtime.ts:227"
+      ],
+      "finding": "Only the test poller accepts the bounded integer timeout. Omission is 180000 ms; explicit null, zero, negative, out-of-range, string, fraction and overflow values refuse before creating harness state. Existing fixture calls retain defaults. Four existing Node regressions exercise the actual extracted close function under Windows/POSIX mocks."
+    },
+    {
+      "id": "T05",
+      "status": "pass",
+      "evidence": [
+        "e2e/collaboration-timeout-recovery.spec.ts:79",
+        "e2e/collaboration-timeout-recovery.spec.ts:98",
+        "e2e/collaboration-timeout-recovery.spec.ts:140",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/s3-timeout-run2/collaboration-timeout-reco-d3dde-after-a-same-ledger-restart-chromium/timeout-recovery-evidence.json",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/s3-timeout-run2/collaboration-timeout-reco-d3dde-after-a-same-ledger-restart-chromium/web-retained-timeout.png",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/s3-timeout-run2/collaboration-timeout-reco-d3dde-after-a-same-ledger-restart-chromium/desktop-retained-timeout.png"
+      ],
+      "finding": "Real password API and production Web/actual isolated Electron renderer show the retained failure. Before retry, equality assertions preserve two comments (one Agent), one input attachment, memory v1, one command/run, and separate input/comment/result records. Exact human POST replay returns its original receipt. Agent output upload and external side-effect idempotency are not claimed."
+    },
+    {
+      "id": "T06",
+      "status": "pass",
+      "evidence": [
+        "research/implementation-results.json",
+        "research/targeted-static-check.json",
+        "research/runtime-final-audit.json",
+        "research/cleanup-final.json"
+      ],
+      "finding": "Final normal and race inventories each have 27 passing test/subtest entries, zero failures/skips; Node close has four passes and Go vet exit 0. Prior full typecheck is 9/9 and lint 6/6 with 31 pre-existing out-of-scope warnings. Fresh explicit E2E strict tsc and zero-warning ESLint pass. Final E2E is one pass in 27280 ms, no retry/skip. Source and artifact digests match; original gate booleans are restored with epoch 2 to 6. Only owned API/Web/renderer were stopped, with their ports closed on IPv4 and IPv6."
+    }
+  ],
+  "verification": {
+    "executed_this_review": {
+      "typecheck": {
+        "status": "pass",
+        "exit_code": 0,
+        "entry_files": 2,
+        "source_import_graph_files": 246,
+        "record": "research/targeted-static-check.json"
+      },
+      "lint": {
+        "status": "pass",
+        "exit_code": 0,
+        "warnings": 0,
+        "files": 2,
+        "record": "research/targeted-static-check.json"
+      },
+      "gofmt": {
+        "status": "pass",
+        "exit_code": 0,
+        "argv": [
+          "gofmt",
+          "-l",
+          "server/internal/daemon/collaborationrun/host_runner_test.go",
+          "server/internal/daemon/collaborationrun/host_timeout_recovery_test.go",
+          "server/internal/daemon/collaboration_host_router_test.go",
+          "server/internal/daemon/collaboration_host_router_boundary_test.go"
+        ],
+        "output": ""
+      },
+      "source_and_artifact_digest_audit": "pass",
+      "runtime_evidence_reconciliation": "pass",
+      "screenshots": "Both final-run Web and Electron images visually inspected."
+    },
+    "retained_checks_reviewed": {
+      "go_normal": {
+        "status": "pass",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-impl-final-normal.jsonl",
+        "sha256": "e7198e79fbb258d304f1cc59abb1c55a4caad04a8140904b9875e725f43267b9",
+        "counts": {
+          "pass": 27,
+          "fail": 0,
+          "skip": 0
+        },
+        "test_count_includes_parent_tests": true,
+        "top_level_test_functions": 4,
+        "exit_code": 0,
+        "package_terminal": [
+          {
+            "Time": "2026-11-13T17:35:07.154507+08:00",
+            "Action": "pass",
+            "Package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+            "Elapsed": 7.497
+          },
+          {
+            "Time": "2026-11-13T17:35:15.575343+08:00",
+            "Action": "pass",
+            "Package": "github.com/multica-ai/multica/server/internal/daemon",
+            "Elapsed": 0.981
+          }
+        ],
+        "test_names": [
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner/outcome",
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner/proof",
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner/both",
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner",
+          "TestHostTimeoutAndStopKeepTheirActualFirstOutcome/timeout_before_stop",
+          "TestHostTimeoutAndStopKeepTheirActualFirstOutcome/stop_before_timeout",
+          "TestHostTimeoutAndStopKeepTheirActualFirstOutcome",
+          "TestCollaborationHostHarnessTimeoutBoundary/default",
+          "TestCollaborationHostHarnessTimeoutBoundary/minimum",
+          "TestCollaborationHostHarnessTimeoutBoundary/e2e_budget",
+          "TestCollaborationHostHarnessTimeoutBoundary/maximum",
+          "TestCollaborationHostHarnessTimeoutBoundary/null",
+          "TestCollaborationHostHarnessTimeoutBoundary/zero",
+          "TestCollaborationHostHarnessTimeoutBoundary/negative",
+          "TestCollaborationHostHarnessTimeoutBoundary/too_short",
+          "TestCollaborationHostHarnessTimeoutBoundary/too_long",
+          "TestCollaborationHostHarnessTimeoutBoundary/string",
+          "TestCollaborationHostHarnessTimeoutBoundary/fraction",
+          "TestCollaborationHostHarnessTimeoutBoundary/overflow",
+          "TestCollaborationHostHarnessTimeoutBoundary",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/outcome/OK",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/outcome/Forbidden",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/outcome/Service_Unavailable",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/proof/OK",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/proof/Forbidden",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/proof/Service_Unavailable",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements"
+        ],
+        "stop_order_durations": [
+          {
+            "test": "TestHostTimeoutAndStopKeepTheirActualFirstOutcome/timeout_before_stop",
+            "elapsed": 1.72
+          },
+          {
+            "test": "TestHostTimeoutAndStopKeepTheirActualFirstOutcome/stop_before_timeout",
+            "elapsed": 0.22
+          }
+        ],
+        "reexecuted": false
+      },
+      "go_race": {
+        "status": "pass",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-impl-final-race.jsonl",
+        "sha256": "4124dd02132665be186e8dfb9ffb7f1634cf0c83ae61a5eabd8bb8ab83457c94",
+        "counts": {
+          "pass": 27,
+          "fail": 0,
+          "skip": 0
+        },
+        "test_count_includes_parent_tests": true,
+        "top_level_test_functions": 4,
+        "exit_code": 0,
+        "package_terminal": [
+          {
+            "Time": "2026-11-13T17:36:22.907323+08:00",
+            "Action": "pass",
+            "Package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+            "Elapsed": 8.438
+          },
+          {
+            "Time": "2026-11-13T17:36:27.700366+08:00",
+            "Action": "pass",
+            "Package": "github.com/multica-ai/multica/server/internal/daemon",
+            "Elapsed": 1.7930000000000001
+          }
+        ],
+        "test_names": [
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner/outcome",
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner/proof",
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner/both",
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner",
+          "TestHostTimeoutAndStopKeepTheirActualFirstOutcome/timeout_before_stop",
+          "TestHostTimeoutAndStopKeepTheirActualFirstOutcome/stop_before_timeout",
+          "TestHostTimeoutAndStopKeepTheirActualFirstOutcome",
+          "TestCollaborationHostHarnessTimeoutBoundary/default",
+          "TestCollaborationHostHarnessTimeoutBoundary/minimum",
+          "TestCollaborationHostHarnessTimeoutBoundary/e2e_budget",
+          "TestCollaborationHostHarnessTimeoutBoundary/maximum",
+          "TestCollaborationHostHarnessTimeoutBoundary/null",
+          "TestCollaborationHostHarnessTimeoutBoundary/zero",
+          "TestCollaborationHostHarnessTimeoutBoundary/negative",
+          "TestCollaborationHostHarnessTimeoutBoundary/too_short",
+          "TestCollaborationHostHarnessTimeoutBoundary/too_long",
+          "TestCollaborationHostHarnessTimeoutBoundary/string",
+          "TestCollaborationHostHarnessTimeoutBoundary/fraction",
+          "TestCollaborationHostHarnessTimeoutBoundary/overflow",
+          "TestCollaborationHostHarnessTimeoutBoundary",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/outcome/OK",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/outcome/Forbidden",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/outcome/Service_Unavailable",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/proof/OK",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/proof/Forbidden",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/proof/Service_Unavailable",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements"
+        ],
+        "stop_order_durations": [
+          {
+            "test": "TestHostTimeoutAndStopKeepTheirActualFirstOutcome/timeout_before_stop",
+            "elapsed": 1.7
+          },
+          {
+            "test": "TestHostTimeoutAndStopKeepTheirActualFirstOutcome/stop_before_timeout",
+            "elapsed": 0.23
+          }
+        ],
+        "reexecuted": false
+      },
+      "node_close": {
+        "exit_code": 0,
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-impl-node-close.jsonl",
+        "sha256": "10b37f6242020279f6598114ed51519b688fb729e3f08fa30bfbe3054c3a72d7",
+        "pass": 4,
+        "fail": 0,
+        "skip": 0,
+        "scope": "Windows/POSIX mocked close behavior; not native Windows E2E"
+      },
+      "go_vet": {
+        "exit_code": 0,
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-impl-vet.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "reexecuted": false
+      },
+      "full_typecheck": {
+        "status": "pass",
+        "successful_tasks": 9,
+        "total_tasks": 9,
+        "cached_tasks": 5,
+        "log": {
+          "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-check-typecheck.log",
+          "sha256": "4c4eb63772c2114104b6a8aa2726baea63b2fd450731374d20724bd465bd7c11",
+          "bytes": 4084
+        },
+        "reexecuted": false
+      },
+      "full_lint": {
+        "status": "pass",
+        "successful_tasks": 6,
+        "total_tasks": 6,
+        "cached_tasks": 4,
+        "warning_count": 31,
+        "log": {
+          "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-check-lint.log",
+          "sha256": "ed7940f4727091cc35baf7f47387f7a5a9db2055d961c40a8075e1ee8561749b",
+          "bytes": 11013
+        },
+        "reexecuted": false
+      },
+      "e2e_run1": {
+        "status": "pass",
+        "spec_sha256": "fb52643788656a251775fdb0b0b427b6f6dd5ee5614f76bba0e77618f0e4fedd",
+        "test_duration_ms": 32966,
+        "applies_to_final_spec": false,
+        "report": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-run1.json"
+      },
+      "e2e_run2": {
+        "status": "pass",
+        "spec_sha256": "d7d63e25cb4b96c22c5e5577dbb8f0749dcce53c4fca7529eb5723bd3d4fb306",
+        "test_duration_ms": 27280,
+        "run_duration_ms": 28657.539999999997,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "report": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-run2.json",
+        "evidence": "/Users/artisan/.multica/acceptance/pay241-20261113-01/s3-timeout-run2/collaboration-timeout-reco-d3dde-after-a-same-ledger-restart-chromium/timeout-recovery-evidence.json"
+      }
+    }
+  },
+  "runtime_audit": {
+    "source_bindings": {
+      "server/internal/daemon/collaborationrun/host_runner_test.go": {
+        "expected": "7d513668d77e2ceb329fea0f83d9838e4624a34d1da5b6a4bf426da2d3afbab1",
+        "root_sha256": "7d513668d77e2ceb329fea0f83d9838e4624a34d1da5b6a4bf426da2d3afbab1",
+        "root_matches": true,
+        "execution_source": "root checkout only"
+      },
+      "server/internal/daemon/collaborationrun/host_timeout_recovery_test.go": {
+        "expected": "2e3ebf0c906058855cb399ce717051b20a4443ee90778c36823b74c8ab0bb5f6",
+        "root_sha256": "2e3ebf0c906058855cb399ce717051b20a4443ee90778c36823b74c8ab0bb5f6",
+        "root_matches": true,
+        "execution_source": "root checkout only"
+      },
+      "server/internal/daemon/collaboration_host_router_test.go": {
+        "expected": "5c7365dd147850d0820e87ead8378f60a879f1c67176a07952cfa675a66b7ea7",
+        "root_sha256": "5c7365dd147850d0820e87ead8378f60a879f1c67176a07952cfa675a66b7ea7",
+        "root_matches": true,
+        "runtime_sha256": "5c7365dd147850d0820e87ead8378f60a879f1c67176a07952cfa675a66b7ea7",
+        "runtime_matches": true
+      },
+      "server/internal/daemon/collaboration_host_router_boundary_test.go": {
+        "expected": "62309cc37706f063f79c518cf6aac95afd0ac2af1a55fd16ba05aee3a0583dab",
+        "root_sha256": "62309cc37706f063f79c518cf6aac95afd0ac2af1a55fd16ba05aee3a0583dab",
+        "root_matches": true,
+        "runtime_sha256": "62309cc37706f063f79c518cf6aac95afd0ac2af1a55fd16ba05aee3a0583dab",
+        "runtime_matches": true
+      },
+      "e2e/fixtures/collaboration-host-runtime.ts": {
+        "expected": "10d40de911c937bde95f5578b82a82a40ae60d2996133b3a91dbfb9de9009417",
+        "root_sha256": "10d40de911c937bde95f5578b82a82a40ae60d2996133b3a91dbfb9de9009417",
+        "root_matches": true,
+        "runtime_sha256": "10d40de911c937bde95f5578b82a82a40ae60d2996133b3a91dbfb9de9009417",
+        "runtime_matches": true
+      },
+      "e2e/collaboration-timeout-recovery.spec.ts": {
+        "expected": "d7d63e25cb4b96c22c5e5577dbb8f0749dcce53c4fca7529eb5723bd3d4fb306",
+        "root_sha256": "d7d63e25cb4b96c22c5e5577dbb8f0749dcce53c4fca7529eb5723bd3d4fb306",
+        "root_matches": true,
+        "runtime_sha256": "d7d63e25cb4b96c22c5e5577dbb8f0749dcce53c4fca7529eb5723bd3d4fb306",
+        "runtime_matches": true
+      }
+    },
+    "artifacts": [
+      {
+        "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/bin/server",
+        "expected": "664395c02ddceb3acf82a7057d292ff367e120908a50f314c4beddcb36e98eb4",
+        "actual": "664395c02ddceb3acf82a7057d292ff367e120908a50f314c4beddcb36e98eb4",
+        "match": true
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/bin/multica",
+        "expected": "6d0ff983fccd4c6c4382e36a16739e49e0d7f6d753181115f2275033a68f3ba2",
+        "actual": "6d0ff983fccd4c6c4382e36a16739e49e0d7f6d753181115f2275033a68f3ba2",
+        "match": true
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/bin/closure-provider",
+        "expected": "c00bff858dc7282b5fcab93b31147e95046696d850c78023e8e668c904d45c45",
+        "actual": "c00bff858dc7282b5fcab93b31147e95046696d850c78023e8e668c904d45c45",
+        "match": true
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/source/apps/web/.next/BUILD_ID",
+        "expected": "552ef1ab348a97b8b3c4b1414498906272803b45ee730c8501e8a9b55c8aab31",
+        "actual": "552ef1ab348a97b8b3c4b1414498906272803b45ee730c8501e8a9b55c8aab31",
+        "match": true
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/source/apps/desktop/out/renderer/index.html",
+        "expected": "45653c91f7279a8b523012516bc0a0460adb93bbb0256e385553fe1a5daf5fd2",
+        "actual": "45653c91f7279a8b523012516bc0a0460adb93bbb0256e385553fe1a5daf5fd2",
+        "match": true
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/bin/host-daemon.test",
+        "expected": "fc841f843b64e04974a9566428454324ecec3d448baa4e67c2388ad9e6df3188",
+        "actual": "fc841f843b64e04974a9566428454324ecec3d448baa4e67c2388ad9e6df3188",
+        "match": true
+      }
+    ],
+    "old_http": {
+      "claim": {
+        "calls": 1,
+        "statuses": [
+          200
+        ],
+        "held": 0,
+        "request_hashes": [
+          "e096293af351f1585c4c50d658ec5764018ee86945cc1c46b61d543251adcc55"
+        ],
+        "events": [],
+        "launch_hashes": []
+      },
+      "permit": {
+        "calls": 2,
+        "statuses": [
+          200
+        ],
+        "held": 0,
+        "request_hashes": [
+          "e20e9999445fb20484f2489a90af03449500e5946c4dce4bfc0fd88582d40440"
+        ],
+        "events": [],
+        "launch_hashes": [
+          "fde8ae6b7dd6a829051d58380d0b70f6bc28b91b04feeb5db61e5a8f487b5394"
+        ]
+      },
+      "termination": {
+        "calls": 1,
+        "statuses": [
+          200
+        ],
+        "held": 0,
+        "request_hashes": [
+          "ab7e8b264d26f2ee59eec3b446adf380b923754edd88ad29eb31386fdf9960db"
+        ],
+        "events": [
+          "c39de15f-ec3f-4a02-901e-f1e48378dd94"
+        ],
+        "launch_hashes": [
+          "fde8ae6b7dd6a829051d58380d0b70f6bc28b91b04feeb5db61e5a8f487b5394"
+        ]
+      },
+      "outcome": {
+        "calls": 1,
+        "statuses": [
+          200
+        ],
+        "held": 1,
+        "request_hashes": [
+          "4d3e3a770ce96498382904ca48479bb55e17c33ee59e3eba919af534ef83aefe"
+        ],
+        "events": [
+          "66ab9cb4-93d1-4d47-b7db-81d035891d08"
+        ],
+        "launch_hashes": [
+          "fde8ae6b7dd6a829051d58380d0b70f6bc28b91b04feeb5db61e5a8f487b5394"
+        ]
+      },
+      "proof": {
+        "calls": 2,
+        "statuses": [
+          200
+        ],
+        "held": 2,
+        "request_hashes": [
+          "e1878aad9c6d53e85df2b7ea90f0a3aad3cd27edcea882ece23b0bfe281e2f15"
+        ],
+        "events": [
+          "21e421ec-069d-417f-90b4-d642b84df0b5"
+        ],
+        "launch_hashes": [
+          "fde8ae6b7dd6a829051d58380d0b70f6bc28b91b04feeb5db61e5a8f487b5394"
+        ]
+      }
+    },
+    "new_http": {
+      "proof": {
+        "calls": 1,
+        "statuses": [
+          200
+        ],
+        "held": 0,
+        "request_hashes": [
+          "e1878aad9c6d53e85df2b7ea90f0a3aad3cd27edcea882ece23b0bfe281e2f15"
+        ],
+        "events": [
+          "21e421ec-069d-417f-90b4-d642b84df0b5"
+        ],
+        "launch_hashes": [
+          "fde8ae6b7dd6a829051d58380d0b70f6bc28b91b04feeb5db61e5a8f487b5394"
+        ]
+      },
+      "outcome": {
+        "calls": 1,
+        "statuses": [
+          200
+        ],
+        "held": 0,
+        "request_hashes": [
+          "4d3e3a770ce96498382904ca48479bb55e17c33ee59e3eba919af534ef83aefe"
+        ],
+        "events": [
+          "66ab9cb4-93d1-4d47-b7db-81d035891d08"
+        ],
+        "launch_hashes": [
+          "fde8ae6b7dd6a829051d58380d0b70f6bc28b91b04feeb5db61e5a8f487b5394"
+        ]
+      }
+    },
+    "original_run": "8e28dcc8-a372-4ba4-b8d3-b1fca315d06e",
+    "retry_run": "0d369dc5-0c86-49a3-b315-9904ca783d25",
+    "old_pid": 95242,
+    "new_pid": 95353,
+    "pending_ledger_after_old_process_exit_identical": true,
+    "original_receipt_and_launch_identities_unchanged": true,
+    "original_recovered_request_operations": [
+      "proof",
+      "outcome"
+    ],
+    "callback_observation_interval_ms": 13949.100459,
+    "observed_interval_scope": "Callback arrival after CLI writes to callback socket close; not native spawn-to-exit duration.",
+    "new_dispatch_from_recovery": 0,
+    "duplicate_persisted_business_effects": 0,
+    "explicit_retry_is_distinct": true,
+    "old_failure_retained": true
+  },
+  "test_state": {
+    "configuration_sha256": "831526fbf5c379888f4ff091317f5852c8e0c7eea30978d924930552d48cb916",
+    "database_url_present": false,
+    "ordinary_token_present": false,
+    "external_state": {
+      "HOME": {
+        "exists": true,
+        "under_recorded_external_state_root": true
+      },
+      "TMPDIR": {
+        "exists": true,
+        "under_recorded_external_state_root": true
+      },
+      "TMP": {
+        "exists": true,
+        "under_recorded_external_state_root": true
+      },
+      "TEMP": {
+        "exists": true,
+        "under_recorded_external_state_root": true
+      }
+    }
+  },
+  "environment": {
+    "source_head": "feb87aee75fa6b9dd051a4e35bf7df8b101edb75",
+    "unit_source_root": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "unit_source_files": [
+      "server/internal/daemon/collaborationrun/host_runner_test.go",
+      "server/internal/daemon/collaborationrun/host_timeout_recovery_test.go"
+    ],
+    "runtime_source_root": "/Users/artisan/.multica/acceptance/pay241-20261113-01/source",
+    "runtime_overlay_files": [
+      "server/internal/daemon/collaboration_host_router_test.go",
+      "server/internal/daemon/collaboration_host_router_boundary_test.go",
+      "e2e/fixtures/collaboration-host-runtime.ts",
+      "e2e/collaboration-timeout-recovery.spec.ts"
+    ],
+    "database": "multica_pay241_20261113_01_s3_runtime_api",
+    "gate": {
+      "before": {
+        "database": "multica_pay241_20261113_01_s3_runtime_api",
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": "2"
+      },
+      "after": {
+        "database": "multica_pay241_20261113_01_s3_runtime_api",
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": "6"
+      },
+      "restored": true
+    },
+    "cleanup": {
+      "status": "pass",
+      "processes": [
+        {
+          "component": "renderer",
+          "pid": 88665,
+          "pgid": 88665,
+          "cwd": "/Users/artisan/.multica/acceptance/pay241-20261113-01/source",
+          "stopped": true
+        },
+        {
+          "component": "web",
+          "pid": 88666,
+          "pgid": 88666,
+          "cwd": "/Users/artisan/.multica/acceptance/pay241-20261113-01/source/apps/web",
+          "stopped": true
+        },
+        {
+          "component": "api",
+          "pid": 87448,
+          "pgid": 87448,
+          "cwd": "/Users/artisan/.multica/acceptance/pay241-20261113-01/source/server",
+          "stopped": true
+        }
+      ],
+      "ports": {
+        "6094": {
+          "127.0.0.1": false,
+          "::1": false
+        },
+        "13910": {
+          "127.0.0.1": false,
+          "::1": false
+        },
+        "18990": {
+          "127.0.0.1": false,
+          "::1": false
+        }
+      },
+      "database": "retained",
+      "unowned_processes": "untouched"
+    },
+    "reviewer_service_or_database_actions": []
+  },
+  "first_failures_preserved": [
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-impl-unit-first.jsonl",
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-impl-harness-red.jsonl",
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-impl-eslint.log",
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-impl-stop-final.jsonl",
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/s3-timeout-check-static/typecheck.log"
+  ],
+  "evidence_artifacts": [
+    {
+      "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/s3-timeout-run2/collaboration-timeout-reco-d3dde-after-a-same-ledger-restart-chromium/timeout-recovery-evidence.json",
+      "sha256": "77c80a1a346f4d716bc72e78de8c03f670ed57a4664b6b10e2685b45557d4813"
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/s3-timeout-run2/collaboration-timeout-reco-d3dde-after-a-same-ledger-restart-chromium/web-retained-timeout.png",
+      "sha256": "6a009eb542cbf7f8c3a2b8c90c869e00a4753f0f33a98b455d8d9163f3994104"
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/s3-timeout-run2/collaboration-timeout-reco-d3dde-after-a-same-ledger-restart-chromium/desktop-retained-timeout.png",
+      "sha256": "b433d85712a3dc34d99a0fe3308c6c1c7c3e5de63822b8a2023b91757a97b903"
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-run1.json",
+      "sha256": "a170db319a12be67c78da1c07e3445ac8ccd98ed7d35afb3ae3887ba86704d61"
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-run2.json",
+      "sha256": "0ae9e3d43870d2c869f71cb64c4ed126a8035c0c14f6a1298860b7e819fee7f6"
+    },
+    {
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-timeout-proof/research/runtime-final-audit.json",
+      "sha256": "0397dd24ad051db4f351e189f0a641258c4278c9b63913b46d8ca5fd2aab37b5"
+    },
+    {
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-timeout-proof/research/cleanup-final.json",
+      "sha256": "605a02b893553e5dc0e0807a5d9b1404498175b37ae1ded2f7529b7a6beba28a"
+    },
+    {
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-timeout-proof/research/targeted-static-check.json",
+      "sha256": "97b7e3d0d5ec1d4cdae9b4bad8a4adc80511380c33400222e85267ab4830b385"
+    }
+  ],
+  "sanitized_output_audit": {
+    "status": "pass",
+    "method": "Inspected allowlisted source fields and scanned the named output artifacts for known token/JWT/credential-URL patterns. Private credential configuration contents were not emitted.",
+    "files": [
+      {
+        "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/s3-timeout-run2/collaboration-timeout-reco-d3dde-after-a-same-ledger-restart-chromium/timeout-recovery-evidence.json",
+        "known_credential_pattern_counts": {
+          "runtime capability": 0,
+          "managed or ordinary token": 0,
+          "JWT-like token": 0,
+          "URL user/password": 0
+        }
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-run1.json",
+        "known_credential_pattern_counts": {
+          "runtime capability": 0,
+          "managed or ordinary token": 0,
+          "JWT-like token": 0,
+          "URL user/password": 0
+        }
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-run2.json",
+        "known_credential_pattern_counts": {
+          "runtime capability": 0,
+          "managed or ordinary token": 0,
+          "JWT-like token": 0,
+          "URL user/password": 0
+        }
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-run1-stderr.log",
+        "known_credential_pattern_counts": {
+          "runtime capability": 0,
+          "managed or ordinary token": 0,
+          "JWT-like token": 0,
+          "URL user/password": 0
+        }
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-run2-stderr.log",
+        "known_credential_pattern_counts": {
+          "runtime capability": 0,
+          "managed or ordinary token": 0,
+          "JWT-like token": 0,
+          "URL user/password": 0
+        }
+      },
+      {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-timeout-proof/research/targeted-static-check.json",
+        "known_credential_pattern_counts": {
+          "runtime capability": 0,
+          "managed or ordinary token": 0,
+          "JWT-like token": 0,
+          "URL user/password": 0
+        }
+      }
+    ]
+  },
+  "limitations": [
+    "Controlled Provider processes establish platform orchestration/termination/recovery only, not real commercial model accounts or reasoning quality.",
+    "The final E2E runs on darwin/arm64 with production Web and an isolated real Electron renderer; installed Desktop Main, native Windows/Linux acceptance and all-descendant OS containment are not certified.",
+    "The observed 13949.100459 ms interval starts at callback arrival after CLI writes, not native process launch; configured execution deadline is independently 15000 ms.",
+    "Stable input attachment retention is separate from Agent output attachment upload idempotency, payments, fulfillment, deployment and arbitrary external side effects.",
+    "The broader S3 recovery/notification/blocking scope and full PAY-241 24-case matrix remain open.",
+    "Historical full lint/typecheck, Go tests/vet and real E2E were audited rather than rerun, as explicitly dispatched."
+  ],
+  "archive_recommendation": {
+    "increment_acceptance": "passed",
+    "eligible_after_coordinator_local_commit": true,
+    "archive_executed": false,
+    "parent_s3": "open",
+    "parent_pay241": "open",
+    "full_24_case_matrix": "open"
+  },
+  "git_operations_by_reviewer": []
+}

@@ -1,0 +1,99 @@
+{
+  "recorded_at": "2026-11-13T09:52:17.132Z",
+  "status": "pass",
+  "source_head": "feb87aee75fa6b9dd051a4e35bf7df8b101edb75",
+  "root_head": "feb87aee75fa6b9dd051a4e35bf7df8b101edb75",
+  "gate": {
+    "before": {
+      "database": "multica_pay241_20261113_01_s3_runtime_api",
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "2"
+    },
+    "after": {
+      "database": "multica_pay241_20261113_01_s3_runtime_api",
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "6"
+    },
+    "restored": true
+  },
+  "root_unit_source": {
+    "server/internal/daemon/collaborationrun/host_runner_test.go": {
+      "sha256": "7d513668d77e2ceb329fea0f83d9838e4624a34d1da5b6a4bf426da2d3afbab1",
+      "source": "/Volumes/artisan/code/2026/multica-0.4.37"
+    },
+    "server/internal/daemon/collaborationrun/host_timeout_recovery_test.go": {
+      "sha256": "2e3ebf0c906058855cb399ce717051b20a4443ee90778c36823b74c8ab0bb5f6",
+      "source": "/Volumes/artisan/code/2026/multica-0.4.37"
+    }
+  },
+  "runtime_overlay_source": {
+    "server/internal/daemon/collaboration_host_router_test.go": {
+      "sha256": "5c7365dd147850d0820e87ead8378f60a879f1c67176a07952cfa675a66b7ea7",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261113-01/source"
+    },
+    "server/internal/daemon/collaboration_host_router_boundary_test.go": {
+      "sha256": "62309cc37706f063f79c518cf6aac95afd0ac2af1a55fd16ba05aee3a0583dab",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261113-01/source"
+    },
+    "e2e/fixtures/collaboration-host-runtime.ts": {
+      "sha256": "10d40de911c937bde95f5578b82a82a40ae60d2996133b3a91dbfb9de9009417",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261113-01/source"
+    },
+    "e2e/collaboration-timeout-recovery.spec.ts": {
+      "sha256": "d7d63e25cb4b96c22c5e5577dbb8f0749dcce53c4fca7529eb5723bd3d4fb306",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261113-01/source"
+    }
+  },
+  "artifacts": {
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/bin/server": {
+      "sha256": "664395c02ddceb3acf82a7057d292ff367e120908a50f314c4beddcb36e98eb4",
+      "unchanged": true
+    },
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/bin/multica": {
+      "sha256": "6d0ff983fccd4c6c4382e36a16739e49e0d7f6d753181115f2275033a68f3ba2",
+      "unchanged": true
+    },
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/bin/closure-provider": {
+      "sha256": "c00bff858dc7282b5fcab93b31147e95046696d850c78023e8e668c904d45c45",
+      "unchanged": true
+    },
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/source/apps/web/.next/BUILD_ID": {
+      "sha256": "552ef1ab348a97b8b3c4b1414498906272803b45ee730c8501e8a9b55c8aab31",
+      "unchanged": true
+    },
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/source/apps/desktop/out/renderer/index.html": {
+      "sha256": "45653c91f7279a8b523012516bc0a0460adb93bbb0256e385553fe1a5daf5fd2",
+      "unchanged": true
+    },
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/bin/host-daemon.test": {
+      "sha256": "fc841f843b64e04974a9566428454324ecec3d448baa4e67c2388ad9e6df3188",
+      "mtime": "2026-11-13T09:25:16.298Z",
+      "source_binding": "harness-source.json; compiled after initial runtime preflight before both E2E runs"
+    }
+  },
+  "config_unchanged": true,
+  "health": {
+    "status": "ok",
+    "pid": 87448,
+    "commit": "feb87aee75fa6b9dd051a4e35bf7df8b101edb75",
+    "started_at": "2026-11-13T09:12:43Z"
+  },
+  "e2e_reports": {
+    "run1": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-run1.json",
+      "sha256": "a170db319a12be67c78da1c07e3445ac8ccd98ed7d35afb3ae3887ba86704d61"
+    },
+    "run2": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-run2.json",
+      "sha256": "0ae9e3d43870d2c869f71cb64c4ed126a8035c0c14f6a1298860b7e819fee7f6"
+    }
+  },
+  "limits": [
+    "Two pure unit fixture files were tested in the root checkout; only four runtime/E2E fixture files are overlaid into the isolated runtime source.",
+    "Host daemon hash is recorded at final audit; its source/build command precedes the runtime tests."
+  ]
+}

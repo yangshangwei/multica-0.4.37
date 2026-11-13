@@ -1,6 +1,6 @@
 # 分阶段执行草案
 
-当前阶段：planning。用户已确认S1首包；实际执行计划见 [S1子任务](../archive/2026-11/11-13-collaboration-agent-identity-baseline/implement.md)，其最终摘要已获用户批准，子任务现已验收归档。父任务不直接启动产品实现。
+当前阶段：总验收开放。S1已归档。S2规划评审已通过、待实施；独立于其职业选择的S3超时证明子增量已通过独立检查并归档，S4/S5先准备接入和测量协议。父任务不直接承载产品实现。
 
 ## 0. 规划与基线
 
@@ -34,7 +34,7 @@
 - S5：S1–S4必要依赖通过后运行100独立用户与回写延迟验收；真实模型耗时/质量与平台受控测试分列。
 - 最终：汇总八项交付物，按完整24用例及未解决缺陷判断，不汇总成虚假的部分通过率。
 
-首包选择不会删除S2–S5或原需求；S1子任务已建立，其余包待各自范围收敛后再建立。
+阶段任务已建立：11-13-pay-241-s2-stage-approvals、11-13-pay-241-s3-recovery、11-13-pay-241-s4-external-integrations、11-13-pay-241-s5-performance-acceptance。S3 timeout-proof是独立测试证明增量，不代替整个S3；任何局部通过均不关闭父任务。
 
 ## 3. 验证命令候选
 
@@ -69,4 +69,4 @@ make env-exec ARGS="-- pnpm exec playwright test e2e/collaboration-multi-account
 
 ## 5. 本轮验证
 
-仅检查规划文件、CSV/JSONL结构、来源路径、用例完整性和任务planning状态。产品代码、测试、真实Provider及环境操作均未执行；此说明不代表产品验证通过。
+初次规划仅做结构/路径检查。续行在新DB运行service 50/handler 31个named基线；S3 timeout-proof增量已完成normal/race各27项、两次受控真实E2E与独立检查。真实Provider账号、支付和发布未执行；新证据逐项记入test-matrix.csv的current_evidence，开放项见gaps.md。

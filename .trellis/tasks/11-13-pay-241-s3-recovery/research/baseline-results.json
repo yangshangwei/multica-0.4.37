@@ -1,0 +1,42 @@
+{
+  "head": "feb87aee75fa6b9dd051a4e35bf7df8b101edb75",
+  "database": "multica_pay241_20261113_01_s3_baseline_service",
+  "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-baseline-service-test.jsonl",
+  "sha256": "0dd5ef6a2e679ba25020ba7932dec64f6cac6bfbc43fe49023211901fe962f96",
+  "scope": "Existing attachment, notification, record and outbox contracts; not full S3 acceptance",
+  "tests": {
+    "pass": [
+      "TestCollaborationAttachmentCreationBindingRollsBackWithRequiredWrites",
+      "TestCollaborationAttachmentScopeCiphertextAndLiveAccess",
+      "TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes",
+      "TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner",
+      "TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage",
+      "TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion",
+      "TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity",
+      "TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions",
+      "TestCollaborationNotificationsLoseContentAndAnchorsWithAccess",
+      "TestCollaborationRealtimeAuthorizationKeepsIndependentReadBases",
+      "TestCollaborationRealtimeOutboxRetriesWithoutPrivatePayloads",
+      "TestCollaborationRealtimeRetainsFailedSourceInvalidation",
+      "TestCollaborationRealtimeRemovalReachesRevokedAccount",
+      "TestCollaborationRunRecordsPagingFrozenInputsAndRetention",
+      "TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence",
+      "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/outcome",
+      "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/record_checkpoint",
+      "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/comment",
+      "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/squad_activity",
+      "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected",
+      "TestCollaborationRunRecordsUnclaimedInputsAreNotInvented",
+      "TestCollaborationResultNotificationsRequireProvenTerminalGroup/success",
+      "TestCollaborationResultNotificationsRequireProvenTerminalGroup/failure",
+      "TestCollaborationResultNotificationsRequireProvenTerminalGroup/missing",
+      "TestCollaborationResultNotificationsRequireProvenTerminalGroup/stopped",
+      "TestCollaborationResultNotificationsRequireProvenTerminalGroup/never_launched",
+      "TestCollaborationResultNotificationsRequireProvenTerminalGroup",
+      "TestCollaborationResultNotificationRollbackAndConcurrentReplay",
+      "TestCollaborationSquadRecordingAndOneFinalLeaderNotification"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}
