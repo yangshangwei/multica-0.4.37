@@ -114,7 +114,10 @@ type hostRunFixture struct {
 	stop                 bool
 	offline              bool
 	stopPolls            int
+	claimRequests        int
+	permitRequests       int
 	stopAfterTermination bool
+	stopAfterOutcome     bool
 	losePermitReply      bool
 	loseProofReply       bool
 	loseOutcomeReply     bool
@@ -193,6 +196,7 @@ func (f *hostRunFixture) serve(w http.ResponseWriter, r *http.Request) {
 	}
 	switch {
 	case strings.HasSuffix(r.URL.Path, "/claim"):
+		f.claimRequests++
 		var claimed protocol.CollaborationRunClaimRequest
 		if err := json.NewDecoder(r.Body).Decode(&claimed); err != nil {
 			f.t.Error(err)
@@ -220,6 +224,7 @@ func (f *hostRunFixture) serve(w http.ResponseWriter, r *http.Request) {
 		_ = json.NewEncoder(w).Encode(protocol.CollaborationRunMemory{IssueID: f.claim.Identity.IssueID, RunID: f.claim.Identity.RunID,
 			Version: version, Content: f.memoryContent, Bytes: len(f.memoryContent), MaxBytes: 64 << 10})
 	case strings.HasSuffix(r.URL.Path, "/permit"):
+		f.permitRequests++
 		var p protocol.CollaborationRunPermitRequest
 		if err := json.NewDecoder(r.Body).Decode(&p); err != nil {
 			f.t.Error(err)
@@ -344,6 +349,9 @@ func (f *hostRunFixture) serve(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		f.outcomes = append(f.outcomes, p)
+		if f.stopAfterOutcome {
+			f.stop = true
+		}
 		if f.loseOutcomeReply {
 			f.loseOutcomeReply = false
 			conn, _, _ := w.(http.Hijacker).Hijack()

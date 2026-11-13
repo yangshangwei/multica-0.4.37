@@ -27,6 +27,19 @@ const collaborationHostRouterHarnessArg = "__multica_collaboration_host_router_p
 type collaborationHostRouterInput struct {
 	collaborationRouterHarnessInput
 	RuntimeConfigEpoch string
+	AgentTimeoutMS     json.RawMessage `json:"agent_timeout_ms,omitempty"`
+	HoldReceiptACKs    bool            `json:"hold_receipt_acks,omitempty"`
+}
+
+func (input collaborationHostRouterInput) executionTimeout() (time.Duration, error) {
+	if len(input.AgentTimeoutMS) == 0 {
+		return 3 * time.Minute, nil
+	}
+	var milliseconds int64
+	if err := json.Unmarshal(input.AgentTimeoutMS, &milliseconds); err != nil || milliseconds < 1000 || milliseconds > 180000 {
+		return 0, fmt.Errorf("host fixture agent_timeout_ms must be an integer from 1000 to 180000")
+	}
+	return time.Duration(milliseconds) * time.Millisecond, nil
 }
 
 func init() {
@@ -42,27 +55,33 @@ func init() {
 // Keep observations content-free. The real transport still sends/receives the
 // original request and response; no fixture supplies permits or terminal facts.
 type collaborationHostHTTPFact struct {
-	Operation       string `json:"operation"`
-	RunID           string `json:"run_id"`
-	ProtocolVersion int    `json:"protocol_version"`
-	Containment     string `json:"containment"`
-	AttemptSeq      string `json:"attempt_seq,omitempty"`
-	LaunchHash      string `json:"launch_hash,omitempty"`
-	Kind            string `json:"kind,omitempty"`
-	State           string `json:"state,omitempty"`
-	Status          int    `json:"status"`
+	Operation           string `json:"operation"`
+	RunID               string `json:"run_id"`
+	ProtocolVersion     int    `json:"protocol_version"`
+	Containment         string `json:"containment"`
+	AttemptSeq          string `json:"attempt_seq,omitempty"`
+	LaunchHash          string `json:"launch_hash,omitempty"`
+	Kind                string `json:"kind,omitempty"`
+	State               string `json:"state,omitempty"`
+	Status              int    `json:"status"`
+	EventID             string `json:"event_id,omitempty"`
+	ReceiptID           string `json:"receipt_id,omitempty"`
+	RequestSHA256       string `json:"request_sha256,omitempty"`
+	ResponseSHA256      string `json:"response_sha256,omitempty"`
+	AcknowledgementHeld bool   `json:"acknowledgement_held,omitempty"`
 }
 
 type collaborationHostTransport struct {
-	capacity *collaborationCapacityObserver
-	mu       sync.Mutex
-	facts    []collaborationHostHTTPFact
+	capacity        *collaborationCapacityObserver
+	mu              sync.Mutex
+	facts           []collaborationHostHTTPFact
+	holdReceiptACKs bool
 }
 
 func (o *collaborationHostTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 	fact := collaborationHostHTTPFact{Operation: filepath.Base(r.URL.Path)}
 	observe := r.Method == http.MethodPost && strings.HasPrefix(r.URL.Path, "/api/collaboration/runtime/runs/") &&
-		(fact.Operation == "claim" || fact.Operation == "permit" || fact.Operation == "termination" || fact.Operation == "proof")
+		(fact.Operation == "claim" || fact.Operation == "permit" || fact.Operation == "termination" || fact.Operation == "proof" || fact.Operation == "outcome")
 	if observe && r.GetBody != nil {
 		body, err := r.GetBody()
 		if err != nil {
@@ -76,15 +95,20 @@ func (o *collaborationHostTransport) RoundTrip(r *http.Request) (*http.Response,
 			AttemptNonce    string                            `json:"attempt_nonce"`
 			Kind            string                            `json:"kind"`
 			State           string                            `json:"state"`
+			EventID         string                            `json:"event_id"`
+			ReceiptID       string                            `json:"receipt_id"`
 		}
-		err = json.NewDecoder(io.LimitReader(body, 1<<20)).Decode(&request)
+		wire, err := io.ReadAll(io.LimitReader(body, protocol.CollaborationOutcomeJSONLimit+1))
 		_ = body.Close()
-		if err != nil {
+		if err != nil || len(wire) > protocol.CollaborationOutcomeJSONLimit || json.Unmarshal(wire, &request) != nil {
 			return nil, fmt.Errorf("host fixture request was not bounded JSON")
 		}
+		digest := sha256.Sum256(wire)
+		fact.RequestSHA256 = hex.EncodeToString(digest[:])
 		fact.RunID = strings.Split(strings.TrimPrefix(r.URL.Path, "/api/collaboration/runtime/runs/"), "/")[0]
 		fact.ProtocolVersion, fact.Containment = request.ProtocolVersion, request.Containment
 		fact.AttemptSeq, fact.Kind, fact.State = request.AttemptSeq, request.Kind, request.State
+		fact.EventID, fact.ReceiptID = request.EventID, request.ReceiptID
 		if request.AttemptNonce != "" {
 			sum := sha256.Sum256([]byte(request.AttemptNonce))
 			fact.LaunchHash = hex.EncodeToString(sum[:])
@@ -94,6 +118,22 @@ func (o *collaborationHostTransport) RoundTrip(r *http.Request) (*http.Response,
 	if observe {
 		if response != nil {
 			fact.Status = response.StatusCode
+		}
+		if o.holdReceiptACKs && (fact.Operation == "outcome" || fact.Operation == "proof") &&
+			err == nil && response != nil && response.StatusCode >= 200 && response.StatusCode < 300 {
+			// The real API answered after its transaction. Hold only that ACK,
+			// on every replay until this poller exits; never forge a result.
+			body, readErr := io.ReadAll(io.LimitReader(response.Body, 1<<20))
+			_ = response.Body.Close()
+			response = nil
+			if readErr != nil {
+				err = fmt.Errorf("host fixture could not inspect its committed receipt")
+			} else {
+				digest := sha256.Sum256(body)
+				fact.ResponseSHA256 = hex.EncodeToString(digest[:])
+				fact.AcknowledgementHeld = true
+				err = fmt.Errorf("host fixture held a committed receipt acknowledgement")
+			}
 		}
 		o.mu.Lock()
 		o.facts = append(o.facts, fact)
@@ -106,6 +146,10 @@ func runCollaborationHostRouterHarness() error {
 	var input collaborationHostRouterInput
 	if err := json.NewDecoder(io.LimitReader(os.Stdin, 64<<10)).Decode(&input); err != nil {
 		return fmt.Errorf("host fixture input was not valid JSON")
+	}
+	agentTimeout, err := input.executionTimeout()
+	if err != nil {
+		return err
 	}
 	for _, id := range []string{input.DeploymentID, input.InstallationID, input.WorkspaceID, input.RuntimeID, input.DaemonID} {
 		if !managedUUID.MatchString(id) {
@@ -133,11 +177,11 @@ func runCollaborationHostRouterHarness() error {
 	}
 	d := New(Config{ServerBaseURL: input.ServerURL, DaemonID: input.DaemonID, CLIVersion: "0.4.40-test", WorkspacesRoot: filepath.Join(input.Directory, "ordinary-work"),
 		Agents: map[string]AgentEntry{"claude": {Path: input.Executable}}, MaxConcurrentTasks: 1, PollInterval: 50 * time.Millisecond,
-		AgentTimeout: 3 * time.Minute, CollaborationRunner: config}, slog.New(slog.NewTextHandler(io.Discard, nil)))
+		AgentTimeout: agentTimeout, CollaborationRunner: config}, slog.New(slog.NewTextHandler(io.Discard, nil)))
 	d.setAgentVersion("claude", "fixture-1")
 	d.managed = &managedDaemonLifecycle{homeDirectory: input.Directory, store: &ManagedCredentialStore{DeploymentID: input.DeploymentID, InstallationID: input.InstallationID}}
 	sem := newTaskSlotSemaphore(d.cfg.MaxConcurrentTasks)
-	transport := &collaborationHostTransport{capacity: &collaborationCapacityObserver{daemon: d, slots: sem}}
+	transport := &collaborationHostTransport{capacity: &collaborationCapacityObserver{daemon: d, slots: sem}, holdReceiptACKs: input.HoldReceiptACKs}
 	d.client.client.Transport = transport
 	d.client.enableManagedTransport()
 	if err := d.client.installManagedCredential(input.WorkspaceID, input.Credential); err != nil {
@@ -169,7 +213,8 @@ func runCollaborationHostRouterHarness() error {
 	}
 	if err := json.NewEncoder(os.Stdout).Encode(map[string]any{"ready": true, "protocol_version": identity.ProtocolVersion,
 		"execution_mode": identity.Containment, "preparation_version": capabilities.PreparationVersion,
-		"runtime_config_epoch": registration.RuntimeConfigEpoch, "max_concurrent_tasks": 1, "os": runtime.GOOS, "arch": runtime.GOARCH}); err != nil {
+		"runtime_config_epoch": registration.RuntimeConfigEpoch, "max_concurrent_tasks": 1, "os": runtime.GOOS, "arch": runtime.GOARCH,
+		"agent_timeout_ms": agentTimeout.Milliseconds(), "hold_receipt_acks": input.HoldReceiptACKs}); err != nil {
 		return err
 	}
 	if os.Getenv("COLLABORATION_HOST_READY_ONLY") == "1" {

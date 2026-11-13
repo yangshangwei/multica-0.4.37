@@ -69,9 +69,18 @@ export interface HostIssue {
   id: string; title: string; description: string; targetId: string; channelId: string; agentId: string; name: string;
   attachment: { id: string; name: string; sha256: string } | null;
 }
-interface HostHTTPFact { operation: string; run_id: string; protocol_version: number; containment: string; attempt_seq?: string; launch_hash?: string; kind?: string; state?: string; status: number }
+interface HostHTTPFact { operation: string; run_id: string; protocol_version: number; containment: string; attempt_seq?: string; launch_hash?: string; kind?: string; state?: string; status: number;
+  event_id?: string; receipt_id?: string; request_sha256?: string; response_sha256?: string; acknowledgement_held?: boolean }
 interface HostDaemonSummary { claims: number; invalid_capacity: boolean; available_slots: number; active_tasks: number; http: HostHTTPFact[] }
-interface HostReady { ready: true; protocol_version: number; execution_mode: string; preparation_version: number; runtime_config_epoch: string; max_concurrent_tasks: number; os: string; arch: string }
+interface HostReady { ready: true; protocol_version: number; execution_mode: string; preparation_version: number; runtime_config_epoch: string; max_concurrent_tasks: number; os: string; arch: string;
+  agent_timeout_ms?: number; hold_receipt_acks?: boolean }
+
+export interface HostDaemonOptions {
+  /** Test-poller deadline; omission retains its existing three-minute default. */
+  agentTimeoutMs?: number;
+  /** Drop actual successful outcome/proof replies until this process is stopped. */
+  holdReceiptACKs?: boolean;
+}
 
 interface CollaborationGateState {
   enabled: boolean;
@@ -215,7 +224,13 @@ export async function enrollHostRuntime(owner: TestApiClient, ownerId: string, w
     runtimeConfigEpoch: capabilities.runtime_config_epoch, credential };
 }
 
-export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, readyOnly = false) {
+export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, readyOnly = false, options: HostDaemonOptions = {}) {
+  if (options.agentTimeoutMs !== undefined && (!Number.isInteger(options.agentTimeoutMs) || options.agentTimeoutMs < 1000 || options.agentTimeoutMs > 180000)) {
+    throw new Error("Host fixture agentTimeoutMs must be an integer from 1000 to 180000");
+  }
+  if (options.holdReceiptACKs !== undefined && typeof options.holdReceiptACKs !== "boolean") {
+    throw new Error("Host fixture holdReceiptACKs must be a boolean");
+  }
   const directory = mkdtempSync(join(tmpdir(), "multica-host-runtime-"));
   const extension = process.platform === "win32" ? ".exe" : "";
   const provider = join(directory, `fixture-provider${extension}`);
@@ -295,27 +310,33 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
   for (const key of ["PATH", "TMPDIR", "TMP", "TEMP", "SYSTEMROOT", "SystemRoot", "WINDIR", "COMSPEC"]) {
     if (process.env[key]) env[key] = process.env[key];
   }
-  const child = spawn(process.env.COLLABORATION_HOST_DAEMON!, ["__multica_collaboration_host_router_poller"], { env, stdio: "pipe" });
   const messages: (HostReady | HostDaemonSummary)[] = [];
   let output = "";
   let stderr = "";
-  child.stdout.setEncoding("utf8");
-  child.stderr.setEncoding("utf8");
-  child.stdout.on("data", (chunk: string) => {
-    output += chunk;
-    while (output.includes("\n")) {
-      const end = output.indexOf("\n");
-      try { messages.push(JSON.parse(output.slice(0, end))); } catch { errors.push("Daemon summary was not JSON"); }
-      output = output.slice(end + 1);
-    }
-  });
-  child.stderr.on("data", (chunk: string) => { stderr += chunk.slice(0, 8000 - stderr.length); });
-  child.stdin.on("error", () => errors.push("Native daemon fixture input closed unexpectedly"));
-  child.on("error", () => errors.push("Native daemon fixture could not start"));
-  const exit = new Promise<number | null>((resolve) => child.once("close", resolve));
-  child.stdin.write(`${JSON.stringify({ ServerURL: apiUrl, WorkspaceID: runtime.workspaceId, RuntimeID: runtime.runtimeId,
-    DaemonID: runtime.daemonId, DeploymentID: runtime.deploymentId, InstallationID: runtime.installationId,
-    RuntimeConfigEpoch: runtime.runtimeConfigEpoch, Directory: directory, Executable: provider, CLIExecutable: cli, Credential: runtime.credential })}\n`);
+  const launchDaemon = (holdReceiptACKs: boolean) => {
+    const child = spawn(process.env.COLLABORATION_HOST_DAEMON!, ["__multica_collaboration_host_router_poller"], { env, stdio: "pipe" });
+    child.stdout.setEncoding("utf8");
+    child.stderr.setEncoding("utf8");
+    child.stdout.on("data", (chunk: string) => {
+      output += chunk;
+      while (output.includes("\n")) {
+        const end = output.indexOf("\n");
+        try { messages.push(JSON.parse(output.slice(0, end))); } catch { errors.push("Daemon summary was not JSON"); }
+        output = output.slice(end + 1);
+      }
+    });
+    child.stderr.on("data", (chunk: string) => { stderr += chunk.slice(0, 8000 - stderr.length); });
+    child.stdin.on("error", () => errors.push("Native daemon fixture input closed unexpectedly"));
+    child.on("error", () => errors.push("Native daemon fixture could not start"));
+    const exit = new Promise<number | null>((resolve) => child.once("close", resolve));
+    child.stdin.write(`${JSON.stringify({ ServerURL: apiUrl, WorkspaceID: runtime.workspaceId, RuntimeID: runtime.runtimeId,
+      DaemonID: runtime.daemonId, DeploymentID: runtime.deploymentId, InstallationID: runtime.installationId,
+      RuntimeConfigEpoch: runtime.runtimeConfigEpoch, Directory: directory, Executable: provider, CLIExecutable: cli, Credential: runtime.credential,
+      ...(options.agentTimeoutMs === undefined ? {} : { agent_timeout_ms: options.agentTimeoutMs }), hold_receipt_acks: holdReceiptACKs })}\n`);
+    return { child, exit };
+  };
+  let { child, exit } = launchDaemon(options.holdReceiptACKs === true);
+  const ledgerDirectory = join(directory, ".multica", "management", runtime.deploymentId, "collaboration-runs", runtime.installationId);
   let closed = false;
   const close = async () => {
     if (closed) throw new Error("Host daemon cleanup was invoked twice");
@@ -342,7 +363,36 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
     expect(ready).toMatchObject({ protocol_version: 3, execution_mode: hostMode, preparation_version: 2, max_concurrent_tasks: 1,
       os: process.platform === "win32" ? "windows" : process.platform, arch: process.arch === "x64" ? "amd64" : process.arch });
     expect(BigInt(ready.runtime_config_epoch)).toBeGreaterThan(BigInt(runtime.runtimeConfigEpoch));
+    if (options.agentTimeoutMs !== undefined) expect(ready.agent_timeout_ms).toBe(options.agentTimeoutMs);
+    if (options.holdReceiptACKs === true) expect(ready.hold_receipt_acks).toBe(true);
     return { ready, visits, errors, close, cliHash,
+      ledgerEvidence: () => hostLedgerEvidence(ledgerDirectory),
+      /** Stop this poller only; keep the exact run ledger and callback owner. */
+      async stopPreservingState() {
+        if (closed || child.exitCode !== null) throw new Error("Host daemon is already stopped or cleaned up");
+        if (process.platform !== "win32") child.kill("SIGCONT");
+        child.stdin.end();
+        const killTimer = setTimeout(() => child.kill("SIGKILL"), 20_000);
+        const exitCode = await exit;
+        clearTimeout(killTimer);
+        return { pid: child.pid, exit_code: exitCode, messages: [...messages], ledger: hostLedgerEvidence(ledgerDirectory), errors: [...errors], stderr };
+      },
+      /** Recover in a new process with the same directory, managed identity and original requests. */
+      async restart() {
+        if (closed || child.exitCode !== 0) throw new Error("Host recovery requires a stopped, retained poller");
+        const previousPid = child.pid;
+        const firstMessage = messages.length;
+        output = "";
+        ({ child, exit } = launchDaemon(false));
+        await expect.poll(() => ({ errors, exit: child.exitCode, ready: messages.slice(firstMessage).some((item) => "ready" in item) }),
+          { timeout: 20_000, message: "The restarted poller must reuse its registered runtime" }).toEqual({ errors: [], exit: null, ready: true });
+        const currentReady = messages.slice(firstMessage).find((item): item is HostReady => "ready" in item)!;
+        expect(currentReady.runtime_config_epoch).toBe(ready.runtime_config_epoch);
+        expect(currentReady.hold_receipt_acks).toBe(false);
+        if (options.agentTimeoutMs !== undefined) expect(currentReady.agent_timeout_ms).toBe(options.agentTimeoutMs);
+        expect(child.pid).not.toBe(previousPid);
+        return { previous_pid: previousPid, pid: child.pid, ready: currentReady };
+      },
       async waitForVisit(count: number) {
         await expect.poll(() => ({ errors, exit: child.exitCode, count: visits.length }), { timeout: 30_000 })
           .toEqual({ errors: [], exit: null, count });
@@ -388,10 +438,15 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
 
 function hostLedgerEvidence(directory: string) {
   let files: string[];
-  try { files = readdirSync(directory).filter((name) => name.endsWith(".json")); } catch { return []; }
+  try { files = readdirSync(directory).filter((name) => name.endsWith(".json")).sort(); } catch { return []; }
   return files.map((name) => {
     const record = JSON.parse(readFileSync(join(directory, name), "utf8"));
+    const digest = (value: unknown) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
     return { version: record.version, run_id: record.identity.run_id, issue_id: record.identity.issue_id, phase: record.phase,
+      identity_sha256: digest(record.identity), proof_receipt_id: record.proof?.receipt_id,
+      proof_sha256: record.proof ? digest(record.proof) : null,
+      outcome_event_id: record.host?.outcome?.event_id, outcome_sha256: record.host?.outcome ? digest(record.host.outcome) : null,
+      outcome_recorded: record.host?.outcome_recorded === true, outcome_rejected: record.host?.outcome_rejected === true,
       session_key: record.host?.session_key, namespace_present: Boolean(record.namespace_id), sealed: record.host?.stopped,
       proof_state: record.proof?.state, cleanup: record.proof?.cleanup,
       launches: (record.host?.launches ?? []).map((launch: { attempt_seq: string; kind: string; phase: string; process_instance?: string; pid?: number;
@@ -462,7 +517,7 @@ export async function adoptHostTarget(owner: HostActor, ownerId: string, issueId
   return { targetId: adoption.target_id!, resourceId, name: option.name };
 }
 
-export async function seedHostRuntime() {
+export async function seedHostRuntime(options: HostDaemonOptions = {}) {
   const env = hostEnvironment();
   const restoreGate = await openHostAcceptanceGate();
   let daemon: Awaited<ReturnType<typeof startHostDaemon>> | undefined;
@@ -486,7 +541,7 @@ export async function seedHostRuntime() {
     webActor.client.setWorkspaceSlug(workspace.slug);
     const runtime = await enrollHostRuntime(webActor.client, webActor.id, workspace.id, env.apiUrl, env.deploymentId);
     const delayDaemon = process.env.COLLABORATION_DELAY_HOST_DAEMON === "1";
-    daemon = await startHostDaemon(runtime, env.apiUrl, delayDaemon);
+    daemon = await startHostDaemon(runtime, env.apiUrl, delayDaemon, options);
     await waitForHostRuntime(webActor.client, runtime.runtimeId);
     expect(await webActor.client.requestJSON<{ creation_enabled: boolean }>("/api/collaboration/creation-options"))
       .toMatchObject({ creation_enabled: true });
@@ -540,7 +595,7 @@ export async function seedHostRuntime() {
     }
     if (delayDaemon) {
       await closeCurrentDaemon();
-      daemon = await startHostDaemon(runtime, env.apiUrl);
+      daemon = await startHostDaemon(runtime, env.apiUrl, false, options);
       await waitForHostRuntime(webActor.client, runtime.runtimeId);
     }
     if (!daemon) throw new Error("The host daemon disappeared before the packaged acceptance fixture was ready");
