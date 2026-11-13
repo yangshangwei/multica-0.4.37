@@ -37,6 +37,15 @@ React Query owns issue/workbench/comment/activity/notification data. Persisted
 drafts contain client intent and original observations, never a second server
 state store. Current and participating lists remain separate; transferring work
 does not remove the participant's detail or notification-independent entry.
+
+`CollaborationCommentSchema` accepts the additive `author_agent` display summary
+defined in [collaboration content](../../server/collaboration-content.md).
+Missing, null or malformed summaries become null; non-Agent comments discard it.
+Keep existing comment identity, revision, content-state and pagination checks
+strict. A valid summary has a UUID `agent_id` and string `name`; it is never an
+authorization signal. Core schema tests own this compatibility matrix, while
+run records retain exact execution attribution.
+
 The synchronous StorageAdapter currently persists form/operation JSON as
 plaintext localStorage. Preserve Server/viewer/source/issue/purpose scoping and
 access-loss erasure; do not describe these records as client-encrypted or add a

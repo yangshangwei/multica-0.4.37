@@ -1,6 +1,8 @@
 package service
 
 import (
+	"context"
+	"encoding/json"
 	"net/http"
 	"strings"
 	"sync"
@@ -11,6 +13,115 @@ import (
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
 )
+
+func commentAgentProjection(t *testing.T, view CollaborationCommentView) map[string]any {
+	t.Helper()
+	raw, err := json.Marshal(view)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var wire struct {
+		AuthorAgent map[string]any `json:"author_agent"`
+	}
+	if err := json.Unmarshal(raw, &wire); err != nil {
+		t.Fatal(err)
+	}
+	return wire.AuthorAgent
+}
+
+func TestCollaborationCommentAgentProjectionRetainsRunIdentityAndCurrentAccess(t *testing.T) {
+	f := newManagedCollaborationFixture(t)
+	f.submitManaged(t, f.creator, "produce an attributable result")
+	f.resumeManaged(t)
+	run, _, claim := f.claimManaged(t)
+	token, nonce := permitSquadRun(t, f, run, claim)
+	agentID := util.UUIDToString(f.grant.AgentID)
+	name := "支付研发 Agent"
+	f.fx.Exec(t, `UPDATE agent SET name=$2 WHERE id=$1`, f.grant.AgentID, name)
+	created, err := f.svc.CreateRuntimeComment(context.Background(), run, token, CollaborationRuntimeCommentParams{
+		CommentID: util.MustParseUUID(uuid.NewString()), Content: "Result text cannot choose its own author " + uuid.NewString(),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	finishSquadRun(t, f, run, claim, token, nonce, "success")
+	viewer := collaborationPasswordContext(util.MustParseUUID(f.handler), 1)
+	view, err := f.svc.GetComment(viewer, f.issue.Issue.ID, created.CommentID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	agent := commentAgentProjection(t, view)
+	if view.AuthorType != "agent" || view.Author != nil || view.CanEdit || len(agent) != 2 || agent["agent_id"] != agentID || agent["name"] != name {
+		t.Fatalf("runtime comment lost its minimal Agent identity or gained human authority: %+v, %+v", view, agent)
+	}
+	records, err := f.svc.RunRecords(viewer, f.issue.Issue.ID, run, CollaborationRunRecordsQuery{Limit: 100})
+	if err != nil {
+		t.Fatal(err)
+	}
+	matched := false
+	for _, record := range records.Items {
+		matched = matched || record.CommentID == util.UUIDToString(created.CommentID)
+	}
+	if !matched || records.Resource.AgentID != agentID {
+		t.Fatal("displayed Agent does not match the retained run/comment provenance")
+	}
+	// Resource availability does not revoke a participant's existing history.
+	f.fx.Exec(t, `UPDATE collaboration_grant SET revoked_at=now(),revocation_reason='fixture_revocation' WHERE id=$1`, f.grant.ID)
+	f.fx.Exec(t, `UPDATE agent SET archived_at=now(),name=$2 WHERE id=$1`, f.grant.AgentID, "Renamed archived Agent")
+	f.fx.Exec(t, `UPDATE collaboration_target SET revoked_at=now() WHERE id=$1`, f.targetID)
+	view, err = f.svc.GetComment(viewer, f.issue.Issue.ID, created.CommentID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	agent = commentAgentProjection(t, view)
+	if agent["agent_id"] != agentID || agent["name"] != "Renamed archived Agent" {
+		t.Fatalf("resource withdrawal erased history or froze a fabricated historic name: %+v", agent)
+	}
+	f.fx.Exec(t, `DELETE FROM agent WHERE id=$1`, f.grant.AgentID)
+	view, err = f.svc.GetComment(viewer, f.issue.Issue.ID, created.CommentID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	agent = commentAgentProjection(t, view)
+	if len(agent) != 2 || agent["agent_id"] != agentID || agent["name"] != "" {
+		t.Fatalf("deleted Agent lost stable identity or invented a name: %+v", agent)
+	}
+	f.fx.Exec(t, `UPDATE issue_participant SET revoked_at=now() WHERE issue_id=$1 AND user_id=$2`, f.issue.Issue.ID, f.handler)
+	if _, err = f.svc.GetComment(viewer, f.issue.Issue.ID, created.CommentID); !collaborationErrorCode(err, "not_found") {
+		t.Fatalf("revoked reader retained comment identity access: %v", err)
+	}
+}
+
+func TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents(t *testing.T) {
+	f := newCollaborationContentFixture(t)
+	human := f.comment(t, f.creator, "human content", pgtype.UUID{})
+	f.svc.TxStarter = collaborationFailureStarter{TxStarter: f.pool, queryName: "ListCollaborationMemoryAgentNames"}
+	view, err := f.svc.GetComment(f.ctx, f.issue.Issue.ID, human)
+	if err != nil || view.Author == nil || view.Author.UserID != util.MustParseUUID(f.creator) || !view.CanEdit || commentAgentProjection(t, view) != nil {
+		t.Fatalf("human-only read attempted Agent lookup or changed its contract: %+v %v", view, err)
+	}
+	agent := util.MustParseUUID(f.fx.Comment(t, util.UUIDToString(f.issue.Issue.ID), "unavailable author entity", testutil.Cols{"author_type": "agent", "author_id": uuid.NewString()}))
+	for _, read := range []struct {
+		name string
+		call func() error
+	}{
+		{"detail", func() error { _, err := f.svc.GetComment(f.ctx, f.issue.Issue.ID, agent); return err }},
+		{"list", func() error {
+			_, err := f.svc.ListComments(f.ctx, f.issue.Issue.ID, CollaborationCommentsQuery{Limit: 50})
+			return err
+		}},
+		{"recall", func() error {
+			_, err := f.svc.RecallComments(f.ctx, f.issue.Issue.ID, CollaborationCommentsRecallQuery{Limit: 50, MaxBytes: 4096})
+			return err
+		}},
+	} {
+		t.Run(read.name, func(t *testing.T) {
+			if err := read.call(); err == nil || !strings.Contains(err.Error(), "injected") {
+				t.Fatalf("Agent name query failure was disguised as a deleted author: %v", err)
+			}
+		})
+	}
+}
 
 type collaborationContentFixture struct {
 	*collaborationFixture

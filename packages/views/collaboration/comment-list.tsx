@@ -17,6 +17,7 @@ import { CollaborationDiscussionActions } from "./discussion-actions";
 import { CollaborationQueryState } from "./query-state";
 import { recoverFocus } from "./focus";
 import { useCollaborationLabels } from "./labels";
+import { collaborationCommentAuthor } from "./comment-author";
 
 type CommentProps = { scope: CollaborationScope; issue: CollaborationIssue; comment: CollaborationComment; onReply: (comment: CollaborationComment) => void;
   onPrepareResult?: (comment: CollaborationComment) => void;
@@ -93,7 +94,7 @@ function CommentCard({ scope, issue, comment, onReply, onPrepareResult, onLoadCo
   const locked = send.isPending || pending.length > 0 || drafts.error;
   const tooLong = editor?.action === "edit" && !collaborationCommentWithinByteLimit(editor.content);
   const stale = editor !== null && (editor.revision !== comment.comment_revision || (send.data !== undefined && send.data.status >= 400 && send.data.code !== "invalid_comment_request"));
-  const author = comment.author?.name ?? (comment.author_type === "agent" ? t(($) => $.execution.agent) : t(($) => $.detail.unknownAuthor));
+  const author = collaborationCommentAuthor(comment, { agent: t(($) => $.execution.agent), unknownAuthor: t(($) => $.detail.unknownAuthor) });
   function begin(action: Editor["action"]) {
     setEditor({ action, revision: comment.comment_revision, content: comment.content, attachmentIds: [...comment.attachment_ids] }); send.reset();
     recoverFocus(() => editorForm.current);
@@ -107,8 +108,9 @@ function CommentCard({ scope, issue, comment, onReply, onPrepareResult, onLoadCo
   }
   return <li ref={item} id={`comment-${comment.id}`} tabIndex={-1} className="min-w-0 space-y-3 rounded-md py-2 outline-none focus-visible:ring-2 focus-visible:ring-ring target:bg-accent">
     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
-      <Avatar className="size-6"><AvatarImage src={comment.author?.avatar_url || undefined} alt="" /><AvatarFallback>{author.slice(0, 1)}</AvatarFallback></Avatar>
-      <span className="font-medium text-foreground [overflow-wrap:anywhere]">{author}</span>
+      <Avatar className="size-6"><AvatarImage src={comment.author?.avatar_url || undefined} alt="" /><AvatarFallback>{author.name.slice(0, 1)}</AvatarFallback></Avatar>
+      <span className="min-w-0 font-medium text-foreground [overflow-wrap:anywhere]">{author.name}</span>
+      {author.agentLabel && <span className="shrink-0 rounded bg-muted px-1.5 py-0.5">{author.agentLabel}</span>}
       {comment.author?.external === true && <span>{t(($) => $.detail.external)}</span>}
       <time dateTime={comment.created_at}>{new Date(comment.created_at).toLocaleString(locale)}</time>
       {comment.resolved_at !== null && <span>{comment.resolved_by ? t(($) => $.commentActions.resolvedBy, { name: comment.resolved_by.name }) : t(($) => $.detail.resolved)}</span>}

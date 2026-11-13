@@ -21,6 +21,41 @@ const comment = parseCollaborationComment({ id: commentId, issue_id: actor, auth
   comment_revision: "9007199254740993", attachment_ids: [], created_at: timestamp, updated_at: timestamp, deleted_at: null, resolved_at: null, resolved_by: null, can_edit: true, can_resolve: true, reactions: [{ emoji: "👍", count: 2, viewer_reacted: true }] })!;
 afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); });
 
+// Core content-schema.test.ts owns malformed-summary and authority matrices.
+it.each(["en", "zh-Hans"] as const)("distinguishes a named Agent from a same-named person in %s without fetching Agent details", async locale => {
+  setApiInstance(new ApiClient("https://comments.example"));
+  const fetch = vi.fn();
+  vi.stubGlobal("fetch", fetch);
+  const name = "Payment reviewer / 支付回归审核";
+  const person = { ...comment, author: { ...issue.creator, name, external: true } };
+  const agentComment = parseCollaborationComment({ ...comment, id: eventId, author_type: "agent", author: null,
+    author_agent: { agent_id: eventId, name }, can_edit: false })!;
+  const onReply = vi.fn();
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentList scope={collaborationScope(actor)} issue={issue}
+    comments={[person, agentComment]} onReply={onReply} /></QueryClientProvider>, { locale });
+  const personRow = within(document.getElementById(`comment-${commentId}`)!);
+  const agentRow = within(document.getElementById(`comment-${eventId}`)!);
+  const agentLabel = locale === "en" ? "Agent" : "智能体";
+  expect(personRow.getByText(name)).toBeInTheDocument();
+  expect(personRow.queryByText(agentLabel, { exact: true })).not.toBeInTheDocument();
+  expect(personRow.getByText(locale === "en" ? "External collaborator" : "外部协作者")).toBeInTheDocument();
+  expect(agentRow.getByText(name)).toBeInTheDocument();
+  expect(agentRow.getByText(agentLabel, { exact: true })).toBeInTheDocument();
+  expect(agentRow.queryByRole("button", { name: locale === "en" ? "Edit comment" : "编辑评论" })).not.toBeInTheDocument();
+  await userEvent.click(agentRow.getByRole("button", { name: locale === "en" ? "Reply" : "回复" }));
+  expect(onReply).toHaveBeenCalledWith(agentComment);
+  expect(fetch).not.toHaveBeenCalled();
+});
+
+it.each((["en", "zh-Hans"] as const).flatMap(locale => [undefined, "", "   "].map(name => ({ locale, name }))))("shows one generic Agent label in $locale when the Agent name is $name", ({ locale, name }) => {
+  setApiInstance(new ApiClient("https://comments.example"));
+  const legacy = parseCollaborationComment({ ...comment, author_type: "agent", author: null, can_edit: false,
+    ...(name === undefined ? {} : { author_agent: { agent_id: eventId, name } }) })!;
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentList scope={collaborationScope(actor)} issue={issue}
+    comments={[legacy]} onReply={vi.fn()} /></QueryClientProvider>, { locale });
+  expect(screen.getAllByText(locale === "en" ? "Agent" : "智能体", { exact: true })).toHaveLength(1);
+});
+
 it.each(["en", "zh-Hans"] as const)("uses the %s app locale for comment and history timestamps while preserving ISO values", async locale => {
   setApiInstance(new ApiClient("https://comments.example"));
   const editedAt = "2026-10-20T13:24:00Z";

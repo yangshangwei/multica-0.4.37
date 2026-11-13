@@ -1,0 +1,129 @@
+{
+  "recorded_at": "2026-11-13T06:33:53.829397+00:00",
+  "head": "c79dfe304d172c1127d2271fb3932eb751b7c0fb",
+  "scope": "S1 client B03/B04/B07",
+  "files": {
+    "packages/core/collaboration/content-schema.ts": "29e2202db901cddfc98b7bc5cc7ef4840b7d9585cffc6e1bc5f157473b51920f",
+    "packages/core/collaboration/content-schema.test.ts": "3a527a1bb32fdd37ed23799deb824a9df7c8f8aedfadda8fc4e5985802571270",
+    "packages/views/collaboration/comment-author.ts": "d157aaa7346ee2a718ad3290f73e521039d1ab273200aa8379ff0394fa2ee213",
+    "packages/views/collaboration/comment-list.tsx": "fd18168b323fdcf7647dd727f025a49f9556cf794827d42f1387c85acb77625b",
+    "packages/views/collaboration/comment-list.test.tsx": "7cfe31e8f849327702695ac370b6e41e6b03372c69e311047a571b304d0d6a35",
+    "packages/views/collaboration/comment-composer.tsx": "114d4188f8cc423c652fdef8452e6925924f306840859b9050b17f165c1c0aca",
+    "packages/views/collaboration/comment-composer.test.tsx": "0e3d5eed18576e29e7d53cc5288c8b906bc6952ccf08b366e562d9bb3b524143"
+  },
+  "checks": [
+    {
+      "command": "pnpm --filter @multica/core test collaboration/content-schema.test.ts",
+      "exit_code": 1,
+      "passed": 29,
+      "failed": 15,
+      "log": "client-core-red.log",
+      "phase": "red",
+      "log_sha256": "2309ca58bcdcb6e4de943bdc7229dd8a6247939947c57d119e987b79261574cb"
+    },
+    {
+      "command": "pnpm --filter @multica/views test collaboration/comment-list.test.tsx collaboration/comment-composer.test.tsx",
+      "exit_code": 1,
+      "passed": 24,
+      "failed": 4,
+      "log": "client-views-red.log",
+      "phase": "red",
+      "log_sha256": "67746fb5b28c49044771478573e72897cd0a6a2d30f718817d120a3ecfe208a4"
+    },
+    {
+      "command": "pnpm --filter @multica/core test collaboration/content-schema.test.ts collaboration/comment-actions.test.ts collaboration/comment.test.ts collaboration/command.test.ts collaboration/operation.test.ts api/ws-client-account.test.ts collaboration/run-handoff-queries.test.ts",
+      "exit_code": 0,
+      "passed": 146,
+      "failed": 0,
+      "skipped": 0,
+      "test_files": 7,
+      "log": "client-core-green.log",
+      "phase": "green",
+      "log_sha256": "49c378210685b4be48ee773099bb9de6e70d1f50e1b9d1ad13aae55282350d34"
+    },
+    {
+      "command": "pnpm --filter @multica/views test collaboration/comment-list.test.tsx collaboration/comment-composer.test.tsx collaboration/workflow.test.tsx collaboration/delivery-panel.test.tsx",
+      "exit_code": 1,
+      "passed": 48,
+      "failed": 2,
+      "log": "client-views-green.log",
+      "phase": "intermediate",
+      "cause": "New reply test compared full mention-targets URL and missed existing execution-version query parameter; changed assertion to exact request pathname set.",
+      "log_sha256": "6f90fd16b83e9b4ae4bbde0b5103530333f46a123a17070e49b60496dccff8ad"
+    },
+    {
+      "command": "pnpm --filter @multica/views test collaboration/comment-list.test.tsx collaboration/comment-composer.test.tsx collaboration/workflow.test.tsx collaboration/delivery-panel.test.tsx",
+      "exit_code": 1,
+      "passed": 44,
+      "failed": 6,
+      "log": "client-views-green-2.log",
+      "phase": "intermediate",
+      "cause": "All six failures hit unchanged 5000ms timeout under high shared host load (35.17/35.04/21.32 at 14:25). Includes existing workflow/delivery cases. No timeout changes made.",
+      "log_sha256": "f3e76061bf371268d01fb99121a7d4c7494c2eb0f822af9ee13a94245e9ddf59"
+    },
+    {
+      "command": "pnpm --filter @multica/views test collaboration/comment-list.test.tsx collaboration/comment-composer.test.tsx collaboration/workflow.test.tsx collaboration/delivery-panel.test.tsx --maxWorkers=1 --no-file-parallelism",
+      "exit_code": 0,
+      "passed": 50,
+      "failed": 0,
+      "skipped": 0,
+      "test_files": 4,
+      "log": "client-views-green-3.log",
+      "phase": "green",
+      "log_sha256": "d1af95a5c7dc5be6d59c2f8236b738dd37350a6cb2ef7b77beb0728a6295b267"
+    },
+    {
+      "command": "pnpm --filter @multica/views test collaboration/comment-list.test.tsx --maxWorkers=1 --no-file-parallelism",
+      "exit_code": 0,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "test_files": 1,
+      "log": "client-views-fallback-review.log",
+      "phase": "final_review",
+      "note": "Adds four empty/whitespace Agent-name display cases to previously passing list file. Other three Views files unchanged.",
+      "log_sha256": "c50cc15a3f703bce7c7c643d94a9aa0b22cea978258aa038e5239d5d7eddbbe0"
+    },
+    {
+      "command": "pnpm --filter @multica/core typecheck",
+      "exit_code": 0,
+      "log": "client-core-typecheck.log",
+      "log_sha256": "22458c8f7012d8262e1fd9041a1b33bb5648f5e559dd766fe55261e8a42145d6"
+    },
+    {
+      "command": "pnpm --filter @multica/views typecheck",
+      "exit_code": 0,
+      "log": "client-views-typecheck.log",
+      "log_sha256": "8f442ca6112779dcb1cb48919d5aab6d6f53eb53fa39294bf350ffceb6365d85"
+    },
+    {
+      "command": "pnpm --filter @multica/core exec eslint collaboration/content-schema.ts collaboration/content-schema.test.ts",
+      "exit_code": 0,
+      "log": "client-core-lint.log",
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "command": "pnpm --filter @multica/views exec eslint collaboration/comment-author.ts collaboration/comment-list.tsx collaboration/comment-composer.tsx collaboration/comment-list.test.tsx collaboration/comment-composer.test.tsx",
+      "exit_code": 0,
+      "log": "client-views-lint.log",
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "command": "pnpm --filter @multica/views exec eslint collaboration/comment-list.test.tsx collaboration/comment-composer.test.tsx",
+      "exit_code": 0,
+      "log": "client-views-test-lint-final.log",
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    }
+  ],
+  "not_run": [
+    "Production Web/Electron visual QA and B05/B06/B08/B09 are coordinator/E2E-owned",
+    "Full repository lint/typecheck/build are coordinator-owned"
+  ],
+  "notes": [
+    "No production permissions, API reads, dependencies, migrations or locale additions.",
+    "Existing en/zh-Hans Agent labels reused.",
+    "Human author and avatar/external handling unchanged.",
+    "Views typecheck ran before a final test-only fallback parameter expansion; no product/type changes followed.",
+    "Log files exist locally but are ignored by normal rg --files/git status; use --no-ignore when collecting."
+  ]
+}

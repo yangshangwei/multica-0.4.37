@@ -1,0 +1,11 @@
+case_id,acceptance_ids,scope,required_assertions,canonical_sources,coverage_boundary,current_result
+B01,S1-01/S1-02/S1-05/S1-06,服务端作者投影与授权,真实run写入的Agent ID与摘要一致；member author不变；失权/外部读取拒绝；resource撤回不抹历史；查名错误不伪装删除,server/internal/handler/collaboration_comments_test.go;server/internal/service/collaboration_comments_test.go,新增Agent子断言，复用原权限fixture,PASS
+B02,S1-03/S1-04,列表详情和字节预算,普通分页、max_bytes分页、placeholder补读身份一致；缺失Agent名称空；转义/长名计入JSON预算、cursor不丢不重,server/internal/service/collaboration_comments_recall_test.go;server/internal/handler/collaboration_comments_recall_test.go,添加公开Agent预算/详情断言，不替换原runtime recall测试,PASS
+B03,S1-02/S1-04/S1-06,Core协议兼容,新/旧/缺失/null/畸形摘要按合同解析；非agent不采用摘要；原ID/version/authority校验不放宽,packages/core/collaboration/content-schema.test.ts;packages/core/collaboration/comment-actions.test.ts,此层为解析与权限矩阵唯一权威,PASS
+B04,S1-01/S1-02/S1-03/S1-04,共享界面,英文中文具体名称与智能体标签；同名人机区分；列表回复一致；长名换行；旧响应回退；不查询Agent详情不新增编辑权,packages/views/collaboration/comment-list.test.tsx;packages/views/collaboration/comment-composer.test.tsx,组件测试只测展示和接线，不重跑解析全矩阵,PASS
+B05,S1-07/S1-08/S1-10,canonical三账号闭环,三个独立账号/资源/Agent、五个真实受控run(1/2/2)、原key重放无重复、信息往返、退回修订、精确发起人验收、每条评论摘要与对应run一致,e2e/collaboration-multi-account-closure.spec.ts,保留原全部断言，只增加作者/三会话显示及证据；受控支付文本不代表业务修复,PASS
+B06,S1-03/S1-09,Electron renderer作者显示,用B05同一新任务的评论，在独立profile renderer验证具体Agent标签、回复提示、人员显示、账号头及无额外daemon启动,e2e/fixtures/collaboration-native.ts;e2e/collaboration-multi-account-closure.spec.ts,增加定向renderer步骤；不声称安装版Main或完整第二次闭环,PASS
+B07,S1-08,原请求和连接恢复,原幂等请求身份不变、失败/未知响应不重复派发；断线使受保护查询重新读取且不会越权填充,packages/core/collaboration/comment.test.ts;packages/core/collaboration/command.test.ts;packages/core/collaboration/operation.test.ts;packages/core/api/ws-client-account.test.ts;packages/core/collaboration/run-handoff-queries.test.ts,复用既有测试；不宣称真正模型超时或所有附件幂等已验收,PASS
+B08,S1-05/S1-08/S1-09,离线通知和权限丢失,Web/Electron离线后读取已有信息/验收/运行通知，无来源收件箱重复；撤销读者权限后受保护数据清除,e2e/collaboration-offline-result-notifications.spec.ts,单独cross-client Provider配置，不冒充B05同次执行的步骤,PASS
+B09,S1-02/S1-05/S1-08,运行撤权与人类流转,运行中撤权要求停止证明且显式Resume；人类责任流转只有发起人完成；显示字段不改变原结果,e2e/collaboration-live-revoke-web.spec.ts;e2e/collaboration-handoff-chain-web.spec.ts,复用两个独立canonical场景，保留场景各自source和failure,PASS
+B10,S1-10,交付与验证证据,记录前后source绑定、构建/二进制、named test命中及skip、原失败、终结证明、清理结果；typecheck/lint/相关Go vet通过,implement.md,全部必需用例成功且无未解决首包回归才完成；未执行/skip不能计PASS,PASS

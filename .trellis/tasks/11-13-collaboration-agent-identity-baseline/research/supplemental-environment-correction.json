@@ -1,0 +1,10 @@
+{
+  "recorded_at": "2026-11-13T07:27:52.702259+00:00",
+  "failed_run": "supplemental-run1",
+  "classification": "task_environment_gate_profile_mismatch",
+  "cause": "Existing namespace fixtures require host_execution_enabled=false; the initial coordinator wrapper enabled host cutover, whose runtime admission rejects namespace execution_mode_unsupported (409).",
+  "source": "server/internal/service/collaboration_runtime_preparation.go:184",
+  "before_launcher_sha256": "a727a7a1b44394f32c963416262dc74ee9e2b10919b683731a044c4f67602b10",
+  "after_launcher_sha256": "1375c7fd02442b5462f7c8bb23e86c0243066dfe378bf27e34343e9e829d80c4",
+  "correction": "Task-only enabled=true, creation_enabled=true, host_execution_enabled=false; exact previous flags restored after run. Product code and fixture protocols unchanged."
+}

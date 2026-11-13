@@ -2,7 +2,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { setSchemaLogger } from "../api/schema";
 import { noopLogger } from "../logger";
-import { parseCollaborationComments, parseCollaborationMentionTargets, parseCollaborationTriggerPreview, parseCollaborationCommentReceipt, parseCollaborationNotifications } from "./content-schema";
+import { parseCollaborationComment, parseCollaborationComments, parseCollaborationMentionTargets, parseCollaborationTriggerPreview, parseCollaborationCommentReceipt, parseCollaborationNotifications } from "./content-schema";
 
 const id = (tail: number) => `00000000-0000-4000-8000-${String(tail).padStart(12, "0")}`;
 const account = { user_id: id(1), name: "Participant", avatar_url: "", external: true };
@@ -10,6 +10,52 @@ const timestamp = "2026-10-17T00:00:00Z";
 const comment = { id: id(2), issue_id: id(3), author_type: "member", author: account, content: "Private comment", type: "regular", parent_id: null, comment_revision: "9007199254740993", created_at: timestamp, updated_at: timestamp, deleted_at: null, resolved_at: null, resolved_by: null, can_edit: true, can_resolve: true, reactions: [] };
 const target = { target_id: id(4), kind: "agent", resource_id: id(5), name: "Agent", target_epoch: "1", config_version: "1", queue_state: "paused", waiting_reason: "target_paused", execution_available: false, hold_reason: "initial", hold_version: "9007199254740993" };
 afterEach(() => setSchemaLogger(noopLogger));
+
+describe("comment Agent author summaries", () => {
+  const authorAgent = { agent_id: "ABCDEFAB-0000-4000-8000-000000000005", name: "Payment reviewer" };
+  const agentComment = { ...comment, author_type: "agent", author: null, can_edit: false };
+
+  it("preserves only the minimal Agent identity consistently in detail and list responses", () => {
+    const wire = { ...agentComment, author_agent: { ...authorAgent, workspace_id: id(99), owner: account, runtime: { secret: "not-public" } } };
+    const expected = { agent_id: authorAgent.agent_id.toLowerCase(), name: authorAgent.name };
+    expect(parseCollaborationComment(wire)?.author_agent).toEqual(expected);
+    expect(parseCollaborationComments({ issue_id: comment.issue_id, items: [wire], next_cursor: null })?.items[0]?.author_agent).toEqual(expected);
+    expect(parseCollaborationComment(wire)?.author).toBeNull();
+  });
+
+  it.each([
+    undefined, null, "Agent", 42, [], {},
+    { name: "Missing identity" },
+    { ...authorAgent, agent_id: "not-a-uuid" },
+    { ...authorAgent, name: null },
+    { ...authorAgent, name: 42 },
+  ])("keeps a valid comment readable when its optional summary is absent or malformed: %j", (author_agent) => {
+    const parsed = parseCollaborationComment({ ...agentComment, author_agent });
+    expect(parsed).toMatchObject({ id: comment.id, author: null, content: comment.content, author_agent: null });
+    expect(parseCollaborationComments({ issue_id: comment.issue_id, items: [{ ...agentComment, author_agent }], next_cursor: null })?.items).toHaveLength(1);
+  });
+
+  it("retains a known Agent ID with an empty display name", () => {
+    expect(parseCollaborationComment({ ...agentComment, author_agent: { ...authorAgent, name: "" } })?.author_agent)
+      .toEqual({ agent_id: authorAgent.agent_id.toLowerCase(), name: "" });
+  });
+
+  it.each(["member", "system", "future_author"])("ignores an Agent summary on a %s comment without changing the human author", (author_type) => {
+    expect(parseCollaborationComment({ ...comment, author_type, author_agent: authorAgent }))
+      .toMatchObject({ author_type, author: account, author_agent: null, can_edit: true });
+  });
+
+  it.each([
+    { id: "invalid-id" },
+    { comment_revision: "0" },
+    { can_edit: "true" },
+    { author_authority: { role: "creator", can_submit_command: "true", evaluated_at: timestamp } },
+    { content_state: "omitted", content: "", can_edit: false },
+  ])("does not let an optional display summary relax protected comment fields: %j", (patch) => {
+    expect(parseCollaborationComment({ ...agentComment, ...patch, author_agent: authorAgent })).toBeNull();
+    expect(parseCollaborationComment({ ...agentComment, ...patch, author_agent: {} })).toBeNull();
+  });
+});
 
 describe("trigger preview grouping", () => {
   const direct = { target_id: id(4), kind: "agent", resource_id: id(5), target_epoch: "1", config_version: "1", hold_reason: null, hold_version: "1", state: "waiting", code: "command_waiting", command_id: null };

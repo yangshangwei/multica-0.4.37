@@ -13,6 +13,7 @@ import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
 import { CollaborationAttachmentPicker } from "./attachment-picker";
 import { recoverFocus } from "./focus";
+import { collaborationCommentAuthor } from "./comment-author";
 
 export function CollaborationCommentComposer({ scope, issue, replyTo = null, onCancelReply, onSent }: {
   scope: CollaborationScope; issue: CollaborationIssue; replyTo?: CollaborationComment | null; onCancelReply?: () => void; onSent?: () => void;
@@ -28,6 +29,7 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
   const parentId = selectedParentId ?? delivery.form.parentCommentId ?? null;
   const parent = useQuery({ ...collaborationCommentOptions(client, scope, issue.id, parentId ?? ""), enabled: parentId !== null && selectedParentId === null && issue.capabilities.comment === true });
   const parentComment = selectedParentId ? replyTo : parent.data;
+  const parentAuthor = collaborationCommentAuthor(parentComment, { agent: t(($) => $.execution.agent), unknownAuthor: t(($) => $.detail.unknownAuthor) });
   useEffect(() => {
     if (selectedParentId && selectedParent.current !== selectedParentId) delivery.update({ parentCommentId: selectedParentId });
     selectedParent.current = selectedParentId;
@@ -113,7 +115,8 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
     void publish();
   }}>
     <label htmlFor={fieldId} className="block text-body font-medium">{t(($) => $.composer.label)}</label>
-    {parentId && <div className="flex flex-wrap items-center gap-3 text-caption text-muted-foreground"><span>{t(($) => $.commentActions.replyingTo, { name: parentComment?.author?.name ?? (parentComment?.author_type === "agent" ? t(($) => $.execution.agent) : t(($) => $.detail.unknownAuthor)) })}</span>
+    {parentId && <div className="flex min-w-0 flex-wrap items-center gap-3 text-caption text-muted-foreground"><span className="min-w-0 [overflow-wrap:anywhere]">{t(($) => $.commentActions.replyingTo, { name: parentAuthor.name })}</span>
+      {parentAuthor.agentLabel && <span className="shrink-0 rounded bg-muted px-1.5 py-0.5">{parentAuthor.agentLabel}</span>}
       <Button type="button" variant="ghost" size="sm" disabled={locked} className="pointer-coarse:min-h-11" onClick={() => { delivery.update({ parentCommentId: null }); inspect.reset(); onCancelReply?.(); recoverFocus(() => textarea.current); }}>{t(($) => $.commentActions.cancelReply)}</Button></div>}
     {parent.error && <CollaborationQueryState error={parent.error} retry={() => void parent.refetch()} />}
     <Textarea ref={textarea} id={fieldId} placeholder={t(($) => $.composer.placeholder)} value={content} disabled={locked} onChange={(event) => change(event.target.value)} className="min-h-28" />

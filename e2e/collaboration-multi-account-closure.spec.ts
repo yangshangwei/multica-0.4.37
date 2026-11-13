@@ -1,6 +1,8 @@
 import { randomUUID } from "node:crypto";
-import { writeFileSync } from "node:fs";
-import { expect, test, type BrowserContext, type Page } from "@playwright/test";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { expect, test, type BrowserContext, type Locator, type Page } from "@playwright/test";
 import type { CollaborationComments, CollaborationDeliveryHistory, CollaborationIssue, CollaborationMemory, CollaborationMentionTargets, CollaborationResources, CollaborationRunRecords } from "@multica/core/collaboration";
 import { hostAuthority, hostControl, hostEnvironment, hostPanel, hostRuntimeConfigured, issueRoot, openHostAcceptanceGate, openHostConsent, sendHostComment, versioned, type HostVisit } from "./fixtures/collaboration-host-runtime";
 import { closureActor, createClosureResource, decideClosureResult, offerClosureResource, rawClosureRequest, readClosureIssue, simpleWorkflow, type ClosureActor, type ClosureResource } from "./fixtures/collaboration-multi-account-closure";
@@ -8,6 +10,7 @@ import { selectCollaborationRecipient } from "./fixtures/collaboration-offline-h
 import { directedFormThroughUI } from "./fixtures/collaboration-handoff-chain";
 import { commentThroughUI } from "./fixtures/collaboration-control-gaps";
 import { saveMemoryInUI } from "./fixtures/collaboration-memory";
+import { nativeScreenshot, openDesktop, type NativeHarness } from "./fixtures/collaboration-native";
 
 interface ClosureVisit extends HostVisit {
   memory_input: { version: number; content: string };
@@ -27,11 +30,13 @@ test("three account owners and three native agents close one cross-workspace iss
   expect(await config.json()).toMatchObject({ auth_mode: "password", managed_installation_supported: true, deployment_id: env.deploymentId });
   const restoreGate = await openHostAcceptanceGate();
   const contexts: BrowserContext[] = [];
+  let native: Awaited<ReturnType<typeof openDesktop>> | undefined;
+  let nativeProfile: string | undefined;
   const resources: ClosureResource[] = [];
   const errors: string[] = [];
   const steps: { name: string; at: string; facts: unknown }[] = [];
   const evidence: Record<string, unknown> = { scope: "Three owners, three private workspaces, three actual host pollers and deterministic Provider processes; one shared issue",
-    exclusions: ["commercial model reasoning or credentials", "physical second machine", "OS sandbox", "product repair"], steps };
+    exclusions: ["commercial model reasoning or credentials", "physical second machine", "OS sandbox", "product repair", "installed Desktop Main"], steps };
   const record = (name: string, facts: unknown) => steps.push({ name, at: new Date().toISOString(), facts });
   let passed = false;
   try {
@@ -44,6 +49,14 @@ test("three account owners and three native agents close one cross-workspace iss
       resources.push(await createClosureResource(actor, env.apiUrl, env.deploymentId, `closure-${label}-${suffix}`));
     }
     const [product, development, quality] = resources as [ClosureResource, ClosureResource, ClosureResource];
+    // The existing name-only owner update accepts TEXT names. Keep the same
+    // Agent identity while exercising wrapping with a 104-character word.
+    const qualityAgentId = quality.agent.id;
+    quality.agent = await Q.client.requestJSON<{ id: string; name: string }>(`/api/agents/${qualityAgentId}`, {
+      method: "PUT", body: { name: "QualityPaymentCallbackAudit".repeat(4) },
+    });
+    expect(quality.agent.id).toBe(qualityAgentId);
+    expect(quality.agent.name).toBe("QualityPaymentCallbackAudit".repeat(4));
     evidence.topology = resources.map(resource => ({ account_id: resource.actor.id, account_name: resource.actor.name,
       workspace_id: resource.workspace.id, agent_id: resource.agent.id, runtime_id: resource.runtime.runtimeId, installation_id: resource.runtime.installationId }));
     evidence.unrelated_account_id = X.id;
@@ -153,7 +166,57 @@ test("three account owners and three native agents close one cross-workspace iss
     expect(staleWrite.status).toBe(409);
     record("plain comment created no execution and stale memory update rejected", { comment_id: ordinary.receipt.comment_id, stale_memory_status: staleWrite.status });
 
-    const runs: { run_id: string; command_id: string; owner_id: string; agent_id: string; base_version: string; written_version: string; result: string }[] = [];
+    const runs: { run_id: string; comment_id: string; command_id: string; owner_id: string; agent_id: string; agent_name: string; base_version: string; written_version: string; result: string }[] = [];
+    const commentAuthorHeader = (comment: Locator) => comment.locator("xpath=./div[time]");
+    const checkAgentAuthor = async (page: Page, commentId: string, name: string, reply = false) => {
+      const comment = page.locator(`[id="comment-${commentId}"]`);
+      const header = commentAuthorHeader(comment);
+      await expect(header.getByText(name, { exact: true })).toBeVisible();
+      await expect(header.getByText("Agent", { exact: true })).toBeVisible();
+      await expect(comment.getByRole("button", { name: "Edit comment", exact: true })).toHaveCount(0);
+      await expect(comment.getByRole("button", { name: "Delete comment", exact: true })).toHaveCount(0);
+      if (reply) {
+        await comment.getByRole("button", { name: "Reply", exact: true }).click();
+        const composer = page.getByRole("form", { name: "Comments", exact: true });
+        const hint = composer.getByText(`Replying to ${name}`, { exact: true });
+        await expect(hint).toBeVisible();
+        await expect(hint.locator("..").getByText("Agent", { exact: true })).toBeVisible();
+        await composer.getByRole("button", { name: "Cancel reply", exact: true }).click();
+        await expect(hint).toHaveCount(0);
+      }
+    };
+    const checkWrappedAuthor = async (page: Page, capture: (stage: string) => Promise<void>) => {
+      const measure = async (text: Locator) => {
+        await text.scrollIntoViewIfNeeded();
+        await expect(text).toBeVisible();
+        const geometry = await text.evaluate(element => {
+          const range = document.createRange(); range.selectNodeContents(element);
+          const boxes = [...range.getClientRects()].filter(box => box.height > 0);
+          const boundary = element.closest('li[id^="comment-"], form')!;
+          const bounds = boundary.getBoundingClientRect();
+          return { lines: new Set(boxes.map(box => Math.round(box.top))).size,
+            text_left: Math.min(...boxes.map(box => box.left)), text_right: Math.max(...boxes.map(box => box.right)),
+            boundary_left: bounds.left, boundary_right: bounds.right, boundary_width: boundary.clientWidth,
+            boundary_scroll_width: boundary.scrollWidth, viewport_width: innerWidth, document_width: document.documentElement.scrollWidth };
+        });
+        expect(geometry.lines).toBeGreaterThan(1);
+        expect(geometry.text_left).toBeGreaterThanOrEqual(geometry.boundary_left - 1);
+        expect(geometry.text_right).toBeLessThanOrEqual(geometry.boundary_right + 1);
+        expect(geometry.boundary_scroll_width).toBeLessThanOrEqual(geometry.boundary_width + 1);
+        expect(geometry.document_width).toBeLessThanOrEqual(geometry.viewport_width + 1);
+        return geometry;
+      };
+      const comment = page.locator(`[id="comment-${runs[4]!.comment_id}"]`);
+      const author = await measure(commentAuthorHeader(comment).getByText(quality.agent.name, { exact: true }));
+      await capture("author");
+      await comment.getByRole("button", { name: "Reply", exact: true }).click();
+      const composer = page.getByRole("form", { name: "Comments", exact: true });
+      try {
+        const reply = await measure(composer.getByText(`Replying to ${quality.agent.name}`, { exact: true }));
+        await capture("reply");
+        return { agent_id: quality.agent.id, name_length: quality.agent.name.length, comment_id: runs[4]!.comment_id, author, reply };
+      } finally { await composer.getByRole("button", { name: "Cancel reply", exact: true }).click(); }
+    };
     const execute = async (resource: ClosureResource, target: typeof targets[number], page: Page, sender: ClosureActor, instruction: string) => {
       await show(page);
       const before = await P.client.requestJSON<CollaborationMemory>(`${root}/memory`);
@@ -188,21 +251,25 @@ test("three account owners and three native agents close one cross-workspace iss
       expect(after.author).toMatchObject({ kind: "agent", agent: { agent_id: resource.agent.id, run_id: visit.identity.run_id },
         resource_owner: { user_id: resource.actor.id } });
       const comments = await P.client.requestJSON<CollaborationComments>(`${root}/comments`);
-      // Public comment views project human accounts only; an Agent has no
-      // account summary here. Its exact attribution lives in the run records.
-      expect(comments.items.find(item => item.id === visit.result_comment_id)).toMatchObject({ id: visit.result_comment_id,
+      // Human author stays null; the minimal Agent summary must agree with
+      // the trusted run identity and its separate execution records.
+      const resultComment = comments.items.find(item => item.id === visit.result_comment_id);
+      expect(resultComment).toMatchObject({ id: visit.result_comment_id,
         issue_id: id, author_type: "agent", author: null, content: visit.result_text });
+      expect(resultComment?.author_agent).toEqual({ agent_id: resource.agent.id, name: resource.agent.name });
       const records = await P.client.requestJSON<CollaborationRunRecords>(versioned(`${root}/runs/${visit.identity.run_id}/records?limit=100`));
       expect(records.resource).toMatchObject({ agent_id: resource.agent.id, runtime_id: resource.runtime.runtimeId, resource_owner_user_id: resource.actor.id, execution_workspace_id: resource.workspace.id });
       expect(records.run).toMatchObject({ id: visit.identity.run_id, agent_id: resource.agent.id, proof_state: "host_exit_observed", launch_count: "1" });
       expect(records.items.filter(item => item.kind === "comment"))
         .toEqual([expect.objectContaining({ kind: "comment", comment_id: visit.result_comment_id, body: visit.result_text })]);
       expect((await read()).status_category).not.toBe("done");
-      const fact = { run_id: visit.identity.run_id!, command_id: command.commandId, owner_id: resource.actor.id, agent_id: resource.agent.id,
+      const fact = { run_id: visit.identity.run_id!, comment_id: visit.result_comment_id, command_id: command.commandId,
+        owner_id: resource.actor.id, agent_id: resource.agent.id, agent_name: resource.agent.name,
         base_version: before.version, written_version: after.version, result: visit.result_text };
       runs.push(fact); record("actual Agent launch, CLI context/comment write and observed termination", fact);
       await show(page);
       await expect(page.locator(`[id="comment-${visit.result_comment_id}"]`)).toContainText(instruction);
+      await checkAgentAuthor(page, visit.result_comment_id, resource.agent.name);
       await page.screenshot({ path: info.outputPath(`run-${runs.length}-${resource.agent.id}.png`), fullPage: true });
     };
     await execute(product, targets[0]!, p, P, "Requirements v1: repeated callbacks must reuse one charge; preserve the callback ID.");
@@ -247,6 +314,56 @@ test("three account owners and three native agents close one cross-workspace iss
     await execute(development, targets[1]!, d, D, "Implementation v2: preserve callback ID and charge ID in audit evidence; duplicate replay remains idempotent.");
     // D can invoke Q's consented resource without transferring ownership or responsibility.
     await execute(quality, targets[2]!, d, D, "QA v2: duplicate replay and callback audit evidence both pass; ready for product acceptance.");
+    // Read the same five results in every human session before completion,
+    // while Reply remains available. These checks create no new comments.
+    for (const [actor, page] of [[P, p], [D, d], [Q, q]] as const) {
+      await show(page);
+      const comments = await actor.client.requestJSON<CollaborationComments>(`${root}/comments`);
+      expect(comments.items.filter(item => item.author_type === "agent").map(item => item.id).sort())
+        .toEqual(runs.map(run => run.comment_id).sort());
+      for (const run of runs) {
+        expect(comments.items.find(item => item.id === run.comment_id)?.author_agent)
+          .toEqual({ agent_id: run.agent_id, name: run.agent_name });
+        await checkAgentAuthor(page, run.comment_id, run.agent_name, true);
+      }
+      const human = commentAuthorHeader(page.locator(`[id="comment-${ordinary.receipt.comment_id}"]`));
+      await expect(human.getByText(P.name, { exact: true })).toBeVisible();
+      await expect(human.getByText("Agent", { exact: true })).toHaveCount(0);
+      record("Web participant saw all Agent authors and matching reply hints", { account_id: actor.id, comment_ids: runs.map(run => run.comment_id) });
+    }
+    const webViewport = q.viewportSize()!;
+    try {
+      await q.setViewportSize({ width: 390, height: 1100 });
+      record("Narrow Web long Agent author and reply wrap without horizontal overflow", await checkWrappedAuthor(q,
+        async stage => { await q.screenshot({ path: info.outputPath(`web-narrow-agent-${stage}.png`), fullPage: true }); }));
+    } finally { await q.setViewportSize(webViewport); }
+    nativeProfile = mkdtempSync(join(tmpdir(), "multica-closure-author-"));
+    native = await openDesktop(nativeProfile, { token: Q.client.getToken()!, deepLink: `multica://account?view=participating&issue=${id}` });
+    await native.start();
+    await expect(native.page.getByRole("heading", { name: title, exact: true })).toBeVisible();
+    for (const run of runs) await checkAgentAuthor(native.page, run.comment_id, run.agent_name, true);
+    const nativeHuman = commentAuthorHeader(native.page.locator(`[id="comment-${ordinary.receipt.comment_id}"]`));
+    await expect(nativeHuman.getByText(P.name, { exact: true })).toBeVisible();
+    await expect(nativeHuman.getByText("Agent", { exact: true })).toHaveCount(0);
+    expect(native.accountHeaders.length).toBeGreaterThan(0);
+    expect(native.accountHeaders.every(headers => !headers["x-workspace-id"] && !headers["x-workspace-slug"])).toBe(true);
+    expect(await native.app.evaluate(() => (globalThis as unknown as { desktopAccountAcceptance: NativeHarness }).desktopAccountAcceptance.evidence.daemonStarts)).toBe(0);
+    expect(native.errors).toEqual([]);
+    const nativeWindow = await native.app.browserWindow(native.page);
+    const originalWindow = await nativeWindow.evaluate(window => ({ size: window.getContentSize(), zoom: window.webContents.getZoomFactor() }));
+    try {
+      await nativeWindow.evaluate(window => { window.setContentSize(900, 1000); window.webContents.setZoomFactor(2); });
+      await expect.poll(() => native!.page.evaluate(() => innerWidth)).toBe(450);
+      record("Electron at 200 percent long Agent author and reply wrap without horizontal overflow", await checkWrappedAuthor(native.page,
+        async stage => { await nativeScreenshot(native!.app, native!.page, info.outputPath(`desktop-agent-${stage}.png`)); }));
+    } finally {
+      try { await nativeWindow.evaluate((window, original) => { window.webContents.setZoomFactor(original.zoom); window.setContentSize(original.size[0]!, original.size[1]!); }, originalWindow); }
+      finally { await nativeWindow.dispose(); }
+    }
+    record("Electron renderer read the same issue with Agent and human authors and matching reply hints", {
+      account_id: Q.id, issue_id: id, comment_ids: runs.map(run => run.comment_id), account_requests: native.accountHeaders.length,
+      workspace_headers_present: false, daemon_starts: 0, installed_full_main: false,
+    });
     const submitted2 = await directedFormThroughUI(d, id, "submit_acceptance", "Version 2 complete: duplicate prevention and callback audit evidence pass synthetic QA.", undefined,
       `Verification ${runs[4]!.run_id}; revised implementation ${runs[3]!.run_id}; prior rejection retained.`);
     expect(submitted2.receipt.code).toBe("acceptance_submitted");
@@ -289,6 +406,10 @@ test("three account owners and three native agents close one cross-workspace iss
         catch { /* A closed/crashed page cannot provide visual evidence. */ }
       }
     }
+    if (native) {
+      try { await nativeScreenshot(native.app, native.page, info.outputPath("failure-desktop-authors.png")); }
+      catch { /* A closed native compositor cannot provide a screenshot. */ }
+    }
     throw error;
   } finally {
     evidence.page_errors = errors;
@@ -319,6 +440,19 @@ test("three account owners and three native agents close one cross-workspace iss
     for (const context of contexts) {
       try { await context.close(); }
       catch (error) { cleanupFailures.push(error instanceof Error ? error.message : "Browser cleanup failed"); }
+    }
+    if (native) {
+      evidence.native_page_errors = native.errors;
+      try {
+        expect(native.errors).toEqual([]);
+        expect(await native.app.evaluate(() => (globalThis as unknown as { desktopAccountAcceptance: NativeHarness }).desktopAccountAcceptance.evidence.daemonStarts)).toBe(0);
+      } catch (error) { cleanupFailures.push(error instanceof Error ? error.message : "Native final checks failed"); }
+      try { await native.app.close(); evidence.native_closed = true; }
+      catch (error) { cleanupFailures.push(error instanceof Error ? error.message : "Native cleanup failed"); }
+    }
+    if (nativeProfile) {
+      try { rmSync(nativeProfile, { recursive: true, force: true }); evidence.native_profile_removed = true; }
+      catch (error) { cleanupFailures.push(error instanceof Error ? error.message : "Native profile cleanup failed"); }
     }
     evidence.cleanup = cleanup;
     evidence.cleanup_failures = cleanupFailures;

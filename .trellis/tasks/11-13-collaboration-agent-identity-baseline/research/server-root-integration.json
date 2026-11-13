@@ -1,0 +1,118 @@
+{
+  "started_at": "2026-11-13T07:31:42.859277+00:00",
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "head": "fafb27b1d334e4d9b705917d6b1f825df09f9419",
+  "files": [
+    {
+      "file": "server/internal/service/collaboration_comments_view.go",
+      "sha256": "612d325ad9bb5ebc5842324eb8d292958c0412dd1fde21b537d22450e66b50d0",
+      "matches_isolated_validation": true,
+      "after_sha256": "612d325ad9bb5ebc5842324eb8d292958c0412dd1fde21b537d22450e66b50d0",
+      "unchanged": true
+    },
+    {
+      "file": "server/internal/service/collaboration_comments_test.go",
+      "sha256": "70ded69047bf09ffc6d4b5f0fa4f9c235ccc5d8dfcbc97aa29d4c4d63c1540d0",
+      "matches_isolated_validation": true,
+      "after_sha256": "70ded69047bf09ffc6d4b5f0fa4f9c235ccc5d8dfcbc97aa29d4c4d63c1540d0",
+      "unchanged": true
+    },
+    {
+      "file": "server/internal/service/collaboration_comments_recall_test.go",
+      "sha256": "2fef734cebd6d102c7e5a993a74197cdc4cea32ecdbf09603dda31d6059ee0cd",
+      "matches_isolated_validation": true,
+      "after_sha256": "2fef734cebd6d102c7e5a993a74197cdc4cea32ecdbf09603dda31d6059ee0cd",
+      "unchanged": true
+    },
+    {
+      "file": "server/internal/handler/collaboration_comments_test.go",
+      "sha256": "a4604f0b1062f98303e571143d1d57c741650661bc12de047a8b4718a2e2d59e",
+      "matches_isolated_validation": true,
+      "after_sha256": "a4604f0b1062f98303e571143d1d57c741650661bc12de047a8b4718a2e2d59e",
+      "unchanged": true
+    }
+  ],
+  "finished_at": "2026-11-13T07:33:42.287235+00:00",
+  "final_head": "fafb27b1d334e4d9b705917d6b1f825df09f9419",
+  "head_unchanged": true,
+  "build": {
+    "command": "go -C server build -p 2 ./internal/service ./internal/handler",
+    "exit_code": 0,
+    "log": "server-root-integration-build.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "runs": [
+    {
+      "package": "./internal/service",
+      "exit_code": 0,
+      "log": "server-root-integration-service.jsonl",
+      "counts": {
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_counts": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents",
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents/detail",
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents/list",
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents/recall",
+          "TestCollaborationCommentAgentProjectionRetainsRunIdentityAndCurrentAccess",
+          "TestCollaborationRecallPublicAgentNamesCountTowardBudgetAndKeepIdentity"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "sha256": "4795cfeb0b0de733daff0cd1e21f946c8f90bdbe645c8e22424ec2a52e959f16"
+    },
+    {
+      "package": "./internal/handler",
+      "exit_code": 0,
+      "log": "server-root-integration-handler.jsonl",
+      "counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestCollaborationCommentHTTPAgentProjectionIsMinimalAndCurrentAccessBound"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "sha256": "a35e048875bb9aedb69cc04e481d7895eb484f48aa2462dbabb110006ebb541d"
+    }
+  ],
+  "f2_overlap": {
+    "commit": "fafb27b1d334e4d9b705917d6b1f825df09f9419",
+    "direct_overlap": [],
+    "reviewed_contract_paths": [
+      "server/internal/service/collaboration_comments_view.go",
+      "server/internal/service/collaboration_comments.go",
+      "server/internal/service/collaboration_comments_recall.go",
+      "server/internal/service/collaboration.go",
+      "server/internal/collaboration/access.go",
+      "server/pkg/db/queries/collaboration_comments.sql",
+      "server/pkg/db/queries/collaboration_memory.sql"
+    ],
+    "indirect_changes": [
+      "Report snapshot routes and Reporter capability only apply to their new namespace.",
+      "PreserveReportSnapshotHeaders/CloudFront exception apply only to /api/issues/.../report-snapshots, not /api/collaboration reads.",
+      "Shared issue/workspace delete SQL additionally cleans report tables; Agent/comment author queries and schema are unchanged.",
+      "Generated models add report structures; existing Agent/Comment structures unchanged."
+    ],
+    "assessment": "No S1 identity, read authority, runtime identity or byte-budget contract impact found."
+  },
+  "scope_note": "Root working-tree validation at fafb27b1d with unchanged S1 Go files; pre-existing documentation asset changes remain outside this task. Browser evidence stays bound to the separate c79dfe304 + S1 candidate; these are targeted final-root compile/DB integration checks, not a repeated browser or full-suite claim."
+}

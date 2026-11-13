@@ -1,0 +1,19 @@
+{
+  "reviewed_at": "2026-11-13T07:29:27.635424+00:00",
+  "reference": "artifacts/qa/pay-collaboration-20261113/evidence/agent-author-projection.png",
+  "screenshots": [
+    "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/b05-run3/collaboration-multi-accoun-d2e5f-kspace-issue-after-revision-chromium/web-narrow-agent-author.png",
+    "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/b05-run3/collaboration-multi-accoun-d2e5f-kspace-issue-after-revision-chromium/web-narrow-agent-reply.png",
+    "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/b05-run3/collaboration-multi-accoun-d2e5f-kspace-issue-after-revision-chromium/desktop-agent-author.png",
+    "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/b05-run3/collaboration-multi-accoun-d2e5f-kspace-issue-after-revision-chromium/desktop-agent-reply.png"
+  ],
+  "verdict": {
+    "score": 95,
+    "verdict": "pass",
+    "category_match": true,
+    "differences": [],
+    "suggestions": [],
+    "reasoning": "Compared with the retained collaboration author reference, the existing typography and neutral styles are preserved. The actual 108-character Agent name and reply label wrap within the 390px Web and 200% Electron viewport; the full name and textual Agent badge remain visible without horizontal overflow."
+  },
+  "scope": "Agent author and reply layout; current same-named human/Agent and en/zh-Hans semantics also covered by shared component tests. Not a full application visual audit."
+}

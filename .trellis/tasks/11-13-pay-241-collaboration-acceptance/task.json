@@ -1,0 +1,35 @@
+{
+  "id": "pay-241-collaboration-acceptance",
+  "name": "pay-241-collaboration-acceptance",
+  "title": "PAY-241 支付异常协作闭环验收",
+  "description": "以支付回调异常为验收载体，映射现有协作能力与 24 条测试用例，规划人工审批、权限审计、执行恢复和端到端验证闭环。",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-13",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "11-13-collaboration-agent-identity-baseline"
+  ],
+  "parent": null,
+  "relatedFiles": [
+    ".trellis/tasks/11-13-pay-241-collaboration-acceptance/prd.md",
+    ".trellis/tasks/11-13-pay-241-collaboration-acceptance/roles-and-states.md",
+    ".trellis/tasks/11-13-pay-241-collaboration-acceptance/design.md",
+    ".trellis/tasks/11-13-pay-241-collaboration-acceptance/implement.md",
+    ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+    ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/current-baseline.md"
+  ],
+  "notes": "2026-11-13 S1 child passed B01-B10 and independent final review; implementation committed and archive pending. Parent retains all24/S2-S5; TC20 is PARTIAL because only concrete Agent identity sub-assertions are covered.",
+  "meta": {}
+}

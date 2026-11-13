@@ -28,12 +28,18 @@ type CollaborationCommentReaction struct {
 	ViewerReacted bool   `json:"viewer_reacted"`
 }
 
+type CollaborationCommentAgent struct {
+	AgentID pgtype.UUID `json:"agent_id"`
+	Name    string      `json:"name"`
+}
+
 type CollaborationCommentView struct {
 	protocol.CollaborationCommentContent
 	ID              pgtype.UUID                    `json:"id"`
 	IssueID         pgtype.UUID                    `json:"issue_id"`
 	AuthorType      string                         `json:"author_type"`
 	Author          *CollaborationContentAccount   `json:"author"`
+	AuthorAgent     *CollaborationCommentAgent     `json:"author_agent,omitempty"`
 	Content         string                         `json:"content"`
 	Type            string                         `json:"type"`
 	ParentID        pgtype.UUID                    `json:"parent_id"`
@@ -118,11 +124,19 @@ func collaborationCommentViews(ctx context.Context, q *db.Queries, access Collab
 		return nil, err
 	}
 	users := make([]pgtype.UUID, 0, len(rows)*2)
+	agents := make([]pgtype.UUID, 0)
+	agentNames := make(map[pgtype.UUID]string)
 	ids := make([]pgtype.UUID, 0, len(rows))
 	for _, row := range rows {
 		ids = append(ids, row.ID)
 		if row.AuthorType == "member" {
 			users = append(users, row.AuthorID)
+		}
+		if row.AuthorType == "agent" && row.AuthorID.Valid {
+			if _, seen := agentNames[row.AuthorID]; !seen {
+				agents = append(agents, row.AuthorID)
+				agentNames[row.AuthorID] = ""
+			}
 		}
 		if row.ResolvedByType.String == "member" && row.ResolvedByID.Valid {
 			users = append(users, row.ResolvedByID)
@@ -131,6 +145,15 @@ func collaborationCommentViews(ctx context.Context, q *db.Queries, access Collab
 	accounts, err := collaborationContentAccounts(ctx, q, access.Issue.WorkspaceID, users)
 	if err != nil {
 		return nil, err
+	}
+	if len(agents) > 0 {
+		names, err := q.ListCollaborationMemoryAgentNames(ctx, agents)
+		if err != nil {
+			return nil, err
+		}
+		for _, agent := range names {
+			agentNames[agent.ID] = agent.Name
+		}
 	}
 	authorities, err := collaborationCommentAuthorities(ctx, q, access, rows)
 	if err != nil {
@@ -171,6 +194,9 @@ func collaborationCommentViews(ctx context.Context, q *db.Queries, access Collab
 			Reactions:  make([]CollaborationCommentReaction, 0), AttachmentIDs: make([]pgtype.UUID, 0)}
 		if row.AuthorType == "member" {
 			item.Author = accounts[row.AuthorID]
+		}
+		if row.AuthorType == "agent" && row.AuthorID.Valid {
+			item.AuthorAgent = &CollaborationCommentAgent{AgentID: row.AuthorID, Name: agentNames[row.AuthorID]}
 		}
 		if row.ResolvedByType.String == "member" {
 			item.ResolvedBy = accounts[row.ResolvedByID]

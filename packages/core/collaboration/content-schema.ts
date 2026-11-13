@@ -32,6 +32,7 @@ const uniqueTargets = <T extends { kind: string; resource_id: string }>(items: T
 
 export const CollaborationCommentSchema = z.object({
   id: uuid, issue_id: uuid, author_type: z.string(), author: CollaborationAccountSummarySchema.nullable(),
+  author_agent: z.object({ agent_id: uuid, name: z.string() }).nullish().catch(null).transform((value) => value ?? null),
   content: z.string(), type: z.string(), parent_id: uuid.nullable(), comment_revision: positiveVersion,
   attachment_ids: collaborationAttachmentIds.nullish().transform((value) => value ?? []),
   created_at: timestamp, updated_at: timestamp, deleted_at: timestamp.nullable(), resolved_at: timestamp.nullable(),
@@ -49,7 +50,7 @@ export const CollaborationCommentSchema = z.object({
     value.content_ref === `/api/collaboration/issues/${value.issue_id}/comments/${value.id}`;
   return value.omission_reason === undefined && value.content_bytes === collaborationTextByteLength(value.content) &&
     (value.content_state !== "deleted" || value.deleted_at !== null && value.content === "");
-});
+}).transform((value) => ({ ...value, author_agent: value.author_type === "agent" ? value.author_agent : null }));
 export const CollaborationCommentsSchema = z.object({
   issue_id: uuid, items: z.array(CollaborationCommentSchema), next_cursor: z.string().max(512).nullable(),
   protocol_version: z.literal(1).optional(), total: z.number().int().nonnegative().safe().optional(),

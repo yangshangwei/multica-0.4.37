@@ -19,6 +19,34 @@ const issue = parseCollaborationIssue({ id, title: "Issue", description: "Body",
   collaboration_revision: "1", lifecycle_epoch: "1", write_context: { participant_epoch: "2", account_epoch: "3" }, session: { id, queue_state: "paused", control_version: "1" },
   capabilities: { reference: true, read: true, comment: true, control_ai: false, submit_command: false, invite: false, transfer: false, remove_participants: false, leave: false, edit: false, edit_source_structure: false, reorder: false, change_status: false, complete: false, cancel: false, reopen: false, resolve_thread: false, react: false } })!;
 
+it.each(["en", "zh-Hans"] as const)("shows and restores the concrete Agent reply identity in %s from the comment alone", async locale => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(id);
+  const name = "Payment reviewer / 支付回归审核";
+  const timestamp = "2026-10-19T00:00:00Z";
+  const replyTo = parseCollaborationComment({ id: target, issue_id: id, author_type: "agent", author: null,
+    author_agent: { agent_id: agent, name }, content: "Earlier AI output", type: "comment", parent_id: null,
+    comment_revision: "1", created_at: timestamp, updated_at: timestamp, deleted_at: null, resolved_at: null,
+    resolved_by: null, can_edit: false, can_resolve: false, reactions: [] })!;
+  const fetch = vi.fn(async (url: string) => new Response(JSON.stringify(url.endsWith(`/comments/${target}`) ? replyTo
+    : { protocol_version: 2, issue_id: id, participants: [], can_submit_commands: false, targets: [] })));
+  vi.stubGlobal("fetch", fetch);
+  const initial = renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentComposer scope={scope} issue={issue} replyTo={replyTo} /></QueryClientProvider>, { locale });
+  const replying = `${locale === "en" ? "Replying to" : "正在回复"} ${name}`;
+  const badge = locale === "en" ? "Agent" : "智能体";
+  expect(screen.getByText(replying)).toBeInTheDocument();
+  expect(screen.getByText(badge, { exact: true })).toBeInTheDocument();
+  initial.unmount();
+  client.clear();
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentComposer scope={scope} issue={issue} /></QueryClientProvider>, { locale });
+  expect(await screen.findByText(replying)).toBeInTheDocument();
+  expect(screen.getByText(badge, { exact: true })).toBeInTheDocument();
+  expect(fetch.mock.calls.some(([url]) => url.endsWith(`/comments/${target}`))).toBe(true);
+  expect([...new Set(fetch.mock.calls.map(([url]) => new URL(url).pathname))].sort()).toEqual([
+    `/api/collaboration/issues/${id}/comments/${target}`, `/api/collaboration/issues/${id}/mention-targets`,
+  ]);
+});
+
 it("keeps optional tools collapsed and preserves the comment when toggled by keyboard", async () => {
   setApiInstance(new ApiClient("https://server.example"));
   const scope = collaborationScope(id);

@@ -10,10 +10,84 @@ import (
 	"unicode/utf8"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
+
+func TestCollaborationRecallPublicAgentNamesCountTowardBudgetAndKeepIdentity(t *testing.T) {
+	f := newCollaborationContentFixture(t)
+	name := strings.Repeat("支付 <>&\" Agent ", 20)
+	agentID := f.fx.Agent(t, name, "")
+	issueID := util.UUIDToString(f.issue.Issue.ID)
+	at := time.Now().UTC().Truncate(time.Second)
+	want := make(map[pgtype.UUID]string)
+	for n := 0; n < 9; n++ {
+		body := "agent result"
+		if n == 8 {
+			body = strings.Repeat("<>&中文🙂\n", 1000)
+		}
+		id := util.MustParseUUID(f.fx.Comment(t, issueID, body, testutil.Cols{"author_type": "agent", "author_id": agentID, "created_at": at.Add(time.Duration(n) * time.Second)}))
+		want[id] = body
+	}
+	query := CollaborationCommentsRecallQuery{Limit: 5, MaxBytes: 4096}
+	seen := make(map[pgtype.UUID]bool)
+	omitted := false
+	for pageNumber := 0; pageNumber < 12; pageNumber++ {
+		page, err := f.svc.RecallComments(f.ctx, f.issue.Issue.ID, query)
+		if err != nil {
+			t.Fatal(err)
+		}
+		raw, err := json.Marshal(page)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(page.Items) == 0 || page.Total != int64(len(want)) || page.Bytes != len(raw)+1 || page.Bytes > query.MaxBytes {
+			t.Fatalf("public Agent name escaped the wire budget: returned=%d total=%d wire=%d bytes=%d", len(page.Items), page.Total, len(raw)+1, page.Bytes)
+		}
+		for _, item := range page.Items {
+			body, exists := want[item.ID]
+			if !exists || seen[item.ID] {
+				t.Fatalf("Agent pagination returned an unknown or duplicate comment: %s", util.UUIDToString(item.ID))
+			}
+			seen[item.ID] = true
+			agent := commentAgentProjection(t, item)
+			if len(agent) != 2 || agent["agent_id"] != agentID || agent["name"] != name || item.Author != nil || item.CanEdit {
+				t.Fatalf("public recall changed Agent identity or human authority: %+v", agent)
+			}
+			detail, err := f.svc.GetComment(f.ctx, f.issue.Issue.ID, item.ID)
+			if err != nil || detail.Content != body || !reflect.DeepEqual(agent, commentAgentProjection(t, detail)) {
+				t.Fatalf("detail read lost full text or changed the recall author's identity: %v", err)
+			}
+			if item.ContentState == "omitted" {
+				omitted = true
+				if item.Content != "" || item.ContentRef != "/api/collaboration/issues/"+issueID+"/comments/"+util.UUIDToString(item.ID) {
+					t.Fatal("Agent placeholder has no exact authorized detail reference")
+				}
+			}
+		}
+		if page.NextCursor == nil {
+			break
+		}
+		if *page.NextCursor == query.Cursor {
+			t.Fatal("Agent comment cursor did not progress")
+		}
+		query.Cursor = *page.NextCursor
+	}
+	if len(seen) != len(want) || !omitted {
+		t.Fatalf("public Agent pagination lost comments or skipped the placeholder case: seen=%d want=%d omitted=%v", len(seen), len(want), omitted)
+	}
+	legacy, err := f.svc.ListComments(f.ctx, f.issue.Issue.ID, CollaborationCommentsQuery{Limit: 50})
+	if err != nil || len(legacy.Items) != len(want) {
+		t.Fatalf("ordinary list lost Agent comments: %v", err)
+	}
+	for _, item := range legacy.Items {
+		if item.Content != want[item.ID] || commentAgentProjection(t, item)["name"] != name {
+			t.Fatal("ordinary list changed full text or the Agent display name")
+		}
+	}
+}
 
 func recallTestIdentity() protocol.CollaborationRunIdentity {
 	return protocol.CollaborationRunIdentity{DeploymentID: uuid.NewString(), InstallationID: uuid.NewString(), IssueID: uuid.NewString(), SessionID: uuid.NewString(),
@@ -222,8 +296,9 @@ func TestCollaborationRecallRuntimePagesFulltextAndCurrentAuthority(t *testing.T
 }
 
 // Parent PRD R4 asks runtime comment reads for the author's display name, as
-// the human comment list already has (audit RECALL-1). Agent authors keep the
-// human path's boundary: their type and ID, no name.
+// the human comment list already has (audit RECALL-1). The runtime protocol
+// retains only type/ID for Agent authors; public human reads separately expose
+// the minimal author_agent summary.
 func TestCollaborationRuntimeCommentsCarryMemberDisplayNames(t *testing.T) {
 	f := newManagedCollaborationFixture(t)
 	f.submitManaged(t, f.creator, "admitted input")

@@ -55,6 +55,15 @@ are no earlier results while `hasNextPage` is true.
 
 ### One-action ordinary comments and explicit AI confirmation
 
+Comment lists and reply hints share `collaborationCommentAuthor`. Named Agent
+comments display the current name plus a textual localized Agent badge; missing,
+empty or whitespace-only names display the generic Agent label once. Human names,
+avatars and external badges retain their existing behavior. Long names wrap in
+both locations; same-named humans remain distinguishable. Do not fetch Agent
+details or consult the display summary when granting edit/execute/accept actions.
+The public projection and fallback matrix live in
+[collaboration content](../../server/collaboration-content.md).
+
 Comment tools (mentions and attachments) are explicit compact toggles. The
 attachment picker stays mounted, and retained files/uploads/errors reveal it;
 hiding optional tools must never reset the composer or change send semantics.

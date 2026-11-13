@@ -209,3 +209,63 @@ reads but does not revive those old capabilities. Anonymous reads deny without
 a public redirect. These actual client tests use isolated password sessions and
 synthetic offline resources; installed Main, other OS containment and real
 provider accounts remain separate evidence.
+
+## Comment Agent author projection
+
+### 1. Scope / trigger
+
+Apply to public collaboration comment list, byte-budget recall and single-comment
+reads. Runtime writes and human editing history retain their existing contracts.
+
+### 2. Signatures
+
+`CollaborationCommentView` adds optional
+`author_agent: { agent_id: UUID, name: string }`. `author` remains a human summary
+and is null for Agent comments. All three reads share `collaborationCommentViews`.
+
+### 3. Contracts
+
+Only `author_type=agent` with a valid stored `author_id` produces the summary.
+Deduplicate IDs and reuse `ListCollaborationMemoryAgentNames` once per page;
+human-only pages need no Agent lookup. Names are current, not write-time snapshots.
+Missing/deleted entities retain the trusted ID with an empty name. Archiving an
+Agent or withdrawing its resource does not erase a still-readable comment's author.
+
+The authorized repeatable-read content path remains the access boundary. The
+summary grants no Agent-detail, workspace, edit or execution permission and
+contains no owner, runtime or credential data. Actual query errors fail the read;
+they are not missing-name results. Include the field in the existing actual JSON
+byte budget, including escaped/long names and placeholder pages.
+
+### 4. Validation and error matrix
+
+| Condition | Result |
+| --- | --- |
+| Valid Agent comment | Trusted ID and current display name; human `author` stays null |
+| Member or unknown author type | No Agent summary |
+| Agent deleted or name empty | Trusted ID and empty name; client uses generic Agent label |
+| Resource withdrawn, reader still authorized | Historical comment attribution remains readable |
+| Reader loses all task access | Reject the whole comment read, including the new field |
+| Name query fails | Propagate error, do not fabricate a deleted Agent |
+| Full comment exceeds page budget but its placeholder fits | Bounded placeholder pagination and detail recovery apply |
+| Placeholder plus required metadata still exceeds `max_bytes` | Return 400 `budget_too_small`; never exceed the requested budget |
+
+### 5. Good / base / bad cases
+
+Good: one batch resolves two named Agents across several comments. Base: an old
+client ignores the additive field. Bad: parse a comment body for an Agent ID or
+require the viewer to enter its source workspace to see the author.
+
+### 6. Tests required
+
+Service comment tests cover real runtime attribution, member preservation,
+archive/resource withdrawal/deletion, access loss and failed/omitted lookups.
+Public recall tests cover escaped long names, serialized byte limits, cursor
+progress and exact detail recovery. Handler tests pin the minimal public payload.
+Core owns malformed-summary compatibility; shared Views own list/reply display.
+
+### 7. Wrong versus correct
+
+Wrong: put an Agent in the human `author` field or fetch private Agent details
+from each comment row. Correct: project the minimal summary from the trusted
+comment identity and keep exact run attribution in the existing run records.

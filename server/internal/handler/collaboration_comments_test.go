@@ -68,6 +68,55 @@ func TestCollaborationCommentHTTPKeepsAuthorControlHistoryAndPrivateProjection(t
 	}
 }
 
+func TestCollaborationCommentHTTPAgentProjectionIsMinimalAndCurrentAccessBound(t *testing.T) {
+	issue := collaborationBoundaryIssue(t, testWorkspaceID)
+	reader := dbfx.User(t, "External comment reader", "agent-reader-"+uuid.NewString()+"@example.test")
+	dbfx.InsertNoID(t, "issue_participant", testutil.Cols{"issue_id": issue, "user_id": reader}, "issue_id=$1 AND user_id=$2", issue, reader)
+	privateWorkspace := dbfx.Workspace(t, "Private Agent workspace", "private-agent-"+uuid.NewString())
+	agent := dbfx.Agent(t, "支付研发 Agent", "", testutil.Cols{"workspace_id": privateWorkspace, "instructions": "PRIVATE-AGENT-INSTRUCTIONS"})
+	comment := dbfx.Comment(t, issue, "Attributable result", testutil.Cols{"author_type": "agent", "author_id": agent})
+	for _, query := range []string{"", "max_bytes=4096"} {
+		request := collaborationContentRequest(http.MethodGet, issue, "", reader, "", nil)
+		request.URL.RawQuery = query
+		var page struct {
+			Items []json.RawMessage `json:"items"`
+		}
+		response := testutil.Call(t, testHandler.ListCollaborationComments, request).Want(http.StatusOK)
+		response.JSON(&page)
+		if len(page.Items) != 1 {
+			t.Fatalf("Agent list returned %d comments", len(page.Items))
+		}
+		var wire struct {
+			Author      any               `json:"author"`
+			AuthorAgent map[string]string `json:"author_agent"`
+			CanEdit     bool              `json:"can_edit"`
+		}
+		if err := json.Unmarshal(page.Items[0], &wire); err != nil {
+			t.Fatal(err)
+		}
+		if wire.Author != nil || wire.CanEdit || len(wire.AuthorAgent) != 2 || wire.AuthorAgent["agent_id"] != agent || wire.AuthorAgent["name"] != "支付研发 Agent" {
+			t.Fatalf("Agent projection changed public identity/authority: %+v", wire)
+		}
+		if response.Header().Get("Cache-Control") != "no-store" || strings.Contains(response.Body.String(), privateWorkspace) || strings.Contains(response.Body.String(), "PRIVATE-AGENT-INSTRUCTIONS") {
+			t.Fatal("Agent comment projection leaked configuration or was cacheable")
+		}
+	}
+	var detail struct {
+		AuthorAgent map[string]string `json:"author_agent"`
+	}
+	testutil.Call(t, testHandler.GetCollaborationComment, collaborationContentRequest(http.MethodGet, issue, comment, reader, "", nil)).Want(http.StatusOK).JSON(&detail)
+	if detail.AuthorAgent["agent_id"] != agent || detail.AuthorAgent["name"] != "支付研发 Agent" {
+		t.Fatalf("single-comment projection differs from list: %+v", detail)
+	}
+	dbfx.Exec(t, `UPDATE issue_participant SET revoked_at=now() WHERE issue_id=$1 AND user_id=$2`, issue, reader)
+	testutil.Call(t, testHandler.GetCollaborationComment, collaborationContentRequest(http.MethodGet, issue, comment, reader, "", nil)).Want(http.StatusNotFound)
+	for _, query := range []string{"", "max_bytes=4096"} {
+		request := collaborationContentRequest(http.MethodGet, issue, "", reader, "", nil)
+		request.URL.RawQuery = query
+		testutil.Call(t, testHandler.ListCollaborationComments, request).Want(http.StatusNotFound)
+	}
+}
+
 func TestCollaborationCommentHTTPRejectsForeignCommentsAndMalformedVersions(t *testing.T) {
 	issue := collaborationBoundaryIssue(t, testWorkspaceID)
 	other := collaborationBoundaryIssue(t, testWorkspaceID)

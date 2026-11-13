@@ -1,0 +1,299 @@
+{
+  "reviewed_at": "2026-11-13T06:34:06.344236+00:00",
+  "head": "fafb27b1d334e4d9b705917d6b1f825df09f9419",
+  "scope": "S1 only: browser candidate c79dfe304 plus 12 owned source files; final-root fafb27b1d separately checked by targeted compile/DB integration; parent 24 cases remain open",
+  "verdict": "S1_acceptance_pass",
+  "fixed_findings": [
+    {
+      "file": "e2e/collaboration-multi-account-closure.spec.ts",
+      "issue": "Exact Edit/Delete button selectors never matched the actual Edit comment/Delete comment affordances, making the new no-Agent-edit assertions vacuous.",
+      "fix": "Corrected both selectors to actual accessible names."
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "issue": "Generic-label display regression covered missing summary but omitted empty/whitespace Agent names.",
+      "fix": "Client owner added absent/empty/whitespace × en/zh-Hans to the existing display regression; 19 list tests passed."
+    },
+    {
+      "file": ".trellis/spec/server/collaboration-content.md",
+      "issue": "Budget table omitted the existing budget_too_small result when metadata cannot fit.",
+      "fix": "Coordinator split fitting-placeholder recovery from explicit 400 budget_too_small; final wording reviewed."
+    },
+    {
+      "file": "e2e/collaboration-multi-account-closure.spec.ts",
+      "issue": "Generic Agent label was ambiguous with the permission-context role; composed CSS header selector then matched nothing.",
+      "fix": "E2E owner uses xpath=./div[time] for the direct author header. Exact name/badge and edit/delete assertions remain. Both failed runs retained; complete b05-run3 passed."
+    }
+  ],
+  "unresolved_code_findings": [],
+  "checks": {
+    "scoped_core_eslint": {
+      "status": "pass",
+      "log": "check-core-lint.log"
+    },
+    "scoped_views_eslint": {
+      "status": "pass",
+      "log": "check-views-lint.log"
+    },
+    "strict_e2e_tsc": {
+      "status": "pass",
+      "log": "check-e2e-typecheck.log"
+    },
+    "git_diff_check": {
+      "status": "pass"
+    },
+    "core_typecheck": {
+      "status": "pass",
+      "source": "reviewed client-core-typecheck.log; implementer executed"
+    },
+    "views_typecheck": {
+      "status": "pass",
+      "source": "reviewed client-views-typecheck.log; implementer executed"
+    },
+    "full_isolated_typecheck": {
+      "status": "pass",
+      "tasks": 9,
+      "cached": 0,
+      "log": "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/logs/typecheck.log"
+    },
+    "full_isolated_lint": {
+      "status": "pass",
+      "tasks": 6,
+      "cached": 0,
+      "note": "Existing unrelated warnings retained; zero lint errors",
+      "log": "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/logs/lint.log"
+    },
+    "go_vet": {
+      "status": "pass",
+      "log": "server-vet.log"
+    },
+    "focused_go_race": {
+      "status": "pass",
+      "service_named_including_subtests": 6,
+      "handler_named": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "final_root_integration": {
+      "status": "pass",
+      "head": "fafb27b1d334e4d9b705917d6b1f825df09f9419",
+      "build_exit": 0,
+      "service_named_including_subtests": 6,
+      "handler_named": 1,
+      "fail": 0,
+      "skip": 0,
+      "evidence": "server-root-integration.json"
+    }
+  },
+  "observed_tests": {
+    "core": 146,
+    "views_before_added_fallback_rows": 50,
+    "list_after_fallback_rows": 19,
+    "service_named_including_subtests": 53,
+    "handler_named": 9
+  },
+  "pending_coordinator_gates": [],
+  "files": {
+    "server/internal/service/collaboration_comments_view.go": "612d325ad9bb5ebc5842324eb8d292958c0412dd1fde21b537d22450e66b50d0",
+    "server/internal/service/collaboration_comments_test.go": "70ded69047bf09ffc6d4b5f0fa4f9c235ccc5d8dfcbc97aa29d4c4d63c1540d0",
+    "server/internal/service/collaboration_comments_recall_test.go": "2fef734cebd6d102c7e5a993a74197cdc4cea32ecdbf09603dda31d6059ee0cd",
+    "server/internal/handler/collaboration_comments_test.go": "a4604f0b1062f98303e571143d1d57c741650661bc12de047a8b4718a2e2d59e",
+    "packages/core/collaboration/content-schema.ts": "29e2202db901cddfc98b7bc5cc7ef4840b7d9585cffc6e1bc5f157473b51920f",
+    "packages/core/collaboration/content-schema.test.ts": "3a527a1bb32fdd37ed23799deb824a9df7c8f8aedfadda8fc4e5985802571270",
+    "packages/views/collaboration/comment-author.ts": "d157aaa7346ee2a718ad3290f73e521039d1ab273200aa8379ff0394fa2ee213",
+    "packages/views/collaboration/comment-list.tsx": "fd18168b323fdcf7647dd727f025a49f9556cf794827d42f1387c85acb77625b",
+    "packages/views/collaboration/comment-list.test.tsx": "7cfe31e8f849327702695ac370b6e41e6b03372c69e311047a571b304d0d6a35",
+    "packages/views/collaboration/comment-composer.tsx": "114d4188f8cc423c652fdef8452e6925924f306840859b9050b17f165c1c0aca",
+    "packages/views/collaboration/comment-composer.test.tsx": "0e3d5eed18576e29e7d53cc5288c8b906bc6952ccf08b366e562d9bb3b524143",
+    "e2e/collaboration-multi-account-closure.spec.ts": "e2bbcda9340f930c20b49936b7f2b6d4a1a567d44314c101f11c50b5cb03db53"
+  },
+  "followup_reviewed_at": "2026-11-13T06:47:27.933535+00:00",
+  "spec_files": {
+    ".trellis/spec/server/collaboration-content.md": "637c2911ceb9d3713ee79e3c2b3ff92227dbbeae6ebc51a37cebcb803bf9416e",
+    ".trellis/spec/core/frontend/collaboration-workbench.md": "1246539800787b057417b536162ceb34ae24dfc69f34d563f5e4226c25e6dd2e",
+    ".trellis/spec/views/frontend/collaboration-detail.md": "e914509a427d028d83b81ca24abadbdf5a18d579749cf6a4b1ff53508b39efd8",
+    ".trellis/spec/web/frontend/collaboration-closure-qa.md": "e5f3a57eff6e3b9b60ff4d3f509d0cbcddfc37282e9c42a920e87dbd6497051a"
+  },
+  "followup": {
+    "e2e_previous_sha256": "e97e29cbe72eda8ec945c5ea3faae5f7145aeabcee9593d995e02397b37a6d34",
+    "e2e_reviewed_sha256": "6395d75cf915a54329fc4676fb6f196e73d715f28ecba3e1fc8117faf4ec04c8",
+    "only_product_test_change_since_prior_review": "e2e/collaboration-multi-account-closure.spec.ts",
+    "visual_assertions": [
+      "104-character unbroken Agent name retains the same Agent UUID via existing owner-authorized PUT",
+      "Real text Range rectangles prove multiple lines for list author and reply hint",
+      "Text bounds stay within comment/form; local and document horizontal overflow are rejected",
+      "Web uses 390px viewport; actual Electron window uses 900px content width and 2x native zoom",
+      "Both viewports restore in finally; geometry and four screenshots use the same final Quality comment"
+    ],
+    "static_verification": {
+      "git_diff_check": "reviewer executed, exit 0",
+      "strict_e2e_tsc_and_discovery": "implementer reports repeated pass in e2e-implementation.md after long-name addition; no heavy checks rerun during actual B05"
+    },
+    "runtime_status": "B05 currently executing under coordinator; no runtime pass inferred"
+  },
+  "unresolved_spec_findings": [],
+  "final_reviewed_at": "2026-11-13T07:38:41.334731+00:00",
+  "candidate_head": "c79dfe304d172c1127d2271fb3932eb751b7c0fb",
+  "eligible_for_s1_completion": true,
+  "parent_24_case_completion": false,
+  "required_browser_results": [
+    {
+      "run": "b05-run3",
+      "test": "three account owners and three native agents close one cross-workspace issue after revision",
+      "status": "pass",
+      "retry": 0
+    },
+    {
+      "run": "supplemental-run2",
+      "test": "Web withdrawing a grant during a permitted run stops that work, holds only its target, keeps the queued input, and needs proof plus explicit Resume",
+      "status": "pass",
+      "retry": 0
+    },
+    {
+      "run": "supplemental-run2",
+      "test": "Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "status": "pass",
+      "retry": 0
+    },
+    {
+      "run": "supplemental-run2",
+      "test": "Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "status": "pass",
+      "retry": 0
+    },
+    {
+      "run": "supplemental-run1",
+      "test": "Web directed handoff chain moves current todos with responsibility and only the creator completes",
+      "status": "pass",
+      "retry": 0
+    }
+  ],
+  "final_evidence": {
+    "raw_report_hashes_match": true,
+    "raw_go_inventories_match": true,
+    "all_required_browser_cases_named_pass_no_skips": true,
+    "source_files_match_root_and_isolated_candidate": 12,
+    "host_binaries_and_build_identifiers_match_preflight": true,
+    "namespace_fixture_source_and_binary_hashes_match": true,
+    "b05_issue_id": "01a1d3cc-bf86-7432-a888-1073029b9c89",
+    "b05_distinct_owners": 3,
+    "b05_agent_run_distribution": [
+      1,
+      2,
+      2
+    ],
+    "b05_result": "passed",
+    "b05_native_closed": true,
+    "b05_profile_removed": true,
+    "b05_cleanup_failures": [],
+    "long_name_characters": 108,
+    "long_name_geometry": [
+      {
+        "agent_id": "e5de9a6c-529c-46ea-91bf-8f51f617cb8c",
+        "name_length": 108,
+        "comment_id": "3d58c2a2-90b8-425a-a18a-c754284169c9",
+        "author": {
+          "lines": 2,
+          "text_left": 16,
+          "text_right": 373.78125,
+          "boundary_left": 16,
+          "boundary_right": 374,
+          "boundary_width": 358,
+          "boundary_scroll_width": 358,
+          "viewport_width": 390,
+          "document_width": 390
+        },
+        "reply": {
+          "lines": 3,
+          "text_left": 16,
+          "text_right": 367.875,
+          "boundary_left": 16,
+          "boundary_right": 374,
+          "boundary_width": 358,
+          "boundary_scroll_width": 358,
+          "viewport_width": 390,
+          "document_width": 390
+        }
+      },
+      {
+        "agent_id": "e5de9a6c-529c-46ea-91bf-8f51f617cb8c",
+        "name_length": 108,
+        "comment_id": "3d58c2a2-90b8-425a-a18a-c754284169c9",
+        "author": {
+          "lines": 2,
+          "text_left": 24,
+          "text_right": 420.375,
+          "boundary_left": 24,
+          "boundary_right": 420.5,
+          "boundary_width": 397,
+          "boundary_scroll_width": 397,
+          "viewport_width": 450,
+          "document_width": 450
+        },
+        "reply": {
+          "lines": 3,
+          "text_left": 24,
+          "text_right": 420.34765625,
+          "boundary_left": 24,
+          "boundary_right": 420.5,
+          "boundary_width": 397,
+          "boundary_scroll_width": 397,
+          "viewport_width": 450,
+          "document_width": 450
+        }
+      }
+    ],
+    "visual_screenshots_independently_viewed": 4,
+    "visual_scope": "author/reply, 390px Web and Electron 2x; full-app design not claimed",
+    "cleanup_independent_socket_probe": "Task API18970/Web13890/renderer6064 closed on IPv4 and IPv6; human API18572 and IPv6 Web13492 still available",
+    "cleanup_independent_docker_inventory": [
+      "multica-postgres-1"
+    ],
+    "original_failures_preserved": true
+  },
+  "baseline_cases": {
+    "B01": "PASS",
+    "B02": "PASS",
+    "B03": "PASS",
+    "B04": "PASS",
+    "B05": "PASS",
+    "B06": "PASS",
+    "B07": "PASS",
+    "B08": "PASS",
+    "B09": "PASS",
+    "B10": "PASS"
+  },
+  "evidence_hashes": {
+    "acceptance-result.json": "c3233ac2456146863c05b732aa047469785c0f8bfe943ce4770cea161e9a63b2",
+    "visual-review.json": "4ba922644c1dfc33f8efb070d078fa97ab902d561d1f20a096df20f58e146c2a",
+    "server-results.json": "0a8faae500745d75d1418859ab5bbe6cd45d2acc68cd97166def8c619c001ece",
+    "client-result.json": "638a6a8b383e58f561d250020d54fd2b3c33f7d5959b4b51860efb2663f17403",
+    "server-root-integration.json": "c957878e68fad36c350a94df8b9c84b88bab04ec4ea36a7db32e0a3ad131c7a4",
+    "supplemental-environment-correction.json": "2eb0fba53a9e375670872b9e9ece434ed53c39c815647c5181e89e8f5241ff5a",
+    "e2e-locator-followup.md": "800749e31014550b6c2cd939e10a54f70058d7bf3804e04022f91ae32991dd16",
+    "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/b05-run1.json": "ae424e459fba029e24d907c3ea222ee725b37093272979e2d7d975a35505d2f2",
+    "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/b05-run2.json": "a120d198ede07c07e21785cdb531ae61ea0bc7c880b25763b43a12421d9eb6de",
+    "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/b05-run3.json": "d9cb80f8a6c0e4fa354be09528da8e6e6968e9935eb1a78e50c692740dc2f891",
+    "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/supplemental-run1.json": "5ee358ba441b00920e3c9f9f731c04e65eb9016ebd5e861300781e8847b9afa8",
+    "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/supplemental-run2.json": "f0848b04ff0ca67870cfe54c585c389f968b729ad8a45db28545d84cbd1c4d91"
+  },
+  "remaining_limits": [
+    "Controlled Providers and synthetic test-account approvals; no real payment/model/production release",
+    "Electron renderer only, not installed complete Main",
+    "Browser validation remains c79dfe304+S1; final-root fafb27b1d evidence is targeted compile/DB integration, not a repeated full browser run",
+    "Parent PAY-241 full 24-case acceptance and S2-S5 remain open"
+  ],
+  "final_documentation_review": {
+    "at": "2026-11-13T07:40:42.751731+00:00",
+    "file": ".trellis/spec/web/frontend/collaboration-closure-qa.md",
+    "sha256": "e5f3a57eff6e3b9b60ff4d3f509d0cbcddfc37282e9c42a920e87dbd6497051a",
+    "status": "pass",
+    "reviewed_facts": [
+      "Distinct host closure and namespace offline/live-revoke gate profiles, sequential operation and exact flag restoration",
+      "Author header/time boundary avoids duplicate permission-disclosure Agent labels; installed Playwright scope/has counterexample and direct XPath remedy",
+      "Namespace promotion under host cutover returns execution_mode_unsupported; fix isolated fixture profile rather than product admission"
+    ],
+    "product_source_hashes_unchanged": 12,
+    "tests_rerun": false
+  }
+}
