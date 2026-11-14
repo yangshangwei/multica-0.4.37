@@ -33,7 +33,10 @@ search priority and append-only paging. Ordinary picker actions keep their roles
 
 Only `user_id`, name, avatar and permitted external status are projected. Full
 IDs distinguish equal names and equal UUID prefixes in rows, exact results,
-selected triggers and accessible labels; wrap them, do not truncate the identity.
+default selected triggers and accessible descriptions; wrap visible IDs rather
+than truncating them. Compact selected triggers use a single avatar/name/badge
+row and expose the full localized account ID through the native `title` hover
+hint. Do not add an inline ID row to the compact toolbar.
 Retain the existing selected-name sentence as a separate text element.
 
 Use opaque `faint-foreground` ring/border/outline locally. Portals need explicit
@@ -159,8 +162,8 @@ button to the persistent attachment trigger before abort removes Cancel. A
 post-settlement recovery alone can lose to Base UI's later restore-focus frame.
 Only perform this handoff when Cancel owns focus; preserve another live target.
 
-Compact recipient presentation still displays the full account ID, permitted
-external marker and independent selected-name sentence. AI and selected-file
+Compact recipient presentation keeps the full account ID in its hover hint,
+the visible external marker and independent selected-name sentence. AI and selected-file
 sharing explanations remain available. The advanced-fields summary exposes
 retained user choices without counting revision/identity metadata; invalid
 values still open the disclosure automatically.
@@ -190,8 +193,10 @@ verify that the border is actually painted, contrast is sufficient and it stays
 inside the visible editor region. The required-title explanation stays adjacent
 to the label/input and linked with `aria-describedby`.
 
-Compact selected identity may span the trigger's full width below the name row
-to reduce wrapping. Keep the complete ID and the separate selected-name status.
+Compact selected identity stays in a single row; the full ID appears on hover.
+This user-requested presentation supersedes the earlier always-visible compact
+ID requirement. Keep IDs visible in selection rows and exact lookup results,
+and retain the separate selected-name status.
 The empty compact attachment group may visually hide its legend, but retains
 its accessible name and visible sharing explanation. Files, loading, errors,
 cancellation and unresolved upload states restore the visible details heading.
@@ -239,16 +244,17 @@ Full contracts and shared default-caller tests live in
 
 ## Rendered identity and guidance evidence
 
-`toHaveTextContent(fullId)` protects identity data, but cannot prove that a
-selected ID is readable: it also passes for a clipped `sr-only` descendant.
-Tooltip or screen-reader text cannot replace the complete visible selected ID
-or the visible AI-participation explanation. Browser verification must measure
-the full text ranges against the viewport and every clipping ancestor, including
-`clip`/`clip-path`, after transition settlement. Scroll body guidance into view
-when needed; the fixed controls and complete selected ID must remain reachable.
+For compact selected recipients, assert that the full ID is available in the
+trigger's `title` but absent from its visible text; preserve the selected name
+in the accessible description.
+The browser owns the native hover hint; no second tooltip implementation is
+needed. Selection rows and default noncompact triggers still show full IDs.
+For those visible IDs and AI guidance, text presence alone does not prove
+readability: measure text ranges against clipping ancestors after transitions.
+Scroll body guidance into view when needed; the fixed controls remain reachable.
 
 The unit regression owns independently announced recipient changes, including
 returning to self, in both constrained and standalone panels. Actual CSS browser
-tests own full identity/help visibility, 44px coarse controls, summary-driven
+tests own selection-row identity/help visibility, 44px coarse controls, summary-driven
 toolbar reflow, disclosure focus, long content and refusal visibility. Do not
 replace these with Tailwind-string assertions or jsdom visibility alone.

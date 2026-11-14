@@ -191,16 +191,15 @@ export function CollaborationAccountPicker({
   const accountIdText = display && (!multiple || selectedAccounts.length <= 1) ? t(($) => $.recipientPicker.accountId, { id: accountIdentity(display) }) : null;
   const name = multiple && selectedAccounts.length > 1 ? t(($) => $.recipientPicker.selectedCount, { count: selectedAccounts.length }) : triggerLabel ?? displayName;
   const externalBadge = display?.external === true && <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 text-caption text-muted-foreground">{t(($) => $.recipientPicker.external)}</span>;
-  // Compact controls keep the complete selected identity directly readable.
+  // Compact controls keep the selected account ID in the native hover title.
   const triggerRender = compact
     ? <PillButton aria-label={label} disabled={disabled} title={accountIdText ?? undefined} className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50" />
     : <button type="button" aria-label={label} disabled={disabled} className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-left text-body hover:bg-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" />;
   const trigger = compact
-    ? <span className="grid w-full min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-1.5 gap-y-0.5 text-left">
+    ? <span className="flex min-w-0 items-center gap-1.5 text-left">
       {display && <ActorAvatar name={display.name} initials={initials(display.name)} avatarUrl={display.avatar_url} size="xs" />}
       <span className="min-w-0 truncate">{name}</span>
       {externalBadge}
-      {accountIdText && <span className="col-span-full text-caption text-muted-foreground [overflow-wrap:anywhere]">{accountIdText}</span>}
     </span>
     : <span className="flex min-w-0 flex-1 items-center gap-2">
       {display && <ActorAvatar name={display.name} initials={initials(display.name)} avatarUrl={display.avatar_url} size="sm" />}

@@ -62,8 +62,14 @@ it.each([false, true])("distinguishes same-name accounts and retains full identi
   await user.click(chosen);
   expect(onSelect).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ user_id: directoryId }));
   setSelected(accounts[1]!);
-  expect(trigger).toHaveTextContent(directoryId);
-  expect(trigger).toHaveAccessibleDescription(new RegExp(directoryId));
+  if (compact) {
+    expect(trigger).not.toHaveTextContent(directoryId);
+    expect(trigger).toHaveAttribute("title", expect.stringContaining(directoryId));
+    expect(trigger).toHaveAccessibleDescription(/李明/);
+  } else {
+    expect(trigger).toHaveTextContent(directoryId);
+    expect(trigger).toHaveAccessibleDescription(new RegExp(directoryId));
+  }
 });
 
 it("connects the native filter textbox to stable selected and disabled account options", async () => {
