@@ -1,0 +1,219 @@
+{
+  "review_kind": "planning_only",
+  "task": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance",
+  "reviewer": "trellis-check (explicit S5 dispatch; hook active task was S2 and the task pointer was not changed)",
+  "recorded_at": "2026-11-13T20:55:14Z",
+  "source": {
+    "head": "fb9f4c07059445cea41ed19e956b3eb1861817cc",
+    "worktree": "over 400 unrelated uncommitted entries from other sessions; every source file cited here was clean against HEAD when checked",
+    "line_numbers": "valid for the reviewed tree only; S2 is editing server files, so locate by symbol"
+  },
+  "verdict": {
+    "ready_for_harness_implementation": true,
+    "blocking_findings_open": 0,
+    "ready_for_final_acceptance_run": false,
+    "final_acceptance_blocked_by": ["S2 stage gates not implemented", "S3 remaining recovery scope open", "S4 external environments absent", "real role sign-offs absent"],
+    "requires_new_product_decision": false,
+    "targets_relaxed": false,
+    "note": "No test was run and no service, database, model or git write operation was used. This is not pass evidence for TC-24."
+  },
+  "planning_sha256": {
+    "prd.md": "f2d9e49da98f2019b55ae7f4fc3cc0df6739190ec8ed8fdf40b4c283666087ae",
+    "design.md": "57a29c769cd9eb964b3a52fd9ab27744925fa86a2b5248b35cf45b4eae115723",
+    "implement.md": "4786a89c565f0df9ef1038e53c833a89975003fc8038adc5e9eeff43a35bffba",
+    "implement.jsonl": "1ef44f5c46a55e4ee67e5e0ea7c2deec9a02c6276bc691b271819c5db4e4a205",
+    "check.jsonl": "b84952e28e59211aef228559de29f4f988a272b48339c59830f40c4b0b0ba39d",
+    "research/performance-harness.md": "01ebdb2f13f81f5812d5568d2700d4ef54ae54737ab3936fa58b47b3ad70c12f"
+  },
+  "files_changed_by_review": ["prd.md", "design.md", "implement.md", "implement.jsonl", "check.jsonl", "research/plan-review.md", "research/plan-review.json"],
+  "findings": [
+    {
+      "id": "F01",
+      "kind": "correlation_error",
+      "status": "resolved_in_design",
+      "title": "The frame's collaboration_revision is the current revision at relay time, not the event's own revision; a handoff frame can carry the post-status revision",
+      "evidence": ["server/pkg/db/queries/collaboration_realtime.sql:3-12", "server/internal/service/collaboration_realtime.go:108"],
+      "resolution": "Match frames only by exact event_seq and the ':issue' event_id; record and compare revision without using it as the match key"
+    },
+    {
+      "id": "F02",
+      "kind": "undefined_measurement_input",
+      "status": "resolved_in_design",
+      "title": "The status write receipt has no event_seq, so the expected event identity was unspecified",
+      "evidence": ["server/internal/service/collaboration_lifecycle.go:610-631"],
+      "resolution": "Require quiescence before each timed write, read S from the writer's authoritative GET and expect S+1; one status change emits exactly one event"
+    },
+    {
+      "id": "F03",
+      "kind": "favourable_bias",
+      "status": "resolved_in_design",
+      "title": "Writes issued right after the previous delivery are phase-locked to the 500 ms relay ticker",
+      "evidence": ["server/internal/service/collaboration_realtime.go:65-68"],
+      "resolution": "Seeded uniform [0,500) ms pre-write jitter, recorded per round and in the manifest"
+    },
+    {
+      "id": "F04",
+      "kind": "favourable_bias",
+      "status": "resolved_in_prd",
+      "title": "A pooled p95 alone lets five observers be late on every event",
+      "evidence": [".trellis/tasks/11-13-pay-241-collaboration-acceptance/prd.md R11"],
+      "resolution": "Gate on zero missing samples, pooled p95 <= 2000 ms and p95 of each event's slowest observer <= 2000 ms; report per-observer p95"
+    },
+    {
+      "id": "F05",
+      "kind": "undefined_measurement_input",
+      "status": "resolved_in_design",
+      "title": "Percentile method and missing-sample handling were not a testable definition",
+      "evidence": ["e2e/projects-p1.spec.ts:69"],
+      "resolution": "Nearest rank with integer rank = ceil(N*95/100); non-converged, failed and NOT_RUN samples sort as +Infinity; counterexample tests first"
+    },
+    {
+      "id": "F06",
+      "kind": "favourable_bias",
+      "status": "resolved_in_prd",
+      "title": "Pool size above the product default, run selection or relabelled warm-ups could improve the number",
+      "evidence": ["server/cmd/server/dbstats.go:36"],
+      "resolution": "Product default pool with the effective value recorded; every complete run gets a new id and is retained; warm-up count is pre-registered"
+    },
+    {
+      "id": "F07",
+      "kind": "undefined_behaviour",
+      "status": "resolved_in_design",
+      "title": "Observer disconnect handling was undefined; the hub does not replay frames",
+      "evidence": ["server/internal/realtime/hub.go:697", "server/internal/realtime/hub.go:1200"],
+      "resolution": "Reconnect only at round boundaries; samples during the outage are missing; a post-reconnect read is recorded separately"
+    },
+    {
+      "id": "F08",
+      "kind": "executability",
+      "status": "resolved_in_design",
+      "title": "Only the creator or current handler can change status, so per-user writes need handoffs whose events interleave with status events",
+      "evidence": ["server/internal/collaboration/access.go:82-100", "server/internal/service/collaboration_workflow.go:112"],
+      "resolution": "Quiescence barrier waits for the previous event to reach all observers before the timed write; handoff timing is recorded outside the denominator"
+    },
+    {
+      "id": "F09",
+      "kind": "favourable_bias",
+      "status": "resolved_in_design",
+      "title": "Host, closure and memory Providers print the same fixture kind; the closure Provider writes its comment before the callback",
+      "evidence": ["e2e/fixtures/collaboration-host-provider.go:27", "e2e/fixtures/collaboration-multi-account-provider.go:25", "e2e/fixtures/collaboration-multi-account-provider.go:188-209", "e2e/fixtures/collaboration-host-runtime.ts:243-244"],
+      "resolution": "Bind the host Provider source and binary hashes in the manifest and require a 404 pre-check on the result id in the warm-up run"
+    },
+    {
+      "id": "F10",
+      "kind": "weak_sample",
+      "status": "resolved_in_prd",
+      "title": "20 runs x 5 writes left finalization with 20 samples and clustered business writes",
+      "evidence": [".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/performance-harness.md section 5"],
+      "resolution": "100 independent runs, one business result and one finalization each; both distributions must meet p95 <= 5000 ms"
+    },
+    {
+      "id": "F11",
+      "kind": "favourable_bias",
+      "status": "resolved_in_prd",
+      "title": "Measuring write-back on a small issue understates the 100-collaborator scenario",
+      "evidence": ["server/internal/service/collaboration_squad.go:220-330", "server/internal/service/collaboration_realtime.go:134"],
+      "resolution": "Run the write-back phase on the issue with the same 100 participants while the 100 observer sockets stay connected"
+    },
+    {
+      "id": "F12",
+      "kind": "executability",
+      "status": "resolved_in_design",
+      "title": "sendHostComment, seedHostRuntime and hostEnvironment need a browser page or Web/renderer keys",
+      "evidence": ["e2e/fixtures/collaboration-host-runtime.ts:92-107", "e2e/fixtures/collaboration-host-runtime.ts:520", "e2e/fixtures/collaboration-host-runtime.ts:707", "e2e/collaboration-installed-clients.spec.ts:16-22", "e2e/collaboration-installed-clients.spec.ts:59-71"],
+      "resolution": "Use the existing API-only control and mention-comment pattern with the harness's own environment guard"
+    },
+    {
+      "id": "F13",
+      "kind": "measurement_granularity",
+      "status": "resolved_in_design",
+      "title": "act() waits with expect.poll, and the test poller interval is 50 ms",
+      "evidence": ["e2e/fixtures/collaboration-host-runtime.ts:420-429", "server/internal/daemon/collaboration_host_router_test.go:179"],
+      "resolution": "End point is the parallel authoritative read; queue and launch time is reported separately and excluded from the 5 s gate"
+    },
+    {
+      "id": "F14",
+      "kind": "environment_safety",
+      "status": "resolved_in_design",
+      "title": "The fixture falls back to the default local database and a new spec would be picked up by whole-directory runs",
+      "evidence": ["e2e/fixtures.ts:13-14", "e2e/env.ts", "playwright.config.ts", "e2e/fixtures/lane-guards.ts:13"],
+      "resolution": "Explicit opt-in key, loopback and non-default database guard, /api/config check; otherwise skip"
+    },
+    {
+      "id": "F15",
+      "kind": "stale_reference",
+      "status": "recorded",
+      "title": "Line numbers for collaboration-host-runtime.ts in the research predate the S3 edit of that file",
+      "evidence": ["e2e/fixtures/collaboration-host-runtime.ts:115", "e2e/fixtures/collaboration-host-runtime.ts:185", "e2e/fixtures/collaboration-host-runtime.ts:227", "e2e/fixtures/collaboration-host-runtime.ts:462", "e2e/fixtures/collaboration-host-runtime.ts:485"],
+      "resolution": "design.md names symbols; the research file was left unchanged and its errata are listed in plan-review.md"
+    }
+  ],
+  "verified_facts": [
+    "Registration is limited to 30 per IP per 5 minutes and requires signup to be enabled; login to 300 per IP per minute and 10 per account per 5 minutes (server/internal/handler/auth_password.go:132,135,176,191)",
+    "Register and login routes carry no additional auth rate limiter (server/cmd/server/router.go:1482-1483)",
+    "Recipient eligibility needs an enabled account with a password credential and no forced change; onboarding is not required (server/pkg/db/queries/collaboration_recipients.sql:13-15)",
+    "Collaboration participant invites do not use the workspace invitation limiters and no participant cap was found",
+    "Account WebSocket: first-frame auth within 10 s, auth_ack, issue subscribe_ack, send buffer 256 with slow-client eviction, per-frame re-authorization (server/internal/realtime/hub.go:802,955,983,1107,1173,1200; realtime/collaboration.go:68)",
+    "Node 22.23.2 native WebSocket sends no Origin header (observed on a throwaway loopback socket), which checkOrigin accepts (hub.go:161)",
+    "The relay scans every 500 ms, publishes an empty account hint per participant and then collaboration:changed with an injected event_id (service/collaboration_realtime.go:65-68,134,155; realtime/collaboration.go:177)",
+    "A runtime comment's id equals its request id, so GET comments/{commentId} is a valid exact read (service/collaboration_squad.go:252; router.go:1738)",
+    "The host Provider performs scripted comment writes through the run-local CLI and prints a final result after release (e2e/fixtures/collaboration-host-provider.go:57-62,364-394)",
+    "All five paths in the original jsonl files exist; all paths in the rewritten files exist"
+  ],
+  "harness_file_ownership": {
+    "new_files": [
+      "e2e/collaboration-performance.spec.ts",
+      "e2e/fixtures/collaboration-performance.ts",
+      "e2e/fixtures/collaboration-performance-stats.ts",
+      "e2e/fixtures/collaboration-performance-stats.node-test.mjs"
+    ],
+    "later_spec_file": ".trellis/spec/web/frontend/collaboration-performance-qa.md",
+    "must_not_modify": [
+      "e2e/fixtures.ts",
+      "e2e/fixtures/collaboration-host-runtime.ts",
+      "e2e/fixtures/collaboration-multi-account-closure.ts",
+      "e2e/fixtures/*.go",
+      "playwright.config.ts",
+      "server/**",
+      "packages/**",
+      "apps/**",
+      ".github/**"
+    ],
+    "collision_with_s2": "none; S2 owns server, core, views and its own stage E2E"
+  },
+  "dependencies": {
+    "buildable_now": ["four harness files", "counterexample tests for statistics and correlation", "dry run on a frozen copy of the current commit, labelled as a tool rehearsal"],
+    "needs_s2_s3_s4": ["final acceptance run on the stable candidate", "P06 reconciliation of all 24 cases"],
+    "needs_real_people": ["P07 role sign-offs"]
+  },
+  "open_choices_for_main_session": [
+    {
+      "id": "D1",
+      "question": "Which statistic gates the 2 s sync target",
+      "written_as": "pooled p95 and per-event slowest-observer p95, both required",
+      "recommendation": "keep both; pooled-only would need the user to accept five late observers per event"
+    },
+    {
+      "id": "D2",
+      "question": "Write-back sample structure",
+      "written_as": "100 independent runs with one result each",
+      "recommendation": "keep; reverting to 20 x 5 leaves finalization with 20 samples"
+    },
+    {
+      "id": "D3",
+      "question": "Shared or dedicated PostgreSQL cluster for the final run",
+      "written_as": "shared cluster with recorded headroom and load",
+      "recommendation": "keep shared, consistent with S1/S3; rerun under a new id only if a complete run is visibly contaminated"
+    }
+  ],
+  "not_verified": [
+    "No connection was made to the real hub; latency of 100 native sockets with per-frame authorization under a 25-connection pool is unmeasured",
+    "status-options, status PATCH, handoff and invite requests were read in code only, including the external-handler path",
+    "Workflow transaction cost and lock contention with 100 participants",
+    "Whether finalization depends on the daemon poll interval; the production daemon default interval",
+    "Current PostgreSQL max_connections and connection counts",
+    "Effect of S2's in-progress server changes beyond its default-off policy",
+    "DOM measurement path for the small Web/Electron sample, the full e2e-run-environment.md, and any S4 external environment",
+    "No lint, typecheck or test was run because no code changed"
+  ]
+}

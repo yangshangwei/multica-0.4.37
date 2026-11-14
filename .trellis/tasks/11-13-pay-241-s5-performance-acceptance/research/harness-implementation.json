@@ -1,0 +1,784 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-13T23:08:26.908Z",
+  "task": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance",
+  "author": "trellis-implement (dispatched by the main session for S5)",
+  "source_head": "fb9f4c07059445cea41ed19e956b3eb1861817cc",
+  "status": "harness_implemented_static_and_counter_examples_pass",
+  "acceptance_claim": false,
+  "executed_against_real_api_hub_database_daemon_or_model": false,
+  "scope": "implement.md section 1, steps 1.1-1.5. Four new files; no existing file modified; no git write.",
+  "files": [
+    {
+      "path": "e2e/collaboration-performance.spec.ts",
+      "lines": 68,
+      "sha256": "87ba4d0916c11102be385e811981062315d9c640aa3eb7740bb391665647d175"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-performance.ts",
+      "lines": 1247,
+      "sha256": "1b043991fa58fcd4a2e406577ea40a2339325941de740dd5cad14f6ea6cb3579"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-performance-stats.ts",
+      "lines": 404,
+      "sha256": "9b8724218c3ccbd6f6a60715c7fcbed08ebabb0c1ccd63577d34377308171683"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-performance-stats.node-test.mjs",
+      "lines": 353,
+      "sha256": "f8369bd56dd3da57892f28a10656be8eea15dd59505294c30845272bc77f764e"
+    }
+  ],
+  "read_only_imports": [
+    "e2e/fixtures.ts (TestApiClient)",
+    "e2e/fixtures/collaboration-host-runtime.ts (adoptHostTarget, enrollHostRuntime, hostAuthority, hostMode, issueRoot, openHostAcceptanceGate, startHostDaemon, versioned, waitForHostRuntime)"
+  ],
+  "not_imported": [
+    "sendHostComment",
+    "seedHostRuntime",
+    "hostEnvironment"
+  ],
+  "new_dependencies": [],
+  "commands": [
+    {
+      "step": 1,
+      "purpose": "counter-example tests against a throwing skeleton (first red)",
+      "argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "--experimental-strip-types",
+        "--test",
+        "e2e/fixtures/collaboration-performance-stats.node-test.mjs"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "exit_code": 1,
+      "tests": 20,
+      "pass": 0,
+      "fail": 20,
+      "log": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-stats-red-1.log",
+        "sha256": "9ffb61268bf8ec6561c8037bd01802fcf2c4df7550e959e231b104db8ad06e8c"
+      },
+      "skeleton_copy": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-stats-red.skeleton.ts.txt",
+        "sha256": "76be6244dcc3c6510afd798315f86eacd8fc67cb730adc0a8e349b8659ebd592"
+      }
+    },
+    {
+      "step": 2,
+      "purpose": "same, after tightening one counter-example, still skeleton",
+      "exit_code": 1,
+      "tests": 20,
+      "pass": 0,
+      "fail": 20,
+      "log": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-stats-red-2.log",
+        "sha256": "02bc27dbea11703007266e351834c36fe1dce853fcea17239262611e81d7d761"
+      }
+    },
+    {
+      "step": 3,
+      "purpose": "first run after implementation",
+      "exit_code": 1,
+      "tests": 20,
+      "pass": 19,
+      "fail": 1,
+      "log": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-stats-green-attempt1.log",
+        "sha256": "35cd63d491c05885049fa020dbdc0b559ce42cd8be6e62421f8978e9ccc926c0"
+      },
+      "note": "The failing case was wrong in the test itself (pickWritebackReaders(0,0,3) is valid); the implementation was not changed."
+    },
+    {
+      "step": 4,
+      "purpose": "after correcting that counter-example",
+      "exit_code": 0,
+      "tests": 20,
+      "pass": 20,
+      "fail": 0,
+      "log": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-stats-green-attempt2.log",
+        "sha256": "ad79cb9e39ff5d8354119ae57048c0a7bd6cfa59ef80854d66b28353c8076def"
+      }
+    },
+    {
+      "step": 5,
+      "purpose": "first targeted tsc",
+      "argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "node_modules/typescript/bin/tsc",
+        "--project",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-static/tsconfig-e2e.json",
+        "--pretty",
+        "false"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "exit_code": 2,
+      "errors": 5,
+      "log": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-static/typecheck-attempt1.log",
+        "sha256": "c8d0f4f2c28d9f86bdbbfa32912d85fb5013423a387a0bdc9449992d5a646dd4"
+      }
+    },
+    {
+      "step": 6,
+      "purpose": "tsc after fixes",
+      "exit_code": 0,
+      "log": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-static/typecheck-attempt2.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "step": 7,
+      "purpose": "first targeted ESLint",
+      "argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "node_modules/eslint/bin/eslint.js",
+        "--config",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-static/eslint.config.mjs",
+        "--max-warnings",
+        "0",
+        "--no-cache",
+        "e2e/collaboration-performance.spec.ts",
+        "e2e/fixtures/collaboration-performance.ts",
+        "e2e/fixtures/collaboration-performance-stats.ts",
+        "e2e/fixtures/collaboration-performance-stats.node-test.mjs"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "exit_code": 0,
+      "log": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-static/eslint-attempt1.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "step": 8,
+      "purpose": "final recorded static checks and counter-example tests",
+      "argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-static/run-static.mjs",
+        "final"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "exit_code": 0,
+      "record": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-static/commands-final.json",
+        "sha256": "29ed9ac48abe2e5d65d4d28e2b004568806ae5883524693aabe0b64e5c166852"
+      },
+      "typecheck": {
+        "argv": [
+          "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+          "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/typescript/bin/tsc",
+          "--project",
+          "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-static/tsconfig-e2e.json",
+          "--pretty",
+          "false",
+          "--listFiles"
+        ],
+        "exit_code": 0,
+        "errors": 0,
+        "checked_source_files": 249,
+        "checked_e2e_files": [
+          "e2e/env.ts",
+          "e2e/fixtures.ts",
+          "e2e/fixtures/collaboration-disclosures.ts",
+          "e2e/fixtures/collaboration-host-runtime.ts",
+          "e2e/fixtures/collaboration-performance-stats.ts",
+          "e2e/fixtures/collaboration-performance.ts",
+          "e2e/collaboration-performance.spec.ts"
+        ],
+        "log": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-static/typecheck-final.log",
+          "sha256": "50884ffbb388106970dc1d6ce75ef76a242ade66979aa2edb32de1b22968c3d2"
+        }
+      },
+      "eslint": {
+        "argv": [
+          "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+          "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/eslint/bin/eslint.js",
+          "--config",
+          "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-static/eslint.config.mjs",
+          "--max-warnings",
+          "0",
+          "--no-cache",
+          "e2e/collaboration-performance.spec.ts",
+          "e2e/fixtures/collaboration-performance.ts",
+          "e2e/fixtures/collaboration-performance-stats.ts",
+          "e2e/fixtures/collaboration-performance-stats.node-test.mjs"
+        ],
+        "exit_code": 0,
+        "output": "",
+        "effective_rule_counts": [
+          {
+            "file": "e2e/collaboration-performance.spec.ts",
+            "rules": 91
+          },
+          {
+            "file": "e2e/fixtures/collaboration-performance.ts",
+            "rules": 91
+          },
+          {
+            "file": "e2e/fixtures/collaboration-performance-stats.ts",
+            "rules": 91
+          },
+          {
+            "file": "e2e/fixtures/collaboration-performance-stats.node-test.mjs",
+            "rules": 84
+          }
+        ],
+        "log": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-static/eslint-final.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "counter_example_tests": {
+        "argv": [
+          "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+          "--experimental-strip-types",
+          "--test",
+          "e2e/fixtures/collaboration-performance-stats.node-test.mjs"
+        ],
+        "exit_code": 0,
+        "log": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-stats-final.log",
+          "sha256": "65efbcaafe47f1c7e2566abaa022908ea866438d858592b5c94e8a01c472016c"
+        }
+      },
+      "tools": {
+        "node": "v22.23.2",
+        "typescript": "5.9.3",
+        "eslint": "9.39.4"
+      },
+      "source_unchanged_during_checks": true
+    },
+    {
+      "step": 9,
+      "purpose": "list without the opt-in key",
+      "command": "env -u COLLABORATION_PERF_ACCEPTANCE -u COLLABORATION_PERF_RUN_DIR -u COLLABORATION_PERF_MANIFEST pnpm exec playwright test e2e/collaboration-performance.spec.ts --list",
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "exit_code": 0,
+      "listed": 3,
+      "log": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-playwright-list.log",
+        "sha256": "07c6c77511169ae3dd29e1a8226f0a0c5f4dfd45cda1060974cf543026f8c81d"
+      }
+    },
+    {
+      "step": 10,
+      "purpose": "not-enabled run",
+      "command": "env -u COLLABORATION_PERF_ACCEPTANCE -u COLLABORATION_PERF_RUN_DIR -u COLLABORATION_PERF_MANIFEST pnpm exec playwright test e2e/collaboration-performance.spec.ts --workers=1 --retries=0 --reporter=list",
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "exit_code": 0,
+      "skipped": 3,
+      "ran": 0,
+      "log": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-playwright-not-enabled.log",
+        "sha256": "dec7b697639d4110172786e525454e18030edac3dce6454ae5b9bff3fed2b94a"
+      }
+    }
+  ],
+  "whole_repository_checks": "Not run: e2e is outside pnpm typecheck/lint and no existing file changed.",
+  "test_inventory": {
+    "counter_examples": {
+      "runner": "node:test",
+      "tests": 20,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0,
+      "names": [
+        {
+          "result": "ok",
+          "name": "nearest-rank uses the integer rank ceil(N*95/100) for N=100, 10000 and 20"
+        },
+        {
+          "result": "ok",
+          "name": "a missing sample enters the percentile as +Infinity instead of shrinking the denominator"
+        },
+        {
+          "result": "ok",
+          "name": "more than five percent missing makes p95 unbounded"
+        },
+        {
+          "result": "ok",
+          "name": "any missing sample fails the sync gate even when every percentile is finite and fast"
+        },
+        {
+          "result": "ok",
+          "name": "a duplicate event_id is counted and never yields a second arrival"
+        },
+        {
+          "result": "ok",
+          "name": "only collaboration:changed with exactly sequence S+1 for this issue matches"
+        },
+        {
+          "result": "ok",
+          "name": "a frame that arrives before the write response keeps its original arrival time"
+        },
+        {
+          "result": "ok",
+          "name": "without the matching frame an authoritative read alone is never a converged sample"
+        },
+        {
+          "result": "ok",
+          "name": "warm-up rows are retained but never enter or replace the formal denominator"
+        },
+        {
+          "result": "ok",
+          "name": "an aborted run keeps the 10,000 denominator and reports the remainder as NOT_RUN"
+        },
+        {
+          "result": "ok",
+          "name": "a failed write or failed preparation marks all 100 samples of that event non-converged"
+        },
+        {
+          "result": "ok",
+          "name": "pooled p95 and per-event slowest-observer p95 are judged separately"
+        },
+        {
+          "result": "ok",
+          "name": "accounting refuses duplicated pairs, impossible indices and relabelled late samples"
+        },
+        {
+          "result": "ok",
+          "name": "the two write-back gates are independent and each needs a complete denominator"
+        },
+        {
+          "result": "ok",
+          "name": "phase jitter is seeded, reproducible, inside [0,500) and not phase locked"
+        },
+        {
+          "result": "ok",
+          "name": "registration pacing never plans more than 30 attempts in one server window"
+        },
+        {
+          "result": "ok",
+          "name": "write-back readers are never the triggering account or the resource owner"
+        },
+        {
+          "result": "ok",
+          "name": "the quiescence barrier accepts a delivered frame or a snapshot that already covers the sequence"
+        },
+        {
+          "result": "ok",
+          "name": "the relay-time revision in a frame is recorded as an anomaly, never used to match"
+        },
+        {
+          "result": "ok",
+          "name": "a manifest that changes the pre-registered protocol is rejected"
+        }
+      ]
+    },
+    "playwright_not_enabled": {
+      "tests": 3,
+      "skipped": 3,
+      "passed": 0,
+      "failed": 0,
+      "names": [
+        "PAY-241 S5 collaboration sampling › prepare: 100 password accounts join one collaboration issue through public routes",
+        "PAY-241 S5 collaboration sampling › propagation: 100 observers each see 100 status changes on their own socket and token",
+        "PAY-241 S5 collaboration sampling › writeback: 100 controlled runs each return one business result and one finalization"
+      ]
+    }
+  },
+  "first_failure_logs": [
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-stats-red-1.log",
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-stats-red-2.log",
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-stats-green-attempt1.log",
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-static/typecheck-attempt1.log",
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-selftest-guard-attempt1.log"
+  ],
+  "harness_self_test_against_in_process_fake": {
+    "product_evidence": false,
+    "note": "Scratch files outside the repository. The fake encodes the author's reading of the server source; it exercises pacing, correlation, accounting and files only.",
+    "directory": "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-selftest",
+    "fake": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-selftest/fake-hub.ts",
+      "sha256": "32cc2aa173566de3f3c4e4ac99d8213925c7efd415b00226cfb8fc824c8e4957"
+    },
+    "specs": [
+      {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-selftest/selftest.spec.ts",
+        "sha256": "c593f1e5f9b679af5fac7f67747e787830275039ab2094a37521106a72fde9e9"
+      },
+      {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/s5-harness-selftest/selftest-abort.spec.ts",
+        "sha256": "85c4b4ee042bb9047df3cc70da38d2dd80f28675bbea67cc753e46b8ddfe0704"
+      }
+    ],
+    "fixture_sha256_under_test": "1b043991fa58fcd4a2e406577ea40a2339325941de740dd5cad14f6ea6cb3579",
+    "runs": [
+      {
+        "name": "guard matrix, prepare, clean propagation, fault injection",
+        "exit_code": 0,
+        "tests": 4,
+        "passed": 4,
+        "durations": {
+          "prepare_min": 11.8,
+          "clean_propagation_min": 2.4,
+          "fault_propagation_min": 2.5
+        },
+        "log": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-selftest-run2.log",
+          "sha256": "23fd66502ca28cb6155842eff3493753e596493da1790727c22330f312b5bd24"
+        }
+      },
+      {
+        "name": "unknown write outcome aborts",
+        "exit_code": 0,
+        "tests": 1,
+        "passed": 1,
+        "duration_s": 42.9,
+        "log": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-selftest-abort-attempt1.log",
+          "sha256": "0df098be4b6b72cb16da11b7742968ad64e308c73095e888f6be35e031b0273f"
+        }
+      },
+      {
+        "name": "first background launch",
+        "note": "Cancelled by the author after about 3 seconds and relaunched detached; not a failure.",
+        "log": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-selftest-run1-cancelled-by-author.log",
+          "sha256": "4abd3a2762dcc6fe1a40dc89cd3de1dee248ef80e6fe5577123d61d44c0c6fba"
+        }
+      },
+      {
+        "name": "guard matrix, first attempt",
+        "exit_code": 1,
+        "note": "The fake imported ws with the v8 export name; the hoisted ws is v7.",
+        "log": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s5-harness-selftest-guard-attempt1.log",
+          "sha256": "2f22b8a700e55a8a83082e275772efa81cefaf4bd25ae975c33e4cd08bbb39b3"
+        }
+      }
+    ],
+    "summaries": {
+      "clean": {
+        "denominator": {
+          "planned": 10000,
+          "rows_in_file": 10000,
+          "converged": 10000,
+          "missing": 0,
+          "not_run": 0,
+          "filled_not_run": 0,
+          "over_deadline_reclassified": 0,
+          "warmup_rows_kept_and_excluded": 500
+        },
+        "verdict": {
+          "pass": true,
+          "conditions": {
+            "zero_missing": true,
+            "pooled_p95_within_budget": true,
+            "slowest_observer_p95_within_budget": true
+          },
+          "budget_ms": 2000,
+          "deadline_ms": 10000,
+          "missing": 0
+        },
+        "non_converged_by_code": {},
+        "aborted": null,
+        "samples_file": {
+          "name": "propagation-samples.jsonl",
+          "lines": 10500,
+          "sha256": "bcc4ef716cea41eef6cbcf95341b9ef0f95dab6f20f920bf9bc361b3a06fe6e7"
+        }
+      },
+      "faults": {
+        "denominator": {
+          "planned": 10000,
+          "rows_in_file": 10000,
+          "converged": 9898,
+          "missing": 102,
+          "not_run": 0,
+          "filled_not_run": 0,
+          "over_deadline_reclassified": 0,
+          "warmup_rows_kept_and_excluded": 500
+        },
+        "verdict": {
+          "pass": false,
+          "conditions": {
+            "zero_missing": false,
+            "pooled_p95_within_budget": true,
+            "slowest_observer_p95_within_budget": true
+          },
+          "budget_ms": 2000,
+          "deadline_ms": 10000,
+          "missing": 102
+        },
+        "non_converged_by_code": {
+          "no_matching_frame": 1,
+          "write_http_409": 100,
+          "socket_closed": 1
+        },
+        "aborted": null,
+        "samples_file": {
+          "name": "propagation-samples.jsonl",
+          "lines": 10500,
+          "sha256": "a1900bd6aeca72b2a879acba073c535234ba87e993f40cad4da47f02c1e7dd4a"
+        }
+      },
+      "abort": {
+        "denominator": {
+          "planned": 10000,
+          "rows_in_file": 10000,
+          "converged": 300,
+          "missing": 100,
+          "not_run": 9600,
+          "filled_not_run": 0,
+          "over_deadline_reclassified": 0,
+          "warmup_rows_kept_and_excluded": 500
+        },
+        "verdict": {
+          "pass": false,
+          "conditions": {
+            "zero_missing": false,
+            "pooled_p95_within_budget": false,
+            "slowest_observer_p95_within_budget": false
+          },
+          "budget_ms": 2000,
+          "deadline_ms": 10000,
+          "missing": 9700
+        },
+        "non_converged_by_code": {
+          "write_outcome_unknown": 100,
+          "aborted_after_formal_3_state_unknown": 9600
+        },
+        "aborted": "aborted_after_formal_3_state_unknown",
+        "samples_file": {
+          "name": "propagation-samples.jsonl",
+          "lines": 10500,
+          "sha256": "339bb8f0c7e74b6a0332dbea9153f9d4d24d01174f13d8fec66af37204ab287a"
+        }
+      }
+    },
+    "not_covered": [
+      "runWriteback",
+      "resumeExecution",
+      "withPhaseEvidence",
+      "verifyLiveEnvironment",
+      "readGate",
+      "captureResources",
+      "transfer with an unknown outcome",
+      "refused subscription",
+      "barrier timeout",
+      "lost registration response"
+    ]
+  },
+  "enforcement": {
+    "P01": [
+      "collaboration-performance.ts › prepareRun",
+      "› openObserverSessions",
+      "› connectObserver",
+      "› verifyParticipants",
+      "› loadPreparedRun"
+    ],
+    "P02": [
+      "collaboration-performance-stats.ts › PERFORMANCE_PROTOCOL",
+      "› accountPropagation",
+      "› failedEventRows",
+      "› notRunEventRows",
+      "collaboration-performance.ts › runPropagation (plan)"
+    ],
+    "P03": [
+      "collaboration-performance-stats.ts › propagationVerdict",
+      "› classifyObserverSample",
+      "› nearestRankIndex",
+      "collaboration-performance.ts › runPropagation",
+      "› observeEvent",
+      "› writeStatus"
+    ],
+    "P04": [
+      "collaboration-performance.ts › runWriteback",
+      "› pollUntil",
+      "› resumeExecution",
+      "collaboration-performance-stats.ts › accountWriteback",
+      "› writebackVerdict",
+      "› pickWritebackReaders"
+    ],
+    "P05": [
+      "collaboration-performance.ts › withPhaseEvidence",
+      "› captureResources",
+      "› openLineLog",
+      "› writeExclusive",
+      "summary/failures writers in runPropagation and runWriteback"
+    ],
+    "P08": [
+      "collaboration-performance-stats.node-test.mjs (20 cases)",
+      "scratch self-test against a fake (not product evidence)"
+    ],
+    "F01": [
+      "stats › recordFrame",
+      "› matchExpected",
+      "› revisionAnomaly"
+    ],
+    "F02": [
+      "stats › expectedEventSeq",
+      "fixture › runPropagation (event_sequence_anomaly)"
+    ],
+    "F03": [
+      "stats › phaseJitterMs"
+    ],
+    "F04": [
+      "stats › propagationVerdict (slowest_observer_p95_within_budget)"
+    ],
+    "F05": [
+      "stats › nearestRankIndex",
+      "› nearestRank",
+      "› reportQuantiles"
+    ],
+    "F06": [
+      "fixture › guardEnvironment (pool, redis, replicas)",
+      "stats › preregistrationMismatches",
+      "fixture › writeExclusive / openLineLog (exclusive)"
+    ],
+    "F07": [
+      "fixture › reconnectClosed",
+      "stats › classifyObserverSample (socket_closed)",
+      "recovered_by_reconnect_read_ms"
+    ],
+    "F08": [
+      "fixture › runPropagation (creator transfer, quiescence barrier)",
+      "stats › barrierSatisfied"
+    ],
+    "F09": [
+      "fixture › guardEnvironment (binary and source hashes, source marker)",
+      "› runWriteback (404 pre-checks, provider_wrote_before_instruction, act receipt)"
+    ],
+    "F10": [
+      "stats › PERFORMANCE_PROTOCOL.writebackFormalRuns"
+    ],
+    "F11": [
+      "fixture › runWriteback (SessionSet.issueId, open_sockets)"
+    ],
+    "F12": [
+      "fixture › resumeExecution",
+      "› runWriteback (API comment with target_versions)"
+    ],
+    "F13": [
+      "fixture › pollUntil",
+      "› runWriteback (own visit loop, queue_start_ms reported only)"
+    ],
+    "F14": [
+      "spec › test.skip(!optIn.enabled)",
+      "fixture › performanceOptIn",
+      "› guardEnvironment",
+      "› verifyLiveEnvironment",
+      "per-test test.setTimeout"
+    ]
+  },
+  "coordinator_environment": {
+    "keys": {
+      "all_phases": [
+        "COLLABORATION_PERF_ACCEPTANCE=1",
+        "COLLABORATION_PERF_RUN_DIR",
+        "COLLABORATION_PERF_MANIFEST",
+        "DATABASE_URL",
+        "NEXT_PUBLIC_API_URL",
+        "MULTICA_DEPLOYMENT_ID"
+      ],
+      "optional": [
+        "COLLABORATION_E2E_API_URL (same origin if set)"
+      ],
+      "writeback_only": [
+        "COLLABORATION_HOST_DAEMON",
+        "COLLABORATION_HOST_PROVIDER",
+        "COLLABORATION_HOST_CLI",
+        "COLLABORATION_PERF_PROVIDER_SOURCE"
+      ]
+    },
+    "api_preconditions": [
+      "password mode",
+      "ALLOW_SIGNUP not false",
+      "no REDIS_URL, one process",
+      "DATABASE_MAX_CONNS unset or not above 25",
+      "managed installations available for write-back"
+    ],
+    "gate": "prepare and propagation need enabled=true and creation_enabled=true at allocation and never change the gate; write-back opens and restores it through openHostAcceptanceGate.",
+    "manifest_fields": [
+      "schema_version=1",
+      "run_id",
+      "purpose (rehearsal|acceptance)",
+      "seed",
+      "protocol (must equal PERFORMANCE_PROTOCOL key for key)",
+      "source",
+      "api.{url,pid,commit,deployment_id,pool_max_conns,pool_min_conns,descriptor_limit,redis,replicas}",
+      "database.name",
+      "gate_original.{enabled,creation_enabled,host_execution_enabled,epoch}",
+      "binaries.{provider_source_sha256,provider_sha256,daemon_sha256,cli_sha256} (write-back)"
+    ],
+    "protocol": {
+      "observers": 100,
+      "warmupEvents": 5,
+      "formalEvents": 100,
+      "propagationDeadlineMs": 10000,
+      "propagationBudgetMs": 2000,
+      "relayPeriodMs": 500,
+      "writebackWarmupRuns": 1,
+      "writebackFormalRuns": 100,
+      "writebackDeadlineMs": 30000,
+      "writebackBudgetMs": 5000,
+      "registrationWindowMs": 300000,
+      "registrationPerWindow": 30,
+      "registrationMarginMs": 2000
+    },
+    "run_directory_layout": [
+      "manifest.json",
+      "private/prepare-state.json (0600)",
+      "prepare-log.jsonl",
+      "setup-identities.json",
+      "observed-<phase>-<UTC>.json",
+      "resources-<phase>-<UTC>-before.json",
+      "resources-<phase>-<UTC>-after.json",
+      "propagation-rounds.jsonl",
+      "propagation-samples.jsonl",
+      "summary-propagation.json",
+      "failures-propagation.json",
+      "writeback-runs.jsonl",
+      "writeback-samples.jsonl",
+      "summary-writeback.json",
+      "failures-writeback.json"
+    ],
+    "rerun_rule": "Once a phase has created its samples file the run directory cannot be reused for that phase; a NOT_RUN attempt that wrote no sample may be repeated."
+  },
+  "run_commands": [
+    "node --experimental-strip-types --test e2e/fixtures/collaboration-performance-stats.node-test.mjs",
+    "node \"$TASK_RUN_ROOT/run.mjs\" \"$TASK_RUN_ROOT/perf.json\" pnpm --dir \"$TASK_SOURCE_ROOT\" exec playwright test e2e/collaboration-performance.spec.ts -g \"prepare:\" --workers=1 --retries=0",
+    "node \"$TASK_RUN_ROOT/run.mjs\" \"$TASK_RUN_ROOT/perf.json\" pnpm --dir \"$TASK_SOURCE_ROOT\" exec playwright test e2e/collaboration-performance.spec.ts -g \"propagation:\" --workers=1 --retries=0",
+    "node \"$TASK_RUN_ROOT/run.mjs\" \"$TASK_RUN_ROOT/perf.json\" pnpm --dir \"$TASK_SOURCE_ROOT\" exec playwright test e2e/collaboration-performance.spec.ts -g \"writeback:\" --workers=1 --retries=0"
+  ],
+  "expected_durations": {
+    "prepare": {
+      "estimate_min": "12-20 plus 99 real invitations",
+      "test_timeout_min": 60,
+      "basis": "Three wall-clock-aligned 5-minute registration boundaries; 11.8 min against the fake."
+    },
+    "propagation": {
+      "estimate_min": "4-10",
+      "worst_case_min": 40,
+      "test_timeout_min": 90,
+      "basis": "100 sign-ins at 250 ms, 105 rounds; 2.4 min against the fake. Real server not measured."
+    },
+    "writeback": {
+      "estimate_min": "5-15",
+      "test_timeout_min": 120,
+      "basis": "Never executed. 101 serial runs; aborts when a run does not settle in 30 s."
+    }
+  },
+  "deviations_from_design_for_coordinator": [
+    "With the opt-in present an invalid environment fails the test instead of skipping; without the opt-in everything skips.",
+    "summary and failures are per phase (summary-propagation.json, summary-writeback.json, ...) so each can be created exclusively.",
+    "Registration uses the harness's own fetch to the public /auth/register to read Retry-After; sign-in uses TestApiClient.loginPassword.",
+    "The API pool and, on macOS, the API descriptor limit are taken from the manifest declaration; a declared pool above 25, Redis or more than one replica is refused.",
+    "The secondary hint path measures the first change frame after t0 followed by a successful comment read; whether a runtime comment emits its own event was not confirmed.",
+    "Transfers are always issued by the creator (actor 0)."
+  ],
+  "not_verified": [
+    "Nothing was run against a real hub, API, database, daemon, Provider or model.",
+    "runWriteback, resumeExecution, withPhaseEvidence, verifyLiveEnvironment, readGate and captureResources were never executed (type-checked and linted only).",
+    "Server behaviours read from source or copied from other fixtures, never requested: 201 for a creator-as-handler issue; 200 with participant_added / transferred; creator may transfer when not the handler; todo and in_progress in a new workspace's status options; exactly one event per status change; a non-owner participant's mention queues on the owner's consented target; any participant may read run records; the control resume body; role 'agent' for adoptHostTarget; the queue stays active after a successful run.",
+    "Timing with 100 participants under the default pool, per-frame authorization cost, and issue-detail read cost as 100 runs accumulate.",
+    "100 native sockets against the real hub (the fake only confirmed that Node 22.23.2 sends no Origin header).",
+    "The effect of the in-progress S2 server changes.",
+    "Whole-repository typecheck, lint, Vitest, Go tests and make check."
+  ]
+}

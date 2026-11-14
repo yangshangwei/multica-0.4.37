@@ -1,0 +1,1595 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-11-14T03:58:53.458781+00:00",
+  "run_id": "pay241-s5-r02",
+  "scope": "Independent raw-evidence review; pre-S2 source tool rehearsal only, TC24 remains NOT_RUN",
+  "method": "Python standard library only; exact Cartesian-pair counters; nearest-rank rank=(N*p+99)//100 over full sorted denominator, missing=+Infinity; no harness statistics imports",
+  "checks": [
+    {
+      "check": "identity map is exactly100 distinct active-plan users",
+      "pass": true
+    },
+    {
+      "check": "unique prepared usernames",
+      "pass": true
+    },
+    {
+      "check": "100 public registrations returned201 once each",
+      "pass": true
+    },
+    {
+      "check": "99 distinct successful public invitations",
+      "pass": true
+    },
+    {
+      "check": "registration pace <=30 attempts per fixed5min window",
+      "pass": true
+    },
+    {
+      "check": "private plan matches public100identities and completion",
+      "pass": true
+    },
+    {
+      "check": "private preparation state mode0600",
+      "pass": true
+    },
+    {
+      "check": "propagation raw10500 = formal10000 + warmup500",
+      "pass": true
+    },
+    {
+      "check": "formal exact pairs with no duplicates",
+      "pass": true
+    },
+    {
+      "check": "warmup exact pairs with no duplicates",
+      "pass": true
+    },
+    {
+      "check": "propagation identities/index/writer mapping",
+      "pass": true
+    },
+    {
+      "check": "all propagation rows converged, no missing/replay/reconnect/stale",
+      "pass": true
+    },
+    {
+      "check": "all propagation clocks/correlation/versions exact",
+      "pass": true
+    },
+    {
+      "check": "each event has one exact write/frame identity across100observers",
+      "pass": true
+    },
+    {
+      "check": "all105 requests/event IDs/sequences distinct",
+      "pass": true
+    },
+    {
+      "check": "100 unique stable socket IDs bound one per observer",
+      "pass": true
+    },
+    {
+      "check": "105 planned +105 completed rounds",
+      "pass": true
+    },
+    {
+      "check": "all propagation boundaries100/stable/quiescent/no reconnect",
+      "pass": true
+    },
+    {
+      "check": "completed round receipts agree with raw samples",
+      "pass": true
+    },
+    {
+      "check": "independent pooled matches summary",
+      "pass": true
+    },
+    {
+      "check": "independent slowest_observer_per_event matches summary",
+      "pass": true
+    },
+    {
+      "check": "independent excluding_writer matches summary",
+      "pass": true
+    },
+    {
+      "check": "all100per-observer quantiles match summary",
+      "pass": true
+    },
+    {
+      "check": "writeback202raw exact full pairs",
+      "pass": true
+    },
+    {
+      "check": "allwriteback samples converged and independentreader identities",
+      "pass": true
+    },
+    {
+      "check": "writeback timings/evidence precheck intact",
+      "pass": true
+    },
+    {
+      "check": "writeback all100sockets throughout/no reconnect",
+      "pass": true
+    },
+    {
+      "check": "101independent runs/requests/commands",
+      "pass": true
+    },
+    {
+      "check": "business/finalization exact same run and causal clocks",
+      "pass": true
+    },
+    {
+      "check": "101completed runrecords +101pretrigger observations",
+      "pass": true
+    },
+    {
+      "check": "all pretrigger runtime reads online/current/exactowner",
+      "pass": true
+    },
+    {
+      "check": "independent writeback business matches summary",
+      "pass": true
+    },
+    {
+      "check": "independent writeback finalization matches summary",
+      "pass": true
+    },
+    {
+      "check": "18owner heartbeat pairs all200 and no overlapping/requesttimeouts",
+      "pass": true
+    },
+    {
+      "check": "heartbeat successfully spans longer than150s",
+      "pass": true
+    },
+    {
+      "check": "heartbeats readiness/start/stop clock order",
+      "pass": true
+    },
+    {
+      "check": "all runs finish within unchanged5min fixture lifespan",
+      "pass": true
+    },
+    {
+      "check": "managed credential valid beyond finalheartbeat",
+      "pass": true
+    },
+    {
+      "check": "writeback cleanup acknowledged101sealedruns and gate restored",
+      "pass": true
+    },
+    {
+      "check": "propagation summary manifest/sample/log hash binding",
+      "pass": true
+    },
+    {
+      "check": "propagation failurefile empty and noabort",
+      "pass": true
+    },
+    {
+      "check": "writeback summary manifest/sample/log hash binding",
+      "pass": true
+    },
+    {
+      "check": "writeback failurefile empty and noabort",
+      "pass": true
+    },
+    {
+      "check": "all3phase source/config/live bindings",
+      "pass": true
+    },
+    {
+      "check": "all observed harness/shared-fixture source hashes match currentfrozen",
+      "pass": true
+    },
+    {
+      "check": "3phase command receipts passed actual1test withoutretry/logdrift",
+      "pass": true
+    },
+    {
+      "check": "actual private config/API startup hash binding",
+      "pass": true
+    },
+    {
+      "check": "config explicit matching testdb/localAPI/mode/binaries/defaultpool",
+      "pass": true
+    },
+    {
+      "check": "all5binariesmatchrecordandr01bytes",
+      "pass": true
+    },
+    {
+      "check": "configured provider/daemon/CLI exactmanifesthash",
+      "pass": true
+    },
+    {
+      "check": "all4overlaysmatchmanifestfinalfreezeandreview",
+      "pass": true
+    },
+    {
+      "check": "review prose finalization is recorded and code unchanged",
+      "pass": true
+    },
+    {
+      "check": "APIlog100register201 +201login200",
+      "pass": true
+    },
+    {
+      "check": "APIlog each100user connectedtwice and senttwoclose1005frames",
+      "pass": true,
+      "detail": "200 connected lines and200 normal close1005 read-error lines; per-stage resource snapshots independently show0active afterward."
+    },
+    {
+      "check": "APIlogs confirm18actualownerHTTP200heartbeats",
+      "pass": true
+    },
+    {
+      "check": "API pool startup used25/5",
+      "pass": true
+    },
+    {
+      "check": "all3phasesendedzeroWSandunchangedgate",
+      "pass": true
+    },
+    {
+      "check": "WS counts exactly100new/closed per measurementstage",
+      "pass": true
+    },
+    {
+      "check": "propagation APIlog exactlyoneconnectionandcloseper100user",
+      "pass": true
+    },
+    {
+      "check": "writeback APIlog exactlyoneconnectionandcloseper100user",
+      "pass": true
+    },
+    {
+      "check": "propagation retained whole ordered warmup/formalplan with expectedhandoffsequenceincrements",
+      "pass": true
+    },
+    {
+      "check": "registeredseed jitter is retained and bounded perround",
+      "pass": true,
+      "detail": {
+        "seed": 20261114,
+        "distinct_delays": 95,
+        "min_ms": 8,
+        "max_ms": 493
+      }
+    },
+    {
+      "check": "propagation actualAPIlog100distinctsuccessfulmeandissueGETusers",
+      "pass": true
+    },
+    {
+      "check": "writeback actualAPIlog100distinctsuccessfulmeandissueGETusers",
+      "pass": true
+    },
+    {
+      "check": "all105statusreceiptsadvanceexactlyonerevision",
+      "pass": true
+    },
+    {
+      "check": "eachwritebacksamplematchesitscompletedrunrecordidentitiesandconnectionfacts",
+      "pass": true
+    },
+    {
+      "check": "final DB snapshot isolatedidentity and explicitlyreadonly",
+      "pass": true
+    },
+    {
+      "check": "DB exactly100active preparedparticipants",
+      "pass": true
+    },
+    {
+      "check": "DB101runIDs equal allraw measuredruns",
+      "pass": true
+    },
+    {
+      "check": "DB allrunsexactmodeidentity sealed singlelaunch settledsuccess",
+      "pass": true
+    },
+    {
+      "check": "DB101comments exactraw IDs digests issue andAgentauthor",
+      "pass": true
+    },
+    {
+      "check": "DB durablecommentevent maps eachrawcomment toexactrun",
+      "pass": true
+    },
+    {
+      "check": "DB eachrun exactlyoneauthorizedlaunch andoneterminalobservation",
+      "pass": true
+    },
+    {
+      "check": "DBruntimeowner/workspace/identity stable",
+      "pass": true
+    },
+    {
+      "check": "single503affectedrun subsequentlyretainsDBsettledsuccesshostproof",
+      "pass": true
+    },
+    {
+      "check": "gate originalphaseandfinalchainexact",
+      "pass": true
+    },
+    {
+      "check": "APIstop exactownedprocess health config andlistenergone",
+      "pass": true
+    },
+    {
+      "check": "previousfailedauditorretainedsame101successhostfacts",
+      "pass": true
+    },
+    {
+      "check": "final postshutdown snapshot targetDB0connections and ownedbinaryprocesses0",
+      "pass": true,
+      "detail": "Read-only snapshot at 2026-11-14T04:09:47.537Z; scoped to the allocated database and owned binary paths, not the shared PostgreSQL cluster."
+    }
+  ],
+  "failed_checks": [],
+  "identity": {
+    "distinct_users": 100,
+    "registration_requests": 100,
+    "registration_window_counts": [
+      30,
+      30,
+      30,
+      10
+    ],
+    "registration_elapsed_ms": 661701.0,
+    "public_invites": 99,
+    "API_log_logins": 201,
+    "API_log_websocket_events": 400,
+    "raw_tokens_retained": false,
+    "token_proof": "Fresh login + /api/me per actor and Set(token).size===100 are assertions in frozen openObserverSessions executed successfully before each measurement; raw tokens are intentionally not persisted. Raw propagation socket IDs and server connect/disconnect user IDs are independently recounted."
+  },
+  "propagation": {
+    "formal_rows": 10000,
+    "warmup_rows_excluded": 500,
+    "pooled": {
+      "count": 10000,
+      "missing": 0,
+      "p50_ms": 474.8725420000119,
+      "p95_ms": 702.5789579999982,
+      "p99_ms": 754.1789580000041,
+      "max_ms": 794.5769580000051
+    },
+    "slowest_per_event": {
+      "count": 100,
+      "missing": 0,
+      "p50_ms": 522.1365420000002,
+      "p95_ms": 740.635374999998,
+      "p99_ms": 776.8445829999982,
+      "max_ms": 794.5769580000051
+    },
+    "excluding_writer": {
+      "count": 9900,
+      "missing": 0,
+      "p50_ms": 475.1580829999948,
+      "p95_ms": 702.5246669999906,
+      "p99_ms": 754.1789580000041,
+      "max_ms": 794.5769580000051
+    },
+    "per_observer": {
+      "0": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 467.87258300000394,
+        "p95_ms": 701.3244999999952,
+        "p99_ms": 776.176916999997,
+        "max_ms": 785.661374999996
+      },
+      "1": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 462.15795799999614,
+        "p95_ms": 685.1160830000008,
+        "p99_ms": 747.3464170000007,
+        "max_ms": 760.536666
+      },
+      "2": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 481.73249999999825,
+        "p95_ms": 707.8700830000016,
+        "p99_ms": 770.3335420000003,
+        "max_ms": 791.7270410000056
+      },
+      "3": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 466.64833300000464,
+        "p95_ms": 693.3833340000128,
+        "p99_ms": 733.1455410000053,
+        "max_ms": 761.4490409999999
+      },
+      "4": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 451.90850000001956,
+        "p95_ms": 675.5747499999998,
+        "p99_ms": 715.2690410000068,
+        "max_ms": 750.4337499999965
+      },
+      "5": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 479.6242079999938,
+        "p95_ms": 691.2259159999958,
+        "p99_ms": 761.7233750000014,
+        "max_ms": 770.0909170000014
+      },
+      "6": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 488.4822090000016,
+        "p95_ms": 727.3109580000018,
+        "p99_ms": 750.9443749999991,
+        "max_ms": 755.2496669999964
+      },
+      "7": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 471.2981660000005,
+        "p95_ms": 688.529165999993,
+        "p99_ms": 717.0975409999955,
+        "max_ms": 755.6032080000004
+      },
+      "8": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 473.7176659999968,
+        "p95_ms": 683.7247500000085,
+        "p99_ms": 762.3739579999965,
+        "max_ms": 767.1972079999978
+      },
+      "9": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 476.3003749999916,
+        "p95_ms": 708.7607500000013,
+        "p99_ms": 751.0049169999984,
+        "max_ms": 770.2098330000008
+      },
+      "10": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 460.42245900000125,
+        "p95_ms": 691.5417080000043,
+        "p99_ms": 728.4437499999985,
+        "max_ms": 739.9070409999986
+      },
+      "11": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 454.6907499999943,
+        "p95_ms": 687.7424580000079,
+        "p99_ms": 703.9015829999989,
+        "max_ms": 722.6397500000021
+      },
+      "12": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 445.51825000000827,
+        "p95_ms": 699.0906250000116,
+        "p99_ms": 730.3324169999978,
+        "max_ms": 773.6922500000001
+      },
+      "13": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 474.6895829999994,
+        "p95_ms": 701.3526669999992,
+        "p99_ms": 735.5610840000008,
+        "max_ms": 756.4161659999954
+      },
+      "14": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 470.2974169999943,
+        "p95_ms": 703.1010000000024,
+        "p99_ms": 749.2367919999961,
+        "max_ms": 765.8027910000092
+      },
+      "15": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 484.27787499999977,
+        "p95_ms": 700.7306669999962,
+        "p99_ms": 754.1789580000041,
+        "max_ms": 754.4459169999973
+      },
+      "16": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 477.5837499999907,
+        "p95_ms": 700.2759589999987,
+        "p99_ms": 732.2043750000012,
+        "max_ms": 742.0197500000068
+      },
+      "17": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 472.0277080000087,
+        "p95_ms": 707.6742499999964,
+        "p99_ms": 747.9354590000003,
+        "max_ms": 776.8445829999982
+      },
+      "18": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 464.4186660000123,
+        "p95_ms": 689.9482080000016,
+        "p99_ms": 738.7502499999973,
+        "max_ms": 768.0809169999993
+      },
+      "19": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 469.65908299999865,
+        "p95_ms": 699.080707999994,
+        "p99_ms": 738.6758330000011,
+        "max_ms": 770.6210830000055
+      },
+      "20": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 477.6581249999872,
+        "p95_ms": 681.5710000000036,
+        "p99_ms": 733.5160419999884,
+        "max_ms": 739.2827499999985
+      },
+      "21": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 476.44862499999,
+        "p95_ms": 692.5937910000066,
+        "p99_ms": 745.1373750000057,
+        "max_ms": 747.262917
+      },
+      "22": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 481.33804200000304,
+        "p95_ms": 697.7962919999991,
+        "p99_ms": 746.791916999995,
+        "max_ms": 773.0858329999974
+      },
+      "23": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 484.20524999999907,
+        "p95_ms": 688.1325420000067,
+        "p99_ms": 733.6991249999992,
+        "max_ms": 748.1150419999976
+      },
+      "24": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 482.3694170000017,
+        "p95_ms": 691.0196250000008,
+        "p99_ms": 747.8347089999952,
+        "max_ms": 758.9511250000069
+      },
+      "25": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 448.4120410000032,
+        "p95_ms": 680.9482079999943,
+        "p99_ms": 727.8804999999993,
+        "max_ms": 728.0016659999965
+      },
+      "26": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 469.91883300000336,
+        "p95_ms": 696.528209000011,
+        "p99_ms": 760.6946659999958,
+        "max_ms": 766.5301249999975
+      },
+      "27": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 465.67412499999045,
+        "p95_ms": 707.392875000005,
+        "p99_ms": 747.523374999997,
+        "max_ms": 768.6943330000067
+      },
+      "28": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 453.9649159999972,
+        "p95_ms": 667.7535839999982,
+        "p99_ms": 701.5608340000035,
+        "max_ms": 737.2518750000017
+      },
+      "29": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 481.91924999999173,
+        "p95_ms": 701.9620419999992,
+        "p99_ms": 749.8413749999963,
+        "max_ms": 792.0290000000095
+      },
+      "30": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 503.59237500000745,
+        "p95_ms": 693.0772909999941,
+        "p99_ms": 753.3232089999947,
+        "max_ms": 762.9941249999974
+      },
+      "31": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 480.1216660000209,
+        "p95_ms": 697.6115419999987,
+        "p99_ms": 756.6168330000073,
+        "max_ms": 766.3661250000005
+      },
+      "32": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 465.5374579999989,
+        "p95_ms": 714.0590410000004,
+        "p99_ms": 749.2069589999955,
+        "max_ms": 755.2035419999957
+      },
+      "33": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 464.3942919999972,
+        "p95_ms": 673.2467919999981,
+        "p99_ms": 728.6895839999925,
+        "max_ms": 749.5584159999999
+      },
+      "34": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 468.2127079999991,
+        "p95_ms": 718.7466660000064,
+        "p99_ms": 736.4482500000013,
+        "max_ms": 753.6197910000046
+      },
+      "35": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 470.82066700000723,
+        "p95_ms": 699.3072080000129,
+        "p99_ms": 713.7171660000022,
+        "max_ms": 748.2039579999982
+      },
+      "36": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 478.48291599999357,
+        "p95_ms": 721.301959000004,
+        "p99_ms": 752.870041000002,
+        "max_ms": 788.7628330000007
+      },
+      "37": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 454.04583300001104,
+        "p95_ms": 680.8090000000011,
+        "p99_ms": 712.5200840000034,
+        "max_ms": 714.9917910000077
+      },
+      "38": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 474.8127499999973,
+        "p95_ms": 709.3904589999875,
+        "p99_ms": 749.271541999995,
+        "max_ms": 766.2990410000057
+      },
+      "39": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 466.146084,
+        "p95_ms": 677.2775829999955,
+        "p99_ms": 756.474749999994,
+        "max_ms": 784.3125
+      },
+      "40": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 478.9278750000012,
+        "p95_ms": 710.3873749999984,
+        "p99_ms": 722.4646250000005,
+        "max_ms": 726.3668330000073
+      },
+      "41": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 463.856541000001,
+        "p95_ms": 689.4599159999925,
+        "p99_ms": 734.4828330000018,
+        "max_ms": 783.424291000003
+      },
+      "42": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 464.6489580000052,
+        "p95_ms": 697.8413750000182,
+        "p99_ms": 729.8200419999921,
+        "max_ms": 773.9400000000023
+      },
+      "43": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 471.2042500000098,
+        "p95_ms": 703.1599590000114,
+        "p99_ms": 750.3126249999987,
+        "max_ms": 759.2100000000064
+      },
+      "44": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 467.411500000002,
+        "p95_ms": 702.771541999995,
+        "p99_ms": 767.0032910000009,
+        "max_ms": 768.1399999999994
+      },
+      "45": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 468.77666699999827,
+        "p95_ms": 700.963042000003,
+        "p99_ms": 763.7153749999998,
+        "max_ms": 764.443041999999
+      },
+      "46": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 455.0312090000007,
+        "p95_ms": 684.5852079999968,
+        "p99_ms": 711.6851669999887,
+        "max_ms": 794.1791660000017
+      },
+      "47": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 453.4053750000021,
+        "p95_ms": 686.4987919999985,
+        "p99_ms": 759.5412499999948,
+        "max_ms": 784.1032500000001
+      },
+      "48": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 466.43333300000086,
+        "p95_ms": 663.046875,
+        "p99_ms": 723.7552920000016,
+        "max_ms": 789.146041
+      },
+      "49": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 496.49454200000037,
+        "p95_ms": 708.5984580000004,
+        "p99_ms": 756.5828750000073,
+        "max_ms": 756.7979999999952
+      },
+      "50": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 452.17879200000607,
+        "p95_ms": 687.8202910000109,
+        "p99_ms": 706.684791000007,
+        "max_ms": 752.1302919999944
+      },
+      "51": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 461.8311670000112,
+        "p95_ms": 676.1061669999981,
+        "p99_ms": 727.054959000001,
+        "max_ms": 758.5561659999948
+      },
+      "52": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 483.2124579999945,
+        "p95_ms": 702.6931669999976,
+        "p99_ms": 770.1625419999982,
+        "max_ms": 793.7945829999953
+      },
+      "53": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 476.4125000000058,
+        "p95_ms": 708.937333000009,
+        "p99_ms": 742.325874999995,
+        "max_ms": 753.5272919999989
+      },
+      "54": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 452.41325000001234,
+        "p95_ms": 677.3199999999997,
+        "p99_ms": 748.0617089999942,
+        "max_ms": 771.7951250000042
+      },
+      "55": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 484.19349999999395,
+        "p95_ms": 697.3598749999946,
+        "p99_ms": 770.4410419999986,
+        "max_ms": 794.5769580000051
+      },
+      "56": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 486.93616699999984,
+        "p95_ms": 705.1590419999993,
+        "p99_ms": 752.880041999997,
+        "max_ms": 767.2610830000049
+      },
+      "57": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 501.7295000000013,
+        "p95_ms": 704.183916000009,
+        "p99_ms": 759.9626660000067,
+        "max_ms": 773.6376669999954
+      },
+      "58": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 499.8130420000016,
+        "p95_ms": 713.9212079999998,
+        "p99_ms": 733.3507089999985,
+        "max_ms": 750.281541999997
+      },
+      "59": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 456.4523329999938,
+        "p95_ms": 678.8905419999937,
+        "p99_ms": 729.1950840000063,
+        "max_ms": 779.807415999996
+      },
+      "60": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 499.9172089999993,
+        "p95_ms": 707.2207500000004,
+        "p99_ms": 744.6029160000035,
+        "max_ms": 746.9418749999968
+      },
+      "61": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 464.6666660000046,
+        "p95_ms": 681.5576660000079,
+        "p99_ms": 737.5553329999966,
+        "max_ms": 788.5042079999985
+      },
+      "62": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 474.7642080000078,
+        "p95_ms": 696.0480830000015,
+        "p99_ms": 733.3312090000109,
+        "max_ms": 787.9657909999951
+      },
+      "63": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 463.89075000000594,
+        "p95_ms": 704.814916000003,
+        "p99_ms": 735.1069580000039,
+        "max_ms": 776.609457999999
+      },
+      "64": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 471.0864169999986,
+        "p95_ms": 691.2770409999939,
+        "p99_ms": 730.3786660000042,
+        "max_ms": 762.9353750000009
+      },
+      "65": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 485.63045799999963,
+        "p95_ms": 718.7895410000056,
+        "p99_ms": 742.2613330000022,
+        "max_ms": 791.9838330000057
+      },
+      "66": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 470.00808299999335,
+        "p95_ms": 707.2588749999995,
+        "p99_ms": 753.7748329999959,
+        "max_ms": 758.7640830000018
+      },
+      "67": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 480.13562499999534,
+        "p95_ms": 700.3623750000115,
+        "p99_ms": 724.2457080000022,
+        "max_ms": 787.5837500000052
+      },
+      "68": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 464.5398750000022,
+        "p95_ms": 719.4724160000042,
+        "p99_ms": 748.8559160000004,
+        "max_ms": 752.9215839999961
+      },
+      "69": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 469.4446659999958,
+        "p95_ms": 708.7872920000082,
+        "p99_ms": 738.4269159999967,
+        "max_ms": 759.5951659999992
+      },
+      "70": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 494.0733750000072,
+        "p95_ms": 705.3514580000046,
+        "p99_ms": 775.0549580000006,
+        "max_ms": 781.9732079999958
+      },
+      "71": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 479.12283300000126,
+        "p95_ms": 705.2818750000006,
+        "p99_ms": 749.1066250000003,
+        "max_ms": 759.9542910000018
+      },
+      "72": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 444.9915000000037,
+        "p95_ms": 661.4203750000015,
+        "p99_ms": 701.1468329999989,
+        "max_ms": 783.314916000003
+      },
+      "73": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 489.8213340000002,
+        "p95_ms": 718.1552499999962,
+        "p99_ms": 773.8699579999957,
+        "max_ms": 787.6232080000045
+      },
+      "74": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 469.77850000000035,
+        "p95_ms": 686.7122919999965,
+        "p99_ms": 724.3062079999945,
+        "max_ms": 738.5020829999994
+      },
+      "75": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 454.75995800000965,
+        "p95_ms": 667.8156250000029,
+        "p99_ms": 692.4617080000025,
+        "max_ms": 713.8173749999987
+      },
+      "76": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 504.4389169999995,
+        "p95_ms": 714.5634580000042,
+        "p99_ms": 775.8799169999984,
+        "max_ms": 785.580833
+      },
+      "77": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 506.43391600000905,
+        "p95_ms": 704.9016249999986,
+        "p99_ms": 732.2553750000079,
+        "max_ms": 754.3992499999949
+      },
+      "78": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 472.73308299999917,
+        "p95_ms": 690.3036250000005,
+        "p99_ms": 740.635374999998,
+        "max_ms": 743.5586659999972
+      },
+      "79": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 487.4838330000057,
+        "p95_ms": 699.1573329999956,
+        "p99_ms": 752.1979999999967,
+        "max_ms": 771.8272499999948
+      },
+      "80": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 453.596749999997,
+        "p95_ms": 685.2235000000001,
+        "p99_ms": 721.5644159999938,
+        "max_ms": 788.9443330000067
+      },
+      "81": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 475.7161250000063,
+        "p95_ms": 730.3059169999979,
+        "p99_ms": 760.4659580000007,
+        "max_ms": 767.3690829999978
+      },
+      "82": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 464.4426250000033,
+        "p95_ms": 686.908208000008,
+        "p99_ms": 750.4878749999989,
+        "max_ms": 765.3955410000053
+      },
+      "83": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 475.54279099999985,
+        "p95_ms": 712.1242920000004,
+        "p99_ms": 739.4893750000047,
+        "max_ms": 774.028375000009
+      },
+      "84": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 476.2297499999986,
+        "p95_ms": 689.7632500000036,
+        "p99_ms": 771.8853329999984,
+        "max_ms": 785.7678330000053
+      },
+      "85": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 468.4402500000142,
+        "p95_ms": 687.3293340000018,
+        "p99_ms": 719.0938330000063,
+        "max_ms": 724.8244589999958
+      },
+      "86": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 461.37733400000434,
+        "p95_ms": 708.4486670000042,
+        "p99_ms": 757.2247080000016,
+        "max_ms": 762.0455000000075
+      },
+      "87": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 476.97245799999655,
+        "p95_ms": 689.7416660000017,
+        "p99_ms": 764.2448330000043,
+        "max_ms": 766.4609169999967
+      },
+      "88": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 477.29466700000194,
+        "p95_ms": 700.5827090000093,
+        "p99_ms": 755.133249999999,
+        "max_ms": 789.3827080000046
+      },
+      "89": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 482.9872499999983,
+        "p95_ms": 702.7544999999955,
+        "p99_ms": 742.0648749999964,
+        "max_ms": 777.8252080000093
+      },
+      "90": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 484.01837499999965,
+        "p95_ms": 710.0734999999986,
+        "p99_ms": 741.7035409999953,
+        "max_ms": 753.1306659999973
+      },
+      "91": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 484.4352080000026,
+        "p95_ms": 731.6452920000011,
+        "p99_ms": 772.7909579999978,
+        "max_ms": 787.8137500000012
+      },
+      "92": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 474.82312499999534,
+        "p95_ms": 699.2947920000006,
+        "p99_ms": 747.009791000004,
+        "max_ms": 753.8359999999957
+      },
+      "93": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 487.18974999999045,
+        "p95_ms": 682.1043329999957,
+        "p99_ms": 714.7966670000023,
+        "max_ms": 738.2299159999966
+      },
+      "94": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 469.9253749999916,
+        "p95_ms": 717.6521249999932,
+        "p99_ms": 730.2007500000036,
+        "max_ms": 737.6532080000034
+      },
+      "95": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 471.03241700000217,
+        "p95_ms": 675.9342499999984,
+        "p99_ms": 724.0529590000006,
+        "max_ms": 732.3369160000002
+      },
+      "96": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 465.11283299999195,
+        "p95_ms": 705.0979999999981,
+        "p99_ms": 764.958749999998,
+        "max_ms": 767.0798329999961
+      },
+      "97": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 455.0347500000207,
+        "p95_ms": 667.7617089999985,
+        "p99_ms": 704.9378329999963,
+        "max_ms": 705.1532080000034
+      },
+      "98": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 504.55304099999194,
+        "p95_ms": 692.6524159999972,
+        "p99_ms": 732.4577500000014,
+        "max_ms": 733.6896669999987
+      },
+      "99": {
+        "count": 100,
+        "missing": 0,
+        "p50_ms": 488.2714580000029,
+        "p95_ms": 709.0557499999995,
+        "p99_ms": 753.0323339999959,
+        "max_ms": 787.5260830000043
+      }
+    },
+    "over_budget_observers": [],
+    "pass": true,
+    "raw_sha256": "8ee4ab363627b0fed4cc18c206cd7719bfe11541029ed61fd425720c54a3dabb"
+  },
+  "writeback": {
+    "formal_rows": 200,
+    "warmup_rows_excluded": 2,
+    "distinct_runs_including_warmup": 101,
+    "business": {
+      "count": 100,
+      "missing": 0,
+      "p50_ms": 82.8370419999992,
+      "p95_ms": 130.69391699999687,
+      "p99_ms": 163.20354200000293,
+      "max_ms": 3108.1765000000014
+    },
+    "finalization": {
+      "count": 100,
+      "missing": 0,
+      "p50_ms": 350.09587499999907,
+      "p95_ms": 724.773583000002,
+      "p99_ms": 911.7478750000009,
+      "max_ms": 1793.891042000003
+    },
+    "pass": true,
+    "hints_formal_present": 58,
+    "hints_formal_absent": 42,
+    "raw_sha256": "bd37f74fc07b1a8c7f361f62d05e8062e469e00107fa8158879ebccb24bc0fc7"
+  },
+  "heartbeat": {
+    "successful": 18,
+    "span_ms": 255773.824292,
+    "first_start_utc": "2026-11-14T03:38:16.617Z",
+    "last_end_utc": "2026-11-14T03:42:32.390Z",
+    "end_to_next_start_min_ms": 15003.326415999996,
+    "end_to_next_start_max_ms": 15009.745792000002,
+    "request_duration_min_ms": 9.695999999999913,
+    "request_duration_max_ms": 135.7157920000027,
+    "max_pretrigger_runtime_age_ms": 30653,
+    "daemon_start_to_last_sample_ms": 258090.79025,
+    "daemon_start_to_heartbeat_stopped_ms": 258376.314125
+  },
+  "http_evidence": {
+    "status_counts": {
+      "200": 15750,
+      "201": 310,
+      "404": 547,
+      "0": 200,
+      "503": 1
+    },
+    "unexpected_failures": [
+      {
+        "at_local": "11:41:02.391",
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/415cf06a-0fe4-40a2-9584-f42722439a89/stop-intent",
+        "status": 503,
+        "user_id": null
+      }
+    ],
+    "pprof_bind_conflict_count": 1,
+    "failed_stop_intent_followup": [
+      {
+        "at_local": "11:41:02.391",
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/415cf06a-0fe4-40a2-9584-f42722439a89/stop-intent",
+        "status": 503,
+        "user_id": null
+      }
+    ],
+    "status0_note": "The200 status=0 access-log rows are /ws upgraded/hijacked sessions; not HTTP business failures.",
+    "status_counts_scope": "Complete retained APIlog through finalstop, including setup, measurement and coordinator health checks."
+  },
+  "binding": {
+    "manifest_sha256": "b7c1a3251c4a243862f9ce824522a817bc05374cb2adcdd6c8b89f38751b9d91",
+    "api_config_sha256": "4ee2f52ae08ad81a76886b69181e3e459e9761f47017a198cd17c97a8964b582",
+    "source_commit": "fb9f4c07059445cea41ed19e956b3eb1861817cc",
+    "overlay": {
+      "e2e/collaboration-performance.spec.ts": "904857638743cccc59347880c63ba28ec151cbbc95e69dc32504301dc9651723",
+      "e2e/fixtures/collaboration-performance.ts": "75d25dc3f531fa80ca807d7f3da95a0bcc746082702bcf966f225f09b9d6471a",
+      "e2e/fixtures/collaboration-performance-stats.ts": "a728075a5d1c5d52ef13929dc3cda5c5427cc6cc1adb8f1874f823d0f2b3a73d",
+      "e2e/fixtures/collaboration-performance-stats.node-test.mjs": "9c67395d28af9ff92354e1f7f83d1095181b5a03477e742bf607ad1cde5cc585"
+    },
+    "binary_provenance_sha256": "a4ba2f857692a2fd77c6565fe1feec19a56fd03e96de9c018d2bc2dd63e82385",
+    "phase_command_receipts": [
+      {
+        "phase": "prepare",
+        "argv": [
+          "node",
+          "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/run.mjs",
+          "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/configs/perf.json",
+          "pnpm",
+          "--dir",
+          "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/source",
+          "exec",
+          "playwright",
+          "test",
+          "e2e/collaboration-performance.spec.ts",
+          "-g",
+          "prepare:",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=list",
+          "--output",
+          "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/playwright-prepare"
+        ],
+        "pid": 83628,
+        "started_at": "2026-11-14T03:18:42.263Z",
+        "finished_at": "2026-11-14T03:30:13.123Z",
+        "exit_code": 0,
+        "signal": null,
+        "log": "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/logs/prepare.log",
+        "log_sha256": "214ee6f9c572b3fdd8b3a97c4d9dd81bd91a999343eb6fb8c8e2d87c54ffa201"
+      },
+      {
+        "phase": "propagation",
+        "argv": [
+          "node",
+          "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/run.mjs",
+          "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/configs/perf.json",
+          "pnpm",
+          "--dir",
+          "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/source",
+          "exec",
+          "playwright",
+          "test",
+          "e2e/collaboration-performance.spec.ts",
+          "-g",
+          "propagation:",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=list",
+          "--output",
+          "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/playwright-propagation"
+        ],
+        "pid": 89432,
+        "started_at": "2026-11-14T03:33:04.629Z",
+        "finished_at": "2026-11-14T03:35:31.911Z",
+        "exit_code": 0,
+        "signal": null,
+        "log": "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/logs/propagation.log",
+        "log_sha256": "40ad7f49a91640be5c596ea8949fa4b2f48f9158ccc6fb38ca5d845ef0c03f48"
+      },
+      {
+        "phase": "writeback",
+        "argv": [
+          "node",
+          "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/run.mjs",
+          "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/configs/perf.json",
+          "pnpm",
+          "--dir",
+          "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/source",
+          "exec",
+          "playwright",
+          "test",
+          "e2e/collaboration-performance.spec.ts",
+          "-g",
+          "writeback:",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=list",
+          "--output",
+          "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/playwright-writeback"
+        ],
+        "pid": 90082,
+        "started_at": "2026-11-14T03:37:48.995Z",
+        "finished_at": "2026-11-14T03:42:35.568Z",
+        "exit_code": 0,
+        "signal": null,
+        "log": "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/logs/writeback.log",
+        "log_sha256": "6dcb562d3bcda5a18c3589859e3c20f2293a393e95892f43e2e6875ebfc1126d"
+      }
+    ],
+    "review_at_prepare_sha256": "0bf711729122a194fe7ede05561d62a744171125ae2690af667481078ec65aaf"
+  },
+  "cleanup_status": "Verified retained facts: daemon exit0/101proof_acknowledged; allphase WebSocket active0; original gate flags restored at epoch6; API and owned listener absent; final read-only snapshot confirms0connections to the allocated database and0ownedbinaryprocesses. Database retained.",
+  "resource_limits": {
+    "api_descriptor_limit_unknown": true,
+    "host": "Apple M4 arm64,10CPUs,16GiB",
+    "postgres": "17.11 x86_64, max_connections100",
+    "pool": "observed startup25/5, no overrides",
+    "total_cluster_connection_range": [
+      24,
+      43
+    ],
+    "load1_range": [
+      3.55908203125,
+      15.90380859375
+    ],
+    "writeback_event_loop_max_ms": 95.683
+  },
+  "audit_iterations": [
+    {
+      "initial_parser_check": {
+        "check": "APIlog each100user connectedtwice and senttwoclose1005frames",
+        "pass": true,
+        "detail": "200 connected lines and200 normal close1005 read-error lines; per-stage resource snapshots independently show0active afterward."
+      },
+      "diagnosis": "Reviewer expected a websocket disconnected log; this API logs the received close1005 frame as websocket read error. Corrected to the actual log shape; no sample/source change."
+    }
+  ],
+  "source_tree_audit": {
+    "head": "fb9f4c07059445cea41ed19e956b3eb1861817cc",
+    "tracked_blobs_checked": 28817,
+    "bytes_read": 1741723729,
+    "content_mismatches_after_declared_checkout_EOL_rules": 0,
+    "raw_difference": {
+      "file": "scripts/uninstall-desktop-windows.bat",
+      "raw_sha256": "b42fc96300d51840c575971783f0e17588088a7643594d277a5b7c00251a9a12",
+      "HEAD_sha256": "6e4671df0f7e965556118507db30de9dd37447914c12e47791d3003956bd59f6",
+      "detail": "389LF lines checked out CRLF under existing .gitattributes *.bat text eol=crlf; exact equality after onlyCRLF-to-LF. This Windows uninstall file is outside all measured runtime paths."
+    },
+    "tool_evidence": [
+      "e6f966",
+      "9d8244",
+      "cf3d5b"
+    ]
+  },
+  "evidence_hashes": {
+    "run/failures-propagation.json": "a10bd1433a28264120aa7404ae4c3915c948782435b5b787e7e8def8bfe6c08f",
+    "run/failures-writeback.json": "64e31efd03b4b6afc49727a8965f73c3b4c63e9aed92c8f4bc9e490f672a16d4",
+    "run/manifest.json": "b7c1a3251c4a243862f9ce824522a817bc05374cb2adcdd6c8b89f38751b9d91",
+    "run/observed-prepare-20261114T031904550Z.json": "05f1f75c9160d074148bdcb07d5f3d0aec9054ec5dded3410387439672a3847e",
+    "run/observed-propagation-20261114T033306343Z.json": "f0e81aae87f0db05a23e50d13ca3bc25fb635e780372f180a48a2b1ff0c34793",
+    "run/observed-writeback-20261114T033750713Z.json": "b544a2788e8e417d1ba66c71ea058dfbd0319f7421970feaa0a0d4ec30016d70",
+    "run/prepare-log.jsonl": "ddb4c3c30cb1ffead1cd037d6053e23b9c969f01507a5b143d0595019824cb54",
+    "run/propagation-rounds.jsonl": "0664b10d338921675e7e962e7a4281300c08dede96bb778d0fb46923ad523295",
+    "run/propagation-samples.jsonl": "8ee4ab363627b0fed4cc18c206cd7719bfe11541029ed61fd425720c54a3dabb",
+    "run/resources-prepare-20261114T031904550Z-after.json": "0d420e2ebdc49f52a0236610e17f874560d9e78bceeb9ddeb3f88dc9e302ad9d",
+    "run/resources-prepare-20261114T031904550Z-before.json": "f087b68b90c04e012802a7bdd5bdb3d5749fefc3a054b52989e379159bed5716",
+    "run/resources-propagation-20261114T033306343Z-after.json": "71457ac5748fd07b6078939c9cabef9cfb0c2f9b28bf6165215ea1cbb899c8b3",
+    "run/resources-propagation-20261114T033306343Z-before.json": "cb5447bd1c5d9c000406a94cc611d562b48ab169d09addcb5c91fefe4777fe23",
+    "run/resources-writeback-20261114T033750713Z-after.json": "51eb320e1fd2bd953f748c472bb676088665c6880b2e5bc25eebd7f74ec49f72",
+    "run/resources-writeback-20261114T033750713Z-before.json": "cd705c48ebbec9e4c9ed0ff7912811f54ae32e270af04aeb5ecb0a0eef7ca334",
+    "run/setup-identities.json": "ddb58ac5f8dcdbfba8bc7c23897da2d5dbcc260127a9fab7d767ff16bb5a3d05",
+    "run/summary-propagation.json": "c1b299fb1da8a1e8b84bb50c67663245e23543185f6a2b0cb39472579afcd0cd",
+    "run/summary-writeback.json": "233df8a79ad260abec91995d4122a2f518e17a3a31041e2fae12ba601fcea8b3",
+    "run/writeback-runs.jsonl": "fb6dd71367916ff19dc9cb454969175d79dc02592658a6dd8a3e810a776bdfc0",
+    "run/writeback-samples.jsonl": "bd37f74fc07b1a8c7f361f62d05e8062e469e00107fa8158879ebccb24bc0fc7",
+    "logs/api-runtime.log": "a4eee8430b7aa987edd699f5c71c227a1047bd632aab6c45add8337d25e2b4cc",
+    "database-after-writeback-final.json": "b3f5bc1031d6587841e4b4c89bd69df97063d011be6343de78c94211530e40b8",
+    "database-after-writeback.json": "9811365eb2559b0494138344c671ec264aac3d9b703addd13e1f7c72287f98b0",
+    "database-audit-attempt1.json": "a08591b595b1c6bff11c59eb337e9fcd0185ad02445ee9816dea4c800f2dd170",
+    "database-audit-attempt2.json": "2471c87c30701a4e17b7f09ca11f556d8fc7ad362d03aff17afb4fc6906379d4",
+    "logs/database-audit-attempt2.log": "eff0f7e6ea9109a1b1cf6feeb7c6ef66398a52dd9822020992863a28036e9d74",
+    "logs/database-audit-attempt3.log": "5399df6690b7d068b521668eb85b6c9a5eb8065e47d7e199f9b8515153347e80",
+    "audit-database.mjs": "1bcb57277723e457443463086fb8a44f0f7aaeb785d3eada2ff8733289aacf48",
+    "api-stop.json": "8ef2c78399fe61b714aa7238e9532a8d22201c8ecfc58e998f5a635723b7d921",
+    "migrated-gate.json": "ab214dc907749f7857c8947b4602dbc10b50ac548226f4c159625da7a6bd6610",
+    "gate-allocation.json": "ae4aa2a857dcc8a83edb871cb19215f4a1c97061f3f49de89e68274060fa8217",
+    "gate-read-before-root-restore.json": "eeba3a14d8828ddfc7880d5093f483ce77385b68aa0f6c9892520d92fea8cda5",
+    "gate-restore.json": "75ddecaa1346974d552d21c30474c75bcfcf8508c698afc2017487aea88eac08",
+    "gate-read-after-root-restore.json": "f4d7b35b6effdffa5b43669135d11cd3c1c5fd89799846a5d1232723c32f2d77",
+    "source-overlay.json": "02af815fadb7df150403c81130214daf3f324241706d9ddcd4135bed6bb2da08",
+    "final-freeze.json": "d9ff4a245e9859130d37fb46259dd71d635bcdfa078a805207c5e91e4d813f0d",
+    "review-finalization-note.json": "b15fd0e858d879d21e2ab00b62d24e4f074ff122e7ddfd780283efb688c6d4f0",
+    "review-at-prepare.json": "0bf711729122a194fe7ede05561d62a744171125ae2690af667481078ec65aaf",
+    "bin-provenance.json": "a4ba2f857692a2fd77c6565fe1feec19a56fd03e96de9c018d2bc2dd63e82385",
+    "configs/perf.json": "4ee2f52ae08ad81a76886b69181e3e459e9761f47017a198cd17c97a8964b582",
+    "api-process.json": "db05b16633f4bed652fbc6b76ef446da8598f214e08200a1d5d977b82d7c7d51",
+    "logs/api-start.json": "9433bca3b8bf0aef3bd9d67ea83cf58ad0e89510bc292fa127b6d4c19eb85181",
+    "final-resources.json": "f96d40f5a773a2ecfbc1613b87dd4cd003c5ae3a130ad0f2b0bd5964e4fc2386"
+  },
+  "previous_run": {
+    "run_id": "pay241-s5-r01",
+    "retained_writeback_pass": false,
+    "formal_converged": 71,
+    "formal_failed": 1,
+    "formal_not_run": 28,
+    "formal_denominator": 100,
+    "r02_new_database": true,
+    "original_failure": "aborted_after_formal_71_no_provider_launch"
+  },
+  "database_crosscheck": {
+    "recorded_at": "2026-11-14T04:06:42.300Z",
+    "read_only": true,
+    "participants": 100,
+    "runs": 101,
+    "comments": 101,
+    "comment_run_links": 101,
+    "launch_rows": 101,
+    "run_after_503": {
+      "id": "415cf06a-0fe4-40a2-9584-f42722439a89",
+      "issue_id": "01a1d81a-f2de-7eb5-a203-fa340623c369",
+      "business_outcome": "success",
+      "proof_state": "host_exit_observed",
+      "progress_state": "settled",
+      "containment": "host_process_supervision_v1",
+      "agent_id": "3ee30203-705c-4e2f-af29-917fdbe8b0c7",
+      "runtime_id": "b822b6ec-702b-472d-865f-295f7ae74a68",
+      "authorized_attempt_seq": "1",
+      "sealed_attempt_seq": "1",
+      "settled": true,
+      "recording_incomplete": false
+    },
+    "runtime_status_at_late_audit": "offline",
+    "runtime_status_note": "Recorded after heartbeat and API shutdown; not measurement-time liveness. All101pretrigger reads were online.",
+    "auditor_attempts": [
+      {
+        "attempt": 1,
+        "exit_code": 1,
+        "error_code": "42703",
+        "reason": "Auditor used c.issue_id instead of resolving through session; readonly error retained."
+      },
+      {
+        "attempt": 2,
+        "exit_code": 2,
+        "reason": "Auditor incorrectly expected namespace exited_proven; retained101actual host_exit_observed/settled success facts."
+      },
+      {
+        "attempt": 3,
+        "exit_code": 0,
+        "evidence": "logs/database-audit-attempt3.log and database-after-writeback-final.json",
+        "note": "Source inspected and returned rows independently matched to allraw IDs/hashes; not relying only on parent checks."
+      }
+    ]
+  },
+  "cleanup": {
+    "phase_gate_entry": {
+      "enabled": true,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "3"
+    },
+    "allocation_original": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "2"
+    },
+    "after_fixture": {
+      "enabled": true,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "5"
+    },
+    "after_root_restore": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "6"
+    },
+    "api_stop": {
+      "pid": 67305,
+      "verified_command": "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/bin/server",
+      "health_before_stop": {
+        "status": "ok",
+        "pid": 67305,
+        "commit": "fb9f4c07059445cea41ed19e956b3eb1861817cc",
+        "started_at": "2026-11-14T02:58:40Z"
+      },
+      "config_hash_unchanged": true,
+      "signal": "SIGTERM",
+      "requested_at": "2026-11-14T04:02:13.513153+00:00",
+      "ended_at": "2026-11-14T04:02:13.578538+00:00",
+      "process_present_after": false,
+      "listener_18996_after": false,
+      "database_retained": "multica_pay241_s5_r02_api",
+      "api_descriptor_limit": null,
+      "descriptor_limit_note": "Not recorded at API launch and no historical limit inferred from the harness limit."
+    },
+    "database_retained": true,
+    "final_database_connection_count": 0,
+    "API_log_hash_at_initial_review": "0bac4e12ecb7fe67d4868f24b4f7be7471b153931e3ec57dcdcf6ae160c73505",
+    "API_log_hash_after_stop": "a4eee8430b7aa987edd699f5c71c227a1047bd632aab6c45add8337d25e2b4cc",
+    "final_owned_binary_process_count": 0,
+    "final_resources_snapshot": {
+      "at": "2026-11-14T04:09:47.537Z",
+      "database": "multica_pay241_s5_r02_api",
+      "database_connections": [],
+      "total_database_connections": 0,
+      "owned_binary_processes": [],
+      "api_stop": "api-stop.json",
+      "gate_after": "gate-read-after-root-restore.json",
+      "read_only": true
+    }
+  },
+  "findings": [
+    {
+      "id": "L01",
+      "severity": "rehearsal_metadata_gap",
+      "issue": "API descriptorlimit is unknown; harness limit is recorded and must not be substituted. Record APIlimit in finalcandidate run."
+    },
+    {
+      "id": "L02",
+      "severity": "retained_transient_error",
+      "issue": "One stop-intent503 on formalindex67; no same-path200replay observed. Final DB verifies its settled success/hostproof."
+    },
+    {
+      "id": "L03",
+      "severity": "retained_startup_warning",
+      "issue": "pprof6060bind conflict; APImeasurement healthy, profiling not proven."
+    },
+    {
+      "id": "L04",
+      "severity": "secondary_metric_limit",
+      "issue": "42formal hintpaths are null; finite58hint distribution is informational only."
+    },
+    {
+      "id": "L05",
+      "severity": "evidence_scope",
+      "issue": "Tokenuniqueness/authACK/parser assertions are frozenharness execution evidence, not a retained secret-token/response-frame archive. APIlogs and rawsocket/user IDs independently agree."
+    }
+  ],
+  "status": "successful_tool_rehearsal_with_retained_limits",
+  "blocking_findings_open": 0,
+  "final_candidate_acceptance": "NOT_RUN",
+  "tc24": "NOT_RUN",
+  "finalized_at": "2026-11-14T04:09:43.227379+00:00",
+  "final_evidence_binding_recheck": true,
+  "cleanup_addendum": {
+    "at": "2026-11-14T04:15:43.076848+00:00",
+    "resolved_finding": "L06",
+    "evidence": "final-resources.json",
+    "previous_state": "Final DBconnection-count snapshot had not been supplied at initialreview; retained addendum resolves this evidence gap.",
+    "no_measurement_or_test_rerun": true
+  }
+}

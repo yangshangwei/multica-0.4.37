@@ -1,0 +1,157 @@
+{
+  "kind": "s5-tool-rehearsal",
+  "run_id": "pay241-s5-20261114-r01",
+  "acceptance_evidence": false,
+  "note": "Tool rehearsal on fb9f4c070 plus the four harness files, API only; not TC-24 evidence.",
+  "run_root": "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r01",
+  "source_head": "fb9f4c07059445cea41ed19e956b3eb1861817cc",
+  "database": "multica_pay241_s5_r01_api",
+  "api": {
+    "pid": 20501,
+    "base_url": "http://127.0.0.1:18995",
+    "pool": {
+      "max_conns": 25,
+      "min_conns": 5
+    },
+    "redis": false,
+    "started_at": "2026-11-13T23:24:20.722Z",
+    "stopped_at": "2026-11-14T02:20:45Z"
+  },
+  "postgres": {
+    "image_arch": "amd64 on arm64 host (emulated)",
+    "version": "17.11",
+    "max_connections": 100
+  },
+  "phases": {
+    "prepare": {
+      "result": "pass",
+      "exit_code": 0,
+      "duration_min": 11.2,
+      "registrations_201": 100,
+      "invites_200": 99,
+      "http_429": 0,
+      "distinct_users": 100
+    },
+    "propagation": {
+      "result": "pass",
+      "exit_code": 0,
+      "duration_min": 2.6,
+      "formal_rows": 10000,
+      "missing": 0,
+      "pooled_ms": {
+        "p50": 511,
+        "p95": 783,
+        "p99": 969,
+        "max": 1154
+      },
+      "slowest_observer_p95_ms": 846,
+      "independent_recompute": "match"
+    },
+    "writeback": {
+      "result": "aborted",
+      "exit_code": 1,
+      "reason": "aborted_after_formal_71_no_provider_launch",
+      "converged_formal": 71,
+      "not_run": 28,
+      "denominator": 100,
+      "business_ms": {
+        "p50": 82,
+        "max": 178
+      },
+      "finalization_ms": {
+        "p50": 306,
+        "max": 499
+      },
+      "root_cause": "runtime sweeper marked the fixture runtime offline after RuntimeClaimFreshnessSeconds=150; host fixture sends no heartbeat (logs/api-runtime.log line 16291)"
+    }
+  },
+  "gate": {
+    "migration_original": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "2"
+    },
+    "before_restore": {
+      "enabled": true,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "5"
+    },
+    "after_restore": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "6"
+    }
+  },
+  "retained": [
+    "database",
+    "run directory",
+    "logs"
+  ],
+  "files": {
+    "run/manifest.json": {
+      "sha256": "41b524d6a3a2790f9f4e4f0f4b857d9403770f4ab4b9edfa268854259a673a4c",
+      "lines": 56
+    },
+    "run/setup-identities.json": {
+      "sha256": "3a3c5678da0b2346ec5037dd6dc6747373b50da7eb188698ec47143086aee85d",
+      "lines": 508
+    },
+    "run/propagation-samples.jsonl": {
+      "sha256": "3c0ecf5ea08dc21303260f2f97bf87144293a0c33afefe2aec7b8dc5db93f1a5",
+      "lines": 10500
+    },
+    "run/propagation-rounds.jsonl": {
+      "sha256": "701d3d9a6fd04bc9ef24132cfd8f1c51a37c7d7baa457436f460e4deebd2d5ae",
+      "lines": 210
+    },
+    "run/summary-propagation.json": {
+      "sha256": "e0ec0241919d25ffd916638c306c72ee007a24e45e0f917ff6c1ab9dcdaa982a",
+      "lines": 1246
+    },
+    "run/failures-propagation.json": {
+      "sha256": "b676b78824986e6bf9b5f8186f0bf80ad2198ae51ea450d80ad298ed3728cb47",
+      "lines": 6
+    },
+    "run/writeback-runs.jsonl": {
+      "sha256": "a2df1ded214d67562ad15b302220a4a8f4fcee51f97b15fb7cd011797ff4ab0f",
+      "lines": 73
+    },
+    "run/writeback-samples.jsonl": {
+      "sha256": "66992c450bd776cc41cbaf8cdd0febc934b332bcd6d747adc8243ceae1546019",
+      "lines": 202
+    },
+    "run/summary-writeback.json": {
+      "sha256": "d9d842ce6217eacbda5676dfbd6927ab23767a6e81b4f2332fdb16464c8cc797",
+      "lines": 150
+    },
+    "run/failures-writeback.json": {
+      "sha256": "d8ff4997cd10a1203a4f50916fc5bbe1989cf980be2ed53fdf1d2d8432c6fadd",
+      "lines": 723
+    },
+    "gate-allocation.json": {
+      "sha256": "4608ac55800a8399f7a4124b1c123cd6d8b74e524192869f50644eff9fac9053"
+    },
+    "gate-read-pre-restore.json": {
+      "sha256": "2d17fda329045f3cfc86e912cc943ea805bc512a601cf6cf52507de42bc6b642"
+    },
+    "gate-restore.json": {
+      "sha256": "d0a9193d67b098a995713952593d731e1ff4c0af9a89e86bf0ab16161374d88b"
+    },
+    "gate-read-post-restore.json": {
+      "sha256": "9634bc2cc1a2c49d84a9f27fb207fd7a10f10bdb4cee3a8db05749329a53e456"
+    },
+    "api-stop.json": {
+      "sha256": "bf5a991079d677070c047488e48ff671bcdfc57e7fe2fae9a5d2167776c829d1"
+    },
+    "source-overlay.sha256": {
+      "sha256": "785ee7ae400bb4aafbcc74384569fa0cb76bdaa26a342e40d0e80bb8e209e6bf"
+    },
+    "bin.sha256": {
+      "sha256": "340efb0955f64ef13d3148dc24d28e88ced78e126736b28d0787ee4422f76c6f"
+    }
+  },
+  "next": "r02 with a new run id, run root and database after the harness heartbeat fix (implement.md 1.6)"
+}

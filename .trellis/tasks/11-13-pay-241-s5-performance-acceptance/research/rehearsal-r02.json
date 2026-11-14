@@ -1,0 +1,373 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-14T04:22:09.073113+00:00",
+  "run_id": "pay241-s5-r02",
+  "status": "tool_rehearsal_passed_final_acceptance_not_run",
+  "purpose": "rehearsal",
+  "run_root": "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02",
+  "product_commit": "fb9f4c07059445cea41ed19e956b3eb1861817cc",
+  "source_overlay": {
+    "e2e/collaboration-performance.spec.ts": "904857638743cccc59347880c63ba28ec151cbbc95e69dc32504301dc9651723",
+    "e2e/fixtures/collaboration-performance.ts": "75d25dc3f531fa80ca807d7f3da95a0bcc746082702bcf966f225f09b9d6471a",
+    "e2e/fixtures/collaboration-performance-stats.ts": "a728075a5d1c5d52ef13929dc3cda5c5427cc6cc1adb8f1874f823d0f2b3a73d",
+    "e2e/fixtures/collaboration-performance-stats.node-test.mjs": "9c67395d28af9ff92354e1f7f83d1095181b5a03477e742bf607ad1cde5cc585"
+  },
+  "binaries_reused_from": "pay241-s5-r01; identical product source and SHA256 checked before copying",
+  "api": {
+    "url": "http://127.0.0.1:18996",
+    "pid": 67305,
+    "commit": "fb9f4c07059445cea41ed19e956b3eb1861817cc",
+    "deployment_id": "237863c2-35db-403f-9d98-3573f4b65f6b",
+    "pool_max_conns": 25,
+    "pool_min_conns": 5,
+    "descriptor_limit": null,
+    "redis": false,
+    "replicas": 1
+  },
+  "database": {
+    "name": "multica_pay241_s5_r02_api"
+  },
+  "phase_commands": [
+    {
+      "phase": "prepare",
+      "argv": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/configs/perf.json",
+        "pnpm",
+        "--dir",
+        "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/source",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-performance.spec.ts",
+        "-g",
+        "prepare:",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=list",
+        "--output",
+        "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/playwright-prepare"
+      ],
+      "pid": 83628,
+      "started_at": "2026-11-14T03:18:42.263Z",
+      "finished_at": "2026-11-14T03:30:13.123Z",
+      "exit_code": 0,
+      "signal": null,
+      "log": "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/logs/prepare.log",
+      "log_sha256": "214ee6f9c572b3fdd8b3a97c4d9dd81bd91a999343eb6fb8c8e2d87c54ffa201"
+    },
+    {
+      "phase": "propagation",
+      "argv": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/configs/perf.json",
+        "pnpm",
+        "--dir",
+        "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/source",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-performance.spec.ts",
+        "-g",
+        "propagation:",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=list",
+        "--output",
+        "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/playwright-propagation"
+      ],
+      "pid": 89432,
+      "started_at": "2026-11-14T03:33:04.629Z",
+      "finished_at": "2026-11-14T03:35:31.911Z",
+      "exit_code": 0,
+      "signal": null,
+      "log": "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/logs/propagation.log",
+      "log_sha256": "40ad7f49a91640be5c596ea8949fa4b2f48f9158ccc6fb38ca5d845ef0c03f48"
+    },
+    {
+      "phase": "writeback",
+      "argv": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/configs/perf.json",
+        "pnpm",
+        "--dir",
+        "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/source",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-performance.spec.ts",
+        "-g",
+        "writeback:",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=list",
+        "--output",
+        "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/playwright-writeback"
+      ],
+      "pid": 90082,
+      "started_at": "2026-11-14T03:37:48.995Z",
+      "finished_at": "2026-11-14T03:42:35.568Z",
+      "exit_code": 0,
+      "signal": null,
+      "log": "/Users/artisan/.multica/acceptance/pay241-s5-20261114-r02/logs/writeback.log",
+      "log_sha256": "6dcb562d3bcda5a18c3589859e3c20f2293a393e95892f43e2e6875ebfc1126d"
+    }
+  ],
+  "propagation": {
+    "denominator": {
+      "planned": 10000,
+      "rows_in_file": 10000,
+      "converged": 10000,
+      "missing": 0,
+      "not_run": 0,
+      "filled_not_run": 0,
+      "over_deadline_reclassified": 0,
+      "warmup_rows_kept_and_excluded": 500
+    },
+    "verdict": {
+      "pass": true,
+      "conditions": {
+        "zero_missing": true,
+        "pooled_p95_within_budget": true,
+        "slowest_observer_p95_within_budget": true
+      },
+      "budget_ms": 2000,
+      "deadline_ms": 10000,
+      "missing": 0
+    },
+    "pooled": {
+      "count": 10000,
+      "missing": 0,
+      "p50_ms": 474.8725420000119,
+      "p95_ms": 702.5789579999982,
+      "p99_ms": 754.1789580000041,
+      "max_ms": 794.5769580000051,
+      "p95_finite": true
+    },
+    "slowest_observer_per_event": {
+      "count": 100,
+      "missing": 0,
+      "p50_ms": 522.1365420000002,
+      "p95_ms": 740.635374999998,
+      "p99_ms": 776.8445829999982,
+      "max_ms": 794.5769580000051,
+      "p95_finite": true
+    }
+  },
+  "writeback": {
+    "pass": true,
+    "aborted": null,
+    "business_result": {
+      "pass": true,
+      "budget_ms": 5000,
+      "denominator": 100,
+      "rows_in_file": 100,
+      "converged": 100,
+      "not_run": 0,
+      "filled_not_run": 0,
+      "over_deadline_reclassified": 0,
+      "count": 100,
+      "missing": 0,
+      "p50_ms": 82.8370419999992,
+      "p95_ms": 130.69391699999687,
+      "p99_ms": 163.20354200000293,
+      "max_ms": 3108.1765000000014,
+      "p95_finite": true
+    },
+    "finalization": {
+      "pass": true,
+      "budget_ms": 5000,
+      "denominator": 100,
+      "rows_in_file": 100,
+      "converged": 100,
+      "not_run": 0,
+      "filled_not_run": 0,
+      "over_deadline_reclassified": 0,
+      "count": 100,
+      "missing": 0,
+      "p50_ms": 350.09587499999907,
+      "p95_ms": 724.773583000002,
+      "p99_ms": 911.7478750000009,
+      "max_ms": 1793.891042000003,
+      "p95_finite": true
+    },
+    "warmup_rows_kept_and_excluded": 2,
+    "setup": {
+      "runtime_id": "b822b6ec-702b-472d-865f-295f7ae74a68",
+      "runtime_owner_user_id": "021aa9b0-3a9c-4e01-b350-544bdd76135f",
+      "liveness": {
+        "heartbeatIntervalMs": 15000,
+        "heartbeatRequestTimeoutMs": 10000,
+        "runtimeFreshnessMs": 150000,
+        "hostHarnessLifetimeMs": 300000
+      },
+      "managed_credential_expires_at": "2026-11-15T03:38:16Z",
+      "daemon_start_requested_ms": 26072.903708,
+      "daemon_ready_ms": 28890.954792,
+      "execution_workspace_id": "6572914a-52b2-4f18-ae06-e63aff26d2d3",
+      "agent_id": "3ee30203-705c-4e2f-af29-917fdbe8b0c7",
+      "target_id": "2e8aca7b-9909-470f-b857-8400ead8538f",
+      "execution_mode": "host_process_supervision_v1",
+      "resume": [
+        {
+          "scope": "issue",
+          "request_id": "653750e6-e801-4d04-91d0-cd87ac1d8517",
+          "http_status": 200,
+          "code": "resumed",
+          "queue_state": "active"
+        }
+      ],
+      "poller_note": "Test poller: 50 ms poll interval, capacity 1. Not a production daemon.",
+      "heartbeat": {
+        "stopped": true,
+        "stopped_at_utc": "2026-11-14T03:42:35.005Z",
+        "stopped_ms": 284449.217833,
+        "failure": null
+      },
+      "gate": {
+        "before": {
+          "enabled": true,
+          "creation_enabled": true,
+          "host_execution_enabled": false,
+          "epoch": "3"
+        },
+        "after": {
+          "enabled": true,
+          "creation_enabled": true,
+          "host_execution_enabled": false,
+          "epoch": "5"
+        },
+        "restored": true,
+        "allocation_original": {
+          "enabled": true,
+          "creation_enabled": true,
+          "host_execution_enabled": false,
+          "epoch": "3"
+        }
+      },
+      "cleanup_failures": [],
+      "daemon": {
+        "exit_code": 0,
+        "errors": 0,
+        "ledger_runs": 101,
+        "ledger_phases": [
+          "proof_acknowledged"
+        ]
+      }
+    }
+  },
+  "root_database_audit": "database-after-writeback-final.json",
+  "cleanup": {
+    "at": "2026-11-14T04:09:47.537Z",
+    "database": "multica_pay241_s5_r02_api",
+    "database_connections": [],
+    "total_database_connections": 0,
+    "owned_binary_processes": [],
+    "api_stop": "api-stop.json",
+    "gate_after": "gate-read-after-root-restore.json",
+    "read_only": true
+  },
+  "evidence": {
+    "run/manifest.json": {
+      "sha256": "b7c1a3251c4a243862f9ce824522a817bc05374cb2adcdd6c8b89f38751b9d91",
+      "bytes": 2002
+    },
+    "source-overlay.json": {
+      "sha256": "02af815fadb7df150403c81130214daf3f324241706d9ddcd4135bed6bb2da08",
+      "bytes": 482
+    },
+    "bin-provenance.json": {
+      "sha256": "a4ba2f857692a2fd77c6565fe1feec19a56fd03e96de9c018d2bc2dd63e82385",
+      "bytes": 1863
+    },
+    "run/setup-identities.json": {
+      "sha256": "ddb58ac5f8dcdbfba8bc7c23897da2d5dbcc260127a9fab7d767ff16bb5a3d05",
+      "bytes": 13570
+    },
+    "run/prepare-log.jsonl": {
+      "sha256": "ddb4c3c30cb1ffead1cd037d6053e23b9c969f01507a5b143d0595019824cb54",
+      "bytes": 26690
+    },
+    "run/propagation-rounds.jsonl": {
+      "sha256": "0664b10d338921675e7e962e7a4281300c08dede96bb778d0fb46923ad523295",
+      "bytes": 204842
+    },
+    "run/propagation-samples.jsonl": {
+      "sha256": "8ee4ab363627b0fed4cc18c206cd7719bfe11541029ed61fd425720c54a3dabb",
+      "bytes": 12119782
+    },
+    "run/summary-propagation.json": {
+      "sha256": "c1b299fb1da8a1e8b84bb50c67663245e23543185f6a2b0cb39472579afcd0cd",
+      "bytes": 34733
+    },
+    "run/failures-propagation.json": {
+      "sha256": "a10bd1433a28264120aa7404ae4c3915c948782435b5b787e7e8def8bfe6c08f",
+      "bytes": 104
+    },
+    "run/writeback-runs.jsonl": {
+      "sha256": "fb6dd71367916ff19dc9cb454969175d79dc02592658a6dd8a3e810a776bdfc0",
+      "bytes": 249267
+    },
+    "run/writeback-samples.jsonl": {
+      "sha256": "bd37f74fc07b1a8c7f361f62d05e8062e469e00107fa8158879ebccb24bc0fc7",
+      "bytes": 359637
+    },
+    "run/summary-writeback.json": {
+      "sha256": "233df8a79ad260abec91995d4122a2f518e17a3a31041e2fae12ba601fcea8b3",
+      "bytes": 5443
+    },
+    "run/failures-writeback.json": {
+      "sha256": "64e31efd03b4b6afc49727a8965f73c3b4c63e9aed92c8f4bc9e490f672a16d4",
+      "bytes": 100
+    },
+    "database-after-writeback-final.json": {
+      "sha256": "b3f5bc1031d6587841e4b4c89bd69df97063d011be6343de78c94211530e40b8",
+      "bytes": 134829
+    },
+    "gate-allocation.json": {
+      "sha256": "ae4aa2a857dcc8a83edb871cb19215f4a1c97061f3f49de89e68274060fa8217",
+      "bytes": 582
+    },
+    "gate-restore.json": {
+      "sha256": "75ddecaa1346974d552d21c30474c75bcfcf8508c698afc2017487aea88eac08",
+      "bytes": 576
+    },
+    "gate-read-after-root-restore.json": {
+      "sha256": "f4d7b35b6effdffa5b43669135d11cd3c1c5fd89799846a5d1232723c32f2d77",
+      "bytes": 574
+    },
+    "api-stop.json": {
+      "sha256": "8ef2c78399fe61b714aa7238e9532a8d22201c8ecfc58e998f5a635723b7d921",
+      "bytes": 706
+    },
+    "final-resources.json": {
+      "sha256": "f96d40f5a773a2ecfbc1613b87dd4cd003c5ae3a130ad0f2b0bd5964e4fc2386",
+      "bytes": 284
+    },
+    "review-finalization-note.json": {
+      "sha256": "b15fd0e858d879d21e2ab00b62d24e4f074ff122e7ddfd780283efb688c6d4f0",
+      "bytes": 672
+    }
+  },
+  "independent_review": {
+    "path": "research/rehearsal-r02-review.json",
+    "sha256": "da161e1d1aa2a7ad204abd7436e59d6d58470c68010a6bb6cf19b71c73327753",
+    "checks_passed": 79,
+    "blocking_findings_open": 0
+  },
+  "retained_failures_and_limits": [
+    "r01 writeback stopped at formal run72; unchanged raw denominator100",
+    "Initial heartbeat ACK assumption and99socket success bug fixed before r02 sampling; red cases retained",
+    "One HTTP503 on stop-intent for formal run_index67; no same-path successful retry observed; that run is independently verified settled success",
+    "pprof default6060 bind failed; API remained healthy",
+    "API descriptor limit not recorded; do not replace with harness limit",
+    "Secondary hint42null values retained; not a complete100result delivery metric",
+    "Two root read-only post-run audit mistakes retained; corrected audit3 passed without product/sample changes",
+    "No production Web/Desktop DOM, finalS2-S4candidate, real model, money, production deploy or business sign-off evidence"
+  ],
+  "parent_tc24": "NOT_RUN",
+  "archive_allowed": false
+}
