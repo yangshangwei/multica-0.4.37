@@ -1,0 +1,1046 @@
+{
+  "mode": "round-1",
+  "build": {
+    "mode": "round-1",
+    "output": "/tmp/multica-collaboration-create-closure-round-1",
+    "builtAt": "2026-11-14T01:23:27.793Z",
+    "buildPid": 55143,
+    "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "sources": [
+      {
+        "path": "packages/views/collaboration/creation-form.tsx",
+        "sha256": "76dfca3170f0311299bcec8f6361dc1c1fa48b875278c64bde0ee016b4ec9443"
+      },
+      {
+        "path": "packages/views/collaboration/creation-form.test.tsx",
+        "sha256": "c6a8711f15bdb0c781fede03a8232b0215b43bb5d599d0e06451bfa90baa907b"
+      },
+      {
+        "path": "packages/views/collaboration/account-picker.tsx",
+        "sha256": "d2be611603ad3b190dfbd9481165dbaeceee5490cf5d154243043de5164fbaf0"
+      },
+      {
+        "path": "packages/views/collaboration/attachment-picker.tsx",
+        "sha256": "d909037eb0910954168c7ef7710e0ca6466f5fa5ab7cbe0138bb2f43c56c70c8"
+      },
+      {
+        "path": "packages/views/collaboration/creation-description-assist.tsx",
+        "sha256": "0bda3ef2edaa4548c1b0f2b9b8f2f94b6ea4ae7c41eddc3e99234517a1740081"
+      },
+      {
+        "path": "packages/views/modals/issue-description-assist.tsx",
+        "sha256": "c27764b9d0bd8288e790fcabd2717e4b9003c29c43d8ea085938a221cc4b6552"
+      },
+      {
+        "path": "packages/core/api/issue-description-stream.ts",
+        "sha256": "b0841552950178ead6bed4ac3b9b29622b66568cad6d23e03122790383039317"
+      },
+      {
+        "path": "packages/views/locales/en/modals.json",
+        "sha256": "2d06e8dfd98c517db05d1bca79e07df1d44fc4250f501a2a7c31aabd03c66531"
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/modals.json",
+        "sha256": "5f04a651a2f1e725eae993f46ba1402fb8e80e68c58cd2456b3f1d8c4a37fb52"
+      },
+      {
+        "path": "packages/views/collaboration/field-inputs.tsx",
+        "sha256": "823c7a6d1898eea6b85f39ff0b103fdec32b8858d70f85200c3f811049967987"
+      },
+      {
+        "path": "packages/views/collaboration/form-styles.ts",
+        "sha256": "fc42e560df3ce9a76db383e586a3a456f8c5e2c3596e7c58486452530ba74e8f"
+      },
+      {
+        "path": "packages/views/collaboration/focus.ts",
+        "sha256": "b9e0e438e5afcd5778e39b39991bdd49ff9b2bddb7af3c46f818083627fe4870"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/property-picker.tsx",
+        "sha256": "7ae19a5d2e4ea1d3c94caf29187f0a256dacb5bdfaf46a545acd432db0e8d6a7"
+      },
+      {
+        "path": "packages/views/locales/en/collaboration.json",
+        "sha256": "c21408c96356d883d5f085114361b38f13297980aaadfcc649a106408a7d1212"
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/collaboration.json",
+        "sha256": "19aba95a6e90652a89f8c47cb1a4b31013db15bb67220f30e92d37052204b4fc"
+      },
+      {
+        "path": "packages/ui/styles/tokens.css",
+        "sha256": "18b70609b67a446cc76d251bef9ea689d7e046a0bdd3c5ab2e26c66edfb03b81"
+      },
+      {
+        "path": "packages/ui/styles/base.css",
+        "sha256": "3545cb8854b53302d614bcd01c86038f03a9e5253b836753ef8e70b6904192dd"
+      },
+      {
+        "path": "packages/ui/components/ui/dialog.tsx",
+        "sha256": "35a8ac18ba129e7d90fe11e74fa2dfb5dc483d28424f39592e660884b99973cf"
+      },
+      {
+        "path": "packages/ui/components/ui/input.tsx",
+        "sha256": "a5ff3c99a2b9f302ee1291bb9d0a03300a4bbcc5fdbfa5d56421091ce5c7fcd4"
+      },
+      {
+        "path": "packages/ui/components/ui/textarea.tsx",
+        "sha256": "81b3e8aba2f8c955466889f9349911f375b3396fabe995cd5f173ff4d91bfc94"
+      },
+      {
+        "path": "packages/ui/components/ui/button.tsx",
+        "sha256": "a440a1db53ad25cb9ebda46b182e43f329e4b32f668c76bf9512724fe5bbcaf5"
+      },
+      {
+        "path": "packages/ui/components/ui/popover.tsx",
+        "sha256": "46d8d14a5637d48f6342f011027c2ac6e9e8cc53f6f4bbc41b633a773fd506e8"
+      },
+      {
+        "path": "packages/views/modals/create-issue.tsx",
+        "sha256": "16f154a27dc64ecd435b40d560a076546b7c90c27f0571e95d2f75b90b676b70"
+      },
+      {
+        "path": "artifacts/qa/collaboration-create-20261114/preview/main.tsx",
+        "sha256": "9df1613a262a2bc2cd81eaa116ca2ce505ce29deeebc1468af9df1d56041d1b0"
+      },
+      {
+        "path": "artifacts/qa/collaboration-create-20261114/preview/verify.mjs",
+        "sha256": "d747bf8f2517c52f9d29d46296d23d20722070aef39c97532c57bdfb8d3cc7ee"
+      },
+      {
+        "path": "artifacts/qa/collaboration-create-20261114/preview/build.mjs",
+        "sha256": "fd5de6608391ab427b2d4fb0f7da7cd938a8ead9ec9baf94bf8026f4d85cdeb6"
+      }
+    ]
+  },
+  "startedAt": "2026-11-14T01:24:14.902Z",
+  "driverPid": 56032,
+  "scope": "Actual shared composer and CSS with isolated mock API/SSE and memory drafts",
+  "scenarios": {
+    "toolbar-722-light-zh-Hans": {
+      "identity": {
+        "found": true,
+        "visible": true,
+        "lines": 2,
+        "boxes": [
+          {
+            "width": 138.09375,
+            "height": 15,
+            "left": 107.296875,
+            "right": 245.390625,
+            "top": 500,
+            "bottom": 515
+          },
+          {
+            "width": 126.5625,
+            "height": 15,
+            "left": 56,
+            "right": 182.5625,
+            "top": 516,
+            "bottom": 531
+          }
+        ]
+      },
+      "policyHelp": {
+        "found": true,
+        "visible": true,
+        "lines": 1,
+        "boxes": [
+          {
+            "width": 362.671875,
+            "height": 15,
+            "left": 45,
+            "right": 407.671875,
+            "top": 405,
+            "bottom": 420
+          }
+        ]
+      },
+      "policyHelpInitiallyVisible": true,
+      "independentStatus": 1,
+      "recipient": {
+        "width": 224,
+        "height": 60,
+        "left": 45,
+        "right": 269,
+        "top": 477,
+        "bottom": 537,
+        "visible": true
+      },
+      "toolbar": {
+        "width": 672,
+        "height": 76,
+        "left": 25,
+        "right": 697,
+        "top": 469,
+        "bottom": 545,
+        "visible": true
+      },
+      "footer": {
+        "width": 672,
+        "height": 57,
+        "left": 25,
+        "right": 697,
+        "top": 545,
+        "bottom": 602,
+        "visible": true
+      },
+      "description": {
+        "width": 632,
+        "height": 119,
+        "left": 45,
+        "right": 677,
+        "top": 218,
+        "bottom": 337,
+        "visible": true
+      },
+      "rowIdentity": {
+        "found": true,
+        "visible": true,
+        "lines": 2,
+        "boxes": [
+          {
+            "width": 174.09375,
+            "height": 15,
+            "left": 136.296875,
+            "right": 310.390625,
+            "top": 390,
+            "bottom": 405
+          },
+          {
+            "width": 90.5625,
+            "height": 15,
+            "left": 85,
+            "right": 175.5625,
+            "top": 406,
+            "bottom": 421
+          }
+        ]
+      },
+      "disclosure": {
+        "toggle": {
+          "width": 156.328125,
+          "height": 26,
+          "left": 387,
+          "right": 543.328125,
+          "top": 494,
+          "bottom": 520,
+          "visible": true
+        },
+        "footer": {
+          "width": 672,
+          "height": 57,
+          "left": 25,
+          "right": 697,
+          "top": 545,
+          "bottom": 602,
+          "visible": true
+        },
+        "selectedPriorityRetained": true,
+        "focusReturnedToToggle": true
+      },
+      "draftAndIdentityRetainedOnReopen": true
+    },
+    "toolbar-722-dark-zh-Hans": {
+      "identity": {
+        "found": true,
+        "visible": true,
+        "lines": 2,
+        "boxes": [
+          {
+            "width": 138.09375,
+            "height": 15,
+            "left": 107.296875,
+            "right": 245.390625,
+            "top": 500,
+            "bottom": 515
+          },
+          {
+            "width": 126.5625,
+            "height": 15,
+            "left": 56,
+            "right": 182.5625,
+            "top": 516,
+            "bottom": 531
+          }
+        ]
+      },
+      "policyHelp": {
+        "found": true,
+        "visible": true,
+        "lines": 1,
+        "boxes": [
+          {
+            "width": 362.671875,
+            "height": 15,
+            "left": 45,
+            "right": 407.671875,
+            "top": 405,
+            "bottom": 420
+          }
+        ]
+      },
+      "policyHelpInitiallyVisible": true,
+      "independentStatus": 1,
+      "recipient": {
+        "width": 224,
+        "height": 60,
+        "left": 45,
+        "right": 269,
+        "top": 477,
+        "bottom": 537,
+        "visible": true
+      },
+      "toolbar": {
+        "width": 672,
+        "height": 76,
+        "left": 25,
+        "right": 697,
+        "top": 469,
+        "bottom": 545,
+        "visible": true
+      },
+      "footer": {
+        "width": 672,
+        "height": 57,
+        "left": 25,
+        "right": 697,
+        "top": 545,
+        "bottom": 602,
+        "visible": true
+      },
+      "description": {
+        "width": 632,
+        "height": 119,
+        "left": 45,
+        "right": 677,
+        "top": 218,
+        "bottom": 337,
+        "visible": true
+      },
+      "rowIdentity": {
+        "found": true,
+        "visible": true,
+        "lines": 2,
+        "boxes": [
+          {
+            "width": 174.09375,
+            "height": 15,
+            "left": 136.296875,
+            "right": 310.390625,
+            "top": 390,
+            "bottom": 405
+          },
+          {
+            "width": 90.5625,
+            "height": 15,
+            "left": 85,
+            "right": 175.5625,
+            "top": 406,
+            "bottom": 421
+          }
+        ]
+      },
+      "disclosure": {
+        "toggle": {
+          "width": 156.328125,
+          "height": 26,
+          "left": 387,
+          "right": 543.328125,
+          "top": 494,
+          "bottom": 520,
+          "visible": true
+        },
+        "footer": {
+          "width": 672,
+          "height": 57,
+          "left": 25,
+          "right": 697,
+          "top": 545,
+          "bottom": 602,
+          "visible": true
+        },
+        "selectedPriorityRetained": true,
+        "focusReturnedToToggle": true
+      },
+      "draftAndIdentityRetainedOnReopen": true
+    },
+    "toolbar-1280-light-zh-Hans": {
+      "identity": {
+        "found": true,
+        "visible": true,
+        "lines": 2,
+        "boxes": [
+          {
+            "width": 138.09375,
+            "height": 15,
+            "left": 386.296875,
+            "right": 524.390625,
+            "top": 620,
+            "bottom": 635
+          },
+          {
+            "width": 126.5625,
+            "height": 15,
+            "left": 335,
+            "right": 461.5625,
+            "top": 636,
+            "bottom": 651
+          }
+        ]
+      },
+      "policyHelp": {
+        "found": true,
+        "visible": true,
+        "lines": 1,
+        "boxes": [
+          {
+            "width": 362.671875,
+            "height": 15,
+            "left": 324,
+            "right": 686.671875,
+            "top": 525,
+            "bottom": 540
+          }
+        ]
+      },
+      "policyHelpInitiallyVisible": true,
+      "independentStatus": 1,
+      "recipient": {
+        "width": 224,
+        "height": 60,
+        "left": 324,
+        "right": 548,
+        "top": 597,
+        "bottom": 657,
+        "visible": true
+      },
+      "toolbar": {
+        "width": 672,
+        "height": 76,
+        "left": 304,
+        "right": 976,
+        "top": 589,
+        "bottom": 665,
+        "visible": true
+      },
+      "footer": {
+        "width": 672,
+        "height": 57,
+        "left": 304,
+        "right": 976,
+        "top": 665,
+        "bottom": 722,
+        "visible": true
+      },
+      "description": {
+        "width": 632,
+        "height": 119,
+        "left": 324,
+        "right": 956,
+        "top": 338,
+        "bottom": 457,
+        "visible": true
+      },
+      "rowIdentity": {
+        "found": true,
+        "visible": true,
+        "lines": 2,
+        "boxes": [
+          {
+            "width": 174.09375,
+            "height": 15,
+            "left": 415.296875,
+            "right": 589.390625,
+            "top": 510,
+            "bottom": 525
+          },
+          {
+            "width": 90.5625,
+            "height": 15,
+            "left": 364,
+            "right": 454.5625,
+            "top": 526,
+            "bottom": 541
+          }
+        ]
+      },
+      "disclosure": {
+        "toggle": {
+          "width": 156.328125,
+          "height": 26,
+          "left": 650,
+          "right": 806.328125,
+          "top": 614,
+          "bottom": 640,
+          "visible": true
+        },
+        "footer": {
+          "width": 672,
+          "height": 57,
+          "left": 304,
+          "right": 976,
+          "top": 665,
+          "bottom": 722,
+          "visible": true
+        },
+        "selectedPriorityRetained": true,
+        "focusReturnedToToggle": true
+      },
+      "draftAndIdentityRetainedOnReopen": true
+    },
+    "toolbar-1280-dark-zh-Hans": {
+      "identity": {
+        "found": true,
+        "visible": true,
+        "lines": 2,
+        "boxes": [
+          {
+            "width": 138.09375,
+            "height": 15,
+            "left": 386.296875,
+            "right": 524.390625,
+            "top": 620,
+            "bottom": 635
+          },
+          {
+            "width": 126.5625,
+            "height": 15,
+            "left": 335,
+            "right": 461.5625,
+            "top": 636,
+            "bottom": 651
+          }
+        ]
+      },
+      "policyHelp": {
+        "found": true,
+        "visible": true,
+        "lines": 1,
+        "boxes": [
+          {
+            "width": 362.671875,
+            "height": 15,
+            "left": 324,
+            "right": 686.671875,
+            "top": 525,
+            "bottom": 540
+          }
+        ]
+      },
+      "policyHelpInitiallyVisible": true,
+      "independentStatus": 1,
+      "recipient": {
+        "width": 224,
+        "height": 60,
+        "left": 324,
+        "right": 548,
+        "top": 597,
+        "bottom": 657,
+        "visible": true
+      },
+      "toolbar": {
+        "width": 672,
+        "height": 76,
+        "left": 304,
+        "right": 976,
+        "top": 589,
+        "bottom": 665,
+        "visible": true
+      },
+      "footer": {
+        "width": 672,
+        "height": 57,
+        "left": 304,
+        "right": 976,
+        "top": 665,
+        "bottom": 722,
+        "visible": true
+      },
+      "description": {
+        "width": 632,
+        "height": 119,
+        "left": 324,
+        "right": 956,
+        "top": 338,
+        "bottom": 457,
+        "visible": true
+      },
+      "rowIdentity": {
+        "found": true,
+        "visible": true,
+        "lines": 2,
+        "boxes": [
+          {
+            "width": 174.09375,
+            "height": 15,
+            "left": 415.296875,
+            "right": 589.390625,
+            "top": 510,
+            "bottom": 525
+          },
+          {
+            "width": 90.5625,
+            "height": 15,
+            "left": 364,
+            "right": 454.5625,
+            "top": 526,
+            "bottom": 541
+          }
+        ]
+      },
+      "disclosure": {
+        "toggle": {
+          "width": 156.328125,
+          "height": 26,
+          "left": 650,
+          "right": 806.328125,
+          "top": 614,
+          "bottom": 640,
+          "visible": true
+        },
+        "footer": {
+          "width": 672,
+          "height": 57,
+          "left": 304,
+          "right": 976,
+          "top": 665,
+          "bottom": 722,
+          "visible": true
+        },
+        "selectedPriorityRetained": true,
+        "focusReturnedToToggle": true
+      },
+      "draftAndIdentityRetainedOnReopen": true
+    },
+    "toolbar-390-light-zh-Hans": {
+      "identity": {
+        "found": true,
+        "visible": true,
+        "lines": 2,
+        "boxes": [
+          {
+            "width": 138.09375,
+            "height": 15,
+            "left": 94.296875,
+            "right": 232.390625,
+            "top": 426,
+            "bottom": 441
+          },
+          {
+            "width": 126.5625,
+            "height": 15,
+            "left": 43,
+            "right": 169.5625,
+            "top": 442,
+            "bottom": 457
+          }
+        ]
+      },
+      "policyHelp": {
+        "found": true,
+        "visible": true,
+        "lines": 2,
+        "boxes": [
+          {
+            "width": 314.671875,
+            "height": 15,
+            "left": 32,
+            "right": 346.671875,
+            "top": 315,
+            "bottom": 330
+          },
+          {
+            "width": 48,
+            "height": 15,
+            "left": 32,
+            "right": 80,
+            "top": 331,
+            "bottom": 346
+          }
+        ]
+      },
+      "policyHelpInitiallyVisible": false,
+      "independentStatus": 1,
+      "recipient": {
+        "width": 224,
+        "height": 60,
+        "left": 32,
+        "right": 256,
+        "top": 403,
+        "bottom": 463,
+        "visible": true
+      },
+      "toolbar": {
+        "width": 366,
+        "height": 126,
+        "left": 12,
+        "right": 378,
+        "top": 395,
+        "bottom": 521,
+        "visible": true
+      },
+      "footer": {
+        "width": 366,
+        "height": 121,
+        "left": 12,
+        "right": 378,
+        "top": 521,
+        "bottom": 642,
+        "visible": true
+      },
+      "description": {
+        "width": 326,
+        "height": 64,
+        "left": 32,
+        "right": 358,
+        "top": 167,
+        "bottom": 231,
+        "visible": true
+      },
+      "rowIdentity": {
+        "found": true,
+        "visible": true,
+        "lines": 2,
+        "boxes": [
+          {
+            "width": 174.09375,
+            "height": 15,
+            "left": 110.296875,
+            "right": 284.390625,
+            "top": 316,
+            "bottom": 331
+          },
+          {
+            "width": 90.5625,
+            "height": 15,
+            "left": 59,
+            "right": 149.5625,
+            "top": 332,
+            "bottom": 347
+          }
+        ]
+      },
+      "disclosure": {
+        "toggle": {
+          "width": 156.328125,
+          "height": 44,
+          "left": 144,
+          "right": 300.328125,
+          "top": 469,
+          "bottom": 513,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "left": 12,
+          "right": 378,
+          "top": 521,
+          "bottom": 642,
+          "visible": true
+        },
+        "selectedPriorityRetained": true,
+        "focusReturnedToToggle": true
+      },
+      "draftAndIdentityRetainedOnReopen": true
+    },
+    "toolbar-390-dark-zh-Hans": {
+      "identity": {
+        "found": true,
+        "visible": true,
+        "lines": 2,
+        "boxes": [
+          {
+            "width": 138.09375,
+            "height": 15,
+            "left": 94.296875,
+            "right": 232.390625,
+            "top": 426,
+            "bottom": 441
+          },
+          {
+            "width": 126.5625,
+            "height": 15,
+            "left": 43,
+            "right": 169.5625,
+            "top": 442,
+            "bottom": 457
+          }
+        ]
+      },
+      "policyHelp": {
+        "found": true,
+        "visible": true,
+        "lines": 2,
+        "boxes": [
+          {
+            "width": 314.671875,
+            "height": 15,
+            "left": 32,
+            "right": 346.671875,
+            "top": 315,
+            "bottom": 330
+          },
+          {
+            "width": 48,
+            "height": 15,
+            "left": 32,
+            "right": 80,
+            "top": 331,
+            "bottom": 346
+          }
+        ]
+      },
+      "policyHelpInitiallyVisible": false,
+      "independentStatus": 1,
+      "recipient": {
+        "width": 224,
+        "height": 60,
+        "left": 32,
+        "right": 256,
+        "top": 403,
+        "bottom": 463,
+        "visible": true
+      },
+      "toolbar": {
+        "width": 366,
+        "height": 126,
+        "left": 12,
+        "right": 378,
+        "top": 395,
+        "bottom": 521,
+        "visible": true
+      },
+      "footer": {
+        "width": 366,
+        "height": 121,
+        "left": 12,
+        "right": 378,
+        "top": 521,
+        "bottom": 642,
+        "visible": true
+      },
+      "description": {
+        "width": 326,
+        "height": 64,
+        "left": 32,
+        "right": 358,
+        "top": 167,
+        "bottom": 231,
+        "visible": true
+      },
+      "rowIdentity": {
+        "found": true,
+        "visible": true,
+        "lines": 2,
+        "boxes": [
+          {
+            "width": 174.09375,
+            "height": 15,
+            "left": 110.296875,
+            "right": 284.390625,
+            "top": 316,
+            "bottom": 331
+          },
+          {
+            "width": 90.5625,
+            "height": 15,
+            "left": 59,
+            "right": 149.5625,
+            "top": 332,
+            "bottom": 347
+          }
+        ]
+      },
+      "disclosure": {
+        "toggle": {
+          "width": 156.328125,
+          "height": 44,
+          "left": 144,
+          "right": 300.328125,
+          "top": 469,
+          "bottom": 513,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "left": 12,
+          "right": 378,
+          "top": 521,
+          "bottom": 642,
+          "visible": true
+        },
+        "selectedPriorityRetained": true,
+        "focusReturnedToToggle": true
+      },
+      "draftAndIdentityRetainedOnReopen": true
+    },
+    "long-content-recovery-light": {
+      "initialFooter": {
+        "width": 366,
+        "height": 121,
+        "left": 12,
+        "right": 378,
+        "top": 521,
+        "bottom": 642,
+        "visible": true
+      },
+      "filesFooter": {
+        "width": 366,
+        "height": 121,
+        "left": 12,
+        "right": 378,
+        "top": 521,
+        "bottom": 642,
+        "visible": true
+      },
+      "longState": {
+        "answer": {
+          "width": 300,
+          "height": 44,
+          "left": 45,
+          "right": 345,
+          "top": 275,
+          "bottom": 319,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "left": 12,
+          "right": 378,
+          "top": 509,
+          "bottom": 630,
+          "visible": true
+        },
+        "editor": {
+          "client": 1436,
+          "scroll": 1436
+        },
+        "formIdentityRetained": true,
+        "streamRetainedOnResize": true
+      },
+      "refusal": {
+        "rejection": {
+          "width": 326,
+          "height": 20,
+          "left": 32,
+          "right": 358,
+          "top": 311,
+          "bottom": 331,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "left": 12,
+          "right": 378,
+          "top": 509,
+          "bottom": 630,
+          "visible": true
+        },
+        "files": 32
+      },
+      "rawUndoPreserved": true
+    },
+    "long-content-recovery-dark": {
+      "initialFooter": {
+        "width": 366,
+        "height": 121,
+        "left": 12,
+        "right": 378,
+        "top": 521,
+        "bottom": 642,
+        "visible": true
+      },
+      "filesFooter": {
+        "width": 366,
+        "height": 121,
+        "left": 12,
+        "right": 378,
+        "top": 521,
+        "bottom": 642,
+        "visible": true
+      },
+      "longState": {
+        "answer": {
+          "width": 300,
+          "height": 44,
+          "left": 45,
+          "right": 345,
+          "top": 269,
+          "bottom": 313,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "left": 12,
+          "right": 378,
+          "top": 509,
+          "bottom": 630,
+          "visible": true
+        },
+        "editor": {
+          "client": 1436,
+          "scroll": 1436
+        },
+        "formIdentityRetained": true,
+        "streamRetainedOnResize": true
+      },
+      "refusal": {
+        "rejection": {
+          "width": 326,
+          "height": 20,
+          "left": 32,
+          "right": 358,
+          "top": 311,
+          "bottom": 331,
+          "visible": true
+        },
+        "footer": {
+          "width": 366,
+          "height": 121,
+          "left": 12,
+          "right": 378,
+          "top": 509,
+          "bottom": 630,
+          "visible": true
+        },
+        "files": 32
+      },
+      "rawUndoPreserved": true
+    }
+  },
+  "failures": [
+    {
+      "scenario": "toolbar-320-light-zh-Hans",
+      "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Proxy.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-create-20261114/preview/verify.mjs:177:71\n    at async scenario (file:///Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-create-20261114/preview/verify.mjs:125:34)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-create-20261114/preview/verify.mjs:137:32"
+    },
+    {
+      "scenario": "toolbar-320-dark-zh-Hans",
+      "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Proxy.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-create-20261114/preview/verify.mjs:177:71\n    at runNextTicks (node:internal/process/task_queues:64:5)\n    at process.processImmediate (node:internal/timers:452:9)\n    at process.callbackTrampoline (node:internal/async_hooks:130:17)\n    at async scenario (file:///Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-create-20261114/preview/verify.mjs:125:34)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-create-20261114/preview/verify.mjs:137:32"
+    },
+    {
+      "scenario": "toolbar-320-light-en",
+      "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Proxy.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-create-20261114/preview/verify.mjs:177:71\n    at runNextTicks (node:internal/process/task_queues:64:5)\n    at process.processImmediate (node:internal/timers:452:9)\n    at process.callbackTrampoline (node:internal/async_hooks:130:17)\n    at async scenario (file:///Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-create-20261114/preview/verify.mjs:125:34)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-create-20261114/preview/verify.mjs:137:32"
+    },
+    {
+      "scenario": "toolbar-320-dark-en",
+      "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Proxy.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-create-20261114/preview/verify.mjs:177:71\n    at async scenario (file:///Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-create-20261114/preview/verify.mjs:125:34)\n    at async file:///Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-create-20261114/preview/verify.mjs:137:32"
+    }
+  ],
+  "pageErrors": [],
+  "blockedRequests": [],
+  "listener": {
+    "origin": "http://127.0.0.1:63463",
+    "owned": true,
+    "pid": 56032
+  },
+  "engine": "Playwright Chromium 145.0.7632.6",
+  "browserClosed": true,
+  "listenerClosed": true,
+  "finishedAt": "2026-11-14T01:24:48.115Z"
+}

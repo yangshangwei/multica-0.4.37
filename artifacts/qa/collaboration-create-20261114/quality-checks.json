@@ -1,0 +1,61 @@
+{
+  "checkedAt": "2026-11-14T02:23:43.604777+00:00",
+  "tests": {
+    "command": "pnpm --filter @multica/views exec vitest run collaboration modals/issue-description-assist.test.tsx locales/parity.test.ts --maxWorkers=2",
+    "exitCode": 0,
+    "files": 36,
+    "passed": 425
+  },
+  "typecheck": {
+    "command": "pnpm --filter @multica/views typecheck",
+    "exitCode": 0
+  },
+  "lint": {
+    "command": "pnpm --filter @multica/views lint",
+    "exitCode": 0,
+    "errors": 0,
+    "existingWarnings": 27
+  },
+  "detector": {
+    "targets": [
+      "packages/views/collaboration/creation-form.tsx",
+      "packages/views/collaboration/account-picker.tsx"
+    ],
+    "exitCode": 0,
+    "findings": [],
+    "phase": "Single scan after information restoration; final reserved-basis-only delta confirmed with fresh lint and real-CSS browser tests."
+  },
+  "scopedDiffCheck": {
+    "exitCode": 0
+  },
+  "browser": {
+    "passed": 13,
+    "failed": 0,
+    "pageErrors": 0,
+    "ownedResourcesClosed": true
+  },
+  "native": {
+    "trustedOSPointer": true,
+    "closeDelivered": true,
+    "clickAndDragStationary": true,
+    "ownedResourcesClosed": true
+  },
+  "visualVerdict": {
+    "score": 95,
+    "verdict": "pass",
+    "category_match": true,
+    "differences": [],
+    "suggestions": [],
+    "reasoning": "Readable identities and guidance preserve the incumbent composer styling. The final13-case confirmation includes stable320px summaries and the520px first-date edit with complete focused-control visibility; no confirmed visual or interaction defect remains."
+  },
+  "scope": "Bounded direct page closure; no Trellis task created and no live backend/model acceptance claimed",
+  "finalBuild": "preview/round-3-build.json",
+  "review": {
+    "status": "passed",
+    "resolved": [
+      "520px first-date focused-control clipping"
+    ],
+    "newConfirmedFindings": [],
+    "headDependencies": "required imports and66locale stems present"
+  }
+}

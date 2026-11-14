@@ -10,6 +10,9 @@ live API acceptance and Electron Main are separate verification surfaces.
 ## 2. Signatures
 
 - `CollaborationCreationPanel({ scope, sourceWorkspaceId?, onCreated, constrained?, onCancel? })`; standalone defaults remain unconstrained without a Dialog dependency.
+- `CollaborationAccountPicker.compact?` uses the shared pill chrome;
+  `triggerLabel?` changes its visible single-selection caption only. Full account
+  identity, lookup, default presentation and accessible labels remain intact.
 - `PropertyPicker.listboxId?` and `contentClassName?` are generic opt-in relations/styles.
 - `PickerItem.optionId?` enables `option`, selected/disabled semantics and composite tab order; `ariaLabel?` must include visible identity when it overrides descendants.
 - Core `executeCollaborationCreation(client, scope, draft, recovery)` continues to own correlation, original keys, retirement and source/API/viewer fences.
@@ -106,12 +109,27 @@ IME composition, exact lookup and full account identity labels remain intact.
 
 ## Composer layout and attachment focus
 
-Creation uses the single-surface composer with recipient and AI participation
-after title/description in the scrollable body, outside advanced fields. The
-source context and footer remain in normal flow. Only the attachment entry,
-draft notice and cancel/create actions belong in the fixed footer: file lists,
-sharing help, upload progress, retry/reselect controls and long errors scroll
-with the body. A 32-file selection must not grow the fixed footer.
+Creation uses the single-surface composer with title/description in the scrolling
+body and a bottom property toolbar for recipient, AI participation and the
+initial-fields disclosure. Keep source context, the property toolbar and footer
+in normal flow outside that scroll owner. The separate selected-recipient status
+and the AI explanation linked by `aria-describedby` stay visibly rendered in the
+body; on a short viewport they remain reachable through body scrolling.
+Attachment entry, draft notice and cancel/create actions belong in the footer;
+file lists, sharing help, upload progress, retry/reselect controls and long errors
+scroll with the body. A 32-file selection must not grow the fixed footer.
+
+Initial fields use a named button with `aria-expanded`/`aria-controls` and a
+mounted, hidden section in the body. Retained non-default values appear in the
+button's summary; invalid values open the section automatically. Opening reveals
+the section through the body scroll owner, and closing keeps keyboard focus on
+the disclosure. Keep AI policy and the disclosure in one shrinkable, no-wrap
+control group with a stable reserved basis (`basis-80 grow`, clamped by
+`max-w-full`). Reserving 20rem gives supported summary captions room before the
+first edit; the group may wrap as a whole at narrow widths, but adding count text
+must not change its outer row placement and clip an already focused field.
+Verify 320px summary updates and a 520x568 first Start-date edit. Do not solve
+this local layout issue with another observer or unconditional recovery.
 
 Splitting attachment presentation must retain one upload owner. Optional
 composition props may place the trigger in the footer and details in the body;
@@ -195,13 +213,14 @@ outside the scrolling body with viewport gutters and coarse targets >=44px.
 Standalone panels accept optional header/layout callbacks without a Dialog
 dependency.
 
-Expanded height must enlarge the description editor, not create an unused gap
-after the fields. Use an expanded-only flex column in the scrolling body with
-natural-height, nonshrinking siblings and the description as the sole grow
-item. The textarea grows with an auto content basis and retains natural
-field-sizing/minimum height. Extra AI questions, files or open advanced fields
-consume that spare space before genuine content overflow scrolls the body.
-Keep the default compact flow and all mounted editor/assistant identities.
+Available height must enlarge the description editor, not create an unused gap
+after the fields. Constrained default and expanded sizes use a flex column in the
+scrolling body with natural-height, nonshrinking siblings and the description as
+the sole grow item. The textarea grows with an auto content basis and retains
+natural field-sizing/minimum height. Extra AI questions, files or open advanced
+fields consume that spare space before genuine overflow scrolls the body.
+Standalone unconstrained panels keep their natural flow. Resizing retains all
+mounted editor/assistant identities.
 
 The popup must explicitly opt out of Electron app-region dragging. Expanded
 header controls overlap the desktop shell's native drag strip; a high z-index
@@ -217,3 +236,19 @@ or draft ownership changes discard output; upload/create/durable-recovery locks
 prevent adoption. AI unavailable/route-missing failures preserve drafts/files.
 Full contracts and shared default-caller tests live in
 [Issue Description Assist](./issue-description-assist.md).
+
+## Rendered identity and guidance evidence
+
+`toHaveTextContent(fullId)` protects identity data, but cannot prove that a
+selected ID is readable: it also passes for a clipped `sr-only` descendant.
+Tooltip or screen-reader text cannot replace the complete visible selected ID
+or the visible AI-participation explanation. Browser verification must measure
+the full text ranges against the viewport and every clipping ancestor, including
+`clip`/`clip-path`, after transition settlement. Scroll body guidance into view
+when needed; the fixed controls and complete selected ID must remain reachable.
+
+The unit regression owns independently announced recipient changes, including
+returning to self, in both constrained and standalone panels. Actual CSS browser
+tests own full identity/help visibility, 44px coarse controls, summary-driven
+toolbar reflow, disclosure focus, long content and refusal visibility. Do not
+replace these with Tailwind-string assertions or jsdom visibility alone.

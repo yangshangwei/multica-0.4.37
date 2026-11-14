@@ -1,0 +1,13 @@
+{
+  "score": 88,
+  "verdict": "revise",
+  "category_match": true,
+  "differences": [
+    "A520x568 first Start-date edit increases the outer toolbar from76px to126px; the still-focused date control is clipped by32px. The inner no-wrap group does not reserve stable space within the wrapping parent."
+  ],
+  "suggestions": [
+    "Reserve a stable responsive basis for the AI/disclosure group, large enough for the supported summary captions, so the outer row placement does not depend on configured-count text.",
+    "Preserve the readable ID/status/help and verify the new520px date regression with the prior matrix on one final frozen build."
+  ],
+  "reasoning": "Independent review and a new real-CSS regression reproduce the same clipping with the current frozen build. This is a concrete responsive focus defect requiring a narrow layout correction."
+}

@@ -1,0 +1,16 @@
+{
+  "score": 84,
+  "verdict": "revise",
+  "category_match": true,
+  "differences": [
+    "The bottom-toolbar composer preserves the incumbent product styling, but all four current captures hide the selected account ID.",
+    "AI participation help is screen-reader-only in every capture, and the independent selected-recipient status is absent.",
+    "The narrow English toolbar/footer remains reachable, but guidance in the scrolling body requires an explicit reachability check after restoring it."
+  ],
+  "suggestions": [
+    "Restore the complete wrapping selected account ID without replacing the bottom toolbar.",
+    "Restore the independently announced recipient status and visible AI participation help using existing copy.",
+    "Verify text ranges, clipping and scroll reachability at 320/390 widths together with the desktop captures."
+  ],
+  "reasoning": "Current screenshots retain the approved composer hierarchy and semantic-token styling. Missing identity and guidance are confirmed by painted text-range measurements, so this version needs a local correction."
+}

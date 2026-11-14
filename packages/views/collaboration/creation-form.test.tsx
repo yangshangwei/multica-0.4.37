@@ -66,6 +66,29 @@ it("preserves the manual policy choice with the creation draft and sends it expl
   expect(JSON.parse(String(write?.[1]?.body))).toMatchObject({ title: "A manual collaboration", ai_policy: "manual" });
 });
 
+it.each([false, true])("announces recipient changes independently of the toolbar trigger: constrained=%s", async (constrained) => {
+  vi.stubGlobal("fetch", vi.fn(async (input: string) => {
+    const url = new URL(input);
+    if (url.pathname.endsWith("creation-options")) return json(url.searchParams.has("source_workspace_id") ? parentOptions() : options);
+    if (url.pathname.endsWith("recipients/search")) return json({ issue_id: null, source_workspace_id: source,
+      scope: "directory", source_member: true, recent: [], next_cursor: null,
+      recipients: [{ user_id: other, name: "External recipient", avatar_url: "", external: true }] });
+    if (url.pathname.includes("/attachments/drafts/")) return json({ draft_id: url.pathname.split("/").pop(), attachments: [] });
+    throw new Error(`Unexpected test path ${url.pathname}`);
+  }));
+  const user = userEvent.setup();
+  mount(vi.fn(), source, "en", constrained);
+  await screen.findByLabelText("Title");
+  const trigger = screen.getByRole("button", { name: "Recipient" });
+  await user.click(trigger);
+  await user.click(await screen.findByRole("option", { name: new RegExp(other) }));
+  const status = await screen.findByText("Assigned to External recipient", { selector: '[role="status"]' });
+  expect(trigger).not.toContainElement(status);
+  await user.click(trigger);
+  await user.click(await screen.findByRole("option", { name: new RegExp(actor) }));
+  expect(status).toHaveTextContent("Assigned to you");
+});
+
 it("locks the source through delayed creation and completes the original form once", async () => {
   let finishCreate!: (response: Response) => void;
   const keys: string[] = [];
@@ -609,7 +632,7 @@ for (const constrained of [true, false]) it(`reveals clipped body focus without 
 });
 
 
-it("summarizes retained non-default fields outside the collapsed details", async () => {
+it("summarizes retained non-default fields on the collapsed toolbar toggle", async () => {
   vi.stubGlobal("fetch", vi.fn(async (input: string) => new URL(input).searchParams.has("source_workspace_id") ? json(parentOptions()) : json(options)));
   const user = userEvent.setup();
   let view = mount(vi.fn(), source, "en", true);
@@ -620,7 +643,8 @@ it("summarizes retained non-default fields outside the collapsed details", async
   view.unmount();
   view = mount(vi.fn(), source, "en", true);
   const summary = await screen.findByText("2 fields set");
-  expect(summary.closest("details")).not.toHaveAttribute("open");
+  expect(summary.closest("button")).toHaveAttribute("aria-expanded", "false");
+  expect(screen.getByLabelText("Priority")).not.toBeVisible();
   expect(summary).toBeVisible();
   await user.click(summary);
   expect(screen.getByLabelText("Priority")).toHaveValue("high");

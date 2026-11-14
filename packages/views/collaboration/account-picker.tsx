@@ -15,6 +15,7 @@ import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { ActorAvatar } from "@multica/ui/components/common/actor-avatar";
 import { useT } from "../i18n";
+import { PillButton } from "../common/pill-button";
 import { CollaborationQueryState } from "./query-state";
 import { PickerItem, PickerSection, PropertyPicker } from "../issues/components/pickers/property-picker";
 import { collaborationFocusWithinClass, collaborationPickerContentClass } from "./form-styles";
@@ -27,7 +28,10 @@ export interface CollaborationAccountPickerProps {
   onSelect: (account: CollaborationRecipientAccount | null) => void;
   label: string;
   disabled?: boolean;
+  /** Render the trigger as a toolbar pill. */
   compact?: boolean;
+  /** Visible trigger text for a single selection; defaults to the account name. */
+  triggerLabel?: string;
   allowSelf?: boolean;
   selfName?: string;
   membersOnly?: boolean;
@@ -59,6 +63,7 @@ export function CollaborationAccountPicker({
   label,
   disabled = false,
   compact = false,
+  triggerLabel,
   allowSelf = false,
   selfName,
   membersOnly = false,
@@ -183,23 +188,34 @@ export function CollaborationAccountPicker({
     </div>}
   </div>;
 
-  const selectedIdentity = display && (!multiple || selectedAccounts.length <= 1)
-    ? <span className={`block text-caption text-muted-foreground [overflow-wrap:anywhere] ${compact ? "col-span-full" : ""}`}>{t(($) => $.recipientPicker.accountId, { id: accountIdentity(display) })}</span>
-    : null;
-  return <div data-recipient-picker className={`min-w-0 ${collaborationFocusWithinClass}`}>
+  const accountIdText = display && (!multiple || selectedAccounts.length <= 1) ? t(($) => $.recipientPicker.accountId, { id: accountIdentity(display) }) : null;
+  const name = multiple && selectedAccounts.length > 1 ? t(($) => $.recipientPicker.selectedCount, { count: selectedAccounts.length }) : triggerLabel ?? displayName;
+  const externalBadge = display?.external === true && <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 text-caption text-muted-foreground">{t(($) => $.recipientPicker.external)}</span>;
+  // Compact controls keep the complete selected identity directly readable.
+  const triggerRender = compact
+    ? <PillButton aria-label={label} disabled={disabled} title={accountIdText ?? undefined} className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50" />
+    : <button type="button" aria-label={label} disabled={disabled} className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-left text-body hover:bg-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" />;
+  const trigger = compact
+    ? <span className="grid w-full min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-1.5 gap-y-0.5 text-left">
+      {display && <ActorAvatar name={display.name} initials={initials(display.name)} avatarUrl={display.avatar_url} size="xs" />}
+      <span className="min-w-0 truncate">{name}</span>
+      {externalBadge}
+      {accountIdText && <span className="col-span-full text-caption text-muted-foreground [overflow-wrap:anywhere]">{accountIdText}</span>}
+    </span>
+    : <span className="flex min-w-0 flex-1 items-center gap-2">
+      {display && <ActorAvatar name={display.name} initials={initials(display.name)} avatarUrl={display.avatar_url} size="sm" />}
+      <span className="min-w-0 flex-1"><span className="block truncate">{name}</span>
+        {accountIdText && <span className="block text-caption text-muted-foreground [overflow-wrap:anywhere]">{accountIdText}</span>}
+      </span>
+      {externalBadge}
+      <ChevronDown aria-hidden className="size-4 shrink-0 text-muted-foreground" />
+    </span>;
+  return <div data-recipient-picker className={`min-w-0 ${compact ? "flex" : ""} ${collaborationFocusWithinClass}`}>
     <PropertyPicker open={isOpen} onOpenChange={(next) => { setOpen(next); if (!next) { setExactOpen(false); setExactText(""); setExactRequest(""); } }}
       width="w-96 max-w-[calc(100vw-24px)]" align="start" searchable searchPlaceholder={t(($) => $.recipientPicker.search)}
       navigationResetKey={navigationResetKey} onSearchChange={setInput} listboxId={listboxId} searchInputRef={searchInput}
       contentClassName={`${collaborationPickerContentClass} max-h-(--available-height) overflow-y-auto [&>div]:min-h-0 [&>div:has(>[role=listbox])]:shrink [&>div:not(:has(>[role=listbox]))]:shrink-0`}
-      triggerAriaLabel={label} triggerRender={<button type="button" aria-label={label} disabled={disabled} className={`flex min-h-11 w-full min-w-0 items-center gap-2 rounded-md px-3 py-2 text-left text-body hover:bg-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 ${compact ? "bg-muted/50" : "border border-input bg-background"}`} />} trigger={<span className={compact ? "grid min-w-0 flex-1 grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-x-2 gap-y-1" : "flex min-w-0 flex-1 items-center gap-2"}>
-        {display && <ActorAvatar name={display.name} initials={initials(display.name)} avatarUrl={display.avatar_url} size="sm" />}
-        <span className="min-w-0 flex-1"><span className="block truncate">{multiple && selectedAccounts.length > 1 ? t(($) => $.recipientPicker.selectedCount, { count: selectedAccounts.length }) : displayName}</span>
-          {!compact && selectedIdentity}
-        </span>
-        {display?.external === true && <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 text-caption text-muted-foreground">{t(($) => $.recipientPicker.external)}</span>}
-        <ChevronDown aria-hidden className="size-4 shrink-0 text-muted-foreground" />
-        {compact && selectedIdentity}
-      </span>}
+      triggerAriaLabel={label} triggerRender={triggerRender} trigger={trigger}
       footer={<>
         {!searchPending && search.isFetchingNextPage && <p role="status" className="px-2 py-2 text-caption text-muted-foreground"><LoaderCircle aria-hidden className="mr-1 inline size-3.5 animate-spin" />{t(($) => $.recipientPicker.loadingMore)}</p>}
         {!searchPending && search.hasNextPage && <button type="button" className="min-h-11 w-full rounded-md px-2 text-left text-caption text-muted-foreground hover:bg-accent hover:text-foreground" disabled={search.isFetchingNextPage} onClick={() => { searchInput.current?.focus(); void search.fetchNextPage(); }}>{t(($) => $.recipientPicker.loadMore)}</button>}

@@ -1,0 +1,62 @@
+{
+  "checkedAt": "2026-11-14T02:38:22.695041+00:00",
+  "scope": "Resume authorized direct closure; no new product edits, task, archive, or deployment",
+  "pageSourcesMatchFinalBuild": [
+    {
+      "path": "packages/views/collaboration/account-picker.tsx",
+      "sha256": "d2be611603ad3b190dfbd9481165dbaeceee5490cf5d154243043de5164fbaf0"
+    },
+    {
+      "path": "packages/views/collaboration/creation-form.tsx",
+      "sha256": "73a35cd01ffa17104ba1ed3bf93f5fd7a8b404338f9658ecf17ede4db738c243"
+    },
+    {
+      "path": "packages/views/collaboration/creation-form.test.tsx",
+      "sha256": "c6a8711f15bdb0c781fede03a8232b0215b43bb5d599d0e06451bfa90baa907b"
+    }
+  ],
+  "initialManifestComparison": {
+    "matching": 474,
+    "total": 475,
+    "changed": [
+      "packages/core/collaboration/stage-test-fixtures.ts"
+    ]
+  },
+  "tests": {
+    "command": "pnpm --filter @multica/views exec vitest run collaboration/creation-form.test.tsx collaboration/account-picker.test.tsx --maxWorkers=2",
+    "exitCode": 0,
+    "files": 2,
+    "passed": 40
+  },
+  "lint": {
+    "command": "pnpm --filter @multica/views exec eslint collaboration/account-picker.tsx collaboration/creation-form.tsx collaboration/creation-form.test.tsx",
+    "exitCode": 0
+  },
+  "typecheck": {
+    "command": "pnpm --filter @multica/views typecheck",
+    "attempts": [
+      {
+        "exitCode": 2,
+        "diagnostic": "../core/collaboration/stage-actions.ts(36,42): error TS2552: Cannot find name CollaborationStageRequestBody.",
+        "subsequentObservation": "Import was present when inspected; parallel work changed this untracked file."
+      },
+      {
+        "exitCode": 2,
+        "diagnostic": "collaboration/stage-forms.tsx(102,29): error TS2554: Expected 2 arguments, but got 1."
+      }
+    ],
+    "scopeAssessment": "Both files are untracked stage-approval work, absent from HEAD and excluded from the page commit. No current workspace-wide typecheck pass claimed."
+  },
+  "retainedBrowserEvidence": {
+    "path": "browser-round-3/results.json",
+    "passed": 13,
+    "failed": 0,
+    "pageErrors": 0,
+    "rerunThisResume": false
+  },
+  "retainedNativeEvidence": {
+    "path": "native-round-3/results.json",
+    "osCloseAndStationaryDragVerified": true,
+    "rerunThisResume": false
+  }
+}
