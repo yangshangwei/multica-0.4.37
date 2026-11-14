@@ -30,6 +30,13 @@ Authenticated account entry remains available with no workspaces, a pending list
 or list failure. Login completion does not await another workspace fetch; the
 existing Query owns that list. Actual login/setup/password guards remain blocking.
 
+Automatic account fallback additionally requires `onboarded_at != null`. A newly
+registered user normally has zero workspaces: leave that session with the existing
+invitation/onboarding overlay routing instead of selecting account scope, which
+suppresses those overlays. Pass the current onboarding status into
+`accountBootstrapDestination` and its calling effect's dependencies. This does not
+block explicit account links or restored account tabs before onboarding.
+
 Detailed account links may remain in an account popout; account list navigation
 returns to the main account tab. Preserve native Cmd+W and existing workspace
 issue windows. With no workspace sidebar, reserve native toolbar clearance,
@@ -40,6 +47,8 @@ omit its unavailable toggle and show the localized account tab/window title.
 | Condition | Result |
 | --- | --- |
 | Workspace list zero/pending/500 | Account remains usable; workspace recovery is separate |
+| First-run session without explicit account selection, list ready and empty | Check invitations, then open onboarding; do not automatically select account scope |
+| First-run session, initial workspace-list failure | Keep workspace recovery available; do not change scope through account fallback |
 | Fresh session (no restored tab), list ready with workspaces | Open the first workspace; account stays one click away in the navigation bar |
 | Login/setup/password restriction | Existing guard blocks account content |
 | Account navigation from a workspace | Clear mirror before subscribers observe the new tab |
@@ -59,6 +68,9 @@ omit its unavailable toggle and show the localized account tab/window title.
 ## 6. Tests Required
 
 Store/coordinator/navigation/boot/shared-window tests own their boundary matrices.
+`platform/account-bootstrap.test.ts` owns automatic-fallback conditions;
+`App.onboarding.test.tsx` covers registration, delayed empty-list arrival and the
+actual competing shell effects with real auth, Query, tab and overlay stores.
 `e2e/collaboration-account-desktop.spec.ts` runs actual Electron with isolated
 profiles and actual API/WS; only named failure/guard cases use a loopback proxy.
 Use `BrowserWindow.sendInputEvent` for genuine native shortcuts and

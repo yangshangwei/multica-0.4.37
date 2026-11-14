@@ -253,12 +253,12 @@ export function AppContent({ onServerEditorOpenChange }: { onServerEditorOpenCha
 
   useLayoutEffect(() => {
     if (!ownerReady) return;
-    const destination = accountBootstrapDestination({ authenticated: !!user && authStatus === "authenticated", restricted, activeScope, workspaceListReady, workspaceListUnavailable: workspaceList.unavailable, workspaceCount: wsCount });
+    const destination = accountBootstrapDestination({ authenticated: !!user && authStatus === "authenticated", restricted, hasOnboarded, activeScope, workspaceListReady, workspaceListUnavailable: workspaceList.unavailable, workspaceCount: wsCount });
     if (destination) {
       setCurrentWorkspace(null, null);
       useTabStore.getState().switchAccount();
     }
-  }, [user, authStatus, restricted, activeScope, workspaceListReady, workspaceList.unavailable, wsCount, ownerReady]);
+  }, [user, authStatus, restricted, hasOnboarded, activeScope, workspaceListReady, workspaceList.unavailable, wsCount, ownerReady]);
   const activeWsId = activeWorkspaceSlug
     ? workspaces.find((w) => w.slug === activeWorkspaceSlug)?.id
     : undefined;

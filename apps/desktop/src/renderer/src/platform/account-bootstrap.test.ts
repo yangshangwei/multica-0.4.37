@@ -3,12 +3,18 @@ import { describe, expect, it } from "vitest";
 import { accountBootstrapDestination } from "./account-bootstrap";
 
 describe("authenticated account boot", () => {
-  const ready = { authenticated: true, restricted: false, activeScope: "none" as const, workspaceListReady: false, workspaceListUnavailable: false, workspaceCount: 0 };
+  const ready = { authenticated: true, restricted: false, hasOnboarded: true, activeScope: "none" as const, workspaceListReady: false, workspaceListUnavailable: false, workspaceCount: 0 };
   it.each([
     { workspaceListReady: false, workspaceListUnavailable: true },
     { workspaceListReady: true, workspaceListUnavailable: false },
   ])("opens account when no workspace can be chosen: %o", (list) => {
     expect(accountBootstrapDestination({ ...ready, ...list })).toBe("account");
+  });
+  it.each([
+    { workspaceListReady: false, workspaceListUnavailable: true },
+    { workspaceListReady: true, workspaceListUnavailable: false },
+  ])("leaves a new account's first-run routing in control: %o", (list) => {
+    expect(accountBootstrapDestination({ ...ready, ...list, hasOnboarded: false })).toBeNull();
   });
   it("waits for a pending list instead of defaulting a fresh session to account", () => {
     expect(accountBootstrapDestination(ready)).toBeNull();
@@ -20,6 +26,9 @@ describe("authenticated account boot", () => {
   });
   it("preserves restored account selection with available workspaces", () => {
     expect(accountBootstrapDestination({ ...ready, activeScope: "account", workspaceListReady: true, workspaceCount: 3 })).toBeNull();
+  });
+  it("preserves explicit account selection before onboarding", () => {
+    expect(accountBootstrapDestination({ ...ready, hasOnboarded: false, activeScope: "account", workspaceListReady: true })).toBeNull();
   });
   it("keeps workspace tabs during loading but falls back to account on initial list failure", () => {
     expect(accountBootstrapDestination({ ...ready, activeScope: "workspace" })).toBeNull();
