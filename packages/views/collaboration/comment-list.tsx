@@ -261,7 +261,7 @@ function CommentCard({ scope, issue, comment, placement, onReply, onPrepareResul
       ? <div className="space-y-2"><p className="text-body text-muted-foreground">{t(($) => $.recall.omitted)}</p>
         {contentStale && <p role="status" className="text-caption">{t(($) => $.recall.revisionChanged)}</p>}
         {!!contentError && <CollaborationQueryState error={contentError} />}
-        <Button type="button" variant="outline" disabled={contentLoading} onClick={onLoadContent}>{contentLoading ? t(($) => $.page.loading) : contentStale ? t(($) => $.recall.refresh) : t(($) => $.recall.loadContent)}</Button>
+        <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={contentLoading} onClick={onLoadContent}>{contentLoading ? t(($) => $.page.loading) : contentStale ? t(($) => $.recall.refresh) : t(($) => $.recall.loadContent)}</Button>
       </div> : <RichContent resourcePolicy="restricted" content={comment.content} />}
     {comment.deleted_at === null && !omitted && <CollaborationCommentAttachments scope={scope} issueId={issue.id} attachmentIds={comment.attachment_ids} />}
     {!deleted && <div role="group" aria-label={t(($) => $.commentActions.discussion)} className="flex min-w-0 flex-wrap items-center gap-1">

@@ -38,4 +38,14 @@ As of 15:34 UTC, the newer owner has sealed the additional test-only correction 
 
 The Codex TUI connector returned HTTP 502 for listing and sending to the newer thread. Native routing does not expose its child agent in the original tree. The attempted UI fallback could not access Warp and ended without terminal interaction. Local Trellis session history and immutable receipts were used to establish the newer state. This communication limitation does not authorize duplicate execution.
 
-S2 remains `in_progress`. LIVE P2 and the four actual Web/Desktop scenarios remain unaccepted; the parent ledger remains 4 PARTIAL / 20 NOT_RUN. S3–S5 dependencies and the restriction on real model accounts, funds, and production actions remain unchanged.
+## Completed full code gate on 2026-11-16
+
+The original ROOT lane completed four new current-source handler/router suites, each on a fresh fully migrated database. Handler normal/race each passed 99 tops / 326 named / 275 leaves; router each passed 54 / 208 / 174. The independently rebound service results add 116 / 321 / 263, giving 269 / 855 / 712 per mode. The named and leaf sets match across modes; source, configuration, logical schema, and catalog are unchanged, with zero orphan pending events or remaining owned processes/connections.
+
+Independent verdict: `SCOPED_CODE_P2_ACCEPTED_R10`, current code blockers zero. Final JSON SHA256 `0a2bc8f1227cd32928d5958b3b9ca3daf9e7a4c0b3167c536b529bf1940a09a3`; MD SHA256 `13cb7cace5119f7ce79d06c262fcf05b0243d95b491390b3febe4d2e52a2d1ac`. Both are under `full-root-p2-r10-r01/independent-check/final-combined-r01/`. ROOT's complete reconciliation SHA256 is `f2fcb25323f1e46b6742e598b75ef7574e70b93a01ab43a9ac84ee833b7efc3d`.
+
+The environment owner handed off an unexecuted draft; ROOT validated it, recorded the takeover, and executed the exact five-database sequence. A new template received the 18 missing knowledge migrations and now matches all 853 source versions. Four new handler/router databases were cloned from it. The old 835 template remained unchanged. The four prepared service databases were not created or run because the existing current-source service results were independently accepted for reuse.
+
+The separate actual four-scenario run failed its first invitation request with 400 because the shared test helper added `execution_view_version:6` to a closed workflow request. Its 0 PASS / 1 FAIL / 3 NOT_RUN record is preserved. The single `workflowAuthority` correction passed independent review, and the existing execution thread is restarting the matching environment for the r02 run.
+
+S2 remains `in_progress`. The complete code/P2 gate is accepted; actual Web/Desktop scenarios, A01–A12, and full S2 remain open. The parent ledger remains 4 PARTIAL / 20 NOT_RUN. S3–S5 dependencies and the restriction on real model accounts, funds, and production actions remain unchanged.

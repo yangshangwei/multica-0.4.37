@@ -21,12 +21,12 @@
   "children": [],
   "parent": "11-13-pay-241-collaboration-acceptance",
   "relatedFiles": [],
-  "notes": "2026-11-16: P2_CODE_ACCEPTED_R09_SCOPED and current5038 JOINT_SERVICE_ACCEPTED_R09_SCOPED, blockers0; normal/race each116top321named263leaf. Three approved ROOT paths integrated, P2availabletrue/defaultprojectpolicyoff. Frontend3358/1961,619parameterPASS/36files,5typechecks2lint4test2buildexit0. Matching5runtimeproducts, actual853migrationledger/exact865index and admin password/fresh authority verified. First real4case r01=0PASS1FAIL3NOT_RUN: strict invite rejects fixture execution_view_version6 before pages/Host; original400 retained, no automatic retry. Private shared-fixture correction+independent review in progress; A01-A12/fullS2open,parent24=4PARTIAL20NOT_RUN. No session Git commit/dependency/real model/funds/production action.",
+  "notes": "2026-11-16: P2_CODE_ACCEPTED_R09_SCOPED and current5038 JOINT_SERVICE_ACCEPTED_R09_SCOPED, blockers0; normal/race each116top321named263leaf. Three approved ROOT paths integrated, P2availabletrue/defaultprojectpolicyoff. Frontend3358/1961,619parameterPASS/36files,5typechecks2lint4test2buildexit0. Matching5runtimeproducts, actual853migrationledger/exact865index and admin password/fresh authority verified. First real4case r01=0PASS1FAIL3NOT_RUN: strict invite rejects fixture execution_view_version6 before pages/Host; original400 retained, no automatic retry. Private shared-fixture correction+independent review in progress; A01-A12/fullS2open,parent24=4PARTIAL20NOT_RUN. No session Git commit/dependency/real model/funds/production action. r02 update: fixture source-only independently accepted fcab7ff1; ROOT helper d40059ca integrated with mode preserved. Original r01 owned services stopped/DB0; matching runtime restarted and complete before f2686a1b PASS. New bound four-case r02 c73d2ede running once, no outcome yet; original r01 and all prior failures preserved.",
   "meta": {
     "current_verification": {
       "revision": "r09",
-      "phase": "s2_four_scenarios_fixture_contract_repair",
-      "observed_at": "2026-11-15T17:03:07.245782+00:00",
+      "phase": "s2_corrected_fixture_four_scenarios_r02_running",
+      "observed_at": "2026-11-15T17:27:27.926755+00:00",
       "source_manifest_sha256": "e4dbc77ea04f770daad31b65496d181f1a5e5923f0fcdb6baace8eadf6504229",
       "source_files": 5038,
       "server_graph_scope": "scoped layer, not full ROOT source readiness",
@@ -76,7 +76,7 @@
       "corrective_fixture_scope": [
         "e2e/fixtures/collaboration-multi-account-closure.ts"
       ],
-      "corrective_fixture_state": "PRIVATE_COPY_AND_INDEPENDENT_REVIEW_IN_PROGRESS",
+      "corrective_fixture_state": "INDEPENDENTLY_ACCEPTED_AND_ROOT_SINGLE_FILE_INTEGRATED",
       "production_decoder_changed": false,
       "full_s2_accepted": false,
       "A01_A12_final_acceptance": "OPEN",
@@ -89,7 +89,22 @@
       "joint_service_report": "research/joint-service-r09-independent-check-20261115.json",
       "frontend_report": "research/frontend-r07-current-build-20261115.json",
       "progress_report": "research/progress-20261116.md",
-      "actual_run_report": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/four-scenarios-r01/result.json"
+      "actual_run_report": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/four-scenarios-r01/result.json",
+      "corrective_fixture_after_sha256": "d40059ca4bc003dd343d19ccfb86c23bf9f57f9d65348fc727d6ea583eee73f5",
+      "corrective_fixture_review": "research/fixture-r08-independent-check-r02.json",
+      "corrective_fixture_review_sha256": "fcab7ff1474873309d36016a1e2e024d574eafd18a13740d80e747fd73b0d819",
+      "runtime_r01_cleanup": "OWNED_PROCESSES_PORTS_AND_OTHER_DB_CONNECTIONS_ZERO_DATABASE_RETAINED",
+      "runtime_current_API_pid": 22290,
+      "runtime_current_bridge_pid": 22272,
+      "runtime_current_web_pid": 22852,
+      "runtime_current_renderer_pid": 22862,
+      "runtime_current_round": "r02",
+      "runtime_r02_before_sha256": "f2686a1b981531f2ab1a317b48a26942d61c45ff862b2e67e5ae22d14192911b",
+      "runtime_r02_permit_sha256": "c73d2ede91fb4cfbc3473c5fd3b5d44e461ad23432b05a6ed14484c2ba559544",
+      "runtime_r02_test_source_binding_sha256": "7ea690fd7e8b4739c3499ec393b9b51a179ac0085fb79008a11456d9fff32044",
+      "runtime_r02_result": "RUNNING_NOT_ACCEPTED",
+      "runtime_current_PAY_API_suites": 1,
+      "latest_completed_four_case_round": "r01"
     },
     "original_root_reentry_snapshot": {
       "observed_at": "2026-11-15T15:34:25Z",
@@ -142,6 +157,29 @@
       "p2_available": false,
       "actual_web_desktop_scenarios_passed": 0,
       "full_s2_accepted": false
+    },
+    "full_root_verification_r10": {
+      "local_date": "2026-11-16",
+      "verdict": "SCOPED_CODE_P2_ACCEPTED_R10",
+      "current_code_blocking_findings": 0,
+      "source_files": 5039,
+      "source_manifest_sha256": "bb888e0f947878961dc0aaaa63f4ca0f7e4565d8a4b789e51306e23145277a2e",
+      "handler_per_mode": {"top": 99, "named_pass": 326, "leaf": 275},
+      "router_per_mode": {"top": 54, "named_pass": 208, "leaf": 174},
+      "reused_service_per_mode": {"top": 116, "named_pass": 321, "leaf": 263},
+      "combined_per_mode": {"top": 269, "named_pass": 855, "leaf": 712},
+      "normal_race_exact_name_and_leaf_sets_equal": true,
+      "new_full_go_commands": 4,
+      "new_database_count": 5,
+      "complete_source_migration_versions": 853,
+      "old_835_template_and_all_failed_databases_preserved": true,
+      "source_configuration_catalog_or_orphan_pending_event_drift": 0,
+      "final_json_sha256": "0a2bc8f1227cd32928d5958b3b9ca3daf9e7a4c0b3167c536b529bf1940a09a3",
+      "final_md_sha256": "13cb7cace5119f7ce79d06c262fcf05b0243d95b491390b3febe4d2e52a2d1ac",
+      "root_reconciliation_sha256": "f2fcb25323f1e46b6742e598b75ef7574e70b93a01ab43a9ac84ee833b7efc3d",
+      "p2_pre_c01_code_and_full_http_gate_closed": true,
+      "actual_four_scenario_and_full_s2_accepted": false,
+      "actual_scenario_continuation_owner": "01a1df98-6557-7f20-9fae-693f06996942"
     },
     "verification_history": [
       {

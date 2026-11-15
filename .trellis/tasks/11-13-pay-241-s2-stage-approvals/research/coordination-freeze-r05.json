@@ -425,6 +425,25 @@
     "live_and_accepted_source_p2_available": false,
     "actual_web_desktop_scenarios_passed": 0
   },
+  "current_r10_full_code_verification": {
+    "local_date": "2026-11-16",
+    "verdict": "SCOPED_CODE_P2_ACCEPTED_R10",
+    "source_files": 5039,
+    "source_manifest_sha256": "bb888e0f947878961dc0aaaa63f4ca0f7e4565d8a4b789e51306e23145277a2e",
+    "normal_and_race_each": {"top": 269, "named_pass": 855, "leaf": 712},
+    "new_handler_router_go_commands": 4,
+    "normal_race_name_and_leaf_sets_equal": true,
+    "current_blocking_code_findings": 0,
+    "code_and_p2_pre_c01_gates_accepted": true,
+    "actual_four_scenarios_and_full_s2_accepted": false,
+    "final_json_sha256": "0a2bc8f1227cd32928d5958b3b9ca3daf9e7a4c0b3167c536b529bf1940a09a3",
+    "final_md_sha256": "13cb7cace5119f7ce79d06c262fcf05b0243d95b491390b3febe4d2e52a2d1ac",
+    "root_reconciliation_sha256": "f2fcb25323f1e46b6742e598b75ef7574e70b93a01ab43a9ac84ee833b7efc3d",
+    "first_actual_scenario_run": {"pass": 0, "fail": 1, "not_run": 3},
+    "single_fixture_repair_review": "FIXTURE_R02_ACCEPTED_READY_FOR_BOUND_4CASE_RERUN",
+    "actual_rerun_owner": "01a1df98-6557-7f20-9fae-693f06996942",
+    "all_old_templates_failed_sources_raws_and_histories_preserved": true
+  },
   "runtime_preparation_binding": {
     "status": "PREPARED_NOT_READY_FOR_RUNTIME_ACCEPTANCE",
     "report": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/evidence/runtime-preparation-binding-r01.json",
