@@ -83,14 +83,21 @@ func rk1kContinuationOutputsOverlap(first, second string) bool {
 // added again to the two unique, retained physical attempts.
 func rk1kValidateContinuationHistory(r *rk1kCodexRegistration) error {
 	refuse := errors.New("invalid full knowledge continuation history")
-	if r.Mode != rk1kFullContinuationMode || r.Cap != 17 || r.AttemptLimit != 15 || r.PriorActualStarts != 2 || r.PriorDebits != 2 {
+	if r.Mode != rk1kFullContinuationMode || r.Cap != 17 || r.AttemptLimit != 15 || r.PriorActualStarts != 2 || r.PriorDebits != 2 || !rk1kCodexMigrationVersionAllowed(r) {
 		return refuse
 	}
 	var retry rk1kCodexRegistration
 	if rk1kReadBoundJSON(r.PriorRegistration, r.PriorRegistrationSHA256, &retry) != nil {
 		return refuse
 	}
-	if retry.Mode != rk1kE0bRetryMode || !retry.Authorized || retry.SchemaVersion != 1 || retry.Provider != "codex" || retry.Ledger != r.PriorLedger || retry.Executable != r.Executable || retry.ExecutableSHA256 != r.ExecutableSHA256 || retry.Model != r.Model || retry.Version != r.Version || retry.ConfigSHA256 != r.ConfigSHA256 {
+	if retry.Mode != rk1kE0bRetryMode || !retry.Authorized || retry.SchemaVersion != 1 || retry.Provider != "codex" || retry.Ledger != r.PriorLedger || retry.MigrationRecord != "" || retry.MigrationRecordSHA256 != "" {
+		return refuse
+	}
+	if r.MigrationRecord == "" && r.MigrationRecordSHA256 == "" {
+		if retry.Executable != r.Executable || retry.ExecutableSHA256 != r.ExecutableSHA256 || retry.Model != r.Model || retry.Version != r.Version || retry.ConfigSHA256 != r.ConfigSHA256 {
+			return refuse
+		}
+	} else if rk1kValidateCodexBindingMigration(r, &retry) != nil {
 		return refuse
 	}
 	if rk1kValidateRetryHistory(&retry) != nil {

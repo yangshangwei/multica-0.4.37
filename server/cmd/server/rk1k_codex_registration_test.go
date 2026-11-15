@@ -35,6 +35,8 @@ type rk1kCodexRegistration struct {
 	PriorDebits             int               `json:"prior_debits,omitempty"`
 	PriorRegistration       string            `json:"prior_registration,omitempty"`
 	PriorRegistrationSHA256 string            `json:"prior_registration_sha256,omitempty"`
+	MigrationRecord         string            `json:"migration_record,omitempty"`
+	MigrationRecordSHA256   string            `json:"migration_record_sha256,omitempty"`
 	Ledger                  string            `json:"ledger"`
 	Output                  string            `json:"output"`
 	Database                string            `json:"database"`
@@ -72,7 +74,7 @@ func rk1kLoadCodexRegistrationMode(path, digest, entryMode string) (*rk1kCodexRe
 		return nil, refuse
 	}
 	var r rk1kCodexRegistration
-	if json.Unmarshal(raw, &r) != nil || r.SchemaVersion != 1 || !r.Authorized || r.Provider != "codex" || !rk1kCodexCapForMode(r.Mode, r.Cap) || r.Model == "" || (r.Version != "0.165.0" && r.Version != "0.166.0") || time.Now().After(r.ExpiresAt) {
+	if json.Unmarshal(raw, &r) != nil || r.SchemaVersion != 1 || !r.Authorized || r.Provider != "codex" || !rk1kCodexCapForMode(r.Mode, r.Cap) || r.Model == "" || !rk1kCodexMigrationVersionAllowed(&r) || time.Now().After(r.ExpiresAt) {
 		return nil, refuse
 	}
 	if !filepath.IsAbs(r.Executable) || !filepath.IsAbs(r.ConfigPath) || !filepath.IsAbs(r.Ledger) || !filepath.IsAbs(r.Output) || !strings.HasPrefix(r.Database, rk1kDatabasePrefix) {
