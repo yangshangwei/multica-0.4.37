@@ -51,7 +51,7 @@ export function deriveCollaborationCommentThreads(comments: CollaborationComment
 
 展开状态：`useState<Map<threadId, boolean>>`，在渲染期为首次出现的串写入初值 `!resolved`（与文件里 `restoredIds` 相同的渲染期派生写法）。之后只由用户操作或下面两条规则改变：
 
-- 强制展开：该串任一评论在 `drafts.commentChanges` / `drafts.discussion` 里有待恢复请求 → 渲染时视为展开（不写状态，草稿清掉后回到用户上次的选择）。
+- 强制展开：该串任一评论在 `drafts.commentChanges` / `drafts.discussion` 里有待恢复请求 → 展开并写入状态，期间折叠按钮禁用。（实施时的修订：原设计是不写状态、草稿清掉后回到用户上次的选择；实际改为记录展开，这样恢复完成后结果与编辑框不会立刻被折叠收走。）
 - reveal：`revealCommentId` 与 `revealKey` 组合变化时，把包含它的串设为展开（渲染期处理，保证父组件的锚点 effect 运行时目标已可见）。
 
 页面内变为已解决的串：状态里已有 `true`，不会自动折叠（R2.6）。

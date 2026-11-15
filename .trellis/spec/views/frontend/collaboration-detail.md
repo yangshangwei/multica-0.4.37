@@ -76,6 +76,56 @@ confirmation instead of automatic send. Manual policy denies new AI admission
 and still permits ordinary human discussion under current authority. A lost
 write response retains its original intent and offers original-key recovery.
 
+### Comment threads, folding and row actions
+
+`deriveCollaborationCommentThreads` (Core, pure) groups the loaded, deduplicated
+comments once in `collaboration-detail.tsx`; the header count and the list both
+consume that result. A thread is a root plus every loaded descendant, matching
+the Server resolution scope. It is unresolved (`pending`) when no loaded member
+carries `resolved_at` and at least one member is not deleted. Replies whose
+parent is not loaded group under that missing parent id, start at depth 1 and
+keep the "View parent comment" link; a loaded parent removes the link.
+
+The list stays one flat `<ol>` of `<li key=commentId>`; thread structure is
+`data-depth` (indent capped at 3), a left rule and an optional fold row
+(`key=thread:<id>`, `data-thread-fold`). Never nest lists or re-parent rows: a
+separately restored comment (`additionalIds`) must keep its component identity
+and unsent edit when it later joins a loaded thread.
+
+Folding hides rows with `hidden`; it never unmounts them. A thread that is
+resolved when first shown starts folded; an unresolved one starts open. A thread
+stays open when it was resolved on this page, when any member has a retained
+comment-change or discussion request (the fold button is disabled meanwhile, and
+the forced expansion is recorded so the settled result stays in view), or when
+its rows were already shown open before an older page re-grouped them. A
+`revealCommentId` + `revealKey` intent expands the containing thread during
+render, before the parent anchor effect scrolls and focuses; an intent whose
+comment is not loaded yet stays armed until it arrives.
+
+Each row has one action line: Reply, reactions and, on the thread's single
+resolve host (root when resolvable, else the first resolvable member, or the
+member carrying the resolution), Resolve/Reopen. Edit, Delete, history, "Use in
+result", per-row resolve and the read-only authority summary live in the row
+menu, whose trigger is named `commentActions.more` ("Comment actions" /
+"评论操作") — it must stay distinct from the workflow "More actions" trigger
+because E2E disclosure helpers select that name page-wide. A deleted comment is
+one line (author, deleted notice, time, menu) and keeps its reactions.
+
+Hand focus off from the menu's `finalFocus`, not from the item's click handler:
+Chromium keeps the popup mounted for its exit animation and re-focuses it when
+the chosen item is removed, so a click-time `focus()` is undone and jsdom will
+not show it. Inline forms take focus there; "Use in result" runs one macrotask
+after the trigger has focus so the result dialog records the trigger as its
+return target. Closing a form returns focus to the row's menu trigger.
+
+The header shows the Server total (absent when not provided) and, when above
+zero, the unresolved-thread count as a button that focuses the first unresolved
+thread. While another page exists the count uses the "in loaded comments"
+wording and the fold row omits its size; "Loaded x of y" renders only beside
+Load more. Timestamps are relative within seven days, a localized date after,
+with the ISO value in `dateTime` and the full localized time in `title`.
+"Edited" (`updated_at` later than `created_at`, not deleted) opens the history.
+
 ### Auxiliary discovery, recovery and anchors
 
 Keep all auxiliary panel instances mounted across drawer close and category
@@ -171,6 +221,12 @@ changing the selected issue. History/comment timestamps use `useLocale()`.
 | Empty manual current state with retained history/error | Keep AI entry/history/Stop/recovery accessible |
 | Protected Query denial | Remove private content and use existing scoped recovery |
 | Repeated explicit anchor versus scope resume | Fresh target focus versus saved scroll, respectively |
+| Thread already resolved when first shown | One fold row; expanding shows every member and Reopen |
+| Thread resolved on this page | Stays open; feedback and Reopen remain visible |
+| Retained comment/discussion request inside a resolved thread | Thread open, fold button disabled, recovery controls visible |
+| Anchor to a comment inside a folded thread | Thread expands, then the existing scroll/focus runs |
+| Unresolved count while another comment page exists | "In loaded comments" wording; never presented as the issue total |
+| All comment pages loaded | No "Loaded x of y"; fold rows show their comment count |
 
 ## 5. Good / Base / Bad Cases
 
@@ -193,6 +249,17 @@ The workflow upload regression covers Cancel upload inside the modal, and the
 unknown-result regression covers focus returning to recovery. Core owns pure parsing/action/page/recovery matrices; Server owns transactions
 and admission. Do not multiply these matrices through DOM mounts.
 
+The thread grouping/pending/resolve-host matrix lives in
+`packages/core/collaboration/comment-threads.test.ts`. `comment-list.test.tsx`
+keeps the wiring: one action line and menu contents, fold/expand/forced-open,
+hide-not-unmount, reveal, restored-row identity, and the two focus regressions
+that run under `closeMenusLikeChromium` (exit animation plus focus loss on
+removal). A menu-item focus test without that helper proves nothing about
+Chromium. E2E reaches row actions only through
+`e2e/fixtures/collaboration-comment-menu.ts`; use `expectCommentMenuWithout`
+for absence so the assertion first proves the menu is open, and check a comment
+row before opening another modal menu on the page.
+
 `e2e/collaboration-detail-journey.spec.ts` proves the full production Web/actual
 Electron human chain, original GET with one POST, source and parent identity,
 Chinese self-completion, long/narrow/enlarged-text states and repeated anchor/
@@ -210,6 +277,10 @@ nested overlays with active, and expose recovery through an actionable toolbar.
 
 Capture only after fonts, finite animations and scroll painting settle; verify
 main geometry and the intended visible target, not screenshot dimensions alone.
+
+Wrong: nest reply lists, unmount a folded thread, or fold a thread that still
+holds a retained request. Correct: one flat keyed list, `hidden` rows, and a
+forced-open thread until the request settles.
 
 Wrong: duplicate Server stage logic in Views or automatically submit prepared
 comment text as a result.
