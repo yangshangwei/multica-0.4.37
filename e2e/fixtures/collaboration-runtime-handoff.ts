@@ -139,7 +139,11 @@ export async function recoverLongComment(page: Page, fixture: RuntimeHandoffFixt
   // The heading now sits in its own row; the whole discussion section holds the range and paging.
   const comments = page.locator("#discussion");
   await expect(comments.getByRole("heading", { name: "Comments", exact: true })).toBeVisible();
-  await expect(comments.getByText(`Loaded 1 of ${fixture.totalComments} comments`, { exact: true })).toBeVisible();
+  await expect(comments.locator("[data-comment-total]")).toHaveText(String(fixture.totalComments));
+  // The loaded range is shown only while another page exists; a lone comment is already complete.
+  const loadedRange = comments.getByText(/^Loaded \d+ of \d+ comments$/);
+  if (fixture.totalComments > 1) await expect(loadedRange).toHaveText(`Loaded 1 of ${fixture.totalComments} comments`);
+  else await expect(loadedRange).toHaveCount(0);
   const comment = page.locator(`[id="comment-${fixture.longCommentId}"]`);
   await expect(comment.getByText("This comment is longer than the page budget. Load its full text to read or edit it.", { exact: true })).toBeVisible();
   await expectCommentMenuWithout(comment, ["Edit comment"]);

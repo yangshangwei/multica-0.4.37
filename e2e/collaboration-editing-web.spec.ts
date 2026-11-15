@@ -56,10 +56,11 @@ test("Web source creation, field edits and discussion share one authorized issue
     await authenticateCollaborationEditor(recipientPage, fixture.recipient.getToken()!);
     await recipientPage.goto(`/account?view=current&issue=${issue.id}`);
     await expect(recipientPage.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
+    // Checked first: revealing the issue action can leave a modal menu open that blocks the comment row.
+    await expectCommentMenuWithout(recipientPage.locator(`[id="comment-${discussion.replyId}"]`), ["Edit comment"]);
     const recipientEdit = await revealCollaborationEditingAction(recipientPage, "Edit issue");
     await expect(recipientPage.getByRole("button", { name: "Edit source fields", exact: true, includeHidden: true })).toHaveCount(0);
     await expect(recipientPage.getByRole("button", { name: "Change iteration", exact: true, includeHidden: true })).toHaveCount(0);
-    await expectCommentMenuWithout(recipientPage.locator(`[id="comment-${discussion.replyId}"]`), ["Edit comment"]);
     const options = await fixture.recipient.requestJSON<{ source_options?: unknown }>(`/api/collaboration/issues/${issue.id}/field-options`);
     expect(options.source_options).toBeUndefined();
 

@@ -104,7 +104,8 @@ export async function createCollaborationWithInitialFields(page: Page, fixture: 
   await dialog.getByLabel("Title", { exact: true }).fill(fixture.title);
   await dialog.getByLabel("Description", { exact: true }).fill("One issue shared with an external handler.");
   await selectCollaborationRecipient(page, dialog, { id: fixture.recipientId, name: fixture.recipientName });
-  await expect(dialog.getByText(`Assigned to ${fixture.recipientName}`, { exact: true })).toBeVisible();
+  // The recipient trigger repeats this text; the status line is the announced outcome.
+  await expect(dialog.getByText(`Assigned to ${fixture.recipientName}`, { exact: true }).and(dialog.getByRole("status"))).toBeVisible();
   await dialog.getByText("Initial fields", { exact: true }).click();
   await dialog.getByLabel("Status", { exact: true }).selectOption("todo");
   await dialog.getByLabel("Priority", { exact: true }).selectOption("high");

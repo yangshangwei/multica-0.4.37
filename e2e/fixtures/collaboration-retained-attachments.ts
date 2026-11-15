@@ -118,7 +118,8 @@ export async function exerciseTypedCreation(session: RetainedSession, fixture: R
   await dialog.getByLabel("Title", { exact: true }).fill(title);
   await dialog.getByLabel("Description", { exact: true }).fill(body);
   await selectCollaborationRecipient(page, dialog, { id: fixture.creatorId, name: fixture.human.name });
-  await expect(dialog.getByText(`Assigned to ${fixture.human.name}`, { exact: true })).toBeVisible();
+  // The recipient trigger repeats this text; the status line is the announced outcome.
+  await expect(dialog.getByText(`Assigned to ${fixture.human.name}`, { exact: true }).and(dialog.getByRole("status"))).toBeVisible();
   const uploadPending = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/collaboration/attachments/drafts" && response.request().method() === "POST");
   await dialog.getByLabel("Attach files", { exact: true }).setInputFiles({ name: "typed-creation.txt", mimeType: "text/plain", buffer: bytes });
   const uploadResponse = await uploadPending;
