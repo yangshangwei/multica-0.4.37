@@ -1,0 +1,41 @@
+# Original ROOT continuation reconciliation
+
+Recorded on 2026-11-15 by original ROOT thread `01a1dde9-4bd6-7c00-9fa1-e29bf5ddb142` after the user requested continuation.
+
+The active execution owner is the newer coordinator thread `01a1df98-6557-7f20-9fae-693f06996942`. Its source, execution receipts, and task notes supersede the inherited preparation-only summary. The original ROOT tree did not execute any GREEN Go test commands or create the proposed full-check databases 20–23 during this reentry.
+
+## Verified continuation state
+
+- The R06 acceptance remains `CODE_ACCEPTED_R06`; it does not accept P2 or the actual Web/Desktop scenarios.
+- The newer coordinator's original r07 execution binding is `current-coordinator-r01/green-execution-binding-current-r01.json`, SHA256 `7a727bbd04eaff8e84934c0cfae736836483f8ebc68d5ebb44b1d5ee15c25039`.
+- Its first eight normal profiles have completed PASS receipts. The ninth, K06, has an actual FAIL receipt. The original source, raw log, database, and failure report remain preserved.
+- The K06 failure came from a new test reading the public workflow success response into an internal receipt and expecting its body `Status` to equal 200. The public success response intentionally omits `status`; the HTTP response was 200. The minimal correction changes only the existing router test and retains the business assertions.
+- The repaired source is `p2-k06-repair-current-r02/source`, manifest SHA256 `a3261a9d92d3e51b01c3d41d933a6005f885624197a6297595df188b0d375414`. The newer coordinator has bound two fresh K06 profiles and eight unused race profiles through `current-coordinator-r01/k06-repaired-execution-r08.json`, SHA256 `bdefd438c0a0e84504925aed3a56752c0ee7469a110d3abb2113002bbba38466`. Results and formal acceptance remain the execution owner's responsibility.
+- Original ROOT's older GREEN permit `5aed7a77…` and four-environment preparation permit `5b4e2e48…` are held. The original source agent reported zero GREEN commands, zero consumed profiles, and no running labels. Its hold audit is `green-check-r01/coordinator-duplication-hold-audit-r01.json`, SHA256 `1acf8ee2b0c7c899a8f56028ea5fb1c204f659aff586a34ddad565d645b8e3a8`.
+- The original environment agent verified that it had not created databases 20–23, child profiles, configuration files, or directories for the new request. Its earlier 17 profiles and two K06 profiles remain intact.
+
+## Continuing ownership
+
+The newer coordinator owns test execution, source integration, frontend builds, and runtime continuation. Original ROOT's existing checker is performing a separate read-only reconciliation of retained receipts, the repaired source, and affected coverage. Its only permitted new audit output is under `p2-verification-r07-r01/original-root-readonly-reconciliation-r01/reviewer`; it must not run Go commands, query databases, change source, or overwrite either coordinator's reports.
+
+## Subsequent evidence
+
+The first actual r08 K06 run reached the corrected public response, which had HTTP 200 and no `status` key. The consumed receipt identity assertions and all three P2 policy changes passed. It then failed at router test line 300 because the test expected `queue_state = 'open'` after reopening. The existing `ReopenCollaborationSession` SQL deliberately sets `paused` with `pause_reason = 'issue_reopened'`; the actual reopen request returned HTTP 200. The newer owner is correcting this additional test assumption without changing the product's pause contract. The r08 raw SHA256 is `79b48d0b2306c96c0f65fc24c5600dd3baf94e8d0d6ea4af609e72ff8e37c0d2`; its database and failed source remain preserved, and the remaining nine commands were not executed by that run.
+
+Original ROOT also completed an independent read-only reconciliation of the current frontend records. It rehashed 3,358 input files and checked 1,961 symlinks against the production binding, with zero drift. The four Vitest results contain 619 passed case instances from 36 disjoint files, with no failed, skipped, pending, or todo cases. There are 602 distinct file/display-name pairs; five existing parameterized test title groups account for the other 17 occurrences. All five typechecks, both scoped lint commands, and the Web and Desktop builds have matching successful raw/exit records. Both accepted P6 fixture hashes are retained. The sole original-to-production input change is the recorded `next-env.d.ts` production declaration.
+
+Frontend audit: `p2-verification-r07-r01/original-root-readonly-reconciliation-r01/coordinator/frontend-reconciliation-r01.json`, SHA256 `19f07c07bf3bc5346f0804f7cd39def659fcd66d86b9017315ba4ffcd1224511`. This audit executed zero test/build commands and does not accept P2, the full S2 graph, or any actual Web/Desktop scenario.
+
+## Remaining backend coverage and contract review
+
+The supplemental checker derived the affected complete handler inventory as 99 top-level tests in 24 files, and the router inventory as 54 top-level tests in 10 files, excluding two opt-in harnesses. The first eight scoped normal profiles provide passing evidence for only three distinct handler tops and one router top. Complete passing evidence is still missing for 96 handler and 53 router tops in normal mode; the complete 99/54 race inventories are also unrecorded. These inventories must be bound to the final corrected integration source before the broader verification step. The existing narrower passes remain useful source-specific evidence.
+
+A further unexecuted K06 assumption has been identified by the newer owner: the fresh request uses a reopened collaboration target with an old unused completion grant. `completionMutationDigest` compares the full stored authorization target before the stage guard and returns `delivery_completion_conflict` for a changed target. The retained candidate expects `stage_incomplete` instead. The next test-only correction must preserve that exact earlier M1 rejection and the no-consumption/no-new-terminal assertions; any separate stage-blocker probe needs its own valid preconditions. No actual fresh-grant refusal result has been claimed for the failed r08 run.
+
+The supplemental audit is complete at `p2-verification-r07-r01/original-root-readonly-reconciliation-r01/reviewer/supplemental-p2-reconciliation-r01.md` and `.json`. MD SHA256: `3025739c3fe7df4c14b6e8b89adef1af343e4a121e64e0f15a7aaf2a7a96914a`; JSON SHA256: `88af70d124c2a23504ac10f8889c9d5ab884d5c4baaae9a9bf73060478fa3c74`. It rehashed the 111 r07 and 16 r08 report references without a hash or size mismatch, reconciled native SQL and restored-index witnesses, and supplied exact anchored selectors plus name/file/line inventories. It ran zero Go commands or database queries and issued no execution permit or acceptance decision. `P2-PRE-C01` and the complete coverage gate remain open.
+
+As of 15:34 UTC, the newer owner has sealed the additional test-only correction at `p2-k06-repair-current-r03/source`, manifest SHA256 `80abb746c9c905bbd54e73db05bfbce0c84b02f9057b7c77b67632e3496549a1`. Its separate source-only review passed, retaining 4,967 protected files and changing no product or SQL. It now asserts the paused reopen contract and the exact old-grant target-conflict refusal while retaining public response, history/replay, consumption, and effect assertions. The code intake SHA256 is `9a6b60f42803dace6fbbe68cfe96cf3fde576f89c13699ff509afe30b51a5434`; the ten-command verification binding is `84217527dffe70bcf826b9d54b92b0ce2f3074ac2d99fa1c15e02cc4d3d4f34c`. Actual results and full affected coverage remain pending with the current owner.
+
+The Codex TUI connector returned HTTP 502 for listing and sending to the newer thread. Native routing does not expose its child agent in the original tree. The attempted UI fallback could not access Warp and ended without terminal interaction. Local Trellis session history and immutable receipts were used to establish the newer state. This communication limitation does not authorize duplicate execution.
+
+S2 remains `in_progress`. LIVE P2 and the four actual Web/Desktop scenarios remain unaccepted; the parent ledger remains 4 PARTIAL / 20 NOT_RUN. S3–S5 dependencies and the restriction on real model accounts, funds, and production actions remain unchanged.

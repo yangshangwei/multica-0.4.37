@@ -1,0 +1,45 @@
+{
+  "kind": "latest_PAY_P2_r07_checkpoint_observation",
+  "at": "2026-11-15T15:42:03.480262+00:00",
+  "source_thread": "01a1df98-6557-7f20-9fae-693f06996942",
+  "initial_normal_passed": 8,
+  "K06_publicDTO_http_witness": {
+    "policy_PUT_200": 3,
+    "reopen_200": 1
+  },
+  "retained_failures": [
+    "public successful response status misread",
+    "queue expected open after reopen",
+    "old grant stage_incomplete ordering"
+  ],
+  "latest_candidate_prefix": "80abb746",
+  "candidate_source_inputs": 4968,
+  "new_production_delta": 0,
+  "correction": "tests expect paused/issue_reopened and delivery_completion_conflict according to actual ordered witnesses",
+  "pending_sequence": [
+    "new22_normal",
+    "existing21_race",
+    "original8_unused_race"
+  ],
+  "PAY_DB_suites_at_callback": 0,
+  "knowledge_DB_suites": 0,
+  "ROOT_P2_three_files_integrated": false,
+  "current_server": {
+    "graph_prefix": "d1b63872",
+    "inputs": 5038,
+    "build": "passed",
+    "vet": "passed",
+    "preserves": "35peer product differences,865/hooks/virtualoff"
+  },
+  "current_frontend": {
+    "graph_prefix": "315a7654",
+    "inputs": 3358,
+    "typechecks": 5,
+    "lints": 2,
+    "tests_passed": 619,
+    "production_builds_passed": 2
+  },
+  "P2_independently_accepted": false,
+  "final_ROOT_accepted": false,
+  "scope": "Coordinator observation; not independent full source or P2 acceptance"
+}

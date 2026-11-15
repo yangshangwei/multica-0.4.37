@@ -1,0 +1,17 @@
+--- /Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-bin/pnpm
++++ /Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/pnpm
+@@ -22,12 +22,12 @@
+     environment["CHANGELOG_ELECTRON_RENDERER_URL"] = environment["MULTICA_TASK_RENDERER_URL"]
+     if not any(a == "--reporter" or a.startswith("--reporter=") for a in args):
+         args.append("--reporter=line,json")
+-    environment["PLAYWRIGHT_JSON_OUTPUT_NAME"] = str(Path(environment["MULTICA_TASK_PACKAGE_DB_EVIDENCE"]).parent / "makecheck-playwright-results.json")
++    environment["PLAYWRIGHT_JSON_OUTPUT_NAME"] = str(Path(environment["MULTICA_TASK_PACKAGE_DB_EVIDENCE"]).parent / "makecheck-playwright-results-v9.json")
+     record = {"command": ["pnpm", *args], "candidate": environment["MULTICA_TASK_CANDIDATE_ROOT"],
+               "api_url": api, "web_url": environment.get("PLAYWRIGHT_BASE_URL"),
+               "renderer_url": environment["MULTICA_TASK_RENDERER_URL"], "database_name": database.path.lstrip("/"),
+               "provider_accounts": False, "fixture_wiring_only": True}
+-    output = Path(environment["MULTICA_TASK_PACKAGE_DB_EVIDENCE"]).parent / "makecheck-playwright-environment.json"
++    output = Path(environment["MULTICA_TASK_PACKAGE_DB_EVIDENCE"]).parent / "makecheck-playwright-environment-v9.json"
+     output.write_text(json.dumps(record, indent=2) + "\n")
+ if args[:3] == ["exec", "playwright", "test"]:
+     guard = Path(environment["MULTICA_TASK_CANDIDATE_ROOT"]) / "scripts/go-test-with-agent-cli-guard.sh"

@@ -1,0 +1,412 @@
+{
+  "status": "review_complete_no_open_client_findings",
+  "scope": "S2 shared client increment 3a and C01-C07 correction only",
+  "completed_at": "2026-11-14T05:14:38.950053+00:00",
+  "reported_head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "git_commands_run": false,
+  "wire_sha256": "ecd9ca49c34b25bf71815e3a7edf95b1ccfa7cfe327b25a24d9f6e6f8134d129",
+  "original_report_bindings": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/client-increment-3a-check.md",
+      "sha256": "17ab152d90d3ec9eb2da954daabd2d54ec648bd1a872c1e6d2d28654f11455ce"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/client-increment-3a-check.json",
+      "sha256": "d81d9d15518e550a1b615c82fecd25ec3b5b732e11aa1a7098b580721ce737c8"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/client-increment-3a-fix-results.md",
+      "sha256": "855e23a42b416c9760b11ff7f78e512cbf66480ec28dd98ee49b0bd416b9c63e"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/client-increment-3a-fix-results.json",
+      "sha256": "e0678cf5da9e5d831fdea0da472062c743eca328c755e68739533c84c1007a54"
+    }
+  ],
+  "input_verification": {
+    "files_matching_before_reviewer_changes": 26,
+    "logs_matching": 21,
+    "report_core_count_note": "Reported full run was 291; later source-cache regression increased the final snapshot to 292, independently rerun here."
+  },
+  "final_source_manifest": [
+    {
+      "path": "packages/core/collaboration/index.ts",
+      "fix_report_sha256": "2a530d53951098a8b2d9ac92b13064686492f8f1f9d1f275b7c514ee9c048bc9",
+      "final_sha256": "2a530d53951098a8b2d9ac92b13064686492f8f1f9d1f275b7c514ee9c048bc9",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/core/collaboration/stage-actions.test.ts",
+      "fix_report_sha256": "4cbbc17945f815234e35d096cb8edac163f944db81232c1cdab020b1373ed58c",
+      "final_sha256": "4cbbc17945f815234e35d096cb8edac163f944db81232c1cdab020b1373ed58c",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/core/collaboration/stage-actions.ts",
+      "fix_report_sha256": "71774b76ac4f1b69134d2caa102277021676f6c8a9047df79dda64d37ae510e7",
+      "final_sha256": "71774b76ac4f1b69134d2caa102277021676f6c8a9047df79dda64d37ae510e7",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-actions.test.ts",
+      "fix_report_sha256": "974cbf84f1ac4ac6f1612766f2a9de54656b7ba9f44a83148a3472da06565a2c",
+      "final_sha256": "974cbf84f1ac4ac6f1612766f2a9de54656b7ba9f44a83148a3472da06565a2c",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-presentation.test.ts",
+      "fix_report_sha256": "707d9acfbb5a39f69e138d7309116f80cd7210f599a23230be36b95b44f4cc26",
+      "final_sha256": "707d9acfbb5a39f69e138d7309116f80cd7210f599a23230be36b95b44f4cc26",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-presentation.ts",
+      "fix_report_sha256": "b3ded1dc4b36c32412fea06327672248ffc4b53f105584f3b554bc94d916e9f0",
+      "final_sha256": "b3ded1dc4b36c32412fea06327672248ffc4b53f105584f3b554bc94d916e9f0",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-schema.test.ts",
+      "fix_report_sha256": "d649ecf1814355457eb9a7df0f08452b3922b230239c81650b0e2a36cba5bef7",
+      "final_sha256": "d649ecf1814355457eb9a7df0f08452b3922b230239c81650b0e2a36cba5bef7",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/core/collaboration/stage-intent.test.ts",
+      "fix_report_sha256": "de60ef83047d51fb82b89a46d430cc0292af92630e5a90bd95b3dc6e70c3af95",
+      "final_sha256": "de60ef83047d51fb82b89a46d430cc0292af92630e5a90bd95b3dc6e70c3af95",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/core/collaboration/stage-intent.ts",
+      "fix_report_sha256": "bd205750510a16b8ca8bab54dd968691dae932a802b95676fc072c80cfc9b670",
+      "final_sha256": "bd205750510a16b8ca8bab54dd968691dae932a802b95676fc072c80cfc9b670",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/core/collaboration/stage-queries.test.ts",
+      "fix_report_sha256": "a62fb1a29400cd4eda0033847cec183e2e08d79bea23dae513bef93766a749ca",
+      "final_sha256": "a62fb1a29400cd4eda0033847cec183e2e08d79bea23dae513bef93766a749ca",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/core/collaboration/stage-queries.ts",
+      "fix_report_sha256": "0de8a66fca4d9416b290f959a3ca837be56be3f683a3a55f5d628f4bcda4de17",
+      "final_sha256": "0de8a66fca4d9416b290f959a3ca837be56be3f683a3a55f5d628f4bcda4de17",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/core/collaboration/stage-schema.test.ts",
+      "fix_report_sha256": "22ecf3a91694f9ac8bfe18004db2243b1da22118dd5a710c3cb319ecd5984766",
+      "final_sha256": "22ecf3a91694f9ac8bfe18004db2243b1da22118dd5a710c3cb319ecd5984766",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/core/collaboration/stage-schema.ts",
+      "fix_report_sha256": "ff76c8c554710c627132ff8fe70dcf2ebe148ac08cd6da2500392d4960c7f518",
+      "final_sha256": "ff76c8c554710c627132ff8fe70dcf2ebe148ac08cd6da2500392d4960c7f518",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/core/collaboration/stage-source-cache.test.ts",
+      "fix_report_sha256": "673780b61fe3d04f37f67ff0eb1e5b26e4f6456e97c56cf45b05204213997388",
+      "final_sha256": "673780b61fe3d04f37f67ff0eb1e5b26e4f6456e97c56cf45b05204213997388",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/core/collaboration/stage-source-cache.ts",
+      "fix_report_sha256": "033711eda34e7fd06295abb6316a34f41abe476d57c47e84d81fdb7ed51fa461",
+      "final_sha256": "033711eda34e7fd06295abb6316a34f41abe476d57c47e84d81fdb7ed51fa461",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "fix_report_sha256": "7d913ca33324548097b2d3c0dc83edf84ae29992d0a4ffdb5ab91544fadb80e3",
+      "final_sha256": "7d913ca33324548097b2d3c0dc83edf84ae29992d0a4ffdb5ab91544fadb80e3",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/views/collaboration/collaboration-detail.tsx",
+      "fix_report_sha256": "6c3a3167988fc485737f3ea4f4631c9cbcf4e926836b5719c7bacde994dddc2b",
+      "final_sha256": "6c3a3167988fc485737f3ea4f4631c9cbcf4e926836b5719c7bacde994dddc2b",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-forms.tsx",
+      "fix_report_sha256": "403f8003aadb61dd4ab6b3c2dd9e183901cc2da046033bccd1c97feb6249288e",
+      "final_sha256": "403f8003aadb61dd4ab6b3c2dd9e183901cc2da046033bccd1c97feb6249288e",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-panel.test.tsx",
+      "fix_report_sha256": "778093a4c94ddf2891b103131bb2350040b8da5ff5d52b57a49bccf66e490c25",
+      "final_sha256": "778093a4c94ddf2891b103131bb2350040b8da5ff5d52b57a49bccf66e490c25",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-panel.tsx",
+      "fix_report_sha256": "fee486c0acd34c6f933d8d220fb3122633d1cf74b888996a4fbe4b902ed53da9",
+      "final_sha256": "fee486c0acd34c6f933d8d220fb3122633d1cf74b888996a4fbe4b902ed53da9",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/views/collaboration/stage-forms.tsx",
+      "fix_report_sha256": "b49b1cda0df7666ab59e8c83cc9c682f7cf838f940dd1865b172c62e8eb22332",
+      "final_sha256": "b49b1cda0df7666ab59e8c83cc9c682f7cf838f940dd1865b172c62e8eb22332",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/views/collaboration/stage-panel.test.tsx",
+      "fix_report_sha256": "595e48b3138f8b90f9f7a6e5093769ce526b597f5091ca31ec4a118d5cac1da2",
+      "final_sha256": "e1e0ccea21370ae245fabc0b94e89e317e3ba3d8aa42c697a3aeae76b37a94e0",
+      "reviewer_changed": true
+    },
+    {
+      "path": "packages/views/collaboration/stage-panel.tsx",
+      "fix_report_sha256": "5934ab6348a507c847deed285ae33ca735c53ecf562f33a3ef8159b0d13a21e3",
+      "final_sha256": "ec5fdd08215302d934ce07f8444ea8e7671f58d7aa5fde31d2e6342f6c151985",
+      "reviewer_changed": true
+    },
+    {
+      "path": "packages/views/collaboration/stage-recovery.test.tsx",
+      "fix_report_sha256": "93d5781c6dadc1192412e490ec97a6237da28b8d8736a68bdf098abfa858507a",
+      "final_sha256": "7895d2390c6129df65c7bdace7e3d15e102780ac031f6c86533e0a9948877c1e",
+      "reviewer_changed": true
+    },
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "fix_report_sha256": "ed9c2b72b2b97e3eb7d63f805ea682c2414f88184212fbfc0c1cbe9f6943c835",
+      "final_sha256": "ed9c2b72b2b97e3eb7d63f805ea682c2414f88184212fbfc0c1cbe9f6943c835",
+      "reviewer_changed": false
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "fix_report_sha256": "e6a86f54cd5748f13fb248c1182a3f8afa9695211ac247e9c06fea38f614bdb5",
+      "final_sha256": "e6a86f54cd5748f13fb248c1182a3f8afa9695211ac247e9c06fea38f614bdb5",
+      "reviewer_changed": false
+    }
+  ],
+  "additional_read_source_bindings": [
+    {
+      "path": "packages/core/api/client.ts",
+      "sha256": "e46abcb3fddae8aecffbca1160c2e796831505b8e855a67df9163ac80eba1ef2"
+    },
+    {
+      "path": "packages/core/api/schemas.ts",
+      "sha256": "d34a4bc6896a2cc7d562cd218cc218e23c170615a698a0427b87d112c2eac763"
+    },
+    {
+      "path": "packages/core/workspace/queries.ts",
+      "sha256": "d88db2e7030aa81a4f93e6e1e5128ffac3590b7ce72853821aa12993b095e826"
+    },
+    {
+      "path": "server/internal/handler/workspace.go",
+      "sha256": "3c80027560c505cf12c298772ddb0f36dc7942c6638fbe765d19b4b2ecc6709f"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage.go",
+      "sha256": "b6f1c501243529556123497061d539c6c7954c08f2afe8445cfd08c59b9a14dd"
+    }
+  ],
+  "findings_rechecked": [
+    {
+      "id": "C01",
+      "status": "resolved",
+      "source": "stage-intent.ts:33,163; stage-schema.ts:442,678; stage-actions.ts:264,285; stage-panel.tsx:366; collaboration-detail.tsx:70",
+      "evidence": "Full and recovery-only records share the existing prefix. Denial removes private body/prose. The strict action union retains exactly the fields needed by the same matcher, and no write body is reconstructed. Reduced objects and stale full handles cannot POST during denial; conflicting stored reduced records also block full-body overwrite. Denied detail exposes original-key GET404/GET200 recovery, with all identity/logout cleanup preserved."
+    },
+    {
+      "id": "C02",
+      "status": "resolved",
+      "source": "stage-source-cache.ts:15,37; stage-queries.ts:128; stage-code-forms.tsx:35,47",
+      "evidence": "R4 source workspace is explicit in keys. A workspace-scoped generation is advanced before cancellation/erasure across same-viewer/session sibling and cross-issue R4 entries. Older success and error are fenced before they can restore evidence or deny issue access. Other workspaces and issue identity survive. Source-dependent forms unmount/remount without their old source snapshots or unsent review text; already-anonymous records preserve their existing read/error state."
+    },
+    {
+      "id": "C03",
+      "status": "resolved",
+      "source": "stage-code-presentation.ts:28,45; stage-actions.ts:76; stage-code-forms.tsx:40,47",
+      "evidence": "Reason-only return derives independently from source-readable approval eligibility. Proper-role/current candidate returns accept null expiry, null evidence and no dependencies; optional hidden references and approval remain blocked. The withheld form exposes no private evidence controls."
+    },
+    {
+      "id": "C04",
+      "status": "resolved",
+      "source": "stage-code-presentation.ts:29; stage-queries.ts:136; stage-code-forms.tsx:121",
+      "evidence": "R1 discovery and R4 must agree on exact candidate identity and current state before authorizing controls. Discovery changes refresh selected R4. Revocation remains separately available for readable superseded, unconsumed decisions."
+    },
+    {
+      "id": "C05",
+      "status": "resolved",
+      "source": "stage-queries.ts:154; stage-actions.ts:159; stage-panel.tsx:301; api/client.ts:5328; api/schemas.ts:3868; server/internal/handler/workspace.go:498",
+      "evidence": "The existing explicit-workspace member query supplies real workspace_id/user_id/role fields. The handler writes them and the schema preserves them; no fixture-only capability is assumed. The account-scoped wrapper retains one matching viewer role. Owner/admin and a successful non-fetching read are required; preparation rechecks workspace/account/role. No wire changes."
+    },
+    {
+      "id": "C06",
+      "status": "resolved",
+      "source": "collaboration-detail.tsx:110; stage-panel.tsx:94,137,310; stage-forms.tsx:166,288",
+      "evidence": "Required parent/R1, P1/authority and R3 failures disable new writes and resends while preserving input and GET recovery. Successful refresh re-enables the retained form. C08 below corrects an over-broad resend lock introduced by this change."
+    },
+    {
+      "id": "C07",
+      "status": "resolved",
+      "source": "stage-schema.ts:179; stage-code-presentation.ts:47",
+      "evidence": "The parser rejects a valid decision with a terminal revocation, and validDecisions defensively excludes any non-null revocation."
+    }
+  ],
+  "findings_fixed_by_reviewer": [
+    {
+      "id": "C08",
+      "priority": "P2",
+      "files": [
+        {
+          "path": "packages/views/collaboration/stage-panel.tsx",
+          "line": 310
+        },
+        {
+          "path": "packages/views/collaboration/stage-panel.test.tsx",
+          "line": 396
+        }
+      ],
+      "issue": "New-write pending-intent lock was reused as sendDisabled, making every pending full P2 intent impossible to resend even after GET404 with healthy administration authority.",
+      "fix": "Separate current read/authority/storage/busy sendDisabled from the additional pending-intent condition that blocks only new writes. Policy absence still blocks sending. Explicit retry reuses the stored key and body; reduced records remain non-sendable.",
+      "proof": "C08 red2 failed on disabled resend. Final 30-test run verifies no automatic PUT after GET404, a locked replacement write, read-failure lockdown with GET available, and exact method/path/Idempotency-Key/body on explicit resend."
+    },
+    {
+      "id": "test_selector",
+      "files": [
+        {
+          "path": "packages/views/collaboration/stage-recovery.test.tsx",
+          "line": 30
+        }
+      ],
+      "issue": "The absence assertion searched /Resend/, whereas the rendered label is Send the same request again, so it could pass vacuously.",
+      "fix": "Assert absence using the actual accessible label; the GET-only recovery suite passes."
+    }
+  ],
+  "findings_not_fixed": [],
+  "verification": [
+    {
+      "name": "core",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage- collaboration/draft.test.ts",
+      "exit_code": 0,
+      "summary": "12 suites / 292 passed / no failures or skips",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-recheck-core.log",
+      "sha256": "760f011d91625e538d16850f738066abada80c9df233b43a09de9d0752aed657"
+    },
+    {
+      "name": "views",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/stage- collaboration/collaboration-detail.test.tsx locales",
+      "exit_code": 0,
+      "summary": "6 suites / 127 passed / no failures or skips; before C08",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-recheck-views.log",
+      "sha256": "e61199bbca04cb2dda8d71aaa73916e0acf44d5cb19abd0387146d6482167b1c"
+    },
+    {
+      "name": "types",
+      "command": "pnpm --filter @multica/core --filter @multica/views typecheck",
+      "exit_code": 0,
+      "summary": "both packages passed; before C08",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-recheck-types.log",
+      "sha256": "28baed49eaac6990b023b3da99e5f129a44c3b6595bd00466bd54338eee72a42"
+    },
+    {
+      "name": "core-lint",
+      "command": "pnpm exec eslint collaboration/stage-*.ts collaboration/index.ts (cwd packages/core)",
+      "exit_code": 0,
+      "summary": "pass / zero code warnings",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-recheck-core-lint.log",
+      "sha256": "4e34acfccad80f6bb5a2fad20a2b60ae434cdb31bb4e6c3939a884299fa47751"
+    },
+    {
+      "name": "views-lint",
+      "command": "pnpm exec eslint collaboration/stage-*.tsx collaboration/stage-labels.ts collaboration/collaboration-detail.tsx collaboration/collaboration-detail.test.tsx (cwd packages/views)",
+      "exit_code": 0,
+      "summary": "pass / zero code warnings; before C08",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-recheck-views-lint.log",
+      "sha256": "4e34acfccad80f6bb5a2fad20a2b60ae434cdb31bb4e6c3939a884299fa47751"
+    },
+    {
+      "name": "c08-red",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-panel.test.tsx -t C08",
+      "exit_code": 1,
+      "summary": "test setup mismatch: /Resend/ was not the actual accessible label; not product-failure evidence",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-recheck-c08-red.log",
+      "sha256": "9c149ec1b04ea944f43a6675de70839c0314353159bb9588ad61e13c2d3016bb"
+    },
+    {
+      "name": "c08-red2",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-panel.test.tsx -t C08",
+      "exit_code": 1,
+      "summary": "1 failed / 28 filtered; actual product defect: original-request resend disabled",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-recheck-c08-red2.log",
+      "sha256": "d5235634a6f0da0982d56ad24d8dd82eed60bb200c394c0d7e77f459d5ca359c"
+    },
+    {
+      "name": "c08-green",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-panel.test.tsx collaboration/stage-recovery.test.tsx",
+      "exit_code": 1,
+      "summary": "29 passed / 1 assertion failed: transport X-Request-ID correctly differs between attempts; assertion narrowed to operation identity",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-recheck-c08-green.log",
+      "sha256": "a6c115c8005d400ea3dd0cf8fc46e963a03eaafbf5a8209452ed4f4e376852b8"
+    },
+    {
+      "name": "types-final",
+      "command": "pnpm --filter @multica/core --filter @multica/views typecheck",
+      "exit_code": 0,
+      "summary": "both packages passed after code fix",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-recheck-types-final.log",
+      "sha256": "28baed49eaac6990b023b3da99e5f129a44c3b6595bd00466bd54338eee72a42"
+    },
+    {
+      "name": "views-lint-final",
+      "command": "pnpm exec eslint collaboration/stage-panel.tsx collaboration/stage-panel.test.tsx collaboration/stage-recovery.test.tsx (cwd packages/views)",
+      "exit_code": 0,
+      "summary": "pass / zero code warnings",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-recheck-views-lint-final.log",
+      "sha256": "4e34acfccad80f6bb5a2fad20a2b60ae434cdb31bb4e6c3939a884299fa47751"
+    },
+    {
+      "name": "c08-green2",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-panel.test.tsx collaboration/stage-recovery.test.tsx",
+      "exit_code": 0,
+      "summary": "2 affected suites / 30 passed / no failures or skips; final source",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-recheck-c08-green2.log",
+      "sha256": "c1e0e09db8e6e7f7271028f1ac671e7c04f26899902b5baa8ec4e15272ebf1b6"
+    },
+    {
+      "name": "views-lint-final2",
+      "command": "pnpm exec eslint collaboration/stage-panel.tsx collaboration/stage-panel.test.tsx collaboration/stage-recovery.test.tsx (cwd packages/views)",
+      "exit_code": 0,
+      "summary": "pass / zero code warnings; final source",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-recheck-views-lint-final2.log",
+      "sha256": "4e34acfccad80f6bb5a2fad20a2b60ae434cdb31bb4e6c3939a884299fa47751"
+    },
+    {
+      "name": "views-types-final",
+      "command": "pnpm --filter @multica/views typecheck",
+      "exit_code": 0,
+      "summary": "pass after final test assertion correction",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-recheck-views-types-final.log",
+      "sha256": "0bdd921912c92f4d314ec78e0239f6d4094843305e3c55a655b181a047526ddf"
+    }
+  ],
+  "ready_for_eventual_joint_integration": true,
+  "whole_s2_accepted": false,
+  "parent_accepted": false,
+  "deferred": [
+    "client3b M1 collaboration completion",
+    "generic completion stage blockers",
+    "activity/notifications",
+    "T4 detail after server2b freeze",
+    "production Web/Desktop and A01-A12 joint acceptance"
+  ],
+  "spec_sync_owner": "root; no spec edits by checker",
+  "not_run": [
+    "API",
+    "DB",
+    "browser",
+    "models",
+    "platform launch",
+    "full builds"
+  ],
+  "dependencies_added": false
+}

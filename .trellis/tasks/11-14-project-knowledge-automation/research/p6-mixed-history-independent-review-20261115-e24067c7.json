@@ -1,0 +1,980 @@
+{
+  "schema_version": 1,
+  "review_id": "p6-mixed-history-independent-review-20261115-e24067c7",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "approved_revision": "2026-11-14-v1",
+  "reviewer_role": "trellis-check",
+  "mode": "bounded_read_only_added_test_review",
+  "reviewed_at": "2026-11-15T06:38:43.648Z",
+  "scope": {
+    "only_code_file_under_review": "server/internal/service/task_knowledge_mixed_history_integration_test.go",
+    "purpose": "核对新增有界 C1/C2 回归是否真正覆盖早遇 human 冲突、native refusal、第三页 automatic exposure 和最高 matching nested manifest 版本；确认新测试输入与此前矩阵的关系。",
+    "supporting_reads": "此前两份不可变审查 JSON、必要既有 fixture/SQL、实际测试小 JSON、Go JSON 原始日志和既有 Redis 归属/auth receipt；只读哈希用于输入归属，不扩展代码审查。 负责人后续修3个 handler tests，仅用既有历史 per-file snapshot 与当前哈希清单确认预期内容差异，没有审查这些文件代码。",
+    "allowed_write": "one new task research JSON, mode 0600",
+    "production_tests_spec_markdown_metadata_dependencies_modified_by_reviewer": false,
+    "go_db_provider_execution_by_reviewer": false,
+    "p6_started_or_controlled_by_reviewer": false,
+    "recursive_delegation": false,
+    "overall_acceptance_scope_expanded": false
+  },
+  "verdict": "no_blocking_findings_C1_C2_closed_by_bounded_actual_regressions_C3_remains_nonblocking",
+  "blocking_security_findings_open": 0,
+  "blocking_findings": [],
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "C3",
+      "category": "inherited_test_coverage_comment",
+      "severity": "low",
+      "blocking": false,
+      "title": "换证后原 prepare/authorize 请求恢复缺少直接 automatic replay 回归",
+      "status": "remains_nonblocking_outside_this_added_file",
+      "evidence": [
+        {
+          "path": "server/internal/service/collaboration_knowledge_consumption_test.go",
+          "line": 224,
+          "detail": "重新验收用例验证 resolver、lock hints、BuildTaskKnowledgeClaim 拒绝旧证明并允许 fresh proof2。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge_automation_test.go",
+          "line": 43,
+          "detail": "消费竞态覆盖 reopen 的 prepare/authorize 两种提交顺序，未更新到 reacceptance 的 proof2 后复用原请求。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge_history_test.go",
+          "line": 233,
+          "detail": "原 authorize 请求丢响应后的当前资格复查对照是 human withdrawal。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge_prepare.go",
+          "line": 544,
+          "detail": "prepared replay 只复查原 p.Manifest 并要求原 request/hash；不重新 Resolve 当前集合。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge_prepare.go",
+          "line": 660,
+          "detail": "authorize 的共用事务与原 prepared manifest 复查发生在原 receipt 回放前。"
+        },
+        {
+          "path": "server/internal/service/collaboration_knowledge_locks.go",
+          "line": 173,
+          "detail": "原 manifest validity 与当前 head 不相等即拒绝。"
+        }
+      ],
+      "carried_from": {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-resume-security-review-20261115-41b188ec.json",
+        "sha256": "a353a29fc1996b846d33f41abaa45ec32657001a77022079d61a171d61c69071"
+      },
+      "reason_not_fixed": "本文件针对 C1/C2；proof1 换成 proof2 后直接重放原 prepare/authorize 请求仍不在本轮范围。未扩展测试或总体 AC。"
+    }
+  ],
+  "closed_coverage_comments": [
+    {
+      "id": "C1",
+      "severity_when_open": "medium",
+      "status": "closed",
+      "code_file": "server/internal/service/task_knowledge_mixed_history_integration_test.go",
+      "cases": [
+        "server_configuration",
+        "client_binding",
+        "native_refused"
+      ],
+      "references": [
+        {
+          "line": 19,
+          "detail": "正式 accepted source；beforeDelivery 回调用人类 proposal/approve 建立人工贡献。"
+        },
+        {
+          "line": 43,
+          "detail": "真实 v1 private prepare/authorize/native observations，先于 automatic publication。"
+        },
+        {
+          "line": 60,
+          "detail": "通过既有 retained SQL fixture 建立 accepted-source 自动 validity，再真实 v2 prepare/authorize。"
+        },
+        {
+          "line": 65,
+          "detail": "两条 preparation 必须共用完全相同 Session binding。"
+        },
+        {
+          "line": 91,
+          "detail": "native_refused 通过真实 contradictory-native Observe API 产生 409 并保留 Refused。"
+        },
+        {
+          "line": 104,
+          "detail": "260 claimed-only 行加两条 preparation，固定 created_at 严格顺序。"
+        },
+        {
+          "line": 116,
+          "detail": "同生产 query 逐页断言 128/128/6、human page1 首位、automatic page3 末位。"
+        },
+        {
+          "line": 125,
+          "detail": "逐行严格 decode，并验证 task/agent/scope、人工无 validity、自动恰好一个实际发布 candidate 的 validity。"
+        },
+        {
+          "line": 178,
+          "detail": "server instructions 或合法 client ConfigurationID 变更；native variant 只依靠持久化 Refused。"
+        },
+        {
+          "line": 183,
+          "detail": "新 turn 无当前 retained claim，旧曝光只能来自 history。"
+        },
+        {
+          "line": 190,
+          "detail": "旧 native 必须 typed 409、descriptor=nil、prior empty；不是无错误的 fresh 回退。"
+        },
+        {
+          "line": 202,
+          "detail": "同一配置/facts 的显式 fresh finalize/prepare 成功，新 generation/空 native 且只含 human，排除暂停 automatic。"
+        },
+        {
+          "line": 207,
+          "detail": "全部 history 聚合字节及两条原 manifest/hash/version/native/attempt 逐项不变。"
+        }
+      ],
+      "raw_pass_events": [
+        {
+          "name": "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure/server_configuration",
+          "line": 11,
+          "time": "2026-11-15T14:18:19.058193+08:00",
+          "elapsed": 1.6
+        },
+        {
+          "name": "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure/client_binding",
+          "line": 19,
+          "time": "2026-11-15T14:18:20.654624+08:00",
+          "elapsed": 1.6
+        },
+        {
+          "name": "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure/native_refused",
+          "line": 27,
+          "time": "2026-11-15T14:18:22.277423+08:00",
+          "elapsed": 1.62
+        }
+      ],
+      "assessment": "实际 3 个变体覆盖早遇已准备 human 不兼容/Refused 后深页仍必须记住 automatic exposure。合法编码、相同 native、准备成功、完全匹配的 page 顺序和同配置 fresh 成功对照排除了其它拒绝导致假绿。"
+    },
+    {
+      "id": "C2",
+      "severity_when_open": "low",
+      "status": "closed",
+      "code_file": "server/internal/service/task_knowledge_mixed_history_integration_test.go",
+      "negative_cases": [
+        "server_configuration",
+        "client_binding"
+      ],
+      "legacy_positive_cases": [
+        "v1_envelope",
+        "v2_envelope_with_v1_claim"
+      ],
+      "references": [
+        {
+          "line": 238,
+          "detail": "recordSession 真实 prepare/authorize/native observations，持久化单条 pure v2 human manifest 且无 validity。"
+        },
+        {
+          "line": 248,
+          "detail": "严格 decode 校验外层 v2、嵌套 manifest v2 和实际 human candidate。"
+        },
+        {
+          "line": 264,
+          "detail": "直接调用 helper，断言无错误、不兼容 binding=nil、managed=true、空 Entries 的最高版本仍为2。"
+        },
+        {
+          "line": 268,
+          "detail": "v1 原 native claim 必须 typed 409，并且不写 replacement claim/attempt。"
+        },
+        {
+          "line": 281,
+          "detail": "同 facts 的显式 v2 fresh prepare 成功且原 human history bytes/manifest/attempt 不变。"
+        },
+        {
+          "line": 306,
+          "detail": "两个 legacy 对照从真实 v1 prepare/authorize 开始。"
+        },
+        {
+          "line": 319,
+          "detail": "仅对 v2 envelope 对照提升 outer version，再严格 encode/decode；嵌套 descriptor/manifest/authorization/observation 保持v1。"
+        },
+        {
+          "line": 342,
+          "detail": "配置不变时 v2 invocation 先证实合法 old native resume。"
+        },
+        {
+          "line": 349,
+          "detail": "配置改变后直接 helper 回传最高 nested version1，而非 outer envelope2；v2 请求合法 mint fresh binding。"
+        },
+        {
+          "line": 365,
+          "detail": "不重写原 manifest/hash/version/native/attempt。"
+        }
+      ],
+      "raw_pass_events": [
+        {
+          "name": "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding/server_configuration",
+          "line": 37,
+          "time": "2026-11-15T14:18:22.659963+08:00",
+          "elapsed": 0.38
+        },
+        {
+          "name": "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding/client_binding",
+          "line": 43,
+          "time": "2026-11-15T14:18:23.051235+08:00",
+          "elapsed": 0.39
+        },
+        {
+          "name": "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding/v1_envelope",
+          "line": 53,
+          "time": "2026-11-15T14:18:23.517755+08:00",
+          "elapsed": 0.47
+        },
+        {
+          "name": "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding/v2_envelope_with_v1_claim",
+          "line": 59,
+          "time": "2026-11-15T14:18:23.892932+08:00",
+          "elapsed": 0.38
+        }
+      ],
+      "assessment": "直接成功的 helper 版本断言锁定此前空 manifest 回退的最高 matching version 分支；真实 pure-human preparation 与同 facts 的 fresh prepare 排除泛化错误。两个合法 outer1/outer2+nested1 对照保留 legacy fresh 行为。关闭仅针对原 C2 bounded coverage，不扩展 empty-history 或整体 AC。"
+    }
+  ],
+  "false_green_checks": [
+    {
+      "check": "formal_source_and_private_preparation",
+      "result": "pass",
+      "detail": "正式 SubmitAcceptance/ChangeLifecycle accepted source，人工走 proposal/approve；自动 fixture 使用真实 retained SQL、合成 succeeded generating/checking records 与 validity，不调用模型。所有消费准备/授权/native/refusal 都走实际 service API。",
+      "references": [
+        {
+          "path": "server/internal/service/collaboration_knowledge_delivery_test.go",
+          "line": 13
+        },
+        {
+          "path": "server/internal/service/collaboration_knowledge_consumption_test.go",
+          "line": 22
+        },
+        {
+          "path": "server/internal/service/task_knowledge_automation_test.go",
+          "line": 17
+        },
+        {
+          "path": "server/internal/service/task_knowledge_history_test.go",
+          "line": 54
+        }
+      ]
+    },
+    {
+      "check": "same_scope_and_real_keyset_third_page",
+      "result": "pass",
+      "detail": "nextTurn 继承 agent/runtime/issue/chat scope；filler 清除 Prepared/Attempts 并 encode 有效 v1 claimed history；使用与 helper 相同 SQL (created_at,id) keyset，实测断言两页128及末页6。",
+      "references": [
+        {
+          "path": "server/internal/service/task_knowledge_history_test.go",
+          "line": 74
+        },
+        {
+          "path": "server/internal/service/task_knowledge_history_growth_test.go",
+          "line": 20
+        },
+        {
+          "path": "server/pkg/db/queries/task_knowledge.sql",
+          "line": 4
+        }
+      ]
+    },
+    {
+      "check": "supported_current_configuration",
+      "result": "pass",
+      "detail": "server instructions 变化只影响 digest；client IDs 是合法非空身份字符串，版本1/2均被 supported guard 接受。C1 explicit fresh 与 C2 v2 fresh prepare 使用相同当前配置/facts，成功对照排除无关 admission/source/permission 错误。",
+      "references": [
+        {
+          "path": "server/internal/service/task_knowledge.go",
+          "line": 322
+        }
+      ]
+    },
+    {
+      "check": "aggregate_scan_errors_are_fatal",
+      "result": "pass",
+      "detail": "historyBefore/historyAfter 的 Scan 是 testutil.Row.Scan，任何查询/扫描错误直接 Fatalf；不存在忽略 pgx Scan 错误后两个 nil buffer 比较假绿。",
+      "references": [
+        {
+          "path": "server/internal/testutil/db.go",
+          "line": 118
+        }
+      ]
+    },
+    {
+      "check": "no_init_or_global_state",
+      "result": "pass",
+      "top_level_declarations": [
+        {
+          "line": 15,
+          "text": "func TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure(t *testing.T) {"
+        },
+        {
+          "line": 232,
+          "text": "func TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding(t *testing.T) {"
+        },
+        {
+          "line": 301,
+          "text": "func TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding(t *testing.T) {"
+        }
+      ],
+      "init_present": false,
+      "package_globals_present": false,
+      "detail": "新增文件仅 imports 和3个 Test 函数；所有变体状态局部，未添加 init/global/env/provider hooks 或依赖。"
+    }
+  ],
+  "source_identity": {
+    "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+    "new_test": {
+      "path": "server/internal/service/task_knowledge_mixed_history_integration_test.go",
+      "sha256": "42efe25cc5a54c19e2518eee60307baaa23788dc10e05f9a7f70b771e9ea141a",
+      "bytes": 23420,
+      "external_draft_sha256_claim": "42efe25cc5a54c19e2518eee60307baaa23788dc10e05f9a7f70b771e9ea141a",
+      "actual_external_draft_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l/task_knowledge_mixed_history_integration_test.go",
+      "actual_external_draft_bytes_match": true
+    },
+    "production_helper": {
+      "path": "server/internal/service/task_knowledge.go",
+      "sha256": "a2258373d8c0abc4883e5fdd7fc28a0bca80ce106bc41758d5ecdb795f21d9e7",
+      "matches_prior_a225_review": true
+    },
+    "execution_spec": {
+      "path": ".trellis/spec/server/collaboration-knowledge-execution.md",
+      "sha256": "f9302a6ce63fee9c86b0449cac4b2d0bf698cd38cf2fb13840cd2a616221f2bb",
+      "matches_prior_f930_review": true
+    },
+    "server_inputs": {
+      "historical_run_inputs": {
+        "completed_full_service_before_and_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "completed_mixed_regression_before_and_after": "917eeab82fccdcad57006f511e3ff09bc33e01b0d1d20263d658ef5699a6a80e"
+      },
+      "independent_pre_handler_edit_reconstruction": {
+        "current": {
+          "sha256": "917eeab82fccdcad57006f511e3ff09bc33e01b0d1d20263d658ef5699a6a80e",
+          "file_count": 4765,
+          "byte_count": 41736108
+        },
+        "excluding_new_test": {
+          "sha256": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+          "file_count": 4764,
+          "byte_count": 41712688
+        }
+      },
+      "reconstruction_note": "此前本轮只读实算 with-new-test=917、excluding-only-new-test=ca9；此实算与 integration receipt 及各自历史 run before/after 一致。随后负责人修改3个 handler tests，当前整棵 server fingerprint 不再应等于917。",
+      "later_current_metadata_audit": {
+        "historical_source_sha256": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "current_source_sha256": "f827689ea5d568481fafbce19efac4a30a143198ce461391e391b9d71b0c7f4e",
+        "added": [
+          {
+            "path": "server/internal/service/task_knowledge_mixed_history_integration_test.go",
+            "sha256": "42efe25cc5a54c19e2518eee60307baaa23788dc10e05f9a7f70b771e9ea141a",
+            "size": 23420
+          }
+        ],
+        "changed": [
+          {
+            "path": "server/internal/handler/config_test.go",
+            "sha256_before": "427b0ce155fc4561bcb166dddc471d10be8e733a2332abdc080ee3805d62007d",
+            "sha256_after": "aeb94618e9c599e8828278d3e67dcb7613f7e0ba06a8485dddaacdbf41de2329"
+          },
+          {
+            "path": "server/internal/handler/issue_autopilot_assignment_authority_test.go",
+            "sha256_before": "9fcebcd42a02fd821cb69fb5330bbeb94e8b5916834c36c65bdf8df89f329c50",
+            "sha256_after": "8d2011ee7f20925ed9f4c045e385dd0c83a39eefcf7c9d68e8517c8b5ec8203a"
+          },
+          {
+            "path": "server/internal/handler/workspace_delete_manifest_test.go",
+            "sha256_before": "ec257908cfde065ae94ae361e26040acb0c178cb944e17a9eec0b843dcd2b9de",
+            "sha256_after": "7de1513b341b327d2e6c6747575158640e91acbb3f5de1b6c68727ffa1584adc"
+          }
+        ],
+        "removed": [],
+        "mode_changes": []
+      },
+      "later_current_metadata_audit_at": "2026-11-15T06:42:27.730Z",
+      "expected_later_test_changes_match_leader": true,
+      "production_content_drift": false
+    },
+    "fingerprint_algorithm": "SHA256 over sorted server/**/* files with .go/.sql suffix or basename go.mod/go.sum/sqlc.yaml; repository-relative path, NUL, complete bytes. Excluding exactly the new test reproduces ca9 prior full matrix input.",
+    "referenced_fixture_fingerprints": [
+      {
+        "path": "server/internal/testutil/db.go",
+        "sha256": "57f74029e5273c15eb32b1b811d0760997dcea4b02d30ac510292d68f21989f1"
+      },
+      {
+        "path": "server/internal/service/task_knowledge_test.go",
+        "sha256": "7a68a595cea6a46d8ff585aeb812410e7f335376dc1365819ebb3b0d0d1b50a0"
+      },
+      {
+        "path": "server/internal/service/task_knowledge_history_test.go",
+        "sha256": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223"
+      },
+      {
+        "path": "server/internal/service/task_knowledge_history_growth_test.go",
+        "sha256": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12"
+      },
+      {
+        "path": "server/internal/service/collaboration_knowledge_delivery_test.go",
+        "sha256": "06eedc36a91d465d1b9e16b6020de8ff3020ca8baf2ed01d91d7b256fa8e54ea"
+      },
+      {
+        "path": "server/internal/service/collaboration_knowledge_consumption_test.go",
+        "sha256": "2a9015de956a785d2e330050fe7b5624801c2d523ce0a2ec82d5185e49e93f01"
+      },
+      {
+        "path": "server/internal/service/task_knowledge_automation_test.go",
+        "sha256": "664da26f7931835af3b3586dbb4241a9796cf7dcf764950c377a8dcdda54e94f"
+      },
+      {
+        "path": "server/pkg/db/queries/task_knowledge.sql",
+        "sha256": "9f808a9c707ac28a9575eabb8df34734de6fb630d8fa1e5fcb25f0ea2d514d19"
+      }
+    ],
+    "prior_review_reports": [
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-resume-security-review-20261115-41b188ec.json",
+        "sha256": "a353a29fc1996b846d33f41abaa45ec32657001a77022079d61a171d61c69071"
+      },
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-resume-spec-recheck-20261115-b930f73c.json",
+        "sha256": "e128a06673614380b9f7147483568fecb99cafa7d2527a31af4ce26bf7304080"
+      }
+    ],
+    "historical_integration_prior_go_sql_input_parity_independently_verified": true,
+    "historical_file_snapshot": {
+      "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/source-final.json",
+      "sha256": "288d885a7d4e8e016881b1629efd0857483b805fb490302d2d214f4e64c23d92",
+      "source_sha256": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+      "file_count": 4764
+    }
+  },
+  "evidence": {
+    "artifacts": [
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-mixed-history-race-55779534.json",
+        "sha256": "3828def458aa5e33c5029353602e1c83349a98883948b6771985a8edb36fce00",
+        "bytes": 6384
+      },
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-mixed-history-integration-6d969496.json",
+        "sha256": "e751660e0b7af42da20c70cc16673cc0006dfcf4f350becc7ae77e9649f1a403",
+        "bytes": 781
+      },
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-service-final-race-4f72f717.json",
+        "sha256": "3be924a7c0a8151d1d7c53bdc3afa797ddc435f24ab5ced7f1c8a9d83e7240ff",
+        "bytes": 580077
+      },
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-current-go-binding-20261115-sjf89wb8.json",
+        "sha256": "b74b1ddb7a30df86f5e2d9f9c05d451aa92571c94fad2daa2804c447ae75d0fc",
+        "bytes": 118103
+      },
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-current-go-nondb-matrix-20261115-sjf89wb8.json",
+        "sha256": "5afde30d5c3d64856a8cc9624465315366d5bc432186607bcb9db557fe23ab16",
+        "bytes": 6449239
+      },
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-mixed-history-draft-20261115-be374d42.json",
+        "sha256": "e28bb908591158df8cff0dadd863d7c691b2bf19a4cd98a9aacd2f87378d25ca",
+        "bytes": 23743
+      }
+    ],
+    "mixed_regression": {
+      "report_path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-mixed-history-race-55779534.json",
+      "raw_log": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-mixed-history-race-55779534/tests.jsonl",
+        "sha256": "fb91d99dec33a1c1b610f303777f706541be5f852c3688e86ab1f8828cf48246",
+        "bytes": 18576,
+        "malformed_json_lines": [],
+        "counts": {
+          "run": 10,
+          "pass": 10,
+          "fail": 0,
+          "skip": 0
+        },
+        "package_terminal": [
+          {
+            "line": 64,
+            "Time": "2026-11-15T14:18:24.907697+08:00",
+            "Action": "pass",
+            "Package": "github.com/multica-ai/multica/server/internal/service",
+            "Elapsed": 8.744
+          }
+        ],
+        "raw_report_named_inventory_matches": {
+          "run": true,
+          "pass": true,
+          "fail": true,
+          "skip": true
+        },
+        "data_race_output_lines": []
+      },
+      "named_pass_events": [
+        {
+          "name": "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure/server_configuration",
+          "line": 11,
+          "time": "2026-11-15T14:18:19.058193+08:00",
+          "elapsed": 1.6
+        },
+        {
+          "name": "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure/client_binding",
+          "line": 19,
+          "time": "2026-11-15T14:18:20.654624+08:00",
+          "elapsed": 1.6
+        },
+        {
+          "name": "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure/native_refused",
+          "line": 27,
+          "time": "2026-11-15T14:18:22.277423+08:00",
+          "elapsed": 1.62
+        },
+        {
+          "name": "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure",
+          "line": 29,
+          "time": "2026-11-15T14:18:22.277444+08:00",
+          "elapsed": 4.82
+        },
+        {
+          "name": "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding/server_configuration",
+          "line": 37,
+          "time": "2026-11-15T14:18:22.659963+08:00",
+          "elapsed": 0.38
+        },
+        {
+          "name": "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding/client_binding",
+          "line": 43,
+          "time": "2026-11-15T14:18:23.051235+08:00",
+          "elapsed": 0.39
+        },
+        {
+          "name": "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding",
+          "line": 45,
+          "time": "2026-11-15T14:18:23.051258+08:00",
+          "elapsed": 0.77
+        },
+        {
+          "name": "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding/v1_envelope",
+          "line": 53,
+          "time": "2026-11-15T14:18:23.517755+08:00",
+          "elapsed": 0.47
+        },
+        {
+          "name": "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding/v2_envelope_with_v1_claim",
+          "line": 59,
+          "time": "2026-11-15T14:18:23.892932+08:00",
+          "elapsed": 0.38
+        },
+        {
+          "name": "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding",
+          "line": 61,
+          "time": "2026-11-15T14:18:23.892957+08:00",
+          "elapsed": 0.84
+        }
+      ],
+      "count_semantics": "10 named PASS events = 7 variant leaves plus 3 parent Test events; no failure/skip. Separate from old 3840 full matrix.",
+      "command_race_enabled": true,
+      "test_exit": 0,
+      "migration_exit": 0,
+      "source_before": "917eeab82fccdcad57006f511e3ff09bc33e01b0d1d20263d658ef5699a6a80e",
+      "source_after": "917eeab82fccdcad57006f511e3ff09bc33e01b0d1d20263d658ef5699a6a80e",
+      "source_stable": true,
+      "connections_after": 0
+    },
+    "old_completed_service_matrix_context": {
+      "report_path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-service-final-race-4f72f717.json",
+      "raw_log": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-service-final-race-4f72f717/tests.jsonl",
+        "sha256": "527221d082f66a2f8e24497e0c9363f9ce4be14b7feb17e3c53f4756113922ca",
+        "bytes": 4662547,
+        "malformed_json_lines": [],
+        "counts": {
+          "run": 3840,
+          "pass": 3840,
+          "fail": 0,
+          "skip": 0
+        },
+        "package_terminal": [
+          {
+            "line": 17236,
+            "Time": "2026-11-15T14:04:16.962952+08:00",
+            "Action": "pass",
+            "Package": "github.com/multica-ai/multica/server/internal/service",
+            "Elapsed": 1312.576
+          }
+        ],
+        "raw_report_named_inventory_matches": {
+          "run": true,
+          "pass": true,
+          "fail": true,
+          "skip": true
+        },
+        "data_race_output_lines": []
+      },
+      "source_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+      "source_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+      "source_stable": true,
+      "connections_after": 0,
+      "finished_at": "2026-11-15T06:04:18.177147+00:00",
+      "new_test_integration_at": "2026-11-15T06:17:26.562497+00:00",
+      "integration_after_full_matrix_complete": true,
+      "new_mixed_test_names_in_old_matrix": [],
+      "old_18_redis_skip_names_have_actual_pass_events": [
+        {
+          "name": "TestEmptyClaimCache_EmptyRuntimeIDIsNoOp",
+          "pass_events": [
+            {
+              "line": 11322,
+              "time": "2026-11-15T13:59:31.242272+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestEmptyClaimCache_MarkAndIsEmptyVersionMatched",
+          "pass_events": [
+            {
+              "line": 11326,
+              "time": "2026-11-15T13:59:31.24662+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestEmptyClaimCache_BumpInvalidatesPriorMark",
+          "pass_events": [
+            {
+              "line": 11330,
+              "time": "2026-11-15T13:59:31.248873+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestEmptyClaimCache_StaleMarkRejected",
+          "pass_events": [
+            {
+              "line": 11334,
+              "time": "2026-11-15T13:59:31.250934+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestEmptyClaimCache_TTL",
+          "pass_events": [
+            {
+              "line": 11338,
+              "time": "2026-11-15T13:59:31.25276+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestEmptyClaimCache_RuntimeIsolation",
+          "pass_events": [
+            {
+              "line": 11342,
+              "time": "2026-11-15T13:59:31.255622+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline",
+          "pass_events": [
+            {
+              "line": 14550,
+              "time": "2026-11-15T14:02:34.101427+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers",
+          "pass_events": [
+            {
+              "line": 14554,
+              "time": "2026-11-15T14:02:34.108172+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestReclaimCheckCache_TrackLaterAndForget",
+          "pass_events": [
+            {
+              "line": 14558,
+              "time": "2026-11-15T14:02:34.113667+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestReclaimCheckCache_CollectionCheckAlignsBackstops",
+          "pass_events": [
+            {
+              "line": 14562,
+              "time": "2026-11-15T14:02:34.118555+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder",
+          "pass_events": [
+            {
+              "line": 14566,
+              "time": "2026-11-15T14:02:34.122576+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen",
+          "pass_events": [
+            {
+              "line": 14570,
+              "time": "2026-11-15T14:02:34.126605+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+          "pass_events": [
+            {
+              "line": 15199,
+              "time": "2026-11-15T14:02:46.399464+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry",
+          "pass_events": [
+            {
+              "line": 15203,
+              "time": "2026-11-15T14:02:46.588107+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestNotifyTaskAvailable_BumpsBeforeWakeup",
+          "pass_events": [
+            {
+              "line": 16310,
+              "time": "2026-11-15T14:03:47.657802+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp",
+          "pass_events": [
+            {
+              "line": 16314,
+              "time": "2026-11-15T14:03:47.660876+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup",
+          "pass_events": [
+            {
+              "line": 16318,
+              "time": "2026-11-15T14:03:47.664011+08:00"
+            }
+          ]
+        },
+        {
+          "name": "TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict",
+          "pass_events": [
+            {
+              "line": 16326,
+              "time": "2026-11-15T14:03:47.667319+08:00"
+            }
+          ]
+        }
+      ],
+      "source_relation": "3840 actual PASS belong to historical ca9 input before this added test. At mixed integration, excluding exactly the new file reconstructed ca9 and with-new-file reconstructed917, matching both historical before/after receipts. The new10 actual named cases ran against917 and are absent from old3840 logs. Later only the leader-described3 handler test edits changed current fingerprint to f827; those expected edits do not invalidate historical parity or change either denominator. No post-addition or post-handler-edit full-service rerun claimed."
+    },
+    "retained_redis_evidence_context": {
+      "read_only_existing_proofs": true,
+      "no_redis_operations_by_reviewer": true,
+      "records": [
+        {
+          "key": "mixed_redis_before",
+          "verifier_log": {
+            "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-mixed-history-race-55779534/redis-ownership-56609abf.log",
+            "sha256": "25670ece421d57426625194423166cd3c3c74f65b30a6b4fa3dc3e33f55b8304"
+          },
+          "verified_status": "verified_owned_running",
+          "ownership_run_id": "1b8185dd69414d0b8ae9ab679a1c7669",
+          "container_id": "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+          "network_id": "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e",
+          "receipt": {
+            "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-verify-83cebff4b500.receipt.json",
+            "sha256": "927dc60d5e17285099be403e73cdc03e880035b2700526b871b19f3965636b98",
+            "bytes": 17096
+          },
+          "receipt_status": "verified_owned_running",
+          "authenticated_ping": "PONG",
+          "report_proof_matches_raw_log": true
+        },
+        {
+          "key": "mixed_redis_after",
+          "verifier_log": {
+            "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-mixed-history-race-55779534/redis-ownership-cd05f6bb.log",
+            "sha256": "fc892927b278da67aa70c2956575dfcd6146a6c08e6e2b3723abca5f51e7dd80"
+          },
+          "verified_status": "verified_owned_running",
+          "ownership_run_id": "1b8185dd69414d0b8ae9ab679a1c7669",
+          "container_id": "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+          "network_id": "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e",
+          "receipt": {
+            "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-verify-e248df18680f.receipt.json",
+            "sha256": "fc1f468b5f90756748fcfa5a30ff3e08cfde9f8eef536ee619fb8aa65063527e",
+            "bytes": 17096
+          },
+          "receipt_status": "verified_owned_running",
+          "authenticated_ping": "PONG",
+          "report_proof_matches_raw_log": true
+        },
+        {
+          "key": "full_redis_before",
+          "verifier_log": {
+            "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-service-final-race-4f72f717/redis-ownership-297deb69.log",
+            "sha256": "e75fb10d0b7f90a52036f95413965075c12b1dad410e7e23a1840b71ddea9308"
+          },
+          "verified_status": "verified_owned_running",
+          "ownership_run_id": "1b8185dd69414d0b8ae9ab679a1c7669",
+          "container_id": "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+          "network_id": "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e",
+          "receipt": {
+            "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-verify-62c756ce4248.receipt.json",
+            "sha256": "cb2a2b9431ac79c1a6f71fc706ca6234a619652d06af48122e2e0365e6c49813",
+            "bytes": 17096
+          },
+          "receipt_status": "verified_owned_running",
+          "authenticated_ping": "PONG",
+          "report_proof_matches_raw_log": true
+        },
+        {
+          "key": "full_redis_after",
+          "verifier_log": {
+            "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-service-final-race-4f72f717/redis-ownership-ccca252b.log",
+            "sha256": "a9f43b45efe8b05f573bfbd7109b1b0b9168ed08226d5ef2e74cb3d164662dc9"
+          },
+          "verified_status": "verified_owned_running",
+          "ownership_run_id": "1b8185dd69414d0b8ae9ab679a1c7669",
+          "container_id": "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+          "network_id": "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e",
+          "receipt": {
+            "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-verify-dbac66318374.receipt.json",
+            "sha256": "73fa192b2decd5e6dd41611436616336075f9bb68dd36e7f9538e47c01e5aae3",
+            "bytes": 17096
+          },
+          "receipt_status": "verified_owned_running",
+          "authenticated_ping": "PONG",
+          "report_proof_matches_raw_log": true
+        }
+      ]
+    },
+    "hegel_context_only": {
+      "artifacts": [
+        {
+          "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-current-go-binding-20261115-sjf89wb8.json",
+          "sha256": "b74b1ddb7a30df86f5e2d9f9c05d451aa92571c94fad2daa2804c447ae75d0fc",
+          "bytes": 118103
+        },
+        {
+          "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-current-go-nondb-matrix-20261115-sjf89wb8.json",
+          "sha256": "5afde30d5c3d64856a8cc9624465315366d5bc432186607bcb9db557fe23ab16",
+          "bytes": 6449239
+        }
+      ],
+      "source_sha256": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+      "build": {
+        "status": "pass",
+        "exit_code": 0
+      },
+      "vet": {
+        "status": "pass",
+        "exit_code": 0
+      },
+      "fresh_counts_by_mode": {
+        "unit": {
+          "run": 2554,
+          "pass": 2552,
+          "fail": 0,
+          "skip": 2
+        },
+        "race": {
+          "run": 2554,
+          "pass": 2552,
+          "fail": 0,
+          "skip": 2
+        }
+      },
+      "source_relation": "Hegel fresh unit/race/build/vet reports bind the preserved prior ca9 input; not evidence that later mixed-history file was included. No Hegel suite re-executed or code scope expanded."
+    }
+  },
+  "verification": {
+    "lint": {
+      "status": "not_run_by_reviewer",
+      "reason": "用户禁止运行Go/DB；只进行只读静态核对。"
+    },
+    "typecheck": {
+      "status": "not_run_by_reviewer",
+      "parent_evidence": "The actual new-package -race Go test run compiled the added test and passed; prior Hegel build/vet bind ca9 only."
+    },
+    "tests": {
+      "status": "existing_actual_parent_logs_verified",
+      "reviewer_execution": false,
+      "mixed": {
+        "run": 10,
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "prior_service": {
+        "run": 3840,
+        "pass": 3840,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "static_whitespace": {
+      "command": "git diff --no-index --check /dev/null server/internal/service/task_knowledge_mixed_history_integration_test.go",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "interpretation": "no-index implies --exit-code; new file differs from /dev/null, with no whitespace diagnostics. Independent text scan has zero trailing whitespace lines.",
+      "independent_trailing_whitespace_lines": []
+    },
+    "report": {
+      "expected_mode": "0600",
+      "format": "JSON",
+      "post_write_check": "exact read-back JSON and permission bits required before final response"
+    }
+  },
+  "modified_paths": [
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-mixed-history-independent-review-20261115-e24067c7.json",
+      "change": "added",
+      "mode": "0600"
+    }
+  ],
+  "overall_ac_or_p6_completion_claimed": false,
+  "later_leader_update_context_only": {
+    "reported_handler_red": {
+      "pass": 5907,
+      "fail": 5,
+      "skip": 7,
+      "source_stable": true,
+      "connections_after": 0,
+      "evidence_preserved_by_leader": true
+    },
+    "reported_later_test_edits": [
+      "server/internal/handler/config_test.go",
+      "server/internal/handler/issue_autopilot_assignment_authority_test.go",
+      "server/internal/handler/workspace_delete_manifest_test.go"
+    ],
+    "focused_replay_reported_running": true,
+    "handler_code_or_failure_semantics_reviewed_by_this_reviewer": false,
+    "handler_replay_outcome_claimed": false,
+    "interpretation": "最新主会话事实仅作为时间与输入归属说明。本 JSON 仍只审查唯一 mixed-history 新文件，不改变总体AC/P6或重新运行矩阵。"
+  },
+  "completed_at": "2026-11-15T06:42:27.733Z"
+}

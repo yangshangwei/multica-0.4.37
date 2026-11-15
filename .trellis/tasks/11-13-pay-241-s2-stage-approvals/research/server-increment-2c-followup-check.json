@@ -1,0 +1,386 @@
+{
+  "schema_version": 1,
+  "increment": "2c-followup-independent-check",
+  "reviewer": "/root/s2_check_resume",
+  "recorded_at": "2026-11-14T14:09:09.027382+00:00",
+  "status": "pass_bounded_correction",
+  "closed_findings": [
+    {
+      "id": "S2C-C01",
+      "severity": "P2",
+      "state": "closed",
+      "basis": "shared absolute post-callback deadline plus unknown/cancellation/unavailable-fallback tests"
+    },
+    {
+      "id": "S2C-C02",
+      "severity": "P2",
+      "state": "closed",
+      "basis": "full original issuer/M1 chain validation in R4; release and rollback history retained, hints disabled, actual execution still refused"
+    }
+  ],
+  "open_blocking_findings": [],
+  "source": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/source",
+    "base_files": 4938,
+    "overlay_files": [
+      {
+        "path": "server/internal/service/collaboration_stage_execution.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup/source/server/internal/service/collaboration_stage_execution.go",
+        "sha256": "9a3fb5a253244c3be6b36c33cf42569a5965e4507804d7b6b3bdbeeb1a0eb015",
+        "base_sha256": "35d4fd3745ddee3c031b1d13366bf9571cb6da3e63f33acd8b5cda3ebeb35e20",
+        "workspace_matches": true
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_execution_view.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup/source/server/internal/service/collaboration_stage_execution_view.go",
+        "sha256": "d8e27b4310527a5a12580c04a03592d55127b1ec154d8e567d3d94b757f3fa89",
+        "base_sha256": "3368a3b21cc67d474a3fe116eb1c2da1c388283c4c31f9d0fe8204e52042d1da",
+        "workspace_matches": true
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_execution_followup_test.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup/source/server/internal/service/collaboration_stage_execution_followup_test.go",
+        "sha256": "3130731ae1fae899ab730a82f5fbc54d08bca2d83764fcb40971f61800ee7016",
+        "base_sha256": null,
+        "workspace_matches": true
+      }
+    ],
+    "full_files": 4939,
+    "binding": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/input-check.json",
+    "binding_sha256": "48ff40f1e40528bf46a7ae1b28afcef1154b3ee6c2ee761a1f292f03c62fa5b0",
+    "final_audit": {
+      "at": "2026-11-14T14:09:09.019882+00:00",
+      "files": 4939,
+      "hash_errors": [],
+      "undeclared_files": []
+    }
+  },
+  "implementation_evidence_audit": [
+    {
+      "id": "build-1",
+      "exit": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "canonical-green-1",
+      "exit": 0,
+      "counts": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "canonical-red-1",
+      "exit": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 7,
+        "skip": 0
+      }
+    },
+    {
+      "id": "format-1",
+      "exit": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "race-lock-recheck-1",
+      "exit": 0,
+      "counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "router-normal-1",
+      "exit": 0,
+      "counts": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "service-normal-1",
+      "exit": 0,
+      "counts": {
+        "pass": 49,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "service-race-1",
+      "exit": 1,
+      "counts": {
+        "pass": 48,
+        "fail": 1,
+        "skip": 0
+      }
+    },
+    {
+      "id": "service-race-2",
+      "exit": 0,
+      "counts": {
+        "pass": 49,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "vet-1",
+      "exit": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    }
+  ],
+  "canonical_red_green": {
+    "red_named_failures": [
+      "TestStageExecutionFinalizationSharesOneDeadline/unknown_fallback",
+      "TestStageExecutionFinalizationSharesOneDeadline/caller_cancelled",
+      "TestStageExecutionFinalizationSharesOneDeadline/fallback_unavailable",
+      "TestStageExecutionFinalizationSharesOneDeadline",
+      "TestStageExecutionR4ReflectsTransitiveArtifactAuthority/release",
+      "TestStageExecutionR4ReflectsTransitiveArtifactAuthority/rollback",
+      "TestStageExecutionR4ReflectsTransitiveArtifactAuthority"
+    ],
+    "green_named_passes": [
+      "TestStageExecutionFinalizationSharesOneDeadline/unknown_fallback",
+      "TestStageExecutionFinalizationSharesOneDeadline/caller_cancelled",
+      "TestStageExecutionFinalizationSharesOneDeadline/fallback_unavailable",
+      "TestStageExecutionFinalizationSharesOneDeadline",
+      "TestStageExecutionR4ReflectsTransitiveArtifactAuthority/release",
+      "TestStageExecutionR4ReflectsTransitiveArtifactAuthority/rollback",
+      "TestStageExecutionR4ReflectsTransitiveArtifactAuthority"
+    ],
+    "test_source_unchanged": true,
+    "test_source_sha256": "3130731ae1fae899ab730a82f5fbc54d08bca2d83764fcb40971f61800ee7016"
+  },
+  "verification": [
+    {
+      "id": "normal",
+      "started_at": "2026-11-14T14:00:26.342870+00:00",
+      "finished_at": "2026-11-14T14:01:04.491754+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_impl_service.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/source/server",
+        "test",
+        "./internal/service",
+        "-run",
+        "^TestStageExecution(FinalizationSharesOneDeadline|R4ReflectsTransitiveArtifactAuthority|CommitUncertaintyAndPreEntryCancellation|LateAuthenticatedFactDoesNotRenewApproval|OriginalArtifactReaderRevocation|ProductionUnavailableAndSourceDeniedProjection)$",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/normal.log",
+      "log_sha256": "c3acdda62210dd7c6c0522803c8ad22d24d7cfee8106c72da910764a2e79370e",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/normal.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [
+          "TestStageExecutionFinalizationSharesOneDeadline/unknown_fallback",
+          "TestStageExecutionFinalizationSharesOneDeadline/caller_cancelled",
+          "TestStageExecutionFinalizationSharesOneDeadline/fallback_unavailable",
+          "TestStageExecutionFinalizationSharesOneDeadline",
+          "TestStageExecutionR4ReflectsTransitiveArtifactAuthority/release",
+          "TestStageExecutionR4ReflectsTransitiveArtifactAuthority/rollback",
+          "TestStageExecutionR4ReflectsTransitiveArtifactAuthority",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/unknown_commit",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/cancel_after_commit",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/panic",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/transport",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation",
+          "TestStageExecutionLateAuthenticatedFactDoesNotRenewApproval",
+          "TestStageExecutionProductionUnavailableAndSourceDeniedProjection",
+          "TestStageExecutionOriginalArtifactReaderRevocation"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    },
+    {
+      "id": "race",
+      "started_at": "2026-11-14T14:01:04.492155+00:00",
+      "finished_at": "2026-11-14T14:02:01.240134+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_race_service.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/source/server",
+        "test",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^TestStageExecution(FinalizationSharesOneDeadline|R4ReflectsTransitiveArtifactAuthority|CommitUncertaintyAndPreEntryCancellation|LateAuthenticatedFactDoesNotRenewApproval|OriginalArtifactReaderRevocation|ProductionUnavailableAndSourceDeniedProjection)$",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/race.log",
+      "log_sha256": "5ea56310313d968bf9e80cacad758e5693f6852e3281ee79e0ebf828bda773fc",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/race.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [
+          "TestStageExecutionFinalizationSharesOneDeadline/unknown_fallback",
+          "TestStageExecutionFinalizationSharesOneDeadline/caller_cancelled",
+          "TestStageExecutionFinalizationSharesOneDeadline/fallback_unavailable",
+          "TestStageExecutionFinalizationSharesOneDeadline",
+          "TestStageExecutionR4ReflectsTransitiveArtifactAuthority/release",
+          "TestStageExecutionR4ReflectsTransitiveArtifactAuthority/rollback",
+          "TestStageExecutionR4ReflectsTransitiveArtifactAuthority",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/unknown_commit",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/cancel_after_commit",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/panic",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/transport",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation",
+          "TestStageExecutionLateAuthenticatedFactDoesNotRenewApproval",
+          "TestStageExecutionProductionUnavailableAndSourceDeniedProjection",
+          "TestStageExecutionOriginalArtifactReaderRevocation"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    },
+    {
+      "id": "vet",
+      "started_at": "2026-11-14T14:02:01.240402+00:00",
+      "finished_at": "2026-11-14T14:02:11.247395+00:00",
+      "command": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/source/server",
+        "vet",
+        "./internal/service",
+        "./internal/handler",
+        "./cmd/server"
+      ],
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/vet.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/vet.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [],
+        "fail": [],
+        "skip": []
+      }
+    },
+    {
+      "id": "format",
+      "started_at": "2026-11-14T14:02:11.248225+00:00",
+      "finished_at": "2026-11-14T14:02:11.279474+00:00",
+      "command": [
+        "gofmt",
+        "-l",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/source/server/internal/service/collaboration_stage_execution.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/source/server/internal/service/collaboration_stage_execution_view.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/source/server/internal/service/collaboration_stage_execution_followup_test.go"
+      ],
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/format.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/format.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [],
+        "fail": [],
+        "skip": []
+      }
+    }
+  ],
+  "retained_uncertainty": {
+    "run": "service-race-1",
+    "result": "48 named passes, 1 failure",
+    "sqlstate": "55P03",
+    "relation": "github_installation",
+    "cause": "unknown",
+    "later_passes": [
+      "race-lock-recheck-1",
+      "service-race-2"
+    ],
+    "rule": "Post-failure zero locks/backends and later autovacuum timestamps do not establish the earlier blocker; original failure is retained."
+  },
+  "profiles_used": [
+    "s2_impl_service",
+    "s2_race_service"
+  ],
+  "profiles_released": [
+    "s2_impl_service",
+    "s2_race_service",
+    "s2_impl_handler",
+    "s2_race_handler",
+    "s2_2c_router_r01_safe",
+    "s2_2c_router_race_r01_safe"
+  ],
+  "reviewer_product_or_test_changes": [],
+  "git_writes": false,
+  "database_lifecycle_or_gate_writes": false,
+  "activation_available": false,
+  "long_lived_harness_launched": false,
+  "not_run": [
+    "full S2 A01–A12",
+    "2d writers/final guards/M1/activity",
+    "production Web/matching Desktop",
+    "actual long-lived router/CLI/Git combined journey",
+    "real S4 providers/payment/model accounts"
+  ],
+  "references": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-followup-results.md",
+      "sha256": "f0ab3d1171969bbac1480f2de722f15e5dc5c265a2e100c178073ba1e441dba0"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-followup-results.json",
+      "sha256": "441f6352cb4b6e7ec70e080c41bc5594d294a2a7b59a3066347af9a07db40265"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-check.md",
+      "sha256": "aeb35a6bf357199b44e28c771ea519e2b4793aed1016ef0be9642161ca22cf25"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-check.json",
+      "sha256": "5964f850c35b99a8e0eee150be18c8e1437ab4587205742ebd7d65160eab6865"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup/final-binding.json",
+      "sha256": "8864520f2176e37698eaba328fb0ff18f8443a04749ccf9004faa8986ac01135"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-inc2c-followup-race-lock-audit.json",
+      "sha256": "fd7ad604fa9d511974f49808d0d92c6ac34fb2497eb0f1e2fccef9913d00b239"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/input-check.json",
+      "sha256": "48ff40f1e40528bf46a7ae1b28afcef1154b3ee6c2ee761a1f292f03c62fa5b0"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/final-source-audit.json",
+      "sha256": "9acc08ff1aa112d303bf3816bb2908312d362c059309203bf1c217ccc629331b"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/run_checks.py",
+      "sha256": "db5c15b56c1d4beea5af534be8c97e4868e217a0d2d67ca09182c3565e88f5fa"
+    }
+  ],
+  "report_markdown_sha256": "8099e524ea0adbd2ebac7c4d5aabb7b8ca4660861f579f889bd3f0a6c4e98862"
+}

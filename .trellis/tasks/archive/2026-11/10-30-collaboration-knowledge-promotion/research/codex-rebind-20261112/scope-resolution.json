@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "kind": "direct_coding_cli_scope_resolution",
+  "recorded_at": "2026-11-12T03:00:00.588199+00:00",
+  "head": "45ec006d96445b41d02c5d26acd5b8c574ea0289",
+  "workspace_status_entries": 417,
+  "tasks": {
+    "10-30-collaboration-context-handoff": "in_progress",
+    "10-30-collaboration-fix-closure": "in_progress",
+    "10-30-collaboration-context-handoff-runtime": "in_progress",
+    "10-30-collaboration-knowledge-promotion": "in_progress"
+  },
+  "development_cli": {
+    "version": "0.167.0",
+    "configured_model": "gpt-6.1-sol",
+    "configuration_sha256": "1438c71e69e2c5f8263d76c75b6d85ed6f4c77ee7b0c939eb56c06c8ab092612",
+    "global_configuration_modified": false,
+    "successful_result_record": "direct-coding-cli-04.json",
+    "result_sha256": "39f60ef620f949eff32de2cc22f50218fea37408effcaa441db0085bac52c7da",
+    "result_bytes": 266,
+    "per_invocation_reasoning_effort": "low",
+    "multica_sdk_used": false,
+    "development_process_count": 4,
+    "attempts": {
+      "1": {
+        "record": "direct-coding-cli-01.json",
+        "sha256": "7d9e5f00885999d703e3110ce33bb13ad32105ca2d6f0604c0c49b8a0066990e",
+        "exit_code": 124,
+        "result_nonempty": false
+      },
+      "2": {
+        "record": "direct-coding-cli-02.json",
+        "sha256": "2d79b2108348a3ae95b71e40a576c93603acb11167ed95a366c3319f01ba2e56",
+        "exit_code": 0,
+        "result_nonempty": false
+      },
+      "3": {
+        "record": "direct-coding-cli-03.json",
+        "sha256": "15dd0a5e028b531097d3104be20eb5f9d2e6ca9008e1673f2ee697c860ae9e19",
+        "exit_code": 124,
+        "result_nonempty": false
+      },
+      "4": {
+        "record": "direct-coding-cli-04.json",
+        "sha256": "ff5201d79061bd892d0308bdc375299120c7a33d3c3e0d446fa5684733979e87",
+        "exit_code": 0,
+        "result_nonempty": true
+      }
+    },
+    "scope": "development task handoff; not product Provider acceptance"
+  },
+  "main_product_code_modified_by_this_session": false,
+  "sdk_migration_candidate": "retained isolated, not integrated, no dynamic acceptance, incomplete independent review",
+  "new_database_count": 4,
+  "database_migrations": 781,
+  "latest_migration": "793_delivery_vcs_trust",
+  "real_product_provider_starts": 0,
+  "product_budgets": {
+    "runtime": {
+      "consumed": 12,
+      "cap": 25,
+      "remaining": 13
+    },
+    "knowledge": {
+      "consumed": 2,
+      "cap": 17,
+      "remaining": 15
+    },
+    "E5": {
+      "consumed": 19,
+      "cap": 27,
+      "remaining": 8,
+      "disposition": "failed-with-valid-evidence"
+    }
+  },
+  "real_gate": {
+    "runnable": false,
+    "allow_build": false,
+    "allow_check": false,
+    "allow_run": false
+  },
+  "gateway_admission_scope": "Only direct developer CLI response established; Multica product native integration admission remains unverified",
+  "business_decision_needed_for_development_cli": null,
+  "commits": 0,
+  "pushes": 0,
+  "deployments": 0,
+  "archives": 0,
+  "external_messages": 0
+}

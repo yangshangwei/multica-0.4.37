@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-12T02:35:17.257720+00:00",
+  "owner": "root/codex-rebind-20261112",
+  "worktree": "/Volumes/artisan/code/2026/mc-knowledge-rebind-20261112",
+  "new_databases": [
+    {
+      "lane": "red01",
+      "identity": {
+        "database": "multica_rk1k_rebind_20261112_red01",
+        "server_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "migrations": 781,
+        "latest_migration": "793_delivery_vcs_trust",
+        "issues": 0,
+        "tasks": 0,
+        "collaboration_runs": 0
+      },
+      "environment_path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/codex-rebind-20261112/red01-environment.json",
+      "environment_sha256": "f0006a833024bc0f40934c4894abbeac7d5e98d96418e7696978740dd6cc479c",
+      "migration_log_sha256": "b796b0db4dcb21211f76def3b2cb420ef63b43426b19248121a4c18f809da792",
+      "migration_binary_sha256": "d11c8578eaabc87aa8138482caf679394dae4bf545d4de911e83d0d2126dfe3a",
+      "migration_exit": 0,
+      "provider_launches": 0
+    },
+    {
+      "lane": "normal01",
+      "identity": {
+        "database": "multica_rk1k_rebind_20261112_normal01",
+        "server_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "migrations": 781,
+        "latest_migration": "793_delivery_vcs_trust",
+        "issues": 0,
+        "tasks": 0,
+        "collaboration_runs": 0
+      },
+      "environment_path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/codex-rebind-20261112/normal01-environment.json",
+      "environment_sha256": "85745e8eb2be1d267bbedfed3cf8e239e783b2165a04958f40b339688727bd1d",
+      "migration_log_sha256": "76d1b527794a4eb2948fd860f9c8d740554391a9b57c2178b7fc243613a70455",
+      "migration_binary_sha256": "d11c8578eaabc87aa8138482caf679394dae4bf545d4de911e83d0d2126dfe3a",
+      "migration_exit": 0,
+      "provider_launches": 0
+    },
+    {
+      "lane": "race01",
+      "identity": {
+        "database": "multica_rk1k_rebind_20261112_race01",
+        "server_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "migrations": 781,
+        "latest_migration": "793_delivery_vcs_trust",
+        "issues": 0,
+        "tasks": 0,
+        "collaboration_runs": 0
+      },
+      "environment_path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/codex-rebind-20261112/race01-environment.json",
+      "environment_sha256": "deb4bd34cd949e0f5533af24a8c1b8e53786838c3588eeb60746418f1e6f40e3",
+      "migration_log_sha256": "9bbbbf97c16e9274afd5b257f11761bddb9cdfc5c9131e0c69b4071ba00efc8f",
+      "migration_binary_sha256": "d11c8578eaabc87aa8138482caf679394dae4bf545d4de911e83d0d2126dfe3a",
+      "migration_exit": 0,
+      "provider_launches": 0
+    },
+    {
+      "lane": "candidate01",
+      "identity": {
+        "database": "multica_rk1k_rebind_20261112_candidate01",
+        "server_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "migrations": 781,
+        "latest_migration": "793_delivery_vcs_trust",
+        "issues": 0,
+        "tasks": 0,
+        "collaboration_runs": 0
+      },
+      "environment_path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/codex-rebind-20261112/candidate01-environment.json",
+      "environment_sha256": "3f89eedf7d6288300ced9e044b60365e3a7324038422d8c75d83e797aa22fe47",
+      "migration_log_sha256": "5558591bf39fc6b4d0216f35e09b9025c59278a4ce412dbfd6247940190827d0",
+      "migration_binary_sha256": "d11c8578eaabc87aa8138482caf679394dae4bf545d4de911e83d0d2126dfe3a",
+      "migration_exit": 0,
+      "provider_launches": 0
+    }
+  ],
+  "real_gate_opened": false
+}

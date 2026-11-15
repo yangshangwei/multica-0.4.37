@@ -1,0 +1,475 @@
+{
+  "schema_version": 1,
+  "kind": "independent_initial_persistent_wrapper_v1_review_with_effective_PG_endpoint_RED",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "role": "trellis-check",
+  "at": "2026-11-15T16:48:29.856770+00:00",
+  "verdict": "CHANGES_REQUESTED_EFFECTIVE_PG_ENDPOINT_GUARD",
+  "blocking_count": 1,
+  "findings": [
+    {
+      "id": "PW-PG1",
+      "severity": "high",
+      "blocking_for_new_actual_allocation": true,
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper.py",
+      "wrapper_sha256": "7597bdfab9ab9ca891610a0ef4c73e24417cc991b0f0e5c80b474b7fba5f9772",
+      "function": "pg_config",
+      "line": 46,
+      "issue": "The guard validates only the URI authority hostname and preserves all query/fragment/port forms. Query host or dbname can override the endpoint/database when the generated URL reaches pgx; the wrapper therefore does not yet enforce its literal-loopback/dedicated-database configuration promise.",
+      "minimal_offline_examples": [
+        "DATABASE_URL=postgres://fixture@127.0.0.1:5432/fixture?host=outside.invalid",
+        "DATABASE_URL=postgres://fixture@127.0.0.1:5432/fixture?dbname=other"
+      ],
+      "observed_v1_result": "Both examples accepted by actual pg_config. Six strict-negative fixture forms accepted; no SQL/network/Go/backend execution occurred.",
+      "primary_backend_evidence": {
+        "file": "/Users/artisan/go/pkg/mod/github.com/jackc/pgx/v5@v5.9.2/pgconn/config.go",
+        "sha256": "da7909eb1387c4f3c930acf7e066645aee800715142ce743d0c554ff5197458e",
+        "query_override_line": 610,
+        "behavior": "parseURLSettings copies URL authority/path then assigns parsedURL.Query values into the same settings map; dbname maps to database, and host replaces authority host."
+      },
+      "original_controller_evidence": {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+        "sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+        "new_database_URL_line": 996,
+        "behavior": "URL replacement updates only path; it preserves query and fragment. Original controller code is unchanged."
+      },
+      "minimum_fix": "Create a new immutable wrapper version. Reject endpoint/database query overrides and ambiguous encoded/duplicate query forms; allow only explicitly supported single sslmode=disable, if needed. Validate port and reject fragment before default validation/execution. Add offline old-v1 RED/new-v2 GREEN cases without altering original Runtime or allocating a real database.",
+      "not_fixed_reason": "Implementation wrapper is outside reviewer write ownership; parent has dispatched original implement owner for immutable v2."
+    }
+  ],
+  "preparation_receipt": {
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-fresh-persistent-runtime-preparation-20261116-e1a489b1104b.json",
+    "sha256": "dce79fb2e94087f3072f4dde1f4ade07f77f0c47a5aaebb041cb0096dcd45b93"
+  },
+  "checks": {
+    "initial_preparation_receipt_SHA_matches": true,
+    "wrapper_original_SHA_matches_and_unchanged": true,
+    "all_available_new_preparation_and_fixture_refs_match": true,
+    "wrapper_syntax_valid": true,
+    "default_validation_performs_no_original_action": true,
+    "execute_opt_in_is_required_in_code": true,
+    "only_module_STATE_is_overridden": true,
+    "module_ROOT_is_compared_to_selected_source": true,
+    "controller_source_bytes_match_original": true,
+    "original_Runtime_ctor_guards_replayed_with_fake_metadata": true,
+    "durable_root_canonical_owned0700_trusted_ancestor_chain": true,
+    "STATE_outside_Git_exercised_by_original_default_validation": true,
+    "source_specific_PG_file_is0600_SHA_pinned_DATABASE_URL_only": true,
+    "original_7_fixtures_kept_separately": true,
+    "actual_DB_full_source_or_runtime_actions_remain_zero": true,
+    "literal_loopback_effective_URI_endpoint_guard_complete": false
+  },
+  "reference_hash_checks": {
+    "count": 11,
+    "matching": 11,
+    "checks": [
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/fresh-runtime-plan.json",
+        "expected_sha256": "a4ce9427b81318547b842407a61d3c121fb234ff85bad0e2875d5200c87917f5",
+        "actual_sha256": "a4ce9427b81318547b842407a61d3c121fb234ff85bad0e2875d5200c87917f5",
+        "match": true,
+        "mode": "0o600",
+        "reference": "prep.plan"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/recovery-search-and-state-preparation.json",
+        "expected_sha256": "ed816cd53e2aab16f5766df978ad56c25ddda89141b3f8445183bd2a447fba21",
+        "actual_sha256": "ed816cd53e2aab16f5766df978ad56c25ddda89141b3f8445183bd2a447fba21",
+        "match": true,
+        "mode": "0o600",
+        "reference": "plan.original_assets.recovery_report"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper.py",
+        "expected_sha256": "7597bdfab9ab9ca891610a0ef4c73e24417cc991b0f0e5c80b474b7fba5f9772",
+        "actual_sha256": "7597bdfab9ab9ca891610a0ef4c73e24417cc991b0f0e5c80b474b7fba5f9772",
+        "match": true,
+        "mode": "0o600",
+        "reference": "new_offline_witness.wrapper"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/persistent-wrapper-fixtures.json",
+        "expected_sha256": "e7dce8d4c554bdc70d021c882845f6e1ba333faf1789d75893ff6668448c952e",
+        "actual_sha256": "e7dce8d4c554bdc70d021c882845f6e1ba333faf1789d75893ff6668448c952e",
+        "match": true,
+        "mode": "0o600",
+        "reference": "plan.fixtures"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7/host_override/.env",
+        "expected_sha256": "249a6944302b2aa9329a5b0f9836debbfb8ef9c3e3ce2a0dc210d83dbcdd406b",
+        "actual_sha256": "249a6944302b2aa9329a5b0f9836debbfb8ef9c3e3ce2a0dc210d83dbcdd406b",
+        "match": true,
+        "mode": "0o600",
+        "reference": "new_offline_witness.PG_config_cases[0]"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7/dbname_override/.env",
+        "expected_sha256": "bf0590ffd160d03f9a810a7571217dba3437fd612248fe1fcf40d4e84e11a3cc",
+        "actual_sha256": "bf0590ffd160d03f9a810a7571217dba3437fd612248fe1fcf40d4e84e11a3cc",
+        "match": true,
+        "mode": "0o600",
+        "reference": "new_offline_witness.PG_config_cases[1]"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7/encoded_host_override/.env",
+        "expected_sha256": "f7998f845513152a3c86fcbf329fdd0af167d1a871eed8b5d4629ea34fda03ec",
+        "actual_sha256": "f7998f845513152a3c86fcbf329fdd0af167d1a871eed8b5d4629ea34fda03ec",
+        "match": true,
+        "mode": "0o600",
+        "reference": "new_offline_witness.PG_config_cases[2]"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7/duplicate_host_query/.env",
+        "expected_sha256": "ec2c140a7c2346cce2f0edc5a914223b2f1360855c17164037a910832ae97c28",
+        "actual_sha256": "ec2c140a7c2346cce2f0edc5a914223b2f1360855c17164037a910832ae97c28",
+        "match": true,
+        "mode": "0o600",
+        "reference": "new_offline_witness.PG_config_cases[3]"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7/invalid_port/.env",
+        "expected_sha256": "47de5e693b5c55af7693054f12ce57e068f46e2721f08f4c303871ef0ca935b9",
+        "actual_sha256": "47de5e693b5c55af7693054f12ce57e068f46e2721f08f4c303871ef0ca935b9",
+        "match": true,
+        "mode": "0o600",
+        "reference": "new_offline_witness.PG_config_cases[4]"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7/fragment/.env",
+        "expected_sha256": "7fb0580fa34d72a24859024a272568de46e76ae934ccce4acc164c55609a72e2",
+        "actual_sha256": "7fb0580fa34d72a24859024a272568de46e76ae934ccce4acc164c55609a72e2",
+        "match": true,
+        "mode": "0o600",
+        "reference": "new_offline_witness.PG_config_cases[5]"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7/single_sslmode_disable/.env",
+        "expected_sha256": "c481c9b6ef4da8c90343e5dd492afc916da9d5fc97978b7d31286a53a8dc219b",
+        "actual_sha256": "c481c9b6ef4da8c90343e5dd492afc916da9d5fc97978b7d31286a53a8dc219b",
+        "match": true,
+        "mode": "0o600",
+        "reference": "new_offline_witness.PG_config_cases[6]"
+      }
+    ]
+  },
+  "owned_offline_witness": {
+    "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7/initial-review-witness.json",
+    "sha256": "ee4458660508883335dc950261beeda8d4b18de9b6617e6e5580dbc110878c4a",
+    "owned_root": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7",
+    "PG_config_v1_RED": {
+      "expected_rejected_cases_accepted": 6,
+      "host_and_dbname_RED": true
+    },
+    "cases": [
+      {
+        "case": "host_override",
+        "configuration_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7/host_override/.env",
+        "configuration_sha256": "249a6944302b2aa9329a5b0f9836debbfb8ef9c3e3ce2a0dc210d83dbcdd406b",
+        "configuration_keys": [
+          "DATABASE_URL"
+        ],
+        "credentials": "none; synthetic fixture user only",
+        "expected_acceptance": false,
+        "actual_v1_acceptance": true,
+        "assertion_satisfied": false,
+        "error": null,
+        "URI_netloc_host": "127.0.0.1",
+        "decoded_query_keys": [
+          "host"
+        ],
+        "pgx_effective_host_from_documented_query_precedence": "outside.invalid",
+        "pgx_effective_database_from_documented_query_precedence": "fixture",
+        "pgx_was_not_executed": true
+      },
+      {
+        "case": "dbname_override",
+        "configuration_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7/dbname_override/.env",
+        "configuration_sha256": "bf0590ffd160d03f9a810a7571217dba3437fd612248fe1fcf40d4e84e11a3cc",
+        "configuration_keys": [
+          "DATABASE_URL"
+        ],
+        "credentials": "none; synthetic fixture user only",
+        "expected_acceptance": false,
+        "actual_v1_acceptance": true,
+        "assertion_satisfied": false,
+        "error": null,
+        "URI_netloc_host": "127.0.0.1",
+        "decoded_query_keys": [
+          "dbname"
+        ],
+        "pgx_effective_host_from_documented_query_precedence": "127.0.0.1",
+        "pgx_effective_database_from_documented_query_precedence": "other",
+        "pgx_was_not_executed": true
+      },
+      {
+        "case": "encoded_host_override",
+        "configuration_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7/encoded_host_override/.env",
+        "configuration_sha256": "f7998f845513152a3c86fcbf329fdd0af167d1a871eed8b5d4629ea34fda03ec",
+        "configuration_keys": [
+          "DATABASE_URL"
+        ],
+        "credentials": "none; synthetic fixture user only",
+        "expected_acceptance": false,
+        "actual_v1_acceptance": true,
+        "assertion_satisfied": false,
+        "error": null,
+        "URI_netloc_host": "127.0.0.1",
+        "decoded_query_keys": [
+          "host"
+        ],
+        "pgx_effective_host_from_documented_query_precedence": "outside.invalid",
+        "pgx_effective_database_from_documented_query_precedence": "fixture",
+        "pgx_was_not_executed": true
+      },
+      {
+        "case": "duplicate_host_query",
+        "configuration_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7/duplicate_host_query/.env",
+        "configuration_sha256": "ec2c140a7c2346cce2f0edc5a914223b2f1360855c17164037a910832ae97c28",
+        "configuration_keys": [
+          "DATABASE_URL"
+        ],
+        "credentials": "none; synthetic fixture user only",
+        "expected_acceptance": false,
+        "actual_v1_acceptance": true,
+        "assertion_satisfied": false,
+        "error": null,
+        "URI_netloc_host": "127.0.0.1",
+        "decoded_query_keys": [
+          "host"
+        ],
+        "pgx_effective_host_from_documented_query_precedence": "outside.invalid",
+        "pgx_effective_database_from_documented_query_precedence": "fixture",
+        "pgx_was_not_executed": true
+      },
+      {
+        "case": "invalid_port",
+        "configuration_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7/invalid_port/.env",
+        "configuration_sha256": "47de5e693b5c55af7693054f12ce57e068f46e2721f08f4c303871ef0ca935b9",
+        "configuration_keys": [
+          "DATABASE_URL"
+        ],
+        "credentials": "none; synthetic fixture user only",
+        "expected_acceptance": false,
+        "actual_v1_acceptance": true,
+        "assertion_satisfied": false,
+        "error": null,
+        "URI_netloc_host": "127.0.0.1",
+        "decoded_query_keys": [],
+        "pgx_effective_host_from_documented_query_precedence": "127.0.0.1",
+        "pgx_effective_database_from_documented_query_precedence": "fixture",
+        "pgx_was_not_executed": true
+      },
+      {
+        "case": "fragment",
+        "configuration_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7/fragment/.env",
+        "configuration_sha256": "7fb0580fa34d72a24859024a272568de46e76ae934ccce4acc164c55609a72e2",
+        "configuration_keys": [
+          "DATABASE_URL"
+        ],
+        "credentials": "none; synthetic fixture user only",
+        "expected_acceptance": false,
+        "actual_v1_acceptance": true,
+        "assertion_satisfied": false,
+        "error": null,
+        "URI_netloc_host": "127.0.0.1",
+        "decoded_query_keys": [],
+        "pgx_effective_host_from_documented_query_precedence": "127.0.0.1",
+        "pgx_effective_database_from_documented_query_precedence": "fixture",
+        "pgx_was_not_executed": true
+      },
+      {
+        "case": "single_sslmode_disable",
+        "configuration_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7/single_sslmode_disable/.env",
+        "configuration_sha256": "c481c9b6ef4da8c90343e5dd492afc916da9d5fc97978b7d31286a53a8dc219b",
+        "configuration_keys": [
+          "DATABASE_URL"
+        ],
+        "credentials": "none; synthetic fixture user only",
+        "expected_acceptance": true,
+        "actual_v1_acceptance": true,
+        "assertion_satisfied": true,
+        "error": null,
+        "URI_netloc_host": "127.0.0.1",
+        "decoded_query_keys": [
+          "sslmode"
+        ],
+        "pgx_effective_host_from_documented_query_precedence": "127.0.0.1",
+        "pgx_effective_database_from_documented_query_precedence": "fixture",
+        "pgx_was_not_executed": true
+      }
+    ],
+    "original_Runtime_ctor_replays": [
+      {
+        "case": "original_default_TEMP_STATE",
+        "expected_constructor_acceptance": false,
+        "actual_constructor_acceptance": false,
+        "assertion_satisfied": true,
+        "error": "Allocation is not an external P6 runtime",
+        "original_Runtime_code_SHA": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+        "database_or_process_operations": 0
+      },
+      {
+        "case": "correct_persistent_STATE",
+        "expected_constructor_acceptance": true,
+        "actual_constructor_acceptance": true,
+        "assertion_satisfied": true,
+        "error": null,
+        "original_Runtime_code_SHA": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+        "database_or_process_operations": 0
+      },
+      {
+        "case": "wrong_explicit_STATE",
+        "expected_constructor_acceptance": false,
+        "actual_constructor_acceptance": false,
+        "assertion_satisfied": true,
+        "error": "Allocation is not an external P6 runtime",
+        "original_Runtime_code_SHA": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+        "database_or_process_operations": 0
+      }
+    ],
+    "default_validation_only": {
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-I",
+        "-B",
+        "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper.py",
+        "--source-root",
+        "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/fixture-source",
+        "--state-root",
+        "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/fixture-state",
+        "--controller-sha256",
+        "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+        "--pg-config-sha256",
+        "cdeaa366833edcbf403221461c1f6c3449004b597ee7868066c76f0cf6fd59fa",
+        "allocate"
+      ],
+      "cwd": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/fixture-source",
+      "child_environment_keys": [
+        "PATH",
+        "LANG",
+        "PYTHONDONTWRITEBYTECODE",
+        "GIT_CONFIG_NOSYSTEM",
+        "GIT_CONFIG_GLOBAL"
+      ],
+      "exit": 0,
+      "output": {
+        "validated": true,
+        "original_controller_unchanged": true,
+        "controller": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/fixture-source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+        "controller_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+        "source_root": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/fixture-source",
+        "STATE": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/fixture-state",
+        "pg_config_sha256": "cdeaa366833edcbf403221461c1f6c3449004b597ee7868066c76f0cf6fd59fa",
+        "configuration_keys": [
+          "DATABASE_URL"
+        ],
+        "wrapper_sha256": "7597bdfab9ab9ca891610a0ef4c73e24417cc991b0f0e5c80b474b7fba5f9772",
+        "action_executed": false,
+        "source_ready": false
+      },
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "validated_without_execution": true
+    },
+    "no_real_accounts_or_SQL_or_network": true
+  },
+  "STATE_identity_review": {
+    "durable_root": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6",
+    "ancestor_chain": [
+      {
+        "path": "/",
+        "uid": 0,
+        "mode": "0o755",
+        "symlink": false,
+        "trusted": true
+      },
+      {
+        "path": "/Users",
+        "uid": 0,
+        "mode": "0o755",
+        "symlink": false,
+        "trusted": true
+      },
+      {
+        "path": "/Users/artisan",
+        "uid": 501,
+        "mode": "0o750",
+        "symlink": false,
+        "trusted": true
+      },
+      {
+        "path": "/Users/artisan/.multica",
+        "uid": 501,
+        "mode": "0o755",
+        "symlink": false,
+        "trusted": true
+      },
+      {
+        "path": "/Users/artisan/.multica/acceptance",
+        "uid": 501,
+        "mode": "0o700",
+        "symlink": false,
+        "trusted": true
+      },
+      {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6",
+        "uid": 501,
+        "mode": "0o700",
+        "symlink": false,
+        "trusted": true
+      }
+    ],
+    "module_override_attrs": [
+      "STATE"
+    ],
+    "old_default_TEMP_STATE_and_wrong_explicit_STATE_refused_by_original_ctor": true,
+    "correct_persistent_STATE_passed_original_ctor": true,
+    "all_original_Runtime_methods_and_guards_unchanged": true,
+    "fidelity": "Replay/default child CWD equals fixture SOURCE and loader verifies module.ROOT equals selected canonical SOURCE. Main must retain exact SOURCE/full-source/wrapper/STATE/configuration bindings for future execution, as the fresh-runtime-plan requires.",
+    "source_ready_or_new_allocation_granted": false
+  },
+  "configuration_privacy_review": {
+    "only_source_specific_DATABASE_URL_file_read": true,
+    "config_symlink_owner600_and_SHA_guards_present": true,
+    "whole_ROOT_env_or_real_LLM_values_not_copied_or_read_by_reviewer": true,
+    "default_stdout_contains_only_config_SHA_and_key_names": true,
+    "all_new_counterexample_URLs_are_synthetic_and_password_free": true,
+    "effective_PG_target_guard_findings": "PW-PG1"
+  },
+  "historical_asset_availability": {
+    "report": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-retained-temp-assets-unavailable-89b59df6.json",
+    "sha256": "2ef9e9e926f2d5c969310f3e20f01482002cb414d8e31b68221154d5076a1c12",
+    "classification": "retained_P6_asset_availability_failure",
+    "missing_original_assets_are_separate_from_wrapper_review": true,
+    "no_old_SOURCE_or_env_or_runtime_rehash_or_recovery_or_recreation_required_or_performed": true,
+    "historical_results_not_reclassified": true,
+    "recovery_reference": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/recovery-search-and-state-preparation.json",
+      "sha256": "ed816cd53e2aab16f5766df978ad56c25ddda89141b3f8445183bd2a447fba21"
+    },
+    "recorded_readonly_recovery_counts": {
+      "JSON": 114,
+      "tar": 47,
+      "extracted": 0
+    }
+  },
+  "ownership": {
+    "new_repo_receipt_only": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-persistent-wrapper-initial-review-20261116-aeaba48eee42.json",
+    "owned_tiny_fixture_witness_outputs": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/independent-initial-wrapper-review-bec583df19c7",
+    "original_wrapper_controller_7fixtures_and_other_proofs_modified": 0,
+    "shared_ROOT_SOURCE_specs_taskMD_or_oldallocation_writes": 0,
+    "real_PG_DB_RUNTIME_account_model_Go_or_full_source_operations": 0,
+    "descendants_spawned": 0
+  },
+  "next_step": "Parent/original implement owner supplies immutable wrapper-v2 and old-v1 RED/new-v2 GREEN evidence; then close PW-PG1 before actual fresh allocation. Root3/wholecopy/P2 remain separately gated, not prerequisites for this wrapper repair review.",
+  "acceptance_limits": {
+    "default_and_original_ctor_behaviors_verified": true,
+    "ready_for_new_actual_allocation": false,
+    "actual_new_DB": false,
+    "actual_full_source_copy": false,
+    "source_ready": false,
+    "P2": false,
+    "LIVE": false,
+    "final_knowledge_acceptance": false
+  }
+}

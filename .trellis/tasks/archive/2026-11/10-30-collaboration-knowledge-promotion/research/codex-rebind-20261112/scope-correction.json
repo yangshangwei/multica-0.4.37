@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-12T02:44:54.821355+00:00",
+  "kind": "scope_correction_direct_coding_cli",
+  "user_message_exact": "我切 codex的地址了 。 你干活的时候，直接调用codex的cli 即可， 为啥要用multica的sdk呢",
+  "accepted_scope": "Use current user-configured Codex CLI directly for development work. Do not conflate its connectivity with the Multica product native SDK acceptance.",
+  "sdk_migration_status": "retained_isolated_unintegrated_preparation_only",
+  "sdk_migration_worktree": "/Volumes/artisan/code/2026/mc-knowledge-rebind-20261112",
+  "sdk_candidate_sha256": {
+    "server/cmd/server/rk1k_codex_registration_test.go": "fcbd60bdd8282474c97154e55648db44097d9647e79e2be39c48bb0368eb139a",
+    "server/cmd/server/rk1k_codex_continuation_test.go": "7a15ca10c6dc48275e99b8d5908fb91351c2917b90c173022fe633f5627e5c83",
+    "server/cmd/server/rk1k_codex_migration_test.go": "49bf60018f76ab875066f6604d315758251b32c0a1afa509a8bf919839b8da2e"
+  },
+  "dynamic_verification": "not run; stopped after scope correction",
+  "independent_sdk_review": "incomplete preparatory review; no PASS or integration grant",
+  "main_product_files_modified_by_this_session": [],
+  "databases_retained": [
+    "multica_rk1k_rebind_20261112_red01",
+    "multica_rk1k_rebind_20261112_normal01",
+    "multica_rk1k_rebind_20261112_race01",
+    "multica_rk1k_rebind_20261112_candidate01"
+  ],
+  "database_activity_this_turn": "created and migrated four new task-owned DBs, no test bodies or Provider ran; no old database modified",
+  "real_gate": {
+    "runnable": false,
+    "allow_build": false,
+    "allow_check": false,
+    "allow_run": false
+  },
+  "budgets": {
+    "runtime": {
+      "consumed": 12,
+      "cap": 25,
+      "remaining": 13
+    },
+    "knowledge": {
+      "consumed": 2,
+      "cap": 17,
+      "remaining": 15
+    },
+    "E5": {
+      "consumed": 19,
+      "cap": 27,
+      "remaining": 8
+    }
+  },
+  "earlier_gateway_question": "No longer a dependency for CLI development work. Product gateway admission remains an independent unverified gate."
+}

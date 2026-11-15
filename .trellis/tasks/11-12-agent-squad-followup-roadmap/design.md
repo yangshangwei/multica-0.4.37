@@ -306,3 +306,36 @@ D1 范围/时间、D2 历史与报告身份、D3 保留/大小、D4 exact GET/�
 ## 12. F2 当前落地合同
 
 后续明确授权与report-wide选择已落地：[server code-spec](../../spec/server/report-snapshots.md)。实现为同次保存internal/public/private audit的v2封存包，行级seal_digest绑定三者；公共project_reasons也从safe facts重放。capture/correction/withdraw共享实际更新的report control；撤回为本报告全部内容终止，不做跨报告来源治理或物理备份销毁。来源采集按独立依赖处理，未证历史保持unknown。当前验收与原失败保留见 [F2验收](research/f2-acceptance-20261113.md)，旧设计/并行草稿仅作历史依据。
+
+## 13. F3 单一父任务预算根（design only，未授权实施）
+
+完整合同在 [F3 最小合同](research/f3-minimum-budget-contract-20261113.md)，其 §11 是 2026-11-14 对照源码后的修订，冲突处以 §11 为准。本节只留设计骨架与接点；逐行 expected 在 [验收矩阵](research/f3-acceptance-matrix-20261113.md)。
+
+### 13.1 选择与边界
+
+- 根绑定普通父任务 `(workspace_id, root_issue_id)`，终身一个（D1，用户已确认）。准入状态 `open / closed / tombstoned` 与结算状态分两条轴；业务状态变化不动预算。
+- 首包只观察：记录影子预留、已知实际、估算、未知与“若强制将拒绝”，不改变任何执行结果。强制准入是另一个需单独授权的包。
+- `autopilot_quota` 是工作空间次数配额，`task_usage` 是可覆盖的当前值，hourly 是展示投影；三者都不是预算账本，首包不读它们来算金额，也不改它们。
+
+### 13.2 数据职责（候选，未写迁移）
+
+root/control、member binding、attempt/invocation、不可变 entries、operations/receipts 五类。全部无 FK，保存 ID 副本，因此现有 issue 删除的 FK 级联不会带走预算行。每个索引单独一条 CONCURRENTLY 迁移。
+
+### 13.3 接点
+
+| 接点 | 位置 | 做什么 |
+| --- | --- | --- |
+| 成员绑定 | issue 创建/改父/删除路径，已持有 `iteration:<ws>` fence 处 | 同事务写成员行；启用根时递归遍历并查环 |
+| 影子预留 | `FinalizeTaskClaim` 事务内，身份 CAS 之后、发 token 之前 | 写 attempt、预留、收据，签发 `budget_attempt_id` 并随 launch payload 下发 |
+| 用量事件 | 新的版本化上报入口（现有 `ReportTaskUsage` 保持不变） | 整批原子、原 key 幂等、逐事件收据 |
+| 管理与读取 | exact root 的人工 API 与 `issue budget` CLI | 允许名单的人工来源 + 当前 owner/admin + 根任务编辑权 |
+
+锁序：根行锁在所有路径中排最后；持根锁时不阻塞等待 task 或 issue 行。finalize 经已保存的成员行找根，不锁祖先。
+
+### 13.4 与源码不符而已修订的假设
+
+没有“按原 claim 查询”，重领即新 attempt；`claim_generation` 不上行，不能当执行身份；普通 agent 在 finalize 没有 invoke 复核；`RequireHumanActor` 对未知来源放行；quick-create 执行无 `issue_id`。详见合同 §11 R1–R10。
+
+### 13.5 兼容与回退
+
+响应为新增字段与新增端点，客户端经 schema 解析；旧 daemon 照常执行并记为覆盖缺口。回退是停止新观察、保留账目与只读，不做破坏性 down，不把金额降为 0。F2 报告快照与 M1-S1 完成授权不新增写路径。

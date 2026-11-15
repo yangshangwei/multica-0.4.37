@@ -2,17 +2,23 @@
 
 ## 1. Scope / trigger
 
-Apply to human knowledge proposals, exact-version decisions, private projections,
-source availability and target invalidation. Execution has a separate
+Apply to human and automated knowledge proposals, exact-version decisions,
+project policies, accepted-event jobs, private projections, source availability
+and target invalidation. Execution has a separate
 [preparation and launch contract](./collaboration-knowledge-execution.md).
 These are implemented contracts, not a release or Provider acceptance claim.
 
 ## 2. Signatures
 
-All human endpoints use `protocol_version: 1`, canonical UUIDs and exact decimal
+Human candidate endpoints negotiate `X-Multica-Knowledge-Version: 2`; an absent
+header means v1. Candidate write bodies declare the same `protocol_version`.
+Both readers are strict, with canonical UUIDs and exact signed-int64 decimal
 strings for versions/revisions. Routes are in
 [`router.go`](../../../server/cmd/server/router.go); strict DTOs and budgets are in
 [`collaboration_knowledge.go`](../../../server/pkg/protocol/collaboration_knowledge.go).
+Policy/jobs endpoints require header version 2. Their policy/retry bodies contain
+only the fields below, without `protocol_version`; they use the strict workflow
+body decoder rather than the candidate DTO decoder.
 
 | Endpoint | Contract |
 | --- | --- |
@@ -22,6 +28,11 @@ strings for versions/revisions. Routes are in
 | `POST .../knowledge-candidates/{candidateId}/reject` or `/withdraw` | `request_id`, `expected_state_revision`, nonempty `reason` |
 | `GET .../knowledge-candidates/{candidateId}/operations/{requestId}` | Original actor's content-free receipt; no source ID required |
 | `GET /api/projects/{id}/knowledge` or `/api/workspaces/{id}/knowledge` | Authorized target projection with explicit workspace context |
+| `GET/PUT /api/projects/{id}/knowledge-policy` | V2 leased policy; PUT `{request_id,expected_revision,is_enabled,max_candidates}` requires an explicit boolean and max 1–3 |
+| `GET /api/projects/{id}/knowledge-policy/operations/{requestId}` | Original human actor's content-free policy receipt; remains routable after workspace departure |
+| `GET /api/collaboration/issues/{id}/knowledge-jobs` | V2 leased status, exact accepted submission/event, counts and model/usage metadata; latest 20 jobs plus `has_more` |
+| `POST .../knowledge-jobs/{jobId}/retry` | `{request_id,expected_revision}`; current source reader and target confirmer, same accepted job, new execution revision |
+| `GET .../knowledge-jobs/{jobId}/operations/{requestId}` | Original actor's content-free retry receipt, without source material |
 
 Migrations 747–763 add retained `collaboration_knowledge_candidate`, independent
 `collaboration_knowledge_target`, durable `collaboration_knowledge_invalidation`
@@ -34,7 +45,87 @@ IS NOT NULL`): agent/runtime keyset btrees and a `jsonb_path_ops` GIN over
 retained runtime, daemon and owner claim snapshots. They add no exposure marker,
 backfill or history row cap.
 
+Migrations 844–860 and 865 add `project_knowledge_policy`,
+`collaboration_knowledge_{job,batch,attempt,evaluation,validity}`, execution-policy
+bindings, candidate origin and strict v1/v2 retained storage. Relationships remain
+application-owned; every new index is a separate concurrent migration. Keep sqlc
+and the public-schema workspace-deletion manifest synchronized. Policy and target
+rows are explicitly removed with their owning workspace/project; candidate,
+job, batch, attempt, evaluation, validity and invalidation history are retained.
+
+Policy/retry DTOs and transactions live in
+`collaboration_knowledge_policy.go` and `collaboration_knowledge_automation_jobs.go`;
+there is no public command that can act as the system approver.
+
 ## 3. Contracts
+
+### Formal acceptance, rules and automatic validity
+
+- An absent project override is `origin:system`, `revision:"0"`, enabled, max 3,
+  rule `project-knowledge-v1`, with null human actor/time. A current human project
+  lead or workspace owner/admin may write a CAS override. Built-in rule upgrades
+  retain explicit settings. Knowledge use, extraction model configuration and
+  project adoption policy are separate controls.
+- Only exact formal project collaboration acceptance, including self-acceptance,
+  writes a unique `(issue,accepted_event_seq)` job in the business transaction.
+  No-project, manual-policy and disabled-policy cases write no job. Done, run
+  success, returned/cancelled delivery and historical backfill are not triggers.
+  Extraction runs after commit through the router-owned server LLM client; it
+  never enqueues or replays the closed business input or uses a personal daemon.
+- Delivery refs bind `issue_id`, `submission_id`, `delivery_event_seq`,
+  `accepted_event_seq` and SHA-256 of the canonical complete result/basis.
+  Quotes additionally name the exact result/basis field. Sources are inert:
+  do not fetch attachments/URLs or execute commands from evidence.
+- Each generation batch proposes 0–3 entries, each with body ≤2 KiB, summary
+  ≤256 bytes and ≤4 exact quotes. Complete source input is ≤8 items/128 KiB;
+  complete target comparison is ≤16 items/128 KiB. Generation sees permitted
+  source material and same-source predecessors; checking also sees the full
+  readable comparison. Authorize and budget-check the complete comparison before
+  either model call. An unreadable/incomplete comparison cannot prove novelty.
+  Each stage has ≤288 KiB decoded input and ≤2 MiB complete wire JSON; generation
+  output is ≤6000 completion tokens/24 KiB, checking ≤3000 tokens/16 KiB, with
+  private check reasons ≤1000 UTF-8 bytes. A valid empty generation completes
+  without a checking call.
+  Model reasons require the complete actual input-source closure, regardless of
+  the model's declared related refs; public status contains fixed reason codes.
+- A short settlement transaction rechecks accepted event/close epoch, source
+  identity/hash/access, project, manual policy, effective policy/revision, target
+  revision, exact quotes, expiry, human decisions and the complete target budget.
+  Exact/semantic duplicates skip; conflicts, unsupported evidence, uncertainty,
+  changed bindings and capacity stay pending. Save the fitting set and all
+  outcomes atomically; never truncate or evict old contributions.
+- Successful stage history and published outcomes persist. Expired leases and uncertain calls are
+  retained as uncertainty; an authorized explicit retry advances execution,
+  retaining saved create outcomes, settled predecessor slots and the acceptance-wide quota
+  of newly published lineages. Count each automation-root lineage for that job
+  once any version has a `published_target_revision`, including later human
+  approval and withdrawn/superseded history. Unpublished pending proposals do not
+  spend this publication quota; restoring/revising an existing lineage does not
+  spend new-lineage quota. The current execution's policy limit bounds remaining
+  automatic publication. Later human decisions cannot reset the count or permit
+  a withdrawn automatic lineage to be resurrected.
+- Job status preserves all permitted latest-execution stage-attempt records per
+  job, up to 42: seven batches × two stages × three allowed attempt numbers.
+  A 43-record projection fails closed. The current worker writes attempt 1 only,
+  normally producing at most 14 records; this does not reduce the projection
+  limit or permit dropping valid retained attempts.
+- Automatic proofs apply to immutable `approval_origin:automation`, not merely
+  an automated proposal or the latest decision origin. A human-approved automated
+  proposal retains human approval's consumption semantics.
+- Reopening advances the source epoch under existing source locks. New resolve,
+  replay and launch authorization immediately reject stale automatic proofs,
+  before asynchronous target hints. Approved history remains `paused_review`;
+  unexpired paused approvals still reserve capacity. Reacceptance fixes all
+  affected predecessors in up to six review batches plus one new-entry batch.
+  Unchanged normalized body and summary receive a new validity revision when
+  supported; changed material may replace its exact lineage only after passing
+  the same gates. Human withdrawal/revision wins over late automatic results. Untouched automatic
+  pending successors alone are not a human veto.
+- V2 represents `proposal_origin`, `decision_origin`, nullable system actor IDs,
+  automation provenance and `usage_status`. V1 serves only complete representable
+  legacy scopes; new identity/delivery/validity shapes produce
+  `knowledge_protocol_unsupported`, never a filtered fake-empty scope or a
+  fabricated human approver. Original v1 receipts retain their exact version.
 
 ### Retained versions and current human authority
 
@@ -81,12 +172,16 @@ backfill or history row cap.
 
 `KnowledgeSourceAvailability` borrows an authorized transaction and grants no
 authority itself. Each required source is `memory` (version), `comment`
-(comment ID/revision), or `run_record` (run/record ID), tied to one source issue
-and exact SHA-256 of decoded text. Old memory/comment versions remain valid if
+(comment ID/revision), `run_record` (run/record ID), or v2 `delivery` (exact
+submission and delivery/acceptance events), tied to one source issue. Delivery
+hashes use the server's canonical complete result/basis JSON; the other kinds
+hash exact decoded text. Old memory/comment versions remain valid if
 exactly restorable; current comment tombstones and source purge/delete suppress
 their historical copies. Missing/conflicting material is unavailable; database
-failure is an error. Test/commit evidence is inert text anchored to a required
-source; `verification` is the proposer's attributed claim.
+failure is an error. Retained accepted delivery text can remain available after
+reopen while its automatic consumption proof is paused. Test/commit evidence is
+inert text anchored to a required source; `verification` is the proposer's
+attributed claim.
 
 Every body-bearing GET is `no-store` and carries `projection_checked_at`,
 `valid_until` (at most 30 seconds later), and required nullable `next_expiry_at`.
@@ -191,7 +286,13 @@ credentials, body/summary/refs and cursor/error text stay out of generic logs.
 
 | Condition | Outcome |
 | --- | --- |
-| Unknown/duplicate/cross-kind fields, malformed UUID/UTF-8/text | `400 invalid_knowledge_request` |
+| Candidate DTO unknown/duplicate/cross-kind fields, malformed UUID/UTF-8/text | `400 invalid_knowledge_request` |
+| Multiple knowledge-version header values | `400 invalid_knowledge_request` |
+| One unsupported knowledge-version header value, including an explicit empty value; or v1/absent header on policy/jobs endpoints | `409 knowledge_protocol_unsupported` |
+| Candidate write body version differs from its supported header version | `400 invalid_knowledge_request` |
+| Policy/retry body is malformed, has duplicate/unknown fields (including `protocol_version`), or has trailing JSON | `400 invalid_request`, unsealed |
+| Policy/retry workflow body exceeds 64 KiB / media type is not JSON | `413 request_too_large` / `415 json_required`, unsealed |
+| Policy body omits `is_enabled` or `max_candidates`, or decoded `request_id`/`expected_revision`/`max_candidates` fails canonical/range validation | `400 invalid_knowledge_request`, unsealed |
 | New proposal `expires_at` not after `proposed_at`, by the application clock or by the database clock at INSERT (CHECK `collaboration_knowledge_candidate_check5`, matched by table and constraint name) | `400 invalid_knowledge_request`, unsealed; any other `23514` stays `503 knowledge_unavailable` |
 | Body >64KiB, summary >2KiB, metadata >16KiB or request wire limit | `413 knowledge_candidate_too_large` |
 | Missing reviewed revision/version/hash | `428 knowledge_revision_required` |
@@ -199,21 +300,43 @@ credentials, body/summary/refs and cursor/error text stay out of generic logs.
 | Stale state revision, reviewed body, lifecycle, expiry or source | `409 knowledge_revision_conflict`, `knowledge_content_changed`, `knowledge_state_conflict`, `knowledge_expired` or `knowledge_source_unavailable` |
 | Target >16 active items or >128KiB full material | `409 knowledge_target_budget_exceeded`; no truncation/publication |
 | Reused request with different kind/payload | `409 idempotency_conflict` |
+| V1 candidate scope requires automation, delivery or validity semantics | `409 knowledge_protocol_unsupported`; no lossy projection |
+| Policy CAS mismatch | Sealed `409 knowledge_policy_revision_conflict` receipt with v2, original request/project IDs and current revision |
+| Retry CAS mismatch / changed source / current policy disabled | Sealed `409 knowledge_job_revision_conflict`, `knowledge_source_changed` or `knowledge_automation_disabled` receipt with original request/issue/job IDs and revision |
 | Contention after bounded transaction retry / dependency failure | `503 knowledge_busy` / `knowledge_unavailable` |
 
 New-proposal failures before persistence may be unsealed; they do not fabricate
 a receipt. Existing-candidate decisions may seal a content-free refusal. A
 missing operation is not evidence that an uncertain write never committed.
+Policy/retry PUT/POST handlers serialize a sealed refusal receipt with HTTP 409,
+including same-key write replay. Their operation GET returns HTTP 200 with the
+same sealed code, version, request/resource IDs and revision; these receipts have
+no body `status` field. A generic error writer would drop identity/version/revision
+and turn a known refusal into client uncertainty. Unsealed errors keep generic handling
+and must not fabricate an empty receipt. GET recovery reauthorizes the original
+actor independently of their current source/target role.
 
 ## 5. Good / base / bad cases
 
 - Good: an external handler proposes to the visible source project; its human
   lead reviews the exact tuple; a later purge clears all material projections.
+- Good: acceptance commits despite model failure; reacceptance restores only
+  currently supported automatic proofs and preserves human withdrawal.
 - Base: a pending proposal has no runtime effect and sends no target hint.
 - Bad: target admin role exposes source text, an old approved row is edited in
   place, a purge waits on target fanout, or missing history becomes an empty set.
 
 ## 6. Tests required
+
+Automation worker/rule/policy suites assert formal-event-only jobs, zero model
+calls without configuration, all-source reason privacy, complete comparison
+before any model call, lease uncertainty, acceptance-wide lineage quota across
+retries/human decisions, full multi-batch revalidation, and both commit orders
+for reopen and human overrides. Handler `collaboration_knowledge_version_test.go`
+asserts sealed non-2xx policy/retry receipts and original-key recovery. Workspace
+deletion must pass `TestWorkspaceDeletionManifestCoversPublicSchema`, not only a
+selected retention subset. Current integration evidence belongs to
+`11-14-project-knowledge-automation/research`; older passes are bounded snapshots.
 
 Keep policy/protocol, migrations/generated serialization, transactional service,
 HTTP and socket tests at their owning layers. Canonical suites are
@@ -229,9 +352,15 @@ tags, a timed-out hint that does not block later hints
 (`TestKnowledgeTimedOutHintDoesNotBlockLaterHints`), and final socket denial even
 when Redis contains stale PAT authority.
 Execution/static evidence is recorded separately in the
-[task research](../../tasks/10-30-collaboration-knowledge-promotion/research/).
+[task research](../../tasks/archive/2026-11/10-30-collaboration-knowledge-promotion/research/).
 
 ## 7. Wrong vs correct
+
+Wrong: replace a sealed policy refusal with `{error:code}`, or turn off automation
+and deploy a reader that cannot recognize its retained history.
+
+Correct: return the original status and content-free receipt, retain strict v1/v2
+readers, and recheck the current automatic proof at every consumption boundary.
 
 Wrong: broadcast a candidate/source event and let target clients remove its body;
 authorize a cached PAT because the account is still active.

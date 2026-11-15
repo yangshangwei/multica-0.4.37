@@ -1,0 +1,46 @@
+{
+  "created_at": "2026-11-15T06:59:08.387084+00:00",
+  "original_red_report": "research/p6-migrations-current-full-race-6322b51d.json",
+  "original_red_named_pass": 568,
+  "original_red_named_fail": 1,
+  "original_red_named_skip": 0,
+  "original_failed_test": "TestMigrationNumericPrefixesStayUniqueAfterLegacySet",
+  "repair": "Move only the unreleased knowledge-origin concurrent index to unused865; retain both SQL bytes and immutable old receipts.",
+  "migration_renames": [
+    {
+      "before_path": "server/migrations/861_knowledge_automation_origin.up.sql",
+      "after_path": "server/migrations/865_knowledge_automation_origin.up.sql",
+      "bytes_sha256": "0816309f0602aaf351ca0f7b40e5c800bfd9b8614b42a6c5bb20c022ce8e4b1a",
+      "bytes_unchanged": true,
+      "preserved_before": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-migration-prefix-red-repair-4qilxj7h/861_knowledge_automation_origin.up.sql"
+    },
+    {
+      "before_path": "server/migrations/861_knowledge_automation_origin.down.sql",
+      "after_path": "server/migrations/865_knowledge_automation_origin.down.sql",
+      "bytes_sha256": "1edf462a5f95b4a3d3fccd19d3a91cb09e7019b30a3aef855e594ff2583b5eef",
+      "bytes_unchanged": true,
+      "preserved_before": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-migration-prefix-red-repair-4qilxj7h/861_knowledge_automation_origin.down.sql"
+    }
+  ],
+  "docs": [
+    {
+      "path": ".trellis/spec/server/collaboration-knowledge.md",
+      "before_sha256": "96a8c2e6f96726358799b0e09243c4d9222d743896f8f99b4c0c87cac8acc054",
+      "after_sha256": "86ee1aa0dd823b3dce5a421809157e1e583a43fd5e673a14e1bea8372ae15c79",
+      "preserved_before": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-migration-prefix-red-repair-4qilxj7h/collaboration-knowledge.md"
+    },
+    {
+      "path": "docs/collaboration-knowledge-runtime.md",
+      "before_sha256": "dd92c1b08592161cb1b9a2e663e072518c194f0028126c637661cc019d2aef03",
+      "after_sha256": "fff741ede86eb7f8d8b91d844140b1bfb88d83389afa8dc344e5ecc58ba3aaa5",
+      "preserved_before": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-migration-prefix-red-repair-4qilxj7h/collaboration-knowledge-runtime.md"
+    }
+  ],
+  "source_sha256_before": "f827689ea5d568481fafbce19efac4a30a143198ce461391e391b9d71b0c7f4e",
+  "source_sha256_after": "d9fe7fcb1b35657cf930a4c1c60b03b0c093bbfbbb192a927636475dd705531c",
+  "sql_content_changed": false,
+  "go_changed": false,
+  "old_databases_modified": false,
+  "test_or_legacy_prefix_exemption_changed": false,
+  "verification": "pending"
+}

@@ -1,0 +1,106 @@
+{
+  "observed_at": "2026-11-02T23:45:03.955109+00:00",
+  "bindings_sha256": "ccc11e4d7e79a19c964b75d4b2c3354268a4bf28fa7ad153c23aa0a95b30b6ba",
+  "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "source_labels": {
+    "tracked_fingerprint": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+    "checkout_source_id": "3f9788baf2ad3d922df86c4817b7fe0f3183e1a5c6c0e40d43fc76cd4f2c1d88",
+    "checkout_source_id_helper": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/checkout-source-id-v11.cjs",
+    "checkout_source_id_helper_sha256": "817348f249009f05e0e05a4a08d0f76581cda60fac9f9ce88b18255fd4e85bc8",
+    "production_difference_from_v10": [
+      "packages/views/collaboration/account-picker.tsx",
+      "packages/views/collaboration/creation-form.tsx",
+      "packages/views/collaboration/field-inputs.tsx",
+      "packages/views/collaboration/form-styles.ts",
+      "packages/views/collaboration/labels.ts",
+      "packages/views/collaboration/workflow.tsx",
+      "packages/views/issues/components/pickers/property-picker.tsx",
+      "packages/views/locales/en/collaboration.json",
+      "packages/views/locales/zh-Hans/collaboration.json",
+      "server/internal/service/collaboration_source_fields.go",
+      "server/pkg/db/generated/collaboration_source_fields.sql.go",
+      "server/pkg/db/queries/collaboration_source_fields.sql"
+    ],
+    "adjacent_test_differences": [
+      "packages/views/collaboration/account-picker.test.tsx",
+      "packages/views/collaboration/creation-form.test.tsx",
+      "packages/views/collaboration/field-editing.test.tsx",
+      "packages/views/collaboration/field-inputs.test.tsx",
+      "packages/views/issues/components/pickers/property-picker.test.tsx",
+      "server/internal/service/collaboration_source_fields_test.go"
+    ],
+    "original_e2e_patch_id": "3a28b3fc5a05aa7c39e9c6e310d1cc5427441f8a",
+    "current_e2e_patch_id": "3a28b3fc5a05aa7c39e9c6e310d1cc5427441f8a",
+    "e2e_delta_sha256": "fef30433f9117b94d4ed03a2d48d134b225dffbd4e58a6a7ab850627744db58f",
+    "old_product_fingerprint_not_reused": true
+  },
+  "cli_actual": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/multica",
+    "sha256": "c008c02377c4c52665000a0620a5a7b3f90f4d10d54d53e1d74bce97dccc6197",
+    "matches": true,
+    "bytes": 29314610
+  },
+  "desktop_actual": [
+    {
+      "artifact": "renderer",
+      "kind": "installed",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/renderer",
+      "file_count": 493,
+      "claimed_manifest_sha256": "bc46754412b91fac5f6649b7b37ad537e067bb9ab6fa6f0c4012cb0fced91d18",
+      "byte_size_mode_failures": [],
+      "file_set_matches": true
+    },
+    {
+      "artifact": "renderer",
+      "kind": "staged",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/artifacts/renderer",
+      "file_count": 493,
+      "claimed_manifest_sha256": "bc46754412b91fac5f6649b7b37ad537e067bb9ab6fa6f0c4012cb0fced91d18",
+      "byte_size_mode_failures": [],
+      "file_set_matches": true
+    },
+    {
+      "artifact": "preload",
+      "kind": "installed",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/preload",
+      "file_count": 1,
+      "claimed_manifest_sha256": "eb6f5654d511b3b23a8856597deeabf4277c8a21afffcce04c8703ad6b4c128e",
+      "byte_size_mode_failures": [],
+      "file_set_matches": true
+    },
+    {
+      "artifact": "preload",
+      "kind": "staged",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/artifacts/preload",
+      "file_count": 1,
+      "claimed_manifest_sha256": "eb6f5654d511b3b23a8856597deeabf4277c8a21afffcce04c8703ad6b4c128e",
+      "byte_size_mode_failures": [],
+      "file_set_matches": true
+    },
+    {
+      "artifact": "main",
+      "kind": "installed",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/main",
+      "file_count": 1,
+      "claimed_manifest_sha256": "7e4cfb3a45cb26761edb8b73b3f2cd2fe433d2d25e67010ea22156d4287a0360",
+      "byte_size_mode_failures": [],
+      "file_set_matches": true
+    },
+    {
+      "artifact": "main",
+      "kind": "staged",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/artifacts/main",
+      "file_count": 1,
+      "claimed_manifest_sha256": "7e4cfb3a45cb26761edb8b73b3f2cd2fe433d2d25e67010ea22156d4287a0360",
+      "byte_size_mode_failures": [],
+      "file_set_matches": true
+    }
+  ],
+  "staged_installed_records_identical": true,
+  "workspace_exports": {
+    "count": 66,
+    "all_owned": true
+  },
+  "all_actual_artifact_bytes_match": true,
+  "actual_root_build_or_services_tests_Provider": false
+}

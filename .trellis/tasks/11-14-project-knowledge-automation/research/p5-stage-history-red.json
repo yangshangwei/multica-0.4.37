@@ -1,0 +1,61 @@
+{
+  "command": [
+    "/opt/homebrew/bin/pnpm",
+    "--filter",
+    "@multica/core",
+    "exec",
+    "vitest",
+    "run",
+    "collaboration/knowledge-automation-status-schema.test.ts",
+    "--maxWorkers=2",
+    "--reporter=json",
+    "--outputFile=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p5-history-red-01be7013/tests.json"
+  ],
+  "exit": 1,
+  "tests": [
+    {
+      "name": "knowledge policy and job protocol preserves system defaults and explicit human disablement without fabricated actors",
+      "status": "passed",
+      "failureMessages": []
+    },
+    {
+      "name": "knowledge policy and job protocol keeps actual zero usage distinct from unknown and partial counts",
+      "status": "passed",
+      "failureMessages": []
+    },
+    {
+      "name": "knowledge policy and job protocol rejects private details, foreign jobs, duplicate identities and malformed paging",
+      "status": "passed",
+      "failureMessages": []
+    },
+    {
+      "name": "knowledge policy and job protocol retains every server-admitted stage attempt and rejects excess history",
+      "status": "failed",
+      "failureMessages": [
+        "CollaborationKnowledgeProtocolError: Knowledge response does not match its declared protocol\n    at parse (/Volumes/artisan/code/2026/multica-0.4.37/packages/core/collaboration/knowledge-automation-schema.ts:67:30)\n    at parseKnowledgeAutomationJobs (/Volumes/artisan/code/2026/multica-0.4.37/packages/core/collaboration/knowledge-automation-schema.ts:72:64)\n    at /Volumes/artisan/code/2026/multica-0.4.37/packages/core/collaboration/knowledge-automation-status-schema.test.ts:56:12\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:296:11\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1258:26\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1681:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1678:10)\n    at file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@vitest+runner@4.1.0/node_modules/@vitest/runner/dist/index.js:1660:20\n    at new Promise (<anonymous>)"
+      ]
+    },
+    {
+      "name": "knowledge policy and job protocol requires v2 for new surfaces and never treats malformed claimed support as absent",
+      "status": "passed",
+      "failureMessages": []
+    },
+    {
+      "name": "knowledge policy and job protocol accepts only content-free known original-operation outcomes",
+      "status": "passed",
+      "failureMessages": []
+    },
+    {
+      "name": "knowledge policy and job protocol selects only the exact acceptance and current project, retaining reopen status",
+      "status": "passed",
+      "failureMessages": []
+    }
+  ],
+  "run_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p5-history-red-01be7013",
+  "real_model_credentials_inherited": false,
+  "source_hashes": {
+    "packages/core/collaboration/knowledge-automation-schema.ts": "795ac8d88aeb8ba1e61557add6b48fa9c1f49eb856083e858d630908fa6a8c1c",
+    "packages/core/collaboration/knowledge-automation-status-schema.test.ts": "b672b3f27c55de295e64cbcc12249def6d012b853cb6e5d6bd660d0520a8f4b1"
+  },
+  "created_at": "2026-11-15T03:57:30.369384+00:00"
+}

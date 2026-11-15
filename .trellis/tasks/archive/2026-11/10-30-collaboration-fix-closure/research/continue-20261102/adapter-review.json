@@ -1,0 +1,158 @@
+{
+  "recorded_at": "2026-11-02T12:58:13.307789+00:00",
+  "reviewer": "/root/adapter_preflight_review",
+  "verdict": "changes-required",
+  "blocking_findings_open": 3,
+  "scope": "task-private v5 Go/pnpm adapters, fake suite and final4 full-check launcher",
+  "files": {
+    "go": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+      "sha256": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+      "python_ast_syntax": "pass"
+    },
+    "pnpm": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/pnpm",
+      "sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "python_ast_syntax": "pass"
+    },
+    "fake_suite": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-go-isolation-test.py",
+      "sha256": "5c5aad4d0e04427a1c53eadec2067a2ac355701c9d4605e722a87ccf9acad4e7",
+      "python_ast_syntax": "pass"
+    },
+    "launcher": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check.py",
+      "sha256": "3c50f99cb9b995fa29a0d1ee4e54e98d6aaa28bdf10ebc827c3cb5b302f5f566",
+      "python_ast_syntax": "pass"
+    }
+  },
+  "comparison_to_v4": "AV4-1 corrected: unmarked ordinary test commands refuse before real Go or SQL; non-test and actual -c forwarding are retained.",
+  "findings": [
+    {
+      "id": "AV5-P1",
+      "severity": "high",
+      "blocking": true,
+      "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check.py",
+      "lines": [
+        25
+      ],
+      "related_files": [
+        {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+          "lines": [
+            136,
+            137,
+            147
+          ]
+        },
+        {
+          "file": "server/cmd/server/dbstats_test.go",
+          "lines": [
+            24,
+            27,
+            33,
+            36,
+            44,
+            51,
+            67
+          ]
+        }
+      ],
+      "issue": "API DATABASE_MAX_CONNS=10 / DATABASE_MIN_CONNS=1 overrides reach every Go package. Existing defaults/URL precedence tests intentionally do not unset a supplied parent variable, so the full check environment changes the behavior under test.",
+      "evidence": "The fake propagation witness captured both keys in both real-Go-command stand-ins. No real database or Go test binary was executed.",
+      "minimal_fix": "Keep overrides only for the task API service startup; remove pool overrides from each actual Go test child, including mode=0 forwarding. Preserve package-selected database and original test assertions. Add a fake child-env regression."
+    },
+    {
+      "id": "AV5-P2",
+      "severity": "medium",
+      "blocking": true,
+      "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check.py",
+      "lines": [
+        16,
+        17
+      ],
+      "issue": "The launcher evaluates its dotenv source as bash code instead of parsing task configuration data, contrary to database-test-isolation.md.",
+      "evidence": "The subprocess command is bash -c set -a; . \"$1\"; env -0. This is source execution before the check entrypoint, not data parsing. Repository check.sh also reloads the supplied file; the safe selected input must therefore be validated/canonicalized for that boundary.",
+      "minimal_fix": "Parse supported task env assignments as data; reject unsupported lines or expansion rather than executing them. If needed serialize a separately fingerprinted task-owned shell-safe configuration copy for repository startup. Preserve source bytes and the original rejected record."
+    },
+    {
+      "id": "AV5-P3",
+      "severity": "medium",
+      "blocking": true,
+      "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check.py",
+      "lines": [
+        14,
+        34,
+        36
+      ],
+      "issue": "Independent-review clearance is not enforced against the actual adapter bytes immediately before execution, and does not bind the current launcher bytes.",
+      "evidence": "Line 14 checks clearance values against hard-coded expected hashes. Line 34 computes the current wrapper hashes for reporting only; no equality check uses those current hashes before Popen. Current file hashes do match the prior constants, but the advertised reviewed-byte launch contract is not enforced.",
+      "minimal_fix": "Before starting services/tests, compute and compare current go/pnpm and launcher hashes (and selected candidate/config identities) to explicit independent review clearance; reject mismatches. Add a fake mismatch-preflight contract. Root owns writing clearance after independent review."
+    }
+  ],
+  "fake_contracts": {
+    "command": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-go-isolation-test.py"
+    ],
+    "exit_code": 0,
+    "passed": 11,
+    "failed": 0,
+    "stdout": "",
+    "stderr": "test_compile_and_non_test_calls_never_touch_database (__main__.IsolationLauncherTests.test_compile_and_non_test_calls_never_touch_database) ... ok\ntest_default_and_remote_templates_refuse_before_database_commands (__main__.IsolationLauncherTests.test_default_and_remote_templates_refuse_before_database_commands) ... ok\ntest_no_test_files_are_compilation_only (__main__.IsolationLauncherTests.test_no_test_files_are_compilation_only) ... ok\ntest_packages_get_distinct_owned_clones_without_recursive_mode (__main__.IsolationLauncherTests.test_packages_get_distinct_owned_clones_without_recursive_mode) ... ok\ntest_recursive_context_forwards_only_its_explicit_owned_clone (__main__.IsolationLauncherTests.test_recursive_context_forwards_only_its_explicit_owned_clone) ... ok\ntest_recursive_context_refuses_default_or_unowned_database (__main__.IsolationLauncherTests.test_recursive_context_refuses_default_or_unowned_database) ... ok\ntest_recursive_named_clone_without_allocation_record_refuses (__main__.IsolationLauncherTests.test_recursive_named_clone_without_allocation_record_refuses) ... ok\ntest_silent_testmain_success_is_not_named_test_evidence (__main__.IsolationLauncherTests.test_silent_testmain_success_is_not_named_test_evidence) ... ok\ntest_unmarked_real_compile_flag_still_compiles_without_a_database (__main__.IsolationLauncherTests.test_unmarked_real_compile_flag_still_compiles_without_a_database) ... ok\ntest_unmarked_test_execution_refuses_before_real_go_or_sql (__main__.IsolationLauncherTests.test_unmarked_test_execution_refuses_before_real_go_or_sql) ... ok\ntest_allocated_api_and_renderer_are_explicit_without_network (__main__.PlaywrightWiringTests.test_allocated_api_and_renderer_are_explicit_without_network) ... ok\n\n----------------------------------------------------------------------\nRan 11 tests in 3.122s\n\nOK\n",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "48a8f2ca7e55f908d5956df0035f7a5f334d7e9f81fcef4194fdf30d54a48023"
+  },
+  "fake_environment_propagation": {
+    "exit_code": 0,
+    "commands": [
+      {
+        "command": [
+          "test",
+          "-json",
+          "example/first"
+        ],
+        "mode": "0",
+        "pool_max": "10",
+        "pool_min": "1",
+        "task_config_root": "/fixture/task-config",
+        "task_workspaces_root": "/fixture/task-workspaces"
+      },
+      {
+        "command": [
+          "test",
+          "-json",
+          "example/second"
+        ],
+        "mode": "0",
+        "pool_max": "10",
+        "pool_min": "1",
+        "task_config_root": "/fixture/task-config",
+        "task_workspaces_root": "/fixture/task-workspaces"
+      }
+    ],
+    "real_database_calls": 0,
+    "real_Go_tests": 0
+  },
+  "positive_checks": [
+    "Actual -c parsing stops at -args/-- and skips consumed flag values; tested missing-mode ordinary commands reject.",
+    "Recursive mode accepts only a named local owned clone with an allocation record; v5 fake suite exercises missing record and malformed/default/remote refusal.",
+    "The current scripts/test-go.sh flags are preserved and every package receives a distinct retained template clone. No-test-files metadata is compilation-only; silent TestMain exit is refused.",
+    "pnpm wiring preserves supplied test selectors, workers, retries and explicit reporter; default reporter is line,json and candidate Agent CLI guard is invoked.",
+    "Launcher strips inherited MULTICA_TASK_* and listed Multica identity/token variables; Go adapter alone still forwards task-root overrides as the fake witness shows. No claim that these task-root overrides currently survive the launcher strip."
+  ],
+  "notes": [
+    "The launcher inherits process HOME and ambient provider-specific configuration variables; it does not independently prove a private package-level HOME. Existing reviewed CLI fixtures set their own HOME, and the bounded search did not establish user-account access in this run. Prefer explicit package-owned HOME/cache variables if required for joint account isolation; do not impose global MULTICA_TASK_CONFIG_ROOT/WORKSPACES_ROOT on tests.",
+    "API/renderer actual listener and PostgreSQL headroom readiness are coordinator execution gates, not proved by this fake review.",
+    "Current adapter hashes match the existing v5 local proof. Existing preparation-Web/Desktop passes remain valid but do not substitute for a new complete make check."
+  ],
+  "verification": {
+    "python_ast_syntax": "pass (4 actual files)",
+    "fake_tests": "pass (11 named cases)",
+    "lint": "not run: no reviewed JS/TS source changes; only task-private Python AST/fake scope authorized",
+    "typecheck": "not run: no reviewed JS/TS source changes; only task-private Python AST/fake scope authorized",
+    "database_or_provider_execution": false
+  },
+  "modified_source_files": [],
+  "clearance_created": false
+}

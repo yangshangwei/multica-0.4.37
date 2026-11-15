@@ -1,0 +1,304 @@
+{
+  "at": "2026-11-15T17:13:03.798988+00:00",
+  "reviewer": "/root/p2_r07_check",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "verdict": "FIXTURE_R02_ACCEPTED_READY_FOR_BOUND_4CASE_RERUN",
+  "blocking_findings_open": 0,
+  "accepted_scope": "One existing E2E workflowAuthority helper projection. ROOT may integrate only the reviewed hunk and bind the new four-case runtime revision; production and host-resource protocol unchanged.",
+  "actual_r01": {
+    "planned_case_count": 4,
+    "pass": 0,
+    "fail": 1,
+    "not_run": 3,
+    "failed_location": "e2e/collaboration-stage-approvals.spec.ts:100",
+    "reason": "participants request contains host-only execution_view_version6 and strict workflow decoder returns400 invalid_request before stage/action authority.",
+    "actual_failed_request": {
+      "actor_id": "5f3ea9e9-8478-4f32-9194-47688f193476",
+      "method": "POST",
+      "path": "/api/collaboration/issues/01a1e01e-55a6-77c8-acde-97733b1560e0/participants",
+      "request_id": "add9dcc7-bd30-4f67-ad2e-bb976d13c71c",
+      "request_body": {
+        "expected_lifecycle_epoch": "1",
+        "expected_participant_epoch": "1",
+        "expected_account_epoch": "1",
+        "execution_view_version": 6,
+        "expected_collaboration_revision": "1",
+        "target_user_id": "3f5c589e-3a0d-41b4-b378-4f05c1a25632"
+      },
+      "request_sha256": "1f6b9ed91b887d9ec97eaba693ed38381deec6809ab37b8fefbda89326a42c73",
+      "status": 400,
+      "response_body": {
+        "code": "invalid_request",
+        "error": "Invalid request"
+      },
+      "response_sha256": "608a8ce060daeff3ffbbf5bab17d9743fd04302d07a63bb374b9ad0f9d38ef3e",
+      "request_hash_independently_verified": true,
+      "response_hash_with_encoder_newline_independently_verified": true
+    },
+    "original_red_retained": true
+  },
+  "repaired_source": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/source",
+    "files": 3358,
+    "links": 1961,
+    "binding_sha256": "7ea690fd7e8b4739c3499ec393b9b51a179ac0085fb79008a11456d9fff32044",
+    "only_changed_path": "e2e/fixtures/collaboration-multi-account-closure.ts",
+    "before_sha256": "91b8b4c5cbaab035b6c70c1e2a8034d6ea1cbefacdfe61f13c1747d8bc9cc166",
+    "after_sha256": "d40059ca4bc003dd343d19ccfb86c23bf9f57f9d65348fc727d6ea583eee73f5",
+    "private_file_mode": 384,
+    "protected_files": 3357,
+    "protected_drift": 0,
+    "workspace_link_mismatches": 0
+  },
+  "consumer_boundary": {
+    "workflow_fields": [
+      "expected_lifecycle_epoch",
+      "expected_participant_epoch",
+      "expected_account_epoch",
+      "expected_collaboration_revision"
+    ],
+    "host_specific_field_not_forwarded": "execution_view_version",
+    "guard_preserved": "Calls unchanged hostAuthority to check write_context, then explicitly projects only its three epoch values plus current collaboration revision.",
+    "real_export_consumer_sites": [
+      {
+        "file": "e2e/collaboration-stage-approvals.spec.ts",
+        "line": 98,
+        "consumer": "participant invite workflow"
+      },
+      {
+        "file": "e2e/collaboration-stage-execution.spec.ts",
+        "line": 119,
+        "consumer": "participant invite workflow"
+      },
+      {
+        "file": "e2e/collaboration-stage-execution.spec.ts",
+        "line": 446,
+        "consumer": "project field edit workflow"
+      },
+      {
+        "file": "e2e/fixtures/collaboration-stage-approvals.ts",
+        "line": 117,
+        "consumer": "stage policy/role/stage observation composition"
+      },
+      {
+        "file": "e2e/fixtures/collaboration-stage-execution.ts",
+        "line": 345,
+        "consumer": "formal acceptance submission workflow"
+      },
+      {
+        "file": "e2e/fixtures/collaboration-stage-execution.ts",
+        "line": 367,
+        "consumer": "self/submission M1 completion workflow"
+      }
+    ],
+    "unaffected_same_named_local_builders": [
+      "collaboration-performance.ts local function",
+      "order-export-leave alias of gapWorkflowObservations"
+    ],
+    "resource_consumers": "Closure resource offer/adopt/consent keep unchanged hostAuthority with execution_view_version6.",
+    "completion_M1_contract": "stageCompleteBody and stageAuthorizeM1 retain the exact four observations, expected issue/status/target identity, completion authorization and original operation key; only the invalid host-only body field is removed."
+  },
+  "static_evidence": {
+    "typecheck": {
+      "exit": 0,
+      "configuration": "Old E2E4 noEmit config compiles both stage specs and helper/import closure; noEmit, no incremental/composite.",
+      "commands": {
+        "label": "typecheck",
+        "argv": [
+          "/opt/homebrew/opt/node@22/bin/node",
+          "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/source/node_modules/typescript/bin/tsc",
+          "-p",
+          "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/tsconfig.json"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/source",
+        "pid": 15156,
+        "started_at": "2026-11-15T17:07:12.887202+00:00",
+        "ended_at": "2026-11-15T17:07:16.777551+00:00",
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "lint": {
+      "exit": 0,
+      "actual_file_not_ignored": true,
+      "errors": 0,
+      "warnings": 0,
+      "commands": {
+        "label": "lint",
+        "argv": [
+          "/opt/homebrew/opt/node@22/bin/node",
+          "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/source/node_modules/eslint/bin/eslint.js",
+          "--config",
+          "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/eslint.config.mjs",
+          "--max-warnings=0",
+          "--format",
+          "json",
+          "e2e/fixtures/collaboration-multi-account-closure.ts"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/source",
+        "pid": 15157,
+        "started_at": "2026-11-15T17:07:12.888409+00:00",
+        "ended_at": "2026-11-15T17:07:16.777718+00:00",
+        "exit": 0,
+        "stdout_sha256": "5d03897e7625627c896404b7d25aeda08a77299df935f4258b3c6f991fdf1577",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "all3358_files1961_links_independently_rechecked": true,
+    "hostAuthority_bytes_unchanged": true,
+    "production_web_desktop_output_change": false,
+    "reviewer_executed_tests_DB_API_browser": 0
+  },
+  "original_after_audit_note": "ROOT-reported READ ONLY42P01 for an audit of nonexistent collaboration_participant is a separate auditor error; source table is issue_participant. It does not add a business-case failure or alter the r01 denominator.",
+  "remaining_requirements": [
+    "New exact source/runtime binding and fresh run ID before replaying the complete four-case selection once.",
+    "Retain all four original cases; first failure and three NOT_RUN remain historical rather than relabeled pass.",
+    "This check is static/retained-evidence acceptance only; no repaired runtime case has run and no stage/business acceptance is claimed."
+  ],
+  "reviewer_ROOT_frozen_source_or_repository_MD_edits": 0,
+  "reviewer_behavior_or_network_commands": 0,
+  "joint_service_tests_repeated": false,
+  "evidence_references": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/input-binding.json",
+      "sha256": "7ea690fd7e8b4739c3499ec393b9b51a179ac0085fb79008a11456d9fff32044",
+      "bytes": 954683
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/workflow-authority.patch",
+      "sha256": "363f615abe91a205a0d36432130116a67c5c5f844070bbef539ab82651cedfde",
+      "bytes": 1162
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/handoff.json",
+      "sha256": "39b0a3650301b39361eef910798dbd2243ba51801d8b22e9449c60c063f8cb8e",
+      "bytes": 2364
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/static-results.json",
+      "sha256": "624393acd7092f15c6225953a1d6be67b1b227a5d03fc7e0721446185a66389a",
+      "bytes": 2326
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/tsconfig.json",
+      "sha256": "c1252ea7972949f5002b0cd891fae6b51c1d0541338e9a369b6cb5c40e996151",
+      "bytes": 1195
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/eslint.config.mjs",
+      "sha256": "b01efecab207e3145d19e93919f79d4c83bd46479c9fe39efa407100b2e97dfc",
+      "bytes": 551
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/typecheck.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/typecheck.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/lint.stdout",
+      "sha256": "5d03897e7625627c896404b7d25aeda08a77299df935f4258b3c6f991fdf1577",
+      "bytes": 368
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/lint.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/four-scenarios-r01/result.json",
+      "sha256": "4dcd7e730b46973799a7cc9c0b70d340e69ff18b56519970b761ea4871afc6d1",
+      "bytes": 4699
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/four-scenarios-r01/playwright-report.json",
+      "sha256": "5891c21423ce333137d32d1c2e45d1412233613ffb2dd87c5f9d3e4df4831786",
+      "bytes": 9120
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/four-scenarios-r01/runner.stdout.log",
+      "sha256": "272a4cc95964b3a9cb3026ec84f8c09dc804e612ffd7de50ce71953dd86b4e2d",
+      "bytes": 2171
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/four-scenarios-r01/runner.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/four-scenarios-r01/exit.json",
+      "sha256": "5cd7143ed05cd32dcf513859eb55fa319cd85aa163c2e6cd7580476fe88b9567",
+      "bytes": 100
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/four-scenarios-r01/command.json",
+      "sha256": "30c4f1fab3e358641609824bfb80891bbfabda0abeb262573d3c3aed3500c632",
+      "bytes": 3457
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/four-scenarios-r01/test-results/collaboration-stage-approv-895aa-tory-across-Web-and-Desktop-chromium/stage-approvals-evidence.json",
+      "sha256": "d055d1a9076a21bbef9dbd7375d6769292adccb4bd95d881c2c9067147fe3eca",
+      "bytes": 11556
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/fixture-r08-independent-check-r01/readonly-intake-r01.json",
+      "sha256": "220addb36d2fb9f3043419ba1d19fd1b1c42a6b470a02ad19842059c7773e1f8",
+      "bytes": 6668
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/fixture-r08-independent-check-r01/patch-static-intake-r02.json",
+      "sha256": "09913b0ab20fb18d740e31f7d13f5a680d3e986ec92f085a8ef07efafeecbbdf",
+      "bytes": 716
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/frontend-current-r07-r01/source/e2e/fixtures/collaboration-multi-account-closure.ts",
+      "sha256": "91b8b4c5cbaab035b6c70c1e2a8034d6ea1cbefacdfe61f13c1747d8bc9cc166",
+      "bytes": 9301
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/source/e2e/fixtures/collaboration-multi-account-closure.ts",
+      "sha256": "d40059ca4bc003dd343d19ccfb86c23bf9f57f9d65348fc727d6ea583eee73f5",
+      "bytes": 9520
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r07-r01/acceptance/fixture-repair-r02/source/e2e/fixtures/collaboration-host-runtime.ts",
+      "sha256": "88b357f0465cf6d4bb35036a683467f05173aaa64c282f24ad634df1baff3519",
+      "bytes": 57874
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/collaboration_workflow.go",
+      "sha256": "2633c9b19f43ac914286b11f03390d251de39e35d45c8632f20f4514b136dc68",
+      "bytes": 16615
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/collaboration_authority.go",
+      "sha256": "cd7ea917da30dbc077043be8d4d40cf7583dce339b49243f5a7a34a5e556543c",
+      "bytes": 6503
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/collaboration_stage.go",
+      "sha256": "38f19a7a11e4f77d5e731bf7f08f89d060fc87667255bf6a4c8dca606a2bff96",
+      "bytes": 18532
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/collaboration_stage_review.go",
+      "sha256": "decfadbdfe4d4da253e85de2b2f987a28af0a70c983f43b5c0acd0d482d86fd4",
+      "bytes": 10001
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-stage-approvals.ts",
+      "sha256": "00405f3f5b6d978fe22ae54a35500a9481888a0cd4976aefe29df8a346dd3f27",
+      "bytes": 24909
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-stage-execution.ts",
+      "sha256": "483e1320dfdf8148d96e20dff3743617990e08a68a5751df10188f75b6c5521b",
+      "bytes": 33005
+    }
+  ]
+}

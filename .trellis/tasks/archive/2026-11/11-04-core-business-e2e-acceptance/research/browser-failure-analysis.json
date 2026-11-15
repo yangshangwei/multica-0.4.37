@@ -1,0 +1,165 @@
+{
+  "scope": "Read-only original baseline diagnosis; no test replay, service/DB changes, or source edits",
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "evidence": {
+    "assignment": {
+      "trace": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/artifacts/core-business-workflow-G-E-aa272-il-they-are-reassigned-away-chromium/trace.zip",
+      "sha256": "37f769d35afdb2e1a18e2ff4d670e885a6b7987e5006afc1d2492d9885283e8e",
+      "network_files": [
+        "1-trace.network",
+        "0-trace.network"
+      ],
+      "browser_trace_files": [
+        "1-trace.trace",
+        "0-trace.trace"
+      ]
+    },
+    "triage": {
+      "trace": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/artifacts/triage-duplicate-picker-de-c5831-firms-the-chosen-target-en--chromium/trace.zip",
+      "sha256": "c78c9281db1f6ed23939dfbe2ad4ef8fa5d138fb286992b5c0a1a4117c9b8557",
+      "network_files": [],
+      "browser_trace_files": []
+    },
+    "changelog": {
+      "trace": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/artifacts/changelog-generated-public-8829a-resh-client-without-restart-chromium/trace.zip",
+      "sha256": "190affd3df63e11eb52c0026531d11bacd73259d56f248ad947841a1dfa9f52f",
+      "network_files": [
+        "0-trace.network"
+      ],
+      "browser_trace_files": [
+        "0-trace.trace"
+      ]
+    }
+  },
+  "assignment": {
+    "classification": "Confirmed interaction interrupted before assignment write; canonical navigation/remount is strongly evidenced, isolated replay pending",
+    "network_summary": {
+      "api_requests": 49,
+      "status_counts": {
+        "200": 48,
+        "204": 1
+      },
+      "issue_mutations": 0,
+      "max_captured_api_ms": 274.217
+    },
+    "timeline_monotonic_ms": [
+      {
+        "at": 1398586.678,
+        "fact": "title visible, UUID URL, Unassigned trigger id base-ui-_r_1h_"
+      },
+      {
+        "at": 1398592.9,
+        "fact": "waitForResponse PUT registered"
+      },
+      {
+        "at": 1398638.647,
+        "fact": "actual Unassigned click starts"
+      },
+      {
+        "at": 1398728.866,
+        "fact": "click completes"
+      },
+      {
+        "at": 1398756.403,
+        "fact": "screencast shows transient popup including target member"
+      },
+      {
+        "at": 1398782.676,
+        "fact": "DOM URL now /issues/CORE-1; new Unassigned trigger id base-ui-_r_4c_, aria-expanded=false"
+      },
+      {
+        "at": 1398801.44,
+        "fact": "member row click begins waiting; never resolves before test timeout"
+      },
+      {
+        "at": 1398826.873,
+        "fact": "screencast popup absent"
+      }
+    ],
+    "canonical_navigation": {
+      "request_started_utc": "2026-11-04T16:27:40.585Z",
+      "path_suffix": "/issues/CORE-1",
+      "status": 200,
+      "duration_ms": 186.937
+    },
+    "excluded_explanations": [
+      "PUT changed to PATCH: neither write method appears",
+      "Missing membership: members200 contains exact target member",
+      "Test reached inbox assertion: it stopped before first assignment"
+    ],
+    "hypotheses": [
+      {
+        "rank": 1,
+        "hypothesis": "UUID to identifier route replacement remounts the detail during first popover opening",
+        "prediction": "Waiting for canonical URL before the same click removes this race; delaying only canonical route response after title exposes it again",
+        "evidence": "URL boundary, replaced trigger id, transient menu and no mutation align"
+      },
+      {
+        "rank": 2,
+        "hypothesis": "A separate parent/layout remount coincides with navigation, rather than the canonical route alone",
+        "prediction": "Instrument mount/unmount and stable node identity; trigger still remounts on fully canonical URL under same query updates",
+        "evidence": "Trigger identity proves remount but does not isolate which ancestor"
+      },
+      {
+        "rank": 3,
+        "hypothesis": "Base UI focus/outside-dismiss contributes to closure",
+        "prediction": "Popover onOpenChange reasons show outside/focus close without unmount; this alone would not explain changed generated trigger id",
+        "evidence": "Lower-ranked because generated id changed"
+      }
+    ],
+    "replay": "python3 .omx/private/core-e2e-20261104/run-browser.py diagnosis-ge1-original-1 e2e/core-business-workflow.spec.ts --grep \"^G-E1 assigning a teammate\"",
+    "minimal_probe": "Same original flow plus local diagnostic event stream: URL changes, trigger node identity, popup mount/unmount, pointerdown/up/click, and actual request method/path. Then one-variable canonical URL wait comparison. Do not add retries or arbitrary sleep."
+  },
+  "triage": {
+    "classification": "Native keyboard/input discrepancy; cause unresolved because native event/network recording is absent",
+    "facts": [
+      "Native English failed at list closure, 5000ms assert, total11899ms",
+      "Fill expected Resolved UI/UX upload failure completed; one matching option visible after920ms",
+      "ArrowDown succeeded in7.3ms; Enter succeeded in5.3ms",
+      "Failure screenshot and ARIA show focused input Resolved UI/UX upload failure e, expanded list and selected exact target option",
+      "page-errors attachment is empty",
+      "No native browser trace or network files in archive; only test API action records",
+      "Native zh-Hans and Web en/zh-Hans passed in same baseline"
+    ],
+    "hypotheses": [
+      {
+        "rank": 1,
+        "hypothesis": "Unexpected native input/composition changed text and Enter did not reach cmdk as a selection event",
+        "prediction": "Capture beforeinput/input/composition and native before-input-event; extra space/e has a concrete event origin or composing Enter is observed",
+        "evidence": "Actual input contains extra space/e not requested by fill or the two recorded key commands; mechanism not established"
+      },
+      {
+        "rank": 2,
+        "hypothesis": "cmdk candidate selection/controlled input state was not ready when Enter ran",
+        "prediction": "Correct noncomposing Enter is captured but selectedItemId/option identity is stale or selection callback does not fire; an explicit active-descendant readiness observation separates this from key delivery",
+        "evidence": "Original case waited visible candidate but not keyboard active descendant; final option selected alone does not prove state at keydown"
+      },
+      {
+        "rank": 3,
+        "hypothesis": "Selection fired then a later controlled input/focus update reopened the list and replaced value",
+        "prediction": "onSelect/MutationObserver records identifier value and collapsed list before a later input/focus event restores search text",
+        "evidence": "TriageDuplicatePicker onValueChange/focus/click opens and onSelect closes, but no recorded callback order"
+      }
+    ],
+    "replay": "python3 .omx/private/core-e2e-20261104/run-browser.py diagnosis-triage-native-en-1 e2e/triage-duplicate-picker-desktop.spec.ts --grep \"\\(en\\)$\"",
+    "minimal_probe": "Before original keyboard sequence record actual input value, activeElement, aria-expanded/activedescendant, selected option ID; attach trace to actual Electron context, plus bounded capture-phase keyboard/beforeinput/input/composition events. Preserve keyboard interaction and original5s assertion."
+  },
+  "changelog": {
+    "classification": "Confirmed setup path guard before any publication business step",
+    "facts": [
+      "CHANGELOG_E2E_FEED selected root private changelog.json",
+      "Spec requires frozen checkout .omx/state/desktop-changelog/live descendant",
+      "Failed at line103 in97ms, before useLocalApi and before reading/replacing feed",
+      "Other changelog reader/desktop cases passed"
+    ],
+    "next_step": "Root prepares a new task-owned feed under the exact allowed frozen-checkout live directory, aligns API CHANGELOG_FILE and test CHANGELOG_E2E_FEED to it, verifies new config identity, then replays original case. Never relax the containment guard.",
+    "replay": "python3 .omx/private/core-e2e-20261104/run-browser.py diagnosis-changelog-feed-1 e2e/changelog.spec.ts --grep \"generated publication reaches\""
+  },
+  "limits": [
+    "No hypothesis tested by this read-only task",
+    "No timeout increase or retry performed",
+    "Shared CPU contention is not inferred from timeouts",
+    "Assignment error-context onboarding snapshot was captured after fixture teardown; pre-teardown screenshots/trace show original issue and are the diagnostic evidence",
+    "Native no-write/network verdict is unavailable; no native network was captured"
+  ]
+}

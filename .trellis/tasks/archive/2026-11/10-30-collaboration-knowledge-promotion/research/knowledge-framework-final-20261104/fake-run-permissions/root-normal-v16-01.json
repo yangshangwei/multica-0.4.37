@@ -1,0 +1,47 @@
+{
+  "issued_at": "2026-11-04T09:33:04.790316+00:00",
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "executor": "/root/shared_executor",
+  "lane": "normal",
+  "label": "rk1k-normal-v16-01",
+  "scope": "One original fixed seven-test fake normal suite; no race until actual normal acceptance",
+  "framework_HEAD": "92a4c7adfad20354e79855e4134934e6004774ad",
+  "accepted_product_source": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "runner_sha256": "ff0ec52b930164ae44b15c40ccbc38e37499f07cf549fb7b92097205f8ab903a",
+  "input_binding_sha256": "28a8dcc387b092d55a3d5dc870ccb58ed965b07a7e49561ee6396d91270230da",
+  "environment_sha256": "b53fbf730d9b5bb501ca58226f6d0844616f550914f226a6fbe0f3c98704b0a9",
+  "before_false_permit_sha256": "a59a1a2898d0a88e05573e11636bd71ceacfd57cd3e23baa762b871b64fded34",
+  "source_review_sha256": "53fa774254fdc8ef5a92d4c08e51d1ff14c965bc2e036b409740d83ea8246cc2",
+  "admission_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fake-run-admission-review/review.json",
+    "sha256": "ae3e0dd61b6258b556e53f23b8f3d4b6bf230babcd56d56ba891a63825575d93"
+  },
+  "database": "multica_rk1k_20261104_v16_normal_a3c9",
+  "root_actual_database_identity": "multica_rk1k_20261104_v16_normal_a3c9|764_collaboration_ai_policy|0|0",
+  "fixed_filter": "^TestRK1Knowledge(EntryGuard|WrapperGuard|PromptData|TraceCredentialLabels|NativeMetadataUsesRawOutput|EvidenceFaults|FakeProof)$",
+  "expected_top_level_tests": [
+    "TestRK1KnowledgeEntryGuard",
+    "TestRK1KnowledgeWrapperGuard",
+    "TestRK1KnowledgePromptData",
+    "TestRK1KnowledgeTraceCredentialLabels",
+    "TestRK1KnowledgeNativeMetadataUsesRawOutput",
+    "TestRK1KnowledgeEvidenceFaults",
+    "TestRK1KnowledgeFakeProof"
+  ],
+  "expected_summary": {
+    "measured_fake_starts": 15,
+    "fake_seed_starts": 3,
+    "paid_starts": 0,
+    "knowledge_allocated": 0,
+    "real_runnable": false
+  },
+  "python_interpreter": {
+    "path": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+    "sha256": "cbf84109626aa1013bbe408fbb9590bd0f1c1548f038b2221c6b8b87de26ca43",
+    "version": "3.14.3"
+  },
+  "real_provider_allowed": false,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false
+}

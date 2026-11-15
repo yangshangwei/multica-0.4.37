@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-12T02:27:29.643387+00:00",
+  "user_message_exact": "先完成合法 CLI/Provider 网关准入及当前源码、配置、数据库、独占窗口的重新绑 ； 可以使用codex",
+  "scope": "Current local Codex version/account/configuration migration preparation and lawful gateway admission; preserve existing task scope and budgets",
+  "knowledge_budget": {
+    "cap": 17,
+    "historical_starts": 2,
+    "remaining": 15
+  },
+  "runtime_budget": {
+    "cap": 25,
+    "historical_starts": 12,
+    "remaining": 13
+  },
+  "real_gate": {
+    "runnable": false,
+    "allow_build": false,
+    "allow_check": false,
+    "allow_run": false
+  },
+  "prohibited": [
+    "client identity/User-Agent/originator changes",
+    "exec bridge",
+    "unregistered inference health probes",
+    "rewriting historical evidence",
+    "commits/push/deployment/messages",
+    "Runtime provider substitution without reviewed migration"
+  ]
+}

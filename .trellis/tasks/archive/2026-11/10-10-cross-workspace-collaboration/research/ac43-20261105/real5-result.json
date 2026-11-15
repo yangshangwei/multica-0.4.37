@@ -1,0 +1,194 @@
+{
+  "run": "real5",
+  "status": "partial_acceptance_provider_rejection",
+  "scope": "runtime/configuration and business provenance; external billing excluded by user",
+  "scenarios": {
+    "multiple_targets": "passed",
+    "mixed_human_authors": "passed",
+    "ordinary_transfer": "passed",
+    "cross_environment_squad": "blocked_at_claude_leader"
+  },
+  "completed_successful_runs": [
+    {
+      "label": "multiple_targets_A",
+      "run_id": "40e2731d-0312-41da-8dc0-aa62a476b63d",
+      "provider": "claude",
+      "status": "passed_runtime_provenance",
+      "proof": "host_exit_observed",
+      "business_outcome": "success"
+    },
+    {
+      "label": "two_human_authors_A",
+      "run_id": "f1381e8b-9489-4006-92ff-43ae6d8fa9b9",
+      "provider": "claude",
+      "status": "passed_runtime_provenance",
+      "proof": "host_exit_observed",
+      "business_outcome": "success"
+    },
+    {
+      "label": "ordinary_transfer_A",
+      "run_id": "4f4609b6-baed-449a-a3e1-3e2855fd02b0",
+      "provider": "claude",
+      "status": "passed_runtime_provenance",
+      "proof": "host_exit_observed",
+      "business_outcome": "success"
+    },
+    {
+      "label": "multiple_targets_B",
+      "run_id": "323f4366-eeda-4060-93ca-ca072988ba81",
+      "provider": "codex",
+      "status": "passed_runtime_provenance",
+      "proof": "host_exit_observed",
+      "business_outcome": "success"
+    }
+  ],
+  "blocked_run": {
+    "label": "squad_leader_A",
+    "run_id": "38f4b482-9527-4828-aef6-d46777de6d4e",
+    "proof": "host_exit_observed",
+    "authorized_attempts": 1,
+    "sealed_attempts": 1,
+    "business_outcome": "failure",
+    "reason": "Claude upstream safeguards rejection",
+    "provider_message_id": "msg_3ce22a1112bc4bf1943e21068c595453"
+  },
+  "codex_exec_launches": [
+    {
+      "transport": "codex_exec_test_bridge",
+      "adapter_session_handle": "ac43-exec-bridge-8f4407ab-f546-410d-bbb1-7d0de9e09839",
+      "provider_actual_thread_id": "01a1a783-d166-7d61-943f-ca2b1d009768",
+      "logical_handle": true,
+      "managed_wrapper_pid": 74906,
+      "child_pid": 74907,
+      "process_group": 74906,
+      "child_process_group": 74906,
+      "physical_exec_children": 1,
+      "exit_code": 0,
+      "status": "completed",
+      "stdout_drained": true,
+      "sandbox": "read-only",
+      "bridge_sha256": "5809e94bb129227e01ebb80cbf3577b6ac524d06b35a6a106f57b29bac318f0d",
+      "real_binary_sha256": "61b0194f3bb6534439c8d26a3ed57d0805f84b884588b761795323eeb92fcf70",
+      "actual_exec_usage": {
+        "input_tokens": 27988,
+        "cached_input_tokens": 15616,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 86,
+        "reasoning_output_tokens": 76
+      }
+    }
+  ],
+  "member_and_continuation": "not_run",
+  "source_manifest": {
+    "run": "real5",
+    "database": "multica_ac43_20261105_5dafd1c6",
+    "started_at": "2026-11-04T17:01:46.974649+00:00",
+    "command": [
+      "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-ac43-20261105-bi0bmk8x/ac43-v3.test",
+      "-test.run=^TestAC43RealProviderProvenance$",
+      "-test.v",
+      "-test.timeout=45m"
+    ],
+    "binary_sha256": "8a55be03c63407f9dd4562ab52f78f4e6ecfce65df6b52aee234b4ab42c7b900",
+    "source_head": "d862c5c4bb55d11074d9f4c51643871764e3a9bb",
+    "harness": {
+      "server/cmd/server/ac43_fixture_test.go": "91a405a592ef077b502fc689d8947ded9823666dd9b1dede3e8b095b66c3a943",
+      "server/cmd/server/ac43_real_provider_test.go": "ae4acc02dae8a01a99a26349d3dfa394087b55e61dafcd76dac091f2834db00e"
+    },
+    "codex_transport": "codex_exec_test_bridge",
+    "bridge_sha256": "5809e94bb129227e01ebb80cbf3577b6ac524d06b35a6a106f57b29bac318f0d",
+    "real_codex_executable": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/codex",
+    "codex_exec_evidence": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-ac43-20261105-bi0bmk8x/real5-exec-bridge",
+    "exit_code": 1,
+    "finished_at": "2026-11-04T17:04:56.079923+00:00"
+  },
+  "final_identity_checks": [
+    {
+      "kind": "provider_config",
+      "file": "/Users/artisan/.codex/config.toml",
+      "unchanged": false
+    },
+    {
+      "kind": "provider_config",
+      "file": "/Users/artisan/.claude/settings.json",
+      "unchanged": true
+    },
+    {
+      "kind": "executable",
+      "file": "/Users/artisan/.local/share/claude/versions/2.1.318",
+      "unchanged": true
+    },
+    {
+      "kind": "executable",
+      "file": "/Users/artisan/.nvm/versions/node/v22.23.2/lib/node_modules/@openai/codex/bin/codex.js",
+      "unchanged": false
+    },
+    {
+      "kind": "executable",
+      "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-ac43-20261105-bi0bmk8x/multica-cli",
+      "unchanged": true
+    },
+    {
+      "kind": "harness",
+      "file": "server/cmd/server/ac43_real_provider_test.go",
+      "unchanged": true
+    },
+    {
+      "kind": "harness",
+      "file": "server/cmd/server/ac43_fixture_test.go",
+      "unchanged": true
+    },
+    {
+      "kind": "harness",
+      "file": "server/cmd/server/testdata/ac43-codex-exec-bridge.py",
+      "unchanged": true
+    },
+    {
+      "kind": "harness",
+      "file": "server/cmd/server/testdata/test_ac43_codex_exec_bridge.py",
+      "unchanged": true
+    },
+    {
+      "kind": "product",
+      "file": "server/internal/daemon/collaborationrun/host_runner.go",
+      "unchanged": true
+    },
+    {
+      "kind": "product",
+      "file": "server/internal/daemon/collaborationrun/host_config.go",
+      "unchanged": true
+    },
+    {
+      "kind": "product",
+      "file": "server/internal/daemon/execenv/codex_home.go",
+      "unchanged": true
+    },
+    {
+      "kind": "product",
+      "file": "server/pkg/agent/claude.go",
+      "unchanged": true
+    },
+    {
+      "kind": "product",
+      "file": "server/pkg/agent/codex.go",
+      "unchanged": true
+    },
+    {
+      "kind": "source_commit",
+      "unchanged": true
+    }
+  ],
+  "all_checked_identities_unchanged": false,
+  "same_machine_and_os_user": true,
+  "builtin_codex_app_server": "blocked_by_gateway_403_in_real2",
+  "external_billing_reconciliation": "excluded_by_user",
+  "tool_drift": {
+    "current_codex_version": "0.166.0",
+    "observed_run_codex_version": "0.165.0",
+    "observed_originator": "codex_exec",
+    "launch_wrapper_hash_matches_initial": true,
+    "runtime_endpoint_model_and_credential_fingerprint_match_initial": true,
+    "native_binary_pre_run_hash_recorded": false,
+    "claim": "Observed run identity is retained; final global environment was not unchanged."
+  }
+}

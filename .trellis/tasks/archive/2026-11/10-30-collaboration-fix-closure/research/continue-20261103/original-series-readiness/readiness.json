@@ -1,0 +1,539 @@
+{
+  "status": "ready-for-root-preflight",
+  "recorded_at": "2026-11-03T01:05:17.702475+00:00",
+  "active_task": ".trellis/tasks/10-30-collaboration-fix-closure",
+  "query": "Bounded handoff to resume the original registered E0-E6 series after deterministic acceptance",
+  "scope": "Read-only original experiment filesystem, source/framework hashes and existing registration; no Provider/account/services/DB/git commands",
+  "root_execution_authority_granted": false,
+  "registration": {
+    "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/original-series-run/prerun.json",
+    "registered_at": "2026-11-02T13:32:38.895903+00:00",
+    "registered_by_session": "01a19c0d-cce1-73e3-99ee-2c3c9e9239ba",
+    "sha256": "2f77e27d357f2b5cf9b2eedc386b07981e4ed50e8252c69227a51b733ad50dd1"
+  },
+  "runner": {
+    "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/original-series-run/run_scenario.py",
+    "sha256": "da39ef5ec1f0c6ae1607f16dacf82cd247bb1d70804a1880112127bd258f5042",
+    "registered_execution_clearance_exists": false,
+    "existing_selected_outputs": []
+  },
+  "source_checks": [
+    {
+      "arm": "baseline",
+      "root": "/Volumes/artisan/code/2026/mc-context-guard-baseline-20261102",
+      "source_commit_observed_from_metadata": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "matches_registered_head": true,
+      "framework_sha256": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+      "matches_registered_framework": true,
+      "framework_files": {
+        "host_context_experiment_evidence_test.go": {
+          "sha256": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+          "matches_registration": true
+        },
+        "host_context_experiment_fixture_test.go": {
+          "sha256": "0245a0719d82c3b9a2d1c754c7df27504b837776a4d04ac2bdb71864afa794d6",
+          "matches_registration": true
+        },
+        "host_context_experiment_stop_test.go": {
+          "sha256": "2ddb69382caac52ef6afbaf3b6e4246a07d52aa3c06f0a6e0b1b5f8453a8908d",
+          "matches_registration": true
+        },
+        "host_context_experiment_test.go": {
+          "sha256": "09e5d6cc4e1abca7cb332e6c2b30b563351021fcaf730d8ee6445b2257fa6893",
+          "matches_registration": true
+        }
+      },
+      "actual_framework_file_names": [
+        "host_context_experiment_evidence_test.go",
+        "host_context_experiment_fixture_test.go",
+        "host_context_experiment_stop_test.go",
+        "host_context_experiment_test.go"
+      ],
+      "whole_dirty_scope_check": "root must run git status; research role did not execute git"
+    },
+    {
+      "arm": "after",
+      "root": "/Volumes/artisan/code/2026/mc-context-guard-after-20261102",
+      "source_commit_observed_from_metadata": "835e7b046c6841e0945a59326bc4ddcbae4a0df7",
+      "matches_registered_head": true,
+      "framework_sha256": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+      "matches_registered_framework": true,
+      "framework_files": {
+        "host_context_experiment_evidence_test.go": {
+          "sha256": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+          "matches_registration": true
+        },
+        "host_context_experiment_fixture_test.go": {
+          "sha256": "0245a0719d82c3b9a2d1c754c7df27504b837776a4d04ac2bdb71864afa794d6",
+          "matches_registration": true
+        },
+        "host_context_experiment_stop_test.go": {
+          "sha256": "2ddb69382caac52ef6afbaf3b6e4246a07d52aa3c06f0a6e0b1b5f8453a8908d",
+          "matches_registration": true
+        },
+        "host_context_experiment_test.go": {
+          "sha256": "09e5d6cc4e1abca7cb332e6c2b30b563351021fcaf730d8ee6445b2257fa6893",
+          "matches_registration": true
+        }
+      },
+      "actual_framework_file_names": [
+        "host_context_experiment_evidence_test.go",
+        "host_context_experiment_fixture_test.go",
+        "host_context_experiment_stop_test.go",
+        "host_context_experiment_test.go"
+      ],
+      "whole_dirty_scope_check": "root must run git status; research role did not execute git"
+    }
+  ],
+  "executable": {
+    "path": "/Users/artisan/.local/bin/claude",
+    "resolved_path": "/Users/artisan/.local/share/claude/versions/2.1.316",
+    "sha256": "64c327e92b2c5e0f78c0a980c5a518121e1f0d140ca771ca5dd4488d1a2dcb3f",
+    "matches_registration": true,
+    "is_executable": true,
+    "registered_version": "2.1.316",
+    "version_probe_executed": false,
+    "account_access": false
+  },
+  "quota": {
+    "original_remaining_approved_call_cap": 14,
+    "consumed_historical_trial_slot_count": 13,
+    "consumed_slots": {
+      "E1": [
+        1,
+        2,
+        3
+      ],
+      "E2a": [
+        1,
+        2,
+        3
+      ],
+      "E2b": [
+        1,
+        2,
+        3
+      ],
+      "E3_baseline": [
+        1,
+        2,
+        3
+      ],
+      "E3_after": [
+        1
+      ]
+    },
+    "new_started_records_since_registration": [],
+    "new_provider_calls_by_this_research": 0,
+    "remaining_call_cap_at_snapshot": 14,
+    "new_rk1_calls": 0,
+    "actual_launch_accounting": "Root must reconcile per-run permits/terminations/proof launches; trial slots alone do not infer physical launch count."
+  },
+  "historical_started_records": [
+    {
+      "scenario": "E1_memory_first",
+      "arm": "baseline",
+      "trial": "1",
+      "run_id": "12f7f898-b819-43cf-848e-b26fae635e55",
+      "started_at": "2026-10-31T12:35:06.467913Z",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "d5a682bac34e01ab5293fb372bae7d259413f420f151a85c231421146d7633db",
+      "record_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-10-31-series2/E1_memory_first-baseline/records.jsonl"
+    },
+    {
+      "scenario": "E2a_window_fact_newest",
+      "arm": "baseline",
+      "trial": "2",
+      "run_id": "bd1f29a8-2650-4704-9362-b94c1f7bef93",
+      "started_at": "2026-10-31T19:14:33.32988Z",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "record_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume2/E2a_window_fact_newest-baseline/records.jsonl"
+    },
+    {
+      "scenario": "E2a_window_fact_newest",
+      "arm": "baseline",
+      "trial": "3",
+      "run_id": "420ded43-5b43-4f04-95c8-ebec3ae03d2d",
+      "started_at": "2026-11-01T04:03:13.072515Z",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "record_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2a_window_fact_newest-baseline/records.jsonl"
+    },
+    {
+      "scenario": "E2b_window_fact_oldest",
+      "arm": "baseline",
+      "trial": "1",
+      "run_id": "5fc1ef44-9511-4c0b-b3ad-c6f44873c3f4",
+      "started_at": "2026-11-01T04:06:13.433981Z",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "record_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2b_window_fact_oldest-baseline/records.jsonl"
+    },
+    {
+      "scenario": "E2b_window_fact_oldest",
+      "arm": "baseline",
+      "trial": "2",
+      "run_id": "97dc4218-13f8-418f-b22b-d2ee91e0fd7d",
+      "started_at": "2026-11-01T04:07:46.555945Z",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "record_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2b_window_fact_oldest-baseline/records.jsonl"
+    },
+    {
+      "scenario": "E2b_window_fact_oldest",
+      "arm": "baseline",
+      "trial": "3",
+      "run_id": "f805fd55-50f2-40a6-accc-8a067385721d",
+      "started_at": "2026-11-01T04:08:52.28941Z",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "record_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2b_window_fact_oldest-baseline/records.jsonl"
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "after",
+      "trial": "1",
+      "run_id": "3aa8be3c-769e-4c7e-a821-d99e464ebefb",
+      "started_at": "2026-11-01T04:17:34.320893Z",
+      "source_commit": "835e7b046c6841e0945a59326bc4ddcbae4a0df7",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "record_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-after/records.jsonl"
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "baseline",
+      "trial": "1",
+      "run_id": "86ff8933-8d55-4675-879f-f62e2df72aae",
+      "started_at": "2026-11-01T04:10:43.336068Z",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "record_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-baseline/records.jsonl"
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "baseline",
+      "trial": "2",
+      "run_id": "ae864440-47ab-4c8d-a18c-251791b13284",
+      "started_at": "2026-11-01T04:12:25.270892Z",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "record_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-baseline/records.jsonl"
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "baseline",
+      "trial": "3",
+      "run_id": "fe9e3573-ca1e-4e07-b9d7-afe6f664860d",
+      "started_at": "2026-11-01T04:13:55.237879Z",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "record_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-baseline/records.jsonl"
+    },
+    {
+      "scenario": "E2a_window_fact_newest",
+      "arm": "baseline",
+      "trial": "1",
+      "run_id": "008e9dd2-4af7-4fc1-ae94-f43307ce0198",
+      "started_at": "2026-10-31T13:58:37.379518Z",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "record_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-e2-resume-2026-10-31/E2a_window_fact_newest-baseline/records.jsonl"
+    },
+    {
+      "scenario": "E1_memory_first",
+      "arm": "baseline",
+      "trial": "2",
+      "run_id": "26b51bb8-786a-4001-9297-043bb2130362",
+      "started_at": "2026-10-31T13:14:20.849429Z",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "record_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-resume-2026-10-31/E1_memory_first-baseline/records.jsonl"
+    },
+    {
+      "scenario": "E1_memory_first",
+      "arm": "baseline",
+      "trial": "3",
+      "run_id": "d0470e80-a96f-464f-a436-faeecc5d4502",
+      "started_at": "2026-10-31T13:17:57.480886Z",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "record_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-resume-2026-10-31/E1_memory_first-baseline/records.jsonl"
+    }
+  ],
+  "historical_commands": [
+    {
+      "started_at": "2026-10-31T19:14:29.722072+00:00",
+      "finished_at": "2026-10-31T19:17:49.253337+00:00",
+      "state": null,
+      "exit_code": 1,
+      "launched_by": null,
+      "call_cap": null,
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume2/E2a_window_fact_newest-baseline/command.json"
+    },
+    {
+      "started_at": "2026-11-01T04:03:07.601904+00:00",
+      "finished_at": "2026-11-01T04:04:34.030585+00:00",
+      "state": null,
+      "exit_code": 0,
+      "launched_by": "claude dfc52231-3a8b-4173-823d-9dcf6e621ae9 (multica-0-4-37-54)",
+      "call_cap": null,
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2a_window_fact_newest-baseline/command.json"
+    },
+    {
+      "started_at": "2026-11-01T04:06:08.994425+00:00",
+      "finished_at": "2026-11-01T04:09:35.941354+00:00",
+      "state": null,
+      "exit_code": 0,
+      "launched_by": "claude dfc52231-3a8b-4173-823d-9dcf6e621ae9 (multica-0-4-37-54)",
+      "call_cap": null,
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2b_window_fact_oldest-baseline/command.json"
+    },
+    {
+      "started_at": "2026-11-01T04:17:29.412301+00:00",
+      "finished_at": "2026-11-01T04:22:35.290982+00:00",
+      "state": null,
+      "exit_code": 1,
+      "launched_by": "claude dfc52231-3a8b-4173-823d-9dcf6e621ae9 (multica-0-4-37-54)",
+      "call_cap": null,
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-after/command.json"
+    },
+    {
+      "started_at": "2026-11-01T04:10:38.480903+00:00",
+      "finished_at": "2026-11-01T04:16:33.206231+00:00",
+      "state": null,
+      "exit_code": 0,
+      "launched_by": "claude dfc52231-3a8b-4173-823d-9dcf6e621ae9 (multica-0-4-37-54)",
+      "call_cap": null,
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-baseline/command.json"
+    }
+  ],
+  "next_cursor": {
+    "scenario": "E3_member_scope",
+    "arm": "after",
+    "start_trial": 2
+  },
+  "ordered_plan": [
+    {
+      "scenario": "E3_member_scope",
+      "arm": "after",
+      "start_trial": 2,
+      "remaining_trials": [
+        2,
+        3
+      ],
+      "launches_per_trial": 1,
+      "call_cap": 2
+    },
+    {
+      "scenario": "E4_stale_merge",
+      "arm": "baseline",
+      "start_trial": 1,
+      "remaining_trials": [
+        1,
+        2,
+        3
+      ],
+      "launches_per_trial": 1,
+      "call_cap": 3
+    },
+    {
+      "scenario": "E5_injection",
+      "arm": "baseline",
+      "start_trial": 1,
+      "remaining_trials": [
+        1,
+        2,
+        3
+      ],
+      "launches_per_trial": 1,
+      "call_cap": 3
+    },
+    {
+      "scenario": "E6_relay",
+      "arm": "baseline",
+      "start_trial": 1,
+      "remaining_trials": [
+        1,
+        2,
+        3
+      ],
+      "launches_per_trial": 2,
+      "call_cap": 6
+    }
+  ],
+  "suggested_takeover_directory": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run",
+  "takeover_requirements": [
+    "Preserve old runner/prerun/clearance and all valid/invalid trial records.",
+    "Append a fresh registration using actual current root owner, previous_registration/previous_verification, unchanged trial/model/source/framework/timeout and remaining14-call plan. Copy unchanged reviewed runner bytes to the new directory only after verifying that destination is unused.",
+    "Bind new prerun hash, unchanged runner hash and framework to independent zero-blocker review and the actual completed whole-check report.",
+    "Fresh root exclusive-account-window evidence is mandatory; an existing unrelated v10 check is not an original experiment window.",
+    "Repeat original-record/output scan immediately before launch; any newly consumed slot requires reconciliation and a new remainder registration rather than replay."
+  ],
+  "root_preflight_commands": [
+    [
+      "python3",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/run_scenario.py",
+      "E3_member_scope",
+      "after",
+      "2",
+      "--check-only"
+    ],
+    [
+      "python3",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/run_scenario.py",
+      "E4_stale_merge",
+      "baseline",
+      "1",
+      "--check-only"
+    ],
+    [
+      "python3",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/run_scenario.py",
+      "E5_injection",
+      "baseline",
+      "1",
+      "--check-only"
+    ],
+    [
+      "python3",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/run_scenario.py",
+      "E6_relay",
+      "baseline",
+      "1",
+      "--check-only"
+    ]
+  ],
+  "root_live_commands_serial_after_clearance": [
+    [
+      "python3",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/run_scenario.py",
+      "E3_member_scope",
+      "after",
+      "2"
+    ],
+    [
+      "python3",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/run_scenario.py",
+      "E4_stale_merge",
+      "baseline",
+      "1"
+    ],
+    [
+      "python3",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/run_scenario.py",
+      "E5_injection",
+      "baseline",
+      "1"
+    ],
+    [
+      "python3",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/run_scenario.py",
+      "E6_relay",
+      "baseline",
+      "1"
+    ]
+  ],
+  "required_clearance": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/execution-clearance.json",
+    "owner_session": "actual current root owner, matching new registered_by_session",
+    "authorization_confirmed": true,
+    "wholecheck_passed": true,
+    "exclusive_window_confirmed": true,
+    "blocking_findings_open": 0,
+    "remaining_series_call_cap": 14,
+    "framework_sha256": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+    "runner_sha256": "da39ef5ec1f0c6ae1607f16dacf82cd247bb1d70804a1880112127bd258f5042",
+    "prerun_sha256": "fresh successor registration sha256; do not reuse old value"
+  },
+  "stop_rule": "Stop every later trial/scenario after first incomplete runtime/environment/harness result; no extra replacement/health calls or timeout/model change. E5 canary stops for blocking review.",
+  "live_evidence_schema": {
+    "command.json": [
+      "cwd",
+      "command",
+      "explicit_environment",
+      "removed_session_environment",
+      "started_at",
+      "finished_at",
+      "state",
+      "launched_by",
+      "framework_sha256",
+      "runner_sha256",
+      "call_cap",
+      "exit_code",
+      "log_sha256"
+    ],
+    "records.jsonl": [
+      "scenario",
+      "trial",
+      "arm",
+      "source_commit",
+      "framework_sha256",
+      "provider",
+      "provider_version",
+      "requested_model",
+      "observed_model",
+      "model_observation",
+      "run_id",
+      "evidence_path",
+      "host_prompt",
+      "host_brief",
+      "prompt_source",
+      "cli_sha256",
+      "requested_thinking_level",
+      "requested_service_tier",
+      "status",
+      "verdict",
+      "started_at",
+      "finished_at",
+      "outcome",
+      "body",
+      "context_reads",
+      "memory_reads",
+      "memory_puts",
+      "memory_final",
+      "posted_comments",
+      "prompt_sha256",
+      "prompt_bytes",
+      "seconds"
+    ],
+    "records.jsonl.trials/<run_id>/events.jsonl": {
+      "fields": [
+        "sequence",
+        "at",
+        "kind",
+        "data"
+      ],
+      "kinds": [
+        "started",
+        "scenario",
+        "memory_base",
+        "HTTP request/response",
+        "lifecycle",
+        "finished"
+      ],
+      "lifecycle": [
+        "permits",
+        "terminations",
+        "proofs",
+        "complete",
+        "prompt_coverage_complete",
+        "ledger_phase"
+      ]
+    },
+    "semantic-verdicts.json": "Separate human adjudication, linked original record hash and criterion per trial/hop; never rewrite raw verdicts."
+  },
+  "not_verified": [
+    "Current full deterministic acceptance; root reported fresh v10 records and must reconcile their owner/state separately.",
+    "Current account health/credentials or an exclusive Provider window.",
+    "Source worktree dirty scope beyond registered framework bytes (no git operations under research role).",
+    "Live semantic outcomes E3after2/3, E4, E5 or E6."
+  ],
+  "critical_caveats": [
+    "E3 baseline3/3 already contradicts the original <=2/3 baseline prediction; completing after can show regressions but cannot establish the predicted improvement.",
+    "E2a has only one valid sample; do not replace its two invalid slots.",
+    "E5 canary requires durable finished/fail plus immediate stop of all later execution.",
+    "E4/E6 return manual_review_required; Go exit0 alone is not semantic acceptance.",
+    "No new E0/health trial is budgeted or needed solely to resume the unchanged original product/CLI/account."
+  ]
+}

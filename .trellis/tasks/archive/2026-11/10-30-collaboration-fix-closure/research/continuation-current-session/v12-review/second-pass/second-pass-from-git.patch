@@ -1,0 +1,118 @@
+--- a/e2e/fixtures/collaboration-editing.ts
++++ b/e2e/fixtures/collaboration-editing.ts
+@@ -132,8 +132,17 @@
+   return issue;
+ }
+ 
++export async function revealCollaborationEditingAction(page: Page, name: "Edit issue" | "Edit source fields" | "Change iteration") {
++  const workflow = page.getByRole("region", { name: "Issue actions", exact: true });
++  await expect(workflow).toBeVisible();
++  const action = workflow.getByRole("button", { name, exact: true });
++  if (!await action.isVisible()) await workflow.locator("summary").filter({ hasText: /^More actions$/ }).click();
++  await expect(action).toBeVisible();
++  return action;
++}
++
+ export async function exerciseCollaborationFields(page: Page, fixture: CollaborationEditingFixture, issueId: string) {
+-  await page.getByRole("button", { name: "Edit issue", exact: true }).click();
++  await (await revealCollaborationEditingAction(page, "Edit issue")).click();
+   let form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Edit issue", exact: true }) });
+   await toggleLabel(page, form, fixture.labels[1].name);
+   await setTextProperty(page, form, fixture.property.name, "Reviewed delivery context");
+@@ -145,14 +154,14 @@
+     labels: expect.arrayContaining([expect.objectContaining({ id: fixture.labels[1].id })]),
+   });
+ 
+-  await page.getByRole("button", { name: "Edit source fields", exact: true }).click();
++  await (await revealCollaborationEditingAction(page, "Edit source fields")).click();
+   form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Edit source fields", exact: true }) });
+   await form.getByLabel("Subtask stage number (optional)", { exact: true }).fill("3");
+   await form.getByRole("button", { name: "Confirm", exact: true }).click();
+   await expect(form).toHaveCount(0);
+   expect(await fixture.source.requestJSON(`/api/collaboration/issues/${issueId}`)).toMatchObject({ source_structure: { stage: 3 } });
+ 
+-  await page.getByRole("button", { name: "Change iteration", exact: true }).click();
++  await (await revealCollaborationEditingAction(page, "Change iteration")).click();
+   form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Change iteration", exact: true }) });
+   await form.getByLabel("Iteration", { exact: true }).selectOption(fixture.iterations[1].id);
+   await expect(form.getByRole("button", { name: "Confirm", exact: true })).toBeDisabled();
+@@ -165,7 +174,6 @@
+ export async function sendCollaborationComment(page: Page, content: string) {
+   const composer = page.getByRole("form", { name: "Comments", exact: true });
+   await composer.getByLabel("Add comment", { exact: true }).fill(content);
+-  await composer.getByRole("button", { name: "Preview delivery", exact: true }).click();
+   const send = composer.getByRole("button", { name: "Send comment", exact: true });
+   await expect(send).toBeEnabled();
+   const response = page.waitForResponse((item) => /\/api\/collaboration\/issues\/[^/]+\/comments$/.test(new URL(item.url()).pathname)
+--- a/e2e/collaboration-editing-web.spec.ts
++++ b/e2e/collaboration-editing-web.spec.ts
+@@ -2,7 +2,7 @@
+ import { test, expect } from "@playwright/test";
+ import { TestApiClient } from "./fixtures";
+ import { authenticateCollaborationEditor, createCollaborationWithInitialFields, exerciseCollaborationDiscussion,
+-  exerciseCollaborationFields, seedCollaborationEditing } from "./fixtures/collaboration-editing";
++  exerciseCollaborationFields, revealCollaborationEditingAction, seedCollaborationEditing } from "./fixtures/collaboration-editing";
+ 
+ const apiUrl = process.env.COLLABORATION_E2E_API_URL;
+ 
+@@ -25,9 +25,12 @@
+ 
+   // A normal source detail URL must resolve the same object using collaboration
+   // authority and controls, including a linked child in the source workspace.
++  const sourceIssue = await fixture.source.requestJSON<{ id: string; identifier: string }>(`/api/issues/${issue.id}`);
++  expect(sourceIssue.id).toBe(issue.id);
+   await page.goto(`/${fixture.workspace.slug}/issues/${issue.id}`);
++  await expect(page).toHaveURL((url) => url.pathname === `/${fixture.workspace.slug}/issues/${sourceIssue.identifier}`);
+   await expect(page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
+-  await expect(page.getByRole("button", { name: "Edit source fields", exact: true })).toBeVisible();
++  await revealCollaborationEditingAction(page, "Edit source fields");
+   await page.screenshot({ path: testInfo.outputPath("web-source-collaboration.png"), animations: "disabled" });
+   await page.goto(`/${fixture.workspace.slug}/issues`);
+   await expect(page.getByText(fixture.ordinary.title, { exact: true }).first()).toBeVisible();
+@@ -52,13 +55,14 @@
+     await authenticateCollaborationEditor(recipientPage, fixture.recipient.getToken()!);
+     await recipientPage.goto(`/account?view=current&issue=${issue.id}`);
+     await expect(recipientPage.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
+-    await expect(recipientPage.getByRole("button", { name: "Edit source fields", exact: true })).toHaveCount(0);
+-    await expect(recipientPage.getByRole("button", { name: "Change iteration", exact: true })).toHaveCount(0);
++    const recipientEdit = await revealCollaborationEditingAction(recipientPage, "Edit issue");
++    await expect(recipientPage.getByRole("button", { name: "Edit source fields", exact: true, includeHidden: true })).toHaveCount(0);
++    await expect(recipientPage.getByRole("button", { name: "Change iteration", exact: true, includeHidden: true })).toHaveCount(0);
+     await expect(recipientPage.locator(`[id="comment-${discussion.replyId}"]`).getByRole("button", { name: "Edit comment", exact: true })).toHaveCount(0);
+     const options = await fixture.recipient.requestJSON<{ source_options?: unknown }>(`/api/collaboration/issues/${issue.id}/field-options`);
+     expect(options.source_options).toBeUndefined();
+ 
+-    await recipientPage.getByRole("button", { name: "Edit issue", exact: true }).click();
++    await recipientEdit.click();
+     const form = recipientPage.locator("form").filter({ has: recipientPage.getByRole("heading", { name: "Edit issue", exact: true }) });
+     await form.getByLabel("Priority", { exact: true }).selectOption("medium");
+     await form.getByRole("button", { name: "Confirm", exact: true }).click();
+@@ -67,7 +71,7 @@
+     expect(catalogRequests).toEqual([]);
+ 
+     await recipientPage.setViewportSize({ width: 640, height: 900 });
+-    await recipientPage.getByRole("button", { name: "Edit issue", exact: true }).click();
++    await (await revealCollaborationEditingAction(recipientPage, "Edit issue")).click();
+     await expect(recipientPage.getByLabel("Description", { exact: true })).toBeVisible();
+     expect(await recipientPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+     await recipientPage.screenshot({ path: testInfo.outputPath("web-external-editing-narrow.png"), animations: "disabled", fullPage: false });
+--- a/e2e/collaboration-account-desktop.spec.ts
++++ b/e2e/collaboration-account-desktop.spec.ts
+@@ -9,7 +9,7 @@
+ import { openDesktop, deepLink, selectDesktopWorkspace, nativeScreenshot, captureNativeSection, responseEvidence, type NativeHarness } from "./fixtures/collaboration-native";
+ import { seedCollaborationResourceJourney, type CollaborationResourceSnapshot } from "./fixtures/collaboration-resources";
+ import { createCollaborationWithInitialFields, exerciseCollaborationDiscussion, exerciseCollaborationFields,
+-  seedCollaborationEditing } from "./fixtures/collaboration-editing";
++  revealCollaborationEditingAction, seedCollaborationEditing } from "./fixtures/collaboration-editing";
+ import { attachRecordedChild, detachRecordedChild, exerciseRecordedPages, recordedAccountPath,
+   removeRecordViewer, seedCollaborationRecordJourney, showRecordedUsage } from "./fixtures/collaboration-records";
+ import { exerciseCollaborationResourceOffers, resourceOfferAccountPath, seedCollaborationResourceOfferJourney } from "./fixtures/collaboration-resource-offers";
+@@ -550,7 +550,7 @@
+     const window = await app.browserWindow(native.page);
+     await window.evaluate((target) => target.webContents.setZoomFactor(2));
+     await window.dispose();
+-    await native.page.getByRole("button", { name: "Edit issue", exact: true }).click();
++    await (await revealCollaborationEditingAction(native.page, "Edit issue")).click();
+     const editDescription = native.page.getByLabel("Description", { exact: true });
+     await editDescription.evaluate((element) => element.scrollIntoView({ block: "center" }));
+     await expect(editDescription).toBeInViewport({ ratio: 1 });

@@ -1,0 +1,60 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "created_at": "2026-11-15T07:52:53.517614+00:00",
+  "original_error": "Source changed after the source-ready build; stop owned services and rebuild",
+  "start_session_id": 17188,
+  "start_exit_code": 1,
+  "build": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-0cc54918/build-72f79a734581/build.json",
+  "build_source_id": "e01cb1b9182d7f946e642668a376e872a43147f0a03a8d384f454abc555c2de6",
+  "current_source_id": "577ef4572fabf382f732596f06dc9ef4a30777fa7e23b61fba931421c7f4a5a4",
+  "source_matches": false,
+  "changes": [
+    {
+      "path": "packages/core/collaboration/comment-threads.ts",
+      "kind": "added",
+      "old": null,
+      "current": {
+        "sha256": "5f5c3777fb4a43d4ed26660f4ac8472620309bcf001e35275026794dbb87002a",
+        "normalized_sha256": "5f5c3777fb4a43d4ed26660f4ac8472620309bcf001e35275026794dbb87002a",
+        "mode": 420,
+        "link": null
+      }
+    },
+    {
+      "path": "packages/core/collaboration/index.ts",
+      "kind": "modified",
+      "old": {
+        "sha256": "6588f2664ed6e8f15d361a48a0ca1c803f93b1c9d81d9d089549d9bdebb98121",
+        "normalized_sha256": "6588f2664ed6e8f15d361a48a0ca1c803f93b1c9d81d9d089549d9bdebb98121",
+        "mode": 420,
+        "link": null
+      },
+      "current": {
+        "sha256": "c5209dc9aa4a9e7e0b99de9e74d10b6cea12d90644095dc91aa1ededb07a55f2",
+        "normalized_sha256": "c5209dc9aa4a9e7e0b99de9e74d10b6cea12d90644095dc91aa1ededb07a55f2",
+        "mode": 420,
+        "link": null
+      }
+    },
+    {
+      "path": "packages/views/collaboration/discussion-actions.tsx",
+      "kind": "modified",
+      "old": {
+        "sha256": "305f7a85e3ba6b5b80d8de96f2c4f3e5a0f86f5ae82574fec9fc471bbe313525",
+        "normalized_sha256": "305f7a85e3ba6b5b80d8de96f2c4f3e5a0f86f5ae82574fec9fc471bbe313525",
+        "mode": 420,
+        "link": null
+      },
+      "current": {
+        "sha256": "a605f351b136ce26dc850e29a898f44674909e2a1a60c14db54468347401a1b5",
+        "normalized_sha256": "a605f351b136ce26dc850e29a898f44674909e2a1a60c14db54468347401a1b5",
+        "mode": 420,
+        "link": null
+      }
+    }
+  ],
+  "owned_services_stopped": true,
+  "stopped_owned_pids": [],
+  "runtime_accepted": false,
+  "final_acceptance_verified": false
+}

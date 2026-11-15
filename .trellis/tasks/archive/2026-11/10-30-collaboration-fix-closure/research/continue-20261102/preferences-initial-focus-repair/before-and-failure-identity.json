@@ -1,0 +1,51 @@
+{
+  "at": "2026-11-02T17:31:08.308412+00:00",
+  "worktree": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+  "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "raw_v9_report": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/makecheck-playwright-results-v9.json",
+  "raw_report_sha256": "8dea30021a5f386e6a217600223c3c6ec299e1a8bd156849a317b48b98de14d3",
+  "failures": [
+    {
+      "file": "settings-preferences.spec.ts",
+      "title": "hidden manual issue fields persist and remain usable through the overflow menu",
+      "line": 107,
+      "project": "chromium",
+      "test_status": "unexpected",
+      "result_status": "timedOut",
+      "retry": 0,
+      "error_message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
+      "attachment_refs": [
+        {
+          "name": "preferences-failure",
+          "contentType": "image/png",
+          "path": null,
+          "exists": null,
+          "sha256": null,
+          "inline_body_in_original_report": true
+        },
+        {
+          "name": "error-context",
+          "contentType": "text/markdown",
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/settings-preferences-hidde-af0f8-e-through-the-overflow-menu-chromium/error-context.md",
+          "exists": true,
+          "sha256": "01257b3f96d6235d39fe4b9a410a5a5a62796655b46216b1f5dc517d3f3ec1c1",
+          "inline_body_in_original_report": false
+        },
+        {
+          "name": "trace",
+          "contentType": "application/zip",
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/settings-preferences-hidde-af0f8-e-through-the-overflow-menu-chromium/trace.zip",
+          "exists": true,
+          "sha256": "e3f7432d38a194faa355c56084edb3f4c67552dbe7096d46681439930294a7ff",
+          "inline_body_in_original_report": false
+        }
+      ]
+    }
+  ],
+  "source_before_sha256": "b9b6041c93db6e669f23eb22df1cd1fe07a9f0e575c0c256db7b0c2a774391a4",
+  "memory_patch_sha256": "2d3ab36d74220324ad4f38b3f70eace05a8a01f1f576d173f100799d54dc1e41",
+  "main_preferences_sha256": "b9b6041c93db6e669f23eb22df1cd1fe07a9f0e575c0c256db7b0c2a774391a4",
+  "confirmed_root_trace_cause": "Manual Title(required) natural50ms deferred autofocus fires after More opens, making popup unstable/detached during shell transition. Wait for intended title focus before opening More, then assert actual menuitem visible.",
+  "classification_note": "Original v9 result is timedOut with test status unexpected, not literal failed; root trace establishes the focus/menu sequence.",
+  "actual_browser_API_DB_Provider_calls": 0
+}

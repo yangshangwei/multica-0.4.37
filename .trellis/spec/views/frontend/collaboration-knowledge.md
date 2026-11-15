@@ -2,8 +2,9 @@
 
 ## 1. Scope / trigger
 
-Apply to collaboration source proposal/review and project/workspace managed
-contribution panels shared by Web and Desktop. Use the
+Apply to collaboration source proposal/review, automatic extraction status,
+project policies and project/workspace managed contribution panels shared by
+Web and Desktop. Use the
 [Core lease/recovery contract](../../core/frontend/collaboration-knowledge.md)
 and [server authority contract](../../server/collaboration-knowledge.md).
 These views introduce no platform route, store or knowledge-generation model.
@@ -19,8 +20,46 @@ These views introduce no platform route, store or knowledge-generation model.
   live in [`packages/views/collaboration`](../../../../packages/views/collaboration/).
   Core owns every network/schema/action; use `AppLink` and existing account source
   anchors. Views have no runtime environment or enablement switch.
+- `KnowledgeAutomationStatus({scope,issue,onOpenKnowledge?})` is shared by Web and
+  Desktop delivery views. It selects the exact current accepted submission/event
+  through Core and uses current server-granted retry capability.
+- `ProjectKnowledgePolicy({workspaceId,projectId})` in
+  `projects/components/project-knowledge-policy.tsx` is mounted beside the project
+  contribution panel. Its scope is keyed by current server/viewer/project.
+- `useKnowledgeAutomationControl` owns in-memory intent, notices and explicit
+  local dismissal; Core owns write/recovery identity and receipt validation.
 
 ## 3. Contracts
+
+### Automatic status, policy and audit
+
+Only project-bound formally accepted, nonmanual tasks query current automation
+status. Old acceptances must not appear as processing for the latest submission;
+no-project/manual/disabled-policy cases show no fabricated job. Existing pending
+request recovery remains reachable even if current status is no longer eligible.
+Show processing, saved/restored/revised counts, no reusable content, pending,
+unconfigured and paused/cancelled states from the exact server projection.
+An erased/failed status read offers explicit refresh without retaining old data.
+
+Policy shows system default versus human override and permits editing only with
+current `can_manage === true`. The enabled switch and 1–3 limit are a local draft
+bound to the displayed revision; a changed revision blocks Save until explicit
+reload. Await the original receipt. Neither optimistic success nor a sealed
+refusal may clear an unresolved request as though it succeeded. Recovered known
+outcomes and local storage-cleanup failure have distinct feedback.
+
+Candidate detail labels model proposal/system rule adoption separately from
+human decisions, using v2 origins and nullable system actor facts. Show exact
+delivery/acceptance, rule version and evidence as attributed information;
+model opinions and quoted test claims are not verified test results. Display
+actual model and known/partial/unknown usage without replacing missing values
+with zero. The latest-execution projection permits up to 42 complete stage-attempt
+records per job and rejects 43. The current worker normally produces at most 14;
+preserve additional valid retained attempts within the projection limit.
+Raw private model text never belongs in status or shared component
+state. `paused_review` preserves approved history while explaining that the
+current automatic source proof does not permit use. Reopen is one cause; a
+missing or invalid proof also pauses usage.
 
 ### Source selection and destination
 
@@ -51,6 +90,10 @@ attributed data. Show expiry and applicability without implying server-tested
 evidence or automatic runtime consumption.
 
 ### Live exact review and audit
+
+Correction/derivation of an automatic candidate may retain its exact delivery
+refs. Re-read them through Core's authorized source builder; a displayed summary
+cannot substitute for the bound historical result/basis.
 
 Read candidate detail live from Core and render only its current authorized Query
 value. Approval requires full available content, current server grant, and an
@@ -158,6 +201,10 @@ was never applied. A removal failure keeps the row and shows its own error.
 | Known result but local cleanup failed | Show known outcome plus cleanup notice; no repeat POST |
 | Lease/hint/access clears current Query | Remove body immediately, including an open review |
 | Decision or recovered older request settles while a draft is open | Keep the draft; select only an owned candidate, otherwise point to its own list |
+| Project policy revision changed while a draft is open | Block Save; explicit reload discards/rebases the local draft |
+| Automation receipt is a known refusal | Show confirmed refusal; never show saved/retried success |
+| Latest acceptance does not match a historical job | Hide that job as current work; retain original-request recovery |
+| Automatic knowledge is approved but paused | Label paused usage separately from its retained adoption history |
 
 ## 5. Good / base / bad cases
 
@@ -168,6 +215,15 @@ was never applied. A removal failure keeps the row and shows its own error.
   follow the latest source project, or retain a cleared body in component state.
 
 ## 6. Tests required
+
+`knowledge-automation.test.tsx` owns eligible/exact-event status selection,
+system/default policy, role-granted controls, revision-bound drafts, explicit
+false-to-true policy updates, outcome/cleanup/uncertainty feedback, identity-only
+recovery and honest usage display. `e2e/project-knowledge-automation.spec.ts`
+owns production Web and native Electron acceptance → adoption → actual daemon
+input → reopen/old-session refusal → reacceptance/fresh-proof restoration, plus
+no-project/manual zero-work cases. These controlled processes do not establish
+packaged installer or real-model quality acceptance.
 
 `knowledge-panel.test.tsx` owns source/target wiring, keyboard confirmation,
 original-intent recovery, changed-review reset, unchanged-refresh retention of

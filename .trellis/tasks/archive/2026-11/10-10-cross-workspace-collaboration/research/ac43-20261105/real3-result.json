@@ -1,0 +1,64 @@
+{
+  "run": "real3",
+  "status": "passed_partial_runtime_provenance",
+  "scenarios_passed": [
+    "mixed_human_authors",
+    "ordinary_transfer"
+  ],
+  "scenarios_not_run": [
+    "multiple_targets_B",
+    "cross_environment_squad"
+  ],
+  "external_billing_reconciliation": "excluded_by_user",
+  "runs": [
+    {
+      "label": "multiple_targets_A",
+      "run_id": "9391e545-11ed-4042-b099-cd726adcb76d",
+      "provider": "claude",
+      "status": "passed_runtime_provenance",
+      "proof": "host_exit_observed",
+      "business_outcome": "success",
+      "authorized_attempts": 1,
+      "sealed_attempts": 1
+    },
+    {
+      "label": "two_human_authors_A",
+      "run_id": "ea1e832d-0b87-48b9-88c4-11ea623c53da",
+      "provider": "claude",
+      "status": "passed_runtime_provenance",
+      "proof": "host_exit_observed",
+      "business_outcome": "success",
+      "authorized_attempts": 1,
+      "sealed_attempts": 1
+    },
+    {
+      "label": "ordinary_transfer_A",
+      "run_id": "77b9041a-7a1d-4156-9ff6-10211355e90f",
+      "provider": "claude",
+      "status": "passed_runtime_provenance",
+      "proof": "host_exit_observed",
+      "business_outcome": "success",
+      "authorized_attempts": 1,
+      "sealed_attempts": 1
+    }
+  ],
+  "manifest": {
+    "run": "real3",
+    "database": "multica_ac43_20261105_899ad60b",
+    "started_at": "2026-11-04T16:49:33.997438+00:00",
+    "command": [
+      "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-ac43-20261105-bi0bmk8x/ac43-v3.test",
+      "-test.run=^TestAC43RealProviderProvenance$",
+      "-test.v",
+      "-test.timeout=45m"
+    ],
+    "binary_sha256": "8a55be03c63407f9dd4562ab52f78f4e6ecfce65df6b52aee234b4ab42c7b900",
+    "source_head": "d862c5c4bb55d11074d9f4c51643871764e3a9bb",
+    "harness": {
+      "server/cmd/server/ac43_fixture_test.go": "91a405a592ef077b502fc689d8947ded9823666dd9b1dede3e8b095b66c3a943",
+      "server/cmd/server/ac43_real_provider_test.go": "ae4acc02dae8a01a99a26349d3dfa394087b55e61dafcd76dac091f2834db00e"
+    },
+    "exit_code": 0,
+    "finished_at": "2026-11-04T16:51:15.665729+00:00"
+  }
+}

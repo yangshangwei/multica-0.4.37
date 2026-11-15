@@ -1,0 +1,1450 @@
+{
+ "schema_version": 1,
+ "review_id": "p6-independent-final-candidate-ac-review-20261115-a710db0a",
+ "task": ".trellis/tasks/11-14-project-knowledge-automation",
+ "reviewed_at": "2026-11-15T12:58:00.275Z",
+ "role": "independent trellis-check",
+ "review_mode": "final private-candidate evidence/source/AC review; read-only verification",
+ "approved_revision": "existing2026-11-14-v1",
+ "verdict": "accept_frozen_private_candidate",
+ "blocking_findings": [],
+ "blocking_count": 0,
+ "private_candidate_accepted": true,
+ "private_p6_acceptance_verified": true,
+ "all_private_ac_rows_verified": true,
+ "shared_root_final_acceptance_verified": false,
+ "task_complete": false,
+ "task_completion_permitted_by_this_review": false,
+ "ownership": {
+  "spawned_descendants": 0,
+  "product_source_or_specs_modified": false,
+  "existing_receipts_modified": false,
+  "tests_or_builds_rerun": false,
+  "services_or_native_apps_started": false,
+  "db_queries_or_resource_mutations": false,
+  "only_write": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-final-candidate-ac-review-20261115-a710db0a.json",
+  "root_integration_owner": "leader/Descartes; out of this review scope",
+  "new_root_web_e2e_fixture_contract_spec": "separate docs checker; excluded from private source graph and this review"
+ },
+ "context": {
+  "prior_full_scope_review_reused": {
+   "file": "@RESEARCH/p6-ac-review-preflight-20261115-7686d6f9.json",
+   "sha256": "dd4246e2ef4a0f3f93b730414c236ae5c7e4126ac2193efe4d2538674926608d"
+  },
+  "task_artifacts_read_from_private_snapshot": [
+   "prd.md",
+   "design.md",
+   "implement.md",
+   "implementation-approval.md",
+   "task.json",
+   "check.jsonl"
+  ],
+  "package_context": {
+   "command": "python3 .trellis/scripts/get_context.py --mode packages",
+   "result": "No packages configured; applicable server/Core/Views/Web/Desktop/Docs layer indexes, Quality Check guidance and domain Tests required sections were read."
+  },
+  "skill": ".agents/skills/trellis-check/SKILL.md",
+  "current_root_task_status_observed": "in_progress",
+  "metadata_used_as_acceptance_proof": false
+ },
+ "source_binding": {
+  "source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+  "candidate_root": "@CANDIDATE",
+  "build_stage_root": "@STAGE",
+  "build_receipt": "@RUN/build-419ecea5cf21/build.json",
+  "build_sha256": "10706082db40383cf0bf3e7d10dea206fb8a7899ef024c4edad0197a81f86482",
+  "build_id": "Suwn9SgGXHAkR5YxpSvU5",
+  "private_and_stage_head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "private_git_index_sha256": "d4c7194a00eb3176dd4b6d4146749a86b35a2c323e674cf69de673eab2115e7b",
+  "controller_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+  "source_audit_reused_from_same_continuous_review": {
+   "files": 11017,
+   "candidate_and_stage_raw_or_normalized_mismatches": 0,
+   "bytes_modes_and_links_checked": true,
+   "workspace_bindings_each": 32,
+   "workspace_binding_mismatches": 0,
+   "build_artifact_hashes": 1681,
+   "build_artifact_mismatches": 0,
+   "pinned_tool_hashes": 8,
+   "pinned_tool_mismatches": 0
+  },
+  "private_index_scope": "Preserves inclusion of retained ignored source witnesses in a private index; not a new shared repository commit or ROOT acceptance.",
+  "allocation_before_stop_sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+  "execution_allocation_sha256": "440b1097b001f2d1bc5f4bca0d8ddafa00055662b7bdb41f0a424ec3ee2f9198",
+  "allocation_original_and_parent_unchanged": true,
+  "guard_policy": "Fresh allocations/builds bind exact source/environment/resources/tool inputs; password/profile fixes did not relax controller equality or auth guards.",
+  "backend_source_mapping": {
+   "inputs": 4765,
+   "algorithm": "SHA-256 over sorted repository-relative server .go/.sql/go.mod/go.sum/sqlc.yaml paths, NUL, then complete bytes; mode compared separately",
+   "sha256": "d9fe7fcb1b35657cf930a4c1c60b03b0c093bbfbbb192a927636475dd705531c",
+   "matches_prior_full_review": true,
+   "original_service_paths": 4764,
+   "original_service_reconstructed_sha256": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+   "original_service_reconstruction_matches_receipt": true,
+   "known_test_only_paths": [
+    "server/internal/service/task_knowledge_mixed_history_integration_test.go",
+    "server/internal/handler/config_test.go",
+    "server/internal/handler/issue_autopilot_assignment_authority_test.go",
+    "server/internal/handler/workspace_delete_manifest_test.go"
+   ],
+   "production_go_or_sql_byte_drift": 0
+  },
+  "frontend_source_mapping": {
+   "executed_source": "d1a929957a32b63c683c642528afb6e73872fd993b3ee7c7c65328ecc4f9379b",
+   "compared_current_source": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+   "only_changed_paths": [
+    ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+    "e2e/fixtures/collaboration-detail-journey.ts",
+    "e2e/fixtures/project-knowledge-automation.ts",
+    "e2e/project-knowledge-automation.spec.ts"
+   ],
+   "package_app_product_and_unit_inputs_changed": 0,
+   "carried_canonical_quality_valid_for_unchanged_layer": true,
+   "fixture_checks_have_separate_scopes": true
+  },
+  "final_fixture_admissions": {
+   "password_onboarding": "Real valid username registration plus PATCH /api/me/onboarding and completion with verified creator identity; legacy default preserved.",
+   "managed_owner": "Task-owned profile/.desktop-user-id written0600/wx under unique0700 HOME, exact managed user read-back; production PAT/enrollment/signing/MDT/one-shot stdin unchanged.",
+   "production_go_sql_ui_delta_from_fixture_repairs": 0
+  }
+ },
+ "migration_namespace": {
+  "evidence": "migration_repair",
+  "contract_evidence": "migration_contract",
+  "historical_red_retained": "TestMigrationNumericPrefixesStayUniqueAfterLegacySet: 861 prefix collision",
+  "renames": [
+   {
+    "before": "server/migrations/861_knowledge_automation_origin.up.sql",
+    "after": "server/migrations/865_knowledge_automation_origin.up.sql",
+    "sql_sha256": "0816309f0602aaf351ca0f7b40e5c800bfd9b8614b42a6c5bb20c022ce8e4b1a",
+    "sql_bytes_identical": true
+   },
+   {
+    "before": "server/migrations/861_knowledge_automation_origin.down.sql",
+    "after": "server/migrations/865_knowledge_automation_origin.down.sql",
+    "sql_sha256": "1edf462a5f95b4a3d3fccd19d3a91cb09e7019b30a3aef855e594ff2583b5eef",
+    "sql_bytes_identical": true
+   }
+  ],
+  "scope": "Only knowledge-owned unreleased index filenames861→865; migration order changes intentionally, SQL bytes do not.",
+  "legacy_prefix_exemption_added": false,
+  "old_databases_modified": false,
+  "up_files": 18,
+  "concurrent_single_statement_index_files": 16,
+  "new_foreign_keys_or_cascades": 0,
+  "contract_violations": 0
+ },
+ "acceptance_criteria": [
+  {
+   "id": "AC1",
+   "candidate_status": "verified_for_frozen_private_candidate",
+   "source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+   "facts": "Private production startup/readiness passed with knowledge enabled; API/Compose default-on and explicit-false contracts retain authority and session fences.",
+   "code_and_contract_review": {
+    "receipt": "preflight",
+    "row": "AC1",
+    "backend_receipt": "router",
+    "source_map": "source_binding.backend_source_mapping and frontend_source_mapping"
+   },
+   "actual_runtime_evidence": [
+    "bound_build_and_ready"
+   ],
+   "not_covered_by_two_journeys": [
+    "Compose/Docker default is source/configuration evidence; no installed Docker or all-platform launch was executed."
+   ],
+   "blocking_gaps": []
+  },
+  {
+   "id": "AC2",
+   "candidate_status": "verified_for_frozen_private_candidate",
+   "source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+   "facts": "Both UI acceptances committed while the controlled model was held. The real worker adopted one exact delivery without per-candidate human approval. Four completed daemon tasks consumed exact body SHA, candidate ID/version1 and independently recomputed protocol2 manifests/prompts.",
+   "code_and_contract_review": {
+    "receipt": "preflight",
+    "row": "AC2",
+    "backend_receipt": "knowledge_post_prefix",
+    "source_map": "source_binding.backend_source_mapping and frontend_source_mapping"
+   },
+   "actual_runtime_evidence": [
+    "journeys",
+    "execution_hash_audit"
+   ],
+   "not_covered_by_two_journeys": [
+    "Controlled server-model and local consumer capture establish orchestration and exact input delivery; no real-provider semantic-quality claim."
+   ],
+   "blocking_gaps": []
+  },
+  {
+   "id": "AC3",
+   "candidate_status": "verified_for_frozen_private_candidate",
+   "source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+   "facts": "Both platforms formally accepted no-project and manual-policy issues with zero source automatic jobs/candidates, unchanged workspace base/target/automatic rows, and unchanged model/provider invocation counts; original human proposal/review contracts remain mapped.",
+   "code_and_contract_review": {
+    "receipt": "preflight",
+    "row": "AC3",
+    "backend_receipt": "knowledge_post_prefix",
+    "source_map": "source_binding.backend_source_mapping and frontend_source_mapping"
+   },
+   "actual_runtime_evidence": [
+    "journeys"
+   ],
+   "not_covered_by_two_journeys": [
+    "Negative proofs are scoped to the exact source issues and task-owned workspace; they do not claim global absence of other peers' work."
+   ],
+   "blocking_gaps": []
+  },
+  {
+   "id": "AC4",
+   "candidate_status": "verified_for_frozen_private_candidate",
+   "source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+   "facts": "Durable accepted-event/job/batch/attempt uniqueness, stage reuse and lease fencing are verified by unchanged backend tests. Runtime first adoption saved1 and reacceptance restored1/saved0 on the same candidate.",
+   "code_and_contract_review": {
+    "receipt": "preflight",
+    "row": "AC4",
+    "backend_receipt": "knowledge_post_prefix",
+    "source_map": "source_binding.backend_source_mapping and frontend_source_mapping"
+   },
+   "actual_runtime_evidence": [
+    "journeys"
+   ],
+   "not_covered_by_two_journeys": [
+    "Success/pending/return/cancel/repeated notification/worker takeover branches are carried backend evidence, not newly exercised by the two browser journeys."
+   ],
+   "blocking_gaps": []
+  },
+  {
+   "id": "AC5",
+   "candidate_status": "verified_for_frozen_private_candidate",
+   "source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+   "facts": "Source and comparison closure, current authority, expiry, exact citations/hashes, duplicate/conflict/uncertainty rejection and private projections retain mapped test coverage. Runtime valid delivery has exact acceptance citation and empty automatic evidence; C3 current-proof dependency manifests remain bound.",
+   "code_and_contract_review": {
+    "receipt": "preflight",
+    "row": "AC5",
+    "backend_receipt": "knowledge_post_prefix",
+    "source_map": "source_binding.backend_source_mapping and frontend_source_mapping"
+   },
+   "actual_runtime_evidence": [
+    "journeys",
+    "c3_direct"
+   ],
+   "not_covered_by_two_journeys": [
+    "Invalid-source, loss-of-authority and conflict matrices are backend evidence; model truthfulness/real-provider quality was not assessed."
+   ],
+   "blocking_gaps": []
+  },
+  {
+   "id": "AC6",
+   "candidate_status": "verified_for_frozen_private_candidate",
+   "source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+   "facts": "Real Web/Desktop candidate review displays Server AI, System rule, actual project-knowledge-v1 rule, version1, exact delivery/acceptance link/body, and no Verified by proposer. Original human receipts remain distinct in mapped Core/Views/public-v2 tests. Eight screenshot hashes and both retained journey JSONs were checked; all eight images were visually inspected.",
+   "code_and_contract_review": {
+    "receipt": "preflight",
+    "row": "AC6",
+    "backend_receipt": "knowledge_post_prefix",
+    "source_map": "source_binding.backend_source_mapping and frontend_source_mapping"
+   },
+   "actual_runtime_evidence": [
+    "journeys",
+    "visual_capture_audit"
+   ],
+   "not_covered_by_two_journeys": [
+    "Native viewport screenshots of processing/restoration do not independently display the lower Project knowledge status. Desktop restoration capture text is Checking knowledge status…, while its earlier named UI assertion and completed job/fresh proof demonstrate restoration."
+   ],
+   "blocking_gaps": []
+  },
+  {
+   "id": "AC7",
+   "candidate_status": "verified_for_frozen_private_candidate",
+   "source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+   "facts": "Both actual UI acceptances completed while model generation was held, with zero saved candidates before release. Manual/no-project negative cases made zero automatic calls. Unconfigured/unavailable/disabled/failed worker and no-business-replay contracts retain unchanged backend coverage.",
+   "code_and_contract_review": {
+    "receipt": "preflight",
+    "row": "AC7",
+    "backend_receipt": "knowledge_post_prefix",
+    "source_map": "source_binding.backend_source_mapping and frontend_source_mapping"
+   },
+   "actual_runtime_evidence": [
+    "journeys"
+   ],
+   "not_covered_by_two_journeys": [
+    "The held local model exercises nonblocking orchestration; unavailable/timeout/disabled branches are carried tests rather than fresh platform outages."
+   ],
+   "blocking_gaps": []
+  },
+  {
+   "id": "AC8a",
+   "candidate_status": "verified_for_frozen_private_candidate",
+   "source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+   "facts": "Both real reopen actions leave approved version1 paused_review. Old native continuation tasks fail knowledge_context_changed with no additional provider invocation. Immediate synchronous disclosure/prepare/authorize fences remain verified by unchanged transaction tests.",
+   "code_and_contract_review": {
+    "receipt": "preflight",
+    "row": "AC8a",
+    "backend_receipt": "knowledge_post_prefix",
+    "source_map": "source_binding.backend_source_mapping and frontend_source_mapping"
+   },
+   "actual_runtime_evidence": [
+    "journeys",
+    "execution_hash_audit"
+   ],
+   "not_covered_by_two_journeys": [
+    "UI screenshots alone do not prove transaction timing; mapped backend concurrency tests establish immediate commit-time exclusion."
+   ],
+   "blocking_gaps": []
+  },
+  {
+   "id": "AC8b",
+   "candidate_status": "verified_for_frozen_private_candidate",
+   "source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+   "facts": "Reacceptance restores the same candidate ID/version1/body with a new accepted submission. First/fresh manifests bind revision1→2, accepted_event_seq3→6 and close_epoch2→4, with new native sessions; old sessions still fail without provider invocation. C3 normal and race each directly replay the unchanged original prepare and authorize after active proof2, receive exact409 knowledge_context_changed/zero response, and admit genuine fresh proof2 controls.",
+   "code_and_contract_review": {
+    "receipt": "preflight",
+    "row": "AC8b",
+    "backend_receipt": "knowledge_post_prefix",
+    "source_map": "source_binding.backend_source_mapping and frontend_source_mapping"
+   },
+   "actual_runtime_evidence": [
+    "journeys",
+    "execution_hash_audit",
+    "c3_direct"
+   ],
+   "not_covered_by_two_journeys": [
+    "C3 is separate private protocol-test execution, not P6 comment continuation. Conflict/expiry/withdrawal/budget and late-event rejection remain mapped backend tests. Desktop final capture shows a freshness check rather than a stable restored label."
+   ],
+   "blocking_gaps": []
+  },
+  {
+   "id": "AC8c",
+   "candidate_status": "verified_for_frozen_private_candidate",
+   "source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+   "facts": "Unchanged production settlement/validity code and mapped tests preserve immutable original approval, human withdrawal/correction precedence, CAS head revisions, human-approved versions and unrelated-source knowledge.",
+   "code_and_contract_review": {
+    "receipt": "preflight",
+    "row": "AC8c",
+    "backend_receipt": "knowledge_post_prefix",
+    "source_map": "source_binding.backend_source_mapping and frontend_source_mapping"
+   },
+   "actual_runtime_evidence": [],
+   "not_covered_by_two_journeys": [
+    "Two browser journeys do not exercise concurrent human revision/withdrawal; the retained race/transaction evidence supplies this contract."
+   ],
+   "blocking_gaps": []
+  },
+  {
+   "id": "AC9",
+   "candidate_status": "verified_for_frozen_private_candidate",
+   "source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+   "facts": "Mapped budget/atomic-settlement tests verify16 entries/128KiB, complete runtime-envelope limits, fitting deterministic sets, explicit pending outcomes and no eviction/truncation/false success. Current migration/SQLC/source parity is intact.",
+   "code_and_contract_review": {
+    "receipt": "preflight",
+    "row": "AC9",
+    "backend_receipt": "knowledge_post_prefix",
+    "source_map": "source_binding.backend_source_mapping and frontend_source_mapping"
+   },
+   "actual_runtime_evidence": [],
+   "not_covered_by_two_journeys": [
+    "No fresh capacity stress or platform UI capacity journey was run."
+   ],
+   "blocking_gaps": []
+  },
+  {
+   "id": "AC10",
+   "candidate_status": "verified_for_frozen_private_candidate",
+   "source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+   "facts": "Mapped server-owned LLM code/tests return before HTTP when unconfigured and retain actual/partial/zero/unknown usage semantics. Actual job attempts use the controlled server model and known returned usage; personal daemon only consumes approved exact input.",
+   "code_and_contract_review": {
+    "receipt": "preflight",
+    "row": "AC10",
+    "backend_receipt": "knowledge_post_prefix",
+    "source_map": "source_binding.backend_source_mapping and frontend_source_mapping"
+   },
+   "actual_runtime_evidence": [
+    "journeys"
+   ],
+   "not_covered_by_two_journeys": [
+    "Real provider accounts, semantic quality, real provider billing and model-specific failure behavior were not evaluated."
+   ],
+   "blocking_gaps": []
+  },
+  {
+   "id": "AC11",
+   "candidate_status": "verified_for_frozen_private_candidate",
+   "source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+   "facts": "Both effective project policies are system_default revision0, enabled, rule project-knowledge-v1. Mapped policy permission/CAS/original-recovery/explicit-false/default-upgrade/current-authority tests preserve in-flight policy fences.",
+   "code_and_contract_review": {
+    "receipt": "preflight",
+    "row": "AC11",
+    "backend_receipt": "knowledge_post_prefix",
+    "source_map": "source_binding.backend_source_mapping and frontend_source_mapping"
+   },
+   "actual_runtime_evidence": [
+    "journeys"
+   ],
+   "not_covered_by_two_journeys": [
+    "Permission changes, policy edits and default upgrades are carried backend/Core/Views evidence rather than new two-platform edit scenarios."
+   ],
+   "blocking_gaps": []
+  },
+  {
+   "id": "AC12",
+   "candidate_status": "verified_for_frozen_private_candidate",
+   "source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+   "facts": "Actual supported public/runtime-v2 paths retain system identity, delivery citations, pause/restoration and exact proof bindings. Four old continuations and separate C3 direct requests are rejected after invalidation/replacement. Mapped mixed-history/public-v1/storage reader/downgrade tests preserve old receipts and forbid hiding automatic history through v1 or namespace fallback.",
+   "code_and_contract_review": {
+    "receipt": "preflight",
+    "row": "AC12",
+    "backend_receipt": "knowledge_post_prefix",
+    "source_map": "source_binding.backend_source_mapping and frontend_source_mapping"
+   },
+   "actual_runtime_evidence": [
+    "journeys",
+    "execution_hash_audit",
+    "c3_direct"
+   ],
+   "not_covered_by_two_journeys": [
+    "Legacy-version/downgrade matrices are mapped backend/protocol evidence; this does not verify an installed old client, installed Electron Main, installer or other operating systems."
+   ],
+   "blocking_gaps": []
+  }
+ ],
+ "quality_evidence": {
+  "not_rerun_by_reviewer": true,
+  "count_semantics": "Each receipt retains its actual named-test accounting, including parent/child events where present. Rows and normal/race modes overlap and are never added to fabricate a total.",
+  "isolated_frontend": {
+   "evidence": "isolated_frontend",
+   "lint_exit": 0,
+   "typecheck_exit": 0,
+   "test_exit": 0,
+   "pass": 14112,
+   "fail": 0,
+   "skip": 0,
+   "forced_test_execution": true,
+   "cached_packages": [],
+   "source_mapping": "frontend_source_mapping"
+  },
+  "backend": [
+   {
+    "suite": "service full race",
+    "evidence": "service_full",
+    "pass": 3840,
+    "fail": 0,
+    "skip": 0,
+    "scope": "Historical complete execution; current production byte parity reconstructed. Not presented as a new current full service run."
+   },
+   {
+    "suite": "handler full race",
+    "evidence": "handler_full",
+    "pass": 5912,
+    "fail": 0,
+    "skip": 7,
+    "skip_reasons_evidence": "handler_skip_summary"
+   },
+   {
+    "suite": "router full race",
+    "evidence": "router",
+    "pass": 1014,
+    "fail": 0,
+    "skip": 8,
+    "skip_reason_groups": [
+     "6 explicit Linux namespace cases",
+     "dedicated stage harness",
+     "opt-in M1 browser fixture"
+    ],
+    "later_peer_F06_coverage_claimed": false
+   },
+   {
+    "suite": "migrations full race after865 repair",
+    "evidence": "migrations_current",
+    "pass": 569,
+    "fail": 0,
+    "skip": 0
+   },
+   {
+    "suite": "knowledge/authority/mixed current race",
+    "evidence": "knowledge_post_prefix",
+    "pass": 428,
+    "fail": 0,
+    "skip": 0,
+    "overlap_with_service": true
+   },
+   {
+    "suite": "testutil full race",
+    "evidence": "testutil_current",
+    "pass": 18,
+    "fail": 0,
+    "skip": 0
+   }
+  ],
+  "go_build_vet": {
+   "evidence": "go_static_current",
+   "passed": true
+  },
+  "sqlc": {
+   "evidence": "sqlc_current",
+   "generated_files": 141,
+   "matching_current_marked_files": 141,
+   "drift": 0,
+   "old_off_proxy_error_retained": "sqlc_old_attempt",
+   "new_dependencies_or_network": false
+  },
+  "focused_fixture_noemit": {
+   "evidence": "profile_owner_types",
+   "private_errors": 0,
+   "root_errors": 0,
+   "focused_only": true,
+   "production_compiler_options_unchanged": true
+  },
+  "standalone_fixture_lint": {
+   "detail_original_errors": 8,
+   "detail_current_errors": 8,
+   "automation_original_errors": 5,
+   "automation_current_errors": 5,
+   "new_errors": 0,
+   "passed": false,
+   "ignored_root_probe_not_counted_as_pass": true,
+   "proper_root_target_receipt": "detail_root_lint",
+   "automation_receipt": "profile_owner_lint"
+  },
+  "unchanged_closure_limits": "Older non-DB4724 matrix is only carried on unchanged input closures; fresh affected non-DB normal/race each2552PASS/2SKIP remain separate. No new aggregate suite total is claimed."
+ },
+ "actual_runtime": {
+  "run_directory": "@RUN",
+  "result_source_sha256": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+  "source_stable": true,
+  "build_and_ready": {
+   "build_state": "built",
+   "before_stop_state": "ready",
+   "before_stop_runtime_permitted": true,
+   "auth_mode": "password",
+   "managed_installation_supported": true,
+   "deployment_id": "3cc23866-f1a4-575b-a56c-40351c7d35d7"
+  },
+  "named_inventory": [
+   {
+    "title": "project-knowledge-automation.spec.ts / web: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+    "expected_status": "passed",
+    "results": [
+     "passed"
+    ]
+   },
+   {
+    "title": "project-knowledge-automation.spec.ts / desktop: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+    "expected_status": "passed",
+    "results": [
+     "passed"
+    ]
+   }
+  ],
+  "pass": 2,
+  "fail": 0,
+  "skip": 0,
+  "unexpected": 0,
+  "flaky": 0,
+  "retries": 0,
+  "workers": 1,
+  "report_stats": {
+   "startTime": "2026-11-15T11:57:38.606Z",
+   "duration": 43459.166,
+   "expected": 2,
+   "skipped": 0,
+   "unexpected": 0,
+   "flaky": 0
+  },
+  "original_files": {
+   "@RUN/test-0440e9486493/result.json": "b04d114a472a2d161dcf83ee6dd5c4cbf09d77e38cb825a88669b01039288806",
+   "@RUN/test-0440e9486493/playwright-report.json": "9f908e453ac1e3dd33cb79fe726ce9ef1580ef8804884037dd4fd9c04fbb912c",
+   "@RUN/test-0440e9486493/playwright.log": "68cc34e63a504f3fe7e59e05b909c7c9f6c32e9d724da152611a0d5a3fa4030a",
+   "@RUN/test-0440e9486493/browser-binding.json": "979282a9d84ed1fdbc50513b0f0b34f9ad58b8ee47b19b3e3c7dc0bc77b5537a"
+  },
+  "original_file_hashes_verified": true,
+  "before_stop_snapshots": {
+   "runtime-before-stop.json": {
+    "file": "@RUN/test-0440e9486493/runtime-before-stop.json",
+    "sha256": "41b46a6caa9d302bbfd8f3a30bb1da722737377c0b9e3fb42164e996bb200a78",
+    "mode": "0600",
+    "hash_and_mode_verified": true
+   },
+   "provenance-before-stop.json": {
+    "file": "@RUN/test-0440e9486493/provenance-before-stop.json",
+    "sha256": "e376b9d5a7f5ac5faa6b823a7915bde4d71f297e94daed0afe950adf1e0e3e90",
+    "mode": "0600",
+    "hash_and_mode_verified": true
+   },
+   "allocation-before-stop.json": {
+    "file": "@RUN/test-0440e9486493/allocation-before-stop.json",
+    "sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+    "mode": "0600",
+    "hash_and_mode_verified": true
+   }
+  },
+  "journeys": [
+   {
+    "platform": "desktop",
+    "evidence": {
+     "file": "@RUN/test-0440e9486493/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/journey-evidence.json",
+     "sha256": "889389b43116dcbe40a52660d847da9f6bf1970d1ed201f63ee2e96200d1805e"
+    },
+    "marker": "P6-desktop-6dd0f025",
+    "policy": {
+     "origin": "system",
+     "revision": "0",
+     "enabled": true,
+     "rule_version": "project-knowledge-v1"
+    },
+    "candidate": {
+     "id": "a93ce0da-d62a-5a35-a7d4-f24e7590f89e",
+     "version": "1",
+     "content_sha256": "9bf95e4d668401ee5daf87bf192f7d7dd052296eb0f46d462fff1e45a7d73af5",
+     "proposal_origin": "automation",
+     "decision_origin": "automation",
+     "evidence_count": 0
+    },
+    "old_continuation_refusals": [
+     {
+      "task_id": "01a1df12-77cd-704a-9672-60219ae6a2c9",
+      "status": "failed",
+      "error_code": "knowledge_context_changed",
+      "provider_before": 5,
+      "provider_after": 5
+     },
+     {
+      "task_id": "01a1df12-8476-7372-998d-dfe42721de2b",
+      "status": "failed",
+      "error_code": "knowledge_context_changed",
+      "provider_before": 5,
+      "provider_after": 5
+     }
+    ],
+    "restored_job": {
+     "phase": "completed",
+     "counts": {
+      "saved": 0,
+      "restored": 1,
+      "revised": 0,
+      "pending": 0,
+      "skipped": 0
+     },
+     "accepted_event_seq": "6",
+     "submission_id": "63bdb545-7c3b-493b-9296-05671faa54ac"
+    },
+    "negative_automatic_effects": {
+     "jobs": 0,
+     "candidates": 0,
+     "model_calls_unchanged": true,
+     "workspace_rows_unchanged": true,
+     "provider_calls_unchanged_verified_by_original_assertion": true
+    },
+    "managed_owner": {
+     "owner_file": "@RUN/daemon-homes/e47253b3-802e-4760-8708-d70928a331db/.multica/profiles/p6-desktop-6dd0f025/.desktop-user-id",
+     "owner_sha256": "13b5b86456d24dda47f6ac60d47d73b60acfa14f9fc412f83b617bb6c680af83",
+     "owner_mode": "0600",
+     "home_mode": "0o700",
+     "owner_matches_verified_managed_user": true,
+     "daemon_log": "@RUN/daemon-homes/e47253b3-802e-4760-8708-d70928a331db/.multica/profiles/p6-desktop-6dd0f025/daemon.log",
+     "daemon_log_sha256": "3ca6287067e8ca9b4a269cfbe153ed4a5ee77e6e570580b1407d163c16a88660",
+     "daemon_log_bytes": 11622,
+     "successful_and_refused_task_ids_present": true,
+     "recorded_daemon_pid": 54408,
+     "retained_pid_file_matches": true,
+     "old_refusals_exact_and_no_provider_calls": true
+    },
+    "screenshots": [
+     {
+      "file": "@RUN/test-0440e9486493/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/desktop-accepted-processing.png",
+      "sha256": "51735570d903aec9eb9ea9bd2ae1b234d9e45260e5a652450a33f8fe415cb737",
+      "visually_inspected": true
+     },
+     {
+      "file": "@RUN/test-0440e9486493/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/desktop-automatically-saved.png",
+      "sha256": "37fa338bc63b1a55c9a22bbe34929a72c97ea6a188dc66eea078d8fc0fd139f6",
+      "visually_inspected": true
+     },
+     {
+      "file": "@RUN/test-0440e9486493/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/desktop-reopened-paused.png",
+      "sha256": "e549d0999da3f8684ec4d96f54454a6db314fbac6bf656608a2f6ca46af41257",
+      "visually_inspected": true
+     },
+     {
+      "file": "@RUN/test-0440e9486493/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/desktop-reaccepted-restored.png",
+      "sha256": "cc51f8c717165489439a7d80e46a9f49bb320d4de899c5beaccd479cc0f187dd",
+      "visually_inspected": true
+     }
+    ],
+    "captures": [
+     {
+      "stage": "accepted-processing",
+      "region": "Project knowledge",
+      "screenshot_file": "@RUN/test-0440e9486493/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/desktop-accepted-processing.png",
+      "recorded_region_text": "Project knowledge\n\nOrganizing knowledge…\n\nProcessing details"
+     },
+     {
+      "stage": "automatically-saved",
+      "region": "Review candidate",
+      "screenshot_file": "@RUN/test-0440e9486493/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/desktop-automatically-saved.png",
+      "recorded_region_text": "Review candidate\nClose review\nApproved\nVersion\n1\nDestination\nProject · Knowledge automation P6-desktop-6dd0f025\nProposed by\nServer AI\nProposed at\n11/15/2026, 7:58:07 PM\nApproved by\nSystem rule\nRule ve"
+     },
+     {
+      "stage": "reopened-paused",
+      "region": "Knowledge candidates",
+      "screenshot_file": "@RUN/test-0440e9486493/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/desktop-reopened-paused.png",
+      "recorded_region_text": "Knowledge candidates\n\nKnowledge from accepted project work and human proposals appears here. Sources and current access determine its use.\n\nPropose knowledge\nAccepted retry rule P6-desktop-6dd0f025\nVe"
+     },
+     {
+      "stage": "reaccepted-restored",
+      "region": "Project knowledge",
+      "screenshot_file": "@RUN/test-0440e9486493/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/desktop-reaccepted-restored.png",
+      "recorded_region_text": "Project knowledge\n\nChecking knowledge status…"
+     }
+    ]
+   },
+   {
+    "platform": "web",
+    "evidence": {
+     "file": "@RUN/test-0440e9486493/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/journey-evidence.json",
+     "sha256": "78b8bf66a450f28a92c12c6609c787a1537e5805b011852434b4aeb427ea562e"
+    },
+    "marker": "P6-web-05e9e898",
+    "policy": {
+     "origin": "system",
+     "revision": "0",
+     "enabled": true,
+     "rule_version": "project-knowledge-v1"
+    },
+    "candidate": {
+     "id": "79de1e82-7d6f-55cd-a27f-c49d162856fa",
+     "version": "1",
+     "content_sha256": "6dd157742c3749d95c92919a7c86512a30c911b9167b78078fa4f0892dbbd88a",
+     "proposal_origin": "automation",
+     "decision_origin": "automation",
+     "evidence_count": 0
+    },
+    "old_continuation_refusals": [
+     {
+      "task_id": "01a1df12-2bfb-7bdf-a772-efde62f34bb1",
+      "status": "failed",
+      "error_code": "knowledge_context_changed",
+      "provider_before": 3,
+      "provider_after": 3
+     },
+     {
+      "task_id": "01a1df12-3848-7883-a14e-fc8c27be2aaa",
+      "status": "failed",
+      "error_code": "knowledge_context_changed",
+      "provider_before": 3,
+      "provider_after": 3
+     }
+    ],
+    "restored_job": {
+     "phase": "completed",
+     "counts": {
+      "saved": 0,
+      "restored": 1,
+      "revised": 0,
+      "pending": 0,
+      "skipped": 0
+     },
+     "accepted_event_seq": "6",
+     "submission_id": "ada08942-dc62-49c8-a08c-293caa3b4ae4"
+    },
+    "negative_automatic_effects": {
+     "jobs": 0,
+     "candidates": 0,
+     "model_calls_unchanged": true,
+     "workspace_rows_unchanged": true,
+     "provider_calls_unchanged_verified_by_original_assertion": true
+    },
+    "managed_owner": {
+     "owner_file": "@RUN/daemon-homes/e654217e-f8e2-4851-b69b-64a231f0675f/.multica/profiles/p6-web-05e9e898/.desktop-user-id",
+     "owner_sha256": "ac9182090a814b5cef6479512601293755eed83d806fbab25f3f3ff9df10223f",
+     "owner_mode": "0600",
+     "home_mode": "0o700",
+     "owner_matches_verified_managed_user": true,
+     "daemon_log": "@RUN/daemon-homes/e654217e-f8e2-4851-b69b-64a231f0675f/.multica/profiles/p6-web-05e9e898/daemon.log",
+     "daemon_log_sha256": "818969ad0068f1c9310adfbd82f39cfa31a0b4813ebc4b37cdbbcd625971d857",
+     "daemon_log_bytes": 11324,
+     "successful_and_refused_task_ids_present": true,
+     "recorded_daemon_pid": 54142,
+     "retained_pid_file_matches": true,
+     "old_refusals_exact_and_no_provider_calls": true
+    },
+    "screenshots": [
+     {
+      "file": "@RUN/test-0440e9486493/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/web-accepted-processing.png",
+      "sha256": "c5d27e0af087504f61a81b8794a6f478263dd6c84fd76e9714d9b915fa803450",
+      "visually_inspected": true
+     },
+     {
+      "file": "@RUN/test-0440e9486493/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/web-automatically-saved.png",
+      "sha256": "2a9718596316a8c74c86eb0ea4a07d1daa55d57000866dc5ee3f02c8dc6fa11f",
+      "visually_inspected": true
+     },
+     {
+      "file": "@RUN/test-0440e9486493/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/web-reopened-paused.png",
+      "sha256": "e758fb5a431b834f05f0d34d4272fcb9a4aea85cac961bc290855bdfb49e376c",
+      "visually_inspected": true
+     },
+     {
+      "file": "@RUN/test-0440e9486493/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/web-reaccepted-restored.png",
+      "sha256": "d75e46cc3418a9e60bb9dcaad1845399dd9a1e44ea953a20540ce5c91ee86b98",
+      "visually_inspected": true
+     }
+    ],
+    "captures": [
+     {
+      "stage": "accepted-processing",
+      "region": "Project knowledge",
+      "screenshot_file": "@RUN/test-0440e9486493/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/web-accepted-processing.png",
+      "recorded_region_text": "Project knowledge\n\nOrganizing knowledge…"
+     },
+     {
+      "stage": "automatically-saved",
+      "region": "Review candidate",
+      "screenshot_file": "@RUN/test-0440e9486493/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/web-automatically-saved.png",
+      "recorded_region_text": "Review candidate\nClose review\nApproved\nVersion\n1\nDestination\nProject · Knowledge automation P6-web-05e9e898\nProposed by\nServer AI\nProposed at\n11/15/2026, 7:57:46 PM\nApproved by\nSystem rule\nRule versio"
+     },
+     {
+      "stage": "reopened-paused",
+      "region": "Knowledge candidates",
+      "screenshot_file": "@RUN/test-0440e9486493/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/web-reopened-paused.png",
+      "recorded_region_text": "Knowledge candidates\n\nKnowledge from accepted project work and human proposals appears here. Sources and current access determine its use.\n\nPropose knowledge\nAccepted retry rule P6-web-05e9e898\nVersio"
+     },
+     {
+      "stage": "reaccepted-restored",
+      "region": "Project knowledge",
+      "screenshot_file": "@RUN/test-0440e9486493/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/web-reaccepted-restored.png",
+      "recorded_region_text": "Project knowledge\n1 restored\nReview knowledge\nProcessing details"
+     }
+    ]
+   }
+  ],
+  "execution_hash_audit": [
+   {
+    "platform": "web",
+    "phase": "first",
+    "task_id": "01a1df12-2415-74e9-83f8-852e4869d1f9",
+    "session_id": "10004fcb-2b5f-4a88-909e-9e5b32cf56cf",
+    "provider_pid": 54158,
+    "candidate_id": "79de1e82-7d6f-55cd-a27f-c49d162856fa",
+    "candidate_version": "1",
+    "content_sha256": "6dd157742c3749d95c92919a7c86512a30c911b9167b78078fa4f0892dbbd88a",
+    "manifest_sha256": "e3455fa1506026c8dc1484fb5f8287b1aaa6b29bae0549e76bb1ad30fbba648f",
+    "authorized_prompt_sha256": "068d9d992dae92e2c35199908cb7ac0379bec5bc9cf05d8f2c9abb8c89cce67f",
+    "validity": {
+     "revision": "1",
+     "accepted_event_seq": "3",
+     "submission_id": "778926e1-c7c9-48d9-869d-106371a08d73",
+     "validated_close_epoch": "2"
+    },
+    "checks": {
+     "raw_capture_fields_exact": true,
+     "body_exact": true,
+     "manifest_hash_exact": true,
+     "decoded_prompt_hash_exact": true,
+     "authorization_manifest_exact": true,
+     "bound_session_and_physical_start": true
+    }
+   },
+   {
+    "platform": "web",
+    "phase": "fresh",
+    "task_id": "01a1df12-3b5e-7a3d-b61d-5202cc2de892",
+    "session_id": "a0a9128b-52a9-4d4d-8d9a-08da94a9e9fc",
+    "provider_pid": 54242,
+    "candidate_id": "79de1e82-7d6f-55cd-a27f-c49d162856fa",
+    "candidate_version": "1",
+    "content_sha256": "6dd157742c3749d95c92919a7c86512a30c911b9167b78078fa4f0892dbbd88a",
+    "manifest_sha256": "3032c13a71ae35d07c04cbff64680d87776ad7ffc9a7f4b11242a56fce591074",
+    "authorized_prompt_sha256": "c412b03dcaa05d0f4726bd97ef6639f310138d54006b3f31c642a92e8c01d545",
+    "validity": {
+     "revision": "2",
+     "accepted_event_seq": "6",
+     "submission_id": "ada08942-dc62-49c8-a08c-293caa3b4ae4",
+     "validated_close_epoch": "4"
+    },
+    "checks": {
+     "raw_capture_fields_exact": true,
+     "body_exact": true,
+     "manifest_hash_exact": true,
+     "decoded_prompt_hash_exact": true,
+     "authorization_manifest_exact": true,
+     "bound_session_and_physical_start": true
+    }
+   },
+   {
+    "platform": "desktop",
+    "phase": "first",
+    "task_id": "01a1df12-6f3a-7bf2-9355-2fcdf6936c93",
+    "session_id": "0ec903fe-e19f-4ec5-af9c-01d1798b18b2",
+    "provider_pid": 54417,
+    "candidate_id": "a93ce0da-d62a-5a35-a7d4-f24e7590f89e",
+    "candidate_version": "1",
+    "content_sha256": "9bf95e4d668401ee5daf87bf192f7d7dd052296eb0f46d462fff1e45a7d73af5",
+    "manifest_sha256": "6d23286b75d823ecdc9fe5118743c3407d0a4270ad5ce6e55ea0ce2b1d2d77f2",
+    "authorized_prompt_sha256": "3b30c6bc842f367fa8df06a1e7941ab98413a0d198799d6b48324fe9bdd0704c",
+    "validity": {
+     "revision": "1",
+     "accepted_event_seq": "3",
+     "submission_id": "34c5b0e6-2d34-40fd-81a3-65d6c7dcfad1",
+     "validated_close_epoch": "2"
+    },
+    "checks": {
+     "raw_capture_fields_exact": true,
+     "body_exact": true,
+     "manifest_hash_exact": true,
+     "decoded_prompt_hash_exact": true,
+     "authorization_manifest_exact": true,
+     "bound_session_and_physical_start": true
+    }
+   },
+   {
+    "platform": "desktop",
+    "phase": "fresh",
+    "task_id": "01a1df12-8780-755f-b1ad-ce609dd75d0b",
+    "session_id": "4a9bd5e2-9ace-463b-a9b3-f29e3b2f1b2f",
+    "provider_pid": 54492,
+    "candidate_id": "a93ce0da-d62a-5a35-a7d4-f24e7590f89e",
+    "candidate_version": "1",
+    "content_sha256": "9bf95e4d668401ee5daf87bf192f7d7dd052296eb0f46d462fff1e45a7d73af5",
+    "manifest_sha256": "cc00aa9c34daa3c7d064ae02c6f1abb530ed733a0081457a3bace793b51cf226",
+    "authorized_prompt_sha256": "d889882f4dc9eaade2b32dd711e6c07670a80229049ab1c4fbc9da7e45987c44",
+    "validity": {
+     "revision": "2",
+     "accepted_event_seq": "6",
+     "submission_id": "63bdb545-7c3b-493b-9296-05671faa54ac",
+     "validated_close_epoch": "4"
+    },
+    "checks": {
+     "raw_capture_fields_exact": true,
+     "body_exact": true,
+     "manifest_hash_exact": true,
+     "decoded_prompt_hash_exact": true,
+     "authorization_manifest_exact": true,
+     "bound_session_and_physical_start": true
+    }
+   }
+  ],
+  "provider_capture": {
+   "file": "@RUN/logs/provider.jsonl",
+   "sha256": "a62024252595b51c0df9c20cb207ed4fc9ff0795de0738f68de28d1b4a7a62bf",
+   "records": 6,
+   "current_successful_task_records": 4,
+   "retained_earlier_records": 2
+  },
+  "native_scope": {
+   "actual_electron_renderer_preload_and_routes": true,
+   "matching_production_cli": true,
+   "main_scope": "selected production routing/IPC functions with fixture services",
+   "installed_main": false,
+   "installer_or_other_platforms_verified": false,
+   "controlled_provider_only": true
+  },
+  "prompt_hash_method": "Rebuilt manifest JSON in declared Go struct order. Authorization prompt hash matches decoded Claude stream-json message text, not the outer stdin envelope. Raw provider capture retains at timestamp; every fixture-selected task/prompt/argv/session/PID field matches exactly."
+ },
+ "c3": {
+  "evidence": "c3_direct",
+  "closed_for_candidate": true,
+  "original_assigned_source": "b91a4cac945be1bdf3f98ff1d861895fb43602e554fb89ad668be63b19bc2aa5",
+  "mapped_current_source": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+  "production_paths_checked": 3104,
+  "bytes_modes_sizes_equal_between_b91_c3_private_and_current": true,
+  "production_mapping_mismatches": 0,
+  "added_private_test": {
+   "file": "@C3_SOURCE/server/internal/service/task_knowledge_c3_direct_replay_test.go",
+   "sha256": "65ddb000ba20a7326889e855c8e2cedc7480798f74ad081e8cdc09d1815b5aed",
+   "input_version": 2,
+   "mode": "0600",
+   "included_in_candidate_product": false
+  },
+  "original_added_test_identity_preserved_separately": true,
+  "scope": "Direct original prepare/authorize after proof replacement using real lifecycle reopen/reacceptance plus publishConsumptionProof test fixture; distinct from P6 comment continuation and mixed-history review.",
+  "normal": {
+   "named_leaf_pass": 2,
+   "fail": 0,
+   "skip": 0,
+   "raw_log": "@C3_RUN/logs/tests-normal-fixture-v2.log",
+   "sha256": "a21d3236ef01ccfaaebe1d5aa294fec53df59bb795798d43120235adb7a84121"
+  },
+  "race": {
+   "named_leaf_pass": 2,
+   "fail": 0,
+   "skip": 0,
+   "raw_log": "@C3_RUN/logs/tests-race-fixture-v2.log",
+   "sha256": "d9034a98ab5eeb1a48bed18ccfa4699c4a8dba0bd552366d5a9a1ffcc4e661b9"
+  },
+  "actual_trace_and_hash_checks": [
+   {
+    "mode": "normal",
+    "test": "TestKnowledgeC3ReacceptanceOriginalPrepareReplay",
+    "raw_trace_count": 7,
+    "raw_traces_match_receipt": true,
+    "original_prepare_hash_matches": true,
+    "original_authorize_hash_matches": true,
+    "original_manifest_hash_matches": true,
+    "current_manifest_hash_matches": true,
+    "original_identical_replay_positive": true,
+    "denied_status": 409,
+    "denied_code": "knowledge_context_changed",
+    "response_zero": true,
+    "same_original_request": true,
+    "proof2_active": true,
+    "same_candidate_version_content": true,
+    "original_retained_all_stages": true,
+    "fresh_prepare_request_hash_matches": true,
+    "fresh_authorize_request_hash_matches": true,
+    "fresh_manifest_matches_current": true,
+    "fresh_auth_matches_current": true,
+    "fresh_session_generation": true,
+    "scope_unchanged": true,
+    "proof_revision": "2"
+   },
+   {
+    "mode": "normal",
+    "test": "TestKnowledgeC3ReacceptanceOriginalAuthorizeReplay",
+    "raw_trace_count": 7,
+    "raw_traces_match_receipt": true,
+    "original_prepare_hash_matches": true,
+    "original_authorize_hash_matches": true,
+    "original_manifest_hash_matches": true,
+    "current_manifest_hash_matches": true,
+    "original_identical_replay_positive": true,
+    "denied_status": 409,
+    "denied_code": "knowledge_context_changed",
+    "response_zero": true,
+    "same_original_request": true,
+    "proof2_active": true,
+    "same_candidate_version_content": true,
+    "original_retained_all_stages": true,
+    "fresh_prepare_request_hash_matches": true,
+    "fresh_authorize_request_hash_matches": true,
+    "fresh_manifest_matches_current": true,
+    "fresh_auth_matches_current": true,
+    "fresh_session_generation": true,
+    "scope_unchanged": true,
+    "proof_revision": "2"
+   },
+   {
+    "mode": "race",
+    "test": "TestKnowledgeC3ReacceptanceOriginalPrepareReplay",
+    "raw_trace_count": 7,
+    "raw_traces_match_receipt": true,
+    "original_prepare_hash_matches": true,
+    "original_authorize_hash_matches": true,
+    "original_manifest_hash_matches": true,
+    "current_manifest_hash_matches": true,
+    "original_identical_replay_positive": true,
+    "denied_status": 409,
+    "denied_code": "knowledge_context_changed",
+    "response_zero": true,
+    "same_original_request": true,
+    "proof2_active": true,
+    "same_candidate_version_content": true,
+    "original_retained_all_stages": true,
+    "fresh_prepare_request_hash_matches": true,
+    "fresh_authorize_request_hash_matches": true,
+    "fresh_manifest_matches_current": true,
+    "fresh_auth_matches_current": true,
+    "fresh_session_generation": true,
+    "scope_unchanged": true,
+    "proof_revision": "2"
+   },
+   {
+    "mode": "race",
+    "test": "TestKnowledgeC3ReacceptanceOriginalAuthorizeReplay",
+    "raw_trace_count": 7,
+    "raw_traces_match_receipt": true,
+    "original_prepare_hash_matches": true,
+    "original_authorize_hash_matches": true,
+    "original_manifest_hash_matches": true,
+    "current_manifest_hash_matches": true,
+    "original_identical_replay_positive": true,
+    "denied_status": 409,
+    "denied_code": "knowledge_context_changed",
+    "response_zero": true,
+    "same_original_request": true,
+    "proof2_active": true,
+    "same_candidate_version_content": true,
+    "original_retained_all_stages": true,
+    "fresh_prepare_request_hash_matches": true,
+    "fresh_authorize_request_hash_matches": true,
+    "fresh_manifest_matches_current": true,
+    "fresh_auth_matches_current": true,
+    "fresh_session_generation": true,
+    "scope_unchanged": true,
+    "proof_revision": "2"
+   }
+  ],
+  "source_audits": {
+   "artifacts": 11,
+   "all_hashes_and_embedded_results_match": true,
+   "all_passed": true
+  },
+  "full_source_manifest": {
+   "path": "@C3_RUN/source-copy-manifest.json",
+   "sha256": "ddc2de7828df1fb0ac7fcb9117180b86e8303601616c5c759d99a102a7b1895c",
+   "bytes": 3693197,
+   "mode": "0o600"
+  },
+  "proof2_dependency_closure": {
+   "artifact": {
+    "path": "@C3_RUN/proof2-dependency-closure-audit.json",
+    "sha256": "18666dd9bf75085b11df1977b415e9533f313401bbcd1ac23537a15a71bf5050",
+    "bytes": 52192,
+    "mode": "0o600"
+   },
+   "embedded_result_matches_artifact": true,
+   "cases": [
+    {
+     "mode": "normal",
+     "test": "TestKnowledgeC3ReacceptanceOriginalPrepareReplay",
+     "original_citations_preserved": true,
+     "new_dependency_identity_hash_matches_acceptance": true,
+     "fresh_manifest_binds_current_proof2": true,
+     "old_and_new_evaluations_retained": true
+    },
+    {
+     "mode": "normal",
+     "test": "TestKnowledgeC3ReacceptanceOriginalAuthorizeReplay",
+     "original_citations_preserved": true,
+     "new_dependency_identity_hash_matches_acceptance": true,
+     "fresh_manifest_binds_current_proof2": true,
+     "old_and_new_evaluations_retained": true
+    },
+    {
+     "mode": "race",
+     "test": "TestKnowledgeC3ReacceptanceOriginalPrepareReplay",
+     "original_citations_preserved": true,
+     "new_dependency_identity_hash_matches_acceptance": true,
+     "fresh_manifest_binds_current_proof2": true,
+     "old_and_new_evaluations_retained": true
+    },
+    {
+     "mode": "race",
+     "test": "TestKnowledgeC3ReacceptanceOriginalAuthorizeReplay",
+     "original_citations_preserved": true,
+     "new_dependency_identity_hash_matches_acceptance": true,
+     "fresh_manifest_binds_current_proof2": true,
+     "old_and_new_evaluations_retained": true
+    }
+   ],
+   "database_writes": false,
+   "owned_connections_after_reads": 0,
+   "ledger_unchanged": true
+  },
+  "C1_C2": "Closed by independent mixed-history owner; review hash verified and assertions not duplicated.",
+  "historical_failed_normal_and_support_graphs_preserved": true,
+  "normal_race_counts_not_added": true
+ },
+ "resource_audit": {
+  "evidence": "resources",
+  "state": "passed_readonly_owned_final_resource_audit",
+  "status_artifact": {
+   "file": "@RUN/final-resource-audit-569cc14c/status.stdout.json",
+   "sha256": "1f026a4e1962e3e45190eca4ba477dc043a87508428c55c9b7de4cf8a101779f"
+  },
+  "process_artifact": {
+   "file": "@RUN/final-resource-audit-569cc14c/owned-process-audit.json",
+   "sha256": "a945c61acbd5ed305a11d205b455f58942986c76348841178c3bfb5c1518b835"
+  },
+  "services_stopped": 4,
+  "runtime_permitted": false,
+  "recorded_pid_birth_group_identities": 11,
+  "owned_residual_processes": 0,
+  "ports": [
+   {
+    "port": 19618,
+    "listeners": 0,
+    "raw_exit": 1,
+    "raw": {
+     "file": "@RUN/final-resource-audit-569cc14c/port-19618.log",
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "empty_lsof_exit1_is_zero_listeners": true
+   },
+   {
+    "port": 20088,
+    "listeners": 0,
+    "raw_exit": 1,
+    "raw": {
+     "file": "@RUN/final-resource-audit-569cc14c/port-20088.log",
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "empty_lsof_exit1_is_zero_listeners": true
+   },
+   {
+    "port": 61990,
+    "listeners": 0,
+    "raw_exit": 1,
+    "raw": {
+     "file": "@RUN/final-resource-audit-569cc14c/port-61990.log",
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "empty_lsof_exit1_is_zero_listeners": true
+   },
+   {
+    "port": 61991,
+    "listeners": 0,
+    "raw_exit": 1,
+    "raw": {
+     "file": "@RUN/final-resource-audit-569cc14c/port-61991.log",
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "empty_lsof_exit1_is_zero_listeners": true
+   },
+   {
+    "port": 61992,
+    "listeners": 0,
+    "raw_exit": 1,
+    "raw": {
+     "file": "@RUN/final-resource-audit-569cc14c/port-61992.log",
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "empty_lsof_exit1_is_zero_listeners": true
+   },
+   {
+    "port": 61993,
+    "listeners": 0,
+    "raw_exit": 1,
+    "raw": {
+     "file": "@RUN/final-resource-audit-569cc14c/port-61993.log",
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "empty_lsof_exit1_is_zero_listeners": true
+   }
+  ],
+  "retained_databases": [
+   {
+    "name": "mca_knowledge_browser_073bb20e614e",
+    "oid": "16193034",
+    "connections": 0
+   },
+   {
+    "name": "mca_knowledge_c3_0f943220c767_ffc69717",
+    "oid": "16201324",
+    "connections": 0
+   }
+  ],
+  "db_audit_artifact": {
+   "file": "@RUN/final-resource-audit-569cc14c/postgres-retention.stdout.json",
+   "sha256": "94976d6136cd8b83e419f4385ffdb32d7ed7cdc4c053f94806d6a0f56dcd0d94"
+  },
+  "original_result_report_log_binding_unchanged": true,
+  "before_stop_snapshot_hashes_and0600_modes_unchanged": true,
+  "daemon_logs": "Actual logs are in each managed_identity.home_directory/.multica/profiles/<profile>/daemon.log; correct file hashes and successful/refused task mentions independently read.",
+  "historical_pid_files": "Retained for evidence. Their recorded PIDs match the logs/receipts; resource audit establishes the actual processes are absent.",
+  "redis_teardown": {
+   "file": "@RESEARCH/p6-redis-owned-final-teardown-fca701ac.json",
+   "sha256": "e5925d7eac27265a47f1ea74ff3968b9b42fd3819461d09562dabf17ba0bee36",
+   "state": "teardown_complete",
+   "repeat_teardown_executed": false,
+   "allocation_unchanged": true
+  },
+  "allocation_hash_unchanged": true,
+  "stop_exit": 0,
+  "cleanup_failures": 0,
+  "extra_teardown_or_cache_prune_or_db_deletion_or_connection_termination_by_reviewer": false,
+  "pay_resources_changed": false,
+  "referenced_original_artifact_hash_audit": {
+   "files_checked": 118,
+   "mismatches": 0,
+   "includes_raw_audits_eight_screenshots_owner_logs_c3_manifests": true
+  }
+ },
+ "root_integration": {
+  "accepted": false,
+  "full_current_root_compare_or_test_not_repeated": true,
+  "narrow_evidence": "root_narrow",
+  "narrow_patch_hashes_verified": true,
+  "narrow_file_bindings": [
+   {
+    "root_path": "@ROOT/e2e/fixtures/collaboration-detail-journey.ts",
+    "root_sha256_at_receipt": "baafa7c58469badf64d1b039cc673731c4427e64d2f1b8be57b99edd3b4bcd0e",
+    "private_sha256": "a750402f7f8d7ed2c6b23c943bfbb5041d54874ffe3aceeff8bebedc2385df72",
+    "full_file_parity": false,
+    "patch_file": "@RESEARCH/p6-root-narrow-fixture-binding-b7dc8f78-password.patch",
+    "patch_sha256": "25d0097ce90f6f93ccf957364adb0e1ee81541b4cd3ce035e6305298aca36e62",
+    "hunks": 1,
+    "historical_before_after_reconstruction_verified_by_leader": true,
+    "other_root_peer_differences_preserved": true
+   },
+   {
+    "root_path": "@ROOT/e2e/fixtures/project-knowledge-automation.ts",
+    "root_sha256_at_receipt": "e4f3831c51bc40a1c83fd11aecd35f01cd4baedb06a6c9d48e308c1fa260440b",
+    "private_sha256": "e4f3831c51bc40a1c83fd11aecd35f01cd4baedb06a6c9d48e308c1fa260440b",
+    "full_file_parity": true,
+    "patch_file": "@RESEARCH/p6-root-narrow-fixture-binding-b7dc8f78-profile.patch",
+    "patch_sha256": "832ee22f1663f5a55fc36ae63cad257ae7e7728b344379cf93f23dea0d89da70",
+    "hunks": 2,
+    "historical_before_after_reconstruction_verified_by_leader": true,
+    "other_root_peer_differences_preserved": true
+   }
+  ],
+  "detail_fixture_comment_menu_peer_differences_preserved": true,
+  "scope": "Two ROOT fixture patches provide integration source material only. They do not promote isolated acceptance to ROOT green or change the PAY fffeec graph."
+ },
+ "preserved_failure_history": [
+  {
+   "file": "@RESEARCH/p6-original-after-password-fixture-failure-1a428255.json",
+   "sha256": "afbbcc32709bce1155b3acdf7b4748682727a7735470216a465bdf6855e5a0b5"
+  },
+  {
+   "file": "@RESEARCH/p6-original-candidate-detail-failure-f9a40679.json",
+   "sha256": "a5e4301470594561db3bca1468a0df88ea5e725b4f103d29917601fd8ab861ec"
+  },
+  {
+   "file": "@RESEARCH/p6-original-legacy-daemon-input-failure-e7734978.json",
+   "sha256": "55d13c69aa2ad75d5d8dac3346d4de1f66a935be96fd959183673dd5019faa68"
+  },
+  {
+   "file": "@RESEARCH/p6-original-missing-deployment-start-failure-265a01f8.json",
+   "sha256": "ddfdc58f39832a8dbd7a97e5356957530b5a7611d21cf0def74b9a52bfea0243"
+  },
+  {
+   "file": "@RESEARCH/p6-original-modal-capture-failure-1bbd46cc.json",
+   "sha256": "4361e2198f106828c1af1b1a6e6ca3d40b73c883c06ca6f767479f6ed12187aa"
+  },
+  {
+   "file": "@RESEARCH/p6-original-password-registration-failure-e562808a.json",
+   "sha256": "472a49b6aaefa158f59b74d7d535d6a1ea6bfe94ea17357e45fdb3d770217d60"
+  },
+  {
+   "file": "@RESEARCH/p6-original-project-setup-failure-7432183b.json",
+   "sha256": "9cd7638f5c92a81a4761e6150adb4080cad9fed305fd83d7bd092c526b00b789"
+  },
+  {
+   "file": "@RESEARCH/p6-owned-cache-prune-8341b343.json",
+   "sha256": "64d83e27e3ffb771ee6df7f118d6bb798234ac4e30ef994bb99653c97be17a8d"
+  }
+ ],
+ "failure_history_semantics": "Prior real setup/assertion/auth/profile failures, Errno28 build/cache-prune evidence, migration RED and SQLC pre-generation error remain historical failures. The successful4e build/run does not rewrite their allocations, source identities or results.",
+ "nonblocking_evidence_qualifications": [
+  {
+   "id": "desktop_capture_freshness_and_viewport",
+   "severity": "low",
+   "blocking": false,
+   "observed": "Desktop reaccepted-restored region text is Project knowledge / Checking knowledge status…; processing/restoration native viewport images do not independently show the lower status region.",
+   "evidence": {
+    "file": "@RUN/test-0440e9486493/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/journey-evidence.json",
+    "sha256": "889389b43116dcbe40a52660d847da9f6bf1970d1ed201f63ee2e96200d1805e"
+   },
+   "why_not_blocking": "The named pre-capture UI1 restored assertion passed, retained completed job has restored1/saved0, same candidate/version is active, and independently checked fresh daemon manifest binds proof2. These prove restoration without treating the final screenshot as a stable restored-label proof.",
+   "recommendation": "Keep this capture limitation visible when presenting evidence; no frozen-source mutation or rerun is required for private acceptance."
+  }
+ ],
+ "scope_limits": [
+  "Shared ROOT is mutable and differs from the private snapshot; final ROOT integration/source-bound quality and acceptance are open.",
+  "No real provider semantic-quality/account/billing claim.",
+  "Real Electron renderer/preload/routes and matching CLI are covered; installed Main, installer and other platforms are not.",
+  "Standalone fixture lint remains baseline-failing; focused noEmit and unchanged package quality are separately scoped.",
+  "PAY parent24 remains4PARTIAL/20NOT_RUN; independent S2 owner has0/4 scenarios. Knowledge acceptance does not close them.",
+  "New ROOT Web E2E fixture-contract documentation is handled separately and is not inserted into the tested private source graph."
+ ],
+ "next_review_gates": [
+  "Leader/Descartes must finish source-bound shared ROOT integration after peer changes stabilize and resolve any actual ROOT quality failures.",
+  "The separate docs checker must finish the new ROOT fixture-contract review; leader owns task/spec consistency and completion metadata.",
+  "PAY/S2 owner continues its independent matrix; do not use this knowledge review to close the PAY parent."
+ ],
+ "evidence": {
+  "preflight": {
+   "file": "@RESEARCH/p6-ac-review-preflight-20261115-7686d6f9.json",
+   "sha256": "dd4246e2ef4a0f3f93b730414c236ae5c7e4126ac2193efe4d2538674926608d"
+  },
+  "journeys": {
+   "file": "@RESEARCH/p6-final-bound-journeys-and-cleanup-fc83cb34.json",
+   "sha256": "750448f7cea7010c255b6e29e5551efdca9a9cefe3879066d8bdb6cc2cb496bd"
+  },
+  "resources": {
+   "file": "@RESEARCH/p6-final-owned-resource-audit-569cc14c.json",
+   "sha256": "8e887a757994b998195317698f673173953a485df517c15513783e2edf6b7a3c"
+  },
+  "c3_direct": {
+   "file": "@RESEARCH/p6-c3-direct-replay-20261115-0f943220c767.json",
+   "sha256": "d05562b78c2adfe04f99f5fd793059714625b9e0ab4679b6212aa40311fef9bf"
+  },
+  "root_narrow": {
+   "file": "@RESEARCH/p6-root-narrow-fixture-binding-b7dc8f78.json",
+   "sha256": "1cf9714e7f31a1da774326a2576cfeabd30ac9ceb8e548762a1df2d01401c546"
+  },
+  "isolated_frontend": {
+   "file": "@RESEARCH/p6-isolated-frontend-0f91ae3c.json",
+   "sha256": "11dfc1d4b4c5fd36042fdd63bff4c3e212ba79209987f9d83efd6eab4643fc4a"
+  },
+  "service_full": {
+   "file": "@RESEARCH/p6-service-final-race-4f72f717.json",
+   "sha256": "3be924a7c0a8151d1d7c53bdc3afa797ddc435f24ab5ced7f1c8a9d83e7240ff"
+  },
+  "handler_full": {
+   "file": "@RESEARCH/p6-handler-current-full-race-72340538.json",
+   "sha256": "dad4e1a88c9d8ec1673ac3dfbb1aec1054522cd62ea41024db120b829686e2a8"
+  },
+  "handler_skip_summary": {
+   "file": "@RESEARCH/p6-handler-current-full-summary.json",
+   "sha256": "19c93982e994bef8b6ebd8d54ff6596aac6040e6728f5ea43965926e57d14212"
+  },
+  "router": {
+   "file": "@RESEARCH/p6-router-current-full-race-fd976616.json",
+   "sha256": "40b19032b0ff42549b429b2646fef6989db49fa8ff4048f7cb07d64a4f478fcc"
+  },
+  "migrations_old_red": {
+   "file": "@RESEARCH/p6-migrations-current-full-race-6322b51d.json",
+   "sha256": "860d1a416fc8352189d591eade028ea64a8fcf07286c0f66b80188831bf3d66f"
+  },
+  "migrations_current": {
+   "file": "@RESEARCH/p6-migrations-unique-prefix-race-9d74fbcd.json",
+   "sha256": "49437646829b6fd9962021a95ef9fe04ac1940deb6a483521f79122ae384a5a3"
+  },
+  "knowledge_post_prefix": {
+   "file": "@RESEARCH/p6-knowledge-post-prefix-race-2b28b210.json",
+   "sha256": "edfcc267e947c349afa4813dad89c0c8782d2e6d8d93f13fbe5c497e8fa3092e"
+  },
+  "testutil_current": {
+   "file": "@RESEARCH/p6-testutil-current-full-race-e8b788d7.json",
+   "sha256": "9bf4eaa3e47388cea3c60379c31eb0778c80cd307caa6677a413e1fd2a402f60"
+  },
+  "go_static_current": {
+   "file": "@RESEARCH/p6-post-unique-prefix-go-static-1dc78e90.json",
+   "sha256": "b786675779bb3b6f02265aa849dd70942ba56fc5512ed767af52478b58610c5a"
+  },
+  "migration_contract": {
+   "file": "@RESEARCH/p6-migration-contract-unique-prefix-ebc4f688.json",
+   "sha256": "fc453a906d455613eca02c30242898c6a74f7322e4af041efbbb5acaacc842cc"
+  },
+  "migration_repair": {
+   "file": "@RESEARCH/p6-migration-prefix-repair-25e839da.json",
+   "sha256": "fe41723a8652cad3d52bb333f67cff7a8e47aa6a0ce6e437f30854c1c63c74a3"
+  },
+  "sqlc_old_attempt": {
+   "file": "@RESEARCH/p6-sqlc-unique-prefix-2cc3b384.json",
+   "sha256": "fe634b05e42d37279d1d2e8a0e468b7c336a0cc8c1f43915841d8a3fc5465a8f"
+  },
+  "sqlc_current": {
+   "file": "@RESEARCH/p6-sqlc-filecache-097c96ba.json",
+   "sha256": "8b493dbe2805d263d947cfc4f0c46ac0312545f9df49f4fff0de32393bc8260d"
+  },
+  "mixed_history_review": {
+   "file": "@RESEARCH/p6-mixed-history-independent-review-20261115-e24067c7.json",
+   "sha256": "512162ca89bd75c57bf1628ec473f49885040639e0fb03175b0d3e998bca0591"
+  },
+  "profile_owner_types": {
+   "file": "@RESEARCH/p6-profile-owner-types-b6564417.json",
+   "sha256": "a727a8b036dbef8fbeeb52591395d67ddbb95d468e072c7b692d95a78db7998c"
+  },
+  "profile_owner_lint": {
+   "file": "@RESEARCH/p6-profile-owner-lint-bee03f06.json",
+   "sha256": "5484fef34beb694e87897ce9062a6f0c76671f42d24ddbef0f29b5596bbd9f77"
+  },
+  "detail_root_lint": {
+   "file": "@RESEARCH/p6-password-fixture-root-lint-6c72c9be.json",
+   "sha256": "343f53c0bb4298aa910e5bb8de0a5ec107acb8f7c82aac3d4e3b87c66dcec24f"
+  }
+ },
+ "path_roots": {
+  "ROOT": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "TASK": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation",
+  "RESEARCH": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research",
+  "CANDIDATE": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source",
+  "STAGE": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-419ecea5cf21/source",
+  "RUN": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156",
+  "C3_SOURCE": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-c3-direct-replay-20261115-0f943220c767/source",
+  "C3_RUN": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-c3-direct-replay-20261115-0f943220c767"
+ },
+ "path_reference_format": "@NAME/path resolves against path_roots.NAME. File hash references are immutable; no giant source inventories or raw logs are embedded."
+}

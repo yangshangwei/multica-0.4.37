@@ -1,0 +1,82 @@
+{
+  "state": "COMPILED_NOT_EXECUTED",
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "source_root": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104",
+  "runner_sha256": "b9f565b5685059e6f32d43ddc7d2328fed5f848e6ead90474c44bf3b3abe255b",
+  "test_sha256": "9eeb88953149d0845ca8685c58921f3623ef3c9f1bbdecb50ab0505f4078c7af",
+  "overlay_sha256": "276665ea8fa0b6574075732e3636dc39d6c607d02cb14a69de62aa5e52801a1d",
+  "binary_sha256": "c1b6df32543c3296c5674e102261f946000fb3e3281cec562abbbb7e5c19c4fe",
+  "helper_sha256": "62d283c29acede97225ef888f9170605911f1d83fbabbcbcc9927f53dd966a46",
+  "review_identity_sha256": "e02df402e73eda5bf6717809dfe5eb874015937b747d8e5f256d19f6b2d27588",
+  "source_sha256": "252147577459a20f4deba1ddb88551d3d0013db2a6cbe9b9d3f670923e4456bb",
+  "compile_exit": 0,
+  "compile_only_no_TestMain": true,
+  "race_enabled": false,
+  "source_matches": true,
+  "measurement_executed": false,
+  "database_access": false,
+  "virtual_file_absent": true,
+  "measurement_test": "TestIterationClosureAttributionDiagnostic",
+  "facts": "one actual1000-todo end-to-planned closure, existing ordered membership/snapshot paths and commit; noP95gateclaim",
+  "instrumentation": [
+    "pgxQuery names/count/inclusiveelapsed",
+    "completeBatch names/count/elapsed once",
+    "pgxAcquire count/elapsed",
+    "commit andbegin traceentries",
+    "original1msLockobserver",
+    "pooldeltas/processGC+allocatedbytes"
+  ],
+  "not_implemented": [
+    "actualcachedplans/statisticscapture",
+    "artificialproductphase labels",
+    "rollback-only substitute for commit"
+  ],
+  "required_permit": {
+    "approved_by": "root",
+    "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "quiet_ready": true,
+    "run_id": "execution-1",
+    "review_identity_sha256": "e02df402e73eda5bf6717809dfe5eb874015937b747d8e5f256d19f6b2d27588",
+    "migration_count": 752,
+    "database": {
+      "database": "ROOT_ALLOCATE_FRESH_multica_core1a32_*",
+      "database_url": "PRIVATE_EXACT_URL",
+      "ready": true
+    }
+  },
+  "execution_command": [
+    "python3",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/conditional/iteration-attribution-1/run.py",
+    "run",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/conditional/iteration-attribution-1/root-permit.json"
+  ],
+  "actual_binary_command": [
+    "bash",
+    "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "tool",
+    "test2json",
+    "-p",
+    "github.com/multica-ai/multica/server/internal/handler",
+    "-t",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/conditional/iteration-attribution-1/handler-attribution.test",
+    "-test.v=test2json",
+    "-test.count=1",
+    "-test.parallel=1",
+    "-test.timeout=5m",
+    "-test.run=^TestIterationClosureAttributionDiagnostic$"
+  ],
+  "verification": {
+    "gofmt": "PASS",
+    "python_AST": "PASS",
+    "go_compile_only": "PASS",
+    "no_race_binary_metadata": "PASS",
+    "source_identity_before_after": "PASS",
+    "virtual_product_test_absent": "PASS",
+    "lint": "NOT_RUN privateadditiveGooverlay only",
+    "typecheck": "Go compile PASS; TS notapplicable",
+    "runtime_tests": "NOT_RUN awaitingrootquietpermit"
+  },
+  "at": "2026-11-05T10:13:45.289724+00:00"
+}

@@ -1,0 +1,41 @@
+{
+  "recorded_at": "2026-11-03T08:32:27.553747+00:00",
+  "scope": "targeted production Web/native regression, not whole acceptance",
+  "single_run": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/directed-e2e-pass3.json",
+  "exit_code": 0,
+  "pass": 3,
+  "skip": 0,
+  "retry": 0,
+  "inventory": [
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "file": "collaboration-delivery-web.spec.ts",
+      "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "file": "collaboration-editing-web.spec.ts",
+      "title": "Web source creation, field edits and discussion share one authorized issue",
+      "status": "passed",
+      "retry": 0
+    }
+  ],
+  "evidence_hashes": {
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/directed-e2e.json": "2697386d46d6bd078c2620895b28a50a7107b2db83b544e7cea743e1f7c8443d",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/directed-e2e-results.json": "3e0cbaec367bd6f942bb74f95a5a2eae438245d6966fc05f8675c02b16a6dac7",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/directed-e2e-pass2.json": "4e9fdab69af7a73834c14d13f9f1d29efe45a7475b29d62e37b946570eebac9c",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/directed-e2e-pass2-results.json": "309bd87b83e91c0b4f83dd1d97314ff12bda0b7f7fe8aa576057b45e8c066f7a",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/directed-e2e-pass3.json": "a8b61bd92afbfc5df17ab34e8ac6708df985e858eb7e47ed715d447ef3c862a8",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/directed-e2e-pass3-results.json": "05866d4feed171cbbf333c411759e9ff3aca97858b2f50ea86e03b05139b8be4",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/preflight-api-limiter-correction.json": "a14e4bd65b7766b8453665946b7b7e26b2a485cd8c7b7fc90a9235191f311bf2"
+  },
+  "candidate_product_files_changed_during_replays": false,
+  "test_only_successor_freeze_pending": true,
+  "new_Provider_calls": 0
+}

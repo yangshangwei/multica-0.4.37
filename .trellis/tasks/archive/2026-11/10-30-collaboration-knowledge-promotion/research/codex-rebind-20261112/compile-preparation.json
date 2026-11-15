@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-12T02:48:18.213477+00:00",
+  "scope": "compile-only preparatory artifacts before user scope correction",
+  "toolchain": "go version go1.27.0 darwin/arm64",
+  "source_snapshot": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/codex-rebind-20261112/source-snapshot.json",
+  "worktree": "/Volumes/artisan/code/2026/mc-knowledge-rebind-20261112",
+  "commands": [
+    {
+      "argv": [
+        "go",
+        "build",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/codex-rebind-20261112/migrate",
+        "./cmd/migrate"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "go",
+        "build",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/codex-rebind-20261112/multica",
+        "./cmd/multica"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "artifacts": {
+    "migrate": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/codex-rebind-20261112/migrate",
+      "sha256": "d11c8578eaabc87aa8138482caf679394dae4bf545d4de911e83d0d2126dfe3a"
+    },
+    "multica": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/codex-rebind-20261112/multica",
+      "sha256": "7148f7af7ad2f7bf7344af575bf65b950c77f09cb29eeb4e22f688d25aaf7a74"
+    }
+  },
+  "sdk_migration_worker_compile": {
+    "command": "go test -tags=agentintegration -c -o /tmp/multica-rk1k-migration-control.test ./cmd/server",
+    "exit_code": 0,
+    "scope": "worker-reported compile only; no TestMain, no DB-backed controls"
+  },
+  "acceptance_status": "preparation only; no dynamic tests or actual E0b/K1-K3",
+  "real_product_provider_starts": 0
+}

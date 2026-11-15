@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "trellis_preparation_quality_check",
+  "recorded_at": "2026-11-12T02:46:30.478118+00:00",
+  "json_parsed": {
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/codex-rebind-20261112/authorization-scope.json": true,
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/codex-rebind-20261112/source-snapshot.json": true,
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/codex-rebind-20261112/current-configuration-binding.json": true,
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/codex-rebind-20261112/database-allocation.json": true,
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/codex-rebind-20261112/native-installation-binding.json": true,
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/codex-rebind-20261112/startup-config-validation.json": true,
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/codex-rebind-20261112/doctor-diagnostic-limits.json": true,
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/codex-rebind-20261112/protocol-comparison.json": true,
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/codex-rebind-20261112/protocol-stable-comparison.json": true,
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/codex-rebind-20261112/scope-correction.json": true
+  },
+  "main_product_harness_unchanged": {
+    "server/cmd/server/rk1k_codex_registration_test.go": true,
+    "server/cmd/server/rk1k_codex_continuation_test.go": true,
+    "server/pkg/agent/codex.go": true
+  },
+  "all_four_tasks_in_progress": true,
+  "historical_evidence": {
+    "h3a_t2_public_result": {
+      "sha256": "9a4b94050ad696c46512b0833d27398ac0c6ef48770f6085d1db1283f9d628ce",
+      "unchanged": true
+    },
+    "h3a_t2_invocation": {
+      "sha256": "909ac2da3054ab19ce4a75290ce9c5b06778740835efa414f6f206d863ddd3ed",
+      "unchanged": true
+    },
+    "approval_registration": {
+      "sha256": "7d743b5e1defa5fe8875c79a84d95c9982e9b0bfb650258a936a9214ed74f53c",
+      "unchanged": true
+    },
+    "real_execution_authorization": {
+      "sha256": "1f56add2daca80c4f17575550979ce783f7a1ea860ef63e78e584e80e258f580",
+      "unchanged": true
+    }
+  },
+  "diff_check_exit": 0,
+  "main_migration_file_absent": true,
+  "dynamic_migration_tests": "NOT_RUN; user scope correction stopped unnecessary SDK migration",
+  "sdk_migration_candidate": "unintegrated and unaccepted",
+  "real_provider_calls": 0,
+  "actual_coding_cli_result": "pending separate direct-coding-cli-01.json",
+  "full_project_checks": "not run; main product files not changed by this session"
+}

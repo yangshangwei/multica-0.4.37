@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "owner": "/root/s2_e2e",
+  "recorded_at": "2026-11-14T07:02:37.332567+00:00",
+  "status": "authoring_complete_static_verified_runtime_not_run",
+  "head_at_report": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "owned_files": [
+    {
+      "path": "e2e/collaboration-stage-approvals.spec.ts",
+      "sha256": "1c5ddc1fa4f5dc4e4ebbf37243ed395d2779124655edbff1fdd95bd16f90bd08"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-stage-approvals.ts",
+      "sha256": "470bf0a1b2afc7301212fccdd95d2e207581a65d5fc4d89380c6386b6047b5c9"
+    }
+  ],
+  "context_files_at_report": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md",
+      "sha256": "a71d71570cf1f337d0f8c299e77e307e6d37516dd516eaa6e0882548c5669520"
+    },
+    {
+      "path": "packages/core/collaboration/stage-schema.ts",
+      "sha256": "87c944735e41e4394f471a505182794e271607e34335ca9b69abb350c468203f"
+    },
+    {
+      "path": "packages/core/collaboration/schema.ts",
+      "sha256": "a4af82f7b8ebd82001cab485a4e8e5b29efb42eebd8cde8027550bccd5e0bbc6"
+    },
+    {
+      "path": "packages/views/collaboration/stage-panel.tsx",
+      "sha256": "ec5fdd08215302d934ce07f8444ea8e7671f58d7aa5fde31d2e6342f6c151985"
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-forms.tsx",
+      "sha256": "634263dad2405ed777148f422a611333394a167690aa85c2d4faf0c510b55600"
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-panel.tsx",
+      "sha256": "5f502d6fcf649307f5d666ab748d1382cf11d04020ecc1928cabe1420631e6ef"
+    },
+    {
+      "path": "packages/views/collaboration/stage-forms.tsx",
+      "sha256": "b49b1cda0df7666ab59e8c83cc9c682f7cf838f940dd1865b172c62e8eb22332"
+    },
+    {
+      "path": "packages/views/collaboration/stage-proposals.tsx",
+      "sha256": "6a58777f5ffa8ac24180523b772df356f7bf7ca777ceac86983d98415dc27a92"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-native.ts",
+      "sha256": "b4038d1ba4eeb3e47c3d9730326d2dcb7f41af07e929bd84013712a5775373f1"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-runtime.ts",
+      "sha256": "10d40de911c937bde95f5578b82a82a40ae60d2996133b3a91dbfb9de9009417"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-multi-account-closure.ts",
+      "sha256": "91b8b4c5cbaab035b6c70c1e2a8034d6ea1cbefacdfe61f13c1747d8bc9cc166"
+    }
+  ],
+  "frozen_wire_read": "a71d71570cf1f337d0f8c299e77e307e6d37516dd516eaa6e0882548c5669520",
+  "checks": [
+    {
+      "id": "typecheck-1",
+      "exit_code": 2,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/typecheck-1.log",
+      "log_sha256": "a44de169dda5792e382bad37bdb353502d81f3d5801ce753862e899cc442d395",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/typecheck-1.exit"
+    },
+    {
+      "id": "typecheck-2",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/typecheck-2.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/typecheck-2.exit"
+    },
+    {
+      "id": "typecheck-3",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/typecheck-3.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/typecheck-3.exit"
+    },
+    {
+      "id": "typecheck-4",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/typecheck-4.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/typecheck-4.exit"
+    },
+    {
+      "id": "lint-1",
+      "exit_code": 1,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/lint-1.log",
+      "log_sha256": "4477e9abe5857a964c673610831ba6c58bde19bef2f09db5c0483cb79ff96eb3",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/lint-1.exit"
+    },
+    {
+      "id": "lint-2",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/lint-2.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/lint-2.exit"
+    },
+    {
+      "id": "lint-3",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/lint-3.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/lint-3.exit"
+    },
+    {
+      "id": "lint-4",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/lint-4.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/lint-4.exit"
+    },
+    {
+      "id": "discovery-1",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/discovery-1.log",
+      "log_sha256": "fdfaa4b7afb6dd5e68bc9ecf465dbe37ecc4ce10fa158dc4e37daa619feadbac",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/discovery-1.exit"
+    },
+    {
+      "id": "discovery-2",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/discovery-2.log",
+      "log_sha256": "94444cbee015791c6da81581aba7db34abf95921bf98dea84f81cdcccf3cd8dc",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/discovery-2.exit"
+    },
+    {
+      "id": "discovery-3",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/discovery-3.log",
+      "log_sha256": "bddfd4001c7e65865cee924e5bfa6a6c6d02b003e015347fc764d1a7b36e009a",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/discovery-3.exit"
+    }
+  ],
+  "final_check_ids": [
+    "typecheck-4",
+    "lint-4",
+    "discovery-3"
+  ],
+  "metadata": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/tsconfig.json",
+      "sha256": "951494d7e3e1b2ba8ffbf2fa9cf51ebf3055135a0d5711f0a286be55c51a2ff7"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/eslint.config.mjs",
+      "sha256": "bc57708ae9e971da038987b297368e7dd2e93cf4c9a85175e9429243a4585ce3"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/final-verification.json",
+      "sha256": "bbb05c3936a153885c1cd55b15224eff79cc91f8ee24aff8ab4c827d2ff25550"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment1-check/static-final.json",
+      "sha256": "f0a25ef2dc978ae2bdb07d9608a3d2e95cc2fb3209321e180eb338fe2d7472a3"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/joint-e2e-increment-1-results.md",
+      "sha256": "8f579db84b51e13ad8d8278f91a1e9da160f4713439a1db000dd28c3a40782cd"
+    }
+  ],
+  "named_discovery": {
+    "count": 1,
+    "name": "stage roles, proposals and code review retain exact human decisions across Web and Desktop",
+    "test_bodies_executed": 0
+  },
+  "runtime": {
+    "api_calls": 0,
+    "database_connections": 0,
+    "browser_launches": 0,
+    "daemon_launches": 0,
+    "model_calls": 0,
+    "git_writes": 0
+  },
+  "synthetic_setup_authorized": {
+    "public_password_registrations": 7,
+    "email_bridge": "Only exact registered actor IDs and requested usernames, existing SQL NULL email, deterministic example.invalid addresses, transaction and task DB identity check; no password/role/member writes.",
+    "memberships": "public invite/accept/delete/reinvite/accept",
+    "external_facts": "task-owned synthetic GitHub PR/CI mirror rows; no remote provider calls",
+    "stage_facts": "actual public API/UI, never SQL seeded"
+  },
+  "coverage_intent": [
+    "A01 role separation and owner/handler distinction",
+    "A02 proposal create/modify/accept/reject and original identity",
+    "A03 strict PR/CI refusal subset",
+    "A04 human review, forged-agent header and no-approval refusal subset",
+    "A08 original key, revocation, head drift and source rejoin subset",
+    "A10 protected R1/R4 and outsider read subset",
+    "partial A11 shared Web/Electron controls only after actual run"
+  ],
+  "remaining": [
+    "No actual E2E or product assertions executed.",
+    "Require completed2b\u20132d and client source-denied digest fix, fresh source-bound API/production Web/Desktop environment and outbound mail disabled.",
+    "Add T4/QA, release/rollback, M1/finalwriter/admin paths before fullA01\u2013A12.",
+    "Installed Main, actual models, real payment/fulfillment/CI/deploy/rollback and business sign-off not covered."
+  ],
+  "preserved_failures": [
+    "typecheck-1: recovered string key incompatible with inferred UUID template type",
+    "lint-1: root runtime Core barrel dependency rule; replaced by existing pure schema leaf imports",
+    "first no-index audit: empty diagnostics with expected new-file difference exit1; corrected auditor condition"
+  ],
+  "no_whole_phase_acceptance": true
+}

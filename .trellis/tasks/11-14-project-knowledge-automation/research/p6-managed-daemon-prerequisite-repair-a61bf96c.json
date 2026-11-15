@@ -1,0 +1,108 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "recorded_at": "2026-11-15T10:04:41.259815+00:00",
+  "status": "implemented_static_checked_runtime_pending",
+  "source_before": "b91a4cac945be1bdf3f98ff1d861895fb43602e554fb89ad668be63b19bc2aa5",
+  "source_after": "f75ed59db8b83e5f149334817897a1d570e9ead6bc89de576a9251d058a8e846",
+  "source_after_paths": 11017,
+  "only_changed_paths": [
+    ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+    "e2e/fixtures/collaboration-detail-journey.ts",
+    "e2e/fixtures/project-knowledge-automation.ts",
+    "e2e/project-knowledge-automation.spec.ts"
+  ],
+  "source_deltas": {
+    ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py": {
+      "before": {
+        "sha256": "18643895cdf992a684ed22ecead35d3f42e30c27d01fb71e6f784d461bbce69a",
+        "normalized_sha256": "18643895cdf992a684ed22ecead35d3f42e30c27d01fb71e6f784d461bbce69a",
+        "mode": 420,
+        "link": null
+      },
+      "after": {
+        "sha256": "e3aeae6a78dd882127121f9c813cd7f83ea14cabd28d3178b7e6d7b67c96d253",
+        "normalized_sha256": "e3aeae6a78dd882127121f9c813cd7f83ea14cabd28d3178b7e6d7b67c96d253",
+        "mode": 420,
+        "link": null
+      },
+      "public_candidate_identical": true
+    },
+    "e2e/fixtures/collaboration-detail-journey.ts": {
+      "before": {
+        "sha256": "ec727d740cf074b4b7f47a257ef29a3e2e233736b7f69c845c2b69fd58bc88e2",
+        "normalized_sha256": "ec727d740cf074b4b7f47a257ef29a3e2e233736b7f69c845c2b69fd58bc88e2",
+        "mode": 420,
+        "link": null
+      },
+      "after": {
+        "sha256": "470dde98fab303d210701fe03cca296ec5ee712d7e44ffbfd63914f7401355aa",
+        "normalized_sha256": "470dde98fab303d210701fe03cca296ec5ee712d7e44ffbfd63914f7401355aa",
+        "mode": 420,
+        "link": null
+      },
+      "public_candidate_identical": true
+    },
+    "e2e/fixtures/project-knowledge-automation.ts": {
+      "before": {
+        "sha256": "f7553a1785231cab4f0ddc967c7a819b62eea389ca3fcb1a010b84a889cbd106",
+        "normalized_sha256": "f7553a1785231cab4f0ddc967c7a819b62eea389ca3fcb1a010b84a889cbd106",
+        "mode": 420,
+        "link": null
+      },
+      "after": {
+        "sha256": "195f255c761a88bd70fae3cd0d5eb17ca739ac92b446d7321a56d3f224ac27ad",
+        "normalized_sha256": "195f255c761a88bd70fae3cd0d5eb17ca739ac92b446d7321a56d3f224ac27ad",
+        "mode": 420,
+        "link": null
+      },
+      "public_candidate_identical": true
+    },
+    "e2e/project-knowledge-automation.spec.ts": {
+      "before": {
+        "sha256": "de6c4090c4e520bfadb87463a28fccb15831557ba8d1404d99a7b78578434381",
+        "normalized_sha256": "de6c4090c4e520bfadb87463a28fccb15831557ba8d1404d99a7b78578434381",
+        "mode": 420,
+        "link": null
+      },
+      "after": {
+        "sha256": "d4af16db947c7ae3e1379f5d079759b2c860efe1de427f606177c53093e11d73",
+        "normalized_sha256": "d4af16db947c7ae3e1379f5d079759b2c860efe1de427f606177c53093e11d73",
+        "mode": 420,
+        "link": null
+      },
+      "public_candidate_identical": true
+    }
+  },
+  "auth_configuration": {
+    "MULTICA_AUTH_MODE": "password",
+    "MULTICA_MANAGED_INSTALLATIONS_ENABLED": "true",
+    "MULTICA_PASSWORD_LIMITER_MODE": "single",
+    "MULTICA_DEVICE_AUTH_ENABLED": "false",
+    "MULTICA_PLATFORM_ADMIN_ENABLED": "false",
+    "MULTICA_CLOUD_URL": ""
+  },
+  "original_failure": "research/p6-original-legacy-daemon-input-failure-e7734978.json",
+  "cjs_module_original_failure": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-static-f7356860/result.json",
+  "cjs_module_corrected_listing": {
+    "command": [
+      "/opt/homebrew/bin/pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/project-knowledge-automation.spec.ts",
+      "--list"
+    ],
+    "cwd": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source",
+    "exit_code": 0,
+    "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-static-22585557/playwright-list.log",
+    "listed_tests": 2
+  },
+  "lint_baseline": "research/p6-managed-lint-baseline-comparison-f5822947.json",
+  "new_lint_diagnostics": 0,
+  "python_ast": "passed",
+  "product_go_sql_ui_delta": false,
+  "allocation_sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+  "source_environment_sha256": "bc1f96e026f7dc801bcad1d1c3344b10105a8aa05dc0a809d578d641aae2166b",
+  "next_gate": "real_source_bound_build_then_complete_web_desktop_journeys",
+  "authorization": "Existing approved 2026-11-14-v1 implementation; synthetic local actors and controlled providers only."
+}

@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "kind": "runtime_h3a_continuation_execution_registration",
+  "recorded_at_utc": "2026-11-12T04:44:17.901371+00:00",
+  "scope": "RK1-H3a trial3 through RK1-H3b/H5/H6, task-local continuation entry only",
+  "approval_registration": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261111/approval-registration.json",
+  "approval_registration_sha256": "7d743b5e1defa5fe8875c79a84d95c9982e9b0bfb650258a936a9214ed74f53c",
+  "real_execution_authorization": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261111/real-execution-authorization.json",
+  "real_execution_authorization_sha256": "1f56add2daca80c4f17575550979ce783f7a1ea860ef63e78e584e80e258f580",
+  "historical": {
+    "result": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H3a-t2.json",
+    "result_sha256": "9a4b94050ad696c46512b0833d27398ac0c6ef48770f6085d1db1283f9d628ce",
+    "invocation": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H3a/invocation-20261105T125045Z.json",
+    "invocation_sha256": "909ac2da3054ab19ce4a75290ce9c5b06778740835efa414f6f206d863ddd3ed",
+    "review_inventory": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/h3a-entry/independent-review.json",
+    "review_inventory_sha256": "e5807dddbc40ff880b431fb5ba002457c407fb2d77b75ee76d3b3841d30b991b",
+    "source_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+    "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+    "consumed": 12,
+    "remaining": 13
+  },
+  "authorized_order": [
+    {
+      "scenario": "RK1-H3a",
+      "start_trial": 3,
+      "launches": 1
+    },
+    {
+      "scenario": "RK1-H3b",
+      "start_trial": 1,
+      "launches": 3
+    },
+    {
+      "scenario": "RK1-H5",
+      "start_trial": 1,
+      "launches": 3
+    },
+    {
+      "scenario": "RK1-H6",
+      "start_trial": 1,
+      "launches": 6
+    }
+  ],
+  "budget": {
+    "cap": 25,
+    "prior_actual_starts": 12,
+    "remaining_actual_start_limit": 13
+  },
+  "current": {
+    "head": "45ec006d96445b41d02c5d26acd5b8c574ea0289",
+    "source_id": "60cad529c638fc3a56fe2cfbd41af1f142677ee23af0350d937b9623ac6ff7db",
+    "source_manifest": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261112/current-source-manifest.json",
+    "source_manifest_sha256": "dd4c2a041e12079e75fd071acc73b6fcb86bc62175d677bfb0f374e31e9df46c",
+    "framework_sha256": "71f7ca86b99d1e12cc71980d4f5c506e5c6d15b6e56ebab8731ea0d43609bad8",
+    "launcher": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261112/run_continuation.py",
+    "launcher_sha256": "4b3799485dfbe4103b7f44ab130920e0a0a1ad5607a70573c6d09de671ece54e",
+    "provider": {
+      "name": "claude",
+      "version": "2.1.322",
+      "executable": "/Users/artisan/.local/bin/claude",
+      "executable_sha256": "a9d237949db816a0b7afd88a9a8e1df36b3a597a30f5a41d1c0539eb180a3450",
+      "model": "claude-opus-5-5"
+    },
+    "operator_config_sha256": "42738ed8982962a865463df461e51641624457fa198e31c0ba3653e87c3378e3",
+    "database": {
+      "name": "multica_rk1_continuation_20261112",
+      "migration": "793_delivery_vcs_trust",
+      "identity_sha256": "eb7d391405453f76a67b86894cfe0414d8750ea24caef82d3f4cba851e0d69ec"
+    },
+    "source_binding_ready": false,
+    "framework_binding_ready": false,
+    "cli_ready": false,
+    "configuration_ready": false,
+    "database_ready": false,
+    "window_ready": false,
+    "permit_ready": false,
+    "gateway_ready": false,
+    "window": {
+      "id": "",
+      "owner": "",
+      "expires_at": ""
+    },
+    "permit": {
+      "id": "",
+      "issued_at": "",
+      "expires_at": ""
+    },
+    "provider_gateway": {
+      "admission_id": "",
+      "provider": "",
+      "evidence": ""
+    },
+    "binding_notes": {
+      "source": "current source has dirty product inputs; source ID is recorded for review only",
+      "framework": "current 19-file framework differs from historic registration and is unreviewed for this entry",
+      "cli": "Claude 2.1.322 bytes differ from historic 2.1.316 registration",
+      "configuration": "operator configuration is fingerprinted but no current reviewed permit binding exists",
+      "database": "candidate name is reserved for a future task-owned runtime database; no real run binding",
+      "window": "no current exclusive window is claimed",
+      "permit": "no separate permit is issued",
+      "gateway": "legitimate product Provider gateway admission is unconfirmed"
+    }
+  },
+  "ledger": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261112/continuation-ledger.json",
+  "output": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261112/output",
+  "execution_gate": {
+    "runnable": false,
+    "allow_build": false,
+    "allow_check": false,
+    "allow_run": false,
+    "reason": "Current source, framework review, CLI/config/database/window/permit and legitimate Provider gateway bindings are not all proven; registration is preparation-only."
+  },
+  "stop_rules": {
+    "stop_on_first_new_incomplete": true,
+    "stop_on_runtime_environment_or_harness_failure": true,
+    "stop_on_h5_canary": true,
+    "no_historical_slot_rerun": true,
+    "reservation_is_not_actual_start": true,
+    "actual_start_keeps_debit_on_failure": true
+  }
+}

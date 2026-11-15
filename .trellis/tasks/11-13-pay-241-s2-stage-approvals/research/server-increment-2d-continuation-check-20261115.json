@@ -1,0 +1,1698 @@
+{
+  "task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "date": "2026-11-15",
+  "role": "trellis-check",
+  "status": "BOUNDED_THREE_FIX_GREEN__FULL_2D_NOT_ACCEPTABLE_KNOWN_PENDING",
+  "bounded_verdict": "PASS: exact r03 three-RED repairs and bounded compatibility/static checks",
+  "full_2d_acceptable": false,
+  "s2_complete": false,
+  "a01_a12_accepted": false,
+  "activation_available": false,
+  "new_counterexamples": [],
+  "blocking_findings": [
+    {
+      "id": "R03-PENDING-01",
+      "kind": "known_source_contract_gap_not_new_test_failure",
+      "severity": "blocks_full_2d",
+      "references": [
+        {
+          "file": "server/internal/service/collaboration_stage_completion.go",
+          "line": 134
+        },
+        {
+          "file": "server/internal/service/collaboration_stage_completion.go",
+          "line": 320
+        },
+        {
+          "file": "server/pkg/db/queries/collaboration_stage_review.sql",
+          "line": 10
+        },
+        {
+          "file": "server/pkg/db/queries/collaboration_stage_submission.sql",
+          "line": 5
+        }
+      ],
+      "issue": "Exact candidate-head and immutable submission reads still lack the precise owning-transaction row-lock contract disclosed by the owner.",
+      "why_not_fixed": "Product/query files are outside checker write scope; main says the original owner is implementing a separate immutable second-batch freeze.",
+      "repro": "Static exact-query/caller confirmation; no new concurrency counterexample run. Required late-write/two-order reproduction belongs to the owner's next batch.",
+      "owner_report_line": 153
+    },
+    {
+      "id": "R03-PENDING-02",
+      "kind": "known_source_contract_gap_not_new_test_failure",
+      "severity": "blocks_full_2d",
+      "references": [
+        {
+          "file": "server/internal/service/collaboration_stage_completion.go",
+          "line": 42
+        },
+        {
+          "file": "server/internal/service/collaboration_stage_completion.go",
+          "line": 373
+        },
+        {
+          "file": "server/internal/service/collaboration_stage_completion.go",
+          "line": 405
+        }
+      ],
+      "issue": "Private final guard still needs exact actual caller/participant/account snapshot and original operation/result identity binding independently of M1.",
+      "why_not_fixed": "Known second-batch public-contract/authority implementation owned by original implementation agent; no peer or product edits allowed.",
+      "repro": "Owner-disclosed gap with frozen structure/check confirmation; no invented passing corrupt-binding or late-authority test.",
+      "owner_report_line": 154
+    },
+    {
+      "id": "R03-PENDING-03",
+      "kind": "known_source_contract_gap_not_new_test_failure",
+      "severity": "blocks_full_2d",
+      "references": [
+        {
+          "file": "server/internal/service/collaboration_stage_completion.go",
+          "line": 247
+        },
+        {
+          "file": "server/internal/service/collaboration_stage_completion.go",
+          "line": 260
+        },
+        {
+          "file": "server/internal/service/collaboration_stage_completion.go",
+          "line": 415
+        }
+      ],
+      "issue": "Complete final evidence horizons/current-source/current-target proof remains open, including artifact/original issuer/rollback metric bounds.",
+      "why_not_fixed": "Known authority/evidence design implementation and late-clock test batch owned by original owner; bounded checker does not widen scope.",
+      "repro": "Existing final helper and limited CI/decision bounds read; full post-receipt final-clock and both-order suite not run in r03.",
+      "owner_report_line": 155
+    },
+    {
+      "id": "R03-PENDING-04",
+      "kind": "known_acceptance_gap",
+      "severity": "blocks_full_2d_and_activation",
+      "references": [
+        {
+          "file": "server/internal/handler/collaboration_stage.go",
+          "line": 21
+        }
+      ],
+      "issue": "Stage x all M1 modes, stage-enabled R38/P != E and actual new F06 router/preview/zero-write proofs remain pending; four runtime E2E are not run.",
+      "why_not_fixed": "Independent F06 testing is another lane's responsibility; no duplicated test writing, no API/browser/model startup or policy enable authority in this check.",
+      "repro": "Missing named r03 proof; old M1 controls explicitly retained as non-stage-enabled compatibility only.",
+      "owner_report_line": 156
+    }
+  ],
+  "findings_fixed_verified": [
+    {
+      "id": "R03-F01",
+      "file": "server/internal/service/collaboration_stage_completion.go",
+      "line": 344,
+      "issue": "Nil transaction and empty guard previously passed the final writer check.",
+      "fix": "Owner rejects a nil transaction or invalid issue/workspace IDs before considering preparation; actual guarded callers pass their database after-row.",
+      "tests": [
+        "TestStageCompletionGuardRequiresPreparedTransaction"
+      ],
+      "actual_callers": [
+        "server/internal/service/collaboration_workflow.go:623",
+        "server/internal/service/admin_collaboration.go:290",
+        "server/internal/handler/issue.go:4151",
+        "server/internal/service/issue_status_write.go:135"
+      ],
+      "fixed_by": "implementation owner before r03 freeze",
+      "checker_product_change": false,
+      "independent_normal_race": "PASS"
+    },
+    {
+      "id": "R03-F02",
+      "file": "server/internal/service/collaboration_stage_completion.go",
+      "line": 349,
+      "issue": "A managed enabled root could omit private stage preparation.",
+      "fix": "Owner rechecks the enabled-root state for nil guard and refuses with stage_incomplete / stage_preparation_required; successful submit/complete and R38 call final guard without a guard-presence bypass.",
+      "tests": [
+        "TestStageCompletionGuardCannotBeOmittedForManagedRoot"
+      ],
+      "actual_callers": [
+        "server/internal/service/collaboration_workflow.go:622",
+        "server/internal/service/admin_collaboration.go:289"
+      ],
+      "fixed_by": "implementation owner before r03 freeze",
+      "checker_product_change": false,
+      "independent_normal_race": "PASS"
+    },
+    {
+      "id": "R03-F03",
+      "file": "server/internal/service/collaboration_stage_policy.go",
+      "line": 236,
+      "issue": "Structural readiness substituted for the exact final submission-readiness ledger.",
+      "fix": "Owner calls checkStageSubmissionSchema before policy write and again before commit, locking exact 864_collaboration_stage_submission_ready; missing ledger rejects without policy rows.",
+      "tests": [
+        "TestStageCompletionPolicyActivationRequiresExact864Ledger"
+      ],
+      "actual_callers": [
+        "server/internal/service/collaboration_stage_policy.go:240",
+        "server/internal/service/collaboration_stage_policy.go:258",
+        "server/internal/service/collaboration_stage_completion.go:55"
+      ],
+      "fixed_by": "implementation owner before r03 freeze",
+      "checker_product_change": false,
+      "independent_normal_race": "PASS"
+    }
+  ],
+  "checker_product_fixes": [],
+  "scope": {
+    "frozen_source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source",
+    "write_scope": [
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-continuation-check-20261115.md",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-continuation-check-20261115.json",
+      "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check"
+    ],
+    "product_tests_peer_files_modified": false,
+    "source_copy_or_overlay": false,
+    "second_batch_or_future_freeze_reviewed": false,
+    "whole_server_dotdotdot_run": false,
+    "db_creation_migration_switch_drop": false,
+    "api_browser_model_started": false,
+    "git_commit": false
+  },
+  "source": {
+    "manifest": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/manifest.json",
+    "manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+    "file_count": 4954,
+    "audits": [
+      {
+        "label": "before",
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/source-audit-before.json",
+        "sha256": "faf020d0148f18330b34bd5eb3ff17a9297c73230717e50372e92c9a92fe0501",
+        "expected_file_count": 4954,
+        "actual_file_count": 4954,
+        "mismatches": [],
+        "r02_ddl": [
+          {
+            "path": "server/migrations/861_collaboration_stage_submission.up.sql",
+            "expected_sha256": "7d884d34cd3e4e13cb7cf0ff564612784a12c9599f211e729d116dfdeac77633",
+            "actual_sha256": "7d884d34cd3e4e13cb7cf0ff564612784a12c9599f211e729d116dfdeac77633",
+            "match": true
+          },
+          {
+            "path": "server/migrations/864_collaboration_stage_submission_ready.up.sql",
+            "expected_sha256": "467e26e0eb8544b0d150e15f08a66fcbf744310d18dc140ac2456d44476d41c2",
+            "actual_sha256": "467e26e0eb8544b0d150e15f08a66fcbf744310d18dc140ac2456d44476d41c2",
+            "match": true
+          },
+          {
+            "path": "server/pkg/db/queries/collaboration_stage_submission.sql",
+            "expected_sha256": "03a4feaf53021e0bffd72bcd5c2021928092b48054d7674556180005384ae113",
+            "actual_sha256": "03a4feaf53021e0bffd72bcd5c2021928092b48054d7674556180005384ae113",
+            "match": true
+          },
+          {
+            "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+            "expected_sha256": "bc81aa51901ec304b1a923ba90108a96cb1a9d37e71e928095cbb856da595f55",
+            "actual_sha256": "bc81aa51901ec304b1a923ba90108a96cb1a9d37e71e928095cbb856da595f55",
+            "match": true
+          }
+        ],
+        "input_results": [
+          {
+            "name": "continuation-red-r01",
+            "recorded_exit": 1,
+            "recorded_named_pass": 8,
+            "recorded_named_fail": 3,
+            "recorded_named_skip": 0,
+            "log_sha256": "7b8e57411989498f56466bd364b5486c3967f779adbbe234dc831c54d3812f24",
+            "log_hash_matches": true,
+            "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+            "exit_hash_matches": true,
+            "actual_exit": 1,
+            "actual_named_pass": 8,
+            "actual_named_fail": 3,
+            "actual_named_skip": 0
+          },
+          {
+            "name": "continuation-green-r01",
+            "recorded_exit": 0,
+            "recorded_named_pass": 11,
+            "recorded_named_fail": 0,
+            "recorded_named_skip": 0,
+            "command_sha256": "07d96f60a91b9e179a998ece710616b3476ea89fedb4db6273ac1ca83af40a2c",
+            "command_hash_matches": true,
+            "log_sha256": "83f3f4f195f9221ce704ae9f180d1de174927401264505e64dfd614fa0d07930",
+            "log_hash_matches": true,
+            "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+            "exit_hash_matches": true,
+            "actual_exit": 0,
+            "actual_named_pass": 11,
+            "actual_named_fail": 0,
+            "actual_named_skip": 0
+          },
+          {
+            "name": "completion-baseline-r02",
+            "recorded_exit": 0,
+            "recorded_named_pass": 16,
+            "recorded_named_fail": 0,
+            "recorded_named_skip": 0,
+            "command_sha256": "2829b9ee52d61abf22418283f0edf7d0cdfc6555c0b99ffca6989c2a415182d6",
+            "command_hash_matches": true,
+            "log_sha256": "a284464cc731426e450922bcbfc683833f7109bf753befcf0d8709e737d6770a",
+            "log_hash_matches": true,
+            "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+            "exit_hash_matches": true,
+            "actual_exit": 0,
+            "actual_named_pass": 16,
+            "actual_named_fail": 0,
+            "actual_named_skip": 0
+          },
+          {
+            "name": "draft-admission-r01",
+            "recorded_exit": 1,
+            "recorded_named_pass": 3,
+            "recorded_named_fail": 2,
+            "recorded_named_skip": 0,
+            "log_sha256": "0188dcebefebbcbd805a73182c7c7ee71e476c1951a5b799d16fad445cc40941",
+            "log_hash_matches": true,
+            "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+            "exit_hash_matches": true,
+            "actual_exit": 1,
+            "actual_named_pass": 3,
+            "actual_named_fail": 2,
+            "actual_named_skip": 0
+          }
+        ]
+      },
+      {
+        "label": "after",
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/source-audit-after.json",
+        "sha256": "6d92097d0a3ab2c43bd071dfe828d6d6ac461ff9c99623b74b21a09cc5fbfc9c",
+        "expected_file_count": 4954,
+        "actual_file_count": 4954,
+        "mismatches": [],
+        "r02_ddl": [
+          {
+            "path": "server/migrations/861_collaboration_stage_submission.up.sql",
+            "expected_sha256": "7d884d34cd3e4e13cb7cf0ff564612784a12c9599f211e729d116dfdeac77633",
+            "actual_sha256": "7d884d34cd3e4e13cb7cf0ff564612784a12c9599f211e729d116dfdeac77633",
+            "match": true
+          },
+          {
+            "path": "server/migrations/864_collaboration_stage_submission_ready.up.sql",
+            "expected_sha256": "467e26e0eb8544b0d150e15f08a66fcbf744310d18dc140ac2456d44476d41c2",
+            "actual_sha256": "467e26e0eb8544b0d150e15f08a66fcbf744310d18dc140ac2456d44476d41c2",
+            "match": true
+          },
+          {
+            "path": "server/pkg/db/queries/collaboration_stage_submission.sql",
+            "expected_sha256": "03a4feaf53021e0bffd72bcd5c2021928092b48054d7674556180005384ae113",
+            "actual_sha256": "03a4feaf53021e0bffd72bcd5c2021928092b48054d7674556180005384ae113",
+            "match": true
+          },
+          {
+            "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+            "expected_sha256": "bc81aa51901ec304b1a923ba90108a96cb1a9d37e71e928095cbb856da595f55",
+            "actual_sha256": "bc81aa51901ec304b1a923ba90108a96cb1a9d37e71e928095cbb856da595f55",
+            "match": true
+          }
+        ],
+        "input_results": [
+          {
+            "name": "continuation-red-r01",
+            "recorded_exit": 1,
+            "recorded_named_pass": 8,
+            "recorded_named_fail": 3,
+            "recorded_named_skip": 0,
+            "log_sha256": "7b8e57411989498f56466bd364b5486c3967f779adbbe234dc831c54d3812f24",
+            "log_hash_matches": true,
+            "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+            "exit_hash_matches": true,
+            "actual_exit": 1,
+            "actual_named_pass": 8,
+            "actual_named_fail": 3,
+            "actual_named_skip": 0
+          },
+          {
+            "name": "continuation-green-r01",
+            "recorded_exit": 0,
+            "recorded_named_pass": 11,
+            "recorded_named_fail": 0,
+            "recorded_named_skip": 0,
+            "command_sha256": "07d96f60a91b9e179a998ece710616b3476ea89fedb4db6273ac1ca83af40a2c",
+            "command_hash_matches": true,
+            "log_sha256": "83f3f4f195f9221ce704ae9f180d1de174927401264505e64dfd614fa0d07930",
+            "log_hash_matches": true,
+            "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+            "exit_hash_matches": true,
+            "actual_exit": 0,
+            "actual_named_pass": 11,
+            "actual_named_fail": 0,
+            "actual_named_skip": 0
+          },
+          {
+            "name": "completion-baseline-r02",
+            "recorded_exit": 0,
+            "recorded_named_pass": 16,
+            "recorded_named_fail": 0,
+            "recorded_named_skip": 0,
+            "command_sha256": "2829b9ee52d61abf22418283f0edf7d0cdfc6555c0b99ffca6989c2a415182d6",
+            "command_hash_matches": true,
+            "log_sha256": "a284464cc731426e450922bcbfc683833f7109bf753befcf0d8709e737d6770a",
+            "log_hash_matches": true,
+            "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+            "exit_hash_matches": true,
+            "actual_exit": 0,
+            "actual_named_pass": 16,
+            "actual_named_fail": 0,
+            "actual_named_skip": 0
+          },
+          {
+            "name": "draft-admission-r01",
+            "recorded_exit": 1,
+            "recorded_named_pass": 3,
+            "recorded_named_fail": 2,
+            "recorded_named_skip": 0,
+            "log_sha256": "0188dcebefebbcbd805a73182c7c7ee71e476c1951a5b799d16fad445cc40941",
+            "log_hash_matches": true,
+            "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+            "exit_hash_matches": true,
+            "actual_exit": 1,
+            "actual_named_pass": 3,
+            "actual_named_fail": 2,
+            "actual_named_skip": 0
+          }
+        ]
+      }
+    ],
+    "owner_report": {
+      "md": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-continuation-20261115-results.md",
+      "md_sha256": "a463cbc028b3c9d0451923c127eb4582bcbd6fb69ac4f33269ba50d75a212429",
+      "json": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-continuation-20261115-results.json",
+      "json_sha256": "0c8b5728edfdb948cc3a72def3e0642f70a684c769593825fb9c0887113cf7a3",
+      "known_pending_lines": [
+        153,
+        154,
+        155,
+        156,
+        157
+      ]
+    },
+    "prior_summary": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/input/final-green-r03-test-results.json",
+      "sha256": "ae1a129daea7c17d35c8a124cd3a059195ec76e77278d714a7bef3791933dc5f"
+    }
+  },
+  "verification": {
+    "lint": {
+      "status": "PASS",
+      "commands": [
+        "vet-service-r01",
+        "vet-handler-r01",
+        "vet-router-r01",
+        "gofmt-owned-r01"
+      ],
+      "gofmt_owned_go_files": 35
+    },
+    "typecheck": {
+      "status": "PASS_SCOPED_GO_COMPILATION",
+      "proof": "Actual normal/race go test compilation for internal/service, internal/handler and cmd/server plus go vet. No TypeScript/pnpm or whole-server build claim."
+    },
+    "tests": {
+      "status": "PASS_BOUNDED",
+      "run_count": 8,
+      "counts_not_additive": true,
+      "note": "11 named records in canonical selection are contained in 16 total named records in larger completion selection, not 27 independent cases. Parent/subtest named records and repeated normal/race/compatibility runs are not summed into acceptance cases.",
+      "stage_enabled_fixture": "Only the new canonical service default M1/off completion fixture supplies stage-enabled positive proof.",
+      "compatibility_only": [
+        "handler-compat-normal-r01",
+        "handler-compat-race-r01",
+        "router-compat-normal-r01",
+        "router-compat-race-r01"
+      ],
+      "missing_top_level": [],
+      "named_fail": 0,
+      "named_skip": 0
+    },
+    "commands": [
+      {
+        "name": "continuation-normal-r01",
+        "profile": "service",
+        "package": "./internal/service",
+        "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source",
+        "manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+        "launcher_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_service.json",
+        "config_sha256": "2bcc44bb0b51782e9dd6c3200ef8d708150ca4ecfa385e01bfc438fa5c0f44ea",
+        "command": "node /Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs /Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_service.json go -C /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server test ./internal/service -run \"^TestStageCompletion(Guard|PolicyActivation|StoredBlockers|Activity)\" -count=1 -json",
+        "started": "2026-11-15T04:31:44.868Z",
+        "ended": "2026-11-15T04:32:12.559Z",
+        "exit": 0,
+        "signal": null,
+        "stdout": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/continuation-normal-r01.jsonl",
+        "stdout_sha256": "d1e89dfb134aff25fbd7bef7ff1432b4bb7997d650b48a3aa891041207bb0fdb",
+        "stderr": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/continuation-normal-r01.stderr.log",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "named_run": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_roles_configured",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_proposal_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_code_candidate_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_scope_confirmed",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_decision_recorded",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_execution_observed"
+        ],
+        "top_level_run": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata"
+        ],
+        "named_pass": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_roles_configured",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_proposal_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_code_candidate_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_scope_confirmed",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_decision_recorded",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_execution_observed",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata"
+        ],
+        "top_level_pass": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata"
+        ],
+        "named_fail": [],
+        "top_level_fail": [],
+        "named_skip": [],
+        "top_level_skip": [],
+        "expected_top_level": [
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects"
+        ],
+        "missing_top_level": [],
+        "passed": true,
+        "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/continuation-normal-r01.result.json",
+        "result_sha256": "b593f6fd8d316d6c2912e934332fe1429e76edbe4a9ae25af95a3fd5543588be",
+        "command_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/continuation-normal-r01.command.txt",
+        "command_sha256": "85e77a7fcd083decc9274952ffec626799e80f56767050cc205e3481a05481f3",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/continuation-normal-r01.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "name": "continuation-race-r01",
+        "profile": "service",
+        "package": "./internal/service",
+        "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source",
+        "manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+        "launcher_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_service.json",
+        "config_sha256": "2bcc44bb0b51782e9dd6c3200ef8d708150ca4ecfa385e01bfc438fa5c0f44ea",
+        "command": "node /Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs /Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_service.json go -C /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server test ./internal/service -run \"^TestStageCompletion(Guard|PolicyActivation|StoredBlockers|Activity)\" -count=1 -json -race",
+        "started": "2026-11-15T04:32:12.674Z",
+        "ended": "2026-11-15T04:32:55.238Z",
+        "exit": 0,
+        "signal": null,
+        "stdout": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/continuation-race-r01.jsonl",
+        "stdout_sha256": "e30175c28235a50fd18c4fa3b22456dfbeec0297395ef97857cf8451edca3a92",
+        "stderr": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/continuation-race-r01.stderr.log",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "named_run": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_roles_configured",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_proposal_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_code_candidate_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_scope_confirmed",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_decision_recorded",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_execution_observed"
+        ],
+        "top_level_run": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata"
+        ],
+        "named_pass": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_roles_configured",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_proposal_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_code_candidate_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_scope_confirmed",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_decision_recorded",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_execution_observed",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata"
+        ],
+        "top_level_pass": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata"
+        ],
+        "named_fail": [],
+        "top_level_fail": [],
+        "named_skip": [],
+        "top_level_skip": [],
+        "expected_top_level": [
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects"
+        ],
+        "missing_top_level": [],
+        "passed": true,
+        "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/continuation-race-r01.result.json",
+        "result_sha256": "9874c1ca65dd5c51f16e4e1a5c82004ed0cfc75ff8906f1987a5bd31d813da97",
+        "command_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/continuation-race-r01.command.txt",
+        "command_sha256": "a19340c7dbd9a8b55fc252513d4653bd1c6b9bccdc4a4749565cba80e44b89ca",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/continuation-race-r01.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "name": "completion-normal-r01",
+        "profile": "service",
+        "package": "./internal/service",
+        "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source",
+        "manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+        "launcher_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_service.json",
+        "config_sha256": "2bcc44bb0b51782e9dd6c3200ef8d708150ca4ecfa385e01bfc438fa5c0f44ea",
+        "command": "node /Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs /Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_service.json go -C /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server test ./internal/service -run \"^TestStageCompletion\" -count=1 -json",
+        "started": "2026-11-15T04:32:55.342Z",
+        "ended": "2026-11-15T04:33:07.999Z",
+        "exit": 0,
+        "signal": null,
+        "stdout": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/completion-normal-r01.jsonl",
+        "stdout_sha256": "331b4fc2e3af89da2362bc0dd20e88e279b2357835ac76cb0d93a99bbbdbaf9a",
+        "stderr": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/completion-normal-r01.stderr.log",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "named_run": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_roles_configured",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_proposal_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_code_candidate_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_scope_confirmed",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_decision_recorded",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_execution_observed",
+          "TestStageCompletionRefusesUnverifiedSubmission",
+          "TestStageCompletionRefusesUnverifiedSelfCompletion",
+          "TestStageCompletionVerifiedSubmissionAndSelf",
+          "TestStageCompletionVerifiedSubmissionAndSelf/false",
+          "TestStageCompletionVerifiedSubmissionAndSelf/true"
+        ],
+        "top_level_run": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "TestStageCompletionRefusesUnverifiedSubmission",
+          "TestStageCompletionRefusesUnverifiedSelfCompletion",
+          "TestStageCompletionVerifiedSubmissionAndSelf"
+        ],
+        "named_pass": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_roles_configured",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_proposal_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_code_candidate_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_scope_confirmed",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_decision_recorded",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_execution_observed",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "TestStageCompletionRefusesUnverifiedSubmission",
+          "TestStageCompletionRefusesUnverifiedSelfCompletion",
+          "TestStageCompletionVerifiedSubmissionAndSelf/false",
+          "TestStageCompletionVerifiedSubmissionAndSelf/true",
+          "TestStageCompletionVerifiedSubmissionAndSelf"
+        ],
+        "top_level_pass": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "TestStageCompletionRefusesUnverifiedSubmission",
+          "TestStageCompletionRefusesUnverifiedSelfCompletion",
+          "TestStageCompletionVerifiedSubmissionAndSelf"
+        ],
+        "named_fail": [],
+        "top_level_fail": [],
+        "named_skip": [],
+        "top_level_skip": [],
+        "expected_top_level": [
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionRefusesUnverifiedSelfCompletion",
+          "TestStageCompletionRefusesUnverifiedSubmission",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionVerifiedSubmissionAndSelf"
+        ],
+        "missing_top_level": [],
+        "passed": true,
+        "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/completion-normal-r01.result.json",
+        "result_sha256": "c7204eb61999844b314babf87de7b19167c6ea3cb048ac7e523ba9507372523c",
+        "command_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/completion-normal-r01.command.txt",
+        "command_sha256": "b59631baf9fd29fce73ee7845b9e3a7c54ba007a6595049ff5fe00d20f2960a4",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/completion-normal-r01.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "name": "completion-race-r01",
+        "profile": "service",
+        "package": "./internal/service",
+        "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source",
+        "manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+        "launcher_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_service.json",
+        "config_sha256": "2bcc44bb0b51782e9dd6c3200ef8d708150ca4ecfa385e01bfc438fa5c0f44ea",
+        "command": "node /Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs /Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_service.json go -C /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server test ./internal/service -run \"^TestStageCompletion\" -count=1 -json -race",
+        "started": "2026-11-15T04:33:08.110Z",
+        "ended": "2026-11-15T04:33:24.759Z",
+        "exit": 0,
+        "signal": null,
+        "stdout": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/completion-race-r01.jsonl",
+        "stdout_sha256": "e95c6e2708c538cbc4cf938ba6d1766d109174e0d095746d95502c45471885e0",
+        "stderr": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/completion-race-r01.stderr.log",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "named_run": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_roles_configured",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_proposal_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_code_candidate_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_scope_confirmed",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_decision_recorded",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_execution_observed",
+          "TestStageCompletionRefusesUnverifiedSubmission",
+          "TestStageCompletionRefusesUnverifiedSelfCompletion",
+          "TestStageCompletionVerifiedSubmissionAndSelf",
+          "TestStageCompletionVerifiedSubmissionAndSelf/false",
+          "TestStageCompletionVerifiedSubmissionAndSelf/true"
+        ],
+        "top_level_run": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "TestStageCompletionRefusesUnverifiedSubmission",
+          "TestStageCompletionRefusesUnverifiedSelfCompletion",
+          "TestStageCompletionVerifiedSubmissionAndSelf"
+        ],
+        "named_pass": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_roles_configured",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_proposal_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_code_candidate_created",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_scope_confirmed",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_decision_recorded",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_execution_observed",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "TestStageCompletionRefusesUnverifiedSubmission",
+          "TestStageCompletionRefusesUnverifiedSelfCompletion",
+          "TestStageCompletionVerifiedSubmissionAndSelf/false",
+          "TestStageCompletionVerifiedSubmissionAndSelf/true",
+          "TestStageCompletionVerifiedSubmissionAndSelf"
+        ],
+        "top_level_pass": [
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "TestStageCompletionRefusesUnverifiedSubmission",
+          "TestStageCompletionRefusesUnverifiedSelfCompletion",
+          "TestStageCompletionVerifiedSubmissionAndSelf"
+        ],
+        "named_fail": [],
+        "top_level_fail": [],
+        "named_skip": [],
+        "top_level_skip": [],
+        "expected_top_level": [
+          "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "TestStageCompletionGuardRequiresPreparedTransaction",
+          "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "TestStageCompletionRefusesUnverifiedSelfCompletion",
+          "TestStageCompletionRefusesUnverifiedSubmission",
+          "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "TestStageCompletionVerifiedSubmissionAndSelf"
+        ],
+        "missing_top_level": [],
+        "passed": true,
+        "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/completion-race-r01.result.json",
+        "result_sha256": "9238e0ea64fbb24cf81c78ee77286bc6320242c9d6ef6a9d0f26cc42fe0ed0d1",
+        "command_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/completion-race-r01.command.txt",
+        "command_sha256": "096360812cfe2e1028f275845b48003e110627340a0e924e85e056e322e91fc5",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/completion-race-r01.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "name": "handler-compat-normal-r01",
+        "profile": "handler",
+        "package": "./internal/handler",
+        "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source",
+        "manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+        "launcher_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_handler.json",
+        "config_sha256": "ea34669e728c386fef79185b5d0f4d0f533d33ddfb814e693ba79d95d625c94c",
+        "command": "node /Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs /Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_handler.json go -C /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server test ./internal/handler -run \"^(TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists|TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative|TestDeliveryCompletionR38BindsActualPendingSubmission|TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery|TestDeliveryCompletionCollaborationGrantAndRefusalDoNotBindAttachments)$\" -count=1 -json",
+        "started": "2026-11-15T04:35:11.898Z",
+        "ended": "2026-11-15T04:35:48.339Z",
+        "exit": 0,
+        "signal": null,
+        "stdout": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/handler-compat-normal-r01.jsonl",
+        "stdout_sha256": "fc2d287f79faea59a9b7509dbd0ba1d1736164591e61c79672dc961a87aa0505",
+        "stderr": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/handler-compat-normal-r01.stderr.log",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "named_run": [
+          "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/no_project",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/off",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/observe",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/enforce",
+          "TestDeliveryCompletionR38BindsActualPendingSubmission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin",
+          "TestDeliveryCompletionCollaborationGrantAndRefusalDoNotBindAttachments"
+        ],
+        "top_level_run": [
+          "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative",
+          "TestDeliveryCompletionR38BindsActualPendingSubmission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+          "TestDeliveryCompletionCollaborationGrantAndRefusalDoNotBindAttachments"
+        ],
+        "named_pass": [
+          "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/no_project",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/off",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/observe",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/enforce",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative",
+          "TestDeliveryCompletionR38BindsActualPendingSubmission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+          "TestDeliveryCompletionCollaborationGrantAndRefusalDoNotBindAttachments"
+        ],
+        "top_level_pass": [
+          "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative",
+          "TestDeliveryCompletionR38BindsActualPendingSubmission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+          "TestDeliveryCompletionCollaborationGrantAndRefusalDoNotBindAttachments"
+        ],
+        "named_fail": [],
+        "top_level_fail": [],
+        "named_skip": [],
+        "top_level_skip": [],
+        "expected_top_level": [
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+          "TestDeliveryCompletionCollaborationGrantAndRefusalDoNotBindAttachments",
+          "TestDeliveryCompletionR38BindsActualPendingSubmission",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative",
+          "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists"
+        ],
+        "missing_top_level": [],
+        "passed": true,
+        "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/handler-compat-normal-r01.result.json",
+        "result_sha256": "0dd8f309c2a11b59cd239205882405bb81da9af9a64e1a2d895e3f18a32d6b97",
+        "command_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/handler-compat-normal-r01.command.txt",
+        "command_sha256": "d3e9d99a9efc498eb177872b5e26a4dc37ed6c83d190baa0bb50e45f20d8ad6e",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/handler-compat-normal-r01.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "name": "handler-compat-race-r01",
+        "profile": "handler",
+        "package": "./internal/handler",
+        "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source",
+        "manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+        "launcher_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_handler.json",
+        "config_sha256": "ea34669e728c386fef79185b5d0f4d0f533d33ddfb814e693ba79d95d625c94c",
+        "command": "node /Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs /Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_handler.json go -C /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server test ./internal/handler -run \"^(TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists|TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative|TestDeliveryCompletionR38BindsActualPendingSubmission|TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery|TestDeliveryCompletionCollaborationGrantAndRefusalDoNotBindAttachments)$\" -count=1 -json -race",
+        "started": "2026-11-15T04:35:48.610Z",
+        "ended": "2026-11-15T04:37:15.903Z",
+        "exit": 0,
+        "signal": null,
+        "stdout": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/handler-compat-race-r01.jsonl",
+        "stdout_sha256": "9f266c9033e5872dff6db025a9241dd37ad00f38fc6704ab836c318df20b0c24",
+        "stderr": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/handler-compat-race-r01.stderr.log",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "named_run": [
+          "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/no_project",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/off",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/observe",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/enforce",
+          "TestDeliveryCompletionR38BindsActualPendingSubmission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin",
+          "TestDeliveryCompletionCollaborationGrantAndRefusalDoNotBindAttachments"
+        ],
+        "top_level_run": [
+          "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative",
+          "TestDeliveryCompletionR38BindsActualPendingSubmission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+          "TestDeliveryCompletionCollaborationGrantAndRefusalDoNotBindAttachments"
+        ],
+        "named_pass": [
+          "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/no_project",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/off",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/observe",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative/enforce",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative",
+          "TestDeliveryCompletionR38BindsActualPendingSubmission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+          "TestDeliveryCompletionCollaborationGrantAndRefusalDoNotBindAttachments"
+        ],
+        "top_level_pass": [
+          "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative",
+          "TestDeliveryCompletionR38BindsActualPendingSubmission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+          "TestDeliveryCompletionCollaborationGrantAndRefusalDoNotBindAttachments"
+        ],
+        "named_fail": [],
+        "top_level_fail": [],
+        "named_skip": [],
+        "top_level_skip": [],
+        "expected_top_level": [
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+          "TestDeliveryCompletionCollaborationGrantAndRefusalDoNotBindAttachments",
+          "TestDeliveryCompletionR38BindsActualPendingSubmission",
+          "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative",
+          "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists"
+        ],
+        "missing_top_level": [],
+        "passed": true,
+        "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/handler-compat-race-r01.result.json",
+        "result_sha256": "7e842677692fd830c8675f7304bceafd8752ee58087cdd95c2ae2dfaa84f4b0e",
+        "command_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/handler-compat-race-r01.command.txt",
+        "command_sha256": "e2061e087e28fcdf597aeb0ca837d2afdfa84ecdc5ca77ac5ab57c595de73904",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/handler-compat-race-r01.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "name": "router-compat-normal-r01",
+        "profile": "router",
+        "package": "./cmd/server",
+        "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source",
+        "manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+        "launcher_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_router.json",
+        "config_sha256": "95eef111d1180f149235c36a4dc2298c1a88546c0f70a0ce503a89423d017600",
+        "command": "node /Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs /Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_router.json go -C /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server test ./cmd/server -run \"^(TestCollaborationStageRoutesAreRegisteredAndEnablingStaysUnavailable|TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery|TestDeliveryCompletionEnforcementRouterOrdinaryAndMove|TestDeliveryCompletionEnforcementRouterBatchCommittedPrefix|TestDeliveryCompletionEnforcementRouterCreateAndCommentChild|TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState)$\" -count=1 -json",
+        "started": "2026-11-15T04:35:32.423Z",
+        "ended": "2026-11-15T04:35:47.139Z",
+        "exit": 0,
+        "signal": null,
+        "stdout": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/router-compat-normal-r01.jsonl",
+        "stdout_sha256": "aa10708104cde3224920feb24b9c161b6819afc089a4e6293a00125687be69a7",
+        "stderr": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/router-compat-normal-r01.stderr.log",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "named_run": [
+          "TestCollaborationStageRoutesAreRegisteredAndEnablingStaysUnavailable",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/self",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/submission",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/admin",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove/put",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove/move",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove/custom_done",
+          "TestDeliveryCompletionEnforcementRouterBatchCommittedPrefix",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild/done",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild/custom_create_done",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState/github",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState/forgejo",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState/gitlab"
+        ],
+        "top_level_run": [
+          "TestCollaborationStageRoutesAreRegisteredAndEnablingStaysUnavailable",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove",
+          "TestDeliveryCompletionEnforcementRouterBatchCommittedPrefix",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState"
+        ],
+        "named_pass": [
+          "TestCollaborationStageRoutesAreRegisteredAndEnablingStaysUnavailable",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/self",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/submission",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/admin",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove/put",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove/move",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove/custom_done",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove",
+          "TestDeliveryCompletionEnforcementRouterBatchCommittedPrefix",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild/done",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild/custom_create_done",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState/github",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState/forgejo",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState/gitlab",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState"
+        ],
+        "top_level_pass": [
+          "TestCollaborationStageRoutesAreRegisteredAndEnablingStaysUnavailable",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove",
+          "TestDeliveryCompletionEnforcementRouterBatchCommittedPrefix",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState"
+        ],
+        "named_fail": [],
+        "top_level_fail": [],
+        "named_skip": [],
+        "top_level_skip": [],
+        "expected_top_level": [
+          "TestCollaborationStageRoutesAreRegisteredAndEnablingStaysUnavailable",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery",
+          "TestDeliveryCompletionEnforcementRouterBatchCommittedPrefix",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState"
+        ],
+        "missing_top_level": [],
+        "passed": true,
+        "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/router-compat-normal-r01.result.json",
+        "result_sha256": "596f878a6eb0335f19b42f191032f0cdf4abf7cf1981ce332ff96f0d721edada",
+        "command_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/router-compat-normal-r01.command.txt",
+        "command_sha256": "1012301edc74b542993f2b95d6be3d9845f07cc4b640db2ae1415daa24a50c01",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/router-compat-normal-r01.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "name": "router-compat-race-r01",
+        "profile": "router",
+        "package": "./cmd/server",
+        "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source",
+        "manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+        "launcher_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_router.json",
+        "config_sha256": "95eef111d1180f149235c36a4dc2298c1a88546c0f70a0ce503a89423d017600",
+        "command": "node /Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs /Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_router.json go -C /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server test ./cmd/server -run \"^(TestCollaborationStageRoutesAreRegisteredAndEnablingStaysUnavailable|TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery|TestDeliveryCompletionEnforcementRouterOrdinaryAndMove|TestDeliveryCompletionEnforcementRouterBatchCommittedPrefix|TestDeliveryCompletionEnforcementRouterCreateAndCommentChild|TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState)$\" -count=1 -json -race",
+        "started": "2026-11-15T04:35:47.433Z",
+        "ended": "2026-11-15T04:36:47.372Z",
+        "exit": 0,
+        "signal": null,
+        "stdout": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/router-compat-race-r01.jsonl",
+        "stdout_sha256": "f0ecac162a04dc8edacf57cc1d7c4d0eab4d359a9d988a1096d2a85a36f97cbb",
+        "stderr": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/router-compat-race-r01.stderr.log",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "named_run": [
+          "TestCollaborationStageRoutesAreRegisteredAndEnablingStaysUnavailable",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/self",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/submission",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/admin",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove/put",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove/move",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove/custom_done",
+          "TestDeliveryCompletionEnforcementRouterBatchCommittedPrefix",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild/done",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild/custom_create_done",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState/github",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState/forgejo",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState/gitlab"
+        ],
+        "top_level_run": [
+          "TestCollaborationStageRoutesAreRegisteredAndEnablingStaysUnavailable",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove",
+          "TestDeliveryCompletionEnforcementRouterBatchCommittedPrefix",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState"
+        ],
+        "named_pass": [
+          "TestCollaborationStageRoutesAreRegisteredAndEnablingStaysUnavailable",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/self",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/submission",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/admin",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove/put",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove/move",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove/custom_done",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove",
+          "TestDeliveryCompletionEnforcementRouterBatchCommittedPrefix",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild/done",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild/custom_create_done",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState/github",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState/forgejo",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState/gitlab",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState"
+        ],
+        "top_level_pass": [
+          "TestCollaborationStageRoutesAreRegisteredAndEnablingStaysUnavailable",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove",
+          "TestDeliveryCompletionEnforcementRouterBatchCommittedPrefix",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState"
+        ],
+        "named_fail": [],
+        "top_level_fail": [],
+        "named_skip": [],
+        "top_level_skip": [],
+        "expected_top_level": [
+          "TestCollaborationStageRoutesAreRegisteredAndEnablingStaysUnavailable",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery",
+          "TestDeliveryCompletionEnforcementRouterBatchCommittedPrefix",
+          "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild",
+          "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove",
+          "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState"
+        ],
+        "missing_top_level": [],
+        "passed": true,
+        "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/router-compat-race-r01.result.json",
+        "result_sha256": "a058fba3800304d570af1ce79b9f29df8a26cd469a17ec85af070d6aef21f220",
+        "command_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/router-compat-race-r01.command.txt",
+        "command_sha256": "03a8b99cd3190597ccd53366b9efb28e05c45dd893b1755a168afb50103ef6d2",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/router-compat-race-r01.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "name": "vet-service-r01",
+        "profile": "service",
+        "package": "./internal/service",
+        "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source",
+        "manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+        "launcher_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_service.json",
+        "config_sha256": "2bcc44bb0b51782e9dd6c3200ef8d708150ca4ecfa385e01bfc438fa5c0f44ea",
+        "command": "node /Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs /Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_service.json go -C /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server vet ./internal/service",
+        "started": "2026-11-15T04:37:16.070Z",
+        "ended": "2026-11-15T04:37:18.567Z",
+        "exit": 0,
+        "signal": null,
+        "stdout": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/vet-service-r01.jsonl",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/vet-service-r01.stderr.log",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "passed": true,
+        "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/vet-service-r01.result.json",
+        "result_sha256": "35ef50c95121c9bd076350dece0b79c9619cf8e62bb294b464fa314aab263ea1",
+        "command_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/vet-service-r01.command.txt",
+        "command_sha256": "683bd65156d0b04e857926702e35b7ddb8734e3e46c98a322f3df92ed745b375",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/vet-service-r01.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "name": "vet-handler-r01",
+        "profile": "handler",
+        "package": "./internal/handler",
+        "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source",
+        "manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+        "launcher_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_handler.json",
+        "config_sha256": "ea34669e728c386fef79185b5d0f4d0f533d33ddfb814e693ba79d95d625c94c",
+        "command": "node /Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs /Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_handler.json go -C /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server vet ./internal/handler",
+        "started": "2026-11-15T04:37:18.619Z",
+        "ended": "2026-11-15T04:37:20.965Z",
+        "exit": 0,
+        "signal": null,
+        "stdout": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/vet-handler-r01.jsonl",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/vet-handler-r01.stderr.log",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "passed": true,
+        "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/vet-handler-r01.result.json",
+        "result_sha256": "f989ba17b9e9d07196883c304721a561eb85a61093a25b737ee7a4716b9437e0",
+        "command_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/vet-handler-r01.command.txt",
+        "command_sha256": "7d4ca94eaeece14c9c90e5c0ddd11d5162f262c96c5540afbdb60848d73a66db",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/vet-handler-r01.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "name": "vet-router-r01",
+        "profile": "router",
+        "package": "./cmd/server",
+        "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source",
+        "manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+        "launcher_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_router.json",
+        "config_sha256": "95eef111d1180f149235c36a4dc2298c1a88546c0f70a0ce503a89423d017600",
+        "command": "node /Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs /Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_router.json go -C /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server vet ./cmd/server",
+        "started": "2026-11-15T04:36:47.519Z",
+        "ended": "2026-11-15T04:36:50.864Z",
+        "exit": 0,
+        "signal": null,
+        "stdout": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/vet-router-r01.jsonl",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/vet-router-r01.stderr.log",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "passed": true,
+        "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/vet-router-r01.result.json",
+        "result_sha256": "67c0c70a1590bddf7e559fbbff7dd2b95d7e73219b13450ac6712518d493eeb5",
+        "command_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/vet-router-r01.command.txt",
+        "command_sha256": "43e28e1c08fd91b72a339c2ac4b7897d1ef636359af2064237ce26dd05dd5f19",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/vet-router-r01.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "name": "gofmt-owned-r01",
+        "profile": "service",
+        "package": "./internal/service",
+        "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source",
+        "manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+        "launcher_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_service.json",
+        "config_sha256": "2bcc44bb0b51782e9dd6c3200ef8d708150ca4ecfa385e01bfc438fa5c0f44ea",
+        "command": "node /Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs /Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_service.json gofmt -l /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/handler/collaboration_completion_preview.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_completion_preview.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_stage_activity.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_stage_completion.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_stage_completion_test.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_stage_project.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/pkg/db/generated/collaboration_stage_submission.sql.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/cmd/migrate/main.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/cmd/server/router.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/handler/admin_collaboration.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/handler/collaboration_boundary_test.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/handler/collaboration_lifecycle.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/handler/collaboration_workflow.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/handler/github.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/handler/issue.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/handler/project.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/admin_collaboration.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_activity.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_edit_test.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_fields_test.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_handoff.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_lifecycle.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_stage_actions.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_stage_execution_approvals.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_stage_review.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_workflow.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_workflow_test.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/delivery_completion.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/delivery_completion_collaboration.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/delivery_project_change.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/issue_status_write.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/task.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/pkg/db/generated/models.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_stage_policy.go /Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source/server/internal/service/collaboration_stage_completion_continuation_test.go",
+        "started": "2026-11-15T04:37:52.052Z",
+        "ended": "2026-11-15T04:37:52.311Z",
+        "exit": 0,
+        "signal": null,
+        "stdout": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/gofmt-owned-r01.jsonl",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/gofmt-owned-r01.stderr.log",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "passed": true,
+        "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/gofmt-owned-r01.result.json",
+        "result_sha256": "477f08f90616f212020672cbf7ca0bc3518779f9e7828cabf3625a7af14d7d16",
+        "command_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/gofmt-owned-r01.command.txt",
+        "command_sha256": "c9ee83a9a5f97f0a8fdb798611c2ba28a89e07395954b7185ce1661e69ab7aed",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/logs/gofmt-owned-r01.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    ],
+    "database": [
+      {
+        "profile": "service",
+        "config": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_service.json",
+        "before": {
+          "database": "multica_pay241_20261115_s2_check_service",
+          "ledger_count": 835,
+          "last_version": "864_collaboration_stage_submission_ready",
+          "other_connections": 0
+        },
+        "after": {
+          "database": "multica_pay241_20261115_s2_check_service",
+          "ledger_count": 835,
+          "last_version": "864_collaboration_stage_submission_ready",
+          "other_connections": 0
+        }
+      },
+      {
+        "profile": "handler",
+        "config": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_handler.json",
+        "before": {
+          "database": "multica_pay241_20261115_s2_check_handler",
+          "ledger_count": 835,
+          "last_version": "864_collaboration_stage_submission_ready",
+          "other_connections": 0
+        },
+        "after": {
+          "database": "multica_pay241_20261115_s2_check_handler",
+          "ledger_count": 835,
+          "last_version": "864_collaboration_stage_submission_ready",
+          "other_connections": 0
+        }
+      },
+      {
+        "profile": "router",
+        "config": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/check_router.json",
+        "before": {
+          "database": "multica_pay241_20261115_s2_check_router",
+          "ledger_count": 835,
+          "last_version": "864_collaboration_stage_submission_ready",
+          "other_connections": 0
+        },
+        "after": {
+          "database": "multica_pay241_20261115_s2_check_router",
+          "ledger_count": 835,
+          "last_version": "864_collaboration_stage_submission_ready",
+          "other_connections": 0
+        }
+      }
+    ],
+    "same_database_normal_race_sequential": true,
+    "external_ddl": {
+      "status": "MAIN_REPORTED_INDEPENDENT_PASS",
+      "named_assertions_reported": 39,
+      "passed_assertions_reported": 39,
+      "composition": "6 old raw + 1 supplement",
+      "owned_run": false,
+      "rerun": false,
+      "provenance": "Main-session update on 2026-11-15; main incorporates exact separate DDL evidence."
+    }
+  },
+  "classification_contract": {
+    "coveredactualtest": "Only the described frozen-r03 slice has an actual named test. It does not prove the full W/Q requirement.",
+    "codeonly": "Frozen caller/query/transport read; required actual behavior has not been demonstrated here.",
+    "notproven": "Required r03 acceptance proof is absent. Older compatibility/external/preflight results are not promoted.",
+    "ordinary_m1_compatibility_is_not_stage_enabled": true
+  },
+  "writer_coverage": [
+    {
+      "id": "W01",
+      "coverage": "coveredactualtest",
+      "boundary": "Stage-enabled M1/off submit refusal and verified submission with one immutable binding.",
+      "tests": [
+        "TestStageCompletionRefusesUnverifiedSubmission",
+        "TestStageCompletionVerifiedSubmissionAndSelf/false"
+      ],
+      "pending": "Observe/enforce, attachments and final-clock/locking combinations.",
+      "owner_r03_status": "PARTIAL",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W02",
+      "coverage": "coveredactualtest",
+      "boundary": "Stage-enabled M1/off exact submission completion and original-key replay.",
+      "tests": [
+        "TestStageCompletionVerifiedSubmissionAndSelf/false"
+      ],
+      "pending": "Enforce terminal consumption, legacy/corrupt binding and late-change combinations.",
+      "owner_r03_status": "PARTIAL",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W03",
+      "coverage": "coveredactualtest",
+      "boundary": "Stage-enabled M1/off self-result refusal, successful completion, one binding and replay.",
+      "tests": [
+        "TestStageCompletionRefusesUnverifiedSelfCompletion",
+        "TestStageCompletionVerifiedSubmissionAndSelf/true"
+      ],
+      "pending": "Stage-enabled observe/enforce self positives, attachment variants and final-clock cases.",
+      "owner_r03_status": "PARTIAL",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W04",
+      "coverage": "codeonly",
+      "boundary": "Actual R38 writer invokes final guard after history and original receipt at admin_collaboration.go:290.",
+      "compatibility_tests": [
+        "TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative",
+        "TestDeliveryCompletionR38BindsActualPendingSubmission",
+        "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/admin"
+      ],
+      "pending": "All stage-enabled R38 positives/negatives, org/caller/final-clock and P != E controls.",
+      "owner_r03_status": "NOT_RUN",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W05",
+      "coverage": "coveredactualtest",
+      "boundary": "Ordinary M1 PUT compatibility only; the S2 stage policy is not enabled in these fixtures.",
+      "tests": [
+        "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove"
+      ],
+      "pending": "Stage-enabled root/old-client/Agent boundary and independent child combinations.",
+      "owner_r03_status": "NOT_RUN",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W06",
+      "coverage": "coveredactualtest",
+      "boundary": "Ordinary M1 Move compatibility only; not stage-enabled proof.",
+      "tests": [
+        "TestDeliveryCompletionEnforcementRouterOrdinaryAndMove"
+      ],
+      "pending": "Stage-managed root/child semantics and concurrent candidate staleness.",
+      "owner_r03_status": "NOT_RUN",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W07",
+      "coverage": "coveredactualtest",
+      "boundary": "Ordinary M1 sequential batch committed-prefix compatibility only.",
+      "tests": [
+        "TestDeliveryCompletionEnforcementRouterBatchCommittedPrefix"
+      ],
+      "pending": "Stage root batch pre-effects refusal and repeated-grant/key controls.",
+      "owner_r03_status": "NOT_RUN",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W08",
+      "coverage": "coveredactualtest",
+      "boundary": "Ordinary M1 create/comment-child/create-as-done compatibility only.",
+      "tests": [
+        "TestDeliveryCompletionEnforcementRouterCreateAndCommentChild"
+      ],
+      "pending": "Stage-enabled human/machine decomposition, inherited project and child controls.",
+      "owner_r03_status": "NOT_RUN",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W09",
+      "coverage": "coveredactualtest",
+      "boundary": "Ordinary signed GitHub exact-grant M1 completion compatibility only.",
+      "tests": [
+        "TestDeliveryCompletionWebhookRouterExactGrantConsumesWithState"
+      ],
+      "pending": "Stage-enabled root/system refusal and VCS/current-trust combinations.",
+      "owner_r03_status": "NOT_RUN",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W10",
+      "coverage": "notproven",
+      "boundary": "No CLI/daemon/provider process was started by this checker.",
+      "pending": "Matching CLI/API and run-local machine completion boundary.",
+      "owner_r03_status": "NOT_RUN",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W11",
+      "coverage": "codeonly",
+      "boundary": "EditIssue calls CheckDeliveryProjectChangeInTx at collaboration_edit.go:98.",
+      "pending": "Stage x M1 exit/clear refusals and policy/complete contention.",
+      "owner_r03_status": "NOT_RUN",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W12",
+      "coverage": "codeonly",
+      "boundary": "Impact calls CheckStageProjectDeleteInTx at project.go:846; delete calls CheckDeliveryProjectDeleteInTx at project.go:920.",
+      "pending": "Actual stage-enabled impact/delete responses and lock contention.",
+      "owner_r03_status": "NOT_RUN",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W13",
+      "coverage": "notproven",
+      "boundary": "No managed root ordinary/batch delete control selected in this bounded run.",
+      "pending": "Pre-cancel/pre-cleanup root and ordinary-parent/collaboration-child refusal.",
+      "owner_r03_status": "NOT_RUN",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W14",
+      "coverage": "notproven",
+      "boundary": "Earlier 2c admission evidence is not promoted to r03 acceptance.",
+      "pending": "Child semantic/parent/project/delete staleness at actual completion consumption.",
+      "owner_r03_status": "NOT_RUN",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W15",
+      "coverage": "notproven",
+      "boundary": "No enqueue/start suite rerun; original failed draft-admission evidence remains retained and unattributed.",
+      "pending": "Combined lifecycle/admission guard and both real commit orders.",
+      "owner_r03_status": "NOT_RUN",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W16",
+      "coverage": "codeonly",
+      "boundary": "Workflow final-stage call is restricted to successful submit/complete; actual cancel branch remains separate.",
+      "pending": "Stage-enabled cancel/reopen/new scope, original consumed-key recovery and approval non-revival.",
+      "owner_r03_status": "NOT_RUN",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W17",
+      "coverage": "codeonly",
+      "boundary": "Four F06 adapters/routes and explicit child-source/64 KiB/five-second handling read in frozen source.",
+      "pending": "New F06 list/preview service/handler/router normal/race, done child, ACL, cursor and zero-write proof; another lane owns these tests.",
+      "owner_r03_status": "NOT_RUN",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "W18",
+      "coverage": "coveredactualtest",
+      "boundary": "Closed safe activity metadata and original stored stage-blocker GET/replay with no added event.",
+      "tests": [
+        "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+        "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects"
+      ],
+      "pending": "Actual HTTP/activity/outbox/timeline, all invalid retained variants and concurrent authority.",
+      "owner_r03_status": "PARTIAL",
+      "complete_requirement_proven": false
+    }
+  ],
+  "writer_coverage_counts": {
+    "coveredactualtest": 9,
+    "codeonly": 5,
+    "notproven": 4
+  },
+  "transaction_authority_coverage": [
+    {
+      "id": "Q01",
+      "coverage": "coveredactualtest",
+      "boundary": "Only stage-enabled default M1/off submit/exact/self positives and refusals.",
+      "pending": "Full off/observe/enforce x submit/submission/self/R38. Old M1 router/handler green does not prove stage-enabled behavior.",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "Q02",
+      "coverage": "coveredactualtest",
+      "boundary": "Nil transaction/guard and omitted managed-root preparation refuse at actual final guard.",
+      "tests": [
+        "TestStageCompletionGuardRequiresPreparedTransaction",
+        "TestStageCompletionGuardCannotBeOmittedForManagedRoot"
+      ],
+      "pending": "Wrong tx, reused/unfinalized guard, precise caller/operation/result and allowed-after variants.",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "Q03",
+      "coverage": "notproven",
+      "boundary": "Final call location is read after original receipt, but no complete final-clock or two-order proof.",
+      "pending": "Known second-batch artifact/issuer/rollback-metric horizons and caller/role/participant/account/source/trust races.",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "Q04",
+      "coverage": "coveredactualtest",
+      "boundary": "Successful submit/self retains exactly one immutable stage submission row.",
+      "tests": [
+        "TestStageCompletionVerifiedSubmissionAndSelf"
+      ],
+      "pending": "Precise candidate/submission row locks and missing/legacy/corrupt semantic/operation bindings.",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "Q05",
+      "coverage": "notproven",
+      "boundary": "Distinct issuer/consumer M1 controls ran without stage enabled; they are compatibility evidence only.",
+      "compatibility_tests": [
+        "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+        "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery"
+      ],
+      "pending": "Stage-enabled P != E, outside-source consumer, revoked/expired issuer/consumer, admin org and privacy controls.",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "Q06",
+      "coverage": "codeonly",
+      "boundary": "New F06 read adapters and five-second transaction wiring inspected.",
+      "pending": "Zero authorization/evaluation/submission/status/attachment/queue writes and done-child exact source/root binding.",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "Q07",
+      "coverage": "codeonly",
+      "boundary": "F06 handler rejects query on preview, enforces 64 KiB and delegates strict parse/bounded candidate query.",
+      "pending": "Actual new endpoint strict malformed bodies, paging/cursor/empty and mid-revocation normal/race.",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "Q08",
+      "coverage": "coveredactualtest",
+      "boundary": "Original stage-incomplete refusal retains status/blockers through policy disable and GET/replay without events; completed same key replays.",
+      "tests": [
+        "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+        "TestStageCompletionVerifiedSubmissionAndSelf"
+      ],
+      "pending": "Commit unknown, late required-write failure, reopen/current-authority and actual lost-response HTTP.",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "Q09",
+      "coverage": "coveredactualtest",
+      "boundary": "Missing exact 864 ledger seam refuses policy write with zero policy rows; public activation remains false.",
+      "tests": [
+        "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+        "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists",
+        "TestCollaborationStageRoutesAreRegisteredAndEnablingStaysUnavailable"
+      ],
+      "pending": "Full writer readiness, table/index/trigger/partial migration and safe final activation; no P2 was enabled.",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "Q10",
+      "coverage": "notproven",
+      "boundary": "No combined policy/project completion/contention or ordinary-child independence campaign run.",
+      "pending": "Both commit orders and stage x M1 project/target/lifecycle controls.",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "Q11",
+      "coverage": "codeonly",
+      "boundary": "4954-file immutable identity and four exact r02 DDL/query/generated hashes verified before/after.",
+      "pending": "DDL is separately checked by root; main reports 39/39 PASS (6 old raw + 1 supplement), not this checker's migration/test count.",
+      "complete_requirement_proven": false
+    },
+    {
+      "id": "Q12",
+      "coverage": "notproven",
+      "boundary": "Exact manifest, three permitted DB profiles, original failures and zero owned connections retained.",
+      "pending": "Four real Web/Desktop scenarios and their final API/CLI/Host/source/config/gate/resource proof; current root startup/auth preflight is not stage-enabled acceptance.",
+      "complete_requirement_proven": false
+    }
+  ],
+  "transaction_authority_coverage_counts": {
+    "coveredactualtest": 5,
+    "codeonly": 3,
+    "notproven": 4
+  },
+  "retained_failures": [
+    {
+      "name": "continuation-red-r01",
+      "recorded_exit": 1,
+      "recorded_named_pass": 8,
+      "recorded_named_fail": 3,
+      "recorded_named_skip": 0,
+      "log_sha256": "7b8e57411989498f56466bd364b5486c3967f779adbbe234dc831c54d3812f24",
+      "log_hash_matches": true,
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit_hash_matches": true,
+      "actual_exit": 1,
+      "actual_named_pass": 8,
+      "actual_named_fail": 3,
+      "actual_named_skip": 0
+    },
+    {
+      "name": "continuation-green-r01",
+      "recorded_exit": 0,
+      "recorded_named_pass": 11,
+      "recorded_named_fail": 0,
+      "recorded_named_skip": 0,
+      "command_sha256": "07d96f60a91b9e179a998ece710616b3476ea89fedb4db6273ac1ca83af40a2c",
+      "command_hash_matches": true,
+      "log_sha256": "83f3f4f195f9221ce704ae9f180d1de174927401264505e64dfd614fa0d07930",
+      "log_hash_matches": true,
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit_hash_matches": true,
+      "actual_exit": 0,
+      "actual_named_pass": 11,
+      "actual_named_fail": 0,
+      "actual_named_skip": 0
+    },
+    {
+      "name": "completion-baseline-r02",
+      "recorded_exit": 0,
+      "recorded_named_pass": 16,
+      "recorded_named_fail": 0,
+      "recorded_named_skip": 0,
+      "command_sha256": "2829b9ee52d61abf22418283f0edf7d0cdfc6555c0b99ffca6989c2a415182d6",
+      "command_hash_matches": true,
+      "log_sha256": "a284464cc731426e450922bcbfc683833f7109bf753befcf0d8709e737d6770a",
+      "log_hash_matches": true,
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit_hash_matches": true,
+      "actual_exit": 0,
+      "actual_named_pass": 16,
+      "actual_named_fail": 0,
+      "actual_named_skip": 0
+    },
+    {
+      "name": "draft-admission-r01",
+      "recorded_exit": 1,
+      "recorded_named_pass": 3,
+      "recorded_named_fail": 2,
+      "recorded_named_skip": 0,
+      "log_sha256": "0188dcebefebbcbd805a73182c7c7ee71e476c1951a5b799d16fad445cc40941",
+      "log_hash_matches": true,
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit_hash_matches": true,
+      "actual_exit": 1,
+      "actual_named_pass": 3,
+      "actual_named_fail": 2,
+      "actual_named_skip": 0
+    }
+  ],
+  "unattributed_original_failure": "draft-admission-r01 deploymentunknown failure remains retained; this checker does not attribute its cause or promote it to a pass.",
+  "integration_boundary": {
+    "allowed_candidate_use": "Exact r03 source for bounded startup/auth/HTTP preflight and existing ordinary/M1 compatibility, with public stage activation kept false; synthetic stage-enabled package fixtures only.",
+    "not_allowed_as_acceptance": [
+      "Complete 2d gate",
+      "Public P2 stage activation",
+      "Four real Web/Desktop scenario PASS",
+      "S2 acceptance/archive",
+      "Real payment/deployment/provider/model/performance proof"
+    ],
+    "next_candidate_requirements": "Original owner closes three known source-contract gaps in a separately immutable freeze; dedicated F06 lane supplies actual new route proofs; then rerun exact changed-source normal/race, stage x M1/R38/P != E and final clock/rollback/authority controls."
+  },
+  "spec_sync_recommendation": {
+    "owner": "main session",
+    "paths": [
+      ".trellis/spec/server/collaboration-stage-approvals.md",
+      ".trellis/spec/server/delivery-completion-enforcement.md"
+    ],
+    "action": "Keep activation/full-writer disclaimers. After the future guard/locking/horizon candidate is checked, sync its executable contracts; this checker does not modify shared specs."
+  },
+  "changed_files": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-continuation-check-20261115.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-continuation-check-20261115.json",
+    "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/run-check.mjs"
+  ],
+  "simplifications": "None; no product/test refactor or peer-file edit.",
+  "evidence_root": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check",
+  "research_files": {
+    "md": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-continuation-check-20261115.md",
+    "md_sha256": "19e4f1c3f29c2b3ee8edcfbdd00fddb449455d5b9e8cceea1af1e80509110308",
+    "json": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-continuation-check-20261115.json"
+  },
+  "private_helper": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d-check/run-check.mjs",
+    "sha256": "5ced1a289c80c0c63500ecf2b0e6a860da8e9fa1343e46c2a9a4cdc7f98369e5"
+  }
+}
+

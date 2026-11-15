@@ -1,0 +1,51 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "source_root": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "run_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-0cc54918",
+  "database": "mca_knowledge_browser_23c46529b6e3",
+  "api_origin": "http://127.0.0.1:55749",
+  "web_origin": "http://127.0.0.1:55750",
+  "renderer_origin": "http://127.0.0.1:55751",
+  "model_origin": "http://127.0.0.1:55752",
+  "ports": {
+    "api": 55749,
+    "web": 55750,
+    "renderer": 55751,
+    "model": 55752
+  },
+  "cluster_before": {
+    "database": "postgres",
+    "connections": 28,
+    "max_connections": 100
+  },
+  "provider_probe_keys": [
+    "MULTICA_ANTIGRAVITY_PATH",
+    "MULTICA_CLAUDE_PATH",
+    "MULTICA_CODEARTS_PATH",
+    "MULTICA_CODEBUDDY_PATH",
+    "MULTICA_CODEX_PATH",
+    "MULTICA_COPILOT_PATH",
+    "MULTICA_CURSOR_PATH",
+    "MULTICA_DEVECO_PATH",
+    "MULTICA_DIM_PATH",
+    "MULTICA_DSH_PATH",
+    "MULTICA_GROK_PATH",
+    "MULTICA_HERMES_PATH",
+    "MULTICA_KIMI_PATH",
+    "MULTICA_KIRO_PATH",
+    "MULTICA_MCODE_PATH",
+    "MULTICA_OMP_PATH",
+    "MULTICA_OPENCLAW_PATH",
+    "MULTICA_OPENCODE_PATH",
+    "MULTICA_PI_PATH",
+    "MULTICA_QODERCLICN_PATH",
+    "MULTICA_QODER_PATH",
+    "MULTICA_QWENPAW_PATH",
+    "MULTICA_QWEN_PATH",
+    "MULTICA_REASONIX_PATH",
+    "MULTICA_TRAECLI_PATH",
+    "MULTICA_ZEROCLAW_PATH"
+  ],
+  "real_accounts": false,
+  "created_by": "p6-runtime.py"
+}

@@ -1,0 +1,23 @@
+{
+  "at": "2026-11-02T13:07:12.837607+00:00",
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-launcher-test.py",
+    "LauncherEntryTests.test_tampered_go_adapter_is_refused_before_make",
+    "LauncherEntryTests.test_tampered_pnpm_adapter_is_refused_before_make",
+    "LauncherEntryTests.test_tampered_launcher_is_refused_before_make",
+    "LauncherEntryTests.test_tampered_source_config_is_refused_before_make",
+    "LauncherEntryTests.test_candidate_mismatch_is_refused_before_make",
+    "LauncherEntryTests.test_command_substitution_is_not_executed",
+    "LauncherEntryTests.test_backtick_substitution_is_not_executed"
+  ],
+  "launcher": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check.py",
+  "exit_code": 0,
+  "expected": "7 assertion failures: old launcher reaches fake make for post-review mutations and attempts bash dotenv sourcing",
+  "mock_boundaries": "Only filesystem locations rewritten; git read results and make/shell processes spied, no real make/database/shell payload execution",
+  "log_sha256": "dbe4632c8594dc1fc090fa529fc523577de9638db9cf304bfd673aaa7b60afe6",
+  "real_database_commands": 0,
+  "real_provider_calls": 0,
+  "state": "invalid_fixture_path_alias",
+  "classification": "macOS /var vs /private/var root assertion masked intended behavior; fixture canonicalized before real regression run"
+}

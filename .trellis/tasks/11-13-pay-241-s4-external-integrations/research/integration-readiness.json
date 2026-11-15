@@ -1,0 +1,691 @@
+{
+  "schema_version": 1,
+  "kind": "preparation_manifest_not_execution_evidence",
+  "date": "2026-11-14",
+  "captured_at_utc": "2026-11-14T02:38:21.125542+00:00",
+  "task": ".trellis/tasks/11-13-pay-241-s4-external-integrations",
+  "report": "integration-readiness.md",
+  "report_sha256": "6e67a6e8d107fb97de5a2723e9e4645f78440e3a5794b972b6943880c09e76b7",
+  "preparation_status": "DOCUMENTED",
+  "external_test_status": "NOT_RUN",
+  "external_acceptance_pass": false,
+  "scope": {
+    "network_accessed": false,
+    "accounts_accessed": false,
+    "credentials_accessed": false,
+    "databases_accessed": false,
+    "model_accessed": false,
+    "git_commands_run": false,
+    "product_files_written": false,
+    "allowed_write_directory": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s4-external-integrations/research"
+  },
+  "source_identity": {
+    "checkout_path": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "commit": null,
+    "commit_note": "No Git operation performed; local file hashes are not a release or running API identity.",
+    "concurrent_source_mutation_possible": true,
+    "files": [
+      {
+        "path": "AGENTS.md",
+        "sha256": "403ec642d0625862bd042fa3293be4c46bb308b88159cbaa75559cbf1f389289",
+        "bytes": 3840
+      },
+      {
+        "path": "CLAUDE.md",
+        "sha256": "ba958587589c26338bfb9547d745653a34239ee0524b8cb10a89c49056b382ed",
+        "bytes": 21075
+      },
+      {
+        "path": ".trellis/workflow.md",
+        "sha256": "eb4508a4f6792f3d53705c1f9e7d21807dabd774543bd7b01f56372a704f6ad0",
+        "bytes": 39348
+      },
+      {
+        "path": ".trellis/spec/server/index.md",
+        "sha256": "644f0e7052db6ac2ffa443e88fecb687445f1c1a3afd773fd456089c1651c787",
+        "bytes": 9182
+      },
+      {
+        "path": ".trellis/spec/server/security-boundaries.md",
+        "sha256": "eafe18806e77423c13062317ab9168019f0148131107179bfdd162876957e2cf",
+        "bytes": 19809
+      },
+      {
+        "path": ".trellis/spec/server/delivery-evidence-observation.md",
+        "sha256": "5137e63c949a0ea3c4e4996aada3ac2572657e9b8154cc18f0cd7f7f879fb2da",
+        "bytes": 8356
+      },
+      {
+        "path": ".trellis/spec/server/controlled-artifact-execution.md",
+        "sha256": "c2bcaeed50eb4ff5619b6dce64b90c8973304d24fda3166e934af8e79042f0db",
+        "bytes": 10427
+      },
+      {
+        "path": ".trellis/spec/server/verification-environment.md",
+        "sha256": "bd1bdb58861d993eb5dc836bd45fe9276b066763265265822dfccec584ece4da",
+        "bytes": 10557
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/prd.md",
+        "sha256": "ca742f3cebda4901b6194f00b0c453d1ea0f5d428e8da67c969ebe45bc30572a",
+        "bytes": 2074
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/design.md",
+        "sha256": "171ade89e57edb746958edf18dcf42cd4ab9735ac762054eb12b3888342706c1",
+        "bytes": 2371
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/implement.md",
+        "sha256": "3ac1b78079242abbf5afdf2205ed425a35e7bb37816824af28377fb88be108df",
+        "bytes": 923
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/design.md",
+        "sha256": "a377e9011ef7d3f4dc2e77a4dbc10d331bdf32247761782d8ee233c7b131493a",
+        "bytes": 24227
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md",
+        "sha256": "ced0cd66c729093c96259f42adee8a788868dde12851679a990266bd8dba1b4c",
+        "bytes": 59222
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-gates.md",
+        "sha256": "f899ec3a290829b7633fe0be08e0fc3dc61fb4a98f72914725fe1699f0cefc0e",
+        "bytes": 20114
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/verification-plan.md",
+        "sha256": "288dfaed94d645a1c636339b7004f30057d6fcfd5af84866b899167980c6edfb",
+        "bytes": 19231
+      },
+      {
+        "path": ".trellis/tasks/11-10-git-engineering-material-workflow/design.md",
+        "sha256": "ca2cc05022fc6a69e5d833541a8315eb125e4b7df7c9ec2b9af5dda134c10f0f",
+        "bytes": 31213
+      },
+      {
+        "path": "server/go.mod",
+        "sha256": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+        "bytes": 3586
+      },
+      {
+        "path": "server/cmd/server/router.go",
+        "sha256": "530ee558e7bd93d6b9fce2d63ff7dd727795ea946884fc47031ecda89f3d88c2",
+        "bytes": 149240
+      },
+      {
+        "path": "server/internal/handler/github.go",
+        "sha256": "6b88995907af1d48480828579b22d3d1c35382629445acbe7aad936fca053c06",
+        "bytes": 78944
+      },
+      {
+        "path": "server/internal/handler/vcs.go",
+        "sha256": "289a9da24ea5844b338403ba3f56b0adee515e30edc28415a5e822dfd2d0d38a",
+        "bytes": 11620
+      },
+      {
+        "path": "server/internal/handler/vcs_webhook.go",
+        "sha256": "7f40b6cea1c864b29b7722de1fe5ac6476c2077861282b8076ab359eebd3ea52",
+        "bytes": 13911
+      },
+      {
+        "path": "server/internal/handler/cloud_billing.go",
+        "sha256": "64fc81f0b63f74a8676bd028fadfa38c8107603e4a3d48b39c01b77c96d61d8e",
+        "bytes": 24333
+      },
+      {
+        "path": "server/internal/handler/collaboration_stage.go",
+        "sha256": "1689734f18c3055c4c079b48dcd4d205bd373dc62fdd6a9b4b8f4ee9de0fa7a8",
+        "bytes": 18474
+      },
+      {
+        "path": "server/internal/handler/handler.go",
+        "sha256": "d32dafc0efc4b8aa696dd8bbb443c68ef735b574d908763ee2d4379fc2779eec",
+        "bytes": 59687
+      },
+      {
+        "path": "server/internal/integrations/ghsnapshot/client.go",
+        "sha256": "268a496c572e8cfe0fb272bf6f946507104074f59bf7d6a86f3a025845bbe5bd",
+        "bytes": 10475
+      },
+      {
+        "path": "server/internal/integrations/ghsnapshot/snapshot.go",
+        "sha256": "bdc5d7548847edd6feea648375f90bd0949969b982a27bbe48acb14c89457da5",
+        "bytes": 9252
+      },
+      {
+        "path": "server/internal/integrations/ghsnapshot/refresh.go",
+        "sha256": "f2daf542fac413c60fa00ad5654d4f70b14859b6c4d10cc224b6118ab448577e",
+        "bytes": 16332
+      },
+      {
+        "path": "server/internal/integrations/vcs/vcs.go",
+        "sha256": "2223faa9fa61c66978cbd8907036fa34a68fad185a7c03c4b28af829a15ca1bb",
+        "bytes": 5207
+      },
+      {
+        "path": "server/internal/integrations/vcs/gitlab.go",
+        "sha256": "b22314d99bb9a144e8d87fdfa0b515e0cfdbde970a2f000479b3305b5455bd13",
+        "bytes": 8948
+      },
+      {
+        "path": "server/internal/integrations/vcs/forgejo.go",
+        "sha256": "871d8ea5a1cb87c4ca153587f1623e9d582eda08c37dffbd26dd6f9c8f22341f",
+        "bytes": 8274
+      },
+      {
+        "path": "server/pkg/db/queries/github.sql",
+        "sha256": "17f3df846b5933b9f9934ad25473e529b49917eacd90190ac9c7e14fa32b0faf",
+        "bytes": 13839
+      },
+      {
+        "path": "server/pkg/db/queries/github_snapshot.sql",
+        "sha256": "648708334cad58644fc94b60a7a1ba8f3b97b429ee0395dc215f92d38272f5bc",
+        "bytes": 4331
+      },
+      {
+        "path": "server/pkg/db/queries/vcs.sql",
+        "sha256": "fff09916b59c267b87a13adc73337f1353a20ffdb52900cb485cb1a2d887753c",
+        "bytes": 11443
+      },
+      {
+        "path": "server/pkg/db/queries/collaboration_stage.sql",
+        "sha256": "57ff366abcaf8b81e86b6d281c149b5148ea3584dfccfecda2c0a09f5d62c5bb",
+        "bytes": 13691
+      },
+      {
+        "path": "server/internal/service/delivery_completion_webhook.go",
+        "sha256": "ab39ace3439f5332cbaa2a789608cf5766ff828ff7cec5a5fe4afec0f47a573b",
+        "bytes": 14588
+      },
+      {
+        "path": "server/internal/service/delivery_completion.go",
+        "sha256": "48ef3b9fa0be3707ee962bab79b541b10cf8e8c5ac28532f3651bca73a3f8994",
+        "bytes": 19549
+      },
+      {
+        "path": "server/internal/service/issue_status_write.go",
+        "sha256": "71c96fea42ad2f07017577091face61c5295921883b74a09744d2153771ed286",
+        "bytes": 6540
+      },
+      {
+        "path": "server/internal/util/secretbox/secretbox.go",
+        "sha256": "1e787e4e3c2ae03cd0937f0264ac5b07bd3b27042b0a96ba3cbd2408a423c6b4",
+        "bytes": 3922
+      }
+    ]
+  },
+  "prior_config_observation": {
+    "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/verification-plan.md:62",
+    "reinspected": false,
+    "empty_checked_fields": [
+      "GITHUB_APP_SLUG",
+      "GITHUB_WEBHOOK_SECRET",
+      "GITHUB_APP_ID",
+      "GITHUB_APP_PRIVATE_KEY"
+    ],
+    "payment_release_fields": "not found in prior bounded inventory",
+    "all_accounts_absent": null,
+    "encrypted_connections_inspected": false
+  },
+  "known_config_names_not_values": {
+    "github": [
+      "GITHUB_APP_SLUG",
+      "GITHUB_WEBHOOK_SECRET",
+      "GITHUB_APP_ID",
+      "GITHUB_APP_PRIVATE_KEY"
+    ],
+    "vcs": [
+      "MULTICA_VCS_INTEGRATION_ENABLED",
+      "MULTICA_VCS_SECRET_KEY",
+      "MULTICA_PUBLIC_URL"
+    ],
+    "payment": null,
+    "release_rollback": null,
+    "metrics": null
+  },
+  "inputs": [
+    {
+      "id": "I01",
+      "name": "source_runtime",
+      "owner_role_required": "coordinator",
+      "owner": null,
+      "actual_environment_name": null,
+      "target": null,
+      "authority_evidence": null,
+      "status": "UNRESOLVED",
+      "required_fields": [
+        "source_revision_and_digest",
+        "api_web_desktop_cli_versions",
+        "owned_environment_ledger",
+        "actual_issue_and_candidate_identities"
+      ]
+    },
+    {
+      "id": "I02",
+      "name": "repository",
+      "owner_role_required": "repository_owner_admin",
+      "owner": null,
+      "actual_environment_name": null,
+      "target": null,
+      "authority_evidence": null,
+      "status": "UNRESOLVED",
+      "required_fields": [
+        "provider_instance_version",
+        "remote_repository_id_path",
+        "local_integration_and_remote_installation_ids",
+        "trust_revision",
+        "allowed_test_namespace",
+        "native_rules",
+        "read_replay_cleanup_authority"
+      ]
+    },
+    {
+      "id": "I03",
+      "name": "ci_build",
+      "owner_role_required": "ci_owner",
+      "owner": null,
+      "actual_environment_name": null,
+      "target": null,
+      "authority_evidence": null,
+      "status": "UNRESOLVED",
+      "required_fields": [
+        "workflow_revision",
+        "required_checks",
+        "native_run_job_check_attempt_ids",
+        "source_vs_merge_sha_semantics",
+        "artifact_digest_retention",
+        "failure_controls"
+      ]
+    },
+    {
+      "id": "I04",
+      "name": "payment",
+      "owner_role_required": "payment_system_owner",
+      "owner": null,
+      "actual_environment_name": null,
+      "target": null,
+      "authority_evidence": null,
+      "status": "UNRESOLVED",
+      "required_fields": [
+        "actual_system_official_contract_version",
+        "sandbox_account_merchant_tenant_target",
+        "sandbox_instrument_amount_currency",
+        "create_pay_query_compensation_contract",
+        "idempotency_scope_ttl",
+        "callback_replay_rules",
+        "charge_capture_ledger_reader"
+      ]
+    },
+    {
+      "id": "I05",
+      "name": "order_fulfillment",
+      "owner_role_required": "business_and_messaging_owners",
+      "owner": null,
+      "actual_environment_name": null,
+      "target": null,
+      "authority_evidence": null,
+      "status": "UNRESOLVED",
+      "required_fields": [
+        "order_service_contract_version",
+        "payment_linkage",
+        "order_transition_ledger",
+        "fulfillment_effect_ledger",
+        "consumer_dedup_scope",
+        "queue_identity",
+        "failure_recovery_compensation_controls"
+      ]
+    },
+    {
+      "id": "I06",
+      "name": "callback_time",
+      "owner_role_required": "system_owners",
+      "owner": null,
+      "actual_environment_name": null,
+      "target": null,
+      "authority_evidence": null,
+      "status": "UNRESOLVED",
+      "required_fields": [
+        "callback_target_routing",
+        "signing_secret_reference_generation",
+        "valid_redelivery_facility",
+        "event_attempt_ids",
+        "restricted_raw_evidence_storage",
+        "utc_clock_skew",
+        "monotonic_timer",
+        "allowed_45_second_delay_point_deadline"
+      ]
+    },
+    {
+      "id": "I07",
+      "name": "nonproduction_release",
+      "owner_role_required": "environment_operator",
+      "owner": null,
+      "actual_environment_name": null,
+      "target": null,
+      "authority_evidence": null,
+      "status": "UNRESOLVED",
+      "required_fields": [
+        "environment_name_id_url",
+        "actual_release_rollback_contract_version",
+        "current_deployment",
+        "approved_new_previous_digests",
+        "scoped_executor",
+        "operation_query_idempotency_reconciliation",
+        "health_checks"
+      ]
+    },
+    {
+      "id": "I08",
+      "name": "metrics",
+      "owner_role_required": "observability_and_environment_owners",
+      "owner": null,
+      "actual_environment_name": null,
+      "target": null,
+      "authority_evidence": null,
+      "status": "UNRESOLVED",
+      "required_fields": [
+        "metric_source_query_labels_window",
+        "baseline_threshold_rule_version",
+        "allowed_fault_injection_restore",
+        "original_sample_ids_times_hashes",
+        "rollback_target_validation"
+      ]
+    },
+    {
+      "id": "I09",
+      "name": "people_authority",
+      "owner_role_required": "project_and_business_owner",
+      "owner": null,
+      "actual_environment_name": null,
+      "target": null,
+      "authority_evidence": null,
+      "status": "UNRESOLVED",
+      "required_fields": [
+        "named_user_ids_source_membership",
+        "role_revisions_account_generations",
+        "credential_expiry",
+        "qa_release_separation",
+        "simulated_vs_formal_signer_labels"
+      ]
+    },
+    {
+      "id": "I10",
+      "name": "s2_internal_boundary",
+      "owner_role_required": "s2_2c_owner_and_s4_implementer_checker",
+      "owner": null,
+      "actual_environment_name": null,
+      "target": null,
+      "authority_evidence": null,
+      "status": "UNRESOLVED",
+      "required_fields": [
+        "actual_internal_symbol_types_migrations",
+        "integration_trust_binding",
+        "metric_binding",
+        "unknown_operation_reconciliation",
+        "evidence_current_read_policy",
+        "independent_review"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "E01",
+      "parent_cases": [
+        "TC06",
+        "TC07",
+        "TC08"
+      ],
+      "status": "NOT_RUN",
+      "required_input_ids": [
+        "I01",
+        "I02",
+        "I03",
+        "I06",
+        "I09",
+        "I10"
+      ],
+      "required_evidence": [
+        "repository_installation_connection_trust_identity",
+        "current_branch_pr_head",
+        "complete_native_check_job_attempt_set",
+        "native_required_rules",
+        "server_ci_digest_observation_time",
+        "artifact_source_binding",
+        "exact_human_decisions_refusals",
+        "old_head_replay_duplicate_and_trust_change_results"
+      ],
+      "actual_run_id": null,
+      "evidence_artifacts": [],
+      "synthetic_evidence_acceptable": false
+    },
+    {
+      "id": "E02",
+      "parent_cases": [
+        "TC09"
+      ],
+      "status": "NOT_RUN",
+      "required_input_ids": [
+        "I01",
+        "I04",
+        "I05",
+        "I06",
+        "I09"
+      ],
+      "required_evidence": [
+        "sandbox_charge_capture_ledger",
+        "order_paid_transition_ledger",
+        "linked_fulfillment_result",
+        "amount_currency_and_service_versions"
+      ],
+      "actual_run_id": null,
+      "evidence_artifacts": [],
+      "synthetic_evidence_acceptable": false
+    },
+    {
+      "id": "E03",
+      "parent_cases": [
+        "TC10"
+      ],
+      "status": "NOT_RUN",
+      "required_input_ids": [
+        "I01",
+        "I04",
+        "I05",
+        "I06",
+        "I09"
+      ],
+      "required_evidence": [
+        "same_event_three_real_delivery_attempts",
+        "one_financial_effect",
+        "one_effective_order_transition",
+        "one_fulfillment_effect",
+        "distinct_domain_idempotency_keys_and_queries"
+      ],
+      "actual_run_id": null,
+      "evidence_artifacts": [],
+      "synthetic_evidence_acceptable": false
+    },
+    {
+      "id": "E04",
+      "parent_cases": [
+        "TC11"
+      ],
+      "status": "NOT_RUN",
+      "required_input_ids": [
+        "I01",
+        "I04",
+        "I05",
+        "I06",
+        "I09"
+      ],
+      "required_evidence": [
+        "real_45_second_wall_and_monotonic_timing",
+        "timeout_then_success_original_operation_lookup",
+        "out_of_order_no_state_regression",
+        "consumer_failure_and_recovery_history",
+        "compensation_identity",
+        "three_domain_no_duplicate_effect_ledgers"
+      ],
+      "actual_run_id": null,
+      "evidence_artifacts": [],
+      "synthetic_evidence_acceptable": false
+    },
+    {
+      "id": "E05",
+      "parent_cases": [
+        "TC17"
+      ],
+      "status": "NOT_RUN",
+      "required_input_ids": [
+        "I01",
+        "I02",
+        "I03",
+        "I07",
+        "I09",
+        "I10"
+      ],
+      "required_evidence": [
+        "qa_release_denial_and_zero_external_invocation",
+        "exact_code_build_environment_approval",
+        "current_pre_execution_authority_recheck",
+        "changed_target_digest_and_revoked_expired_signer_refusals",
+        "actual_deployment_operation_and_trusted_observation"
+      ],
+      "actual_run_id": null,
+      "evidence_artifacts": [],
+      "synthetic_evidence_acceptable": false
+    },
+    {
+      "id": "E06",
+      "parent_cases": [
+        "TC18"
+      ],
+      "status": "NOT_RUN",
+      "required_input_ids": [
+        "I01",
+        "I02",
+        "I03",
+        "I07",
+        "I08",
+        "I09",
+        "I10"
+      ],
+      "required_evidence": [
+        "real_anomaly_samples_query_window_threshold",
+        "metric_bound_suggestion_and_human_approval",
+        "exact_original_deployment_and_rollback_target",
+        "actual_rollback_operation_result",
+        "post_rollback_artifact_health_verification"
+      ],
+      "actual_run_id": null,
+      "evidence_artifacts": [],
+      "synthetic_evidence_acceptable": false
+    },
+    {
+      "id": "E07",
+      "parent_cases": [
+        "TC19",
+        "TC20"
+      ],
+      "status": "NOT_RUN",
+      "required_input_ids": [
+        "I01",
+        "I02",
+        "I03",
+        "I07",
+        "I08",
+        "I09",
+        "I10"
+      ],
+      "required_evidence": [
+        "actual_execution_facts_and_current_decisions",
+        "actual_verification_reports",
+        "exact_final_submission_and_acceptance",
+        "unknown_unexecuted_stale_refused_without_side_effect",
+        "api_web_desktop_same_source_identity"
+      ],
+      "actual_run_id": null,
+      "evidence_artifacts": [],
+      "synthetic_evidence_acceptable": false
+    }
+  ],
+  "open_findings": [
+    {
+      "id": "S4-F01",
+      "status": "SOURCE_RISK_NOT_RUNTIME_REPRODUCED",
+      "owner_role": "server_owner",
+      "cases": [
+        "E01"
+      ],
+      "source": "server/pkg/db/queries/github.sql:126",
+      "summary": "GitHub PR upsert has no provider timestamp ordering guard; old authenticated PR redelivery can regress mirrored head. Approval revival must be checked against completed S2."
+    },
+    {
+      "id": "S4-F02",
+      "status": "CONFIRMED_SOURCE_LIMITATION",
+      "owner_role": "s4_adapter_implementer",
+      "cases": [
+        "E01"
+      ],
+      "source": "server/pkg/db/queries/vcs.sql:107",
+      "summary": "VCS CI lacks repository and native run/attempt identity; GitLab merges pipelines and normalizes skipped to passed. Keep unsupported."
+    },
+    {
+      "id": "S4-F03",
+      "status": "CONFIRMED_SOURCE_LIMITATION",
+      "owner_role": "s4_adapter_implementer",
+      "cases": [
+        "E01"
+      ],
+      "source": "server/internal/integrations/ghsnapshot/snapshot.go:21",
+      "summary": "GitHub stored contexts lack native run/job/attempt and artifact identity; required-branch checks need independent real-source verification."
+    },
+    {
+      "id": "S4-F04",
+      "status": "DESIGN_HANDOFF_REQUIRED",
+      "owner_role": "s2_2c_owner",
+      "cases": [
+        "E06"
+      ],
+      "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/design.md:110",
+      "summary": "F05 metric-record binding is not represented in frozen public evidence fields; resolve internally or via reviewed amendment. No contract edited."
+    },
+    {
+      "id": "S4-F05",
+      "status": "NOT_FOUND_AT_CAPTURE",
+      "owner_role": "s2_2c_owner_and_s4_adapter_implementer",
+      "cases": [
+        "E05",
+        "E06",
+        "E07"
+      ],
+      "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md:900",
+      "summary": "Bind actual internal execution-fact registration/consumption and durable unknown-operation reconciliation before integration."
+    }
+  ],
+  "existing_billing_boundary": {
+    "provider_selected_for_s4": null,
+    "source": "server/internal/handler/cloud_billing.go:520",
+    "scope": "Multica Cloud credit/subscription proxy; not PAY-241 business payment/order/fulfillment"
+  },
+  "closure": {
+    "E08_independent_real_evidence_review": "NOT_RUN",
+    "all_real_inputs_bound": false,
+    "ready_for_actual_integration": false,
+    "task_must_remain_open": true
+  },
+  "verification": {
+    "code_tests_run": false,
+    "external_tests_run": false,
+    "artifact_checks": [
+      "JSON parses",
+      "E01-E07 each NOT_RUN",
+      "all input references resolve",
+      "source files exist and hashes captured",
+      "report hash matches"
+    ]
+  }
+}

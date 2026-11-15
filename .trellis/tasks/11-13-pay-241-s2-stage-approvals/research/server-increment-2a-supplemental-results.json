@@ -1,0 +1,265 @@
+{
+  "at": "2026-11-14T06:03:58.839860+00:00",
+  "owner": "/root",
+  "scope": "2a supplemental validation; not S2 acceptance",
+  "source_file_count": 4864,
+  "source_drift": [],
+  "runs": [
+    {
+      "label": "s2-2a-ghsnapshot-race-r01",
+      "package": "./internal/integrations/ghsnapshot",
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-ghsnapshot-race-r01.log",
+      "log_sha256": "da4d674d639907e77388474461f35d24ff87e20dc21d9fabc068df2ac6d1af0b",
+      "counts": {
+        "pass": 42
+      },
+      "top_level_count": 24,
+      "tests": [
+        {
+          "name": "TestInstallationTokenCaches",
+          "action": "pass"
+        },
+        {
+          "name": "TestInstallationTokenSingleflight",
+          "action": "pass"
+        },
+        {
+          "name": "TestGraphQLRateLimited",
+          "action": "pass"
+        },
+        {
+          "name": "TestRateLimitFromResponse/retry-after_wins",
+          "action": "pass"
+        },
+        {
+          "name": "TestRateLimitFromResponse/reset_fallback",
+          "action": "pass"
+        },
+        {
+          "name": "TestRateLimitFromResponse/default",
+          "action": "pass"
+        },
+        {
+          "name": "TestRateLimitFromResponse/clamped_to_5m",
+          "action": "pass"
+        },
+        {
+          "name": "TestRateLimitFromResponse",
+          "action": "pass"
+        },
+        {
+          "name": "TestNewClientFromEnv/unconfigured_yields_nil_client_no_error",
+          "action": "pass"
+        },
+        {
+          "name": "TestNewClientFromEnv/malformed_key_is_an_error",
+          "action": "pass"
+        },
+        {
+          "name": "TestNewClientFromEnv/valid_key_enables_the_client",
+          "action": "pass"
+        },
+        {
+          "name": "TestNewClientFromEnv",
+          "action": "pass"
+        },
+        {
+          "name": "TestListStaleUndecidedGitHubPRsExcludesDecidedAndRotatesCursor",
+          "action": "pass"
+        },
+        {
+          "name": "TestApplySnapshotHeadSHAGuard",
+          "action": "pass"
+        },
+        {
+          "name": "TestInFlightOldHeadKeepsTrailingRefresh",
+          "action": "pass"
+        },
+        {
+          "name": "TestApplySnapshotReplacesRuns",
+          "action": "pass"
+        },
+        {
+          "name": "TestManagerDisabledNoOps",
+          "action": "pass"
+        },
+        {
+          "name": "TestEnqueueCoalesces",
+          "action": "pass"
+        },
+        {
+          "name": "TestMaybeEnqueueOnViewRespectsTTL",
+          "action": "pass"
+        },
+        {
+          "name": "TestProcessRateLimitedSetsPause",
+          "action": "pass"
+        },
+        {
+          "name": "TestRateLimitedInstallationDoesNotOccupyWorkers",
+          "action": "pass"
+        },
+        {
+          "name": "TestRateLimitDeadlineNeverShortens",
+          "action": "pass"
+        },
+        {
+          "name": "TestRateLimitIsolatedByInstallation",
+          "action": "pass"
+        },
+        {
+          "name": "TestPersistentRateLimitReturnsToTTLSweep",
+          "action": "pass"
+        },
+        {
+          "name": "TestScheduleChaseBounded",
+          "action": "pass"
+        },
+        {
+          "name": "TestFetchPRSnapshotRejectsIncompleteNormalizedCheckSet/missing_check_name",
+          "action": "pass"
+        },
+        {
+          "name": "TestFetchPRSnapshotRejectsIncompleteNormalizedCheckSet/missing_status_name",
+          "action": "pass"
+        },
+        {
+          "name": "TestFetchPRSnapshotRejectsIncompleteNormalizedCheckSet/unknown_union",
+          "action": "pass"
+        },
+        {
+          "name": "TestFetchPRSnapshotRejectsIncompleteNormalizedCheckSet/null_node",
+          "action": "pass"
+        },
+        {
+          "name": "TestFetchPRSnapshotRejectsIncompleteNormalizedCheckSet/malformed_check",
+          "action": "pass"
+        },
+        {
+          "name": "TestFetchPRSnapshotRejectsIncompleteNormalizedCheckSet",
+          "action": "pass"
+        },
+        {
+          "name": "TestFetchPRSnapshotPaginatesContexts",
+          "action": "pass"
+        },
+        {
+          "name": "TestFetchPRSnapshotRejectsHeadChangeDuringPagination",
+          "action": "pass"
+        },
+        {
+          "name": "TestFetchPRSnapshotRejectsPaginationBeyondLimit",
+          "action": "pass"
+        },
+        {
+          "name": "TestFetchPRSnapshotNullRollup",
+          "action": "pass"
+        },
+        {
+          "name": "TestSnapshotDecided/clean_passed",
+          "action": "pass"
+        },
+        {
+          "name": "TestSnapshotDecided/conflicting_decided",
+          "action": "pass"
+        },
+        {
+          "name": "TestSnapshotDecided/mergeable_unknown",
+          "action": "pass"
+        },
+        {
+          "name": "TestSnapshotDecided/rollup_pending",
+          "action": "pass"
+        },
+        {
+          "name": "TestSnapshotDecided/running_context",
+          "action": "pass"
+        },
+        {
+          "name": "TestSnapshotDecided/no_checks_but_mergeable",
+          "action": "pass"
+        },
+        {
+          "name": "TestSnapshotDecided",
+          "action": "pass"
+        }
+      ]
+    },
+    {
+      "label": "s2-2a-migrate-r01",
+      "package": "./cmd/migrate",
+      "exit": 1,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-migrate-r01.log",
+      "log_sha256": "d5aab8839627062ef2d4e01d720348c78e033e1c39fd742a8e3464a1fc726cca",
+      "counts": {
+        "pass": 2,
+        "fail": 1
+      },
+      "top_level_count": 3,
+      "tests": [
+        {
+          "name": "TestCollaborationStageMigrationsRunnerUpgradeRefusalRollbackAndReupgrade",
+          "action": "pass"
+        },
+        {
+          "name": "TestEveryConcurrentDownBuildHasCleanup",
+          "action": "pass"
+        },
+        {
+          "name": "TestEveryConcurrentUpBuildHasCleanup",
+          "action": "fail"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-coordinator-hash-check.json",
+      "sha256": "76edf2f66b270f9e2a07230e9706c74be1d0e47122e4f6f91866b90659218aaf"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source.json",
+      "sha256": "702a6fcfb19ca8ed4d210f45e0c11fb866b80a0869489579bf0c33e5db07f73b"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-allocation.json",
+      "sha256": "0158eba76c61742f10486ff9b35171b63850b4580f2005b01692f21b8ad3facd"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-migrations.json",
+      "sha256": "152e3a4eb368389349b4082d626a923d9c44edcb5f85c933d816eea1c1de6079"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-final-db.json",
+      "sha256": "10c837402663f98f6840c15efc741a23a3cbb3c4d5baee169a96ef201b36eb17"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-migration-roundtrip-r01/results.json",
+      "sha256": "bd5daf758d7a390462811635d0631b1585a78ddee4a4d5e3a956fc30e2b82bdd"
+    }
+  ],
+  "findings": [
+    {
+      "id": "migration-cleanup-registration",
+      "status": "routed_to_s2_server",
+      "severity": "P1",
+      "s2_missing": 16,
+      "other_F2_missing": 8,
+      "independent_review": "server-increment-2a-check.json"
+    },
+    {
+      "id": "private-child-digest",
+      "status": "independent_review_routed_to_server_and_client",
+      "severity": "P2",
+      "decision": "Source-denied R1 child digest explicit null; exact correction frozen by server owner before clients edit."
+    }
+  ],
+  "limits": [
+    "2a frozen server full-package snapshot tests, no remote GitHub/CI.",
+    "No A01-A12,production Web/Desktop or real model/business acceptance.",
+    "Retained-history CLI refusal exercised with synthetic code candidate; individual decision/revocation-only guard branches remain for canonical migration coverage.",
+    "Initial coordinator hash audit stopped at absent additional-static exit_file key; corrected audit directly reran both static checks.",
+    "Actual CLI roundtrip used same compiled migration binary and ten unmodified selected821\u2013825migration files; kept database and retained synthetic candidate."
+  ]
+}

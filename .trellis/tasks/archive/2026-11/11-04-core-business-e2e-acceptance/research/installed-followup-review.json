@@ -1,0 +1,50 @@
+{
+  "verdict": "PASS",
+  "blocking_findings_open": 0,
+  "reviewed_at": "2026-11-05T03:55:48.677823+00:00",
+  "review_mode": "Independent read-only static followup review during externally owned model window; no tests/build/browser/database/services",
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "changes": [
+    {
+      "file": "e2e/fixtures/collaboration-installed-main.mjs",
+      "before_sha256": "aa0f1ff6375dc9ca462a1361e5c3324fde58835c1d75b952c39e33eda2b2e749",
+      "after_sha256": "8bd7f89c3381cc99f6e51877b017ad6d8b1bdb8882cdeeaade99e1575721a363",
+      "patch_sha256": "4681777163391fc340de705fc371d6ed4361636f9d8175008882a408b3b16a35",
+      "exact_diff_matches": true
+    },
+    {
+      "file": "e2e/collaboration-host-installed.spec.ts",
+      "before_sha256": "2ca4a3b659fd8a6693d19dee23c587a107ddbce1f07f02c7efe5f9653b288fbe",
+      "after_sha256": "e439fa251286bd879c1eda278ce1ae264ae8dd3744fba9005e196f069488c97f",
+      "patch_sha256": "715a8b3515c69d900e82669d247341161a1130f5156ea5b89b551e8cbe0a4df0",
+      "exact_diff_matches": true
+    }
+  ],
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "checked_contracts": [
+    "Outer host restart now expects authenticated managed daemon running, as already verified by metadata exact private profile/PID/server/deployment/user checks",
+    "Initial launch and metadata remain stopped before authentication; autoStart=false and updater disabled assertions remain",
+    "Execution state equality after restart, exact two existing visits, paused queue and explicit Resume to third launch remain unchanged",
+    "Diagnostics only execute after original state/ownership assertion fails; strict assertion and unchanged timeout are rethrown",
+    "Only fixed profile files under realpath-validated expected home are read; reads limited to64KiB tail per regular file; no writes or probes that mutate files",
+    "Public diagnostic projection omits raw log text/config credentials/proofs; logs emit hashes plus allowlisted markers/codes; config emits presence/match booleans; IPC metadata emits booleans only",
+    "Main stderr is truncated before decoding and reduced to allowlisted codes, retaining at most20 entries",
+    "Diagnostic capture uses3s promise budget; read failures are reduced to fixed codes; unknown raw errors are not exported",
+    "Directory mode/owner/writability and bundled CLI metadata are read-only; no daemon start/stop behavior changed",
+    "Profile credential presence uses token field confirmed against frozen server/internal/cli/config.go:28"
+  ],
+  "verification": {
+    "exact_patch_file_binding": "PASS2files",
+    "static_control_flow_and_secret_projection": "PASS",
+    "lint": "NOT_RUN: no checks during externally owned model window",
+    "typecheck": "NOT_RUN: read-only review only",
+    "tests": "NOT_RUN: root owns post-window replay; prior author checks do not establish live diagnosis"
+  },
+  "remaining_limits": [
+    "Current frozen files still prior hashes; root must apply these exact patches and renew provenance before replay",
+    "Diagnostics do not fix the Linux daemon failure; expected running still strictly enforced",
+    "Mac original stopped outer assertion failure remains retained; postpatch actual restart/Resume must still be executed",
+    "The newly observed diagnostic patch468177... supersedes earlier64715... mentioned in dispatch"
+  ]
+}

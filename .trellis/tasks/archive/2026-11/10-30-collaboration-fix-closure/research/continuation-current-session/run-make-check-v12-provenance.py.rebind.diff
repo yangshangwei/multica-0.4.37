@@ -1,0 +1,140 @@
+--- /Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11-provenance.py
++++ /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/run-make-check-v12-provenance.py
+@@ -9,9 +9,9 @@
+ from urllib.parse import urlsplit
+ 
+ 
+-EXPECTED_ROOT = Path("/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103")
+-EXPECTED_CANDIDATE_SHA = "304f74dd3ba4ddea862c94917c5bb0770355a351"
+-ADAPTERS = EXPECTED_ROOT / ".omx/private/final-check-v11/check-bin"
++EXPECTED_ROOT = Path("/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103")
++EXPECTED_CANDIDATE_SHA = "b6c74033f1913e46418ec1b119da33236dcba805"
++ADAPTERS = EXPECTED_ROOT / ".omx/private/final-check-v12/check-bin"
+ 
+ 
+ def require(condition, message):
+@@ -63,7 +63,7 @@
+ 
+ 
+ def verify_owned_bindings(root, out, clearance, values):
+-    binding_path = out / "owned-bindings-v11-provenance.json"
++    binding_path = out / "owned-bindings-v12-provenance.json"
+     require(clearance.get("bindings_sha256") == file_hash(binding_path), "Owned source/artifact bindings differ from independent review")
+     binding = json.loads(binding_path.read_text())
+     require(binding.get("candidate_root") == str(root) and binding.get("candidate_sha") == EXPECTED_CANDIDATE_SHA,
+@@ -130,7 +130,7 @@
+                 path = directory / row["path"]
+                 require(not path.is_symlink() and file_hash(path) == row["sha256"], "Current-source desktop artifact changed")
+     require(renderer_url(values) == binding["renderer_url"], "Renderer origin differs from current artifact preparation")
+-    proof_path = out / "resource-ownership-v11.json"
++    proof_path = out / "resource-ownership-v12.json"
+     require(proof_path.is_file() and clearance.get("resource_ownership_sha256") == file_hash(proof_path),
+             "Root-owned renderer/Redis/exclusive-window proof is required")
+     proof = json.loads(proof_path.read_text())
+@@ -141,7 +141,7 @@
+             and renderer.get("index_sha256") == file_hash(root / "apps/desktop/out/renderer/index.html"),
+             "Owned live renderer proof differs from current built artifact")
+     redis = proof.get("redis", {})
+-    require(redis.get("ownership_verified") is True and redis.get("port") == 16422 and redis.get("container_id"),
++    require(redis.get("ownership_verified") is True and redis.get("port") == 53841 and redis.get("container_id"),
+             "Dedicated task Redis ownership proof is required")
+     return binding
+ 
+@@ -150,20 +150,20 @@
+     launcher = Path(__file__).resolve()
+     root = launcher.parents[3]
+     require(root == EXPECTED_ROOT, "Unexpected candidate checkout")
+-    out = root / ".omx/private/final-check-v11"
+-    record_path = out / "make-check-v11.json"
+-    log_path = out / "make-check-v11.log"
+-    safe_source = out / "check-source-v11.safe.env"
++    out = root / ".omx/private/final-check-v12"
++    record_path = out / "make-check-v12.json"
++    log_path = out / "make-check-v12.log"
++    safe_source = out / "check-source-v12.safe.env"
+     require(not record_path.exists() and not log_path.exists() and not safe_source.exists(), "Never overwrite previous check evidence")
+     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+-    require(head == EXPECTED_CANDIDATE_SHA, "Final candidate differs from v11 preparation")
++    require(head == EXPECTED_CANDIDATE_SHA, "Final candidate differs from v12 preparation")
+     require(not subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True).strip(), "Final candidate must start clean")
+-    clearance_path = out / "independent-review-clearance-v11.json"
+-    require(clearance_path.is_file(), "Pending independent v11 and current RKI6 result review")
++    clearance_path = out / "independent-review-clearance-v12.json"
++    require(clearance_path.is_file(), "Pending independent v12 and current RKI6 result review")
+     clearance = json.loads(clearance_path.read_text())
+     require(clearance.get("verdict") in ("pass", "pass-with-notes") and clearance.get("blocking_findings_open") == 0,
+             "Independent review has open blocking findings")
+-    source = out / "check-source-v11.env"
++    source = out / "check-source-v12.env"
+     source_bytes = source.read_bytes()
+     adapter_hashes = {name: sha256((ADAPTERS / name).read_bytes()) for name in ("go", "pnpm")}
+     launcher_hash = sha256(launcher.read_bytes())
+@@ -188,7 +188,7 @@
+         "MULTICA_SKILL_TEMPLATE_DIR": out / "catalog/skills", "MULTICA_RESOURCE_PUBLISH_DIR": out / "catalog/published",
+     }
+     require(all(values.get(key) == str(path) for key, path in catalog_paths.items()),
+-            "Task catalog configuration differs from v11 allocation")
++            "Task catalog configuration differs from v12 allocation")
+     for directory in (out / "catalog", out / "catalog/mcp", out / "catalog/skills", out / "catalog/published"):
+         require(not directory.is_symlink() and directory.is_dir() and directory.stat().st_uid == os.geteuid()
+                 and directory.stat().st_mode & 0o777 == 0o700,
+@@ -198,7 +198,7 @@
+             "Task DSH must remain the allocated missing absolute path")
+     renderer = renderer_url(values)
+     binding = verify_owned_bindings(root, out, clearance, values)
+-    task_home = out / "full-check-home-v11"
++    task_home = out / "full-check-home-v12"
+     values.update(HOME=str(task_home), **binding["cache_paths"], GOROOT=binding["tools"]["go"]["goroot"])
+     env = {**os.environ, **values}
+     for key in list(env):
+@@ -216,26 +216,26 @@
+         PATH=str(ADAPTERS) + ":" + str(Path(binding["tools"]["node"]["path"]).parent) + ":" + str(Path(binding["tools"]["go"]["path"]).parent) + ":/opt/homebrew/opt/libpq/bin:" + env["PATH"],
+         MULTICA_TASK_REAL_GO=binding["tools"]["go"]["path"], MULTICA_TASK_REAL_PNPM=binding["tools"]["pnpm"]["path"],
+         MULTICA_TASK_PSQL=binding["tools"]["psql"]["path"], MULTICA_TASK_PACKAGE_DB_MODE="1",
+-        MULTICA_TASK_PACKAGE_DB_EVIDENCE=str(out / "go-packages-v11"), MULTICA_TASK_CANDIDATE_ROOT=str(root),
+-        MULTICA_TASK_RENDERER_URL=renderer, MULTICA_DEV_HOME=str(out / "dev-registry-v11"),
+-        MULTICA_DEV_TMPDIR=binding["allocation"]["directory"], TMPDIR=binding["allocation"]["directory"], MULTICA_DEV_PROFILES_HOME=str(out / "profiles-v11"),
+-        MULTICA_DEV_WORKSPACES_PARENT=str(out / "workspaces-v11"), NEXT_TELEMETRY_DISABLED="1",
++        MULTICA_TASK_PACKAGE_DB_EVIDENCE=str(out / "go-packages-v12"), MULTICA_TASK_CANDIDATE_ROOT=str(root),
++        MULTICA_TASK_RENDERER_URL=renderer, MULTICA_DEV_HOME=str(out / "dev-registry-v12"),
++        MULTICA_DEV_TMPDIR=binding["allocation"]["directory"], TMPDIR=binding["allocation"]["directory"], MULTICA_DEV_PROFILES_HOME=str(out / "profiles-v12"),
++        MULTICA_DEV_WORKSPACES_PARENT=str(out / "workspaces-v12"), NEXT_TELEMETRY_DISABLED="1",
+         GOPROXY="off", GOSUMDB="off", GOTOOLCHAIN="local", GOENV="off", GOMAXPROCS="2",
+         PNPM_DISABLE_SELF_UPDATE_CHECK="1", COREPACK_ENABLE_NETWORK="0", NPM_CONFIG_USERCONFIG="/dev/null",
+         NPM_CONFIG_GLOBALCONFIG="/dev/null", NPM_CONFIG_CACHE=str(out / "node-cache"),
+         DATABASE_MAX_CONNS="10", DATABASE_MIN_CONNS="1", ENV_FILE=str(safe_source),
+     )
+-    allocation = json.loads((out / "build-temp-allocation-v11.json").read_text())
++    allocation = json.loads((out / "build-temp-allocation-v12.json").read_text())
+     task_temp = Path(env["MULTICA_DEV_TMPDIR"])
+-    require(str(task_temp) == allocation["directory"] and str(task_temp).startswith("/private/tmp/multica-final-check-v11-"),
++    require(str(task_temp) == allocation["directory"] and str(task_temp).startswith("/private/tmp/multica-final-check-v12-"),
+             "Build temporary directory differs from allocation")
+     require(not task_temp.is_symlink() and task_temp.is_dir() and task_temp.stat().st_uid == os.geteuid() and task_temp.stat().st_mode & 0o777 == 0o700,
+             "Build temporary directory must be task-owned mode0700")
+     require(subprocess.run(["git", "-C", str(task_temp), "rev-parse", "--show-toplevel"], env=env,
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE).returncode != 0,
+             "Build temporary directory must be outside every Git worktree")
+-    for directory in (task_home, out / "go-packages-v11", out / "dev-registry-v11", out / "profiles-v11", out / "workspaces-v11"):
+-        require(not directory.exists() and not directory.is_symlink(), "V11 writable execution directories must be fresh")
++    for directory in (task_home, out / "go-packages-v12", out / "dev-registry-v12", out / "profiles-v12", out / "workspaces-v12"):
++        require(not directory.exists() and not directory.is_symlink(), "V12 writable execution directories must be fresh")
+     task_home.mkdir(mode=0o700)
+     require(task_home.stat().st_uid == os.geteuid() and task_home.stat().st_mode & 0o777 == 0o700,
+             "Full-check home must be task-owned mode0700")
+@@ -255,13 +255,13 @@
+         "home": str(task_home), "Go_cache_paths": {key: env[key] for key in ("GOCACHE", "GOMODCACHE", "GOPATH")},
+         "renderer": renderer, "knowledge_default": False, "real_provider_allowed": False,
+         "build_temp_directory": str(task_temp), "build_temp_git_root_absent": True,
+-        "owned_bindings_sha256": file_hash(out / "owned-bindings-v11-provenance.json"),
++        "owned_bindings_sha256": file_hash(out / "owned-bindings-v12-provenance.json"),
+         "dev_environment_source_id": binding["source"]["checkout_source_id"],
+         "canonical_product_source_id": binding["source"]["product_source"]["source_id"],
+         "canonical_product_file_count": binding["source"]["product_source"]["file_count"],
+         "tracked_snapshot_fingerprint": binding["source"]["tracked_fingerprint"],
+         "tools": binding["tools"], "cli_sha256": binding["cli"]["sha256"],
+-        "resource_ownership_sha256": file_hash(out / "resource-ownership-v11.json"),
++        "resource_ownership_sha256": file_hash(out / "resource-ownership-v12.json"),
+         "state": "running", "started_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+     }
+     descriptor = os.open(record_path, os.O_RDWR | os.O_CREAT | os.O_EXCL, 0o600)

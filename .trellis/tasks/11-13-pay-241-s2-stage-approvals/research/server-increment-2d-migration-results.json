@@ -1,0 +1,38 @@
+{
+  "at": "2026-11-14T14:56:52.337296+00:00",
+  "status": "migration_scope_pass",
+  "source_files": 4949,
+  "databases": 8,
+  "ledger_entries": 835,
+  "latest_version": 864,
+  "new_indexes": 2,
+  "foreign_keys": 0,
+  "production_activation": false,
+  "runtime_admission_half_downgrade": "pending canonical service test",
+  "retained_synthetic_submission_rows": 1,
+  "retained_synthetic_2c_intents": 1,
+  "evidence": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-inc2d-ddl-root-binding.json",
+      "sha256": "a9a922dea3b3642eae492fc9bb0afdc73b8ca406dea8920f3be4e37b6ed5f97f"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-inc2d-migrator-build.json",
+      "sha256": "ddd47d3c10b8925746d5eeb480ad878ce2839315aa96db0796ef6359fd70d7ec"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-inc2d-migrations.json",
+      "sha256": "9b617ed4f5a13179a4ad5e18931a5ab35e42e7d0e0cb8de8e898470fc84b2b5a"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-inc2d-downgrade-check.json",
+      "sha256": "93fa82ec9d224aecdf57678dfaa8b247725c138b741d4cfb6c5dc7fbcea324dc"
+    }
+  ],
+  "markdown": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-migration-results.md",
+    "sha256": "0b838bf6aa4913bcfd36ca1a4966249a2d71460c792376a0eb3087b432370cbb"
+  },
+  "phase_accepted": false,
+  "parent_accepted": false
+}

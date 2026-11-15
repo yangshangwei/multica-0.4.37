@@ -1,0 +1,39 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "server",
+    "test",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestContextExperiment(E5|NonE5)",
+    "-count=1",
+    "-json",
+    "-timeout=5m",
+    "-p",
+    "2",
+    "-parallel",
+    "2"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-context-guard-baseline-20261102",
+  "started_at": "2026-11-02T13:24:41.532167+00:00",
+  "finished_at": "2026-11-02T13:24:48.789807+00:00",
+  "exit_code": 1,
+  "counts": {
+    "run": 4,
+    "pass": 3,
+    "fail": 1,
+    "skip": 0
+  },
+  "failures": [
+    "TestContextExperimentE5CanaryStopsBeforeNextTrial"
+  ],
+  "log_sha256": "1e3161be4286ff66e14d0d01f1d9abb5ef545b79850f95fc23ad974a198538f1",
+  "Provider_real_calls": 0,
+  "database_access": false,
+  "expected_red": true
+}

@@ -1,0 +1,200 @@
+{
+  "kind": "read_only_current_ROOT_normal_Go_JSON_reparse",
+  "at": "2026-11-15T14:19:02.041Z",
+  "accepted": true,
+  "source_scope": "original_292e_normal_recorded_source_bound_inputs",
+  "original_state_retained": "failed",
+  "original_result": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-execution-result.json",
+    "sha256": "c6c65a9c306920ae490c23fffe4958389fbcadc42b333e7e5105d88c0c20f25a"
+  },
+  "retained_original_result": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/original-normal-execution-result.json",
+    "sha256": "c6c65a9c306920ae490c23fffe4958389fbcadc42b333e7e5105d88c0c20f25a"
+  },
+  "raw": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-tests.stdout.log",
+    "sha256": "2316db743f9b3d35dfd3518fb46de8bc8f6ba4d91b2de4227ef208f6c4f5214c",
+    "bytes": 4322874,
+    "unchanged": true
+  },
+  "parser": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/inventory-parser-v2.cjs",
+    "sha256": "a28625ce70f1a5122852d8b6afce22184d9fd7a2b5267cd347a6fa4af2eb97f6"
+  },
+  "source_fingerprint": "c526b554bf358bad6978e1849d6a3e7ffdce37d29886423ca5b890b61b2ebfe8",
+  "source_manifest": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-test-source-after-manifest.json",
+    "sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+    "mode": "0600",
+    "count": 4774,
+    "bytes": 41944558,
+    "fingerprint_sha256": "c526b554bf358bad6978e1849d6a3e7ffdce37d29886423ca5b890b61b2ebfe8",
+    "stable_reads": true
+  },
+  "top_inventory": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/source-AST-inventory.json",
+    "sha256": "4780bdada9ca451f66dc0792cbb2c29432cc18b42de1dee66926c7aa5200ca50",
+    "top_count": 194
+  },
+  "original_inventory_summary": {
+    "expected_top_count": 194,
+    "actual_top_count": 194,
+    "named_count": 428,
+    "leaf_count": 365,
+    "counts": {
+      "run": 428,
+      "pass": 428,
+      "fail": 0,
+      "skip": 0
+    },
+    "inventory_complete": false,
+    "all_selected_named_tests_passed": false,
+    "parse_errors": 2226,
+    "duplicate_count": 0,
+    "unfinished_count": 0,
+    "missing_top_count": 0,
+    "unexpected_top_count": 0
+  },
+  "corrected_inventory": {
+    "expected_top_count": 194,
+    "actual_top_count": 194,
+    "named_count": 428,
+    "leaf_count": 365,
+    "counts": {
+      "run": 428,
+      "pass": 428,
+      "fail": 0,
+      "skip": 0
+    },
+    "build_event_count": 2226,
+    "build_failures": 0,
+    "parse_errors": 0,
+    "inventory_complete": true,
+    "duplicates": 0,
+    "unfinished": 0,
+    "missing_tops": 0,
+    "unexpected_tops": 0,
+    "named_set_sha256": "db2ac45793cd2144566791c6925ecac46954f6f97af231052178871673af7396",
+    "leaf_set_sha256": "8b53f22354fed3edecc7eababda03f118110e69aa95aea8b64e1e38275524821"
+  },
+  "binding_count": 18,
+  "binding_failures": [],
+  "bindings": [
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-tests-wrapper.stdout.log",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-tests-wrapper.stderr.log",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-tests.stdout.log",
+      "expected_sha256": "2316db743f9b3d35dfd3518fb46de8bc8f6ba4d91b2de4227ef208f6c4f5214c",
+      "actual_sha256": "2316db743f9b3d35dfd3518fb46de8bc8f6ba4d91b2de4227ef208f6c4f5214c",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-tests.stderr.log",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-actual-inventory.json",
+      "expected_sha256": "250d9dcb18b1fbeca57541277550527ca2582ca78f055591588af3396d7c2614",
+      "actual_sha256": "250d9dcb18b1fbeca57541277550527ca2582ca78f055591588af3396d7c2614",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-test-source-before-manifest.json",
+      "expected_sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+      "actual_sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-test-source-after-manifest.json",
+      "expected_sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+      "actual_sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-consumed-before-manifest.json",
+      "expected_sha256": "84804cbe9032224e3cd18f7f773a2b9e7645cd52be6291402ce2f870d7789d9f",
+      "actual_sha256": "84804cbe9032224e3cd18f7f773a2b9e7645cd52be6291402ce2f870d7789d9f",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-consumed-after-manifest.json",
+      "expected_sha256": "84804cbe9032224e3cd18f7f773a2b9e7645cd52be6291402ce2f870d7789d9f",
+      "actual_sha256": "84804cbe9032224e3cd18f7f773a2b9e7645cd52be6291402ce2f870d7789d9f",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-test-tools-before-manifest.json",
+      "expected_sha256": "ae935a5f2a7188a2f2ba6023801bd105e8c7bf8cec270e8c678191451cdc8e5a",
+      "actual_sha256": "ae935a5f2a7188a2f2ba6023801bd105e8c7bf8cec270e8c678191451cdc8e5a",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-test-tools-after-manifest.json",
+      "expected_sha256": "ae935a5f2a7188a2f2ba6023801bd105e8c7bf8cec270e8c678191451cdc8e5a",
+      "actual_sha256": "ae935a5f2a7188a2f2ba6023801bd105e8c7bf8cec270e8c678191451cdc8e5a",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-test-config-before-manifest.json",
+      "expected_sha256": "c8aecfbc88177ac101bfca289df97b688d0aa255ba9d028c26d172b2056a7b04",
+      "actual_sha256": "c8aecfbc88177ac101bfca289df97b688d0aa255ba9d028c26d172b2056a7b04",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-test-config-after-manifest.json",
+      "expected_sha256": "c8aecfbc88177ac101bfca289df97b688d0aa255ba9d028c26d172b2056a7b04",
+      "actual_sha256": "c8aecfbc88177ac101bfca289df97b688d0aa255ba9d028c26d172b2056a7b04",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-before-git-identity.json",
+      "expected_sha256": "2d048e035ba4c26ba324ef5c747817815a730a05e063ab41e437024ed91125be",
+      "actual_sha256": "2d048e035ba4c26ba324ef5c747817815a730a05e063ab41e437024ed91125be",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-after-git-identity.json",
+      "expected_sha256": "af5cb49e1b62703afa19c974c0b38ffed31146399b7116ddda633e09cf55ca37",
+      "actual_sha256": "af5cb49e1b62703afa19c974c0b38ffed31146399b7116ddda633e09cf55ca37",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-generated-inputs-manifest.json",
+      "expected_sha256": "12faf4a3897fc3cf03983c20c0f8501f63b7f3b655ba03afd8bf168426df7557",
+      "actual_sha256": "12faf4a3897fc3cf03983c20c0f8501f63b7f3b655ba03afd8bf168426df7557",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-post-schema-schema.json",
+      "expected_sha256": "c7b137d128b663139ad904511389688bdda3e4470e0577157400abe48c5dcad9",
+      "actual_sha256": "c7b137d128b663139ad904511389688bdda3e4470e0577157400abe48c5dcad9",
+      "matches": true
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-post-owned-processes.json",
+      "expected_sha256": "a0e1f98fa3679a263767b93e5c39a7e7926188e87ba62f1505749f2c3c99f92c",
+      "actual_sha256": "a0e1f98fa3679a263767b93e5c39a7e7926188e87ba62f1505749f2c3c99f92c",
+      "matches": true
+    }
+  ],
+  "normal_tests_replayed": 0,
+  "new_databases_created": 0,
+  "model_provider_or_account_calls": 0,
+  "original_parser_or_controller_modified_by_this_owner": false,
+  "ROOT_final": false,
+  "P2_final": false,
+  "product_final": false
+}

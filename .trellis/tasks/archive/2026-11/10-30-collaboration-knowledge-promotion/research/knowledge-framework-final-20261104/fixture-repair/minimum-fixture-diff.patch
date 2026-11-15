@@ -1,0 +1,25 @@
+--- rk1k_fixture.before.go
++++ server/cmd/server/rk1k_fixture_test.go
+@@ -234,13 +234,21 @@
+ 	}
+ 	deadline := time.Now().Add(10 * time.Second)
+ 	for {
++		list, err := f.client.List(f.t.Context(), f.base.runtime)
++		if err != nil {
++			f.t.Fatalf("runtime list: %v", err)
++		}
++		eligible := make(map[string]bool, len(list.RunIDs))
++		for _, id := range list.RunIDs {
++			eligible[id] = true
++		}
+ 		runs, err := f.q.ListCollaborationRuns(f.t.Context(), session.ID)
+ 		if err != nil {
+ 			f.t.Fatal(err)
+ 		}
+ 		pending := make([]db.CollaborationRun, 0, len(runs))
+ 		for _, run := range runs {
+-			if !run.SettledAt.Valid {
++			if !run.SettledAt.Valid && eligible[util.UUIDToString(run.ID)] {
+ 				pending = append(pending, run)
+ 			}
+ 		}

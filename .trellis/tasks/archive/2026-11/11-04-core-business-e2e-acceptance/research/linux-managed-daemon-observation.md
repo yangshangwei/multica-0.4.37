@@ -1,0 +1,5 @@
+# Linux installed Main daemon-state observation
+
+ui-r2-03 failed after real password login while `navigate` metadata expected running but observed stopped. This is distinct from the macOS outer assertion mismatch. Source inspection does not establish a Linux exemption: server `managed_installation_supported` is a capability flag, whereas Desktop creates the actual session only after validating password JWT identity and enrollment. Missing complete JWT can return no managed session; enrollment can fail.
+
+The image environment has no MULTICA disable flag. The disposable container and its unretained Main stderr leave insufficient evidence to choose a cause. Do not accept arbitrary running/stopped or special-case Linux to make the test pass. Root should retain the original failure and run a bounded diagnostic capturing only metadata presence/matching booleans, safe daemon diagnostic/status fields and exact private-profile identity. Never include token/proof/private-key contents. Product changes are not justified by the current evidence.

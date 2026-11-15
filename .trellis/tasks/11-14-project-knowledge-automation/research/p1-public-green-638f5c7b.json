@@ -1,0 +1,71 @@
+{
+  "run_id": "p1-public-green-638f5c7b",
+  "database": "mca_knowledge_service_85e418fe3d8c",
+  "package": "./internal/service",
+  "test_pattern": "^(TestKnowledgePublic|TestKnowledgeHumanListDetail|TestKnowledgeBoundedHistory|TestKnowledgePagingRejects|TestKnowledgeExternalHandlerCanPropose)",
+  "run_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p1-public-green-638f5c7b",
+  "state": "complete",
+  "cluster_before": {
+    "database": "postgres",
+    "version": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "max_connections": 100,
+    "connections": 28
+  },
+  "go_version": "go version go1.27.0 darwin/arm64",
+  "source_sha256_before": "d2f714aa2ba11790bd9bb32f02391a8ae0d3a3290175dbc0036575dfaebb1aeb",
+  "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "created_at": "2026-11-14T13:03:42.590515+00:00",
+  "real_model_credentials_inherited": false,
+  "agent_cli_guard": true,
+  "launcher_sha256": "8b0c310e77af0f694d187306332e208a2910da1e3e95cbb045d4ee4f5ae68446",
+  "migration_exit": 0,
+  "migration_ledger": "848:860_knowledge_automation_execution_policy",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-count=1",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-timeout=5m",
+    "./internal/service",
+    "-run",
+    "^(TestKnowledgePublic|TestKnowledgeHumanListDetail|TestKnowledgeBoundedHistory|TestKnowledgePagingRejects|TestKnowledgeExternalHandlerCanPropose)"
+  ],
+  "test_exit": 0,
+  "tests": {
+    "run": [
+      "TestKnowledgeExternalHandlerCanProposeToVisibleCurrentSourceProject",
+      "TestKnowledgePublicV2PreservesHumanReceiptsAndAudit",
+      "TestKnowledgePublicCursorCannotChangeProtocolVersion",
+      "TestKnowledgePublicV1CannotHideAutomationBeyondPage",
+      "TestKnowledgeExternalHandlerCanProposeToSourceWorkspaceWithoutMembership",
+      "TestKnowledgeHumanListDetailHistoryAndTargetSuppressPurgedSourceText",
+      "TestKnowledgeBoundedHistoryRemainsReachableThroughSourcePaging",
+      "TestKnowledgePagingRejectsExpiredForeignAndMalformedBoundary"
+    ],
+    "pass": [
+      "TestKnowledgeExternalHandlerCanProposeToVisibleCurrentSourceProject",
+      "TestKnowledgePublicV2PreservesHumanReceiptsAndAudit",
+      "TestKnowledgePublicCursorCannotChangeProtocolVersion",
+      "TestKnowledgePublicV1CannotHideAutomationBeyondPage",
+      "TestKnowledgeExternalHandlerCanProposeToSourceWorkspaceWithoutMembership",
+      "TestKnowledgeHumanListDetailHistoryAndTargetSuppressPurgedSourceText",
+      "TestKnowledgeBoundedHistoryRemainsReachableThroughSourcePaging",
+      "TestKnowledgePagingRejectsExpiredForeignAndMalformedBoundary"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "source_sha256_after": "d2f714aa2ba11790bd9bb32f02391a8ae0d3a3290175dbc0036575dfaebb1aeb",
+  "connections_after": 0,
+  "finished_at": "2026-11-14T13:03:58.528676+00:00",
+  "source_stable": true
+}

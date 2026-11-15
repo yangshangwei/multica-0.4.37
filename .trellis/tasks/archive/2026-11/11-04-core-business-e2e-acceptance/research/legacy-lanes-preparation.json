@@ -1,0 +1,39 @@
+{
+  "state": "PREPARED_NOT_EXECUTED",
+  "runner_sha256": "f32db349c571219fe467ab70ab3129a9a21042c1f0891a565f84922ebf8f1b77",
+  "shared_controller_sha256": "0a7b435357482a6cbfcf95ee42ce781d16000e9848db9d433687e5cd4d2073f5",
+  "allocated_databases_sha256": "440df3532d6cc149a7a01f31e308616cb8182a0a5cfe4dc1b324ddec85c17756",
+  "rows": [
+    {
+      "variant": "device",
+      "database": "multica_core1a32_20261104_device",
+      "spec": "e2e/auth-device.spec.ts",
+      "spec_sha256": "674d1eaf4c509a739ad7d702b733d3c9b84b56e87259469cffc9e0e9a8aa3551",
+      "expected_cases": 1
+    },
+    {
+      "variant": "assist",
+      "database": "multica_core1a32_20261104_assist",
+      "spec": "e2e/issue-assist-flow.spec.ts",
+      "spec_sha256": "8095037ed04d084f43ddc087e34aba61897a10d4c338ea95948e3dedc8613a22",
+      "expected_cases": 8,
+      "helper": "e2e/support/assist-provider.mjs",
+      "helper_sha256": "3a187e8154de0499c2b932ee04b2d49b82d88f905ad0dd3f7a3a21d72e2ff44d",
+      "helper_port": "ROOT_SELECT_FREE_LOOPBACK_PORT"
+    },
+    {
+      "variant": "recommend",
+      "database": "multica_core1a32_20261104_recommend",
+      "spec": "e2e/quick-create-actor-picker-phase2.spec.ts",
+      "spec_sha256": "d95d2b030877eeab2309f6dacce4f12600caed15bada6cd39b16b9ace168a12a",
+      "expected_cases": 4,
+      "helper": "e2e/fixtures/creator-recommendation-provider.mjs",
+      "helper_sha256": "80285ff97109e21e7bd05d1a1e89434cc208bf0e3d2ce024532823f51d1ee2f5",
+      "helper_port": "ROOT_SELECT_FREE_LOOPBACK_PORT"
+    }
+  ],
+  "no_ddl": true,
+  "real_provider_calls": 0,
+  "syntax_check": "PASS",
+  "live_execution": false
+}

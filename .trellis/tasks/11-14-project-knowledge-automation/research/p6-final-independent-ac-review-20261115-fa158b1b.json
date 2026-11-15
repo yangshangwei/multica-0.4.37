@@ -1,0 +1,314 @@
+{
+  "schema_version": 1,
+  "review_id": "p6-final-independent-ac-review-20261115-fa158b1b",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "reviewer_role": "independent_trellis_check_subagent",
+  "reviewed_at": "2026-11-15T10:17:45.573Z",
+  "review_mode": "bounded_read_only_b91_to_f75_managed_prerequisite_delta",
+  "state": "interim_managed_prerequisite_admission_not_final_ac",
+  "approved_implementation_revision": "existing2026-11-14-v1",
+  "verdict": "zero_confirmed_managed_prerequisite_admission_blockers",
+  "blocking_findings": [],
+  "blocking_findings_open": 0,
+  "admitted_for_candidate_scoped_actual_journeys": true,
+  "final_ac_or_p6_acceptance_verified": false,
+  "current_root_frontend_accepted": false,
+  "source_ready_or_runtime_permit_issued_by_reviewer": false,
+  "ownership": {
+    "product_source_mutations": 0,
+    "task_spec_markdown_mutations": 0,
+    "guards_mutated_by_reviewer": 0,
+    "tests_lint_typecheck_builds_or_db_suites_run_by_reviewer": 0,
+    "services_or_native_apps_started_or_stopped_by_reviewer": 0,
+    "descendants_spawned": 0,
+    "public_file_created": "research/p6-final-independent-ac-review-20261115-fa158b1b.json",
+    "root_current_checks_and_mapping_owner": "Descartes",
+    "prior_context_reused": [
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-ac-review-preflight-20261115-7686d6f9.json",
+        "sha256": "dd4246e2ef4a0f3f93b730414c236ae5c7e4126ac2193efe4d2538674926608d"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-isolated-candidate-admission-review-20261115-333d5619.json",
+        "sha256": "14f120d72df88182df5727201aae627b56be0681e0d4986227f2a29b53e64ffe"
+      }
+    ]
+  },
+  "source": {
+    "candidate_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source",
+    "before": "b91a4cac945be1bdf3f98ff1d861895fb43602e554fb89ad668be63b19bc2aa5",
+    "after": "f75ed59db8b83e5f149334817897a1d570e9ead6bc89de576a9251d058a8e846",
+    "files": 11017,
+    "exact_changed_paths": [
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+        "before_sha256": "18643895cdf992a684ed22ecead35d3f42e30c27d01fb71e6f784d461bbce69a",
+        "after_sha256": "e3aeae6a78dd882127121f9c813cd7f83ea14cabd28d3178b7e6d7b67c96d253",
+        "mode_link_unchanged": true
+      },
+      {
+        "path": "e2e/fixtures/collaboration-detail-journey.ts",
+        "before_sha256": "ec727d740cf074b4b7f47a257ef29a3e2e233736b7f69c845c2b69fd58bc88e2",
+        "after_sha256": "470dde98fab303d210701fe03cca296ec5ee712d7e44ffbfd63914f7401355aa",
+        "mode_link_unchanged": true
+      },
+      {
+        "path": "e2e/fixtures/project-knowledge-automation.ts",
+        "before_sha256": "f7553a1785231cab4f0ddc967c7a819b62eea389ca3fcb1a010b84a889cbd106",
+        "after_sha256": "195f255c761a88bd70fae3cd0d5eb17ca739ac92b446d7321a56d3f224ac27ad",
+        "mode_link_unchanged": true
+      },
+      {
+        "path": "e2e/project-knowledge-automation.spec.ts",
+        "before_sha256": "de6c4090c4e520bfadb87463a28fccb15831557ba8d1404d99a7b78578434381",
+        "after_sha256": "d4af16db947c7ae3e1379f5d079759b2c860efe1de427f606177c53093e11d73",
+        "mode_link_unchanged": true
+      }
+    ],
+    "inverse_all_11017_rows_match_b91": true,
+    "inverse_source_id": "b91a4cac945be1bdf3f98ff1d861895fb43602e554fb89ad668be63b19bc2aa5",
+    "four_paths_still_match_at_write": true,
+    "workspace_bindings": 32,
+    "workspace_bindings_unchanged": true,
+    "source_symlinks": 0,
+    "private_git_index": {
+      "entry_count": 11017,
+      "conflict_stage_count": 0,
+      "path_set_matches_source": true,
+      "is_regular": true,
+      "is_symlink": false,
+      "nlink": 1,
+      "sha256": "d4c7194a00eb3176dd4b6d4146749a86b35a2c323e674cf69de673eab2115e7b",
+      "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+      "head_matches_b91": true,
+      "object_type": "commit"
+    },
+    "product_go_sql_ui_delta": false,
+    "private_go_sql_sha256": "d9fe7fcb1b35657cf930a4c1c60b03b0c093bbfbbb192a927636475dd705531c",
+    "production_scope_limit": "No current full ROOT comparison or ROOT verification was repeated. Candidate product/Go/SQL/UI equality follows the exact private before/after mapping; mutable ROOT integration remains separate.",
+    "receipt": {
+      "path": "research/p6-managed-daemon-prerequisite-repair-a61bf96c.json",
+      "sha256": "916448ef8cc6d56c899e0f0c5774e1899133099d2d74ef39de2089426bd6c182"
+    }
+  },
+  "auth_admission_findings": [
+    {
+      "id": "AUTH-1",
+      "severity": "info",
+      "status": "reviewed_no_blocker",
+      "finding": "P6 explicitly requires password authentication, managed installation support, single local limiter and disabled device/admin/cloud integration. Controller compares all six expected configuration values exactly and pins live API listener, commit, managed support and UUID deployment identity.",
+      "controller_changed_functions": [
+        "Runtime.assert_build",
+        "Runtime.environment",
+        "Runtime.prove_services",
+        "main"
+      ],
+      "controller_function_count": 40,
+      "other_36_functions_ast_unchanged_from_b91": true,
+      "configuration": {
+        "MULTICA_AUTH_MODE": "password",
+        "MULTICA_MANAGED_INSTALLATIONS_ENABLED": "true",
+        "MULTICA_PASSWORD_LIMITER_MODE": "single",
+        "MULTICA_DEVICE_AUTH_ENABLED": "false",
+        "MULTICA_PLATFORM_ADMIN_ENABLED": "false",
+        "MULTICA_CLOUD_URL": ""
+      },
+      "guard_limit": "Authentication expectation was retargeted to the authorized managed mode; source, allocation, environment hashes, tools, artifacts, PID/birth ownership and runtime lifecycle checks remain. This is not a claim that all controller bytes stayed unchanged."
+    },
+    {
+      "id": "AUTH-2",
+      "severity": "info",
+      "status": "reviewed_no_blocker",
+      "finding": "detailJourneyProvenance and seedDetailJourney still default to legacy. The password branch requires explicit provenance and environment agreement, then verifies live config/deployment and the existing source/listener/build/database/manual-business-gate proof before synthetic account setup.",
+      "default_legacy_preserved": true,
+      "manual_business_gates_preserved": true
+    },
+    {
+      "id": "AUTH-3",
+      "severity": "info",
+      "status": "reviewed_runtime_proof_pending",
+      "finding": "The fixture uses CJS createRequire for the unchanged production managed-session source module. It requests real enrollment/binding challenges, creates a private installation identity, passes its one-shot handoff to the matching production CLI through --managed-handoff-stdin and uses a unique private daemon HOME. No MDT credential or approved prompt is fabricated by the fixture.",
+      "production_helper": "apps/desktop/src/main/managed-session.ts",
+      "handoff_transport": "stdin",
+      "credentials_in_argv": false,
+      "private_profile_config_mode": "0600 exclusive create",
+      "private_home_mode": "0700",
+      "runtime_pending": "Actual populated context version/delivery and captured approved knowledge through this managed daemon remain to be proved."
+    },
+    {
+      "id": "AUTH-4",
+      "severity": "info",
+      "status": "reviewed_no_blocker",
+      "finding": "The spec increment records managed identity. Exact approved body/hash, candidate version equality, acceptance-bound validity, reopen/refusal, fresh restored proof and zero-work negative assertions remain. No assertions, rules, guards or dependencies were suppressed to admit this candidate."
+    }
+  ],
+  "static_evidence": {
+    "playwright_discovery": {
+      "named_tests": 2,
+      "platforms": [
+        "web",
+        "desktop"
+      ],
+      "exit_code": 0,
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-static-22585557/playwright-list.log",
+      "log_sha256": "83e86b9bfa58f3c0307c46e9b707de3148e67c0b3c1bdf0a87c74e7320d1a7fb",
+      "acceptance_execution": false,
+      "original_cjs_import_failure_preserved": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-static-f7356860/result.json"
+    },
+    "eslint_baseline": {
+      "receipt": "research/p6-managed-lint-baseline-comparison-f5822947.json",
+      "sha256": "1daf8376d76fdbaca0217f363f772e8d182b6817d63da4be6a992e76a5b20613",
+      "raw_logs_verified": 6,
+      "all_raw_messages_match_receipt": true,
+      "comparisons": [
+        {
+          "file": "e2e/fixtures/collaboration-detail-journey.ts",
+          "original_errors": 8,
+          "current_errors": 8,
+          "same_rule_message_multiset": true,
+          "before_source_hash_matches": true,
+          "after_source_hash_matches": true
+        },
+        {
+          "file": "e2e/fixtures/project-knowledge-automation.ts",
+          "original_errors": 5,
+          "current_errors": 5,
+          "same_rule_message_multiset": true,
+          "before_source_hash_matches": true,
+          "after_source_hash_matches": true
+        },
+        {
+          "file": "e2e/project-knowledge-automation.spec.ts",
+          "original_errors": 1,
+          "current_errors": 1,
+          "same_rule_message_multiset": true,
+          "before_source_hash_matches": true,
+          "after_source_hash_matches": true
+        }
+      ],
+      "new_diagnostics": 0,
+      "standalone_e2e_lint_passed": false
+    },
+    "typescript_baseline": {
+      "receipt": "research/p6-managed-types-baseline-comparison-311b22cf.json",
+      "receipt_sha256": "1c77248c4634f26194b547326d32a1918a41cd28b159b820baf20bf85b16c5bc",
+      "typescript_version": "5.9.3",
+      "mode": "strict_host_overlay_before_after_comparison_no_emit",
+      "original_diagnostics": 8,
+      "current_diagnostics": 8,
+      "same_code_file_message_multiset": true,
+      "new_diagnostics": 0,
+      "current_typecheck_passed": false,
+      "full_e2e_typecheck_green_claimed": false,
+      "old_diagnostic_groups": {
+        "declaration_TestWorkspace": 5,
+        "candidate_union_version": 1,
+        "capture_nullability": 2
+      },
+      "current_source_hashes_match": true,
+      "canonical_package_quality": "Carried only for unchanged package/product/unit inputs; this comparison does not make standalone E2E typecheck green."
+    },
+    "canonical_package_quality": {
+      "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-isolated-frontend-0f91ae3c.json",
+      "sha256": "11dfc1d4b4c5fd36042fdd63bff4c3e212ba79209987f9d83efd6eab4643fc4a",
+      "executed_source_id": "d1a929957a32b63c683c642528afb6e73872fd993b3ee7c7c65328ecc4f9379b",
+      "counts": {
+        "pass": 14112,
+        "fail": 0,
+        "skip": 0,
+        "total": 14112
+      },
+      "no_cache": true,
+      "scope": "Historical executed package lint/typecheck/test fact carried through unchanged product/package/unit inputs. Standalone E2E lint/typecheck are not green and were not rerun by this reviewer."
+    }
+  },
+  "preserved_failures": {
+    "legacy_daemon_input": {
+      "receipt": "research/p6-original-legacy-daemon-input-failure-e7734978.json",
+      "sha256": "55d13c69aa2ad75d5d8dac3346d4de1f66a935be96fd959183673dd5019faa68",
+      "source_id": "b91a4cac945be1bdf3f98ff1d861895fb43602e554fb89ad668be63b19bc2aa5",
+      "counts": {
+        "pass": 0,
+        "fail": 2,
+        "skip": 0,
+        "retry": 0
+      },
+      "actual_consumers_completed": 2,
+      "knowledge_context_version_and_delivery_null": true,
+      "raw_result_sha256": "180f886d9a187b952831b1d6a0e8f70a3d9f4f1a8b8a3c20565951b77d46b1c0",
+      "raw_report_sha256": "f1cd08245146b90bf67f708dc6e293e656f485f063871996468f29b2eaf6fb85",
+      "raw_result_report_and_build_hashes_verified": true,
+      "diagnosis": "Expected production guard rejected private knowledge negotiation under legacy user credentials; this is a missing fixture prerequisite, not a confirmed production-code defect."
+    },
+    "errno28_build": {
+      "build": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5543914b5f75/build.json",
+      "source_id": "f75ed59db8b83e5f149334817897a1d570e9ead6bc89de576a9251d058a8e846",
+      "state": "build_failed",
+      "error": "OSError: [Errno 28] No space left on device",
+      "raw_error": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/logs/lifecycle-error-2b5f3bf63b11.log",
+      "raw_error_sha256": "708dded5016d9a2e5cd91f1560e2ef734cd842ca282d47777757aba8a9101463",
+      "raw_error_hash_verified": true,
+      "receipt": {
+        "path": "research/p6-owned-cache-prune-8341b343.json",
+        "sha256": "64d83e27e3ffb771ee6df7f118d6bb798234ac4e30ef994bb99653c97be17a8d"
+      },
+      "repair": "Only six explicitly excluded owned Next cache directories were removed.",
+      "removed_allocated_bytes": 11000614912,
+      "owner_receipt_protected_artifacts": 8419,
+      "owner_receipt_protected_mismatches": 0,
+      "protected_hashes_not_recomputed_by_this_bounded_reviewer": true,
+      "source_before": "f75ed59db8b83e5f149334817897a1d570e9ead6bc89de576a9251d058a8e846",
+      "source_after": "f75ed59db8b83e5f149334817897a1d570e9ead6bc89de576a9251d058a8e846",
+      "source_stable": true,
+      "public_peer_assets_touched": false,
+      "all_six_old_cache_directories_independently_observed_absent": true,
+      "original_failure_remains_red": true
+    }
+  },
+  "current_build_scope": {
+    "leader_reported_rebuild": "build-5da5f97393ec",
+    "expected_source_id": "f75ed59db8b83e5f149334817897a1d570e9ead6bc89de576a9251d058a8e846",
+    "actual_build_runtime_and_cleanup_verdict": "pending_not_inspected_or_waited_for_in_this_interim_admission"
+  },
+  "recommendations_and_next_gates": [
+    {
+      "priority": "required_for_final_candidate_acceptance",
+      "action": "Supply immutable same-source completed API/CLI/Web/Desktop build and live ownership/config/environment/source/artifact receipts; this interim admission issues no runtime permit."
+    },
+    {
+      "priority": "required_for_final_candidate_acceptance",
+      "action": "Run both actual named journeys with managed context version/delivery populated, exact captured approved body/version/validity, reopen and fresh reacceptance proof, and negative zero-job/candidate/model/provider/workspace-write assertions. Record actual fail/skip/retry counts."
+    },
+    {
+      "priority": "required_for_final_candidate_acceptance",
+      "action": "Supply owned daemon/native/service cleanup plus remaining process, listener and DB connection proof; retained owned resources must be explicit."
+    },
+    {
+      "priority": "low_nonblocking_separate_C3",
+      "action": "Keep direct original prepare/authorize replay after proof replacement separate from comment continuation; C3 remains unexecuted until its own actual receipt."
+    },
+    {
+      "priority": "existing_static_followup",
+      "action": "Retain standalone E2E ESLint and TypeScript diagnostic boundaries. Any later source correction stays with the leader and requires its own frozen source/evidence binding."
+    }
+  ],
+  "scope_limits": {
+    "final_ac1_ac12_review": "Not closed by this interim admission; earlier full-scope review is reused and forthcoming actual runtime/cleanup receipts are required.",
+    "root": "Mutable concurrent ROOT remains unaccepted; Descartes receipt state scoped_failure_or_unstable is not ROOT GREEN.",
+    "controlled_model": "No real-provider semantic quality claim.",
+    "desktop": "Real renderer/preload/routes and matching CLI plus direct production managed-session helper do not establish installed Main, installer or other platforms.",
+    "dependencies": "Shared preexisting dependency caches are not hermetic.",
+    "C1_C2": "Closed by the independent mixed-history owner; assertions were not duplicated here.",
+    "C3": "Low/nonblocking direct original prepare/authorize replay after replacement not executed.",
+    "PAY_parent24": {
+      "PARTIAL": 4,
+      "NOT_RUN": 20,
+      "closed_by_knowledge_review": false
+    },
+    "PAY_S2": {
+      "passed": 0,
+      "total": 4,
+      "closed_by_knowledge_review": false
+    }
+  }
+}

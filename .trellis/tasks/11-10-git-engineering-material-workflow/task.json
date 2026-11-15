@@ -1,0 +1,209 @@
+{
+  "id": "git-engineering-material-workflow",
+  "name": "git-engineering-material-workflow",
+  "title": "Git 工程物料与 Multica 全流程协作需求深化",
+  "description": "基于源码和一手资料深化 Git 工程物料与 Multica 的职责、版本、审批和证据闭环，交付专家研究框架与重写后的题目；本轮仅规划",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-10",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "2026-11-12：D9 澄清为未来产品使用模型：产品/测试的物料仓关联一个普通 Multica 项目，该项目兼任系统需求、测试与协调入口。此前把计划中的资源记录为既有仓库/项目并要求地址属于误解。当前功能开发无需真实 Git 地址或预建业务项目，运行时再配置绑定，开发用模拟 provider 和隔离数据。D1–D8 保留，总体/模块编排、QA 策略、开关重启与首期范围仍待定。保持 planning，尚未开始实现。 本轮新增 D10：用户确认稳定目录、Multica 分层状态与独立归档，需求完成需整体验收、问题修复需复测通过，完成/关闭/重开/归档不移动 Git 文件。具体状态映射、转换与归档权限及自动归档时机待细化；本次只更新规划记录。",
+  "meta": {
+    "progress_phase": "design_draft_product_decisions_pending",
+    "research_deliverables_complete": true,
+    "product_implementation_started": false,
+    "implementation_ready": false,
+    "next_action": "Continue product and technical design for ordinary material project coordination and runtime resource binding; use isolated fixtures for development without requesting live repository URLs or precreated projects; converge QA policy, D8 re-enable behavior and first-release scope; refine D10 status mappings, transition/archive permissions and automatic archive policy while preserving stable material paths",
+    "research_files": [
+      "research/requirements-depth.md",
+      "research/multica-existing-capabilities.md",
+      "research/primary-sources.md",
+      "research/product-authoring-workflow.md",
+      "research/gitlab-github-compatibility.md",
+      "research/deepseek-harness-primary-sources.md",
+      "research/material-repository-layout.md"
+    ],
+    "status_refresh_2026_11_11": {
+      "source_head": "1ce4e81223be3397fe15e2649debfac40720ddd9",
+      "report": "docs/audits/2026-11-11-active-task-progress-refresh.zh-CN.md",
+      "archive_ready": false,
+      "previous_current_fields": {
+        "notes": "",
+        "meta": {}
+      }
+    },
+    "confirmed_submission_policy": {
+      "confirmed_at": "2026-11-11",
+      "delivery": "push_requirement_branch_and_create_or_update_pr_mr",
+      "effective_baseline": "after_current_business_approval_native_gates_and_verified_system_merge",
+      "automatic_merge": true,
+      "trigger": "automatically_after_clarification_and_reviewable_prd",
+      "manual_submit_required": false,
+      "updated_at": "2026-11-12",
+      "merge_trigger": "current_valid_multica_business_approval",
+      "merge_scope": "approved_requirement_pr_mr_in_configured_material_repository"
+    },
+    "confirmed_data_ownership": {
+      "confirmed_at": "2026-11-11",
+      "git": [
+        "requirement_definitions",
+        "design_definitions",
+        "task_definitions",
+        "bug_definitions",
+        "approved_material_versions"
+      ],
+      "multica": [
+        "discussions",
+        "assignments",
+        "progress",
+        "run_records"
+      ],
+      "write_every_status_change_to_git": false
+    },
+    "planning_artifacts": {
+      "prd.md": "in_planning",
+      "design.md": "draft",
+      "implement.md": "draft",
+      "implementation_ready": false
+    },
+    "confirmed_provider_options": {
+      "confirmed_at": "2026-11-11",
+      "gitlab": {
+        "self_hosted_included": true
+      },
+      "github": true,
+      "delivery_sequence": "proposed_gitlab_then_github_not_confirmed",
+      "simultaneous_first_release": "undecided"
+    },
+    "confirmed_review_entry": {
+      "confirmed_at": "2026-11-11",
+      "surface": "multica",
+      "actions": [
+        "read",
+        "comment",
+        "approve",
+        "request_changes"
+      ],
+      "git_platform_redirect_required": false,
+      "reviewer_git_account_required": false,
+      "business_review_identity": "multica_authenticated_human",
+      "git_sync_identity": "system_integration",
+      "git_sync_is_native_reviewer_approval": false,
+      "native_git_gates_must_be_satisfied": true,
+      "merge_responsibility": "preauthorized_system_integration",
+      "merge_requires_separate_human_action": false,
+      "business_approval_triggers_merge": true,
+      "updated_at": "2026-11-12",
+      "merge_requires_current_approved_revision": true,
+      "merge_permission_preconfigured": true,
+      "native_gate_bypass_allowed": false,
+      "additional_native_approval_may_block_merge": true,
+      "code_merge_authorized": false,
+      "downstream_stage_start_policy": "D8"
+    },
+    "merge_policy_history": [
+      {
+        "decision": "D7",
+        "confirmed_at": "2026-11-11",
+        "policy": "manual_engineering_or_repository_maintainer_merge",
+        "superseded_at": "2026-11-12",
+        "replacement": "product_approval_triggers_condition_checked_system_merge"
+      }
+    ],
+    "confirmed_downstream_start_policy": {
+      "decision": "D8",
+      "confirmed_at": "2026-11-12",
+      "configuration_scope": "project",
+      "default_enabled": true,
+      "per_requirement_override": false,
+      "trigger": "verified_approved_requirement_merge_baseline",
+      "stages": [
+        "technical_design_generation",
+        "task_breakdown"
+      ],
+      "enabled_behavior": "automatically_start_plan_stage_after_input_and_permission_checks",
+      "disabled_behavior": "create_linked_todo_wait_for_manual_start",
+      "disabled_issue_status_category": "todo",
+      "manual_start_reuses_same_task": true,
+      "coding_requires_current_plan_approval": true,
+      "reenable_existing_todo_behavior": "undecided",
+      "proposed_reenable_behavior": "new_stages_only_existing_todos_remain_manual",
+      "implementation_started": false
+    },
+    "material_directory_proposal": {
+      "updated_at": "2026-11-12",
+      "status": "ordinary_material_project_and_stable_paths_confirmed_remaining_contracts_draft",
+      "reference_repository": "https://github.com/deepseek-ai/deepseek-harness",
+      "reference_commit": "e8f7b93a344964de3dca1ace9e72b6e4d6de87cb",
+      "proposal": "research/material-repository-layout.md",
+      "recommended_topology": "one_shared_material_repository_per_business_system_with_module_projects_and_separate_code_repositories",
+      "shared_repository_alternative": "stable_system_roots_only_with_compatible_access_boundaries",
+      "qa_issue_review_and_repair_policy": "undecided",
+      "coordination_owner": "D9_planned_product_qa_material_repository_project",
+      "cross_module_start_policy": "draft_single_coordination_owner_and_module_project_switches",
+      "source_version_model": "per_repository_commit_and_build_environment_manifest",
+      "runtime_repository_support": "initialize_empty_repository_or_read_compatible_existing_content_when_configured"
+    },
+    "confirmed_environment": {
+      "clarified_at": "2026-11-12",
+      "multica_project_unit": "module",
+      "system_architecture": "distributed",
+      "multiple_git_repositories": true,
+      "module_repository_cardinality": "not_confirmed",
+      "context_scope": "target_usage_model_not_current_connected_resources"
+    },
+    "confirmed_material_project_policy": {
+      "decision": "D9",
+      "confirmed_at": "2026-11-12",
+      "clarified_at": "2026-11-12",
+      "context": "future_product_usage_model_not_current_integration_request",
+      "product_qa_material_repository_has_ordinary_project": true,
+      "coordination_owner": "ordinary_multica_project_associated_with_material_repository",
+      "extra_coordination_project_required": false,
+      "module_projects_and_code_repositories_remain_separate": true,
+      "suggested_project_name": "系统需求与测试",
+      "live_git_url_required_for_development": false,
+      "precreated_business_project_required_for_development": false,
+      "runtime_binding_configured_when_feature_is_used": true,
+      "development_validation": "controlled_git_provider_and_isolated_project_fixtures",
+      "implementation_started": false
+    },
+    "confirmed_material_lifecycle_policy": {
+      "decision": "D10",
+      "confirmed_at": "2026-11-12",
+      "scope": "stable_material_paths_separate_status_dimensions_and_multica_archival",
+      "git_paths_change_on_completion_closure_reopening_or_archive": false,
+      "status_authority": "multica",
+      "status_dimensions": [
+        "material_review",
+        "requirement_delivery",
+        "issue_resolution"
+      ],
+      "archive_authority": "multica",
+      "archive_is_separate_from_completion": true,
+      "archived_records_remain_searchable_and_traceable": true,
+      "state_only_changes_create_git_commits": false,
+      "requirement_completion_requires_system_acceptance": true,
+      "resolved_issue_closure_requires_verified_retest": true,
+      "failed_retest_allows_reopening": true,
+      "retain_original_report_and_versioned_resolution_evidence": true,
+      "status_mapping_and_transition_permissions": "undecided",
+      "archive_permissions_and_automatic_archive_policy": "undecided",
+      "implementation_started": false
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "PAY_P2_coordinator_progress_callback_observation",
+  "at": "2026-11-15T15:25:44.800933+00:00",
+  "source_thread": "01a1df98-6557-7f20-9fae-693f06996942",
+  "initial_normal_profiles_passed": 8,
+  "retained_K06_failure": "test incorrectly read status in public successful response body; original failure/database preserved",
+  "corrected_candidate_prefix": "a3261a9d",
+  "candidate_inputs": 4968,
+  "correction_production_delta": 0,
+  "correction_scope": "server router test only",
+  "independent_static_check": "passed",
+  "execution_sequence": [
+    "fresh20_normal",
+    "fresh21_race",
+    "original8_unused_race"
+  ],
+  "PAY_database_suites": 1,
+  "knowledge_database_suites": 0,
+  "frontend": {
+    "inputs": 3358,
+    "tests_passed": 619,
+    "typecheck": "passed",
+    "lint": "passed",
+    "production_build": "in_progress"
+  },
+  "server_static": "freezing current ROOT plus three P2 deltas; preserve35peer product differences,865/hooks/virtualoff",
+  "actual_P2_independently_accepted": false,
+  "final_ROOT_accepted": false,
+  "scope": "Coordinator callback only; not independent result acceptance or final source-ready clearance"
+}

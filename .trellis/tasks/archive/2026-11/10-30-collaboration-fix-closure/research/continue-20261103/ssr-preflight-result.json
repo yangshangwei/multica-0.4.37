@@ -1,0 +1,71 @@
+{
+  "recorded_at": "2026-11-03T01:47:44.602344+00:00",
+  "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "state": "preflight_passed_not_wholecheck",
+  "tests": [
+    {
+      "file": "auth.spec.ts",
+      "title": "login page renders correctly",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "auth.spec.ts",
+      "title": "login and redirect to /issues",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "auth.spec.ts",
+      "title": "unauthenticated user is redirected to /login",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "auth.spec.ts",
+      "title": "logout redirects to /login",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    }
+  ],
+  "pass": 4,
+  "fail": 0,
+  "skip": 0,
+  "retry": 0,
+  "command_exit": 0,
+  "rendered_config": {
+    "apiBaseUrl": [
+      "http://localhost:18248"
+    ],
+    "wsUrl": [
+      "ws://localhost:18248/ws"
+    ]
+  },
+  "database": "multica_closure_v11_ssr20261103",
+  "raw_report": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/ssr-preflight-20261103/auth-results.json",
+  "raw_report_sha256": "4fb38f83ad3b79767c6ac9dff65d6ca6604e906d7ea8089b11a767b41f14af27",
+  "auth_log_sha256": "122e923e9fc5dd592822a1a784cb6463cb0fb45ddd133fa432a117c547d5a364",
+  "pre_fixture_runtime": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/ssr-preflight-20261103/runtime-before-auth.json",
+  "fullcheck_passed": false,
+  "Provider_calls": 0
+}

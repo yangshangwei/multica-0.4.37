@@ -1,0 +1,10 @@
+--- baseline/server/internal/cli/collaboration.go
++++ v16/server/internal/cli/collaboration.go
+@@ -158,6 +158,7 @@
+ 	ID         string  `json:"id"`
+ 	AuthorType string  `json:"author_type"`
+ 	AuthorID   string  `json:"author_id"`
++	AuthorName string  `json:"author_name,omitempty"`
+ 	Content    string  `json:"content"`
+ 	ParentID   *string `json:"parent_id"`
+ 	CreatedAt  string  `json:"created_at"`

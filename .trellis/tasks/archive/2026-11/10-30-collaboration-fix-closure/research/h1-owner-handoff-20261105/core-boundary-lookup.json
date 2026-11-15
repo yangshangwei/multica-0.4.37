@@ -1,0 +1,42 @@
+{
+  "observed_at": "2026-11-05T05:28:05.274357+00:00",
+  "scope": "Bounded filename/metadata lookup for current core-owned H1 release/READY artifact",
+  "owner_requested": "runtime1a729; core1a731 explicit execution window",
+  "roots": [
+    "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/.omx/private",
+    "/Volumes/artisan/e2e-private/core1a32-20261105",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-branch-e2e-acceptance"
+  ],
+  "matching_files": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-branch-e2e-acceptance/evidence/ENV-1-live-handoff.png",
+      "mtime_utc": "2026-11-01T16:09:47.971642+00:00",
+      "bytes": 47327,
+      "sha256": "48071fa2f4abc0d9bc4d719fdcb1ad4b7471722a9146e209f1ea5410c3f56e2f"
+    }
+  ],
+  "current_core_worktree": {
+    "path": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104",
+    "latest_named_current_artifact_found": null,
+    "private_root_has_only_installed_main_identities": true
+  },
+  "core_private_root": {
+    "path": "/Volumes/artisan/e2e-private/core1a32-20261105",
+    "latest_named_current_artifact_found": null,
+    "top_dirs": [
+      "conditional",
+      "backend",
+      "performance"
+    ]
+  },
+  "branch_task": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-branch-e2e-acceptance",
+    "status": "in_progress",
+    "recorded_result": "NOT PASSED on 822c15785; 421PASS/15FAIL/2BLOCKED; no product changes/provider calls",
+    "recorded_at": "2026-11-01T17:46:24.388982+00:00"
+  },
+  "conclusion": "No NEW explicit core-owned READY/release/window/handoff artifact was found in the bounded roots. Idle/no-process observations are not authorization and do not imply readiness. Historical ready-for-integration artifacts are excluded from current readiness.",
+  "new_ready_artifact": false,
+  "tests_or_services_started": false,
+  "credentials_or_account_logs_read": false
+}

@@ -1,0 +1,60 @@
+{
+  "run_id": "p1-manifest-current-1c1a6c81",
+  "database": "mca_knowledge_handler_7ce59cfcc677",
+  "package": "./internal/handler",
+  "test_pattern": "^TestWorkspaceDeletionManifest",
+  "run_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p1-manifest-current-1c1a6c81",
+  "state": "failed",
+  "cluster_before": {
+    "database": "postgres",
+    "version": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "max_connections": 100,
+    "connections": 25
+  },
+  "go_version": "go version go1.27.0 darwin/arm64",
+  "source_sha256_before": "8b6b445598f6a7f420e669af5aaf023f615364431a617b0e190815d516c2d1d8",
+  "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "created_at": "2026-11-15T03:22:56.743554+00:00",
+  "real_model_credentials_inherited": false,
+  "agent_cli_guard": true,
+  "launcher_sha256": "8b0c310e77af0f694d187306332e208a2910da1e3e95cbb045d4ee4f5ae68446",
+  "migration_exit": 0,
+  "migration_ledger": "849:861_knowledge_automation_origin",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-count=1",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-timeout=15m",
+    "./internal/handler",
+    "-run",
+    "^TestWorkspaceDeletionManifest"
+  ],
+  "test_exit": 1,
+  "tests": {
+    "run": [
+      "TestWorkspaceDeletionManifestPreservesKnowledgeHistory",
+      "TestWorkspaceDeletionManifestCoversPublicSchema"
+    ],
+    "pass": [
+      "TestWorkspaceDeletionManifestPreservesKnowledgeHistory"
+    ],
+    "fail": [
+      "TestWorkspaceDeletionManifestCoversPublicSchema"
+    ],
+    "skip": []
+  },
+  "source_sha256_after": "8b6b445598f6a7f420e669af5aaf023f615364431a617b0e190815d516c2d1d8",
+  "connections_after": 0,
+  "finished_at": "2026-11-15T03:23:18.260577+00:00",
+  "source_stable": true
+}

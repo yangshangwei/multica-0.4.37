@@ -1,0 +1,52 @@
+{
+  "created_at": "2026-11-15T06:53:06.113757+00:00",
+  "state": "pass",
+  "source_id_before": "9c5261714d1137c5a9ab8327514af61f8a355f3e024af4ebbfec5ad468dbf070",
+  "source_id_after": "9c5261714d1137c5a9ab8327514af61f8a355f3e024af4ebbfec5ad468dbf070",
+  "source_stable": true,
+  "steps": [
+    {
+      "command": [
+        "node",
+        "scripts/check-ui-wildcard-exports.mjs"
+      ],
+      "exit_code": 0,
+      "log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-offline-checks-bhradarn/check-0.log",
+      "sha256": "6ee90f6d30806132fd1b998d0d7ffcdc93ab7d1d8dc26390709e0df66fa9a435",
+      "output_tail": "packages/ui wildcard exports clean (62 files under components/ui, components/common, markdown, hooks).\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/test-go.test.sh"
+      ],
+      "exit_code": 0,
+      "log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-offline-checks-bhradarn/check-1.log",
+      "sha256": "a01cbecf6343b7c02ca46a5116b40b28bcb6c0d6d53858ae111829b15066a43d",
+      "output_tail": "test-go.test.sh: PASS\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/dev-env.test.sh"
+      ],
+      "exit_code": 0,
+      "log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-offline-checks-bhradarn/check-2.log",
+      "sha256": "4d88b22f5dab8d66d6470d98508fbc9254c4d7792bcf9d9e9875b410ff8c0c5c",
+      "output_tail": "✓ dev-env.sh registry behaviour verified\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/check.test.sh"
+      ],
+      "exit_code": 0,
+      "log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-offline-checks-bhradarn/check-3.log",
+      "sha256": "948ccbfd480dcb590f69bb087ad4dcd916b7fdac549b050d5236aa96f16f6431",
+      "output_tail": "PASS\nnative-duplicate: PASS\nnative-shared-renderer: PASS\nnative-ipv6: PASS\nnative-remote: PASS\nnative-credential: PASS\nnative-malformed: PASS\nnative-protocol: PASS\nnative-zero-port: PASS\nTAP version 13\n# Subtest: serves the built renderer and assets, records its listener, and stops\nok 1 - serves the built renderer and assets, records its listener, and stops\n  ---\n  duration_ms: 231.403834\n  type: 'test'\n  ...\n# Subtest: missing build exits before creating readiness evidence\nok 2 - missing build exits before creating readiness evidence\n  ---\n  duration_ms: 26.238833\n  type: 'test'\n  ...\n# Subtest: a busy port fails without replacing the existing server\nok 3 - a busy port fails without replacing the existing server\n  ---\n  duration_ms: 102.981208\n  type: 'test'\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 3\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 415.735917\ncheck.test.sh: PASS\n"
+    }
+  ],
+  "product_runtime_started": false,
+  "real_model_or_accounts_inherited": false,
+  "database_used": false
+}

@@ -1,0 +1,78 @@
+--- baseline/server/internal/daemon/collaborationrun/host_recording.go
++++ v16/server/internal/daemon/collaborationrun/host_recording.go
+@@ -6,6 +6,7 @@
+ 	"errors"
+ 	"math"
+ 	"os"
++	"sort"
+ 	"strconv"
+ 	"strings"
+ 	"time"
+@@ -18,6 +19,9 @@
+ )
+ 
+ type hostRecording struct {
++	checkpoints  *hostCheckpointSender
++	streamID     string
++	closed       bool
+ 	messages     []protocol.CollaborationRecordedMessage
+ 	bytes        int
+ 	partial      bool
+@@ -51,8 +55,15 @@
+ 
+ func (r *hostRecording) add(message protocol.CollaborationRecordedMessage) {
+ 	message.Body = r.text(message.Body, protocol.CollaborationRecordTextLimit)
+-	if len(r.messages) >= protocol.CollaborationRecordItemLimit || r.bytes+len(message.Body) > 512<<10 {
+-		r.partial = true
++	if r.closed || len(r.messages) >= protocol.CollaborationRecordItemLimit || r.bytes+len(message.Body) > protocol.CollaborationRecordingBodyLimit {
++		r.partial, r.closed = true, true
++		if r.checkpoints != nil {
++			r.checkpoints.closed.Store(true)
++		}
++		return
++	}
++	if r.checkpoints != nil && !r.checkpoints.offer(message) {
++		r.partial, r.closed = true, true
+ 		return
+ 	}
+ 	r.bytes += len(message.Body)
+@@ -224,12 +235,38 @@
+ 		r.partial = true
+ 	}
+ 	completeness := "complete"
+-	if r.partial {
++	healthy := r.checkpoints != nil && r.checkpoints.healthy()
++	if r.partial || r.checkpoints != nil && !healthy {
+ 		completeness = "partial"
+ 	}
+ 	out := protocol.CollaborationRunOutcome{ProtocolVersion: protocol.CollaborationHostRuntimeProtocolVersion, Containment: protocol.CollaborationContainmentHostProcessSupervision,
+ 		Identity: identity, EventID: uuid.NewString(), AttemptSeq: seq, AttemptNonce: nonce, Outcome: kind, Body: body,
+ 		Record: &protocol.CollaborationRunRecord{Version: 1, Completeness: completeness, Messages: r.messages, Usage: usage}}
++	if r.checkpoints != nil {
++		acknowledged := r.checkpoints.acknowledged()
++		out.Record.Version = 2
++		out.Record.StreamID = r.streamID
++		out.Record.MessageOffset = acknowledged
++		out.Record.Messages = []protocol.CollaborationRecordedMessage{}
++		// While every observed message is staged with its original payload and
++		// none was refused, the unacknowledged suffix is exactly the pending
++		// chunks. The outcome carries it; the service deduplicates it by offset
++		// against checkpoints that commit first. After a loss the suffix stays
++		// out, so the outcome cannot disguise the gap.
++		if healthy && acknowledged < len(r.messages) {
++			tail := r.messages[acknowledged:]
++			fits := func(n int) bool {
++				out.Record.Messages = tail[:n]
++				return protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: kind, Body: body, Record: out.Record}) == nil
++			}
++			if !fits(len(tail)) {
++				out.Record.Completeness = "partial"
++				n := sort.Search(len(tail), func(n int) bool { return !fits(n + 1) })
++				fits(n)
++			}
++			out.Record.Messages = append([]protocol.CollaborationRecordedMessage{}, out.Record.Messages...)
++		}
++	}
+ 	if protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: kind, Body: body, Record: out.Record}) != nil {
+ 		return protocol.CollaborationRunOutcome{}, false
+ 	}

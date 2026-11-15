@@ -1,0 +1,60 @@
+{
+  "recorded_at": "2026-11-14T10:10:26.680928+00:00",
+  "scope": "existing S4 readiness documentation reconciliation; no external operations",
+  "case_status": {
+    "E01": "NOT_RUN",
+    "E02": "NOT_RUN",
+    "E03": "NOT_RUN",
+    "E04": "NOT_RUN",
+    "E05": "NOT_RUN",
+    "E06": "NOT_RUN",
+    "E07": "NOT_RUN"
+  },
+  "source_head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "s2_2c_status": "contract_frozen_dto_drafts_only_at_capture",
+  "external_inputs_changed": false,
+  "tests_run": [],
+  "source_documents": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/research/integration-readiness.md",
+      "sha256": "6e67a6e8d107fb97de5a2723e9e4645f78440e3a5794b972b6943880c09e76b7"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/research/integration-readiness.json",
+      "sha256": "c68389515d4c61c2ee2e961ac7db240b130f81116ee28af36967c721b6ad3613"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2a-results.md",
+      "sha256": "476f95c4f791249049762a5ca5676fed827c73250a18dcfc8d52842dbc83852b"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2a-supplemental-results.md",
+      "sha256": "9419692670dc658d5955c75370cebb4c52cd87ee44aadab1e47bcabeade595c0"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2a-followup-results.md",
+      "sha256": "3cb857d627de927e772c9e6281a827d7d38676391ab07b722708dda59c934c7f"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2a-source-fence-check.md",
+      "sha256": "f8877f70661256e7a3320dc67f643ec7384a192e97f9462a7bc53eb5c476235b"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2b-check.md",
+      "sha256": "c3a134c4bc52795858092b193672fe67324a249c2a83d8531f204ec4d7d84fc3"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-contract-review.md",
+      "sha256": "2aea82ef694da3cc27a9fac3ce49eca47afc76af986a0108b98cdb162f405ad9"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-control-contract.md",
+      "sha256": "ca3ee225e4a970fba2d70e389049f23f03f9967a01eb1882a812728bf2c6d1a4"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md",
+      "sha256": "dabc19c5762e46577468e3ec436998b4837f28e9ba1996731b47b2d9ad3e8c14"
+    }
+  ],
+  "report_markdown_sha256": "90400017ee1bea484ad1562085d4bb0e1256c85a7060f899c287a6bf2bdb02dc"
+}

@@ -804,6 +804,112 @@ Archived 11-01-branch-e2e-acceptance at the user's request. Preserved the retain
 - Continue any remaining platform or repair work in a separate active task if needed.
 
 
+## Session 143: Fix expanded description growth and native Close
+<!-- trellis-session: v=2 fp=0dbb876cec74e996 -->
+
+**Date**: 2026-11-08
+**Task**: Fix expanded description growth and native Close
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Expanded spare height now grows the description editor; local popup no-drag restores OS pointer Close in Electron.
+
+### Main Changes
+
+- Single mounted form and default density preserved; native drag interception proven before/after.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `6166cb230` | fix(collaboration): make expansion useful and restore native close clicks |
+
+### Testing
+
+- [OK] 81 focused tests; Views typecheck/lint; layout detector;8 browser geometry cases; Quartz OS input in owned Electron.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None in scope; production backend and full installed-app acceptance remain separate.
+
+
+## Session 144: Core business E2E acceptance and verified repairs
+<!-- trellis-session: v=2 fp=2fe342f3ef74f514 -->
+
+**Date**: 2026-11-09
+**Task**: Core business E2E acceptance and verified repairs
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+441 unique E2E cases closed across configurations; original failures retained; four product defects repaired; frontend/backend/performance and packaged Main gates passed; owned resources cleaned.
+
+### Main Changes
+
+- Project acceptance recovery, durable cookie logout, ordered questionnaire saves and batched iteration preparation.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `c5289f646ecd977d21546472ee0dea08d27878f6` | fix(projects): preserve explicit acceptance review across realtime refreshes |
+| `fbd19d3018d458ef9c854a3391541606ad864a01` | fix(auth): wait for cookie teardown before clearing the active session |
+| `93608baecf1b1aead066c21b8d3be5d64989401a` | fix(onboarding): preserve the latest questionnaire answers before completion |
+| `f1e1cb9bfc6e6b5bf96d7c790a55ba75d102dd37` | fix(iterations): remove repeated reads from large lifecycle operations |
+| `338d571d0b008ec57d598f991e3aec3f66910a16` | test(e2e): exercise current recovery and native interaction contracts |
+
+### Testing
+
+- [OK] 441 E2E identities; 13398 frontend plus196 mobile; 82 Go packages; three unchanged performance gates.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No required task work remains; external model/platform/release exclusions are documented.
+
+
+## Session 145: 三账号三 Agent 跨空间协作闭环实测
+<!-- trellis-session: v=2 fp=683ca2fd51f10a9b -->
+
+**Date**: 2026-11-09
+**Task**: 三账号三 Agent 跨空间协作闭环实测
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+隔离 password API/production Web 中四个最终场景通过，零跳过；同一任务三账号三空间三个模拟 Agent 五轮运行、上下文 v1→v6、退回后精确验收；保留首次 DTO 测试断言失败证据。产品代码未修改，测试服务已停，数据库和中文报告保留。
+
+### Main Changes
+
+- 新增独立闭环测试、模拟 Provider、中文报告和完整运行证据
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `6e103fd4a` | test(collaboration): prove delivery survives three independent account owners |
+
+### Testing
+
+- [OK] 四项 Playwright 场景通过；聚焦 TypeScript、ESLint、Go vet 通过
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 本次测试已完成；真实模型、多物理机器和运行中撤权竞态不在本次证据范围
+
+
 ## Session 146: 提交六项进度核对与三项业务闭环验收
 <!-- trellis-session: v=2 fp=9c528e586a21183e -->
 
@@ -1097,3 +1203,40 @@ Archived 11-01-branch-e2e-acceptance at the user's request. Preserved the retain
 ### Next Steps
 
 - PAY-241父任务继续S2–S5；TC20完整审计仍为PARTIAL。
+
+
+## Session 156: 项目知识接续：ROOT service复核收口
+<!-- trellis-session: v=2 fp=6900ee5c82cd67b2 -->
+
+**Date**: 2026-11-15
+**Task**: 项目知识接续：ROOT service复核收口
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+恢复11-14-project-knowledge-automation并更新进度；当前ROOT知识service normal/race独立接受，解析器PARSER-C1关闭，最终ROOT与PAY P2门槛保持开放。
+
+### Main Changes
+
+- 同步task.json、implement.md、两份接续进度和P6运行指南；补充server验证规范及索引中的Go BuildEvent/TestEvent契约。
+- 封存v3 normal/race独立审计与文档关闭回执，保留原normal recorderfailed、缓存复制RED、旧parser和全部raw；协调原292e owner停止后续写入。
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] 普通模式/race每模式194top、428named、365leaf PASS，0FAIL/SKIP/缺失/重复/未结束；4774当前ROOT源与共同11827 compiled输入一致，两个所属DB连接0。
+- [OK] 私有v3 parser29/29 GREEN；文档审查0阻塞、115/115引用哈希匹配；ROOT前端/共享容器6265输入独立双读零漂移，既有220PASS证据仍有效；定向git diff --check通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 由原PAY owner完成P2 r07修复后源码与实际schema/readiness/启停/history/原键恢复的独立接受；当前真实503 RED保留，19profile准备，P2=false。
+- 接受P2最终源后封存共享ROOT输入，复用既有P6 allocation完成匹配构建、Web/Desktop两端知识旅程、资源审计和最终AC；任务继续in_progress，不归档。
+
+- 接续回执补充（2026-11-15T14:56:46.867929+00:00）：PAY GREEN18b3f4bd候选4,968输入／3owned／4,965protected零漂移已绑定并获执行许可；19总profile中的18未用profile待实际P2验证，最多2suite。知识suite0，P2／LIVE／最终ROOT验收仍false。

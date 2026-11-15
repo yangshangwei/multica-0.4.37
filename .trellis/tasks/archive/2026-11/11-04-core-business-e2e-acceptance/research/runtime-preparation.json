@@ -1,0 +1,226 @@
+{
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "source_root": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104",
+  "scope": "compile-only current-candidate fixtures; no runtime/business/Provider acceptance",
+  "artifacts": {
+    "native-daemon": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/native-daemon",
+      "sha256": "fe92632d1e52a87e8672af117026023b146d45129888d04e460d4e4d4f4fa908",
+      "bytes": 41479778,
+      "target_os": "darwin",
+      "target_arch": "arm64",
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/native-daemon: Mach-O 64-bit executable arm64",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-p",
+        "2",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/native-daemon",
+        "./internal/daemon"
+      ],
+      "exit_code": 0
+    },
+    "host-provider": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/host-provider",
+      "sha256": "d4fe753d3c1005b7f5a7b63f39f18d03d240f7cdfd2d9fdbcdbc8882859498da",
+      "bytes": 5496130,
+      "target_os": "darwin",
+      "target_arch": "arm64",
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/host-provider: Mach-O 64-bit executable arm64",
+      "command": [
+        "go",
+        "build",
+        "-p",
+        "2",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/host-provider",
+        "../e2e/fixtures/collaboration-host-provider.go"
+      ],
+      "exit_code": 0
+    },
+    "memory-provider": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/memory-provider",
+      "sha256": "ac9d12ac0ec3e8b825d16988d2c9f6374db81e1f8efa21214b1ea7f9a38477cd",
+      "bytes": 5087970,
+      "target_os": "darwin",
+      "target_arch": "arm64",
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/memory-provider: Mach-O 64-bit executable arm64",
+      "command": [
+        "go",
+        "build",
+        "-p",
+        "2",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/memory-provider",
+        "../e2e/fixtures/collaboration-memory-provider.go"
+      ],
+      "exit_code": 0
+    },
+    "password-server": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/password-server",
+      "sha256": "2034cb3b7476406653c549f0f8f1c29667823651c54ca673dac76db8b4fcbb80",
+      "bytes": 101438530,
+      "target_os": "darwin",
+      "target_arch": "arm64",
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/password-server: Mach-O 64-bit executable arm64",
+      "command": [
+        "go",
+        "build",
+        "-p",
+        "2",
+        "-ldflags",
+        "-X main.commit=1a32ca36c",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/password-server",
+        "./cmd/server"
+      ],
+      "exit_code": 0
+    },
+    "linux-arm64-daemon": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/linux-arm64-daemon",
+      "sha256": "01e3865feb653d95268ed6dcf9ca129a779161a22b4abacbe69a8d7828e28a29",
+      "bytes": 40447545,
+      "target_os": "linux",
+      "target_arch": "arm64",
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/linux-arm64-daemon: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, Go BuildID=aNyrNjF6RmjnIUsMG_2Y/Q17uu47fM7HUJ86ugK43/jsBbPd92yTDPdLkRhuSJ/nxuDNTZn5VZKLXRYtfwi, BuildID[sha1]=4f42ddda28ff142d40a1f164da69aef35668e133, with debug_info, not stripped",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-p",
+        "2",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/linux-arm64-daemon",
+        "./internal/daemon"
+      ],
+      "exit_code": 0
+    },
+    "linux-arm64-cross-provider": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/linux-arm64-cross-provider",
+      "sha256": "76bee4550d92df05e619104624121e235b26e7153ef0ce446c18573b11f35a5c",
+      "bytes": 4573621,
+      "target_os": "linux",
+      "target_arch": "arm64",
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/linux-arm64-cross-provider: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, Go BuildID=q0EZLhRTHOTmgCauJFHv/MlPne7bKey2RdZ3fS8P7/SgXl7eqKY7Nu8lFRO-4V/Gu5nNCQSYIPR1pavV7Ug, BuildID[sha1]=f364311c447467aa7e3baf1f69b77ce44a5e9f55, with debug_info, not stripped",
+      "command": [
+        "go",
+        "build",
+        "-p",
+        "2",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/linux-arm64-cross-provider",
+        "../e2e/fixtures/collaboration-cross-client-provider.go"
+      ],
+      "exit_code": 0
+    },
+    "linux-amd64-cli-relay": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/linux-amd64-cli-relay",
+      "sha256": "e41144ddc2293824d6e6d20e4726266c8860fd02b1ef2a1657dd02b6f5938cd8",
+      "bytes": 9872219,
+      "target_os": "linux",
+      "target_arch": "amd64",
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/linux-amd64-cli-relay: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, Go BuildID=TvH3kHl9qZqet6xMbLVP/cTiQKkZGLO5VYZc2eOj-/uRTn6F8ZSVa43qtA-TA7/_0ThPg2sQOtGsZLJXLQ0, BuildID[sha1]=3c7deaf5d08f3f68023eb8d43a27fd1dd9bdf9d6, with debug_info, not stripped",
+      "command": [
+        "go",
+        "build",
+        "-p",
+        "2",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/linux-amd64-cli-relay",
+        "../e2e/fixtures/collaboration-installed-cli-relay.go"
+      ],
+      "exit_code": 0
+    }
+  },
+  "native_cli": {
+    "build": {
+      "path": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/server/bin/darwin-arm64/multica",
+      "raw_sha256": "3949c9d8ad5b6696838ae49be7a95515d9a0b1e880db85badcc01ed7c79ee478",
+      "normalized_sha256": "2a2c2e79b3159080776cc2b59c302200aa8ecd39fe62baa7816b5eddb146df6c",
+      "remove_signature_exit": 0,
+      "remove_signature_stderr": "",
+      "go_buildinfo_exit": 0
+    },
+    "bundled": {
+      "path": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/apps/desktop/resources/bin/multica",
+      "raw_sha256": "ef0101f29c60029a25c83f6c91e6de056ede64b504cd9514d2d53a613bfa1a44",
+      "normalized_sha256": "a10055f7ce5d2c4f79e4e20b0b0adae6eac904a0174720c10491ccc5d8405095",
+      "remove_signature_exit": 0,
+      "remove_signature_stderr": "",
+      "go_buildinfo_exit": 0
+    },
+    "raw_equal": false,
+    "same_build_metadata": true,
+    "ad_hoc_signing_replay_exact_match": true
+  },
+  "lane_binary_environment": {
+    "host": {
+      "COLLABORATION_HOST_DAEMON": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/native-daemon",
+      "COLLABORATION_HOST_CLI": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/apps/desktop/resources/bin/multica",
+      "E2E_PASSWORD_SERVER_BINARY": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/password-server",
+      "COLLABORATION_HOST_PROVIDER": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/host-provider"
+    },
+    "memory": {
+      "COLLABORATION_HOST_DAEMON": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/native-daemon",
+      "COLLABORATION_HOST_CLI": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/apps/desktop/resources/bin/multica",
+      "E2E_PASSWORD_SERVER_BINARY": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/password-server",
+      "COLLABORATION_HOST_PROVIDER": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/memory-provider"
+    },
+    "knowledge-off-on": {
+      "COLLABORATION_HOST_DAEMON": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/native-daemon",
+      "COLLABORATION_HOST_CLI": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/apps/desktop/resources/bin/multica",
+      "E2E_PASSWORD_SERVER_BINARY": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/password-server",
+      "COLLABORATION_HOST_PROVIDER": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/host-provider"
+    },
+    "cross-client-linux-arm64": {
+      "COLLABORATION_CROSS_CLIENT_DAEMON": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/linux-arm64-daemon",
+      "COLLABORATION_CROSS_CLIENT_PROVIDER": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/linux-arm64-cross-provider"
+    },
+    "installed-legacy-cli-linux-amd64": {
+      "COLLABORATION_INSTALLED_CLI_RELAY": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/bin/linux-amd64-cli-relay"
+    }
+  },
+  "common_required_keys": [
+    "DATABASE_URL",
+    "COLLABORATION_E2E_API_URL",
+    "NEXT_PUBLIC_API_URL",
+    "PLAYWRIGHT_BASE_URL",
+    "MULTICA_DEPLOYMENT_ID",
+    "COLLABORATION_ELECTRON_SOURCE_ROOT",
+    "COLLABORATION_ELECTRON_RENDERER_URL",
+    "E2E_PASSWORD_AUTH=1"
+  ],
+  "api_required_config": {
+    "MULTICA_AUTH_MODE": "password",
+    "MULTICA_PASSWORD_LIMITER_MODE": "single",
+    "MULTICA_MANAGED_INSTALLATIONS_ENABLED": "true",
+    "MULTICA_DEVICE_AUTH_ENABLED": "false",
+    "MULTICA_CLOUD_URL": "",
+    "ALLOW_SIGNUP": "true"
+  },
+  "knowledge_configuration": "Distinct API startups with MULTICA_KNOWLEDGE_CONTEXT_ENABLED=false/true and matching COLLABORATION_KNOWLEDGE_EXPECTED=false/true",
+  "cross_client_callback": "Root must establish actual numeric Docker host IPv4 reachable from selected task-owned Linux containers; do not infer from past runs",
+  "images": {
+    "namespace_redis": {
+      "tag": "redis:7-alpine",
+      "sha256": "7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "arch": "arm64"
+    },
+    "old_cli": {
+      "sha256": "8d5ede4df2fa4b66d499803b95428b729fcb6ba753b3800e9b931b968ee16104",
+      "arch": "amd64",
+      "expected_version": "v0.6.7"
+    }
+  },
+  "detail_patch": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/detail-proposal/current-task-allocation.patch",
+    "applied": false,
+    "validation": "syntax transpilation and git apply --check passed; runtime regressions pending root review/application"
+  },
+  "executed_tests": 0,
+  "started_services": 0,
+  "database_access": false,
+  "provider_account_access": false
+}

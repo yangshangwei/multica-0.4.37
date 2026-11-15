@@ -1,6 +1,6 @@
 # 技术设计草案
 
-状态：S1已完成归档；其设计见 [S1子任务](../archive/2026-11/11-13-collaboration-agent-identity-baseline/design.md)。用户已授权继续S2–S5，后续业务规则由各子任务收敛并独立评审；S2职业规则已由用户确认，最终规划评审通过，尚未实施。
+状态：S1已完成归档；其设计见 [S1子任务](../archive/2026-11/11-13-collaboration-agent-identity-baseline/design.md)。S2职业规则已由用户确认，阶段服务及共享客户端已有实现和增量检查，当前补齐最后 2d writer/事务门禁并准备联合验收。后续 S3–S5 仍分别按自身合同和证据推进；最新结果见父 `session-progress.md`。
 
 ## 1. 复用边界
 

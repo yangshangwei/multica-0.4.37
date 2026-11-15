@@ -1,0 +1,37 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "state": "diagnosis_pending",
+  "created_at": "2026-11-15T08:22:10.408352+00:00",
+  "run_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/p6-next-config-import-probe-62c150e1",
+  "node_version": "v22.23.2",
+  "original_config_sha256": "a07c77a82846c5a7f7eecdce04ce7731e73d6d01143b0b503395480891aeb209",
+  "controlled_production_phase": true,
+  "fixture_root_has_no_user_dotenv": true,
+  "real_accounts": false,
+  "source_files_changed": [],
+  "results": [
+    {
+      "label": "original",
+      "exit": 1,
+      "stdout_log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/p6-next-config-import-probe-62c150e1/original.stdout.log",
+      "stderr_log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/p6-next-config-import-probe-62c150e1/original.stderr.log",
+      "proof_lines": [
+        "CONFIG_RUNTIME_PROOF {\"api\":\"http://127.0.0.1:18080/api/:path*\",\"transpilePackages\":[\"@multica/core\",\"@multica/ui\",\"@multica/views\"]}"
+      ]
+    },
+    {
+      "label": "explicit-ts-extension",
+      "exit": 1,
+      "stdout_log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/p6-next-config-import-probe-62c150e1/explicit-ts-extension.stdout.log",
+      "stderr_log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/p6-next-config-import-probe-62c150e1/explicit-ts-extension.stderr.log",
+      "proof_lines": [
+        "CONFIG_RUNTIME_PROOF {\"api\":\"http://127.0.0.1:18080/api/:path*\",\"transpilePackages\":[\"@multica/core\",\"@multica/ui\",\"@multica/views\"]}"
+      ]
+    }
+  ],
+  "official_references": [
+    "https://nodejs.org/docs/latest-v22.x/api/typescript.html",
+    "https://nextjs.org/docs/app/api-reference/config/typescript"
+  ],
+  "product_runtime_acceptance": false
+}

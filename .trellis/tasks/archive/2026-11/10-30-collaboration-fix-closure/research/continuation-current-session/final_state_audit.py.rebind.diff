@@ -1,0 +1,79 @@
+--- /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/final-state-audit/final_state_audit.py
++++ /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/final-state-audit-v12/final_state_audit.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Read-only final v11 identities; this is not whole-check acceptance."""
++"""Read-only final v12 identities; this is not whole-check acceptance."""
+ import argparse
+ import datetime
+ import hashlib
+@@ -12,8 +12,8 @@
+ 
+ 
+ HERE = Path(__file__).resolve().parent
+-ROOT = Path("/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103")
+-REVIEW = HERE.parent / "v11-review/review.json"
++ROOT = Path("/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103")
++REVIEW = HERE.parent / "v12-review/review.json"
+ NEXT_PATH = "apps/web/next-env.d.ts"
+ DEV_IMPORT = b'import "./.next/dev/types/routes.d.ts";'
+ PRODUCTION_IMPORT = b'import "./.next/types/routes.d.ts";'
+@@ -31,10 +31,10 @@
+ 
+ def audit(root, review):
+     root = Path(root).resolve()
+-    out = root / ".omx/private/final-check-v11"
+-    launcher = out / "run-make-check-v11-provenance.py"
+-    clearance = json.loads((out / "independent-review-clearance-v11.json").read_text())
+-    run_path = out / "make-check-v11.json"
++    out = root / ".omx/private/final-check-v12"
++    launcher = out / "run-make-check-v12-provenance.py"
++    clearance = json.loads((out / "independent-review-clearance-v12.json").read_text())
++    run_path = out / "make-check-v12.json"
+     run = json.loads(run_path.read_text())
+     require(run.get("state") == "complete" and type(run.get("exit_code")) is int,
+             "Final-state audit requires a complete run")
+@@ -46,7 +46,7 @@
+     for key in ("candidate_sha", "launcher_sha256", "adapter_sha256", "source_env_sha256", "bindings_sha256"):
+         require(clearance.get(key) == review[key], "Execution clearance differs from independent review: " + key)
+     require(digest(launcher) == review["launcher_sha256"], "Registered launcher changed")
+-    module = types.ModuleType("registered_v11_final_audit")
++    module = types.ModuleType("registered_v12_final_audit")
+     module.__file__ = str(launcher)
+     exec(compile(launcher.read_bytes(), str(launcher), "exec"), module.__dict__)
+     require(module.EXPECTED_ROOT == root and module.EXPECTED_CANDIDATE_SHA == review["candidate_sha"],
+@@ -56,11 +56,11 @@
+     status = subprocess.check_output(["git", "status", "--porcelain", "--untracked-files=all"], cwd=root, text=True)
+     require(all(line == " M " + NEXT_PATH for line in status.splitlines()),
+             "Unregistered final source changes are present")
+-    source = out / "check-source-v11.env"
++    source = out / "check-source-v12.env"
+     require(digest(source) == review["source_env_sha256"], "Registered source environment changed")
+     adapters = {name: digest(module.ADAPTERS / name) for name in ("go", "pnpm")}
+     require(adapters == review["adapter_sha256"], "Registered adapter changed")
+-    binding_path = out / "owned-bindings-v11-provenance.json"
++    binding_path = out / "owned-bindings-v12-provenance.json"
+     require(digest(binding_path) == review["bindings_sha256"], "Registered bindings changed")
+     registered = json.loads(binding_path.read_text())
+     rows = [row for row in registered["source"]["tracked_files"] if row["path"] == NEXT_PATH]
+@@ -89,9 +89,9 @@
+     # Every registered source, tool, graph and artifact guard runs unchanged.
+     module.file_hash = final_hash
+     binding = module.verify_owned_bindings(root, out, clearance, module.parse_generated_environment(source.read_text()))
+-    require(digest(out / "check-source-v11.safe.env") == run.get("effective_env_sha256"),
++    require(digest(out / "check-source-v12.safe.env") == run.get("effective_env_sha256"),
+             "Canonical execution environment changed")
+-    require(digest(out / "make-check-v11.log") == run.get("log_sha256"), "Complete run log changed")
++    require(digest(out / "make-check-v12.log") == run.get("log_sha256"), "Complete run log changed")
+     expected = {
+         "candidate_root": str(root), "candidate_sha": review["candidate_sha"],
+         "launcher_sha256": review["launcher_sha256"], "adapter_sha256": adapters,
+@@ -114,7 +114,7 @@
+         "source_env_sha256": digest(source), "adapter_sha256": adapters,
+         "run_sha256": digest(run_path), "wholecheck_exit_code": run["exit_code"],
+         "wholecheck_passed": run["exit_code"] == 0,
+-        "clearance_sha256": digest(out / "independent-review-clearance-v11.json"),
++        "clearance_sha256": digest(out / "independent-review-clearance-v12.json"),
+         "resource_ownership_sha256": clearance["resource_ownership_sha256"],
+         "tracked_file_count": len(binding["source"]["tracked_files"]),
+         "workspace_edges": len(binding["workspace"]["edges"]),

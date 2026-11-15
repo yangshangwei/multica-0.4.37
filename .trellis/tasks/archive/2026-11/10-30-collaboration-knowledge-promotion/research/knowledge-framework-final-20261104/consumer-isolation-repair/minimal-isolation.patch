@@ -1,0 +1,103 @@
+--- minimal-isolation-before.go
++++ rk1k_fixture_test.go
+@@ -152,43 +152,11 @@
+ 	}
+ 	b.managed.fx.Exec(t, `UPDATE managed_installation SET os=$2 WHERE id=$1`, b.installationID, installationOS)
+ 	f.project = b.managed.fx.Project(t, "RK1K independent project", testutil.Cols{"description": "Independent base; no approved policy"})
+-	old, err := f.q.GetAgentRuntime(t.Context(), util.MustParseUUID(b.runtime))
+-	if err != nil {
+-		t.Fatal(err)
+-	}
+-	metadata, err := json.Marshal(map[string]string{"cli_version": "0.4.37"})
+-	if err != nil {
+-		t.Fatal(err)
+-	}
+-	b.runtime = b.managed.fx.Runtime(t, "RK1K Claude host", testutil.Cols{"owner_id": b.owner,
+-		"provider": "claude", "runtime_mode": "local", "daemon_id": old.DaemonID.String, "status": "online", "metadata": metadata})
+ 	f.host = &collaborationrun.HostConfig{Provider: "claude", ProviderVersion: env.version, ProviderMode: "local",
+ 		AccountSource: "rk1k-test-runtime", Executable: wrapper,
+ 		Limits: protocol.CollaborationPreparationLimits{FileCount: 32, PerFileBytes: 100 << 20, TotalInputBytes: 256 << 20,
+ 			WorkspaceBytes: 512 << 20, GitExpandedBytes: 256 << 20, EntryCount: 4096, TimeoutSeconds: 60}}
+-	caps, err := f.host.Capabilities()
+-	if err != nil {
+-		t.Fatal(err)
+-	}
+-	runtimeRow, err := f.q.GetAgentRuntime(t.Context(), util.MustParseUUID(b.runtime))
+-	if err != nil {
+-		t.Fatal(err)
+-	}
+-	b.managed.request(t, b.binding.DaemonToken, false, "POST", "/api/collaboration/runtime/capabilities",
+-		protocol.CollaborationRuntimeCapabilitiesRequest{ProtocolVersion: 3, DeploymentID: b.deployment,
+-			InstallationID: b.installationID, RuntimeID: b.runtime, BindingID: b.binding.BindingID,
+-			BindingEpoch: b.binding.BindingEpoch, ExpectedRuntimeConfigEpoch: strconv.FormatInt(runtimeRow.CollaborationConfigEpoch, 10),
+-			Capabilities: caps}, nil).Want(200)
+-	capDigest, err := protocol.CollaborationRuntimeCapabilityDigest(caps)
+-	if err != nil {
+-		t.Fatal(err)
+-	}
+-	f.request = protocol.CollaborationRunClaimRequest{ProtocolVersion: 3, DeploymentID: b.deployment,
+-		InstallationID: b.installationID, RuntimeID: b.runtime, BindingID: b.binding.BindingID, BindingEpoch: b.binding.BindingEpoch,
+-		Containment: protocol.CollaborationContainmentHostProcessSupervision, PreparationVersion: 2, CapabilityDigest: capDigest}
+-	if f.client, err = collaborationrun.NewClient(b.server.URL, b.binding.DaemonToken, f.transport); err != nil {
+-		t.Fatal(err)
+-	}
++	f.registerHostRuntime(f.rk1Fixture, "RK1K Claude host")
+ 	t.Setenv(rk1kPlanDirEnv, plans)
+ 	f.sourceWorkspace, f.sourceToken = b.managed.fx.WorkspaceID, b.ownerToken
+ 	sourceProject, sourceUser := f.project, b.owner
+@@ -221,6 +189,45 @@
+ 	}
+ 	headers["X-Workspace-ID"] = f.base.managed.fx.WorkspaceID
+ 	return f.base.managed.request(f.t, token, false, method, path, body, headers)
++}
++
++func (f *rk1kFixture) registerHostRuntime(h *rk1Fixture, name string) {
++	t := f.t
++	t.Helper()
++	b := h.base
++	old, err := f.q.GetAgentRuntime(t.Context(), util.MustParseUUID(b.runtime))
++	if err != nil {
++		t.Fatal(err)
++	}
++	metadata, err := json.Marshal(map[string]string{"cli_version": "0.4.37"})
++	if err != nil {
++		t.Fatal(err)
++	}
++	b.runtime = b.managed.fx.Runtime(t, name, testutil.Cols{"owner_id": b.owner,
++		"provider": "claude", "runtime_mode": "local", "daemon_id": old.DaemonID.String, "status": "online", "metadata": metadata})
++	caps, err := h.host.Capabilities()
++	if err != nil {
++		t.Fatal(err)
++	}
++	runtimeRow, err := f.q.GetAgentRuntime(t.Context(), util.MustParseUUID(b.runtime))
++	if err != nil {
++		t.Fatal(err)
++	}
++	b.managed.request(t, b.binding.DaemonToken, false, "POST", "/api/collaboration/runtime/capabilities",
++		protocol.CollaborationRuntimeCapabilitiesRequest{ProtocolVersion: 3, DeploymentID: b.deployment,
++			InstallationID: b.installationID, RuntimeID: b.runtime, BindingID: b.binding.BindingID,
++			BindingEpoch: b.binding.BindingEpoch, ExpectedRuntimeConfigEpoch: strconv.FormatInt(runtimeRow.CollaborationConfigEpoch, 10),
++			Capabilities: caps}, nil).Want(200)
++	capDigest, err := protocol.CollaborationRuntimeCapabilityDigest(caps)
++	if err != nil {
++		t.Fatal(err)
++	}
++	h.request = protocol.CollaborationRunClaimRequest{ProtocolVersion: 3, DeploymentID: b.deployment,
++		InstallationID: b.installationID, RuntimeID: b.runtime, BindingID: b.binding.BindingID, BindingEpoch: b.binding.BindingEpoch,
++		Containment: protocol.CollaborationContainmentHostProcessSupervision, PreparationVersion: 2, CapabilityDigest: capDigest}
++	if h.client, err = collaborationrun.NewClient(b.server.URL, b.binding.DaemonToken, f.transport); err != nil {
++		t.Fatal(err)
++	}
+ }
+ 
+ // nextRunForIssue keeps one consumer's finite schedule isolated when several
+@@ -492,6 +499,9 @@
+ 		"source_workspace_id": f.base.managed.fx.WorkspaceID, "handler_user_id": f.base.contributor,
+ 		"title": "RK1K consumer " + label, "description": "Report the active approved policy.", "project_id": f.project}, nil).Want(201).JSON(&issue)
+ 	copy := *f.rk1Fixture
++	base := *f.base
++	copy.base = &base
++	f.registerHostRuntime(&copy, "RK1K consumer "+label+" host")
+ 	copy.issue, copy.targets, copy.targetSet = issue.ID, map[string]string{}, 1
+ 	copy.dir = filepath.Join(f.dir, "consumer-"+label)
+ 	if err := os.Mkdir(copy.dir, 0700); err != nil {

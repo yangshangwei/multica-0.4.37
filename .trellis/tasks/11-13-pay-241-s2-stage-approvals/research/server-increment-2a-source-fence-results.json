@@ -1,0 +1,86 @@
+{
+  "status": "a5_source_fence_fixed_normal_and_race_passed",
+  "sources": [
+    {
+      "path": "server/internal/service/collaboration_stage.go",
+      "sha256": "613dc67d0ed18995645df1ae9ab297c21c23ac2027d3491d3647c85fa3e06156",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-source-fence-fix/server/internal/service/collaboration_stage.go"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_source_fence_test.go",
+      "sha256": "759c543d6f446d985bb507fc47df1b5b0140da8a76f4a72fa4b56fbdf9b2d9bc",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-source-fence-fix/server/internal/service/collaboration_stage_source_fence_test.go"
+    }
+  ],
+  "logs": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-source-fence-red-1.log",
+      "sha256": "f04cfd401426c1fd6f1fcccd6a190087523e201dfa246c54be33a647b327106d",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-source-fence-red-1.exit",
+      "exit": 1,
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "named": {
+        "pass": [
+          "TestStageTestSubjectMemberFenceAtActualCommentWrite"
+        ],
+        "fail": [
+          "TestStageScopeMemberFenceAtActualDecisionWrite"
+        ],
+        "skip": []
+      }
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-source-fence-green-1.log",
+      "sha256": "0cfabc5c9e2433afda63500544caa86b85510d03ff163082101172842576dea1",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-source-fence-green-1.exit",
+      "exit": 0,
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [
+          "TestStageScopeMemberFenceAtActualDecisionWrite",
+          "TestStageTestSubjectMemberFenceAtActualCommentWrite"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-source-fence-race-1.log",
+      "sha256": "d69b4fcad19db4e087cd70fef42a16bcb190ce13bbe91facc4b058f1016a703e",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-source-fence-race-1.exit",
+      "exit": 0,
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [
+          "TestStageScopeMemberFenceAtActualDecisionWrite"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-qa-green-1.log",
+      "sha256": "0f70dba49cb7d7891f80c5af2f79f24f28f7c7f48bb695951a51bca2ede94769",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-qa-green-1.exit",
+      "exit": 0,
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [
+          "TestStageScopeMemberFenceAtActualDecisionWrite",
+          "TestStageTestReportActualInputClaimAndReceipt",
+          "TestStageTestSubjectRequiresTypedTarget",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/success",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/failed_execution",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/unsettled",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/failed_case",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution",
+          "TestStageTestSubjectMemberFenceAtActualCommentWrite"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    }
+  ],
+  "proof": "The before-actual-decision-write hook invokes the production generated DeleteMember on a second connection. Red: DELETE and A5 both committed. Green: DELETE gets55P03 while scope commits; after scope commit DELETE succeeds; a new cached nonempty selection refuses, while an empty external scope remains permitted.",
+  "context": "C1 comment fence is a 2b control: already passed in red and green. Its test now lives in collaboration_test_report_test.go, not the bounded 2a reconstruction. qa-green-1 additionally confirms the split A5 test source on current implementation. Original follow-up reports and missing-manifest reconstruction failure remain preserved."
+}

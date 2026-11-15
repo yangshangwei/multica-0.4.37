@@ -1,0 +1,145 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "recorded_at": "2026-11-15T10:22:14.755056+00:00",
+  "status": "original_start_failure_preserved",
+  "source_id": "f75ed59db8b83e5f149334817897a1d570e9ead6bc89de576a9251d058a8e846",
+  "build_file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/build.json",
+  "original_runtime": {
+    "task": ".trellis/tasks/11-14-project-knowledge-automation",
+    "directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-990cedc47368",
+    "build_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec",
+    "source_id": "f75ed59db8b83e5f149334817897a1d570e9ead6bc89de576a9251d058a8e846",
+    "allocation_sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+    "environment_sha256": "bea934b9f05ae339187c2ec457248014df3cbff645dc54aca7523004310dd34a",
+    "state": "start_failed",
+    "runtime_permitted": false,
+    "processes": {
+      "model": {
+        "pid": 45365,
+        "pgid": 45365,
+        "birth": "Sun Nov 15 18:19:39 2026",
+        "command": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node /private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/source/e2e/fixtures/project-knowledge-model.mjs",
+        "argv": [
+          "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/source/e2e/fixtures/project-knowledge-model.mjs"
+        ],
+        "cwd": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/source",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-990cedc47368/model.log",
+        "members": {
+          "45365": {
+            "pid": 45365,
+            "ppid": 45161,
+            "pgid": 45365,
+            "birth": "Sun Nov 15 18:19:39 2026"
+          }
+        },
+        "remaining_owned_pids": [],
+        "unproven_group_pids": []
+      },
+      "api": {
+        "pid": 45367,
+        "pgid": 45367,
+        "birth": "Sun Nov 15 18:19:39 2026",
+        "command": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/bin/server",
+        "argv": [
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/bin/server"
+        ],
+        "cwd": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/source",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-990cedc47368/api.log",
+        "members": {
+          "45367": {
+            "pid": 45367,
+            "ppid": 45161,
+            "pgid": 45367,
+            "birth": "Sun Nov 15 18:19:39 2026"
+          }
+        },
+        "remaining_owned_pids": [],
+        "unproven_group_pids": []
+      },
+      "web": {
+        "pid": 45369,
+        "pgid": 45369,
+        "birth": "Sun Nov 15 18:19:39 2026",
+        "command": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node /private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/source/apps/web/node_modules/next/dist/bin/next start /private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/source/apps/web --hostname 127.0.0.1 --port 61991",
+        "argv": [
+          "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/source/apps/web/node_modules/next/dist/bin/next",
+          "start",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/source/apps/web",
+          "--hostname",
+          "127.0.0.1",
+          "--port",
+          "61991"
+        ],
+        "cwd": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/source/apps/web",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-990cedc47368/web.log",
+        "members": {
+          "45369": {
+            "pid": 45369,
+            "ppid": 45161,
+            "pgid": 45369,
+            "birth": "Sun Nov 15 18:19:39 2026"
+          },
+          "45380": {
+            "pid": 45380,
+            "ppid": 45369,
+            "pgid": 45369,
+            "birth": "Sun Nov 15 18:19:40 2026"
+          }
+        },
+        "remaining_owned_pids": [],
+        "unproven_group_pids": []
+      },
+      "renderer": {
+        "pid": 45371,
+        "pgid": 45371,
+        "birth": "Sun Nov 15 18:19:39 2026",
+        "command": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node /private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/source/scripts/check-desktop-renderer.mjs /private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/source/apps/desktop/out/renderer 61992 /private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-990cedc47368/renderer-serving.json",
+        "argv": [
+          "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/source/scripts/check-desktop-renderer.mjs",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/source/apps/desktop/out/renderer",
+          "61992",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-990cedc47368/renderer-serving.json"
+        ],
+        "cwd": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/source",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-990cedc47368/renderer.log",
+        "members": {
+          "45371": {
+            "pid": 45371,
+            "ppid": 45161,
+            "pgid": 45371,
+            "birth": "Sun Nov 15 18:19:39 2026"
+          }
+        },
+        "remaining_owned_pids": [],
+        "unproven_group_pids": []
+      }
+    },
+    "renderer_proof_file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-990cedc47368/renderer-serving.json",
+    "database_before": {
+      "database": "mca_knowledge_browser_073bb20e614e",
+      "connections": 31,
+      "max_connections": 100
+    },
+    "migration_ledger": {
+      "database": "mca_knowledge_browser_073bb20e614e",
+      "count": 853,
+      "latest": "865_knowledge_automation_origin",
+      "gates": [
+        {
+          "creation_enabled": true,
+          "enabled": false,
+          "host_execution_enabled": false
+        }
+      ]
+    }
+  },
+  "original_runtime_sha256": "89aa40cf785847ee7b9d3cf5fcbab357003b060fa0cb4901fa0efb0596b1bbc2",
+  "original_api_log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-990cedc47368/api.log",
+  "original_api_log_sha256": "6385618ff059c2fbf188fecdd742bc99c9b3ef6b3f192875ac4c9f463ba78d0b",
+  "original_api_error": "18:19:41.312 ERR managed installations require password mode and a stable MULTICA_DEPLOYMENT_ID UUID",
+  "reason": "Managed installation startup requires the existing MULTICA_DEPLOYMENT_ID stable UUID; the fixture launcher had set the unrelated MULTICA_MANAGED_DEPLOYMENT_ID key.",
+  "repair_plan": "Set and strictly verify a deterministic synthetic deployment UUID per fixed task database/allocation, preserving original allocation/env and all existing authorization/resource guards. Also close observed fixture-only availability/capture type narrowing errors in the same bounded E2E write scope; no product API/Go/SQL/UI change."
+}

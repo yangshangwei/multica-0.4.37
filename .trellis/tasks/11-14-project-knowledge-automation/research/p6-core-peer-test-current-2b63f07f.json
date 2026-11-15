@@ -1,0 +1,23 @@
+{
+  "created_at": "2026-11-15T07:40:00.038657+00:00",
+  "state": "fail",
+  "command": [
+    "pnpm",
+    "--filter",
+    "@multica/core",
+    "exec",
+    "vitest",
+    "run",
+    "collaboration/comment-threads.test.ts",
+    "--maxWorkers=2"
+  ],
+  "exit_code": 1,
+  "source_id_before": "e01cb1b9182d7f946e642668a376e872a43147f0a03a8d384f454abc555c2de6",
+  "source_id_after": "e01cb1b9182d7f946e642668a376e872a43147f0a03a8d384f454abc555c2de6",
+  "source_stable": true,
+  "source_file_not_owned": "packages/core/collaboration/comment-threads.test.ts",
+  "source_file_sha256": "0bd9aba457d3e581f3231e3e53af1b4797e915e1e8c07d9d417d943950ee6e38",
+  "log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-core-peer-test-zeidpkip/vitest.log",
+  "log_sha256": "ea630895acc628ecfb97a7e421d496d54a98a8567e73c8a8881d41b9ed0f1c2f",
+  "database_or_real_models_used": false
+}

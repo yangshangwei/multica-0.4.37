@@ -1,0 +1,263 @@
+--- /Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/fake-preflight-v11-provenance.py
++++ /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/fake-preflight-v12-provenance.py
+@@ -13,10 +13,10 @@
+ from unittest.mock import patch
+ 
+ 
+-CANDIDATE = "304f74dd3ba4ddea862c94917c5bb0770355a351"
+-REAL_ROOT = "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103"
++CANDIDATE = "b6c74033f1913e46418ec1b119da33236dcba805"
++REAL_ROOT = "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103"
+ REAL_ADAPTER_BASE = "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101"
+-SOURCE = Path(os.environ.get("CHECK_LAUNCHER_SOURCE", REAL_ROOT + "/.omx/private/final-check-v11/run-make-check-v11-provenance.py"))
++SOURCE = Path(os.environ.get("CHECK_LAUNCHER_SOURCE", REAL_ROOT + "/.omx/private/final-check-v12/run-make-check-v12-provenance.py"))
+ 
+ 
+ def digest(path):
+@@ -25,10 +25,10 @@
+ 
+ class LauncherEntryTests(unittest.TestCase):
+     def setUp(self):
+-        self.temp = tempfile.TemporaryDirectory(prefix="multica-v11-launcher-contract-", dir="/private/tmp")
++        self.temp = tempfile.TemporaryDirectory(prefix="multica-v12-launcher-contract-", dir="/private/tmp")
+         self.addCleanup(self.temp.cleanup)
+         self.root = (Path(self.temp.name) / "candidate").resolve()
+-        self.out = self.root / ".omx/private/final-check-v11"
++        self.out = self.root / ".omx/private/final-check-v12"
+         self.out.mkdir(parents=True)
+         self.adapters = (Path(self.temp.name) / "check-bin").resolve()
+         self.adapters.mkdir()
+@@ -42,13 +42,13 @@
+         source = SOURCE.read_text().replace(REAL_ROOT, str(self.root))
+         for item in ("adapter-v5", "adapter-v9"):
+             source = source.replace(REAL_ADAPTER_BASE + "/" + item + "/check-bin", str(self.adapters))
+-        source = source.replace("/private/tmp/multica-final-check-v11-8t_05bq4", str(self.build_temp))
+-        source = source.replace("/private/tmp/multica-final-check-v11-", str(self.build_temp.parent) + "/build-")
++        source = source.replace("/private/tmp/multica-final-check-v12-8t_05bq4", str(self.build_temp))
++        source = source.replace("/private/tmp/multica-final-check-v12-", str(self.build_temp.parent) + "/build-")
+         self.launcher = self.out / SOURCE.name
+-        source = source.replace('ADAPTERS = EXPECTED_ROOT / ".omx/private/final-check-v11/check-bin"', "ADAPTERS = Path(" + repr(str(self.adapters)) + ")")
++        source = source.replace('ADAPTERS = EXPECTED_ROOT / ".omx/private/final-check-v12/check-bin"', "ADAPTERS = Path(" + repr(str(self.adapters)) + ")")
+         self.launcher.write_text(source)
+-        self.renderer = "http://127.0.0.1:19846/" if version == "adapter-v9" else "http://127.0.0.1:19844"
+-        self.source_env = self.out / "check-source-v11.env"
++        self.renderer = "http://127.0.0.1:19857/" if version == "adapter-v9" else "http://127.0.0.1:19844"
++        self.source_env = self.out / "check-source-v12.env"
+         for directory in (self.out / "catalog", self.out / "catalog/mcp", self.out / "catalog/skills", self.out / "catalog/published"):
+             directory.mkdir(mode=0o700)
+         self.source_env.write_text("\n".join([
+@@ -63,11 +63,11 @@
+             "MULTICA_LLM_API_KEY=", "MULTICA_LLM_BASE_URL=",
+             "COLLABORATION_ELECTRON_RENDERER_URL=" + self.renderer,
+             "CHANGELOG_ELECTRON_RENDERER_URL=" + self.renderer,
+-            "DATABASE_MAX_CONNS=10", "DATABASE_MIN_CONNS=1", "REDIS_TEST_URL=redis://127.0.0.1:16422/0",
++            "DATABASE_MAX_CONNS=10", "DATABASE_MIN_CONNS=1", "REDIS_TEST_URL=redis://127.0.0.1:53841/0",
+             "MULTICA_RESOURCE_PUBLISH_DIR=" + str(self.out / "catalog/published"),
+         ]) + "\n")
+-        (self.out / "build-temp-allocation-v11.json").write_text(json.dumps({"directory": str(self.build_temp)}))
+-        self.clearance = self.out / ("independent-review-clearance-v11.json" if version == "adapter-v9" else "independent-review-clearance.json")
++        (self.out / "build-temp-allocation-v12.json").write_text(json.dumps({"directory": str(self.build_temp)}))
++        self.clearance = self.out / ("independent-review-clearance-v12.json" if version == "adapter-v9" else "independent-review-clearance.json")
+         self.prepare_owned_fixture()
+         self.write_clearance()
+         self.head = CANDIDATE
+@@ -92,7 +92,7 @@
+         dependency.symlink_to(core, target_is_directory=True)
+         self.workspace_link = dependency
+         expected = write(self.out / "workspace-expectations.json", "synthetic source-backed map")
+-        resolver = write(self.out / "resolve-workspaces-v11.mjs", "// synthetic resolver; subprocess mocked\n")
++        resolver = write(self.out / "resolve-workspaces-v12.mjs", "// synthetic resolver; subprocess mocked\n")
+         self.mock_graph = {"root": str(self.root), "exports": [], "auth": [str(core / "auth/index.ts")], "errors": []}
+         self.tool_paths = {}
+         tools = {}
+@@ -130,18 +130,18 @@
+         product_digest = hashlib.sha256("".join(path + "\0" + product_sha[path] + "\n" for path in sorted(product_sha)).encode()).hexdigest()
+         product_manifest = {"head": CANDIDATE, "roots": product_roots, "source_id": product_digest,
+                             "file_count": len(product_sha), "dirty_product_paths": [], "sha256": product_sha}
+-        manifest_path = write(self.out / "canonical-product-source-manifest-v11-provenance.json", json.dumps(product_manifest))
++        manifest_path = write(self.out / "canonical-product-source-manifest-v12-provenance.json", json.dumps(product_manifest))
+         standard_method = write(self.out / "source-manifest-standard-fixture.py", "# synthetic method path; not executed\n")
+         binding["source"]["product_source"] = {"roots": product_roots, "source_id": product_digest, "file_count": len(product_sha),
+                          "manifest_path": str(manifest_path), "manifest_sha256": digest(manifest_path),
+                          "standard_script_path": str(standard_method), "standard_script_sha256": digest(standard_method)}
+-        self.binding_file = self.out / "owned-bindings-v11-provenance.json"
++        self.binding_file = self.out / "owned-bindings-v12-provenance.json"
+         self.binding_file.write_text(json.dumps(binding))
+-        self.resource_file = self.out / "resource-ownership-v11.json"
++        self.resource_file = self.out / "resource-ownership-v12.json"
+         self.resource_file.write_text(json.dumps({"candidate_root": str(self.root), "candidate_sha": CANDIDATE,
+                     "exclusive_window_verified": True, "renderer": {"ownership_verified": True, "url": self.renderer,
+                     "index_sha256": digest(self.root / "apps/desktop/out/renderer/index.html")},
+-                    "redis": {"ownership_verified": True, "port": 16422, "container_id": "synthetic-no-service"}}))
++                    "redis": {"ownership_verified": True, "port": 53841, "container_id": "synthetic-no-service"}}))
+ 
+     def write_clearance(self, **overrides):
+         clearance = {
+@@ -197,7 +197,7 @@
+                     # inside this temp fixture; no repository target executes.
+                     with patch("subprocess.run", original_run), patch("subprocess.Popen", original_popen):
+                         result = original_run(
+-                            ["/usr/bin/make", "-f", str(makefile), "ENV_FILE=" + str(fixture.out / "check-source-v11.safe.env"), "probe"],
++                            ["/usr/bin/make", "-f", str(makefile), "ENV_FILE=" + str(fixture.out / "check-source-v12.safe.env"), "probe"],
+                             cwd=fixture.root, env={"PATH": "/usr/bin:/bin"}, capture_output=True, text=True,
+                         )
+                     kwargs["stdout"].write(result.stdout + result.stderr)
+@@ -284,7 +284,7 @@
+         self.assertFalse(marker.exists(), "Normalized dotenv must not execute expressions during Make include/export")
+         self.assertEqual(code, 2, output)
+         self.assertEqual(self.launches, [], "Refuse unsupported Make syntax before writing config or spawning Make")
+-        self.assertFalse((self.out / "check-source-v11.safe.env").exists())
++        self.assertFalse((self.out / "check-source-v12.safe.env").exists())
+ 
+     def test_escaped_normalized_parenthesized_make_function_is_refused(self):
+         self.assert_make_value_is_refused("$(shell printf touched > MARKER)", escaped=True)
+@@ -322,7 +322,7 @@
+         self.assertEqual(env["MULTICA_TASK_RENDERER_URL"], self.renderer)
+         self.assertEqual(env["COLLABORATION_ELECTRON_RENDERER_URL"], self.renderer)
+         self.assertEqual(env["CHANGELOG_ELECTRON_RENDERER_URL"], self.renderer)
+-        self.assertEqual(env["REDIS_TEST_URL"], "redis://127.0.0.1:16422/0")
++        self.assertEqual(env["REDIS_TEST_URL"], "redis://127.0.0.1:53841/0")
+         self.assertEqual(env["MULTICA_RESOURCE_PUBLISH_DIR"], str(self.out / "catalog/published"))
+ 
+     def test_launcher_child_gets_private_home_and_explicit_actual_caches(self):
+@@ -334,7 +334,7 @@
+             self.assertEqual(os.environ["HOME"], str(decoy), "Launcher must change only its child's environment")
+         self.assertEqual(code, 0, output)
+         env = self.launches[0]["env"]
+-        task_home = self.out / "full-check-home-v11"
++        task_home = self.out / "full-check-home-v12"
+         self.assertEqual(env["HOME"], str(task_home))
+         self.assertEqual(task_home.stat().st_mode & 0o777, 0o700)
+         self.assertEqual(env["GOCACHE"], str(self.out / "go-build-cache"))
+@@ -359,7 +359,7 @@
+         self.write_clearance()
+         code, output = self.run_entry()
+         self.assertEqual(code, 0, output)
+-        safe_source = self.out / "check-source-v11.safe.env"
++        safe_source = self.out / "check-source-v12.safe.env"
+         self.assertTrue(safe_source.is_file(), "Repository scripts must receive the canonical data-only copy")
+         result = subprocess.run(
+             ["/bin/bash", "-c", '. "$1"; printf "%s\\n" "$DATABASE_MAX_CONNS" "$DATABASE_MIN_CONNS" "${MULTICA_TOKEN-unset}"',
+@@ -377,7 +377,7 @@
+         self.write_clearance()
+         code, output = self.run_entry()
+         self.assertEqual(code, 0, output)
+-        safe_source = self.out / "check-source-v11.safe.env"
++        safe_source = self.out / "check-source-v12.safe.env"
+         self.assertTrue(safe_source.is_file())
+         self.assertEqual(safe_source.stat().st_mode & 0o777, 0o600)
+         result = subprocess.run(
+@@ -389,12 +389,12 @@
+         self.assertFalse(marker.exists(), "Canonical quoting must also protect the repository's later shell loader")
+ 
+     def test_non_loopback_renderer_is_refused_before_make(self):
+-        self.source_env.write_text(self.source_env.read_text().replace(self.renderer, "http://example.invalid:19846/"))
++        self.source_env.write_text(self.source_env.read_text().replace(self.renderer, "http://example.invalid:19857/"))
+         self.write_clearance()
+         self.assert_refused_before_make()
+ 
+     def test_credentialed_renderer_is_refused_before_make(self):
+-        self.source_env.write_text(self.source_env.read_text().replace(self.renderer, "http://fixture:fixture@127.0.0.1:19846/"))
++        self.source_env.write_text(self.source_env.read_text().replace(self.renderer, "http://fixture:fixture@127.0.0.1:19857/"))
+         self.write_clearance()
+         self.assert_refused_before_make()
+ 
+@@ -402,13 +402,13 @@
+     def test_missing_catalog_refuses_before_make(self):
+         (self.out / "catalog/mcp").rmdir()
+         self.assert_refused_before_make()
+-        self.assertFalse((self.out / "check-source-v11.safe.env").exists())
+-        self.assertFalse((self.out / "full-check-home-v11").exists())
++        self.assertFalse((self.out / "check-source-v12.safe.env").exists())
++        self.assertFalse((self.out / "full-check-home-v12").exists())
+ 
+     def test_shared_writable_catalog_refuses_before_make(self):
+         (self.out / "catalog/skills").chmod(0o770)
+         self.assert_refused_before_make()
+-        self.assertFalse((self.out / "full-check-home-v11").exists())
++        self.assertFalse((self.out / "full-check-home-v12").exists())
+ 
+     def test_symlinked_catalog_refuses_before_make(self):
+         selected = self.out / "catalog/published"
+@@ -417,7 +417,7 @@
+         decoy.mkdir(mode=0o700)
+         selected.symlink_to(decoy, target_is_directory=True)
+         self.assert_refused_before_make()
+-        self.assertFalse((self.out / "full-check-home-v11").exists())
++        self.assertFalse((self.out / "full-check-home-v12").exists())
+ 
+     def test_catalog_path_mismatch_refuses_before_make(self):
+         with self.source_env.open("a") as file:
+@@ -438,33 +438,33 @@
+     def test_build_temp_git_root_refuses_before_make(self):
+         self.build_temp_in_git = True
+         self.assert_refused_before_make()
+-        self.assertFalse((self.out / "check-source-v11.safe.env").exists())
++        self.assertFalse((self.out / "check-source-v12.safe.env").exists())
+ 
+     def test_existing_execution_directory_refuses_before_make(self):
+-        (self.out / "go-packages-v11").mkdir(mode=0o700)
+-        self.assert_refused_before_make()
+-        self.assertFalse((self.out / "check-source-v11.safe.env").exists())
++        (self.out / "go-packages-v12").mkdir(mode=0o700)
++        self.assert_refused_before_make()
++        self.assertFalse((self.out / "check-source-v12.safe.env").exists())
+ 
+     def test_repeated_launch_preserves_previous_evidence(self):
+         code, output = self.run_entry()
+         self.assertEqual(code, 0, output)
+         previous = {name: (self.out / name).read_bytes() for name in (
+-            "make-check-v11.json", "make-check-v11.log", "check-source-v11.safe.env")}
++            "make-check-v12.json", "make-check-v12.log", "check-source-v12.safe.env")}
+         code, output = self.run_entry()
+         self.assertEqual(code, 2, output)
+         self.assertEqual(len(self.launches), 1)
+         self.assertEqual(previous, {name: (self.out / name).read_bytes() for name in previous})
+ 
+-    def test_new_v11_process_paths_and_record_are_bound(self):
++    def test_new_v12_process_paths_and_record_are_bound(self):
+         code, output = self.run_entry()
+         self.assertEqual(code, 0, output)
+         launch = self.launches[0]
+         env = launch["env"]
+-        self.assertEqual(launch["command"], ["make", "check", "ENV_FILE=" + str(self.out / "check-source-v11.safe.env")])
+-        self.assertEqual(env["MULTICA_DEV_HOME"], str(self.out / "dev-registry-v11"))
+-        self.assertEqual(env["MULTICA_TASK_PACKAGE_DB_EVIDENCE"], str(self.out / "go-packages-v11"))
+-        self.assertEqual(env["MULTICA_DEV_PROFILES_HOME"], str(self.out / "profiles-v11"))
+-        self.assertEqual(env["MULTICA_DEV_WORKSPACES_PARENT"], str(self.out / "workspaces-v11"))
++        self.assertEqual(launch["command"], ["make", "check", "ENV_FILE=" + str(self.out / "check-source-v12.safe.env")])
++        self.assertEqual(env["MULTICA_DEV_HOME"], str(self.out / "dev-registry-v12"))
++        self.assertEqual(env["MULTICA_TASK_PACKAGE_DB_EVIDENCE"], str(self.out / "go-packages-v12"))
++        self.assertEqual(env["MULTICA_DEV_PROFILES_HOME"], str(self.out / "profiles-v12"))
++        self.assertEqual(env["MULTICA_DEV_WORKSPACES_PARENT"], str(self.out / "workspaces-v12"))
+         self.assertEqual(env["TMPDIR"], str(self.build_temp))
+         self.assertEqual(env["MULTICA_DEV_TMPDIR"], str(self.build_temp))
+         self.assertEqual(env["MULTICA_MCP_TEMPLATE_DIR"], str(self.out / "catalog/mcp"))
+@@ -472,15 +472,15 @@
+         self.assertEqual(env["MULTICA_SKILL_TEMPLATE_DIR"], str(self.out / "catalog/skills"))
+         self.assertEqual(env["MULTICA_RESOURCE_PUBLISH_DIR"], str(self.out / "catalog/published"))
+         self.assertNotIn("MULTICA_RUN_REAL_AGENT_SMOKE", env)
+-        record = json.loads((self.out / "make-check-v11.json").read_text())
++        record = json.loads((self.out / "make-check-v12.json").read_text())
+         self.assertEqual(record["candidate_sha"], CANDIDATE)
+         self.assertEqual(record["adapter_sha256"], {name: digest(self.adapters / name) for name in ("go", "pnpm")})
+         self.assertEqual(record["launcher_sha256"], digest(self.launcher))
+         self.assertEqual(record["source_env_sha256"], digest(self.source_env))
+-        self.assertEqual(record["effective_env_sha256"], digest(self.out / "check-source-v11.safe.env"))
++        self.assertEqual(record["effective_env_sha256"], digest(self.out / "check-source-v12.safe.env"))
+         self.assertEqual(record["state"], "complete")
+         self.assertEqual(record["exit_code"], 0)
+-        self.assertEqual((self.out / "make-check-v11.json").stat().st_mode & 0o777, 0o600)
++        self.assertEqual((self.out / "make-check-v12.json").stat().st_mode & 0o777, 0o600)
+ 
+ 
+     def test_modified_tracked_source_refuses_before_make(self):
+@@ -565,7 +565,7 @@
+     def test_run_record_separates_product_overlay_and_tracked_identities(self):
+         code, output = self.run_entry()
+         self.assertEqual(code, 0, output)
+-        record = json.loads((self.out / "make-check-v11.json").read_text())
++        record = json.loads((self.out / "make-check-v12.json").read_text())
+         binding = json.loads(self.binding_file.read_text())
+         self.assertEqual(record["canonical_product_source_id"], binding["source"]["product_source"]["source_id"])
+         self.assertEqual(record["canonical_product_file_count"], 2)

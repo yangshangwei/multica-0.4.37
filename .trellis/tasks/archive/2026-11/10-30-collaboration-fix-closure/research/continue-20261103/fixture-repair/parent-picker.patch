@@ -1,0 +1,21 @@
+diff --git a/e2e/fixtures/collaboration-editing.ts b/e2e/fixtures/collaboration-editing.ts
+index 981de5f64..f395f49ac 100644
+--- a/e2e/fixtures/collaboration-editing.ts
++++ b/e2e/fixtures/collaboration-editing.ts
+@@ -110,7 +110,15 @@ export async function createCollaborationWithInitialFields(page: Page, fixture:
+   await toggleLabel(page, dialog, fixture.labels[0].name);
+   await setTextProperty(page, dialog, fixture.property.name, "Initial delivery context");
+   await dialog.getByLabel("Project", { exact: true }).selectOption(fixture.project.id);
+-  await dialog.getByLabel("Parent issue", { exact: true }).selectOption(fixture.parent.id);
++  const parentTrigger = dialog.getByRole("button", { name: "Parent issue", exact: true });
++  await parentTrigger.click();
++  const parentSearch = page.getByPlaceholder("Find source issues by title or number", { exact: true });
++  await expect(parentSearch).toBeVisible();
++  const parentPicker = page.getByRole("dialog").filter({ has: parentSearch });
++  await parentSearch.fill(fixture.parent.title);
++  await parentPicker.getByRole("button").filter({ hasText: fixture.parent.title }).click();
++  await expect(parentSearch).toBeHidden();
++  await expect(parentTrigger).toContainText(fixture.parent.title);
+   await dialog.getByLabel("Stage under parent", { exact: true }).fill("2");
+   await dialog.getByLabel("Iteration", { exact: true }).selectOption(fixture.iterations[0].id);
+   const created = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/collaboration/issues" && response.request().method() === "POST");

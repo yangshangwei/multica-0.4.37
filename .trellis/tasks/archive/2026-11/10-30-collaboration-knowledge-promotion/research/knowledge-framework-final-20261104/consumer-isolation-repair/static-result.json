@@ -1,0 +1,54 @@
+{
+  "state": "static_pass",
+  "started_at": "2026-11-04T10:20:01.656622+00:00",
+  "fixture_sha256": "9ad91d89d9f43c63759c69274db18c99108b49de7000e6a74a7a08bbb872e0d8",
+  "gofmt_status": 0,
+  "checks": [
+    {
+      "label": "compile",
+      "command": [
+        "/bin/bash",
+        "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-tags=agentintegration",
+        "-p=1",
+        "-mod=readonly",
+        "-o",
+        "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/consumer-isolation-static-01/framework-static.test",
+        "./cmd/server"
+      ],
+      "exit_status": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "vet",
+      "command": [
+        "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+        "-C",
+        "server",
+        "vet",
+        "-tags=agentintegration",
+        "-p=1",
+        "./cmd/server",
+        "./internal/daemon"
+      ],
+      "exit_status": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "test_bodies_executed": false,
+  "real_Provider_calls": 0,
+  "finished_at": "2026-11-04T10:20:18.852432+00:00",
+  "compiled_binary": {
+    "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/consumer-isolation-static-01/framework-static.test",
+    "sha256": "462661dadb7a86cb8ca9d4d37743794fef8187cdf55ff91edb1b579febd6b7b1",
+    "executed": false
+  },
+  "minimal_diff_sha256": "1ac68162aee3e04e33c6fda74e0bc5fafadf1715a9b96af3a4f7ee8c31d3bb7d",
+  "actual_diff_sha256": "a5e13d8cbad6f47e0ca38e27222c516765bd8f5ce226eca1c62821f14dfa615d"
+}

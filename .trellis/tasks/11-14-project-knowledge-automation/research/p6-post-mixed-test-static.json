@@ -1,0 +1,22 @@
+{
+  "state": "pass",
+  "exit_code": 0,
+  "command": [
+    "/opt/homebrew/bin/go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "vet",
+    "-p",
+    "2",
+    "./..."
+  ],
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-mixed-history-race-55779534/post-test-vet.log",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "new_test": "server/internal/service/task_knowledge_mixed_history_integration_test.go",
+  "new_test_sha256": "42efe25cc5a54c19e2518eee60307baaa23788dc10e05f9a7f70b771e9ea141a",
+  "typed_compilation_and_race_test_evidence": "p6-mixed-history-race-55779534.json",
+  "production_input_parity_evidence": "p6-mixed-history-integration-6d969496.json",
+  "real_accounts_inherited": false,
+  "testmain_or_database_executed": false,
+  "created_at": "2026-11-15T06:25:19.922838+00:00"
+}

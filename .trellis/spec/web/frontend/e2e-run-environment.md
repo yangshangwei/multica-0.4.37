@@ -101,6 +101,71 @@ remain active without one shared fixture exhausting the account budget.
    settings. Deployment guidance is in
    `docs/offline-upgrade.zh-CN.md`, sections 7.2 and 7.5.1.
 
+### Password actors and managed profile prerequisites
+
+1. **Scope / trigger:** an explicitly password-authenticated E2E actor that
+   launches the production managed daemon. A running password API and a valid
+   PAT alone do not establish an onboarded account or local profile owner.
+2. **Signatures:** `auth.NormalizeUsername(raw)` in
+   `server/internal/auth/password.go`; `TestApiClient.registerPassword()`;
+   authenticated `PATCH /api/me/onboarding` and
+   `POST /api/me/onboarding/complete`; `prepareManagedInstallationSession()` in
+   `apps/desktop/src/main/managed-session.ts`; `managedProfileUser()` and
+   `initializeManagedTransport()` in `server/internal/daemon/managed_lifecycle.go`.
+   Desktop's `writeProfileUserId()` uses the same `.desktop-user-id` marker.
+3. **Contracts:** usernames contain 3–32 ASCII letters, digits or underscores
+   after trimming and are normalized to lowercase. Bound both the role and the
+   unique suffix; a hyphenated email identifier is not a valid username. The
+   password actor must submit the actual questionnaire/completion requests and
+   assert the returned ID equals the registered ID and `onboarded_at` is non-null.
+   The existing fixture uses `questionnaire.source: ["friends_colleagues"]`.
+   Preserve the existing legacy branch for fixtures that did not opt in.
+
+   For the managed branch, use a unique owned process `HOME` and named profile,
+   the API-issued PAT and the actual enrolled/signed installation session. After
+   `createHandoff()`, write the verified `managed.userId` in that same profile:
+
+   ```ts
+   const profileOwnerPath = join(profileDir, ".desktop-user-id");
+   writeFileSync(profileOwnerPath, managed.userId, { mode: 0o600, flag: "wx" });
+   expect(readFileSync(profileOwnerPath, "utf8")).toBe(fixture.creator.id);
+   ```
+
+   Pass the real handoff through stdin with `--managed-handoff-stdin`. Keep the
+   deployment/installation/daemon/user binding and `/api/me` principal checks;
+   profile contents never substitute for enrollment or daemon authorization.
+4. **Validation and errors:** registration rejects hyphens or out-of-range
+   usernames with HTTP 400 `invalid_username`. Missing `.desktop-user-id` rejects
+   managed startup with `managed profile has no user identity`; an invalid UUID
+   yields `managed profile user is invalid`. Mismatching managed daemon identity
+   yields `managed profile identity mismatch`; a differing API actor, or one with
+   `requires_account_setup` or `requires_password_change` set to true, yields
+   `daemon credential principal differs from managed profile`.
+   A null managed session is incomplete fixture admission, not permission to
+   fall back to an unenrolled daemon or invented user marker.
+5. **Good / base / bad cases:** good is a real registered/onboarded fixture user,
+   its own enrolled session and PAT, plus an owner marker read back as that same
+   user. Base is an unchanged legacy fixture with no managed launch. Bad is a
+   random UUID or another user's marker, onboarding state edited around the API,
+   or a borrowed default HOME/profile.
+6. **Tests required:** use the canonical two journeys in
+   `e2e/project-knowledge-automation.spec.ts` with setup in
+   `e2e/fixtures/collaboration-detail-journey.ts` and
+   `e2e/fixtures/project-knowledge-automation.ts`. Retain the original registration
+   and startup failures, bind a fresh complete build after a fixture change and
+   require both actual Web/Desktop journeys with zero skip/retry. Assert real
+   daemon input, v2 validity/session proof, old-continuation refusal and fresh
+   execution. Do not replace those with a mocked registration or new unit suite
+   that duplicates the production username validator. Preserve profile/log/owner
+   hashes, audit actual daemon/provider processes and the per-profile health
+   port; a retained `daemon.pid` file does not prove the process is running.
+7. **Wrong vs correct:** writing an arbitrary `.desktop-user-id` beside a PAT is
+   wrong. Establish the actual registered/onboarded user and enrolled session,
+   then persist its verified ID in the owned profile and retain all production
+   principal/identity guards. Current source-bound receipts are under
+   `.trellis/tasks/11-14-project-knowledge-automation/research/`; a private pass
+   must still be reconciled with the final shared ROOT integration.
+
 ### Browser cache with a private acceptance home
 
 1. **Scope:** a Playwright child whose `HOME` is a fresh task-owned directory.

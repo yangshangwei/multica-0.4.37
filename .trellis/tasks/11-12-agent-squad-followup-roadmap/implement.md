@@ -243,3 +243,26 @@ Views 全量套件已在修复后重跑并通过 602 files / 7,332 tests。M1-S1
 - [x] 最终限定文件/文档审计通过；按f2-commit-manifest列出的明确文件及spec索引单行准备本任务提交，不整体暂存并行工作，不归档或关闭roadmap。
 
 验收与A映射：[research/f2-acceptance-20261113.md](research/f2-acceptance-20261113.md)。无需重跑M1 Web/Desktop或未改前端的lint/typecheck；本次Go边界已验证。F1其他入口、F3/F4/F5及真实运行任务保留未完成。
+
+## 15. F3 规划与未来实施顺序（design only，未授权）
+
+本轮只产出文档，未改产品代码、迁移、路由，未运行任何产品或 DB 测试。
+
+- [x] 核对分支、HEAD、祖先关系、任务指针与状态；保留并行改动。
+- [x] 来源研究：[总表](research/f3-source-map-20261113.md)、[usage](research/f3-usage-source-map-20261113.md)、[执行/claim](research/f3-execution-source-map-20261113.md)。
+- [x] [最小合同](research/f3-minimum-budget-contract-20261113.md) 及其 §11 源码复核修订。
+- [x] [验收矩阵](research/f3-acceptance-matrix-20261113.md) B01–B60、E01–E06；requirements F3-01–14；design §13。
+- [ ] 用户审阅 D2–D6 并对最终方案给出独立明确的实施授权。
+
+获得授权后的建议顺序（每步有自己的出口，前一步未过不进下一步）：
+
+1. **E2 清点**：列全所有写 `parent_issue_id` 或创建 issue 的路径及其是否取工作空间 fence；画出含根行的全路径锁图。出口：清单与锁图经 check 复核。
+2. **纯计量**：tick/十进制编码、价格快照与舍入、A/R/H reducer、累计/增量/更正。出口：B15、B17–B30 pure 行。
+3. **schema**：五类表与独立并发索引迁移。出口：B51、B56。
+4. **根与成员**：启用、继承、改父/删除、close/reopen。出口：B01–B14、B57、B59、B60。
+5. **attempt 与影子预留**：finalize 事务接入、`budget_attempt_id` 下发。出口：B07、B08、B34–B38、B45–B47、B55。
+6. **用量事件入口与 daemon journal**：整批原子、原 key 恢复、旧协议缺口。出口：B31–B33、B49、B53。
+7. **权限、API、CLI**：允许名单、revision、最小披露；同步内置 skill 文档与 source map。出口：B39–B44、B48、B50、B52、B58。
+8. **不回归与收尾**：B54，normal/race 各用新建数据库并证明零 skip，独立 check，更新 spec。
+
+回滚点：第 3 步前无持久变更；第 3 步后以停用观察开关回退，账目保留。

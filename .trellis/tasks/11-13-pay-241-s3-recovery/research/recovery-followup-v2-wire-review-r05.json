@@ -1,0 +1,926 @@
+{
+  "recorded_at": "2026-11-15T08:46:13.717Z",
+  "reviewer": "/root/s2_f06_check_r05",
+  "active_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "status": "PLANNING_PASS",
+  "product_fix_claimed": false,
+  "task_activated": false,
+  "parent_closed": false,
+  "open_planning_findings": 0,
+  "findings_fixed": [
+    {
+      "file": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-wire-supplement-r05.md",
+      "issue": "Assumed event-sequence history order and mandatory old event links could lose legacy affected rows.",
+      "fix": "Applied main-selected actual handoff tuple/upper/current-revision paging and linked/legacy_unlinked/unavailable provenance with explicit null event identities."
+    },
+    {
+      "file": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-wire-supplement-r05.md",
+      "issue": "Existing content reader was incorrectly treated as supplying byte/time limits and a general sealer.",
+      "fix": "Pinned explicit 5s/65536 encoded-byte/50-item/2048 cursor bounds and first-item overflow 503; distinguished reusable JSON sizing from incompatible comment envelope/omission behavior."
+    },
+    {
+      "file": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-wire-supplement-r05.md",
+      "issue": "Handoff base64 cursor and T4 run salt do not supply human-history signing.",
+      "fix": "Applied main-selected narrow domain-separated HMAC using existing actual cached JWT key/validator, rejecting known default, nullable read-basis fingerprint and actual restart-based rotation."
+    },
+    {
+      "file": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-wire-supplement-r05.md",
+      "issue": "Public nullable identities/counts and return-history fallback provenance were implicit.",
+      "fix": "Added closed item/affected shapes, exact request-handoff-vs-operation-key distinction, int64 decimal denominator, original transaction fallback facts and legacy null/unavailable behavior."
+    },
+    {
+      "file": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-wire-supplement-r05.md",
+      "issue": "Creation response could be reused across selected projects; raw project ID misses inheritance.",
+      "fix": "Pinned complete not_selected/known presence/types, project-aware Query identity, existing readonly options vs actual resolved-project writer, existing 409 status_unavailable own-result mapping."
+    },
+    {
+      "file": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-wire-supplement-r05.md",
+      "issue": "Repair replay/default-status and pending normal fallback need exact existing allowlist/schema touchpoints.",
+      "fix": "Pinned directed receipt-before-new-validation order, repair-only empty-default variant, pending-safe nested/nonblocked returns, actual raw pointer and source-departure eligibility distinction."
+    }
+  ],
+  "findings_not_fixed": [],
+  "c01_disposition": [
+    {
+      "id": "S3P-C01/A",
+      "sequence": "Creator replaces somebody else’s current request",
+      "status": "CLOSED_IN_V2_CONTRACT",
+      "rule": "Managed blocked parentless B2 refuses. One explicit repair R commits actual blocked→S, target, exact supersession and its own receipt. Only a separate fresh observed B2 may follow.",
+      "evidence": [
+        "collaboration_handoff.go:153-202",
+        "collaboration_workflow.go:233-263",
+        "v2 §2/§3/sequence A"
+      ],
+      "test": "V2-01"
+    },
+    {
+      "id": "S3P-C01/B",
+      "sequence": "Current recipient removed while root remains blocked",
+      "status": "CLOSED_IN_V2_CONTRACT",
+      "rule": "Security depart remains allowed and supersedes the chain without pretending repair. R observes null pointer, uses a human choice with no pending delivery, does not retroactively credit removal rows; later B2 saves real S.",
+      "evidence": [
+        "collaboration_workflow.go:277-314",
+        "collaboration_workflow.sql:SupersedeCollaborationInformationRequests",
+        "v2 sequence B"
+      ],
+      "test": "V2-02"
+    },
+    {
+      "id": "S3P-C01/C",
+      "sequence": "Legacy standalone/incomplete blocked state becomes managed",
+      "status": "CLOSED_IN_V2_CONTRACT",
+      "rule": "Management follows current source/project policy even without a stage-task row. Human-selected repair needs no invented old origin, records actual blocked prior status, and leaves legacy fields/history intact.",
+      "evidence": [
+        "collaboration_stage.go:loadStageRoot",
+        "v2 §2/sequence C",
+        "wire selected-project/effective-project contract"
+      ],
+      "test": "V2-03"
+    },
+    {
+      "id": "S3P-C01/D",
+      "sequence": "Complete B2 proposed under incomplete or unusable legacy parent",
+      "status": "CLOSED_IN_V2_CONTRACT",
+      "rule": "Normal nesting requires complete verifiable pending-safe exit, cycle/missing/invalid source fails closed. No-pending human-selected R may supersede real legacy rows without inventing links; history counts include null provenance.",
+      "evidence": [
+        "collaboration_handoff.go:177-188/254-269",
+        "collaboration_activity.go:181-188",
+        "wire human history/provenance"
+      ],
+      "test": "V2-04"
+    },
+    {
+      "id": "S3P-C01/E",
+      "sequence": "Original requester leaves or is disabled",
+      "status": "CLOSED_IN_V2_CONTRACT",
+      "rule": "Normal return still checks requester current participation/recipient eligibility and never reenrolls them. Current authorized Q can repair to self; equal from/to is a truthful status recovery, not a transfer to H.",
+      "evidence": [
+        "collaboration_handoff.go:223-239",
+        "collaboration_workflow.go:195-210/233-263",
+        "v2 sequence E"
+      ],
+      "test": "V2-05"
+    },
+    {
+      "id": "S3P-C01/F",
+      "sequence": "Valid complete ordinary nested return",
+      "status": "PRESERVED",
+      "rule": "Two exact returns reactivate the complete parent and restore its saved legal status. Pending-safe blocked→blocked nesting remains valid. No R is fabricated, and old/unmanaged behavior stays scoped.",
+      "evidence": [
+        "collaboration_handoff.go:246-271",
+        "v2 sequence F",
+        "wire pending-return integration"
+      ],
+      "test": "V2-06"
+    },
+    {
+      "id": "S3P-C01/G",
+      "sequence": "Genuine current pending submission interrupted from in_review",
+      "status": "CLOSED_IN_V2_CONTRACT",
+      "rule": "Exact submission/event and current eligible creator have priority. No human-selected work state, different target, fabricated submission, stage/M1 rebinding or blind archived→in_progress fallback. Later acceptance/return is independent.",
+      "evidence": [
+        "collaboration_delivery_test.go:79-100",
+        "collaboration_delivery.go:448-453",
+        "collaboration_handoff.go:96-103",
+        "v2 §4/sequence G"
+      ],
+      "test": "V2-07"
+    },
+    {
+      "id": "S3P-C01/H",
+      "sequence": "Required pending creator truly unavailable",
+      "status": "CLOSED_WITH_EXPLICIT_REFUSAL",
+      "rule": "Normal repair refuses. No new R38 repair or proxy acceptance; separately authorized existing cancel/reopen with successor starts a new lifecycle and requires final S2 reset/reconfirmation. Source workspace departure with retained participation is not unavailability.",
+      "evidence": [
+        "collaboration/access.go:86-132",
+        "v2 §3/§4/sequence H",
+        "wire pending-return integration"
+      ],
+      "test": "V2-08"
+    }
+  ],
+  "c02_disposition": [
+    {
+      "id": "presence",
+      "status": "CLOSED",
+      "rule": "Raw absence/null/type/duplicate validation precedes pointer conversion; only old/unmanaged legitimate absence remains omitted. Managed validation is after original-key recovery.",
+      "evidence": "v2 §5; wire original-key integration"
+    },
+    {
+      "id": "finite_text",
+      "status": "CLOSED",
+      "rule": "Managed reason and condition each <=4096 UTF-8 bytes, nonblank/NUL-free; no unrequested arbitrary future-day limit. Existing escaped 64KiB writer envelope is retained.",
+      "evidence": "v2 §5/§8 V2-14"
+    },
+    {
+      "id": "eta_precision",
+      "status": "CLOSED",
+      "rule": "RFC3339 explicit zone, 0..6 fractional digits, exact UTC microsecond storage vs final DB clock for new writes. Original raw input remains in digest; old replay/past historical ETA is not recomputed.",
+      "evidence": "v2 §5/§7"
+    },
+    {
+      "id": "current_vs_history",
+      "status": "CLOSED",
+      "rule": "Complete metadata is not actionability. New server block is complete/legacy/unavailable; old absence unknown. Actual null pointer differs from a dangling non-null pointer. Current authority fences all human pages.",
+      "evidence": "v2 §5; wire item/projection integration"
+    },
+    {
+      "id": "runtime_v1",
+      "status": "CLOSED",
+      "rule": "No new transfer/source/version fields or note concatenation in strict runtime v1. New live/new snapshots may use existing missing string; old snapshots/source bytes/hash remain unchanged.",
+      "evidence": "protocol/collaboration_handoff.go:217/256/348; collaboration_handoff_snapshot.go:128; wire §4"
+    },
+    {
+      "id": "selected_project",
+      "status": "CLOSED",
+      "rule": "Only GET gains project_id; not_selected has managed:null and preserves choices, known has exact source/project/nonnegative decimal policy revision including 0/default off. Missing schema 503; project-aware Query key/correlation; real root writer uses effective inherited project.",
+      "evidence": "collaboration_creation_options.go:27; issue.go:442-491; creation.ts:18; wire §1"
+    },
+    {
+      "id": "creation_original_result",
+      "status": "CLOSED",
+      "rule": "Keep POST/digest and actor-owned original create key unchanged. Use existing 409 status_unavailable/typed own rejection. Actual dependency failure does not become a durable business refusal.",
+      "evidence": "collaboration.go:206-239/275-300; collaboration_creation_result.go:39-105; creation-schema.ts:rejection enum"
+    },
+    {
+      "id": "legacy_provenance",
+      "status": "CLOSED_AFTER_MAIN_SELECTION",
+      "rule": "Actual handoff created_at/id ordering includes unlinked legacy rows; linked event IDs are exact, legacy event ID/sequence explicit null, malformed linkage unavailable. Legacy cannot authorize historical_information basis.",
+      "evidence": "collaboration_activity.go:181-188; handoff.sql:GetCollaborationInformationRequestEventSequence; wire §2/§3"
+    },
+    {
+      "id": "affected_denominator",
+      "status": "CLOSED_AFTER_MAIN_SELECTION",
+      "rule": "Immutable repair count is nonnegative int64 decimal, full relation includes legacy/unavailable rows, 0 is honest; no event guessing or dropping. prior removal/returned rows are not credited to R.",
+      "evidence": "v2 §3/§8 V2-15; wire affected-list envelope/items"
+    },
+    {
+      "id": "paging_and_bytes",
+      "status": "CLOSED_AFTER_MAIN_SELECTION",
+      "rule": "5s explicit read context, fixed encoded JSON+newline <=65536, limit1..50, encoded cursor<=2048. Reserve real cursor and retain first unfit row; first complete item over cap is 503, never omitted prose or false complete prefix.",
+      "evidence": "collaboration_comments.go:103-120; collaboration_comments_recall.go:105-198; wire §2"
+    },
+    {
+      "id": "cursor_sealing",
+      "status": "CLOSED_AFTER_MAIN_SELECTION",
+      "rule": "New history-only HMAC-SHA256/base64url domain; use actual cached JWTSecret validated with existing validator, not run T4 salt or public dev fallback. Current viewer/root/projection/revision/nullable authority/upper/last/repair ID binding; restart-based rotation and fresh authorized page.",
+      "evidence": "auth/jwt.go:21/53; main.go:286; test_report_view.go:76-100; wire cursor integrity"
+    },
+    {
+      "id": "normal_return_provenance",
+      "status": "CLOSED",
+      "rule": "Return actor/time/restored status/fallback are actual original row/event facts; do not recompute using current handler/catalog/issue updated_at. Legacy unverifiable restoration is null/unavailable; pending-safe normal nesting retained.",
+      "evidence": "collaboration_handoff.go:246-271; collaboration_workflow.go:255-257/336-348; wire §3"
+    },
+    {
+      "id": "repair_options_and_replay",
+      "status": "CLOSED",
+      "rule": "New repair-only options variant permits default_status empty with valid information_repair_context; old schemas retain min1/default included. Directed participation gates receipt lookup; new action independently checks both Transfer+ChangeStatus and target/current managed context.",
+      "evidence": "workflow.go:375-418/559-610; lifecycle.go:54/198; core schema.ts:CollaborationStatusOptionsSchema; wire original-key integration"
+    }
+  ],
+  "activation_dependencies": [
+    {
+      "dependency": "Final S2 source/lock contract",
+      "status": "NOT_READY",
+      "requirement": "Root must accept and bind final 2d all-writer/guard/source-policy candidate before S3 shared-file handoff. Intermediate r02 overlay SHA22421… is not acceptance."
+    },
+    {
+      "dependency": "Task contract/manifests sync",
+      "status": "COORDINATOR_FOLLOWUP",
+      "requirement": "Copy accepted v2 + this final wire/review into design/implement and actual implement/check jsonl; include exact accepted S2 references, current auth/creation/handoff/byte-budget source touchpoints."
+    },
+    {
+      "dependency": "Actual implementation and verification",
+      "status": "NOT_RUN",
+      "requirement": "Single server owner adds reviewed columns/immutable repair relation/count/refusal/event/source queries and narrow history cursor/DTOs; Core/Views consume frozen closed contract. Red→green V2-01..18/owning-layer wire/real API-Web-Desktop verification later, on assigned source/databases."
+    },
+    {
+      "dependency": "Environment signing key",
+      "status": "MUST_VERIFY_BEFORE_READ_EXECUTION",
+      "requirement": "Use the existing actual validated JWT key; task test process must configure it before sync.Once/TestMain. No env hot reload, public dev fallback, real account/key inspection or new key setting."
+    },
+    {
+      "dependency": "Migration/retention readiness",
+      "status": "NOT_RUN",
+      "requirement": "Root assigns latest numbers. Nullable columns/no FK; add indexes only if justified and single-statement CONCURRENTLY with cleanup registration; higher-numbered retained-history down guard before supporting removal."
+    }
+  ],
+  "wire": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-wire-supplement-r05.md",
+    "original_sha256": "7853fb9ad3280d24114cf1cf01a9cc19f6f6c365fc66a41cf3f1be39ede71987",
+    "final_sha256": "d9934020f24751ee722bb0bf115a0e587a37a4ee6bb0465cf12e26fee90e76c5",
+    "original_preserved": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/s3-plan-check/wire-before.md",
+    "main_selected": {
+      "paging": "real handoff created_at/id keyset with upper tuple/current revision",
+      "provenance": [
+        "linked",
+        "legacy_unlinked",
+        "unavailable"
+      ],
+      "legacy_event_identity": null,
+      "read_deadline_seconds": 5,
+      "max_encoded_response_bytes": 65536,
+      "max_limit": 50,
+      "max_cursor_encoded_bytes": 2048,
+      "first_oversize": "503 information_context_unavailable",
+      "sealing": "history-only HMAC-SHA256/base64url using validated actual cached JWT key",
+      "domain": "collaboration-human-information-history-cursor-v1",
+      "no_new_config_dependency_or_token": true
+    }
+  },
+  "key_feasibility": {
+    "getter": "auth.JWTSecret()",
+    "validator": "auth.ValidateJWTSecret(string(actualCachedKey))",
+    "source": [
+      "server/internal/auth/jwt.go:21",
+      "server/internal/auth/jwt.go:53",
+      "server/cmd/server/main.go:286"
+    ],
+    "public_development_fallback_refused": true,
+    "actual_environment_key_inspected": false,
+    "sync_once_rotation": "process replacement/restart, not environment hot reload",
+    "t4_run_salt_not_reused": true
+  },
+  "verification": {
+    "check_jsonl_references": 18,
+    "all_reference_files_loaded": true,
+    "document_structure": "pass",
+    "json_examples": "pass",
+    "source_capture_count": 41,
+    "source_drift": [],
+    "preserved_documents_unchanged": true,
+    "product_lint": "NOT_RUN",
+    "product_typecheck": "NOT_RUN",
+    "product_tests": "NOT_RUN",
+    "database_api_browser_provider_execution": 0,
+    "task_status": "planning"
+  },
+  "inputs": {
+    "before": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/s3-plan-check/before-inputs.json",
+      "sha256": "71bb9e4758b9e3bb7133eb9b4755b7b3b768d5d20325d8adc945944c5c3cea11",
+      "bytes": 18086
+    },
+    "after": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/s3-plan-check/after-inputs.json",
+      "sha256": "08d0359c68764be6bd3568a3c3cad64a8a0507b8390fd1aee15df7fbd6f8c39f",
+      "bytes": 21063
+    },
+    "structure": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/s3-plan-check/wire-structure-check.json",
+      "sha256": "83c132af36f750ee2464ae062ecd150b29d10c6f39a4d334500608a41f5797da",
+      "bytes": 811
+    },
+    "check_jsonl_sha256": "257e218e12ebaedd52f89c19c21985e11b73d8545b182a522b1f58e7435ea037",
+    "references": [
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-foundation.md",
+        "sha256": "f867b6f7cb6ce34c013a3bc1c5266381d2602d756c82aa9bc25a332952f6f099",
+        "reused_loaded_identical": true,
+        "bytes": 41981,
+        "lines": 608
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-delivery.md",
+        "sha256": "85a8b1556675114aeef2f2b5f8ed2ae22f546ff40e4e64c6afc772dbf1aa4351",
+        "reused_loaded_identical": true,
+        "bytes": 14373,
+        "lines": 245
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-stage-approvals.md",
+        "sha256": "be229701226d051a86adfac59fdaadec7be286aea0f057dea0de1361171c80bc",
+        "reused_loaded_identical": true,
+        "bytes": 17526,
+        "lines": 144
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-source-editing.md",
+        "sha256": "652d71d25519580a88421df1f54d2ce6c621072504c83f3dd1124e1fc5ad1be5",
+        "reused_loaded_identical": false,
+        "bytes": 16067,
+        "lines": 256
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-command-history.md",
+        "sha256": "ada35ce0d66562fc57eca2a44a257d40807e99f43b97d11ab55f8404c25655c9",
+        "reused_loaded_identical": false,
+        "bytes": 3651,
+        "lines": 72
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-realtime.md",
+        "sha256": "321cc698a38a5629b9ddd1477fd1caa86288df708e1891201c5c6e5d4417d64b",
+        "reused_loaded_identical": false,
+        "bytes": 6341,
+        "lines": 111
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-content.md",
+        "sha256": "637c2911ceb9d3713ee79e3c2b3ff92227dbbeae6ebc51a37cebcb803bf9416e",
+        "reused_loaded_identical": false,
+        "bytes": 15918,
+        "lines": 272
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-runtime-recovery.md",
+        "sha256": "567d1503719db0bc04e04480d292b18c1b700a4cfeed53c47ef5df64d4b5b064",
+        "reused_loaded_identical": false,
+        "bytes": 14413,
+        "lines": 223
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/database-test-isolation.md",
+        "sha256": "6317dea643c1e395aaea3ff7a0aa1cc5b3f33b085636c739606aaa33ff1a6b07",
+        "reused_loaded_identical": true,
+        "bytes": 23251,
+        "lines": 358
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/verification-environment.md",
+        "sha256": "bd1bdb58861d993eb5dc836bd45fe9276b066763265265822dfccec584ece4da",
+        "reused_loaded_identical": true,
+        "bytes": 10557,
+        "lines": 153
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/core/frontend/collaboration-workbench.md",
+        "sha256": "1246539800787b057417b536162ceb34ae24dfc69f34d563f5e4226c25e6dd2e",
+        "reused_loaded_identical": true,
+        "bytes": 21651,
+        "lines": 333
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/views/frontend/collaboration-detail.md",
+        "sha256": "e914509a427d028d83b81ca24abadbdf5a18d579749cf6a4b1ff53508b39efd8",
+        "reused_loaded_identical": true,
+        "bytes": 13493,
+        "lines": 219
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/e2e-run-environment.md",
+        "sha256": "ee8fae2ce3484722c6d42a116db9699694260fcbf8a13938d6eb390a84c0751a",
+        "reused_loaded_identical": false,
+        "bytes": 44986,
+        "lines": 716
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-preparation-20261114.md",
+        "sha256": "58ec01d7ead8eb3cca7f5d261e71abde62a2190c116b1dcda67355a72582186e",
+        "reused_loaded_identical": false,
+        "bytes": 46767,
+        "lines": 250
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-block-contract-v2-20261114.md",
+        "sha256": "650ecd16f2bcf912b8b14e8403783fac514e8b744b28498570c028a0d6fdd1e5",
+        "reused_loaded_identical": false,
+        "bytes": 39800,
+        "lines": 311
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-wire-supplement-r05.md",
+        "sha256": "7853fb9ad3280d24114cf1cf01a9cc19f6f6c365fc66a41cf3f1be39ede71987",
+        "reused_loaded_identical": false,
+        "bytes": 10394,
+        "lines": 96
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-review-20261114.md",
+        "sha256": "695b556f7763aa7871fc128c052086bdb53e087f68c756e74790c46bbe321190",
+        "reused_loaded_identical": false,
+        "bytes": 8752,
+        "lines": 78
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/report.md",
+        "sha256": "ffb0264996dbf7700cb934fe66e0a54989928147d6d778e78bcb582590503a60",
+        "reused_loaded_identical": false,
+        "bytes": 3638,
+        "lines": 35
+      }
+    ],
+    "protected_documents": [
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/prd.md",
+        "before_sha256": "481c2f7cd895eadfa934e044ad6a10650bf0def477d110127c1e0bef7cdb34b4",
+        "after_sha256": "481c2f7cd895eadfa934e044ad6a10650bf0def477d110127c1e0bef7cdb34b4",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/design.md",
+        "before_sha256": "3e1c3d2e73b2aaff0d4e32da8ecf064a225d26dd82da913ff8efc6ba53ccabf6",
+        "after_sha256": "3e1c3d2e73b2aaff0d4e32da8ecf064a225d26dd82da913ff8efc6ba53ccabf6",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/implement.md",
+        "before_sha256": "35e58d57fdc7aa609f32338cb0bbb3df575c917f9d01512a6a0891547a7e013e",
+        "after_sha256": "35e58d57fdc7aa609f32338cb0bbb3df575c917f9d01512a6a0891547a7e013e",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-foundation.md",
+        "before_sha256": "f867b6f7cb6ce34c013a3bc1c5266381d2602d756c82aa9bc25a332952f6f099",
+        "after_sha256": "f867b6f7cb6ce34c013a3bc1c5266381d2602d756c82aa9bc25a332952f6f099",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-delivery.md",
+        "before_sha256": "85a8b1556675114aeef2f2b5f8ed2ae22f546ff40e4e64c6afc772dbf1aa4351",
+        "after_sha256": "85a8b1556675114aeef2f2b5f8ed2ae22f546ff40e4e64c6afc772dbf1aa4351",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-stage-approvals.md",
+        "before_sha256": "be229701226d051a86adfac59fdaadec7be286aea0f057dea0de1361171c80bc",
+        "after_sha256": "be229701226d051a86adfac59fdaadec7be286aea0f057dea0de1361171c80bc",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-source-editing.md",
+        "before_sha256": "652d71d25519580a88421df1f54d2ce6c621072504c83f3dd1124e1fc5ad1be5",
+        "after_sha256": "652d71d25519580a88421df1f54d2ce6c621072504c83f3dd1124e1fc5ad1be5",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-command-history.md",
+        "before_sha256": "ada35ce0d66562fc57eca2a44a257d40807e99f43b97d11ab55f8404c25655c9",
+        "after_sha256": "ada35ce0d66562fc57eca2a44a257d40807e99f43b97d11ab55f8404c25655c9",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-realtime.md",
+        "before_sha256": "321cc698a38a5629b9ddd1477fd1caa86288df708e1891201c5c6e5d4417d64b",
+        "after_sha256": "321cc698a38a5629b9ddd1477fd1caa86288df708e1891201c5c6e5d4417d64b",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-content.md",
+        "before_sha256": "637c2911ceb9d3713ee79e3c2b3ff92227dbbeae6ebc51a37cebcb803bf9416e",
+        "after_sha256": "637c2911ceb9d3713ee79e3c2b3ff92227dbbeae6ebc51a37cebcb803bf9416e",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-runtime-recovery.md",
+        "before_sha256": "567d1503719db0bc04e04480d292b18c1b700a4cfeed53c47ef5df64d4b5b064",
+        "after_sha256": "567d1503719db0bc04e04480d292b18c1b700a4cfeed53c47ef5df64d4b5b064",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/database-test-isolation.md",
+        "before_sha256": "6317dea643c1e395aaea3ff7a0aa1cc5b3f33b085636c739606aaa33ff1a6b07",
+        "after_sha256": "6317dea643c1e395aaea3ff7a0aa1cc5b3f33b085636c739606aaa33ff1a6b07",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/verification-environment.md",
+        "before_sha256": "bd1bdb58861d993eb5dc836bd45fe9276b066763265265822dfccec584ece4da",
+        "after_sha256": "bd1bdb58861d993eb5dc836bd45fe9276b066763265265822dfccec584ece4da",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/core/frontend/collaboration-workbench.md",
+        "before_sha256": "1246539800787b057417b536162ceb34ae24dfc69f34d563f5e4226c25e6dd2e",
+        "after_sha256": "1246539800787b057417b536162ceb34ae24dfc69f34d563f5e4226c25e6dd2e",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/views/frontend/collaboration-detail.md",
+        "before_sha256": "e914509a427d028d83b81ca24abadbdf5a18d579749cf6a4b1ff53508b39efd8",
+        "after_sha256": "e914509a427d028d83b81ca24abadbdf5a18d579749cf6a4b1ff53508b39efd8",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/e2e-run-environment.md",
+        "before_sha256": "ee8fae2ce3484722c6d42a116db9699694260fcbf8a13938d6eb390a84c0751a",
+        "after_sha256": "ee8fae2ce3484722c6d42a116db9699694260fcbf8a13938d6eb390a84c0751a",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-preparation-20261114.md",
+        "before_sha256": "58ec01d7ead8eb3cca7f5d261e71abde62a2190c116b1dcda67355a72582186e",
+        "after_sha256": "58ec01d7ead8eb3cca7f5d261e71abde62a2190c116b1dcda67355a72582186e",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-block-contract-v2-20261114.md",
+        "before_sha256": "650ecd16f2bcf912b8b14e8403783fac514e8b744b28498570c028a0d6fdd1e5",
+        "after_sha256": "650ecd16f2bcf912b8b14e8403783fac514e8b744b28498570c028a0d6fdd1e5",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-review-20261114.md",
+        "before_sha256": "695b556f7763aa7871fc128c052086bdb53e087f68c756e74790c46bbe321190",
+        "after_sha256": "695b556f7763aa7871fc128c052086bdb53e087f68c756e74790c46bbe321190",
+        "unchanged": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/report.md",
+        "before_sha256": "ffb0264996dbf7700cb934fe66e0a54989928147d6d778e78bcb582590503a60",
+        "after_sha256": "ffb0264996dbf7700cb934fe66e0a54989928147d6d778e78bcb582590503a60",
+        "unchanged": true
+      }
+    ],
+    "source_capture": [
+      {
+        "path": "server/internal/collaboration/access.go",
+        "sha256": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64",
+        "bytes": 4085,
+        "after_sha256": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64",
+        "after_bytes": 4085,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_creation_fields.go",
+        "sha256": "d79029f5833abc1d6f856f5eb6042cebbe9387adfc5f417b085fbdfe17d42420",
+        "bytes": 7356,
+        "after_sha256": "d79029f5833abc1d6f856f5eb6042cebbe9387adfc5f417b085fbdfe17d42420",
+        "after_bytes": 7356,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/handler/collaboration_workflow.go",
+        "sha256": "2633c9b19f43ac914286b11f03390d251de39e35d45c8632f20f4514b136dc68",
+        "bytes": 16615,
+        "after_sha256": "2633c9b19f43ac914286b11f03390d251de39e35d45c8632f20f4514b136dc68",
+        "after_bytes": 16615,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_handoff.go",
+        "sha256": "e93510ae234e5667db3dfca6cdb327d054a9cd84730f4630303fdf7b16dd6e42",
+        "bytes": 19736,
+        "after_sha256": "e93510ae234e5667db3dfca6cdb327d054a9cd84730f4630303fdf7b16dd6e42",
+        "after_bytes": 19736,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_workflow.go",
+        "sha256": "cfc9e748a1a5e4cd1c417e417166fdd4a0dc4d50ab0633ba8f24ca48ac54c8e4",
+        "bytes": 33332,
+        "after_sha256": "cfc9e748a1a5e4cd1c417e417166fdd4a0dc4d50ab0633ba8f24ca48ac54c8e4",
+        "after_bytes": 33332,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_lifecycle.go",
+        "sha256": "c9e39896113df41d7d516b5bcdf524082ea272878da15f6aa0ffe6908a344fd2",
+        "bytes": 27366,
+        "after_sha256": "c9e39896113df41d7d516b5bcdf524082ea272878da15f6aa0ffe6908a344fd2",
+        "after_bytes": 27366,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_activity.go",
+        "sha256": "576d591b9eda7148a034ecf69c020e64653919ec8da12029a568eca7a4a890fa",
+        "bytes": 11821,
+        "after_sha256": "576d591b9eda7148a034ecf69c020e64653919ec8da12029a568eca7a4a890fa",
+        "after_bytes": 11821,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_handoff_snapshot.go",
+        "sha256": "3f8908055f5e7b5936925d2010df531e1802269bfade7dbf963f00e61d8062c2",
+        "bytes": 11059,
+        "after_sha256": "3f8908055f5e7b5936925d2010df531e1802269bfade7dbf963f00e61d8062c2",
+        "after_bytes": 11059,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_runtime_handoff.go",
+        "sha256": "ee5c0569a6a3b531c41086e0ca5b45b8154e8e0623b7872276da50f781c73ef9",
+        "bytes": 19109,
+        "after_sha256": "ee5c0569a6a3b531c41086e0ca5b45b8154e8e0623b7872276da50f781c73ef9",
+        "after_bytes": 19109,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_comments_recall.go",
+        "sha256": "5ffa0c1784063a5e07eb8feb5a624b2995a1530e83b653c993011120fbe25ad8",
+        "bytes": 15932,
+        "after_sha256": "5ffa0c1784063a5e07eb8feb5a624b2995a1530e83b653c993011120fbe25ad8",
+        "after_bytes": 15932,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_records.go",
+        "sha256": "943c7a80c9cbc66e97da9b42fc6a7ca03590e59bf0dacf476ea64b4cac9c5e10",
+        "bytes": 20580,
+        "after_sha256": "943c7a80c9cbc66e97da9b42fc6a7ca03590e59bf0dacf476ea64b4cac9c5e10",
+        "after_bytes": 20580,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration.go",
+        "sha256": "277dc7c15951e90c00aaaf4acd469107dd5e676a79423ee8ad5e7ab7c12bfef7",
+        "bytes": 19936,
+        "after_sha256": "277dc7c15951e90c00aaaf4acd469107dd5e676a79423ee8ad5e7ab7c12bfef7",
+        "after_bytes": 19936,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/issue.go",
+        "sha256": "0696dfbc0acb4221be78b8f63bb0d58f5546f744292e3d52c4aec243da4a3223",
+        "bytes": 42340,
+        "after_sha256": "0696dfbc0acb4221be78b8f63bb0d58f5546f744292e3d52c4aec243da4a3223",
+        "after_bytes": 42340,
+        "unchanged": true
+      },
+      {
+        "path": "server/pkg/protocol/collaboration_handoff.go",
+        "sha256": "a2af3cb853fe14e4fec2d73a59b177ba68a52f17bced2d3ef58b2e54b892f9ac",
+        "bytes": 18020,
+        "after_sha256": "a2af3cb853fe14e4fec2d73a59b177ba68a52f17bced2d3ef58b2e54b892f9ac",
+        "after_bytes": 18020,
+        "unchanged": true
+      },
+      {
+        "path": "server/pkg/db/queries/collaboration_workflow.sql",
+        "sha256": "1b9b415c960211011342056575ccef263223e1b078507d91c28af1c19f95c330",
+        "bytes": 4934,
+        "after_sha256": "1b9b415c960211011342056575ccef263223e1b078507d91c28af1c19f95c330",
+        "after_bytes": 4934,
+        "unchanged": true
+      },
+      {
+        "path": "server/pkg/db/queries/collaboration_handoff.sql",
+        "sha256": "05d738cdabae133f5c21cf6c894d6db6d2b07f4bf1f6432b34e3bb2dab61f9db",
+        "bytes": 3012,
+        "after_sha256": "05d738cdabae133f5c21cf6c894d6db6d2b07f4bf1f6432b34e3bb2dab61f9db",
+        "after_bytes": 3012,
+        "unchanged": true
+      },
+      {
+        "path": "server/migrations/571_collaboration_schema.up.sql",
+        "sha256": "d799d35327b530b72fd366354bcb9c8fac9c63d748faa1a0bffd461f7dc61b5f",
+        "bytes": 9590,
+        "after_sha256": "d799d35327b530b72fd366354bcb9c8fac9c63d748faa1a0bffd461f7dc61b5f",
+        "after_bytes": 9590,
+        "unchanged": true
+      },
+      {
+        "path": "server/cmd/server/router.go",
+        "sha256": "99b8add17fa3251ec830a0069e8477c67c74a83626a62a829228685142bf4b11",
+        "bytes": 151540,
+        "after_sha256": "99b8add17fa3251ec830a0069e8477c67c74a83626a62a829228685142bf4b11",
+        "after_bytes": 151540,
+        "unchanged": true
+      },
+      {
+        "path": "packages/core/api/client.ts",
+        "sha256": "89fd63d8439b60882c1a33297172d3595718d7357a505950502c1698516a83a4",
+        "bytes": 366334,
+        "after_sha256": "89fd63d8439b60882c1a33297172d3595718d7357a505950502c1698516a83a4",
+        "after_bytes": 366334,
+        "unchanged": true
+      },
+      {
+        "path": "packages/core/collaboration/schema.ts",
+        "sha256": "780f2248b0798741b64315c531ff3f84309885468e8b80b27cc2b9df1ab3880b",
+        "bytes": 23858,
+        "after_sha256": "780f2248b0798741b64315c531ff3f84309885468e8b80b27cc2b9df1ab3880b",
+        "after_bytes": 23858,
+        "unchanged": true
+      },
+      {
+        "path": "packages/core/collaboration/action.ts",
+        "sha256": "f63420449b456b0d9eb89c25aa9ce874f771658f1b84e2ac0e295df10a33de65",
+        "bytes": 8541,
+        "after_sha256": "f63420449b456b0d9eb89c25aa9ce874f771658f1b84e2ac0e295df10a33de65",
+        "after_bytes": 8541,
+        "unchanged": true
+      },
+      {
+        "path": "packages/core/collaboration/creation.ts",
+        "sha256": "258c796f93e32a8b96b9c2d37c4bb6a30719064ad19b9739199b4833a81e4b4e",
+        "bytes": 7701,
+        "after_sha256": "258c796f93e32a8b96b9c2d37c4bb6a30719064ad19b9739199b4833a81e4b4e",
+        "after_bytes": 7701,
+        "unchanged": true
+      },
+      {
+        "path": "packages/core/collaboration/creation-schema.ts",
+        "sha256": "b6580faefc7bb84e75f1b4fe5b78fc1a578b0ed2d661c05424295f53ec099fc1",
+        "bytes": 4944,
+        "after_sha256": "b6580faefc7bb84e75f1b4fe5b78fc1a578b0ed2d661c05424295f53ec099fc1",
+        "after_bytes": 4944,
+        "unchanged": true
+      },
+      {
+        "path": "packages/views/collaboration/creation-form.tsx",
+        "sha256": "50af8b5b82e22f63d39daf0f1a72bc1afad1e4cb7e40b98b3f1a999df565f8c2",
+        "bytes": 34741,
+        "after_sha256": "50af8b5b82e22f63d39daf0f1a72bc1afad1e4cb7e40b98b3f1a999df565f8c2",
+        "after_bytes": 34741,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/handler/collaboration.go",
+        "sha256": "d0a141a653cafb514074c0deebcdb0ce2723a65b8b7448d7bea77c80fb311889",
+        "bytes": 11488,
+        "after_sha256": "d0a141a653cafb514074c0deebcdb0ce2723a65b8b7448d7bea77c80fb311889",
+        "after_bytes": 11488,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_creation_options.go",
+        "sha256": "a03ed96db8b005c72c3eb2129f14ce70e04aca7773286909231893e7f2fc3b57",
+        "bytes": 2448,
+        "after_sha256": "a03ed96db8b005c72c3eb2129f14ce70e04aca7773286909231893e7f2fc3b57",
+        "after_bytes": 2448,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_comments.go",
+        "sha256": "4fb2e4668e5288c068e4f4365a68b1a552233f08725611e2080402a3726e5d79",
+        "bytes": 12178,
+        "after_sha256": "4fb2e4668e5288c068e4f4365a68b1a552233f08725611e2080402a3726e5d79",
+        "after_bytes": 12178,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_policy.go",
+        "sha256": "a892c72b67010b78a7d1383406ba11412efc2a9ecc3acd1e3df36295265cf9d6",
+        "bytes": 12118,
+        "after_sha256": "a892c72b67010b78a7d1383406ba11412efc2a9ecc3acd1e3df36295265cf9d6",
+        "after_bytes": 12118,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_project.go",
+        "sha256": "53906a02c02fcce5e89d6e522d27407fce2a420cc1f27368a2d66550937f7ce8",
+        "bytes": 1568,
+        "after_sha256": "53906a02c02fcce5e89d6e522d27407fce2a420cc1f27368a2d66550937f7ce8",
+        "after_bytes": 1568,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_stage.go",
+        "sha256": "613dc67d0ed18995645df1ae9ab297c21c23ac2027d3491d3647c85fa3e06156",
+        "bytes": 17873,
+        "after_sha256": "613dc67d0ed18995645df1ae9ab297c21c23ac2027d3491d3647c85fa3e06156",
+        "after_bytes": 17873,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_test_report_view.go",
+        "sha256": "0d3eca7d40f51798266ddeb49a09bc61c3b09485147252cf596890d49b338f83",
+        "bytes": 13921,
+        "after_sha256": "0d3eca7d40f51798266ddeb49a09bc61c3b09485147252cf596890d49b338f83",
+        "after_bytes": 13921,
+        "unchanged": true
+      },
+      {
+        "path": "server/pkg/protocol/collaboration_recall.go",
+        "sha256": "b0e14709b149a9c76bdf3113dc4ddb28d98113bd5f5ce6de73d246846501aa9d",
+        "bytes": 10923,
+        "after_sha256": "b0e14709b149a9c76bdf3113dc4ddb28d98113bd5f5ce6de73d246846501aa9d",
+        "after_bytes": 10923,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/handler/collaboration_creation.go",
+        "sha256": "251d122737d23c2e310ddbdce52f0ed5ca0ca253fca5c85b6cc94475266a1f52",
+        "bytes": 6004,
+        "after_sha256": "251d122737d23c2e310ddbdce52f0ed5ca0ca253fca5c85b6cc94475266a1f52",
+        "after_bytes": 6004,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_source_fields.go",
+        "sha256": "cfd744c16d41b9084c72547a58ad97020a5b9b154f0f15f18dad51cd4d54cade",
+        "bytes": 7289,
+        "after_sha256": "cfd744c16d41b9084c72547a58ad97020a5b9b154f0f15f18dad51cd4d54cade",
+        "after_bytes": 7289,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_delivery.go",
+        "sha256": "59982f3e2d792a5261b7ff02192cbba508ea51021b21e5ea37c833a2f263d7df",
+        "bytes": 20748,
+        "after_sha256": "59982f3e2d792a5261b7ff02192cbba508ea51021b21e5ea37c833a2f263d7df",
+        "after_bytes": 20748,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_delivery_test.go",
+        "sha256": "e1a4b43d0cdc3786ed210ffd8f4588f92195648105dc6be1890ddf49580de498",
+        "bytes": 26218,
+        "after_sha256": "e1a4b43d0cdc3786ed210ffd8f4588f92195648105dc6be1890ddf49580de498",
+        "after_bytes": 26218,
+        "unchanged": true
+      },
+      {
+        "path": "packages/core/collaboration/queries.ts",
+        "sha256": "429dd8178587b17ec4187cd740f944093c1b5485cbc8c0e983fb4bc7ae379ab9",
+        "bytes": 4236,
+        "after_sha256": "429dd8178587b17ec4187cd740f944093c1b5485cbc8c0e983fb4bc7ae379ab9",
+        "after_bytes": 4236,
+        "unchanged": true
+      },
+      {
+        "path": "packages/core/collaboration/version.ts",
+        "sha256": "ff55efa4562191af9afea21c07cf1a5e5fb1865508e28e0dbcf015e8e6c0099f",
+        "bytes": 402,
+        "after_sha256": "ff55efa4562191af9afea21c07cf1a5e5fb1865508e28e0dbcf015e8e6c0099f",
+        "after_bytes": 402,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/auth/jwt.go",
+        "sha256": "f907ca9f8927f70804601c4e627187873370fde8392c27327727529921d867df",
+        "bytes": 3018,
+        "after_sha256": "f907ca9f8927f70804601c4e627187873370fde8392c27327727529921d867df",
+        "after_bytes": 3018,
+        "unchanged": true
+      },
+      {
+        "path": "server/cmd/server/main.go",
+        "sha256": "9b8c77da2b470832f827cf2ce9038312fc5b4d6d12510054a82e72c8673b78d4",
+        "bytes": 39351,
+        "after_sha256": "9b8c77da2b470832f827cf2ce9038312fc5b4d6d12510054a82e72c8673b78d4",
+        "after_bytes": 39351,
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_creation_result.go",
+        "sha256": "369d6fabc1dcec1e5df01c68d1e94dc91653a955a827e0fa021f6e02996e71c2",
+        "bytes": 7417,
+        "after_sha256": "369d6fabc1dcec1e5df01c68d1e94dc91653a955a827e0fa021f6e02996e71c2",
+        "after_bytes": 7417,
+        "unchanged": true
+      }
+    ]
+  },
+  "final_s2_dependency": {
+    "accepted": false,
+    "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/intermediate-product-r02/source",
+    "manifest_sha256": "22421f02d6a7ca2688eeb95c1c056e04d72086cfac07f7d2ed076977e01ee24e",
+    "paths": 15,
+    "state": "intermediate_not_final",
+    "s3_must_bind_final_accepted_source": true
+  },
+  "sync_required": {
+    "design": "accepted v2+r05wire+review including complete C01/pending/current-vs-history/keyset/signing/bounds/legacy and unchanged runtime/oldhash",
+    "implement": "accepted final S2 source/lock helpers before shared-file owner handoff; effective-project guard, original transactions and V2-01..18/owning-layer wire regressions",
+    "jsonl": "keep current18 real references, add this review/exact final S2 acceptance+manifest/auth key/actual create/cursor budget/schema references before activation"
+  },
+  "scope": {
+    "repo_changed_files": [
+      ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-wire-supplement-r05.md",
+      ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-v2-wire-review-r05.md",
+      ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-v2-wire-review-r05.json"
+    ],
+    "product_helper_tests_changed": false,
+    "original_v1_v2_review_changed": false,
+    "global_docs_specs_changed": false,
+    "mirror_tests_added": false,
+    "git_mutations": false,
+    "task_pointer_changed": false,
+    "runtime_v2_or_output_upload_added": false,
+    "private_evidence": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/s3-plan-check"
+  },
+  "report_md_sha256": "2af4befee18f5d8837943f6c8a6a8d11e664e952c2da099ca2d233f7682e9196"
+}

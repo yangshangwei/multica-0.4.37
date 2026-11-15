@@ -1,0 +1,41 @@
+{
+  "created_at": "2026-11-15T07:01:13.942872+00:00",
+  "state": "pass",
+  "source_sha256_before": "d9fe7fcb1b35657cf930a4c1c60b03b0c093bbfbbb192a927636475dd705531c",
+  "source_sha256_after": "d9fe7fcb1b35657cf930a4c1c60b03b0c093bbfbbb192a927636475dd705531c",
+  "source_stable": true,
+  "steps": [
+    {
+      "command": [
+        "/opt/homebrew/bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server",
+        "build",
+        "-p",
+        "2",
+        "./..."
+      ],
+      "exit_code": 0,
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-unique-prefix-go-static-xwn91030/build.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_empty": true
+    },
+    {
+      "command": [
+        "/opt/homebrew/bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server",
+        "vet",
+        "-p",
+        "2",
+        "./..."
+      ],
+      "exit_code": 0,
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-unique-prefix-go-static-xwn91030/vet.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_empty": true
+    }
+  ],
+  "real_model_or_accounts_inherited": false,
+  "database_used": false
+}

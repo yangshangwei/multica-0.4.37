@@ -1,0 +1,50 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "related_task": "PAY-241",
+  "observed_at": "2026-11-15T12:30:08.428367+00:00",
+  "evidence_kind": "readonly_owner_persisted_progress_observation_not_final_code_acceptance",
+  "source_thread": "01a1dde9-4bd6-7c00-9fa1-e29bf5ddb142",
+  "source_report": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/coordination-freeze-r05.json",
+  "observed_source_report_sha256": "5d017248cef16d229379776a406c995f4a7dff494cf9e7a8542d27bb36c7b99a",
+  "observed_source_report_changed_during_read": false,
+  "owner_state": "COMPLETE_NORMAL_116_TOP_321_NAMED_PASS_RACE_EXECUTING",
+  "source_root": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/combined-final-verification-r06-r01/source",
+  "source_manifest_sha256": "fffeec5a7c48ad8fee7a4bc0933e0a0416d1357fc8ec56c93cc77b0e06c3bda4",
+  "source_input_files": 4968,
+  "production_byte_mode_drift": 0,
+  "actual_top_level_ast_tests": 116,
+  "fresh_database_configurations": 4,
+  "execution_permit_sha256": "69d967e0d9efc1dfd03b6f89c508be5c3354de73762966f7c1a24818173c00a8",
+  "normal": {
+    "completion": {
+      "top": 37,
+      "named_pass": 128,
+      "leaves": 95,
+      "fail": 0,
+      "skip": 0,
+      "raw_sha256": "a6daa8c1d391f208e15555e4deaa1a962c0001114c7936442e36f12f94f2b62c"
+    },
+    "foundation": {
+      "top": 79,
+      "named_pass": 193,
+      "leaves": 168,
+      "fail": 0,
+      "skip": 0,
+      "raw_sha256": "4416c15a060996cc115ab8290cdc742f77611fef23088c9a6de6422b4fdf29a0"
+    },
+    "unique_tops": 116,
+    "different_named_records": 321,
+    "missing_extra_duplicate_or_unfinished": 0,
+    "source_config_drift": 0,
+    "original_r03_failure_cause_proven": false
+  },
+  "race_complete_partitions": 0,
+  "complete_new_code_verdict_independently_accepted": false,
+  "original_r03_failure_cause_proven": false,
+  "original_r03_accepted": false,
+  "p2_readiness": false,
+  "product_passed": 0,
+  "product_total": 4,
+  "pay_source_or_report_mutations": [],
+  "new_suite_executed_by_this_observer": false
+}

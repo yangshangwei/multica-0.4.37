@@ -300,3 +300,39 @@ Correct: admit a separately versioned host capability, preserve issue-bound auth
 Wrong: change a legacy unknown run to host mode during upgrade and retry the original instruction.
 
 Correct: preserve the old run, mode and nonce/barrier; only subsequent authorized new executions use the new mode. Renew the resource owner's consent before expanding host access.
+
+## AC43 runtime provenance acceptance
+
+### Scope
+
+Use the tagged `cmd/server/ac43*_test.go` harness for real-provider provenance across two enrolled installations/runtimes, three human principals, multiple targets, mixed authors, ordinary transfer and a cross-runtime squad. Same-host runtime separation is not OS-user or machine isolation. External billing/account reconciliation is a separate claim; record explicit user exclusions rather than marking untested billing as passed.
+
+### Entry points
+
+Compile with `go test -tags=agentintegration -c -o <private-binary> ./cmd/server`. `TestAC43FixtureContract` never launches an installed provider; `TestAC43RealProviderProvenance` requires `MULTICA_RUN_REAL_AGENT_SMOKE=1`. Both require the allocated `AC43_DATABASE_NAME` and matching explicit `DATABASE_URL`; use a fresh migrated `multica_ac43_*` database. The real test additionally requires `AC43_OUT`, `AC43_CLI`, and each provider's `AC43_{CLAUDE,CODEX}_{EXECUTABLE,MODEL}`. `AC43_SCENARIOS=claude_flow` reports only partial acceptance.
+
+### Contracts
+
+Create private ledger and host parent directories before opening the ledger or probing the host; the fixture contract exercises those prerequisites. Retain real claim/outcome/proof facts and public records. Compare actual creator, handler, input authors, resource/agent owners, grant and binding epochs, runtime/installation, configuration version, capability digest and frozen invocation across transfer.
+
+The explicitly selected `testdata/ac43-codex-exec-bridge.py` is a test transport, not the built-in app-server. `TEST_CODEX_EXEC_PATH` selects the actual CLI and `TEST_CODEX_EXEC_EVIDENCE` a private directory. Its logical adapter handle is distinct from the actual `thread.started` ID. It runs one real read-only `codex exec --json` child with the admitted prompt/model/workdir and task Codex home, waits for exit plus terminal events, and preserves private raw evidence. It does not support resume or tool-event translation. Do not relabel its pass as native app-server, Codex tool-use or production adapter support.
+
+### Error matrix
+
+- Missing task assignment: skip before provider discovery; wrong explicit database: fail.
+- Child exit nonzero, missing terminal event, malformed/unmapped events: fail, retain evidence.
+- The exact pre-turn `disable_response_storage` deprecation warning may contain a truncated path; preserve it without treating it as an execution failure. Other warnings/errors, including the same message inside an active turn, fail.
+- Gateway client restriction or provider safeguards rejection: retain the failed business outcome and managed termination; do not invent a pass, change HTTP identity or omit the original failure.
+- External CLI/config drift: distinguish initial, actual-launch and final identities. A retained rollout and launch hash can prove the observed CLI version; they do not prove the final environment or an unrecorded native binary was frozen.
+
+### Cases
+
+Good: author changes after transfer while the admitted runtime/grant/configuration remains the same. Base: report a Claude-only partial result. Bad: infer a billing account from `account_source=runtime_configuration`, different API keys, or token counts.
+
+### Verification
+
+Run fixture prerequisites, Go compile/vet and the credential-free Python bridge tests before authenticated calls. Check exact answers, actual authors, successful outcome, equal authorized/sealed attempts and `host_exit_observed`. For a squad require the real leader → member → continuation lineage; a leader rejection leaves the remaining steps unverified. Pin source, wrapper, CLI and configuration facts, retain failures, and audit owned connections after execution.
+
+### Wrong versus correct
+
+Wrong: count direct `codex exec` connectivity as a successful built-in Multica adapter or count three scenarios as complete AC43. Correct: identify the selected transport, prove the authoritative runtime records, and report exclusions and blocked scenarios. Evidence: `10-10-cross-workspace-collaboration/research/ac43-20261105/`.

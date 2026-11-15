@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-04T09:31:07.055113+00:00",
+  "reviewer": "/root/knowledge6_source_review",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion",
+  "scope": "Independent prepared fixed7 fake-run admission only; no scenario execution",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "ready_for_Root_signature": true,
+  "actual_fake_results_complete": false,
+  "prepared_refs": {
+    "handoff": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fixture-repair/preparation-handoff.json",
+      "sha256": "3708cf006d822a1c1ad442800671a1738d459aa649766013d1061a8ae772d8e7"
+    },
+    "runner": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/run-fake-knowledge-v16.py",
+      "sha256": "ff0ec52b930164ae44b15c40ccbc38e37499f07cf549fb7b92097205f8ab903a"
+    },
+    "input_binding": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/input-binding.json",
+      "sha256": "28a8dcc387b092d55a3d5dc870ccb58ed965b07a7e49561ee6396d91270230da"
+    },
+    "source_static_review": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/pre-run-source-review/review.json",
+      "sha256": "53fa774254fdc8ef5a92d4c08e51d1ff14c965bc2e036b409740d83ea8246cc2"
+    }
+  },
+  "source_binding": {
+    "HEAD": "92a4c7adfad20354e79855e4134934e6004774ad",
+    "accepted_product_source": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "five_product_trees": {
+      "server": "f245624a344af700d11ebfa3fa15194e2235f6f6",
+      "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+      "packages": "c34c22d60416b9e0786dc23f14fa3c5a00c38e85",
+      "scripts": "602113e862a08b682721b2c2d92169b3d6836e5a",
+      "e2e": "ca80cc15f8275025534950b7bca54ec8c05681e1"
+    },
+    "actual_source_entries_verified": 8197,
+    "untracked_inventory_exact_six": true,
+    "six_and_old17_hashes_match": true,
+    "tools_guard_and_explicit_CLI_hashes_match": true,
+    "source_manifest_details_in_binding": true,
+    "new_real_or_ambient_CLI_discovery": false
+  },
+  "actual_false_permits": [
+    {
+      "lane": "normal",
+      "permit_path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/permissions/rk1k-normal-v16-01.json",
+      "false_permit_sha256": "a59a1a2898d0a88e05573e11636bd71ceacfd57cd3e23baa762b871b64fded34",
+      "label": "rk1k-normal-v16-01",
+      "database": "multica_rk1k_20261104_v16_normal_a3c9",
+      "identity": "multica_rk1k_20261104_v16_normal_a3c9|764_collaboration_ai_policy",
+      "Root_migration_exit": 0,
+      "environment_path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/normal-environment.json",
+      "environment_sha256": "b53fbf730d9b5bb501ca58226f6d0844616f550914f226a6fbe0f3c98704b0a9",
+      "Root_URL_matches_private_env": true,
+      "real_keys_empty": true,
+      "resources": [
+        {
+          "kind": "home",
+          "path": "/private/tmp/multica-rk1k-20261104-normal-sguoed6q/home",
+          "owner_mode_path_verified": true
+        },
+        {
+          "kind": "temp",
+          "path": "/private/tmp/multica-rk1k-20261104-normal-sguoed6q",
+          "owner_mode_path_verified": true
+        },
+        {
+          "kind": "GOCACHE",
+          "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runtime-cache-normal",
+          "owner_mode_path_verified": true
+        },
+        {
+          "kind": "GOPATH",
+          "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runtime-gopath-normal",
+          "owner_mode_path_verified": true
+        }
+      ],
+      "fresh_output_absent": true,
+      "root_record_pending": true
+    },
+    {
+      "lane": "race",
+      "permit_path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/permissions/rk1k-race-v16-01.json",
+      "false_permit_sha256": "0a35a2dc0adbaa323ea977013c2c770a42ee1a978b25e10e2e29922410f887dc",
+      "label": "rk1k-race-v16-01",
+      "database": "multica_rk1k_20261104_v16_race_a3c9",
+      "identity": "multica_rk1k_20261104_v16_race_a3c9|764_collaboration_ai_policy",
+      "Root_migration_exit": 0,
+      "environment_path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/race-environment.json",
+      "environment_sha256": "ac3120dd6f55f76a24faeaf38284b6b427869798f500c714dc5f2aecdaa63f88",
+      "Root_URL_matches_private_env": true,
+      "real_keys_empty": true,
+      "resources": [
+        {
+          "kind": "home",
+          "path": "/private/tmp/multica-rk1k-20261104-race-8dh_qcvp/home",
+          "owner_mode_path_verified": true
+        },
+        {
+          "kind": "temp",
+          "path": "/private/tmp/multica-rk1k-20261104-race-8dh_qcvp",
+          "owner_mode_path_verified": true
+        },
+        {
+          "kind": "GOCACHE",
+          "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runtime-cache-race",
+          "owner_mode_path_verified": true
+        },
+        {
+          "kind": "GOPATH",
+          "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runtime-gopath-race",
+          "owner_mode_path_verified": true
+        }
+      ],
+      "fresh_output_absent": true,
+      "root_record_pending": true
+    }
+  ],
+  "command_scope": {
+    "fixed_filter": "^TestRK1Knowledge(EntryGuard|WrapperGuard|PromptData|TraceCredentialLabels|NativeMetadataUsesRawOutput|EvidenceFaults|FakeProof)$",
+    "top_level_tests": [
+      "TestRK1KnowledgeEntryGuard",
+      "TestRK1KnowledgeWrapperGuard",
+      "TestRK1KnowledgePromptData",
+      "TestRK1KnowledgeTraceCredentialLabels",
+      "TestRK1KnowledgeNativeMetadataUsesRawOutput",
+      "TestRK1KnowledgeEvidenceFaults",
+      "TestRK1KnowledgeFakeProof"
+    ],
+    "count": 7,
+    "tags": "agentintegration",
+    "p": 1,
+    "parallel": 1,
+    "count_each": 1,
+    "reporter": "json",
+    "timeout": "10m",
+    "only_race_extra": "-race",
+    "normal_success_same_binding_required_before_race": true,
+    "exclusive_execution_lock": true
+  },
+  "accepted_result_contract": {
+    "complete_named7_each_run1_pass1_fail0_skip0": true,
+    "no_any_failure_skip_or_invalid_raw_lines": true,
+    "before_after_source_binding_checks": true,
+    "expected_summary": {
+      "measured_fake_starts": 15,
+      "fake_seed_starts": 3,
+      "paid_starts": 0,
+      "knowledge_allocated": 0,
+      "real_runnable": false
+    },
+    "physical_totals_independently_recomputed": true,
+    "all_summary_samples_finished_pass": true,
+    "malformed_summary_caught_and_failed_terminal_record_retained": true,
+    "final_dynamic_six_file_review_still_required": true
+  },
+  "existing_controls": {
+    "green_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fixture-repair/runner-control-green.json",
+    "green_sha256": "6d9b05df03a34cdb944827f3a6fe3dd15bdb2abc1a212511f2593344a090f97c",
+    "green_raw_sha256": "64d379a51aaff2a4672ca88f74aee7903d00e74ae661a1171a66d0cc58943cfb",
+    "named_tests": 3,
+    "red_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fixture-repair/runner-control-red.json",
+    "red_sha256": "3c72d619f83a74c4aea4911652b522a8d5764f8733d3d230f80cad38828f58dd",
+    "red_raw_sha256": "9fe5b6231240a8aa6abaacd6c9f86cb73a3aaea26056f63fcf5a0402f2c67c22",
+    "normal_race_credential_free_recorder": true,
+    "upstream_sources_or_admission_stubbed": true,
+    "no_actual_Go_TestMain_DB_or_model_bodies": true,
+    "tests_repeated_here": false
+  },
+  "applicable_spec": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-context-experiments.md",
+    "sha256": "3c238386d7f268cedf0e1aded570c55962f85a2f719b536679682b752facf11d",
+    "new7part_List_and_fixedproof_contract_matches": true
+  },
+  "Root_next": "Preserve false permits and sign fixed normal; sole executor runs once, then same-binding race only after actual normal success. Require full 15+3/0 proof and final six-file source/CLI/env/DB/raw binding; no real-model authority inferred.",
+  "operations": {
+    "tests_controls_migrations_auditors_models_spawned": 0,
+    "original_source_input_permission_resource_mutations": 0,
+    "written_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fake-run-admission-review"
+  },
+  "real_gate": {
+    "knowledge_allocated": 0,
+    "knowledge_calls": 0,
+    "real_runnable": false,
+    "production_default_enabled": false,
+    "other_paid_ledgers_touched": false
+  },
+  "report_md_sha256": "263856d155c5f313d2ec632d6732306b1010f86ca8d79603c4175eede3fc81ce"
+}

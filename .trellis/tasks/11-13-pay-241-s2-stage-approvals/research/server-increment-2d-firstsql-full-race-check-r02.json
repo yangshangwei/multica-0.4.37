@@ -1,0 +1,3758 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-15T11:16:30.839500+00:00",
+  "reviewer": "/root/s2_final_code_check_r05",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "status": "DIAGNOSTIC_SETUP_BLOCKED_STATIC_ENV_MISMATCH_CONFIRMED",
+  "slice_complete_as_readonly_evidence_handoff": true,
+  "original_review": {
+    "status": "NOT_ACCEPTABLE_R03",
+    "reports": [
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-final-code-check-r05.md",
+        "sha256": "db8191b67bbc4838a2b777fa55628845d470f53de4a952a7c2a0ac7bd1d587ab",
+        "size": 20886
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-final-code-check-r05.json",
+        "sha256": "e847823c715d4b58ae73a0634671da2ff8d4c3bcab56f3ba8f3579523e24eaf7",
+        "size": 724703
+      }
+    ],
+    "original_first_segment_named_counts": {
+      "pass": 126,
+      "fail": 2
+    },
+    "blockers_remain": 2
+  },
+  "original_v01_closed": false,
+  "original_v02_closed": false,
+  "original_r03_accepted": false,
+  "not_reproduced": false,
+  "product_fix_pass": false,
+  "p2_activation_available": false,
+  "p2_opening_recommended": false,
+  "full_s2_accepted": false,
+  "a01_a12_accepted": false,
+  "actual_web_desktop_scenarios_run": 0,
+  "source": {
+    "manifest": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/diagnosis-firstsql-r01/manifest.json",
+      "sha256": "c1f3ac5be782ab0292a88292cd2872cca49b06a3a4d87a4c8041a3141e77c250",
+      "size": 960887
+    },
+    "regular_files": 4966,
+    "parent_manifest": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/combined-candidate-r05-r03/manifest.json",
+      "sha256": "81cacce71bc781e8c6ca2a6f27fa379ba9befe3671b7187fb81baf71b818720a",
+      "size": 1022358
+    },
+    "parent_regular_files": 4965,
+    "existing_test_only_changes": [
+      "server/internal/service/collaboration_stage_completion_tx_test.go",
+      "server/internal/service/collaboration_test.go"
+    ],
+    "sole_added_test_only_file": "server/internal/service/collaboration_stage_firstsql_diagnostic_test.go",
+    "product_source_or_frozen_tests_modified_by_reviewer": false
+  },
+  "original_selection": {
+    "package": "./internal/service",
+    "mode": "race",
+    "selector": "^(TestStageCompletionActivityUsesOnlyClosedSafeMetadata|TestStageCompletionAllM1ModesAndActualWriters|TestStageCompletionCandidateHeadLocksInOwningTransaction|TestStageCompletionExecutionTrustBothCommitOrders|TestStageCompletionFinalClockRunsAfterWriterReceipts|TestStageCompletionFinalCurrentCredentialHorizons|TestStageCompletionFinalM1ConsumptionCannotDisappear|TestStageCompletionFinalM1ExpiryAfterOriginalReceipt|TestStageCompletionFinalM1IssuerRevocationAfterOriginalReceipt|TestStageCompletionFinalOperationHeaderAndResultCannotChange|TestStageCompletionFinalResultContentCannotChange|TestStageCompletionFinalRollbackMetricCannotChangeAfterObservation|TestStageCompletionFinalSubmitAccountCannotChange|TestStageCompletionFinalSubmitAuthorityCannotChange|TestStageCompletionFinalTargetCannotChangeAfterObservation|TestStageCompletionGuardCannotBeOmittedForManagedRoot|TestStageCompletionGuardRequiresM1Finalization|TestStageCompletionGuardRequiresPreparedTransaction|TestStageCompletionImmutableSubmissionLocksInOwningTransaction|TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt|TestStageCompletionPolicyActivationRequiresExact864Ledger|TestStageCompletionPrivateGuardTransactionAndSingleUse|TestStageCompletionRefusesUnverifiedSelfCompletion|TestStageCompletionRefusesUnverifiedSubmission|TestStageCompletionRollbackMetricBothCommitOrders|TestStageCompletionSourceRevocationBothCommitOrders|TestStageCompletionStoredBlockersRecoverWithoutFreshEffects|TestStageCompletionSubmissionRequiresItsOriginalOperation|TestStageCompletionVerifiedSubmissionAndSelf|TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority|TestStageExitContinuationPolicyCompletionCommitOrders|TestStageExitContinuationRootMoveClearM1Modes|TestStageExitContinuationRootMoveCompletionCommitOrders|TestStageWriterContinuationApprovedMaterializationM1Modes|TestStageWriterContinuationManualAndMachineCreateM1Modes|TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate|TestStageWriterContinuationSystemRootRefusalM1Modes)$",
+    "top_count": 37,
+    "top_names": [
+      "TestStageCompletionGuardRequiresPreparedTransaction",
+      "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+      "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+      "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+      "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+      "TestStageCompletionRefusesUnverifiedSubmission",
+      "TestStageCompletionRefusesUnverifiedSelfCompletion",
+      "TestStageCompletionVerifiedSubmissionAndSelf",
+      "TestStageCompletionFinalSubmitAuthorityCannotChange",
+      "TestStageCompletionFinalClockRunsAfterWriterReceipts",
+      "TestStageCompletionSubmissionRequiresItsOriginalOperation",
+      "TestStageCompletionCandidateHeadLocksInOwningTransaction",
+      "TestStageCompletionImmutableSubmissionLocksInOwningTransaction",
+      "TestStageCompletionFinalSubmitAccountCannotChange",
+      "TestStageCompletionFinalOperationHeaderAndResultCannotChange",
+      "TestStageCompletionFinalTargetCannotChangeAfterObservation",
+      "TestStageCompletionFinalRollbackMetricCannotChangeAfterObservation",
+      "TestStageCompletionFinalResultContentCannotChange",
+      "TestStageCompletionFinalM1ConsumptionCannotDisappear",
+      "TestStageCompletionFinalM1ExpiryAfterOriginalReceipt",
+      "TestStageCompletionFinalM1IssuerRevocationAfterOriginalReceipt",
+      "TestStageCompletionGuardRequiresM1Finalization",
+      "TestStageCompletionAllM1ModesAndActualWriters",
+      "TestStageCompletionFinalCurrentCredentialHorizons",
+      "TestStageCompletionSourceRevocationBothCommitOrders",
+      "TestStageCompletionPrivateGuardTransactionAndSingleUse",
+      "TestStageCompletionExecutionTrustBothCommitOrders",
+      "TestStageCompletionRollbackMetricBothCommitOrders",
+      "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt",
+      "TestStageExitContinuationRootMoveClearM1Modes",
+      "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority",
+      "TestStageExitContinuationPolicyCompletionCommitOrders",
+      "TestStageExitContinuationRootMoveCompletionCommitOrders",
+      "TestStageWriterContinuationManualAndMachineCreateM1Modes",
+      "TestStageWriterContinuationApprovedMaterializationM1Modes",
+      "TestStageWriterContinuationSystemRootRefusalM1Modes",
+      "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate"
+    ]
+  },
+  "attempts": [
+    {
+      "run_id": "firstsql-full-race-r02",
+      "status": "NOT_RUN_COMPILE_LINK_ENOSPC",
+      "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02",
+      "command": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/logs/full-race.command.json",
+        "sha256": "4cb81bcbfc1ff7f2e33802a71bc6644f5b9b69c1040d71c766db735131b476b4",
+        "size": 5662
+      },
+      "exact_argv": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/diag_firstsql_full_race_r02.json",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/diagnosis-firstsql-r01/source/server",
+        "test",
+        "./internal/service",
+        "-run",
+        "^(TestStageCompletionActivityUsesOnlyClosedSafeMetadata|TestStageCompletionAllM1ModesAndActualWriters|TestStageCompletionCandidateHeadLocksInOwningTransaction|TestStageCompletionExecutionTrustBothCommitOrders|TestStageCompletionFinalClockRunsAfterWriterReceipts|TestStageCompletionFinalCurrentCredentialHorizons|TestStageCompletionFinalM1ConsumptionCannotDisappear|TestStageCompletionFinalM1ExpiryAfterOriginalReceipt|TestStageCompletionFinalM1IssuerRevocationAfterOriginalReceipt|TestStageCompletionFinalOperationHeaderAndResultCannotChange|TestStageCompletionFinalResultContentCannotChange|TestStageCompletionFinalRollbackMetricCannotChangeAfterObservation|TestStageCompletionFinalSubmitAccountCannotChange|TestStageCompletionFinalSubmitAuthorityCannotChange|TestStageCompletionFinalTargetCannotChangeAfterObservation|TestStageCompletionGuardCannotBeOmittedForManagedRoot|TestStageCompletionGuardRequiresM1Finalization|TestStageCompletionGuardRequiresPreparedTransaction|TestStageCompletionImmutableSubmissionLocksInOwningTransaction|TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt|TestStageCompletionPolicyActivationRequiresExact864Ledger|TestStageCompletionPrivateGuardTransactionAndSingleUse|TestStageCompletionRefusesUnverifiedSelfCompletion|TestStageCompletionRefusesUnverifiedSubmission|TestStageCompletionRollbackMetricBothCommitOrders|TestStageCompletionSourceRevocationBothCommitOrders|TestStageCompletionStoredBlockersRecoverWithoutFreshEffects|TestStageCompletionSubmissionRequiresItsOriginalOperation|TestStageCompletionVerifiedSubmissionAndSelf|TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority|TestStageExitContinuationPolicyCompletionCommitOrders|TestStageExitContinuationRootMoveClearM1Modes|TestStageExitContinuationRootMoveCompletionCommitOrders|TestStageWriterContinuationApprovedMaterializationM1Modes|TestStageWriterContinuationManualAndMachineCreateM1Modes|TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate|TestStageWriterContinuationSystemRootRefusalM1Modes)$",
+        "-count=1",
+        "-json",
+        "-race"
+      ],
+      "original_selector_identical": true,
+      "config": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/diag_firstsql_full_race_r02.json",
+        "sha256": "ea5256f7d2f428c4d4921a300acf9430f3ef23e459f1b675245d742779b745d0",
+        "size": 2982
+      },
+      "configuration_metadata": {
+        "TASK_DATABASE_NAME": "multica_pay241_20261115_s2_r05_firstsql_full_race_r02",
+        "HOME": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/diag_firstsql_full_race_r02/home",
+        "TMPDIR": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/diag_firstsql_full_race_r02/tmp",
+        "TMP": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/diag_firstsql_full_race_r02/tmp",
+        "TEMP": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/diag_firstsql_full_race_r02/tmp",
+        "GOTMPDIR": null,
+        "GOCACHE": "/Volumes/artisan/dev-cache/go-build"
+      },
+      "explicit_go": "/opt/homebrew/bin/go",
+      "default_go_test_timeout": "10m; no timeout option or assertion/budget change",
+      "started_at": "2026-11-15T10:08:20.310105+00:00",
+      "ended_at": "2026-11-15T10:08:23.988717+00:00",
+      "helper_execution_seconds": 3.678612,
+      "launcher_and_compiler_preparation_until_package_start_seconds": 3.646499,
+      "package_terminal": {
+        "Time": "2026-11-15T18:08:23.956748+08:00",
+        "Action": "fail",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Elapsed": 0,
+        "FailedBuild": "github.com/multica-ai/multica/server/internal/service.test"
+      },
+      "exit": 1,
+      "exit_record": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/logs/full-race.exit.json",
+        "sha256": "331dd85020eaf7c911e3417ee78f7ff17a0d1257e2a5c310696fc702d1c3f16f",
+        "size": 16
+      },
+      "raw": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/logs/full-race.jsonl",
+        "sha256": "fe3f9151954fbb129ae5cc4ac13270ee7fcd5e9b9e3e966bcca929ad489ab295",
+        "size": 1081
+      },
+      "stderr": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/logs/full-race.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "result": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/logs/full-race.result.json",
+        "sha256": "b1910242d46c9d4579fc76b33a28ba39a8987c549144fd5e95e2f00e01839e5f",
+        "size": 6461
+      },
+      "named_terminal_count": 0,
+      "named_counts": {},
+      "top_count": 0,
+      "top_counts": {},
+      "leaf_count": 0,
+      "leaf_counts": {},
+      "missing_top": [
+        "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+        "TestStageCompletionAllM1ModesAndActualWriters",
+        "TestStageCompletionCandidateHeadLocksInOwningTransaction",
+        "TestStageCompletionExecutionTrustBothCommitOrders",
+        "TestStageCompletionFinalClockRunsAfterWriterReceipts",
+        "TestStageCompletionFinalCurrentCredentialHorizons",
+        "TestStageCompletionFinalM1ConsumptionCannotDisappear",
+        "TestStageCompletionFinalM1ExpiryAfterOriginalReceipt",
+        "TestStageCompletionFinalM1IssuerRevocationAfterOriginalReceipt",
+        "TestStageCompletionFinalOperationHeaderAndResultCannotChange",
+        "TestStageCompletionFinalResultContentCannotChange",
+        "TestStageCompletionFinalRollbackMetricCannotChangeAfterObservation",
+        "TestStageCompletionFinalSubmitAccountCannotChange",
+        "TestStageCompletionFinalSubmitAuthorityCannotChange",
+        "TestStageCompletionFinalTargetCannotChangeAfterObservation",
+        "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+        "TestStageCompletionGuardRequiresM1Finalization",
+        "TestStageCompletionGuardRequiresPreparedTransaction",
+        "TestStageCompletionImmutableSubmissionLocksInOwningTransaction",
+        "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt",
+        "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+        "TestStageCompletionPrivateGuardTransactionAndSingleUse",
+        "TestStageCompletionRefusesUnverifiedSelfCompletion",
+        "TestStageCompletionRefusesUnverifiedSubmission",
+        "TestStageCompletionRollbackMetricBothCommitOrders",
+        "TestStageCompletionSourceRevocationBothCommitOrders",
+        "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+        "TestStageCompletionSubmissionRequiresItsOriginalOperation",
+        "TestStageCompletionVerifiedSubmissionAndSelf",
+        "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority",
+        "TestStageExitContinuationPolicyCompletionCommitOrders",
+        "TestStageExitContinuationRootMoveClearM1Modes",
+        "TestStageExitContinuationRootMoveCompletionCommitOrders",
+        "TestStageWriterContinuationApprovedMaterializationM1Modes",
+        "TestStageWriterContinuationManualAndMachineCreateM1Modes",
+        "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate",
+        "TestStageWriterContinuationSystemRootRefusalM1Modes"
+      ],
+      "extra_top": [],
+      "unfinished": [],
+      "duplicate_terminals": [],
+      "non_json_lines": [],
+      "terminal_records": [],
+      "first_sql_diagnostic_count": 0,
+      "diagnostics": [],
+      "artifact_fixture_refusal_count": 0,
+      "artifact_fixture_refusals": [],
+      "actor_result_terminals": [],
+      "completion_return_observed": false,
+      "corruption_injection_reached": false,
+      "corruption_hits": null,
+      "not_reproduced_conclusion": false,
+      "original_v01_closed": false,
+      "original_v02_closed": false,
+      "source_audits": [
+        {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/source-initial.json",
+          "sha256": "a20296b99566452a16d58a418cd73f6acef4d3a7ff076228abd520dfc9066603",
+          "size": 1024213
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/source-before-run.json",
+          "sha256": "66e0aeee90102aab7d5f2bc9c2b5d129f6dff87cf7d3ccdd3a62a4772fb199bc",
+          "size": 1024213
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/source-after-run.json",
+          "sha256": "edba0a50d9a5c553b76b7c2bd423812dead23b5e00416110cccd6c77bf50cc06",
+          "size": 1024213
+        }
+      ],
+      "source_regular_files": 4966,
+      "parent_regular_files": 4965,
+      "source_before_after_equal": true,
+      "source_missing_extra_changed_special": false,
+      "parent_source_changed": [],
+      "database_before": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/database-before.json",
+        "sha256": "1dd1a9b9de9016f06e7d10ea3ac5656a4864d22ea0cdde0c61d8ddc1d67b702c",
+        "size": 2646
+      },
+      "database_after": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/database-after.json",
+        "sha256": "e17e7e8d320c6632284bbeb26c8621bb182d4e9d8cb9baaebbc42645a09a85e3",
+        "size": 2646
+      },
+      "database_before_summary": {
+        "status": "PASS",
+        "identity": {
+          "database": "multica_pay241_20261115_s2_r05_firstsql_full_race_r02",
+          "read_only": "on",
+          "version": "17.11 (Debian 17.11-1.pgdg12+2)",
+          "max_connections": 100,
+          "cluster_connections": 28,
+          "other_connections": 0
+        },
+        "ledger": {
+          "rows": 835,
+          "last": "864_collaboration_stage_submission_ready",
+          "sha256": "5c638f1506d2208fe918f5a385cff5e86cd1d2424fab4523170390b871668647"
+        },
+        "stage_facts": {
+          "collaboration_stage_candidate": 0,
+          "collaboration_stage_child": 0,
+          "collaboration_stage_decision": 0,
+          "collaboration_stage_execution_intent": 0,
+          "collaboration_stage_execution_observation": 0,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 0,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 0,
+          "collaboration_stage_task": 0,
+          "project_stage_policy": 0
+        },
+        "bare_hex64": true,
+        "gate": [
+          {
+            "id": 1,
+            "enabled": false,
+            "creation_enabled": true,
+            "epoch": "2",
+            "freeze_operation_id": null,
+            "freeze_progress": null,
+            "host_execution_enabled": false
+          }
+        ]
+      },
+      "database_after_summary": {
+        "status": "PASS",
+        "identity": {
+          "database": "multica_pay241_20261115_s2_r05_firstsql_full_race_r02",
+          "read_only": "on",
+          "version": "17.11 (Debian 17.11-1.pgdg12+2)",
+          "max_connections": 100,
+          "cluster_connections": 27,
+          "other_connections": 0
+        },
+        "ledger": {
+          "rows": 835,
+          "last": "864_collaboration_stage_submission_ready",
+          "sha256": "5c638f1506d2208fe918f5a385cff5e86cd1d2424fab4523170390b871668647"
+        },
+        "stage_facts": {
+          "collaboration_stage_candidate": 0,
+          "collaboration_stage_child": 0,
+          "collaboration_stage_decision": 0,
+          "collaboration_stage_execution_intent": 0,
+          "collaboration_stage_execution_observation": 0,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 0,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 0,
+          "collaboration_stage_task": 0,
+          "project_stage_policy": 0
+        },
+        "bare_hex64": true,
+        "gate": [
+          {
+            "id": 1,
+            "enabled": false,
+            "creation_enabled": true,
+            "epoch": "2",
+            "freeze_operation_id": null,
+            "freeze_progress": null,
+            "host_execution_enabled": false
+          }
+        ]
+      },
+      "database_preserved": true,
+      "database_reuse": "Initial compile-only attempt; its DB later explicitly used by r03"
+    },
+    {
+      "run_id": "firstsql-full-race-r03",
+      "status": "FIXTURE_SETUP_BLOCKED",
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03",
+      "command": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/logs/full-race.command.json",
+        "sha256": "dd5458d6a851a35b6d9196303455f2076aa5b256bfa194aa02e44e1bbf69b36a",
+        "size": 5681
+      },
+      "exact_argv": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/configs/firstsql-full-race-r03.json",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/diagnosis-firstsql-r01/source/server",
+        "test",
+        "./internal/service",
+        "-run",
+        "^(TestStageCompletionActivityUsesOnlyClosedSafeMetadata|TestStageCompletionAllM1ModesAndActualWriters|TestStageCompletionCandidateHeadLocksInOwningTransaction|TestStageCompletionExecutionTrustBothCommitOrders|TestStageCompletionFinalClockRunsAfterWriterReceipts|TestStageCompletionFinalCurrentCredentialHorizons|TestStageCompletionFinalM1ConsumptionCannotDisappear|TestStageCompletionFinalM1ExpiryAfterOriginalReceipt|TestStageCompletionFinalM1IssuerRevocationAfterOriginalReceipt|TestStageCompletionFinalOperationHeaderAndResultCannotChange|TestStageCompletionFinalResultContentCannotChange|TestStageCompletionFinalRollbackMetricCannotChangeAfterObservation|TestStageCompletionFinalSubmitAccountCannotChange|TestStageCompletionFinalSubmitAuthorityCannotChange|TestStageCompletionFinalTargetCannotChangeAfterObservation|TestStageCompletionGuardCannotBeOmittedForManagedRoot|TestStageCompletionGuardRequiresM1Finalization|TestStageCompletionGuardRequiresPreparedTransaction|TestStageCompletionImmutableSubmissionLocksInOwningTransaction|TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt|TestStageCompletionPolicyActivationRequiresExact864Ledger|TestStageCompletionPrivateGuardTransactionAndSingleUse|TestStageCompletionRefusesUnverifiedSelfCompletion|TestStageCompletionRefusesUnverifiedSubmission|TestStageCompletionRollbackMetricBothCommitOrders|TestStageCompletionSourceRevocationBothCommitOrders|TestStageCompletionStoredBlockersRecoverWithoutFreshEffects|TestStageCompletionSubmissionRequiresItsOriginalOperation|TestStageCompletionVerifiedSubmissionAndSelf|TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority|TestStageExitContinuationPolicyCompletionCommitOrders|TestStageExitContinuationRootMoveClearM1Modes|TestStageExitContinuationRootMoveCompletionCommitOrders|TestStageWriterContinuationApprovedMaterializationM1Modes|TestStageWriterContinuationManualAndMachineCreateM1Modes|TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate|TestStageWriterContinuationSystemRootRefusalM1Modes)$",
+        "-count=1",
+        "-json",
+        "-race"
+      ],
+      "original_selector_identical": true,
+      "config": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/configs/firstsql-full-race-r03.json",
+        "sha256": "443d468f1f42c04073f14bd349dc6e977bc501b5bbb91eab5f46344c9b218c84",
+        "size": 3065
+      },
+      "configuration_metadata": {
+        "TASK_DATABASE_NAME": "multica_pay241_20261115_s2_r05_firstsql_full_race_r02",
+        "HOME": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/state/firstsql-full-race-r03/home",
+        "TMPDIR": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/state/firstsql-full-race-r03/tmp",
+        "TMP": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/state/firstsql-full-race-r03/tmp",
+        "TEMP": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/state/firstsql-full-race-r03/tmp",
+        "GOTMPDIR": null,
+        "GOCACHE": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/go-cache-r01"
+      },
+      "explicit_go": "/opt/homebrew/bin/go",
+      "default_go_test_timeout": "10m; no timeout option or assertion/budget change",
+      "started_at": "2026-11-15T10:29:36.726536+00:00",
+      "ended_at": "2026-11-15T10:38:15.057226+00:00",
+      "helper_execution_seconds": 518.33069,
+      "launcher_and_compiler_preparation_until_package_start_seconds": 417.656684,
+      "package_terminal": {
+        "Time": "2026-11-15T18:38:14.887772+08:00",
+        "Action": "fail",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Elapsed": 100.505
+      },
+      "exit": 1,
+      "exit_record": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/logs/full-race.exit.json",
+        "sha256": "331dd85020eaf7c911e3417ee78f7ff17a0d1257e2a5c310696fc702d1c3f16f",
+        "size": 16
+      },
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/logs/full-race.jsonl",
+        "sha256": "8b87e9ba0f940b5ec223c927649632a0132746087272f53f17865e62c36f041d",
+        "size": 152204
+      },
+      "stderr": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/logs/full-race.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/logs/full-race.result.json",
+        "sha256": "792ac66ff3ffc78ad58de95e21d9513d95f1668602dc1c32115ff48019ff84c3",
+        "size": 37855
+      },
+      "named_terminal_count": 128,
+      "named_counts": {
+        "pass": 40,
+        "fail": 88
+      },
+      "top_count": 37,
+      "top_counts": {
+        "pass": 13,
+        "fail": 24
+      },
+      "leaf_count": 95,
+      "leaf_counts": {
+        "pass": 33,
+        "fail": 62
+      },
+      "missing_top": [],
+      "extra_top": [],
+      "unfinished": [],
+      "duplicate_terminals": [],
+      "non_json_lines": [],
+      "terminal_records": [
+        {
+          "Time": "2026-11-15T18:36:35.660315+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionGuardRequiresPreparedTransaction",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:36:37.983669+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "Elapsed": 2.33
+        },
+        {
+          "Time": "2026-11-15T18:36:38.880602+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "Elapsed": 0.9
+        },
+        {
+          "Time": "2026-11-15T18:36:40.125891+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "Elapsed": 1.24
+        },
+        {
+          "Time": "2026-11-15T18:36:40.126823+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_roles_configured",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:36:40.127182+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_proposal_created",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:36:40.12762+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_code_candidate_created",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:36:40.128406+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_scope_confirmed",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:36:40.128431+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_decision_recorded",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:36:40.128445+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_execution_observed",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:36:40.128449+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:36:40.94696+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionRefusesUnverifiedSubmission",
+          "Elapsed": 0.82
+        },
+        {
+          "Time": "2026-11-15T18:36:41.850223+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionRefusesUnverifiedSelfCompletion",
+          "Elapsed": 0.9
+        },
+        {
+          "Time": "2026-11-15T18:36:43.260035+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionVerifiedSubmissionAndSelf/false",
+          "Elapsed": 1.41
+        },
+        {
+          "Time": "2026-11-15T18:36:44.851708+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionVerifiedSubmissionAndSelf/true",
+          "Elapsed": 1.59
+        },
+        {
+          "Time": "2026-11-15T18:36:44.851735+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionVerifiedSubmissionAndSelf",
+          "Elapsed": 3
+        },
+        {
+          "Time": "2026-11-15T18:36:46.936783+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalSubmitAuthorityCannotChange",
+          "Elapsed": 2.08
+        },
+        {
+          "Time": "2026-11-15T18:36:49.552902+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalClockRunsAfterWriterReceipts",
+          "Elapsed": 2.62
+        },
+        {
+          "Time": "2026-11-15T18:36:50.904657+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionSubmissionRequiresItsOriginalOperation",
+          "Elapsed": 1.35
+        },
+        {
+          "Time": "2026-11-15T18:36:52.852608+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionCandidateHeadLocksInOwningTransaction",
+          "Elapsed": 1.95
+        },
+        {
+          "Time": "2026-11-15T18:36:54.554457+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionImmutableSubmissionLocksInOwningTransaction",
+          "Elapsed": 1.7
+        },
+        {
+          "Time": "2026-11-15T18:36:56.310272+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalSubmitAccountCannotChange",
+          "Elapsed": 1.76
+        },
+        {
+          "Time": "2026-11-15T18:36:57.733407+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalOperationHeaderAndResultCannotChange/actor",
+          "Elapsed": 1.42
+        },
+        {
+          "Time": "2026-11-15T18:37:00.596673+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalOperationHeaderAndResultCannotChange/result",
+          "Elapsed": 2.86
+        },
+        {
+          "Time": "2026-11-15T18:37:00.597224+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalOperationHeaderAndResultCannotChange",
+          "Elapsed": 4.29
+        },
+        {
+          "Time": "2026-11-15T18:37:01.607668+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalTargetCannotChangeAfterObservation",
+          "Elapsed": 1.01
+        },
+        {
+          "Time": "2026-11-15T18:37:02.489604+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalRollbackMetricCannotChangeAfterObservation",
+          "Elapsed": 0.88
+        },
+        {
+          "Time": "2026-11-15T18:37:03.256353+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalResultContentCannotChange/submit",
+          "Elapsed": 0.77
+        },
+        {
+          "Time": "2026-11-15T18:37:03.985463+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalResultContentCannotChange/submission",
+          "Elapsed": 0.73
+        },
+        {
+          "Time": "2026-11-15T18:37:04.666644+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalResultContentCannotChange/self",
+          "Elapsed": 0.68
+        },
+        {
+          "Time": "2026-11-15T18:37:05.908324+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalResultContentCannotChange/acceptance_reason",
+          "Elapsed": 1.24
+        },
+        {
+          "Time": "2026-11-15T18:37:05.908529+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalResultContentCannotChange",
+          "Elapsed": 3.42
+        },
+        {
+          "Time": "2026-11-15T18:37:07.348526+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalM1ConsumptionCannotDisappear",
+          "Elapsed": 1.44
+        },
+        {
+          "Time": "2026-11-15T18:37:09.027042+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalM1ExpiryAfterOriginalReceipt",
+          "Elapsed": 1.68
+        },
+        {
+          "Time": "2026-11-15T18:37:11.10188+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalM1IssuerRevocationAfterOriginalReceipt",
+          "Elapsed": 2.07
+        },
+        {
+          "Time": "2026-11-15T18:37:12.901866+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionGuardRequiresM1Finalization",
+          "Elapsed": 1.8
+        },
+        {
+          "Time": "2026-11-15T18:37:13.925798+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/submit/incomplete",
+          "Elapsed": 1.02
+        },
+        {
+          "Time": "2026-11-15T18:37:15.651628+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/submit/verified",
+          "Elapsed": 1.72
+        },
+        {
+          "Time": "2026-11-15T18:37:15.652236+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/submit",
+          "Elapsed": 2.75
+        },
+        {
+          "Time": "2026-11-15T18:37:17.147329+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/submission/incomplete",
+          "Elapsed": 1.49
+        },
+        {
+          "Time": "2026-11-15T18:37:18.660043+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/submission/verified",
+          "Elapsed": 1.51
+        },
+        {
+          "Time": "2026-11-15T18:37:18.660122+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/submission",
+          "Elapsed": 3.01
+        },
+        {
+          "Time": "2026-11-15T18:37:21.821831+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/self/incomplete",
+          "Elapsed": 3.16
+        },
+        {
+          "Time": "2026-11-15T18:37:23.522326+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/self/verified",
+          "Elapsed": 1.7
+        },
+        {
+          "Time": "2026-11-15T18:37:23.522351+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/self",
+          "Elapsed": 4.86
+        },
+        {
+          "Time": "2026-11-15T18:37:25.08387+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/admin/incomplete",
+          "Elapsed": 1.56
+        },
+        {
+          "Time": "2026-11-15T18:37:27.693871+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/admin/verified",
+          "Elapsed": 2.61
+        },
+        {
+          "Time": "2026-11-15T18:37:27.693978+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/admin",
+          "Elapsed": 4.17
+        },
+        {
+          "Time": "2026-11-15T18:37:27.69413+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off",
+          "Elapsed": 14.79
+        },
+        {
+          "Time": "2026-11-15T18:37:30.418511+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/incomplete",
+          "Elapsed": 2.72
+        },
+        {
+          "Time": "2026-11-15T18:37:31.38452+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/verified",
+          "Elapsed": 0.97
+        },
+        {
+          "Time": "2026-11-15T18:37:31.384559+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submit",
+          "Elapsed": 3.69
+        },
+        {
+          "Time": "2026-11-15T18:37:32.503449+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/incomplete",
+          "Elapsed": 1.12
+        },
+        {
+          "Time": "2026-11-15T18:37:34.122497+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/verified",
+          "Elapsed": 1.62
+        },
+        {
+          "Time": "2026-11-15T18:37:34.122545+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submission",
+          "Elapsed": 2.74
+        },
+        {
+          "Time": "2026-11-15T18:37:36.723624+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/self/incomplete",
+          "Elapsed": 2.6
+        },
+        {
+          "Time": "2026-11-15T18:37:38.072874+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/self/verified",
+          "Elapsed": 1.35
+        },
+        {
+          "Time": "2026-11-15T18:37:38.072969+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/self",
+          "Elapsed": 3.95
+        },
+        {
+          "Time": "2026-11-15T18:37:39.09514+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/incomplete",
+          "Elapsed": 1.02
+        },
+        {
+          "Time": "2026-11-15T18:37:39.981432+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/verified",
+          "Elapsed": 0.89
+        },
+        {
+          "Time": "2026-11-15T18:37:39.981446+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/admin",
+          "Elapsed": 1.91
+        },
+        {
+          "Time": "2026-11-15T18:37:39.981825+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe",
+          "Elapsed": 12.29
+        },
+        {
+          "Time": "2026-11-15T18:37:41.236357+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/incomplete",
+          "Elapsed": 1.25
+        },
+        {
+          "Time": "2026-11-15T18:37:42.466558+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/verified",
+          "Elapsed": 1.23
+        },
+        {
+          "Time": "2026-11-15T18:37:42.466593+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit",
+          "Elapsed": 2.48
+        },
+        {
+          "Time": "2026-11-15T18:37:43.486629+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/incomplete",
+          "Elapsed": 1.02
+        },
+        {
+          "Time": "2026-11-15T18:37:44.328139+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/verified",
+          "Elapsed": 0.84
+        },
+        {
+          "Time": "2026-11-15T18:37:44.328177+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission",
+          "Elapsed": 1.86
+        },
+        {
+          "Time": "2026-11-15T18:37:45.080324+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/incomplete",
+          "Elapsed": 0.75
+        },
+        {
+          "Time": "2026-11-15T18:37:45.955839+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/verified",
+          "Elapsed": 0.88
+        },
+        {
+          "Time": "2026-11-15T18:37:45.955871+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/self",
+          "Elapsed": 1.63
+        },
+        {
+          "Time": "2026-11-15T18:37:46.728506+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/incomplete",
+          "Elapsed": 0.77
+        },
+        {
+          "Time": "2026-11-15T18:37:47.625506+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/verified",
+          "Elapsed": 0.9
+        },
+        {
+          "Time": "2026-11-15T18:37:47.625531+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin",
+          "Elapsed": 1.67
+        },
+        {
+          "Time": "2026-11-15T18:37:47.625643+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce",
+          "Elapsed": 7.64
+        },
+        {
+          "Time": "2026-11-15T18:37:47.625695+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters",
+          "Elapsed": 34.72
+        },
+        {
+          "Time": "2026-11-15T18:37:48.387605+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalCurrentCredentialHorizons/stage_signer",
+          "Elapsed": 0.76
+        },
+        {
+          "Time": "2026-11-15T18:37:49.869106+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalCurrentCredentialHorizons/m1_issuer",
+          "Elapsed": 1.48
+        },
+        {
+          "Time": "2026-11-15T18:37:50.561218+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalCurrentCredentialHorizons/caller",
+          "Elapsed": 0.69
+        },
+        {
+          "Time": "2026-11-15T18:37:50.561356+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalCurrentCredentialHorizons",
+          "Elapsed": 2.94
+        },
+        {
+          "Time": "2026-11-15T18:37:51.266622+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionSourceRevocationBothCommitOrders/revocation_first",
+          "Elapsed": 0.7
+        },
+        {
+          "Time": "2026-11-15T18:37:52.094673+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionSourceRevocationBothCommitOrders/completion_first",
+          "Elapsed": 0.83
+        },
+        {
+          "Time": "2026-11-15T18:37:52.094712+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionSourceRevocationBothCommitOrders",
+          "Elapsed": 1.53
+        },
+        {
+          "Time": "2026-11-15T18:37:52.770077+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionPrivateGuardTransactionAndSingleUse",
+          "Elapsed": 0.67
+        },
+        {
+          "Time": "2026-11-15T18:37:53.43074+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionExecutionTrustBothCommitOrders/trust_first",
+          "Elapsed": 0.66
+        },
+        {
+          "Time": "2026-11-15T18:37:54.260207+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionExecutionTrustBothCommitOrders/completion_first",
+          "Elapsed": 0.83
+        },
+        {
+          "Time": "2026-11-15T18:37:54.26023+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionExecutionTrustBothCommitOrders",
+          "Elapsed": 1.49
+        },
+        {
+          "Time": "2026-11-15T18:37:55.072826+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionRollbackMetricBothCommitOrders/metric_first",
+          "Elapsed": 0.81
+        },
+        {
+          "Time": "2026-11-15T18:37:56.124205+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionRollbackMetricBothCommitOrders/completion_first",
+          "Elapsed": 1.05
+        },
+        {
+          "Time": "2026-11-15T18:37:56.124234+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionRollbackMetricBothCommitOrders",
+          "Elapsed": 1.86
+        },
+        {
+          "Time": "2026-11-15T18:37:56.965124+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/wrong_consumer",
+          "Elapsed": 0.84
+        },
+        {
+          "Time": "2026-11-15T18:37:57.683459+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/agent_actor",
+          "Elapsed": 0.72
+        },
+        {
+          "Time": "2026-11-15T18:37:58.599735+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/issuer_revoked",
+          "Elapsed": 0.92
+        },
+        {
+          "Time": "2026-11-15T18:37:59.817979+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/consumer_revoked",
+          "Elapsed": 1.22
+        },
+        {
+          "Time": "2026-11-15T18:37:59.818027+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt",
+          "Elapsed": 3.69
+        },
+        {
+          "Time": "2026-11-15T18:38:00.410489+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveClearM1Modes/off/move",
+          "Elapsed": 0.59
+        },
+        {
+          "Time": "2026-11-15T18:38:00.968161+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveClearM1Modes/off/clear",
+          "Elapsed": 0.56
+        },
+        {
+          "Time": "2026-11-15T18:38:01.629592+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveClearM1Modes/observe/move",
+          "Elapsed": 0.66
+        },
+        {
+          "Time": "2026-11-15T18:38:02.361952+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveClearM1Modes/observe/clear",
+          "Elapsed": 0.73
+        },
+        {
+          "Time": "2026-11-15T18:38:02.922967+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveClearM1Modes/enforce/move",
+          "Elapsed": 0.56
+        },
+        {
+          "Time": "2026-11-15T18:38:03.47513+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveClearM1Modes/enforce/clear",
+          "Elapsed": 0.55
+        },
+        {
+          "Time": "2026-11-15T18:38:03.475157+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveClearM1Modes",
+          "Elapsed": 3.66
+        },
+        {
+          "Time": "2026-11-15T18:38:03.922702+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority/reason",
+          "Elapsed": 0.45
+        },
+        {
+          "Time": "2026-11-15T18:38:04.367211+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority/done",
+          "Elapsed": 0.44
+        },
+        {
+          "Time": "2026-11-15T18:38:04.852261+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority/source_member",
+          "Elapsed": 0.48
+        },
+        {
+          "Time": "2026-11-15T18:38:04.852276+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority",
+          "Elapsed": 1.38
+        },
+        {
+          "Time": "2026-11-15T18:38:05.75127+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationPolicyCompletionCommitOrders/completion_first",
+          "Elapsed": 0.9
+        },
+        {
+          "Time": "2026-11-15T18:38:06.45928+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationPolicyCompletionCommitOrders/policy_first",
+          "Elapsed": 0.71
+        },
+        {
+          "Time": "2026-11-15T18:38:06.459297+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationPolicyCompletionCommitOrders",
+          "Elapsed": 1.61
+        },
+        {
+          "Time": "2026-11-15T18:38:07.330601+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveCompletionCommitOrders/completion_first",
+          "Elapsed": 0.87
+        },
+        {
+          "Time": "2026-11-15T18:38:08.105295+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveCompletionCommitOrders/move_first",
+          "Elapsed": 0.77
+        },
+        {
+          "Time": "2026-11-15T18:38:08.105308+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveCompletionCommitOrders",
+          "Elapsed": 1.65
+        },
+        {
+          "Time": "2026-11-15T18:38:08.667964+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationManualAndMachineCreateM1Modes/off",
+          "Elapsed": 0.56
+        },
+        {
+          "Time": "2026-11-15T18:38:09.327461+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationManualAndMachineCreateM1Modes/observe",
+          "Elapsed": 0.66
+        },
+        {
+          "Time": "2026-11-15T18:38:09.741464+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationManualAndMachineCreateM1Modes/enforce",
+          "Elapsed": 0.41
+        },
+        {
+          "Time": "2026-11-15T18:38:09.74148+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationManualAndMachineCreateM1Modes",
+          "Elapsed": 1.64
+        },
+        {
+          "Time": "2026-11-15T18:38:10.275848+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationApprovedMaterializationM1Modes/off",
+          "Elapsed": 0.53
+        },
+        {
+          "Time": "2026-11-15T18:38:10.904125+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationApprovedMaterializationM1Modes/observe",
+          "Elapsed": 0.63
+        },
+        {
+          "Time": "2026-11-15T18:38:11.520876+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationApprovedMaterializationM1Modes/enforce",
+          "Elapsed": 0.62
+        },
+        {
+          "Time": "2026-11-15T18:38:11.520889+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationApprovedMaterializationM1Modes",
+          "Elapsed": 1.78
+        },
+        {
+          "Time": "2026-11-15T18:38:11.934076+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationSystemRootRefusalM1Modes/off",
+          "Elapsed": 0.41
+        },
+        {
+          "Time": "2026-11-15T18:38:12.343753+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationSystemRootRefusalM1Modes/observe",
+          "Elapsed": 0.41
+        },
+        {
+          "Time": "2026-11-15T18:38:12.803564+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationSystemRootRefusalM1Modes/enforce",
+          "Elapsed": 0.46
+        },
+        {
+          "Time": "2026-11-15T18:38:12.803579+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationSystemRootRefusalM1Modes",
+          "Elapsed": 1.28
+        },
+        {
+          "Time": "2026-11-15T18:38:13.489507+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate/off",
+          "Elapsed": 0.69
+        },
+        {
+          "Time": "2026-11-15T18:38:14.174035+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate/observe",
+          "Elapsed": 0.68
+        },
+        {
+          "Time": "2026-11-15T18:38:14.873449+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate/enforce",
+          "Elapsed": 0.7
+        },
+        {
+          "Time": "2026-11-15T18:38:14.873462+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate",
+          "Elapsed": 2.07
+        }
+      ],
+      "first_sql_diagnostic_count": 0,
+      "diagnostics": [],
+      "artifact_fixture_refusal_count": 62,
+      "artifact_fixture_refusals": [
+        {
+          "test": "TestStageCompletionVerifiedSubmissionAndSelf/false",
+          "message": "collaboration_stage_completion_test.go:69: artifact adapter unavailable",
+          "time": "2026-11-15T18:36:43.0648+08:00"
+        },
+        {
+          "test": "TestStageCompletionVerifiedSubmissionAndSelf/true",
+          "message": "collaboration_stage_completion_test.go:69: artifact adapter unavailable",
+          "time": "2026-11-15T18:36:44.668386+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalSubmitAuthorityCannotChange",
+          "message": "collaboration_stage_completion_tx_test.go:100: artifact adapter unavailable",
+          "time": "2026-11-15T18:36:46.669431+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalClockRunsAfterWriterReceipts",
+          "message": "collaboration_stage_completion_tx_test.go:124: artifact adapter unavailable",
+          "time": "2026-11-15T18:36:48.715709+08:00"
+        },
+        {
+          "test": "TestStageCompletionSubmissionRequiresItsOriginalOperation",
+          "message": "collaboration_stage_completion_tx_test.go:153: artifact adapter unavailable",
+          "time": "2026-11-15T18:36:50.689616+08:00"
+        },
+        {
+          "test": "TestStageCompletionCandidateHeadLocksInOwningTransaction",
+          "message": "collaboration_stage_completion_tx_test.go:211: artifact adapter unavailable",
+          "time": "2026-11-15T18:36:52.46371+08:00"
+        },
+        {
+          "test": "TestStageCompletionImmutableSubmissionLocksInOwningTransaction",
+          "message": "collaboration_stage_completion_tx_test.go:233: artifact adapter unavailable",
+          "time": "2026-11-15T18:36:54.358299+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalSubmitAccountCannotChange",
+          "message": "collaboration_stage_completion_tx_test.go:268: artifact adapter unavailable",
+          "time": "2026-11-15T18:36:56.070121+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalOperationHeaderAndResultCannotChange/actor",
+          "message": "collaboration_stage_completion_tx_test.go:296: artifact adapter unavailable",
+          "time": "2026-11-15T18:36:57.496169+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalOperationHeaderAndResultCannotChange/result",
+          "message": "collaboration_stage_completion_tx_test.go:296: artifact adapter unavailable",
+          "time": "2026-11-15T18:36:59.886989+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalTargetCannotChangeAfterObservation",
+          "message": "collaboration_stage_completion_tx_test.go:365: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:01.510225+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalRollbackMetricCannotChangeAfterObservation",
+          "message": "collaboration_stage_completion_tx_test.go:387: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:02.387668+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalResultContentCannotChange/submit",
+          "message": "collaboration_stage_completion_tx_test.go:495: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:03.123532+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalResultContentCannotChange/submission",
+          "message": "collaboration_stage_completion_tx_test.go:495: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:03.900246+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalResultContentCannotChange/self",
+          "message": "collaboration_stage_completion_tx_test.go:495: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:04.583807+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalResultContentCannotChange/acceptance_reason",
+          "message": "collaboration_stage_completion_tx_test.go:495: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:05.725594+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalM1ConsumptionCannotDisappear",
+          "message": "collaboration_stage_completion_tx_test.go:546: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:07.032081+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalM1ExpiryAfterOriginalReceipt",
+          "message": "collaboration_stage_completion_tx_test.go:569: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:08.588337+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalM1IssuerRevocationAfterOriginalReceipt",
+          "message": "collaboration_stage_completion_tx_test.go:593: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:10.839808+08:00"
+        },
+        {
+          "test": "TestStageCompletionGuardRequiresM1Finalization",
+          "message": "collaboration_stage_completion_tx_test.go:623: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:12.653906+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/submit/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:13.758193+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/submit/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:15.087067+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/submission/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:16.966389+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/submission/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:18.435496+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/self/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:21.23344+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/self/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:23.328996+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/admin/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:24.670851+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/admin/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:27.433057+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:30.21946+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:31.238304+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:32.30024+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:33.619606+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/self/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:36.171034+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/self/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:37.939014+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:38.808663+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:39.86163+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:40.915096+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:42.336576+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:43.325152+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:44.147036+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:44.962421+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:45.848078+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:46.617041+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:47.469812+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalCurrentCredentialHorizons/stage_signer",
+          "message": "collaboration_stage_completion_tx_test.go:933: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:48.282729+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalCurrentCredentialHorizons/m1_issuer",
+          "message": "collaboration_stage_completion_tx_test.go:933: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:49.746418+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalCurrentCredentialHorizons/caller",
+          "message": "collaboration_stage_completion_tx_test.go:933: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:50.471554+08:00"
+        },
+        {
+          "test": "TestStageCompletionSourceRevocationBothCommitOrders/revocation_first",
+          "message": "collaboration_stage_completion_tx_test.go:978: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:51.126871+08:00"
+        },
+        {
+          "test": "TestStageCompletionSourceRevocationBothCommitOrders/completion_first",
+          "message": "collaboration_stage_completion_tx_test.go:978: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:51.83343+08:00"
+        },
+        {
+          "test": "TestStageCompletionPrivateGuardTransactionAndSingleUse",
+          "message": "collaboration_stage_completion_tx_test.go:1048: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:52.667873+08:00"
+        },
+        {
+          "test": "TestStageCompletionExecutionTrustBothCommitOrders/trust_first",
+          "message": "collaboration_stage_completion_tx_test.go:1106: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:53.323667+08:00"
+        },
+        {
+          "test": "TestStageCompletionExecutionTrustBothCommitOrders/completion_first",
+          "message": "collaboration_stage_completion_tx_test.go:1106: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:54.106385+08:00"
+        },
+        {
+          "test": "TestStageCompletionRollbackMetricBothCommitOrders/metric_first",
+          "message": "collaboration_stage_completion_tx_test.go:1187: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:54.959597+08:00"
+        },
+        {
+          "test": "TestStageCompletionRollbackMetricBothCommitOrders/completion_first",
+          "message": "collaboration_stage_completion_tx_test.go:1187: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:56.008304+08:00"
+        },
+        {
+          "test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/wrong_consumer",
+          "message": "collaboration_stage_completion_tx_test.go:1260: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:56.82985+08:00"
+        },
+        {
+          "test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/agent_actor",
+          "message": "collaboration_stage_completion_tx_test.go:1260: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:57.587715+08:00"
+        },
+        {
+          "test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/issuer_revoked",
+          "message": "collaboration_stage_completion_tx_test.go:1260: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:58.315021+08:00"
+        },
+        {
+          "test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/consumer_revoked",
+          "message": "collaboration_stage_completion_tx_test.go:1260: artifact adapter unavailable",
+          "time": "2026-11-15T18:37:59.713486+08:00"
+        },
+        {
+          "test": "TestStageExitContinuationPolicyCompletionCommitOrders/completion_first",
+          "message": "collaboration_stage_exit_continuation_test.go:216: artifact adapter unavailable",
+          "time": "2026-11-15T18:38:05.648666+08:00"
+        },
+        {
+          "test": "TestStageExitContinuationPolicyCompletionCommitOrders/policy_first",
+          "message": "collaboration_stage_exit_continuation_test.go:216: artifact adapter unavailable",
+          "time": "2026-11-15T18:38:06.348469+08:00"
+        },
+        {
+          "test": "TestStageExitContinuationRootMoveCompletionCommitOrders/completion_first",
+          "message": "collaboration_stage_exit_continuation_test.go:267: artifact adapter unavailable",
+          "time": "2026-11-15T18:38:07.22874+08:00"
+        },
+        {
+          "test": "TestStageExitContinuationRootMoveCompletionCommitOrders/move_first",
+          "message": "collaboration_stage_exit_continuation_test.go:267: artifact adapter unavailable",
+          "time": "2026-11-15T18:38:07.975959+08:00"
+        }
+      ],
+      "actor_result_terminals": [
+        {
+          "Time": "2026-11-15T18:36:57.733407+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalOperationHeaderAndResultCannotChange/actor",
+          "Elapsed": 1.42
+        },
+        {
+          "Time": "2026-11-15T18:37:00.596673+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalOperationHeaderAndResultCannotChange/result",
+          "Elapsed": 2.86
+        }
+      ],
+      "completion_return_observed": false,
+      "corruption_injection_reached": false,
+      "corruption_hits": null,
+      "not_reproduced_conclusion": false,
+      "original_v01_closed": false,
+      "original_v02_closed": false,
+      "source_audits": [
+        {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/source-initial.json",
+          "sha256": "92e1384bc5cd2b6b20988735a8183ea248ef52a944a9db8bbfac849b8b71f7db",
+          "size": 1024213
+        },
+        {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/source-before-run.json",
+          "sha256": "962c9ddfc7110e1ba06ebfc04205cf25e16c0665f04d12f07453c6f29feefe42",
+          "size": 1024213
+        },
+        {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/source-after-run.json",
+          "sha256": "f6d52bbe4605d244099dc3381a6c93251fa96483cb741b21805dfee29cd2049b",
+          "size": 1024213
+        }
+      ],
+      "source_regular_files": 4966,
+      "parent_regular_files": 4965,
+      "source_before_after_equal": true,
+      "source_missing_extra_changed_special": false,
+      "parent_source_changed": [],
+      "database_before": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/database-before.json",
+        "sha256": "a56b0e943e16256e4c7f896a3c6fe5b366b84682a2e9c5948af836b6f4288457",
+        "size": 2862
+      },
+      "database_after": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/database-after.json",
+        "sha256": "6ca5b360d68966038e3beb4e45e84ff6a2cbff95d34957cb692b0525ffce3911",
+        "size": 2863
+      },
+      "database_before_summary": {
+        "status": "PASS",
+        "identity": {
+          "database": "multica_pay241_20261115_s2_r05_firstsql_full_race_r02",
+          "read_only": "on",
+          "version": "17.11 (Debian 17.11-1.pgdg12+2)",
+          "max_connections": 100,
+          "cluster_connections": 31,
+          "other_connections": 0
+        },
+        "ledger": {
+          "rows": 835,
+          "last": "864_collaboration_stage_submission_ready",
+          "sha256": "5c638f1506d2208fe918f5a385cff5e86cd1d2424fab4523170390b871668647"
+        },
+        "stage_facts": {
+          "collaboration_stage_candidate": 0,
+          "collaboration_stage_child": 0,
+          "collaboration_stage_decision": 0,
+          "collaboration_stage_execution_intent": 0,
+          "collaboration_stage_execution_observation": 0,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 0,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 0,
+          "collaboration_stage_task": 0,
+          "project_stage_policy": 0
+        },
+        "bare_hex64": true,
+        "gate": [
+          {
+            "id": 1,
+            "enabled": false,
+            "creation_enabled": true,
+            "epoch": "2",
+            "freeze_operation_id": null,
+            "freeze_progress": null,
+            "host_execution_enabled": false
+          }
+        ]
+      },
+      "database_after_summary": {
+        "status": "PASS",
+        "identity": {
+          "database": "multica_pay241_20261115_s2_r05_firstsql_full_race_r02",
+          "read_only": "on",
+          "version": "17.11 (Debian 17.11-1.pgdg12+2)",
+          "max_connections": 100,
+          "cluster_connections": 32,
+          "other_connections": 0
+        },
+        "ledger": {
+          "rows": 835,
+          "last": "864_collaboration_stage_submission_ready",
+          "sha256": "5c638f1506d2208fe918f5a385cff5e86cd1d2424fab4523170390b871668647"
+        },
+        "stage_facts": {
+          "collaboration_stage_candidate": 0,
+          "collaboration_stage_child": 0,
+          "collaboration_stage_decision": 0,
+          "collaboration_stage_execution_intent": 0,
+          "collaboration_stage_execution_observation": 0,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 0,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 0,
+          "collaboration_stage_task": 0,
+          "project_stage_policy": 0
+        },
+        "bare_hex64": true,
+        "gate": [
+          {
+            "id": 1,
+            "enabled": false,
+            "creation_enabled": false,
+            "epoch": "2",
+            "freeze_operation_id": null,
+            "freeze_progress": null,
+            "host_execution_enabled": false
+          }
+        ]
+      },
+      "database_preserved": true,
+      "database_reuse": "Original proven-unused r02 DB was explicitly reused only for r03; now preserve it"
+    },
+    {
+      "run_id": "firstsql-full-race-r04",
+      "status": "FIXTURE_SETUP_BLOCKED",
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04",
+      "command": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/logs/full-race.command.json",
+        "sha256": "cdfceb72f8ea67790e3ca90fd6bac0fa194b5deb6496265e04af9385552a8773",
+        "size": 5681
+      },
+      "exact_argv": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/configs/firstsql-full-race-r04.json",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/diagnosis-firstsql-r01/source/server",
+        "test",
+        "./internal/service",
+        "-run",
+        "^(TestStageCompletionActivityUsesOnlyClosedSafeMetadata|TestStageCompletionAllM1ModesAndActualWriters|TestStageCompletionCandidateHeadLocksInOwningTransaction|TestStageCompletionExecutionTrustBothCommitOrders|TestStageCompletionFinalClockRunsAfterWriterReceipts|TestStageCompletionFinalCurrentCredentialHorizons|TestStageCompletionFinalM1ConsumptionCannotDisappear|TestStageCompletionFinalM1ExpiryAfterOriginalReceipt|TestStageCompletionFinalM1IssuerRevocationAfterOriginalReceipt|TestStageCompletionFinalOperationHeaderAndResultCannotChange|TestStageCompletionFinalResultContentCannotChange|TestStageCompletionFinalRollbackMetricCannotChangeAfterObservation|TestStageCompletionFinalSubmitAccountCannotChange|TestStageCompletionFinalSubmitAuthorityCannotChange|TestStageCompletionFinalTargetCannotChangeAfterObservation|TestStageCompletionGuardCannotBeOmittedForManagedRoot|TestStageCompletionGuardRequiresM1Finalization|TestStageCompletionGuardRequiresPreparedTransaction|TestStageCompletionImmutableSubmissionLocksInOwningTransaction|TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt|TestStageCompletionPolicyActivationRequiresExact864Ledger|TestStageCompletionPrivateGuardTransactionAndSingleUse|TestStageCompletionRefusesUnverifiedSelfCompletion|TestStageCompletionRefusesUnverifiedSubmission|TestStageCompletionRollbackMetricBothCommitOrders|TestStageCompletionSourceRevocationBothCommitOrders|TestStageCompletionStoredBlockersRecoverWithoutFreshEffects|TestStageCompletionSubmissionRequiresItsOriginalOperation|TestStageCompletionVerifiedSubmissionAndSelf|TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority|TestStageExitContinuationPolicyCompletionCommitOrders|TestStageExitContinuationRootMoveClearM1Modes|TestStageExitContinuationRootMoveCompletionCommitOrders|TestStageWriterContinuationApprovedMaterializationM1Modes|TestStageWriterContinuationManualAndMachineCreateM1Modes|TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate|TestStageWriterContinuationSystemRootRefusalM1Modes)$",
+        "-count=1",
+        "-json",
+        "-race"
+      ],
+      "original_selector_identical": true,
+      "config": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/configs/firstsql-full-race-r04.json",
+        "sha256": "0369b70daabdbfab362df18584102830fc3c660257de048f29ee4321943ff5d3",
+        "size": 3029
+      },
+      "configuration_metadata": {
+        "TASK_DATABASE_NAME": "multica_pay241_20261115_s2_r05_firstsql_full_race_r04",
+        "HOME": "/Users/artisan/.multica/pay241-r05/fixture-state-r02/firstsql-full-race-r04/home",
+        "TMPDIR": "/Users/artisan/.multica/pay241-r05/fixture-state-r02/firstsql-full-race-r04/tmp",
+        "TMP": "/Users/artisan/.multica/pay241-r05/fixture-state-r02/firstsql-full-race-r04/tmp",
+        "TEMP": "/Users/artisan/.multica/pay241-r05/fixture-state-r02/firstsql-full-race-r04/tmp",
+        "GOTMPDIR": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/state/firstsql-full-race-r04",
+        "GOCACHE": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/go-cache-r01"
+      },
+      "explicit_go": "/opt/homebrew/bin/go",
+      "default_go_test_timeout": "10m; no timeout option or assertion/budget change",
+      "started_at": "2026-11-15T10:59:17.681156+00:00",
+      "ended_at": "2026-11-15T11:00:01.211790+00:00",
+      "helper_execution_seconds": 43.530634,
+      "launcher_and_compiler_preparation_until_package_start_seconds": 6.307736,
+      "package_terminal": {
+        "Time": "2026-11-15T19:00:01.17585+08:00",
+        "Action": "fail",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Elapsed": 37.187
+      },
+      "exit": 1,
+      "exit_record": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/logs/full-race.exit.json",
+        "sha256": "331dd85020eaf7c911e3417ee78f7ff17a0d1257e2a5c310696fc702d1c3f16f",
+        "size": 16
+      },
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/logs/full-race.jsonl",
+        "sha256": "eb3874f96c46ced7a0e9b76ee9dd1bebf38dabfd3117c4804ee15351bf771039",
+        "size": 152199
+      },
+      "stderr": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/logs/full-race.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/logs/full-race.result.json",
+        "sha256": "62fdd2b990531782bbdc91977c9230e4fa0cd30b62229f79ce13ea0bd24aa1e1",
+        "size": 37850
+      },
+      "named_terminal_count": 128,
+      "named_counts": {
+        "pass": 40,
+        "fail": 88
+      },
+      "top_count": 37,
+      "top_counts": {
+        "pass": 13,
+        "fail": 24
+      },
+      "leaf_count": 95,
+      "leaf_counts": {
+        "pass": 33,
+        "fail": 62
+      },
+      "missing_top": [],
+      "extra_top": [],
+      "unfinished": [],
+      "duplicate_terminals": [],
+      "non_json_lines": [],
+      "terminal_records": [
+        {
+          "Time": "2026-11-15T18:59:25.283105+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionGuardRequiresPreparedTransaction",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:59:25.641814+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionGuardCannotBeOmittedForManagedRoot",
+          "Elapsed": 0.36
+        },
+        {
+          "Time": "2026-11-15T18:59:25.9111+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionPolicyActivationRequiresExact864Ledger",
+          "Elapsed": 0.27
+        },
+        {
+          "Time": "2026-11-15T18:59:26.215996+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects",
+          "Elapsed": 0.3
+        },
+        {
+          "Time": "2026-11-15T18:59:26.21668+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_roles_configured",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:59:26.216983+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_proposal_created",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:59:26.217343+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_code_candidate_created",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:59:26.217625+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_scope_confirmed",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:59:26.217976+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_decision_recorded",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:59:26.218157+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionActivityUsesOnlyClosedSafeMetadata/stage_execution_observed",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:59:26.2183+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-15T18:59:26.514092+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionRefusesUnverifiedSubmission",
+          "Elapsed": 0.3
+        },
+        {
+          "Time": "2026-11-15T18:59:26.855267+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionRefusesUnverifiedSelfCompletion",
+          "Elapsed": 0.34
+        },
+        {
+          "Time": "2026-11-15T18:59:27.293903+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionVerifiedSubmissionAndSelf/false",
+          "Elapsed": 0.44
+        },
+        {
+          "Time": "2026-11-15T18:59:27.820054+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionVerifiedSubmissionAndSelf/true",
+          "Elapsed": 0.53
+        },
+        {
+          "Time": "2026-11-15T18:59:27.820076+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionVerifiedSubmissionAndSelf",
+          "Elapsed": 0.96
+        },
+        {
+          "Time": "2026-11-15T18:59:28.267459+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalSubmitAuthorityCannotChange",
+          "Elapsed": 0.45
+        },
+        {
+          "Time": "2026-11-15T18:59:28.730502+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalClockRunsAfterWriterReceipts",
+          "Elapsed": 0.46
+        },
+        {
+          "Time": "2026-11-15T18:59:29.134056+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionSubmissionRequiresItsOriginalOperation",
+          "Elapsed": 0.4
+        },
+        {
+          "Time": "2026-11-15T18:59:29.541246+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionCandidateHeadLocksInOwningTransaction",
+          "Elapsed": 0.41
+        },
+        {
+          "Time": "2026-11-15T18:59:29.945098+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionImmutableSubmissionLocksInOwningTransaction",
+          "Elapsed": 0.4
+        },
+        {
+          "Time": "2026-11-15T18:59:30.373634+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalSubmitAccountCannotChange",
+          "Elapsed": 0.43
+        },
+        {
+          "Time": "2026-11-15T18:59:30.895485+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalOperationHeaderAndResultCannotChange/actor",
+          "Elapsed": 0.52
+        },
+        {
+          "Time": "2026-11-15T18:59:31.321179+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalOperationHeaderAndResultCannotChange/result",
+          "Elapsed": 0.43
+        },
+        {
+          "Time": "2026-11-15T18:59:31.321228+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalOperationHeaderAndResultCannotChange",
+          "Elapsed": 0.95
+        },
+        {
+          "Time": "2026-11-15T18:59:31.745575+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalTargetCannotChangeAfterObservation",
+          "Elapsed": 0.42
+        },
+        {
+          "Time": "2026-11-15T18:59:32.160411+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalRollbackMetricCannotChangeAfterObservation",
+          "Elapsed": 0.41
+        },
+        {
+          "Time": "2026-11-15T18:59:32.600626+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalResultContentCannotChange/submit",
+          "Elapsed": 0.44
+        },
+        {
+          "Time": "2026-11-15T18:59:33.026233+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalResultContentCannotChange/submission",
+          "Elapsed": 0.43
+        },
+        {
+          "Time": "2026-11-15T18:59:33.447009+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalResultContentCannotChange/self",
+          "Elapsed": 0.42
+        },
+        {
+          "Time": "2026-11-15T18:59:33.860329+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalResultContentCannotChange/acceptance_reason",
+          "Elapsed": 0.41
+        },
+        {
+          "Time": "2026-11-15T18:59:33.860366+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalResultContentCannotChange",
+          "Elapsed": 1.7
+        },
+        {
+          "Time": "2026-11-15T18:59:34.35064+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalM1ConsumptionCannotDisappear",
+          "Elapsed": 0.49
+        },
+        {
+          "Time": "2026-11-15T18:59:34.776468+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalM1ExpiryAfterOriginalReceipt",
+          "Elapsed": 0.43
+        },
+        {
+          "Time": "2026-11-15T18:59:35.17879+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalM1IssuerRevocationAfterOriginalReceipt",
+          "Elapsed": 0.4
+        },
+        {
+          "Time": "2026-11-15T18:59:35.602465+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionGuardRequiresM1Finalization",
+          "Elapsed": 0.42
+        },
+        {
+          "Time": "2026-11-15T18:59:36.013114+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/submit/incomplete",
+          "Elapsed": 0.41
+        },
+        {
+          "Time": "2026-11-15T18:59:36.439521+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/submit/verified",
+          "Elapsed": 0.43
+        },
+        {
+          "Time": "2026-11-15T18:59:36.439529+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/submit",
+          "Elapsed": 0.84
+        },
+        {
+          "Time": "2026-11-15T18:59:36.881332+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/submission/incomplete",
+          "Elapsed": 0.44
+        },
+        {
+          "Time": "2026-11-15T18:59:37.359095+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/submission/verified",
+          "Elapsed": 0.48
+        },
+        {
+          "Time": "2026-11-15T18:59:37.359106+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/submission",
+          "Elapsed": 0.92
+        },
+        {
+          "Time": "2026-11-15T18:59:38.037656+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/self/incomplete",
+          "Elapsed": 0.68
+        },
+        {
+          "Time": "2026-11-15T18:59:38.472806+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/self/verified",
+          "Elapsed": 0.44
+        },
+        {
+          "Time": "2026-11-15T18:59:38.473094+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/self",
+          "Elapsed": 1.11
+        },
+        {
+          "Time": "2026-11-15T18:59:38.879513+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/admin/incomplete",
+          "Elapsed": 0.41
+        },
+        {
+          "Time": "2026-11-15T18:59:39.285698+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/admin/verified",
+          "Elapsed": 0.41
+        },
+        {
+          "Time": "2026-11-15T18:59:39.285707+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off/admin",
+          "Elapsed": 0.81
+        },
+        {
+          "Time": "2026-11-15T18:59:39.285713+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/off",
+          "Elapsed": 3.68
+        },
+        {
+          "Time": "2026-11-15T18:59:39.678521+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/incomplete",
+          "Elapsed": 0.39
+        },
+        {
+          "Time": "2026-11-15T18:59:40.074814+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/verified",
+          "Elapsed": 0.4
+        },
+        {
+          "Time": "2026-11-15T18:59:40.074833+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submit",
+          "Elapsed": 0.79
+        },
+        {
+          "Time": "2026-11-15T18:59:40.470137+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/incomplete",
+          "Elapsed": 0.4
+        },
+        {
+          "Time": "2026-11-15T18:59:40.978929+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/verified",
+          "Elapsed": 0.51
+        },
+        {
+          "Time": "2026-11-15T18:59:40.978939+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submission",
+          "Elapsed": 0.9
+        },
+        {
+          "Time": "2026-11-15T18:59:41.367955+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/self/incomplete",
+          "Elapsed": 0.39
+        },
+        {
+          "Time": "2026-11-15T18:59:41.756541+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/self/verified",
+          "Elapsed": 0.39
+        },
+        {
+          "Time": "2026-11-15T18:59:41.756578+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/self",
+          "Elapsed": 0.78
+        },
+        {
+          "Time": "2026-11-15T18:59:42.146786+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/incomplete",
+          "Elapsed": 0.39
+        },
+        {
+          "Time": "2026-11-15T18:59:42.609747+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/verified",
+          "Elapsed": 0.46
+        },
+        {
+          "Time": "2026-11-15T18:59:42.609758+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe/admin",
+          "Elapsed": 0.85
+        },
+        {
+          "Time": "2026-11-15T18:59:42.609818+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/observe",
+          "Elapsed": 3.32
+        },
+        {
+          "Time": "2026-11-15T18:59:43.044402+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/incomplete",
+          "Elapsed": 0.43
+        },
+        {
+          "Time": "2026-11-15T18:59:43.54509+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/verified",
+          "Elapsed": 0.5
+        },
+        {
+          "Time": "2026-11-15T18:59:43.545102+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit",
+          "Elapsed": 0.94
+        },
+        {
+          "Time": "2026-11-15T18:59:43.966951+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/incomplete",
+          "Elapsed": 0.42
+        },
+        {
+          "Time": "2026-11-15T18:59:44.51259+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/verified",
+          "Elapsed": 0.55
+        },
+        {
+          "Time": "2026-11-15T18:59:44.512601+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission",
+          "Elapsed": 0.97
+        },
+        {
+          "Time": "2026-11-15T18:59:44.957904+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/incomplete",
+          "Elapsed": 0.45
+        },
+        {
+          "Time": "2026-11-15T18:59:45.36003+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/verified",
+          "Elapsed": 0.4
+        },
+        {
+          "Time": "2026-11-15T18:59:45.360051+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/self",
+          "Elapsed": 0.85
+        },
+        {
+          "Time": "2026-11-15T18:59:45.761844+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/incomplete",
+          "Elapsed": 0.4
+        },
+        {
+          "Time": "2026-11-15T18:59:46.165293+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/verified",
+          "Elapsed": 0.4
+        },
+        {
+          "Time": "2026-11-15T18:59:46.165307+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin",
+          "Elapsed": 0.81
+        },
+        {
+          "Time": "2026-11-15T18:59:46.165315+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters/enforce",
+          "Elapsed": 3.56
+        },
+        {
+          "Time": "2026-11-15T18:59:46.165326+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionAllM1ModesAndActualWriters",
+          "Elapsed": 10.56
+        },
+        {
+          "Time": "2026-11-15T18:59:46.580697+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalCurrentCredentialHorizons/stage_signer",
+          "Elapsed": 0.42
+        },
+        {
+          "Time": "2026-11-15T18:59:47.025225+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalCurrentCredentialHorizons/m1_issuer",
+          "Elapsed": 0.44
+        },
+        {
+          "Time": "2026-11-15T18:59:47.535219+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalCurrentCredentialHorizons/caller",
+          "Elapsed": 0.51
+        },
+        {
+          "Time": "2026-11-15T18:59:47.535243+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalCurrentCredentialHorizons",
+          "Elapsed": 1.37
+        },
+        {
+          "Time": "2026-11-15T18:59:47.957728+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionSourceRevocationBothCommitOrders/revocation_first",
+          "Elapsed": 0.42
+        },
+        {
+          "Time": "2026-11-15T18:59:48.391809+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionSourceRevocationBothCommitOrders/completion_first",
+          "Elapsed": 0.43
+        },
+        {
+          "Time": "2026-11-15T18:59:48.391832+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionSourceRevocationBothCommitOrders",
+          "Elapsed": 0.86
+        },
+        {
+          "Time": "2026-11-15T18:59:48.818685+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionPrivateGuardTransactionAndSingleUse",
+          "Elapsed": 0.43
+        },
+        {
+          "Time": "2026-11-15T18:59:49.246073+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionExecutionTrustBothCommitOrders/trust_first",
+          "Elapsed": 0.43
+        },
+        {
+          "Time": "2026-11-15T18:59:49.656395+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionExecutionTrustBothCommitOrders/completion_first",
+          "Elapsed": 0.41
+        },
+        {
+          "Time": "2026-11-15T18:59:49.656428+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionExecutionTrustBothCommitOrders",
+          "Elapsed": 0.84
+        },
+        {
+          "Time": "2026-11-15T18:59:50.101873+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionRollbackMetricBothCommitOrders/metric_first",
+          "Elapsed": 0.45
+        },
+        {
+          "Time": "2026-11-15T18:59:50.52393+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionRollbackMetricBothCommitOrders/completion_first",
+          "Elapsed": 0.42
+        },
+        {
+          "Time": "2026-11-15T18:59:50.523944+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionRollbackMetricBothCommitOrders",
+          "Elapsed": 0.87
+        },
+        {
+          "Time": "2026-11-15T18:59:50.994623+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/wrong_consumer",
+          "Elapsed": 0.47
+        },
+        {
+          "Time": "2026-11-15T18:59:51.441644+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/agent_actor",
+          "Elapsed": 0.45
+        },
+        {
+          "Time": "2026-11-15T18:59:51.851706+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/issuer_revoked",
+          "Elapsed": 0.41
+        },
+        {
+          "Time": "2026-11-15T18:59:52.310537+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/consumer_revoked",
+          "Elapsed": 0.46
+        },
+        {
+          "Time": "2026-11-15T18:59:52.310564+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt",
+          "Elapsed": 1.79
+        },
+        {
+          "Time": "2026-11-15T18:59:52.633109+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveClearM1Modes/off/move",
+          "Elapsed": 0.32
+        },
+        {
+          "Time": "2026-11-15T18:59:52.93286+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveClearM1Modes/off/clear",
+          "Elapsed": 0.3
+        },
+        {
+          "Time": "2026-11-15T18:59:53.244432+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveClearM1Modes/observe/move",
+          "Elapsed": 0.31
+        },
+        {
+          "Time": "2026-11-15T18:59:53.538562+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveClearM1Modes/observe/clear",
+          "Elapsed": 0.29
+        },
+        {
+          "Time": "2026-11-15T18:59:53.840181+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveClearM1Modes/enforce/move",
+          "Elapsed": 0.3
+        },
+        {
+          "Time": "2026-11-15T18:59:54.150642+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveClearM1Modes/enforce/clear",
+          "Elapsed": 0.31
+        },
+        {
+          "Time": "2026-11-15T18:59:54.150671+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveClearM1Modes",
+          "Elapsed": 1.84
+        },
+        {
+          "Time": "2026-11-15T18:59:54.487752+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority/reason",
+          "Elapsed": 0.34
+        },
+        {
+          "Time": "2026-11-15T18:59:54.765934+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority/done",
+          "Elapsed": 0.28
+        },
+        {
+          "Time": "2026-11-15T18:59:55.054216+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority/source_member",
+          "Elapsed": 0.29
+        },
+        {
+          "Time": "2026-11-15T18:59:55.054242+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority",
+          "Elapsed": 0.9
+        },
+        {
+          "Time": "2026-11-15T18:59:55.494698+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationPolicyCompletionCommitOrders/completion_first",
+          "Elapsed": 0.44
+        },
+        {
+          "Time": "2026-11-15T18:59:55.904266+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationPolicyCompletionCommitOrders/policy_first",
+          "Elapsed": 0.41
+        },
+        {
+          "Time": "2026-11-15T18:59:55.904294+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationPolicyCompletionCommitOrders",
+          "Elapsed": 0.85
+        },
+        {
+          "Time": "2026-11-15T18:59:56.327395+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveCompletionCommitOrders/completion_first",
+          "Elapsed": 0.42
+        },
+        {
+          "Time": "2026-11-15T18:59:56.784217+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveCompletionCommitOrders/move_first",
+          "Elapsed": 0.46
+        },
+        {
+          "Time": "2026-11-15T18:59:56.784241+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageExitContinuationRootMoveCompletionCommitOrders",
+          "Elapsed": 0.88
+        },
+        {
+          "Time": "2026-11-15T18:59:57.102409+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationManualAndMachineCreateM1Modes/off",
+          "Elapsed": 0.32
+        },
+        {
+          "Time": "2026-11-15T18:59:57.421544+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationManualAndMachineCreateM1Modes/observe",
+          "Elapsed": 0.32
+        },
+        {
+          "Time": "2026-11-15T18:59:57.763384+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationManualAndMachineCreateM1Modes/enforce",
+          "Elapsed": 0.34
+        },
+        {
+          "Time": "2026-11-15T18:59:57.763408+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationManualAndMachineCreateM1Modes",
+          "Elapsed": 0.98
+        },
+        {
+          "Time": "2026-11-15T18:59:58.161895+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationApprovedMaterializationM1Modes/off",
+          "Elapsed": 0.4
+        },
+        {
+          "Time": "2026-11-15T18:59:58.545713+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationApprovedMaterializationM1Modes/observe",
+          "Elapsed": 0.38
+        },
+        {
+          "Time": "2026-11-15T18:59:58.972511+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationApprovedMaterializationM1Modes/enforce",
+          "Elapsed": 0.43
+        },
+        {
+          "Time": "2026-11-15T18:59:58.972523+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationApprovedMaterializationM1Modes",
+          "Elapsed": 1.21
+        },
+        {
+          "Time": "2026-11-15T18:59:59.283391+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationSystemRootRefusalM1Modes/off",
+          "Elapsed": 0.31
+        },
+        {
+          "Time": "2026-11-15T18:59:59.548569+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationSystemRootRefusalM1Modes/observe",
+          "Elapsed": 0.27
+        },
+        {
+          "Time": "2026-11-15T18:59:59.815591+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationSystemRootRefusalM1Modes/enforce",
+          "Elapsed": 0.27
+        },
+        {
+          "Time": "2026-11-15T18:59:59.815616+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationSystemRootRefusalM1Modes",
+          "Elapsed": 0.84
+        },
+        {
+          "Time": "2026-11-15T19:00:00.236363+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate/off",
+          "Elapsed": 0.42
+        },
+        {
+          "Time": "2026-11-15T19:00:00.646592+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate/observe",
+          "Elapsed": 0.41
+        },
+        {
+          "Time": "2026-11-15T19:00:01.168271+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate/enforce",
+          "Elapsed": 0.52
+        },
+        {
+          "Time": "2026-11-15T19:00:01.168292+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate",
+          "Elapsed": 1.35
+        }
+      ],
+      "first_sql_diagnostic_count": 0,
+      "diagnostics": [],
+      "artifact_fixture_refusal_count": 62,
+      "artifact_fixture_refusals": [
+        {
+          "test": "TestStageCompletionVerifiedSubmissionAndSelf/false",
+          "message": "collaboration_stage_completion_test.go:69: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:27.236615+08:00"
+        },
+        {
+          "test": "TestStageCompletionVerifiedSubmissionAndSelf/true",
+          "message": "collaboration_stage_completion_test.go:69: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:27.763638+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalSubmitAuthorityCannotChange",
+          "message": "collaboration_stage_completion_tx_test.go:100: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:28.214794+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalClockRunsAfterWriterReceipts",
+          "message": "collaboration_stage_completion_tx_test.go:124: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:28.674492+08:00"
+        },
+        {
+          "test": "TestStageCompletionSubmissionRequiresItsOriginalOperation",
+          "message": "collaboration_stage_completion_tx_test.go:153: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:29.08145+08:00"
+        },
+        {
+          "test": "TestStageCompletionCandidateHeadLocksInOwningTransaction",
+          "message": "collaboration_stage_completion_tx_test.go:211: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:29.488542+08:00"
+        },
+        {
+          "test": "TestStageCompletionImmutableSubmissionLocksInOwningTransaction",
+          "message": "collaboration_stage_completion_tx_test.go:233: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:29.894488+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalSubmitAccountCannotChange",
+          "message": "collaboration_stage_completion_tx_test.go:268: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:30.317922+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalOperationHeaderAndResultCannotChange/actor",
+          "message": "collaboration_stage_completion_tx_test.go:296: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:30.807303+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalOperationHeaderAndResultCannotChange/result",
+          "message": "collaboration_stage_completion_tx_test.go:296: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:31.264714+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalTargetCannotChangeAfterObservation",
+          "message": "collaboration_stage_completion_tx_test.go:365: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:31.688284+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalRollbackMetricCannotChangeAfterObservation",
+          "message": "collaboration_stage_completion_tx_test.go:387: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:32.101403+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalResultContentCannotChange/submit",
+          "message": "collaboration_stage_completion_tx_test.go:495: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:32.546163+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalResultContentCannotChange/submission",
+          "message": "collaboration_stage_completion_tx_test.go:495: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:32.971208+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalResultContentCannotChange/self",
+          "message": "collaboration_stage_completion_tx_test.go:495: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:33.389783+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalResultContentCannotChange/acceptance_reason",
+          "message": "collaboration_stage_completion_tx_test.go:495: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:33.806693+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalM1ConsumptionCannotDisappear",
+          "message": "collaboration_stage_completion_tx_test.go:546: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:34.262693+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalM1ExpiryAfterOriginalReceipt",
+          "message": "collaboration_stage_completion_tx_test.go:569: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:34.719937+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalM1IssuerRevocationAfterOriginalReceipt",
+          "message": "collaboration_stage_completion_tx_test.go:593: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:35.127156+08:00"
+        },
+        {
+          "test": "TestStageCompletionGuardRequiresM1Finalization",
+          "message": "collaboration_stage_completion_tx_test.go:623: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:35.551255+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/submit/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:35.959102+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/submit/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:36.38085+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/submission/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:36.823313+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/submission/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:37.291403+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/self/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:37.859089+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/self/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:38.420111+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/admin/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:38.82135+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/off/admin/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:39.227552+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:39.623699+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:40.022363+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:40.416316+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:40.875734+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/self/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:41.314516+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/self/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:41.706553+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:42.093475+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:42.552772+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:42.989047+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:43.485706+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:43.898309+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:44.452228+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:44.898243+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:45.30718+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/incomplete",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:45.706543+08:00"
+        },
+        {
+          "test": "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/verified",
+          "message": "collaboration_stage_completion_tx_test.go:766: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:46.111165+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalCurrentCredentialHorizons/stage_signer",
+          "message": "collaboration_stage_completion_tx_test.go:933: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:46.528575+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalCurrentCredentialHorizons/m1_issuer",
+          "message": "collaboration_stage_completion_tx_test.go:933: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:46.969894+08:00"
+        },
+        {
+          "test": "TestStageCompletionFinalCurrentCredentialHorizons/caller",
+          "message": "collaboration_stage_completion_tx_test.go:933: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:47.481183+08:00"
+        },
+        {
+          "test": "TestStageCompletionSourceRevocationBothCommitOrders/revocation_first",
+          "message": "collaboration_stage_completion_tx_test.go:978: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:47.903612+08:00"
+        },
+        {
+          "test": "TestStageCompletionSourceRevocationBothCommitOrders/completion_first",
+          "message": "collaboration_stage_completion_tx_test.go:978: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:48.335875+08:00"
+        },
+        {
+          "test": "TestStageCompletionPrivateGuardTransactionAndSingleUse",
+          "message": "collaboration_stage_completion_tx_test.go:1048: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:48.764182+08:00"
+        },
+        {
+          "test": "TestStageCompletionExecutionTrustBothCommitOrders/trust_first",
+          "message": "collaboration_stage_completion_tx_test.go:1106: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:49.193309+08:00"
+        },
+        {
+          "test": "TestStageCompletionExecutionTrustBothCommitOrders/completion_first",
+          "message": "collaboration_stage_completion_tx_test.go:1106: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:49.605345+08:00"
+        },
+        {
+          "test": "TestStageCompletionRollbackMetricBothCommitOrders/metric_first",
+          "message": "collaboration_stage_completion_tx_test.go:1187: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:50.039187+08:00"
+        },
+        {
+          "test": "TestStageCompletionRollbackMetricBothCommitOrders/completion_first",
+          "message": "collaboration_stage_completion_tx_test.go:1187: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:50.469945+08:00"
+        },
+        {
+          "test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/wrong_consumer",
+          "message": "collaboration_stage_completion_tx_test.go:1260: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:50.937411+08:00"
+        },
+        {
+          "test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/agent_actor",
+          "message": "collaboration_stage_completion_tx_test.go:1260: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:51.390503+08:00"
+        },
+        {
+          "test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/issuer_revoked",
+          "message": "collaboration_stage_completion_tx_test.go:1260: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:51.799452+08:00"
+        },
+        {
+          "test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/consumer_revoked",
+          "message": "collaboration_stage_completion_tx_test.go:1260: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:52.257008+08:00"
+        },
+        {
+          "test": "TestStageExitContinuationPolicyCompletionCommitOrders/completion_first",
+          "message": "collaboration_stage_exit_continuation_test.go:216: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:55.441355+08:00"
+        },
+        {
+          "test": "TestStageExitContinuationPolicyCompletionCommitOrders/policy_first",
+          "message": "collaboration_stage_exit_continuation_test.go:216: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:55.85441+08:00"
+        },
+        {
+          "test": "TestStageExitContinuationRootMoveCompletionCommitOrders/completion_first",
+          "message": "collaboration_stage_exit_continuation_test.go:267: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:56.268416+08:00"
+        },
+        {
+          "test": "TestStageExitContinuationRootMoveCompletionCommitOrders/move_first",
+          "message": "collaboration_stage_exit_continuation_test.go:267: artifact adapter unavailable",
+          "time": "2026-11-15T18:59:56.732533+08:00"
+        }
+      ],
+      "actor_result_terminals": [
+        {
+          "Time": "2026-11-15T18:59:30.895485+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalOperationHeaderAndResultCannotChange/actor",
+          "Elapsed": 0.52
+        },
+        {
+          "Time": "2026-11-15T18:59:31.321179+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestStageCompletionFinalOperationHeaderAndResultCannotChange/result",
+          "Elapsed": 0.43
+        }
+      ],
+      "completion_return_observed": false,
+      "corruption_injection_reached": false,
+      "corruption_hits": null,
+      "not_reproduced_conclusion": false,
+      "original_v01_closed": false,
+      "original_v02_closed": false,
+      "source_audits": [
+        {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/source-initial.json",
+          "sha256": "72dcd8516d2cbe5b52275ba7102551e6f3386b34187bf0203a4aa7237c4b8c2e",
+          "size": 1024213
+        },
+        {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/source-before-run.json",
+          "sha256": "3b05a36faa8f547d71d66fe01e7df2cdcd2b63d05dfa0737e09b2ba8be55217e",
+          "size": 1024213
+        },
+        {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/source-after-run.json",
+          "sha256": "38c1e5e6020d83e2eac874b5cbd2f99a4ba825e6645b4fa4e8fdd315a208705b",
+          "size": 1024213
+        }
+      ],
+      "source_regular_files": 4966,
+      "parent_regular_files": 4965,
+      "source_before_after_equal": true,
+      "source_missing_extra_changed_special": false,
+      "parent_source_changed": [],
+      "database_before": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/database-before.json",
+        "sha256": "fceb940cdbe186d9a24d646e8aa38fc94543b7e3f8e53599da67abe802671741",
+        "size": 1901
+      },
+      "database_after": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/database-after.json",
+        "sha256": "13913a7cb23103b522a8d23f68774675e29d27618d24a1621de42be5fd8009bb",
+        "size": 1902
+      },
+      "database_before_summary": {
+        "status": "PASS",
+        "identity": {
+          "database": "multica_pay241_20261115_s2_r05_firstsql_full_race_r04",
+          "read_only": "on",
+          "version": "17.11 (Debian 17.11-1.pgdg12+2)",
+          "max_connections": 100,
+          "cluster_connections": 37,
+          "other_connections": 0
+        },
+        "ledger": {
+          "rows": 835,
+          "last": "864_collaboration_stage_submission_ready",
+          "sha256": "5c638f1506d2208fe918f5a385cff5e86cd1d2424fab4523170390b871668647"
+        },
+        "stage_facts": {
+          "collaboration_stage_candidate": 0,
+          "collaboration_stage_child": 0,
+          "collaboration_stage_decision": 0,
+          "collaboration_stage_execution_intent": 0,
+          "collaboration_stage_execution_observation": 0,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 0,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 0,
+          "collaboration_stage_task": 0,
+          "project_stage_policy": 0
+        },
+        "bare_hex64": true,
+        "gate": [
+          {
+            "id": 1,
+            "enabled": false,
+            "creation_enabled": true,
+            "epoch": "2",
+            "freeze_operation_id": null,
+            "freeze_progress": null,
+            "host_execution_enabled": false
+          }
+        ]
+      },
+      "database_after_summary": {
+        "status": "PASS",
+        "identity": {
+          "database": "multica_pay241_20261115_s2_r05_firstsql_full_race_r04",
+          "read_only": "on",
+          "version": "17.11 (Debian 17.11-1.pgdg12+2)",
+          "max_connections": 100,
+          "cluster_connections": 37,
+          "other_connections": 0
+        },
+        "ledger": {
+          "rows": 835,
+          "last": "864_collaboration_stage_submission_ready",
+          "sha256": "5c638f1506d2208fe918f5a385cff5e86cd1d2424fab4523170390b871668647"
+        },
+        "stage_facts": {
+          "collaboration_stage_candidate": 0,
+          "collaboration_stage_child": 0,
+          "collaboration_stage_decision": 0,
+          "collaboration_stage_execution_intent": 0,
+          "collaboration_stage_execution_observation": 0,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 0,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 0,
+          "collaboration_stage_task": 0,
+          "project_stage_policy": 0
+        },
+        "bare_hex64": true,
+        "gate": [
+          {
+            "id": 1,
+            "enabled": false,
+            "creation_enabled": false,
+            "epoch": "2",
+            "freeze_operation_id": null,
+            "freeze_progress": null,
+            "host_execution_enabled": false
+          }
+        ]
+      },
+      "database_preserved": true,
+      "database_reuse": "Fresh r04 DB; actual fixtures ran, preserve it and require another fresh DB for a later full suite"
+    }
+  ],
+  "sdk_environment_proof": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/sdk-environment-proof.json",
+    "sha256": "7543c2faf215d943bb2c4fb07ad1dde08a5961bb8e0261f948557fdebfb60b49",
+    "size": 54856
+  },
+  "process_exit_proof": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/process-exit-proof.json",
+    "sha256": "17c56e8ade50c583ce55c77e14c101256b9db577a97d22cbffc4cc4ef65a5c77",
+    "size": 193
+  },
+  "preserved_evidence_audit": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/preserved-evidence-audit.json",
+    "sha256": "b3a7461da002d83271c2a9331fe60751e701244516e0e8cb2d96ca60b40086af",
+    "size": 22105
+  },
+  "current_outcome": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/diagnostic-outcome.json",
+    "sha256": "006be193888a5a3a0bf30f763bf21e392e15b95f74fbf0da965e32c5c27fb3b4",
+    "size": 26769
+  },
+  "findings_fixed": [
+    {
+      "file": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/report.py",
+      "issue": "Original command expected_top contains metadata objects; the report helper initially treated them as names.",
+      "fix": "Read each original row name before set comparison. Preserved the failed helper and metadata-only failure record; no source, test or acceptance evidence changed."
+    }
+  ],
+  "findings_not_fixed": [
+    {
+      "id": "ENV01",
+      "classification": "Static current-harness configuration mismatch",
+      "issue": "Installed Go1.27 T.TempDir uses GOTMPDIR. r03 external TMPDIR and r04 external GOTMPDIR select an ancestor refused by the unchanged artifact validator.",
+      "reason_not_fixed": "ROOT owns profile allocation and fresh-DB permits; this continuation is read-only. No fixture, validator, frozen source or old config was changed.",
+      "next_step": "ROOT must bind a new profile controlling the actual Go1.27 TempDir base, verify generated root metadata in an exact single-case prerequisite on a fresh DB, then issue a new full37 permit. Keep production validator, fixtures, assertions and deadlines unchanged."
+    },
+    {
+      "id": "V01",
+      "classification": "Original verification blocker remains open",
+      "issue": "Original result subtest returned SQLSTATE25P02 with hits0 before corruption; no first underlying SQL error captured.",
+      "reason_not_fixed": "All three current full diagnostic attempts failed to reach the injection. New environment refusals cannot classify or close the original SQL failure."
+    },
+    {
+      "id": "V02",
+      "classification": "Original verification blocker remains open; separate owner",
+      "issue": "Original late authenticated fact returned stage_execution_conflict without initial Prepare state/callback/terminal/time evidence.",
+      "reason_not_fixed": "This reviewer owns first-SQL and SDK handoff only. Separate owner diagnostics have not closed this blocker."
+    }
+  ],
+  "verification": {
+    "lint": {
+      "status": "NOT_RERUN_THIS_DIAGNOSTIC_SLICE",
+      "retained_original_full_review": "PASS; scoped gofmt/go vet",
+      "reason": "No additional normal/pure/static commands were permitted."
+    },
+    "typecheck": {
+      "status": "NOT_RERUN_THIS_DIAGNOSTIC_SLICE",
+      "retained_original_full_review": "PASS; Go build and retained frontend typechecks",
+      "test_compilation": "r02 link ENOSPC; r03/r04 compiled and actually ran"
+    },
+    "tests": {
+      "status": "FAIL",
+      "r02": "All37 NOT_RUN after link ENOSPC",
+      "r03": "Complete37 tops/128named:40PASS88FAIL fixture setup",
+      "r04": "Complete37 tops/128named:40PASS88FAIL fixture setup",
+      "skip_missing_unfinished_duplicate": "r03/r04 all zero"
+    },
+    "source_config_parent_audits": "PASS; same4966 source/4965 parent before-after, exact configs and selector",
+    "database_audits": "Retained authorized before/after READONLY records PASS;835/exact864/barehex64,all11stagefacts0,otherconnections0",
+    "sql_or_go_after_readonly_dispatch": false
+  },
+  "instrumentation_limits": "Hashing/call-stack collection/locking/output adds observation overhead; byte identity does not establish identical timing or full driver-interface coverage",
+  "tracer_interfaces": "QueryTracer only; no dedicated Batch/CopyFrom/Connect/Prepare tracer",
+  "no_sql_arguments_prose_or_credentials_logged_by_instrumentation": true,
+  "unproven_boundaries": [
+    "Reviewer did not execute a runtime env/TempDir/earliest-artifact-refusal probe; original failing artifacts were cleaned by the fixtures. Exact runtime base suffix, UID/mode and earliest refused branch were not logged.",
+    "Go1.27 TempDir creates the numbered child with mode0777 before process umask; root profile metadata alone does not prove each generated ancestor mode.",
+    "No source/behavior proof for Go1.26/Linux CI is claimed.",
+    "Static current-profile attribution does not classify original R03 SQLSTATE25P02 or late-fact conflict.",
+    "Owner has a separately assigned test-only metadata diagnostic; this reviewer did not read, modify, or duplicate that private source."
+  ],
+  "spec_sync": "ROOT acknowledged and owns correction of compiler/fixture temporary-directory guidance; this reviewer does not edit specs.",
+  "changed_repository_files": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-firstsql-full-race-check-r02.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-firstsql-full-race-check-r02.json"
+  ],
+  "simplifications": [],
+  "references": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-final-code-check-r05.md",
+      "sha256": "db8191b67bbc4838a2b777fa55628845d470f53de4a952a7c2a0ac7bd1d587ab",
+      "size": 20886
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-final-code-check-r05.json",
+      "sha256": "e847823c715d4b58ae73a0634671da2ff8d4c3bcab56f3ba8f3579523e24eaf7",
+      "size": 724703
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/diagnosis-firstsql-r01/manifest.json",
+      "sha256": "c1f3ac5be782ab0292a88292cd2872cca49b06a3a4d87a4c8041a3141e77c250",
+      "size": 960887
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/diagnosis-firstsql-r01/binding.json",
+      "sha256": "f75993676b5845bbad6bc648c919191b29874a381c9bc6862feac281aa4d5762",
+      "size": 1428
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/combined-candidate-r05-r03/manifest.json",
+      "sha256": "81cacce71bc781e8c6ca2a6f27fa379ba9befe3671b7187fb81baf71b818720a",
+      "size": 1022358
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/diagnosis-firstsql-r01/instrumentation.diff",
+      "sha256": "2734c73300aea734d4646353e20a762ced5b3c381f9012a8c88bd188f5f4570b",
+      "size": 8952
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/instrumentation-review.json",
+      "sha256": "5a0e7e2ee06e2279f86adf0c7fd80078d8567ff16555e4ccaed72bc9d2e4e8d5",
+      "size": 2399
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/final-code-review/logs/service-completion-race-r03.command.json",
+      "sha256": "cbcc84ce81d3555980f9da24e81d45b0d7fd713222e74488ad35ac348197d9e9",
+      "size": 10676
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/final-code-review/logs/service-completion-race-r03.result.json",
+      "sha256": "98568f2599bcf0a6663f4f1d2e49a8f70914e568a815a4227d06b1f3edcb6309",
+      "size": 47317
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/final-code-review/logs/service-completion-race-r03.jsonl",
+      "sha256": "f569bac9772d5ff2ce4fa74bfe6dbcee4e3502e489e1c930a298370bb82d023e",
+      "size": 134437
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/final-code-review/logs/service-completion-race-r03.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/logs/full-race.result.json",
+      "sha256": "b1910242d46c9d4579fc76b33a28ba39a8987c549144fd5e95e2f00e01839e5f",
+      "size": 6461
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/logs/full-race.command.json",
+      "sha256": "4cb81bcbfc1ff7f2e33802a71bc6644f5b9b69c1040d71c766db735131b476b4",
+      "size": 5662
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/logs/full-race.exit.json",
+      "sha256": "331dd85020eaf7c911e3417ee78f7ff17a0d1257e2a5c310696fc702d1c3f16f",
+      "size": 16
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/logs/full-race.jsonl",
+      "sha256": "fe3f9151954fbb129ae5cc4ac13270ee7fcd5e9b9e3e966bcca929ad489ab295",
+      "size": 1081
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/logs/full-race.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/diag_firstsql_full_race_r02.json",
+      "sha256": "ea5256f7d2f428c4d4921a300acf9430f3ef23e459f1b675245d742779b745d0",
+      "size": 2982
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/source-before-run.json",
+      "sha256": "66e0aeee90102aab7d5f2bc9c2b5d129f6dff87cf7d3ccdd3a62a4772fb199bc",
+      "size": 1024213
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/source-after-run.json",
+      "sha256": "edba0a50d9a5c553b76b7c2bd423812dead23b5e00416110cccd6c77bf50cc06",
+      "size": 1024213
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/source-initial.json",
+      "sha256": "a20296b99566452a16d58a418cd73f6acef4d3a7ff076228abd520dfc9066603",
+      "size": 1024213
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/database-before.json",
+      "sha256": "1dd1a9b9de9016f06e7d10ea3ac5656a4864d22ea0cdde0c61d8ddc1d67b702c",
+      "size": 2646
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/database-after.json",
+      "sha256": "e17e7e8d320c6632284bbeb26c8621bb182d4e9d8cb9baaebbc42645a09a85e3",
+      "size": 2646
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/check.py",
+      "sha256": "a6f10a785a27b5f39382013bd040bb0d15c75a046cdc8010c2dcc9ce5cd0c1eb",
+      "size": 9924
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/firstsql-full-race-check-r02/database.mjs",
+      "sha256": "05ca35d90be0f0550d64be988b0e81774a2c85d3a7f0afae38744d1cfd49f0b5",
+      "size": 4655
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/logs/full-race.result.json",
+      "sha256": "792ac66ff3ffc78ad58de95e21d9513d95f1668602dc1c32115ff48019ff84c3",
+      "size": 37855
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/logs/full-race.command.json",
+      "sha256": "dd5458d6a851a35b6d9196303455f2076aa5b256bfa194aa02e44e1bbf69b36a",
+      "size": 5681
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/logs/full-race.exit.json",
+      "sha256": "331dd85020eaf7c911e3417ee78f7ff17a0d1257e2a5c310696fc702d1c3f16f",
+      "size": 16
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/logs/full-race.jsonl",
+      "sha256": "8b87e9ba0f940b5ec223c927649632a0132746087272f53f17865e62c36f041d",
+      "size": 152204
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/logs/full-race.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/configs/firstsql-full-race-r03.json",
+      "sha256": "443d468f1f42c04073f14bd349dc6e977bc501b5bbb91eab5f46344c9b218c84",
+      "size": 3065
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/source-before-run.json",
+      "sha256": "962c9ddfc7110e1ba06ebfc04205cf25e16c0665f04d12f07453c6f29feefe42",
+      "size": 1024213
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/source-after-run.json",
+      "sha256": "f6d52bbe4605d244099dc3381a6c93251fa96483cb741b21805dfee29cd2049b",
+      "size": 1024213
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/source-initial.json",
+      "sha256": "92e1384bc5cd2b6b20988735a8183ea248ef52a944a9db8bbfac849b8b71f7db",
+      "size": 1024213
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/database-before.json",
+      "sha256": "a56b0e943e16256e4c7f896a3c6fe5b366b84682a2e9c5948af836b6f4288457",
+      "size": 2862
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/database-after.json",
+      "sha256": "6ca5b360d68966038e3beb4e45e84ff6a2cbff95d34957cb692b0525ffce3911",
+      "size": 2863
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/new-run-binding.json",
+      "sha256": "dcdf2109f854aa4435ad70d7d7ebe60f501d69814dfc72e157bb54741b0eaf8a",
+      "size": 4004
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/check.py",
+      "sha256": "ba097733242b4852ed65bbc9c9b6c5d87780b0432e89a558d0dd684c75e2d1a5",
+      "size": 2534
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/firstsql-full-race-r03/database.mjs",
+      "sha256": "adb01ca475a67b8adfe52f6bd8d4e997b125f87004a950005a78bdebb8190de3",
+      "size": 4926
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/logs/full-race.result.json",
+      "sha256": "62fdd2b990531782bbdc91977c9230e4fa0cd30b62229f79ce13ea0bd24aa1e1",
+      "size": 37850
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/logs/full-race.command.json",
+      "sha256": "cdfceb72f8ea67790e3ca90fd6bac0fa194b5deb6496265e04af9385552a8773",
+      "size": 5681
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/logs/full-race.exit.json",
+      "sha256": "331dd85020eaf7c911e3417ee78f7ff17a0d1257e2a5c310696fc702d1c3f16f",
+      "size": 16
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/logs/full-race.jsonl",
+      "sha256": "eb3874f96c46ced7a0e9b76ee9dd1bebf38dabfd3117c4804ee15351bf771039",
+      "size": 152199
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/logs/full-race.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/configs/firstsql-full-race-r04.json",
+      "sha256": "0369b70daabdbfab362df18584102830fc3c660257de048f29ee4321943ff5d3",
+      "size": 3029
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/source-before-run.json",
+      "sha256": "3b05a36faa8f547d71d66fe01e7df2cdcd2b63d05dfa0737e09b2ba8be55217e",
+      "size": 1024213
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/source-after-run.json",
+      "sha256": "38c1e5e6020d83e2eac874b5cbd2f99a4ba825e6645b4fa4e8fdd315a208705b",
+      "size": 1024213
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/source-initial.json",
+      "sha256": "72dcd8516d2cbe5b52275ba7102551e6f3386b34187bf0203a4aa7237c4b8c2e",
+      "size": 1024213
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/database-before.json",
+      "sha256": "fceb940cdbe186d9a24d646e8aa38fc94543b7e3f8e53599da67abe802671741",
+      "size": 1901
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/database-after.json",
+      "sha256": "13913a7cb23103b522a8d23f68774675e29d27618d24a1621de42be5fd8009bb",
+      "size": 1902
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/new-run-binding.json",
+      "sha256": "f2b699b69b8f77ce2e69921767b981583c820b06cf4a9b597097e92debdf6e62",
+      "size": 3441
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/check.py",
+      "sha256": "04da8a7146712ccb55da9336be4290478217443c34e6c3ea09522d10892a10d2",
+      "size": 8672
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/database.mjs",
+      "sha256": "07aacc22400466605bd7ca3817006f619200f8480b1821f8b92da38f46f554d5",
+      "size": 4651
+    },
+    {
+      "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/src/cmd/go/main.go",
+      "sha256": "750f5cbf07bb4304e33d34d7c2655ad977db7ea5855c47051bf122988f63068a",
+      "size": 11648
+    },
+    {
+      "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/src/cmd/go/internal/cfg/cfg.go",
+      "sha256": "8eb038ac6df168fe5af971cd768d99dd3c64224273072a4160dcc5f51eacae9d",
+      "size": 22272
+    },
+    {
+      "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/src/cmd/go/internal/toolchain/select.go",
+      "sha256": "9c9dca69c01bd6a7ce96eb0d75bee073d7d3332c5a168f417e9750bc72f5181a",
+      "size": 25779
+    },
+    {
+      "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/src/cmd/go/internal/base/env.go",
+      "sha256": "3b417dbc15296097d68068c7b697297dbe825bdd4dc0fa423a45a44d946d54c4",
+      "size": 1292
+    },
+    {
+      "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/src/cmd/go/internal/test/test.go",
+      "sha256": "ce0bfdd1686ff4d58fd013848066a27b509d76ada665712fbb2746d101537172",
+      "size": 81728
+    },
+    {
+      "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/src/cmd/go/internal/work/action.go",
+      "sha256": "7e264948cdf181f50560cbb21c95b2c526611923ea2e11d859a60f0962e786ec",
+      "size": 42515
+    },
+    {
+      "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/src/testing/testing.go",
+      "sha256": "8d2437cfdcfb82fd8807e5063783de1d50f70e589e80cad10e17d8ef23f724d9",
+      "size": 94214
+    },
+    {
+      "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/src/os/tempfile.go",
+      "sha256": "a337c2a6dc2e4368b2dc0015ea7c0b935b68b14885a0771a6cbe27e588c2cd16",
+      "size": 4002
+    },
+    {
+      "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/src/os/file.go",
+      "sha256": "d77653afbcbec5256b56aee25dce3df3ed001f964c9b245b848a5d378884bcb3",
+      "size": 30343
+    },
+    {
+      "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/src/os/file_unix.go",
+      "sha256": "877dd004355c475e8805b5700061604558422da057037556e0cf6edeb36ab7ec",
+      "size": 14265
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/diagnosis-firstsql-r01/source/server/internal/service/collaboration_stage_completion_tx_test.go",
+      "sha256": "43a3baef24323d79b7c9e1d4fe599767608d21dc8e444e630e7f36463046a443",
+      "size": 73815
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/diagnosis-firstsql-r01/source/server/internal/service/collaboration_stage_completion_test.go",
+      "sha256": "8ad9dea5a06ec2e9d8e5f35276b1290dbf384cd4190c123fb10b1a49200e34e3",
+      "size": 4944
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/diagnosis-firstsql-r01/source/server/internal/service/collaboration_stage_execution_fixture_test.go",
+      "sha256": "9c23a7b54a30ef2a3c4655653213b2ddbfa889a804448d505a43f30e0d77dab6",
+      "size": 15055
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/diagnosis-firstsql-r01/source/server/internal/service/collaboration_test_report_test.go",
+      "sha256": "2e44ca4836a60fc21f3344adf2807691ec3c85dcbdfc35980bafab3d46f33696",
+      "size": 15333
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/diagnosis-firstsql-r01/source/server/internal/service/collaboration_test_report_artifact_test.go",
+      "sha256": "ac3290191de8af13655f05008adbb94aecee5b20354d1cffcab1accb0c92ef74",
+      "size": 21588
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/diagnosis-firstsql-r01/source/server/internal/artifact/packager.go",
+      "sha256": "97dea8fe35facef1261522006487f07320e8248b61186694d9a69b3a7d32913d",
+      "size": 10113
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/diagnosis-firstsql-r01/source/server/internal/artifact/files_unix.go",
+      "sha256": "18bcac8ba8e5b925cb2d3dc5fa8b5673c5857aafc33ab333db95d6d8b277e681",
+      "size": 9780
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+      "sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+      "size": 1046
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/sdk-environment-proof.json",
+      "sha256": "7543c2faf215d943bb2c4fb07ad1dde08a5961bb8e0261f948557fdebfb60b49",
+      "size": 54856
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/process-exit-proof.json",
+      "sha256": "17c56e8ade50c583ce55c77e14c101256b9db577a97d22cbffc4cc4ef65a5c77",
+      "size": 193
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/diagnostic-outcome.json",
+      "sha256": "006be193888a5a3a0bf30f763bf21e392e15b95f74fbf0da965e32c5c27fb3b4",
+      "size": 26769
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/preflight-initial.json",
+      "sha256": "908b6247d06f4d9b9d9fa62526a94ea52b46c14eca427fe79a8810289f858d78",
+      "size": 8638
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/preflight-before-run.json",
+      "sha256": "d9e43a9d7321326dc45978d24f15f7a24effae70cc4557f68a8adc20f02f77f8",
+      "size": 8638
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/preflight-after-run.json",
+      "sha256": "3f9102fbac453ca5ef28bd7d1970e40be33390fc1844b96519d2cb89949bea07",
+      "size": 8638
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/evidence/trusted-fixture-binding-r02.json",
+      "sha256": "76d84236be12bddb11c4e796dd7e70bbf516f7b592efc9becec09110a4e4de35",
+      "size": 16915
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/evidence/trusted-fixture-r04-clearance.json",
+      "sha256": "37eb8d5d82256de962edb5fe4ae4611fcc076a29ad1ff1c326539537d0f5090b",
+      "size": 4389
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r01/evidence/capacity-rebind-r01.json",
+      "sha256": "f2a06b398724804fd1d3bacc01ab8b83d43df50bfa7e4805d77b12302ffa4f1a",
+      "size": 10307
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/report.py",
+      "sha256": "af2c73f78702cd65deaeb003e9ddfeeb16a79f8a63b7ba1e66051e3793d10e13",
+      "size": 36475
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/report-helper-before-fix-01.py",
+      "sha256": "62677be15c7dc9b375fe22d4d716ec80acb1de6ec71d1cf3e3626b11e34c5ab1",
+      "size": 35866
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/report-helper-failure-01.json",
+      "sha256": "df8e5c4d0643f710d60c9727ed7581d8edb44be516fe0e3f9ab24df5d0be26e5",
+      "size": 382
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r02/firstsql-full-race-r04/preserved-evidence-audit.json",
+      "sha256": "b3a7461da002d83271c2a9331fe60751e701244516e0e8cb2d96ca60b40086af",
+      "size": 22105
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-firstsql-full-race-check-r02.md",
+      "sha256": "4de729484bf0294f5d2cc9896b3bcf3036ff7b395426a3d4920f5eca6c481723",
+      "size": 10363
+    }
+  ],
+  "report_markdown": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-firstsql-full-race-check-r02.md",
+    "sha256": "4de729484bf0294f5d2cc9896b3bcf3036ff7b395426a3d4920f5eca6c481723",
+    "size": 10363
+  },
+  "final_editorial_check": "Clarified historical r02/r03 read-only Git-root probes; r04 and subsequent SDK analysis executed no Git commands. Original source/config/raw/report bytes unchanged."
+}

@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-05T04:29:24.252873+00:00",
+  "command": [
+    "python3",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/test_runtime_entry.py",
+    "-v"
+  ],
+  "exit_code": 0,
+  "source_before": {
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/runtime_entry.py": "098febad1498ac5fcd7b4d7b431e38083937478669f3cd3c5e48b8b0b4b39031",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/test_runtime_entry.py": "1e5a9b70ece75eae34519fb73b6f701fe9a6695c4b1f5029ea7b8e8eebb72f59"
+  },
+  "source_after": {
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/runtime_entry.py": "098febad1498ac5fcd7b4d7b431e38083937478669f3cd3c5e48b8b0b4b39031",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/test_runtime_entry.py": "1e5a9b70ece75eae34519fb73b6f701fe9a6695c4b1f5029ea7b8e8eebb72f59"
+  },
+  "source_unchanged": true,
+  "log_sha256": "240ae3b369f92771288174351a1ecff782412c3b1bc89ebdf9b3aff1758cfa0e",
+  "scope": "Supplied credential-free unit controls with temporary files only; helpermain not invoked, no realconfig scan/Go/DB/Provider",
+  "tests_not_model_acceptance": true
+}

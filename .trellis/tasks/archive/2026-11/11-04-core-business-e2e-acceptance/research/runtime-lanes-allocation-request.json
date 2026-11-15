@@ -1,0 +1,784 @@
+{
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "source_root": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104",
+  "root_allocates_only": true,
+  "rows": [
+    {
+      "id": "pw-01",
+      "spec": "e2e/admin-collaboration-switches.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-admin"
+      ],
+      "database": "multica_core1a32_20261104_pw_01",
+      "bootstrap_admin": true,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-02",
+      "spec": "e2e/admin-resource-publishing.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-resource-publishing"
+      ],
+      "database": "multica_core1a32_20261104_pw_02",
+      "bootstrap_admin": true,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-03",
+      "spec": "e2e/collaboration-administration-desktop.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-admin"
+      ],
+      "database": "multica_core1a32_20261104_pw_03",
+      "bootstrap_admin": true,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-04",
+      "spec": "e2e/collaboration-administration-web.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-admin"
+      ],
+      "database": "multica_core1a32_20261104_pw_04",
+      "bootstrap_admin": true,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-05",
+      "spec": "e2e/collaboration-control-journey-desktop.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-managed-control"
+      ],
+      "database": "multica_core1a32_20261104_pw_05",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": true,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-06",
+      "spec": "e2e/collaboration-control-journey-web.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-managed-control"
+      ],
+      "database": "multica_core1a32_20261104_pw_06",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": true,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-07",
+      "spec": "e2e/collaboration-cross-client-execution.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-linux-namespace-native"
+      ],
+      "database": "multica_core1a32_20261104_pw_07",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": true,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-08",
+      "spec": "e2e/collaboration-handoff-chain-desktop.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-collaboration-native"
+      ],
+      "database": "multica_core1a32_20261104_pw_08",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-09",
+      "spec": "e2e/collaboration-handoff-chain-web.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-collaboration"
+      ],
+      "database": "multica_core1a32_20261104_pw_09",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-10",
+      "spec": "e2e/collaboration-host-installed.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-packaged-host-main"
+      ],
+      "database": "multica_core1a32_20261104_pw_10",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": true,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-11",
+      "spec": "e2e/collaboration-host-runtime.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-native-host"
+      ],
+      "database": "multica_core1a32_20261104_pw_11",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-12",
+      "spec": "e2e/collaboration-host-squad.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-native-host"
+      ],
+      "database": "multica_core1a32_20261104_pw_12",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-13",
+      "spec": "e2e/collaboration-host-switch.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-native-host"
+      ],
+      "database": "multica_core1a32_20261104_pw_13",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-14",
+      "spec": "e2e/collaboration-installed-clients.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-installed-legacy-cli"
+      ],
+      "database": "multica_core1a32_20261104_pw_14",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": true,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-15",
+      "spec": "e2e/collaboration-installed-main.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-packaged-linux-main"
+      ],
+      "database": "multica_core1a32_20261104_pw_15",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": true,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": true,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-16",
+      "spec": "e2e/collaboration-knowledge-deployed.spec.ts",
+      "variant": "knowledge-off",
+      "lanes": [
+        "password-host-knowledge-on-off"
+      ],
+      "database": "multica_core1a32_20261104_pw_16",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-17",
+      "spec": "e2e/collaboration-knowledge-deployed.spec.ts",
+      "variant": "knowledge-on",
+      "lanes": [
+        "password-host-knowledge-on-off"
+      ],
+      "database": "multica_core1a32_20261104_pw_17",
+      "bootstrap_admin": false,
+      "knowledge_enabled": true,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-18",
+      "spec": "e2e/collaboration-lane-close-controls.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-linux-namespace-native"
+      ],
+      "database": "multica_core1a32_20261104_pw_18",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": true,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-19",
+      "spec": "e2e/collaboration-leave-web.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-managed-control"
+      ],
+      "database": "multica_core1a32_20261104_pw_19",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": true,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-20",
+      "spec": "e2e/collaboration-lifecycle-controls.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-linux-namespace-native"
+      ],
+      "database": "multica_core1a32_20261104_pw_20",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": true,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-21",
+      "spec": "e2e/collaboration-live-revoke-web.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-managed-control"
+      ],
+      "database": "multica_core1a32_20261104_pw_21",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": true,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-22",
+      "spec": "e2e/collaboration-memory-runtime.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-host-memory-provider"
+      ],
+      "database": "multica_core1a32_20261104_pw_22",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-23",
+      "spec": "e2e/collaboration-offline-handoff.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-collaboration-native",
+        "password-collaboration"
+      ],
+      "database": "multica_core1a32_20261104_pw_23",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-24",
+      "spec": "e2e/collaboration-offline-result-notifications.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-linux-namespace-native"
+      ],
+      "database": "multica_core1a32_20261104_pw_24",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": true,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-25",
+      "spec": "e2e/collaboration-retained-attachment.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-collaboration-native",
+        "password-collaboration"
+      ],
+      "database": "multica_core1a32_20261104_pw_25",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-26",
+      "spec": "e2e/collaboration-runtime-handoff-desktop.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-collaboration-native"
+      ],
+      "database": "multica_core1a32_20261104_pw_26",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-27",
+      "spec": "e2e/collaboration-runtime-handoff-web.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-collaboration"
+      ],
+      "database": "multica_core1a32_20261104_pw_27",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-28",
+      "spec": "e2e/collaboration-selection-boundary.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-collaboration-native"
+      ],
+      "database": "multica_core1a32_20261104_pw_28",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-29",
+      "spec": "e2e/collaboration-source-surface.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-collaboration-native"
+      ],
+      "database": "multica_core1a32_20261104_pw_29",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-30",
+      "spec": "e2e/collaboration-terminal-reopen-web.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-managed-control"
+      ],
+      "database": "multica_core1a32_20261104_pw_30",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": true,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-31",
+      "spec": "e2e/mcp-desktop.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-native"
+      ],
+      "database": "multica_core1a32_20261104_pw_31",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-32",
+      "spec": "e2e/password-binding-desktop.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-native"
+      ],
+      "database": "multica_core1a32_20261104_pw_32",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-33",
+      "spec": "e2e/password-branches.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-native",
+        "password"
+      ],
+      "database": "multica_core1a32_20261104_pw_33",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-34",
+      "spec": "e2e/password-migration.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password"
+      ],
+      "database": "multica_core1a32_20261104_pw_34",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-35",
+      "spec": "e2e/password-registration.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password"
+      ],
+      "database": "multica_core1a32_20261104_pw_35",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-36",
+      "spec": "e2e/password-server-switch.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-native"
+      ],
+      "database": "multica_core1a32_20261104_pw_36",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-37",
+      "spec": "e2e/platform-admin-accounts.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-admin"
+      ],
+      "database": "multica_core1a32_20261104_pw_37",
+      "bootstrap_admin": true,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-38",
+      "spec": "e2e/platform-admin-controls.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-admin"
+      ],
+      "database": "multica_core1a32_20261104_pw_38",
+      "bootstrap_admin": true,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-39",
+      "spec": "e2e/platform-admin-executions.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-admin"
+      ],
+      "database": "multica_core1a32_20261104_pw_39",
+      "bootstrap_admin": true,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-40",
+      "spec": "e2e/platform-admin-initialization.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-admin-initialization"
+      ],
+      "database": "multica_core1a32_20261104_admin_init_40",
+      "bootstrap_admin": false,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-41",
+      "spec": "e2e/platform-admin-installations-read.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-admin"
+      ],
+      "database": "multica_core1a32_20261104_pw_41",
+      "bootstrap_admin": true,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-42",
+      "spec": "e2e/platform-admin-observability.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-admin"
+      ],
+      "database": "multica_core1a32_20261104_pw_42",
+      "bootstrap_admin": true,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    },
+    {
+      "id": "pw-43",
+      "spec": "e2e/platform-admin.spec.ts",
+      "variant": "default",
+      "lanes": [
+        "password-admin"
+      ],
+      "database": "multica_core1a32_20261104_pw_43",
+      "bootstrap_admin": true,
+      "knowledge_enabled": false,
+      "requires_external_preparation": false,
+      "gate_expected": {
+        "creation_enabled": true,
+        "enabled": false,
+        "host_execution_enabled": false
+      },
+      "api_auth_mode": "password"
+    }
+  ]
+}

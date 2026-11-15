@@ -1,0 +1,52 @@
+{
+  "recorded_at": "2026-11-03T01:29:32.965469+00:00",
+  "owner": "/root/final_audit",
+  "verdict": "implemented-private-tests-passed; independent-review-and-root-final-run-pending",
+  "auditor": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/final-state-audit/final_state_audit.py",
+  "auditor_sha256": "be288aea29914f5bd8740c84c0699c83b39f4c8a9d9c3b9e5e68461378daada2",
+  "tests": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/final-state-audit/final_state_audit_test.py",
+  "tests_sha256": "bf205c4f14f7bdd2bea6691a754c3cfefb536c1ca699688efab6734aad140e7c",
+  "verification": {
+    "recorded_at": "2026-11-03T01:26:39.345689+00:00",
+    "command": [
+      "/usr/bin/sandbox-exec",
+      "-f",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/final-state-audit/offline-tests.sb",
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/final-state-audit/final_state_audit_test.py"
+    ],
+    "exit_code": 0,
+    "cases": 12,
+    "pass": 12,
+    "fail": 0,
+    "skip": 0,
+    "syntax": {
+      "final_state_audit.py": "be288aea29914f5bd8740c84c0699c83b39f4c8a9d9c3b9e5e68461378daada2",
+      "final_state_audit_test.py": "bf205c4f14f7bdd2bea6691a754c3cfefb536c1ca699688efab6734aad140e7c"
+    },
+    "log_sha256": "303ddddafed2a8731dec944eb73e052fe1ce1a96daed695ca449d619bd786ac7",
+    "network_denied": true,
+    "actual_candidate_or_old_evidence_modified": false,
+    "actual_repository_commands_DB_services_Provider": 0
+  },
+  "frozen_v11_inputs_current_sha256": {
+    "run-make-check-v11-provenance.py": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e",
+    "owned-bindings-v11-provenance.json": "6db6435e476b8f448a412d4b097e16e6131ddbf7458450ced1cf69a8f281d80b",
+    "check-source-v11.env": "999decf083adf9cea0271cef37834fe6528104d4ca63f8e69c90afacd01ecd8f"
+  },
+  "frozen_v11_inputs_unchanged": true,
+  "root_command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/final-state-audit/final_state_audit.py",
+    "--output",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/final-state-audit/post-make-v11.json"
+  ],
+  "actual_candidate_audit_run": false,
+  "real_repository_test_lint_typecheck_services_DB_Provider_actions": 0,
+  "candidate_or_registered_launcher_edits": 0,
+  "pending_root": [
+    "Independent script review and hash binding",
+    "Run actual auditor after completed full command; unique output path",
+    "Actual live API/Web/database/renderer/Redis and result-inventory checks remain separate"
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "at": "2026-11-05T07:16:25.174782+00:00",
+  "patch_sha256": "128b6221e870a4699b2a780c7e1733c687667ea1a2584c581125af9e6e70c832",
+  "files": [
+    {
+      "file": "e2e/fixtures/collaboration-installed-main.ts",
+      "before_sha256": "8f27855ec75b0117f70c0ee8f6e4784889c3ff0f97bc5390a0f1f99e0b71756e",
+      "after_sha256": "ca3bd1dbd3eba417117899ac83a26f803e213ec998af4bcd9b149124db38bd89"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-installed-main.mjs",
+      "before_sha256": "5500107e0c8fd8bce3c51500626a4616fad3cd3d0d7cd1174c3d25fb536ffabb",
+      "after_sha256": "6d26ef06ba99b6f136f3b646ab6e31a9d67e176e90dc4fd5a23ad930bb78ba96"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-installed-main.node-test.mjs",
+      "before_sha256": "49edb4de5ed70224ff3aaca2608c7f6a8a47b7da72a9bbbaea4d325ea4f5e9c0",
+      "after_sha256": "ac85496ed7c6b18d1493458a37ea5fc05b56da59c750db66276a6de1548fa6f1"
+    },
+    {
+      "file": "e2e/collaboration-installed-main.spec.ts",
+      "before_sha256": "cc312cf8a7f6e50c7d36691e775f1a8e501b9fa7903e7ae0cc0a227b1ffeb004",
+      "after_sha256": "d240f0a8bd17d34e8ac7111b2a34c1ffe1416ef50e89f0262eda9073e4c5a927"
+    }
+  ],
+  "scope": "Test diagnostics only, primary/capture/cleanup error preservation; payload-free bounded client/controller timeline. No product behavior or timeout edits.",
+  "frozen_modified": false,
+  "tests": "9/9 focused Node checks PASS; syntax/diff/1casecollection PASS; no actual E2E or DB",
+  "command": "node --experimental-strip-types --test e2e/fixtures/collaboration-installed-main.node-test.mjs",
+  "validation": {
+    "at": "2026-11-05T07:18:40.786259+00:00",
+    "window_release": "explicit root message: H1 released07:02:03; focused checks authorized",
+    "node": {
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--test",
+        "e2e/fixtures/collaboration-installed-main.node-test.mjs"
+      ],
+      "exit_code": 0,
+      "tests": 9,
+      "pass": 9,
+      "fail": 0,
+      "skip": 0,
+      "duration_ms": 637.3525
+    },
+    "syntax": {
+      "command": [
+        "node",
+        "--check",
+        "e2e/fixtures/collaboration-installed-main.mjs"
+      ],
+      "exit_code": 0
+    },
+    "diff_check": {
+      "exit_code": 0,
+      "scope": [
+        "e2e/fixtures/collaboration-installed-main.ts",
+        "e2e/fixtures/collaboration-installed-main.mjs",
+        "e2e/fixtures/collaboration-installed-main.node-test.mjs",
+        "e2e/collaboration-installed-main.spec.ts"
+      ]
+    },
+    "playwright_collection": {
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-installed-main.spec.ts",
+        "--list",
+        "--reporter=line"
+      ],
+      "exit_code": 0,
+      "tests": 1,
+      "files": 1,
+      "test_bodies_executed": 0
+    }
+  }
+}

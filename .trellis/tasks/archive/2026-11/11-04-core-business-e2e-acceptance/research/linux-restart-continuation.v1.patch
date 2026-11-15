@@ -1,0 +1,489 @@
+--- a/e2e/fixtures/collaboration-installed-main.ts
++++ b/e2e/fixtures/collaboration-installed-main.ts
+@@ -44,6 +44,42 @@
+ 
+ export interface InstalledMainWrite<Receipt, Input = unknown> { receipt: Receipt; requestId: string; input: Input; resultText: string }
+ 
++const installedCommands = new Set(["install", "init", "login", "navigate", "read", "control", "comment", "cancel", "history",
++  "host-records", "handoff", "workflow", "reload", "restart", "capture", "status", "close"]);
++const installedPhases = new Set(["command", "restart.close", "restart.launch", "restart.refresh", "restart.metadata",
++  "close.stop-daemon", "close.application", "eof.stop-daemon", "eof.application"]);
++const installedOutcomes = new Set(["started", "completed", "failed", "timeout", "write-failed", "process-exit", "process-error"]);
++export interface InstalledMainTimelineEvent {
++  id: number;
++  command: string;
++  phase: string;
++  outcome: string;
++  elapsedMs: number;
++  source: "client" | "controller";
++}
++
++/** Project only fixed-schema metadata; even a malformed reply must not expose payload or errors. */
++export function installedTimelineEvent(value: unknown, source: InstalledMainTimelineEvent["source"]): InstalledMainTimelineEvent | null {
++  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
++  const entry = value as Record<string, unknown>;
++  if (!Number.isSafeInteger(entry.id) || (entry.id as number) < 0 || typeof entry.command !== "string"
++    || (!installedCommands.has(entry.command) && entry.command !== "unknown") || typeof entry.phase !== "string"
++    || !installedPhases.has(entry.phase) || typeof entry.outcome !== "string" || !installedOutcomes.has(entry.outcome)
++    || typeof entry.elapsedMs !== "number" || !Number.isFinite(entry.elapsedMs) || entry.elapsedMs < 0) return null;
++  return { id: entry.id as number, command: entry.command, phase: entry.phase, outcome: entry.outcome,
++    elapsedMs: entry.elapsedMs, source };
++}
++
++/** Every independent cleanup runs; earlier failures retain their original objects and order. */
++export async function finishInstalledMainJourney(failures: unknown[], cleanups: (() => Promise<unknown>)[]): Promise<void> {
++  const retained = [...failures];
++  for (const cleanup of cleanups) {
++    try { await cleanup(); } catch (error) { retained.push(error); }
++  }
++  if (retained.length === 1) throw retained[0];
++  if (retained.length > 1) throw new AggregateError(retained, "Installed Main journey and cleanup failures", { cause: retained[0] });
++}
++
+ /** Credentials travel only in stdin to one fresh container. Docker arguments,
+  * replies, reports and Playwright traces contain no fixture password or token. */
+ export class InstalledMainClient {
+@@ -51,7 +87,10 @@
+   readonly packageRoot: string;
+   private readonly child: ChildProcessWithoutNullStreams;
+   private sequence = 0;
+-  private readonly pending = new Map<number, { resolve(value: unknown): void; reject(error: Error): void; timer: NodeJS.Timeout }>();
++  private readonly pending = new Map<number, { command: string; resolve(value: unknown): void; reject(error: Error): void; timer: NodeJS.Timeout }>();
++  private readonly timeline: InstalledMainTimelineEvent[] = [];
++  private timelineTruncated = false;
++  private readonly timelineStarted = performance.now();
+   private ended = false;
+   private stderrBytes = 0;
+   private ignoredOutputLines = 0;
+@@ -107,6 +146,15 @@
+     this.child.stderr.on("data", (chunk: Buffer) => { this.stderrBytes += chunk.length; });
+     const lines = createInterface({ input: this.child.stdout });
+     lines.on("line", (line) => {
++      const eventPrefix = "MULTICA_INSTALLED_EVENT ";
++      if (line.startsWith(eventPrefix)) {
++        try {
++          const event = installedTimelineEvent(JSON.parse(line.slice(eventPrefix.length)), "controller");
++          if (event) this.appendTimeline(event);
++          else this.ignoredOutputLines += 1;
++        } catch { this.ignoredOutputLines += 1; }
++        return;
++      }
+       const prefix = "MULTICA_INSTALLED_REPLY ";
+       if (!line.startsWith(prefix)) { this.ignoredOutputLines += 1; return; }
+       let reply: { id: number; value?: unknown; error?: string };
+@@ -116,16 +164,17 @@
+       if (!pending) return;
+       clearTimeout(pending.timer);
+       this.pending.delete(reply.id);
++      this.recordCommand(reply.id, pending.command, reply.error ? "failed" : "completed");
+       if (reply.error) pending.reject(new Error(reply.error));
+       else pending.resolve(reply.value);
+     });
+     this.child.on("error", () => {
+       this.machineIdentity?.cleanup();
+-      this.rejectAll(new Error("Could not launch the configured installed Main container"));
++      this.rejectAll(new Error("Could not launch the configured installed Main container"), "process-error");
+     });
+     this.child.on("close", (code, signal) => {
+       this.ended = true;
+-      this.rejectAll(new Error(`Installed Main container exited: code=${code}, signal=${signal}, private stderr bytes=${this.stderrBytes}`));
++      this.rejectAll(new Error(`Installed Main container exited: code=${code}, signal=${signal}, private stderr bytes=${this.stderrBytes}`), "process-exit");
+       if (this.machineIdentity) void this.cleanupStoppedContainerIdentity();
+     });
+   }
+@@ -133,17 +182,39 @@
+   async command<T>(command: string, input: Record<string, unknown> = {}, timeout = 120_000): Promise<T> {
+     if (this.ended) throw new Error("Installed Main container is no longer running");
+     const id = ++this.sequence;
++    this.recordCommand(id, command, "started");
+     return new Promise<T>((resolve, reject) => {
+-      const timer = setTimeout(() => { this.pending.delete(id); reject(new Error(`Installed Main ${command} exceeded ${timeout}ms`)); }, timeout);
+-      this.pending.set(id, { resolve: (value) => resolve(value as T), reject, timer });
++      const timer = setTimeout(() => {
++        this.pending.delete(id);
++        this.recordCommand(id, command, "timeout");
++        reject(new Error(`Installed Main ${command} exceeded ${timeout}ms`));
++      }, timeout);
++      this.pending.set(id, { command, resolve: (value) => resolve(value as T), reject, timer });
+       this.child.stdin.write(`${JSON.stringify({ id, command, ...input })}\n`, (error) => {
+-        if (error) { clearTimeout(timer); this.pending.delete(id); reject(new Error("Installed Main stdin command could not be delivered")); }
++        if (error && this.pending.delete(id)) {
++          clearTimeout(timer);
++          this.recordCommand(id, command, "write-failed");
++          reject(new Error("Installed Main stdin command could not be delivered"));
++        }
+       });
+     });
+   }
+ 
+   get transportEvidence() { return { containerName: this.containerName, ignoredOutputLines: this.ignoredOutputLines,
+-    privateStderrBytes: this.stderrBytes, credentialTransport: "stdin only", homeOverride: this.nativeMode, nativeIPCStubs: false }; }
++    privateStderrBytes: this.stderrBytes, credentialTransport: "stdin only", homeOverride: this.nativeMode, nativeIPCStubs: false,
++    commandTimeline: this.timeline.map((event) => ({ ...event })), timelineTruncated: this.timelineTruncated }; }
++
++  private appendTimeline(event: InstalledMainTimelineEvent) {
++    // Preserve the first failure context, rather than evicting it during cleanup.
++    if (this.timeline.length >= 512) { this.timelineTruncated = true; return; }
++    this.timeline.push(event);
++  }
++
++  private recordCommand(id: number, command: string, outcome: string) {
++    const event = installedTimelineEvent({ id, command: installedCommands.has(command) ? command : "unknown",
++      phase: "command", outcome, elapsedMs: performance.now() - this.timelineStarted }, "client");
++    if (event) this.appendTimeline(event);
++  }
+ 
+   private async cleanupStoppedContainerIdentity(stopRunning = false) {
+     if (!this.machineIdentity) return;
+@@ -176,44 +247,50 @@
+       const closed = () => { clearTimeout(timer); resolve(); };
+       this.child.once("close", closed);
+     });
+-    try { await this.command("close", {}, 30_000); }
+-    finally {
+-      this.child.stdin.end();
+-      await waitForClose();
+-      if (!this.ended) {
+-        if (this.nativeMode) {
+-          const pid = this.child.pid;
+-          if (!pid) throw new Error("Installed Main controller has no owned process ID");
+-          // Only the controller this instance spawned, including its Electron
+-          // children. Never use a process name or touch another installed app.
+-          if (process.platform === "win32") {
+-            await new Promise<void>((resolve, reject) => {
+-              execFile("taskkill", ["/PID", String(pid), "/T", "/F"], { timeout: 10_000 }, (error) => {
+-                if (error && !this.ended) reject(new Error("Could not terminate this installed Main controller"));
+-                else resolve();
++    const failures: unknown[] = [];
++    try { await this.command("close", {}, 30_000); } catch (error) { failures.push(error); }
++    await finishInstalledMainJourney(failures, [
++      async () => { this.child.stdin.end(); await waitForClose(); },
++      async () => {
++        if (!this.ended) {
++          if (this.nativeMode) {
++            const pid = this.child.pid;
++            if (!pid) throw new Error("Installed Main controller has no owned process ID");
++            // Only the controller this instance spawned, including its Electron
++            // children. Never use a process name or touch another installed app.
++            if (process.platform === "win32") {
++              await new Promise<void>((resolve, reject) => {
++                execFile("taskkill", ["/PID", String(pid), "/T", "/F"], { timeout: 10_000 }, (error) => {
++                  if (error && !this.ended) reject(new Error("Could not terminate this installed Main controller"));
++                  else resolve();
++                });
+               });
++            } else {
++              try { process.kill(-pid, "SIGTERM"); } catch (error) { if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error; }
++            }
++            await waitForClose();
++            if (!this.ended) throw new Error("Installed Main controller did not exit after termination");
++          } else {
++            // Stop only the UUID-named container this instance started. The Docker
++            // client can outlive the container, so killing its PID is insufficient.
++            await new Promise<void>((resolve) => {
++              const stop = spawn("docker", ["stop", "--time", "5", this.containerName], { stdio: "ignore" });
++              stop.once("error", () => resolve());
++              stop.once("close", () => resolve());
+             });
+-          } else {
+-            try { process.kill(-pid, "SIGTERM"); } catch (error) { if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error; }
+           }
+-          await waitForClose();
+-          if (!this.ended) throw new Error("Installed Main controller did not exit after termination");
+-        } else {
+-          // Stop only the UUID-named container this instance started. The Docker
+-          // client can outlive the container, so killing its PID is insufficient.
+-          await new Promise<void>((resolve) => {
+-            const stop = spawn("docker", ["stop", "--time", "5", this.containerName], { stdio: "ignore" });
+-            stop.once("error", () => resolve());
+-            stop.once("close", () => resolve());
+-          });
+         }
+-      }
+-      await this.cleanupStoppedContainerIdentity(true);
++      },
++      () => this.cleanupStoppedContainerIdentity(true),
++    ]);
++  }
++
++  private rejectAll(error: Error, outcome = "failed") {
++    for (const [id, pending] of this.pending) {
++      clearTimeout(pending.timer);
++      this.recordCommand(id, pending.command, outcome);
++      pending.reject(error);
+     }
+-  }
+-
+-  private rejectAll(error: Error) {
+-    for (const pending of this.pending.values()) { clearTimeout(pending.timer); pending.reject(error); }
+     this.pending.clear();
+   }
+ }
+--- a/e2e/fixtures/collaboration-installed-main.mjs
++++ b/e2e/fixtures/collaboration-installed-main.mjs
+@@ -22,6 +22,35 @@
+ const packagePath = nativeLayout?.asar ?? `${packageRoot}/resources/app.asar`;
+ const bundledCliPath = nativeLayout?.cli ?? `${packageRoot}/resources/app.asar.unpacked/resources/bin/multica`;
+ const protocolPrefix = "MULTICA_INSTALLED_REPLY ";
++const timelinePrefix = "MULTICA_INSTALLED_EVENT ";
++const timelineStarted = performance.now();
++const timelineCommands = new Set(["install", "init", "login", "navigate", "read", "control", "comment", "cancel", "history",
++  "host-records", "handoff", "workflow", "reload", "restart", "capture", "status", "close"]);
++let timelineEntries = 0;
++
++async function commandEvent(message, phase, outcome) {
++  // Fixed fields only: never serialize message input, responses, error text or account identity.
++  if (timelineEntries >= 512) return;
++  timelineEntries += 1;
++  const event = { id: Number.isSafeInteger(message?.id) && message.id >= 0 ? message.id : 0,
++    command: timelineCommands.has(message?.command) ? message.command : "unknown", phase, outcome,
++    elapsedMs: performance.now() - timelineStarted };
++  // Flush the stage before entering an operation that may never return.
++  await new Promise((resolve, reject) => process.stdout.write(`${timelinePrefix}${JSON.stringify(event)}\n`,
++    (error) => error ? reject(error) : resolve()));
++}
++
++async function commandPhase(message, phase, operation) {
++  await commandEvent(message, phase, "started");
++  try {
++    const result = await operation();
++    await commandEvent(message, phase, "completed");
++    return result;
++  } catch (error) {
++    await commandEvent(message, phase, "failed");
++    throw error;
++  }
++}
+ const secrets = new Set();
+ const errors = [];
+ const responses = [];
+@@ -664,11 +693,13 @@
+       return metadata();
+     }
+     case "restart": {
+-      await app.close();
+-      await launch();
+-      await refreshIssue(message.issueId);
+-      await expect(page.locator("#password-username")).toHaveCount(0);
+-      return metadata();
++      await commandPhase(message, "restart.close", () => app.close());
++      await commandPhase(message, "restart.launch", () => launch());
++      await commandPhase(message, "restart.refresh", async () => {
++        await refreshIssue(message.issueId);
++        await expect(page.locator("#password-username")).toHaveCount(0);
++      });
++      return commandPhase(message, "restart.metadata", () => metadata());
+     }
+     case "capture": {
+       await page.evaluate(async () => { await document.fonts.ready;
+@@ -682,11 +713,15 @@
+     }
+     case "status": return metadata();
+     case "close": {
+-      try {
+-        if (!nativeMode) assert(!existsSync(discoveryMarker), "The discovery-only CLI must never execute an agent task");
+-        await stopOwnedManagedDaemon();
+-      } finally { if (app) await app.close(); }
+-      app = undefined;
++      const failures = [];
++      try { if (!nativeMode) assert(!existsSync(discoveryMarker), "The discovery-only CLI must never execute an agent task"); }
++      catch (error) { failures.push(error); }
++      try { await commandPhase(message, "close.stop-daemon", () => stopOwnedManagedDaemon()); }
++      catch (error) { failures.push(error); }
++      try { if (app) await commandPhase(message, "close.application", () => app.close()); app = undefined; }
++      catch (error) { failures.push(error); }
++      if (failures.length === 1) throw failures[0];
++      if (failures.length > 1) throw new AggregateError(failures, "Installed controller shutdown failures", { cause: failures[0] });
+       return { closed: true, errors: [...errors], accountRequests: [...accountRequests], responses: [...responses] };
+     }
+     default: throw new Error("Unknown installed-client fixture command");
+@@ -699,12 +734,18 @@
+   try {
+     message = JSON.parse(line);
+     assert(Number.isInteger(message.id) && typeof message.command === "string");
+-    reply(message.id, await dispatch(message));
++    await commandEvent(message, "command", "started");
++    const value = await dispatch(message);
++    await commandEvent(message, "command", "completed");
++    reply(message.id, value);
+     if (message.command === "close") break;
+   } catch (error) {
++    await commandEvent(message, "command", "failed");
+     reply(message?.id ?? null, undefined, scrub(error instanceof Error ? error.stack ?? error.message : String(error)));
+   }
+ }
+ if (app) {
+-  try { await stopOwnedManagedDaemon(); } finally { await app.close().catch(() => undefined); }
+-}
++  const cleanup = { id: 0, command: "close" };
++  try { await commandPhase(cleanup, "eof.stop-daemon", () => stopOwnedManagedDaemon()); }
++  finally { await commandPhase(cleanup, "eof.application", () => app.close()).catch(() => undefined); }
++}
+--- a/e2e/fixtures/collaboration-installed-main.node-test.mjs
++++ b/e2e/fixtures/collaboration-installed-main.node-test.mjs
+@@ -2,10 +2,11 @@
+ import { EventEmitter } from "node:events";
+ import { spawnSync } from "node:child_process";
+ import test from "node:test";
++import { PassThrough } from "node:stream";
+ import { mkdtempSync, readFileSync, statSync, existsSync, rmSync } from "node:fs";
+ import { tmpdir } from "node:os";
+ import { dirname, join } from "node:path";
+-import { InstalledMainClient, createInstalledMachineIdentity } from "./collaboration-installed-main.ts";
++import { InstalledMainClient, createInstalledMachineIdentity, finishInstalledMainJourney, installedTimelineEvent } from "./collaboration-installed-main.ts";
+ 
+ test("native controller shutdown preserves a failed close command after its owned child exits", async () => {
+   const client = Object.create(InstalledMainClient.prototype);
+@@ -69,3 +70,99 @@
+     assert.equal(existsSync(executable), false);
+   } finally { identity.cleanup(); rmSync(root, { recursive: true, force: true }); }
+ });
++
++
++test("journey preserves the primary error and every cleanup failure while attempting all cleanup steps", async () => {
++  const primary = new TypeError("original business failure");
++  const status = new Error("status capture failed");
++  const disconnect = new Error("disconnect failed");
++  const close = new Error("native close failed");
++  const calls = [];
++  const original = [primary, status];
++  await assert.rejects(finishInstalledMainJourney(original, [
++    async () => { calls.push("disconnect"); throw disconnect; },
++    async () => { calls.push("close"); throw close; },
++    async () => { calls.push("timeline"); },
++  ]), error => {
++    assert(error instanceof AggregateError);
++    assert.equal(error.cause, primary);
++    assert.deepEqual(error.errors, [primary, status, disconnect, close]);
++    return true;
++  });
++  assert.deepEqual(calls, ["disconnect", "close", "timeline"]);
++  assert.deepEqual(original, [primary, status]);
++});
++
++test("a lone business or cleanup failure remains the exact original object", async () => {
++  const primary = new Error("original");
++  await assert.rejects(finishInstalledMainJourney([primary], [async () => undefined]), error => error === primary);
++  const cleanup = new Error("cleanup");
++  await assert.rejects(finishInstalledMainJourney([], [async () => { throw cleanup; }]), error => error === cleanup);
++  await finishInstalledMainJourney([], [async () => undefined]);
++});
++
++test("native close keeps command, stream and final cleanup failures without skipping owned cleanup", async () => {
++  const client = Object.create(InstalledMainClient.prototype);
++  const primary = new Error("close command failed");
++  const stream = new Error("stdin end failed");
++  const cleanup = new Error("owned cleanup failed");
++  const calls = [];
++  client.ended = false;
++  client.command = async () => { throw primary; };
++  client.child = { stdin: { end: () => { client.ended = true; throw stream; } } };
++  client.cleanupStoppedContainerIdentity = async () => { calls.push("owned cleanup"); throw cleanup; };
++  await assert.rejects(client.close(), error => {
++    assert(error instanceof AggregateError);
++    assert.deepEqual(error.errors, [primary, stream, cleanup]);
++    return true;
++  });
++  assert.deepEqual(calls, ["owned cleanup"]);
++});
++
++function protocolClient() {
++  const client = Object.create(InstalledMainClient.prototype);
++  const child = new EventEmitter();
++  child.stdout = new PassThrough();
++  child.stderr = new PassThrough();
++  child.stdin = { write: (_value, callback) => callback() };
++  Object.assign(client, { child, ended: false, pending: new Map(), sequence: 0, timeline: [], timelineStarted: performance.now(),
++    timelineTruncated: false, ignoredOutputLines: 0, stderrBytes: 0, nativeMode: true });
++  client.attachProtocolHandlers();
++  return { client, child };
++}
++
++test("command and streamed restart stages survive a timeout without recording secret input or output", async () => {
++  const { client, child } = protocolClient();
++  const secret = "sensitive-test-password";
++  try {
++    const pending = client.command("restart", { password: secret }, 15);
++    const event = { id: 1, command: "restart", phase: "restart.close", outcome: "started", elapsedMs: 3,
++      token: secret, error: secret, response: { password: secret } };
++    child.stdout.write(`MULTICA_INSTALLED_EVENT ${JSON.stringify(event)}\n`);
++    // Invalid event fields cannot smuggle secrets into any visible timeline field.
++    child.stdout.write(`MULTICA_INSTALLED_EVENT ${JSON.stringify({ ...event, phase: secret })}\n`);
++    await assert.rejects(pending, /restart exceeded 15ms/);
++    const timeline = client.transportEvidence.commandTimeline;
++    assert.deepEqual(timeline.map(({ source, phase, outcome }) => ({ source, phase, outcome })), [
++      { source: "client", phase: "command", outcome: "started" },
++      { source: "controller", phase: "restart.close", outcome: "started" },
++      { source: "client", phase: "command", outcome: "timeout" },
++    ]);
++    assert(!JSON.stringify(client.transportEvidence).includes(secret));
++    const safe = installedTimelineEvent(event, "controller");
++    assert.deepEqual(Object.keys(safe), ["id", "command", "phase", "outcome", "elapsedMs", "source"]);
++    assert.equal(installedTimelineEvent({ ...event, elapsedMs: Infinity }, "controller"), null);
++  } finally { child.stdout.end(); child.stderr.end(); }
++});
++
++test("protocol completion records only fixed metadata and returns the original response", async () => {
++  const { client, child } = protocolClient();
++  const secret = "sensitive-test-token";
++  try {
++    const pending = client.command("read", { authorization: secret });
++    child.stdout.write(`MULTICA_INSTALLED_REPLY ${JSON.stringify({ id: 1, value: { token: secret } })}\n`);
++    assert.deepEqual(await pending, { token: secret });
++    assert.deepEqual(client.transportEvidence.commandTimeline.map(row => row.outcome), ["started", "completed"]);
++    assert(!JSON.stringify(client.transportEvidence).includes(secret));
++  } finally { child.stdout.end(); child.stderr.end(); }
++});
+--- a/e2e/collaboration-installed-main.spec.ts
++++ b/e2e/collaboration-installed-main.spec.ts
+@@ -4,7 +4,7 @@
+   CollaborationControlInput, CollaborationControlReceipt, CollaborationIssue, CollaborationOperation, CollaborationStatusOptions, CollaborationWorkbench } from "@multica/core/collaboration";
+ import { TestApiClient } from "./fixtures";
+ import { authenticateControlWeb, controlAccountPath, seedCollaborationControlJourney } from "./fixtures/collaboration-control-journey";
+-import { dockerTaskURL, InstalledMainClient, type InstalledMainMetadata, type InstalledMainWrite } from "./fixtures/collaboration-installed-main";
++import { dockerTaskURL, finishInstalledMainJourney, InstalledMainClient, type InstalledMainMetadata, type InstalledMainWrite } from "./fixtures/collaboration-installed-main";
+ import { selectCollaborationRecipient } from "./fixtures/collaboration-offline-handoff";
+ import { directedFormThroughUI } from "./fixtures/collaboration-handoff-chain";
+ import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
+@@ -183,6 +183,7 @@
+     installedHandlerId: user.id, sourceWorkspaceId: fixture.sourceWorkspace.id, webTransfer: transferToInstalled,
+     nativeExecutionScope: "Full packaged production Main/preload/renderer and bundled CLI version bootstrap; remote permit is a public protocol simulation with no executable, outcome or proof" };
+   let started = false;
++  const failures: unknown[] = [];
+   try {
+     const boot = await native.command<InstalledMainMetadata>("init", { apiUrl: dockerTaskURL(fixture.apiUrl), appUrl: dockerTaskURL(webURL), executionViewVersion: 6 }, 180_000);
+     started = true;
+@@ -418,15 +419,26 @@
+     evidence.final = { sharedFacts: sharedFacts(current), status, transport: native.transportEvidence };
+     await testInfo.attach("installed-full-main-journey", { contentType: "application/json", body: JSON.stringify(evidence, null, 2) });
+   } catch (error) {
++    // Keep the business error even if the same blocked controller cannot report status or close.
++    failures.push(error);
++    try {
++      // Snapshot the completed stage boundaries before asking a possibly blocked controller for status.
++      await testInfo.attach("installed-full-main-primary-timeline", { contentType: "application/json",
++        body: JSON.stringify(native.transportEvidence, null, 2) });
++    } catch (attachmentError) { failures.push(attachmentError); }
+     if (started) {
+-      try {
+-        evidence.failureState = await native.command("status", {}, 20_000);
+-        await testInfo.attach("installed-full-main-failure", { contentType: "application/json", body: JSON.stringify(evidence, null, 2) });
+-      } catch { /* Preserve the original failure if the native process exited. */ }
++      try { evidence.failureState = await native.command("status", {}, 20_000); }
++      catch (captureError) { failures.push(captureError); }
+     }
+-    throw error;
++    try {
++      await testInfo.attach("installed-full-main-failure", { contentType: "application/json", body: JSON.stringify(evidence, null, 2) });
++    } catch (attachmentError) { failures.push(attachmentError); }
+   } finally {
+-    await fixture.simulatedDaemon.disconnect();
+-    await native.close();
++    await finishInstalledMainJourney(failures, [
++      () => fixture.simulatedDaemon.disconnect(),
++      () => native.close(),
++      () => testInfo.attach("installed-full-main-command-timeline", { contentType: "application/json",
++        body: JSON.stringify(native.transportEvidence, null, 2) }),
++    ]);
+   }
+ });

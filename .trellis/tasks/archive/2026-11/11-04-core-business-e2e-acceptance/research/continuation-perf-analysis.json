@@ -1,0 +1,402 @@
+{
+  "mode": "read-only source and retained-artifact analysis; no tests/build/database/browser/model actions",
+  "generated_at": "2026-11-05T07:17:42.799919+00:00",
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "source_root": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104",
+  "source_hashes": {
+    "server/internal/handler/iteration_capacity_benchmark_test.go": "6d038e63322ef8819b83a4392db0808438edd2aeceda99d8a52e70431244d930",
+    "server/internal/handler/iteration_i1_p95_test.go": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+    "server/internal/handler/iteration_management.go": "03b4bebebec2fc5b161e0ecac95df034f156c8fdd99359cc0fec7e2bdaf8562e",
+    "server/internal/iteration/membership.go": "163f21e0cb3f07dc26bf8d41abd3eb5073a73428094903a787c191025dd2df52",
+    "server/internal/iteration/membership_batch.go": "249502d7d24102be4c31acced82427e038fef224758243268d4a8759f3dd1e8b",
+    "server/internal/iteration/record.go": "76ae601427c3a339e57020326585274a7b272ef3381cf78f6e9578197ed6420c",
+    "server/internal/iteration/transaction.go": "34a4e50cccf2683aca43e931fb64ee24f4393b66e20349c427af612b88128b27",
+    "server/internal/service/iteration_closure.go": "7f4989c6e3d6a684fc28bd4c5996a318296683d7e0ec5df5ee36b8045a0134b3",
+    "server/internal/service/iteration_lifecycle_apply.go": "4617b15692793de8947b42db5c030f7dec50097b78e4293d3dfc65406906995e",
+    "server/internal/service/iteration_lifecycle_preview.go": "ee377dc88778ffa6f2dc9d5fc77d720f422ba81ee43b1549d736424ad0cbcd25",
+    "server/migrations/559_iteration_event_sequence.up.sql": "d2270db7f6736610b00f92edcbfa27634bab935e2b3d08605f595ec8bdf9ea56",
+    "server/pkg/db/queries/iteration_membership_batch.sql": "032d0b48df0cbbe027a8f9b1fdf94da44bc4380245761a18fe56d64a21ef3c1b"
+  },
+  "evidence_sha256": {
+    ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/performance-1/samples.json": "26b2140e9e69c85d7311e889f4cf07a2808ea5da440e5208e1c4b89dfd7420ab",
+    ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/performance-1/run.json": "b54010cb0b37b9b6698392c7353dd2eaf68b79ccdbec6672510cd3ddd285233d",
+    ".omx/private/core-e2e-20261104/conditional/performance-run-1/stdout.txt": "5602dd4dbc5ca9e0f981d8343e237dbc7baa17ae29cabcccdf5b831247d498b6"
+  },
+  "original_gate_unchanged": true,
+  "current_root_cause_confirmed": false,
+  "metrics": {
+    "closure_p95_ms": 2155.025,
+    "closure_median_ms": 1792.6444999999999,
+    "measured_exceed_2000_count": 7,
+    "measured_count": 30,
+    "warmup_count": 5,
+    "phase_ranges": [
+      {
+        "zero_based_cycles": [
+          0,
+          4
+        ],
+        "warmup": true,
+        "metrics_ms": {
+          "closure": {
+            "median": 2125.136,
+            "min": 2039.963,
+            "max": 2344.856
+          },
+          "detail": {
+            "median": 68.763,
+            "min": 64.057,
+            "max": 83.037
+          },
+          "preview": {
+            "median": 353.699,
+            "min": 299.833,
+            "max": 369.793
+          }
+        }
+      },
+      {
+        "zero_based_cycles": [
+          5,
+          10
+        ],
+        "warmup": false,
+        "metrics_ms": {
+          "closure": {
+            "median": 2124.96,
+            "min": 2099.908,
+            "max": 2180.708
+          },
+          "detail": {
+            "median": 67.35149999999999,
+            "min": 64.754,
+            "max": 78.28
+          },
+          "preview": {
+            "median": 355.275,
+            "min": 343.666,
+            "max": 366.708
+          }
+        }
+      },
+      {
+        "zero_based_cycles": [
+          11,
+          25
+        ],
+        "warmup": false,
+        "metrics_ms": {
+          "closure": {
+            "median": 1802.25,
+            "min": 1750.569,
+            "max": 2116.188
+          },
+          "detail": {
+            "median": 57.419,
+            "min": 52.835,
+            "max": 66.229
+          },
+          "preview": {
+            "median": 325.445,
+            "min": 293.657,
+            "max": 396.391
+          }
+        }
+      },
+      {
+        "zero_based_cycles": [
+          26,
+          34
+        ],
+        "warmup": false,
+        "metrics_ms": {
+          "closure": {
+            "median": 1263.066,
+            "min": 1183.502,
+            "max": 1293.529
+          },
+          "detail": {
+            "median": 58.077,
+            "min": 55.755,
+            "max": 79.055
+          },
+          "preview": {
+            "median": 328.614,
+            "min": 312.222,
+            "max": 467.845
+          }
+        }
+      }
+    ],
+    "reported_sql_statements": 643369,
+    "statement_counter_scope": "whole measured-handler pool across initial move/start/detail/preview/apply and preparatory GetIssue requests; not closure-only",
+    "lock_observer": {
+      "blocked_samples": 0,
+      "events": {},
+      "sampled_blocked_ms": 0,
+      "samples": 145938
+    }
+  },
+  "preloop_plans": {
+    "events": {
+      "planning_ms": 0.956,
+      "execution_ms": 2.185,
+      "nodes": [
+        {
+          "Node Type": "Sort",
+          "Plan Rows": 1,
+          "Actual Rows": 1001,
+          "Actual Loops": 1,
+          "Actual Total Time": 1.882,
+          "Shared Hit Blocks": 100,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Bitmap Heap Scan",
+          "Relation Name": "iteration_event",
+          "Plan Rows": 1,
+          "Actual Rows": 1001,
+          "Actual Loops": 1,
+          "Actual Total Time": 1.042,
+          "Rows Removed by Filter": 0,
+          "Shared Hit Blocks": 97,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Bitmap Index Scan",
+          "Index Name": "iteration_event_sequence",
+          "Plan Rows": 12,
+          "Actual Rows": 1001,
+          "Actual Loops": 1,
+          "Actual Total Time": 0.353,
+          "Shared Hit Blocks": 6,
+          "Shared Read Blocks": 0
+        }
+      ],
+      "scope": "pre-loop EXPLAIN-prefixed read query; not actual cached canonical membership-write plan"
+    },
+    "labels": {
+      "planning_ms": 5.879,
+      "execution_ms": 3.996,
+      "nodes": [
+        {
+          "Node Type": "Nested Loop",
+          "Plan Rows": 4,
+          "Actual Rows": 3000,
+          "Actual Loops": 1,
+          "Actual Total Time": 3.809,
+          "Shared Hit Blocks": 9049,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Nested Loop",
+          "Plan Rows": 4,
+          "Actual Rows": 3000,
+          "Actual Loops": 1,
+          "Actual Total Time": 2.145,
+          "Shared Hit Blocks": 3049,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Index Scan",
+          "Relation Name": "issue",
+          "Index Name": "iteration_issue_current",
+          "Plan Rows": 1,
+          "Actual Rows": 1000,
+          "Actual Loops": 1,
+          "Actual Total Time": 0.285,
+          "Shared Hit Blocks": 34,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Bitmap Heap Scan",
+          "Relation Name": "issue_to_label",
+          "Plan Rows": 16,
+          "Actual Rows": 3,
+          "Actual Loops": 1000,
+          "Actual Total Time": 0.001,
+          "Shared Hit Blocks": 3015,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Bitmap Index Scan",
+          "Index Name": "issue_to_label_pkey",
+          "Plan Rows": 16,
+          "Actual Rows": 3,
+          "Actual Loops": 1000,
+          "Actual Total Time": 0.001,
+          "Shared Hit Blocks": 2000,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Index Scan",
+          "Relation Name": "issue_label",
+          "Index Name": "issue_label_pkey",
+          "Plan Rows": 1,
+          "Actual Rows": 1,
+          "Actual Loops": 3000,
+          "Actual Total Time": 0.0,
+          "Shared Hit Blocks": 6000,
+          "Shared Read Blocks": 0
+        }
+      ],
+      "scope": "pre-loop EXPLAIN-prefixed read query; not actual cached canonical membership-write plan"
+    },
+    "members": {
+      "planning_ms": 0.132,
+      "execution_ms": 0.701,
+      "nodes": [
+        {
+          "Node Type": "Sort",
+          "Plan Rows": 1,
+          "Actual Rows": 1000,
+          "Actual Loops": 1,
+          "Actual Total Time": 0.656,
+          "Shared Hit Blocks": 37,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Index Scan",
+          "Relation Name": "issue",
+          "Index Name": "iteration_issue_current",
+          "Plan Rows": 1,
+          "Actual Rows": 1000,
+          "Actual Loops": 1,
+          "Actual Total Time": 0.128,
+          "Shared Hit Blocks": 34,
+          "Shared Read Blocks": 0
+        }
+      ],
+      "scope": "pre-loop EXPLAIN-prefixed read query; not actual cached canonical membership-write plan"
+    }
+  },
+  "source_inferred_counts_per_one_1000_todo_end_to_planned_target": {
+    "active_task_reads": 1000,
+    "source_participation_reads": 1000,
+    "target_participation_reads": 1000,
+    "total_serial_core_reads": 3000,
+    "membership_batch_phases": 7,
+    "membership_batch_statements": 7000,
+    "latest_event_subqueries_in_these_batches": 4000,
+    "scope_note": "Mechanism counts from current source for this exact workload; not fresh measured attribution; excludes constant/setup/history/auth/commit statements."
+  },
+  "references": {
+    "handler": "server/internal/handler/iteration_management.go:159",
+    "apply": "server/internal/service/iteration_lifecycle_apply.go:31",
+    "active_task_reads": "server/internal/service/iteration_lifecycle_preview.go:290",
+    "prepare_membership": "server/internal/service/iteration_closure.go:102",
+    "participation_reads": "server/internal/iteration/membership.go:53",
+    "no_builtin_status_query": "server/internal/iteration/record.go:51",
+    "batches": "server/internal/iteration/membership_batch.go:96",
+    "canonical_batch_sql": "server/pkg/db/queries/iteration_membership_batch.sql:4",
+    "event_index": "server/migrations/559_iteration_event_sequence.up.sql:1",
+    "snapshot": "server/internal/service/iteration_closure.go:125",
+    "snapshot_persist": "server/internal/service/iteration_closure.go:254",
+    "history_reloads": "server/internal/service/iteration_lifecycle_preview.go:481",
+    "rc_retry": "server/internal/iteration/transaction.go:23",
+    "full_tracer": "server/internal/handler/iteration_capacity_benchmark_test.go:121",
+    "lock_observer": "server/internal/handler/iteration_capacity_benchmark_test.go:159",
+    "gate": "server/internal/handler/iteration_i1_p95_test.go:85"
+  },
+  "ranked_hypotheses": [
+    {
+      "rank": 1,
+      "mechanism": "Repeated latest-event lookups in membership write batches use materially different planner/statistics/cache paths across the run",
+      "status": "unproven current-candidate timing cause",
+      "support": [
+        "Four thousand per-closure latest-event subqueries inferred from canonical batch SQL: 2000 event appends,1000 leaves,1000 joins.",
+        "Current pre-loop read plans estimate1 source issue/event row vs actual1000/1001.",
+        "Closure-only phase medians fall~2125→1802→1263ms while history accumulates."
+      ],
+      "prediction": "If this explains dominant closure cost, measured source-leave/target-join/event append batch spans will dominate and actual canonical prepared plans or buffer/rows-visited counts will correlate with slower/faster phases.",
+      "falsifier": "If measured batch spans are small and canonical prepared paths/buffers stable across the difference, this mechanism cannot explain most of the excess.",
+      "missing_evidence": [
+        "per-phase client timing",
+        "actual canonical prepared plans",
+        "same-backend prepared statement identity",
+        "per-cycle relation/analyze metadata"
+      ]
+    },
+    {
+      "rank": 2,
+      "mechanism": "3000 sequential active-task/participation queries impose significant fixed transport/decode cost",
+      "status": "query count proved by current source; duration unmeasured in current run",
+      "support": [
+        "1000 ListActiveTasksByIssue reads for built-in todo items.",
+        "1000 source and1000 empty-target participation locking reads.",
+        "Built-in todo avoids extra category lookup; targetplanned avoids HasIterationActiveJoin."
+      ],
+      "prediction": "A request-scoped pgx trace will show exact1000+2000 query counts; their inclusive serial time is material. A separate later typed transport-equivalence comparison should reduce this component while preserving results/errors/lock order.",
+      "falsifier": "If these reads contribute only a small fraction of current closure time, they are not the principal bottleneck.",
+      "limitation": "Stable3000-query count alone cannot explain the later stepwise latency decrease."
+    },
+    {
+      "rank": 3,
+      "mechanism": "Whole-run observer or shared execution/IO/CPU/GC state changes measured cost",
+      "status": "plausible environment contribution; no causal proof",
+      "support": [
+        "Observer polls pg_stat_activity at1ms and performed145938 samples.",
+        "Lock-only0 observations exclude neither shortlocks norIO/poolwait/CPU/GC.",
+        "Go1.27darwinarm64 client and x86_64PostgreSQL onarm64host; no continuous shared-load or pool/GC telemetry in this run."
+      ],
+      "prediction": "If material, endpoint-marked acquire/commit/query spans or separately captured GC/process/DB wait categories will show a component not explained by query counts/plans; a matched diagnostic observerON/OFF comparison would alter it.",
+      "falsifier": "Stable negligible acquisition/GC/observer overhead and unchanged timing under a matched observercontrol would weaken this explanation.",
+      "limitation": "Architecture difference and initial process snapshot alone cannot justify changing the FAIL verdict."
+    }
+  ],
+  "next_diagnostic": {
+    "suggested_name": "TestIterationClosureAttributionDiagnostic",
+    "location": "new task-private virtual _test.go in server/internal/handler via Go overlay; no existing source/test replacement",
+    "allocation": "root-created fresh migrated exclusiveDB; external nonGit HOME/TMP; explicitcache; CLIguard; no realProvider",
+    "execution": "after H1 explicit release, compile-only then exactly1 diagnostic invocation with1 actual1000-item closure, no-race/count1/parallel1; do not run originalP95gate",
+    "instrumentation": [
+      "mark only ApplyIterationOperation request context",
+      "pgx Query/Batch/Acquire and transaction Commit timing plus attempt count",
+      "count named canonical query shapes, timing includes scan/Rows.Err/Close",
+      "sum complete batch spans once, use per-statement callbacks only as counts",
+      "pool delta, context wait categories and bounded process/GC observation before/after; residual not labelledCPU",
+      "record originalshape1000todo/10projects/owner/5priorities/3of6labels; one end active→planned target",
+      "keep observer state explicit; initial comparable diagnostic retains original1ms Lockobserver"
+    ],
+    "business_assertions": [
+      "1000issues roll over exactlyonce",
+      "all1000frozenfacts retain priority and3labels",
+      "source closed/targetplanned andallpointers consistent",
+      "unchanged running-task semantics/noexecution",
+      "durable originaloperation identity/idempotentread retained"
+    ],
+    "decision_rule": "Only if a measured phase dominates run its next focusedplan or typed-read-equivalence probe; do not implement optimization from source counts alone. This one-operation diagnostic cannot prove aP95fix or reproduce historical sample-phase changes.",
+    "followup_tests": [
+      "TestIterationMembershipBatchSQLMatchesCanonical",
+      "TestIterationClosureBatchCASFailureRollsBackAllPhases",
+      "TestIterationClosureBatchMultiTargetHandoff",
+      "TestIterationLifecycleBatchSwappedSources",
+      "TestIterationClosureRollbackReplayAndFrozenDigest",
+      "TestIterationClosureFinalSnapshotFailureRollsBackHandoff",
+      "TestIterationClosureRealMemberRevocationRaces",
+      "TestIterationClosureRealIssueAndProjectWriterRaces",
+      "TestIterationClosureManagementPreservesRunningTask",
+      "TestIterationClosureRolloverEventsMatchCommittedCounters"
+    ],
+    "physical_test_file": ".omx/private/core-e2e-20261104/conditional/iteration-attribution-1/iteration_attribution_test.go",
+    "virtual_overlay_path": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/server/internal/handler/iteration_attribution_diagnostic_test.go",
+    "overlay_json": ".omx/private/core-e2e-20261104/conditional/iteration-attribution-1/overlay.json",
+    "run_pattern": "^TestIterationClosureAttributionDiagnostic$",
+    "rollback_contract": {
+      "first_probe": "Real Apply uses unchanged RunOperation/RunTransaction and commits once on a fresh owned DB; preserve actual commit timing and persisted assertions. Keep the DB for evidence rather than fake Commit into Rollback.",
+      "failure": "Any failed preparation/CAS/snapshot/operation write follows existing owner rollback. Confirm no partial membership/event/snapshot/result commit if injecting a separately labelled failure control.",
+      "later_plan_probe": "If EXPLAIN ANALYZE of write SQL is needed, use a separate fresh owned transaction and rollback at the end; compare logical source/target/issue/participation/event/snapshot fingerprints. Do not assert rollback restored WAL/buffers/tuple versions/statistics.",
+      "global_prohibition": "No shared cluster configuration/index changes, source DB reuse, forced disconnect or speculative cleanup."
+    },
+    "actual_plan_capture": "On a task-only connection, if auto_explain is already available, capture actual canonical membership SQL plans with session-only settings and OnNotice; bind backendPID/preparedstatement identity/SQL/parameterpopulation. Do not use global logging or count instrumented timings as original gate data; begin with original plan_cache_mode and index settings."
+  },
+  "historical_evidence_boundary": "Old7af9candidate phase731ms serial reads /1279ms write batches and preparedplan/ANALYZE diagnostics are hypothesis sources only, not measurements for1a32. Do not borrow oldpermits/DBs, overwrite oldresults or assert sameplan state.",
+  "verification": {
+    "raw_sample_recalculation": "PASS",
+    "preloop_plan_JSON_parsing": "PASS",
+    "read_only_source_reference_check": "PASS",
+    "lint": "NOT_RUN: analysis-only and H1window",
+    "typecheck": "NOT_RUN: analysis-only and H1window",
+    "tests": "NOT_RUN: explicitly read-only slice"
+  }
+}

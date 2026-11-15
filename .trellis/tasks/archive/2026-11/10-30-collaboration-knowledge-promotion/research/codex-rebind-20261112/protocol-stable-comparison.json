@@ -1,0 +1,6023 @@
+[
+  {
+    "name": "InitializeParams",
+    "old_sha256": "b55124e7c0f36a1789396daa5578217a92be67f053903696236686e59f6f212e",
+    "new_sha256": "c608ff6bdd94e661423dca9b44cd1dcea7eac610f74e1310284c61eab64280bc",
+    "old_required": [
+      "clientInfo"
+    ],
+    "new_required": [
+      "clientInfo"
+    ],
+    "differences": [
+      {
+        "path": "$.definitions.InitializeCapabilities.properties.requiredHumanApproval",
+        "added": {
+          "description": "Present `humanCommand` approvals to a person and return only a one-time decision. Requires `experimentalApi`. Pending requests can be replayed to compatible clients.",
+          "type": "boolean"
+        }
+      }
+    ]
+  },
+  {
+    "name": "ThreadStartParams",
+    "old_sha256": "e9c6d3cc18d049bfbc0249add3808fb8e5a27e1a0b5a423767aafbc3859a9428",
+    "new_sha256": "e9c6d3cc18d049bfbc0249add3808fb8e5a27e1a0b5a423767aafbc3859a9428",
+    "old_required": [],
+    "new_required": [],
+    "differences": []
+  },
+  {
+    "name": "ThreadResumeParams",
+    "old_sha256": "8dceca415b2c16693b55658ea629cba5ffc82ac300dcd403db0ba7455e491496",
+    "new_sha256": "cba2b0a25e99cc2a9ea083f3ad8cea4d1a3a198922d8c2ba5224b6414eff7334",
+    "old_required": [
+      "threadId"
+    ],
+    "new_required": [
+      "threadId"
+    ],
+    "differences": [
+      {
+        "path": "$.definitions.ContentItem.oneOf",
+        "old": [
+          {
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "input_text"
+                ],
+                "title": "InputTextContentItemType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "text",
+              "type"
+            ],
+            "title": "InputTextContentItem",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "image_url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "image_url"
+                ],
+                "title": "ImageUrlContentItem",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "file_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id"
+                ],
+                "title": "FileIdContentItem",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": {
+                "enum": [
+                  "input_image"
+                ],
+                "title": "InputImageContentItemType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "InputImageContentItem",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "audio_url": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "input_audio"
+                ],
+                "title": "InputAudioContentItemType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "audio_url",
+              "type"
+            ],
+            "title": "InputAudioContentItem",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "annotations": {
+                "items": true,
+                "type": [
+                  "array",
+                  "null"
+                ]
+              },
+              "logprobs": {
+                "items": true,
+                "type": [
+                  "array",
+                  "null"
+                ]
+              },
+              "text": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "output_text"
+                ],
+                "title": "OutputTextContentItemType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "text",
+              "type"
+            ],
+            "title": "OutputTextContentItem",
+            "type": "object"
+          }
+        ],
+        "new": [
+          {
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "input_text"
+                ],
+                "title": "InputTextContentItemType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "text",
+              "type"
+            ],
+            "title": "InputTextContentItem",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "image_url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "image_url"
+                ],
+                "title": "ImageUrlContentItem",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "file_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id"
+                ],
+                "title": "FileIdContentItem",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": {
+                "enum": [
+                  "input_image"
+                ],
+                "title": "InputImageContentItemType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "InputImageContentItem",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "audio_url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "audio_url"
+                ],
+                "title": "AudioUrlContentItem",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "file_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id"
+                ],
+                "title": "FileIdContentItem",
+                "type": "object"
+              }
+            ],
+            "description": "Inline audio data or an uploaded file loaded by the Responses API.",
+            "properties": {
+              "type": {
+                "enum": [
+                  "input_audio"
+                ],
+                "title": "InputAudioContentItemType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "InputAudioContentItem",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "annotations": {
+                "items": true,
+                "type": [
+                  "array",
+                  "null"
+                ]
+              },
+              "logprobs": {
+                "items": true,
+                "type": [
+                  "array",
+                  "null"
+                ]
+              },
+              "text": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "output_text"
+                ],
+                "title": "OutputTextContentItemType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "text",
+              "type"
+            ],
+            "title": "OutputTextContentItem",
+            "type": "object"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "TurnStartParams",
+    "old_sha256": "49e53282f327c25e7b39d97afacd038ef10ad5c4fb0431608b354d3a7bf6bcea",
+    "new_sha256": "4e25cd48986f73e600d9949a055ddb994a75b4a38790e935274646f0fece00ad",
+    "old_required": [
+      "input",
+      "threadId"
+    ],
+    "new_required": [
+      "input",
+      "threadId"
+    ],
+    "differences": [
+      {
+        "path": "$.definitions.UserInput.oneOf",
+        "old": [
+          {
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "text_elements": {
+                "default": [],
+                "description": "UI-defined spans within `text` used to render or persist special elements.",
+                "items": {
+                  "$ref": "#/definitions/TextElement"
+                },
+                "type": "array"
+              },
+              "type": {
+                "enum": [
+                  "text"
+                ],
+                "title": "TextUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "text",
+              "type"
+            ],
+            "title": "TextUserInput",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "UrlUserInput",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "fileId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileId"
+                ],
+                "title": "FileIdUserInput",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "type": {
+                "enum": [
+                  "image"
+                ],
+                "title": "ImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "ImageUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localImage"
+                ],
+                "title": "LocalImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalImageUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "audio"
+                ],
+                "title": "AudioUserInputType",
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "url"
+            ],
+            "title": "AudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localAudio"
+                ],
+                "title": "LocalAudioUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalAudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "skill"
+                ],
+                "title": "SkillUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "SkillUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "mention"
+                ],
+                "title": "MentionUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "MentionUserInput",
+            "type": "object"
+          }
+        ],
+        "new": [
+          {
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "text_elements": {
+                "default": [],
+                "description": "UI-defined spans within `text` used to render or persist special elements.",
+                "items": {
+                  "$ref": "#/definitions/TextElement"
+                },
+                "type": "array"
+              },
+              "type": {
+                "enum": [
+                  "text"
+                ],
+                "title": "TextUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "text",
+              "type"
+            ],
+            "title": "TextUserInput",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "UrlUserInput",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "fileId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileId"
+                ],
+                "title": "FileIdUserInput",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "type": {
+                "enum": [
+                  "image"
+                ],
+                "title": "ImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "ImageUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localImage"
+                ],
+                "title": "LocalImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalImageUserInput",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "UrlUserInput",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "fileId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileId"
+                ],
+                "title": "FileIdUserInput",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "audio"
+                ],
+                "title": "AudioUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "AudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localAudio"
+                ],
+                "title": "LocalAudioUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalAudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "skill"
+                ],
+                "title": "SkillUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "SkillUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "mention"
+                ],
+                "title": "MentionUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "MentionUserInput",
+            "type": "object"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "ThreadStartResponse",
+    "old_sha256": "c655daa1616548f6b3b0960acee9dcfefa8aba5965ec4fc636c84ee840a8626a",
+    "new_sha256": "dfacf835b6b46a9f087b3e89a81f44f1ed0620518a7a957a3d06681bd86b6944",
+    "old_required": [
+      "approvalPolicy",
+      "approvalsReviewer",
+      "cwd",
+      "model",
+      "modelProvider",
+      "sandbox",
+      "thread"
+    ],
+    "new_required": [
+      "approvalPolicy",
+      "approvalsReviewer",
+      "cwd",
+      "model",
+      "modelProvider",
+      "sandbox",
+      "thread"
+    ],
+    "differences": [
+      {
+        "path": "$.definitions.UserInput.oneOf",
+        "old": [
+          {
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "text_elements": {
+                "default": [],
+                "description": "UI-defined spans within `text` used to render or persist special elements.",
+                "items": {
+                  "$ref": "#/definitions/TextElement"
+                },
+                "type": "array"
+              },
+              "type": {
+                "enum": [
+                  "text"
+                ],
+                "title": "TextUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "text",
+              "type"
+            ],
+            "title": "TextUserInput",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "UrlUserInput",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "fileId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileId"
+                ],
+                "title": "FileIdUserInput",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "type": {
+                "enum": [
+                  "image"
+                ],
+                "title": "ImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "ImageUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localImage"
+                ],
+                "title": "LocalImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalImageUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "audio"
+                ],
+                "title": "AudioUserInputType",
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "url"
+            ],
+            "title": "AudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localAudio"
+                ],
+                "title": "LocalAudioUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalAudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "skill"
+                ],
+                "title": "SkillUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "SkillUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "mention"
+                ],
+                "title": "MentionUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "MentionUserInput",
+            "type": "object"
+          }
+        ],
+        "new": [
+          {
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "text_elements": {
+                "default": [],
+                "description": "UI-defined spans within `text` used to render or persist special elements.",
+                "items": {
+                  "$ref": "#/definitions/TextElement"
+                },
+                "type": "array"
+              },
+              "type": {
+                "enum": [
+                  "text"
+                ],
+                "title": "TextUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "text",
+              "type"
+            ],
+            "title": "TextUserInput",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "UrlUserInput",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "fileId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileId"
+                ],
+                "title": "FileIdUserInput",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "type": {
+                "enum": [
+                  "image"
+                ],
+                "title": "ImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "ImageUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localImage"
+                ],
+                "title": "LocalImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalImageUserInput",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "UrlUserInput",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "fileId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileId"
+                ],
+                "title": "FileIdUserInput",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "audio"
+                ],
+                "title": "AudioUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "AudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localAudio"
+                ],
+                "title": "LocalAudioUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalAudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "skill"
+                ],
+                "title": "SkillUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "SkillUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "mention"
+                ],
+                "title": "MentionUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "MentionUserInput",
+            "type": "object"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "ThreadResumeResponse",
+    "old_sha256": "2f8aa868ca008731622673d518b12f70ea8920eaf00fa5e80bfeb49cd8f2a77c",
+    "new_sha256": "f450bafe946842b04e49db3e661738b52d8a64f32089fe4fe9ae9c5eab5b8498",
+    "old_required": [
+      "approvalPolicy",
+      "approvalsReviewer",
+      "cwd",
+      "model",
+      "modelProvider",
+      "sandbox",
+      "thread"
+    ],
+    "new_required": [
+      "approvalPolicy",
+      "approvalsReviewer",
+      "cwd",
+      "model",
+      "modelProvider",
+      "sandbox",
+      "thread"
+    ],
+    "differences": [
+      {
+        "path": "$.definitions.UserInput.oneOf",
+        "old": [
+          {
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "text_elements": {
+                "default": [],
+                "description": "UI-defined spans within `text` used to render or persist special elements.",
+                "items": {
+                  "$ref": "#/definitions/TextElement"
+                },
+                "type": "array"
+              },
+              "type": {
+                "enum": [
+                  "text"
+                ],
+                "title": "TextUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "text",
+              "type"
+            ],
+            "title": "TextUserInput",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "UrlUserInput",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "fileId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileId"
+                ],
+                "title": "FileIdUserInput",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "type": {
+                "enum": [
+                  "image"
+                ],
+                "title": "ImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "ImageUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localImage"
+                ],
+                "title": "LocalImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalImageUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "audio"
+                ],
+                "title": "AudioUserInputType",
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "url"
+            ],
+            "title": "AudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localAudio"
+                ],
+                "title": "LocalAudioUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalAudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "skill"
+                ],
+                "title": "SkillUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "SkillUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "mention"
+                ],
+                "title": "MentionUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "MentionUserInput",
+            "type": "object"
+          }
+        ],
+        "new": [
+          {
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "text_elements": {
+                "default": [],
+                "description": "UI-defined spans within `text` used to render or persist special elements.",
+                "items": {
+                  "$ref": "#/definitions/TextElement"
+                },
+                "type": "array"
+              },
+              "type": {
+                "enum": [
+                  "text"
+                ],
+                "title": "TextUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "text",
+              "type"
+            ],
+            "title": "TextUserInput",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "UrlUserInput",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "fileId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileId"
+                ],
+                "title": "FileIdUserInput",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "type": {
+                "enum": [
+                  "image"
+                ],
+                "title": "ImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "ImageUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localImage"
+                ],
+                "title": "LocalImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalImageUserInput",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "UrlUserInput",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "fileId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileId"
+                ],
+                "title": "FileIdUserInput",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "audio"
+                ],
+                "title": "AudioUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "AudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localAudio"
+                ],
+                "title": "LocalAudioUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalAudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "skill"
+                ],
+                "title": "SkillUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "SkillUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "mention"
+                ],
+                "title": "MentionUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "MentionUserInput",
+            "type": "object"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "TurnStartResponse",
+    "old_sha256": "85da8d16c86432da14440504ae1e76d13527058920d4ed81632dd50c3fbd054d",
+    "new_sha256": "b75b88c2f507685b948d06166b5436678fd320c9878883d97f5a17f620a25116",
+    "old_required": [
+      "turn"
+    ],
+    "new_required": [
+      "turn"
+    ],
+    "differences": [
+      {
+        "path": "$.definitions.UserInput.oneOf",
+        "old": [
+          {
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "text_elements": {
+                "default": [],
+                "description": "UI-defined spans within `text` used to render or persist special elements.",
+                "items": {
+                  "$ref": "#/definitions/TextElement"
+                },
+                "type": "array"
+              },
+              "type": {
+                "enum": [
+                  "text"
+                ],
+                "title": "TextUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "text",
+              "type"
+            ],
+            "title": "TextUserInput",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "UrlUserInput",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "fileId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileId"
+                ],
+                "title": "FileIdUserInput",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "type": {
+                "enum": [
+                  "image"
+                ],
+                "title": "ImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "ImageUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localImage"
+                ],
+                "title": "LocalImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalImageUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "audio"
+                ],
+                "title": "AudioUserInputType",
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "url"
+            ],
+            "title": "AudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localAudio"
+                ],
+                "title": "LocalAudioUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalAudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "skill"
+                ],
+                "title": "SkillUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "SkillUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "mention"
+                ],
+                "title": "MentionUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "MentionUserInput",
+            "type": "object"
+          }
+        ],
+        "new": [
+          {
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "text_elements": {
+                "default": [],
+                "description": "UI-defined spans within `text` used to render or persist special elements.",
+                "items": {
+                  "$ref": "#/definitions/TextElement"
+                },
+                "type": "array"
+              },
+              "type": {
+                "enum": [
+                  "text"
+                ],
+                "title": "TextUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "text",
+              "type"
+            ],
+            "title": "TextUserInput",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "UrlUserInput",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "fileId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileId"
+                ],
+                "title": "FileIdUserInput",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "type": {
+                "enum": [
+                  "image"
+                ],
+                "title": "ImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "ImageUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localImage"
+                ],
+                "title": "LocalImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalImageUserInput",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "UrlUserInput",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "fileId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileId"
+                ],
+                "title": "FileIdUserInput",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "audio"
+                ],
+                "title": "AudioUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "AudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localAudio"
+                ],
+                "title": "LocalAudioUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalAudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "skill"
+                ],
+                "title": "SkillUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "SkillUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "mention"
+                ],
+                "title": "MentionUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "MentionUserInput",
+            "type": "object"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "ServerNotification",
+    "old_sha256": "cc06d031345c7f1f08f0ac8ccb42d889b3246fadada1aabdf4688027975efad7",
+    "new_sha256": "6371619bc83dd2c7a3ff348704d514c5be9f0d8e992275a1fa592cf51bfd2c1f",
+    "old_required": [],
+    "new_required": [],
+    "differences": [
+      {
+        "path": "$.definitions.ThreadSectionChangedNotification",
+        "added": {
+          "description": "Broadcast after a successful move into, within, or out of a section.",
+          "properties": {
+            "sectionId": {
+              "description": "Destination section, or `null` when the thread was removed from its section.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "threadId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "sectionId",
+            "threadId"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "path": "$.definitions.UserInput.oneOf",
+        "old": [
+          {
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "text_elements": {
+                "default": [],
+                "description": "UI-defined spans within `text` used to render or persist special elements.",
+                "items": {
+                  "$ref": "#/definitions/TextElement"
+                },
+                "type": "array"
+              },
+              "type": {
+                "enum": [
+                  "text"
+                ],
+                "title": "TextUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "text",
+              "type"
+            ],
+            "title": "TextUserInput",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "UrlUserInput",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "fileId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileId"
+                ],
+                "title": "FileIdUserInput",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "type": {
+                "enum": [
+                  "image"
+                ],
+                "title": "ImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "ImageUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localImage"
+                ],
+                "title": "LocalImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalImageUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "audio"
+                ],
+                "title": "AudioUserInputType",
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "url"
+            ],
+            "title": "AudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localAudio"
+                ],
+                "title": "LocalAudioUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalAudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "skill"
+                ],
+                "title": "SkillUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "SkillUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "mention"
+                ],
+                "title": "MentionUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "MentionUserInput",
+            "type": "object"
+          }
+        ],
+        "new": [
+          {
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "text_elements": {
+                "default": [],
+                "description": "UI-defined spans within `text` used to render or persist special elements.",
+                "items": {
+                  "$ref": "#/definitions/TextElement"
+                },
+                "type": "array"
+              },
+              "type": {
+                "enum": [
+                  "text"
+                ],
+                "title": "TextUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "text",
+              "type"
+            ],
+            "title": "TextUserInput",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "UrlUserInput",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "fileId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileId"
+                ],
+                "title": "FileIdUserInput",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "type": {
+                "enum": [
+                  "image"
+                ],
+                "title": "ImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "ImageUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "detail": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ImageDetail"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localImage"
+                ],
+                "title": "LocalImageUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalImageUserInput",
+            "type": "object"
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "UrlUserInput",
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "fileId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileId"
+                ],
+                "title": "FileIdUserInput",
+                "type": "object"
+              }
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "audio"
+                ],
+                "title": "AudioUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "AudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "localAudio"
+                ],
+                "title": "LocalAudioUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "title": "LocalAudioUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "skill"
+                ],
+                "title": "SkillUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "SkillUserInput",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "mention"
+                ],
+                "title": "MentionUserInputType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "path",
+              "type"
+            ],
+            "title": "MentionUserInput",
+            "type": "object"
+          }
+        ]
+      },
+      {
+        "path": "$.oneOf",
+        "old": [
+          {
+            "description": "NEW NOTIFICATIONS",
+            "properties": {
+              "method": {
+                "enum": [
+                  "error"
+                ],
+                "title": "ErrorNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ErrorNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "ErrorNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/started"
+                ],
+                "title": "Thread/startedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadStartedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/startedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/status/changed"
+                ],
+                "title": "Thread/status/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadStatusChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/status/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/readState/changed"
+                ],
+                "title": "Thread/readState/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadReadStateChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/readState/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/archived"
+                ],
+                "title": "Thread/archivedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadArchivedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/archivedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/deleted"
+                ],
+                "title": "Thread/deletedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadDeletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/deletedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/unarchived"
+                ],
+                "title": "Thread/unarchivedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadUnarchivedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/unarchivedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/closed"
+                ],
+                "title": "Thread/closedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadClosedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/closedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/reverted"
+                ],
+                "title": "Thread/revertedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRevertedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/revertedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "skills/changed"
+                ],
+                "title": "Skills/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/SkillsChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Skills/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/name/updated"
+                ],
+                "title": "Thread/name/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadNameUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/name/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/attachment/updated"
+                ],
+                "title": "Thread/attachment/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadAttachmentUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/attachment/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/goal/updated"
+                ],
+                "title": "Thread/goal/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadGoalUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/goal/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/prediction/updated"
+                ],
+                "title": "Thread/prediction/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadPredictionUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/prediction/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/goal/cleared"
+                ],
+                "title": "Thread/goal/clearedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadGoalClearedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/goal/clearedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/queue/changed"
+                ],
+                "title": "Thread/queue/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadQueueChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/queue/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "project/changed"
+                ],
+                "title": "Project/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ProjectChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Project/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/project/updated"
+                ],
+                "title": "Thread/project/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadProjectUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/project/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/environment/connected"
+                ],
+                "title": "Thread/environment/connectedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/EnvironmentConnectionNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/environment/connectedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/environment/disconnected"
+                ],
+                "title": "Thread/environment/disconnectedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/EnvironmentConnectionNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/environment/disconnectedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/settings/updated"
+                ],
+                "title": "Thread/settings/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadSettingsUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/settings/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/tokenUsage/updated"
+                ],
+                "title": "Thread/tokenUsage/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadTokenUsageUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/tokenUsage/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "turn/started"
+                ],
+                "title": "Turn/startedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/TurnStartedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Turn/startedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "hook/started"
+                ],
+                "title": "Hook/startedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/HookStartedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Hook/startedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "turn/completed"
+                ],
+                "title": "Turn/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/TurnCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Turn/completedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "hook/completed"
+                ],
+                "title": "Hook/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/HookCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Hook/completedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "turn/diff/updated"
+                ],
+                "title": "Turn/diff/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/TurnDiffUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Turn/diff/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "turn/plan/updated"
+                ],
+                "title": "Turn/plan/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/TurnPlanUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Turn/plan/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/started"
+                ],
+                "title": "Item/startedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ItemStartedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/startedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/autoApprovalReview/started"
+                ],
+                "title": "Item/autoApprovalReview/startedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ItemGuardianApprovalReviewStartedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/autoApprovalReview/startedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/autoApprovalReview/completed"
+                ],
+                "title": "Item/autoApprovalReview/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ItemGuardianApprovalReviewCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/autoApprovalReview/completedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "autoApprovalReview/strictReviewRequired"
+                ],
+                "title": "AutoApprovalReview/strictReviewRequiredNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/StrictReviewRequiredNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "AutoApprovalReview/strictReviewRequiredNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/completed"
+                ],
+                "title": "Item/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ItemCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/completedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/agentMessage/delta"
+                ],
+                "title": "Item/agentMessage/deltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/AgentMessageDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/agentMessage/deltaNotification",
+            "type": "object"
+          },
+          {
+            "description": "EXPERIMENTAL - proposed plan streaming deltas for plan items.",
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/plan/delta"
+                ],
+                "title": "Item/plan/deltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/PlanDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/plan/deltaNotification",
+            "type": "object"
+          },
+          {
+            "description": "Stream base64-encoded stdout/stderr chunks for a running `command/exec` session.",
+            "properties": {
+              "method": {
+                "enum": [
+                  "command/exec/outputDelta"
+                ],
+                "title": "Command/exec/outputDeltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/CommandExecOutputDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Command/exec/outputDeltaNotification",
+            "type": "object"
+          },
+          {
+            "description": "Stream base64-encoded stdout/stderr chunks for a running `process/spawn` session.",
+            "properties": {
+              "method": {
+                "enum": [
+                  "process/outputDelta"
+                ],
+                "title": "Process/outputDeltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ProcessOutputDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Process/outputDeltaNotification",
+            "type": "object"
+          },
+          {
+            "description": "Final exit notification for a `process/spawn` session.",
+            "properties": {
+              "method": {
+                "enum": [
+                  "process/exited"
+                ],
+                "title": "Process/exitedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ProcessExitedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Process/exitedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/commandExecution/outputDelta"
+                ],
+                "title": "Item/commandExecution/outputDeltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/CommandExecutionOutputDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/commandExecution/outputDeltaNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/commandExecution/terminalInteraction"
+                ],
+                "title": "Item/commandExecution/terminalInteractionNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/TerminalInteractionNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/commandExecution/terminalInteractionNotification",
+            "type": "object"
+          },
+          {
+            "description": "Deprecated legacy apply_patch output stream notification.",
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/fileChange/outputDelta"
+                ],
+                "title": "Item/fileChange/outputDeltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/FileChangeOutputDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/fileChange/outputDeltaNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/fileChange/patchUpdated"
+                ],
+                "title": "Item/fileChange/patchUpdatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/FileChangePatchUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/fileChange/patchUpdatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "serverRequest/resolved"
+                ],
+                "title": "ServerRequest/resolvedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ServerRequestResolvedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "ServerRequest/resolvedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/mcpToolCall/progress"
+                ],
+                "title": "Item/mcpToolCall/progressNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/McpToolCallProgressNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/mcpToolCall/progressNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "mcpServer/oauthLogin/completed"
+                ],
+                "title": "McpServer/oauthLogin/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/McpServerOauthLoginCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "McpServer/oauthLogin/completedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "mcpServer/startupStatus/updated"
+                ],
+                "title": "McpServer/startupStatus/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/McpServerStatusUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "McpServer/startupStatus/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "mcpServer/event/stream/notification"
+                ],
+                "title": "McpServer/event/stream/notificationNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/McpServerEventStreamNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "McpServer/event/stream/notificationNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "account/updated"
+                ],
+                "title": "Account/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/AccountUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Account/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "account/gatewayOAuth/changed"
+                ],
+                "title": "Account/gatewayOAuth/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/GatewayOAuthChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Account/gatewayOAuth/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "account/rateLimits/updated"
+                ],
+                "title": "Account/rateLimits/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/AccountRateLimitsUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Account/rateLimits/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "app/list/updated"
+                ],
+                "title": "App/list/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/AppListUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "App/list/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "remoteControl/status/changed"
+                ],
+                "title": "RemoteControl/status/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/RemoteControlStatusChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "RemoteControl/status/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "externalAgentConfig/import/progress"
+                ],
+                "title": "ExternalAgentConfig/import/progressNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ExternalAgentConfigImportProgressNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "ExternalAgentConfig/import/progressNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "externalAgentConfig/import/completed"
+                ],
+                "title": "ExternalAgentConfig/import/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ExternalAgentConfigImportCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "ExternalAgentConfig/import/completedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "fs/changed"
+                ],
+                "title": "Fs/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/FsChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Fs/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/reasoning/summaryTextDelta"
+                ],
+                "title": "Item/reasoning/summaryTextDeltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ReasoningSummaryTextDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/reasoning/summaryTextDeltaNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/reasoning/summaryPartAdded"
+                ],
+                "title": "Item/reasoning/summaryPartAddedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ReasoningSummaryPartAddedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/reasoning/summaryPartAddedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/reasoning/textDelta"
+                ],
+                "title": "Item/reasoning/textDeltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ReasoningTextDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/reasoning/textDeltaNotification",
+            "type": "object"
+          },
+          {
+            "description": "Deprecated: Use `ContextCompaction` item type instead.",
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/compacted"
+                ],
+                "title": "Thread/compactedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ContextCompactedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/compactedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "model/rerouted"
+                ],
+                "title": "Model/reroutedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ModelReroutedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Model/reroutedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "model/verification"
+                ],
+                "title": "Model/verificationNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ModelVerificationNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Model/verificationNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "modelProvider/authRecoveryStarted"
+                ],
+                "title": "ModelProvider/authRecoveryStartedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/AuthRecoveryNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "ModelProvider/authRecoveryStartedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "modelProvider/authRecoveryCompleted"
+                ],
+                "title": "ModelProvider/authRecoveryCompletedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/AuthRecoveryNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "ModelProvider/authRecoveryCompletedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "turn/moderationMetadata"
+                ],
+                "title": "Turn/moderationMetadataNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/TurnModerationMetadataNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Turn/moderationMetadataNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "model/safetyBuffering/updated"
+                ],
+                "title": "Model/safetyBuffering/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ModelSafetyBufferingUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Model/safetyBuffering/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "warning"
+                ],
+                "title": "WarningNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/WarningNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "WarningNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "guardianWarning"
+                ],
+                "title": "GuardianWarningNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/GuardianWarningNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "GuardianWarningNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "deprecationNotice"
+                ],
+                "title": "DeprecationNoticeNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/DeprecationNoticeNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "DeprecationNoticeNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "configWarning"
+                ],
+                "title": "ConfigWarningNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ConfigWarningNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "ConfigWarningNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "fuzzyFileSearch/sessionUpdated"
+                ],
+                "title": "FuzzyFileSearch/sessionUpdatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/FuzzyFileSearchSessionUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "FuzzyFileSearch/sessionUpdatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "fuzzyFileSearch/sessionCompleted"
+                ],
+                "title": "FuzzyFileSearch/sessionCompletedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/FuzzyFileSearchSessionCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "FuzzyFileSearch/sessionCompletedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/started"
+                ],
+                "title": "Thread/realtime/startedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeStartedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/startedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/itemAdded"
+                ],
+                "title": "Thread/realtime/itemAddedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeItemAddedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/itemAddedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/item/started"
+                ],
+                "title": "Thread/realtime/item/startedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeItemStartedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/item/startedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/item/transcript/delta"
+                ],
+                "title": "Thread/realtime/item/transcript/deltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeItemTranscriptDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/item/transcript/deltaNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/item/completed"
+                ],
+                "title": "Thread/realtime/item/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeItemCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/item/completedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/transcript/delta"
+                ],
+                "title": "Thread/realtime/transcript/deltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeTranscriptDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/transcript/deltaNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/transcript/done"
+                ],
+                "title": "Thread/realtime/transcript/doneNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeTranscriptDoneNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/transcript/doneNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/outputAudio/delta"
+                ],
+                "title": "Thread/realtime/outputAudio/deltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeOutputAudioDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/outputAudio/deltaNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/sdp"
+                ],
+                "title": "Thread/realtime/sdpNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeSdpNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/sdpNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/error"
+                ],
+                "title": "Thread/realtime/errorNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeErrorNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/errorNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/closed"
+                ],
+                "title": "Thread/realtime/closedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeClosedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/closedNotification",
+            "type": "object"
+          },
+          {
+            "description": "Notifies the user of world-writable directories on Windows, which cannot be protected by the sandbox.",
+            "properties": {
+              "method": {
+                "enum": [
+                  "windows/worldWritableWarning"
+                ],
+                "title": "Windows/worldWritableWarningNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/WindowsWorldWritableWarningNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Windows/worldWritableWarningNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "windowsSandbox/setupCompleted"
+                ],
+                "title": "WindowsSandbox/setupCompletedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/WindowsSandboxSetupCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "WindowsSandbox/setupCompletedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "account/login/completed"
+                ],
+                "title": "Account/login/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/AccountLoginCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Account/login/completedNotification",
+            "type": "object"
+          }
+        ],
+        "new": [
+          {
+            "description": "NEW NOTIFICATIONS",
+            "properties": {
+              "method": {
+                "enum": [
+                  "error"
+                ],
+                "title": "ErrorNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ErrorNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "ErrorNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/started"
+                ],
+                "title": "Thread/startedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadStartedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/startedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/status/changed"
+                ],
+                "title": "Thread/status/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadStatusChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/status/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/readState/changed"
+                ],
+                "title": "Thread/readState/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadReadStateChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/readState/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/archived"
+                ],
+                "title": "Thread/archivedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadArchivedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/archivedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/deleted"
+                ],
+                "title": "Thread/deletedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadDeletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/deletedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/unarchived"
+                ],
+                "title": "Thread/unarchivedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadUnarchivedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/unarchivedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/closed"
+                ],
+                "title": "Thread/closedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadClosedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/closedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/reverted"
+                ],
+                "title": "Thread/revertedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRevertedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/revertedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "skills/changed"
+                ],
+                "title": "Skills/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/SkillsChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Skills/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/name/updated"
+                ],
+                "title": "Thread/name/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadNameUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/name/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/section/changed"
+                ],
+                "title": "Thread/section/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadSectionChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/section/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/attachment/updated"
+                ],
+                "title": "Thread/attachment/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadAttachmentUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/attachment/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/goal/updated"
+                ],
+                "title": "Thread/goal/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadGoalUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/goal/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/prediction/updated"
+                ],
+                "title": "Thread/prediction/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadPredictionUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/prediction/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/goal/cleared"
+                ],
+                "title": "Thread/goal/clearedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadGoalClearedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/goal/clearedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/queue/changed"
+                ],
+                "title": "Thread/queue/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadQueueChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/queue/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "project/changed"
+                ],
+                "title": "Project/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ProjectChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Project/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/project/updated"
+                ],
+                "title": "Thread/project/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadProjectUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/project/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/environment/connected"
+                ],
+                "title": "Thread/environment/connectedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/EnvironmentConnectionNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/environment/connectedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/environment/disconnected"
+                ],
+                "title": "Thread/environment/disconnectedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/EnvironmentConnectionNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/environment/disconnectedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/settings/updated"
+                ],
+                "title": "Thread/settings/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadSettingsUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/settings/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/tokenUsage/updated"
+                ],
+                "title": "Thread/tokenUsage/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadTokenUsageUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/tokenUsage/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "turn/started"
+                ],
+                "title": "Turn/startedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/TurnStartedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Turn/startedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "hook/started"
+                ],
+                "title": "Hook/startedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/HookStartedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Hook/startedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "turn/completed"
+                ],
+                "title": "Turn/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/TurnCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Turn/completedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "hook/completed"
+                ],
+                "title": "Hook/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/HookCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Hook/completedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "turn/diff/updated"
+                ],
+                "title": "Turn/diff/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/TurnDiffUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Turn/diff/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "turn/plan/updated"
+                ],
+                "title": "Turn/plan/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/TurnPlanUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Turn/plan/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/started"
+                ],
+                "title": "Item/startedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ItemStartedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/startedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/autoApprovalReview/started"
+                ],
+                "title": "Item/autoApprovalReview/startedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ItemGuardianApprovalReviewStartedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/autoApprovalReview/startedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/autoApprovalReview/completed"
+                ],
+                "title": "Item/autoApprovalReview/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ItemGuardianApprovalReviewCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/autoApprovalReview/completedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "autoApprovalReview/strictReviewRequired"
+                ],
+                "title": "AutoApprovalReview/strictReviewRequiredNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/StrictReviewRequiredNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "AutoApprovalReview/strictReviewRequiredNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/completed"
+                ],
+                "title": "Item/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ItemCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/completedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/agentMessage/delta"
+                ],
+                "title": "Item/agentMessage/deltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/AgentMessageDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/agentMessage/deltaNotification",
+            "type": "object"
+          },
+          {
+            "description": "EXPERIMENTAL - proposed plan streaming deltas for plan items.",
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/plan/delta"
+                ],
+                "title": "Item/plan/deltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/PlanDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/plan/deltaNotification",
+            "type": "object"
+          },
+          {
+            "description": "Stream base64-encoded stdout/stderr chunks for a running `command/exec` session.",
+            "properties": {
+              "method": {
+                "enum": [
+                  "command/exec/outputDelta"
+                ],
+                "title": "Command/exec/outputDeltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/CommandExecOutputDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Command/exec/outputDeltaNotification",
+            "type": "object"
+          },
+          {
+            "description": "Stream base64-encoded stdout/stderr chunks for a running `process/spawn` session.",
+            "properties": {
+              "method": {
+                "enum": [
+                  "process/outputDelta"
+                ],
+                "title": "Process/outputDeltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ProcessOutputDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Process/outputDeltaNotification",
+            "type": "object"
+          },
+          {
+            "description": "Final exit notification for a `process/spawn` session.",
+            "properties": {
+              "method": {
+                "enum": [
+                  "process/exited"
+                ],
+                "title": "Process/exitedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ProcessExitedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Process/exitedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/commandExecution/outputDelta"
+                ],
+                "title": "Item/commandExecution/outputDeltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/CommandExecutionOutputDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/commandExecution/outputDeltaNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/commandExecution/terminalInteraction"
+                ],
+                "title": "Item/commandExecution/terminalInteractionNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/TerminalInteractionNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/commandExecution/terminalInteractionNotification",
+            "type": "object"
+          },
+          {
+            "description": "Deprecated legacy apply_patch output stream notification.",
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/fileChange/outputDelta"
+                ],
+                "title": "Item/fileChange/outputDeltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/FileChangeOutputDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/fileChange/outputDeltaNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/fileChange/patchUpdated"
+                ],
+                "title": "Item/fileChange/patchUpdatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/FileChangePatchUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/fileChange/patchUpdatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "serverRequest/resolved"
+                ],
+                "title": "ServerRequest/resolvedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ServerRequestResolvedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "ServerRequest/resolvedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/mcpToolCall/progress"
+                ],
+                "title": "Item/mcpToolCall/progressNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/McpToolCallProgressNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/mcpToolCall/progressNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "mcpServer/oauthLogin/completed"
+                ],
+                "title": "McpServer/oauthLogin/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/McpServerOauthLoginCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "McpServer/oauthLogin/completedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "mcpServer/startupStatus/updated"
+                ],
+                "title": "McpServer/startupStatus/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/McpServerStatusUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "McpServer/startupStatus/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "mcpServer/event/stream/notification"
+                ],
+                "title": "McpServer/event/stream/notificationNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/McpServerEventStreamNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "McpServer/event/stream/notificationNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "account/updated"
+                ],
+                "title": "Account/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/AccountUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Account/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "account/gatewayOAuth/changed"
+                ],
+                "title": "Account/gatewayOAuth/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/GatewayOAuthChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Account/gatewayOAuth/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "account/rateLimits/updated"
+                ],
+                "title": "Account/rateLimits/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/AccountRateLimitsUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Account/rateLimits/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "app/list/updated"
+                ],
+                "title": "App/list/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/AppListUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "App/list/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "remoteControl/status/changed"
+                ],
+                "title": "RemoteControl/status/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/RemoteControlStatusChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "RemoteControl/status/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "externalAgentConfig/import/progress"
+                ],
+                "title": "ExternalAgentConfig/import/progressNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ExternalAgentConfigImportProgressNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "ExternalAgentConfig/import/progressNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "externalAgentConfig/import/completed"
+                ],
+                "title": "ExternalAgentConfig/import/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ExternalAgentConfigImportCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "ExternalAgentConfig/import/completedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "fs/changed"
+                ],
+                "title": "Fs/changedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/FsChangedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Fs/changedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/reasoning/summaryTextDelta"
+                ],
+                "title": "Item/reasoning/summaryTextDeltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ReasoningSummaryTextDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/reasoning/summaryTextDeltaNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/reasoning/summaryPartAdded"
+                ],
+                "title": "Item/reasoning/summaryPartAddedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ReasoningSummaryPartAddedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/reasoning/summaryPartAddedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "item/reasoning/textDelta"
+                ],
+                "title": "Item/reasoning/textDeltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ReasoningTextDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Item/reasoning/textDeltaNotification",
+            "type": "object"
+          },
+          {
+            "description": "Deprecated: Use `ContextCompaction` item type instead.",
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/compacted"
+                ],
+                "title": "Thread/compactedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ContextCompactedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/compactedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "model/rerouted"
+                ],
+                "title": "Model/reroutedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ModelReroutedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Model/reroutedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "model/verification"
+                ],
+                "title": "Model/verificationNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ModelVerificationNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Model/verificationNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "modelProvider/authRecoveryStarted"
+                ],
+                "title": "ModelProvider/authRecoveryStartedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/AuthRecoveryNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "ModelProvider/authRecoveryStartedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "modelProvider/authRecoveryCompleted"
+                ],
+                "title": "ModelProvider/authRecoveryCompletedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/AuthRecoveryNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "ModelProvider/authRecoveryCompletedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "turn/moderationMetadata"
+                ],
+                "title": "Turn/moderationMetadataNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/TurnModerationMetadataNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Turn/moderationMetadataNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "model/safetyBuffering/updated"
+                ],
+                "title": "Model/safetyBuffering/updatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ModelSafetyBufferingUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Model/safetyBuffering/updatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "warning"
+                ],
+                "title": "WarningNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/WarningNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "WarningNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "guardianWarning"
+                ],
+                "title": "GuardianWarningNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/GuardianWarningNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "GuardianWarningNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "deprecationNotice"
+                ],
+                "title": "DeprecationNoticeNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/DeprecationNoticeNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "DeprecationNoticeNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "configWarning"
+                ],
+                "title": "ConfigWarningNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ConfigWarningNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "ConfigWarningNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "fuzzyFileSearch/sessionUpdated"
+                ],
+                "title": "FuzzyFileSearch/sessionUpdatedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/FuzzyFileSearchSessionUpdatedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "FuzzyFileSearch/sessionUpdatedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "fuzzyFileSearch/sessionCompleted"
+                ],
+                "title": "FuzzyFileSearch/sessionCompletedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/FuzzyFileSearchSessionCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "FuzzyFileSearch/sessionCompletedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/started"
+                ],
+                "title": "Thread/realtime/startedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeStartedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/startedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/itemAdded"
+                ],
+                "title": "Thread/realtime/itemAddedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeItemAddedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/itemAddedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/item/started"
+                ],
+                "title": "Thread/realtime/item/startedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeItemStartedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/item/startedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/item/transcript/delta"
+                ],
+                "title": "Thread/realtime/item/transcript/deltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeItemTranscriptDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/item/transcript/deltaNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/item/completed"
+                ],
+                "title": "Thread/realtime/item/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeItemCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/item/completedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/transcript/delta"
+                ],
+                "title": "Thread/realtime/transcript/deltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeTranscriptDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/transcript/deltaNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/transcript/done"
+                ],
+                "title": "Thread/realtime/transcript/doneNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeTranscriptDoneNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/transcript/doneNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/outputAudio/delta"
+                ],
+                "title": "Thread/realtime/outputAudio/deltaNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeOutputAudioDeltaNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/outputAudio/deltaNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/sdp"
+                ],
+                "title": "Thread/realtime/sdpNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeSdpNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/sdpNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/error"
+                ],
+                "title": "Thread/realtime/errorNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeErrorNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/errorNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "thread/realtime/closed"
+                ],
+                "title": "Thread/realtime/closedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/ThreadRealtimeClosedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Thread/realtime/closedNotification",
+            "type": "object"
+          },
+          {
+            "description": "Notifies the user of world-writable directories on Windows, which cannot be protected by the sandbox.",
+            "properties": {
+              "method": {
+                "enum": [
+                  "windows/worldWritableWarning"
+                ],
+                "title": "Windows/worldWritableWarningNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/WindowsWorldWritableWarningNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Windows/worldWritableWarningNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "windowsSandbox/setupCompleted"
+                ],
+                "title": "WindowsSandbox/setupCompletedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/WindowsSandboxSetupCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "WindowsSandbox/setupCompletedNotification",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "account/login/completed"
+                ],
+                "title": "Account/login/completedNotificationMethod",
+                "type": "string"
+              },
+              "params": {
+                "$ref": "#/definitions/AccountLoginCompletedNotification"
+              }
+            },
+            "required": [
+              "method",
+              "params"
+            ],
+            "title": "Account/login/completedNotification",
+            "type": "object"
+          }
+        ]
+      }
+    ]
+  }
+]

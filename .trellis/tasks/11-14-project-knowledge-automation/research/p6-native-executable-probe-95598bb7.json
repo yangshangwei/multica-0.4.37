@@ -1,0 +1,28 @@
+{
+  "exit_code": 2,
+  "result": {
+    "product_acceptance": false,
+    "models_or_accounts_used": false,
+    "chromium": {
+      "status": "pass",
+      "version": "145.0.7632.6"
+    },
+    "state": "failed",
+    "error": {
+      "name": "TimeoutError",
+      "message": "electron.launch: Timeout 20000ms exceeded.\nCall log:\n  - <launching> /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --inspect=0 --remote-debugging-port=0 /private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-native-launch-probe-zq7umjun/electron-main.mjs --password-store=basic\n  - <launched> pid=62144\n  - [pid=62144][err] Debugger listening on ws://127.0.0.1:53484/5b2a9ccd-6d96-44d8-9fbc-b1bcfee8d306\n  - [pid=62144][err] For help, see: https://nodejs.org/en/docs/inspector\n  - <ws connecting> ws://127.0.0.1:53484/5b2a9ccd-6d96-44d8-9fbc-b1bcfee8d306\n  - [pid=62144][err] Debugger attached.\n  - <ws connected> ws://127.0.0.1:53484/5b2a9ccd-6d96-44d8-9fbc-b1bcfee8d306\n"
+    }
+  },
+  "probe_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-native-launch-probe-zq7umjun",
+  "node_process_pid": 62101,
+  "node_process_group": 62101,
+  "node_exited": true,
+  "electron_binary": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+  "electron_binary_sha256": "cf74833a9b0c242e26c177005d7d61819e5bf5ed199acc794fed2eb0cc4f3149",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-native-launch-probe-zq7umjun/launch.log",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_or_dependencies_modified": false,
+  "product_runtime_started": false,
+  "real_accounts_inherited": false,
+  "created_at": "2026-11-15T06:29:14.654616+00:00"
+}

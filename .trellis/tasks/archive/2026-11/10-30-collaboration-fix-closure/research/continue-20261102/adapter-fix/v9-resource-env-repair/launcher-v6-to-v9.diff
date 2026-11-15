@@ -1,0 +1,55 @@
+--- /Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check-v6.py
++++ /Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check-v9.py
+@@ -10,7 +10,7 @@
+ 
+ 
+ EXPECTED_ROOT = Path("/Volumes/artisan/code/2026/mc-collaboration-final4-20261102")
+-ADAPTERS = Path("/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-bin")
++ADAPTERS = Path("/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin")
+ 
+ 
+ def require(condition, message):
+@@ -61,14 +61,14 @@
+     root = launcher.parents[3]
+     require(root == EXPECTED_ROOT, "Unexpected candidate checkout")
+     out = root / ".omx/private/final-candidate"
+-    record_path = out / "make-check-v6.json"
+-    log_path = out / "make-check-v6.log"
+-    safe_source = out / "check-source-v6.safe.env"
++    record_path = out / "make-check-v9.json"
++    log_path = out / "make-check-v9.log"
++    safe_source = out / "check-source-v9.safe.env"
+     require(not record_path.exists() and not log_path.exists() and not safe_source.exists(), "Never overwrite previous check evidence")
+     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+     require(not subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True).strip(), "Final candidate must start clean")
+-    clearance_path = out / "independent-review-clearance-v6.json"
+-    require(clearance_path.is_file(), "Pending independent v6 and current RKI6 result review")
++    clearance_path = out / "independent-review-clearance-v9.json"
++    require(clearance_path.is_file(), "Pending independent v9 and current RKI6 result review")
+     clearance = json.loads(clearance_path.read_text())
+     require(clearance.get("verdict") in ("pass", "pass-with-notes") and clearance.get("blocking_findings_open") == 0,
+             "Independent review has open blocking findings")
+@@ -86,7 +86,7 @@
+     # canonical, shell-quoted copy, never the original unparsed dotenv bytes.
+     values = parse_generated_environment(source_bytes.decode())
+     renderer = renderer_url(values)
+-    task_home = out / "full-check-home"
++    task_home = out / "full-check-home-v9"
+     values.update(HOME=str(task_home), GOCACHE="/Volumes/artisan/dev-cache/go-build",
+                   GOMODCACHE="/Users/artisan/go/pkg/mod", GOPATH="/Users/artisan/go")
+     env = {**os.environ, **values}
+@@ -103,10 +103,10 @@
+         PATH=str(ADAPTERS) + ":/opt/homebrew/opt/libpq/bin:" + env["PATH"],
+         MULTICA_TASK_REAL_GO="/opt/homebrew/bin/go", MULTICA_TASK_REAL_PNPM="/opt/homebrew/bin/pnpm",
+         MULTICA_TASK_PSQL="/opt/homebrew/opt/libpq/bin/psql", MULTICA_TASK_PACKAGE_DB_MODE="1",
+-        MULTICA_TASK_PACKAGE_DB_EVIDENCE=str(out / "go-packages-v6"), MULTICA_TASK_CANDIDATE_ROOT=str(root),
+-        MULTICA_TASK_RENDERER_URL=renderer, MULTICA_DEV_HOME=str(out / "dev-registry"),
+-        MULTICA_DEV_TMPDIR="/private/tmp/multica-final-check4-yxg6alb4", MULTICA_DEV_PROFILES_HOME=str(out / "profiles"),
+-        MULTICA_DEV_WORKSPACES_PARENT=str(out / "workspaces"), NEXT_TELEMETRY_DISABLED="1",
++        MULTICA_TASK_PACKAGE_DB_EVIDENCE=str(out / "go-packages-v9"), MULTICA_TASK_CANDIDATE_ROOT=str(root),
++        MULTICA_TASK_RENDERER_URL=renderer, MULTICA_DEV_HOME=str(out / "dev-registry-v9"),
++        MULTICA_DEV_TMPDIR="/private/tmp/multica-final-check4-yxg6alb4", MULTICA_DEV_PROFILES_HOME=str(out / "profiles-v9"),
++        MULTICA_DEV_WORKSPACES_PARENT=str(out / "workspaces-v9"), NEXT_TELEMETRY_DISABLED="1",
+         GOPROXY="file:///Users/artisan/go/pkg/mod/cache/download", GOSUMDB="off", GOTOOLCHAIN="local",
+         DATABASE_MAX_CONNS="10", DATABASE_MIN_CONNS="1", ENV_FILE=str(safe_source),
+     )

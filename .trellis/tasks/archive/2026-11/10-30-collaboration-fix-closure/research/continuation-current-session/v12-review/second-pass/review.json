@@ -1,0 +1,82 @@
+{
+  "recorded_at": "2026-11-03T08:37:57.607389+00:00",
+  "reviewer": "/root/v12_review",
+  "scope": "Three E2E files after original v12 directed failure; immutable b6c74033 comparison",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "files": [
+    {
+      "path": "e2e/fixtures/collaboration-editing.ts",
+      "base_commit": "b6c74033f1913e46418ec1b119da33236dcba805",
+      "immutable_base_sha256": "f6a33e2ccf36799ad3f8fb5a557599b7d71ce3a9a8be42140700482d2bf08207",
+      "reviewed_after_sha256": "085b5af7434d93e3c6efe659c51f7c83bff7ac5c9712a1413e480e4d0e92c58d",
+      "matches_root_precopy_registration": true,
+      "matches_second_pass_postfix_registration": true,
+      "snapshot": ".trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/v12-review/second-pass/reviewed-snapshot/e2e/fixtures/collaboration-editing.ts"
+    },
+    {
+      "path": "e2e/collaboration-editing-web.spec.ts",
+      "base_commit": "b6c74033f1913e46418ec1b119da33236dcba805",
+      "immutable_base_sha256": "3107232598be85c17368e409647d159eabae8976ccc7518267003395445cbd78",
+      "reviewed_after_sha256": "fa0aace8ffd19da4dc32eee5c01324df711e4089b79d5472649f54f71a4e3963",
+      "matches_root_precopy_registration": true,
+      "matches_second_pass_postfix_registration": true,
+      "snapshot": ".trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/v12-review/second-pass/reviewed-snapshot/e2e/collaboration-editing-web.spec.ts"
+    },
+    {
+      "path": "e2e/collaboration-account-desktop.spec.ts",
+      "base_commit": "b6c74033f1913e46418ec1b119da33236dcba805",
+      "immutable_base_sha256": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c",
+      "reviewed_after_sha256": "7e421e01c1eafbbe9bb3ae28513dd7c60d685ad5e84e2041bae255d6a98235df",
+      "matches_root_precopy_registration": true,
+      "matches_second_pass_postfix_registration": true,
+      "snapshot": ".trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/v12-review/second-pass/reviewed-snapshot/e2e/collaboration-account-desktop.spec.ts"
+    }
+  ],
+  "patch_sha256": "01678ed5a8c0480a4ec660a3a67a9a4209c73fa970efc2fe407597f77faf9dfa",
+  "preserved_discussion_recovery_body_byte_identical": true,
+  "explicit_AI_confirmation_unchanged": true,
+  "ordinary_comment_inputs_only": true,
+  "authority_checks_strengthened_hidden_buttons": true,
+  "canonical_source_UUID_to_identifier_assertion_added": true,
+  "underlying_UI": {
+    "workflow_path": "packages/views/collaboration/workflow.tsx",
+    "workflow_sha256": "a8848effe6d8b822369b2466ecce4e86f5dd67ec0ac5ca52ba6db7202ecc9e68",
+    "comment_path": "packages/views/collaboration/comment-composer.tsx",
+    "comment_sha256": "9281818cdd5fdadaed9701d6f4c2b11b5fbe054b90b88acfba97f836412cf9d3",
+    "explicit_confirmation_regression": "packages/views/collaboration/comment-composer.test.tsx:43"
+  },
+  "checked_existing_logs": [
+    {
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/failure-fixes/second-pass/views-workflow-comment-tests.log",
+      "sha256": "5779486fce2b32336bb0f8d121033002c7502e23b302a30367ea3a8a1bc44113",
+      "matches": true,
+      "reported_exit_code": 0
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/failure-fixes/second-pass/e2e-typecheck-final.log",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "matches": true,
+      "reported_exit_code": 0
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/failure-fixes/second-pass/playwright-discovery.log",
+      "sha256": "61bb85653556e85fcaac8b373376cb2dda186e678ab533b62720b04524c13226",
+      "matches": true,
+      "reported_exit_code": 0
+    }
+  ],
+  "new_repository_or_browser_tests_by_reviewer": 0,
+  "services_DB_Provider_calls": 0,
+  "evidence_correction": {
+    "original_preserved": "failure-fixes/second-pass/second-pass.patch",
+    "original_patch_bytes": 0,
+    "original_frozen_v12_source_hash_label": "post-copy working-tree hashes, not immutable b6 pre-change bytes",
+    "reconstruction": "immutable Git blobs plus root directed-replay-input-v2 before/after record and after source hashes",
+    "must_not_claim_v12_worktree_unchanged_after_E2E_replay_copy": true
+  },
+  "product_behavior_API_timeout_skip_changed": false,
+  "runtime_product_commit": "b6c74033f1913e46418ec1b119da33236dcba805",
+  "whole_product_acceptance": false,
+  "pending": "Both new maintenance lanes and final frozen successor rebinding/root actual evidence still require final review."
+}

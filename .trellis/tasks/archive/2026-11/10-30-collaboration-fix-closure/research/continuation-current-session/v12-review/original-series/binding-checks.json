@@ -1,0 +1,64 @@
+{
+  "recorded_at": "2026-11-03T08:44:23.148683+00:00",
+  "shared_registration_fields_changed": [
+    "authorization",
+    "executable",
+    "previous_owner_session",
+    "previous_registration",
+    "previous_registration_sha256",
+    "registered_at",
+    "registered_by_session",
+    "takeover_plan",
+    "takeover_readiness"
+  ],
+  "fields_added": [],
+  "fields_removed": [],
+  "exact_unchanged_runner": true,
+  "old_prerun_sha256": "ebdf45c5abbc74f68a459d4c7ab0b4f9ce65b5d81378c7ed72db53f6dec554c6",
+  "new_prerun_sha256": "58a3b385eb559c0fa420e2f06319b0db6b00243dd579794d455025c433949fe4",
+  "runner_sha256": "da39ef5ec1f0c6ae1607f16dacf82cd247bb1d70804a1880112127bd258f5042",
+  "executable_path": "/Users/artisan/.local/share/claude/versions/2.1.316",
+  "executable_sha256": "64c327e92b2c5e0f78c0a980c5a518121e1f0d140ca771ca5dd4488d1a2dcb3f",
+  "fixed_sources_framework": [
+    {
+      "arm": "baseline",
+      "cwd": "/Volumes/artisan/code/2026/mc-context-guard-baseline-20261102/server",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_files": {
+        "host_context_experiment_evidence_test.go": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+        "host_context_experiment_fixture_test.go": "0245a0719d82c3b9a2d1c754c7df27504b837776a4d04ac2bdb71864afa794d6",
+        "host_context_experiment_stop_test.go": "2ddb69382caac52ef6afbaf3b6e4246a07d52aa3c06f0a6e0b1b5f8453a8908d",
+        "host_context_experiment_test.go": "09e5d6cc4e1abca7cb332e6c2b30b563351021fcaf730d8ee6445b2257fa6893"
+      },
+      "framework_combined": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+      "dirty_paths": [
+        "?? server/internal/daemon/collaborationrun/host_context_experiment_evidence_test.go",
+        "?? server/internal/daemon/collaborationrun/host_context_experiment_fixture_test.go",
+        "?? server/internal/daemon/collaborationrun/host_context_experiment_stop_test.go",
+        "?? server/internal/daemon/collaborationrun/host_context_experiment_test.go"
+      ]
+    },
+    {
+      "arm": "after",
+      "cwd": "/Volumes/artisan/code/2026/mc-context-guard-after-20261102/server",
+      "source_commit": "835e7b046c6841e0945a59326bc4ddcbae4a0df7",
+      "framework_files": {
+        "host_context_experiment_evidence_test.go": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+        "host_context_experiment_fixture_test.go": "0245a0719d82c3b9a2d1c754c7df27504b837776a4d04ac2bdb71864afa794d6",
+        "host_context_experiment_stop_test.go": "2ddb69382caac52ef6afbaf3b6e4246a07d52aa3c06f0a6e0b1b5f8453a8908d",
+        "host_context_experiment_test.go": "09e5d6cc4e1abca7cb332e6c2b30b563351021fcaf730d8ee6445b2257fa6893"
+      },
+      "framework_combined": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+      "dirty_paths": [
+        " M server/internal/daemon/collaborationrun/host_context_experiment_fixture_test.go",
+        " M server/internal/daemon/collaborationrun/host_context_experiment_test.go",
+        "?? server/internal/daemon/collaborationrun/host_context_experiment_stop_test.go"
+      ]
+    }
+  ],
+  "held_status": "held_until_current_wholecheck_password_and_exclusive_window",
+  "clearance_absent": true,
+  "selected_outputs_absent": true,
+  "four_existing_checkonly_results_bound": true,
+  "new_Go_CLI_Provider_accounts_services_invocations": 0
+}

@@ -1,0 +1,24 @@
+{
+  "recorded_at": "2026-11-02T15:15:10.186784+00:00",
+  "fullcheck_record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v6.json",
+  "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "exit_code": 2,
+  "state": "failed_not_accepted",
+  "static_pass": 15,
+  "TS_pass": 13082,
+  "Go_completed_packages": 6,
+  "Go_named_pass": 1889,
+  "Go_named_fail": 3,
+  "Go_named_skip": 7,
+  "failure_package": "cmd/server",
+  "failed_tests": [
+    "TestSkillTemplateCatalog_RouterAndWorkspaceGates/member",
+    "TestSkillTemplateCatalog_RouterAndWorkspaceGates",
+    "TestSkillTemplateCopy_OrdinaryCreatePreservesSourceAndBindings"
+  ],
+  "failure_category": "API resource publishing environment enabled in ordinary router test without active organization",
+  "fresh_replay_required": true,
+  "Provider_calls": 0,
+  "Go_DB_and_logs_retained": true,
+  "browser_started": false
+}

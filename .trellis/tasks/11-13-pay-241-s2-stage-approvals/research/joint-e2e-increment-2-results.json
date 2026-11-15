@@ -1,0 +1,574 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-14T08:58:04.882041+00:00",
+  "owner": "/root/s2_e2e",
+  "status": "authoring_complete_static_fake_provider_verified_live_not_run",
+  "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "owned_files": [
+    {
+      "path": "e2e/collaboration-stage-approvals.spec.ts",
+      "sha256": "e08ac729902d007fc71a2bfa33017b2b1227f39726bde6389fac9bd946abe608"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-stage-approvals.ts",
+      "sha256": "104b50119ea53a97a8f688d2f9fba44fd5a46afd097db1adb8ecbab1941dcaea"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-runtime.ts",
+      "sha256": "88b357f0465cf6d4bb35036a683467f05173aaa64c282f24ad634df1baff3519"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-provider.go",
+      "sha256": "fc1095dc4fea11ad6a3e0a96647d99996687ba10937c00ebda53097f26fcd77f"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-provider_test.go",
+      "sha256": "4830a9dd03ea6e9212918418eb0654d62f77b0fbbff6e70df7bdc52d8ad9f4a3"
+    }
+  ],
+  "source_snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/final-source",
+  "original_increment1_preserved": true,
+  "dispatch_wire_sha256": "a71d71570cf1f337d0f8c299e77e307e6d37516dd516eaa6e0882548c5669520",
+  "context_files": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md",
+      "sha256": "6b5d4a192263b7543d6d0adac1ad16aba3b5a38251d7b48cf9c7a18029fe4485"
+    },
+    {
+      "path": "server/internal/daemon/collaboration_host_router_test.go",
+      "sha256": "6ea88ebb555918c2e75878dca7addbc0af11adc5dadb6604fb8fad230fa70aab"
+    },
+    {
+      "path": "server/internal/daemon/collaboration_host_router_boundary_test.go",
+      "sha256": "3ad39578ecca2cbcf57c1237df3bb20f0567a6b9b75d0261ebb706b95a24e61a"
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-report-schema.ts",
+      "sha256": "5c1592a40abf86a399b074b3c5e7ce3363c3e7d7e1216056c25b22ffc93ce66a"
+    },
+    {
+      "path": "packages/views/collaboration/stage-test-report.tsx",
+      "sha256": "a846404b40eb171456a47ec543b8ec3970b4687dcafb8a1eb92c6fc73f38756b"
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-panel.tsx",
+      "sha256": "e0ceb537d9439f0d3b3686f90f1251591c6bb8978224d109dc88f7635e9f3989"
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-forms.tsx",
+      "sha256": "634263dad2405ed777148f422a611333394a167690aa85c2d4faf0c510b55600"
+    },
+    {
+      "path": "packages/views/collaboration/comment-composer.tsx",
+      "sha256": "cfce6a82e9bf2e783c32bb96ebd6b80ae676d1348100dad56548b03e33bc154e"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-performance.ts",
+      "sha256": "75d25dc3f531fa80ca807d7f3da95a0bcc746082702bcf966f225f09b9d6471a"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-performance-stats.ts",
+      "sha256": "a728075a5d1c5d52ef13929dc3cda5c5427cc6cc1adb8f1874f823d0f2b3a73d"
+    }
+  ],
+  "runs": [
+    {
+      "id": "provider-red-1",
+      "exit_code": 1,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/provider-red-1.log",
+      "log_sha256": "a968231bd24d30195fc726c2dff09282e742b08f24e60ad1cef37d199bb0ddf3",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/provider-red-1.exit",
+      "tests": [
+        {
+          "name": "TestFixtureTestReportUsesPreparedSourceAndOriginalCLIReceipt/none",
+          "action": "fail"
+        },
+        {
+          "name": "TestFixtureTestReportUsesPreparedSourceAndOriginalCLIReceipt/duplicate_effect",
+          "action": "fail"
+        },
+        {
+          "name": "TestFixtureTestReportUsesPreparedSourceAndOriginalCLIReceipt",
+          "action": "fail"
+        },
+        {
+          "name": "TestFixtureTestSubjectUnavailableIsNotAPassingReport",
+          "action": "fail"
+        }
+      ],
+      "counts": {
+        "fail": 4
+      },
+      "top_level_count": 2
+    },
+    {
+      "id": "provider-green-1",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/provider-green-1.log",
+      "log_sha256": "8133995f99704f409f62d5f5131c34638c74c7665c5742e96eb0d0dd07507719",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/provider-green-1.exit",
+      "tests": [
+        {
+          "name": "TestFixtureTestReportUsesPreparedSourceAndOriginalCLIReceipt/none",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixtureTestReportUsesPreparedSourceAndOriginalCLIReceipt/duplicate_effect",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixtureTestReportUsesPreparedSourceAndOriginalCLIReceipt",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixtureTestSubjectUnavailableIsNotAPassingReport",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePaymentCasesRejectUnboundedOrUnrelatedMarkers",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixtureReleaseFailureKeepsDefaultSuccessSeparate",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptAcceptsManagedKnowledgeSuffix",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/no_knowledge",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/whitespace_only",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/valid_empty_array",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/valid_array_trailing_whitespace",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/garbage_suffix",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/second_frozen_value",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/wrong_marker",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/extra_prefix_whitespace",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/malformed_array",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/not_array",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/knowledge_second_value",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/knowledge_garbage_tail",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/hash_mismatch",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/invalid_candidate",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/invalid_source",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/zero_version",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/noncanonical_version",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/duplicate_identity",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptStillRequiresAdmittedIssueAndInputs/missing",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptStillRequiresAdmittedIssueAndInputs/wrong_issue",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptStillRequiresAdmittedIssueAndInputs/missing_inputs",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptStillRequiresAdmittedIssueAndInputs",
+          "action": "pass"
+        }
+      ],
+      "counts": {
+        "pass": 30
+      },
+      "top_level_count": 7
+    },
+    {
+      "id": "provider-output-red-1",
+      "exit_code": 1,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/provider-output-red-1.log",
+      "log_sha256": "90e3220df31b11e46faccd23fede9cbe84aa6023f8125cf7c256e33753486631",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/provider-output-red-1.exit",
+      "tests": [
+        {
+          "name": "TestFixtureCLIOutputLimitAlsoAppliesToPipeCopies",
+          "action": "fail"
+        }
+      ],
+      "counts": {
+        "fail": 1
+      },
+      "top_level_count": 1
+    },
+    {
+      "id": "provider-green-2",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/provider-green-2.log",
+      "log_sha256": "3da240e41028b1c3b89c0844f68909b52225510edb0a909c8ee2ccd65c1d735d",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/provider-green-2.exit",
+      "tests": [
+        {
+          "name": "TestFixtureTestReportUsesPreparedSourceAndOriginalCLIReceipt/none",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixtureTestReportUsesPreparedSourceAndOriginalCLIReceipt/duplicate_effect",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixtureTestReportUsesPreparedSourceAndOriginalCLIReceipt",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixtureTestSubjectUnavailableIsNotAPassingReport",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePaymentCasesRejectUnboundedOrUnrelatedMarkers",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixtureReleaseFailureKeepsDefaultSuccessSeparate",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixtureCLIOutputLimitAlsoAppliesToPipeCopies",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptAcceptsManagedKnowledgeSuffix",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/no_knowledge",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/whitespace_only",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/valid_empty_array",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/valid_array_trailing_whitespace",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/garbage_suffix",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/second_frozen_value",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/wrong_marker",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/extra_prefix_whitespace",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/malformed_array",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/not_array",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/knowledge_second_value",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/knowledge_garbage_tail",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/hash_mismatch",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/invalid_candidate",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/invalid_source",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/zero_version",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/noncanonical_version",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/duplicate_identity",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptStillRequiresAdmittedIssueAndInputs/missing",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptStillRequiresAdmittedIssueAndInputs/wrong_issue",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptStillRequiresAdmittedIssueAndInputs/missing_inputs",
+          "action": "pass"
+        },
+        {
+          "name": "TestFixturePromptStillRequiresAdmittedIssueAndInputs",
+          "action": "pass"
+        }
+      ],
+      "counts": {
+        "pass": 31
+      },
+      "top_level_count": 8
+    },
+    {
+      "id": "typecheck-1",
+      "exit_code": 2,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/typecheck-1.log",
+      "log_sha256": "8b91af5f1591e795b93adc81e36416fd0af42d5fedc9e4245b08cda1416b5e5d",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/typecheck-1.exit"
+    },
+    {
+      "id": "typecheck-2",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/typecheck-2.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/typecheck-2.exit"
+    },
+    {
+      "id": "typecheck-3",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/typecheck-3.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/typecheck-3.exit"
+    },
+    {
+      "id": "typecheck-4",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/typecheck-4.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/typecheck-4.exit"
+    },
+    {
+      "id": "lint-1",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/lint-1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/lint-1.exit"
+    },
+    {
+      "id": "lint-2",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/lint-2.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/lint-2.exit"
+    },
+    {
+      "id": "lint-3",
+      "exit_code": 1,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/lint-3.log",
+      "log_sha256": "54f3e2472ece24d0796eccbd49f8d8a73c30c3efcecba1430d642e19dd74931c",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/lint-3.exit"
+    },
+    {
+      "id": "lint-4",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/lint-4.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/lint-4.exit"
+    },
+    {
+      "id": "host-node-1",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/host-node-1.log",
+      "log_sha256": "82b7bd12ab4ebfea7c3937db24f0d3c03fa9b1a047130a58052836caa2c7fc63",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/host-node-1.exit"
+    },
+    {
+      "id": "discovery-1",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/discovery-1.log",
+      "log_sha256": "4a88e8156edbb526d8c6c26f8f1f2bf4d5fa8379a960b5921499f3344280e307",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/discovery-1.exit"
+    },
+    {
+      "id": "discovery-2",
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/discovery-2.log",
+      "log_sha256": "4a88e8156edbb526d8c6c26f8f1f2bf4d5fa8379a960b5921499f3344280e307",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/discovery-2.exit"
+    }
+  ],
+  "final_check_ids": [
+    "typecheck-4",
+    "lint-4",
+    "provider-green-2",
+    "host-node-1",
+    "discovery-2"
+  ],
+  "metadata": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/source-before.json",
+      "sha256": "66a4ab5aa6a18259845699e418fb4dbc24216056db968eac20e92e49a6be98c1"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/tsconfig.json",
+      "sha256": "6d05e4a90f7a5a7538aee3e89aacb951207846f21964fd551721b844babad458"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/eslint.config.mjs",
+      "sha256": "b458d4a78adfe09e7e64125da8b8a674a2163787fd9a8e5781c79b4488a9af34"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/final-verification.json",
+      "sha256": "f9879e54926ed0c719d0a5a8d2b0569f31817ee3079ed598eb1713f4f9edbb54"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/final-verification-attempt3.json",
+      "sha256": "b9ee69dd873e260315880b2cf3a3878cf1383ccef42fcc3f2a30504d62b52628"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/provider-final-verification.json",
+      "sha256": "1d1f8bdffb890e5baa938f614e23e92c9f02c173b709ae7551c33b03f1f561dc"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/joint-e2e-increment-2-results.md",
+      "sha256": "37d4e29e075c8b0c27ac913dfc26cbc9cd13fa1f660cf5039298654934064243"
+    }
+  ],
+  "whitespace": [
+    {
+      "path": "e2e/collaboration-stage-approvals.spec.ts",
+      "exit": 1,
+      "diagnostic_bytes": 0
+    },
+    {
+      "path": "e2e/fixtures/collaboration-stage-approvals.ts",
+      "exit": 1,
+      "diagnostic_bytes": 0
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-runtime.ts",
+      "exit": 1,
+      "diagnostic_bytes": 0
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-provider.go",
+      "exit": 1,
+      "diagnostic_bytes": 0
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-provider_test.go",
+      "exit": 1,
+      "diagnostic_bytes": 0
+    }
+  ],
+  "gofmt": {
+    "exit": 0,
+    "diagnostics": 0
+  },
+  "runtime_execution": {
+    "playwright_test_bodies": 0,
+    "live_api_calls": 0,
+    "database_connections": 0,
+    "browser_launches": 0,
+    "daemon_launches": 0,
+    "model_calls": 0,
+    "git_writes": 0,
+    "fake_cli_processes": "Only exact current Go test executable, fake JSON subject/submit/receipt, no network/account resolution"
+  },
+  "authored_a05": [
+    "real local Git commits/bundle source, dirty/untracked exclusion controls",
+    "bare Host ordinary run => CLI subject unavailable, no report or QA approval",
+    "current human C1 through existing typed mention preview/send",
+    "actual controlled provider CLI T1/T2/T3 with immutable report and original key",
+    "failed case + settled execution failure, explicit QA return/rework",
+    "new command/run/binding/report, old failure/QA return retained",
+    "full T4 report selection and explicit human QA approval => release stage, artifact null retained"
+  ],
+  "runtime_preconditions": [
+    "S2 2d public policy activation and all write guards complete",
+    "fresh task-owned database and source-bound API/CLI/productionWeb/Desktop",
+    "new base Host provider supporting --fixture-capabilities, not closure provider",
+    "new Host daemon harness with optional Git, explicit COLLABORATION_STAGE_GIT",
+    "outbound email and real GitHub refresh credentials disabled for synthetic S2 run"
+  ],
+  "limits": [
+    "No actual prepared Git/runtime/report/QA E2E ran; A05/A01-A12/S2 stay NOT_RUN.",
+    "Source-only null artifact is not build approval; release/rollback/M1/admin paths remain future.",
+    "The Go tests used fake CLI JSON and local marker files, not actual API or Git materialization.",
+    "Server Git harness tests belong to s2_server, not this evidence."
+  ],
+  "remaining": "Root independently review then run only after2d; keep first configured failures and complete final acceptance elsewhere.",
+  "wire_update_at_completion": {
+    "sha256": "6b5d4a192263b7543d6d0adac1ad16aba3b5a38251d7b48cf9c7a18029fe4485",
+    "change": "Section13.16 marks2b T1-T4/C1/QA served; inspected A7 and report shapes remain the frozen contracts used here."
+  }
+}

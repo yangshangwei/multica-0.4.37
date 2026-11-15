@@ -1,0 +1,97 @@
+{
+  "state": "normal2_original_failure_preserved",
+  "recorded_at": "2026-11-04T10:47:34.349112+00:00",
+  "exit_status": 1,
+  "accepted": false,
+  "top_named_counts": {
+    "TestRK1KnowledgeEntryGuard": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeWrapperGuard": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgePromptData": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeTraceCredentialLabels": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeNativeMetadataUsesRawOutput": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeEvidenceFaults": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeFakeProof": {
+      "run": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    }
+  },
+  "fail_events": 3,
+  "skip_events": 0,
+  "source_after_pass": true,
+  "files": {
+    "started.json": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/runs/rk1k-normal-v16-02/started.json",
+      "sha256": "15b489eaad8d04382c058268172bec2bc1c6962045b993087ffac8218e639b0f"
+    },
+    "result.json": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/runs/rk1k-normal-v16-02/result.json",
+      "sha256": "5f0318d97719bbafb21ffd124e909cf14aee07fc749356edaa1f2e4783717ce1"
+    },
+    "tests.jsonl": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/runs/rk1k-normal-v16-02/tests.jsonl",
+      "sha256": "b0dc5f46aef5428dd86d210159867abe3d801d77fd23ff9cd489a5e6bb934084"
+    }
+  },
+  "failure": "First K1 newConsumer fx.Runtime insert collides with agent_runtime_workspace_id_daemon_id_provider_idx SQLSTATE23505",
+  "partial_fixed_schedule_counts": {
+    "measured_fake_starts": 1,
+    "fake_seed_starts": 0,
+    "paid_starts": 0
+  },
+  "sample_records": [
+    {
+      "label": "E0b",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/runs/rk1k-normal-v16-02/proof/E0b/samples/E0b.json",
+      "sha256": "969447009edec7ccd01b30d7406c417dd1079cdc73fd1c6a752d46fa1f5c8d02",
+      "state": "finished",
+      "verdict": "pass"
+    }
+  ],
+  "summary_exists": false,
+  "six_after": {
+    "server/cmd/server/rk1k_fixture_test.go": "9ad91d89d9f43c63759c69274db18c99108b49de7000e6a74a7a08bbb872e0d8",
+    "server/cmd/server/rk1k_provider_test.go": "114439c31ac397e3195ae23e806487f3c02df1cae9bd422d90b73db66f879924",
+    "server/cmd/server/rk1k_scenarios_test.go": "7cd1780f910bc350dadf607aeb8c0f8451eb926da95556241ca5baaeb9289217",
+    "server/cmd/server/rk1k_evidence_test.go": "198402547160cfe530faf9175efe802ee19370eed4ab62bdc6dec8290b3b7717",
+    "server/cmd/server/rk1k_entry_test.go": "e58fff97a4654f32363b9cbb5be1e5562100354747a79a091747ec1dbb2e4844",
+    "server/internal/daemon/rk1k_driver_agentintegration.go": "b0ed3e55972f3f8208bfde741d73ae419d83acca316ee0e109eed8e643f002e0"
+  },
+  "old17_unchanged": true,
+  "fixture_rejected_bytes_frozen": true,
+  "race2_ready": false,
+  "retried": false,
+  "new_model_or_stage_or_commit_activity": false,
+  "real_Provider_calls": 0
+}

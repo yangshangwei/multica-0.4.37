@@ -1,0 +1,37 @@
+{
+  "recorded_at": "2026-11-15T09:14:59.183548+00:00",
+  "state": "candidate_detail_journey_repaired_rebuild_required",
+  "original_failure_report": "research/p6-original-candidate-detail-failure-f9a40679.json",
+  "changed_files": [
+    "e2e/project-knowledge-automation.spec.ts"
+  ],
+  "candidate_mirror": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/e2e/project-knowledge-automation.spec.ts",
+  "original_bytes": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/p6-review-opening-repair-f9a40679/project-knowledge-automation.original.spec.ts",
+  "original_sha256": "af0b644f25a9089c55ca9ce8604f405458576b967df1572d4851d0b6397b35a0",
+  "corrected_sha256": "6635894c5de46cc7349bb8871f425780dbb1bdd9854f6f5062b30f81727663b7",
+  "source_id_before": "2ac0b36939db68ff2e767f2f86f50a06586506cb70e17a34a49af22cbb622198",
+  "source_id_after": "32f271d5bd4a8dd6954f847e430291998b5ed5db6d7e800b10b6c50dbd098268",
+  "source_map_changed_paths": [
+    "e2e/project-knowledge-automation.spec.ts"
+  ],
+  "controller_bytes_unchanged": true,
+  "contract": [
+    ".trellis/spec/views/frontend/collaboration-knowledge.md: candidate detail owns model proposal/system rule adoption, exact delivery/acceptance, rule version and honest evidence",
+    "packages/views/collaboration/knowledge-panel.tsx: candidate row opens KnowledgeReview",
+    "packages/views/collaboration/knowledge-review.tsx: origins and source link live in selected detail",
+    "server/internal/service/collaboration_knowledge_automation_settle.go: automatic evidence stays empty; no model verdict becomes a verified test"
+  ],
+  "assertions_added": [
+    "real candidate click and visible review",
+    "Server AI separate from System rule",
+    "actual rule version",
+    "exact saved body",
+    "empty model-produced evidence and no Verified by proposer claim",
+    "visible exact acceptance/source link containing full source and submission UUID"
+  ],
+  "product_source_changed": false,
+  "frontend_scope_carry": "e2e assertion only; full isolated frontend 14112/0/0 unchanged; exact source map delta retained",
+  "runtime_source_ready": false,
+  "current_root_acceptance_verified": false,
+  "final_acceptance_verified": false
+}

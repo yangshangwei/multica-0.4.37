@@ -1,0 +1,627 @@
+{
+  "schema_version": 1,
+  "increment": "2b-artifact-read-acl-independent-check",
+  "status": "pass_bounded_correction",
+  "reviewer": "/root/s2_check_resume",
+  "recorded_at": "2026-11-14T10:30:16.230800+00:00",
+  "closed_findings": [
+    {
+      "id": "S2B-C01",
+      "severity": "P1",
+      "state": "closed",
+      "basis": "exact original artifact authority, pre-pagination run gate, protected QA reference, independent normal/race and HTTP adapter regressions"
+    }
+  ],
+  "open_blocking_findings": [],
+  "reviewer_product_writes": false,
+  "reviewer_git_writes": false,
+  "schema_migration_or_gate_writes": false,
+  "activation_available": false,
+  "source": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source",
+    "files": 4894,
+    "overlay_files": [
+      {
+        "path": "server/internal/handler/collaboration_stage_test.go",
+        "sha256": "a968c37584682494c590302d6f4d1d5d1a2b255f3f792dc624f8b53fc4770ce2",
+        "base_sha256": "aca6ef05cec405c272b9c0ca7b235d3c91c13d7671550dbb5505bbbf7647b809"
+      },
+      {
+        "path": "server/internal/service/collaboration_test_report_view.go",
+        "sha256": "0d3eca7d40f51798266ddeb49a09bc61c3b09485147252cf596890d49b338f83",
+        "base_sha256": "33f4b40619ec5f050e8b9776af92e881d95752985059c2615e364df3bd503736"
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_qa.go",
+        "sha256": "abaf0f98851ebb6ebb501a354c70ab3a96bda3f64ab7d99d341d7373b38d9dd5",
+        "base_sha256": "e75059b605327b43eeca02bad5630a2f0f76d8b5879a593cd589b554d53d1e94"
+      },
+      {
+        "path": "server/internal/service/collaboration_test_report_artifact_test.go",
+        "sha256": "ac3290191de8af13655f05008adbb94aecee5b20354d1cffcab1accb0c92ef74",
+        "base_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_evidence_read.go",
+        "sha256": "cfa66007851859c8b62f022937773c538db0f686e2e94f2aadc2360f7325e9b2",
+        "base_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_test_subject.go",
+        "sha256": "6ae551c727f3de62ea2d267cb19790b745b37642f6260efe8e43a6b7f08efa7d",
+        "base_sha256": "9a47a1d752d0e1c5193ee338abae4efb13ea21ab2cea5b001fbc5ccd409ba4a1"
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_review_test.go",
+        "sha256": "aa20739aaf5e381768b73ab48ed79457d03326d20a16fb81785440fc7a483d1c",
+        "base_sha256": "6b55c53c798962dfa266baaa0837dd2d3447a83dc48ef46e8e81fb3d011d0494"
+      },
+      {
+        "path": "server/internal/service/collaboration_test_report_http_test.go",
+        "sha256": "0ba3901ebc49264a770a1f0e997b61cad94f78abee9927e7e8dc68da9b4dbc12",
+        "base_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_review_view.go",
+        "sha256": "cfd422ad8350d9c6a59d7b4253cef106d090db2b96a064e962f04977e88686ac",
+        "base_sha256": "ecb3fade3f27a8fe9c8be5540cf34d7ac4788ff42b6ff0ba074bc35630bb5910"
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_review_types.go",
+        "sha256": "d26f0662fcb36ffe2f08b638d886f8f39381d39380a95df7606fe64cc4e8f8c6",
+        "base_sha256": "4e10961e17cfd3f53b5ce6478c01e1063d47c9a55384340da0ba1f3cc5246526"
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_execution_serialization_test.go",
+        "sha256": "d24046c1c83ce4ea6939a3ea183a7ec64dd25ba0791fa6be4286bd7fd61b00dc",
+        "base_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_review.go",
+        "sha256": "808628705743ad13c0b7aad6cf4acc346f061c472629a6810c14d4dfd09bbc76",
+        "base_sha256": "82f14c257b9d6b98ef0f6d4ab2e3945c59e29a39cfcc86093a331f9d405ccd3b"
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_execution_types.go",
+        "sha256": "5815bc554fd2b1ce7f184f171f776a2fc2c2a6da1795fe74ee1034502fa1348d",
+        "base_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_test_report_test.go",
+        "sha256": "2e44ca4836a60fc21f3344adf2807691ec3c85dcbdfc35980bafab3d46f33696",
+        "base_sha256": "79625bfc1aeeb9020a7138787734a8fe80a5e1718e28a6a0792d51994a92fff6"
+      }
+    ],
+    "binding": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/input-check.json",
+    "binding_sha256": "fd37caa619833156225fd78fa41ea5c8c27b7cbc072f32722cf18a07b1d19a08",
+    "postcheck_audit": {
+      "at": "2026-11-14T10:28:40.769543+00:00",
+      "files_checked": 4894,
+      "input_check_sha256": "fd37caa619833156225fd78fa41ea5c8c27b7cbc072f32722cf18a07b1d19a08",
+      "errors": []
+    }
+  },
+  "verification": [
+    {
+      "id": "service-normal",
+      "started_at": "2026-11-14T10:24:12.086581+00:00",
+      "finished_at": "2026-11-14T10:24:46.643889+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_impl_service.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server",
+        "test",
+        "./internal/service",
+        "-run",
+        "^TestStage(ArtifactReport|TestReportUnboundRunKeepsAuthorizedEmptyList|ReviewRequestPreservesPreExecutionCanonicalBytes|TestReportOriginalCandidateConcurrentRecoveryAndPrivacy|QAPassedReportNeedsSuccessfulSettledExecution)",
+        "-count=1",
+        "-json"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/service-normal.log",
+      "log_sha256": "27c4c474e10d9182446bfa467350e0679ce9bbc8e652b297ad4adfd26df27772",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/service-normal.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [
+          "TestStageReviewRequestPreservesPreExecutionCanonicalBytes/code_review",
+          "TestStageReviewRequestPreservesPreExecutionCanonicalBytes/qa",
+          "TestStageReviewRequestPreservesPreExecutionCanonicalBytes",
+          "TestStageArtifactReportReadAuthorityMatchesR4",
+          "TestStageArtifactReportQAReferenceUsesCurrentManager",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/list",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/detail",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/r4",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/qa_reference",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA",
+          "TestStageArtifactReportRevocationBeforeAuthorityLockDiscardsSnapshot/list",
+          "TestStageArtifactReportRevocationBeforeAuthorityLockDiscardsSnapshot/detail",
+          "TestStageArtifactReportRevocationBeforeAuthorityLockDiscardsSnapshot",
+          "TestStageArtifactReportCachedCursorDoesNotRestoreAuthority",
+          "TestStageArtifactReportEmptyListStillChecksFrozenSource",
+          "TestStageTestReportUnboundRunKeepsAuthorizedEmptyList",
+          "TestStageTestReportOriginalCandidateConcurrentRecoveryAndPrivacy",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/success",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/failed_execution",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/unsettled",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/failed_case",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution",
+          "TestStageArtifactReportHTTPReadAuthorityEnvelope"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "environment": "compile commands use checker HOME/TMP and explicit Go caches; DB launcher verifies allocated identity and loads package-private HOME/TMP"
+    },
+    {
+      "id": "service-race",
+      "started_at": "2026-11-14T10:24:46.644243+00:00",
+      "finished_at": "2026-11-14T10:25:30.074747+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_race_service.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server",
+        "test",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^TestStageArtifactReport",
+        "-count=1",
+        "-json"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/service-race.log",
+      "log_sha256": "011553bf3700ffb3bba48e099d81f80ef2af9d18b362be7849b0a3f44583bb22",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/service-race.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [
+          "TestStageArtifactReportReadAuthorityMatchesR4",
+          "TestStageArtifactReportQAReferenceUsesCurrentManager",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/list",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/detail",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/r4",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/qa_reference",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA",
+          "TestStageArtifactReportRevocationBeforeAuthorityLockDiscardsSnapshot/list",
+          "TestStageArtifactReportRevocationBeforeAuthorityLockDiscardsSnapshot/detail",
+          "TestStageArtifactReportRevocationBeforeAuthorityLockDiscardsSnapshot",
+          "TestStageArtifactReportCachedCursorDoesNotRestoreAuthority",
+          "TestStageArtifactReportEmptyListStillChecksFrozenSource",
+          "TestStageArtifactReportHTTPReadAuthorityEnvelope"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "environment": "compile commands use checker HOME/TMP and explicit Go caches; DB launcher verifies allocated identity and loads package-private HOME/TMP"
+    },
+    {
+      "id": "handler-normal",
+      "started_at": "2026-11-14T10:25:30.075000+00:00",
+      "finished_at": "2026-11-14T10:25:46.464215+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_impl_handler.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server",
+        "test",
+        "./internal/handler",
+        "-run",
+        "^Test(CollaborationStage|Stage)",
+        "-count=1",
+        "-json"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/handler-normal.log",
+      "log_sha256": "4e17c5bfb4bb24b8591c7ebde9416c7e98d64f8a98f6adb33154e670473d2766",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/handler-normal.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [
+          "TestStageDescendantMoveAndBatchRefuseExactAdmissionCode",
+          "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/machine/start",
+          "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/machine/waiting-local-directory",
+          "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/human/start",
+          "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/human/waiting-local-directory",
+          "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation",
+          "TestStageHTTPCodeReviewContractAndProtectedEvidence",
+          "TestStageHTTPReviewStrictBodies/absent_supersedes",
+          "TestStageHTTPReviewStrictBodies/absent_artifact",
+          "TestStageHTTPReviewStrictBodies/upper_alias",
+          "TestStageHTTPReviewStrictBodies/unknown_field",
+          "TestStageHTTPReviewStrictBodies/short_head",
+          "TestStageHTTPReviewStrictBodies",
+          "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists",
+          "TestStageHTTPStrictBodies",
+          "TestStageHTTPActionsConfirmationsRefusalsAndRecovery",
+          "TestStageAdmissionThroughOrdinaryIssueHandlers",
+          "TestStageHTTPScopeConfirmationRequiresExplicitVerifiedCode",
+          "TestStageHTTPTestReportPurposeAndMalformedBodies",
+          "TestStageHTTPCreateOnlyTestSubjectMalformed",
+          "TestStageGitHubOlderEventCannotRestoreOldHeadOrLinks",
+          "TestStageBarrierClosed_Unstaged/last_child_still_leaves_a_sibling_open",
+          "TestStageBarrierClosed_Unstaged/every_child_terminal_closes_the_single_implicit_stage",
+          "TestStageBarrierClosed_Unstaged/a_backlog_sibling_holds_the_barrier_open_(no_surprise_cascade)",
+          "TestStageBarrierClosed_Unstaged/cancelled_counts_as_terminal",
+          "TestStageBarrierClosed_Unstaged",
+          "TestStageBarrierClosed_Staged/stage_1_not_fully_done_does_not_fire",
+          "TestStageBarrierClosed_Staged/closing_stage_1_fires_even_though_later_stages_are_parked",
+          "TestStageBarrierClosed_Staged/closing_stage_2_fires_when_stages_1_and_2_are_terminal",
+          "TestStageBarrierClosed_Staged/final_stage_closes_once_its_child_finishes",
+          "TestStageBarrierClosed_Staged",
+          "TestStageProgressSummary",
+          "TestStageProgressSummary_FinalStageNoNext",
+          "TestStageProgressSummary_SkipsUnstaged",
+          "TestStageAdvanceInstruction/a_known_next_stage_points_the_leader_at_it",
+          "TestStageAdvanceInstruction/no_created_next_stage_does_not_assert_finality",
+          "TestStageAdvanceInstruction",
+          "TestStageBarrierClosed_CancelledClosesStage/staged:_cancelling_the_last_open_child_closes_the_stage",
+          "TestStageBarrierClosed_CancelledClosesStage/unstaged:_cancel_of_the_last_open_child_closes_the_implicit_stage",
+          "TestStageBarrierClosed_CancelledClosesStage",
+          "TestStageBarrierClosed_UnstagedIgnoredInStagedSet/a_non-terminal_unstaged_child_does_not_block_stage_1",
+          "TestStageBarrierClosed_UnstagedIgnoredInStagedSet/completing_an_unstaged_child_in_a_staged_set_closes_nothing",
+          "TestStageBarrierClosed_UnstagedIgnoredInStagedSet",
+          "TestStageLeaderPrepareTimeoutRetryCanAdvanceNextStage"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "environment": "compile commands use checker HOME/TMP and explicit Go caches; DB launcher verifies allocated identity and loads package-private HOME/TMP"
+    },
+    {
+      "id": "vet",
+      "started_at": "2026-11-14T10:25:46.464561+00:00",
+      "finished_at": "2026-11-14T10:25:49.322073+00:00",
+      "command": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server",
+        "vet",
+        "./internal/service",
+        "./internal/handler"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/vet.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/vet.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [],
+        "fail": [],
+        "skip": []
+      },
+      "environment": "compile commands use checker HOME/TMP and explicit Go caches; DB launcher verifies allocated identity and loads package-private HOME/TMP"
+    },
+    {
+      "id": "build",
+      "started_at": "2026-11-14T10:25:49.322254+00:00",
+      "finished_at": "2026-11-14T10:25:59.473724+00:00",
+      "command": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server",
+        "build",
+        "./..."
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/build.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/build.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [],
+        "fail": [],
+        "skip": []
+      },
+      "environment": "compile commands use checker HOME/TMP and explicit Go caches; DB launcher verifies allocated identity and loads package-private HOME/TMP"
+    },
+    {
+      "id": "gofmt",
+      "command": [
+        "gofmt",
+        "-l",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server/internal/handler/collaboration_stage_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server/internal/service/collaboration_test_report_view.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server/internal/service/collaboration_stage_qa.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server/internal/service/collaboration_test_report_artifact_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server/internal/service/collaboration_stage_evidence_read.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server/internal/service/collaboration_test_subject.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server/internal/service/collaboration_stage_review_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server/internal/service/collaboration_test_report_http_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server/internal/service/collaboration_stage_review_view.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server/internal/service/collaboration_stage_review_types.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server/internal/service/collaboration_stage_execution_serialization_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server/internal/service/collaboration_stage_review.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server/internal/service/collaboration_stage_execution_types.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/source/server/internal/service/collaboration_test_report_test.go"
+      ],
+      "exit_code": 0,
+      "empty_output": true,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/gofmt.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/gofmt.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    }
+  ],
+  "implementation_evidence_audit": {
+    "report": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2b-acl-fix-results.json",
+    "report_sha256": "addeb97b2905eb1308c73124f9e7783dba426fb960d9e2582a22c6c406306869",
+    "runs": [
+      {
+        "id": "build-final-1",
+        "exit": 0,
+        "named_counts": {
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/build-final-1.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/build-final-1.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "id": "extended-1",
+        "exit": 1,
+        "named_counts": {
+          "pass": 8,
+          "fail": 3,
+          "skip": 0
+        },
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/extended-1.log",
+        "sha256": "090d506010aa6b606b49f00629c43d6bd2f32aa78c55317c09d7211364a3ee40",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/extended-1.exit",
+        "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      },
+      {
+        "id": "extended-2",
+        "exit": 1,
+        "named_counts": {
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/extended-2.log",
+        "sha256": "5edf86ef566979fdf8bcbd11ba6ab7c3a268ee9e0b8b28274187412c015aa4db",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/extended-2.exit",
+        "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      },
+      {
+        "id": "extended-3",
+        "exit": 1,
+        "named_counts": {
+          "pass": 12,
+          "fail": 2,
+          "skip": 0
+        },
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/extended-3.log",
+        "sha256": "950eda5c7d88a8c221f0df1b0f27782415e1669383de57d212153b76b0a77caa",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/extended-3.exit",
+        "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      },
+      {
+        "id": "format-final-1",
+        "exit": 0,
+        "named_counts": {
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/format-final-1.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/format-final-1.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "id": "green-1",
+        "exit": 0,
+        "named_counts": {
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/green-1.log",
+        "sha256": "7dd8190ef985cb8ddcf2fe674ba5be9fc8ab98dfc25af6d59a45d1e2b84c83b1",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/green-1.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "id": "handler-normal-final-1",
+        "exit": 0,
+        "named_counts": {
+          "pass": 44,
+          "fail": 0,
+          "skip": 0
+        },
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/handler-normal-final-1.log",
+        "sha256": "7477ebc453bf35574b5b854dd99cc690f4e250d7aa505f3eac2ffddcf183832a",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/handler-normal-final-1.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "id": "handler-race-final-1",
+        "exit": 0,
+        "named_counts": {
+          "pass": 44,
+          "fail": 0,
+          "skip": 0
+        },
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/handler-race-final-1.log",
+        "sha256": "c2515cc21adffd73af83b90769379d693afef0bba7a3b33a770a7d6d10d5f78d",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/handler-race-final-1.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "id": "red-1",
+        "exit": 1,
+        "named_counts": {
+          "pass": 0,
+          "fail": 1,
+          "skip": 0
+        },
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/red-1.log",
+        "sha256": "5724d6f6cafe3fe27f2c5a8b2c7e33196b40449fab117f187eebe12025256692",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/red-1.exit",
+        "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      },
+      {
+        "id": "red-2",
+        "exit": 1,
+        "named_counts": {
+          "pass": 0,
+          "fail": 1,
+          "skip": 0
+        },
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/red-2.log",
+        "sha256": "6a34e406f1b0d844c846dee0ab3170ac75dfdbe873654beaf184e9ad41fd676b",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/red-2.exit",
+        "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      },
+      {
+        "id": "service-race-final-1",
+        "exit": 0,
+        "named_counts": {
+          "pass": 25,
+          "fail": 0,
+          "skip": 0
+        },
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/service-race-final-1.log",
+        "sha256": "ebbf578fe3d3fdc0c9c30e70126b1aa485d3fa58f4801dc4a506c1b2aea13fa1",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/service-race-final-1.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "id": "stage-normal-final-1",
+        "exit": 0,
+        "named_counts": {
+          "pass": 125,
+          "fail": 0,
+          "skip": 0
+        },
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/stage-normal-final-1.log",
+        "sha256": "80a58bda543e8c1a1b7e031bf4c962052c82201d4bfb915726609b270bae032f",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/stage-normal-final-1.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "id": "vet-final-1",
+        "exit": 0,
+        "named_counts": {
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/vet-final-1.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/vet-final-1.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "id": "whitespace-final-1",
+        "exit": 0,
+        "named_counts": {
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/whitespace-final-1.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-fix/whitespace-final-1.exit",
+        "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    ],
+    "errors": []
+  },
+  "findings_not_fixed": [
+    {
+      "id": "EVIDENCE-TZ",
+      "kind": "nonblocking evidence erratum",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2b-acl-fix-results.md",
+      "recorded_text": "workspace timestamp14:38Z",
+      "actual_mtime_utc": "2026-11-14T06:38:23.783938Z",
+      "actual_timezone": "Asia/Shanghai",
+      "original_preserved": true
+    },
+    {
+      "id": "FOLLOWUP-2C-ARRAYS",
+      "kind": "unfinished scope, not ACL blocker",
+      "path": "server/internal/service/collaboration_stage_review_view.go",
+      "note": "Explicit pre-existing2c DTO draft arrays are nil in current R4 constructor;2c own implementation/acceptance must initialize frozen arrays and source-denied variant. No2c readiness certified."
+    }
+  ],
+  "db_profiles_released": [
+    "s2_impl_service",
+    "s2_impl_handler",
+    "s2_race_service",
+    "s2_race_handler"
+  ],
+  "db_profiles_executed": [
+    "s2_impl_service",
+    "s2_race_service",
+    "s2_impl_handler"
+  ],
+  "not_run": [
+    "complete A01–A12",
+    "production Web/matching Desktop",
+    "standalone router/auth and owned-Git/CLI journey",
+    "2c release/rollback and execution ledger",
+    "2d all completion/project-exit writers",
+    "actual external providers/payment/deployment/model accounts",
+    "full repository make check"
+  ],
+  "references": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2b-acl-fix-results.json",
+      "sha256": "addeb97b2905eb1308c73124f9e7783dba426fb960d9e2582a22c6c406306869"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2b-acl-fix-results.md",
+      "sha256": "0559996948908b494b5fe4be2ecb68617a06ac497c54a9f1750278ada78d04d3"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2b-check.json",
+      "sha256": "e4c715c3e20d7c4ae04a3c26a6332826e929413919e0322ffc45522099a0933c"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2b-check.md",
+      "sha256": "c3a134c4bc52795858092b193672fe67324a249c2a83d8531f204ec4d7d84fc3"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/test-report-contract.md",
+      "sha256": "9c3bb62bfa7b88ce75184c143a23011880c759da84cb562a2b699724b93c855f"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md",
+      "sha256": "dabc19c5762e46577468e3ec436998b4837f28e9ba1996731b47b2d9ad3e8c14"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/historical-source-audit.json",
+      "sha256": "bc4bf07803ca10bc8247120d27d140972e2a616b5f5b5cd3682e553f0910b2e5"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/input-check.json",
+      "sha256": "fd37caa619833156225fd78fa41ea5c8c27b7cbc072f32722cf18a07b1d19a08"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/implementation-evidence-audit.json",
+      "sha256": "156898989feb04b4f4ab7aa9faca2471a229ac8e8c0a0a41fa534b122a3cb89d"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/final-source-audit.json",
+      "sha256": "f46ef4898783925cfbc9628d3c6c90f87f6877889bbd8860f4226a041f8e701f"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-acl-check/run_checks.py",
+      "sha256": "1211abf07ab896daeb491131a4174963283d399aaafde2a1f17eba2b29ad36ed"
+    }
+  ],
+  "report_markdown_sha256": "ea3e89d37085fa0e55f2ab460712c4a78d16dd9c384f09a4a7dfe9290d302b71"
+}

@@ -1,0 +1,1130 @@
+{
+  "schema_version": 1,
+  "review_id": "p6-root-knowledge-go-static-verification-20261115-7a3e544be95f",
+  "task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation",
+  "recorded_at": "2026-11-15T13:35:03.169Z",
+  "role": "trellis-check",
+  "mode": "bounded_current_ROOT_static_only",
+  "status": "pass",
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "verification": {
+    "lint": {
+      "command": "go vet -p 2 ./...",
+      "status": "pass",
+      "exit_code": 0
+    },
+    "typecheck": {
+      "command": "go build -p 2 ./...",
+      "status": "pass",
+      "exit_code": 0,
+      "kind": "Go compilation; TypeScript owned by the existing frontend lane"
+    },
+    "tests": {
+      "status": "NOT_RUN",
+      "count": 0,
+      "reason": "Static-only receipt; no TestMain, test binary or test body executed."
+    }
+  },
+  "exact_commands": [
+    {
+      "label": "go-version",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "version"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "exit_code": 0,
+      "signal": null,
+      "wrapper_argv": [
+        "/bin/bash",
+        "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-bridge.cjs",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-version-request.json"
+      ],
+      "wrapper_exit_code": 0,
+      "environment_sha256": "0f1431f98e02d5539161d7524c2658f03f5e4089eb97ef97b7b77a2133ab2324",
+      "stdout": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-version.stdout.log",
+        "sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+        "bytes": 33
+      },
+      "stderr": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-version.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "started_at": "2026-11-15T13:29:57.209Z",
+      "ended_at": "2026-11-15T13:29:57.250Z",
+      "guard_sentinel_count": 26,
+      "guard_invocations": 0
+    },
+    {
+      "label": "go-environment",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "env",
+        "-json",
+        "GOOS",
+        "GOARCH",
+        "GOVERSION",
+        "GOROOT",
+        "GOTOOLDIR",
+        "CGO_ENABLED",
+        "CC",
+        "CXX",
+        "GOMOD",
+        "GOWORK",
+        "GOENV",
+        "GOTOOLCHAIN",
+        "GOCACHE",
+        "GOMODCACHE",
+        "GOPATH",
+        "GOFLAGS",
+        "GOPROXY",
+        "GOSUMDB",
+        "GOTELEMETRY"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "exit_code": 0,
+      "signal": null,
+      "wrapper_argv": [
+        "/bin/bash",
+        "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-bridge.cjs",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-environment-request.json"
+      ],
+      "wrapper_exit_code": 0,
+      "environment_sha256": "ee32aaeb00a979d0c9263182f782aa3794fe9e9eda89f0a5a0a39e773ff9aa97",
+      "stdout": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-environment.stdout.log",
+        "sha256": "1cc86d629fc87a278ea6ad006da281ff27fcc610e85e4349056791706a703082",
+        "bytes": 786
+      },
+      "stderr": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-environment.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "started_at": "2026-11-15T13:29:57.357Z",
+      "ended_at": "2026-11-15T13:29:57.367Z",
+      "guard_sentinel_count": 26,
+      "guard_invocations": 0
+    },
+    {
+      "label": "go-list-before",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "./..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "exit_code": 0,
+      "signal": null,
+      "wrapper_argv": [
+        "/bin/bash",
+        "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-bridge.cjs",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-before-request.json"
+      ],
+      "wrapper_exit_code": 0,
+      "environment_sha256": "26ecb45b7ce933f64c94b3f9995f862cbcd610f45a2f9ff43365abadae711aee",
+      "stdout": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-before.stdout.log",
+        "sha256": "f638780c180876b6cbaba38a381daae13518a2f0fe6fc916bf7dabdfa1429b0a",
+        "bytes": 4472876
+      },
+      "stderr": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-before.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "started_at": "2026-11-15T13:29:57.757Z",
+      "ended_at": "2026-11-15T13:30:00.495Z",
+      "guard_sentinel_count": 26,
+      "guard_invocations": 0
+    },
+    {
+      "label": "go-build",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "build",
+        "-p",
+        "2",
+        "./..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "exit_code": 0,
+      "signal": null,
+      "wrapper_argv": [
+        "/bin/bash",
+        "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-bridge.cjs",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-build-request.json"
+      ],
+      "wrapper_exit_code": 0,
+      "environment_sha256": "11b750432b6bf6dae139fa47fdfa84a9fc5ebee7310a927eec2701c81aa7d943",
+      "stdout": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-build.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-build.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "started_at": "2026-11-15T13:30:02.937Z",
+      "ended_at": "2026-11-15T13:30:42.009Z",
+      "guard_sentinel_count": 26,
+      "guard_invocations": 0
+    },
+    {
+      "label": "go-vet",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "vet",
+        "-p",
+        "2",
+        "./..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "exit_code": 0,
+      "signal": null,
+      "wrapper_argv": [
+        "/bin/bash",
+        "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-bridge.cjs",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-vet-request.json"
+      ],
+      "wrapper_exit_code": 0,
+      "environment_sha256": "7a86f19d3dad3eaf3298f76d87c7f72a13bf29694d7f70966a2e4df5309c77f5",
+      "stdout": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-vet.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-vet.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "started_at": "2026-11-15T13:30:45.061Z",
+      "ended_at": "2026-11-15T13:31:09.626Z",
+      "guard_sentinel_count": 26,
+      "guard_invocations": 0
+    },
+    {
+      "label": "go-list-after",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "./..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "exit_code": 0,
+      "signal": null,
+      "wrapper_argv": [
+        "/bin/bash",
+        "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-bridge.cjs",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-after-request.json"
+      ],
+      "wrapper_exit_code": 0,
+      "environment_sha256": "4e0ed2251035d7349dfa072e465f8d32f76f9efbc10222904b42111f87d15ea8",
+      "stdout": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-after.stdout.log",
+        "sha256": "baaef793c8e82039ba80b8039c0208f15f3b7a49e42cbe3e455028efcf859302",
+        "bytes": 4443783
+      },
+      "stderr": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-after.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "started_at": "2026-11-15T13:31:12.096Z",
+      "ended_at": "2026-11-15T13:31:13.143Z",
+      "guard_sentinel_count": 26,
+      "guard_invocations": 0
+    }
+  ],
+  "source_binding": {
+    "source_scope": "Actual current ROOT/server Go and SQL plus all declared dependency Go/module/embedded/test-compilation inputs, standard library/toolchain source, exact guard scripts, and loaded task context.",
+    "input_count": 12173,
+    "package_metadata_count": 768,
+    "categories": {
+      "context_guard_or_generated": 100,
+      "ROOT_go": 2924,
+      "ROOT_module_or_embed": 245,
+      "ROOT_sql": 1845,
+      "dependency_module_or_embed": 185,
+      "dependency_go": 3169,
+      "stdlib_or_toolchain_source": 3705
+    },
+    "before": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/inputs-before-manifest.json",
+      "sha256": "2463380e4b99e4dce0796dd43a1cbbeb58fad19092746f7c2440f1e6f40ab985",
+      "mode": "0600",
+      "count": 12173,
+      "bytes": 123366671,
+      "fingerprint_sha256": "d907e3bb2b6a1d0f6568e041721e3663ec3702af2fcf90b0edcee6491f66b38c",
+      "stable_reads": true
+    },
+    "after_build": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/inputs-after-build-manifest.json",
+      "sha256": "2463380e4b99e4dce0796dd43a1cbbeb58fad19092746f7c2440f1e6f40ab985",
+      "mode": "0600",
+      "count": 12173,
+      "bytes": 123366671,
+      "fingerprint_sha256": "d907e3bb2b6a1d0f6568e041721e3663ec3702af2fcf90b0edcee6491f66b38c",
+      "stable_reads": true
+    },
+    "after_vet": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/inputs-after-vet-manifest.json",
+      "sha256": "2463380e4b99e4dce0796dd43a1cbbeb58fad19092746f7c2440f1e6f40ab985",
+      "mode": "0600",
+      "count": 12173,
+      "bytes": 123366671,
+      "fingerprint_sha256": "d907e3bb2b6a1d0f6568e041721e3663ec3702af2fcf90b0edcee6491f66b38c",
+      "stable_reads": true
+    },
+    "bytes_and_modes_stable": true,
+    "package_closure_stable": true,
+    "root_HEAD_before_raw": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/head-before.stdout.log",
+      "sha256": "d14d06fbe7b921d67d47391c141498fba4522e35a1a38c683e86bfeaea04576e",
+      "bytes": 41
+    },
+    "root_HEAD_after_raw": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/head-after.stdout.log",
+      "sha256": "d14d06fbe7b921d67d47391c141498fba4522e35a1a38c683e86bfeaea04576e",
+      "bytes": 41
+    },
+    "root_HEAD_stable": true,
+    "dirty_inventory_stable": true,
+    "stability_limit": "Complete before/after byte and mode observations and package-list closure; no atomic freeze or continuing no-drift claim."
+  },
+  "tool_identity": {
+    "go": {
+      "path": "/opt/homebrew/bin/go",
+      "resolved": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+      "sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+      "version": "go1.27.0",
+      "GOOS": "darwin",
+      "GOARCH": "arm64",
+      "CGO_ENABLED": "1",
+      "verified_prior_tool_match": true
+    },
+    "all_tool_bytes_and_modes_before": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/tool-identities-before-manifest.json",
+      "sha256": "84e6992fcddda82afd1a076ccae12fa612610b474c513167b04889eac87d4cb7",
+      "mode": "0600",
+      "count": 13,
+      "bytes": 203362866,
+      "fingerprint_sha256": "be546251ecfcff7354787def15649101a12b7aea1552ac3e16c3583d99fc67ad",
+      "stable_reads": true
+    },
+    "all_tool_bytes_and_modes_after": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/tool-identities-after-manifest.json",
+      "sha256": "84e6992fcddda82afd1a076ccae12fa612610b474c513167b04889eac87d4cb7",
+      "mode": "0600",
+      "count": 13,
+      "bytes": 203362866,
+      "fingerprint_sha256": "be546251ecfcff7354787def15649101a12b7aea1552ac3e16c3583d99fc67ad",
+      "stable_reads": true
+    },
+    "stable": true
+  },
+  "environment": {
+    "allowlisted": true,
+    "ambient_database_API_model_account_browser_Redis_configuration_inherited": false,
+    "actual_environment_keys": [
+      "GIT_CONFIG_GLOBAL",
+      "GIT_CONFIG_NOSYSTEM",
+      "GIT_OPTIONAL_LOCKS",
+      "GOCACHE",
+      "GOENV",
+      "GOFLAGS",
+      "GOMAXPROCS",
+      "GOMODCACHE",
+      "GOPATH",
+      "GOPROXY",
+      "GOSUMDB",
+      "GOTELEMETRY",
+      "GOTMPDIR",
+      "GOTOOLCHAIN",
+      "GOWORK",
+      "HOME",
+      "LANG",
+      "LC_ALL",
+      "MULTICA_AGENT_CLI_GUARD_MARKER",
+      "PATH",
+      "SHELL",
+      "TEMP",
+      "TMP",
+      "TMPDIR",
+      "XDG_CACHE_HOME",
+      "XDG_CONFIG_HOME"
+    ],
+    "private_configuration_sha256": "6907ac657c59cade4764b5709c2cbc4ff0e1357044102997c508c5563abe67ca",
+    "raw_environment_sha256": "9a367100ad8a786577231d960048133969ccc4825fdd3b9d88701b71ba80a1a0",
+    "GOPROXY": "off",
+    "GOSUMDB": "off",
+    "GOENV": "off",
+    "GOWORK": "off",
+    "GOTOOLCHAIN": "local",
+    "GOFLAGS": "-mod=readonly",
+    "scratch_external_Git_probe_exit": 128
+  },
+  "cache_provenance": {
+    "verified_prior_receipt": {
+      "receipt_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-c3-direct-replay-20261115-0f943220c767.json",
+      "receipt_sha256": "d05562b78c2adfe04f99f5fd793059714625b9e0ab4679b6212aa40311fef9bf",
+      "module_copy_sha256": "66558e28f215a42eb37b5537060358f9c5a07594085254d98e34bb97ef82dff9",
+      "prior_verified_go_sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+    },
+    "owned_copies": [
+      {
+        "source": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-c3-direct-replay-20261115-0f943220c767/gomodcache",
+        "destination": "/Volumes/artisan/multica-p6-root-go-static-cache-20261115-7a3e544be95f/gomodcache",
+        "file_count": 11439,
+        "bytes": 175313863,
+        "source_unchanged": true,
+        "copy_matches_source_bytes_and_modes": true,
+        "before": {
+          "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/module-cache-copy-source-before.json",
+          "sha256": "44ec01e03a1a48b16d0f8548ccce4f0ffc84c161f633cca9cb28ac9d0566a0a9",
+          "mode": "0600"
+        },
+        "copied": {
+          "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/module-cache-copy-destination.json",
+          "sha256": "f935d05be120d74759f3a091f40140eea6e2779ae73b92e54857fe18153556da",
+          "mode": "0600"
+        },
+        "after": {
+          "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/module-cache-copy-source-after.json",
+          "sha256": "44ec01e03a1a48b16d0f8548ccce4f0ffc84c161f633cca9cb28ac9d0566a0a9",
+          "mode": "0600"
+        }
+      },
+      {
+        "source": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-c3-direct-replay-20261115-0f943220c767/gocache",
+        "destination": "/Volumes/artisan/multica-p6-root-go-static-cache-20261115-7a3e544be95f/gocache",
+        "file_count": 8333,
+        "bytes": 2083577753,
+        "source_unchanged": true,
+        "copy_matches_source_bytes_and_modes": true,
+        "before": {
+          "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/build-cache-copy-source-before.json",
+          "sha256": "1273a0d711a3e9af3262c053d3f8606eac46e11bba9ffbd308c6dc1bc4c463c8",
+          "mode": "0600"
+        },
+        "copied": {
+          "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/build-cache-copy-destination.json",
+          "sha256": "a832348f13ebb52d696ebbbaf14858f1b6044d2ec320da0663ffbfe15cd362d7",
+          "mode": "0600"
+        },
+        "after": {
+          "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/build-cache-copy-source-after.json",
+          "sha256": "1273a0d711a3e9af3262c053d3f8606eac46e11bba9ffbd308c6dc1bc4c463c8",
+          "mode": "0600"
+        }
+      }
+    ],
+    "dependency_downloads": 0,
+    "cache_cleanup": 0
+  },
+  "disk": {
+    "before": [
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f",
+        "available_bytes": "15755112448",
+        "free_bytes": "15755112448",
+        "block_size": "4096"
+      },
+      {
+        "path": "/Volumes/artisan/multica-p6-root-go-static-cache-20261115-7a3e544be95f",
+        "available_bytes": "1059843362816",
+        "free_bytes": "1059843362816",
+        "block_size": "4096"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37",
+        "available_bytes": "1059843362816",
+        "free_bytes": "1059843362816",
+        "block_size": "4096"
+      }
+    ],
+    "after": [
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f",
+        "available_bytes": "15323766784",
+        "free_bytes": "15323766784",
+        "block_size": "4096"
+      },
+      {
+        "path": "/Volumes/artisan/multica-p6-root-go-static-cache-20261115-7a3e544be95f",
+        "available_bytes": "1056272859136",
+        "free_bytes": "1056272859136",
+        "block_size": "4096"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37",
+        "available_bytes": "1056272859136",
+        "free_bytes": "1056272859136",
+        "block_size": "4096"
+      }
+    ]
+  },
+  "raw_evidence": {
+    "root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f",
+    "mode": "0700",
+    "cache_root": "/Volumes/artisan/multica-p6-root-go-static-cache-20261115-7a3e544be95f",
+    "cache_root_mode": "0700",
+    "result_sha256": "791a43528f60682df1e92e3f2b8952896345d6b4f3bd966714a4445b5e6a1e88",
+    "artifacts": [
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/allowlisted-environment.json",
+        "bytes": 1635,
+        "sha256": "9a367100ad8a786577231d960048133969ccc4825fdd3b9d88701b71ba80a1a0",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/build-cache-copy-destination.json",
+        "bytes": 3711435,
+        "sha256": "a832348f13ebb52d696ebbbaf14858f1b6044d2ec320da0663ffbfe15cd362d7",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/build-cache-copy-source-after.json",
+        "bytes": 4261413,
+        "sha256": "1273a0d711a3e9af3262c053d3f8606eac46e11bba9ffbd308c6dc1bc4c463c8",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/build-cache-copy-source-before.json",
+        "bytes": 4261413,
+        "sha256": "1273a0d711a3e9af3262c053d3f8606eac46e11bba9ffbd308c6dc1bc4c463c8",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/config.json",
+        "bytes": 2791,
+        "sha256": "6907ac657c59cade4764b5709c2cbc4ff0e1357044102997c508c5563abe67ca",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/disk-after.json",
+        "bytes": 589,
+        "sha256": "82a7ec2e2bb9a08214184e179cfda191ccfdafd705a99eaf02b733e0790ae7a3",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/disk-before.json",
+        "bytes": 589,
+        "sha256": "a754af3a46a5f88060f7269c2426d1f0dad5ea54743c4e1b0fc4afab3451ad3b",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/external-git-boundary.stderr.log",
+        "bytes": 69,
+        "sha256": "d2b35cacadc66b7fad8dedd1be5244e17150a6625978c9330f831bd7a9cd6b1e",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/external-git-boundary.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/git-after.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/git-after.stdout.log",
+        "bytes": 69845,
+        "sha256": "dbd279e49bab0f33351b603fe36a18f6774f9ba706db98d839127edb3c76ce1e",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/git-before.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/git-before.stdout.log",
+        "bytes": 69845,
+        "sha256": "dbd279e49bab0f33351b603fe36a18f6774f9ba706db98d839127edb3c76ce1e",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-bridge.cjs",
+        "bytes": 4121,
+        "sha256": "0116a789150b9bb5977c0180df77cb1e8e43e7596c7eecb4cbeb5eb15c8cfdca",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-build-actual-environment.json",
+        "bytes": 1974,
+        "sha256": "86a5785b21672c895925453e7662d77b1a5a167b0a3211ffb24cc3ff74827e1c",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-build-actual.json",
+        "bytes": 12325,
+        "sha256": "f04a4a4fa19ac4943262b4a12fc73e41b881d4c0a31bd56026a5f12e1dead736",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-build-guard-after.json",
+        "bytes": 4757,
+        "sha256": "76981922e6601737e9471adbd33e0142bbdec5bb44ab8159541985c711f738d7",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-build-guard-before.json",
+        "bytes": 4757,
+        "sha256": "76981922e6601737e9471adbd33e0142bbdec5bb44ab8159541985c711f738d7",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-build-request.json",
+        "bytes": 1994,
+        "sha256": "6ff08014e0e4d2c386d7d2050691f6b7987e9c756f5fbc000537fc18a268dae8",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-build-step.json",
+        "bytes": 14450,
+        "sha256": "d0b87db47ca2b0ff4fb4e33fc9079688b25f67555b072e913e6d3aa31df133b4",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-build-wrapper.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-build-wrapper.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-build.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-build.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-environment-actual-environment.json",
+        "bytes": 1974,
+        "sha256": "f3fa381e23243e609c326d5c563ec11ff45ad4ebd6755663d5a085531144a97b",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-environment-actual.json",
+        "bytes": 12602,
+        "sha256": "3817b9cf8436b1ddd82346be6d51560b842578dc3bfa28ecb34e3feb4ad643b5",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-environment-guard-after.json",
+        "bytes": 4757,
+        "sha256": "c9ab59982aedc6d0b53f3af72cdf6e257c2f0e36fd4cd4fcc18952b3a58eee09",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-environment-guard-before.json",
+        "bytes": 4757,
+        "sha256": "c9ab59982aedc6d0b53f3af72cdf6e257c2f0e36fd4cd4fcc18952b3a58eee09",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-environment-request.json",
+        "bytes": 2263,
+        "sha256": "bad82b990551f0b7d1cdb267be2d7004a78b57ff2593df5b7674d1bae2be999f",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-environment-step.json",
+        "bytes": 14791,
+        "sha256": "d62d073f6b9a42aa920c7bc3d40900f62c5b7abd483723e15a263cc7713f2538",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-environment-wrapper.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-environment-wrapper.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-environment.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-environment.stdout.log",
+        "bytes": 786,
+        "sha256": "1cc86d629fc87a278ea6ad006da281ff27fcc610e85e4349056791706a703082",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-after-actual-environment.json",
+        "bytes": 1974,
+        "sha256": "894c6521565fd3ac23a13b3c7140e2512b0024ec543f022a29a2525015aaeb84",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-after-actual.json",
+        "bytes": 12360,
+        "sha256": "5f65863ceca90db2f11f5459821e09443165375c12a2026fd1605736c9e192c3",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-after-guard-after.json",
+        "bytes": 4757,
+        "sha256": "23a5b12009efbfe0c1f47f0a5358822eee7758c1433c1e21a968caf5d5c3d322",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-after-guard-before.json",
+        "bytes": 4757,
+        "sha256": "23a5b12009efbfe0c1f47f0a5358822eee7758c1433c1e21a968caf5d5c3d322",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-after-request.json",
+        "bytes": 2018,
+        "sha256": "3d7bdd43fe89f93d970bf03601c27c8227f92b807155fbb1faff4447b8bf679b",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-after-step.json",
+        "bytes": 14512,
+        "sha256": "64eb088984c2d4622c9d40c8ff1bde79ff5ad8b0d3bd69a6f753ff47077b3f25",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-after-wrapper.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-after-wrapper.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-after.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-after.stdout.log",
+        "bytes": 4443783,
+        "sha256": "baaef793c8e82039ba80b8039c0208f15f3b7a49e42cbe3e455028efcf859302",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-before-actual-environment.json",
+        "bytes": 1974,
+        "sha256": "468918aeed27815343ad7a5a49b3f0a84979ee6586eb6cc815caa19e366df9d1",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-before-actual.json",
+        "bytes": 12362,
+        "sha256": "d862e59e65f010c08a6a5b90f97a375a4cc13e7d032a8be4612778315646a28c",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-before-guard-after.json",
+        "bytes": 4757,
+        "sha256": "aa5600b25c34f9c9504a388dd70f30d9cb28ef1f582d654bcc51142ddd91d710",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-before-guard-before.json",
+        "bytes": 4757,
+        "sha256": "aa5600b25c34f9c9504a388dd70f30d9cb28ef1f582d654bcc51142ddd91d710",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-before-request.json",
+        "bytes": 2019,
+        "sha256": "d5d2239561034e52ece8f73233a57b89b82ab6ac5bc9da54263f253978fd7824",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-before-step.json",
+        "bytes": 14519,
+        "sha256": "3d3688c96b6938308fe557cdab4573ad96b82c041d9862857813c2b3311e8836",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-before-wrapper.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-before-wrapper.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-before.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-list-before.stdout.log",
+        "bytes": 4472876,
+        "sha256": "f638780c180876b6cbaba38a381daae13518a2f0fe6fc916bf7dabdfa1429b0a",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-version-actual-environment.json",
+        "bytes": 1974,
+        "sha256": "799555d8d5924a97d5f27855940c030515aa57154eec8d2ff12b9f46eaf551ea",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-version-actual.json",
+        "bytes": 12300,
+        "sha256": "52ed79d267c864c6f69cbc98418fec732bff915f45b4c176f8ecc9bc220ee23f",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-version-guard-after.json",
+        "bytes": 4757,
+        "sha256": "41e823d751cd65c2bab6fb0e311b937a3b4f8d8f48ade4f67b34b35fb2958d85",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-version-guard-before.json",
+        "bytes": 4757,
+        "sha256": "41e823d751cd65c2bab6fb0e311b937a3b4f8d8f48ade4f67b34b35fb2958d85",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-version-request.json",
+        "bytes": 1966,
+        "sha256": "f8962e73d17a0ed21327b37c599234addfb7829f508bcb8f6d86d0cf1ab0a51c",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-version-step.json",
+        "bytes": 14429,
+        "sha256": "c4e1860e60a06e5ab3b209682ccc1d3782af8b9535989695bb4b5935f7f32da1",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-version-wrapper.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-version-wrapper.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-version.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-version.stdout.log",
+        "bytes": 33,
+        "sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-vet-actual-environment.json",
+        "bytes": 1974,
+        "sha256": "846f6200f6ce5f599ad9ad2d1119e826ad59d674bfb6bb80f19afb096e84047a",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-vet-actual.json",
+        "bytes": 12319,
+        "sha256": "78060efa98d69fe17663147183a44e9505288fae3684853e5b5829f29e98ab9f",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-vet-guard-after.json",
+        "bytes": 4757,
+        "sha256": "a3a16c3cda62a27ca30ed7c58b0183f3f871158056a515f4523a48bc9e73c9f3",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-vet-guard-before.json",
+        "bytes": 4757,
+        "sha256": "a3a16c3cda62a27ca30ed7c58b0183f3f871158056a515f4523a48bc9e73c9f3",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-vet-request.json",
+        "bytes": 1990,
+        "sha256": "0ff4c0e34582751d8e1e14ea8e5c391f494a623f0a5e696eae8275d31ad1e2b7",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-vet-step.json",
+        "bytes": 14434,
+        "sha256": "7d92eae811ab6b150a30069bad2a26d23b43afeb9d52915e33d6b2c8f01e1cb9",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-vet-wrapper.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-vet-wrapper.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-vet.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/go-vet.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/head-after.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/head-after.stdout.log",
+        "bytes": 41,
+        "sha256": "d14d06fbe7b921d67d47391c141498fba4522e35a1a38c683e86bfeaea04576e",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/head-before.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/head-before.stdout.log",
+        "bytes": 41,
+        "sha256": "d14d06fbe7b921d67d47391c141498fba4522e35a1a38c683e86bfeaea04576e",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/inputs-after-build-manifest.json",
+        "bytes": 5225581,
+        "sha256": "2463380e4b99e4dce0796dd43a1cbbeb58fad19092746f7c2440f1e6f40ab985",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/inputs-after-vet-manifest.json",
+        "bytes": 5225581,
+        "sha256": "2463380e4b99e4dce0796dd43a1cbbeb58fad19092746f7c2440f1e6f40ab985",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/inputs-before-manifest.json",
+        "bytes": 5225581,
+        "sha256": "2463380e4b99e4dce0796dd43a1cbbeb58fad19092746f7c2440f1e6f40ab985",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/module-cache-copy-destination.json",
+        "bytes": 4989374,
+        "sha256": "f935d05be120d74759f3a091f40140eea6e2779ae73b92e54857fe18153556da",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/module-cache-copy-source-after.json",
+        "bytes": 5744348,
+        "sha256": "44ec01e03a1a48b16d0f8548ccce4f0ffc84c161f633cca9cb28ac9d0566a0a9",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/module-cache-copy-source-before.json",
+        "bytes": 5744348,
+        "sha256": "44ec01e03a1a48b16d0f8548ccce4f0ffc84c161f633cca9cb28ac9d0566a0a9",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/owned-process-audit.json",
+        "bytes": 348,
+        "sha256": "1ac2dffc7889eaeb08c0b5187773cec02a65b3874e081e95150bf9740839ecdf",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/package-closure-after.json",
+        "bytes": 5429169,
+        "sha256": "974bc1d1d68deb089de99dad0bab388e942f1ed3951d5195dcd716ea8c0dbcef",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/package-closure-before.json",
+        "bytes": 5461902,
+        "sha256": "e7fc1ece3acae6197a9b94caeb0716408d5e448d2a8982344ba83d030dd61a8e",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/pre-discovery-manifest.json",
+        "bytes": 1997170,
+        "sha256": "86c65b3834bd78a849d4a592f2fc9c52e91c598bcd351620e783a9dc40314fa2",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/progress.json",
+        "bytes": 201,
+        "sha256": "78c6b75aab55e385e9faef3404d1aee38de97c438420f0228f9f663f75955dfa",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/result.json",
+        "bytes": 142346,
+        "sha256": "791a43528f60682df1e92e3f2b8952896345d6b4f3bd966714a4445b5e6a1e88",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/runner.log",
+        "bytes": 956,
+        "sha256": "9088cecd3e6a8235145f7cd62cd174abfe774efd5590f680fa6399f26e3941c6",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/static-runner.cjs",
+        "bytes": 17178,
+        "sha256": "c444f0ebe60ca2f094c683d43aab7e6847f741b07bfcc21bb6905994f1b50624",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/tool-identities-after-manifest.json",
+        "bytes": 4558,
+        "sha256": "84e6992fcddda82afd1a076ccae12fa612610b474c513167b04889eac87d4cb7",
+        "mode": "0600"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/tool-identities-before-manifest.json",
+        "bytes": 4558,
+        "sha256": "84e6992fcddda82afd1a076ccae12fa612610b474c513167b04889eac87d4cb7",
+        "mode": "0600"
+      }
+    ],
+    "all_raw_artifact_modes_0600": true,
+    "source_bytes_retained_in_private_content_addressed_blobs": true
+  },
+  "owned_processes": {
+    "recorded_go_and_wrapper_pids": [
+      95124,
+      95065,
+      95186,
+      95127,
+      95247,
+      95188,
+      95352,
+      95293,
+      96859,
+      96799,
+      97689,
+      97630
+    ],
+    "audit_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/owned-process-audit.json",
+    "audit_sha256": "1ac2dffc7889eaeb08c0b5187773cec02a65b3874e081e95150bf9740839ecdf",
+    "remaining": 0
+  },
+  "ownership": {
+    "ROOT_source_config_spec_helper_test_files_edited": [],
+    "new_research_files": [
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-go-static-verification-20261115-7a3e544be95f.json"
+    ],
+    "external_owned_roots": [
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f",
+      "/Volumes/artisan/multica-p6-root-go-static-cache-20261115-7a3e544be95f"
+    ],
+    "source_fixes": 0,
+    "forbidden_operations": {
+      "tests": 0,
+      "databases": 0,
+      "APIs": 0,
+      "models": 0,
+      "browsers": 0,
+      "migrations": 0,
+      "sqlc_generation": 0,
+      "source_edits": 0,
+      "dependency_downloads": 0,
+      "cache_cleanup": 0,
+      "agent_spawn": 0
+    }
+  },
+  "qualifications": {
+    "private_candidate_final_AC_acceptance_preserved": true,
+    "private_candidate_review_sha256": "31ab0f37d40530602a1eb50e8eaeb4b623758b27ae89536dbaa6768ac9c2ec81",
+    "root_preflight_sha256": "1f80ab283ac17597cd40a63dff4392267226dc5ea695496b362e2aa67c5062e1",
+    "PAY_CODE_ACCEPTED_R06_sha256": "06cb58ddf6bbc1ff1f069144f2756b48c0b2801d1396cc2affe48eb1c59d23a7",
+    "final_shared_ROOT_source_acceptance": false,
+    "PAY_P2_acceptance": false,
+    "product_acceptance": false,
+    "task_complete": false,
+    "followup_service_tests_in_separate_new_receipt": true
+  },
+  "immutability": {
+    "sealed": true,
+    "no_followup_writes_to_this_receipt_or_static_raw_evidence": true
+  }
+}

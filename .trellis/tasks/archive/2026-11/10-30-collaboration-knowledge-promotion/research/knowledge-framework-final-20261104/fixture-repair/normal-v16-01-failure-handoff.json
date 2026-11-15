@@ -1,0 +1,139 @@
+{
+  "state": "normal_v16_01_failed_preserved",
+  "recorded_at": "2026-11-04T09:44:46.247760+00:00",
+  "framework_HEAD": "92a4c7adfad20354e79855e4134934e6004774ad",
+  "accepted_product_source": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "exit_status": 1,
+  "accepted": false,
+  "top_level_tests": {
+    "TestRK1KnowledgeEntryGuard": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeWrapperGuard": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgePromptData": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeTraceCredentialLabels": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeNativeMetadataUsesRawOutput": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeEvidenceFaults": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeFakeProof": {
+      "run": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    }
+  },
+  "fail_events": 3,
+  "skip_events": 0,
+  "invalid_log_lines": 0,
+  "files": {
+    "started.json": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/started.json",
+      "sha256": "ff8fc7d0d641b6c0e03f13a9ee159a9a8b1e6ed91f64a6bfe605f2d9a8ebdbea",
+      "bytes": 1074
+    },
+    "result.json": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/result.json",
+      "sha256": "a1c125f17305bd4f7f6786fa54262a022232c742f4e8171dd88c3b7dd227e0b1",
+      "bytes": 2197
+    },
+    "tests.jsonl": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/tests.jsonl",
+      "sha256": "98e01f3ab910e9900cb2308069f24bf08148fc6fdb0496f8fac1cc88c23f0bac",
+      "bytes": 488589
+    }
+  },
+  "named_inventory": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fixture-repair/normal-v16-01-named-inventory.json",
+    "sha256": "cc2c4ddc75933733d010840d31e24cdc56b8ac0236d6a43a16152cd9193d7e72"
+  },
+  "sample_inventory": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fixture-repair/normal-v16-01-sample-inventory.json",
+    "sha256": "c8741027011ce8569e99db320dab287a2f5fed2defd7c28e4844d236a3df7dde"
+  },
+  "failure": {
+    "stage": "K3 continuation seed-root before physical launch",
+    "original_output": [
+      {
+        "test": "TestRK1KnowledgeFakeProof/K3",
+        "text": "rk1k_scenarios_test.go:597: expected one pending run for issue 01a1a5ea-0d3d-7854-bbdf-d28fbb1240cd, got 0 ()"
+      }
+    ],
+    "first_root_member_and_member_seed_now_pass": true,
+    "HTTP_List_observed_200": true,
+    "current_failure_cause": "unknown until read-only diagnosis"
+  },
+  "partial_fixed_schedule_physical_counts": {
+    "measured_fake_starts": 14,
+    "fake_seed_starts": 1,
+    "paid_starts": 0
+  },
+  "durable_summary_complete": false,
+  "six_after_unchanged": {
+    "server/cmd/server/rk1k_fixture_test.go": "f7072ce7b11dad29ba0b5dd3cf7e84e0eab87f1d8fb8fd0b702075385bb57b6f",
+    "server/cmd/server/rk1k_provider_test.go": "114439c31ac397e3195ae23e806487f3c02df1cae9bd422d90b73db66f879924",
+    "server/cmd/server/rk1k_scenarios_test.go": "7cd1780f910bc350dadf607aeb8c0f8451eb926da95556241ca5baaeb9289217",
+    "server/cmd/server/rk1k_evidence_test.go": "198402547160cfe530faf9175efe802ee19370eed4ab62bdc6dec8290b3b7717",
+    "server/cmd/server/rk1k_entry_test.go": "e58fff97a4654f32363b9cbb5be1e5562100354747a79a091747ec1dbb2e4844",
+    "server/internal/daemon/rk1k_driver_agentintegration.go": "b0ed3e55972f3f8208bfde741d73ae419d83acca316ee0e109eed8e643f002e0"
+  },
+  "old17_after_unchanged": {
+    "server/cmd/server/rk1_entry_test.go": "0e7bd9887edc6be00c020fc861aab6c26cfbe494fb1dcd30b1a53f857541d0e3",
+    "server/cmd/server/rk1_evidence_contract_unit_test.go": "9868bad19675c8ebdaf43bf9d63b59485e12830501379acc769ba8f0c3a603ef",
+    "server/cmd/server/rk1_evidence_fault_proof_test.go": "b43d805ecdbaca8d61d1aeb777108f99ab74046f7b84b8d36ffa219f19079090",
+    "server/cmd/server/rk1_evidence_format_test.go": "648d8edb9640ba4cd09d213c785e232d4904ebff5d1631ec015f4eb6ea1962d4",
+    "server/cmd/server/rk1_evidence_publication_test.go": "461ae12b8da9ffc803681608f7d88db0f39342158f3223d71ad167a772e690f1",
+    "server/cmd/server/rk1_fake_helpers_test.go": "d863e2b35aab4a127e26f6a923fd4d60438aa610804a96f67aa2be23c0c50ab2",
+    "server/cmd/server/rk1_fake_test.go": "952165b30c01d6486304b81df72e3bcd373ce1e794a716772a344dece137e840",
+    "server/cmd/server/rk1_fixture_test.go": "c257225e01c00a92dc266226347a3ffa016ac79db18c592dff6d293c6294994b",
+    "server/cmd/server/rk1_lifecycle_test.go": "b1fe1002b28804b7bfd8593b5df0c20502e246de5b5e7ab8760029a5da3e8c6f",
+    "server/cmd/server/rk1_observe_test.go": "5472c35cff8f5f99eb1c84381656e9677985e3743a278ff271531a01740f1b07",
+    "server/cmd/server/rk1_provider_test.go": "02050fc42ba6aeb02f4d7695ce76f4ee7a4402f07048cc2326dcde5d7b3e4f05",
+    "server/cmd/server/rk1_run_test.go": "0eb15501131a043c2cbd98c5ac33e515a9b1d6c55d4ba54f0388a13516a85763",
+    "server/cmd/server/rk1_scenarios_handoff_test.go": "eaba9f65a465f12afb3c5322ffefe6f6ec9d5e94bfa50870bf3027fea992c06a",
+    "server/cmd/server/rk1_scenarios_recall_test.go": "644797d7325ab91c9ac6f306a86bf426bbbf6375009673118f1fe3f7706a7cda",
+    "server/cmd/server/rk1_trace_barrier_test.go": "caa003b5b79f0747198d1fbdb268cdb9fdab8b289b691bd0222b2ab5e72a1c94",
+    "server/cmd/server/rk1_trace_test.go": "6f3a767c574d363d3f078bd8b9386c734366186c477493c03067f57f43e7c172",
+    "server/cmd/server/rk1_trial_test.go": "bfdfb910b40dc43c8b8a43d49a617dedc5421d8ed251c30b4488e581f105f5a5"
+  },
+  "input_binding_sha256": "28a8dcc387b092d55a3d5dc870ccb58ed965b07a7e49561ee6396d91270230da",
+  "runner_sha256": "ff0ec52b930164ae44b15c40ccbc38e37499f07cf549fb7b92097205f8ab903a",
+  "normal_environment_sha256": "b53fbf730d9b5bb501ca58226f6d0844616f550914f226a6fbe0f3c98704b0a9",
+  "source_after_pass": true,
+  "race_ready": false,
+  "race_executed": false,
+  "normal_retried": false,
+  "normal8_red_preserved": true,
+  "failed_database_retained": "multica_rk1k_20261104_v16_normal_a3c9",
+  "database_mutations_after_suite": false,
+  "stage_or_commit_changed": false,
+  "knowledge_allocated": 0,
+  "real_Provider_calls": 0,
+  "production_default_enabled": false
+}

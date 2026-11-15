@@ -1,0 +1,385 @@
+{
+  "allocation_id": "1b8185dd69414d0b8ae9ab679a1c7669",
+  "connection": {
+    "db": 12,
+    "host": "127.0.0.1",
+    "password": "8ATGAUQGTwVVXo60W7T2UL9vLcX_08xb6JIMdbrfpbbcaTf5bu_FNpmMHJByeJYA",
+    "port": 52518,
+    "scheme": "redis",
+    "tls": false,
+    "username": null
+  },
+  "container": {
+    "actual_ports": {
+      "6379/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "52518"
+        }
+      ]
+    },
+    "command": [
+      "/bin/sh",
+      "-c",
+      "umask 077; mkfifo -m 600 /data/p6-redis-runtime-config.fifo; exec redis-server /data/p6-redis-runtime-config.fifo"
+    ],
+    "constraints": {
+      "cap_drop": [
+        "ALL"
+      ],
+      "cpus": 0.25,
+      "host_user_data_mounts": false,
+      "log_config": {
+        "Config": {
+          "max-file": "2",
+          "max-size": "1m"
+        },
+        "Type": "json-file"
+      },
+      "memory_bytes": 67108864,
+      "memory_swap_bytes": 67108864,
+      "nano_cpus": 250000000,
+      "pids_limit": 64,
+      "readonly_rootfs": true,
+      "restart_policy": {
+        "MaximumRetryCount": 0,
+        "Name": "no"
+      },
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "tmpfs": {
+        "/data": "rw,noexec,nosuid,nodev,size=8m,mode=0700,uid=999,gid=1000"
+      },
+      "tmpfs_data_size_bytes": 8388608
+    },
+    "created": "2026-11-15T05:37:17.764983759Z",
+    "expected_owner_labels": {
+      "io.multica.trellis.approved-version": "2026-11-14-v1",
+      "io.multica.trellis.created-intent-utc": "2026-11-15T05:37:17.408949+00:00",
+      "io.multica.trellis.owner": "trellis-check",
+      "io.multica.trellis.purpose": "p6-service-redis-fixture",
+      "io.multica.trellis.receipt-root-sha256": "d93e9746ad2e784a29c2a957d2d4990d27d59e14f6da48e76074f12e661ae02f",
+      "io.multica.trellis.resource-kind": "redis-container",
+      "io.multica.trellis.run-id": "1b8185dd69414d0b8ae9ab679a1c7669",
+      "io.multica.trellis.task": "11-14-project-knowledge-automation",
+      "io.multica.trellis.task-path": ".trellis/tasks/11-14-project-knowledge-automation",
+      "io.multica.trellis.transport": "dedicated-non-internal-bridge"
+    },
+    "host_port_bindings": {
+      "6379/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "52518"
+        }
+      ]
+    },
+    "id": "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+    "image_argument": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+    "image_id": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+    "labels": {
+      "io.multica.trellis.approved-version": "2026-11-14-v1",
+      "io.multica.trellis.created-intent-utc": "2026-11-15T05:37:17.408949+00:00",
+      "io.multica.trellis.owner": "trellis-check",
+      "io.multica.trellis.purpose": "p6-service-redis-fixture",
+      "io.multica.trellis.receipt-root-sha256": "d93e9746ad2e784a29c2a957d2d4990d27d59e14f6da48e76074f12e661ae02f",
+      "io.multica.trellis.resource-kind": "redis-container",
+      "io.multica.trellis.run-id": "1b8185dd69414d0b8ae9ab679a1c7669",
+      "io.multica.trellis.task": "11-14-project-knowledge-automation",
+      "io.multica.trellis.task-path": ".trellis/tasks/11-14-project-knowledge-automation",
+      "io.multica.trellis.transport": "dedicated-non-internal-bridge"
+    },
+    "mounts": [],
+    "name": "multica-ka-p6-redis-1b8185dd6941",
+    "networks": {
+      "multica-ka-p6-redis-net-1b8185dd6941": {
+        "Aliases": null,
+        "DNSNames": [
+          "multica-ka-p6-redis-1b8185dd6941",
+          "3b627d9c6d78"
+        ],
+        "DriverOpts": null,
+        "EndpointID": "408207548afa48d9723c4ff6b6944581a1c9a72e89ee14d2315c0fd9f61c4ddf",
+        "Gateway": "172.19.0.1",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "GwPriority": 0,
+        "IPAMConfig": null,
+        "IPAddress": "172.19.0.2",
+        "IPPrefixLen": 16,
+        "IPv6Gateway": "",
+        "Links": null,
+        "MacAddress": "c6:bd:6e:3f:2d:6a",
+        "NetworkID": "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e"
+      }
+    },
+    "started_at": "2026-11-15T05:37:17.924690675Z",
+    "state": "running",
+    "user": "999:1000"
+  },
+  "created_by": "trellis-check",
+  "created_intent_utc": "2026-11-15T05:37:17.408949+00:00",
+  "credentials": {
+    "generated_for_this_fixture_only": true,
+    "generator": "secrets.token_urlsafe(48)",
+    "password_length": 64,
+    "raw_password_and_connection_url_storage": "only this mode0600 allocation"
+  },
+  "docker": {
+    "argv_prefix": [
+      "/usr/local/bin/docker",
+      "--config",
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+      "--context",
+      "desktop-linux"
+    ],
+    "client_version": "29.2.1",
+    "config_dir": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+    "context": "desktop-linux",
+    "endpoint": "unix:///Users/artisan/.docker/run/docker.sock",
+    "engine_id": "2a2bd477-d324-499e-aa4b-788a6bc3c073",
+    "executable": "/usr/local/bin/docker",
+    "server_version": "29.2.1"
+  },
+  "env": {
+    "REDIS_TEST_URL": "redis://:8ATGAUQGTwVVXo60W7T2UL9vLcX_08xb6JIMdbrfpbbcaTf5bu_FNpmMHJByeJYA@127.0.0.1:52518/12"
+  },
+  "evidence": {
+    "external_receipt": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/allocation-success.receipt.json",
+    "immutable_receipt": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation-receipt-20261115-1b8185dd6941.json",
+    "owned_binding_proof": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/owned-binding-proof.json",
+    "owned_binding_sha256": "c91c1301f1b391056113706903c676a702ebf22b259ccf31ac08f44dc973605a"
+  },
+  "go_launcher_admission": {
+    "existing_redis_fallback_allowed": false,
+    "permitted": true,
+    "requires_main_session_explicit_verified_env_pass": true
+  },
+  "image": {
+    "architecture": "arm64",
+    "binary_version": "Redis server v=7.4.8 sha=00000000:0 malloc=jemalloc-5.3.0 bits=64 build=ccfd955b9fce8f87",
+    "created": "2026-04-17T00:23:40.386893417Z",
+    "descriptor": {
+      "digest": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "mediaType": "application/vnd.oci.image.index.v1+json",
+      "size": 10245
+    },
+    "id": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+    "os": "linux",
+    "platform_manifest_descriptor": {
+      "annotations": {
+        "com.docker.official-images.bashbrew.arch": "arm64v8",
+        "org.opencontainers.image.base.digest": "sha256:1832327faf048390adc33852575d37c7ba155e064a339e78b9bd81983a8c7a00",
+        "org.opencontainers.image.base.name": "alpine:3.21",
+        "org.opencontainers.image.created": "2026-04-17T00:22:53Z",
+        "org.opencontainers.image.revision": "9d9b74b729d555ef784db63c1941b73d1c47a6f9",
+        "org.opencontainers.image.source": "https://github.com/redis/docker-library-redis.git#9d9b74b729d555ef784db63c1941b73d1c47a6f9:7.4/alpine",
+        "org.opencontainers.image.url": "https://hub.docker.com/_/redis",
+        "org.opencontainers.image.version": "7.4.8-alpine"
+      },
+      "digest": "sha256:d6550289be540d3c543ffa836fce6e74c265773c0d833953d0461d347729bb70",
+      "mediaType": "application/vnd.oci.image.manifest.v1+json",
+      "platform": {
+        "architecture": "arm64",
+        "os": "linux",
+        "variant": "v8"
+      },
+      "size": 2484
+    },
+    "pull_policy": "never",
+    "repo_digests": [
+      "redis@sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6"
+    ],
+    "runtime_version": "7.4.8",
+    "tag_reference": "redis:7-alpine"
+  },
+  "mode": "0600",
+  "network": {
+    "containers": {
+      "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f": {
+        "EndpointID": "408207548afa48d9723c4ff6b6944581a1c9a72e89ee14d2315c0fd9f61c4ddf",
+        "IPv4Address": "172.19.0.2/16",
+        "IPv6Address": "",
+        "MacAddress": "c6:bd:6e:3f:2d:6a",
+        "Name": "multica-ka-p6-redis-1b8185dd6941"
+      }
+    },
+    "created": "2026-11-15T05:37:17.681188384Z",
+    "driver": "bridge",
+    "enable_ipv6": false,
+    "expected_owner_labels": {
+      "io.multica.trellis.approved-version": "2026-11-14-v1",
+      "io.multica.trellis.created-intent-utc": "2026-11-15T05:37:17.408949+00:00",
+      "io.multica.trellis.owner": "trellis-check",
+      "io.multica.trellis.purpose": "p6-service-redis-fixture",
+      "io.multica.trellis.receipt-root-sha256": "d93e9746ad2e784a29c2a957d2d4990d27d59e14f6da48e76074f12e661ae02f",
+      "io.multica.trellis.resource-kind": "redis-network",
+      "io.multica.trellis.run-id": "1b8185dd69414d0b8ae9ab679a1c7669",
+      "io.multica.trellis.task": "11-14-project-knowledge-automation",
+      "io.multica.trellis.task-path": ".trellis/tasks/11-14-project-knowledge-automation",
+      "io.multica.trellis.transport": "dedicated-non-internal-bridge"
+    },
+    "id": "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e",
+    "internal": false,
+    "ipam": {
+      "Config": [
+        {
+          "Gateway": "172.19.0.1",
+          "Subnet": "172.19.0.0/16"
+        }
+      ],
+      "Driver": "default",
+      "Options": {}
+    },
+    "labels": {
+      "io.multica.trellis.approved-version": "2026-11-14-v1",
+      "io.multica.trellis.created-intent-utc": "2026-11-15T05:37:17.408949+00:00",
+      "io.multica.trellis.owner": "trellis-check",
+      "io.multica.trellis.purpose": "p6-service-redis-fixture",
+      "io.multica.trellis.receipt-root-sha256": "d93e9746ad2e784a29c2a957d2d4990d27d59e14f6da48e76074f12e661ae02f",
+      "io.multica.trellis.resource-kind": "redis-network",
+      "io.multica.trellis.run-id": "1b8185dd69414d0b8ae9ab679a1c7669",
+      "io.multica.trellis.task": "11-14-project-knowledge-automation",
+      "io.multica.trellis.task-path": ".trellis/tasks/11-14-project-knowledge-automation",
+      "io.multica.trellis.transport": "dedicated-non-internal-bridge"
+    },
+    "name": "multica-ka-p6-redis-net-1b8185dd6941",
+    "options": {
+      "com.docker.network.enable_ipv4": "true",
+      "com.docker.network.enable_ipv6": "false"
+    },
+    "scope": "local"
+  },
+  "preservation": {
+    "original_red_and_binding_files": [
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation-evidence-20261115-9f3b2b285a65.json",
+        "sha256": "6b6c7fb29ecac76dac1f46ba7915c595a82494dd8556228fb5c1860dfb3c7ffd"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-stage-history-review-20261115-69457a27.json",
+        "sha256": "c5950ce226cd99a5a38ca4923788328f7c51dace2487629662bc2c0d179ba90f"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-go-nondb-matrix-20261115-69457a27.json",
+        "sha256": "1f88877f4ff988687b6e8c0eda4a39d6eafabd0b9c772b88c8a1b61c912854fa"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-current-binding-20261115-69457a27-r2.json",
+        "sha256": "96ec1aff5f93b6e42a138011f37ce968d6865d5677d928179d3bb72cf781f86e"
+      }
+    ],
+    "postgres_unchanged": true,
+    "prior_allocation_backup": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/prior-red-allocation.receipt.json",
+    "prior_allocation_sha256": "62b3251d5938372b56f97eeef9233b015ec465ee4f1018366ccfbe4f5d8fa07c"
+  },
+  "redis": {
+    "all_keyspace_empty": true,
+    "authenticated_container_ping": "PONG",
+    "authenticated_host_ping": "PONG",
+    "configuration": {
+      "appendonly": "no",
+      "bind": "0.0.0.0",
+      "databases": "16",
+      "dir": "/data",
+      "maxmemory": "33554432",
+      "maxmemory-policy": "noeviction",
+      "port": "6379",
+      "protected-mode": "yes",
+      "save": ""
+    },
+    "container_user_identity": "uid=999(redis) gid=1000(redis) groups=1000(redis)",
+    "dbsize_container": {
+      "0": 0,
+      "12": 0
+    },
+    "dbsize_host": {
+      "0": 0,
+      "12": 0
+    },
+    "default_user_nopass": false,
+    "default_user_password_count": 1,
+    "host_and_container_run_id_match": true,
+    "requirepass_matches_generated_secret": true,
+    "run_id": "454a88f9b46ee2536ab4cfbb4b03eb1aeb7e9af0",
+    "runtime_data_filesystem": "tmpfs",
+    "runtime_fifo_mode": "0600",
+    "runtime_secret_transport": "stdin to 0600 FIFO on private /data tmpfs; no plaintext config file",
+    "runtime_version": "7.4.8",
+    "unauthenticated_ping_denied": true,
+    "wrong_password_denied": true
+  },
+  "redis_test_url": "redis://:8ATGAUQGTwVVXo60W7T2UL9vLcX_08xb6JIMdbrfpbbcaTf5bu_FNpmMHJByeJYA@127.0.0.1:52518/12",
+  "safe_to_pass_to_go_launcher": true,
+  "schema": "multica.p6.redis-allocation.v2",
+  "state": "running",
+  "state_dir": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941",
+  "status": "allocated_verified",
+  "task": {
+    "approved_version": "2026-11-14-v1",
+    "name": "11-14-project-knowledge-automation",
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation"
+  },
+  "teardown": {
+    "deferred": true,
+    "execute_argv_prefix": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "-I",
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-owned-redis.py",
+      "--allocation",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation.json"
+    ],
+    "expected_allocation_sha256_source": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation-receipt-20261115-1b8185dd6941.json: allocation_sha256",
+    "ownership_checks": "context endpoint and engine ID; full IDs, creation timestamps and labels; image, exact network attachment and loopback binding; no other network containers before removal",
+    "remove_container_argv": [
+      "/usr/local/bin/docker",
+      "--config",
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+      "--context",
+      "desktop-linux",
+      "container",
+      "rm",
+      "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f"
+    ],
+    "remove_image": false,
+    "remove_network_argv": [
+      "/usr/local/bin/docker",
+      "--config",
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+      "--context",
+      "desktop-linux",
+      "network",
+      "rm",
+      "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e"
+    ],
+    "required_flags": [
+      "--expected-allocation-sha256",
+      "HASH_FROM_IMMUTABLE_RECEIPT",
+      "--verify-only OR --execute"
+    ],
+    "responsible_session": "main-session",
+    "script": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-owned-redis.py",
+    "script_sha256": "7418bc77eee3c41b20965afc279f5c902bbe5beb9c917efe5baa6cc66d008dd9",
+    "stop_argv": [
+      "/usr/local/bin/docker",
+      "--config",
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+      "--context",
+      "desktop-linux",
+      "container",
+      "stop",
+      "--time",
+      "10",
+      "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f"
+    ],
+    "verify_argv_prefix": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "-I",
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-owned-redis.py",
+      "--allocation",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation.json"
+    ]
+  },
+  "verdict": "GREEN_OWNED_AUTHENTICATED_FIXTURE",
+  "verified_at_utc": "2026-11-15T05:37:19.365780+00:00"
+}

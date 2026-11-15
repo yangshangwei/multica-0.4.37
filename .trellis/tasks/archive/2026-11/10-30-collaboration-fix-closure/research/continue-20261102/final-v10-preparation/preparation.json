@@ -1,0 +1,231 @@
+{
+  "state": "prepared-not-run",
+  "prepared_at": "2026-11-02T19:22:25.563484+00:00",
+  "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "candidate_parent_sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+  "candidate_status": "clean",
+  "product_source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+  "product_source_id_basis": "root-supplied source identity; actual repair clean status and equal committed product trees independently checked",
+  "product_trees": {
+    "server": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+    "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+    "packages": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292"
+  },
+  "candidate4_product_trees_equal": true,
+  "launcher": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/run-make-check-v10.py",
+  "launcher_sha256": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+  "source_env": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/check-source-v10.env",
+  "source_env_sha256": "41a20e71e0d9806867e5beba8deaac291d2a5a577255d0689701957a99e64f18",
+  "source_env_mode": "0600",
+  "adapter_directory": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin",
+  "adapter_sha256": {
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+  },
+  "adapter_changed": false,
+  "provenance": {
+    "launcher_v9": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check-v9.py",
+      "sha256": "68dfc4c48a42e7ea276eee815b7f0985e96cf950ec3e2e623187e8ab583bf475"
+    },
+    "source_env_v9": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/check-source.env",
+      "sha256": "99475d2e36917761e88bab9687073ddb182c131241d8d815b7eb18850572dfe2"
+    },
+    "preflight_v9": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-launcher-test.py",
+      "sha256": "556716b9dd047fa898c8b6f08c1b4a83c2e49999e9f1698501431608982eee99"
+    },
+    "preflight_v10": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/check-launcher-v10-preflight.py",
+      "sha256": "8face46aaf0c79aff33771778bb54aa2e617e2d1c585aa7a19c91b0ae1e8ab93"
+    },
+    "data_parser_functions_unchanged": [
+      "require",
+      "sha256",
+      "parse_generated_environment",
+      "renderer_url"
+    ],
+    "only_changed_source_env_keys": [
+      "MULTICA_MCP_TEMPLATE_DIR",
+      "E2E_MCP_TEMPLATE_DIR",
+      "MULTICA_SKILL_TEMPLATE_DIR",
+      "MULTICA_RESOURCE_PUBLISH_DIR",
+      "COLLABORATION_SOURCE_CLI",
+      "MULTICA_DSH_PATH"
+    ],
+    "old_evidence_and_configuration_preserved": true
+  },
+  "catalog_directories": {
+    "mcp": {
+      "directory": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/catalog/mcp",
+      "mode": "0700",
+      "owner_uid": 501,
+      "non_symlink": true,
+      "initialized_empty": true
+    },
+    "skills": {
+      "directory": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/catalog/skills",
+      "mode": "0700",
+      "owner_uid": 501,
+      "non_symlink": true,
+      "initialized_empty": true
+    },
+    "published": {
+      "directory": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/catalog/published",
+      "mode": "0700",
+      "owner_uid": 501,
+      "non_symlink": true,
+      "initialized_empty": true
+    }
+  },
+  "catalog_config_bindings": {
+    "MULTICA_MCP_TEMPLATE_DIR": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/catalog/mcp",
+    "E2E_MCP_TEMPLATE_DIR": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/catalog/mcp",
+    "MULTICA_SKILL_TEMPLATE_DIR": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/catalog/skills",
+    "MULTICA_RESOURCE_PUBLISH_DIR": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/catalog/published"
+  },
+  "build_temp": {
+    "directory": "/private/tmp/multica-final-check-v10-8t_05bq4",
+    "allocation_record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/build-temp-allocation-v10.json",
+    "mode": "0700",
+    "owner_uid": 501,
+    "non_symlink": true,
+    "git_root_absent": true,
+    "actual_launcher_TMPDIR_and_MULTICA_DEV_TMPDIR_equal": true
+  },
+  "cache_paths": {
+    "GOCACHE": "/Volumes/artisan/dev-cache/go-build",
+    "GOMODCACHE": "/Users/artisan/go/pkg/mod",
+    "GOPATH": "/Users/artisan/go"
+  },
+  "run_paths": {
+    "out": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10",
+    "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+    "log": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.log",
+    "canonical_env": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/check-source-v10.safe.env",
+    "home": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/full-check-home-v10",
+    "registry": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/dev-registry-v10",
+    "go_evidence": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/go-packages-v10",
+    "profiles": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/profiles-v10",
+    "workspaces": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/workspaces-v10",
+    "playwright_results": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/makecheck-playwright-results-v9.json",
+    "playwright_environment": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/makecheck-playwright-environment-v9.json"
+  },
+  "configuration_policy": {
+    "auth_mode": "legacy",
+    "knowledge_context_enabled": false,
+    "device_auth_enabled": false,
+    "managed_installations_enabled": false,
+    "platform_admin_enabled": false,
+    "api_pool": {
+      "max": 10,
+      "min": 1
+    },
+    "llm_api_key_blank": true,
+    "llm_base_url_blank": true,
+    "real_agent_gate_absent": true,
+    "dsh_missing_absolute_path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/missing-test-owned-dsh",
+    "renderer_url": "http://127.0.0.1:19845/",
+    "rendered_service_readiness": "pending-root"
+  },
+  "artifacts": {
+    "manifest": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/artifact-manifest-v10.json",
+    "manifest_sha256": "6c319701f08a159b31d4ebcec6140e28a1c693531c5a8dfa77d95a6d1cbb20f7",
+    "cli": {
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/multica",
+      "staged": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/multica",
+      "sha256": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19",
+      "bytes": 30456738
+    },
+    "staged_renderer_preload": [
+      {
+        "name": "renderer",
+        "source": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/apps/desktop/out/renderer",
+        "staged": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/artifacts/renderer",
+        "required_destination": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/desktop/out/renderer",
+        "file_count": 493,
+        "bytes": 35362968,
+        "manifest_sha256": "afaf7bf2c6affc56ce985a3a05431eb39f827137c5a10dc790f685c720b2b8f4"
+      },
+      {
+        "name": "preload",
+        "source": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/apps/desktop/out/preload",
+        "staged": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/artifacts/preload",
+        "required_destination": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/desktop/out/preload",
+        "file_count": 1,
+        "bytes": 18876,
+        "manifest_sha256": "a49fce2d4f72308ce155dc1cb89b0853caef94709f837264a72f977087579b71"
+      }
+    ],
+    "manifest_algorithm": "sha256 of sorted relative file path, NUL, hex file sha256, newline per file",
+    "source_bytes_equal": true,
+    "copy_only_no_build": true,
+    "checkout_destinations": "pending-root-installation"
+  },
+  "root_command": [
+    "python3",
+    "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/run-make-check-v10.py"
+  ],
+  "repository_command": [
+    "make",
+    "check",
+    "ENV_FILE=/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/check-source-v10.safe.env"
+  ],
+  "additional_test_filters_or_skip_flags": [],
+  "required_clearance": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/independent-review-clearance-v10.json",
+    "exists": false,
+    "required_bindings": {
+      "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+      "adapter_sha256": {
+        "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+        "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+      },
+      "launcher_sha256": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+      "source_env_sha256": "41a20e71e0d9806867e5beba8deaac291d2a5a577255d0689701957a99e64f18"
+    },
+    "required_review_verdict": [
+      "pass",
+      "pass-with-notes"
+    ],
+    "required_blocking_findings_open": 0,
+    "root_owned_independent_review_required": true
+  },
+  "verification": {
+    "fake_preflight": {
+      "pass": 32,
+      "fail": 0,
+      "errors": 0,
+      "skip": 0,
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/fake-preflight.log",
+      "result": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/fake-preflight.json"
+    },
+    "static": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/static-checks.json",
+    "syntax_files_checked": 5,
+    "hash_binding_precedes_execution_mutations": true,
+    "all_actual_execution_paths_absent": true
+  },
+  "evidence": {
+    "launcher_diff": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/launcher-v9-to-v10.diff",
+    "boundary": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/boundary.md",
+    "summary": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/summary.md",
+    "preparation": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/preparation.json"
+  },
+  "actual_actions": {
+    "complete_checks": 0,
+    "Go_TestMain_or_DB_tests": 0,
+    "database_or_migration_actions": 0,
+    "services_started_or_stopped": 0,
+    "network_or_install_actions": 0,
+    "Provider_executions": 0,
+    "commits_or_staging": 0
+  },
+  "pending_root_work": [
+    "Independent v10 review and hash-bound clearance",
+    "Install staged same-source renderer/preload into REPAIR apps/desktop/out and verify the owned renderer",
+    "Verify catalog/API/database readiness and shared service window",
+    "Run exactly one complete repository make check on this frozen candidate"
+  ]
+}

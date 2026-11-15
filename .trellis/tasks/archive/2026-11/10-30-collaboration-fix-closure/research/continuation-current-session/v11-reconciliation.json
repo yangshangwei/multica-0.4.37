@@ -1,0 +1,64 @@
+{
+  "recorded_at": "2026-11-03T07:37:32.486830+00:00",
+  "owner_session": "01a19ff3-faaf-71c1-b068-8571f0e940f1",
+  "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "state": "complete",
+  "exit_code": 2,
+  "started_at": "2026-11-03T01:49:29.326279+00:00",
+  "finished_at": "2026-11-03T03:01:58.440776+00:00",
+  "browser_stats": {
+    "startTime": "2026-11-03T02:42:43.010Z",
+    "duration": 1152397.392,
+    "expected": 347,
+    "skipped": 89,
+    "unexpected": 3,
+    "flaky": 0
+  },
+  "browser_failed_tests": [
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+      "results": [
+        {
+          "status": "failed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "collaboration-delivery-web.spec.ts",
+      "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "results": [
+        {
+          "status": "failed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "collaboration-editing-web.spec.ts",
+      "title": "Web source creation, field edits and discussion share one authorized issue",
+      "results": [
+        {
+          "status": "failed",
+          "retry": 0
+        }
+      ]
+    }
+  ],
+  "browser_top_level_errors": 0,
+  "go_named": {
+    "pass": 20894,
+    "skip": 22
+  },
+  "go_package_records": 82,
+  "go_package_nonzero": [],
+  "raw_files": {
+    "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/make-check-v11.json": "6f38a452ffc087db343f1945e582db83297bfa30fe73f3de5a3f7748f8e6b626",
+    "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/make-check-v11.log": "02d1f307edca1c06e701dd636116bcf1b85569a88317f5889826f3e45b8d16cb",
+    "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/makecheck-playwright-results-v9.json": "8ce622b327167a0a4e443c2d5beb40f1a9a950e27f9aa7a1883f499b7557ef97"
+  },
+  "acceptance": "failed_not_accepted",
+  "post_make_audit_present": false,
+  "new_provider_calls": 0
+}

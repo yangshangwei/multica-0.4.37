@@ -1,0 +1,3939 @@
+{
+  "recorded_at": "2026-11-15T07:18:07.122184+00:00",
+  "status": "PASS_SCOPED_GREEN_R03_READ_INCREMENT",
+  "task_completed": false,
+  "owner": "/root/s2_f06_r03",
+  "changed_files": [
+    "server/cmd/server/collaboration_stage_completion_preview_integration_test.go",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/f06-completion-preview-resume-r03-results.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/f06-completion-preview-resume-r03-results.json"
+  ],
+  "source": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server/cmd/server/collaboration_stage_completion_preview_integration_test.go",
+    "sha256": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+    "bytes": 54561
+  },
+  "isolated_source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source",
+  "preserved_draft": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/source/server/cmd/server/collaboration_stage_completion_preview_integration_test.go",
+    "sha256": "0cbb17ece0ebc01bd5eb54adc236ecd02488906c7b7e755ec8493a5b463c875e",
+    "bytes": 36878
+  },
+  "source_snapshots": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/final-r03-v2-before-source.json",
+      "sha256": "57dac1e8c90602f0f76a2a56b8bbb42e4e2ec29a3f4bf5e7f3ee219dcf8d6b3a",
+      "bytes": 1028759
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/final-r03-v2-after-source.json",
+      "sha256": "bb82fc540a633fbde455712e4f26a083876bda21af42d4267bf3b6956a6b7e51",
+      "bytes": 1028758
+    }
+  ],
+  "file_count": 4955,
+  "unchanged_parent_files": 4954,
+  "green_parent_manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+  "final_checks": {
+    "normal-r03-final-v2": {
+      "label": "normal-r03-final-v2",
+      "started_at": "2026-11-15T07:06:33.189100+00:00",
+      "finished_at": "2026-11-15T07:06:51.391784+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/router.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationStageCompletionPreviewRouter",
+        "-count=1",
+        "-json",
+        "-timeout=180s"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/normal-r03-final-v2.jsonl",
+      "log_sha256": "3fe3edac3a45ae3c0bb7e71b0829f35ac97f38ac82d960bfe4d1c59c90680a91",
+      "test_sha256_before": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "test_sha256_after": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "all_named": {
+        "pass": 112,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 102,
+        "fail": 0,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 95,
+        "fail": 0,
+        "skip": 0
+      },
+      "events": [
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding/self",
+          "action": "pass",
+          "elapsed": 0.67
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding/submission",
+          "action": "pass",
+          "elapsed": 0.41
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding/admin",
+          "action": "pass",
+          "elapsed": 0.63
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding",
+          "action": "pass",
+          "elapsed": 1.71
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations/self",
+          "action": "pass",
+          "elapsed": 0.23
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations/submission",
+          "action": "pass",
+          "elapsed": 0.23
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations",
+          "action": "pass",
+          "elapsed": 0.46
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self/enforce",
+          "action": "pass",
+          "elapsed": 0.02
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self/observe",
+          "action": "pass",
+          "elapsed": 0.02
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self/off",
+          "action": "pass",
+          "elapsed": 0.02
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self",
+          "action": "pass",
+          "elapsed": 0.19
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission/enforce",
+          "action": "pass",
+          "elapsed": 0.03
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission/observe",
+          "action": "pass",
+          "elapsed": 0.03
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission/off",
+          "action": "pass",
+          "elapsed": 0.03
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission",
+          "action": "pass",
+          "elapsed": 0.23
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin/enforce",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin/observe",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin/off",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin",
+          "action": "pass",
+          "elapsed": 0.39
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete",
+          "action": "pass",
+          "elapsed": 0.82
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/self/candidates",
+          "action": "pass",
+          "elapsed": 0.02
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/self/completion-preview",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/self",
+          "action": "pass",
+          "elapsed": 0.15
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/admin/candidates",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/admin/completion-preview",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/admin",
+          "action": "pass",
+          "elapsed": 0.3
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication",
+          "action": "pass",
+          "elapsed": 0.45
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/body_exactly_64_kib_is_a_read",
+          "action": "pass",
+          "elapsed": 0.03
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_shape_array",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_shape_future_field",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/top_level_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/top_level_duplicate",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/nested_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/nested_duplicate",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/numeric_consumer_epoch",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/null_required_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/trailing_json",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/body_over_64_kib",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/ordinary_target_on_collaboration_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/valid_target_for_the_other_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/target_path_identity_mismatch",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/missing_source",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/source_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/duplicate_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_query",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_zero",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_above_50",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_noncanonical",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/duplicate_limit",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self",
+          "action": "pass",
+          "elapsed": 0.26
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/body_exactly_64_kib_is_a_read",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_shape_array",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_shape_future_field",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/top_level_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/top_level_duplicate",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/nested_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/nested_duplicate",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/numeric_consumer_epoch",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/null_required_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/trailing_json",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/body_over_64_kib",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/ordinary_target_on_collaboration_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/valid_target_for_the_other_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/target_path_identity_mismatch",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/missing_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/source_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/duplicate_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_query",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_zero",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_above_50",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_noncanonical",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/duplicate_limit",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin",
+          "action": "pass",
+          "elapsed": 0.48
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport",
+          "action": "pass",
+          "elapsed": 0.74
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/source_revoked",
+          "action": "pass",
+          "elapsed": 0.16
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/consumer_revoked",
+          "action": "pass",
+          "elapsed": 0.15
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/root_revision_changed",
+          "action": "pass",
+          "elapsed": 0.17
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/source_detached",
+          "action": "pass",
+          "elapsed": 0.17
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/stale_source_head",
+          "action": "pass",
+          "elapsed": 0.18
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions",
+          "action": "pass",
+          "elapsed": 0.83
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_unknown_field",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_duplicate_viewer",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_trailing_json",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_root_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_source_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_viewer_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_root_revision_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_source_revision_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/known_old_route_404_is_not_object_denial",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/source_revision_stales_saved_cursor",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/revocation_rejects_cached_cursor_without_private_page",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute",
+          "action": "pass",
+          "elapsed": 0.52
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterR38Scope/enabled_initiator_is_not_R38",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterR38Scope/workspace_organization_link_mismatch",
+          "action": "pass",
+          "elapsed": 0.02
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterR38Scope",
+          "action": "pass",
+          "elapsed": 0.37
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/list/read_first",
+          "action": "pass",
+          "elapsed": 0.23
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/list/revocation_first",
+          "action": "pass",
+          "elapsed": 0.12
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/empty/read_first",
+          "action": "pass",
+          "elapsed": 0.2
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/empty/revocation_first",
+          "action": "pass",
+          "elapsed": 0.12
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/read_first",
+          "action": "pass",
+          "elapsed": 0.25
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/revocation_first",
+          "action": "pass",
+          "elapsed": 0.19
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/preview/read_first",
+          "action": "pass",
+          "elapsed": 0.24
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/preview/revocation_first",
+          "action": "pass",
+          "elapsed": 0.14
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders",
+          "action": "pass",
+          "elapsed": 1.5
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/password_session_changed/candidates",
+          "action": "pass",
+          "elapsed": 0.37
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/password_session_changed/completion-preview",
+          "action": "pass",
+          "elapsed": 0.32
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/administrator_role_removed/candidates",
+          "action": "pass",
+          "elapsed": 0.25
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/administrator_role_removed/completion-preview",
+          "action": "pass",
+          "elapsed": 0.26
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/organization_became_inactive/candidates",
+          "action": "pass",
+          "elapsed": 0.26
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/organization_became_inactive/completion-preview",
+          "action": "pass",
+          "elapsed": 0.26
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization",
+          "action": "pass",
+          "elapsed": 1.72
+        }
+      ],
+      "packages": [
+        {
+          "Time": "2026-11-15T15:06:51.351134+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/cmd/server",
+          "Elapsed": 10.178
+        }
+      ],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/normal-r03-final-v2.json",
+        "sha256": "975d0131621401db28b7f1bc005838d092d07cd8c34765731d02bcc973e2110b",
+        "bytes": 19538
+      },
+      "witnesses": [
+        "collaboration_stage_completion_preview_integration_test.go:145: F06_READONLY kind=self before_sha256=97e22f0afa861c6e5700875d0fd9e35640339135410df63b126c30bf58d58ee2 after_sha256=97e22f0afa861c6e5700875d0fd9e35640339135410df63b126c30bf58d58ee2 root_grants=0 source_grants=1 root_events=0 root_operations=0 root_attachments=1",
+        "collaboration_stage_completion_preview_integration_test.go:145: F06_READONLY kind=submission before_sha256=baf54cea75243f7831725922954af5bc9b0ea1ded8ba470a6e60cf0b4d489fd8 after_sha256=baf54cea75243f7831725922954af5bc9b0ea1ded8ba470a6e60cf0b4d489fd8 root_grants=0 source_grants=1 root_events=1 root_operations=1 root_attachments=0",
+        "collaboration_stage_completion_preview_integration_test.go:145: F06_READONLY kind=admin before_sha256=5e378478f0b9fbb50f7750037aa00ee9d86d5e18f5898c5aaef7f3332727506c after_sha256=5e378478f0b9fbb50f7750037aa00ee9d86d5e18f5898c5aaef7f3332727506c root_grants=0 source_grants=1 root_events=0 root_operations=0 root_attachments=0",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=list order=read_first reader_backend=32731 writer_backend=32794 read_status=200 before_sha256=a0f68e2552841df97b865e2a266c65e26d5a00fb182c44f529be78926dbe70c8 after_sha256=a0f68e2552841df97b865e2a266c65e26d5a00fb182c44f529be78926dbe70c8",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=list order=revocation_first reader_backend=32731 writer_backend=32794 read_status=404 before_sha256=59850bf7fa757d9fe9997420682a24f8d3a083151c03eaa1855f1605ab7d8f04 after_sha256=59850bf7fa757d9fe9997420682a24f8d3a083151c03eaa1855f1605ab7d8f04",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=empty order=read_first reader_backend=32731 writer_backend=32794 read_status=200 before_sha256=dbe072af1d5677f0bab4466dc540585588727d3db80de9528e3246cb524a021a after_sha256=dbe072af1d5677f0bab4466dc540585588727d3db80de9528e3246cb524a021a",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=empty order=revocation_first reader_backend=32731 writer_backend=32794 read_status=404 before_sha256=4a9b71f4760f26a9724148b546ae2c2859f026219275a9c254106556f1d02bcd after_sha256=4a9b71f4760f26a9724148b546ae2c2859f026219275a9c254106556f1d02bcd",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=cursor order=read_first reader_backend=32731 writer_backend=32794 read_status=200 before_sha256=974be10cd3b28bc7361fbfaae4a55e2dda4a83745962a17d629604d3dfee21d0 after_sha256=974be10cd3b28bc7361fbfaae4a55e2dda4a83745962a17d629604d3dfee21d0",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=cursor order=revocation_first reader_backend=32731 writer_backend=32794 read_status=404 before_sha256=079903f785317a56ef82ae9a8d76f5fade6c498d4f489d390c238447486f78dd after_sha256=079903f785317a56ef82ae9a8d76f5fade6c498d4f489d390c238447486f78dd",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=preview order=read_first reader_backend=32731 writer_backend=32794 read_status=200 before_sha256=f7da6342ed7b8f12c3d84a2cd31123060d3d3a7abe07e00a140f6a405cd629ac after_sha256=f7da6342ed7b8f12c3d84a2cd31123060d3d3a7abe07e00a140f6a405cd629ac",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=preview order=revocation_first reader_backend=32731 writer_backend=32794 read_status=404 before_sha256=b805ae6ccdee7a550ba697a181485a48c11faba450e15ea3bb175e59e57bfb7b after_sha256=b805ae6ccdee7a550ba697a181485a48c11faba450e15ea3bb175e59e57bfb7b"
+      ]
+    },
+    "race-r03-final": {
+      "label": "race-r03-final",
+      "started_at": "2026-11-15T07:09:22.869413+00:00",
+      "finished_at": "2026-11-15T07:10:20.893138+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/router_race.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationStageCompletionPreviewRouter",
+        "-count=1",
+        "-json",
+        "-timeout=180s",
+        "-race"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/race-r03-final.jsonl",
+      "log_sha256": "9cd880dd03b180add2cd02ed8805007f16b202ce0cbb770942f43a9b12474be7",
+      "test_sha256_before": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "test_sha256_after": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "all_named": {
+        "pass": 112,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 102,
+        "fail": 0,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 95,
+        "fail": 0,
+        "skip": 0
+      },
+      "events": [
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding/self",
+          "action": "pass",
+          "elapsed": 0.76
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding/submission",
+          "action": "pass",
+          "elapsed": 0.49
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding/admin",
+          "action": "pass",
+          "elapsed": 2.36
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding",
+          "action": "pass",
+          "elapsed": 3.61
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations/self",
+          "action": "pass",
+          "elapsed": 0.22
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations/submission",
+          "action": "pass",
+          "elapsed": 0.26
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations",
+          "action": "pass",
+          "elapsed": 0.48
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self/enforce",
+          "action": "pass",
+          "elapsed": 0.03
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self/observe",
+          "action": "pass",
+          "elapsed": 0.03
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self/off",
+          "action": "pass",
+          "elapsed": 0.03
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self",
+          "action": "pass",
+          "elapsed": 0.23
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission/enforce",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission/observe",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission/off",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission",
+          "action": "pass",
+          "elapsed": 0.28
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin/enforce",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin/observe",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin/off",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin",
+          "action": "pass",
+          "elapsed": 2.25
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete",
+          "action": "pass",
+          "elapsed": 2.76
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/self/candidates",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/self/completion-preview",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/self",
+          "action": "pass",
+          "elapsed": 0.15
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/admin/candidates",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/admin/completion-preview",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/admin",
+          "action": "pass",
+          "elapsed": 2.07
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication",
+          "action": "pass",
+          "elapsed": 2.22
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/body_exactly_64_kib_is_a_read",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_shape_array",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_shape_future_field",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/top_level_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/top_level_duplicate",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/nested_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/nested_duplicate",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/numeric_consumer_epoch",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/null_required_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/trailing_json",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/body_over_64_kib",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/ordinary_target_on_collaboration_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/valid_target_for_the_other_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/target_path_identity_mismatch",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/missing_source",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/source_case_alias",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/duplicate_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_query",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_zero",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_above_50",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_noncanonical",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/duplicate_limit",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self",
+          "action": "pass",
+          "elapsed": 0.29
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/body_exactly_64_kib_is_a_read",
+          "action": "pass",
+          "elapsed": 0.07
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_shape_array",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_shape_future_field",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/top_level_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/top_level_duplicate",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/nested_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/nested_duplicate",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/numeric_consumer_epoch",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/null_required_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/trailing_json",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/body_over_64_kib",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/ordinary_target_on_collaboration_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/valid_target_for_the_other_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/target_path_identity_mismatch",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/missing_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/source_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/duplicate_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_query",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_zero",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_above_50",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_noncanonical",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/duplicate_limit",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin",
+          "action": "pass",
+          "elapsed": 2.44
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport",
+          "action": "pass",
+          "elapsed": 2.73
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/source_revoked",
+          "action": "pass",
+          "elapsed": 0.26
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/consumer_revoked",
+          "action": "pass",
+          "elapsed": 0.27
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/root_revision_changed",
+          "action": "pass",
+          "elapsed": 0.22
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/source_detached",
+          "action": "pass",
+          "elapsed": 0.2
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/stale_source_head",
+          "action": "pass",
+          "elapsed": 0.22
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions",
+          "action": "pass",
+          "elapsed": 1.17
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_unknown_field",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_duplicate_viewer",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_case_alias",
+          "action": "pass",
+          "elapsed": 0.02
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_trailing_json",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_root_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_source_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_viewer_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_root_revision_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_source_revision_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/known_old_route_404_is_not_object_denial",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/source_revision_stales_saved_cursor",
+          "action": "pass",
+          "elapsed": 0.06
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/revocation_rejects_cached_cursor_without_private_page",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute",
+          "action": "pass",
+          "elapsed": 0.44
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterR38Scope/enabled_initiator_is_not_R38",
+          "action": "pass",
+          "elapsed": 0.02
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterR38Scope/workspace_organization_link_mismatch",
+          "action": "pass",
+          "elapsed": 0.02
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterR38Scope",
+          "action": "pass",
+          "elapsed": 2.22
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/list/read_first",
+          "action": "pass",
+          "elapsed": 0.31
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/list/revocation_first",
+          "action": "pass",
+          "elapsed": 0.19
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/empty/read_first",
+          "action": "pass",
+          "elapsed": 0.25
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/empty/revocation_first",
+          "action": "pass",
+          "elapsed": 0.15
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/read_first",
+          "action": "pass",
+          "elapsed": 0.31
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/revocation_first",
+          "action": "pass",
+          "elapsed": 0.22
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/preview/read_first",
+          "action": "pass",
+          "elapsed": 0.25
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/preview/revocation_first",
+          "action": "pass",
+          "elapsed": 0.19
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders",
+          "action": "pass",
+          "elapsed": 1.87
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/password_session_changed/candidates",
+          "action": "pass",
+          "elapsed": 2.07
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/password_session_changed/completion-preview",
+          "action": "pass",
+          "elapsed": 2.03
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/administrator_role_removed/candidates",
+          "action": "pass",
+          "elapsed": 2.05
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/administrator_role_removed/completion-preview",
+          "action": "pass",
+          "elapsed": 2.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/organization_became_inactive/candidates",
+          "action": "pass",
+          "elapsed": 2.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/organization_became_inactive/completion-preview",
+          "action": "pass",
+          "elapsed": 2
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization",
+          "action": "pass",
+          "elapsed": 12.21
+        }
+      ],
+      "packages": [
+        {
+          "Time": "2026-11-15T15:10:20.74366+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/cmd/server",
+          "Elapsed": 32.508
+        }
+      ],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/race-r03-final.json",
+        "sha256": "57f4c3a9287b9f4719dddc3198ba7de03c661bacd4cbf4694c6e03428dad9e9b",
+        "bytes": 19557
+      },
+      "witnesses": [
+        "collaboration_stage_completion_preview_integration_test.go:145: F06_READONLY kind=self before_sha256=9c1142459046ea6904f65794de78f828651941b4e0a75dfb48cb152ff619d6e8 after_sha256=9c1142459046ea6904f65794de78f828651941b4e0a75dfb48cb152ff619d6e8 root_grants=0 source_grants=1 root_events=0 root_operations=0 root_attachments=1",
+        "collaboration_stage_completion_preview_integration_test.go:145: F06_READONLY kind=submission before_sha256=660237611a42f6c80f5099185b307e6140580f802731d217396507e9a211daa8 after_sha256=660237611a42f6c80f5099185b307e6140580f802731d217396507e9a211daa8 root_grants=0 source_grants=1 root_events=1 root_operations=1 root_attachments=0",
+        "collaboration_stage_completion_preview_integration_test.go:145: F06_READONLY kind=admin before_sha256=b6ed375445a968ad24506e3ba89b9e1dcf6a2ed13e99209ba43e98963a947f04 after_sha256=b6ed375445a968ad24506e3ba89b9e1dcf6a2ed13e99209ba43e98963a947f04 root_grants=0 source_grants=1 root_events=0 root_operations=0 root_attachments=0",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=list order=read_first reader_backend=34249 writer_backend=34372 read_status=200 before_sha256=162c33c114a5301889479d13d13a17e0fdd096dd576999c4263eb5147b67104f after_sha256=162c33c114a5301889479d13d13a17e0fdd096dd576999c4263eb5147b67104f",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=list order=revocation_first reader_backend=34249 writer_backend=34372 read_status=404 before_sha256=0302d3ac6144633b54829bdc4b92d80ef6cd23ee06c9d608dfc5826b3da8c085 after_sha256=0302d3ac6144633b54829bdc4b92d80ef6cd23ee06c9d608dfc5826b3da8c085",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=empty order=read_first reader_backend=34249 writer_backend=34372 read_status=200 before_sha256=94e0b140972b9c72a3d617f25f6591cd23612b49317d9a9898cbb8cce3717c6b after_sha256=94e0b140972b9c72a3d617f25f6591cd23612b49317d9a9898cbb8cce3717c6b",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=empty order=revocation_first reader_backend=34249 writer_backend=34372 read_status=404 before_sha256=ae2874c1b9d5f843aa2b01e7f96b53bd34741cbfebbf4a9375c6a0998c4c335e after_sha256=ae2874c1b9d5f843aa2b01e7f96b53bd34741cbfebbf4a9375c6a0998c4c335e",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=cursor order=read_first reader_backend=34249 writer_backend=34372 read_status=200 before_sha256=ee059df6a2cb8ace27cd6aa258023e7cfb5e20b5bfc0f281c4650382a009a38f after_sha256=ee059df6a2cb8ace27cd6aa258023e7cfb5e20b5bfc0f281c4650382a009a38f",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=cursor order=revocation_first reader_backend=34249 writer_backend=34372 read_status=404 before_sha256=8155971c31038f7d7d528060afc478532ffc6b9170bca255946b05648536cef7 after_sha256=8155971c31038f7d7d528060afc478532ffc6b9170bca255946b05648536cef7",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=preview order=read_first reader_backend=34249 writer_backend=34372 read_status=200 before_sha256=c3f727667be4eb55d2bde09729099a46389ef66e57182a350e99605826a8e3e9 after_sha256=c3f727667be4eb55d2bde09729099a46389ef66e57182a350e99605826a8e3e9",
+        "collaboration_stage_completion_preview_integration_test.go:765: F06_AUTHORITY_ORDER shape=preview order=revocation_first reader_backend=34249 writer_backend=34372 read_status=404 before_sha256=4e6702c6a0a1b76852cd985794be9434c72bef297d8e02b915b8dd534a6209ef after_sha256=4e6702c6a0a1b76852cd985794be9434c72bef297d8e02b915b8dd534a6209ef"
+      ]
+    },
+    "vet-r03-final": {
+      "label": "vet-r03-final",
+      "started_at": "2026-11-15T07:07:39.692190+00:00",
+      "finished_at": "2026-11-15T07:07:42.235072+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/router_race.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server",
+        "vet",
+        "./cmd/server"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/vet-r03-final.jsonl",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "test_sha256_before": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "test_sha256_after": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "all_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "events": [],
+      "packages": [],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/vet-r03-final.json",
+        "sha256": "99dd99af86f70dbbececcbf653f1d6e379b3411e0b0b4a80978cd8f71af8e72f",
+        "bytes": 1198
+      }
+    },
+    "compile-r03-final": {
+      "label": "compile-r03-final",
+      "started_at": "2026-11-15T07:09:55.154606+00:00",
+      "finished_at": "2026-11-15T07:10:06.222826+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/router.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server",
+        "test",
+        "-c",
+        "-o",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/build/f06-router.test",
+        "./cmd/server"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/compile-r03-final.jsonl",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "test_sha256_before": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "test_sha256_after": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "all_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "events": [],
+      "packages": [],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/compile-r03-final.json",
+        "sha256": "acb3867b53245d839a3973e8b0da30b32d7a2da9d1ec458a36579467a4916faa",
+        "bytes": 1336
+      }
+    },
+    "gofmt-r03-final": {
+      "label": "gofmt-r03-final",
+      "started_at": "2026-11-15T07:06:49.363839+00:00",
+      "finished_at": "2026-11-15T07:06:49.381170+00:00",
+      "command": [
+        "gofmt",
+        "-l",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server/cmd/server/collaboration_stage_completion_preview_integration_test.go"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/gofmt-r03-final.jsonl",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "test_sha256_before": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "test_sha256_after": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "all_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "events": [],
+      "packages": [],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/gofmt-r03-final.json",
+        "sha256": "d37285776cf8ef900cb26068bb7e576c610837a16c425f79c7154efefd3ccf49",
+        "bytes": 1067
+      }
+    },
+    "goversion-r03-final": {
+      "label": "goversion-r03-final",
+      "started_at": "2026-11-15T07:06:49.870728+00:00",
+      "finished_at": "2026-11-15T07:06:49.984566+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/router_race.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server",
+        "version"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/goversion-r03-final.jsonl",
+      "log_sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+      "test_sha256_before": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "test_sha256_after": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "all_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "events": [],
+      "packages": [],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/goversion-r03-final.json",
+        "sha256": "2d4ff483370a4ff9efbdd95fe4870da4c120f53c69fca0b27a6c1c6010dfe90b",
+        "bytes": 1194
+      }
+    }
+  },
+  "final_by_test": [
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterAuthentication",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "top_level"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/admin",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "intermediate_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/admin/candidates",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/admin/completion-preview",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/self",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "intermediate_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/self/candidates",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/self/completion-preview",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "top_level"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations/self",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations/submission",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "top_level"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/administrator_role_removed/candidates",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/administrator_role_removed/completion-preview",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/organization_became_inactive/candidates",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/organization_became_inactive/completion-preview",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/password_session_changed/candidates",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/password_session_changed/completion-preview",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "top_level"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/consumer_revoked",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/root_revision_changed",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/source_detached",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/source_revoked",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/stale_source_head",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "top_level"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_root_binding",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_root_revision_binding",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_source_binding",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_source_revision_binding",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_case_alias",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_duplicate_viewer",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_trailing_json",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_unknown_field",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_viewer_binding",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/known_old_route_404_is_not_object_denial",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/revocation_rejects_cached_cursor_without_private_page",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/source_revision_stales_saved_cursor",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterR38Scope",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "top_level"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterR38Scope/enabled_initiator_is_not_R38",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterR38Scope/workspace_organization_link_mismatch",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "top_level"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding/admin",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding/self",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding/submission",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "top_level"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/read_first",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/revocation_first",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/empty/read_first",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/empty/revocation_first",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/list/read_first",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/list/revocation_first",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/preview/read_first",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/preview/revocation_first",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "top_level"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "intermediate_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin/enforce",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin/observe",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin/off",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "intermediate_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self/enforce",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self/observe",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self/off",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "intermediate_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission/enforce",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission/observe",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission/off",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "top_level"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "intermediate_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/body_exactly_64_kib_is_a_read",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/body_over_64_kib",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/duplicate_limit",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/duplicate_source",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_above_50",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_noncanonical",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_zero",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/missing_source",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/nested_case_alias",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/nested_duplicate",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/null_required_source",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/numeric_consumer_epoch",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/ordinary_target_on_collaboration_route",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/source_case_alias",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/target_path_identity_mismatch",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/top_level_case_alias",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/top_level_duplicate",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/trailing_json",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_query",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_shape_array",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_shape_future_field",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/valid_target_for_the_other_route",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "intermediate_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/body_exactly_64_kib_is_a_read",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/body_over_64_kib",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/duplicate_limit",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/duplicate_source",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_above_50",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_noncanonical",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_zero",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/missing_source",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/nested_case_alias",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/nested_duplicate",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/null_required_source",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/numeric_consumer_epoch",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/ordinary_target_on_collaboration_route",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/source_case_alias",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/target_path_identity_mismatch",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/top_level_case_alias",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/top_level_duplicate",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/trailing_json",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_query",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_shape_array",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_shape_future_field",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/valid_target_for_the_other_route",
+      "normal": "pass",
+      "race": "pass",
+      "classification": "leaf_subtest"
+    }
+  ],
+  "legacy_runs": [
+    {
+      "label": "normal-r01",
+      "raw": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/normal-r01.log",
+        "sha256": "6f4c830e7fc13acd46b17c7ebbce38005485f096164c66934c5256a8c96b6039",
+        "bytes": 419666
+      },
+      "exit_code": 1,
+      "all_named": {
+        "pass": 70,
+        "fail": 8,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 4,
+        "fail": 4,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 66,
+        "fail": 4,
+        "skip": 0
+      },
+      "leaf_terminal_records": {
+        "pass": 60,
+        "fail": 5,
+        "skip": 0
+      },
+      "failed_names": [
+        "TestCollaborationStageCompletionPreviewRouterAuthentication/self/candidates",
+        "TestCollaborationStageCompletionPreviewRouterAuthentication/self/completion-preview",
+        "TestCollaborationStageCompletionPreviewRouterAuthentication/self",
+        "TestCollaborationStageCompletionPreviewRouterAuthentication",
+        "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/consumer_revoked",
+        "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions",
+        "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute",
+        "TestCollaborationStageCompletionPreviewRouterR38Scope"
+      ]
+    },
+    {
+      "label": "normal-r02",
+      "raw": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/normal-r02.log",
+        "sha256": "47cf9decf38b5c4c155dacb48c3d21a10be68c831bfc37c3440e2684b964e507",
+        "bytes": 439600
+      },
+      "exit_code": 1,
+      "all_named": {
+        "pass": 86,
+        "fail": 2,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 7,
+        "fail": 1,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 79,
+        "fail": 1,
+        "skip": 0
+      },
+      "leaf_terminal_records": {
+        "pass": 72,
+        "fail": 1,
+        "skip": 0
+      },
+      "failed_names": [
+        "TestCollaborationStageCompletionPreviewRouterR38Scope/wrong_current_organization_is_not_R38",
+        "TestCollaborationStageCompletionPreviewRouterR38Scope"
+      ]
+    }
+  ],
+  "retained_resume_runs": {
+    "red-r03-r38-fixture": {
+      "label": "red-r03-r38-fixture",
+      "started_at": "2026-11-15T06:46:31.516143+00:00",
+      "finished_at": "2026-11-15T06:46:51.010031+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/router.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationStageCompletionPreviewRouterR38Scope/wrong_current_organization_is_not_R38$",
+        "-count=1",
+        "-json",
+        "-timeout=180s"
+      ],
+      "exit_code": 1,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/red-r03-r38-fixture.jsonl",
+      "log_sha256": "da317a5e71dd58e59aa8f5f3b32dc4a4146529703a39ce858007e7bdaa0c7896",
+      "test_sha256_before": "0cbb17ece0ebc01bd5eb54adc236ecd02488906c7b7e755ec8493a5b463c875e",
+      "test_sha256_after": "0cbb17ece0ebc01bd5eb54adc236ecd02488906c7b7e755ec8493a5b463c875e",
+      "all_named": {
+        "pass": 0,
+        "fail": 2,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "events": [
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterR38Scope/wrong_current_organization_is_not_R38",
+          "action": "fail",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterR38Scope",
+          "action": "fail",
+          "elapsed": 0.69
+        }
+      ],
+      "packages": [
+        {
+          "Time": "2026-11-15T14:46:50.947651+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/cmd/server",
+          "Elapsed": 2.614
+        }
+      ],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/red-r03-r38-fixture.json",
+        "sha256": "411d8514514ca7b0a494183c8b81f14afe3c6bf98ff6ed7a1d0cfaf0121e590a",
+        "bytes": 1846
+      }
+    },
+    "green-r03-r38-link": {
+      "label": "green-r03-r38-link",
+      "started_at": "2026-11-15T06:49:18.265200+00:00",
+      "finished_at": "2026-11-15T06:49:28.472060+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/router.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationStageCompletionPreviewRouterR38Scope$",
+        "-count=1",
+        "-json",
+        "-timeout=180s"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/green-r03-r38-link.jsonl",
+      "log_sha256": "756148a3043dfad088acc80eba86ab9aed5eafca8d1c5b829af127deb714d534",
+      "test_sha256_before": "fbdeb8be275fb99404d0ac26c23bcb2987b82e8b73150e1c7a3981750fd2d51e",
+      "test_sha256_after": "fbdeb8be275fb99404d0ac26c23bcb2987b82e8b73150e1c7a3981750fd2d51e",
+      "all_named": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "events": [
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterR38Scope/enabled_initiator_is_not_R38",
+          "action": "pass",
+          "elapsed": 0.03
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterR38Scope/workspace_organization_link_mismatch",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterR38Scope",
+          "action": "pass",
+          "elapsed": 0.89
+        }
+      ],
+      "packages": [
+        {
+          "Time": "2026-11-15T14:49:28.42412+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/cmd/server",
+          "Elapsed": 1.904
+        }
+      ],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/green-r03-r38-link.json",
+        "sha256": "4287c3aa84d133ac57f45b522a49e9ec011cfb2fae3e28f84e0d5688cc2a6ef5",
+        "bytes": 1966
+      }
+    },
+    "normal-r03-added-boundaries": {
+      "label": "normal-r03-added-boundaries",
+      "started_at": "2026-11-15T06:56:17.804789+00:00",
+      "finished_at": "2026-11-15T06:56:34.128950+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/router.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationStageCompletionPreviewRouter(CurrentConsumerObservations|StrictTransport|PaginationAndOldRoute|ReadRevocationOrders|CurrentPasswordAndOrganization)$",
+        "-count=1",
+        "-json",
+        "-timeout=180s"
+      ],
+      "exit_code": 1,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/normal-r03-added-boundaries.jsonl",
+      "log_sha256": "d146a1d5f0712ba95a750a1103241c5c7ec71f2371aa1e17c4fc7201233e0ccf",
+      "test_sha256_before": "b2c954414d27c4e3d2aaa740e12572f315b41f30c391be548eeee10f99ab2d57",
+      "test_sha256_after": "b2c954414d27c4e3d2aaa740e12572f315b41f30c391be548eeee10f99ab2d57",
+      "all_named": {
+        "pass": 76,
+        "fail": 3,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 4,
+        "fail": 1,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 72,
+        "fail": 2,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 70,
+        "fail": 2,
+        "skip": 0
+      },
+      "events": [
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations/self",
+          "action": "pass",
+          "elapsed": 0.46
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations/submission",
+          "action": "pass",
+          "elapsed": 0.24
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations",
+          "action": "pass",
+          "elapsed": 0.7
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/body_exactly_64_kib_is_a_read",
+          "action": "pass",
+          "elapsed": 0.03
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_shape_array",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_shape_future_field",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/top_level_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/top_level_duplicate",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/nested_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/nested_duplicate",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/numeric_consumer_epoch",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/null_required_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/trailing_json",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/body_over_64_kib",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/ordinary_target_on_collaboration_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/valid_target_for_the_other_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/target_path_identity_mismatch",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/missing_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/source_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/duplicate_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_query",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_zero",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_above_50",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_noncanonical",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/duplicate_limit",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self",
+          "action": "pass",
+          "elapsed": 0.28
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/body_exactly_64_kib_is_a_read",
+          "action": "pass",
+          "elapsed": 0.05
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_shape_array",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_shape_future_field",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/top_level_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/top_level_duplicate",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/nested_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/nested_duplicate",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/numeric_consumer_epoch",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/null_required_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/trailing_json",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/body_over_64_kib",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/ordinary_target_on_collaboration_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/valid_target_for_the_other_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/target_path_identity_mismatch",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/missing_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/source_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/duplicate_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_query",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_zero",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_above_50",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_noncanonical",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/duplicate_limit",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin",
+          "action": "pass",
+          "elapsed": 0.49
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport",
+          "action": "pass",
+          "elapsed": 0.77
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_unknown_field",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_duplicate_viewer",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_trailing_json",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_root_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_source_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_viewer_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_root_revision_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_source_revision_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/known_old_route_404_is_not_object_denial",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/source_revision_stales_saved_cursor",
+          "action": "pass",
+          "elapsed": 0.05
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/revocation_rejects_cached_cursor_without_private_page",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute",
+          "action": "pass",
+          "elapsed": 0.32
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/list/read_first",
+          "action": "pass",
+          "elapsed": 0.25
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/list/revocation_first",
+          "action": "pass",
+          "elapsed": 0.15
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/empty/read_first",
+          "action": "pass",
+          "elapsed": 0.21
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/empty/revocation_first",
+          "action": "pass",
+          "elapsed": 0.1
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/read_first",
+          "action": "fail",
+          "elapsed": 0.14
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/revocation_first",
+          "action": "fail",
+          "elapsed": 0.14
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/preview/read_first",
+          "action": "pass",
+          "elapsed": 0.24
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/preview/revocation_first",
+          "action": "pass",
+          "elapsed": 0.12
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders",
+          "action": "fail",
+          "elapsed": 1.36
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/password_session_changed/candidates",
+          "action": "pass",
+          "elapsed": 0.25
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/password_session_changed/completion-preview",
+          "action": "pass",
+          "elapsed": 0.26
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/administrator_role_removed/candidates",
+          "action": "pass",
+          "elapsed": 0.25
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/administrator_role_removed/completion-preview",
+          "action": "pass",
+          "elapsed": 0.26
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/organization_became_inactive/candidates",
+          "action": "pass",
+          "elapsed": 0.25
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/organization_became_inactive/completion-preview",
+          "action": "pass",
+          "elapsed": 0.25
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization",
+          "action": "pass",
+          "elapsed": 1.52
+        }
+      ],
+      "packages": [
+        {
+          "Time": "2026-11-15T14:56:34.088495+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/cmd/server",
+          "Elapsed": 8.041
+        }
+      ],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/normal-r03-added-boundaries.json",
+        "sha256": "afdb27c8696637778b2c3324c8e0069b40a16b9c8e2c7d920449d3f341a61745",
+        "bytes": 14690
+      }
+    },
+    "normal-r03-cursor-corrected": {
+      "label": "normal-r03-cursor-corrected",
+      "started_at": "2026-11-15T06:59:01.000551+00:00",
+      "finished_at": "2026-11-15T06:59:10.700630+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/router.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/",
+        "-count=1",
+        "-json",
+        "-timeout=180s"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/normal-r03-cursor-corrected.jsonl",
+      "log_sha256": "ddd510dae70f644ec79fb0ad39247961961abfac5920c3514f260552b05d9412",
+      "test_sha256_before": "df18f4fe9ded5eda8f6e5eb53504d78a764e89d10e5e52aed9a855c1307574ee",
+      "test_sha256_after": "df18f4fe9ded5eda8f6e5eb53504d78a764e89d10e5e52aed9a855c1307574ee",
+      "all_named": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "events": [
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/read_first",
+          "action": "pass",
+          "elapsed": 0.44
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/revocation_first",
+          "action": "pass",
+          "elapsed": 0.16
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders",
+          "action": "pass",
+          "elapsed": 0.61
+        }
+      ],
+      "packages": [
+        {
+          "Time": "2026-11-15T14:59:10.663103+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/cmd/server",
+          "Elapsed": 1.889
+        }
+      ],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/normal-r03-cursor-corrected.json",
+        "sha256": "b471f5a59315acca2fa7d9138b6cfd083ccf70586b2cbb189a0d22e209b8de3c",
+        "bytes": 2016
+      }
+    },
+    "normal-r03-final": {
+      "label": "normal-r03-final",
+      "started_at": "2026-11-15T07:04:08.370049+00:00",
+      "finished_at": "2026-11-15T07:04:27.053782+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/router.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationStageCompletionPreviewRouter",
+        "-count=1",
+        "-json",
+        "-timeout=180s"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/normal-r03-final.jsonl",
+      "log_sha256": "6ad7ef217eca1447e74b358a542eeba4873389c8a668d7372ea99a8341fd3aec",
+      "test_sha256_before": "df18f4fe9ded5eda8f6e5eb53504d78a764e89d10e5e52aed9a855c1307574ee",
+      "test_sha256_after": "df18f4fe9ded5eda8f6e5eb53504d78a764e89d10e5e52aed9a855c1307574ee",
+      "all_named": {
+        "pass": 112,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 102,
+        "fail": 0,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 95,
+        "fail": 0,
+        "skip": 0
+      },
+      "events": [
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding/self",
+          "action": "pass",
+          "elapsed": 0.68
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding/submission",
+          "action": "pass",
+          "elapsed": 0.52
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding/admin",
+          "action": "pass",
+          "elapsed": 1.16
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding",
+          "action": "pass",
+          "elapsed": 2.37
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations/self",
+          "action": "pass",
+          "elapsed": 0.2
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations/submission",
+          "action": "pass",
+          "elapsed": 0.24
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations",
+          "action": "pass",
+          "elapsed": 0.44
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self/enforce",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self/observe",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self/off",
+          "action": "pass",
+          "elapsed": 0.03
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self",
+          "action": "pass",
+          "elapsed": 0.24
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission/enforce",
+          "action": "pass",
+          "elapsed": 0.03
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission/observe",
+          "action": "pass",
+          "elapsed": 0.03
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission/off",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission",
+          "action": "pass",
+          "elapsed": 0.26
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin/enforce",
+          "action": "pass",
+          "elapsed": 0.03
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin/observe",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin/off",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin",
+          "action": "pass",
+          "elapsed": 0.36
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete",
+          "action": "pass",
+          "elapsed": 0.86
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/self/candidates",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/self/completion-preview",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/self",
+          "action": "pass",
+          "elapsed": 0.13
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/admin/candidates",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/admin/completion-preview",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/admin",
+          "action": "pass",
+          "elapsed": 0.31
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterAuthentication",
+          "action": "pass",
+          "elapsed": 0.45
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/body_exactly_64_kib_is_a_read",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_shape_array",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_shape_future_field",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/top_level_case_alias",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/top_level_duplicate",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/nested_case_alias",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/nested_duplicate",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/numeric_consumer_epoch",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/null_required_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/trailing_json",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/body_over_64_kib",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/ordinary_target_on_collaboration_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/valid_target_for_the_other_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/target_path_identity_mismatch",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/missing_source",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/source_case_alias",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/duplicate_source",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_query",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_zero",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_above_50",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_noncanonical",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/duplicate_limit",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self",
+          "action": "pass",
+          "elapsed": 0.26
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/body_exactly_64_kib_is_a_read",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_shape_array",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_shape_future_field",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/top_level_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/top_level_duplicate",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/nested_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/nested_duplicate",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/numeric_consumer_epoch",
+          "action": "pass",
+          "elapsed": 0
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/null_required_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/trailing_json",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/body_over_64_kib",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/ordinary_target_on_collaboration_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/valid_target_for_the_other_route",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/target_path_identity_mismatch",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/missing_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/source_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/duplicate_source",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_query",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_zero",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_above_50",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_noncanonical",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/duplicate_limit",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin",
+          "action": "pass",
+          "elapsed": 0.45
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport",
+          "action": "pass",
+          "elapsed": 0.71
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/source_revoked",
+          "action": "pass",
+          "elapsed": 0.16
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/consumer_revoked",
+          "action": "pass",
+          "elapsed": 0.14
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/root_revision_changed",
+          "action": "pass",
+          "elapsed": 0.15
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/source_detached",
+          "action": "pass",
+          "elapsed": 0.14
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/stale_source_head",
+          "action": "pass",
+          "elapsed": 0.23
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions",
+          "action": "pass",
+          "elapsed": 0.81
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_unknown_field",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_duplicate_viewer",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_case_alias",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_trailing_json",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_root_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_source_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_viewer_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_root_revision_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_source_revision_binding",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/known_old_route_404_is_not_object_denial",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/source_revision_stales_saved_cursor",
+          "action": "pass",
+          "elapsed": 0.04
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/revocation_rejects_cached_cursor_without_private_page",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute",
+          "action": "pass",
+          "elapsed": 0.36
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterR38Scope/enabled_initiator_is_not_R38",
+          "action": "pass",
+          "elapsed": 0.01
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterR38Scope/workspace_organization_link_mismatch",
+          "action": "pass",
+          "elapsed": 0.02
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterR38Scope",
+          "action": "pass",
+          "elapsed": 0.35
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/list/read_first",
+          "action": "pass",
+          "elapsed": 0.24
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/list/revocation_first",
+          "action": "pass",
+          "elapsed": 0.11
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/empty/read_first",
+          "action": "pass",
+          "elapsed": 0.17
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/empty/revocation_first",
+          "action": "pass",
+          "elapsed": 0.11
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/read_first",
+          "action": "pass",
+          "elapsed": 0.22
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/revocation_first",
+          "action": "pass",
+          "elapsed": 0.15
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/preview/read_first",
+          "action": "pass",
+          "elapsed": 0.18
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/preview/revocation_first",
+          "action": "pass",
+          "elapsed": 0.12
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders",
+          "action": "pass",
+          "elapsed": 1.3
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/password_session_changed/candidates",
+          "action": "pass",
+          "elapsed": 0.25
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/password_session_changed/completion-preview",
+          "action": "pass",
+          "elapsed": 0.27
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/administrator_role_removed/candidates",
+          "action": "pass",
+          "elapsed": 0.24
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/administrator_role_removed/completion-preview",
+          "action": "pass",
+          "elapsed": 0.24
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/organization_became_inactive/candidates",
+          "action": "pass",
+          "elapsed": 0.25
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/organization_became_inactive/completion-preview",
+          "action": "pass",
+          "elapsed": 0.24
+        },
+        {
+          "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization",
+          "action": "pass",
+          "elapsed": 1.48
+        }
+      ],
+      "packages": [
+        {
+          "Time": "2026-11-15T15:04:27.016065+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/cmd/server",
+          "Elapsed": 12.118
+        }
+      ],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/normal-r03-final.json",
+        "sha256": "873acbaeb9de03bd18c00958f5dc2b3b9f46ed7a8ae48ce60c9a9b41dab4ea76",
+        "bytes": 19518
+      }
+    }
+  },
+  "database_audits": [
+    {
+      "recorded_at": "2026-11-15T07:02:21.545Z",
+      "label": "normal-r03-full-before",
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/router.json",
+      "configuration_sha256": "18013dee72ebcc3f6c94f9bb1f3b92e87c1cd855d0b57b474406b2f127f9869e",
+      "package": "./cmd/server",
+      "identity": {
+        "database": "multica_pay241_20261115_s2_router",
+        "postgres_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "ledger_count": 835,
+        "ledger_last": "864_collaboration_stage_submission_ready",
+        "other_connections": 0
+      },
+      "facts": {
+        "stage_policy": 0,
+        "stage_task": 0,
+        "stage_candidate": 0,
+        "stage_decision": 0,
+        "stage_submission": 0,
+        "stage_execution": 0,
+        "retained_m1_authorizations": 12,
+        "retained_m1_terminals": 12,
+        "collaboration_events": 0,
+        "collaboration_operations": 0,
+        "collaboration_attachments": 0
+      },
+      "constraints": [
+        {
+          "conname": "collaboration_stage_submission_candidate_version_check",
+          "definition": "CHECK ((candidate_version > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_content_digest_check",
+          "definition": "CHECK ((content_digest ~ '^[0-9a-f]{64}$'::text))"
+        },
+        {
+          "conname": "collaboration_stage_submission_lifecycle_epoch_check",
+          "definition": "CHECK ((lifecycle_epoch > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_policy_revision_check",
+          "definition": "CHECK ((policy_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_role_revision_check",
+          "definition": "CHECK ((role_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_stage_revision_check",
+          "definition": "CHECK ((stage_revision > 0))"
+        }
+      ],
+      "process_paths": [
+        {
+          "key": "HOME",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router/home",
+          "git_probe_exit": 128
+        },
+        {
+          "key": "TMPDIR",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router/tmp",
+          "git_probe_exit": 128
+        },
+        {
+          "key": "TMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router/tmp",
+          "git_probe_exit": 128
+        },
+        {
+          "key": "TEMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router/tmp",
+          "git_probe_exit": 128
+        }
+      ],
+      "readonly": true,
+      "activation_changed": false,
+      "artifact": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/normal-r03-full-before-database.json",
+        "sha256": "d8875f293a9d0691cba73c98ad1fe22405030d4b8f65a7b5998b33cc14661575",
+        "bytes": 2506
+      }
+    },
+    {
+      "recorded_at": "2026-11-15T07:02:22.299Z",
+      "label": "race-r03-full-before",
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/router_race.json",
+      "configuration_sha256": "7d51872bf7eb9926cd9e1b064bc3ba4d38d318f1233526d47afa4cd6fbb37bb4",
+      "package": "./cmd/server",
+      "identity": {
+        "database": "multica_pay241_20261115_s2_router_race",
+        "postgres_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "ledger_count": 835,
+        "ledger_last": "864_collaboration_stage_submission_ready",
+        "other_connections": 0
+      },
+      "facts": {
+        "stage_policy": 0,
+        "stage_task": 0,
+        "stage_candidate": 0,
+        "stage_decision": 0,
+        "stage_submission": 0,
+        "stage_execution": 0,
+        "retained_m1_authorizations": 0,
+        "retained_m1_terminals": 0,
+        "collaboration_events": 0,
+        "collaboration_operations": 0,
+        "collaboration_attachments": 0
+      },
+      "constraints": [
+        {
+          "conname": "collaboration_stage_submission_candidate_version_check",
+          "definition": "CHECK ((candidate_version > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_content_digest_check",
+          "definition": "CHECK ((content_digest ~ '^[0-9a-f]{64}$'::text))"
+        },
+        {
+          "conname": "collaboration_stage_submission_lifecycle_epoch_check",
+          "definition": "CHECK ((lifecycle_epoch > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_policy_revision_check",
+          "definition": "CHECK ((policy_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_role_revision_check",
+          "definition": "CHECK ((role_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_stage_revision_check",
+          "definition": "CHECK ((stage_revision > 0))"
+        }
+      ],
+      "process_paths": [
+        {
+          "key": "HOME",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router_race/home",
+          "git_probe_exit": 128
+        },
+        {
+          "key": "TMPDIR",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router_race/tmp",
+          "git_probe_exit": 128
+        },
+        {
+          "key": "TMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router_race/tmp",
+          "git_probe_exit": 128
+        },
+        {
+          "key": "TEMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router_race/tmp",
+          "git_probe_exit": 128
+        }
+      ],
+      "readonly": true,
+      "activation_changed": false,
+      "artifact": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/race-r03-full-before-database.json",
+        "sha256": "f18288f4fdc664254c22ac88d0f787563d572e4224c180b7893e3eaf814981d8",
+        "bytes": 2532
+      }
+    },
+    {
+      "recorded_at": "2026-11-15T07:09:54.731Z",
+      "label": "normal-r03-final-after",
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/router.json",
+      "configuration_sha256": "18013dee72ebcc3f6c94f9bb1f3b92e87c1cd855d0b57b474406b2f127f9869e",
+      "package": "./cmd/server",
+      "identity": {
+        "database": "multica_pay241_20261115_s2_router",
+        "postgres_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "ledger_count": 835,
+        "ledger_last": "864_collaboration_stage_submission_ready",
+        "other_connections": 0
+      },
+      "facts": {
+        "stage_policy": 0,
+        "stage_task": 0,
+        "stage_candidate": 0,
+        "stage_decision": 0,
+        "stage_submission": 0,
+        "stage_execution": 0,
+        "retained_m1_authorizations": 24,
+        "retained_m1_terminals": 24,
+        "collaboration_events": 0,
+        "collaboration_operations": 0,
+        "collaboration_attachments": 0
+      },
+      "constraints": [
+        {
+          "conname": "collaboration_stage_submission_candidate_version_check",
+          "definition": "CHECK ((candidate_version > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_content_digest_check",
+          "definition": "CHECK ((content_digest ~ '^[0-9a-f]{64}$'::text))"
+        },
+        {
+          "conname": "collaboration_stage_submission_lifecycle_epoch_check",
+          "definition": "CHECK ((lifecycle_epoch > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_policy_revision_check",
+          "definition": "CHECK ((policy_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_role_revision_check",
+          "definition": "CHECK ((role_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_stage_revision_check",
+          "definition": "CHECK ((stage_revision > 0))"
+        }
+      ],
+      "process_paths": [
+        {
+          "key": "HOME",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router/home",
+          "git_probe_exit": 128
+        },
+        {
+          "key": "TMPDIR",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router/tmp",
+          "git_probe_exit": 128
+        },
+        {
+          "key": "TMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router/tmp",
+          "git_probe_exit": 128
+        },
+        {
+          "key": "TEMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router/tmp",
+          "git_probe_exit": 128
+        }
+      ],
+      "readonly": true,
+      "activation_changed": false,
+      "artifact": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/normal-r03-final-after-database.json",
+        "sha256": "0c19c878cea2d36bd37d111b713e73586f7565a80a41417776162813d73e69a8",
+        "bytes": 2506
+      }
+    },
+    {
+      "recorded_at": "2026-11-15T07:13:21.335Z",
+      "label": "race-r03-final-after",
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/router_race.json",
+      "configuration_sha256": "7d51872bf7eb9926cd9e1b064bc3ba4d38d318f1233526d47afa4cd6fbb37bb4",
+      "package": "./cmd/server",
+      "identity": {
+        "database": "multica_pay241_20261115_s2_router_race",
+        "postgres_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "ledger_count": 835,
+        "ledger_last": "864_collaboration_stage_submission_ready",
+        "other_connections": 0
+      },
+      "facts": {
+        "stage_policy": 0,
+        "stage_task": 0,
+        "stage_candidate": 0,
+        "stage_decision": 0,
+        "stage_submission": 0,
+        "stage_execution": 0,
+        "retained_m1_authorizations": 6,
+        "retained_m1_terminals": 6,
+        "collaboration_events": 0,
+        "collaboration_operations": 0,
+        "collaboration_attachments": 0
+      },
+      "constraints": [
+        {
+          "conname": "collaboration_stage_submission_candidate_version_check",
+          "definition": "CHECK ((candidate_version > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_content_digest_check",
+          "definition": "CHECK ((content_digest ~ '^[0-9a-f]{64}$'::text))"
+        },
+        {
+          "conname": "collaboration_stage_submission_lifecycle_epoch_check",
+          "definition": "CHECK ((lifecycle_epoch > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_policy_revision_check",
+          "definition": "CHECK ((policy_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_role_revision_check",
+          "definition": "CHECK ((role_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_stage_revision_check",
+          "definition": "CHECK ((stage_revision > 0))"
+        }
+      ],
+      "process_paths": [
+        {
+          "key": "HOME",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router_race/home",
+          "git_probe_exit": 128
+        },
+        {
+          "key": "TMPDIR",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router_race/tmp",
+          "git_probe_exit": 128
+        },
+        {
+          "key": "TMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router_race/tmp",
+          "git_probe_exit": 128
+        },
+        {
+          "key": "TEMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/state/router_race/tmp",
+          "git_probe_exit": 128
+        }
+      ],
+      "readonly": true,
+      "activation_changed": false,
+      "artifact": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/race-r03-final-after-database.json",
+        "sha256": "9c4e3b2cfcc5835a9f3b1c730dafe8c0938204aadbf2eda5184727ecc32a8c91",
+        "bytes": 2532
+      }
+    }
+  ],
+  "binary": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/build/f06-router.test",
+    "sha256": "66badc1501111f381852125941f866c42553982760b3839a02d546a32fa3471c",
+    "bytes": 117470610
+  },
+  "binary_mode": 493,
+  "coverage": [
+    {
+      "id": "W17",
+      "status": "PASS_ON_GREEN_R03_READ_INCREMENT",
+      "tests": [
+        "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding",
+        "TestCollaborationStageCompletionPreviewRouterStageIncomplete",
+        "TestCollaborationStageCompletionPreviewRouterAuthentication",
+        "TestCollaborationStageCompletionPreviewRouterR38Scope"
+      ],
+      "proved": "Four actual root/R38 routes, numeric root/done-child revisions, exact direct ordinary child, non-authorizing preview and current source/R38 fences.",
+      "final_candidate": "PENDING_COORDINATOR_REPLAY"
+    },
+    {
+      "id": "Q05",
+      "status": "PASS_FOR_READ_SUBSET_AND_STAGE_OFF_M1_CONTROL",
+      "tests": [
+        "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding",
+        "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations",
+        "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions",
+        "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization",
+        "TestCollaborationStageCompletionPreviewRouterR38Scope"
+      ],
+      "proved": "Real authenticated issuer and actual current consumer stay distinct; outside initiator lacks artifact read access, issuer credential horizon and consumer epochs are exact, password/role/current singleton organization changes deny cached reads.",
+      "not_proved": "Final stage-enabled all-writer completion/issuer expiry or a second real tenant organization."
+    },
+    {
+      "id": "Q06",
+      "status": "PASS_ON_GREEN_R03_READ_INCREMENT",
+      "tests": [
+        "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding",
+        "TestCollaborationStageCompletionPreviewRouterStageIncomplete",
+        "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders"
+      ],
+      "proved": "Exact root/done-child source binding and tar bytes; read snapshots show zero authorization/evaluation/submission/status/attachment-link/queue or stage fact writes. Self-result preflight leaves draft attachments unbound.",
+      "not_proved": "A successful read is completion authorization; the separate M1 control uses existing explicit authorization and actual writers with stage policy off."
+    },
+    {
+      "id": "Q07",
+      "status": "PASS_ON_GREEN_R03_READ_INCREMENT",
+      "tests": [
+        "TestCollaborationStageCompletionPreviewRouterStrictTransport",
+        "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute",
+        "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders"
+      ],
+      "proved": "Strict duplicate/unknown/case-alias/trailing JSON; valid 64 KiB and oversized rejection; 1/50 pages and invalid limits; current root/source/viewer/revision cursor binding, authorized empty privacy, old-route/object distinction, list/empty/cursor/preview revocation in both commit orders.",
+      "not_proved": "The inherited M1 200-row hidden-scan bound is not re-exercised by this focused router slice."
+    }
+  ],
+  "product_findings": [],
+  "simplifications": [
+    "Removed the impossible second organization INSERT and named the weaker association control explicitly.",
+    "Reused the existing actual-auth M1/router/testutil fixtures; production helpers and schema stayed unchanged.",
+    "Compared the already-validated tar by original execution ID after adding a second package."
+  ],
+  "limitations": [
+    "Old green-r03 product baseline only; coordinator final-candidate replay and independent check pending.",
+    "Current singleton organization/association fences; no second real tenant fixture.",
+    "Actual M1 stage-off authorization/consumption control is not stage-enabled completion proof.",
+    "Synthetic local identities and database PR facts; no real model/payment/remote CI/deploy/browser acceptance.",
+    "Actual go1.27.0 darwin/arm64; CI Go1.26/Linux not executed.",
+    "Inherited M1 200-row hidden scan is not re-exercised here."
+  ],
+  "activation_available": false,
+  "coordinator_next_step": "Integrate the sole new test into final product candidate and independently replay all 112 named records.",
+  "private_evidence_root": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03",
+  "report_md_sha256": "e75e3c0fa3cc5bf2879db7af00fa7a6dcd1c51d2da1d5373c8b963af1d645b8e"
+}

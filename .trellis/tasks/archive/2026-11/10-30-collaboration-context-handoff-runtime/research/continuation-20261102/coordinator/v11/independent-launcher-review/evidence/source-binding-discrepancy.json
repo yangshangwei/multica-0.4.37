@@ -1,0 +1,86 @@
+{
+  "schema": "v11-independent-source-binding-discrepancy-v1",
+  "status": "blocked_canonical_product_binding_label_pending_corrected_json",
+  "review_scope": "read_only_source_artifact_and_evidence_reuse",
+  "owner_execution_route": "One owner-run standard-library collector after reviewer command transport failure; no reviewer command retries.",
+  "candidate": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+    "head": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+    "head_matches": true,
+    "head_and_status_stable": true
+  },
+  "product_source": {
+    "declared_checkout_source_id": "3f9788baf2ad3d922df86c4817b7fe0f3183e1a5c6c0e40d43fc76cd4f2c1d88",
+    "independent_collector_checkout_source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+    "owner_standard_helper_checkout_source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+    "file_count": 7962,
+    "collector_vs_standard_helper_file_set_matches": true,
+    "collector_vs_standard_helper_file_hash_differences": 0,
+    "matches_declared": false,
+    "standard_roots": [
+      "server",
+      "apps",
+      "packages",
+      "scripts",
+      "Makefile",
+      "package.json",
+      "pnpm-lock.yaml",
+      "pnpm-workspace.yaml"
+    ],
+    "digest_algorithm": "SHA256 over sorted relative_path + NUL + file_sha256 + LF; skip symlink/nonfile",
+    "method_reconciled": true,
+    "corrected_binding_pending": true,
+    "finding": "Original preparation mislabeled the HEAD/overlay identity3f97 as the standard product SourceID. The standard product SourceID462 is verified. Corrected RK1 binding JSON is pending; there is no evidence here of candidate corruption or a product code defect."
+  },
+  "checkout_overlay_identity": {
+    "value": "3f9788baf2ad3d922df86c4817b7fe0f3183e1a5c6c0e40d43fc76cd4f2c1d88",
+    "method_file_name": "checkout-source-id-v11.cjs",
+    "method_file_sha256": "817348f249009f05e0e05a4a08d0f76581cda60fac9f9ce88b18255fd4e85bc8",
+    "algorithm": "SHA256 starts with git HEAD bytes, then binary HEAD diff excluding apps/web/next-env.d.ts, then next-env path/symlink/execute-bits/normalized-content JSON, then sorted untracked apps/packages/server/scripts path and bytes",
+    "scope": "HEAD/overlay normalization identity, distinct from the standard product-only manifest digest and all-tracked snapshot fingerprint",
+    "evidence_route": "Owner returned the exact statically read method and method-file SHA after tracing the original label; this reviewer did not execute the method."
+  },
+  "tracked_snapshot": {
+    "expected_and_observed_fingerprint": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+    "matches": true,
+    "digest_algorithm": "All Git-tracked paths in Git-returned order; path/SHA256/lstat mode; symlink SHA256 of readlink UTF-8 bytes; compact sort_keys JSON SHA256",
+    "scope": "A distinct all-tracked snapshot identity; matching it does not validate the declared product-only SourceID."
+  },
+  "private_binding": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/owned-bindings-v11.json",
+    "expected_and_observed_sha256": "ccc11e4d7e79a19c964b75d4b2c3354268a4bf28fa7ad153c23aa0a95b30b6ba",
+    "matches": true,
+    "scope": "Original immutable collector snapshot binding; corrected current binding hash is pending."
+  },
+  "executed_collector": {
+    "command": "python3 evidence/collector-executed.py",
+    "exit_code": 0,
+    "errors": [],
+    "collector_md_sha256": "ab51ab619af21c2007a6c592d70a47b10ecd10c031ab0e591dc92d4ab310a8c4",
+    "executed_code_sha256": "15d8ace69b04209353422d2d09750524dc4ec908f776d1949ffea82324ac0a85",
+    "result_sha256": "8ff7626840b14c29206f9796898fc30c4cfc767a031aa9857e13d7b3d026f184",
+    "result_bytes": 60526174,
+    "execution_time_owner_reported": "23:28 UTC",
+    "evidence_route": "Exact one-run execution metadata and manifest comparison returned by the root owner; the reviewer did not re-execute the collector."
+  },
+  "required_follow_up": [
+    "Correct RK1 metadata to label canonical product SourceID462, checkout HEAD/overlay identity3f97 with its explicit method hash, and all-tracked fingerprint26e38 separately.",
+    "Narrowly compare corrected private binding JSON fields/hash and artifact byte pins against the preserved one-run snapshot before accepting standard source binding.",
+    "Keep historical source639/source9f72 plus17-framework Go1.27 normal62/race62 evidence labeled historical. Current source/toolchain gates remain pending.",
+    "Retain explicit production Next build/SSR, full runtime and paid-gate limitations."
+  ],
+  "clearances": {
+    "standard_source_binding": false,
+    "current_same_source_fake_gate": false,
+    "production_next_build_or_ssr": false,
+    "paid_gate": false,
+    "wholecheck": false,
+    "task_completion": false
+  },
+  "verification_exclusions": {
+    "lint": "not_run_read_only_scope",
+    "typecheck": "not_run_read_only_scope",
+    "repository_tests": "not_run_owner_prohibited_execution",
+    "builds_services_database_api_provider_network_git_mutations": "not_run"
+  }
+}

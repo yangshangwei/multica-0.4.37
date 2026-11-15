@@ -1,0 +1,163 @@
+{
+  "at": "2026-11-05T03:16:59.458764+00:00",
+  "bundle": {
+    "patch": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/detail-proposal/current-ui-harness-bundle.patch",
+    "sha256": "70fe66c6e8df1b7745b6bbccab00129419007c893841b4c42203be911045d2d9",
+    "files": [
+      {
+        "file": "e2e/fixtures/collaboration-detail-journey.ts",
+        "before_sha256": "56181bfef4c16cddfee5daf5a9f1ecafe0f6f6e49a7016670dc608226a685219",
+        "after_sha256": "6f5e204e07217cd3875324097d300cf2dfe33bb1ac282b1dc280c56c365d3766",
+        "root_existing_change_reused": false
+      },
+      {
+        "file": "e2e/fixtures/collaboration-handoff-chain.ts",
+        "before_sha256": "bf84e9bc84b9924e811870f11868cc1f1acd962923a8365b1461437abc8f2c8b",
+        "after_sha256": "ed4d905126a42b3807554dda406bcf79bed02050c4aa5521b298eae5495e5698",
+        "root_existing_change_reused": true
+      },
+      {
+        "file": "e2e/collaboration-handoff-chain-web.spec.ts",
+        "before_sha256": "c5d29e955de515eb43c09952e6cb594f5ce71e842cc94ba2800a5aebb269b098",
+        "after_sha256": "f2031dfae9a864ccd1a9d04a778a21000ff8e99bfb1f1c3e796a0affcb63a760",
+        "root_existing_change_reused": true
+      },
+      {
+        "file": "e2e/fixtures/collaboration-offline-handoff.ts",
+        "before_sha256": "4179e69cdafa8eec8200e8fedcc832fdf43a199665192b9c5fc8c02fe15bc658",
+        "after_sha256": "3dcb802d957f9028912bded746f6322c8803e7d95989dda3c3a89b9ef5f5ea90",
+        "root_existing_change_reused": true
+      },
+      {
+        "file": "e2e/collaboration-installed-main.spec.ts",
+        "before_sha256": "62a12245a627ac4ae6662101182746bd17e984f9d9798f391dbdb3007c7e3258",
+        "after_sha256": "a1d4c68673b959f0d26166c2f325d1097cb3fb0a6f482533aa5a86fb1a073267",
+        "root_existing_change_reused": false
+      },
+      {
+        "file": "e2e/fixtures/collaboration-installed-main.mjs",
+        "before_sha256": "8f4424f757eb6e1a4859aa08b675e38db6c937e103110461d1ad8341e93ad0fb",
+        "after_sha256": "92d4d2fe8a139a03825010371b4b6a5ba3175703134fae81f3748b26c66d1253",
+        "root_existing_change_reused": false
+      },
+      {
+        "file": "e2e/fixtures/collaboration-control-gaps.ts",
+        "before_sha256": "27a17c3dc0f274df7ddb046f1ac3001c056d721eb4db9120d946fe4805d7fe9d",
+        "after_sha256": "9f7ff5910529e23dfec039258d88843191511f9aefe86e0a13608509131e9053",
+        "root_existing_change_reused": false
+      },
+      {
+        "file": "e2e/fixtures/collaboration-lane-close-controls.ts",
+        "before_sha256": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7",
+        "after_sha256": "6cfea82bdb9348032ea3fadb21893ec97806ec681d593becf763d46cca207565",
+        "root_existing_change_reused": false
+      },
+      {
+        "file": "e2e/collaboration-terminal-reopen-web.spec.ts",
+        "before_sha256": "1acacf4e861c2ab7104dcc231f2a39ebdd9b19ee748e0c3dd3fc2175ff3f1788",
+        "after_sha256": "11a45b5ce123fb9507d6b2ea4f372e6f330f0004ace3a463b70ff6a0c8d0e895",
+        "root_existing_change_reused": false
+      },
+      {
+        "file": "e2e/collaboration-leave-web.spec.ts",
+        "before_sha256": "8f31756ec537294c57b777e1258e660440197a63706d735e368b8e5d08bf1623",
+        "after_sha256": "de0d566a31710201fc4228ad421d6d1ac56bad908082a9b8552196fa1f35481d",
+        "root_existing_change_reused": false
+      },
+      {
+        "file": "e2e/fixtures/collaboration-offline-result-notifications.ts",
+        "before_sha256": "ab8c09d4600e354231e870721665798cbedd0cb584350f03cb96ebaeb3ac615c",
+        "after_sha256": "36d93b95972d3c647bf11d8b89b27d03c166bd41dfaaede365ebbe025cc75b04",
+        "root_existing_change_reused": false
+      },
+      {
+        "file": "e2e/fixtures/collaboration-retained-attachments.ts",
+        "before_sha256": "85237e54cda7b40fb1d7d88ab41518d6ada7760e98c3dadee729a3ec8502f4a9",
+        "after_sha256": "f59d6f150a819b964fe761f5f0bde4abbc5825bfe435aec4112173870e0f2e02",
+        "root_existing_change_reused": false
+      }
+    ],
+    "scope": "test fixtures only; frozen checkout remains untouched; E2E replay required"
+  },
+  "frozen_all_before_hashes_match": false,
+  "contract": {
+    "red_selected": {
+      "fail": 1,
+      "excluded": 34,
+      "reason": "old task identity refuses current task"
+    },
+    "green_applied_root": {
+      "pass": 35,
+      "fail": 0
+    }
+  },
+  "static": {
+    "collection_cases": 22,
+    "collection_specs": 12,
+    "node_controller_layout_pass": 7,
+    "node_syntax": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "preparation_failures_retained": [
+    "First collection caught duplicate local handler name, corrected only to submissionAuthor",
+    "Second collection mixed frozen CLI and root Playwright singleton; corrected to exact root CLI"
+  ],
+  "builder": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/runtime/detail-proposal/build-current-provenance.py",
+    "sha256": "1d881d70346e52e4a0fa71960a6029a33bc32a7262f30bb13d9b8083245048b8",
+    "validation": "AST only; not executed or independently reviewed"
+  },
+  "live_replay": "NOT_RUN; root owns frozen patch/service rebinding and new fresh database runs",
+  "cleanup": "Exact owned daemon72132 terminated after PID/argv/profile/health/config verification; no other processes touched",
+  "frozen_handoff_observation": [
+    {
+      "file": "e2e/fixtures/collaboration-detail-journey.ts",
+      "state": "after"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-handoff-chain.ts",
+      "state": "after"
+    },
+    {
+      "file": "e2e/collaboration-handoff-chain-web.spec.ts",
+      "state": "after"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-offline-handoff.ts",
+      "state": "after"
+    },
+    {
+      "file": "e2e/collaboration-installed-main.spec.ts",
+      "state": "after"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-installed-main.mjs",
+      "state": "after"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-control-gaps.ts",
+      "state": "after"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-lane-close-controls.ts",
+      "state": "after"
+    },
+    {
+      "file": "e2e/collaboration-terminal-reopen-web.spec.ts",
+      "state": "after"
+    },
+    {
+      "file": "e2e/collaboration-leave-web.spec.ts",
+      "state": "after"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-offline-result-notifications.ts",
+      "state": "after"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-retained-attachments.ts",
+      "state": "after"
+    }
+  ],
+  "frozen_observation_note": "Parent announced imminent application while this subagent wrote final report; this subagent made no frozen checkout edits."
+}

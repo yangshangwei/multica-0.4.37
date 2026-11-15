@@ -1,0 +1,61 @@
+{
+  "finding_id": "QA-ENV-PASSWORD-CUTOFF-001",
+  "classification": "test runtime configuration, not demonstrated product defect",
+  "status": "CONFIRMED_BY_CONFIG_AND_SOURCE; replay NOT_RUN",
+  "observations": [
+    {
+      "lane": "pw-32",
+      "started_at": "2026-11-04T17:09:23.129326+00:00",
+      "finished_at": "2026-11-04T17:09:25.912787+00:00",
+      "cutoff": "2026-11-05T00:00:00Z",
+      "deadline": "2026-11-12T00:00:00Z",
+      "derived_legacy_iat": "2026-11-04T23:59:00+00:00",
+      "iat_after_run_start_seconds": 24576.870674,
+      "exit_code": 1,
+      "stats": {
+        "startTime": "2026-11-04T17:09:24.357Z",
+        "duration": 1342.0439999999999,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      }
+    },
+    {
+      "lane": "pw-34",
+      "started_at": "2026-11-04T17:08:54.725166+00:00",
+      "finished_at": "2026-11-04T17:09:18.075930+00:00",
+      "cutoff": "2026-11-05T00:00:00Z",
+      "deadline": "2026-11-12T00:00:00Z",
+      "derived_legacy_iat": "2026-11-04T23:59:00+00:00",
+      "iat_after_run_start_seconds": 24605.274834,
+      "exit_code": 1,
+      "stats": {
+        "startTime": "2026-11-04T17:08:56.173Z",
+        "duration": 21597.782,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      }
+    }
+  ],
+  "causal_chain": [
+    "Both fixture specs mint legacy JWT iat=floor(cutoff/1000)-60; cutoff was2026-11-05T00:00:00Z, yielding2026-11-04T23:59:00Z",
+    "Observed runs were2026-11-04T17:08-17:09Z; legacy-issued timestamp was over6h49m in the future",
+    "Password middleware jwt.WithIssuedAt rejects future JWTs before session lookup; CheckPasswordJWT additionally rejects issued.Time.After(now)",
+    "API startup validation checks RFC3339 UTC and deadline>cutoff but intentionally does not require cutoff<=now; shared controller only required deadline future, allowing this fixture-invalid combination",
+    "Desktop fails at requires_account_setup undefined before launching native UI; Web legacy setup never displays #password-name; temporary-recovery sibling passes"
+  ],
+  "sources": [
+    "e2e/password-binding-desktop.spec.ts:83",
+    "e2e/password-binding-desktop.spec.ts:87",
+    "e2e/password-migration.spec.ts:58",
+    "e2e/password-migration.spec.ts:69",
+    "server/internal/middleware/password_auth.go:66",
+    "server/internal/auth/password_session.go:135",
+    "server/internal/auth/password_config.go:19"
+  ],
+  "next_action": "Preserve original FAIL. Run the same two unmodified specs in new numbered runs with fresh root-owned DBs and a historical cutoff (e.g.2026-11-04T00:00:00Z), deadline safely in the future. Before startup assert cutoff-60seconds <= currentUTC with margin and cutoff<deadline. Do not relax JWT issued-at validation, UI assertion or timeout.",
+  "limits": "No live request, JWT decode or backend log inspection was performed. Exact HTTP response status is not claimed from desktop undefined-body assertion alone. Source and retained config establish that constructed tokens are invalid; actual corrected pass requires new execution."
+}

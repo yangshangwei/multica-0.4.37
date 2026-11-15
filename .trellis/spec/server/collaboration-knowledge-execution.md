@@ -3,8 +3,9 @@
 ## 1. Scope / trigger
 
 Apply when changing ordinary claim/resume/pointer writers, agent launch lifecycle,
-or collaboration host consumption of approved knowledge. The
-[candidate contract](./collaboration-knowledge.md) owns human authority and source
+or collaboration host consumption of approved knowledge, including automatic
+validity proofs and retained v1/v2 histories. The
+[candidate contract](./collaboration-knowledge.md) owns adoption authority and source
 availability. Existing [host execution](./collaboration-host-execution.md) and
 [startup handoff](./collaboration-startup-handoff.md) remain authoritative for
 their permits, accepted inputs and termination; knowledge adds current source
@@ -14,12 +15,12 @@ authorization to those boundaries.
 
 | Surface | Implemented contract |
 | --- | --- |
-| Ordinary claim request | Runtime `TaskKnowledgeInvocation {protocol_version:1,provider,mode,builtin,configuration_id,extra_args}`; response `knowledge_context` is a source-free `TaskKnowledgeClaimDescriptor` |
+| Ordinary claim request | Runtime `TaskKnowledgeInvocation {protocol_version:1\|2,provider,mode,builtin,configuration_id,extra_args}`; response `knowledge_context` is a source-free `TaskKnowledgeClaimDescriptor` of the negotiated version |
 | `POST /api/daemon/tasks/{taskId}/knowledge-context/prepare` | `TaskKnowledgePrepareRequest`: original request UUID, finalized claim generation/dispatched time, exact session binding, invocation fingerprint; optional `resume_unavailable:true` only when the daemon's pre-launch gate dropped the claimed native session. First acceptance requires no preparation or launch attempt; replay with the identical original request ID, flag, claimed session and request hash returns the same server-minted fresh response binding after reauthorization. A new request cannot rebind an already prepared claim. |
 | `POST .../knowledge-context/authorize` | Adds preparation ID, manifest/prompt hashes and physical `attempt_seq`/`attempt_nonce` |
 | `POST .../knowledge-context/observations` | Original claim/preparation/attempt plus started, native-session or terminated fact; canonical `{"accepted":true}` required |
 | Start/pin/complete/fail | `knowledge_fence {claim_generation,dispatched_at}` |
-| Collaboration managed claim | URL `knowledge_version=1`; source-free descriptor binds real run identity, configuration digest and run namespace |
+| Collaboration managed claim | URL `knowledge_version=1\|2`; source-free descriptor binds real run identity, configuration digest and run namespace |
 | `POST /api/collaboration/runtime/runs/{runId}/knowledge-context/prepare` and `/authorize` | MDT-only, full `CollaborationRunIdentity`, original request UUID, frozen handoff ID and invocation fingerprint; authorize also binds manifest/prompt/permit sequence/nonce |
 | `GET .../knowledge-context/status` | Termination `mct_` authority; identity, prepared-operation boolean and original request ID only |
 
@@ -33,13 +34,38 @@ PAT/JWT/task-token fallback is not preparation authority. Collaboration business
 
 ### Startup and disclosure
 
-`MULTICA_KNOWLEDGE_CONTEXT_ENABLED` is literal `true` opt-in, default false,
-read at router construction into `handler.Config.KnowledgeContextEnabled` and
+`MULTICA_KNOWLEDGE_CONTEXT_ENABLED` defaults on when unset or empty. For a nonempty
+value only literal `true` enables it; `false`, `1`, `TRUE` and whitespace variants
+disable it. It is read at router construction into
+`handler.Config.KnowledgeContextEnabled` and
 the router-owned `TaskService`. Collaboration helpers copy that same instance
 gate. It is not a database feature flag or live global toggle. Gate closure
 blocks new positive negotiation, private preparation and launch authorization;
 retained-history checks, observations, fences, receipts and cleanup remain active.
 See the [operator guide](../../../docs/collaboration-knowledge-runtime.md).
+
+### Automatic proof and version boundaries
+
+V2 manifests bind each automatic entry's original candidate/version/content hash
+and `validity {revision,accepted_event_seq,submission_id,validated_close_epoch}`.
+Resolve, replay and authorize lock/recheck both original sources and the new
+positive support dependencies against the current source epoch and formal
+acceptance. Reopen commits before any later authorization can use that old proof;
+no target outbox or UI refresh is needed to enforce it. A reacceptance proof is a
+new binding: it cannot replace an old manifest or revive an exposed native
+session. A separately authorized fresh execution prepares the current proof.
+
+Legacy constants remain 1; latest constants are 2. Strict readers branch on each
+retained `knowledge_context_version`. A monotonic v2 ordinary delivery envelope
+may retain strictly decoded v1 nested claims; never overwrite them as v2. V1
+runtime requests can use only complete representable legacy scopes/history and
+refuse automatic proofs or retained v2 exposure rather than omitting entries.
+Collaboration database slots remain `knowledge:claim:v1` and
+`knowledge:prepare:v1`, with versioned payloads. Changing the slot key would hide
+old private history from downgrade guards. Closing the startup/project gates
+does not permit an older reader or deletion of retained history.
+
+### Claim and disclosure
 
 Single/batch HTTP, daemon WebSocket batch, managed claims and legacy fallback
 share the claim builder. It finalizes only source-free configuration/session
@@ -146,6 +172,16 @@ exposure refuses without reading further. This remains O(negotiated rows) per
 claim; no exposure summary or cross-workspace owner rule changes.
 Proven legacy sessions preserve their existing behavior.
 
+Supported resume selection scans all relevant matching preparations before an
+incompatible binding can take the legacy fresh-binding path. Native refusal or
+configuration/session disagreement is retained while the complete history is
+decoded. If any matching preparation contains an automatic validity proof,
+incompatibility returns 409 `knowledge_context_changed`; it never silently
+advertises an empty prior pointer. A pure human legacy fallback preserves the
+highest matching manifest version, so a v1 request cannot discard retained v2
+history. An explicit empty resume selector remains a fresh execution and does
+not relabel or delete the older history.
+
 When the daemon owns a Claude settings file, `buildClaudeArgs` emits its
 `--settings <managed path>` pair before filtered default/custom options and
 still removes competing configured settings. A dangling required-value option
@@ -213,7 +249,7 @@ actual host directory/session key and neither reads nor saves reusable native
 pointers. Every Claude print invocation includes the official
 [`--no-session-persistence`](https://code.claude.com/docs/en/cli-reference.md)
 **before fingerprinting**. The retained vendor excerpt/hash is in the
-[C4 provenance record](../../tasks/10-30-collaboration-knowledge-promotion/research/collaboration-runtime-integration-2026-11-01/claude-session-persistence-reference.json).
+[C4 provenance record](../../tasks/archive/2026-11/10-30-collaboration-knowledge-promotion/research/collaboration-runtime-integration-2026-11-01/claude-session-persistence-reference.json).
 A unique cwd alone is not
 native-store isolation. Missing, valued, negated or reenable forms refuse; an old
 CLI rejecting the flag has no flag-removal/base-only fallback. Ordinary resumable
@@ -246,6 +282,8 @@ oracle. No body goes into a supervisor ledger or stable base/CLAUDE file.
 | Lock contention exhausts the server's bounded whole-transaction retry (at most 1.5s) and the daemon's three attempts | `knowledge_busy`; terminal for the logical input |
 | Missing lifecycle support/mandatory persistence | `knowledge_invocation_unsupported` or collaboration unsupported refusal |
 | Source/gate loss after launch | Preserve started/terminated facts and original cleanup authority; refuse another launch |
+| Reopened source or reacceptance changed an exposed automatic proof | Refuse old manifest/session; no latest-proof substitution or automatic fresh replay |
+| V1 request needs an automatic proof or encounters retained v2 exposure | Explicit protocol/context refusal; no filtered empty manifest or base fallback |
 
 ## 5. Good / base / bad cases
 
@@ -258,6 +296,15 @@ oracle. No body goes into a supervisor ledger or stable base/CLAUDE file.
   an exposed session after toggling the gate, or treat process start as native ID.
 
 ## 6. Tests required
+
+Current automation consumption suites assert both source-lock commit orders for
+prepare/reopen and authorize/reopen, positive support-source invalidation, old
+manifest refusal after reacceptance, fresh v2 preparation and unchanged human
+knowledge. Protocol/storage/daemon suites assert strict dual readers, monotonic
+ordinary envelopes and discoverable collaboration slots. The production Web and
+native Desktop journey in `e2e/project-knowledge-automation.spec.ts` must include
+actual controlled daemon input, old-session refusal and fresh proof restoration;
+building a renderer alone is not that acceptance.
 
 `pkg/agent/knowledge_launch_test.go` owns physical process/argv/environment/native
 callback contracts. Service `task_knowledge*` suites own current locks, all-status
@@ -289,7 +336,7 @@ logs, retained termination and unchanged base strings. Run database tests only
 with the [explicit isolated database contract](./database-test-isolation.md).
 Fake processes and source-bound passing suites do not establish real
 Provider/version/OS acceptance; G2 and final integrated evidence remain explicit
-[task gates](../../tasks/10-30-collaboration-knowledge-promotion/implement.md).
+[task gates](../../tasks/archive/2026-11/10-30-collaboration-knowledge-promotion/implement.md).
 
 ## 7. Wrong vs correct
 
@@ -316,8 +363,8 @@ version the newer release may have written.
 ### 1. Scope / trigger
 
 Apply to ordinary or collaboration knowledge executed through the built-in local
-Codex app-server. Keep the feature default-off and preserve existing nonknowledge
-Codex recovery and the Claude invocation fingerprint.
+Codex app-server. Use the shared default-on startup gate with explicit disable;
+preserve existing nonknowledge Codex recovery and the Claude invocation fingerprint.
 
 ### 2. Signatures
 

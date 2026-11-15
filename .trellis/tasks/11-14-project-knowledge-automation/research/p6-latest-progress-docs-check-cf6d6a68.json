@@ -1,0 +1,321 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "created_at": "2026-11-15T13:45:12.248395+00:00",
+  "state": "PASS_CURRENT_DOCS",
+  "scope": "Current seven progress/spec/task files; local links/fences/bash syntax/JSON gate consistency/git whitespace and readonly narrow patch checks",
+  "files": [
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/implement.md",
+      "before_sha256": "f227d0208aa977b4ee6fd7ef6d3cad2b18e638024e88f2136d14822dd352b66f",
+      "after_sha256": "f227d0208aa977b4ee6fd7ef6d3cad2b18e638024e88f2136d14822dd352b66f"
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+      "before_sha256": "176b381994584d293b3cce8ba207326145ea632d019eaac01cfad377dbf7ea65",
+      "after_sha256": "176b381994584d293b3cce8ba207326145ea632d019eaac01cfad377dbf7ea65"
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime-usage.md",
+      "before_sha256": "f19224727f029512f1908ca1e5d19d523b9fb106ca6beebce865356bcb1025b7",
+      "after_sha256": "f19224727f029512f1908ca1e5d19d523b9fb106ca6beebce865356bcb1025b7"
+    },
+    {
+      "path": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "before_sha256": "dca6d52e97a7cdfb626d2649ada57f85c495e3a377f2cce6c9e9bd7c2da8ad20",
+      "after_sha256": "dca6d52e97a7cdfb626d2649ada57f85c495e3a377f2cce6c9e9bd7c2da8ad20"
+    },
+    {
+      "path": ".trellis/spec/web/frontend/e2e-run-environment.md",
+      "before_sha256": "821acfdbdf300c2673672d270b394393d9506e7bdbe6e2d25cd19779098a90e4",
+      "after_sha256": "821acfdbdf300c2673672d270b394393d9506e7bdbe6e2d25cd19779098a90e4"
+    },
+    {
+      "path": ".trellis/spec/web/frontend/index.md",
+      "before_sha256": "1ffb7447bec59b3b959ccbddb11106385c837a7203e3518cfb9d5d6055550c6f",
+      "after_sha256": "1ffb7447bec59b3b959ccbddb11106385c837a7203e3518cfb9d5d6055550c6f"
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/task.json",
+      "before_sha256": "a08b97ad1b140c4d98e1f6fbadc924ea18b04a741998f58a7882deb7fb1e296f",
+      "after_sha256": "a08b97ad1b140c4d98e1f6fbadc924ea18b04a741998f58a7882deb7fb1e296f"
+    }
+  ],
+  "markdown_fences": [
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/implement.md",
+      "blocks": 0,
+      "balanced": true
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+      "blocks": 0,
+      "balanced": true
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime-usage.md",
+      "blocks": 2,
+      "balanced": true
+    },
+    {
+      "path": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "blocks": 0,
+      "balanced": true
+    },
+    {
+      "path": ".trellis/spec/web/frontend/e2e-run-environment.md",
+      "blocks": 2,
+      "balanced": true
+    },
+    {
+      "path": ".trellis/spec/web/frontend/index.md",
+      "blocks": 0,
+      "balanced": true
+    }
+  ],
+  "links": [
+    {
+      "from": ".trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+      "target": "../../11-13-pay-241-s2-stage-approvals/research/server-increment-2d-final-code-check-r05.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": ".trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+      "target": "../../11-13-pay-241-s2-stage-approvals/research/server-increment-2d-handler-router-check-r05.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": ".trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+      "target": "../../11-13-pay-241-s2-stage-approvals/research/coordination-freeze-r05.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-final-candidate-ac-review-20261115-a710db0a.json",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-container-verification-bUtC74-dd29b635.json",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/p6-root-narrow-fixture-binding-b7dc8f78.json",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/p6-password-managed-spec-check-52067d2e.json",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/pay241-current-normal-race-116-pass-observation-ef9fe50a.json",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/pay241-code-accepted-r06-bound-callback-16483c51.json",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/pay241-owner-s2-running-and-final-binding-callback-718237a5.json",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/pay241-owner-data-singleton-callback-6daea70e.json",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/final-acceptance-matrix-preflight-20261114.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-13-pay-241-collaboration-acceptance/gaps.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-13-pay-241-collaboration-acceptance/session-progress.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-final-code-check-r05.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-handler-router-check-r05.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/coordination-freeze-r05.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-resume-r05-results.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/continuation-validation-preflight-20261115.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": ".trellis/spec/web/frontend/e2e-run-environment.md",
+      "target": "../../server/database-test-isolation.md#private-environment-registry-identity",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": ".trellis/spec/web/frontend/index.md",
+      "target": "./directory-structure.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": ".trellis/spec/web/frontend/index.md",
+      "target": "./component-guidelines.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": ".trellis/spec/web/frontend/index.md",
+      "target": "./hook-guidelines.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": ".trellis/spec/web/frontend/index.md",
+      "target": "./state-management.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": ".trellis/spec/web/frontend/index.md",
+      "target": "../../core/frontend/global-scope-navigation.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": ".trellis/spec/web/frontend/index.md",
+      "target": "./quality-guidelines.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": ".trellis/spec/web/frontend/index.md",
+      "target": "./type-safety.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": ".trellis/spec/web/frontend/index.md",
+      "target": "./agent-critical-path-ci.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": ".trellis/spec/web/frontend/index.md",
+      "target": "./e2e-run-environment.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": ".trellis/spec/web/frontend/index.md",
+      "target": "./collaboration-closure-qa.md",
+      "exists": true,
+      "passed": true
+    },
+    {
+      "from": ".trellis/spec/web/frontend/index.md",
+      "target": "./collaboration-performance-qa.md",
+      "exists": true,
+      "passed": true
+    }
+  ],
+  "shell_syntax_blocks": [
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime-usage.md",
+      "line": 15,
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime-usage.md",
+      "line": 29,
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": ".trellis/spec/web/frontend/e2e-run-environment.md",
+      "line": 12,
+      "exit": 0,
+      "stderr": ""
+    }
+  ],
+  "patch_reverse_checks": [
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-root-narrow-fixture-binding-b7dc8f78-password.patch",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-root-narrow-fixture-binding-b7dc8f78-profile.patch",
+      "exit": 0,
+      "stderr": ""
+    }
+  ],
+  "git_diff_check_exit": 0,
+  "stable": true,
+  "issues": [],
+  "product_checks_executed": false,
+  "standalone_fixture_lint_pass_claimed": false,
+  "source_or_runtime_mutations": false,
+  "P2_available": false,
+  "ROOT_final_acceptance": false
+}

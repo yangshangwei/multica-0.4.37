@@ -1,0 +1,734 @@
+{
+  "recorded_at": "2026-11-03T08:48:19.143564+00:00",
+  "scope": "read-only file/index scan; no git process invoked, no DB/service/test/provider executed",
+  "candidate": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha_from_dispatch": "b6c74033f1913e46418ec1b119da33236dcba805",
+  "inventory_method": "parsed existing Git index v2 entries read-only; working file hashes; must confirm with canonical source_manifest.py before execution",
+  "roots": [
+    "server",
+    "apps",
+    "packages",
+    "scripts",
+    "Makefile",
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml"
+  ],
+  "source_id": "62e12d358a8d2af1a5ca7e569c696dbe4a4eae37479fbb3905280a832c26cdf4",
+  "file_count": 7984,
+  "old_source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+  "changed_paths": [
+    {
+      "path": "apps/web/next-env.d.ts",
+      "old_sha256": "7ad303e40d4fddf44f156129e397511953a71481c5cfd86b1862649aaaf240cc",
+      "current_sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"
+    },
+    {
+      "path": "packages/core/api/client.ts",
+      "old_sha256": "b9f5c78eb9749d44924f3dc7dadc718864e2d0369f64fe6ecd3ef8b94bb3fca6",
+      "current_sha256": "46ab68e07db2d44d38f95dcd22c73fc4533f881ba839405f34a9080eb763497e"
+    },
+    {
+      "path": "packages/core/api/collaboration-workflow.test.ts",
+      "old_sha256": "deeff59e2afb979584e714898e79847a9c4a585f5b3fd0967338b28e20cb8244",
+      "current_sha256": "574c15664e9b5df4f3fc7898b2830a8f609c9c96315a3b304236bc23b8ad98c2"
+    },
+    {
+      "path": "packages/core/collaboration/account-schema.ts",
+      "old_sha256": null,
+      "current_sha256": "2d0343d1467fad4c62b29ee562c2c343945b17686931ecd420daadaaae03a88c"
+    },
+    {
+      "path": "packages/core/collaboration/action.ts",
+      "old_sha256": "b1e1732bde848e2b37d724989fe35ea0a06d4535db25e869aacd444f1af3526d",
+      "current_sha256": "ff45c1808a94d6068e4c40695a2085c880a266a3d011da6c82dc8f350e6aca55"
+    },
+    {
+      "path": "packages/core/collaboration/control-schema.test.ts",
+      "old_sha256": "395db72440fe45cf99a53601741f24a4c1b4d2de735fad57006496139b824b01",
+      "current_sha256": "4adf335becff5ca49dc9f105c5dbb38fc2efb000b7766c2cdb2b253eded9e112"
+    },
+    {
+      "path": "packages/core/collaboration/control-schema.ts",
+      "old_sha256": "2eb266ba536bebaa4a6a37789e5b6a80da06830e420f64bef06be74ba09aebce",
+      "current_sha256": "65a8a44e2b2be09bde47f1a44bc09f7fba85762f539e8eb1713c8070a58d7357"
+    },
+    {
+      "path": "packages/core/collaboration/control.test.ts",
+      "old_sha256": "f2f830d34e10696650534318d7975042538c93c45aaf877d88283a44564e9927",
+      "current_sha256": "409d0a3c633a4aa6b55346b842b42bd249f79be7707e43bf058e7383e70c7a5d"
+    },
+    {
+      "path": "packages/core/collaboration/control.ts",
+      "old_sha256": "b1e4ee62cff15fec53ae05bfbffa5c09ba048a765a82fef6b3a1a990641e3932",
+      "current_sha256": "2084b0e52eb532b0a62be312547adeae617e5c1f48eb3566e88340409c5b7bdc"
+    },
+    {
+      "path": "packages/core/collaboration/creation-schema.ts",
+      "old_sha256": "5763acc99505b9a6f201a7118710ec400ebb8bdcb423cdf941bb1d398e357e11",
+      "current_sha256": "b6580faefc7bb84e75f1b4fe5b78fc1a578b0ed2d661c05424295f53ec099fc1"
+    },
+    {
+      "path": "packages/core/collaboration/creation.ts",
+      "old_sha256": "e8f4e79c1488101fed9e7920db21d411a5373a1f4d44da5fd5f21199925d976c",
+      "current_sha256": "258c796f93e32a8b96b9c2d37c4bb6a30719064ad19b9739199b4833a81e4b4e"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-draft.ts",
+      "old_sha256": "45a95c4a809bd822f09ab4c99dc32127bd068757f0a63a2b48e7bea7149e2358",
+      "current_sha256": "cf89bd9ea2397a5aabcdee3d0f705fea6f745d0ac137f0b7722c8765c033e407"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-form.test.tsx",
+      "old_sha256": "40db960d2f011fc7da47e5bd597a798f8e2451f126d756228e80ddafbe072359",
+      "current_sha256": "204de70a9a50308390272890a2768fee3897626cd7c9d24e970322364a3e8959"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-form.ts",
+      "old_sha256": "bfbb0b683df885019c52fb27b4791e998725341b35dc6465c6e79d28acb897d4",
+      "current_sha256": "dd5fc9caccf4c41184033ed3a6fe93ac9c150529f8f38b9a187f155193c1f3ab"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-history.test.ts",
+      "old_sha256": null,
+      "current_sha256": "7fd09daa61b58a02b81fa16d56b96a766352c3b6e33d10567fa25678b437d881"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-queries.ts",
+      "old_sha256": null,
+      "current_sha256": "b79f0046054e00ef633f4121aca7f77d0ffbaad79e165a2ba38342fc751e540e"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-result.test.ts",
+      "old_sha256": null,
+      "current_sha256": "19d5c9c0e37058495da500e9a89888c34745c8c9e5c94dbb6c7201530e81d424"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-schema.ts",
+      "old_sha256": null,
+      "current_sha256": "2406cfb832718bd612a46eda78eee0b3b7b89a0269baf9f59b6ac73490bb4742"
+    },
+    {
+      "path": "packages/core/collaboration/index.ts",
+      "old_sha256": "e3994d0b6817dc7b69dbba3b7426c60a4254a1783a49f5c8e0ea05de61f549a7",
+      "current_sha256": "04299fb95bf4dd4b77c4fa2a681e310fdbb2401db2d4c1638477c83c8ef88080"
+    },
+    {
+      "path": "packages/core/collaboration/lifecycle-schema.test.ts",
+      "old_sha256": "2da80ebeb1d4f0c04a467f3de9d6e612c1358b7bf5b35e89c6ef3c85578f4319",
+      "current_sha256": "efd0a44cbcb1ed30468baa0729c2cc6888562385ed3a6397918ea85990c6f16c"
+    },
+    {
+      "path": "packages/core/collaboration/operation.ts",
+      "old_sha256": "15560596f966032f54e90447d5599c609672a1a76614f0a4fd2b70c6648c3778",
+      "current_sha256": "92c9e004d61001a3c448fd416fc68efeb2d2cfa7d9c5bef8f61140f38715460e"
+    },
+    {
+      "path": "packages/core/collaboration/presentation.test.ts",
+      "old_sha256": null,
+      "current_sha256": "db6620dbd5aacdbb80453f1880ec79d839641b46f32b970de31eea644c228fa2"
+    },
+    {
+      "path": "packages/core/collaboration/presentation.ts",
+      "old_sha256": null,
+      "current_sha256": "c52d6ce8368e16c402973955bcbe2fd693c4a605f25a7c53614b9a08d3e833db"
+    },
+    {
+      "path": "packages/core/collaboration/resource-schema.test.ts",
+      "old_sha256": "a5fe062fe3575c1cb72eb0bc789c2ab402b295aab2fd758cb7c6c0ab587d60ae",
+      "current_sha256": "d43984db45e11b639b200c80e951396ce0e42c51ab763a681e74d67f64fd17c0"
+    },
+    {
+      "path": "packages/core/collaboration/resource-schema.ts",
+      "old_sha256": "82222a0dc92137749b3811b9dfa237bb87ec0fc9dd46746195f7551881d7d9c7",
+      "current_sha256": "4fc170353dbdb799c0c1fce6d846cc7215a8b16205d4bfec9d58f3528ae9bcd9"
+    },
+    {
+      "path": "packages/core/collaboration/resource.test.ts",
+      "old_sha256": "b6779df06d432ad786831693db1f5a19fb9eac453096509741664494f2094070",
+      "current_sha256": "7f359d0b29612d803e5a5b50d46fdf957089bff50f767f4ef8b3b8992503481c"
+    },
+    {
+      "path": "packages/core/collaboration/resource.ts",
+      "old_sha256": "373ef2f100f06c297b9058cc8e799ba8c1c3b9e048795eb44fd0ccfd83131b25",
+      "current_sha256": "b68519e3b0b4a150e4cd32860c0c4dca864e9b2b5cba38f96dc9e6f38d578aa7"
+    },
+    {
+      "path": "packages/core/collaboration/result-operation.test.ts",
+      "old_sha256": null,
+      "current_sha256": "f5f247c8ea1241a349f9d7d15cb284895e68ac91ff8b300ee3a41c0dcb383ce6"
+    },
+    {
+      "path": "packages/core/collaboration/schema.ts",
+      "old_sha256": "dbafd1ebc586005ccc990a4de0450656864b0b4888637b190336849eaa0ea76d",
+      "current_sha256": "53c8f39f23708fbd6f94a77d8797acb79c0a71274b67487fb6b4539f412e851f"
+    },
+    {
+      "path": "packages/core/collaboration/switch-schema.test.ts",
+      "old_sha256": "277d9e228bb736885bd30e7304666a85967400d9dc199f959eed42a9f2b5e784",
+      "current_sha256": "49e5ebfad10569f252523756c5c1058a20a14ff65a2c36496002f8625542de93"
+    },
+    {
+      "path": "packages/core/collaboration/switch-schema.ts",
+      "old_sha256": "12e6a81a81c2a81db8fb1cf6d310ec312cca0ec461bfcd9eb31f45bde95344a8",
+      "current_sha256": "a01317075959c586533522913966ba443e8123ad9fe686278027b3ac88e88780"
+    },
+    {
+      "path": "packages/core/collaboration/switch.ts",
+      "old_sha256": "8bbddac551640bf80f29b3703d19719265b34d70450e38eba00221349b0316a9",
+      "current_sha256": "d90f4d83d33e6670a982d60bf0c462ed7083bd41eb28b2bac81325817c60847f"
+    },
+    {
+      "path": "packages/views/collaboration/account-picker.test.tsx",
+      "old_sha256": "9b76c1b7ab61c8d34af96c823f0f80f6768bf46838e2af9451f42981cd3e8e85",
+      "current_sha256": "27b1886db9c406abe364b997afa2cf6e6574aaf773325dce86c4dd7da65ad71b"
+    },
+    {
+      "path": "packages/views/collaboration/account-picker.tsx",
+      "old_sha256": "8cd5edb3273c7766b0686173912f6dd8fd2dc0d335589ee74b6d74ea6fc92959",
+      "current_sha256": "4fb4811ba29c1e7ceaa778bca1721e608d5ae6174b37efca04b9e1a455508543"
+    },
+    {
+      "path": "packages/views/collaboration/attachment-panel.test.tsx",
+      "old_sha256": "64f39acfd21533d410c2992486f49ef4d685c2bf6dae2cb9babf5a8e05dfc218",
+      "current_sha256": "9af2d320cdcf8a4221dff4994074ea0dab7015b8a84bd6d8b210d5921270e8ac"
+    },
+    {
+      "path": "packages/views/collaboration/attachment-panel.tsx",
+      "old_sha256": "0fb48712e951f5c0a388f9c05d995f0f009a8b489668b139241420d51196bfea",
+      "current_sha256": "e3152c87e476cf601ce8b10263303a1de7dc4217494496122ee4aa2105c328c3"
+    },
+    {
+      "path": "packages/views/collaboration/attachment-picker.tsx",
+      "old_sha256": "576f9b62ed173e58461e54ac2bdb8405c6b88ce97a1d777b7ba8d552f92876b0",
+      "current_sha256": "7c56ab389e31356d49de8a2ea5b3bd3584dff86b6d0bf032366733803ef90a1f"
+    },
+    {
+      "path": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "old_sha256": "e900e574c9468c86c28e3cd081d6d42c4bbddc3208e036fb4fc4b24ff7253335",
+      "current_sha256": "da95c746e3bebe56f14fcd32d3ca08f8e54185c44c0063f3a1b70730ea64019b"
+    },
+    {
+      "path": "packages/views/collaboration/collaboration-detail.tsx",
+      "old_sha256": "748f5b98843bbc942b9dd4f7b52d7419195bc1c4ba365f9f3e19218f3d6a2f10",
+      "current_sha256": "3ba249181df0461f124cd3d8670d00e90154c0c055321afda6b6746c2695f6e6"
+    },
+    {
+      "path": "packages/views/collaboration/command-history.test.tsx",
+      "old_sha256": "dbcfee43aa3850fd54b464bf1b3e198cf364338d0e28b6eff8588111331821cb",
+      "current_sha256": "c63e3ea3abbaba6874ce9a470630202ca04182fda0d2051699422cfb1e111caa"
+    },
+    {
+      "path": "packages/views/collaboration/comment-composer.test.tsx",
+      "old_sha256": "f519e2868d2680419f45b3f20971cf265002c43eeb22d70a543fb3ff0c976e1c",
+      "current_sha256": "c3517a8789ccdfe391b45dcc8df18ad8fe180439b3f4bf096aad19802a51d494"
+    },
+    {
+      "path": "packages/views/collaboration/comment-composer.tsx",
+      "old_sha256": "a28889ad7403b02c6ca50333995b413d5c9894fdf7227f2fcd394f6a087995f5",
+      "current_sha256": "9281818cdd5fdadaed9701d6f4c2b11b5fbe054b90b88acfba97f836412cf9d3"
+    },
+    {
+      "path": "packages/views/collaboration/comment-list.tsx",
+      "old_sha256": "cdc246ba2dde50b687b63cb11afd0af93cf588e520d8bda5e822039d5c02beb5",
+      "current_sha256": "b764a6db126408aa1614b2fb6d94218f4bebf7f3f9577686c2d4a849bb4bf264"
+    },
+    {
+      "path": "packages/views/collaboration/creation-form.test.tsx",
+      "old_sha256": "fb729f54909a236779184d2e8fc3b15d2f3d2149fdf673978558ec31ad08f1ea",
+      "current_sha256": "7b5d0b5b218901bdf6a972ee863569626196ed3d901d9a1789f25ff9f188ad76"
+    },
+    {
+      "path": "packages/views/collaboration/creation-form.tsx",
+      "old_sha256": "85cd82ff195e3ad6f9fa24eb81acf27f4e7b3c23cb352abca42dff2e1d963d81",
+      "current_sha256": "20fedee7004ae6fcadca88a5f68b226720ebbbcf8791927a42f03178db5b64c9"
+    },
+    {
+      "path": "packages/views/collaboration/delivery-panel.test.tsx",
+      "old_sha256": null,
+      "current_sha256": "8c7c5fb8c330d1db49ae061d3ef075724ebf35ef508261e6befc003d16431397"
+    },
+    {
+      "path": "packages/views/collaboration/delivery-panel.tsx",
+      "old_sha256": null,
+      "current_sha256": "e7f427703deba73360f2b4730372353c47a307c399782bdc6de606701a1f02a4"
+    },
+    {
+      "path": "packages/views/collaboration/execution-panel.test.tsx",
+      "old_sha256": "fec822bde7cc4fc87288cbf5335e9ed0f7b4529251f157d5e1a984cb85831459",
+      "current_sha256": "6ff265f89209bce81b090292ee65a1d8fd544e13fe77f500730a6ba99497607d"
+    },
+    {
+      "path": "packages/views/collaboration/execution-panel.tsx",
+      "old_sha256": "b512ac955cea6643b5ee3bbc306c84c23874f2deb5f58e445fc63cf0dccafaed",
+      "current_sha256": "6e2e2278df74656c52acb1655007337d548396a988f3e4f889b4f10429f384f0"
+    },
+    {
+      "path": "packages/views/collaboration/field-editing.test.tsx",
+      "old_sha256": "9e22edf54a6fc304b5e655c1bfcb8fa1f331db4699b73120170c580251484d43",
+      "current_sha256": "be59331b9060dda80bd0376c02a41ad76a05aec6bbfb1de92835bcf98d744674"
+    },
+    {
+      "path": "packages/views/collaboration/field-inputs.test.tsx",
+      "old_sha256": null,
+      "current_sha256": "3c1398807c0ee3e4f6a9d48a553552038370803a6a6f49527d827fe348661794"
+    },
+    {
+      "path": "packages/views/collaboration/field-inputs.tsx",
+      "old_sha256": "e6fb2b995e7715dc64540b9d29247e999f0b37944ca0fa250f5539befeb0b7a8",
+      "current_sha256": "823c7a6d1898eea6b85f39ff0b103fdec32b8858d70f85200c3f811049967987"
+    },
+    {
+      "path": "packages/views/collaboration/field-summary.tsx",
+      "old_sha256": "20ad734b97a5d7e2bfb727360fa7021802c9f862cafa8177d7be96f0c509e3fd",
+      "current_sha256": "d0196b54fda7d7eeae935af555593127b91d94646b3a754cb3ed4631c08b8277"
+    },
+    {
+      "path": "packages/views/collaboration/form-styles.ts",
+      "old_sha256": null,
+      "current_sha256": "fc42e560df3ce9a76db383e586a3a456f8c5e2c3596e7c58486452530ba74e8f"
+    },
+    {
+      "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "old_sha256": "2ba69ef2ebbfef204576d4419edcdbf469d7f58a13e94bb80e0c3ac53a5937d8",
+      "current_sha256": "d252bcf1e49515cba3108b1528f49ba4bf92ab9f3eccdba30540b2849d2eb6dd"
+    },
+    {
+      "path": "packages/views/collaboration/knowledge-panel.tsx",
+      "old_sha256": "a715581220c16e2045543e971b2dfc4ffb210b314ecf79f7efc63dd32966cb67",
+      "current_sha256": "ae493596d090ec1ffc7134b9247e2b58dabf2c8aa9e8c4028164795e9e5be735"
+    },
+    {
+      "path": "packages/views/collaboration/labels.ts",
+      "old_sha256": "57d5c6e2144b0ca1d13d91d4bee5d2774925a5645cd4e8119984751daffafc10",
+      "current_sha256": "60616d45f4b9abeca7fc49acd4fbd1007d6e5b3a7d03c028c42e1bfc922bbb50"
+    },
+    {
+      "path": "packages/views/collaboration/participants.tsx",
+      "old_sha256": "76798c9c0c1a4f573c8f589ecae9b35bfaf7edccdee0b0ed7e762ebeed9cfc51",
+      "current_sha256": "4d7d11ca1fb73b93d8a6e33ee4dc454657164dc3e532c27941f05eb04fb1b2c9"
+    },
+    {
+      "path": "packages/views/collaboration/resource-offers.tsx",
+      "old_sha256": "4e5a8308d828b84bb0997df962ce36015e917c3f0e4ee88ec1ae120aae248eb7",
+      "current_sha256": "692ba5e6ad0c50b01f9ae22af3e1ed86a5a72dae095b12ac2da38e7bfdc7e2ec"
+    },
+    {
+      "path": "packages/views/collaboration/resource-panel.tsx",
+      "old_sha256": "5617007e4db753c133c1281b1238a158b3bbea4af7e2f3bce9b404c0902d09a5",
+      "current_sha256": "ede46938e26eb2ef0c17e92f04fed846e9d0972aa5266ab82de04ff853e84204"
+    },
+    {
+      "path": "packages/views/collaboration/switch-panel.tsx",
+      "old_sha256": "436ce572c39900ae9300f387f8be10445a3cb3dc5009acc4eef7a62de060d0c9",
+      "current_sha256": "be5bd6d552b18936d3e92273a35f2a4f822aa441752d9ca74dc8797cbc59c83f"
+    },
+    {
+      "path": "packages/views/collaboration/workflow.test.tsx",
+      "old_sha256": "72cd50690f4b8ec1b42f7555b059276f34b6c5e4ca1ff1adcceff96061712846",
+      "current_sha256": "aa48348cb0065f3c46ff22e733c39f98180d8646a0b32f028c5b24a299858033"
+    },
+    {
+      "path": "packages/views/collaboration/workflow.tsx",
+      "old_sha256": "14d624ae3e5472042566b82d4c1faa93e764fa6090bb20b4b60a02344e0de7ef",
+      "current_sha256": "a8848effe6d8b822369b2466ecce4e86f5dd67ec0ac5ca52ba6db7202ecc9e68"
+    },
+    {
+      "path": "packages/views/issues/components/pickers/property-picker.test.tsx",
+      "old_sha256": "67f6d895eafbb7ee568bb21cfcaab8c03f317200bee3c4e1d145131d59cec664",
+      "current_sha256": "0c81ca05594b947e2595f8c16c1f817b623e759763d4339bb3b435174b9d030d"
+    },
+    {
+      "path": "packages/views/issues/components/pickers/property-picker.tsx",
+      "old_sha256": "491345f91c442a59cb3c87c874d13c9745e55f61622ee40ef4ebb7a80c14d982",
+      "current_sha256": "7ae19a5d2e4ea1d3c94caf29187f0a256dacb5bdfaf46a545acd432db0e8d6a7"
+    },
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "old_sha256": "e9e10f818e59c3141dd4ef09eb6a035b4c2388fc20ed5d0d36a16c722296626a",
+      "current_sha256": "1f6ba410002f2617901cb64a67b9fbb4def88e61faf00b0c75b65d415709f819"
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "old_sha256": "da8ff28f0904aa7bbf4855c831db5e2db18cf2ec6b6a65d3e5177562bf84703b",
+      "current_sha256": "604a79e99eaafc4aa97b7ec2d51042a03abfef490f947851bfd3e7203e58a6be"
+    },
+    {
+      "path": "server/cmd/server/collaboration_handoff_routes_test.go",
+      "old_sha256": "772d25334c390d8096f5e08d9e6f63459082de334f739a75ee456f8ba2f37107",
+      "current_sha256": "b9b853bd0fa21a4c3ef6418dd4166b71943a0947efaec3be8bca863af7f917f3"
+    },
+    {
+      "path": "server/cmd/server/collaboration_lifecycle_routes_test.go",
+      "old_sha256": "bf9bcc513217cb79584474d8417e82d26a48210c6d4b9725fd5990f6a1500a25",
+      "current_sha256": "bca30ed480ed54d76afd583e02d0e07ed2b395feeee9dcfcd1738800341218cc"
+    },
+    {
+      "path": "server/cmd/server/collaboration_workflow_routes_test.go",
+      "old_sha256": "52957d795a96e7edba508745c649d80479ce6a348fae1b2dc814e054a41b10ff",
+      "current_sha256": "623f3cb96e359777572ea36b53a2476c73c5b1c6b4df5f88e198f2a99d08e9f8"
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "old_sha256": "6c7cf270ebb23176c6604ed13bc49f17712ad72d1005df6adf77f43b209ecac9",
+      "current_sha256": "57f90b8fdcb2cc83a4a26c131092629ac402d72e6e93241a05f5d09b1bf09bc8"
+    },
+    {
+      "path": "server/internal/collaboration/access.go",
+      "old_sha256": "a168ab81a233633fc6cdb5771c52fff2176157e0a30ef58d815370a64635778c",
+      "current_sha256": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64"
+    },
+    {
+      "path": "server/internal/handler/collaboration.go",
+      "old_sha256": "378f6d409c08d18ec03f2ff2ec261fe4fe1d1fecc5e85d371a6abddf1cb4ea70",
+      "current_sha256": "d0a141a653cafb514074c0deebcdb0ce2723a65b8b7448d7bea77c80fb311889"
+    },
+    {
+      "path": "server/internal/handler/collaboration_ai_policy.go",
+      "old_sha256": null,
+      "current_sha256": "48dd6cab88176d17e31985f38d0bb5efc99420966b582a1a60d2dcae60443090"
+    },
+    {
+      "path": "server/internal/handler/collaboration_creation.go",
+      "old_sha256": "2a1e12abfe710c0035ddacd8311c074f7544e312617012e8e5b023c1af7b117d",
+      "current_sha256": "251d122737d23c2e310ddbdce52f0ed5ca0ca253fca5c85b6cc94475266a1f52"
+    },
+    {
+      "path": "server/internal/handler/collaboration_delivery_test.go",
+      "old_sha256": null,
+      "current_sha256": "0e0e9fdf1434f205ed2de8c9ffef6e91861b1737808e15335fc043581a6213fe"
+    },
+    {
+      "path": "server/internal/handler/collaboration_lifecycle.go",
+      "old_sha256": "44daa466a9b13c8f3fe7e1d82b841f33ed89b820d74e64ad43eb69be48958d37",
+      "current_sha256": "5117f38845a38075cb7b94876696f3ffa9f58b97198dae58b3511af5804ae8f3"
+    },
+    {
+      "path": "server/internal/handler/collaboration_parent_wakeup_test.go",
+      "old_sha256": "38444da9235fc5a0812511f8814aca26a8a1760b6835ba9ad2b68bb9e931124f",
+      "current_sha256": "dcbe7b070390c3aec4baa2c5eab4befaa836849f79bb56efbe7fa94e00a21b81"
+    },
+    {
+      "path": "server/internal/handler/collaboration_workflow.go",
+      "old_sha256": "faf372f92bc83a57c9b858bff20c77cc3b76a4e42bde06f659f41412498efc37",
+      "current_sha256": "8e8ccec1cc1b4131919d9a93fd4acb1d29f70f6c83ee21d5ba7a0053e6489430"
+    },
+    {
+      "path": "server/internal/handler/daemon_test.go",
+      "old_sha256": "e24aa829357ee9129f68d67a8eadd7ead14cc82341fb3122fd33da5156b2d0df",
+      "current_sha256": "8f2eb1047b23f00eba31b5903911c8eb65ecc1cbecfad6d5b33ceb51971ab65a"
+    },
+    {
+      "path": "server/internal/migrations/collaboration_ai_policy_test.go",
+      "old_sha256": null,
+      "current_sha256": "5265ac5a954aa8ac71de8ff5f0cbacf1cc2367014ebe05979f160de441d84257"
+    },
+    {
+      "path": "server/internal/service/admin_collaboration_authority_test.go",
+      "old_sha256": "89acec031baa0af76ba8400a943655c07ce91084ac89ea9bc4d280a992fd58e2",
+      "current_sha256": "d761a884e7bb1ea8347d2b780104976afb9a93c332d16db1461adedf62e3f4f0"
+    },
+    {
+      "path": "server/internal/service/admin_collaboration_test.go",
+      "old_sha256": "10226e77c18e1da334686c559fdfc7e9b1ee3ae3890108b74daad5e9ac2eefc0",
+      "current_sha256": "678d28ed1d196939c40099a597186004d25b6c70d5f074b5c6be71623c76dfe5"
+    },
+    {
+      "path": "server/internal/service/admin_collaboration_transaction_test.go",
+      "old_sha256": "860c98aec94c6a8194a28d72efb413aec3f162aee6adf41ce3611a9fac5e8d2c",
+      "current_sha256": "8725924936f749870071b0ac9267df2acc9e56a32811d7fb176357212673f310"
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+      "old_sha256": "479c5e3eaf3a7e7a5b707061892d8494f3c0646328002fdd8e71c93a984555fa",
+      "current_sha256": "d9ed068b308783b0b5cd9375b86a1e1c592b9abcbd3dd260a5ecf79ae2b9fbfe"
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+      "old_sha256": "796f561d23690aaed3c1c402663863278e6e7652ea5d9d531fd8abca387963e2",
+      "current_sha256": "851d009653677ec358af379e38df156f0d0e9bd5768d9af773b02a29f4a0d5cb"
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+      "old_sha256": "a0b84216b0708445157e67d1527efc42e914ec746eb6f0aa4d6024ce553a320b",
+      "current_sha256": "c5d12067541472e5f00626dff36ccfbe7cd13dab8de7c5396ebd00641f36b0be"
+    },
+    {
+      "path": "server/internal/service/collaboration.go",
+      "old_sha256": "98eefd329df5102a13644cf60b58b56ffcd67761d63a1865a85eab1ec453ed89",
+      "current_sha256": "3ad137953cd0e2e2e8c491a1c80eeb5b97318233059649efbd90a9e00bdccf19"
+    },
+    {
+      "path": "server/internal/service/collaboration_ai_policy.go",
+      "old_sha256": null,
+      "current_sha256": "523f192b1f83077dcdb99a0e5643d7e5c9d788aaf0ac3f6c22016cd99a7cd1d0"
+    },
+    {
+      "path": "server/internal/service/collaboration_ai_policy_test.go",
+      "old_sha256": null,
+      "current_sha256": "fee8178ad661f1496f8062ea19606ef532aa6e252deae445d8ee550c41f82e72"
+    },
+    {
+      "path": "server/internal/service/collaboration_authority.go",
+      "old_sha256": "1fdd45b3d04f9c75eba44e0b52a6b6d2596623070666e5d23c40477c2e5cb302",
+      "current_sha256": "e067d0f593f6a9482423c641413b08f6eed66bb552dc94020d94800f1f89c52e"
+    },
+    {
+      "path": "server/internal/service/collaboration_batches.go",
+      "old_sha256": "5ce1d33180d1abdd5ff11de3d0890fa0fbc43ba6ffef809c0070528262889409",
+      "current_sha256": "098ee6f0a6ff05dd778ead3e3545077133c0e184503943b6f35448339aacdfd7"
+    },
+    {
+      "path": "server/internal/service/collaboration_command_history_execution_test.go",
+      "old_sha256": "6978398af22418d18d081aa48a964137708d9b96730c902efdb5aee493a25cf1",
+      "current_sha256": "cccf467d700a068bfcaee3660d8704631416bf8a9c571f08d340e66cb329e9ef"
+    },
+    {
+      "path": "server/internal/service/collaboration_command_history_test.go",
+      "old_sha256": "869196731ce555206557c1464a4495a1aad6bab3aed22994ba56fcedb16df976",
+      "current_sha256": "8363cc5253c589d9c77a61cc8c95eac3fe97fd43d19dbbed8738dd3b6c59021c"
+    },
+    {
+      "path": "server/internal/service/collaboration_control.go",
+      "old_sha256": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+      "current_sha256": "b2006df16d203429136e74a8f024feb5fcd489fe438f37d8affcd5528c698e2a"
+    },
+    {
+      "path": "server/internal/service/collaboration_delivery.go",
+      "old_sha256": null,
+      "current_sha256": "d0807d040c2158914214ae92d010456bce063c9e9643d5557dfdac9c1af309f7"
+    },
+    {
+      "path": "server/internal/service/collaboration_delivery_projection_test.go",
+      "old_sha256": null,
+      "current_sha256": "0bbb770aa9bd46c5fc15115db6db16663b18b7b7fed2a49a423099df86e4270d"
+    },
+    {
+      "path": "server/internal/service/collaboration_delivery_test.go",
+      "old_sha256": null,
+      "current_sha256": "e1a4b43d0cdc3786ed210ffd8f4588f92195648105dc6be1890ddf49580de498"
+    },
+    {
+      "path": "server/internal/service/collaboration_handoff.go",
+      "old_sha256": "5757c544bd97e96f506a1f5ad4d12775a2de2b8d7e69508d61be8a9685c84053",
+      "current_sha256": "09f93f41c49d38342be52e1a82019dc47f0d964185a9d184c34f7c6ef82d7aaa"
+    },
+    {
+      "path": "server/internal/service/collaboration_handoff_execution_boundary_test.go",
+      "old_sha256": "2711e8e6aea0e111f5438834e1bb5f116c2b1ffb7b071d4b9c39e8b434baefb6",
+      "current_sha256": "c3cf580ea20cebff0ab18ee7b101385e035b01f16ed2f96f7fef170a1d02f290"
+    },
+    {
+      "path": "server/internal/service/collaboration_handoff_test.go",
+      "old_sha256": "99136f27f2331cd8aa384a45dca0c05b49cfc6831255ad32be71be2ce0f8e992",
+      "current_sha256": "7c12768c7d259be2cc1fafe02e182594ae325a5617938058372aae75d4e5f0f7"
+    },
+    {
+      "path": "server/internal/service/collaboration_host_integration_test.go",
+      "old_sha256": "80a3bd8e72213117a34e631c46ca12ec5f85e02108bbe79398a6c4b7ff98dc98",
+      "current_sha256": "4edc3f20eef3e2ae4905f90a84d8467633c498b545d61acd3a079999b4ecccf2"
+    },
+    {
+      "path": "server/internal/service/collaboration_lifecycle.go",
+      "old_sha256": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+      "current_sha256": "5d98c9d83a1a4033098263957e1d070412e788d45f00e68584575d0eb67712d7"
+    },
+    {
+      "path": "server/internal/service/collaboration_lifecycle_test.go",
+      "old_sha256": "164c27d7f3e34ac838607b73ecb3f02a6c12d7ab19ac685636d0110404d5842f",
+      "current_sha256": "a892d2c1d464b76920359594c8195c7403fee360454e801dca6d28bd6586b92a"
+    },
+    {
+      "path": "server/internal/service/collaboration_memory_test.go",
+      "old_sha256": "cfe84eb31810fb445e85b1bb1d4ee28d28f15e7d28dca7247ff15d4ad14c4807",
+      "current_sha256": "5e7270a1c861f2b541f151bd3e27245ae79be9441b689e08cd26ea6fd78e3b0b"
+    },
+    {
+      "path": "server/internal/service/collaboration_mention_admission_states_test.go",
+      "old_sha256": "07338b91526b867f32e0fdff2865b2c42d9bc4b8949d8fce03b9f029eede6f57",
+      "current_sha256": "49d1b9415592b213ba00bbf67105bc908be45ed85a3e8db28656d6e1c1b36e78"
+    },
+    {
+      "path": "server/internal/service/collaboration_mentions.go",
+      "old_sha256": "55f74f4de9b5d6b22ccca0664442ff51bbf6786fd14b622f3de686ef2bccfd8a",
+      "current_sha256": "a20b671c1541c93f808881950e387302c5af1e33269c7f98b034fb5d93c2add1"
+    },
+    {
+      "path": "server/internal/service/collaboration_parent_wakeup_test.go",
+      "old_sha256": "c308d7cf5183cb6fcbf3ac01d2be619e67a8633df81034832e1eb61580568cdb",
+      "current_sha256": "fa888124a8b2835411113161307daead27b8e369799ddd0740036827109bb679"
+    },
+    {
+      "path": "server/internal/service/collaboration_queue.go",
+      "old_sha256": "f47c777ea4869a792624e0cf9d37908a4c573e8582144813a3b33878ddc7044f",
+      "current_sha256": "6fd21ce5d824e0a41951cfa3de83ba2fb2db46cc4366cdea74b45c2931ccd34b"
+    },
+    {
+      "path": "server/internal/service/collaboration_resource_offers_test.go",
+      "old_sha256": "a166369ae2250a77622549d81c29bcb6148cee82ad5ec7824c8371f19194b3a0",
+      "current_sha256": "6faaad804080af9b4c91d8eb457b918b6a7b7dc7d98b7c9539d8dabe67ca7d69"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime.go",
+      "old_sha256": "d517f5531a133010c36bbda89ca0d5432e9d3bcfe0e423e5113104aff6573d8f",
+      "current_sha256": "3db09f2e93be3c22215da1c87130b9306b484c57a8eb1fc0c26a1c8cbb2ca47b"
+    },
+    {
+      "path": "server/internal/service/collaboration_source_fields.go",
+      "old_sha256": "794004765369b97bb9f3960f3eb5b7b48ab4bc0a104c12d41265c0ccba03f1a0",
+      "current_sha256": "cfd744c16d41b9084c72547a58ad97020a5b9b154f0f15f18dad51cd4d54cade"
+    },
+    {
+      "path": "server/internal/service/collaboration_source_fields_test.go",
+      "old_sha256": "f5164b80a595fabe18dc727139436f99100faa5873d5ad0afbbb78034c9b3fab",
+      "current_sha256": "ac335a446057ea2dcc62590a6cefcc22140efa08e773260a5fcceb84d7115825"
+    },
+    {
+      "path": "server/internal/service/collaboration_targets_review_test.go",
+      "old_sha256": "8ee17bfef1702248089c9373f81045b55856eac4f22d8e5aa6d894b03116dcee",
+      "current_sha256": "65afed94d24411fc860ea32d321c6c9654648d53f4c6693b7019c3c54768d78b"
+    },
+    {
+      "path": "server/internal/service/collaboration_targets_test.go",
+      "old_sha256": "fa50282a74ab50ea4856adbcb16ff6c716db0b6a98b2215b17bd9598083aabef",
+      "current_sha256": "e976fa2346d56dd7bfaa950da82f957c2a9d563c1bcded5cf330de33c4f4e4a7"
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow.go",
+      "old_sha256": "88a0751c04e0087e2636c85dd87ff844bae0b6473bddf947e32ac7c101ed69a2",
+      "current_sha256": "1ef46765e1567a1c762f4647d1553f69b9c8dfd31d1fcc168d77d8795dc28724"
+    },
+    {
+      "path": "server/migrations/764_collaboration_ai_policy.down.sql",
+      "old_sha256": null,
+      "current_sha256": "a3049301fd5f6514a96da66d453f7031f97c653e484f2ca18cf48dd0f6e37f42"
+    },
+    {
+      "path": "server/migrations/764_collaboration_ai_policy.up.sql",
+      "old_sha256": null,
+      "current_sha256": "935800286a9134fcf9fdc74e090d1a485125fa5f601a1b8efa0eec0fe3f396ea"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration.sql.go",
+      "old_sha256": "f4d5f7afe89fdd7f916db63ebe62a17af418c04da847eae48cf86d75124423cc",
+      "current_sha256": "ac5c3592ae443ce9360c27709f04d22453bc853ff810e8f77d5a9091263ef1e2"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_delivery.sql.go",
+      "old_sha256": null,
+      "current_sha256": "1c91a59d79c2bfaa852f52794a328fb8a9f02a236732dec08167f2d865115871"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_knowledge_service.sql.go",
+      "old_sha256": "91463bca4e146d3e7d6bc0c8b48d15b312eb221a06ecb1bbec6790bb82e42a48",
+      "current_sha256": "ca38da913fad927991cfc7f791aa30e0390697b82384fbb657a0513aa8960c6d"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_lifecycle.sql.go",
+      "old_sha256": "fc0c94dcd6d26def8130b2b17b1bec6817f09357235ee7d1b9696b595f48c3f9",
+      "current_sha256": "45a741676b2c890fc2b3957656dcae16570be08654fccd561f1e6eefd78e4b0a"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_reconciliation.sql.go",
+      "old_sha256": "232a9387af64e2ce85a4234699bae0ad4e30e4fdfcd7ee3837432503e215d12e",
+      "current_sha256": "dde44fd5bc1288feeac25dd3c4e8679d51ce7a659d418c6c1565cf3039095343"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_source_fields.sql.go",
+      "old_sha256": "908ac297d64e03e992a06e14a1bc2b3127dd998d729a938105252455a99b6948",
+      "current_sha256": "25e18cf422ea3ed88b28db89b0080ecfbef79d03198032cc029f734eab6cf780"
+    },
+    {
+      "path": "server/pkg/db/generated/models.go",
+      "old_sha256": "52ee61afa68069ac2f983c879ee624d545d983c3fa46d8ee97bf28fa77638a71",
+      "current_sha256": "5c076a036effd67502f52efb97e43de3a3c9bc1d102e2c2f1f71c7caeb0e1171"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration.sql",
+      "old_sha256": "91a1d8490447862b090789b226e5112886072e6b73c715af0c420c430c59c98c",
+      "current_sha256": "52c5d0e1db3ea4456fb98dee9ef88b808c0330edba7cd49bddf9deb1c10d0589"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_delivery.sql",
+      "old_sha256": null,
+      "current_sha256": "aa58da207a2533591f2e1d974d036dacf58f3d2569a063f4db677685ded55cd8"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_source_fields.sql",
+      "old_sha256": "6bed2de835db5e4dd6eff16e5356e22db75c9ac38d5373d3a723ccec4c323d48",
+      "current_sha256": "54fa328e25e57a0a5f0ae1f716e2009bb44f55805b3e7b62067f6b6c96671df0"
+    }
+  ],
+  "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+  "framework_files": [
+    {
+      "path": "server/cmd/server/rk1_entry_test.go",
+      "sha256": "0e7bd9887edc6be00c020fc861aab6c26cfbe494fb1dcd30b1a53f857541d0e3"
+    },
+    {
+      "path": "server/cmd/server/rk1_evidence_contract_unit_test.go",
+      "sha256": "9868bad19675c8ebdaf43bf9d63b59485e12830501379acc769ba8f0c3a603ef"
+    },
+    {
+      "path": "server/cmd/server/rk1_evidence_fault_proof_test.go",
+      "sha256": "b43d805ecdbaca8d61d1aeb777108f99ab74046f7b84b8d36ffa219f19079090"
+    },
+    {
+      "path": "server/cmd/server/rk1_evidence_format_test.go",
+      "sha256": "648d8edb9640ba4cd09d213c785e232d4904ebff5d1631ec015f4eb6ea1962d4"
+    },
+    {
+      "path": "server/cmd/server/rk1_evidence_publication_test.go",
+      "sha256": "461ae12b8da9ffc803681608f7d88db0f39342158f3223d71ad167a772e690f1"
+    },
+    {
+      "path": "server/cmd/server/rk1_fake_helpers_test.go",
+      "sha256": "d863e2b35aab4a127e26f6a923fd4d60438aa610804a96f67aa2be23c0c50ab2"
+    },
+    {
+      "path": "server/cmd/server/rk1_fake_test.go",
+      "sha256": "952165b30c01d6486304b81df72e3bcd373ce1e794a716772a344dece137e840"
+    },
+    {
+      "path": "server/cmd/server/rk1_fixture_test.go",
+      "sha256": "c257225e01c00a92dc266226347a3ffa016ac79db18c592dff6d293c6294994b"
+    },
+    {
+      "path": "server/cmd/server/rk1_lifecycle_test.go",
+      "sha256": "b1fe1002b28804b7bfd8593b5df0c20502e246de5b5e7ab8760029a5da3e8c6f"
+    },
+    {
+      "path": "server/cmd/server/rk1_observe_test.go",
+      "sha256": "5472c35cff8f5f99eb1c84381656e9677985e3743a278ff271531a01740f1b07"
+    },
+    {
+      "path": "server/cmd/server/rk1_provider_test.go",
+      "sha256": "02050fc42ba6aeb02f4d7695ce76f4ee7a4402f07048cc2326dcde5d7b3e4f05"
+    },
+    {
+      "path": "server/cmd/server/rk1_run_test.go",
+      "sha256": "0eb15501131a043c2cbd98c5ac33e515a9b1d6c55d4ba54f0388a13516a85763"
+    },
+    {
+      "path": "server/cmd/server/rk1_scenarios_handoff_test.go",
+      "sha256": "eaba9f65a465f12afb3c5322ffefe6f6ec9d5e94bfa50870bf3027fea992c06a"
+    },
+    {
+      "path": "server/cmd/server/rk1_scenarios_recall_test.go",
+      "sha256": "644797d7325ab91c9ac6f306a86bf426bbbf6375009673118f1fe3f7706a7cda"
+    },
+    {
+      "path": "server/cmd/server/rk1_trace_barrier_test.go",
+      "sha256": "caa003b5b79f0747198d1fbdb268cdb9fdab8b289b691bd0222b2ab5e72a1c94"
+    },
+    {
+      "path": "server/cmd/server/rk1_trace_test.go",
+      "sha256": "6f3a767c574d363d3f078bd8b9386c734366186c477493c03067f57f43e7c172"
+    },
+    {
+      "path": "server/cmd/server/rk1_trial_test.go",
+      "sha256": "bfdfb910b40dc43c8b8a43d49a617dedc5421d8ed251c30b4488e581f105f5a5"
+    }
+  ],
+  "canonical_manifest_still_required": true
+}

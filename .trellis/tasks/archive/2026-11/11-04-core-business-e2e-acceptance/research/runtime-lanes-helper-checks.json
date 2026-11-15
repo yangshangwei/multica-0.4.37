@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "checks": [
+    "completed exact prior record accepted",
+    "changed previous bytes rejected",
+    "active browser prevents switching",
+    "completed browser does not block next lane",
+    "owned private exact file accepted",
+    "changed private input rejected",
+    "world-readable private input rejected",
+    "config is private",
+    "source grammar refuses unsafe value 0",
+    "source grammar refuses unsafe value 1",
+    "source grammar refuses unsafe value 2",
+    "source grammar refuses unsafe value 3",
+    "source grammar refuses unsafe value 4",
+    "source grammar refuses unsafe value 5",
+    "source grammar refuses unsafe value 6",
+    "source grammar refuses invalid key",
+    "HTTP failure emits status without credentials/body"
+  ],
+  "count": 17,
+  "controller_main_executed": false,
+  "network_or_database_access": false,
+  "controller_sha256": "0a7b435357482a6cbfcf95ee42ce781d16000e9848db9d433687e5cd4d2073f5"
+}

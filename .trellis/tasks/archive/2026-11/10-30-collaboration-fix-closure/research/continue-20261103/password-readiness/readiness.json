@@ -1,0 +1,364 @@
+{
+  "status": "ready-for-root-setup-not-run",
+  "recorded_at": "2026-11-03T01:19:44.606065+00:00",
+  "active_task": ".trellis/tasks/10-30-collaboration-fix-closure",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+  "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "canonical_product_source_id_from_bound_manifest": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+  "bound_manifest_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/canonical-product-source-manifest-v11-provenance.json",
+  "binding_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/owned-bindings-v11-provenance.json",
+  "binding_sha256": "6db6435e476b8f448a412d4b097e16e6131ddbf7458450ced1cf69a8f281d80b",
+  "prior_preparation": {
+    "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/password-directed-preparation.json",
+    "state": "prepared_not_started",
+    "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+    "reuse": "Historical only; do not reuse old DB/ports/registry/renderer/owner without new verified bindings."
+  },
+  "expected_project": "chromium",
+  "expected_inventory": [
+    {
+      "id": "C3-web-directed-chain",
+      "file": "e2e/collaboration-handoff-chain-web.spec.ts",
+      "line": 11,
+      "title": "Web directed handoff chain moves current todos with responsibility and only the creator completes",
+      "timeout_ms": 240000,
+      "scope": "C3 human responsibility/todo/creator completion"
+    },
+    {
+      "id": "C3-native-information-return",
+      "file": "e2e/collaboration-handoff-chain-desktop.spec.ts",
+      "line": 16,
+      "title": "Electron information return shows the original requester and note before restoring responsibility",
+      "timeout_ms": 120000,
+      "scope": "C3 actual native requester/note/status visibility"
+    },
+    {
+      "id": "C3-web-offline",
+      "file": "e2e/collaboration-offline-handoff.spec.ts",
+      "line": 12,
+      "title": "Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "timeout_ms": 240000,
+      "scope": "C3 local password Web/offline human workflow"
+    },
+    {
+      "id": "C3-native-offline",
+      "file": "e2e/collaboration-offline-handoff.spec.ts",
+      "line": 12,
+      "title": "Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "timeout_ms": 240000,
+      "scope": "C3 local password native/offline human workflow"
+    },
+    {
+      "id": "runtime-env1-startup",
+      "file": "e2e/collaboration-runtime-handoff-web.spec.ts",
+      "line": 9,
+      "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+      "timeout_ms": 120000,
+      "scope": "runtime retained startup0/live latest1 projection"
+    },
+    {
+      "id": "runtime-web-recall-removal",
+      "file": "e2e/collaboration-runtime-handoff-web.spec.ts",
+      "line": 47,
+      "title": "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+      "timeout_ms": 180000,
+      "scope": "runtime authorized retained source/full-text/pagination/removal projection"
+    },
+    {
+      "id": "runtime-native-recall",
+      "file": "e2e/collaboration-runtime-handoff-desktop.spec.ts",
+      "line": 14,
+      "title": "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+      "timeout_ms": 120000,
+      "scope": "runtime actual native deep link/retained source/unknown tail projection"
+    }
+  ],
+  "expected_results": {
+    "pass": 7,
+    "fail": 0,
+    "skip": 0,
+    "flaky": 0,
+    "retry": 0,
+    "test_attempts": 7
+  },
+  "original_source_hashes": {
+    "e2e/collaboration-handoff-chain-web.spec.ts": "c5d29e955de515eb43c09952e6cb594f5ce71e842cc94ba2800a5aebb269b098",
+    "e2e/collaboration-handoff-chain-desktop.spec.ts": "9444fa57fef1fa73641dbced0409eb606d22e0ad44992990526684e30cdb1e1d",
+    "e2e/collaboration-offline-handoff.spec.ts": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e",
+    "e2e/collaboration-runtime-handoff-web.spec.ts": "e3b9858499b2e83cbef1e0010b06e766a7c98f8b45b69620befb22c3de2e35ac",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts": "e03c98ba0a2db74f5f911bfff05990a3685abfbc77235bbe681d89afe227a540",
+    "e2e/fixtures/collaboration-offline-handoff.ts": "4179e69cdafa8eec8200e8fedcc832fdf43a199665192b9c5fc8c02fe15bc658",
+    "e2e/fixtures/collaboration-handoff-chain.ts": "bf84e9bc84b9924e811870f11868cc1f1acd962923a8365b1461437abc8f2c8b",
+    "e2e/fixtures/collaboration-control-gaps.ts": "27a17c3dc0f274df7ddb046f1ac3001c056d721eb4db9120d946fe4805d7fe9d",
+    "e2e/fixtures/collaboration-runtime-handoff.ts": "b2426de829ee36103624437103966ba2664cab7755c89b2fdb895d1c1b9c5574",
+    "e2e/fixtures/collaboration-native.ts": "88b19f3fcc107997d5b4a1ab8364de3ba4a4930bacbda3c25fa97d60463c3095",
+    "e2e/fixtures/collaboration-account-electron.mjs": "f9021ab07635f2f48d0f90613fcd3c8558cb7262b3bdd2aca98edb31654475d2",
+    "e2e/fixtures.ts": "ec055f2f87f06bc18dbf0c5234a1ef5d4aefaba19f12395b48c97c19616506f2",
+    "e2e/env.ts": "4ef226a0f4fed5834fc41a7164b7ecf77a8061df4a8f53a810cdfe0ebb518040",
+    "playwright.config.ts": "de9a385def3e04d929d514b3d5eca092a78c6b1ea2895429e863e06f1ad285fd"
+  },
+  "required_environment": {
+    "E2E_PASSWORD_AUTH": "1",
+    "MULTICA_AUTH_MODE": "password",
+    "MULTICA_PASSWORD_LIMITER_MODE": "single for exactly one task API; shared plus task Redis for multiple API processes",
+    "MULTICA_DEVICE_AUTH_ENABLED": "false",
+    "MULTICA_CLOUD_URL": "",
+    "ALLOW_SIGNUP": "true",
+    "DISABLE_WORKSPACE_CREATION": "false",
+    "COLLABORATION_E2E_API_URL": "actual allocated loopback API origin",
+    "NEXT_PUBLIC_API_URL": "same origin as COLLABORATION_E2E_API_URL, explicitly set before fixture import/build",
+    "REMOTE_API_URL": "same actual API origin for production Web proxy",
+    "NEXT_PUBLIC_WS_URL": "actual API ws:// loopback /ws endpoint",
+    "COLLABORATION_ELECTRON_WS_URL": "same API ws endpoint (also derived by native fixture)",
+    "PLAYWRIGHT_BASE_URL": "actual allocated production Web origin",
+    "FRONTEND_ORIGIN": "same production Web origin",
+    "DATABASE_URL": "actual isolated migrated password database; loopback host; no default/shared database names",
+    "COLLABORATION_ELECTRON_SOURCE_ROOT": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+    "COLLABORATION_ELECTRON_RENDERER_URL": "http://127.0.0.1:19846/",
+    "CORS_ALLOWED_ORIGINS": "exact production Web and renderer origins before API startup",
+    "ALLOWED_ORIGINS": "same exact server WebSocket allowlist",
+    "PLAYWRIGHT_JSON_OUTPUT_FILE": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/password-directed-20261103/playwright-results.json",
+    "PLAYWRIGHT_BROWSERS_PATH": "verified already-cached Chromium1208 root; keep explicit if process HOME is isolated",
+    "MULTICA_RUN_REAL_AGENT_SMOKE": "absent",
+    "MULTICA_KNOWLEDGE_CONTEXT_ENABLED": "false for this scope; no knowledge gate needed",
+    "MULTICA_MANAGED_INSTALLATIONS_ENABLED": "false for this scope; no managed-installation gate needed"
+  },
+  "node_packages": [
+    {
+      "package": "@playwright/test",
+      "version": "1.58.2",
+      "package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/@playwright/test/package.json",
+      "resolved_package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test/package.json",
+      "resolved_within_candidate": true,
+      "package_json_sha256": "c3633ad1a5096090c15b0a3b414ede7b9628e0b1cafa62e8c0b4321683cc1d90"
+    },
+    {
+      "package": "playwright",
+      "version": "1.58.2",
+      "package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/playwright/package.json",
+      "resolved_package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/package.json",
+      "resolved_within_candidate": true,
+      "package_json_sha256": "718c91812946dcfbb4b724cfa0084ee3be205c571df09094f218bc4571f43c2b"
+    },
+    {
+      "package": "playwright-core",
+      "version": "1.58.2",
+      "package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/playwright-core/package.json",
+      "resolved_package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/playwright-core@1.58.2/node_modules/playwright-core/package.json",
+      "resolved_within_candidate": true,
+      "package_json_sha256": "16a25dbd7368a87af8b58a45c6216b9cec5a91a72cf704533344701997ebde22"
+    },
+    {
+      "package": "pg",
+      "version": "8.20.0",
+      "package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/pg/package.json",
+      "resolved_package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/package.json",
+      "resolved_within_candidate": true,
+      "package_json_sha256": "c7b791217b7b495bf56de329320cd5450d1bcebb6a3475e9d20dedcb37e0edb4"
+    },
+    {
+      "package": "esbuild",
+      "version": "0.25.12",
+      "package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/esbuild/package.json",
+      "resolved_package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/esbuild@0.25.12/node_modules/esbuild/package.json",
+      "resolved_within_candidate": true,
+      "package_json_sha256": "cb7d5b1fe478f8cbaae566a86031b6fdf5f7d444354f35d1cb3cba9adf6d2935"
+    },
+    {
+      "package": "electron",
+      "version": "39.8.7",
+      "package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/electron/package.json",
+      "resolved_package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/electron@39.8.7/node_modules/electron/package.json",
+      "resolved_within_candidate": true,
+      "package_json_sha256": "acc4b78fe92f310cb5f8a29b644bd2b30f68e330f5ac91cbafa19f902c4f0084"
+    },
+    {
+      "package": "electron-vite",
+      "version": "5.0.0",
+      "package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/electron-vite/package.json",
+      "resolved_package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/electron-vite@5.0.0_vite@8.0.1_@emnapi+core@1.11.2_@emnapi+runtime@1.11.2_@types+node@2_4aa05278519a47a18dab2015005b0c53/node_modules/electron-vite/package.json",
+      "resolved_within_candidate": true,
+      "package_json_sha256": "76a61d3f06a16c4b0f7de7f0915e5c251de0060a75b3259ef3da2a5125b4ecca"
+    },
+    {
+      "package": "typescript",
+      "version": "5.9.3",
+      "package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/typescript/package.json",
+      "resolved_package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/package.json",
+      "resolved_within_candidate": true,
+      "package_json_sha256": "822ef7ca6452205657b6288b066481ecf508bfbf43455d715cf7d3ec457561e6"
+    },
+    {
+      "package": "vite (resolved through electron-vite)",
+      "version": "8.0.1",
+      "resolved_package_json": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/vite@8.0.1_@emnapi+core@1.11.2_@emnapi+runtime@1.11.2_@types+node@25.5.0_jiti@2.7.0_terser@5.47.1_yaml@2.9.0/node_modules/vite/package.json",
+      "resolved_within_candidate": true,
+      "package_json_sha256": "5b22070ec3495790fd57a8aeaf41df0929cd4e8a54510c485894c372714064a6"
+    }
+  ],
+  "native_assets": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/renderer/index.html",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/renderer/index.html",
+      "sha256": "9d92714285456d587bb8bcd3ecf2897ad015cf7f63d76f75fea9a541536ae0eb",
+      "bytes": 1256,
+      "is_executable": false
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/preload/index.js",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/preload/index.js",
+      "sha256": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5",
+      "bytes": 18876,
+      "is_executable": false
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/e2e/fixtures/collaboration-account-electron.mjs",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/e2e/fixtures/collaboration-account-electron.mjs",
+      "sha256": "f9021ab07635f2f48d0f90613fcd3c8558cb7262b3bdd2aca98edb31654475d2",
+      "bytes": 8687,
+      "is_executable": false
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+      "sha256": "cf74833a9b0c242e26c177005d7d61819e5bf5ed199acc794fed2eb0cc4f3149",
+      "bytes": 33968,
+      "is_executable": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework",
+      "sha256": "0a85572e116a6fd83549c6669d72e4ff65d86bdf6e69952db882b609d92f808f",
+      "bytes": 173600320,
+      "is_executable": true
+    }
+  ],
+  "bound_desktop_manifests": {
+    "renderer": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/renderer",
+      "file_count": 493,
+      "manifest_sha256": "bc46754412b91fac5f6649b7b37ad537e067bb9ab6fa6f0c4012cb0fced91d18"
+    },
+    "preload": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/preload",
+      "file_count": 1,
+      "manifest_sha256": "eb6f5654d511b3b23a8856597deeabf4277c8a21afffcce04c8703ad6b4c128e"
+    },
+    "main": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/main",
+      "file_count": 1,
+      "manifest_sha256": "7e4cfb3a45cb26761edb8b73b3f2cd2fe433d2d25e67010ea22156d4287a0360"
+    }
+  },
+  "bound_cli_not_required_by_seven": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/multica",
+    "sha256": "c008c02377c4c52665000a0620a5a7b3f90f4d10d54d53e1d74bce97dccc6197",
+    "bytes": 29314610,
+    "version": "v0.6.7-460-g304f74dd3",
+    "version_observation": "multica v0.6.7-460-g304f74dd3 (commit: 304f74dd3, built: 2026-11-02T22:35:30Z)\ngo: go1.26.6, os/arch: darwin/arm64\n",
+    "build_record_sha256": "1f96481d7dc3ab9aa0ba2d9d73c8b3461fd49d0a328e0e4f823c4e3eeb2111cb"
+  },
+  "container_artifacts_required": [],
+  "cached_browser_metadata": {
+    "playwright_version": "1.58.2",
+    "chromium_revision": "1208",
+    "browser_version": "145.0.7632.6",
+    "cached_chromium_directory": "/Users/artisan/Library/Caches/ms-playwright/chromium-1208",
+    "cached_headless_directory": "/Users/artisan/Library/Caches/ms-playwright/chromium_headless_shell-1208",
+    "cache_directories_observed_exist": true,
+    "browser_executed": false
+  },
+  "root_setup_command_example": {
+    "cwd": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+    "environment": {
+      "ENV_FILE": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/password-directed-20261103/source.env",
+      "MULTICA_DEV_HOME": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/password-directed-20261103/registry",
+      "MULTICA_DEV_WORKSPACES_PARENT": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/password-directed-20261103/workspaces",
+      "MULTICA_DEV_PROFILES_HOME": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/password-directed-20261103/profiles",
+      "MULTICA_DEV_TMPDIR": "new Git-external task-owned0700 directory",
+      "MULTICA_WEB_MODE": "production",
+      "PATH": "prepend bound Node bin and owned pnpm bin; no user agent CLI lookup needed"
+    },
+    "argv": [
+      "make",
+      "up",
+      "ENV_FILE=/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/password-directed-20261103/source.env",
+      "C=api,web",
+      "ARGS=--name closure-password-20261103 --web-mode production"
+    ],
+    "caution": "Use only after full default check has finished and current owned Web has stopped, because the production build directory is shared by this checkout. Prepare a Make-safe data-only task env, actual loopback URLs and root owner first."
+  },
+  "root_list_command": [
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-handoff-chain-web.spec.ts",
+    "e2e/collaboration-handoff-chain-desktop.spec.ts",
+    "e2e/collaboration-offline-handoff.spec.ts",
+    "e2e/collaboration-runtime-handoff-web.spec.ts",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts",
+    "--project=chromium",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=json",
+    "--list"
+  ],
+  "root_run_command": [
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-handoff-chain-web.spec.ts",
+    "e2e/collaboration-handoff-chain-desktop.spec.ts",
+    "e2e/collaboration-offline-handoff.spec.ts",
+    "e2e/collaboration-runtime-handoff-web.spec.ts",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts",
+    "--project=chromium",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=json",
+    "--output=/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/password-directed-20261103/artifacts"
+  ],
+  "root_runtime_verification_steps": [
+    "Reconfirm candidate/source/test/fixture/owned dependency hashes; do not mutate tests or add skip branches.",
+    "After default full check closes, allocate new root-owned password registry/database/ports/home/temp. Record actual PostgreSQL database identity and preserve the default environment.",
+    "Set complete password config including limiter, device/Cloud off, signup/workspace creation on. Include renderer in exact CORS/WS allowlists before API startup.",
+    "Start exactly one owned API and production Web (next build + next start), with bound Node/pnpm and same actual API/WS/REMOTE_API_URL; never use next dev.",
+    "Verify live listener pid/source/commit/build/config identities, actual /api/config password availability, production SSR/browser login, API route origin, renderer200 and target WS allowed origin.",
+    "Verify migrated collaboration_execution_gate.creation_enabled=true through actual owned DB and creation-options API. Migration744 opens fresh defaults but preserves explicit admin creation closes; do not broaden host execution/knowledge gates.",
+    "Configure explicit matching cached Chromium1208 under isolated HOME. Native executable/framework, source-extracted Main fixture, renderer/preload and every package path must resolve within the selected candidate.",
+    "List exactly seven original test titles with projectchromium. Run the full five-file original command once with workers1/retries0 and new raw JSON/artifact paths.",
+    "Compare raw report exactly against seven title/file/project identities. Require each one statuspassed, retry0, one result; no skipped/interrupted/flaky/extra/missing tests and no top-level errors.",
+    "Preserve original failure/artifacts before any repair. Keep initial fixture registration429 as setup/environment evidence. Never replace assertions, widen timeouts or count default legacy skips as acceptance."
+  ],
+  "dynamic_native_profile_assertions": [
+    "Each native.openDesktop uses a unique mkdtemp profile beneath the explicit taskTMPDIR and app.setPath(userData,profile); bind actual created path, ownership and process to this invocation.",
+    "Actual native preload receives password token only from synthetic fixture actors; fresh-login/offline journey reauthenticates. No user account profile is needed.",
+    "Native errors empty; accountHeaders contain no X-Workspace-ID/Slug; native evidence.daemonStarts=0.",
+    "Actual screenshot/capture and renderer page observe correct heading, requester/note, retained context and source run; preserve original evidence attachments.",
+    "Cleanup closes every created native/window/browser context and removes only its exact mkdtemp profiles; DB data/failed evidence remain root-owned."
+  ],
+  "limits": {
+    "provider_executions_by_research": 0,
+    "services_started_by_research": 0,
+    "database_actions_by_research": 0,
+    "tests_or_list_executed_by_research": 0,
+    "installs_by_research": 0,
+    "commits_by_research": 0,
+    "code_edits_by_research": 0
+  },
+  "not_proved": [
+    "Actual password API/Web/native availability or listener ownership.",
+    "Seven runtime passes or native dynamic profile assertions; preparation only.",
+    "Installed/packaged Main, Mac/Windows/Linux installer or offline image/CLI compatibility.",
+    "Real checkpoint ingestion, Provider execution, termination proof or learned runtime/knowledge behavior.",
+    "Full candidate dirty-scope admission; no git command was executed under research role."
+  ],
+  "root_list_environment": {
+    "PLAYWRIGHT_JSON_OUTPUT_FILE": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/password-directed-20261103/playwright-inventory.json",
+    "note": "Use a separate listing record; never overwrite the actual runtime report with preflight inventory."
+  }
+}

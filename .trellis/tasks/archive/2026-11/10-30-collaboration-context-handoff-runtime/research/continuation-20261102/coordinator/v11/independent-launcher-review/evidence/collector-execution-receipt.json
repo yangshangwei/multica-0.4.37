@@ -1,0 +1,71 @@
+{
+  "command": [
+    "python3",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/collector-executed.py"
+  ],
+  "exit_code": 0,
+  "collector_md_sha256": "ab51ab619af21c2007a6c592d70a47b10ecd10c031ab0e591dc92d4ab310a8c4",
+  "executed_code_sha256": "15d8ace69b04209353422d2d09750524dc4ec908f776d1949ffea82324ac0a85",
+  "result_sha256": "8ff7626840b14c29206f9796898fc30c4cfc767a031aa9857e13d7b3d026f184",
+  "result_bytes": 60526174,
+  "stdout": {
+    "status": "read_only_collection_complete",
+    "result_path": "<root>/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/collector-result.json",
+    "head_matches": true,
+    "private_bindings_hash_matches": true,
+    "product_source_matches": false,
+    "tracked_snapshot_matches": true,
+    "candidate_head_and_status_stable": true,
+    "input_files": 21,
+    "source_files": 7962,
+    "context_files": 13,
+    "errors": []
+  },
+  "keys": [
+    "schema",
+    "expected",
+    "errors",
+    "git",
+    "head_matches",
+    "private_bindings",
+    "private_bindings_hash_matches",
+    "input_index",
+    "input_json",
+    "referenced_files",
+    "file_hash_declarations",
+    "workspace",
+    "workspace_inputs",
+    "ambient_tool_paths",
+    "tracked_sources",
+    "source_manifest",
+    "e2e_source_binding",
+    "tracked_snapshot_entries",
+    "tracked_snapshot",
+    "context_index",
+    "selected_context",
+    "hook",
+    "git_after",
+    "candidate_head_and_status_stable"
+  ],
+  "head_matches": true,
+  "binding_hash_matches": true,
+  "source_manifest": {
+    "roots": [
+      "server",
+      "apps",
+      "packages",
+      "scripts",
+      "Makefile",
+      "package.json",
+      "pnpm-lock.yaml",
+      "pnpm-workspace.yaml"
+    ],
+    "file_count": 7962,
+    "algorithm": "sorted_relative_path_NUL_file_sha256_LF",
+    "checkout_source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+    "matches_expected": false,
+    "file_selection": "git_ls_files_cached_others_exclude_standard_skip_symlink_nonfile"
+  },
+  "source_snapshot": null,
+  "errors": []
+}

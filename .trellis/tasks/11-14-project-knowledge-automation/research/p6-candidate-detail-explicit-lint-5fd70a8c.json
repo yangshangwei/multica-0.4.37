@@ -1,0 +1,20 @@
+{
+  "recorded_at": "2026-11-15T09:21:20.342485+00:00",
+  "source_id": "32f271d5bd4a8dd6954f847e430291998b5ed5db6d7e800b10b6c50dbd098268",
+  "source_file_sha256": "6635894c5de46cc7349bb8871f425780dbb1bdd9854f6f5062b30f81727663b7",
+  "source_file_stable": true,
+  "command": [
+    "/opt/homebrew/bin/pnpm",
+    "exec",
+    "eslint",
+    "--config",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/packages/eslint-config/base.js",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/e2e/project-knowledge-automation.spec.ts"
+  ],
+  "exit": 1,
+  "log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/assertion-lint-5fd70a8c/eslint.log",
+  "log_sha256": "789ba2119a7740858884a08da841b2dddd8d3ba55594ad4d6b58a56d0ed920be",
+  "previous_setup_failure": "research/p6-candidate-detail-test-static-1e5db95b.json: monorepo root intentionally has no ESLint config; explicit unchanged shared base used now",
+  "playwright_inventory": "original list succeeded with exactly two named tests; not repeated",
+  "runtime_acceptance": false
+}

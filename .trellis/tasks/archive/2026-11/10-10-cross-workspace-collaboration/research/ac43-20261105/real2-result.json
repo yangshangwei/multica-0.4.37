@@ -1,0 +1,36 @@
+{
+  "run": "real2",
+  "status": "blocked_by_codex_gateway",
+  "provider_executions": 2,
+  "claude": {
+    "status": "passed_runtime_provenance",
+    "proof": "host_exit_observed",
+    "business_outcome": "success"
+  },
+  "codex": {
+    "status": "failed",
+    "proof": "host_exit_observed",
+    "business_outcome": "failure",
+    "error": "403 Forbidden: This account only allows Codex official clients"
+  },
+  "manifest": {
+    "run": "real2",
+    "database": "multica_ac43_20261105_717f3cd2",
+    "started_at": "2026-11-04T16:41:07.741844+00:00",
+    "command": [
+      "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-ac43-20261105-bi0bmk8x/ac43-v2.test",
+      "-test.run=^TestAC43RealProviderProvenance$",
+      "-test.v",
+      "-test.timeout=45m"
+    ],
+    "binary_sha256": "4a530e1517dc811ca0d22e6022b1cb84c5f909a9874f3ce585fdc97072e1096f",
+    "source_head": "d862c5c4bb55d11074d9f4c51643871764e3a9bb",
+    "harness": {
+      "server/cmd/server/ac43_fixture_test.go": "91a405a592ef077b502fc689d8947ded9823666dd9b1dede3e8b095b66c3a943",
+      "server/cmd/server/ac43_real_provider_test.go": "61cebb651151c6fc05cbb3f70e91366be7e4d791b9d06327c3da9ff4f181f60d"
+    },
+    "exit_code": 1,
+    "finished_at": "2026-11-04T16:42:04.409033+00:00"
+  },
+  "external_billing_reconciliation": "excluded_by_user"
+}

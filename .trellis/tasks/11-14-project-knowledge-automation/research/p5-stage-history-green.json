@@ -1,0 +1,64 @@
+{
+  "command": [
+    "/opt/homebrew/bin/pnpm",
+    "--filter",
+    "@multica/core",
+    "exec",
+    "vitest",
+    "run",
+    "collaboration/knowledge-automation-status-schema.test.ts",
+    "--maxWorkers=2",
+    "--reporter=json",
+    "--outputFile=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p5-history-green-b457adf3/tests.json"
+  ],
+  "exit": 0,
+  "tests": [
+    {
+      "name": "knowledge policy and job protocol preserves system defaults and explicit human disablement without fabricated actors",
+      "status": "passed",
+      "failureMessages": []
+    },
+    {
+      "name": "knowledge policy and job protocol keeps actual zero usage distinct from unknown and partial counts",
+      "status": "passed",
+      "failureMessages": []
+    },
+    {
+      "name": "knowledge policy and job protocol rejects private details, foreign jobs, duplicate identities and malformed paging",
+      "status": "passed",
+      "failureMessages": []
+    },
+    {
+      "name": "knowledge policy and job protocol retains every server-admitted stage attempt and rejects excess history",
+      "status": "passed",
+      "failureMessages": []
+    },
+    {
+      "name": "knowledge policy and job protocol requires v2 for new surfaces and never treats malformed claimed support as absent",
+      "status": "passed",
+      "failureMessages": []
+    },
+    {
+      "name": "knowledge policy and job protocol accepts only content-free known original-operation outcomes",
+      "status": "passed",
+      "failureMessages": []
+    },
+    {
+      "name": "knowledge policy and job protocol selects only the exact acceptance and current project, retaining reopen status",
+      "status": "passed",
+      "failureMessages": []
+    }
+  ],
+  "run_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p5-history-green-b457adf3",
+  "real_model_credentials_inherited": false,
+  "source_before": {
+    "packages/core/collaboration/knowledge-automation-schema.ts": "00b74d5515e02916c60c717bd7a4da4a18a3072a67b5fe4df070a737b07b95a5",
+    "packages/core/collaboration/knowledge-automation-status-schema.test.ts": "b672b3f27c55de295e64cbcc12249def6d012b853cb6e5d6bd660d0520a8f4b1"
+  },
+  "source_after": {
+    "packages/core/collaboration/knowledge-automation-schema.ts": "00b74d5515e02916c60c717bd7a4da4a18a3072a67b5fe4df070a737b07b95a5",
+    "packages/core/collaboration/knowledge-automation-status-schema.test.ts": "b672b3f27c55de295e64cbcc12249def6d012b853cb6e5d6bd660d0520a8f4b1"
+  },
+  "source_stable": true,
+  "finished_at": "2026-11-15T04:00:35.139057+00:00"
+}

@@ -1,0 +1,13 @@
+--- adapter-v5/check-bin/go
++++ adapter-v6/check-bin/go
+@@ -55,6 +55,10 @@
+     index += 1
+ if compile_only:
+     os.execv(real_go, [real_go, *args])
++
++# API pool limits belong to service startup; tests own their unset/default cases.
++for key in ("DATABASE_MAX_CONNS", "DATABASE_MIN_CONNS"):
++    os.environ.pop(key, None)
+ 
+ mode = os.environ.get("MULTICA_TASK_PACKAGE_DB_MODE")
+ if mode == "0":

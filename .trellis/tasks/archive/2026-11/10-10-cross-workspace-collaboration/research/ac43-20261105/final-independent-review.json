@@ -1,0 +1,97 @@
+{
+  "verdict": "PARTIAL_ACCEPTANCE_CONFIRMED_WITH_TOOL_DRIFT",
+  "checks": {
+    "harness_hashes_match": true,
+    "harness_modes_match": true,
+    "product_hashes_match": true,
+    "global_config_hashes_match": false,
+    "entrypoint_and_cli_hashes_match": false,
+    "reviewed_test_binary_match": true,
+    "source_head_match": true,
+    "tracked_product_tree_unchanged": true,
+    "four_successful_runs": true,
+    "exact_markers": true,
+    "mixed_transfer_environment_unchanged": true,
+    "three_distinct_humans": true,
+    "actual_authors_preserved": true,
+    "two_distinct_environments": true,
+    "transfer_observed": true,
+    "squad_failure_honest": true,
+    "no_member_continuation_records": true,
+    "one_exec_child_record": true,
+    "exec_actual_identity_and_answer": true,
+    "exec_wait_exit_usage": true,
+    "partial_final_truth": true,
+    "multiple_targets_A_http_claim_outcome_proof": true,
+    "two_human_authors_A_http_claim_outcome_proof": true,
+    "ordinary_transfer_A_http_claim_outcome_proof": true,
+    "multiple_targets_B_http_claim_outcome_proof": true,
+    "squad_leader_A_http_claim_outcome_proof": true,
+    "public_json_no_runtime_credential_literal": true
+  },
+  "passed_scenarios": [
+    "multiple_targets",
+    "mixed_human_authors",
+    "ordinary_transfer"
+  ],
+  "blocked_scenario": "cross_environment_squad",
+  "blocking_observation": "Claude squad leader upstream safeguards response; no member or continuation evidence",
+  "builtin_codex_app_server": "real2_gateway403_not_passed",
+  "codex_transport": "codex_exec_test_bridge",
+  "billing_reconciliation": "excluded_by_user",
+  "same_machine_same_os_user": true,
+  "actual_named_test_exit": 1,
+  "source": "d862c5c4bb55d11074d9f4c51643871764e3a9bb",
+  "run_manifest_sha256": "bb1c55d8b073343f1af0a3e8a828872be87b4e4fe700d9e41e2567cb867308be",
+  "summary_sha256": "b3335e6cdf9042b76b03181ef1717443636174a34b0451bd5346f71a027e9b38",
+  "evidence_hashes": {
+    "summary.json": "b3335e6cdf9042b76b03181ef1717443636174a34b0451bd5346f71a027e9b38",
+    "two_human_authors_A.json": "58594f53f36de76e4eacc2caf3b71fefae5cc575bc4af6929c1d200ad1191236",
+    "squad_leader_A.json": "0538bd5b331376561a31b844986bc4f5ef7ec7e412c19808ce2f5c62b3f0c97e",
+    "multiple_targets_A.json": "0792ff65d6e93e4abc4918fd69b90bda099f234fd7a9695a47242b6f36847326",
+    "ordinary_transfer_A-http.private.json": "c82ada3b098a75c96a2805af9c9fc84a13af572b4cd217d80c45e4705cd7ea8f",
+    "multiple_targets_A-http.private.json": "544eab82dd8c2dc7168abb8433ca0b873f4768e0c390a2b4fe38f169ea8f5021",
+    "squad_leader_A-http.private.json": "8b240a3d9f1def2e70622ea9715c1037d6ea05bc2de4fc8d45f5bb9db9687311",
+    "multiple_targets_B-http.private.json": "a60bb30eb0d79771f95cdc4d75d9c2c43c73fbcbe2a4f1665af17505e9cf9489",
+    "two_human_authors_A-http.private.json": "e2c1bbeaefffe09bea2d3013a9b6406bf79d605d9c673ad5da11b670f3c75ae3",
+    "multiple_targets_B.json": "bde64bc91e0a0db9444a7a090f5c8697838de6b9ede264e14cd37843181f53a5",
+    "ordinary_transfer_A.json": "aae530dd58dcb7c525a32eb36334e01d28506cc946804e8ff7365f0dd280a686"
+  },
+  "exec_launch_sha256": "df27ea54ed305570b4a0528d66225f5296173ac6da1f94c96983e8664e5d39e2",
+  "limitations": [
+    "Checks cover the four new harness files and five explicitly pinned product files; tracked product tree is also clean.",
+    "Codex entrypoint manifest identifies codex.js, not an independently preregistered Rust binary.",
+    "Private logs and ledgers are not public artifacts; credential scan here covers root per-run/summary/scrubbed HTTP JSON only.",
+    "Fresh heartbeat and fixed synthetic principals validate logical runtimes on one OS user; no native installer or separate-machine claim."
+  ],
+  "observed_tool_drift": {
+    "final_environment_unchanged": false,
+    "global_codex_configuration_changed": true,
+    "global_codex_entrypoint_changed": true,
+    "scope": "Global Codex installation/configuration changed during acceptance. No reviewer/root operation changed them; causation is not established by this review.",
+    "actual_run_cli_version": "0.165.0",
+    "launch_entrypoint_matches_initial": true,
+    "run_local_model_matches_initial": true,
+    "run_local_endpoint_matches_initial": true,
+    "run_local_credential_fingerprint_matches_initial": true,
+    "run_local_config_sha256": "3135e859379b0f472f0bc35b8b95ff82d1854956c8ff4d834eefb11a705acafc",
+    "rollouts": [
+      {
+        "file": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-ac43-20261105-bi0bmk8x/real5/environment-2/workspaces/bbcebc9dace4363e24183f0538c84c188a755feab4c54f2cac0a29b1f2f8c000/codex-home/sessions/2026/11/05/rollout-2026-11-05T01-03-16-01a1a783-d166-7d61-943f-ca2b1d009768.jsonl",
+        "sha256": "f82f0af930faf6592708bac090cb7d48612266595863c3b44b64104d56a96ec1",
+        "cli_version": "0.165.0",
+        "originator": "codex_exec",
+        "actual_thread_matches": true
+      }
+    ]
+  },
+  "unresolved_findings": [
+    "Global Codex config and entrypoint do not match initial hashes. Per-launch hash and retained rollout identify this actual B run as Codex0.165.0, but no full unchanged-environment claim is valid.",
+    "Cross-environment squad is blocked by the actual Claude upstream safeguard response; member and continuation did not run.",
+    "Built-in Codex app-server remains failed at gateway403; successful B evidence is the user-selected exec test bridge only."
+  ],
+  "retained_run_count": 5,
+  "successful_run_count": 4,
+  "blocked_run_count": 1,
+  "exec_processes_present_at_review": []
+}

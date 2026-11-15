@@ -1,0 +1,38 @@
+--- v1-runner.py
++++ v2-runner.py
+@@ -8,7 +8,7 @@
+ from urllib.parse import urlsplit
+ 
+ ROOT = Path('/Volumes/artisan/code/2026/mc-knowledge-framework-20261103')
+-PRIVATE = ROOT / '.omx/private/knowledge-framework-final-20261104'
++PRIVATE = ROOT / '.omx/private/knowledge-framework-final-20261104-v2'
+ HEAD = '92a4c7adfad20354e79855e4134934e6004774ad'
+ FILTER = '^TestRK1Knowledge(EntryGuard|WrapperGuard|PromptData|TraceCredentialLabels|NativeMetadataUsesRawOutput|EvidenceFaults|FakeProof)$'
+ TESTS = ['TestRK1Knowledge' + name for name in ('EntryGuard', 'WrapperGuard', 'PromptData',
+@@ -58,7 +58,7 @@
+ 
+ def admission(lane, permit_path):
+     require(lane in ('normal', 'race'), 'Unknown fixed lane')
+-    require(not permit_path.is_symlink() and permit_path.resolve() == PRIVATE / 'permissions' / ('rk1k-' + lane + '-v16-01.json'),
++    require(not permit_path.is_symlink() and permit_path.resolve() == PRIVATE / 'permissions' / ('rk1k-' + lane + '-v16-02.json'),
+             'Unregistered permission path')
+     permission = json.loads(permit_path.read_text())
+     require(permission.get('ready_to_execute') is True and permission.get('root_authorized_fake_suite') is True
+@@ -74,7 +74,7 @@
+             and binding['model_budget'] == binding['model_calls'] == 0, 'Wrong fixed fake source or schedule')
+     verify_sources(binding)
+     selected = binding['lanes'][lane]
+-    require(permission['label'] == selected['label'] == 'rk1k-' + lane + '-v16-01', 'Output label changed')
++    require(permission['label'] == selected['label'] == 'rk1k-' + lane + '-v16-02', 'Output label changed')
+     output = Path(selected['output'])
+     require(output == PRIVATE / 'runs' / selected['label'] and not output.exists(), 'Output was previously attempted')
+     env_spec = selected['environment']
+@@ -101,7 +101,7 @@
+     require(digest(allocation['path']) == allocation['sha256'], 'Root database allocation changed')
+     db = json.loads(Path(allocation['path']).read_text())['databases'][lane]
+     require(environment['DATABASE_URL'] == db['DATABASE_URL'] and db['database'] == selected['database']
+-            == 'multica_rk1k_20261104_v16_' + lane + '_a3c9', 'Database is not the original Root allocation')
++            == 'multica_rk1k_20261104_v16_' + lane + '2_a3c9', 'Database is not the original Root allocation')
+     parsed = urlsplit(environment['DATABASE_URL'])
+     require(parsed.hostname in ('127.0.0.1', 'localhost') and parsed.path == '/' + selected['database'], 'Unregistered database endpoint')
+     witness = subprocess.run([binding['tools']['psql']['path'], environment['DATABASE_URL'], '-X', '-Atqc',

@@ -1,0 +1,76 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "recorded_at": "2026-11-15T10:26:32.634177+00:00",
+  "status": "implemented_static_passed_runtime_pending",
+  "source_before": "f75ed59db8b83e5f149334817897a1d570e9ead6bc89de576a9251d058a8e846",
+  "source_after": "f8a313ea125c357cc3a05f90770da33e15d6d0dc7d733854d7d533615eb339fc",
+  "changed_paths": [
+    ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+    "e2e/fixtures/project-knowledge-automation.ts"
+  ],
+  "delta": {
+    ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py": {
+      "before": {
+        "sha256": "e3aeae6a78dd882127121f9c813cd7f83ea14cabd28d3178b7e6d7b67c96d253",
+        "normalized_sha256": "e3aeae6a78dd882127121f9c813cd7f83ea14cabd28d3178b7e6d7b67c96d253",
+        "mode": 420,
+        "link": null
+      },
+      "after": {
+        "sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+        "normalized_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+        "mode": 420,
+        "link": null
+      },
+      "public_candidate_identical": true
+    },
+    "e2e/fixtures/project-knowledge-automation.ts": {
+      "before": {
+        "sha256": "195f255c761a88bd70fae3cd0d5eb17ca739ac92b446d7321a56d3f224ac27ad",
+        "normalized_sha256": "195f255c761a88bd70fae3cd0d5eb17ca739ac92b446d7321a56d3f224ac27ad",
+        "mode": 420,
+        "link": null
+      },
+      "after": {
+        "sha256": "74f9e74a0cf0d33b600eb84eb6f89e20f1412ec9cbb34a855c6408e98788502b",
+        "normalized_sha256": "74f9e74a0cf0d33b600eb84eb6f89e20f1412ec9cbb34a855c6408e98788502b",
+        "mode": 420,
+        "link": null
+      },
+      "public_candidate_identical": true
+    }
+  },
+  "source_paths": 11017,
+  "auth_configuration": {
+    "MULTICA_AUTH_MODE": "password",
+    "MULTICA_MANAGED_INSTALLATIONS_ENABLED": "true",
+    "MULTICA_PASSWORD_LIMITER_MODE": "single",
+    "MULTICA_DEVICE_AUTH_ENABLED": "false",
+    "MULTICA_PLATFORM_ADMIN_ENABLED": "false",
+    "MULTICA_CLOUD_URL": "",
+    "MULTICA_DEPLOYMENT_ID": "3cc23866-f1a4-575b-a56c-40351c7d35d7"
+  },
+  "deployment_binding": "UUIDv5 of the fixed task database under the task-only namespace; identical across rebuilds, no real deployment environment inherited. Exact environment and live deployment equality enforced.",
+  "original_start_failure": "research/p6-original-missing-deployment-start-failure-265a01f8.json",
+  "original_files": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/deployment-type-originals-3fe1f045",
+  "typecheck": {
+    "report": "research/p6-managed-types-noemit-2247f9f8.json",
+    "proper_e2e_noemit_original_errors": 3,
+    "current_errors": 0,
+    "current_passed": true,
+    "declaration_metadata_original_report": "research/p6-managed-types-baseline-comparison-311b22cf.json",
+    "interpretation": "Five old diagnostics came from library declaration generation inappropriate for noEmit E2E validation; three existing fixture narrowing errors were repaired. Production compiler options were unchanged."
+  },
+  "lint": {
+    "report": "research/p6-deployment-type-lint-d9db49eb.json",
+    "new_diagnostics": 0,
+    "standalone_passed": false,
+    "old_dependency_diagnostics_retained": 5
+  },
+  "python_ast": "passed",
+  "product_go_sql_ui_delta": false,
+  "runtime_state": "stopped",
+  "cleanup_failures": [],
+  "free_disk_bytes_before_build": 13428703232,
+  "next_gate": "full source-bound build/start/two complete Web/Desktop journeys; final ROOT integration remains separate"
+}

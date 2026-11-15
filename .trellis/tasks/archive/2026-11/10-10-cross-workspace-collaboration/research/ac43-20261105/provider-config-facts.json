@@ -1,0 +1,25 @@
+{
+  "same_machine": true,
+  "same_os_user": true,
+  "billing_reconciliation": "excluded_by_user",
+  "configuration_files": [
+    {
+      "file": "/Users/artisan/.codex/config.toml",
+      "sha256": "33243722303b753fe515fc5ed4e3934408688cfa0b0f7b7efd0b5c3c2132c104"
+    },
+    {
+      "file": "/Users/artisan/.claude/settings.json",
+      "sha256": "f778fbd569ab4aa918ee55446c94037f23cb9a9556bebce275941851eee99afc"
+    }
+  ],
+  "providers": {
+    "claude": {
+      "model_requested": "claude-opus-5-5[1M]",
+      "executable": "/Users/artisan/.local/bin/claude"
+    },
+    "codex": {
+      "model_requested": "gpt-6-astra",
+      "executable": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/codex"
+    }
+  }
+}

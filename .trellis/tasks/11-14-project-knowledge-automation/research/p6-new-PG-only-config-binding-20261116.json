@@ -1,0 +1,136 @@
+{
+  "kind": "new_exclusive_PG_only_config_hash_pinned_validate_only_binding",
+  "at": "2026-11-15T17:20:15.882921+00:00",
+  "created_by": "/root/root_runtime_prepare",
+  "creator_uid": 501,
+  "authority": "Main explicit PG-only creation handoff after independent wrapperv2 closure; actual SQL/allocation withheld",
+  "configuration": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.env",
+    "sha256": "023175cea43e8d88c06c0e298b9e7ba4459ce0e2ff2aba3114f4124eb9582569",
+    "keys": [
+      "DATABASE_URL"
+    ],
+    "mode": "0o600",
+    "uid": 501,
+    "symlink": false,
+    "exclusive_create": true,
+    "fsynced": true,
+    "literal_URI_validated_before_and_after_write": true
+  },
+  "configured_field_selection": {
+    "source": "/Volumes/artisan/code/2026/multica-0.4.37/.env",
+    "key": "DATABASE_URL",
+    "matching_keys": 1,
+    "shell_or_dotenv_execution": false,
+    "whole_ROOT_env_copied": false,
+    "non_PG_model_or_identity_fields_retained": false
+  },
+  "endpoint_profile": {
+    "scheme": "postgres",
+    "loopback_host": "localhost",
+    "port": 5432,
+    "raw_query": "sslmode=disable",
+    "userinfo_and_database_path_values_disclosed": false,
+    "connection_or_database_ownership_probe_executed": false
+  },
+  "SOURCE": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+  "source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+  "selected_private_HEAD": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+  "source_files": 10408,
+  "workspace_links": 32,
+  "source_inventory_unchanged": true,
+  "frozen_SOURCE_has_no_env": true,
+  "full_source_bindings": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/physical-source-wrapper-v2-bindings.json",
+    "sha256": "1b50ed41914c880b1bf7ee3c3d8f1a250f6d80f6b0b04639c0d6af19ee691d61"
+  },
+  "post_COPY_independence": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/post-COPY-sealed-source-independence-proof.json",
+    "sha256": "eed035e7701f531f43c33054532adf28008089c4dbf7bac5353d48ccca07dc34"
+  },
+  "controller": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+    "sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c"
+  },
+  "wrapper": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper-v2.py",
+    "sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8"
+  },
+  "wrapper_independent_acceptance": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-persistent-wrapper-v2-independent-closure-20261116-74cbae139a17.json",
+    "sha256": "a755bf60c407d0fe521b3d9a6ea0c2dd6539208953ed3963ee5f506a65fd5fc4"
+  },
+  "persistent_STATE": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6",
+  "trusted_STATE_ancestor_chain": [
+    {
+      "path": "/",
+      "uid": 0,
+      "mode": "0o755",
+      "symlink": false
+    },
+    {
+      "path": "/Users",
+      "uid": 0,
+      "mode": "0o755",
+      "symlink": false
+    },
+    {
+      "path": "/Users/artisan",
+      "uid": 501,
+      "mode": "0o750",
+      "symlink": false
+    },
+    {
+      "path": "/Users/artisan/.multica",
+      "uid": 501,
+      "mode": "0o755",
+      "symlink": false
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance",
+      "uid": 501,
+      "mode": "0o700",
+      "symlink": false
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6",
+      "uid": 501,
+      "mode": "0o700",
+      "symlink": false
+    }
+  ],
+  "trusted_STATE_and_Git_external_validation": "PASS through wrapperv2.trusted_state",
+  "validate_only": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/new-PG-only-config-validate-only.json",
+    "sha256": "7516d048dbe32f3e9863b99823a457911669f4c8067ff87d0fbce6bf0be4caea"
+  },
+  "validate_only_output": {
+    "validated": true,
+    "original_controller_unchanged": true,
+    "controller": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+    "controller_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+    "source_root": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+    "STATE": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6",
+    "pg_config_sha256": "023175cea43e8d88c06c0e298b9e7ba4459ce0e2ff2aba3114f4124eb9582569",
+    "configuration_keys": [
+      "DATABASE_URL"
+    ],
+    "wrapper_sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8",
+    "action_executed": false,
+    "source_ready": false
+  },
+  "helper": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-pg-only-config-pin.py",
+    "sha256": "5a91898d7fadd1ee25c6297644588a8402c79323a3dc748bf5ea3855bff1ae9b"
+  },
+  "new_PG_only_file_created": true,
+  "actual_runtime_environment_created": false,
+  "actual_SQL_or_createDB_or_allocation_or_build_or_runtime_or_account_actions": 0,
+  "source_ready": false,
+  "actual_execute_authorized": false,
+  "next_gate": "Independent whole SOURCE and actual runner admission; main explicit actual allocation handoff",
+  "external_binding": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/new-PG-only-config-binding-20261116.json",
+    "sha256": "8e1ce228fc169c44c74fd2084b765bd51382c1812ad181fe24e0b8ae1a568ca2"
+  }
+}

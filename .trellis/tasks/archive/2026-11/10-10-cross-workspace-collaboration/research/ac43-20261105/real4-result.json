@@ -1,0 +1,36 @@
+{
+  "run": "real4",
+  "status": "failed_test_bridge_configuration_warning",
+  "scenarios_completed": [
+    "multiple_targets_A",
+    "two_human_authors_A",
+    "ordinary_transfer_A"
+  ],
+  "codex_failure": "pre-turn diagnostic path truncated by CLI; exact known disable_response_storage warning was rejected",
+  "codex_exec_child_started": true,
+  "manifest": {
+    "run": "real4",
+    "database": "multica_ac43_20261105_01e77d20",
+    "started_at": "2026-11-04T16:57:35.748792+00:00",
+    "command": [
+      "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-ac43-20261105-bi0bmk8x/ac43-v3.test",
+      "-test.run=^TestAC43RealProviderProvenance$",
+      "-test.v",
+      "-test.timeout=45m"
+    ],
+    "binary_sha256": "8a55be03c63407f9dd4562ab52f78f4e6ecfce65df6b52aee234b4ab42c7b900",
+    "source_head": "d862c5c4bb55d11074d9f4c51643871764e3a9bb",
+    "harness": {
+      "server/cmd/server/ac43_fixture_test.go": "91a405a592ef077b502fc689d8947ded9823666dd9b1dede3e8b095b66c3a943",
+      "server/cmd/server/ac43_real_provider_test.go": "ae4acc02dae8a01a99a26349d3dfa394087b55e61dafcd76dac091f2834db00e"
+    },
+    "codex_transport": "codex_exec_test_bridge",
+    "bridge_sha256": "4063d0d06ca4ec2aee9d45affe924f050ce2c1c0b47460f20a4c17f35c54dfac",
+    "real_codex_executable": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/codex",
+    "codex_exec_evidence": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-ac43-20261105-bi0bmk8x/real4-exec-bridge",
+    "exit_code": 1,
+    "finished_at": "2026-11-04T16:58:54.092232+00:00"
+  },
+  "completed_provider_runs": 3,
+  "codex_upstream_call_count": "unknown_after_early_bridge_stop"
+}

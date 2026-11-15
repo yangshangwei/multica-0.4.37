@@ -1,0 +1,128 @@
+{
+  "state": "fixture_and_fake_suite_preparation_frozen_pending_Root_review",
+  "recorded_at": "2026-11-04T09:18:31.873426+00:00",
+  "framework_root": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103",
+  "framework_HEAD": "92a4c7adfad20354e79855e4134934e6004774ad",
+  "accepted_product_source": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "files": {
+    "runner": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/run-fake-knowledge-v16.py",
+      "sha256": "ff0ec52b930164ae44b15c40ccbc38e37499f07cf549fb7b92097205f8ab903a"
+    },
+    "input_binding": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/input-binding.json",
+      "sha256": "28a8dcc387b092d55a3d5dc870ccb58ed965b07a7e49561ee6396d91270230da"
+    },
+    "minimum_fixture_diff": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fixture-repair/minimum-fixture-diff.patch",
+      "sha256": "5a57befb45ea10fc7f39b51890c044acb8ad06516d7d2f4634fd14145770eb6e"
+    },
+    "fixture_static_handoff": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fixture-repair/fixture-static-handoff.json",
+      "sha256": "b7cfa0420a9ffe5261fa32fec25c6ff0a8ae4d7380680c5934e373ced38bf547"
+    },
+    "static_result": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fixture-repair/static-result.json",
+      "sha256": "0bb6382cd2b9d8f133c8e5b8eef02ed97c177554b0b045b36835dbfe4dc54ae4"
+    },
+    "recorder_green": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fixture-repair/runner-control-green.log",
+      "sha256": "64d379a51aaff2a4672ca88f74aee7903d00e74ae661a1171a66d0cc58943cfb"
+    }
+  },
+  "permits": {
+    "normal": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/permissions/rk1k-normal-v16-01.json",
+      "sha256": "a59a1a2898d0a88e05573e11636bd71ceacfd57cd3e23baa762b871b64fded34",
+      "ready_to_execute": false,
+      "label": "rk1k-normal-v16-01",
+      "database": "multica_rk1k_20261104_v16_normal_a3c9",
+      "temp": "/private/tmp/multica-rk1k-20261104-normal-sguoed6q",
+      "home": "/private/tmp/multica-rk1k-20261104-normal-sguoed6q/home",
+      "environment_sha256": "b53fbf730d9b5bb501ca58226f6d0844616f550914f226a6fbe0f3c98704b0a9"
+    },
+    "race": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/permissions/rk1k-race-v16-01.json",
+      "sha256": "0a35a2dc0adbaa323ea977013c2c770a42ee1a978b25e10e2e29922410f887dc",
+      "ready_to_execute": false,
+      "label": "rk1k-race-v16-01",
+      "database": "multica_rk1k_20261104_v16_race_a3c9",
+      "temp": "/private/tmp/multica-rk1k-20261104-race-8dh_qcvp",
+      "home": "/private/tmp/multica-rk1k-20261104-race-8dh_qcvp/home",
+      "environment_sha256": "ac3120dd6f55f76a24faeaf38284b6b427869798f500c714dc5f2aecdaa63f88"
+    }
+  },
+  "six_sha256": {
+    "server/cmd/server/rk1k_fixture_test.go": "f7072ce7b11dad29ba0b5dd3cf7e84e0eab87f1d8fb8fd0b702075385bb57b6f",
+    "server/cmd/server/rk1k_provider_test.go": "114439c31ac397e3195ae23e806487f3c02df1cae9bd422d90b73db66f879924",
+    "server/cmd/server/rk1k_scenarios_test.go": "7cd1780f910bc350dadf607aeb8c0f8451eb926da95556241ca5baaeb9289217",
+    "server/cmd/server/rk1k_evidence_test.go": "198402547160cfe530faf9175efe802ee19370eed4ab62bdc6dec8290b3b7717",
+    "server/cmd/server/rk1k_entry_test.go": "e58fff97a4654f32363b9cbb5be1e5562100354747a79a091747ec1dbb2e4844",
+    "server/internal/daemon/rk1k_driver_agentintegration.go": "b0ed3e55972f3f8208bfde741d73ae419d83acca316ee0e109eed8e643f002e0"
+  },
+  "old17_sha256": {
+    "server/cmd/server/rk1_entry_test.go": "0e7bd9887edc6be00c020fc861aab6c26cfbe494fb1dcd30b1a53f857541d0e3",
+    "server/cmd/server/rk1_evidence_contract_unit_test.go": "9868bad19675c8ebdaf43bf9d63b59485e12830501379acc769ba8f0c3a603ef",
+    "server/cmd/server/rk1_evidence_fault_proof_test.go": "b43d805ecdbaca8d61d1aeb777108f99ab74046f7b84b8d36ffa219f19079090",
+    "server/cmd/server/rk1_evidence_format_test.go": "648d8edb9640ba4cd09d213c785e232d4904ebff5d1631ec015f4eb6ea1962d4",
+    "server/cmd/server/rk1_evidence_publication_test.go": "461ae12b8da9ffc803681608f7d88db0f39342158f3223d71ad167a772e690f1",
+    "server/cmd/server/rk1_fake_helpers_test.go": "d863e2b35aab4a127e26f6a923fd4d60438aa610804a96f67aa2be23c0c50ab2",
+    "server/cmd/server/rk1_fake_test.go": "952165b30c01d6486304b81df72e3bcd373ce1e794a716772a344dece137e840",
+    "server/cmd/server/rk1_fixture_test.go": "c257225e01c00a92dc266226347a3ffa016ac79db18c592dff6d293c6294994b",
+    "server/cmd/server/rk1_lifecycle_test.go": "b1fe1002b28804b7bfd8593b5df0c20502e246de5b5e7ab8760029a5da3e8c6f",
+    "server/cmd/server/rk1_observe_test.go": "5472c35cff8f5f99eb1c84381656e9677985e3743a278ff271531a01740f1b07",
+    "server/cmd/server/rk1_provider_test.go": "02050fc42ba6aeb02f4d7695ce76f4ee7a4402f07048cc2326dcde5d7b3e4f05",
+    "server/cmd/server/rk1_run_test.go": "0eb15501131a043c2cbd98c5ac33e515a9b1d6c55d4ba54f0388a13516a85763",
+    "server/cmd/server/rk1_scenarios_handoff_test.go": "eaba9f65a465f12afb3c5322ffefe6f6ec9d5e94bfa50870bf3027fea992c06a",
+    "server/cmd/server/rk1_scenarios_recall_test.go": "644797d7325ab91c9ac6f306a86bf426bbbf6375009673118f1fe3f7706a7cda",
+    "server/cmd/server/rk1_trace_barrier_test.go": "caa003b5b79f0747198d1fbdb268cdb9fdab8b289b691bd0222b2ab5e72a1c94",
+    "server/cmd/server/rk1_trace_test.go": "6f3a767c574d363d3f078bd8b9386c734366186c477493c03067f57f43e7c172",
+    "server/cmd/server/rk1_trial_test.go": "bfdfb910b40dc43c8b8a43d49a617dedc5421d8ed251c30b4488e581f105f5a5"
+  },
+  "source_manifest_files": 8197,
+  "product_source_verified": true,
+  "normal8_raw_unchanged": true,
+  "static_checks": "gofmt unchanged/tagged compile-only/tagged vet actual exit0",
+  "controls": "credential-free real subprocess argv/env normal/race; false/hash refusal before SQL/Go; malformed durable summary recorded failed; 3 named pass",
+  "normal_and_race_test_bodies_executed": false,
+  "DB_created_migrated_dropped_switched": false,
+  "preparation_SQL": "read-only original Root names/version764/issue0/task0",
+  "Root_new_databases_reference": {
+    "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/root-database-allocations-private.json",
+    "sha256": "8ba83cccc7df6385aafb48907d58825c1840e828cfd3024ca4d469ce609b107a"
+  },
+  "current_CLI": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binaries/multica",
+    "sha256": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac"
+  },
+  "fixed_filter": "^TestRK1Knowledge(EntryGuard|WrapperGuard|PromptData|TraceCredentialLabels|NativeMetadataUsesRawOutput|EvidenceFaults|FakeProof)$",
+  "fixed_flags": [
+    "-tags=agentintegration",
+    "-p=1",
+    "-parallel=1",
+    "-count=1",
+    "-json",
+    "-timeout=10m"
+  ],
+  "race_only_extra_flag": "-race",
+  "required_top_level_named_tests": 7,
+  "required_summary": {
+    "measured_fake_starts": 15,
+    "fake_seed_starts": 3,
+    "paid_starts": 0,
+    "knowledge_allocated": 0,
+    "real_runnable": false
+  },
+  "private_source_manifest_checks_before_after": true,
+  "only_code_change": "rk1k_fixture_test.go::nextRunForIssue",
+  "task_metadata_or_stage_changed": false,
+  "retired_auditor_or_CCG_CLI_rerun": false,
+  "knowledge_allocated": 0,
+  "real_Provider_calls": 0,
+  "production_default_enabled": false,
+  "limits": [
+    "Static and recorder controls do not prove FakeProof/K3 dynamic pass",
+    "Original normal8 and malformed-summary control red are preserved",
+    "Root independent review and explicit signatures are required before any Go/TestMain body"
+  ]
+}

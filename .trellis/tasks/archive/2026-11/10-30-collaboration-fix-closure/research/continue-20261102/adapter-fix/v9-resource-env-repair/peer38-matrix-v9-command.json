@@ -1,0 +1,20 @@
+{
+  "at": "2026-11-02T15:20:44.861257+00:00",
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-go-package-binding-test.py"
+  ],
+  "wrapper": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/go",
+  "wrapper_sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+  "exit_code": 0,
+  "tests_run": 38,
+  "failure_count": 0,
+  "error_count": 0,
+  "log_sha256": "ef2c55c6061c58b23382e2c36c5bb9a21d204e5972a1cf09ee2969b9f22627ee",
+  "actual_Go_TestMain_or_SQL_or_Provider": 0,
+  "network_policy": "deny network*"
+}

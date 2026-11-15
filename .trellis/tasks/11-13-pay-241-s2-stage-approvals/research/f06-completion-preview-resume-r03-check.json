@@ -1,0 +1,3131 @@
+{
+  "recorded_at": "2026-11-15T07:51:18.926Z",
+  "status": "PASS_SCOPED_GREEN_R03_F06",
+  "reviewer": "/root/s2_f06_check_r05",
+  "task_completed": false,
+  "accepts_entire_root_or_r05_product": false,
+  "blocking_findings_open": 0,
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "changed_repo_files": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/f06-completion-preview-resume-r03-check.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/f06-completion-preview-resume-r03-check.json"
+  ],
+  "scope": {
+    "frozen_source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source",
+    "parent_source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/source",
+    "file_count": 4955,
+    "unchanged_parent_files": 4954,
+    "sole_test": {
+      "path": "server/cmd/server/collaboration_stage_completion_preview_integration_test.go",
+      "sha256": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "bytes": 54561,
+      "lines": 811
+    },
+    "reviewed_matrix": [
+      "W17",
+      "Q05 read subset and stage-off M1 control",
+      "Q06",
+      "Q07"
+    ],
+    "final_server_candidate_replay": "pending coordinator",
+    "stage_enabled_completion_proven": false,
+    "p2_activated": false,
+    "e2e_executed": false,
+    "s2_accepted": false
+  },
+  "input_reports": {
+    "markdown": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/f06-completion-preview-resume-r03-results.md",
+      "sha256": "e75e3c0fa3cc5bf2879db7af00fa7a6dcd1c51d2da1d5373c8b963af1d645b8e"
+    },
+    "json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/f06-completion-preview-resume-r03-results.json",
+      "sha256": "938bdbdff2a6716081e0c2c5f6f3c3de8f52770deade0277432cc8164d5d2ca7"
+    },
+    "green_parent_manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+    "context": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/context-inputs.json",
+      "sha256": "49d11a76fa34b9dfa53b41c141d95829e8b4f8eadb3b9a65af6c18a5b333d6c9",
+      "bytes": 10215
+    },
+    "original_artifact_bindings": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/original-artifact-bindings.json",
+      "sha256": "bea5d6c3a995944512efe02413dd9d429dfb73b3295cd031a1c41c5c30d92e5b",
+      "bytes": 14510,
+      "verified_references": 34,
+      "mismatches": 0
+    }
+  },
+  "source_audits": [
+    {
+      "recorded_at": "2026-11-15T07:32:31.941Z",
+      "label": "before",
+      "status": "pass",
+      "manifest": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/before-source.json",
+        "sha256": "ccc973ee3553ccc97db461dd70d74b7b38e4714f9ed8281e0573387c92f0cc01",
+        "bytes": 1024192
+      },
+      "file_count": 4955,
+      "file_manifest_sha256": "561051c7d7692f78af721daebdf9b29357ab60ec52c1dfe818fa5282f3b47311",
+      "prior_difference": {
+        "differences": [],
+        "extra": []
+      },
+      "parent_difference": {
+        "differences": [],
+        "extra": [
+          "server/cmd/server/collaboration_stage_completion_preview_integration_test.go"
+        ]
+      },
+      "activation_available": "false"
+    },
+    {
+      "recorded_at": "2026-11-15T07:34:00.846Z",
+      "label": "after-normal",
+      "status": "pass",
+      "manifest": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/after-normal-source.json",
+        "sha256": "cfc1668999db22c63d3c0333702ca6dccf1dd37e5f09b34b055115ad1bf90639",
+        "bytes": 1024198
+      },
+      "file_count": 4955,
+      "file_manifest_sha256": "561051c7d7692f78af721daebdf9b29357ab60ec52c1dfe818fa5282f3b47311",
+      "prior_difference": {
+        "differences": [],
+        "extra": []
+      },
+      "parent_difference": {
+        "differences": [],
+        "extra": [
+          "server/cmd/server/collaboration_stage_completion_preview_integration_test.go"
+        ]
+      },
+      "activation_available": "false"
+    },
+    {
+      "recorded_at": "2026-11-15T07:37:28.372Z",
+      "label": "after-race",
+      "status": "pass",
+      "manifest": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/after-race-source.json",
+        "sha256": "42f0d31e543beec0ee6c7bffe7d9896d8e7e50bfb134e1dc715c9bfe8356698d",
+        "bytes": 1024196
+      },
+      "file_count": 4955,
+      "file_manifest_sha256": "561051c7d7692f78af721daebdf9b29357ab60ec52c1dfe818fa5282f3b47311",
+      "prior_difference": {
+        "differences": [],
+        "extra": []
+      },
+      "parent_difference": {
+        "differences": [],
+        "extra": [
+          "server/cmd/server/collaboration_stage_completion_preview_integration_test.go"
+        ]
+      },
+      "activation_available": "false"
+    },
+    {
+      "recorded_at": "2026-11-15T07:40:21.053Z",
+      "label": "final",
+      "status": "pass",
+      "manifest": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/final-source.json",
+        "sha256": "8174a8bc535f198ef47e551da782fff11f8de149aec5b6135c0249844eb759cc",
+        "bytes": 1024191
+      },
+      "file_count": 4955,
+      "file_manifest_sha256": "561051c7d7692f78af721daebdf9b29357ab60ec52c1dfe818fa5282f3b47311",
+      "prior_difference": {
+        "differences": [],
+        "extra": []
+      },
+      "parent_difference": {
+        "differences": [],
+        "extra": [
+          "server/cmd/server/collaboration_stage_completion_preview_integration_test.go"
+        ]
+      },
+      "activation_available": "false"
+    }
+  ],
+  "commands": [
+    {
+      "recorded_at": "2026-11-15T07:33:05.788Z",
+      "label": "normal",
+      "started_at": "2026-11-15T07:32:46.366Z",
+      "finished_at": "2026-11-15T07:33:05.788Z",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationStageCompletionPreviewRouter",
+        "-count=1",
+        "-json",
+        "-timeout=180s"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/logs/normal-r01.jsonl",
+      "log_sha256": "dbe2cc296784eae237910e78f98982333e6e03437e7e840bfd4721ce1e249796",
+      "log_bytes": 758416,
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router.json",
+      "configuration_sha256": "f47ba4b11bfa4fc41f0b7d6d1402f0a5a3593c47496a8688501d830706eca21a",
+      "runner": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e"
+      },
+      "test_sha256_before": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "test_sha256_after": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "source_unchanged": true,
+      "executes_TestMain": true,
+      "all_named": {
+        "pass": 112,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 102,
+        "fail": 0,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 95,
+        "fail": 0,
+        "skip": 0
+      },
+      "named_inventory_sha256": "37fd747d46e569fd3cb8f507d60c12201dffad0674040451c8eee5972c62fcff",
+      "missing_names": [],
+      "unexpected_names": [],
+      "duplicate_terminal_names": [],
+      "non_json_lines": 0,
+      "packages": [
+        {
+          "Time": "2026-11-15T15:33:05.740624+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/cmd/server",
+          "Elapsed": 13.779
+        }
+      ],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/logs/normal-r01.json",
+        "sha256": "eeb33bb0c3e97a22938e53f943eaf15f492737e158efdc7c686ee2ce74315eaf",
+        "bytes": 22680
+      }
+    },
+    {
+      "recorded_at": "2026-11-15T07:36:00.040Z",
+      "label": "race",
+      "started_at": "2026-11-15T07:35:10.521Z",
+      "finished_at": "2026-11-15T07:36:00.040Z",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router_race.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationStageCompletionPreviewRouter",
+        "-count=1",
+        "-json",
+        "-timeout=180s",
+        "-race"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/logs/race-r01.jsonl",
+      "log_sha256": "5de3e3b732fc042edfae9e3b9c1031a1dfc9be62c3d4e9fa20c6458beb658d53",
+      "log_bytes": 758953,
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router_race.json",
+      "configuration_sha256": "f91e2cea5c94ba77151624fda0e84e44aa1c6c359d29fe7ad9eb92c2facbe1e2",
+      "runner": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e"
+      },
+      "test_sha256_before": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "test_sha256_after": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "source_unchanged": true,
+      "executes_TestMain": true,
+      "all_named": {
+        "pass": 112,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 102,
+        "fail": 0,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 95,
+        "fail": 0,
+        "skip": 0
+      },
+      "named_inventory_sha256": "37fd747d46e569fd3cb8f507d60c12201dffad0674040451c8eee5972c62fcff",
+      "missing_names": [],
+      "unexpected_names": [],
+      "duplicate_terminal_names": [],
+      "non_json_lines": 0,
+      "packages": [
+        {
+          "Time": "2026-11-15T15:35:59.991478+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/cmd/server",
+          "Elapsed": 43.354
+        }
+      ],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/logs/race-r01.json",
+        "sha256": "26621c65bf48e1e7d459aecf94f913ba5afffa0a7758064f674fb3ebf955c1f1",
+        "bytes": 22726
+      }
+    },
+    {
+      "recorded_at": "2026-11-15T07:37:55.174Z",
+      "label": "vet",
+      "started_at": "2026-11-15T07:37:54.537Z",
+      "finished_at": "2026-11-15T07:37:55.174Z",
+      "command": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server",
+        "vet",
+        "./cmd/server"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/logs/vet-r01.jsonl",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0,
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router.json",
+      "configuration_sha256": "f47ba4b11bfa4fc41f0b7d6d1402f0a5a3593c47496a8688501d830706eca21a",
+      "runner": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e"
+      },
+      "test_sha256_before": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "test_sha256_after": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "source_unchanged": true,
+      "executes_TestMain": false,
+      "all_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "named_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "missing_names": [],
+      "unexpected_names": [],
+      "duplicate_terminal_names": [],
+      "non_json_lines": 0,
+      "packages": [],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/logs/vet-r01.json",
+        "sha256": "2167b96ae03147d893468fca4aa9222ccc9298fa43502a51e1b4704bae2a8d93",
+        "bytes": 1744
+      }
+    },
+    {
+      "recorded_at": "2026-11-15T07:38:05.450Z",
+      "label": "compile",
+      "started_at": "2026-11-15T07:37:54.714Z",
+      "finished_at": "2026-11-15T07:38:05.450Z",
+      "command": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server",
+        "test",
+        "-c",
+        "-o",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/build/f06-router.test",
+        "./cmd/server"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/logs/compile-r01.jsonl",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0,
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router.json",
+      "configuration_sha256": "f47ba4b11bfa4fc41f0b7d6d1402f0a5a3593c47496a8688501d830706eca21a",
+      "runner": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e"
+      },
+      "test_sha256_before": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "test_sha256_after": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "source_unchanged": true,
+      "executes_TestMain": false,
+      "all_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "named_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "missing_names": [],
+      "unexpected_names": [],
+      "duplicate_terminal_names": [],
+      "non_json_lines": 0,
+      "packages": [],
+      "binary": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/build/f06-router.test",
+        "sha256": "66badc1501111f381852125941f866c42553982760b3839a02d546a32fa3471c",
+        "bytes": 117470610,
+        "mode": 493
+      },
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/logs/compile-r01.json",
+        "sha256": "adcc300763046abd339a868ce25a53a3a8adc068de6d52117b7e8626622fab7b",
+        "bytes": 2150
+      }
+    },
+    {
+      "recorded_at": "2026-11-15T07:37:54.732Z",
+      "label": "gofmt",
+      "started_at": "2026-11-15T07:37:54.710Z",
+      "finished_at": "2026-11-15T07:37:54.732Z",
+      "command": [
+        "gofmt",
+        "-l",
+        "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/source/server/cmd/server/collaboration_stage_completion_preview_integration_test.go"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/logs/gofmt-r01.jsonl",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0,
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router.json",
+      "configuration_sha256": "f47ba4b11bfa4fc41f0b7d6d1402f0a5a3593c47496a8688501d830706eca21a",
+      "runner": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e"
+      },
+      "test_sha256_before": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "test_sha256_after": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "source_unchanged": true,
+      "executes_TestMain": false,
+      "all_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "named_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "missing_names": [],
+      "unexpected_names": [],
+      "duplicate_terminal_names": [],
+      "non_json_lines": 0,
+      "packages": [],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/logs/gofmt-r01.json",
+        "sha256": "dc7ec18847993cacc953f488d429a8ada8db3ee3682d7d8e77a472fa8e42664b",
+        "bytes": 1790
+      }
+    },
+    {
+      "recorded_at": "2026-11-15T07:37:56.818Z",
+      "label": "toolchain",
+      "started_at": "2026-11-15T07:37:56.809Z",
+      "finished_at": "2026-11-15T07:37:56.818Z",
+      "command": [
+        "go",
+        "version"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/logs/toolchain-r01.jsonl",
+      "log_sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+      "log_bytes": 33,
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router.json",
+      "configuration_sha256": "f47ba4b11bfa4fc41f0b7d6d1402f0a5a3593c47496a8688501d830706eca21a",
+      "runner": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e"
+      },
+      "test_sha256_before": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "test_sha256_after": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "source_unchanged": true,
+      "executes_TestMain": false,
+      "all_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all_subtests": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "leaf_named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "named_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "missing_names": [],
+      "unexpected_names": [],
+      "duplicate_terminal_names": [],
+      "non_json_lines": 1,
+      "packages": [],
+      "metadata": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/logs/toolchain-r01.json",
+        "sha256": "d623e0998c98ea0221b34604b03c1bfdec8606367269a453cf4ef289501b6cdf",
+        "bytes": 1625
+      }
+    }
+  ],
+  "independent_raw_inventory": {
+    "normal": {
+      "run_names": 112,
+      "terminal_count": 112,
+      "pass": 112,
+      "fail": 0,
+      "skip": 0,
+      "top": 10,
+      "leaves": 95
+    },
+    "race": {
+      "run_names": 112,
+      "terminal_count": 112,
+      "pass": 112,
+      "fail": 0,
+      "skip": 0,
+      "top": 10,
+      "leaves": 95
+    },
+    "names_identical": true,
+    "source_top_names_match": true,
+    "by_top": [
+      {
+        "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding",
+        "line": 95,
+        "leaves": 3
+      },
+      {
+        "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations",
+        "line": 180,
+        "leaves": 2
+      },
+      {
+        "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete",
+        "line": 221,
+        "leaves": 9
+      },
+      {
+        "test": "TestCollaborationStageCompletionPreviewRouterAuthentication",
+        "line": 249,
+        "leaves": 4
+      },
+      {
+        "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport",
+        "line": 283,
+        "leaves": 44
+      },
+      {
+        "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions",
+        "line": 380,
+        "leaves": 5
+      },
+      {
+        "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute",
+        "line": 427,
+        "leaves": 12
+      },
+      {
+        "test": "TestCollaborationStageCompletionPreviewRouterR38Scope",
+        "line": 538,
+        "leaves": 2
+      },
+      {
+        "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders",
+        "line": 671,
+        "leaves": 8
+      },
+      {
+        "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization",
+        "line": 771,
+        "leaves": 6
+      }
+    ],
+    "source_manifest_same": true,
+    "ledger_same": true,
+    "gate_same": true,
+    "config_same": true,
+    "artifact": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/independent-inventory-audit.json",
+      "sha256": "20f3959c2177b5d95064d31b014b44a33156309e0c19076dfcc5dfba3c1c59af",
+      "bytes": 1804
+    }
+  },
+  "by_test": [
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterAuthentication",
+      "classification": "top_level",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 1.08,
+      "race_elapsed_seconds": 2.61
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/admin",
+      "classification": "intermediate_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.28,
+      "race_elapsed_seconds": 2.36
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/admin/candidates",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.01
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/admin/completion-preview",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.01
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/self",
+      "classification": "intermediate_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.81,
+      "race_elapsed_seconds": 0.25
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/self/candidates",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterAuthentication/self/completion-preview",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.05
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations",
+      "classification": "top_level",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.77,
+      "race_elapsed_seconds": 0.54
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations/self",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.52,
+      "race_elapsed_seconds": 0.24
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentConsumerObservations/submission",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.25,
+      "race_elapsed_seconds": 0.3
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization",
+      "classification": "top_level",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 1.83,
+      "race_elapsed_seconds": 15.3
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/administrator_role_removed/candidates",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.37,
+      "race_elapsed_seconds": 2.43
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/administrator_role_removed/completion-preview",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.29,
+      "race_elapsed_seconds": 2.32
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/organization_became_inactive/candidates",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.26,
+      "race_elapsed_seconds": 3.85
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/organization_became_inactive/completion-preview",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.26,
+      "race_elapsed_seconds": 2.48
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/password_session_changed/candidates",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.3,
+      "race_elapsed_seconds": 2.11
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/password_session_changed/completion-preview",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.35,
+      "race_elapsed_seconds": 2.11
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions",
+      "classification": "top_level",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.7,
+      "race_elapsed_seconds": 1.68
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/consumer_revoked",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.14,
+      "race_elapsed_seconds": 0.3
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/root_revision_changed",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.13,
+      "race_elapsed_seconds": 0.37
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/source_detached",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.13,
+      "race_elapsed_seconds": 0.27
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/source_revoked",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.15,
+      "race_elapsed_seconds": 0.41
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/stale_source_head",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.14,
+      "race_elapsed_seconds": 0.33
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute",
+      "classification": "top_level",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.38,
+      "race_elapsed_seconds": 0.92
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_root_binding",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.08
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_root_revision_binding",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_source_binding",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.08
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_source_revision_binding",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_case_alias",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.02,
+      "race_elapsed_seconds": 0.03
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_duplicate_viewer",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.04
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_trailing_json",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.04
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_strict_unknown_field",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.04
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/cursor_viewer_binding",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/known_old_route_404_is_not_object_denial",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/revocation_rejects_cached_cursor_without_private_page",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.01
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute/source_revision_stales_saved_cursor",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.04,
+      "race_elapsed_seconds": 0.07
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterR38Scope",
+      "classification": "top_level",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.39,
+      "race_elapsed_seconds": 2.6
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterR38Scope/enabled_initiator_is_not_R38",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.01
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterR38Scope/workspace_organization_link_mismatch",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.02,
+      "race_elapsed_seconds": 0.03
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding",
+      "classification": "top_level",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 3.13,
+      "race_elapsed_seconds": 3.83
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding/admin",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 1.95,
+      "race_elapsed_seconds": 2.39
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding/self",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.76,
+      "race_elapsed_seconds": 0.95
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadOnlyAndConsumedBinding/submission",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.43,
+      "race_elapsed_seconds": 0.49
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders",
+      "classification": "top_level",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 2.45,
+      "race_elapsed_seconds": 2.25
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/read_first",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.7,
+      "race_elapsed_seconds": 0.34
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/revocation_first",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.24,
+      "race_elapsed_seconds": 0.41
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/empty/read_first",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.39,
+      "race_elapsed_seconds": 0.26
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/empty/revocation_first",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.25,
+      "race_elapsed_seconds": 0.17
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/list/read_first",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.23,
+      "race_elapsed_seconds": 0.35
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/list/revocation_first",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.29,
+      "race_elapsed_seconds": 0.2
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/preview/read_first",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.22,
+      "race_elapsed_seconds": 0.32
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/preview/revocation_first",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.12,
+      "race_elapsed_seconds": 0.22
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete",
+      "classification": "top_level",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 1.13,
+      "race_elapsed_seconds": 2.83
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin",
+      "classification": "intermediate_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.69,
+      "race_elapsed_seconds": 2.3
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin/enforce",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.06,
+      "race_elapsed_seconds": 0.07
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin/observe",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.17,
+      "race_elapsed_seconds": 0.06
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/admin/off",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.11,
+      "race_elapsed_seconds": 0.06
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self",
+      "classification": "intermediate_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.22,
+      "race_elapsed_seconds": 0.23
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self/enforce",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.03,
+      "race_elapsed_seconds": 0.03
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self/observe",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.02,
+      "race_elapsed_seconds": 0.03
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/self/off",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.04,
+      "race_elapsed_seconds": 0.03
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission",
+      "classification": "intermediate_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.23,
+      "race_elapsed_seconds": 0.3
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission/enforce",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.03,
+      "race_elapsed_seconds": 0.03
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission/observe",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.03,
+      "race_elapsed_seconds": 0.03
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStageIncomplete/submission/off",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.03,
+      "race_elapsed_seconds": 0.03
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport",
+      "classification": "top_level",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.82,
+      "race_elapsed_seconds": 8.24
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin",
+      "classification": "intermediate_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.41,
+      "race_elapsed_seconds": 6.79
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/body_exactly_64_kib_is_a_read",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.04,
+      "race_elapsed_seconds": 0.19
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/body_over_64_kib",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.03
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/duplicate_limit",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.01
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/duplicate_source",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_above_50",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.01
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_noncanonical",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.01
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/limit_zero",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/missing_source",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0,
+      "race_elapsed_seconds": 0.03
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/nested_case_alias",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0,
+      "race_elapsed_seconds": 0.01
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/nested_duplicate",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.03
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/null_required_source",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/numeric_consumer_epoch",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/ordinary_target_on_collaboration_route",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/source_case_alias",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/target_path_identity_mismatch",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/top_level_case_alias",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.01
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/top_level_duplicate",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/trailing_json",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.03
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_query",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_shape_array",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/unknown_shape_future_field",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/admin/valid_target_for_the_other_route",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self",
+      "classification": "intermediate_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.41,
+      "race_elapsed_seconds": 1.45
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/body_exactly_64_kib_is_a_read",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.13,
+      "race_elapsed_seconds": 0.27
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/body_over_64_kib",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.12
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/duplicate_limit",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/duplicate_source",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_above_50",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_noncanonical",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/limit_zero",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/missing_source",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.04
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/nested_case_alias",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.05
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/nested_duplicate",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.06
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/null_required_source",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.04
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/numeric_consumer_epoch",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.05
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/ordinary_target_on_collaboration_route",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.03
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/source_case_alias",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/target_path_identity_mismatch",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.04
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/top_level_case_alias",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.04
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/top_level_duplicate",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.06
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/trailing_json",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0,
+      "race_elapsed_seconds": 0.06
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_query",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.02
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_shape_array",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.03
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/unknown_shape_future_field",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.05
+    },
+    {
+      "test": "TestCollaborationStageCompletionPreviewRouterStrictTransport/self/valid_target_for_the_other_route",
+      "classification": "leaf_subtest",
+      "normal": "pass",
+      "race": "pass",
+      "normal_elapsed_seconds": 0.01,
+      "race_elapsed_seconds": 0.03
+    }
+  ],
+  "witnesses": {
+    "normal": [
+      {
+        "kind": "self",
+        "root_grants": "0",
+        "source_grants": "1",
+        "root_events": "0",
+        "root_operations": "0",
+        "root_attachments": "1",
+        "hashes_match": true
+      },
+      {
+        "kind": "submission",
+        "root_grants": "0",
+        "source_grants": "1",
+        "root_events": "1",
+        "root_operations": "1",
+        "root_attachments": "0",
+        "hashes_match": true
+      },
+      {
+        "kind": "admin",
+        "root_grants": "0",
+        "source_grants": "1",
+        "root_events": "0",
+        "root_operations": "0",
+        "root_attachments": "0",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "list",
+        "order": "read_first",
+        "reader_backend": "44970",
+        "writer_backend": "45038",
+        "read_status": "200",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "list",
+        "order": "revocation_first",
+        "reader_backend": "44970",
+        "writer_backend": "45038",
+        "read_status": "404",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "empty",
+        "order": "read_first",
+        "reader_backend": "44970",
+        "writer_backend": "45038",
+        "read_status": "200",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "empty",
+        "order": "revocation_first",
+        "reader_backend": "44970",
+        "writer_backend": "45038",
+        "read_status": "404",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "cursor",
+        "order": "read_first",
+        "reader_backend": "44970",
+        "writer_backend": "45038",
+        "read_status": "200",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "cursor",
+        "order": "revocation_first",
+        "reader_backend": "44970",
+        "writer_backend": "45038",
+        "read_status": "404",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "preview",
+        "order": "read_first",
+        "reader_backend": "44970",
+        "writer_backend": "45038",
+        "read_status": "200",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "preview",
+        "order": "revocation_first",
+        "reader_backend": "44970",
+        "writer_backend": "45038",
+        "read_status": "404",
+        "hashes_match": true
+      }
+    ],
+    "race": [
+      {
+        "kind": "self",
+        "root_grants": "0",
+        "source_grants": "1",
+        "root_events": "0",
+        "root_operations": "0",
+        "root_attachments": "1",
+        "hashes_match": true
+      },
+      {
+        "kind": "submission",
+        "root_grants": "0",
+        "source_grants": "1",
+        "root_events": "1",
+        "root_operations": "1",
+        "root_attachments": "0",
+        "hashes_match": true
+      },
+      {
+        "kind": "admin",
+        "root_grants": "0",
+        "source_grants": "1",
+        "root_events": "0",
+        "root_operations": "0",
+        "root_attachments": "0",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "list",
+        "order": "read_first",
+        "reader_backend": "46093",
+        "writer_backend": "46276",
+        "read_status": "200",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "list",
+        "order": "revocation_first",
+        "reader_backend": "46093",
+        "writer_backend": "46276",
+        "read_status": "404",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "empty",
+        "order": "read_first",
+        "reader_backend": "46093",
+        "writer_backend": "46276",
+        "read_status": "200",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "empty",
+        "order": "revocation_first",
+        "reader_backend": "46093",
+        "writer_backend": "46276",
+        "read_status": "404",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "cursor",
+        "order": "read_first",
+        "reader_backend": "46093",
+        "writer_backend": "46276",
+        "read_status": "200",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "cursor",
+        "order": "revocation_first",
+        "reader_backend": "46093",
+        "writer_backend": "46276",
+        "read_status": "404",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "preview",
+        "order": "read_first",
+        "reader_backend": "46093",
+        "writer_backend": "46276",
+        "read_status": "200",
+        "hashes_match": true
+      },
+      {
+        "kind": "authority_order",
+        "shape": "preview",
+        "order": "revocation_first",
+        "reader_backend": "46093",
+        "writer_backend": "46276",
+        "read_status": "404",
+        "hashes_match": true
+      }
+    ],
+    "normal_count": 11,
+    "race_count": 11,
+    "all_hash_pairs_equal": true
+  },
+  "database_audits": [
+    {
+      "recorded_at": "2026-11-15T07:32:32.109Z",
+      "label": "before",
+      "status": "pass",
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router.json",
+      "configuration_sha256": "f47ba4b11bfa4fc41f0b7d6d1402f0a5a3593c47496a8688501d830706eca21a",
+      "configuration_mode": 384,
+      "permitted_package": "./cmd/server",
+      "permission_source": "explicit parent dispatch; configuration is an environment file",
+      "identity": {
+        "database": "multica_pay241_20261115_s2_r05_review_router",
+        "postgres_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "ledger_count": 835,
+        "ledger_last": "864_collaboration_stage_submission_ready",
+        "other_connections": 0,
+        "cluster_connections": 27,
+        "cluster_max_connections": 100
+      },
+      "facts": {
+        "stage_task": 0,
+        "stage_roles": 0,
+        "stage_policy": 0,
+        "stage_decision": 0,
+        "stage_candidate": 0,
+        "stage_execution": 0,
+        "stage_submission": 0,
+        "collaboration_events": 0,
+        "retained_m1_terminals": 0,
+        "collaboration_operations": 0,
+        "collaboration_attachments": 0,
+        "retained_m1_authorizations": 0
+      },
+      "constraints": [
+        {
+          "conname": "collaboration_stage_submission_candidate_version_check",
+          "definition": "CHECK ((candidate_version > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_content_digest_check",
+          "definition": "CHECK ((content_digest ~ '^[0-9a-f]{64}$'::text))"
+        },
+        {
+          "conname": "collaboration_stage_submission_lifecycle_epoch_check",
+          "definition": "CHECK ((lifecycle_epoch > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_policy_revision_check",
+          "definition": "CHECK ((policy_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_role_revision_check",
+          "definition": "CHECK ((role_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_stage_revision_check",
+          "definition": "CHECK ((stage_revision > 0))"
+        }
+      ],
+      "ledger_sha256": "9919f5b8882f6129f70d0b4cce822843d04fa3bfdb8eb478507a4457c5b9dcc7",
+      "gate": [
+        {
+          "id": 1,
+          "epoch": 2,
+          "enabled": false,
+          "freeze_progress": null,
+          "creation_enabled": true,
+          "freeze_operation_id": null,
+          "host_execution_enabled": false
+        }
+      ],
+      "process_paths": [
+        {
+          "key": "HOME",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/home",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMPDIR",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TEMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        }
+      ],
+      "readonly": true,
+      "activation_changed_by_audit": false,
+      "artifact": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/before-normal-database.json",
+        "sha256": "f70bbfdbbe934f33acfac227f0d2b5c08a308a37efd698e23228ac1035bfe21f",
+        "bytes": 3264
+      }
+    },
+    {
+      "recorded_at": "2026-11-15T07:32:32.230Z",
+      "label": "before",
+      "status": "pass",
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router_race.json",
+      "configuration_sha256": "f91e2cea5c94ba77151624fda0e84e44aa1c6c359d29fe7ad9eb92c2facbe1e2",
+      "configuration_mode": 384,
+      "permitted_package": "./cmd/server",
+      "permission_source": "explicit parent dispatch; configuration is an environment file",
+      "identity": {
+        "database": "multica_pay241_20261115_s2_r05_review_router_race",
+        "postgres_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "ledger_count": 835,
+        "ledger_last": "864_collaboration_stage_submission_ready",
+        "other_connections": 0,
+        "cluster_connections": 27,
+        "cluster_max_connections": 100
+      },
+      "facts": {
+        "stage_task": 0,
+        "stage_roles": 0,
+        "stage_policy": 0,
+        "stage_decision": 0,
+        "stage_candidate": 0,
+        "stage_execution": 0,
+        "stage_submission": 0,
+        "collaboration_events": 0,
+        "retained_m1_terminals": 0,
+        "collaboration_operations": 0,
+        "collaboration_attachments": 0,
+        "retained_m1_authorizations": 0
+      },
+      "constraints": [
+        {
+          "conname": "collaboration_stage_submission_candidate_version_check",
+          "definition": "CHECK ((candidate_version > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_content_digest_check",
+          "definition": "CHECK ((content_digest ~ '^[0-9a-f]{64}$'::text))"
+        },
+        {
+          "conname": "collaboration_stage_submission_lifecycle_epoch_check",
+          "definition": "CHECK ((lifecycle_epoch > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_policy_revision_check",
+          "definition": "CHECK ((policy_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_role_revision_check",
+          "definition": "CHECK ((role_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_stage_revision_check",
+          "definition": "CHECK ((stage_revision > 0))"
+        }
+      ],
+      "ledger_sha256": "9919f5b8882f6129f70d0b4cce822843d04fa3bfdb8eb478507a4457c5b9dcc7",
+      "gate": [
+        {
+          "id": 1,
+          "epoch": 2,
+          "enabled": false,
+          "freeze_progress": null,
+          "creation_enabled": true,
+          "freeze_operation_id": null,
+          "host_execution_enabled": false
+        }
+      ],
+      "process_paths": [
+        {
+          "key": "HOME",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/home",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMPDIR",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TEMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        }
+      ],
+      "readonly": true,
+      "activation_changed_by_audit": false,
+      "artifact": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/before-race-database.json",
+        "sha256": "5ec87384a08c01886d213f278b0cf50ff9299554fd1d35a3e6a70c1ef9a65bb7",
+        "bytes": 3294
+      }
+    },
+    {
+      "recorded_at": "2026-11-15T07:34:01.097Z",
+      "label": "after-normal",
+      "status": "pass",
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router.json",
+      "configuration_sha256": "f47ba4b11bfa4fc41f0b7d6d1402f0a5a3593c47496a8688501d830706eca21a",
+      "configuration_mode": 384,
+      "permitted_package": "./cmd/server",
+      "permission_source": "explicit parent dispatch; configuration is an environment file",
+      "identity": {
+        "database": "multica_pay241_20261115_s2_r05_review_router",
+        "postgres_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "ledger_count": 835,
+        "ledger_last": "864_collaboration_stage_submission_ready",
+        "other_connections": 0,
+        "cluster_connections": 27,
+        "cluster_max_connections": 100
+      },
+      "facts": {
+        "stage_task": 0,
+        "stage_roles": 0,
+        "stage_policy": 0,
+        "stage_decision": 0,
+        "stage_candidate": 0,
+        "stage_execution": 0,
+        "stage_submission": 0,
+        "collaboration_events": 0,
+        "retained_m1_terminals": 6,
+        "collaboration_operations": 0,
+        "collaboration_attachments": 0,
+        "retained_m1_authorizations": 6
+      },
+      "constraints": [
+        {
+          "conname": "collaboration_stage_submission_candidate_version_check",
+          "definition": "CHECK ((candidate_version > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_content_digest_check",
+          "definition": "CHECK ((content_digest ~ '^[0-9a-f]{64}$'::text))"
+        },
+        {
+          "conname": "collaboration_stage_submission_lifecycle_epoch_check",
+          "definition": "CHECK ((lifecycle_epoch > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_policy_revision_check",
+          "definition": "CHECK ((policy_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_role_revision_check",
+          "definition": "CHECK ((role_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_stage_revision_check",
+          "definition": "CHECK ((stage_revision > 0))"
+        }
+      ],
+      "ledger_sha256": "9919f5b8882f6129f70d0b4cce822843d04fa3bfdb8eb478507a4457c5b9dcc7",
+      "gate": [
+        {
+          "id": 1,
+          "epoch": 2,
+          "enabled": false,
+          "freeze_progress": null,
+          "creation_enabled": true,
+          "freeze_operation_id": null,
+          "host_execution_enabled": false
+        }
+      ],
+      "process_paths": [
+        {
+          "key": "HOME",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/home",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMPDIR",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TEMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        }
+      ],
+      "readonly": true,
+      "activation_changed_by_audit": false,
+      "artifact": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/after-normal-normal-database.json",
+        "sha256": "6703448b92a8e4925c257918f80190f3f2c1ab3e5a37a9e457cfb970e10755ef",
+        "bytes": 3270
+      }
+    },
+    {
+      "recorded_at": "2026-11-15T07:34:01.270Z",
+      "label": "after-normal",
+      "status": "pass",
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router_race.json",
+      "configuration_sha256": "f91e2cea5c94ba77151624fda0e84e44aa1c6c359d29fe7ad9eb92c2facbe1e2",
+      "configuration_mode": 384,
+      "permitted_package": "./cmd/server",
+      "permission_source": "explicit parent dispatch; configuration is an environment file",
+      "identity": {
+        "database": "multica_pay241_20261115_s2_r05_review_router_race",
+        "postgres_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "ledger_count": 835,
+        "ledger_last": "864_collaboration_stage_submission_ready",
+        "other_connections": 0,
+        "cluster_connections": 27,
+        "cluster_max_connections": 100
+      },
+      "facts": {
+        "stage_task": 0,
+        "stage_roles": 0,
+        "stage_policy": 0,
+        "stage_decision": 0,
+        "stage_candidate": 0,
+        "stage_execution": 0,
+        "stage_submission": 0,
+        "collaboration_events": 0,
+        "retained_m1_terminals": 0,
+        "collaboration_operations": 0,
+        "collaboration_attachments": 0,
+        "retained_m1_authorizations": 0
+      },
+      "constraints": [
+        {
+          "conname": "collaboration_stage_submission_candidate_version_check",
+          "definition": "CHECK ((candidate_version > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_content_digest_check",
+          "definition": "CHECK ((content_digest ~ '^[0-9a-f]{64}$'::text))"
+        },
+        {
+          "conname": "collaboration_stage_submission_lifecycle_epoch_check",
+          "definition": "CHECK ((lifecycle_epoch > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_policy_revision_check",
+          "definition": "CHECK ((policy_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_role_revision_check",
+          "definition": "CHECK ((role_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_stage_revision_check",
+          "definition": "CHECK ((stage_revision > 0))"
+        }
+      ],
+      "ledger_sha256": "9919f5b8882f6129f70d0b4cce822843d04fa3bfdb8eb478507a4457c5b9dcc7",
+      "gate": [
+        {
+          "id": 1,
+          "epoch": 2,
+          "enabled": false,
+          "freeze_progress": null,
+          "creation_enabled": true,
+          "freeze_operation_id": null,
+          "host_execution_enabled": false
+        }
+      ],
+      "process_paths": [
+        {
+          "key": "HOME",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/home",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMPDIR",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TEMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        }
+      ],
+      "readonly": true,
+      "activation_changed_by_audit": false,
+      "artifact": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/after-normal-race-database.json",
+        "sha256": "6f6a27efc4137d91668bf1925171219bce046c810a385b7fe8b576fcb86aff08",
+        "bytes": 3300
+      }
+    },
+    {
+      "recorded_at": "2026-11-15T07:37:28.540Z",
+      "label": "after-race",
+      "status": "pass",
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router.json",
+      "configuration_sha256": "f47ba4b11bfa4fc41f0b7d6d1402f0a5a3593c47496a8688501d830706eca21a",
+      "configuration_mode": 384,
+      "permitted_package": "./cmd/server",
+      "permission_source": "explicit parent dispatch; configuration is an environment file",
+      "identity": {
+        "database": "multica_pay241_20261115_s2_r05_review_router",
+        "postgres_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "ledger_count": 835,
+        "ledger_last": "864_collaboration_stage_submission_ready",
+        "other_connections": 0,
+        "cluster_connections": 25,
+        "cluster_max_connections": 100
+      },
+      "facts": {
+        "stage_task": 0,
+        "stage_roles": 0,
+        "stage_policy": 0,
+        "stage_decision": 0,
+        "stage_candidate": 0,
+        "stage_execution": 0,
+        "stage_submission": 0,
+        "collaboration_events": 0,
+        "retained_m1_terminals": 6,
+        "collaboration_operations": 0,
+        "collaboration_attachments": 0,
+        "retained_m1_authorizations": 6
+      },
+      "constraints": [
+        {
+          "conname": "collaboration_stage_submission_candidate_version_check",
+          "definition": "CHECK ((candidate_version > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_content_digest_check",
+          "definition": "CHECK ((content_digest ~ '^[0-9a-f]{64}$'::text))"
+        },
+        {
+          "conname": "collaboration_stage_submission_lifecycle_epoch_check",
+          "definition": "CHECK ((lifecycle_epoch > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_policy_revision_check",
+          "definition": "CHECK ((policy_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_role_revision_check",
+          "definition": "CHECK ((role_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_stage_revision_check",
+          "definition": "CHECK ((stage_revision > 0))"
+        }
+      ],
+      "ledger_sha256": "9919f5b8882f6129f70d0b4cce822843d04fa3bfdb8eb478507a4457c5b9dcc7",
+      "gate": [
+        {
+          "id": 1,
+          "epoch": 2,
+          "enabled": false,
+          "freeze_progress": null,
+          "creation_enabled": true,
+          "freeze_operation_id": null,
+          "host_execution_enabled": false
+        }
+      ],
+      "process_paths": [
+        {
+          "key": "HOME",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/home",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMPDIR",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TEMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        }
+      ],
+      "readonly": true,
+      "activation_changed_by_audit": false,
+      "artifact": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/after-race-normal-database.json",
+        "sha256": "8de95a1cec6a616c1cd4928b53542078a0d93c397321a63a7b8a0cb921532800",
+        "bytes": 3268
+      }
+    },
+    {
+      "recorded_at": "2026-11-15T07:37:28.644Z",
+      "label": "after-race",
+      "status": "pass",
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router_race.json",
+      "configuration_sha256": "f91e2cea5c94ba77151624fda0e84e44aa1c6c359d29fe7ad9eb92c2facbe1e2",
+      "configuration_mode": 384,
+      "permitted_package": "./cmd/server",
+      "permission_source": "explicit parent dispatch; configuration is an environment file",
+      "identity": {
+        "database": "multica_pay241_20261115_s2_r05_review_router_race",
+        "postgres_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "ledger_count": 835,
+        "ledger_last": "864_collaboration_stage_submission_ready",
+        "other_connections": 0,
+        "cluster_connections": 25,
+        "cluster_max_connections": 100
+      },
+      "facts": {
+        "stage_task": 0,
+        "stage_roles": 0,
+        "stage_policy": 0,
+        "stage_decision": 0,
+        "stage_candidate": 0,
+        "stage_execution": 0,
+        "stage_submission": 0,
+        "collaboration_events": 0,
+        "retained_m1_terminals": 6,
+        "collaboration_operations": 0,
+        "collaboration_attachments": 0,
+        "retained_m1_authorizations": 6
+      },
+      "constraints": [
+        {
+          "conname": "collaboration_stage_submission_candidate_version_check",
+          "definition": "CHECK ((candidate_version > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_content_digest_check",
+          "definition": "CHECK ((content_digest ~ '^[0-9a-f]{64}$'::text))"
+        },
+        {
+          "conname": "collaboration_stage_submission_lifecycle_epoch_check",
+          "definition": "CHECK ((lifecycle_epoch > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_policy_revision_check",
+          "definition": "CHECK ((policy_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_role_revision_check",
+          "definition": "CHECK ((role_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_stage_revision_check",
+          "definition": "CHECK ((stage_revision > 0))"
+        }
+      ],
+      "ledger_sha256": "9919f5b8882f6129f70d0b4cce822843d04fa3bfdb8eb478507a4457c5b9dcc7",
+      "gate": [
+        {
+          "id": 1,
+          "epoch": 2,
+          "enabled": false,
+          "freeze_progress": null,
+          "creation_enabled": true,
+          "freeze_operation_id": null,
+          "host_execution_enabled": false
+        }
+      ],
+      "process_paths": [
+        {
+          "key": "HOME",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/home",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMPDIR",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TEMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        }
+      ],
+      "readonly": true,
+      "activation_changed_by_audit": false,
+      "artifact": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/after-race-race-database.json",
+        "sha256": "2a24fc4988eb0812bfee483628d55729be0306df6f329324bdf3bb820f95af6e",
+        "bytes": 3298
+      }
+    },
+    {
+      "recorded_at": "2026-11-15T07:40:21.200Z",
+      "label": "final",
+      "status": "pass",
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router.json",
+      "configuration_sha256": "f47ba4b11bfa4fc41f0b7d6d1402f0a5a3593c47496a8688501d830706eca21a",
+      "configuration_mode": 384,
+      "permitted_package": "./cmd/server",
+      "permission_source": "explicit parent dispatch; configuration is an environment file",
+      "identity": {
+        "database": "multica_pay241_20261115_s2_r05_review_router",
+        "postgres_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "ledger_count": 835,
+        "ledger_last": "864_collaboration_stage_submission_ready",
+        "other_connections": 0,
+        "cluster_connections": 17,
+        "cluster_max_connections": 100
+      },
+      "facts": {
+        "stage_task": 0,
+        "stage_roles": 0,
+        "stage_policy": 0,
+        "stage_decision": 0,
+        "stage_candidate": 0,
+        "stage_execution": 0,
+        "stage_submission": 0,
+        "collaboration_events": 0,
+        "retained_m1_terminals": 6,
+        "collaboration_operations": 0,
+        "collaboration_attachments": 0,
+        "retained_m1_authorizations": 6
+      },
+      "constraints": [
+        {
+          "conname": "collaboration_stage_submission_candidate_version_check",
+          "definition": "CHECK ((candidate_version > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_content_digest_check",
+          "definition": "CHECK ((content_digest ~ '^[0-9a-f]{64}$'::text))"
+        },
+        {
+          "conname": "collaboration_stage_submission_lifecycle_epoch_check",
+          "definition": "CHECK ((lifecycle_epoch > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_policy_revision_check",
+          "definition": "CHECK ((policy_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_role_revision_check",
+          "definition": "CHECK ((role_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_stage_revision_check",
+          "definition": "CHECK ((stage_revision > 0))"
+        }
+      ],
+      "ledger_sha256": "9919f5b8882f6129f70d0b4cce822843d04fa3bfdb8eb478507a4457c5b9dcc7",
+      "gate": [
+        {
+          "id": 1,
+          "epoch": 2,
+          "enabled": false,
+          "freeze_progress": null,
+          "creation_enabled": true,
+          "freeze_operation_id": null,
+          "host_execution_enabled": false
+        }
+      ],
+      "process_paths": [
+        {
+          "key": "HOME",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/home",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMPDIR",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TEMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        }
+      ],
+      "readonly": true,
+      "activation_changed_by_audit": false,
+      "artifact": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/final-normal-database.json",
+        "sha256": "b6ffdd744b401e73989b856e3349daa4220739b9d89c37e6a4390ddfa1a051d4",
+        "bytes": 3263
+      }
+    },
+    {
+      "recorded_at": "2026-11-15T07:40:21.311Z",
+      "label": "final",
+      "status": "pass",
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router_race.json",
+      "configuration_sha256": "f91e2cea5c94ba77151624fda0e84e44aa1c6c359d29fe7ad9eb92c2facbe1e2",
+      "configuration_mode": 384,
+      "permitted_package": "./cmd/server",
+      "permission_source": "explicit parent dispatch; configuration is an environment file",
+      "identity": {
+        "database": "multica_pay241_20261115_s2_r05_review_router_race",
+        "postgres_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "ledger_count": 835,
+        "ledger_last": "864_collaboration_stage_submission_ready",
+        "other_connections": 0,
+        "cluster_connections": 17,
+        "cluster_max_connections": 100
+      },
+      "facts": {
+        "stage_task": 0,
+        "stage_roles": 0,
+        "stage_policy": 0,
+        "stage_decision": 0,
+        "stage_candidate": 0,
+        "stage_execution": 0,
+        "stage_submission": 0,
+        "collaboration_events": 0,
+        "retained_m1_terminals": 6,
+        "collaboration_operations": 0,
+        "collaboration_attachments": 0,
+        "retained_m1_authorizations": 6
+      },
+      "constraints": [
+        {
+          "conname": "collaboration_stage_submission_candidate_version_check",
+          "definition": "CHECK ((candidate_version > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_content_digest_check",
+          "definition": "CHECK ((content_digest ~ '^[0-9a-f]{64}$'::text))"
+        },
+        {
+          "conname": "collaboration_stage_submission_lifecycle_epoch_check",
+          "definition": "CHECK ((lifecycle_epoch > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_policy_revision_check",
+          "definition": "CHECK ((policy_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_role_revision_check",
+          "definition": "CHECK ((role_revision > 0))"
+        },
+        {
+          "conname": "collaboration_stage_submission_stage_revision_check",
+          "definition": "CHECK ((stage_revision > 0))"
+        }
+      ],
+      "ledger_sha256": "9919f5b8882f6129f70d0b4cce822843d04fa3bfdb8eb478507a4457c5b9dcc7",
+      "gate": [
+        {
+          "id": 1,
+          "epoch": 2,
+          "enabled": false,
+          "freeze_progress": null,
+          "creation_enabled": true,
+          "freeze_operation_id": null,
+          "host_execution_enabled": false
+        }
+      ],
+      "process_paths": [
+        {
+          "key": "HOME",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/home",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMPDIR",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        },
+        {
+          "key": "TEMP",
+          "directory": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/state/review_router_race/tmp",
+          "git_probe_exit": 128,
+          "git_root_empty": true
+        }
+      ],
+      "readonly": true,
+      "activation_changed_by_audit": false,
+      "artifact": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/final-race-database.json",
+        "sha256": "b442e27b9528fdd57a521bd915c728f20c0947369f4b0b867195565bc03186fa",
+        "bytes": 3293
+      }
+    }
+  ],
+  "final_cleanup": {
+    "r01_preserved": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/final-transient-cleanup.json",
+      "sha256": "47d1927570a8affa59f8da86dd3dc3b2aa94990ffcd06ca949908f1e1a0f2141",
+      "bytes": 2835
+    },
+    "r02_classification": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06/final-transient-cleanup-r02.json",
+      "sha256": "c4eba820b8daaf5c058718240265afa3bda60e29147d35c56288dbc9803878d1",
+      "bytes": 3613
+    },
+    "results": [
+      {
+        "recorded_at": "2026-11-15T07:49:05.170Z",
+        "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router.json",
+        "configuration_sha256": "f47ba4b11bfa4fc41f0b7d6d1402f0a5a3593c47496a8688501d830706eca21a",
+        "identity": {
+          "database": "multica_pay241_20261115_s2_r05_review_router",
+          "other_connections": 0
+        },
+        "readonly": true,
+        "transient_counts": {
+          "user": 0,
+          "workspace": 0,
+          "issue": 0,
+          "project": 0,
+          "member": 0,
+          "issue_collaboration": 0,
+          "collaboration_session": 0,
+          "issue_participant": 0,
+          "collaboration_account_fence": 0,
+          "organization_workspace": 0,
+          "platform_role_binding": 0,
+          "user_password_credential": 0,
+          "task_token": 0,
+          "agent_task_queue": 0,
+          "agent_runtime": 0,
+          "agent": 0,
+          "agent_artifact_execution": 0,
+          "agent_approval_request": 0,
+          "collaboration_attachment_reference": 0,
+          "collaboration_grant": 0,
+          "collaboration_run": 0,
+          "collaboration_command": 0,
+          "admin_operation": 0,
+          "admin_audit_event": 0
+        },
+        "all_transient_tables_empty": true,
+        "retained_m1_evidence_and_policy": {
+          "delivery_evidence_evaluation": 33,
+          "project_delivery_policy": 72
+        },
+        "explicit_fixture_count": 33,
+        "expected_fixture_evaluations": 33,
+        "expected_fixture_policy_revisions": 72,
+        "retained_counts_match_fixture_calls": true,
+        "classification_note": "The first audit included append-only M1 evaluation and project-policy histories in its universal empty predicate. Original table counts are preserved in final-transient-cleanup.json; these histories are retained intentionally and are separate from preview zero-write snapshots."
+      },
+      {
+        "recorded_at": "2026-11-15T07:49:05.170Z",
+        "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router_race.json",
+        "configuration_sha256": "f91e2cea5c94ba77151624fda0e84e44aa1c6c359d29fe7ad9eb92c2facbe1e2",
+        "identity": {
+          "database": "multica_pay241_20261115_s2_r05_review_router_race",
+          "other_connections": 0
+        },
+        "readonly": true,
+        "transient_counts": {
+          "user": 0,
+          "workspace": 0,
+          "issue": 0,
+          "project": 0,
+          "member": 0,
+          "issue_collaboration": 0,
+          "collaboration_session": 0,
+          "issue_participant": 0,
+          "collaboration_account_fence": 0,
+          "organization_workspace": 0,
+          "platform_role_binding": 0,
+          "user_password_credential": 0,
+          "task_token": 0,
+          "agent_task_queue": 0,
+          "agent_runtime": 0,
+          "agent": 0,
+          "agent_artifact_execution": 0,
+          "agent_approval_request": 0,
+          "collaboration_attachment_reference": 0,
+          "collaboration_grant": 0,
+          "collaboration_run": 0,
+          "collaboration_command": 0,
+          "admin_operation": 0,
+          "admin_audit_event": 0
+        },
+        "all_transient_tables_empty": true,
+        "retained_m1_evidence_and_policy": {
+          "delivery_evidence_evaluation": 33,
+          "project_delivery_policy": 72
+        },
+        "explicit_fixture_count": 33,
+        "expected_fixture_evaluations": 33,
+        "expected_fixture_policy_revisions": 72,
+        "retained_counts_match_fixture_calls": true,
+        "classification_note": "The first audit included append-only M1 evaluation and project-policy histories in its universal empty predicate. Original table counts are preserved in final-transient-cleanup.json; these histories are retained intentionally and are separate from preview zero-write snapshots."
+      }
+    ],
+    "retained_m1_authorization_terminal_pairs_per_database": 6
+  },
+  "static_review": [
+    {
+      "dimension": "W17/Q06 root and ordinary-child source",
+      "test_lines": [
+        95,
+        114,
+        127,
+        138,
+        142
+      ],
+      "product_source": [
+        {
+          "file": "server/internal/service/collaboration_completion_preview.go",
+          "line": 61
+        },
+        {
+          "file": "server/internal/service/collaboration_completion_preview.go",
+          "line": 123
+        },
+        {
+          "file": "server/internal/service/collaboration_completion_preview.go",
+          "line": 176
+        },
+        {
+          "file": "server/cmd/server/router.go",
+          "line": 1703
+        },
+        {
+          "file": "server/cmd/server/router.go",
+          "line": 1824
+        }
+      ],
+      "conclusion": "Actual normal/R38 routes use current root and direct ordinary child in the same workspace/project; numeric root/child revisions and the actual done-child tar are preserved. Preview remains non-authorizing and the self draft remains unbound until the separate explicit control write."
+    },
+    {
+      "dimension": "Q05 actual issuer and current consumer",
+      "test_lines": [
+        180,
+        196,
+        206,
+        249,
+        538,
+        771
+      ],
+      "product_source": [
+        {
+          "file": "server/internal/service/collaboration_completion_preview.go",
+          "line": 201
+        },
+        {
+          "file": "server/internal/service/artifact_authority.go",
+          "line": 101
+        },
+        {
+          "file": "server/cmd/server/delivery_completion_collaboration_integration_test.go",
+          "line": 36
+        },
+        {
+          "file": "server/cmd/server/delivery_completion_collaboration_integration_test.go",
+          "line": 273
+        }
+      ],
+      "conclusion": "Signed JWTs and the actual password-login R38 fixture are authenticated through NewRouter. The current initiator consumer and source issuer are distinct; consumer epochs 7/9 and finite issuer expiry are checked. Header spoofing, task tokens, AgentActor hints, current source/consumer revocation and late password/role/organization changes refuse. Accounts and PR facts are synthetic."
+    },
+    {
+      "dimension": "Q07 strict transport and protected pagination",
+      "test_lines": [
+        283,
+        294,
+        344,
+        353,
+        427,
+        472,
+        485,
+        506,
+        517,
+        528
+      ],
+      "product_source": [
+        {
+          "file": "server/internal/handler/collaboration_completion_preview.go",
+          "line": 29
+        },
+        {
+          "file": "server/internal/service/collaboration_completion_preview.go",
+          "line": 131
+        }
+      ],
+      "conclusion": "Exact 64 KiB valid read and oversized/unknown/duplicate/case-alias/trailing JSON refusals are real raw requests through testutil. Closed cross-route variants, source query and limit validation, two actual retained packages, root/source/viewer/revision cursor binding, empty privacy and old-route/object denial distinction remain protected."
+    },
+    {
+      "dimension": "Q06 zero read effects",
+      "test_lines": [
+        55,
+        142,
+        173,
+        237,
+        240,
+        762
+      ],
+      "product_source": [
+        {
+          "file": "server/cmd/server/delivery_completion_hint_integration_test.go",
+          "line": 48
+        },
+        {
+          "file": "server/cmd/server/delivery_evidence_integration_test.go",
+          "line": 119
+        }
+      ],
+      "conclusion": "Request-local snapshots include source evaluation/approval/execution/policy/queue state and root status/submission/event/operation/attachment/authorization/terminal/stage facts. Eleven logged hash pairs per run match. Snapshot setup, revocation fixtures and explicit M1 control writes are separately identified."
+    },
+    {
+      "dimension": "Q07 real source-member revocation orders",
+      "test_lines": [
+        599,
+        608,
+        625,
+        632,
+        647,
+        671,
+        717,
+        719,
+        724,
+        745,
+        749,
+        757,
+        762
+      ],
+      "product_source": [
+        {
+          "file": "server/pkg/db/generated/member.sql.go",
+          "line": 43
+        },
+        {
+          "file": "server/internal/handler/collaboration_stage.go",
+          "line": 161
+        }
+      ],
+      "conclusion": "All eight shape/order barriers reach exactly once on distinct actual PostgreSQL backends; every SQL statement is forwarded. Read-first requires canonical DeleteMember SQLSTATE 55P03 before actual commit and successful deletion afterward; revocation-first commits after Auth and before the read data query. Fresh and cached requests then return exact no-store minimal 404. Reader backend is saved before the later denial. Router drains and no live fixture rows remain."
+    },
+    {
+      "dimension": "R38 original red and exact narrower replacement",
+      "test_lines": [
+        538,
+        569,
+        571,
+        574,
+        576,
+        588,
+        593
+      ],
+      "product_source": [
+        {
+          "file": "server/migrations/465_platform_admin.up.sql",
+          "line": 3
+        },
+        {
+          "file": "server/migrations/467_organization_internal_unique.up.sql",
+          "line": 1
+        }
+      ],
+      "conclusion": "The original 0cbb draft explicitly inserted internal:false, producing SQLSTATE 23514 before HTTP. CHECK(internal) plus unique organization(internal) prevents a second legal organization. The replacement changes only the workspace association to a canonical UUID and proves the real admin/current legal singleton via GET /api/admin/me. Both R38 routes return minimal no-store 404 with zero business effects. This is association fail-closed proof, not second-tenant isolation."
+    },
+    {
+      "dimension": "Reuse and scope",
+      "test_lines": [
+        37,
+        55,
+        264,
+        430,
+        647
+      ],
+      "product_source": [
+        {
+          "file": "server/internal/testutil/db.go",
+          "line": 48
+        },
+        {
+          "file": "server/internal/testutil/db.go",
+          "line": 67
+        },
+        {
+          "file": "server/internal/testutil/db.go",
+          "line": 111
+        },
+        {
+          "file": "server/internal/testutil/http.go",
+          "line": 22
+        },
+        {
+          "file": "server/internal/testutil/http.go",
+          "line": 93
+        }
+      ],
+      "conclusion": "The test reuses existing actual-auth M1 fixtures and testutil insert/request/response helpers. Raw strings are forwarded without re-encoding; QueryRow.Scan fails tests on error. No product/helper/SQL/template/dependency changes or synthetic principal injection were introduced. The first archive is fully validated before adding the second package, then read by its original execution ID."
+    }
+  ],
+  "verification": {
+    "lint": {
+      "status": "pass",
+      "scope": "new Go test gofmt -l and frozen cmd/server go vet"
+    },
+    "typecheck": {
+      "status": "pass",
+      "scope": "Go cmd/server test binary compiled without TestMain",
+      "typescript": "not applicable to this test-only Go delta"
+    },
+    "tests": {
+      "status": "pass",
+      "normal": {
+        "named_pass": 112,
+        "named_fail": 0,
+        "named_skip": 0,
+        "top_level": 10,
+        "all_subtests": 102,
+        "leaf_named": 95
+      },
+      "race": {
+        "named_pass": 112,
+        "named_fail": 0,
+        "named_skip": 0,
+        "top_level": 10,
+        "all_subtests": 102,
+        "leaf_named": 95
+      },
+      "names_match": true
+    },
+    "toolchain": "go version go1.27.0 darwin/arm64",
+    "ci_go126_linux": "not run"
+  },
+  "retained_failures": {
+    "legacy_runs": [
+      {
+        "label": "normal-r01",
+        "raw": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/normal-r01.log",
+          "sha256": "6f4c830e7fc13acd46b17c7ebbce38005485f096164c66934c5256a8c96b6039",
+          "bytes": 419666
+        },
+        "exit_code": 1,
+        "all_named": {
+          "pass": 70,
+          "fail": 8,
+          "skip": 0
+        },
+        "top_level": {
+          "pass": 4,
+          "fail": 4,
+          "skip": 0
+        },
+        "all_subtests": {
+          "pass": 66,
+          "fail": 4,
+          "skip": 0
+        },
+        "leaf_terminal_records": {
+          "pass": 60,
+          "fail": 5,
+          "skip": 0
+        },
+        "failed_names": [
+          "TestCollaborationStageCompletionPreviewRouterAuthentication/self/candidates",
+          "TestCollaborationStageCompletionPreviewRouterAuthentication/self/completion-preview",
+          "TestCollaborationStageCompletionPreviewRouterAuthentication/self",
+          "TestCollaborationStageCompletionPreviewRouterAuthentication",
+          "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions/consumer_revoked",
+          "TestCollaborationStageCompletionPreviewRouterCurrentSourceAndVersions",
+          "TestCollaborationStageCompletionPreviewRouterPaginationAndOldRoute",
+          "TestCollaborationStageCompletionPreviewRouterR38Scope"
+        ]
+      },
+      {
+        "label": "normal-r02",
+        "raw": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/normal-r02.log",
+          "sha256": "47cf9decf38b5c4c155dacb48c3d21a10be68c831bfc37c3440e2684b964e507",
+          "bytes": 439600
+        },
+        "exit_code": 1,
+        "all_named": {
+          "pass": 86,
+          "fail": 2,
+          "skip": 0
+        },
+        "top_level": {
+          "pass": 7,
+          "fail": 1,
+          "skip": 0
+        },
+        "all_subtests": {
+          "pass": 79,
+          "fail": 1,
+          "skip": 0
+        },
+        "leaf_terminal_records": {
+          "pass": 72,
+          "fail": 1,
+          "skip": 0
+        },
+        "failed_names": [
+          "TestCollaborationStageCompletionPreviewRouterR38Scope/wrong_current_organization_is_not_R38",
+          "TestCollaborationStageCompletionPreviewRouterR38Scope"
+        ]
+      }
+    ],
+    "resume_runs": [
+      {
+        "label": "red-r03-r38-fixture",
+        "exit_code": 1,
+        "all_named": {
+          "pass": 0,
+          "fail": 2,
+          "skip": 0
+        },
+        "leaf_named": {
+          "pass": 0,
+          "fail": 1,
+          "skip": 0
+        },
+        "raw": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/red-r03-r38-fixture.jsonl",
+          "sha256": "da317a5e71dd58e59aa8f5f3b32dc4a4146529703a39ce858007e7bdaa0c7896"
+        },
+        "failing_names": [
+          "TestCollaborationStageCompletionPreviewRouterR38Scope/wrong_current_organization_is_not_R38",
+          "TestCollaborationStageCompletionPreviewRouterR38Scope"
+        ]
+      },
+      {
+        "label": "green-r03-r38-link",
+        "exit_code": 0,
+        "all_named": {
+          "pass": 3,
+          "fail": 0,
+          "skip": 0
+        },
+        "leaf_named": {
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "raw": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/green-r03-r38-link.jsonl",
+          "sha256": "756148a3043dfad088acc80eba86ab9aed5eafca8d1c5b829af127deb714d534"
+        },
+        "failing_names": []
+      },
+      {
+        "label": "normal-r03-added-boundaries",
+        "exit_code": 1,
+        "all_named": {
+          "pass": 76,
+          "fail": 3,
+          "skip": 0
+        },
+        "leaf_named": {
+          "pass": 70,
+          "fail": 2,
+          "skip": 0
+        },
+        "raw": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/normal-r03-added-boundaries.jsonl",
+          "sha256": "d146a1d5f0712ba95a750a1103241c5c7ec71f2371aa1e17c4fc7201233e0ccf"
+        },
+        "failing_names": [
+          "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/read_first",
+          "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders/cursor/revocation_first",
+          "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders"
+        ]
+      },
+      {
+        "label": "normal-r03-cursor-corrected",
+        "exit_code": 0,
+        "all_named": {
+          "pass": 3,
+          "fail": 0,
+          "skip": 0
+        },
+        "leaf_named": {
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "raw": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/normal-r03-cursor-corrected.jsonl",
+          "sha256": "ddd510dae70f644ec79fb0ad39247961961abfac5920c3514f260552b05d9412"
+        },
+        "failing_names": []
+      },
+      {
+        "label": "normal-r03-final",
+        "exit_code": 0,
+        "all_named": {
+          "pass": 112,
+          "fail": 0,
+          "skip": 0
+        },
+        "leaf_named": {
+          "pass": 95,
+          "fail": 0,
+          "skip": 0
+        },
+        "raw": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/resume-r03/logs/normal-r03-final.jsonl",
+          "sha256": "6ad7ef217eca1447e74b358a542eeba4873389c8a668d7372ea99a8341fd3aec"
+        },
+        "failing_names": []
+      }
+    ],
+    "original_draft": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/f06-tests/source/server/cmd/server/collaboration_stage_completion_preview_integration_test.go",
+      "sha256": "0cbb17ece0ebc01bd5eb54adc236ecd02488906c7b7e755ec8493a5b463c875e",
+      "bytes": 36878
+    },
+    "r38_attribution": "Original internal:false INSERT hits organization_internal_check SQLSTATE23514 before HTTP; retained current workspace association mismatch proves fail-closed only, not a second real tenant.",
+    "archive_attribution": "Original single-directory helper remains unchanged; new fixture validates original tar before a second execution and reads by the original execution ID afterward."
+  },
+  "spec_sync": {
+    "needed": false,
+    "reason": "Test-only addition follows frozen F06/M1 contracts; no production/template/platform behavior change."
+  },
+  "simplifications": [
+    "Reused existing actual-auth M1 fixture and testutil helpers; no product/helper/test edit by reviewer.",
+    "Kept original failing drafts/logs and append-only history; separated fixture/control writes from read invariants.",
+    "Retained all source bytes/modes; recorded current exact config and final identity rather than inspecting changing ROOT as old evidence."
+  ],
+  "remaining_limits": [
+    "Exact green-r03 plus sole test only; no entire ROOT/new r05/full2d acceptance.",
+    "Q05 read subset and stage-off M1 control; stage-enabled all-writer completion remains pending.",
+    "Legal singleton-organization association mismatch; no second true tenant proof.",
+    "Inherited 200-row hidden scan not re-exercised here.",
+    "Actual Go1.27 darwin/arm64 only; Go1.26/Linux CI not run.",
+    "No P2, real model/payment/remote CI/deployment, Provider or Web/Desktop acceptance.",
+    "Existing unrelated F2 migration cleanup inventory failures remain outside this slice."
+  ],
+  "parent_matrix": {
+    "cases": 24,
+    "partial": 4,
+    "not_run": 20,
+    "unchanged": true
+  },
+  "ownership": {
+    "repo_product_changes": 0,
+    "repo_helper_changes": 0,
+    "repo_test_changes": 0,
+    "new_dependencies": 0,
+    "git_mutations_performed": false,
+    "root_freeze_respected": true,
+    "only_configs": [
+      "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router.json",
+      "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router_race.json"
+    ],
+    "private_evidence_root": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/check-f06"
+  },
+  "report_md_sha256": "0100e0cef3e9909b6985d0c4bfb847230ec7351b643afbd18a35d35ecce915f2",
+  "next_step": "Coordinator integrates the identical F06 test with final accepted server source and replays in a newly bound exact environment; no additional expansion of this slice."
+}

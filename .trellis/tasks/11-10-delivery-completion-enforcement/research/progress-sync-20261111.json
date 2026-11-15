@@ -1,0 +1,77 @@
+{
+  "source_worktree": "/Volumes/artisan/code/2026/mc-delivery-completion-enforcement-20261110",
+  "source_head": "1ce4e81223be3397fe15e2649debfac40720ddd9",
+  "destination_head": "1ce4e81223be3397fe15e2649debfac40720ddd9",
+  "source_task_status": "planning",
+  "confirmed_decisions": {
+    "D1": "A_explicit_human_acceptance_with_one_time_designated_completion",
+    "D2": "A_owner_admin_reasoned_bound_revocable_single_use_skip_max_24h_capped_by_evidence_expiry",
+    "D3": "A_reject_create_as_done_in_resolved_enforce_project_including_parent_inheritance_and_comment_child",
+    "D4a": "A_non_project_enter_done_only_revalidation_and_frozen_historical_acceptance_for_done_edits",
+    "D4b": "A_owner_admin_personal_reasoned_enforce_exit_reopen_before_migration_no_combined_done_explicit_off_before_delete"
+  },
+  "pending_decisions": [
+    "D5",
+    "D6",
+    "D7"
+  ],
+  "files": [
+    {
+      "file": "design.md",
+      "source_sha256": "9e436a8fa33d61bdcebdc9d6677dec7fc08fb078a021368b75ff53768a3a8ec6",
+      "previous_destination_sha256": "6b09558532a8b71d37e03362ace36ea020b4cf28fcc6f59eccdb188f59723f62"
+    },
+    {
+      "file": "handoff.md",
+      "source_sha256": "dc1464b5795a59c9f1f264fb701240af2651c06ea948602c6c8e1028e2cf6309",
+      "previous_destination_sha256": "9667e56f94bf0c08248e260c0152693735c5da4ece16a2fba96474918e26f73d"
+    },
+    {
+      "file": "implement.md",
+      "source_sha256": "a70e5cf41e19f4a1fe633eb875efb3258fa9844a2861447ba9d377629f72ae88",
+      "previous_destination_sha256": "e62e261594287afe752fafa294503612ecd32c5bae1b6485b04f15208043b16e"
+    },
+    {
+      "file": "prd.md",
+      "source_sha256": "215f6f9b7b7d7cf721bade810c7ba694130e4420a88ed79bc302e1392535785b",
+      "previous_destination_sha256": "d2f95e9f030106efc992e8110f8578442f7a1f06914ff4d0e7d246238aef8cd6"
+    },
+    {
+      "file": "progress.md",
+      "source_sha256": "325a83133544b173cd6bdc6dca97670cefbd45933e1177ff72ff53ea10088c0d",
+      "previous_destination_sha256": "e713954759958a184bb182c2a163a5d13292dd5f493fd506b34c78e0d7f4a99f"
+    },
+    {
+      "file": "research/decision-register.md",
+      "source_sha256": "b89eaba2b5576f6fc83e6b1da3c1749ec00fdfec6e9c14c3ce0ed072b8d75453",
+      "previous_destination_sha256": "0e85feb21624c868ea61e9cf18d73f51acb77209acab1b583a515a6d9ea8813a"
+    },
+    {
+      "file": "task.json",
+      "source_sha256": "a7e09cffca78c374ea51f3c898003c528e0e658fc222148db9a91607463c31f9",
+      "previous_destination_sha256": "4679fe272c45c4d33001413036ca644af538f6c5441f44747e40ae7056b46e8a"
+    },
+    {
+      "file": "research/archive-history-recheck-20261110.md",
+      "source_sha256": "7ffaaffa3058d1f5bc7ff0f8bc2432415a5f763281194af08b2caa1028b5e68d",
+      "previous_destination_sha256": null
+    },
+    {
+      "file": "research/resume-check-20261110.md",
+      "source_sha256": "082686359fde59eaf071f2fbb0bfa0a5a9c2e2d2cb69d8483b15340e89e8dbeb",
+      "previous_destination_sha256": null
+    },
+    {
+      "file": "research/resume-head-verification-20261110.json",
+      "source_sha256": "d57a48c512b3e1c1a6e7a9f07976b7412ff56721aabf9d56529c587eb3db0bc5",
+      "previous_destination_sha256": null
+    },
+    {
+      "file": "research/source-recheck-20261110.md",
+      "source_sha256": "dab0d799cc2e32541c26324a17a6c2ae7933a12892dfd18bec12f806adfeae04",
+      "previous_destination_sha256": null
+    }
+  ],
+  "report": "docs/audits/2026-11-11-active-task-progress-refresh.zh-CN.md",
+  "scope": "Documentation synchronization only; no new implementation or execution authorization"
+}

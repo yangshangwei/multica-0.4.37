@@ -1,0 +1,36 @@
+{
+  "recorded_at": "2026-11-03T01:40:08.207001+00:00",
+  "owner_session": "01a19ee4-40e8-7b70-b15c-5b5a13bd050e",
+  "reason": "Retired task-owned catalog API/Web after proof; retain database and logs before exclusive v11",
+  "registry": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/registry",
+  "environment_name": "closure-catalog-20261103",
+  "source_env": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/source.env",
+  "source_env_sha256": "0ff877e91ee47518ce6b3556f93ffff35ef00f0319a5a9c876918df55bb5f376",
+  "api_record": {
+    "component": "api",
+    "mode": "development",
+    "build_id": "",
+    "command": "go run -ldflags '-X main.commit=64a9994ec' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-final4-20261102/server)",
+    "source_id": "7981257755ea50553b826b8cbc34b4ff45be7c841184a8f6b5f7c8f6d31b858c",
+    "configuration_id": "7921a8c3272b96fc184140eff4984ba9994a2ac375a122be3632ac444b762cfe",
+    "commit": "64a9994ec",
+    "launcher_pid": 68992,
+    "started_at": "2026-11-02T17:19:48Z",
+    "listener_pid": 69017
+  },
+  "health": {
+    "status": "ok",
+    "pid": 69017,
+    "commit": "64a9994ec",
+    "started_at": "2026-11-02T17:19:51Z"
+  },
+  "database_retained": true,
+  "stop_command": [
+    "bash",
+    "scripts/dev-env.sh",
+    "down",
+    "closure-catalog-20261103",
+    "--components",
+    "api,web"
+  ]
+}

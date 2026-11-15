@@ -1,0 +1,15 @@
+{
+  "at": "2026-11-02T13:02:35.251064+00:00",
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-go-isolation-test.py",
+    "-k",
+    "api_pool"
+  ],
+  "wrapper": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+  "exit_code": 1,
+  "expected": "3 tests: 2 assertion failures from pool settings reaching test processes; 1 normal-forward pass",
+  "log_sha256": "b92e2364f37ccc83dba9f3202fa2f5248ed50bbfee240df9e37c81755b8fb5e5",
+  "real_database_commands": 0,
+  "real_provider_calls": 0
+}

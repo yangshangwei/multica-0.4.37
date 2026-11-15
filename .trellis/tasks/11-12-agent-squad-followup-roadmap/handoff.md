@@ -131,3 +131,15 @@ task.py validate通过（implement 14条/check 20条），68个Markdown本地目
 本任务保持in_progress。M1-S2–S6/F3/F4/F5-A–E与独立真实运行任务不标完成；不新建/归档任务，不调用真实Provider，不操作POLA-1或共享策略，不发布/部署。其他并行collaboration comments、文档及归档变动不在本提交内。
 
 最终限定审计通过：84项F2来源/工具摘要与最终文件一致，M1原批准及设计/验收区段保持原样；观察到的49项外部并行变化单列保留。提交按f2-commit-manifest的明确文件清单，server spec索引仅暂存F2单行，保留其余并行hunk。13份日志采用验证过的gzip副本提交，原始日志留在本地。未跟踪的共享verification-environment规范未被接管或暂存。
+
+## F3 规划交接（2026-11-14，design only）
+
+Codex 会话在 2026-11-13 中断于“合同、总表、usage 分源已写，执行分源、验收矩阵、校验记录及四份主文档的 F3 节未写”。本次在同一任务内补齐，未新建或归档任务，状态保持 in_progress。
+
+- 入口 HEAD `feb87aee7`，研究期间并行提交推进到 `fb9f4c070`（只动 collaboration 测试文件）；`463b201fa`、`c79dfe304`、`fafb27b1d` 均为祖先。未回退、未暂存、未清理任何并行改动。
+- 新增：`research/f3-execution-source-map-20261113.md`、`research/f3-acceptance-matrix-20261113.md`、`research/f3-planning-validation-20261113.json`。追加：合同 §11、requirements F3 节、design §13、implement §15、本节。
+- 阅读顺序：requirements F3 节 → 合同（先看 §11）→ 验收矩阵 → implement §15。
+- 源码复核改掉了五个原假设（合同 §11）：没有按原 claim 查询的恢复；`claim_generation` 不上行；普通 agent 无 invoke 复核；`RequireHumanActor` 对未知来源放行；quick-create 执行无 `issue_id`。
+- 待用户决定：D2 关闭与留存、D3 使用面与权限、D4 计价承诺、D5 强制启用条件、D6 quick-create 是否纳入。D1 已确认。
+- 未运行任何产品/DB 测试；矩阵 62 行全部未运行。没有 F3 实施授权；未调用 Provider、未操作 POLA-1、未改共享策略、未发布/部署。M1-S2–S6、F4、F5-A–E 仍未完成。
+- F3 文档均未提交。

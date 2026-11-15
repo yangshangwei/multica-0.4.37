@@ -1,0 +1,121 @@
+{
+  "review_kind": "planning_only",
+  "reviewer": "/root/s2_plan_check",
+  "recorded_at": "2026-11-13T08:56:50.830731+00:00",
+  "baseline_head": "feb87aee75fa6b9dd051a4e35bf7df8b101edb75",
+  "verdict": "needs_revision",
+  "ready_for_implementation": false,
+  "scope": "S2 draft planning and cited current source paths; no product changes or product verification",
+  "blocking_product_choice_pending": true,
+  "planning_sha256": {
+    "prd.md": "4f25954040bc221f0c346fe96f7843f6187d8a0fa5c60bad679b544067034230",
+    "design.md": "3d8df6b4dc320447e9ea342c91e85f645e5678db44112c875b2655dd309bf110",
+    "implement.md": "f463f665363632381990cc6811fae5089890ffa3bbe86d12100a36ba66d1bb71",
+    "implement.jsonl": "5b26c91fc2c371a2a250e02cee3500ee5e6e31531433f4c10b9251fdbe79ef6a",
+    "check.jsonl": "5b26c91fc2c371a2a250e02cee3500ee5e6e31531433f4c10b9251fdbe79ef6a"
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "priority": "P1",
+      "kind": "planning_contract_gap",
+      "title": "Original signer authority generations and role-configuration authority are not specified",
+      "criteria": [
+        "A01",
+        "A04",
+        "A06",
+        "A08",
+        "A10"
+      ],
+      "status": "open",
+      "fix_owner": "main_session"
+    },
+    {
+      "id": "F02",
+      "priority": "P1",
+      "kind": "planning_contract_gap",
+      "title": "Evidence version identity is not separated from workflow CAS and additive later-stage evidence",
+      "criteria": [
+        "A02",
+        "A03",
+        "A05",
+        "A08",
+        "A09"
+      ],
+      "status": "open",
+      "fix_owner": "main_session"
+    },
+    {
+      "id": "F03",
+      "priority": "P1",
+      "kind": "planning_contract_gap",
+      "title": "Stage-only completion has no guaranteed final validation when M1 returns NotApplicable",
+      "criteria": [
+        "A08",
+        "A09"
+      ],
+      "status": "open",
+      "fix_owner": "main_session"
+    },
+    {
+      "id": "F04",
+      "priority": "P1",
+      "kind": "planning_contract_gap",
+      "title": "Suggestion lineage/materialization and alternate child admission paths lack an executable contract",
+      "criteria": [
+        "A02",
+        "A04",
+        "A08",
+        "A09"
+      ],
+      "status": "open",
+      "fix_owner": "main_session"
+    },
+    {
+      "id": "F05",
+      "priority": "P1",
+      "kind": "planning_contract_gap",
+      "title": "Typed test/deployment evidence intake and provenance eligibility are not frozen",
+      "criteria": [
+        "A03",
+        "A05",
+        "A06",
+        "A07",
+        "A09"
+      ],
+      "status": "open",
+      "fix_owner": "main_session"
+    },
+    {
+      "id": "F06",
+      "priority": "P1",
+      "kind": "planning_contract_gap",
+      "title": "Known shared-client M1 completion, recovery and stage-event projection gaps lack explicit ownership",
+      "criteria": [
+        "A08",
+        "A09",
+        "A10",
+        "A11",
+        "A12"
+      ],
+      "status": "open",
+      "fix_owner": "main_session"
+    }
+  ],
+  "checks": {
+    "trellis_context_validate": "pass",
+    "manifest_entries_per_role": 10,
+    "missing_manifest_paths": [],
+    "unique_acceptance_criteria": 12,
+    "unique_parent_cases": 24,
+    "source_paths_inspected": true,
+    "lint": "not_run_planning_only",
+    "typecheck": "not_run_planning_only",
+    "product_tests": "not_run_planning_only"
+  },
+  "changed_files": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/plan-review.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/plan-review.json"
+  ],
+  "report": "research/plan-review.md"
+}

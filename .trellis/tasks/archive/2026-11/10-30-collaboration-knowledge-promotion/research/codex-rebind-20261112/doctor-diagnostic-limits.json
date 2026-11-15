@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "codex_preparation_network_diagnostics",
+  "command": "codex doctor --network-only --json --no-color",
+  "exit_code": 0,
+  "codex_reported_overall_status": "ok",
+  "endpoint": "https://agentrouter.org/v1",
+  "probe_response_statuses": [
+    404,
+    401
+  ],
+  "native_path_identity": "CLI diagnostic defaults; not Multica app-server request identity",
+  "not_provider_acceptance": true,
+  "model_turns_started": 0,
+  "gateway_admission_confirmed": false,
+  "inference_health_probe": false,
+  "scope": "Read-only native diagnostic ran in preparation; the reported ok only denotes reachability, and HTTP401 does not establish credential/admission success. No new real test slot was started."
+}

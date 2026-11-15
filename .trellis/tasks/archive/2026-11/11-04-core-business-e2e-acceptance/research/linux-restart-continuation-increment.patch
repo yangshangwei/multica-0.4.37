@@ -1,0 +1,92 @@
+--- a/e2e/fixtures/collaboration-installed-main.mjs
++++ b/e2e/fixtures/collaboration-installed-main.mjs
+@@ -47,7 +47,8 @@
+     await commandEvent(message, phase, "completed");
+     return result;
+   } catch (error) {
+-    await commandEvent(message, phase, "failed");
++    try { await commandEvent(message, phase, "failed"); }
++    catch (eventError) { throw new AggregateError([error, eventError], "Installed operation and event transport failed", { cause: error }); }
+     throw error;
+   }
+ }
+@@ -72,6 +73,13 @@
+   let text = typeof value === "string" ? value : JSON.stringify(value);
+   for (const secret of secrets) text = text.replaceAll(secret, "<private-fixture-value>");
+   return text.replace(/\b(?:eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+|mdt_[A-Za-z0-9_-]+|pat_[A-Za-z0-9_-]+)\b/g, "<credential>");
++}
++
++function failureText(error, depth = 0) {
++  // Keep each controller-side failure through the existing credential scrubber.
++  const own = scrub(error instanceof Error ? error.stack ?? error.message : String(error)).slice(0, 8192);
++  if (!(error instanceof AggregateError) || depth >= 4) return own;
++  return [own, ...error.errors.slice(0, 8).map((item, index) => `Failure ${index + 1}: ${failureText(item, depth + 1)}`)].join("\n");
+ }
+ 
+ function reply(id, value, error) {
+@@ -740,8 +748,10 @@
+     reply(message.id, value);
+     if (message.command === "close") break;
+   } catch (error) {
+-    await commandEvent(message, "command", "failed");
+-    reply(message?.id ?? null, undefined, scrub(error instanceof Error ? error.stack ?? error.message : String(error)));
++    let failure = error;
++    try { await commandEvent(message, "command", "failed"); }
++    catch (eventError) { failure = new AggregateError([error, eventError], "Installed command and event transport failed", { cause: error }); }
++    reply(message?.id ?? null, undefined, failureText(failure));
+   }
+ }
+ if (app) {
+--- a/e2e/fixtures/collaboration-installed-main.node-test.mjs
++++ b/e2e/fixtures/collaboration-installed-main.node-test.mjs
+@@ -3,6 +3,7 @@
+ import { spawnSync } from "node:child_process";
+ import test from "node:test";
+ import { PassThrough } from "node:stream";
++import vm from "node:vm";
+ import { mkdtempSync, readFileSync, statSync, existsSync, rmSync } from "node:fs";
+ import { tmpdir } from "node:os";
+ import { dirname, join } from "node:path";
+@@ -166,3 +167,42 @@
+     assert(!JSON.stringify(client.transportEvidence).includes(secret));
+   } finally { child.stdout.end(); child.stderr.end(); }
+ });
++
++
++test("controller phase event failure cannot replace the failed operation", async () => {
++  // Exercise the actual controller helper without starting its top-level process loop.
++  const source = readFileSync(new URL("./collaboration-installed-main.mjs", import.meta.url), "utf8");
++  const start = source.indexOf("async function commandPhase(");
++  const end = source.indexOf("\nconst secrets =", start);
++  assert(start >= 0 && end > start);
++  const primary = new Error("operation failed");
++  const transport = new Error("event pipe failed");
++  const outcomes = [];
++  const commandPhase = vm.runInNewContext(`${source.slice(start, end)}; commandPhase`, {
++    AggregateError,
++    commandEvent: async (_message, _phase, outcome) => {
++      outcomes.push(outcome);
++      if (outcome === "failed") throw transport;
++    },
++  });
++  await assert.rejects(commandPhase({ id: 1, command: "restart" }, "restart.close", async () => { throw primary; }), error => {
++    assert(error instanceof AggregateError);
++    assert.equal(error.cause, primary);
++    assert.deepEqual(error.errors, [primary, transport]);
++    return true;
++  });
++  assert.deepEqual(outcomes, ["started", "failed"]);
++});
++
++test("controller aggregate failure replies retain member errors while scrubbing credentials", () => {
++  const source = readFileSync(new URL("./collaboration-installed-main.mjs", import.meta.url), "utf8");
++  const start = source.indexOf("function scrub(");
++  const end = source.indexOf("\nfunction reply(", start);
++  assert(start >= 0 && end > start);
++  const secret = "private-synthetic-password";
++  const failureText = vm.runInNewContext(`${source.slice(start, end)}; failureText`, { Error, AggregateError, secrets: new Set([secret]) });
++  const text = failureText(new AggregateError([new TypeError(`primary ${secret}`), new Error(`cleanup ${secret}`)], "both failed"));
++  assert(text.includes("TypeError: primary <private-fixture-value>"));
++  assert(text.includes("Error: cleanup <private-fixture-value>"));
++  assert(!text.includes(secret));
++});

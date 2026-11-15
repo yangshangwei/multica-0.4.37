@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "kind": "runtime_h3a_continuation_implementation_verification",
+  "recorded_at_utc": "2026-11-12T04:53:57.531742+00:00",
+  "scope": "task-local runtime continuation entry, default-closed admission, fake/control validation only",
+  "registration": {
+    "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261112/real-execution-registration.json",
+    "sha256": "1dba4041d1ec45ef24a14de055c9ac292e3f3dab78512bb993c1b5b0c0c0fe64"
+  },
+  "implementation": {
+    "files": [
+      "server/cmd/server/rk1_runtime_continuation_test.go",
+      "server/cmd/server/rk1_provider_test.go",
+      "server/cmd/server/rk1_trial_test.go",
+      "server/cmd/server/rk1_observe_test.go",
+      "research/continuation-20261112/run_continuation.py"
+    ],
+    "framework_sha256": "71f7ca86b99d1e12cc71980d4f5c506e5c6d15b6e56ebab8731ea0d43609bad8",
+    "source_id": "60cad529c638fc3a56fe2cfbd41af1f142677ee23af0350d937b9623ac6ff7db"
+  },
+  "commands": [
+    {
+      "command": "gofmt -w server/cmd/server/rk1_runtime_continuation_test.go server/cmd/server/rk1_provider_test.go server/cmd/server/rk1_observe_test.go server/cmd/server/rk1_trial_test.go",
+      "exit_code": 0
+    },
+    {
+      "command": "go -C server test -tags=agentintegration -run ^$ -c -o /tmp/multica-rk1-continuation-current.test ./cmd/server",
+      "exit_code": 0
+    },
+    {
+      "command": "go -C server vet -tags=agentintegration ./cmd/server",
+      "exit_code": 0
+    },
+    {
+      "command": "DATABASE_URL=...multica_rk1_continuation_20261111 go -C server test -tags=agentintegration -run ^TestRK1RuntimeContinuationControls$ -count=1 ./cmd/server",
+      "exit_code": 0,
+      "scope": "control suite; task-owned fake DB"
+    },
+    {
+      "command": "DATABASE_URL=...multica_rk1_continuation_20261111 go -C server test -race -tags=agentintegration -run ^TestRK1RuntimeContinuationControls$ -count=1 ./cmd/server",
+      "exit_code": 0,
+      "scope": "race control suite; task-owned fake DB"
+    },
+    {
+      "command": "DATABASE_URL=...multica_rk1_continuation_20261111 go -C server test -tags=agentintegration -run ^TestRK1FakeProof$ -count=1 ./cmd/server",
+      "exit_code": 0,
+      "log": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261112/verification/fake-normal-final.log",
+      "log_sha256": "577fa259e997e167d46b8b1ea0c94ec630a6d224be620f781a27ea007d306599",
+      "log_bytes": 316772,
+      "scope": "fake-provider normal; no real Provider"
+    },
+    {
+      "command": "DATABASE_URL=...multica_rk1_continuation_20261111 go -C server test -race -tags=agentintegration -run ^TestRK1FakeProof$ -count=1 ./cmd/server",
+      "exit_code": 0,
+      "log": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261112/verification/fake-race-final.log",
+      "log_sha256": "9172bfed27f9b2ef54c51077f63d013d8dcb10d3b52a97b873db598e8f651941",
+      "log_bytes": 413758,
+      "scope": "fake-provider race; no real Provider"
+    },
+    {
+      "command": "python3 research/continuation-20261112/run_continuation.py RK1-H3a 3 --check-only",
+      "exit_code": 2,
+      "scope": "default-closed preflight refusal; no Provider/CLI/permit/window/database mutation"
+    },
+    {
+      "command": "python3 research/continuation-20261112/run_continuation.py RK1-H3a 3 --check-only",
+      "exit_code": 2,
+      "log": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261112/verification/preflight-final.log",
+      "log_sha256": "e59b2c2325c218d3dfb30ca1efacae0cd4dbd4504a3c54f032026c631a1d8316",
+      "scope": "default-closed refusal; provider_cli_invoked=false, model_calls=0, permit_used=false, execution_window_claimed=false, database_mutated=false"
+    },
+    {
+      "command": "DATABASE_URL=...multica_rk1_continuation_20261111 go -C server test -tags=agentintegration -run ^TestRK1RuntimeContinuationControls$ -count=1 ./cmd/server",
+      "exit_code": 0,
+      "scope": "final post-hardening control suite"
+    },
+    {
+      "command": "DATABASE_URL=...multica_rk1_continuation_20261111 go -C server test -race -tags=agentintegration -run ^TestRK1RuntimeContinuationControls$ -count=1 ./cmd/server",
+      "exit_code": 0,
+      "scope": "final post-hardening race control suite"
+    },
+    {
+      "command": "python3 research/continuation-20261112/run_continuation.py RK1-H3a 3 --check-only",
+      "exit_code": 2,
+      "log": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261112/verification/preflight-final2.log",
+      "log_sha256": "e59b2c2325c218d3dfb30ca1efacae0cd4dbd4504a3c54f032026c631a1d8316",
+      "scope": "final default-closed refusal after operator config hash hardening"
+    }
+  ],
+  "history": {
+    "result_sha256": "9a4b94050ad696c46512b0833d27398ac0c6ef48770f6085d1db1283f9d628ce",
+    "invocation_sha256": "909ac2da3054ab19ce4a75290ce9c5b06778740835efa414f6f206d863ddd3ed",
+    "review_inventory_sha256": "e5807dddbc40ff880b431fb5ba002457c407fb2d77b75ee76d3b3841d30b991b",
+    "approval_sha256": "7d743b5e1defa5fe8875c79a84d95c9982e9b0bfb650258a936a9214ed74f53c",
+    "authorization_sha256": "1f56add2daca80c4f17575550979ce783f7a1ea860ef63e78e584e80e258f580"
+  },
+  "real_execution": {
+    "provider_calls": 0,
+    "model_calls": 0,
+    "permit_used": false,
+    "execution_window_claimed": false,
+    "database_mutated": false,
+    "gate": {
+      "runnable": false,
+      "allow_build": false,
+      "allow_check": false,
+      "allow_run": false,
+      "reason": "Current source, framework review, CLI/config/database/window/permit and legitimate Provider gateway bindings are not all proven; registration is preparation-only."
+    }
+  },
+  "assertions": [
+    "reservation_is_distinct_from_actual_start",
+    "actual_start_marked_by_wrapper_after_launch_directory_creation",
+    "termination_requires_finished_at_and_exit_code",
+    "evidence_hash_persisted_and_not_reused",
+    "incomplete_runtime_environment_harness_and_h5_canary_stop",
+    "historical_slot_duplicate_order_overcap_source_drift_path_alias_and_concurrency_refuse",
+    "old_launcher_old_registration_old_result_immutable"
+  ],
+  "fake_evidence": {
+    "normal": {
+      "exit": 0,
+      "log_sha256": "577fa259e997e167d46b8b1ea0c94ec630a6d224be620f781a27ea007d306599"
+    },
+    "race": {
+      "exit": 0,
+      "log_sha256": "9172bfed27f9b2ef54c51077f63d013d8dcb10d3b52a97b873db598e8f651941"
+    }
+  },
+  "independent_review": {
+    "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261112/independent-review.json",
+    "sha256": "dd9c6d99ae88d9759d07d1eb44566db255c53bc4009ee457aa6f6ca344e9729a",
+    "checks": 17,
+    "passed": true,
+    "disposition": "BLOCKED_PREPARATION_ONLY"
+  },
+  "gate_hardening_followup": {
+    "operator_config_hash_is_required_before_real_admission": true,
+    "controls_normal_exit": 0,
+    "controls_race_exit": 0,
+    "provider_calls": 0
+  },
+  "quality_checks": {
+    "pnpm_lint": {
+      "exit_code": 0,
+      "notes": "27 existing warnings, zero errors"
+    },
+    "pnpm_typecheck": {
+      "exit_code": 0
+    },
+    "pnpm_test": {
+      "exit_code": 1,
+      "passed_tests": 4525,
+      "failed_tests": 1,
+      "failure": "@multica/core platform/core-provider.test.tsx StrictMode=false hook timeout; unrelated to Runtime server files"
+    },
+    "targeted_core_provider_retry": {
+      "exit_code": 0,
+      "tests_passed": 2,
+      "tests_skipped": 3
+    }
+  }
+}

@@ -1,0 +1,1231 @@
+{
+  "diagnosed_at": "2026-11-02T17:05:25.682735+00:00",
+  "reviewer": "/root/rk1_result_review",
+  "active_task": ".trellis/tasks/10-30-collaboration-fix-closure",
+  "scope": "Read-only authoritative v9 final catalogue-failure slice:13 of16; unrelated3 slices remain root-owned",
+  "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "api_running_commit": "64a9994ec",
+  "v9_state_at_read": "complete exit2",
+  "triage_snapshot_sha256": "400791a078ba3d345eaee0d09038ca7a29a4fc89e813f70d3b767e1a7e9bcdb5",
+  "triage_sections": 9,
+  "provided_groups": {
+    "capability-market": 3,
+    "mcp-market": 5,
+    "missing-user-session": 1
+  },
+  "diagnosis": "The authoritative final inventory contains13 catalogue-related failures. Configured missing publication root explains real catalogueGET503 and downstream template availability; missing MCP parent directly causes the deployment fixture mkdtemp failure. These are confirmed task setup defects, with no product-source fix justified until fresh targeted replay.",
+  "findings": [
+    {
+      "id": "BCD-1",
+      "severity": "blocking full browser acceptance",
+      "category": "task environment preparation",
+      "finding": "The API is configured with a nonempty task-owned managed ResourcePublisher Root, but that directory does not exist. openRoot rejects absent roots before managed index reading. Both skill and MCP consumer catalogs deliberately propagate that managed-store failure, suppressing built-in rows rather than falling back.",
+      "evidence": [
+        "actual check.env configured publisher path; direct read-only existence check false",
+        "all observed successful catalog200 statuses are OPTIONS; actual catalog GETs are503",
+        "retained Skill/MCP page snapshots show catalog load errors and missing templates",
+        "exact64a managedBundles/openRoot/consumer paths enforce fail-closed behavior"
+      ],
+      "minimal_fix": "After v9 ends, provision a fresh owned persistent published directory with private permissions before a newly registered API/browser replay. Preserve configured publication support; do not weaken fail-closed product code or browser assertions. Verify real catalogue GET200 and the expected built-in metadata before replay."
+    },
+    {
+      "id": "BCD-2",
+      "severity": "blocking deployment MCP fixture",
+      "category": "task filesystem fixture preparation",
+      "finding": "E2E_MCP_TEMPLATE_DIR and API MCP directory point to the same absent task-owned path. verifyDeploymentMcpCatalog calls mkdtemp beneath that path before its try/finally. The actual deployment test has an ENOENT/mkdtemp failure.",
+      "evidence": [
+        "actual bounded mcp-market.spec.ts71 section contains ENOENT and mkdtemp/catalog path",
+        "read-only MCP root existence check false",
+        "fixture source calls mkdtemp(join(root,...)) without creating the parent"
+      ],
+      "minimal_fix": "Create fresh owned MCP parent directory before replay, with API and test directory values identical. Prepare the task-owned skills directory too, so all three paths have explicit identity/permissions records. Preserve manual/read-only versus managed directory separation."
+    }
+  ],
+  "configured_nonsecret_catalog_paths": {
+    "MULTICA_AUTH_MODE": "legacy",
+    "MULTICA_PLATFORM_ADMIN_ENABLED": "false",
+    "MULTICA_MCP_TEMPLATE_DIR": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/catalog/mcp",
+    "E2E_MCP_TEMPLATE_DIR": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/catalog/mcp",
+    "MULTICA_SKILL_TEMPLATE_DIR": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/catalog/skills",
+    "MULTICA_RESOURCE_PUBLISH_DIR": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/catalog/published"
+  },
+  "actual_filesystem_snapshot": [
+    {
+      "key": "MULTICA_MCP_TEMPLATE_DIR",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/catalog/mcp",
+      "exists_at_read": false,
+      "is_symlink": false,
+      "is_directory": false
+    },
+    {
+      "key": "E2E_MCP_TEMPLATE_DIR",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/catalog/mcp",
+      "exists_at_read": false,
+      "is_symlink": false,
+      "is_directory": false
+    },
+    {
+      "key": "MULTICA_SKILL_TEMPLATE_DIR",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/catalog/skills",
+      "exists_at_read": false,
+      "is_symlink": false,
+      "is_directory": false
+    },
+    {
+      "key": "MULTICA_RESOURCE_PUBLISH_DIR",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/catalog/published",
+      "exists_at_read": false,
+      "is_symlink": false,
+      "is_directory": false
+    }
+  ],
+  "actual_catalog_API_statuses": [
+    {
+      "route": "/api/workspaces/:workspace/mcp-servers/templates",
+      "method": "OPTIONS",
+      "status": 200,
+      "count": 7
+    },
+    {
+      "route": "/api/workspaces/:workspace/mcp-servers/templates",
+      "method": "GET",
+      "status": 503,
+      "count": 48
+    },
+    {
+      "route": "/api/skills/templates",
+      "method": "OPTIONS",
+      "status": 200,
+      "count": 3
+    },
+    {
+      "route": "/api/skills/templates",
+      "method": "GET",
+      "status": 503,
+      "count": 19
+    }
+  ],
+  "catalog_GET503_log_samples": [
+    {
+      "log_line": 2813,
+      "route": "/api/workspaces/:workspace/mcp-servers/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 2815,
+      "route": "/api/skills/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 2833,
+      "route": "/api/skills/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 2862,
+      "route": "/api/workspaces/:workspace/mcp-servers/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 2876,
+      "route": "/api/skills/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 2878,
+      "route": "/api/workspaces/:workspace/mcp-servers/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 2879,
+      "route": "/api/skills/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 2883,
+      "route": "/api/skills/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 2884,
+      "route": "/api/skills/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 2889,
+      "route": "/api/skills/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 2890,
+      "route": "/api/skills/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 2896,
+      "route": "/api/skills/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 2897,
+      "route": "/api/skills/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 2968,
+      "route": "/api/skills/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 2969,
+      "route": "/api/skills/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 3022,
+      "route": "/api/skills/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 3024,
+      "route": "/api/skills/templates",
+      "method": "GET",
+      "status": 503
+    },
+    {
+      "log_line": 15012,
+      "route": "/api/workspaces/:workspace/mcp-servers/templates",
+      "method": "GET",
+      "status": 503
+    }
+  ],
+  "catalog_200s_are_preflight_OPTIONS": true,
+  "bounded_failure_cases": [
+    {
+      "provided_test_identity": "1) [chromium] › e2e/capability-market.spec.ts:5:1 › capability market restores type and draft through history while resource management stays separate",
+      "bounded_section_sha256": "bc365fc4c76f52960375f0b9d3fd5fd3e58b2d06e67aa14960bfd445e568381d",
+      "bounded_lines": 20,
+      "source_locations": [],
+      "filesystem_categories": [],
+      "mkdtemp_failure": false,
+      "hard_test_timeout": true,
+      "locator_lines": [],
+      "numeric_expected_received": [],
+      "DOM_catalog_error_observed": true
+    },
+    {
+      "provided_test_identity": "2) [chromium] › e2e/capability-market.spec.ts:107:1 › capability market isolates workspace resources, preferences and transient drafts",
+      "bounded_section_sha256": "942abaf1c365a0c321fdf8b1bd0c33086f4df85137c1043fab204afa7c83c794",
+      "bounded_lines": 28,
+      "source_locations": [
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/capability-market.spec.ts:152:19"
+      ],
+      "filesystem_categories": [],
+      "mkdtemp_failure": false,
+      "hard_test_timeout": false,
+      "locator_lines": [],
+      "numeric_expected_received": [],
+      "DOM_catalog_error_observed": false
+    },
+    {
+      "provided_test_identity": "3) [chromium] › e2e/capability-market.spec.ts:219:1 › capability market separates catalog failures and polls only the active type",
+      "bounded_section_sha256": "cbf67fb28df2896f4416b37e1a09782426a4601f44dc013e8b75cc105bc2d2ab",
+      "bounded_lines": 36,
+      "source_locations": [
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/capability-market.spec.ts:256:98"
+      ],
+      "filesystem_categories": [],
+      "mkdtemp_failure": false,
+      "hard_test_timeout": false,
+      "locator_lines": [
+        "Locator: getByRole('button', { name: 'Preview multica-code-review', exact: true })"
+      ],
+      "numeric_expected_received": [],
+      "DOM_catalog_error_observed": true
+    },
+    {
+      "provided_test_identity": "4) [chromium] › e2e/mcp-market.spec.ts:71:1 › deployment MCP files appear live and saved snapshots survive updates and withdrawal",
+      "bounded_section_sha256": "423ceee47fd8b5fa57267a2ac7569b2a90490e83ff7061153e93d5f2d28e4730",
+      "bounded_lines": 28,
+      "source_locations": [
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/mcp-market.spec.ts:77:5"
+      ],
+      "filesystem_categories": [
+        "ENOENT"
+      ],
+      "mkdtemp_failure": true,
+      "hard_test_timeout": false,
+      "locator_lines": [],
+      "numeric_expected_received": [],
+      "DOM_catalog_error_observed": true
+    },
+    {
+      "provided_test_identity": "5) [chromium] › e2e/mcp-market.spec.ts:144:1 › uses the collection canvas and adapts template columns to the available width",
+      "bounded_section_sha256": "66eecc10b7b6a0386fc2b2b7d18651a06ae80458de6fc2994b427b24b3ee518e",
+      "bounded_lines": 35,
+      "source_locations": [
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/mcp-market.spec.ts:162:25"
+      ],
+      "filesystem_categories": [],
+      "mkdtemp_failure": false,
+      "hard_test_timeout": false,
+      "locator_lines": [
+        "Locator:  getByTestId('mcp-market').locator('.grid > div')"
+      ],
+      "numeric_expected_received": [
+        "Expected: 16",
+        "Received: 0"
+      ],
+      "DOM_catalog_error_observed": false
+    },
+    {
+      "provided_test_identity": "6) [chromium] › e2e/mcp-market.spec.ts:188:1 › creates and explicitly assigns all sixteen recipes, preserves source after rename, and reuses an instance from an agent",
+      "bounded_section_sha256": "308e381ecb46ccf6910464c5afd1228ce8a8a20d0afbc94390cfbf548a6a2dc7",
+      "bounded_lines": 20,
+      "source_locations": [],
+      "filesystem_categories": [],
+      "mkdtemp_failure": false,
+      "hard_test_timeout": true,
+      "locator_lines": [],
+      "numeric_expected_received": [],
+      "DOM_catalog_error_observed": true
+    },
+    {
+      "provided_test_identity": "7) [chromium] › e2e/mcp-market.spec.ts:400:1 › retries a failed assignment without recreating the saved MCP or repeating successful grants",
+      "bounded_section_sha256": "79464529139b22f18f430386520d53e71761202a7c9c42a3e7270dc524b69d92",
+      "bounded_lines": 27,
+      "source_locations": [
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/mcp-market.spec.ts:428:16"
+      ],
+      "filesystem_categories": [],
+      "mkdtemp_failure": false,
+      "hard_test_timeout": true,
+      "locator_lines": [],
+      "numeric_expected_received": [],
+      "DOM_catalog_error_observed": true
+    },
+    {
+      "provided_test_identity": "8) [chromium] › e2e/mcp-market.spec.ts:433:1 › a member can discover templates and reuse a workspace instance for their agent without creating one",
+      "bounded_section_sha256": "0a32d4f9901f3e6fa1a1e725c7001d5e2f31d61ec86b0fe187be5ad2c78f1426",
+      "bounded_lines": 16,
+      "source_locations": [],
+      "filesystem_categories": [],
+      "mkdtemp_failure": false,
+      "hard_test_timeout": true,
+      "locator_lines": [],
+      "numeric_expected_received": [],
+      "DOM_catalog_error_observed": true
+    },
+    {
+      "provided_test_identity": "9) [chromium] › e2e/missing-user-session.spec.ts:5:1 › an obsolete session returns to sign-in and can open the MCP market after a fresh login",
+      "bounded_section_sha256": "a230c9658195ff36796a0efd93798d941109e28ca5930fa812bedf740ad4003f",
+      "bounded_lines": 36,
+      "source_locations": [
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/missing-user-session.spec.ts:50:101"
+      ],
+      "filesystem_categories": [],
+      "mkdtemp_failure": false,
+      "hard_test_timeout": false,
+      "locator_lines": [
+        "Locator: getByRole('button', { name: 'View configuration: Playwright', exact: true })"
+      ],
+      "numeric_expected_received": [],
+      "DOM_catalog_error_observed": false
+    }
+  ],
+  "retained_DOM_categories": [
+    {
+      "test_index": 1,
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/capability-market-capabili-22f9b-e-management-stays-separate-chromium/error-context.md",
+      "signals": {
+        "skill_catalog_error": true,
+        "mcp_catalog_error": false,
+        "mcp_loading": false
+      },
+      "bytes": 7354
+    },
+    {
+      "test_index": 2,
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/capability-market-capabili-fc7e0-rences-and-transient-drafts-chromium/error-context.md",
+      "signals": {
+        "skill_catalog_error": false,
+        "mcp_catalog_error": false,
+        "mcp_loading": false
+      },
+      "bytes": 3649
+    },
+    {
+      "test_index": 3,
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/capability-market-capabili-0b369--polls-only-the-active-type-chromium/error-context.md",
+      "signals": {
+        "skill_catalog_error": true,
+        "mcp_catalog_error": false,
+        "mcp_loading": false
+      },
+      "bytes": 7318
+    },
+    {
+      "test_index": 4,
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-deployment-MCP--2b345-vive-updates-and-withdrawal-chromium/error-context.md",
+      "signals": {
+        "skill_catalog_error": false,
+        "mcp_catalog_error": false,
+        "mcp_loading": true
+      },
+      "bytes": 7463
+    },
+    {
+      "test_index": 5,
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-uses-the-collec-3aa82-umns-to-the-available-width-chromium/error-context.md",
+      "signals": {
+        "skill_catalog_error": false,
+        "mcp_catalog_error": false,
+        "mcp_loading": false
+      },
+      "bytes": 3649
+    },
+    {
+      "test_index": 6,
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/error-context.md",
+      "signals": {
+        "skill_catalog_error": false,
+        "mcp_catalog_error": true,
+        "mcp_loading": false
+      },
+      "bytes": 7803
+    },
+    {
+      "test_index": 7,
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-retries-a-faile-53df7-repeating-successful-grants-chromium/error-context.md",
+      "signals": {
+        "skill_catalog_error": false,
+        "mcp_catalog_error": true,
+        "mcp_loading": false
+      },
+      "bytes": 7632
+    },
+    {
+      "test_index": 8,
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-a-member-can-di-c5ca3--agent-without-creating-one-chromium/error-context.md",
+      "signals": {
+        "skill_catalog_error": false,
+        "mcp_catalog_error": true,
+        "mcp_loading": false
+      },
+      "bytes": 7640
+    },
+    {
+      "test_index": 9,
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/missing-user-session-an-ob-8e83a--market-after-a-fresh-login-chromium/error-context.md",
+      "signals": {
+        "skill_catalog_error": false,
+        "mcp_catalog_error": false,
+        "mcp_loading": false
+      },
+      "bytes": 3649
+    }
+  ],
+  "source_chain": {
+    "resource_root_guard": "server/internal/service/resource_store.go:49-68",
+    "managed_bundles": "server/internal/service/resource_catalog.go:147-155",
+    "MCP_list": "server/internal/service/mcp_catalog.go:22-26",
+    "MCP_publisher_merge": "server/internal/service/resource_catalog.go:390-409",
+    "skill_publisher_merge": "server/internal/service/skill_template_dir.go:68-77",
+    "handler_publisher_assignment": "server/internal/handler/handler.go:568-597",
+    "catalog_path_config": "server/cmd/server/router.go:435",
+    "public_workspace_active_org": "server/internal/handler/workspace.go:255-277",
+    "MCP_fixture_mkdtemp": "e2e/fixtures/mcp-deployment.ts:17-19",
+    "missing_session_boundary": "e2e/missing-user-session.spec.ts:49-50"
+  },
+  "CLI_guard": {
+    "selected_v9_pnpm_sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+    "guard_forwarding_observed": true,
+    "catalog_List_does_not_execute_recipes": true,
+    "guard_bypass_not_required": true
+  },
+  "built_Web_rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "http://localhost:18247/api/:path*"
+    }
+  ],
+  "browser_environment": {
+    "command": [
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json"
+    ],
+    "candidate": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102",
+    "api_url": "http://localhost:18247",
+    "web_url": "http://localhost:13167",
+    "renderer_url": "http://127.0.0.1:19845/",
+    "database_name": "multica_check_20261102153609_20595_api",
+    "provider_accounts": false,
+    "fixture_wiring_only": true
+  },
+  "organization_diagnosis": "No direct row evidence; no missing-org diagnosis or manual SQL seed is justified. Public fixture creates workspace via an active-org gate. Missing publish root fails independently.",
+  "missing_user_session_scope": "Failure is at the final Playwright template button after prior login/route/tab assertions; no evidence that initial session recovery caused this failure. Later final auth-error assertions were not reached.",
+  "unknowns": [
+    "No database queries were permitted, so current organization rows and exact request-by-request organization callbacks were not directly inspected. However public workspace creation code requires EnsureInternalOrganization to return active before committing; missing publisher directory remains a sufficient independent blocker even with an active organization.",
+    "API middleware logs retain method/path/status but not the internal store-error category/body; no claim that one specific inaccessible-index or org branch was observed in a server stack trace. The configured absent root is directly verified and would necessarily fail openRoot.",
+    "Some retained error-context files are effectively empty after test cleanup. Their exact UI disappearance or cleanup timing is unknown; use the failure identity, source boundary and real GET503 rather than invent a visual cause.",
+    "The13 selected final cases include3 direct skill-catalogAPI503 errors,1 direct MCP filesystem fixture failure and9 blocked template/category/card UI cases. The latter are consistent with the verified catalogue failure but their full product journeys were not reached. A fresh initialized setup replay must verify the remedy."
+  ],
+  "needed_replay": {
+    "after_v9_finishes_only": true,
+    "fresh_owned_API_database_and_catalog_paths": true,
+    "command": [
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/capability-market.spec.ts",
+      "e2e/localized-template-defaults.spec.ts",
+      "e2e/mcp-market.spec.ts",
+      "e2e/missing-user-session.spec.ts",
+      "e2e/skill-market.spec.ts",
+      "e2e/skill-template-creation.spec.ts",
+      "e2e/workspace-defaults.spec.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json"
+    ],
+    "preceding_checks": [
+      "record nonsecret path identity/owner/mode for MCP,skills,published directories; all directories exist and are separate",
+      "actual catalogue GET returns200; MCP contains exactly16 builtins before fixture mutation, skills include multica-code-review",
+      "normal public workspace fixture passes active organization gate; no raw business-db seed",
+      "record currentAPI/Web/source/config/artifact identities"
+    ],
+    "preserve_assertions": [
+      "16 built-in MCP recipes",
+      "live file update/withdrawal and saved source/version metadata",
+      "normal skill categories/search/draft history",
+      "stale-session sign-in followed by real template availability"
+    ],
+    "serialize_with_shared_catalog_cases": [
+      "admin-resource-publishing.spec.ts",
+      "mcp-desktop.spec.ts",
+      "other deployment MCP directory fixtures"
+    ],
+    "then_complete_candidate_acceptance": "Do not splice targeted replay passes into v9; root chooses a newly numbered complete gate after fixes are reviewed.",
+    "selected_failed_test_titles": [
+      "capability market restores type and draft through history while resource management stays separate",
+      "capability market isolates workspace resources, preferences and transient drafts",
+      "capability market separates catalog failures and polls only the active type",
+      "specialist skills localize, search and open their official copies without rewriting stored content",
+      "deployment MCP files appear live and saved snapshots survive updates and withdrawal",
+      "uses the collection canvas and adapts template columns to the available width",
+      "creates and explicitly assigns all sixteen recipes, preserves source after rename, and reuses an instance from an agent",
+      "retries a failed assignment without recreating the saved MCP or repeating successful grants",
+      "a member can discover templates and reuse a workspace instance for their agent without creating one",
+      "an obsolete session returns to sign-in and can open the MCP market after a fresh login",
+      "discovers deployment templates and creates a workspace copy while keeping market context",
+      "creates an edited independent skill after previewing and cancelling without writes",
+      "keeps built-in resources available on request and retains a project without a runtime"
+    ],
+    "preceeding_get_expectations": {
+      "MCP": "exactly16 embedded recipes before deployment mutation",
+      "Skill": "available actual catalogue; skill-template-creation currently asserts15 templates and expected supporting files; do not weaken it before replay"
+    }
+  },
+  "artifact_snapshot_hashes": {
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/browser-triage-progress.json": {
+      "sha256": "400791a078ba3d345eaee0d09038ca7a29a4fc89e813f70d3b767e1a7e9bcdb5",
+      "bytes_at_read": 22386
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/dev-registry-v9/envs/check-20261102153609-20595/check.env": {
+      "sha256": "2b707de14b79cb9082ecfd97d6f5e550f609e8d619733b7e0e96c8741a550688",
+      "bytes_at_read": 2965
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/dev-registry-v9/envs/check-20261102153609-20595/logs/api.log": {
+      "sha256": "49ed0b0d0218e83cdf632e1c782d25b2233533f565caf455855193e25b19f06c",
+      "bytes_at_read": 10421255,
+      "live_log_snapshot": true,
+      "later_verification": "hash file prefix of bytes_at_read while later log appends may continue"
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/capability-market-capabili-22f9b-e-management-stays-separate-chromium/error-context.md": {
+      "sha256": "6a4dad6aac550b666f0193e46acdba3355fdd671f7b8d7ea31a7d8db7a1d4b50",
+      "bytes_at_read": 7354
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/capability-market-capabili-fc7e0-rences-and-transient-drafts-chromium/error-context.md": {
+      "sha256": "01257b3f96d6235d39fe4b9a410a5a5a62796655b46216b1f5dc517d3f3ec1c1",
+      "bytes_at_read": 3649
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/capability-market-capabili-0b369--polls-only-the-active-type-chromium/error-context.md": {
+      "sha256": "b56d243f3d31070496a1a8c5287611c7388294cd0b3d75b635318a30f181aab5",
+      "bytes_at_read": 7318
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-deployment-MCP--2b345-vive-updates-and-withdrawal-chromium/error-context.md": {
+      "sha256": "d679efd3ef55fbff2023a517b225dacc0657165ebe09c6e001bd41b4207f7eea",
+      "bytes_at_read": 7463
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-uses-the-collec-3aa82-umns-to-the-available-width-chromium/error-context.md": {
+      "sha256": "01257b3f96d6235d39fe4b9a410a5a5a62796655b46216b1f5dc517d3f3ec1c1",
+      "bytes_at_read": 3649
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/error-context.md": {
+      "sha256": "72cfb1f9e2b6ade5e823b4527c321cd5f172a0f60acf605e72cccfa388ac3cfe",
+      "bytes_at_read": 7803
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-retries-a-faile-53df7-repeating-successful-grants-chromium/error-context.md": {
+      "sha256": "529636ce3c6f8b2f8efa0877c5fd9dcf93ee9dcaab95af89a6026de445e5d880",
+      "bytes_at_read": 7632
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-a-member-can-di-c5ca3--agent-without-creating-one-chromium/error-context.md": {
+      "sha256": "6ccfa44d4fc16c33a0b5d79c9a0b1413114be7615d9bbb6e087b07bb8434eed3",
+      "bytes_at_read": 7640
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/missing-user-session-an-ob-8e83a--market-after-a-fresh-login-chromium/error-context.md": {
+      "sha256": "01257b3f96d6235d39fe4b9a410a5a5a62796655b46216b1f5dc517d3f3ec1c1",
+      "bytes_at_read": 3649
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/server/internal/handler/handler.go": {
+      "sha256": "c0d052b478820c2f757651329a4f893f095adf1d345d7ac3ba7e49ef08e959f2",
+      "bytes_at_read": 59229
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/server/cmd/server/router.go": {
+      "sha256": "6c7cf270ebb23176c6604ed13bc49f17712ad72d1005df6adf77f43b209ecac9",
+      "bytes_at_read": 145362
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/server/internal/service/resource_store.go": {
+      "sha256": "60095048e4dc919f6a0a62316e59e122e38a74a82930bf55d2f82a5c3090caa6",
+      "bytes_at_read": 20118
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/server/internal/service/resource_catalog.go": {
+      "sha256": "33f78741b0a5d37657434de3e898f90a202693470413161cdc17eb36c46ccef9",
+      "bytes_at_read": 14112
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/server/internal/service/mcp_catalog.go": {
+      "sha256": "f1f66c2a9265341975f540c3b197ed69062ab3fabb08fd28949ec6d906495494",
+      "bytes_at_read": 1932
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/server/internal/service/mcp_template_dir.go": {
+      "sha256": "97f65d54f6fc13d1b263b1bdab8b45f378691117420e8268b28f1173d7a9e223",
+      "bytes_at_read": 17004
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/server/internal/service/skill_template_dir.go": {
+      "sha256": "dfe9d7cba0da3f9dbfc2fead200da0ff4cccdaa4c713fbf7ea6daba6533e4a4c",
+      "bytes_at_read": 9157
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/server/internal/handler/skill_template.go": {
+      "sha256": "1791ed6d8aa7ab0d08c970044c00570abc9126c65af057fa08bb2391f2da1657",
+      "bytes_at_read": 2104
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/server/internal/handler/mcp_template.go": {
+      "sha256": "95702a2640feb09aef7b1157c3b7caab8a0dd37808ce639d36f12934188d8a75",
+      "bytes_at_read": 2977
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/server/internal/handler/workspace.go": {
+      "sha256": "3c80027560c505cf12c298772ddb0f36dc7942c6638fbe765d19b4b2ecc6709f",
+      "bytes_at_read": 52714
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/capability-market.spec.ts": {
+      "sha256": "e8606c7d1b1288991f593f027693af553227f563064012e8bebcab0dc15f4f18",
+      "bytes_at_read": 17259
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/mcp-market.spec.ts": {
+      "sha256": "bc4478da11f8ba7f3a6ccd754368440d5e8d6ef724f8106e2d51b8384dc9797e",
+      "bytes_at_read": 30603
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/missing-user-session.spec.ts": {
+      "sha256": "5cd3efd2cca1948488178d81c7f95b63c851170a835114bbdd3df3516e2584aa",
+      "bytes_at_read": 3682
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/fixtures/mcp-deployment.ts": {
+      "sha256": "1df875b1e5a69bafb21927d77066f2f648b57395e3cd4fc48dc5f8ccdeb5df60",
+      "bytes_at_read": 7503
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/go-test-with-agent-cli-guard.sh": {
+      "sha256": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+      "bytes_at_read": 1286
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/check.sh": {
+      "sha256": "c6d544402060c0e76fafc73e98fece92e063a971bc3cc4e85b36f8d5b8058ae6",
+      "bytes_at_read": 7098
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.trellis/spec/server/resource-publishing.md": {
+      "sha256": "59939c7de5264e2ef2b4c4cc2f7ec5bd4620abafd4b7eebc4191724bf8676f51",
+      "bytes_at_read": 2737
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/dev-registry-v9/envs/check-20261102153609-20595/manifest.env": {
+      "sha256": "8e112f8824cca3a3b4e925eca36b6c0c4f95deff7d2188dc837c5839ac50a9fa",
+      "bytes_at_read": 1166
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/dev-registry-v9/envs/check-20261102153609-20595/api.running.json": {
+      "sha256": "67456cb71316880b872cc79dfd58e79424b136f8dc0fa26b704c5efc49358a95",
+      "bytes_at_read": 502
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/dev-registry-v9/envs/check-20261102153609-20595/web.running.json": {
+      "sha256": "ffa3b8f36aaaab2d08b3708618955f5f7e9009c4b548b3e8aa9ea4d576b57d66",
+      "bytes_at_read": 448
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/dev-registry-v9/envs/check-20261102153609-20595/verification.running.json": {
+      "sha256": "8e949ff78c75660b8468d6d14165563d036002eeab295ca6f841eb93eb2884da",
+      "bytes_at_read": 1142
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.json": {
+      "sha256": "75f2bfdfbb4180c2d5b9f065242b8e58a6cc3e17664505c1e75ec7f938e85c0f",
+      "bytes_at_read": 1897
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/makecheck-playwright-environment-v9.json": {
+      "sha256": "df51eb8e3b6cc9a5af0306910bb4021cd955c5ec2fd88b8ec4f5ef2aee0d8791",
+      "bytes_at_read": 465
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/apps/web/.next/routes-manifest.json": {
+      "sha256": "009fbfccc22ad8946a4bc3e675eaba196507cdf4599662edeb1a02703b9a5183",
+      "bytes_at_read": 20049
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/pnpm": {
+      "sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+      "bytes_at_read": 2234
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/browser-v9-final-failures.json": {
+      "sha256": "64ce72010e17267cc984919f4c6d5025060760d810cec5d6db84123b6468ff41",
+      "bytes_at_read": 218709,
+      "authoritative_final_inventory": true
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/localized-template-defaults.spec.ts": {
+      "sha256": "a981c8fa7a4da18c6f81ad63796a57b4e8e57562f153cf88a5228168ae24fee4",
+      "bytes_at_read": 26405
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/skill-market.spec.ts": {
+      "sha256": "6396f6109fbb44fd1d6b3f87aaccd9d03785b789f65858d318ba86e4d2807eed",
+      "bytes_at_read": 13162
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/skill-template-creation.spec.ts": {
+      "sha256": "89880bf29dfaf7458f2ba86ec556b521e94b60c26c65a53f6b6be310587bbe78",
+      "bytes_at_read": 29773
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/workspace-defaults.spec.ts": {
+      "sha256": "39b6c1b57dbd6d4e046c1dae82187e03bace6677f2a603c29665cbfb412e4f94",
+      "bytes_at_read": 15409
+    }
+  },
+  "operations": {
+    "tests_run": 0,
+    "database_queries": 0,
+    "database_writes": 0,
+    "API_calls": 0,
+    "server_changes": 0,
+    "CLI_or_Provider_exec": 0,
+    "source_env_or_catalog_changes": 0,
+    "commits": 0
+  },
+  "verification": "Static source/config/filesystem/log/DOM reconciliation only; no replay or success claim",
+  "previous_partial_snapshot": {
+    "diagnosed_at": "2026-11-02T17:02:10.638503+00:00",
+    "triage_snapshot_sha256": "400791a078ba3d345eaee0d09038ca7a29a4fc89e813f70d3b767e1a7e9bcdb5",
+    "triage_sections": 9,
+    "v9_state_at_read": "complete"
+  },
+  "v9_final_browser_stats": {
+    "startTime": "2026-11-02T16:28:06.201Z",
+    "duration": 1860038.142,
+    "expected": 334,
+    "skipped": 89,
+    "unexpected": 16,
+    "flaky": 0
+  },
+  "authoritative_failure_file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/browser-v9-final-failures.json",
+  "authoritative_failure_file_sha256": "64ce72010e17267cc984919f4c6d5025060760d810cec5d6db84123b6468ff41",
+  "selected_final_failure_count": 13,
+  "selected_final_cases": [
+    {
+      "file": "e2e/capability-market.spec.ts",
+      "line": 5,
+      "title": "capability market restores type and draft through history while resource management stays separate",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "timedOut",
+          "duration_ms": 120015,
+          "HTTP503_in_error": false,
+          "filesystem_categories": [],
+          "mkdtemp_failure": false,
+          "locator_summary": [],
+          "source_locations": [],
+          "raw_errors_sha256": [
+            "66bd61498f1f6a4387f6a4da712d6f1dc248cec3cc7507fd19ce6dc6d3d7d752"
+          ],
+          "attachments": [
+            {
+              "name": "capability-market-navigation",
+              "contentType": "image/png",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/capability-market-capabili-22f9b-e-management-stays-separate-chromium/attachments/capability-market-navigation-56ddabef631d6b929b26e7c27ef09b4f12742814.png"
+            },
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/capability-market-capabili-22f9b-e-management-stays-separate-chromium/error-context.md"
+            }
+          ],
+          "diagnosis": "BCD-1: unavailable catalogue blocks template/category/card availability; replay required to prove setup remedy"
+        }
+      ]
+    },
+    {
+      "file": "e2e/capability-market.spec.ts",
+      "line": 107,
+      "title": "capability market isolates workspace resources, preferences and transient drafts",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "duration_ms": 16887,
+          "HTTP503_in_error": false,
+          "filesystem_categories": [],
+          "mkdtemp_failure": false,
+          "locator_summary": [],
+          "source_locations": [
+            {
+              "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/capability-market.spec.ts",
+              "column": 19,
+              "line": 152
+            }
+          ],
+          "raw_errors_sha256": [
+            "49e6e5ade08bea27dda67d7d4e438ece597573780f1b5a17e1c5ffde0773ba46"
+          ],
+          "attachments": [
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/capability-market-capabili-fc7e0-rences-and-transient-drafts-chromium/error-context.md"
+            }
+          ],
+          "diagnosis": "BCD-1: unavailable catalogue blocks template/category/card availability; replay required to prove setup remedy"
+        }
+      ]
+    },
+    {
+      "file": "e2e/capability-market.spec.ts",
+      "line": 219,
+      "title": "capability market separates catalog failures and polls only the active type",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "duration_ms": 7534,
+          "HTTP503_in_error": false,
+          "filesystem_categories": [],
+          "mkdtemp_failure": false,
+          "locator_summary": [
+            "Locator: getByRole('button', { name: 'Preview multica-code-review', exact: true })"
+          ],
+          "source_locations": [
+            {
+              "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/capability-market.spec.ts",
+              "column": 98,
+              "line": 256
+            }
+          ],
+          "raw_errors_sha256": [
+            "360a70853a9e4d1c71639255643c9529e4e65ec9000e8ca932643108c91fe89b"
+          ],
+          "attachments": [
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/capability-market-capabili-0b369--polls-only-the-active-type-chromium/error-context.md"
+            }
+          ],
+          "diagnosis": "BCD-1: unavailable catalogue blocks template/category/card availability; replay required to prove setup remedy"
+        }
+      ]
+    },
+    {
+      "file": "e2e/localized-template-defaults.spec.ts",
+      "line": 203,
+      "title": "specialist skills localize, search and open their official copies without rewriting stored content",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "duration_ms": 366,
+          "HTTP503_in_error": true,
+          "filesystem_categories": [],
+          "mkdtemp_failure": false,
+          "locator_summary": [],
+          "source_locations": [
+            {
+              "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/fixtures.ts",
+              "column": 29,
+              "line": 405
+            }
+          ],
+          "raw_errors_sha256": [
+            "0212543ed7219ba3afb118fbbc3fa9f53d65b06acd9ddca51e04d2befcc3c3bc"
+          ],
+          "attachments": [
+            {
+              "name": "localized-template-failure",
+              "contentType": "image/png",
+              "path": null
+            },
+            {
+              "name": "trace",
+              "contentType": "application/zip",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/localized-template-default-a9f16-ut-rewriting-stored-content-chromium/trace.zip"
+            }
+          ],
+          "diagnosis": "BCD-1: direct skill-template API503 before product journey"
+        }
+      ]
+    },
+    {
+      "file": "e2e/mcp-market.spec.ts",
+      "line": 71,
+      "title": "deployment MCP files appear live and saved snapshots survive updates and withdrawal",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "duration_ms": 609,
+          "HTTP503_in_error": false,
+          "filesystem_categories": [
+            "ENOENT"
+          ],
+          "mkdtemp_failure": true,
+          "locator_summary": [],
+          "source_locations": [
+            {
+              "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/fixtures/mcp-deployment.ts",
+              "column": 15,
+              "line": 18
+            }
+          ],
+          "raw_errors_sha256": [
+            "01417c523e5fa118087198a64ba97ac8d0c03ddb3c7b109cd26a5deb1d0f0505"
+          ],
+          "attachments": [
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-deployment-MCP--2b345-vive-updates-and-withdrawal-chromium/error-context.md"
+            }
+          ],
+          "diagnosis": "BCD-2: actual missing parent mkdtemp fixture failure"
+        }
+      ]
+    },
+    {
+      "file": "e2e/mcp-market.spec.ts",
+      "line": 144,
+      "title": "uses the collection canvas and adapts template columns to the available width",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "duration_ms": 7452,
+          "HTTP503_in_error": false,
+          "filesystem_categories": [],
+          "mkdtemp_failure": false,
+          "locator_summary": [
+            "Locator:  getByTestId('mcp-market').locator('.grid > div')"
+          ],
+          "source_locations": [
+            {
+              "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/mcp-market.spec.ts",
+              "column": 25,
+              "line": 162
+            }
+          ],
+          "raw_errors_sha256": [
+            "748dc25cc2008bca4ee55aa185862f0c3b76099128ee593a0f6bdd741c8d6864"
+          ],
+          "attachments": [
+            {
+              "name": "reference-agents",
+              "contentType": "image/png",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-uses-the-collec-3aa82-umns-to-the-available-width-chromium/attachments/reference-agents-4db61f19eeaceafb475fa8f7a65f03eb2f329792.png"
+            },
+            {
+              "name": "reference-skills",
+              "contentType": "image/png",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-uses-the-collec-3aa82-umns-to-the-available-width-chromium/attachments/reference-skills-d2c3177661ead025caf3fe830b876065a5e575ab.png"
+            },
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-uses-the-collec-3aa82-umns-to-the-available-width-chromium/error-context.md"
+            }
+          ],
+          "diagnosis": "BCD-1: unavailable catalogue blocks template/category/card availability; replay required to prove setup remedy"
+        }
+      ]
+    },
+    {
+      "file": "e2e/mcp-market.spec.ts",
+      "line": 188,
+      "title": "creates and explicitly assigns all sixteen recipes, preserves source after rename, and reuses an instance from an agent",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "timedOut",
+          "duration_ms": 360038,
+          "HTTP503_in_error": false,
+          "filesystem_categories": [],
+          "mkdtemp_failure": false,
+          "locator_summary": [],
+          "source_locations": [],
+          "raw_errors_sha256": [
+            "80f0f955a3cb43198818c59e14e567aace08e258e97e13766980c282da3ad946"
+          ],
+          "attachments": [
+            {
+              "name": "market-wide",
+              "contentType": "image/png",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/market-wide-548970473c27f10c4b4f5c4cb7fb7d7e74b72298.png"
+            },
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/error-context.md"
+            }
+          ],
+          "diagnosis": "BCD-1: unavailable catalogue blocks template/category/card availability; replay required to prove setup remedy"
+        }
+      ]
+    },
+    {
+      "file": "e2e/mcp-market.spec.ts",
+      "line": 400,
+      "title": "retries a failed assignment without recreating the saved MCP or repeating successful grants",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "timedOut",
+          "duration_ms": 120025,
+          "HTTP503_in_error": false,
+          "filesystem_categories": [],
+          "mkdtemp_failure": false,
+          "locator_summary": [],
+          "source_locations": [
+            {
+              "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/mcp-market.spec.ts",
+              "column": 16,
+              "line": 428
+            }
+          ],
+          "raw_errors_sha256": [
+            "66bd61498f1f6a4387f6a4da712d6f1dc248cec3cc7507fd19ce6dc6d3d7d752",
+            "a4487239858e949a3fe6a97ac65f8e508be6716328f6afbb213f146a17707bd1"
+          ],
+          "attachments": [
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-retries-a-faile-53df7-repeating-successful-grants-chromium/error-context.md"
+            }
+          ],
+          "diagnosis": "BCD-1: unavailable catalogue blocks template/category/card availability; replay required to prove setup remedy"
+        }
+      ]
+    },
+    {
+      "file": "e2e/mcp-market.spec.ts",
+      "line": 433,
+      "title": "a member can discover templates and reuse a workspace instance for their agent without creating one",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "timedOut",
+          "duration_ms": 120029,
+          "HTTP503_in_error": false,
+          "filesystem_categories": [],
+          "mkdtemp_failure": false,
+          "locator_summary": [],
+          "source_locations": [],
+          "raw_errors_sha256": [
+            "66bd61498f1f6a4387f6a4da712d6f1dc248cec3cc7507fd19ce6dc6d3d7d752"
+          ],
+          "attachments": [
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/mcp-market-a-member-can-di-c5ca3--agent-without-creating-one-chromium/error-context.md"
+            }
+          ],
+          "diagnosis": "BCD-1: unavailable catalogue blocks template/category/card availability; replay required to prove setup remedy"
+        }
+      ]
+    },
+    {
+      "file": "e2e/missing-user-session.spec.ts",
+      "line": 5,
+      "title": "an obsolete session returns to sign-in and can open the MCP market after a fresh login",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "duration_ms": 7144,
+          "HTTP503_in_error": false,
+          "filesystem_categories": [],
+          "mkdtemp_failure": false,
+          "locator_summary": [
+            "Locator: getByRole('button', { name: 'View configuration: Playwright', exact: true })"
+          ],
+          "source_locations": [
+            {
+              "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/missing-user-session.spec.ts",
+              "column": 101,
+              "line": 50
+            }
+          ],
+          "raw_errors_sha256": [
+            "e1cfcef66cb88e4d62919e64bf041617bd03edc962ddd66bb3a52c51efd77ddf"
+          ],
+          "attachments": [
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/missing-user-session-an-ob-8e83a--market-after-a-fresh-login-chromium/error-context.md"
+            }
+          ],
+          "diagnosis": "BCD-1: unavailable catalogue blocks template/category/card availability; replay required to prove setup remedy"
+        }
+      ]
+    },
+    {
+      "file": "e2e/skill-market.spec.ts",
+      "line": 88,
+      "title": "discovers deployment templates and creates a workspace copy while keeping market context",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "duration_ms": 196,
+          "HTTP503_in_error": true,
+          "filesystem_categories": [],
+          "mkdtemp_failure": false,
+          "locator_summary": [],
+          "source_locations": [
+            {
+              "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/fixtures.ts",
+              "column": 29,
+              "line": 405
+            }
+          ],
+          "raw_errors_sha256": [
+            "a62e6bb9f79b8b70811cd142220aafb821c819868a0dfab4727792d803c3ce6a"
+          ],
+          "attachments": [],
+          "diagnosis": "BCD-1: direct skill-template API503 before product journey"
+        }
+      ]
+    },
+    {
+      "file": "e2e/skill-template-creation.spec.ts",
+      "line": 112,
+      "title": "creates an edited independent skill after previewing and cancelling without writes",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "duration_ms": 254,
+          "HTTP503_in_error": true,
+          "filesystem_categories": [],
+          "mkdtemp_failure": false,
+          "locator_summary": [],
+          "source_locations": [
+            {
+              "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/fixtures.ts",
+              "column": 29,
+              "line": 405
+            }
+          ],
+          "raw_errors_sha256": [
+            "e76f9838e2df9a7b67a5814bbdbb97edc5039c039e9ffc3a7e76f6b28c36a4d0"
+          ],
+          "attachments": [],
+          "diagnosis": "BCD-1: direct skill-template API503 before product journey"
+        }
+      ]
+    },
+    {
+      "file": "e2e/workspace-defaults.spec.ts",
+      "line": 113,
+      "title": "keeps built-in resources available on request and retains a project without a runtime",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "duration_ms": 7663,
+          "HTTP503_in_error": false,
+          "filesystem_categories": [],
+          "mkdtemp_failure": false,
+          "locator_summary": [
+            "Locator: getByRole('button', { name: 'Preview multica-code-review', exact: true })"
+          ],
+          "source_locations": [
+            {
+              "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/workspace-defaults.spec.ts",
+              "column": 100,
+              "line": 133
+            }
+          ],
+          "raw_errors_sha256": [
+            "71c972712cbecf573e034858af73ac0e5653a2da103619b36e51867155f65202"
+          ],
+          "attachments": [
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/workspace-defaults-workspa-b67d5-a-project-without-a-runtime-chromium/error-context.md"
+            }
+          ],
+          "diagnosis": "BCD-1: unavailable catalogue blocks template/category/card availability; replay required to prove setup remedy"
+        }
+      ]
+    }
+  ],
+  "selected_files": [
+    "capability-market.spec.ts",
+    "localized-template-defaults.spec.ts",
+    "mcp-market.spec.ts",
+    "missing-user-session.spec.ts",
+    "skill-market.spec.ts",
+    "skill-template-creation.spec.ts",
+    "workspace-defaults.spec.ts"
+  ],
+  "direct_skill_catalog_API503_cases": [
+    {
+      "file": "e2e/localized-template-defaults.spec.ts",
+      "line": 203
+    },
+    {
+      "file": "e2e/skill-market.spec.ts",
+      "line": 88
+    },
+    {
+      "file": "e2e/skill-template-creation.spec.ts",
+      "line": 112
+    }
+  ],
+  "direct_missing_MCP_parent_case": [
+    {
+      "file": "e2e/mcp-market.spec.ts",
+      "line": 71
+    }
+  ]
+}

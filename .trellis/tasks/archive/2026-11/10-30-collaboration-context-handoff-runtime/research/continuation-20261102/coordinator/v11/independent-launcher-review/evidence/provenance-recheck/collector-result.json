@@ -1,0 +1,844 @@
+{
+  "schema": "v11-narrow-provenance-readonly-v1",
+  "expected": {
+    "head": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+    "product": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+    "overlay": "3f9788baf2ad3d922df86c4817b7fe0f3183e1a5c6c0e40d43fc76cd4f2c1d88",
+    "tracked": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+    "binding": "6db6435e476b8f448a412d4b097e16e6131ddbf7458450ced1cf69a8f281d80b",
+    "launcher": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e",
+    "cli": "c008c02377c4c52665000a0620a5a7b3f90f4d10d54d53e1d74bce97dccc6197",
+    "preload": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5",
+    "main": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678",
+    "renderer_index": "9d92714285456d587bb8bcd3ecf2897ad015cf7f63d76f75fea9a541536ae0eb",
+    "renderer_manifest": "bc46754412b91fac5f6649b7b37ad537e067bb9ab6fa6f0c4012cb0fced91d18",
+    "canonical_manifest": "bafbb6dd9ab1f017f2d4ce8f9291bb13d6c7103362fed5b235b3e70c501a8beb",
+    "product_count": 7962,
+    "tracked_count": 17182
+  },
+  "errors": [],
+  "files": {
+    "corrected_binding": {
+      "path": "<candidate>/.omx/private/final-check-v11/owned-bindings-v11-provenance.json",
+      "exists": true,
+      "sha256": "6db6435e476b8f448a412d4b097e16e6131ddbf7458450ced1cf69a8f281d80b",
+      "bytes": 4329839,
+      "mode": 420,
+      "read_stable": true
+    },
+    "corrected_launcher": {
+      "path": "<candidate>/.omx/private/final-check-v11/run-make-check-v11-provenance.py",
+      "exists": true,
+      "sha256": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e",
+      "bytes": 19583,
+      "mode": 420,
+      "read_stable": true
+    },
+    "revised_artifacts": {
+      "path": "<root>/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-candidate-preparation/provenance-correction-v11/revised-provenance-artifacts.json",
+      "exists": true,
+      "sha256": "dc2950d4b2bfad9e974112ed9e94a70a26b3ad743b9efb1dea3fd7369b651869",
+      "bytes": 3028,
+      "mode": 420,
+      "read_stable": true
+    },
+    "correction_summary": {
+      "path": "<root>/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-candidate-preparation/provenance-correction-v11/provenance-correction-summary.json",
+      "exists": true,
+      "sha256": "749aeae4e41ff9bb3c0329e4883a57352a402ca9de70518e2111903c3f434a3d",
+      "bytes": 4644,
+      "mode": 420,
+      "read_stable": true
+    },
+    "corrected_canonical_manifest": {
+      "path": "<root>/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-candidate-preparation/provenance-correction-v11/canonical-product-source-manifest.json",
+      "exists": true,
+      "sha256": "bafbb6dd9ab1f017f2d4ce8f9291bb13d6c7103362fed5b235b3e70c501a8beb",
+      "bytes": 984125,
+      "mode": 420,
+      "read_stable": true
+    },
+    "preserved_independent_manifest": {
+      "path": "<root>/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/direct-source-manifest.json",
+      "exists": true,
+      "sha256": "016cf1a516db6768d355940dd67b1f695f9607b15756853307c020ddd5032c88",
+      "bytes": 984125,
+      "mode": 420,
+      "read_stable": true
+    },
+    "preserved_artifact_observation": {
+      "path": "<root>/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/artifact-actual-observation.json",
+      "exists": true,
+      "sha256": "0a5916483367e1bf67ee85057d4e22b6cbe03cb46130e91b70b3aa41f9c91fb6",
+      "bytes": 4912,
+      "mode": 420,
+      "read_stable": true
+    },
+    "preserved_verdict": {
+      "path": "<root>/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/verdict.json",
+      "exists": true,
+      "sha256": "a0c5190d8ac2a8528ac87ac71144aadd0cb6e366ea297b993285e3cf45fef2f7",
+      "bytes": 10092,
+      "mode": 420,
+      "read_stable": true
+    },
+    "preserved_discrepancy": {
+      "path": "<root>/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/source-binding-discrepancy.json",
+      "exists": true,
+      "sha256": "7925a65c7f911ce7f5954c0db22ad269435351cacd10e094b7ef8451c4334ac3",
+      "bytes": 5163,
+      "mode": 420,
+      "read_stable": true
+    },
+    "preserved_original_binding": {
+      "path": "<candidate>/.omx/private/final-check-v11/owned-bindings-v11.json",
+      "exists": true,
+      "sha256": "ccc11e4d7e79a19c964b75d4b2c3354268a4bf28fa7ad153c23aa0a95b30b6ba",
+      "bytes": 4327200,
+      "mode": 420,
+      "read_stable": true
+    }
+  },
+  "corrected_file_pins": {
+    "binding_matches": true,
+    "launcher_matches": true,
+    "summary_prefix_matches": true,
+    "canonical_manifest_matches": true,
+    "original_binding_preserved": true
+  },
+  "corrected_metadata": {
+    "corrected_binding": {
+      "schema_version": 1,
+      "candidate_root": "<candidate>",
+      "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+      "prepared_at": "<omitted>",
+      "source": {
+        "tracked_files": {
+          "count": 17182
+        },
+        "tracked_fingerprint": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+        "checkout_source_id": "3f9788baf2ad3d922df86c4817b7fe0f3183e1a5c6c0e40d43fc76cd4f2c1d88",
+        "checkout_source_id_helper": "<candidate>/.omx/private/final-check-v11/checkout-source-id-v11.cjs",
+        "checkout_source_id_helper_sha256": "817348f249009f05e0e05a4a08d0f76581cda60fac9f9ce88b18255fd4e85bc8",
+        "production_difference_from_v10": [
+          "packages/views/collaboration/account-picker.tsx",
+          "packages/views/collaboration/creation-form.tsx",
+          "packages/views/collaboration/field-inputs.tsx",
+          "packages/views/collaboration/form-styles.ts",
+          "packages/views/collaboration/labels.ts",
+          "packages/views/collaboration/workflow.tsx",
+          "packages/views/issues/components/pickers/property-picker.tsx",
+          "packages/views/locales/en/collaboration.json",
+          "packages/views/locales/zh-Hans/collaboration.json",
+          "server/internal/service/collaboration_source_fields.go",
+          "server/pkg/db/generated/collaboration_source_fields.sql.go",
+          "server/pkg/db/queries/collaboration_source_fields.sql"
+        ],
+        "adjacent_test_differences": [
+          "packages/views/collaboration/account-picker.test.tsx",
+          "packages/views/collaboration/creation-form.test.tsx",
+          "packages/views/collaboration/field-editing.test.tsx",
+          "packages/views/collaboration/field-inputs.test.tsx",
+          "packages/views/issues/components/pickers/property-picker.test.tsx",
+          "server/internal/service/collaboration_source_fields_test.go"
+        ],
+        "original_e2e_patch_id": "3a28b3fc5a05aa7c39e9c6e310d1cc5427441f8a",
+        "current_e2e_patch_id": "3a28b3fc5a05aa7c39e9c6e310d1cc5427441f8a",
+        "e2e_delta_sha256": "fef30433f9117b94d4ed03a2d48d134b225dffbd4e58a6a7ab850627744db58f",
+        "old_product_fingerprint_not_reused": true,
+        "product_source": {
+          "purpose": "<omitted>",
+          "source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+          "file_count": 7962,
+          "roots": [
+            "<omitted>",
+            "<omitted>",
+            "<omitted>",
+            "<omitted>",
+            "<omitted>",
+            "<omitted>",
+            "<omitted>",
+            "<omitted>"
+          ],
+          "algorithm": "sha256 over sorted path NUL sha256 LF lines of tracked regular files under roots",
+          "selection": "<omitted>",
+          "manifest_path": "<candidate>/.omx/private/final-check-v11/canonical-product-source-manifest-v11-provenance.json",
+          "manifest_sha256": "bafbb6dd9ab1f017f2d4ce8f9291bb13d6c7103362fed5b235b3e70c501a8beb",
+          "standard_script_path": "<root>/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source_manifest.py",
+          "standard_script_sha256": "d5c9e9822f680ce10930ec8c36fe9266d60302aef1089fda3640e7d20252dbb3"
+        },
+        "identity_purposes": {
+          "checkout_source_id": "development environment HEAD/overlay identity from scripts/dev-env.sh checkout_source_id; not canonical product/RK1 source",
+          "tracked_fingerprint": "all Git-tracked snapshot using ordered path/file SHA/lstat mode compact JSON; separate from canonical product source",
+          "product_source": "canonical source_manifest.py product ROOTS digest"
+        },
+        "checkout_source_id_method": {
+          "purpose": "<omitted>",
+          "helper_path": "<candidate>/.omx/private/final-check-v11/checkout-source-id-v11.cjs",
+          "helper_sha256": "817348f249009f05e0e05a4a08d0f76581cda60fac9f9ce88b18255fd4e85bc8",
+          "algorithm": "SHA256(HEAD bytes, binary HEAD diff excluding next-env, next-env normalized path/symlink/execute bits/content JSON, then sorted untracked product path/bytes)",
+          "canonical_product_source": false
+        }
+      },
+      "workspace": {
+        "expectations_path": "<root>/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/workspace-identity-expectations.json",
+        "expectations_sha256": "579f69cdd7c561a9d65c20fa21cde1443092696fcef860c8a315ce9ba7daf49d",
+        "edges": {
+          "count": 22
+        },
+        "resolver_path": "<candidate>/.omx/private/final-check-v11/resolve-workspaces-v11.mjs",
+        "resolver_sha256": "1ded34cc530c40b9f995b80178f07df0a49ce3658ba5f4484ed36fc25f819c1c",
+        "graph": {
+          "root": "<omitted>",
+          "exports": {
+            "count": 66
+          },
+          "auth": [
+            "<omitted>",
+            "<omitted>",
+            "<omitted>",
+            "<omitted>"
+          ],
+          "errors": []
+        }
+      },
+      "tools": {
+        "node": {
+          "path": "<home>/.nvm/versions/node/v22.23.2/bin/node",
+          "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+          "version": "v22.23.2"
+        },
+        "pnpm": {
+          "path": "<candidate>/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+          "sha256": "b276da51dc8ca5b0d3ee3371695b50fc8b3244b281b091c63a3f082a88dadeb9",
+          "version": "10.28.2",
+          "bundle_path": "<candidate>/.omx/private/owned-workspace-links/pnpm-10.28.2/dist/pnpm.cjs",
+          "bundle_sha256": "930fe74c335e95a8f9f6786f115f00c37ae82493ba7bdbddaddd9e06de542f43",
+          "sdk": {
+            "path": "<candidate>/.omx/private/owned-workspace-links/pnpm-10.28.2",
+            "files": {
+              "count": 1069
+            },
+            "file_count": 1069,
+            "manifest_sha256": "efaac641c8400863f66205b45e002874ef1e09a6c1c44c556bcbd50ef161c4dd"
+          }
+        },
+        "go": {
+          "path": "<home>/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+          "version": "go1.26.6",
+          "goroot": "<home>/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64",
+          "members": {
+            "VERSION": "19a1647c6e8fcfdd9b4ecc10d4c83303d4211738d01daed0a822558d96896c54",
+            "bin/go": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+            "pkg/tool/darwin_arm64/compile": "a55d3fd03c97324e4be76e637282c37d6da9ed85aef12f2a2e18f4aa4a67601d",
+            "pkg/tool/darwin_arm64/link": "f7c7456fd23e3d335e375f621eb71c8dac10a95f52bceec05d644bcb5d38cca2",
+            "pkg/tool/darwin_arm64/asm": "833b7000abefed75b0b440c3abd76cfc26c9fb8d956b1f1f3a0333fecace0e3a"
+          }
+        },
+        "psql": {
+          "path": "/opt/homebrew/opt/libpq/bin/psql",
+          "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07"
+        }
+      },
+      "cli": {
+        "path": "<candidate>/.omx/private/final-check-v11/multica",
+        "sha256": "c008c02377c4c52665000a0620a5a7b3f90f4d10d54d53e1d74bce97dccc6197",
+        "bytes": 29314610,
+        "version": "v0.6.7-460-g304f74dd3",
+        "version_observation": "multica v0.6.7-460-g304f74dd3 (commit: 304f74dd3, built: 2026-11-02T22:35:30Z)\ngo: go1.26.6, os/arch: darwin/arm64\n",
+        "build_record_sha256": "1f96481d7dc3ab9aa0ba2d9d73c8b3461fd49d0a328e0e4f823c4e3eeb2111cb"
+      },
+      "desktop": {
+        "renderer": {
+          "installed": {
+            "path": "<candidate>/apps/desktop/out/renderer",
+            "files": {
+              "count": 493
+            },
+            "file_count": 493,
+            "manifest_sha256": "bc46754412b91fac5f6649b7b37ad537e067bb9ab6fa6f0c4012cb0fced91d18"
+          },
+          "staged": {
+            "path": "<candidate>/.omx/private/final-check-v11/artifacts/renderer",
+            "files": {
+              "count": 493
+            },
+            "file_count": 493,
+            "manifest_sha256": "bc46754412b91fac5f6649b7b37ad537e067bb9ab6fa6f0c4012cb0fced91d18"
+          }
+        },
+        "preload": {
+          "installed": {
+            "path": "<candidate>/apps/desktop/out/preload",
+            "files": [
+              {
+                "path": "index.js",
+                "sha256": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5",
+                "bytes": 18876,
+                "mode": 420
+              }
+            ],
+            "file_count": 1,
+            "manifest_sha256": "eb6f5654d511b3b23a8856597deeabf4277c8a21afffcce04c8703ad6b4c128e"
+          },
+          "staged": {
+            "path": "<candidate>/.omx/private/final-check-v11/artifacts/preload",
+            "files": [
+              {
+                "path": "index.js",
+                "sha256": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5",
+                "bytes": 18876,
+                "mode": 420
+              }
+            ],
+            "file_count": 1,
+            "manifest_sha256": "eb6f5654d511b3b23a8856597deeabf4277c8a21afffcce04c8703ad6b4c128e"
+          }
+        },
+        "main": {
+          "installed": {
+            "path": "<candidate>/apps/desktop/out/main",
+            "files": [
+              {
+                "path": "index.js",
+                "sha256": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678",
+                "bytes": 223261,
+                "mode": 420
+              }
+            ],
+            "file_count": 1,
+            "manifest_sha256": "7e4cfb3a45cb26761edb8b73b3f2cd2fe433d2d25e67010ea22156d4287a0360"
+          },
+          "staged": {
+            "path": "<candidate>/.omx/private/final-check-v11/artifacts/main",
+            "files": [
+              {
+                "path": "index.js",
+                "sha256": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678",
+                "bytes": 223261,
+                "mode": 420
+              }
+            ],
+            "file_count": 1,
+            "manifest_sha256": "7e4cfb3a45cb26761edb8b73b3f2cd2fe433d2d25e67010ea22156d4287a0360"
+          }
+        }
+      },
+      "build_records": {
+        "cli_sha256": "1f96481d7dc3ab9aa0ba2d9d73c8b3461fd49d0a328e0e4f823c4e3eeb2111cb",
+        "desktop_sha256": "b38bd6a05b7d36258d46521f6edb12b606fac287154f3a0cfda33b50d71617d4"
+      },
+      "allocation": {
+        "directory": "<omitted>",
+        "mode": "0700",
+        "owner_uid": 501,
+        "git_root_absent": true,
+        "keep_for_evidence": true,
+        "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+        "allocation_phase": "<omitted>",
+        "allocated_at": "<omitted>"
+      },
+      "cache_paths": {
+        "GOCACHE": "<candidate>/.omx/private/final-check-v11/go-build-cache",
+        "GOMODCACHE": "<home>/go/pkg/mod",
+        "GOPATH": "<candidate>/.omx/private/final-check-v11/go-path"
+      },
+      "renderer_url": "<redacted-or-omitted-endpoint>",
+      "api_pool": {
+        "max": 10,
+        "min": 1
+      },
+      "actual_clearance_or_run_created": false,
+      "provenance_revision": {
+        "recorded_at": "2026-11-02T23:48:01.790156+00:00",
+        "revision": "<omitted>",
+        "original_binding_path": "<candidate>/.omx/private/final-check-v11/owned-bindings-v11.json",
+        "original_binding_sha256": "ccc11e4d7e79a19c964b75d4b2c3354268a4bf28fa7ad153c23aa0a95b30b6ba",
+        "code_cli_renderer_dependency_artifacts_unchanged": true
+      }
+    },
+    "revised_artifacts": {
+      "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+      "original_binding_sha256": "ccc11e4d7e79a19c964b75d4b2c3354268a4bf28fa7ad153c23aa0a95b30b6ba",
+      "revised_binding_path": "<candidate>/.omx/private/final-check-v11/owned-bindings-v11-provenance.json",
+      "revised_binding_sha256": "6db6435e476b8f448a412d4b097e16e6131ddbf7458450ced1cf69a8f281d80b",
+      "original_launcher_sha256": "b2d17a742c45134640a070e980937b9f0ce4f724611c7e5c0fb6f2f0a333ffd2",
+      "revised_launcher_path": "<candidate>/.omx/private/final-check-v11/run-make-check-v11-provenance.py",
+      "revised_launcher_sha256": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e",
+      "source_env_unchanged_sha256": "999decf083adf9cea0271cef37834fe6528104d4ca63f8e69c90afacd01ecd8f",
+      "canonical_product": {
+        "purpose": "<omitted>",
+        "source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+        "file_count": 7962,
+        "roots": [
+          "<omitted>",
+          "<omitted>",
+          "<omitted>",
+          "<omitted>",
+          "<omitted>",
+          "<omitted>",
+          "<omitted>",
+          "<omitted>"
+        ],
+        "algorithm": "sha256 over sorted path NUL sha256 LF lines of tracked regular files under roots",
+        "selection": "<omitted>",
+        "manifest_path": "<candidate>/.omx/private/final-check-v11/canonical-product-source-manifest-v11-provenance.json",
+        "manifest_sha256": "bafbb6dd9ab1f017f2d4ce8f9291bb13d6c7103362fed5b235b3e70c501a8beb",
+        "standard_script_path": "<root>/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source_manifest.py",
+        "standard_script_sha256": "d5c9e9822f680ce10930ec8c36fe9266d60302aef1089fda3640e7d20252dbb3"
+      },
+      "development_environment_source_id": "<redacted>",
+      "tracked_snapshot": {
+        "value": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+        "file_count": 17182,
+        "purpose": "<omitted>"
+      },
+      "unchanged_non_source_binding_fields": true,
+      "unchanged_parser_and_core_guard_AST": true,
+      "no_actual_clearance_safe_env_run_created": true
+    },
+    "correction_summary": {
+      "recorded_at": "2026-11-02T23:52:18.816635+00:00",
+      "verdict": "<omitted>",
+      "blocking_findings_open": 0,
+      "scope": "provenance labels/canonical product source guard only; original artifact/runtime facts preserved",
+      "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+      "source_identities": {
+        "canonical_product": {
+          "purpose": "<omitted>",
+          "source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+          "file_count": 7962,
+          "roots": [
+            "<omitted>",
+            "<omitted>",
+            "<omitted>",
+            "<omitted>",
+            "<omitted>",
+            "<omitted>",
+            "<omitted>",
+            "<omitted>"
+          ],
+          "algorithm": "sha256 over sorted path NUL sha256 LF lines of tracked regular files under roots",
+          "selection": "<omitted>",
+          "manifest_path": "<candidate>/.omx/private/final-check-v11/canonical-product-source-manifest-v11-provenance.json",
+          "manifest_sha256": "bafbb6dd9ab1f017f2d4ce8f9291bb13d6c7103362fed5b235b3e70c501a8beb",
+          "standard_script_path": "<root>/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source_manifest.py",
+          "standard_script_sha256": "d5c9e9822f680ce10930ec8c36fe9266d60302aef1089fda3640e7d20252dbb3"
+        },
+        "dev_environment_overlay": "<redacted>",
+        "all_tracked_snapshot": {
+          "value": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+          "file_count": 17182,
+          "algorithm": "all Git-tracked ordered path/SHA256/lstat-mode compact sorted-key JSON SHA256",
+          "scope": "all tracked repository files; distinct from canonical product source"
+        }
+      },
+      "revised_binding_path": "<candidate>/.omx/private/final-check-v11/owned-bindings-v11-provenance.json",
+      "revised_binding_sha256": "6db6435e476b8f448a412d4b097e16e6131ddbf7458450ced1cf69a8f281d80b",
+      "revised_launcher_path": "<candidate>/.omx/private/final-check-v11/run-make-check-v11-provenance.py",
+      "revised_launcher_sha256": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e",
+      "source_env_path": "<candidate>/.omx/private/final-check-v11/check-source-v11.env",
+      "source_env_unchanged_sha256": "999decf083adf9cea0271cef37834fe6528104d4ca63f8e69c90afacd01ecd8f",
+      "revised_preflight_path": "<candidate>/.omx/private/final-check-v11/fake-preflight-v11-provenance.py",
+      "revised_preflight_sha256": "4ca624c9623c267be53928017f1771280579ab6272bc7fb49e09644573b0a09d",
+      "offline_regressions": {
+        "test_count": 45,
+        "exit_code": 0,
+        "record_path": "<root>/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-candidate-preparation/provenance-correction-v11/fake-preflight-v11-provenance.json",
+        "log_sha256": "58fe58271850779c8edfdb51b8c88a93094d7b4077f276080eda66f0b63c3011"
+      },
+      "actual_source_binding_validation": "canonical 7,962-file digest plus existing source/tool/workspace/CLI/renderer checks passed; expected root resource-proof refusal retained",
+      "original_bindings_launcher_summary_raw_logs_preserved": true,
+      "all_non_source_binding_fields_and_CLI_renderer_layout_unchanged": true,
+      "candidate_clean_tracked_bytes_unchanged": true,
+      "actual_clearance_safe_env_run_SQL_API_DB_services_or_repository_tests_created": false,
+      "runtime_review_discrepancy_path": "<root>/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/source-binding-discrepancy.json"
+    }
+  },
+  "identity_field_locations": {
+    "corrected_binding": [
+      {
+        "field": ".candidate_sha",
+        "value": "304f74dd3ba4ddea862c94917c5bb0770355a351"
+      },
+      {
+        "field": ".source.tracked_fingerprint",
+        "value": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920"
+      },
+      {
+        "field": ".source.checkout_source_id",
+        "value": "3f9788baf2ad3d922df86c4817b7fe0f3183e1a5c6c0e40d43fc76cd4f2c1d88"
+      },
+      {
+        "field": ".source.product_source.source_id",
+        "value": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb"
+      },
+      {
+        "field": ".source.product_source.file_count",
+        "value": 7962
+      },
+      {
+        "field": ".source.product_source.manifest_sha256",
+        "value": "bafbb6dd9ab1f017f2d4ce8f9291bb13d6c7103362fed5b235b3e70c501a8beb"
+      },
+      {
+        "field": ".cli.sha256",
+        "value": "c008c02377c4c52665000a0620a5a7b3f90f4d10d54d53e1d74bce97dccc6197"
+      },
+      {
+        "field": ".desktop.renderer.installed.files[492].sha256",
+        "value": "9d92714285456d587bb8bcd3ecf2897ad015cf7f63d76f75fea9a541536ae0eb"
+      },
+      {
+        "field": ".desktop.renderer.installed.manifest_sha256",
+        "value": "bc46754412b91fac5f6649b7b37ad537e067bb9ab6fa6f0c4012cb0fced91d18"
+      },
+      {
+        "field": ".desktop.renderer.staged.files[492].sha256",
+        "value": "9d92714285456d587bb8bcd3ecf2897ad015cf7f63d76f75fea9a541536ae0eb"
+      },
+      {
+        "field": ".desktop.renderer.staged.manifest_sha256",
+        "value": "bc46754412b91fac5f6649b7b37ad537e067bb9ab6fa6f0c4012cb0fced91d18"
+      },
+      {
+        "field": ".desktop.preload.installed.files[0].sha256",
+        "value": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5"
+      },
+      {
+        "field": ".desktop.preload.staged.files[0].sha256",
+        "value": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5"
+      },
+      {
+        "field": ".desktop.main.installed.files[0].sha256",
+        "value": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678"
+      },
+      {
+        "field": ".desktop.main.staged.files[0].sha256",
+        "value": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678"
+      },
+      {
+        "field": ".allocation.candidate_sha",
+        "value": "304f74dd3ba4ddea862c94917c5bb0770355a351"
+      }
+    ],
+    "revised_artifacts": [
+      {
+        "field": ".candidate_sha",
+        "value": "304f74dd3ba4ddea862c94917c5bb0770355a351"
+      },
+      {
+        "field": ".revised_binding_sha256",
+        "value": "6db6435e476b8f448a412d4b097e16e6131ddbf7458450ced1cf69a8f281d80b"
+      },
+      {
+        "field": ".revised_launcher_sha256",
+        "value": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e"
+      },
+      {
+        "field": ".canonical_product.source_id",
+        "value": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb"
+      },
+      {
+        "field": ".canonical_product.file_count",
+        "value": 7962
+      },
+      {
+        "field": ".canonical_product.manifest_sha256",
+        "value": "bafbb6dd9ab1f017f2d4ce8f9291bb13d6c7103362fed5b235b3e70c501a8beb"
+      },
+      {
+        "field": ".tracked_snapshot.value",
+        "value": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920"
+      },
+      {
+        "field": ".tracked_snapshot.file_count",
+        "value": 17182
+      }
+    ],
+    "correction_summary": [
+      {
+        "field": ".candidate_sha",
+        "value": "304f74dd3ba4ddea862c94917c5bb0770355a351"
+      },
+      {
+        "field": ".source_identities.canonical_product.source_id",
+        "value": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb"
+      },
+      {
+        "field": ".source_identities.canonical_product.file_count",
+        "value": 7962
+      },
+      {
+        "field": ".source_identities.canonical_product.manifest_sha256",
+        "value": "bafbb6dd9ab1f017f2d4ce8f9291bb13d6c7103362fed5b235b3e70c501a8beb"
+      },
+      {
+        "field": ".source_identities.all_tracked_snapshot.value",
+        "value": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920"
+      },
+      {
+        "field": ".source_identities.all_tracked_snapshot.file_count",
+        "value": 17182
+      },
+      {
+        "field": ".revised_binding_sha256",
+        "value": "6db6435e476b8f448a412d4b097e16e6131ddbf7458450ced1cf69a8f281d80b"
+      },
+      {
+        "field": ".revised_launcher_sha256",
+        "value": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e"
+      }
+    ]
+  },
+  "manifest_comparison": {
+    "new_count": 7962,
+    "old_count": 7962,
+    "new_computed_source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+    "old_computed_source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+    "file_sets_equal": true,
+    "file_hash_differences": 0,
+    "both_match_canonical": true,
+    "both_counts_match": true
+  },
+  "current_head": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "current_head_matches": true,
+  "current_cli": {
+    "path": "<candidate>/.omx/private/final-check-v11/multica",
+    "exists": true,
+    "sha256": "c008c02377c4c52665000a0620a5a7b3f90f4d10d54d53e1d74bce97dccc6197",
+    "bytes": 29314610,
+    "mode": 493,
+    "read_stable": true,
+    "matches_expected_pin": true
+  },
+  "current_artifact_roots": [
+    {
+      "role": "renderer",
+      "kind": "installed",
+      "root": "<candidate>/apps/desktop/out/renderer",
+      "count": 493,
+      "expected_count": 493,
+      "record_count_matches": true,
+      "file_sets_equal": true,
+      "file_record_differences": 0,
+      "normalized_path_sha_size_mode_digest": "b3e36d9985069535a82a01070336956fe8a3e007428f8204a4473377c3b3c4b3",
+      "expected_normalized_path_sha_size_mode_digest": "b3e36d9985069535a82a01070336956fe8a3e007428f8204a4473377c3b3c4b3",
+      "declared_manifest_sha256": "bc46754412b91fac5f6649b7b37ad537e067bb9ab6fa6f0c4012cb0fced91d18",
+      "read_stable": true,
+      "root_matches_preserved_observation": true,
+      "count_matches_preserved_observation": true
+    },
+    {
+      "role": "renderer",
+      "kind": "staged",
+      "root": "<candidate>/.omx/private/final-check-v11/artifacts/renderer",
+      "count": 493,
+      "expected_count": 493,
+      "record_count_matches": true,
+      "file_sets_equal": true,
+      "file_record_differences": 0,
+      "normalized_path_sha_size_mode_digest": "b3e36d9985069535a82a01070336956fe8a3e007428f8204a4473377c3b3c4b3",
+      "expected_normalized_path_sha_size_mode_digest": "b3e36d9985069535a82a01070336956fe8a3e007428f8204a4473377c3b3c4b3",
+      "declared_manifest_sha256": "bc46754412b91fac5f6649b7b37ad537e067bb9ab6fa6f0c4012cb0fced91d18",
+      "read_stable": true,
+      "root_matches_preserved_observation": true,
+      "count_matches_preserved_observation": true
+    },
+    {
+      "role": "preload",
+      "kind": "installed",
+      "root": "<candidate>/apps/desktop/out/preload",
+      "count": 1,
+      "expected_count": 1,
+      "record_count_matches": true,
+      "file_sets_equal": true,
+      "file_record_differences": 0,
+      "normalized_path_sha_size_mode_digest": "2053c77c6cb88a75f537948adc9dd6328286f94bb8bcf2771fc7b2d6e0af10ba",
+      "expected_normalized_path_sha_size_mode_digest": "2053c77c6cb88a75f537948adc9dd6328286f94bb8bcf2771fc7b2d6e0af10ba",
+      "declared_manifest_sha256": "eb6f5654d511b3b23a8856597deeabf4277c8a21afffcce04c8703ad6b4c128e",
+      "read_stable": true,
+      "root_matches_preserved_observation": true,
+      "count_matches_preserved_observation": true
+    },
+    {
+      "role": "preload",
+      "kind": "staged",
+      "root": "<candidate>/.omx/private/final-check-v11/artifacts/preload",
+      "count": 1,
+      "expected_count": 1,
+      "record_count_matches": true,
+      "file_sets_equal": true,
+      "file_record_differences": 0,
+      "normalized_path_sha_size_mode_digest": "2053c77c6cb88a75f537948adc9dd6328286f94bb8bcf2771fc7b2d6e0af10ba",
+      "expected_normalized_path_sha_size_mode_digest": "2053c77c6cb88a75f537948adc9dd6328286f94bb8bcf2771fc7b2d6e0af10ba",
+      "declared_manifest_sha256": "eb6f5654d511b3b23a8856597deeabf4277c8a21afffcce04c8703ad6b4c128e",
+      "read_stable": true,
+      "root_matches_preserved_observation": true,
+      "count_matches_preserved_observation": true
+    },
+    {
+      "role": "main",
+      "kind": "installed",
+      "root": "<candidate>/apps/desktop/out/main",
+      "count": 1,
+      "expected_count": 1,
+      "record_count_matches": true,
+      "file_sets_equal": true,
+      "file_record_differences": 0,
+      "normalized_path_sha_size_mode_digest": "f83541ac3b0f789c32aba9adf2e574ad14ad21217bf5df32bc2641d46a58c3c8",
+      "expected_normalized_path_sha_size_mode_digest": "f83541ac3b0f789c32aba9adf2e574ad14ad21217bf5df32bc2641d46a58c3c8",
+      "declared_manifest_sha256": "7e4cfb3a45cb26761edb8b73b3f2cd2fe433d2d25e67010ea22156d4287a0360",
+      "read_stable": true,
+      "root_matches_preserved_observation": true,
+      "count_matches_preserved_observation": true
+    },
+    {
+      "role": "main",
+      "kind": "staged",
+      "root": "<candidate>/.omx/private/final-check-v11/artifacts/main",
+      "count": 1,
+      "expected_count": 1,
+      "record_count_matches": true,
+      "file_sets_equal": true,
+      "file_record_differences": 0,
+      "normalized_path_sha_size_mode_digest": "f83541ac3b0f789c32aba9adf2e574ad14ad21217bf5df32bc2641d46a58c3c8",
+      "expected_normalized_path_sha_size_mode_digest": "f83541ac3b0f789c32aba9adf2e574ad14ad21217bf5df32bc2641d46a58c3c8",
+      "declared_manifest_sha256": "7e4cfb3a45cb26761edb8b73b3f2cd2fe433d2d25e67010ea22156d4287a0360",
+      "read_stable": true,
+      "root_matches_preserved_observation": true,
+      "count_matches_preserved_observation": true
+    }
+  ],
+  "current_index_file_pins": [
+    {
+      "path": "<candidate>/apps/desktop/out/renderer/index.html",
+      "exists": true,
+      "sha256": "9d92714285456d587bb8bcd3ecf2897ad015cf7f63d76f75fea9a541536ae0eb",
+      "bytes": 1256,
+      "mode": 420,
+      "read_stable": true,
+      "role": "renderer",
+      "kind": "installed",
+      "matches_expected_pin": true
+    },
+    {
+      "path": "<candidate>/.omx/private/final-check-v11/artifacts/renderer/index.html",
+      "exists": true,
+      "sha256": "9d92714285456d587bb8bcd3ecf2897ad015cf7f63d76f75fea9a541536ae0eb",
+      "bytes": 1256,
+      "mode": 420,
+      "read_stable": true,
+      "role": "renderer",
+      "kind": "staged",
+      "matches_expected_pin": true
+    },
+    {
+      "path": "<candidate>/apps/desktop/out/preload/index.js",
+      "exists": true,
+      "sha256": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5",
+      "bytes": 18876,
+      "mode": 420,
+      "read_stable": true,
+      "role": "preload",
+      "kind": "installed",
+      "matches_expected_pin": true
+    },
+    {
+      "path": "<candidate>/.omx/private/final-check-v11/artifacts/preload/index.js",
+      "exists": true,
+      "sha256": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5",
+      "bytes": 18876,
+      "mode": 420,
+      "read_stable": true,
+      "role": "preload",
+      "kind": "staged",
+      "matches_expected_pin": true
+    },
+    {
+      "path": "<candidate>/apps/desktop/out/main/index.js",
+      "exists": true,
+      "sha256": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678",
+      "bytes": 223261,
+      "mode": 420,
+      "read_stable": true,
+      "role": "main",
+      "kind": "installed",
+      "matches_expected_pin": true
+    },
+    {
+      "path": "<candidate>/.omx/private/final-check-v11/artifacts/main/index.js",
+      "exists": true,
+      "sha256": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678",
+      "bytes": 223261,
+      "mode": 420,
+      "read_stable": true,
+      "role": "main",
+      "kind": "staged",
+      "matches_expected_pin": true
+    }
+  ],
+  "current_target_file_pins_found": {
+    "cli": true,
+    "renderer_index": true,
+    "preload": true,
+    "main": true
+  },
+  "binding_changed_field_names": [
+    ".provenance_revision",
+    ".source.checkout_source_id_method",
+    ".source.identity_purposes",
+    ".source.product_source"
+  ],
+  "preserved_report_hashes_after": {
+    "preserved_verdict": {
+      "path": "<root>/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/verdict.json",
+      "exists": true,
+      "sha256": "a0c5190d8ac2a8528ac87ac71144aadd0cb6e366ea297b993285e3cf45fef2f7",
+      "bytes": 10092,
+      "mode": 420,
+      "read_stable": true
+    },
+    "preserved_discrepancy": {
+      "path": "<root>/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/source-binding-discrepancy.json",
+      "exists": true,
+      "sha256": "7925a65c7f911ce7f5954c0db22ad269435351cacd10e094b7ef8451c4334ac3",
+      "bytes": 5163,
+      "mode": 420,
+      "read_stable": true
+    },
+    "preserved_independent_manifest": {
+      "path": "<root>/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/direct-source-manifest.json",
+      "exists": true,
+      "sha256": "016cf1a516db6768d355940dd67b1f695f9607b15756853307c020ddd5032c88",
+      "bytes": 984125,
+      "mode": 420,
+      "read_stable": true
+    },
+    "preserved_artifact_observation": {
+      "path": "<root>/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/artifact-actual-observation.json",
+      "exists": true,
+      "sha256": "0a5916483367e1bf67ee85057d4e22b6cbe03cb46130e91b70b3aa41f9c91fb6",
+      "bytes": 4912,
+      "mode": 420,
+      "read_stable": true
+    },
+    "preserved_original_binding": {
+      "path": "<candidate>/.omx/private/final-check-v11/owned-bindings-v11.json",
+      "exists": true,
+      "sha256": "ccc11e4d7e79a19c964b75d4b2c3354268a4bf28fa7ad153c23aa0a95b30b6ba",
+      "bytes": 4327200,
+      "mode": 420,
+      "read_stable": true
+    }
+  },
+  "preserved_reports_unchanged": true,
+  "limits": [
+    "No original60MB collector read",
+    "No product/tool/Git command execution",
+    "No new runtime/fake/SSR/full/real/paid gate proof",
+    "Exact corrected binding desktop role/kind schema is used, with current disk records and preserved root/count observations",
+    "Standard manifest comparison reads preserved/corrected records, not a fresh all-source filesystem scan"
+  ]
+}

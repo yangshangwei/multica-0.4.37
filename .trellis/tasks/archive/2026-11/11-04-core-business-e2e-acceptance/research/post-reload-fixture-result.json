@@ -1,0 +1,39 @@
+{
+  "patch_sha256": "fddab16f8b4267519e3b5558a3f9c3e35ffe21bd25a00fba6093dcdee637a6b3",
+  "files": [
+    {
+      "file": "e2e/fixtures/collaboration-retained-attachments.ts",
+      "before_sha256": "f59d6f150a819b964fe761f5f0bde4abbc5825bfe435aec4112173870e0f2e02",
+      "after_sha256": "5ee681aef743ed0d900785b198287ef83b61f0ec8225cf133e1847f4c6294013"
+    },
+    {
+      "file": "e2e/collaboration-terminal-reopen-web.spec.ts",
+      "before_sha256": "11a45b5ce123fb9507d6b2ea4f372e6f330f0004ace3a463b70ff6a0c8d0e895",
+      "after_sha256": "fa8d8d72d1c07dc4719c7856cf44bee70b92ee4f98b728b9c9bd0b9271a181c9"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-installed-main.mjs",
+      "before_sha256": "aa0f1ff6375dc9ca462a1361e5c3324fde58835c1d75b952c39e33eda2b2e749",
+      "after_sha256": "8bd7f89c3381cc99f6e51877b017ad6d8b1bdb8882cdeeaade99e1575721a363"
+    },
+    {
+      "file": "e2e/collaboration-host-installed.spec.ts",
+      "before_sha256": "2ca4a3b659fd8a6693d19dee23c587a107ddbce1f07f02c7efe5f9653b288fbe",
+      "after_sha256": "e439fa251286bd879c1eda278ce1ae264ae8dd3744fba9005e196f069488c97f"
+    }
+  ],
+  "root_and_frozen_equal": true,
+  "scope": "exact post-reload disclosure readiness plus already-reviewed diagnostics and outer restart; no product/timeout change",
+  "at": "2026-11-05T04:05:19.500239+00:00",
+  "checks": {
+    "node_syntax": "PASS",
+    "playwright_collection": {
+      "cases": 6,
+      "specs": 4,
+      "exit_code": 0,
+      "tests_executed": false
+    },
+    "diff_check": "PASS"
+  },
+  "next": "Root rebind source and production services, then fresh-database original E2E replays"
+}

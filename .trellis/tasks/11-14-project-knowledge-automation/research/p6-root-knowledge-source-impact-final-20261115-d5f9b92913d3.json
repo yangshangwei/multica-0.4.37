@@ -1,0 +1,241 @@
+{
+  "kind": "final_current_ROOT_knowledge_source_impact_identity_mapping",
+  "at": "2026-11-15T15:19:59.160275+00:00",
+  "id": "d5f9b92913d3",
+  "scope": "current_ROOT_Go_SQL_module_guard_and_recorded_static_compiler_tool_identity_only",
+  "identity_unchanged": true,
+  "stable_double_read": true,
+  "current_ROOT_source_count": 4774,
+  "expected_ROOT_source_count": 4774,
+  "current_ROOT_source_fingerprint": "c526b554bf358bad6978e1849d6a3e7ffdce37d29886423ca5b890b61b2ebfe8",
+  "expected_ROOT_source_fingerprint": "c526b554bf358bad6978e1849d6a3e7ffdce37d29886423ca5b890b61b2ebfe8",
+  "source_changes": [],
+  "persistent_static_input_count": 12155,
+  "persistent_static_changes": [],
+  "tool_count": 13,
+  "tool_changes": [],
+  "loaded_context_changes": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/verification-environment.md",
+      "ROOT_relative": ".trellis/spec/server/verification-environment.md",
+      "category": "guard_or_embed",
+      "kind": "changed",
+      "before": {
+        "bytes": 10557,
+        "mode": "0644",
+        "sha256": "bd1bdb58861d993eb5dc836bd45fe9276b066763265265822dfccec584ece4da"
+      },
+      "after": {
+        "bytes": 14784,
+        "mode": "0644",
+        "sha256": "c839200904601863c13b9aa8f62102ba54ab4766ece31e7fdfff73cad0dc9260"
+      },
+      "in_recorded_service_normal_consumed": false,
+      "in_recorded_service_race_consumed": false,
+      "in_recorded_service_common_consumed": false,
+      "in_actual_service_package_compilation": false,
+      "in_full_static_package_compilation": false,
+      "schema_or_dynamic_runtime_input": false
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/implement.md",
+      "ROOT_relative": ".trellis/tasks/11-14-project-knowledge-automation/implement.md",
+      "category": "guard_or_embed",
+      "kind": "changed",
+      "before": {
+        "bytes": 23457,
+        "mode": "0644",
+        "sha256": "049a3688a8532e90ac3a39dd896c3828a8efab6d4124395ebc4c7ac0ee5531b4"
+      },
+      "after": {
+        "bytes": 24314,
+        "mode": "0644",
+        "sha256": "1a907783ab6002b0a3af5808b6d5d66d58f84785411b3096f5f35b36b9fddd7f"
+      },
+      "in_recorded_service_normal_consumed": false,
+      "in_recorded_service_race_consumed": false,
+      "in_recorded_service_common_consumed": false,
+      "in_actual_service_package_compilation": false,
+      "in_full_static_package_compilation": false,
+      "schema_or_dynamic_runtime_input": false
+    }
+  ],
+  "loaded_context_qualification": "Planning/progress/spec context changes are recorded separately; they do not change Go compiler, schema, module or guard bytes and do not justify rerunning build/vet when code inputs are unchanged.",
+  "historical_harness_inputs_not_reused_count": 0,
+  "service_common_consumed_closure_count": 11827,
+  "actual_service_package_compile_file_count": 4636,
+  "checks_executed": {
+    "Go_build": 0,
+    "Go_vet": 0,
+    "Go_test": 0,
+    "DB_SQL": 0,
+    "API_browser_model_Redis": 0,
+    "new_cache_or_source_writes": 0
+  },
+  "PAY_overlap": {
+    "coordinator": "01a1df98",
+    "source_candidate": "a3261a9d",
+    "ROOT_plus_three_P2_deltas_static_lane": "owned_by_PAY_current_server_static",
+    "duplicate_build_or_vet_started": false,
+    "future_P2_delta_paths": [
+      "server/internal/handler/collaboration_stage.go",
+      "server/internal/handler/collaboration_stage_test.go",
+      "server/cmd/server/collaboration_stage_routes_test.go"
+    ]
+  },
+  "next_action": "No new Go build/vet or DB/service tests for unchanged current ROOT. PAY owns currentROOT+3P2delta static lane; map accepted final graph afterward.",
+  "original_service_receipt": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-service-independent-v3-normal-race-20261115-87a4b72f8b7f.json",
+    "sha256": "1b13ebacb9034175c674869c5e8adac029ead3aee908be12b43f42b7f8800bbb"
+  },
+  "original_static_receipt": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-go-static-verification-20261115-7a3e544be95f.json",
+    "sha256": "3e8f56aaa12b113ad5d2ca958a2ecc8b80e98b10992c9bd2ae4295a11b325b79"
+  },
+  "current_source_before": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-source-impact-20261115-6990766f49e9/corrected-current-ROOT-source-before.json",
+    "sha256": "16091176accc2c500b30a75a31021a1986027cba515963b84a42705f6c04c8d1"
+  },
+  "current_source_after": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-source-impact-20261115-6990766f49e9/corrected-current-ROOT-source-after.json",
+    "sha256": "16091176accc2c500b30a75a31021a1986027cba515963b84a42705f6c04c8d1"
+  },
+  "static_inputs_before": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-source-impact-20261115-6990766f49e9/persistent-static-inputs-before.json",
+    "sha256": "1d10cdb7f57e458401cc62577395ce4a3f035eab2fa39df8e0d0772af0ace350"
+  },
+  "static_inputs_after": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-source-impact-20261115-6990766f49e9/persistent-static-inputs-after.json",
+    "sha256": "1d10cdb7f57e458401cc62577395ce4a3f035eab2fa39df8e0d0772af0ace350"
+  },
+  "current_tools_before": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-source-impact-20261115-6990766f49e9/tools-before.json",
+    "sha256": "90593e1ba528e37c7d16e800010310a62dd5abca081666606669d54b0cf100a3"
+  },
+  "current_tools_after": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-source-impact-20261115-6990766f49e9/tools-after.json",
+    "sha256": "90593e1ba528e37c7d16e800010310a62dd5abca081666606669d54b0cf100a3"
+  },
+  "loaded_context_snapshot": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-source-impact-20261115-97b3c441d1f6/current-loaded-context-inputs.json",
+    "sha256": "a0f1710a24871bcba280fe6081e266e558f6b0733f59d0cb3f75c1a82ce7b311"
+  },
+  "original_service_manifest": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-final-current-ROOT-source-manifest.json",
+    "sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+    "mode": "0600",
+    "count": 4774,
+    "bytes": 41944558,
+    "fingerprint_sha256": "c526b554bf358bad6978e1849d6a3e7ffdce37d29886423ca5b890b61b2ebfe8",
+    "stable_reads": true
+  },
+  "original_static_manifest": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-go-static-20261115-7a3e544be95f/inputs-after-vet-manifest.json",
+    "sha256": "2463380e4b99e4dce0796dd43a1cbbeb58fad19092746f7c2440f1e6f40ab985",
+    "mode": "0600",
+    "count": 12173,
+    "bytes": 123366671,
+    "fingerprint_sha256": "d907e3bb2b6a1d0f6568e041721e3663ec3702af2fcf90b0edcee6491f66b38c",
+    "stable_reads": true
+  },
+  "service_normal_closure": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-consumed-after-manifest.json",
+    "sha256": "84804cbe9032224e3cd18f7f773a2b9e7645cd52be6291402ce2f870d7789d9f",
+    "mode": "0600",
+    "count": 11828,
+    "bytes": 119502340,
+    "fingerprint_sha256": "3ff3a2e768194cb129d7ce1bf299a27f204cbd75c617711ebfe629143845e1ab",
+    "stable_reads": true
+  },
+  "service_race_closure": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-consumed-after-manifest.json",
+    "sha256": "24d8e970e65efe244dc74bfda8da8be1f637524a89fc2ea06a28ff589d26a240",
+    "mode": "0600",
+    "count": 11844,
+    "bytes": 120056225,
+    "fingerprint_sha256": "22c19156e28f5f8e5f3535ac38605e4afe23e20db842e9d6851945f3932013cd",
+    "stable_reads": true
+  },
+  "ROOT_final": false,
+  "P2_final": false,
+  "product_final": false,
+  "sealed_87_292e_artifacts_or_caches_modified": false,
+  "shared_source_test_spec_metadata_progress_edits": 0,
+  "complete_guard_binding_paths": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/agent-cli-command-names.txt",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server/sqlc.yaml"
+  ],
+  "future_P2_delta_identity_map": [
+    {
+      "path": "server/internal/handler/collaboration_stage.go",
+      "in_sealed_service_common_consumed_union": true,
+      "in_actual_service_package_compilation": true,
+      "in_full_static_package_compilation": true,
+      "schema_or_dynamic_runtime_input": false,
+      "classification": "P2 private delta not present in current ROOT by this identity audit",
+      "service_compilation_basis": "Variant GoFiles/CgoFiles/embed/native input lists; discovery-only TestGoFiles on dependency metadata are not compiler inputs."
+    },
+    {
+      "path": "server/internal/handler/collaboration_stage_test.go",
+      "in_sealed_service_common_consumed_union": true,
+      "in_actual_service_package_compilation": false,
+      "in_full_static_package_compilation": true,
+      "schema_or_dynamic_runtime_input": false,
+      "classification": "P2 private delta not present in current ROOT by this identity audit",
+      "service_compilation_basis": "Variant GoFiles/CgoFiles/embed/native input lists; discovery-only TestGoFiles on dependency metadata are not compiler inputs."
+    },
+    {
+      "path": "server/cmd/server/collaboration_stage_routes_test.go",
+      "in_sealed_service_common_consumed_union": true,
+      "in_actual_service_package_compilation": false,
+      "in_full_static_package_compilation": true,
+      "schema_or_dynamic_runtime_input": false,
+      "classification": "P2 private delta not present in current ROOT by this identity audit",
+      "service_compilation_basis": "Variant GoFiles/CgoFiles/embed/native input lists; discovery-only TestGoFiles on dependency metadata are not compiler inputs."
+    }
+  ],
+  "prior_enumeration_error": {
+    "receipt": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-source-impact-20261115-97b3c441d1f6.json",
+      "sha256": "8478a5a14527080c6381f0caaa86fe5551845bf3ff320bc63baa49c92cfabbf6"
+    },
+    "scope_error": "Current path enumeration omitted the recorded non-Go guard server/sqlc.yaml inside server/. The file was not removed.",
+    "actual_sqlc_config": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/sqlc.yaml",
+      "sha256": "ade6bdf31030c0a8c366e6a981c97efacd3faab408a8e504d6f4530e11e057e4",
+      "bytes": 3678,
+      "mode": "0755"
+    },
+    "actual_source_failure": false,
+    "Go_or_static_commands_started": 0,
+    "original_incorrect_receipt_retained": true
+  },
+  "auxiliary_metadata_classification_correction": {
+    "prior_receipt": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-source-impact-corrected-20261115-6990766f49e9.json",
+      "sha256": "fdd612b5215f386ab4be68216cf1eb79f915680f09c640595bd58e16fbf08590"
+    },
+    "issue": "Unconditional TestGoFiles membership overstates actual dependency test compilation; this does not change the current ROOT identity result.",
+    "actual_compilation_keys": [
+      "GoFiles",
+      "CgoFiles",
+      "CFiles",
+      "CXXFiles",
+      "MFiles",
+      "HFiles",
+      "FFiles",
+      "SFiles",
+      "SwigFiles",
+      "SwigCXXFiles",
+      "EmbedFiles",
+      "SysoFiles"
+    ],
+    "package_metadata": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-package-closure.json",
+      "sha256": "f64f5fb6afc552cddf264aad0e13e7ac10239f71b3cfbca0a590e5049fc303f7"
+    },
+    "source_identity_correction_needed": false
+  },
+  "future_verification_qualification": "Current ROOT is unchanged. When accepted P2 private deltas enter the final graph, all three affect the retained service consumed-union binding; the production stage handler also enters actual service compilation. Coordinate the smallest affected service/API revalidation after P2 acceptance; PAY owns the current ROOT+3delta build/vet lane, and no duplicate checks are started here."
+}

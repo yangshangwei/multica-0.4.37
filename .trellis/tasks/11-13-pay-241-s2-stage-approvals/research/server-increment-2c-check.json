@@ -1,0 +1,1498 @@
+{
+  "schema_version": 1,
+  "increment": "2c-independent-check",
+  "status": "changes_requested",
+  "reviewer": "/root/s2_check_resume",
+  "recorded_at": "2026-11-14T13:03:18.881331+00:00",
+  "blocking_findings_open": 2,
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "S2C-C01",
+      "severity": "P2",
+      "state": "reproduced_open",
+      "file": "server/internal/service/collaboration_stage_execution.go",
+      "symbol": "enterStageExecution",
+      "issue": "Record failure restarts the five-second finalization budget for the internal unknown fallback",
+      "test": "TestStageExecutionCheckFinalizationKeepsOneDeadline",
+      "observed_deadline_extension": "10.203459ms",
+      "limit": "This observed renewed absolute deadline, not a ten-second benchmark; actual uncertainty/no-fact/one-call behavior retained."
+    },
+    {
+      "id": "S2C-C02",
+      "severity": "P2",
+      "state": "reproduced_open",
+      "file": "server/internal/service/collaboration_stage_execution_view.go",
+      "symbol": "stageExecutionReviewState",
+      "related_file": "server/internal/service/collaboration_stage_execution_approvals.go",
+      "related_symbol": "stageExecutionApprovalChain",
+      "issue": "R4 release state remains valid while its transitive original reviewer has lost M1 artifact read authority",
+      "test": "TestStageExecutionCheckR4ReflectsOriginalArtifactReaderLoss",
+      "observed_states": {
+        "code_review": "signer_changed",
+        "qa": "evidence_changed",
+        "release": "valid"
+      },
+      "execution_control": {
+        "error": "stage_signer_changed",
+        "adapter_calls": 0
+      },
+      "limit": "Read-state/UI defect only. Release signable was already blocked in this scenario; no new execution bypass claimed."
+    }
+  ],
+  "source": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source",
+    "base_files": 4894,
+    "overlay_files_count": 63,
+    "product_files_count": 4938,
+    "binding": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/input-check.json",
+    "binding_sha256": "549a1202c49bc8183aad0ecc22e3d14f3f8f7474d9cab53c0b5ada27d83c2ae1",
+    "overlay_files": [
+      {
+        "path": "server/cmd/migrate/main.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/cmd/migrate/main.go",
+        "sha256": "cb6fe520db836ed820a271d0d9edfab94ec9be5c2e92fed74317345ada3da139",
+        "base_sha256": "ec488de1b9b5e6411b32db8351ab197ecb1190d094dbb419a4936e67bea532cf"
+      },
+      {
+        "path": "server/cmd/server/collaboration_stage_execution_control_boundary_test.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/cmd/server/collaboration_stage_execution_control_boundary_test.go",
+        "sha256": "d16caf2d8a79639c2d8d2b4626239d996fd05e5920edba6590ae57cfab25158d",
+        "base_sha256": null
+      },
+      {
+        "path": "server/cmd/server/collaboration_stage_execution_control_test.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/cmd/server/collaboration_stage_execution_control_test.go",
+        "sha256": "024bdd6c3b19227cc3dceed3debc483fd936cfe86998abc26b7017facb51cc53",
+        "base_sha256": null
+      },
+      {
+        "path": "server/cmd/server/collaboration_stage_execution_source_test.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/cmd/server/collaboration_stage_execution_source_test.go",
+        "sha256": "4ce7ef0bc64b3986c40221d72d9c1d2fa2423ac8d6f570655c94ea9bfaa92678",
+        "base_sha256": null
+      },
+      {
+        "path": "server/internal/handler/collaboration_stage.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/handler/collaboration_stage.go",
+        "sha256": "6405f76f1c65652bf9ed636c07dce238102d9f4e0b5cc8ae59a8f05db0ba5294",
+        "base_sha256": "1689734f18c3055c4c079b48dcd4d205bd373dc62fdd6a9b4b8f4ee9de0fa7a8"
+      },
+      {
+        "path": "server/internal/handler/collaboration_stage_review.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/handler/collaboration_stage_review.go",
+        "sha256": "decfadbdfe4d4da253e85de2b2f987a28af0a70c983f43b5c0acd0d482d86fd4",
+        "base_sha256": "134d56f576a38be7528bed1cd92f508db840a95eab1d81781cfabf563f08cff0"
+      },
+      {
+        "path": "server/internal/handler/collaboration_stage_review_test.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/handler/collaboration_stage_review_test.go",
+        "sha256": "f77aa28a8db2fa621c6b3fdc4c6935cbeca789989d2d3163c97abaa2ddce6e9b",
+        "base_sha256": "3dc8a212881d1db0ffe3e1a437a417b06530ce08e2ecdb16caa1fafc4f1752a2"
+      },
+      {
+        "path": "server/internal/handler/handler.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/handler/handler.go",
+        "sha256": "f6cbd77b6b3b499ec34a39900b3686e71263359e91cd025ef9756062b3d3b298",
+        "base_sha256": "d32dafc0efc4b8aa696dd8bbb443c68ef735b574d908763ee2d4379fc2779eec"
+      },
+      {
+        "path": "server/internal/handler/workspace_delete_manifest_test.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/handler/workspace_delete_manifest_test.go",
+        "sha256": "8cd0d3e77203eb3c62672fc4942f525a0a82b858061c4d25758dc6572edcd0a7",
+        "base_sha256": "9d213414f1b94d061fc4ea263658418a645d6edf8002bc70f0bcd47b09c7f5ca"
+      },
+      {
+        "path": "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+        "sha256": "d2f766b44b15855d677077f981a4fb39d20dd9761325109f4cd445400e9b587b",
+        "base_sha256": "6cf6b64fb58fdc49b393a3b7520386a0aee2265c2b9d0b9ffd850cab016a5bdd"
+      },
+      {
+        "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+        "sha256": "68007ba37709d4466f63edb12c2024c0b1c5a96f14cb54381b2ddf97776f757e",
+        "base_sha256": "4dbd7d1e61157607193985cc91d4cddf3ae5340214f26f382642208c2beb69bc"
+      },
+      {
+        "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+        "sha256": "b91ada57a3d3d6ca3a54122822d0578fd69c27d9b0fddfe224e2228f24b4f41b",
+        "base_sha256": "8f0c2b656d96befc1d17aedb9f88b6bd4f97e434fa0bd0daab88800c9d34847f"
+      },
+      {
+        "path": "server/internal/service/collaboration.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration.go",
+        "sha256": "277dc7c15951e90c00aaaf4acd469107dd5e676a79423ee8ad5e7ab7c12bfef7",
+        "base_sha256": "3ad137953cd0e2e2e8c491a1c80eeb5b97318233059649efbd90a9e00bdccf19"
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_evidence.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_evidence.go",
+        "sha256": "336cede24862f507a2e74075cfd143aa4f3c07a889f4633f465aa4dfc3dc8b95",
+        "base_sha256": "5d4b8e07d1338841dae6ac18214f3908bcd017dcc9df011c9018f13240dd0127"
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_evidence_read.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_evidence_read.go",
+        "sha256": "e9612cbf78adfb7fa0c578e0ebe10fae499c265f45dc25601a3eb8017fe50679",
+        "base_sha256": "cfa66007851859c8b62f022937773c538db0f686e2e94f2aadc2360f7325e9b2"
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_execution.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_execution.go",
+        "sha256": "35d4fd3745ddee3c031b1d13366bf9571cb6da3e63f33acd8b5cda3ebeb35e20",
+        "base_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_execution_approvals.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_execution_approvals.go",
+        "sha256": "4f5d99bf8c267596ecfe6ee67ef2a9878a7bc93c52a493518f7e12963dca6e2f",
+        "base_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_execution_fixture_test.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_execution_fixture_test.go",
+        "sha256": "ca6c30f55b82962f5845cd8262eafa831218014bc45c077ac8ce8f3141beb947",
+        "base_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_execution_identity.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_execution_identity.go",
+        "sha256": "2129ede9677f5da9febbd1082f17584e5251d2cfbc08dc5b3945f215cb177166",
+        "base_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_execution_metrics.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_execution_metrics.go",
+        "sha256": "8dce07c597c1221c559068b36c1234ca87067de6f2edd46e95d2e78e240735b0",
+        "base_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_execution_observations.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_execution_observations.go",
+        "sha256": "6cb8f58cbc40336b66b72abe65317e9305a910e80dc976491cd4495096b2291f",
+        "base_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_execution_sources.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_execution_sources.go",
+        "sha256": "03f9f3df09c81c64eaf779bb8875743a15e328aeb399a16e891b6a3a2cc7a627",
+        "base_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_execution_test.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_execution_test.go",
+        "sha256": "4ce6ae1613785905dc6db707e8ccc6b285eb41ff9ce08674e36a1610c4a3d1c0",
+        "base_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_execution_types.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_execution_types.go",
+        "sha256": "500f05fece4da888a44750046a6c420170a96fcaf54c773079ee1460e1cdf68b",
+        "base_sha256": "5815bc554fd2b1ce7f184f171f776a2fc2c2a6da1795fe74ee1034502fa1348d"
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_execution_view.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_execution_view.go",
+        "sha256": "3368a3b21cc67d474a3fe116eb1c2da1c388283c4c31f9d0fe8204e52042d1da",
+        "base_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_qa.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_qa.go",
+        "sha256": "b20586f6783defac0f2c7dd455c23bf884acdf2f6894fb7ff73062e43ad87f35",
+        "base_sha256": "abaf0f98851ebb6ebb501a354c70ab3a96bda3f64ab7d99d341d7373b38d9dd5"
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_review.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_review.go",
+        "sha256": "800c69c97a8e7bd08aee3d84fbc1529e4cc2adcc1bad95db7d9d1285a0f87467",
+        "base_sha256": "808628705743ad13c0b7aad6cf4acc346f061c472629a6810c14d4dfd09bbc76"
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_review_view.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_review_view.go",
+        "sha256": "4e1ac533c04b1b3a38c187a858e56ee50b39cc6587ef8c0c89e759389e738daf",
+        "base_sha256": "cfd422ad8350d9c6a59d7b4253cef106d090db2b96a064e962f04977e88686ac"
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_signer.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/internal/service/collaboration_stage_signer.go",
+        "sha256": "98752861a27e396558625ef6ed5b78269b3abeadb0ff4b61e063b0d8806e3018",
+        "base_sha256": "8fb56b403a4cc881eafd73bc70b9e30c6adc98029e18a1ef4fdf53a784a5762a"
+      },
+      {
+        "path": "server/migrations/829_collaboration_stage_execution.down.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/829_collaboration_stage_execution.down.sql",
+        "sha256": "8c1fb1b753fa2ac4bea696686cf9b70c792ae3a999fa0927c20bd5189842dc82",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/829_collaboration_stage_execution.up.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/829_collaboration_stage_execution.up.sql",
+        "sha256": "c15062ddf823e8716fe21416b5714bd7ed5bfe2ff7f348bab9b9fd02ce27451b",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/830_collaboration_stage_execution_intent_id.down.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/830_collaboration_stage_execution_intent_id.down.sql",
+        "sha256": "2ea61a903f846b008ca16b90b535a6e85e8f0133f9166e8f2aa0b2d1e3736fbe",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/830_collaboration_stage_execution_intent_id.up.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/830_collaboration_stage_execution_intent_id.up.sql",
+        "sha256": "3d529fc3404adbc30d7a7246301bc62ffa2fe7a86b35ebc7056ea0989038ebdf",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/831_collaboration_stage_execution_approval.down.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/831_collaboration_stage_execution_approval.down.sql",
+        "sha256": "b4336439e13dc3a37c13804c801c28dc48d22e841512d90f33b13b36ac852555",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/831_collaboration_stage_execution_approval.up.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/831_collaboration_stage_execution_approval.up.sql",
+        "sha256": "babac9ff4c03d5bb1b2cb5ae1fed53322f93259de96c7cbd46d76cbb73b66fbb",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/832_collaboration_stage_execution_request.down.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/832_collaboration_stage_execution_request.down.sql",
+        "sha256": "8cdad5bb77092414e87246d82b43f63607c43cf2d4c0ee7891940655a20db42e",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/832_collaboration_stage_execution_request.up.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/832_collaboration_stage_execution_request.up.sql",
+        "sha256": "d4a073706b9eea159f0f96bbf9a6b8bdc5ce4b21a6d9ea1e1051acfd771f3dc7",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/833_collaboration_stage_execution_target.down.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/833_collaboration_stage_execution_target.down.sql",
+        "sha256": "949b4af71945b2cfd60a6c103137283b551b5f81e16d574ad17c15806e6af5a4",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/833_collaboration_stage_execution_target.up.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/833_collaboration_stage_execution_target.up.sql",
+        "sha256": "b47597457b4e7625226dc3db91a3179ea6535a81d582c0f590f72c8937bfbd2b",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/834_collaboration_stage_execution_candidate.down.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/834_collaboration_stage_execution_candidate.down.sql",
+        "sha256": "822b7c7b6ede01a11de1d51fe8863ce272011302f58abad96b586b58c9828582",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/834_collaboration_stage_execution_candidate.up.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/834_collaboration_stage_execution_candidate.up.sql",
+        "sha256": "0f14a2d4e66a2e08ea315cf4ddd7d78b53ca5d71db5ec0bfc9d0490f08c274f3",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/835_collaboration_stage_execution_observation_id.down.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/835_collaboration_stage_execution_observation_id.down.sql",
+        "sha256": "5c3a6addbcab5859e4a737927a236bfc1e0370d71e8e8b4307d68221054cc95f",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/835_collaboration_stage_execution_observation_id.up.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/835_collaboration_stage_execution_observation_id.up.sql",
+        "sha256": "2ffa320fd230f8753ad032c15a03382561aea28985a92dbd630844c2fd6a67f3",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/836_collaboration_stage_execution_observation_native.down.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/836_collaboration_stage_execution_observation_native.down.sql",
+        "sha256": "a16917bca431c0c6f2bc959dfbdd2cd86e2709823278fa78c87286766f123557",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/836_collaboration_stage_execution_observation_native.up.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/836_collaboration_stage_execution_observation_native.up.sql",
+        "sha256": "658ff6379ee6be4baaf42829dc7d7870b3cb06309612cc26e9ed9b78214379dd",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/837_collaboration_stage_execution_terminal.down.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/837_collaboration_stage_execution_terminal.down.sql",
+        "sha256": "7b92af78b386f3a8e3b0b1b2321b6a9adc4f187a09002a9ca1233fe911af92a1",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/837_collaboration_stage_execution_terminal.up.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/837_collaboration_stage_execution_terminal.up.sql",
+        "sha256": "803e0bdd9a3f5c5a2b29bb55711c64f8d9c27b7e5037570f0e55f135883e3477",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/838_collaboration_stage_execution_observation_order.down.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/838_collaboration_stage_execution_observation_order.down.sql",
+        "sha256": "6dda857b29d9609ed7431e4e9a0da6b4bbd1ba334d2f8c287e64d4a2d66b4479",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/838_collaboration_stage_execution_observation_order.up.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/838_collaboration_stage_execution_observation_order.up.sql",
+        "sha256": "e515050a5b47ff80374be11dfc095818f60cd0bb8506cf750a0dce0902e6c3c7",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/839_collaboration_stage_rollback_observation_id.down.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/839_collaboration_stage_rollback_observation_id.down.sql",
+        "sha256": "fc3f8dc56d65be4a6bc55a0dd919f044c1ef3e14da5bf9f740b60e482d42ffc8",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/839_collaboration_stage_rollback_observation_id.up.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/839_collaboration_stage_rollback_observation_id.up.sql",
+        "sha256": "b5ccea3d9334e8276aefc9bfa930b402715f4b99bde23513fa0153616285d41e",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/840_collaboration_stage_rollback_observation_version.down.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/840_collaboration_stage_rollback_observation_version.down.sql",
+        "sha256": "e3a723e55823cefc6a9e0244f7c41dd524e0508afde1d189f64e443fa0ae9b43",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/840_collaboration_stage_rollback_observation_version.up.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/840_collaboration_stage_rollback_observation_version.up.sql",
+        "sha256": "ff8d478beefdaf4f13d52295b70406aa1fb8e34c9d8e13b410e58c18955cf1d8",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/841_collaboration_stage_rollback_observation_content.down.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/841_collaboration_stage_rollback_observation_content.down.sql",
+        "sha256": "1424bf829043aa54e32b2452e458b82bea97056a56dc493f10aba24b698b12e6",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/841_collaboration_stage_rollback_observation_content.up.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/841_collaboration_stage_rollback_observation_content.up.sql",
+        "sha256": "6e34e4e0547dc65cb0b5d73f34d0126804203c61830e439fcb06577f741e4f0d",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/842_collaboration_stage_rollback_observation_order.down.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/842_collaboration_stage_rollback_observation_order.down.sql",
+        "sha256": "6787390a69a768f9729ead81d72058c2c768590450d88a60f25c8bdf47ccecc6",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/842_collaboration_stage_rollback_observation_order.up.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/842_collaboration_stage_rollback_observation_order.up.sql",
+        "sha256": "63f8b741b5ec83b18f9afde24bd9a6b4dba04d6f6af32b61f013fcca6c8c1eb3",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/843_collaboration_stage_execution_ready.down.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/843_collaboration_stage_execution_ready.down.sql",
+        "sha256": "459f187e0e616dc4fc49d9346c0094395c783265f206063a249e984dcf59af89",
+        "base_sha256": null
+      },
+      {
+        "path": "server/migrations/843_collaboration_stage_execution_ready.up.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/migrations/843_collaboration_stage_execution_ready.up.sql",
+        "sha256": "5d529fe5ebbc3f18bdfe5ee1b126b6b6b7a27835f040a323f73e475a9426c742",
+        "base_sha256": null
+      },
+      {
+        "path": "server/pkg/db/generated/collaboration_stage_execution.sql.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/pkg/db/generated/collaboration_stage_execution.sql.go",
+        "sha256": "7fb4a1b82ad6e5904df9f52f686480b3e01ff90cc9f8b6887085a426ae899477",
+        "base_sha256": null
+      },
+      {
+        "path": "server/pkg/db/generated/models.go",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/pkg/db/generated/models.go",
+        "sha256": "9a73454f5b1520892b3cc21e3a77c16b1d65834e4234a0146b48c8ce5efee8d7",
+        "base_sha256": "646e558ca088bb70fd722436a471f888cbfada4885b8b456c6f97a7606ce4642"
+      },
+      {
+        "path": "server/pkg/db/queries/collaboration_stage_execution.sql",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/pkg/db/queries/collaboration_stage_execution.sql",
+        "sha256": "e20d36b1dbf3f503277218ca96b2b5f4ab7f02104fe90cbbcad3e4d257433bcf",
+        "base_sha256": null
+      },
+      {
+        "path": "server/sqlc.yaml",
+        "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/isolated-r01-source/server/sqlc.yaml",
+        "sha256": "ac6551821594eedf759f6ad54418b6cc9d4aa61a150eaec755a3f33f24fda629",
+        "base_sha256": "ea3d005d8e5f77fdd7c25589ff5da28fd8fbf1e12c4e27bbce1789a4e81c1306"
+      }
+    ],
+    "additional_private_diagnostic": {
+      "at": "2026-11-14T12:57:44.370992+00:00",
+      "original_product_files": 4938,
+      "original_product_hashes_unchanged": true,
+      "additional_test": {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_execution_check_diagnostics_test.go",
+        "sha256": "1355ee18ed8dc3b03de586f34385e85a3ec105e999245be4f0cf8effba1da44c"
+      },
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_impl_service.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server",
+        "test",
+        "./internal/service",
+        "-run",
+        "^TestStageExecutionCheck",
+        "-count=1",
+        "-json"
+      ]
+    },
+    "final_audit": {
+      "at": "2026-11-14T13:00:56.888472+00:00",
+      "product_files_checked": 4938,
+      "product_hash_errors": [],
+      "additional_private_diagnostic_test": "server/internal/service/collaboration_stage_execution_check_diagnostics_test.go",
+      "current_workspace_differences": [
+        {
+          "path": "server/internal/handler/workspace_delete_manifest_test.go",
+          "frozen_sha256": "8cd0d3e77203eb3c62672fc4942f525a0a82b858061c4d25758dc6572edcd0a7",
+          "current_sha256": "03da138f81fd0b41c9f54ee0c1dcc5c7867bc5bd32334d95ec5da38321f5f58a"
+        },
+        {
+          "path": "server/pkg/db/generated/models.go",
+          "frozen_sha256": "9a73454f5b1520892b3cc21e3a77c16b1d65834e4234a0146b48c8ce5efee8d7",
+          "current_sha256": "b3043324453a6e5420c0fd1add1b45c86f93382438947281b3a91800308693fa"
+        },
+        {
+          "path": "server/sqlc.yaml",
+          "frozen_sha256": "ac6551821594eedf759f6ad54418b6cc9d4aa61a150eaec755a3f33f24fda629",
+          "current_sha256": "ade6bdf31030c0a8c366e6a981c97efacd3faab408a8e504d6f4530e11e057e4"
+        }
+      ]
+    }
+  },
+  "implementation_evidence_audit": [
+    {
+      "id": "build-final-1",
+      "exit": 0,
+      "source_unchanged": true,
+      "final_isolated": false,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "core-build-1",
+      "exit": 1,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "core-build-2",
+      "exit": 0,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "core-build-3",
+      "exit": 0,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "ddl-build-1",
+      "exit": 0,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "handler-final-1",
+      "exit": 0,
+      "source_unchanged": true,
+      "final_isolated": false,
+      "named": {
+        "pass": 49,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "isolated-build-1",
+      "exit": 0,
+      "source_unchanged": true,
+      "final_isolated": true,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "isolated-format-1",
+      "exit": 0,
+      "source_unchanged": true,
+      "final_isolated": true,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "isolated-handler-normal-1",
+      "exit": 0,
+      "source_unchanged": true,
+      "final_isolated": true,
+      "named": {
+        "pass": 49,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "isolated-handler-race-1",
+      "exit": 0,
+      "source_unchanged": true,
+      "final_isolated": true,
+      "named": {
+        "pass": 49,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "isolated-harness-build-1",
+      "exit": 0,
+      "source_unchanged": true,
+      "final_isolated": true,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "isolated-router-normal-1",
+      "exit": 0,
+      "source_unchanged": true,
+      "final_isolated": true,
+      "named": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "isolated-router-race-1",
+      "exit": 0,
+      "source_unchanged": true,
+      "final_isolated": true,
+      "named": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "isolated-service-normal-1",
+      "exit": 0,
+      "source_unchanged": true,
+      "final_isolated": true,
+      "named": {
+        "pass": 145,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "isolated-service-race-1",
+      "exit": 0,
+      "source_unchanged": true,
+      "final_isolated": true,
+      "named": {
+        "pass": 44,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "isolated-sqlc-1",
+      "exit": 0,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "isolated-vet-1",
+      "exit": 0,
+      "source_unchanged": true,
+      "final_isolated": true,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "issuer-artifact-green-1",
+      "exit": 0,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "issuer-artifact-red-1",
+      "exit": 1,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      }
+    },
+    {
+      "id": "router-1",
+      "exit": 0,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "router-compile-1",
+      "exit": 0,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "service-1",
+      "exit": 0,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 13,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "service-2",
+      "exit": 0,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "service-final-1",
+      "exit": 0,
+      "source_unchanged": false,
+      "final_isolated": false,
+      "named": {
+        "pass": 145,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "sqlc-1",
+      "exit": 0,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "sqlc-2",
+      "exit": 0,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "sqlc-3",
+      "exit": 0,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "stage-regression-1",
+      "exit": 0,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 143,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "target-red-1",
+      "exit": 1,
+      "source_unchanged": null,
+      "final_isolated": false,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "vet-final-1",
+      "exit": 0,
+      "source_unchanged": true,
+      "final_isolated": false,
+      "named": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    }
+  ],
+  "verification": [
+    {
+      "id": "check-build-1",
+      "started_at": "2026-11-14T12:51:23.631074+00:00",
+      "finished_at": "2026-11-14T12:51:32.617507+00:00",
+      "command": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server",
+        "build",
+        "./..."
+      ],
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-build-1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-build-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [],
+        "fail": [],
+        "skip": []
+      },
+      "environment": "explicit Go cache/PATH, private compile HOME/TMP; DB wrapper selects coordinator package-private HOME/TMP; long-lived harness flag absent"
+    },
+    {
+      "id": "check-format-1",
+      "started_at": "2026-11-14T12:51:32.617851+00:00",
+      "finished_at": "2026-11-14T12:51:32.639419+00:00",
+      "command": [
+        "gofmt",
+        "-l",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/cmd/migrate/main.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/cmd/server/collaboration_stage_execution_control_boundary_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/cmd/server/collaboration_stage_execution_control_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/cmd/server/collaboration_stage_execution_source_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/handler/collaboration_stage.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/handler/collaboration_stage_review.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/handler/collaboration_stage_review_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/handler/handler.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/handler/workspace_delete_manifest_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_evidence.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_evidence_read.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_execution.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_execution_approvals.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_execution_fixture_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_execution_identity.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_execution_metrics.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_execution_observations.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_execution_sources.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_execution_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_execution_types.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_execution_view.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_qa.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_review.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_review_view.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_signer.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/pkg/db/generated/collaboration_stage_execution.sql.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/pkg/db/generated/models.go"
+      ],
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-format-1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-format-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [],
+        "fail": [],
+        "skip": []
+      },
+      "environment": "explicit Go cache/PATH, private compile HOME/TMP; DB wrapper selects coordinator package-private HOME/TMP; long-lived harness flag absent"
+    },
+    {
+      "id": "check-handler-normal-1",
+      "started_at": "2026-11-14T12:50:00.989867+00:00",
+      "finished_at": "2026-11-14T12:50:18.010032+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_impl_handler.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server",
+        "test",
+        "./internal/handler",
+        "-run",
+        "^TestStage",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-handler-normal-1.log",
+      "log_sha256": "d7438da8f50da1f40f3184dfa8041448678cfaf4504ed520916347c8a6a7a10f",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-handler-normal-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [
+          "TestStageDescendantMoveAndBatchRefuseExactAdmissionCode",
+          "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/machine/start",
+          "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/machine/waiting-local-directory",
+          "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/human/start",
+          "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/human/waiting-local-directory",
+          "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation",
+          "TestStageHTTPCodeReviewContractAndProtectedEvidence",
+          "TestStageHTTPReviewStrictBodies/absent_supersedes",
+          "TestStageHTTPReviewStrictBodies/absent_artifact",
+          "TestStageHTTPReviewStrictBodies/upper_alias",
+          "TestStageHTTPReviewStrictBodies/unknown_field",
+          "TestStageHTTPReviewStrictBodies/short_head",
+          "TestStageHTTPReviewStrictBodies",
+          "TestStageHTTPExecutionEvidenceExtensions/missing_target",
+          "TestStageHTTPExecutionEvidenceExtensions/qa_target",
+          "TestStageHTTPExecutionEvidenceExtensions/bad_metric",
+          "TestStageHTTPExecutionEvidenceExtensions/foreign_field",
+          "TestStageHTTPExecutionEvidenceExtensions",
+          "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists",
+          "TestStageHTTPStrictBodies",
+          "TestStageHTTPActionsConfirmationsRefusalsAndRecovery",
+          "TestStageAdmissionThroughOrdinaryIssueHandlers",
+          "TestStageHTTPScopeConfirmationRequiresExplicitVerifiedCode",
+          "TestStageHTTPTestReportPurposeAndMalformedBodies",
+          "TestStageHTTPCreateOnlyTestSubjectMalformed",
+          "TestStageGitHubOlderEventCannotRestoreOldHeadOrLinks",
+          "TestStageBarrierClosed_Unstaged/last_child_still_leaves_a_sibling_open",
+          "TestStageBarrierClosed_Unstaged/every_child_terminal_closes_the_single_implicit_stage",
+          "TestStageBarrierClosed_Unstaged/a_backlog_sibling_holds_the_barrier_open_(no_surprise_cascade)",
+          "TestStageBarrierClosed_Unstaged/cancelled_counts_as_terminal",
+          "TestStageBarrierClosed_Unstaged",
+          "TestStageBarrierClosed_Staged/stage_1_not_fully_done_does_not_fire",
+          "TestStageBarrierClosed_Staged/closing_stage_1_fires_even_though_later_stages_are_parked",
+          "TestStageBarrierClosed_Staged/closing_stage_2_fires_when_stages_1_and_2_are_terminal",
+          "TestStageBarrierClosed_Staged/final_stage_closes_once_its_child_finishes",
+          "TestStageBarrierClosed_Staged",
+          "TestStageProgressSummary",
+          "TestStageProgressSummary_FinalStageNoNext",
+          "TestStageProgressSummary_SkipsUnstaged",
+          "TestStageAdvanceInstruction/a_known_next_stage_points_the_leader_at_it",
+          "TestStageAdvanceInstruction/no_created_next_stage_does_not_assert_finality",
+          "TestStageAdvanceInstruction",
+          "TestStageBarrierClosed_CancelledClosesStage/staged:_cancelling_the_last_open_child_closes_the_stage",
+          "TestStageBarrierClosed_CancelledClosesStage/unstaged:_cancel_of_the_last_open_child_closes_the_implicit_stage",
+          "TestStageBarrierClosed_CancelledClosesStage",
+          "TestStageBarrierClosed_UnstagedIgnoredInStagedSet/a_non-terminal_unstaged_child_does_not_block_stage_1",
+          "TestStageBarrierClosed_UnstagedIgnoredInStagedSet/completing_an_unstaged_child_in_a_staged_set_closes_nothing",
+          "TestStageBarrierClosed_UnstagedIgnoredInStagedSet",
+          "TestStageLeaderPrepareTimeoutRetryCanAdvanceNextStage"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "environment": "explicit Go cache/PATH, private compile HOME/TMP; DB wrapper selects coordinator package-private HOME/TMP; long-lived harness flag absent"
+    },
+    {
+      "id": "check-handler-race-1",
+      "started_at": "2026-11-14T12:50:18.010701+00:00",
+      "finished_at": "2026-11-14T12:50:51.301421+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_race_handler.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server",
+        "test",
+        "-race",
+        "./internal/handler",
+        "-run",
+        "^TestStage",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-handler-race-1.log",
+      "log_sha256": "ba761c14b91dc3296698bfeaaad27149f7ea9b21e79966d4d192e27b1fc0c293",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-handler-race-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [
+          "TestStageDescendantMoveAndBatchRefuseExactAdmissionCode",
+          "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/machine/start",
+          "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/machine/waiting-local-directory",
+          "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/human/start",
+          "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/human/waiting-local-directory",
+          "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation",
+          "TestStageHTTPCodeReviewContractAndProtectedEvidence",
+          "TestStageHTTPReviewStrictBodies/absent_supersedes",
+          "TestStageHTTPReviewStrictBodies/absent_artifact",
+          "TestStageHTTPReviewStrictBodies/upper_alias",
+          "TestStageHTTPReviewStrictBodies/unknown_field",
+          "TestStageHTTPReviewStrictBodies/short_head",
+          "TestStageHTTPReviewStrictBodies",
+          "TestStageHTTPExecutionEvidenceExtensions/missing_target",
+          "TestStageHTTPExecutionEvidenceExtensions/qa_target",
+          "TestStageHTTPExecutionEvidenceExtensions/bad_metric",
+          "TestStageHTTPExecutionEvidenceExtensions/foreign_field",
+          "TestStageHTTPExecutionEvidenceExtensions",
+          "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists",
+          "TestStageHTTPStrictBodies",
+          "TestStageHTTPActionsConfirmationsRefusalsAndRecovery",
+          "TestStageAdmissionThroughOrdinaryIssueHandlers",
+          "TestStageHTTPScopeConfirmationRequiresExplicitVerifiedCode",
+          "TestStageHTTPTestReportPurposeAndMalformedBodies",
+          "TestStageHTTPCreateOnlyTestSubjectMalformed",
+          "TestStageGitHubOlderEventCannotRestoreOldHeadOrLinks",
+          "TestStageBarrierClosed_Unstaged/last_child_still_leaves_a_sibling_open",
+          "TestStageBarrierClosed_Unstaged/every_child_terminal_closes_the_single_implicit_stage",
+          "TestStageBarrierClosed_Unstaged/a_backlog_sibling_holds_the_barrier_open_(no_surprise_cascade)",
+          "TestStageBarrierClosed_Unstaged/cancelled_counts_as_terminal",
+          "TestStageBarrierClosed_Unstaged",
+          "TestStageBarrierClosed_Staged/stage_1_not_fully_done_does_not_fire",
+          "TestStageBarrierClosed_Staged/closing_stage_1_fires_even_though_later_stages_are_parked",
+          "TestStageBarrierClosed_Staged/closing_stage_2_fires_when_stages_1_and_2_are_terminal",
+          "TestStageBarrierClosed_Staged/final_stage_closes_once_its_child_finishes",
+          "TestStageBarrierClosed_Staged",
+          "TestStageProgressSummary",
+          "TestStageProgressSummary_FinalStageNoNext",
+          "TestStageProgressSummary_SkipsUnstaged",
+          "TestStageAdvanceInstruction/a_known_next_stage_points_the_leader_at_it",
+          "TestStageAdvanceInstruction/no_created_next_stage_does_not_assert_finality",
+          "TestStageAdvanceInstruction",
+          "TestStageBarrierClosed_CancelledClosesStage/staged:_cancelling_the_last_open_child_closes_the_stage",
+          "TestStageBarrierClosed_CancelledClosesStage/unstaged:_cancel_of_the_last_open_child_closes_the_implicit_stage",
+          "TestStageBarrierClosed_CancelledClosesStage",
+          "TestStageBarrierClosed_UnstagedIgnoredInStagedSet/a_non-terminal_unstaged_child_does_not_block_stage_1",
+          "TestStageBarrierClosed_UnstagedIgnoredInStagedSet/completing_an_unstaged_child_in_a_staged_set_closes_nothing",
+          "TestStageBarrierClosed_UnstagedIgnoredInStagedSet",
+          "TestStageLeaderPrepareTimeoutRetryCanAdvanceNextStage"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "environment": "explicit Go cache/PATH, private compile HOME/TMP; DB wrapper selects coordinator package-private HOME/TMP; long-lived harness flag absent"
+    },
+    {
+      "id": "check-router-normal-1",
+      "started_at": "2026-11-14T12:50:51.302139+00:00",
+      "finished_at": "2026-11-14T12:51:01.865201+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_2c_router_r01_safe.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^TestStageExecutionRouter",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-router-normal-1.log",
+      "log_sha256": "7a4aa1877939e1fae3c4aea307aeef20bde15fb6e3f70dac28b50a00c5564626",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-router-normal-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [
+          "TestStageExecutionRouterPrivateControlAndActualArtifact",
+          "TestStageExecutionRouterControlStrictEnvelope",
+          "TestStageExecutionRouterProductionConstructorHasNoSource",
+          "TestStageExecutionRouterCapturedNativeObservationIsImmutable"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "environment": "explicit Go cache/PATH, private compile HOME/TMP; DB wrapper selects coordinator package-private HOME/TMP; long-lived harness flag absent"
+    },
+    {
+      "id": "check-router-race-1",
+      "started_at": "2026-11-14T12:51:01.865655+00:00",
+      "finished_at": "2026-11-14T12:51:20.179072+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_2c_router_race_r01_safe.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server",
+        "test",
+        "-race",
+        "./cmd/server",
+        "-run",
+        "^TestStageExecutionRouter",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-router-race-1.log",
+      "log_sha256": "fbb02ba029a045c1f6a632b8cbcd383c16c6b11746113edc61502b0242ddfea6",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-router-race-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [
+          "TestStageExecutionRouterPrivateControlAndActualArtifact",
+          "TestStageExecutionRouterControlStrictEnvelope",
+          "TestStageExecutionRouterProductionConstructorHasNoSource",
+          "TestStageExecutionRouterCapturedNativeObservationIsImmutable"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "environment": "explicit Go cache/PATH, private compile HOME/TMP; DB wrapper selects coordinator package-private HOME/TMP; long-lived harness flag absent"
+    },
+    {
+      "id": "check-service-normal-1",
+      "started_at": "2026-11-14T12:46:23.610279+00:00",
+      "finished_at": "2026-11-14T12:48:21.789912+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_impl_service.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server",
+        "test",
+        "./internal/service",
+        "-run",
+        "^TestStage",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-service-normal-1.log",
+      "log_sha256": "ebe28a786a4e237ce2b7e7c60cecf26630823cd064d10e98b2c9a5b8a47042f2",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-service-normal-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [
+          "TestStageChildCreationRequiresApprovedProposalForMachines",
+          "TestStageChildExecutionGateAtEnqueueAndStart",
+          "TestStageChildStartSerializesWithRootLifecycle",
+          "TestStageChildUpdateKeepsMappingAndRefusesMachineAttach",
+          "TestStageDescendantsOfManagedRootAreGatedAndConfirmable",
+          "TestStageDescendantEnqueueEntryPoints/mention",
+          "TestStageDescendantEnqueueEntryPoints/thread",
+          "TestStageDescendantEnqueueEntryPoints/squad",
+          "TestStageDescendantEnqueueEntryPoints/squad_handoff",
+          "TestStageDescendantEnqueueEntryPoints/deferred_fallback",
+          "TestStageDescendantEnqueueEntryPoints/deferred_channel",
+          "TestStageDescendantEnqueueEntryPoints/assignment",
+          "TestStageDescendantEnqueueEntryPoints/handoff",
+          "TestStageDescendantEnqueueEntryPoints",
+          "TestStagePreparedEnqueueAdmitsExactlyConfirmedDescendant",
+          "TestStageApprovedChildCannotAuthorizeMachineDecomposition",
+          "TestStageReviewRequestPreservesPreExecutionCanonicalBytes/code_review",
+          "TestStageReviewRequestPreservesPreExecutionCanonicalBytes/qa",
+          "TestStageReviewRequestPreservesPreExecutionCanonicalBytes",
+          "TestStageExecutionTargetAndPhysicalIdentity",
+          "TestStageExecutionReleaseRollbackAndOriginalReceipt",
+          "TestStageExecutionUnknownBlocksRebindingAndCrossWorkspace",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/unknown_commit",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/cancel_after_commit",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/panic",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/transport",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation",
+          "TestStageExecutionSigningStateDriftPreventsDispatch",
+          "TestStageExecutionMetricAmbiguityInvalidatesExistingRollback/healthy",
+          "TestStageExecutionMetricAmbiguityInvalidatesExistingRollback/unknown",
+          "TestStageExecutionMetricAmbiguityInvalidatesExistingRollback/anomaly",
+          "TestStageExecutionMetricAmbiguityInvalidatesExistingRollback",
+          "TestStageExecutionConcurrentPrepareHasOneEntry",
+          "TestStageExecutionCommitDelayRetiresExpiredEntry",
+          "TestStageExecutionLateAuthenticatedFactDoesNotRenewApproval",
+          "TestStageExecutionProductionUnavailableAndSourceDeniedProjection",
+          "TestStageExecutionOriginalArtifactReaderRevocation",
+          "TestStageExecutionReturnKeepsReadableReportWithoutAdapter",
+          "TestStageExecutionMetricReverseOrderAndOlderArrivalCannotResolveAmbiguity",
+          "TestStageSourceDeniedDigestAndCachedScopeSelection",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock/original_approval",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock/original_issuer",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock/caller",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock",
+          "TestStageCodeReviewTransitionsAndOriginalKey",
+          "TestStageCodeReviewStrictCIRefusals/missing",
+          "TestStageCodeReviewStrictCIRefusals/legacy_incomplete",
+          "TestStageCodeReviewStrictCIRefusals/old_head",
+          "TestStageCodeReviewStrictCIRefusals/stale",
+          "TestStageCodeReviewStrictCIRefusals/future",
+          "TestStageCodeReviewStrictCIRefusals/running",
+          "TestStageCodeReviewStrictCIRefusals/skipped",
+          "TestStageCodeReviewStrictCIRefusals/neutral",
+          "TestStageCodeReviewStrictCIRefusals/failure",
+          "TestStageCodeReviewStrictCIRefusals",
+          "TestStageCodeReviewDigestAndSourceDrift/head",
+          "TestStageCodeReviewDigestAndSourceDrift/checks",
+          "TestStageCodeReviewDigestAndSourceDrift/trust",
+          "TestStageCodeReviewDigestAndSourceDrift/child",
+          "TestStageCodeReviewDigestAndSourceDrift/requirement",
+          "TestStageCodeReviewDigestAndSourceDrift",
+          "TestStageCodeReviewReturnAndSourcePrivacy",
+          "TestStageCodeReviewSignerRevocationAndExpiryBounds/participant",
+          "TestStageCodeReviewSignerRevocationAndExpiryBounds/account",
+          "TestStageCodeReviewSignerRevocationAndExpiryBounds/pat",
+          "TestStageCodeReviewSignerRevocationAndExpiryBounds/password",
+          "TestStageCodeReviewSignerRevocationAndExpiryBounds/source_access",
+          "TestStageCodeReviewSignerRevocationAndExpiryBounds/limit_and_expired",
+          "TestStageCodeReviewSignerRevocationAndExpiryBounds",
+          "TestStageCodeCandidateVersionsAndReviewerIsolation",
+          "TestStageCodeCandidateRejectsUnboundInputs/pull_request",
+          "TestStageCodeCandidateRejectsUnboundInputs/head",
+          "TestStageCodeCandidateRejectsUnboundInputs/child",
+          "TestStageCodeCandidateRejectsUnboundInputs/artifact",
+          "TestStageCodeCandidateRejectsUnboundInputs",
+          "TestStageCodeVCSWithoutRepositoryCheckIdentityIsUnsupported",
+          "TestStageCodeReviewConcurrentIntentAndLostCommit/concurrent_same_key",
+          "TestStageCodeReviewConcurrentIntentAndLostCommit/lost_commit",
+          "TestStageCodeReviewConcurrentIntentAndLostCommit",
+          "TestStageCodeReviewFencesChecksAndTrustThroughConsumption/sign/head",
+          "TestStageCodeReviewFencesChecksAndTrustThroughConsumption/sign/checks",
+          "TestStageCodeReviewFencesChecksAndTrustThroughConsumption/sign/trust",
+          "TestStageCodeReviewFencesChecksAndTrustThroughConsumption/advance/head",
+          "TestStageCodeReviewFencesChecksAndTrustThroughConsumption/advance/checks",
+          "TestStageCodeReviewFencesChecksAndTrustThroughConsumption/advance/trust",
+          "TestStageCodeReviewFencesChecksAndTrustThroughConsumption",
+          "TestStageCodeReviewRevocationIsAppendOnly",
+          "TestStageCodeReviewSourceMembershipRejoinDoesNotReviveApproval",
+          "TestStageCodeCandidateDiscoveryEmpty",
+          "TestStageScopeRoleRestorationDoesNotReviveApproval",
+          "TestStageScopeWriteRequiresCurrentCredentialWithoutRetainedExpiry/expired_jwt",
+          "TestStageScopeWriteRequiresCurrentCredentialWithoutRetainedExpiry/revoked_pat",
+          "TestStageScopeWriteRequiresCurrentCredentialWithoutRetainedExpiry",
+          "TestStageScopeConfirmationBindsVerifiedCodeVersion",
+          "TestStageScopeConfirmationFencesCodeUntilCommit/head",
+          "TestStageScopeConfirmationFencesCodeUntilCommit/link",
+          "TestStageScopeConfirmationFencesCodeUntilCommit",
+          "TestStageScopeMemberFenceAtActualDecisionWrite",
+          "TestStagePolicyRevisionCASAuthorityAndOriginalKey",
+          "TestStageRolesRequireSourceAdminParticipantsAndSeparation",
+          "TestStageProposalVersionsDecisionsAndSingleMaterialization",
+          "TestStageProposalConcurrentAcceptCreatesOneChildSet",
+          "TestStageProposalAcceptRollsBackEveryChildOnRefusal",
+          "TestStageProposalSourceIsVerifiedByTheServer",
+          "TestStageScopeConfirmationFirstEnableAndReopen",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_stage_child",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_stage_decision",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit/UPDATE_issue_collaboration_SET_revision",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_event",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_notification",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit/UPDATE_collaboration_operation",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit/lost_commit",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit",
+          "TestStageReadinessPredicateIsSharedWithMigration",
+          "TestStageArtifactReportReadAuthorityMatchesR4",
+          "TestStageArtifactReportQAReferenceUsesCurrentManager",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/list",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/detail",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/r4",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/qa_reference",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA",
+          "TestStageArtifactReportRevocationBeforeAuthorityLockDiscardsSnapshot/list",
+          "TestStageArtifactReportRevocationBeforeAuthorityLockDiscardsSnapshot/detail",
+          "TestStageArtifactReportRevocationBeforeAuthorityLockDiscardsSnapshot",
+          "TestStageArtifactReportCachedCursorDoesNotRestoreAuthority",
+          "TestStageArtifactReportEmptyListStillChecksFrozenSource",
+          "TestStageTestReportUnboundRunKeepsAuthorizedEmptyList",
+          "TestStageTestSubjectClaimRequiresMatchingGit/missing",
+          "TestStageTestSubjectClaimRequiresMatchingGit/mismatch",
+          "TestStageTestSubjectClaimRequiresMatchingGit",
+          "TestStageTestReportOriginalCandidateConcurrentRecoveryAndPrivacy",
+          "TestStageTestSubjectDistinctCandidatesNeverChooseNewest",
+          "TestStageTestReportLegacyRunCannotAcquireSubject",
+          "TestStageTestReportLostCommitRecoversOneOriginalEvent",
+          "TestStageTestSubjectBlockedTargetHasNoBinding",
+          "TestStageTestReportHostCheckpointExactLogAndRedaction",
+          "TestStageTestReportActualInputClaimAndReceipt",
+          "TestStageTestSubjectRequiresTypedTarget",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/success",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/failed_execution",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/unsettled",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/failed_case",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution",
+          "TestStageTestSubjectMemberFenceAtActualCommentWrite",
+          "TestStageArtifactReportHTTPReadAuthorityEnvelope"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "environment": "explicit Go cache/PATH, private compile HOME/TMP; DB wrapper selects coordinator package-private HOME/TMP; long-lived harness flag absent"
+    },
+    {
+      "id": "check-service-race-1",
+      "started_at": "2026-11-14T12:48:21.790710+00:00",
+      "finished_at": "2026-11-14T12:50:00.989313+00:00",
+      "command": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_race_service.json",
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server",
+        "test",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^TestStage(Execution|ArtifactReport|TestReportUnboundRun|QAPassedReportNeedsSuccessfulSettledExecution|AdvanceRechecksOriginalApprovalAtFinalClock|TestSubjectMemberFenceAtActualCommentWrite)",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-service-race-1.log",
+      "log_sha256": "916290e553f3b5b7b328116b3291a84254d4722a7683db031a3decba33217c5b",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-service-race-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [
+          "TestStageExecutionTargetAndPhysicalIdentity",
+          "TestStageExecutionReleaseRollbackAndOriginalReceipt",
+          "TestStageExecutionUnknownBlocksRebindingAndCrossWorkspace",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/unknown_commit",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/cancel_after_commit",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/panic",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation/transport",
+          "TestStageExecutionCommitUncertaintyAndPreEntryCancellation",
+          "TestStageExecutionSigningStateDriftPreventsDispatch",
+          "TestStageExecutionMetricAmbiguityInvalidatesExistingRollback/healthy",
+          "TestStageExecutionMetricAmbiguityInvalidatesExistingRollback/unknown",
+          "TestStageExecutionMetricAmbiguityInvalidatesExistingRollback/anomaly",
+          "TestStageExecutionMetricAmbiguityInvalidatesExistingRollback",
+          "TestStageExecutionConcurrentPrepareHasOneEntry",
+          "TestStageExecutionCommitDelayRetiresExpiredEntry",
+          "TestStageExecutionLateAuthenticatedFactDoesNotRenewApproval",
+          "TestStageExecutionProductionUnavailableAndSourceDeniedProjection",
+          "TestStageExecutionOriginalArtifactReaderRevocation",
+          "TestStageExecutionReturnKeepsReadableReportWithoutAdapter",
+          "TestStageExecutionMetricReverseOrderAndOlderArrivalCannotResolveAmbiguity",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock/original_approval",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock/original_issuer",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock/caller",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock",
+          "TestStageArtifactReportReadAuthorityMatchesR4",
+          "TestStageArtifactReportQAReferenceUsesCurrentManager",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/list",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/detail",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/r4",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA/qa_reference",
+          "TestStageArtifactReportAuthorityLocksAcrossReadAndQA",
+          "TestStageArtifactReportRevocationBeforeAuthorityLockDiscardsSnapshot/list",
+          "TestStageArtifactReportRevocationBeforeAuthorityLockDiscardsSnapshot/detail",
+          "TestStageArtifactReportRevocationBeforeAuthorityLockDiscardsSnapshot",
+          "TestStageArtifactReportCachedCursorDoesNotRestoreAuthority",
+          "TestStageArtifactReportEmptyListStillChecksFrozenSource",
+          "TestStageTestReportUnboundRunKeepsAuthorizedEmptyList",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/success",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/failed_execution",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/unsettled",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution/failed_case",
+          "TestStageQAPassedReportNeedsSuccessfulSettledExecution",
+          "TestStageTestSubjectMemberFenceAtActualCommentWrite",
+          "TestStageArtifactReportHTTPReadAuthorityEnvelope"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "environment": "explicit Go cache/PATH, private compile HOME/TMP; DB wrapper selects coordinator package-private HOME/TMP; long-lived harness flag absent"
+    },
+    {
+      "id": "check-vet-1",
+      "started_at": "2026-11-14T12:51:20.179409+00:00",
+      "finished_at": "2026-11-14T12:51:23.630823+00:00",
+      "command": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server",
+        "vet",
+        "./internal/service",
+        "./internal/handler",
+        "./cmd/server"
+      ],
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-vet-1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/check-vet-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named": {
+        "pass": [],
+        "fail": [],
+        "skip": []
+      },
+      "environment": "explicit Go cache/PATH, private compile HOME/TMP; DB wrapper selects coordinator package-private HOME/TMP; long-lived harness flag absent"
+    }
+  ],
+  "diagnostic": {
+    "command": [
+      "node",
+      "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+      "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_impl_service.json",
+      "go",
+      "-C",
+      "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server",
+      "test",
+      "./internal/service",
+      "-run",
+      "^TestStageExecutionCheck",
+      "-count=1",
+      "-json"
+    ],
+    "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/diagnostic-red-1.log",
+    "log_sha256": "250bba8ee0580b768323560cf6bdb1ac225ca8c10dd39b44c8d90ac755868cda",
+    "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/diagnostic-red-1.exit",
+    "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "exit": 1,
+    "named": {
+      "pass": [],
+      "fail": [
+        "TestStageExecutionCheckR4ReflectsOriginalArtifactReaderLoss",
+        "TestStageExecutionCheckFinalizationKeepsOneDeadline"
+      ],
+      "skip": []
+    },
+    "relevant_output": [
+      "=== RUN   TestStageExecutionCheckR4ReflectsOriginalArtifactReaderLoss\n",
+      "    collaboration_stage_execution_check_diagnostics_test.go:22: current reader sees original release approval state=valid\n",
+      "    collaboration_stage_execution_check_diagnostics_test.go:24: R4 still marks release valid after the original code review signer lost artifact authority\n",
+      "    collaboration_stage_execution_check_diagnostics_test.go:22: current reader sees original qa approval state=evidence_changed\n",
+      "    collaboration_stage_execution_check_diagnostics_test.go:22: current reader sees original code_review approval state=signer_changed\n",
+      "    collaboration_stage_execution_check_diagnostics_test.go:37: actual execution remains refused with stage_signer_changed and zero calls\n",
+      "--- FAIL: TestStageExecutionCheckR4ReflectsOriginalArtifactReaderLoss (1.68s)\n",
+      "=== RUN   TestStageExecutionCheckFinalizationKeepsOneDeadline\n",
+      "    collaboration_stage_execution_check_diagnostics_test.go:72: fallback renewed the finalization deadline by 10.203459ms instead of sharing the original 5s budget\n",
+      "--- FAIL: TestStageExecutionCheckFinalizationKeepsOneDeadline (1.68s)\n"
+    ]
+  },
+  "live_product_or_test_changes": [],
+  "new_private_tests": [
+    "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/source/server/internal/service/collaboration_stage_execution_check_diagnostics_test.go"
+  ],
+  "git_writes": false,
+  "database_lifecycle_or_gate_writes": false,
+  "long_lived_harness_launched": false,
+  "policy_activation": false,
+  "profiles_released": [
+    "s2_impl_service",
+    "s2_race_service",
+    "s2_impl_handler",
+    "s2_race_handler",
+    "s2_2c_router_r01_safe",
+    "s2_2c_router_race_r01_safe"
+  ],
+  "not_run": [
+    "long-lived TestCollaborationStageExecutionHarness",
+    "complete public A7/internal execution/Web/Desktop/Git/CLI journey",
+    "2d all-writer/final-guard/M1/activity implementation",
+    "A01–A12 final acceptance",
+    "S4 real provider/model/account/payment/deployment tests"
+  ],
+  "references": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-results.md",
+      "sha256": "cf0e615754835657f26a14832303bab00895e13724f95f01465477fc4e1af796"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-results.json",
+      "sha256": "a299ff2aa526e8d10c47b8fd497c8764ae66b4609ec117b6e9d7642003450667"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/input-check.json",
+      "sha256": "549a1202c49bc8183aad0ecc22e3d14f3f8f7474d9cab53c0b5ada27d83c2ae1"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/final-source-audit.json",
+      "sha256": "383142de681fbe7e068c987de5043e9f49e3211cfbc2283350068c0492a7b2ad"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/diagnostic-source.json",
+      "sha256": "b4c11e45dc92bbe535a241f7200954a882e98d5b5c7ad4a14af510ce642b67a8"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-check/run_checks.py",
+      "sha256": "7f0704b1f3c47e0b2246076b55d66211b724cf705c8c50af669d4bb2ea04652e"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-control-contract.md",
+      "sha256": "ca3ee225e4a970fba2d70e389049f23f03f9967a01eb1882a812728bf2c6d1a4"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-control-transport.md",
+      "sha256": "629f79765a1e8f12cd29bd275b33a436771eadaa192d31cf91a40f1d8beea901"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-migration-results.json",
+      "sha256": "9983b31c6bd25dcf8dbc79382dceea2f34c8a8c8145729d47ccfe42781494d84"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-migration-results.md",
+      "sha256": "2657e2c125d5441dc94d13a0a3e5427126b5727e1bfc23e0f1ee84acdde99842"
+    }
+  ],
+  "report_markdown_sha256": "aeb35a6bf357199b44e28c771ea519e2b4793aed1016ef0be9642161ca22cf25"
+}

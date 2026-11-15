@@ -1,0 +1,78 @@
+{
+  "recorded_at": "2026-11-03T08:56:11.522138+00:00",
+  "scope": "directed production Web regression; does not replace complete or password acceptance",
+  "head": "084ea3c987fa4ab8418a2ae5b3b7a20c096c36d8",
+  "product_source_id": "b79923e3d766f032b9933577bd9dd39e5f09f75f14f2b8a057310a0742604a82",
+  "api_commit": "084ea3c98",
+  "api_database": "multica_check_20261103084058_48788_api",
+  "api_url": "http://localhost:18574",
+  "web_url": "http://localhost:13494",
+  "web_mode": "production",
+  "web_build_id": "OMgt40p9_p0N6dw9JWVVg",
+  "auth_mode": "legacy",
+  "source_env_preserved": true,
+  "command": "isolated prepare_check_environment -> ensure_database/migrate_database -> start_api/start_web -> pnpm exec playwright test e2e/collaboration-delivery-web.spec.ts e2e/collaboration-editing-web.spec.ts --workers=1 --retries=0 --reporter=line,json --grep=<two exact selected titles>",
+  "actual_exit": 0,
+  "stats": {
+    "startTime": "2026-11-03T08:42:07.957Z",
+    "duration": 13563.891,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "inventory": [
+    {
+      "file": "collaboration-delivery-web.spec.ts",
+      "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "collaboration-editing-web.spec.ts",
+      "title": "Web source creation, field edits and discussion share one authorized issue",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    }
+  ],
+  "files_sha256": {
+    "e2e/fixtures/collaboration-editing.ts": "085b5af7434d93e3c6efe659c51f7c83bff7ac5c9712a1413e480e4d0e92c58d",
+    "e2e/collaboration-delivery-web.spec.ts": "2abe357d3dda931edae450548183a9501d00daec98c124c28227f23b4342f110",
+    "e2e/collaboration-editing-web.spec.ts": "fa0aace8ffd19da4dc32eee5c01324df711e4089b79d5472649f54f71a4e3963",
+    "packages/views/collaboration/field-inputs.tsx": "823c7a6d1898eea6b85f39ff0b103fdec32b8858d70f85200c3f811049967987",
+    "packages/views/locales/en/collaboration.json": "1f6ba410002f2617901cb64a67b9fbb4def88e61faf00b0c75b65d415709f819",
+    "packages/views/locales/zh-Hans/collaboration.json": "604a79e99eaafc4aa97b7ec2d51042a03abfef490f947851bfd3e7203e58a6be"
+  },
+  "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/runtime-continue-20261103/focused-web-results.json",
+  "raw_results_sha256": "eb1f5c67c82770dcf872cd577f1f68299f8cd4e00ce1e602371a3d6656442a34",
+  "environment_record": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/runtime-continue-20261103/focused-web-environment.json",
+  "environment_sha256": "c502a92829b9bc7df2484244469b0bcfca9ec7c69b5ccb71c03ec8cfaba44c42",
+  "source_dirty": true,
+  "cleanup": "only run-owned API/Web stopped, DB/logs retained",
+  "real_provider_calls": 0,
+  "runtime25_consumed": 0,
+  "invalid_setup_attempts_preserved": [
+    {
+      "state": "skipped",
+      "reason": "COLLABORATION_E2E_API_URL absent; not a behavioral run"
+    },
+    {
+      "state": "failed_before_behavior",
+      "reason": "developer password API refuses legacy send-code with403; no application failure inferred"
+    },
+    {
+      "state": "build_precondition_failed",
+      "reason": "another owned Web process still held checkout build; test not started"
+    }
+  ]
+}

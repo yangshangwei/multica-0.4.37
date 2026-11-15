@@ -1,0 +1,1155 @@
+{
+  "schema_version": 1,
+  "reviewer": {
+    "identity": "/root/adapter_v5_review",
+    "role": "trellis-check",
+    "reviewed_at": "2026-11-02T14:12:21.971013+00:00"
+  },
+  "active_task": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "scope": "Independent final v7 recheck only; exact source bytes, bounded fake contracts and network-denied cached Go metadata. No shared-check or integrated-v6 acceptance.",
+  "verdict": "changes-required",
+  "blocking_findings_open": 1,
+  "launcher_clearance": false,
+  "findings_fixed": [],
+  "verified_corrections": [
+    {
+      "id": "AV5-1",
+      "status": "original_guarded_paths_verified",
+      "evidence": "Canonical allocation.package checks and identical -C/-C=/default dot list resolution pass the supplied 30-method and reused independent20 contracts. Scanner AV7-1 can still bypass these guards."
+    },
+    {
+      "id": "AV5-2",
+      "status": "original_guarded_paths_verified",
+      "evidence": "Absent/empty/whitespace Go/PSQL/evidence mode1 settings refuse before SQL/list in the ordinary guarded path; AV7-1 can bypass admission by misclassifying compilation."
+    },
+    {
+      "id": "first-v7-test-value-scanner",
+      "status": "specified_short_flag_and_test_alias_paths_verified",
+      "evidence": "The three named scanner methods pass within the fresh 30-method suite, but common build flags and double-dash aliases are missing."
+    }
+  ],
+  "findings_not_fixed": [
+    {
+      "id": "AV7-1",
+      "severity": "high",
+      "status": "open",
+      "blocking": true,
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+      "line": 41,
+      "related_lines": [
+        46,
+        52,
+        54,
+        57,
+        59,
+        64,
+        65,
+        85,
+        92,
+        98
+      ],
+      "source_sha256": "eafed32e38ea69de0f73272df5c9cc817ec0741726b54fc19d27466742f57076",
+      "title": "Compile-only scanner still differs from real Go argument parsing and bypasses isolation",
+      "issue": "The scanner omits nonboolean common build flags and does not normalize Go double-dash spellings or --args. It can treat a flag value -c as a compile flag or ignore a final real --c=false, forwarding ordinary Go tests before mode, explicit environment, package allocation and pool-variable guards.",
+      "cases": [
+        {
+          "argv": [
+            "test",
+            "-installsuffix",
+            "-c",
+            "example/first"
+          ],
+          "Go_semantics": "Install suffix is -c; compile flag false",
+          "observed": "Mocked fallback exec with missing context"
+        },
+        {
+          "argv": [
+            "test",
+            "-gccgoflags",
+            "-c",
+            "example/second"
+          ],
+          "Go_semantics": "Gccgo flags string is -c; ordinary tests of second package",
+          "observed": "Mocked exec bypasses owner first-package allocation check"
+        },
+        {
+          "argv": [
+            "test",
+            "--run",
+            "-c",
+            "example/first"
+          ],
+          "Go_semantics": "Double-dash run flag consumes regex -c",
+          "observed": "Mocked fallback exec with missing context"
+        },
+        {
+          "argv": [
+            "test",
+            "-c=true",
+            "--c=false",
+            "example/first"
+          ],
+          "Go_semantics": "Last real compile flag is false",
+          "observed": "V7 retains true and reaches mocked fallback exec"
+        },
+        {
+          "argv": [
+            "test",
+            "example/first",
+            "--args",
+            "-c"
+          ],
+          "Go_semantics": "--args ends Go-flag scanning; -c belongs to binary arguments",
+          "observed": "V7 treats tail -c as compile exemption"
+        },
+        {
+          "argv": [
+            "test",
+            "--c=true",
+            "example/first"
+          ],
+          "Go_semantics": "Genuine compile-only alias",
+          "observed": "V7 refuses empty context instead of compile-only forwarding"
+        }
+      ],
+      "actual_Go_reference": {
+        "version": "go1.27.0 darwin/arm64",
+        "commands_artifact": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-reference.json",
+        "double_dash_artifact": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-double-dash-reference.json",
+        "list_installsuffix_exit": 0,
+        "list_gccgoflags_exit": 0,
+        "list_double_dash_exit": 0,
+        "results": "All value-flag metadata calls return example/first. No Go test or TestMain was executed.",
+        "cached_sources": [
+          {
+            "file": "/opt/homebrew/opt/go/libexec/src/cmd/go/internal/work/build.go",
+            "line": 325,
+            "contract": "AddBuildFlags shared with test; gccgoflags and installsuffix take values."
+          },
+          {
+            "file": "/opt/homebrew/opt/go/libexec/src/cmd/go/internal/cmdflag/flag.go",
+            "line": 58,
+            "contract": "ParseOne normalizes two leading dashes, then consumes registered nonboolean values."
+          },
+          {
+            "file": "/opt/homebrew/opt/go/libexec/src/cmd/go/internal/test/testflag.go",
+            "line": 305,
+            "contract": "testFlags accepts --args and updates the registered c Boolean flag in argument order."
+          }
+        ]
+      },
+      "independent_regressions": {
+        "build_suite": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-build-value-contracts.py",
+        "build_methods": 6,
+        "build_failing_methods": 4,
+        "build_failure_entries": 10,
+        "build_raw_sha256": "1c2ed5c9fbea16ace4272aded22751eaab80804c99f0ea03df6c273bccbf200e",
+        "alias_suite": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-dash-alias-contracts.py",
+        "alias_methods": 6,
+        "alias_failing_methods": 5,
+        "alias_failure_entries": 9,
+        "alias_raw_sha256": "0fc4cfd8785ea585ea735c93d8c4eec30ed664bc3676cca9f8b92c2331b86970",
+        "error_entries": 0
+      },
+      "impact_boundary": "All unsafe execution was mocked. The evidence proves reachable ordinary-test forwarding without context or canonical package binding, not actual default-database writes.",
+      "requested_correction": "Use a source-backed classification of all supported common build and forwarded test flag types, normalize supported single/double-dash flag names while preserving raw argv, and honor -args/--args/bare-- and real final Boolean c semantics. Ambiguous or unknown options must fail closed rather than infer compile-only. Require package/context guards for every ordinary test; preserve genuine compilation and original check flags. Independently recheck a new version before any clearance.",
+      "why_not_fixed": "Report-only reviewer ownership excludes adapter/product/status/launcher edits. Coordinator owns the subsequent correction and integrated review."
+    }
+  ],
+  "verification": {
+    "lint": {
+      "status": "not-run",
+      "reason": "No project lint was executed in the restricted private Python review; in-memory syntax/AST checks pass for nine reviewed/captured Python sources."
+    },
+    "typecheck": {
+      "status": "not-applicable",
+      "reason": "No TypeScript or Go product code edits; no project typecheck success claimed."
+    },
+    "syntax": {
+      "status": "pass",
+      "in_memory_only": true,
+      "files": [
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/pnpm",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-isolation-test.py",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-pnpm-reporting-test.py",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-reference.py",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/reused-independent-contracts.py",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-build-value-contracts.py",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-dash-alias-contracts.py"
+      ]
+    },
+    "tests": {
+      "status": "fail",
+      "provided_binding": {
+        "methods_run": 30,
+        "pass": 30,
+        "fail": 0,
+        "errors": 0,
+        "scanner_subset_methods": 3,
+        "scanner_subset_is_part_of_30": true,
+        "exit_code": 0
+      },
+      "provided_inherited": {
+        "methods_run": 14,
+        "pass": 14,
+        "fail": 0,
+        "exit_code": 0
+      },
+      "provided_pnpm": {
+        "methods_run": 5,
+        "pass": 5,
+        "fail": 0,
+        "errors": 0,
+        "exit_code": 0
+      },
+      "reused_independent": {
+        "methods_run": 20,
+        "pass": 20,
+        "fail": 0,
+        "errors": 0,
+        "exit_code": 0
+      },
+      "independent_build_values": {
+        "methods_run": 6,
+        "passing_methods": 2,
+        "failing_methods": 4,
+        "failure_entries": 10,
+        "errors": 0,
+        "exit_code": 1
+      },
+      "independent_double_dash_aliases": {
+        "methods_run": 6,
+        "passing_methods": 1,
+        "failing_methods": 5,
+        "failure_entries": 9,
+        "errors": 0,
+        "exit_code": 1
+      }
+    },
+    "actual_commands": [
+      {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/provided/check-go-package-binding-test.py"
+        ],
+        "exit_code": 0,
+        "source_sha256": "ffafa89ada008bd1829ec74e3dbe58dd1058fc0fbdef95d99be61156af753d1a",
+        "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/provided-binding.log",
+        "raw_sha256": "c0efb3cecb9b6b3eb829bf6f1b45d468f788c35036eb9baf033fdfc8e614e2c9",
+        "network_denied": true,
+        "environment_keys": [
+          "CHECK_BINDING_EVIDENCE",
+          "CHECK_ISOLATION_WRAPPER",
+          "HOME",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "TMPDIR"
+        ],
+        "real_Go_tests": 0,
+        "SQL_connections": 0,
+        "services_or_Provider": 0,
+        "label": "provided-binding"
+      },
+      {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/provided/check-go-isolation-test.py"
+        ],
+        "exit_code": 0,
+        "source_sha256": "3248d5b6b30f10012e46355acbb0cd451864beaaf9afe665e6461a96c4fce92d",
+        "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/provided-legacy.log",
+        "raw_sha256": "adb4f75430bec8fe732eaff9d7a58940bbb77a4f16fbd4f46d82331e2407d971",
+        "network_denied": true,
+        "environment_keys": [
+          "HOME",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "TMPDIR"
+        ],
+        "real_Go_tests": 0,
+        "SQL_connections": 0,
+        "services_or_Provider": 0,
+        "label": "provided-legacy"
+      },
+      {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/provided/check-pnpm-reporting-test.py"
+        ],
+        "exit_code": 0,
+        "source_sha256": "369738115a2ff1e7243766d4031b8d68ced15890bcc733905b7557d496d28147",
+        "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/provided-pnpm.log",
+        "raw_sha256": "4c0a8d8dfd4606ae9cfe3d17fcbd385501b3d4522cda522cf9cd43fd74a56b76",
+        "network_denied": true,
+        "environment_keys": [
+          "CHECK_PNPM_EVIDENCE",
+          "HOME",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "TMPDIR"
+        ],
+        "real_Go_tests": 0,
+        "SQL_connections": 0,
+        "services_or_Provider": 0,
+        "label": "provided-pnpm"
+      },
+      {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/reused-independent-contracts.py"
+        ],
+        "exit_code": 0,
+        "source_sha256": "e54681b593acf0227414b4ceffd1bbd6111b5da63be0cf2d8fd454c282b33de8",
+        "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/reused-independent.log",
+        "raw_sha256": "1ac0d4ce37488c927a960507466cb2f977baa8c56981c7677e39c7e026d84197",
+        "network_denied": true,
+        "real_Go_tests": 0,
+        "SQL_connections": 0,
+        "environment_keys": [
+          "HOME",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "TMPDIR"
+        ],
+        "label": "reused-independent"
+      },
+      {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-build-value-contracts.py"
+        ],
+        "exit_code": 1,
+        "source_sha256": "2caca196cb17917e1b1d61db7ec450369bb00bb6bf794afdc5fdfcc20ede7fe4",
+        "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-build-value-contracts.log",
+        "raw_sha256": "1c2ed5c9fbea16ace4272aded22751eaab80804c99f0ea03df6c273bccbf200e",
+        "network_denied": true,
+        "environment_keys": [
+          "HOME",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "TMPDIR"
+        ],
+        "real_Go_tests": 0,
+        "SQL_connections": 0,
+        "services_or_Provider": 0,
+        "label": "extra-build-value-contracts"
+      },
+      {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-dash-alias-contracts.py"
+        ],
+        "exit_code": 1,
+        "source_sha256": "0d699120391ff047a1671e8ef3a8903a16a2fa42003509dada5252d51d061db6",
+        "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-dash-alias-contracts.log",
+        "raw_sha256": "0fc4cfd8785ea585ea735c93d8c4eec30ed664bc3676cca9f8b92c2331b86970",
+        "network_denied": true,
+        "real_Go_tests": 0,
+        "SQL_connections": 0,
+        "environment_keys": [
+          "HOME",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "TMPDIR"
+        ],
+        "label": "extra-dash-alias-contracts"
+      }
+    ],
+    "cached_Go_metadata": {
+      "reviewer": "/root/adapter_v5_review",
+      "commands": [
+        {
+          "label": "version",
+          "command": [
+            "/usr/bin/sandbox-exec",
+            "-f",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+            "version"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/first",
+          "exit_code": 0,
+          "stdout": "go version go1.27.0 darwin/arm64\n",
+          "stderr": "",
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-version.log",
+          "raw_sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+          "network_denied": true,
+          "actual_Go_tests": 0,
+          "actual_SQL": 0
+        },
+        {
+          "label": "help-build",
+          "command": [
+            "/usr/bin/sandbox-exec",
+            "-f",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+            "help",
+            "build"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/first",
+          "exit_code": 0,
+          "stdout": null,
+          "stderr": "",
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-help-build.log",
+          "raw_sha256": "0ee58285e7ff14a2cb62c1a0b926caa3af8fa46ff7ac9f3a7898ac8d11e50cb9",
+          "network_denied": true,
+          "actual_Go_tests": 0,
+          "actual_SQL": 0
+        },
+        {
+          "label": "help-testflag",
+          "command": [
+            "/usr/bin/sandbox-exec",
+            "-f",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+            "help",
+            "testflag"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/first",
+          "exit_code": 0,
+          "stdout": null,
+          "stderr": "",
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-help-testflag.log",
+          "raw_sha256": "88dd79603f31a6033422757103889ce759736cdc0434f9b38aacdd10a35c2d4f",
+          "network_denied": true,
+          "actual_Go_tests": 0,
+          "actual_SQL": 0
+        },
+        {
+          "label": "list-installsuffix-value",
+          "command": [
+            "/usr/bin/sandbox-exec",
+            "-f",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+            "list",
+            "-mod=readonly",
+            "-buildvcs=false",
+            "-installsuffix",
+            "-c",
+            "."
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/first",
+          "exit_code": 0,
+          "stdout": "example/first\n",
+          "stderr": "",
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-list-installsuffix-value.log",
+          "raw_sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+          "network_denied": true,
+          "actual_Go_tests": 0,
+          "actual_SQL": 0
+        },
+        {
+          "label": "list-gccgoflags-value",
+          "command": [
+            "/usr/bin/sandbox-exec",
+            "-f",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+            "list",
+            "-mod=readonly",
+            "-buildvcs=false",
+            "-gccgoflags",
+            "-c",
+            "."
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/first",
+          "exit_code": 0,
+          "stdout": "example/first\n",
+          "stderr": "",
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-list-gccgoflags-value.log",
+          "raw_sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+          "network_denied": true,
+          "actual_Go_tests": 0,
+          "actual_SQL": 0
+        },
+        {
+          "label": "list-C-absolute",
+          "command": [
+            "/usr/bin/sandbox-exec",
+            "-f",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+            "-C",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/second",
+            "list",
+            "-mod=readonly",
+            "-buildvcs=false",
+            "."
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/first",
+          "exit_code": 0,
+          "stdout": "example/second\n",
+          "stderr": "",
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-list-C-absolute.log",
+          "raw_sha256": "931efd342e89e6de1822a0c10eb8f9736cb00743b5ece4c263ae70ea1fcfa321",
+          "network_denied": true,
+          "actual_Go_tests": 0,
+          "actual_SQL": 0
+        },
+        {
+          "label": "list-C-equals-relative",
+          "command": [
+            "/usr/bin/sandbox-exec",
+            "-f",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+            "-C=../second",
+            "list",
+            "-mod=readonly",
+            "-buildvcs=false",
+            "."
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/first",
+          "exit_code": 0,
+          "stdout": "example/second\n",
+          "stderr": "",
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-list-C-equals-relative.log",
+          "raw_sha256": "931efd342e89e6de1822a0c10eb8f9736cb00743b5ece4c263ae70ea1fcfa321",
+          "network_denied": true,
+          "actual_Go_tests": 0,
+          "actual_SQL": 0
+        },
+        {
+          "label": "list-C-selector",
+          "command": [
+            "/usr/bin/sandbox-exec",
+            "-f",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+            "-C",
+            "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module",
+            "list",
+            "-mod=readonly",
+            "-buildvcs=false",
+            "./first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/second",
+          "exit_code": 0,
+          "stdout": "example/first\n",
+          "stderr": "",
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-list-C-selector.log",
+          "raw_sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+          "network_denied": true,
+          "actual_Go_tests": 0,
+          "actual_SQL": 0
+        }
+      ],
+      "environment_keys": [
+        "CGO_ENABLED",
+        "GOCACHE",
+        "GOMODCACHE",
+        "GOPATH",
+        "GOPROXY",
+        "GOSUMDB",
+        "GOTOOLCHAIN",
+        "GOVCS",
+        "HOME",
+        "PATH",
+        "PYTHONDONTWRITEBYTECODE",
+        "TMPDIR"
+      ],
+      "database_or_private_isolation_keys_present": false,
+      "wrapper_sha256": "eafed32e38ea69de0f73272df5c9cc817ec0741726b54fc19d27466742f57076",
+      "go_binary_sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+      "fixture_source_sha256": {
+        "go.mod": "b0ff564525e2fb1be145f38bdab8363601cac0115c6b62c8eb4b88ee2e18bb2b",
+        "first/fixture.go": "809203a578e804492e135e319a40160153034ecfc8a19022ec7c22dea72cddfd",
+        "second/fixture.go": "f5b1c803675842c32bc96f5c56e482f8e3f6418ee99f01599a301f148c043fea"
+      },
+      "cached_Go_source_sha256": {
+        "/opt/homebrew/opt/go/libexec/src/cmd/go/internal/work/build.go": "42ee70dc662499a36dc527b7590ae4df2e55bdc43c3a6ecea6cf06f3e838a353",
+        "/opt/homebrew/opt/go/libexec/src/cmd/go/internal/test/testflag.go": "5fdf7f4c3b57158231bd3b8fea988e6a21c716fa56032848a7a181f28379b50d"
+      },
+      "scope": "Only network-denied cached Go version/help/list; no TestMain, tests, DB, services or Providers",
+      "additional_double_dash_reference": {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+          "list",
+          "-mod=readonly",
+          "-buildvcs=false",
+          "--installsuffix",
+          "-c",
+          "."
+        ],
+        "exit_code": 0,
+        "stdout": "example/first\n",
+        "stderr": "",
+        "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-double-dash-reference.log",
+        "raw_sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+        "cmdflag_reference": "/opt/homebrew/opt/go/libexec/src/cmd/go/internal/cmdflag/flag.go",
+        "cmdflag_reference_sha256": "49f4b387f80e46a674e755c8c767170aacf98851746ee18e7f1cf1f9d1902327",
+        "network_denied": true,
+        "real_Go_tests": 0,
+        "SQL_connections": 0,
+        "environment_keys": [
+          "CGO_ENABLED",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTOOLCHAIN",
+          "GOVCS",
+          "HOME",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "TMPDIR"
+        ]
+      }
+    }
+  },
+  "adapter_sha256": {
+    "go": "eafed32e38ea69de0f73272df5c9cc817ec0741726b54fc19d27466742f57076",
+    "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "source_binding_checks": {
+    "go_sha_matches_exact_final_pin": true,
+    "pnpm_sha_matches_exact_pin": true,
+    "provided_copies_unchanged": true,
+    "v5_reports_unchanged": true,
+    "incoming_and_first_green_snapshots_match": true,
+    "final_snapshot_matches_live_v7": true,
+    "v6_patch_hash_matches_handoff": true
+  },
+  "snapshot_checks": [
+    {
+      "stage": "incoming",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v5/check-bin/go",
+      "expected": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+      "actual": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+      "match": true
+    },
+    {
+      "stage": "incoming",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v5/check-bin/pnpm",
+      "expected": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "actual": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "match": true
+    },
+    {
+      "stage": "incoming",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v5/check-go-isolation-test.py",
+      "expected": "5c5aad4d0e04427a1c53eadec2067a2ac355701c9d4605e722a87ccf9acad4e7",
+      "actual": "5c5aad4d0e04427a1c53eadec2067a2ac355701c9d4605e722a87ccf9acad4e7",
+      "match": true
+    },
+    {
+      "stage": "incoming",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v6/check-bin/go",
+      "expected": "b8c5d5adbece4f781a00a230b4f6ffbbfed195f4e44826d53997d72b3f160079",
+      "actual": "b8c5d5adbece4f781a00a230b4f6ffbbfed195f4e44826d53997d72b3f160079",
+      "match": true
+    },
+    {
+      "stage": "incoming",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v6/check-bin/pnpm",
+      "expected": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "actual": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "match": true
+    },
+    {
+      "stage": "incoming",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v6/check-go-isolation-test.py",
+      "expected": "ddeb1c96fbefa7aaa4f88b8b0478f313eda4abc4eb26eff369c2b5e284aed66a",
+      "actual": "ddeb1c96fbefa7aaa4f88b8b0478f313eda4abc4eb26eff369c2b5e284aed66a",
+      "match": true
+    },
+    {
+      "stage": "incoming",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v6/check-launcher-test.py",
+      "expected": "fae87da21e6807a1aaf07951cef9e9765d6a324175121fd800e7a160d3bdb500",
+      "actual": "fae87da21e6807a1aaf07951cef9e9765d6a324175121fd800e7a160d3bdb500",
+      "match": true
+    },
+    {
+      "stage": "first-green",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/first-green-source/check-bin/go",
+      "expected": "c987ea45cf75e4fa2fe5858a6bc5d82bb1f30ac289162015ebe544dab8b6382f",
+      "actual": "c987ea45cf75e4fa2fe5858a6bc5d82bb1f30ac289162015ebe544dab8b6382f",
+      "match": true
+    },
+    {
+      "stage": "first-green",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/first-green-source/check-bin/pnpm",
+      "expected": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "actual": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "match": true
+    },
+    {
+      "stage": "first-green",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/first-green-source/check-go-isolation-test.py",
+      "expected": "3248d5b6b30f10012e46355acbb0cd451864beaaf9afe665e6461a96c4fce92d",
+      "actual": "3248d5b6b30f10012e46355acbb0cd451864beaaf9afe665e6461a96c4fce92d",
+      "match": true
+    },
+    {
+      "stage": "first-green",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/first-green-source/check-go-package-binding-test.py",
+      "expected": "fa6449b9ecb9194b3e3f7a5a4d29af08b8dccfe4a741ba99c4d5d79e489176f8",
+      "actual": "fa6449b9ecb9194b3e3f7a5a4d29af08b8dccfe4a741ba99c4d5d79e489176f8",
+      "match": true
+    },
+    {
+      "stage": "first-green",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/first-green-source/check-pnpm-reporting-test.py",
+      "expected": "369738115a2ff1e7243766d4031b8d68ced15890bcc733905b7557d496d28147",
+      "actual": "369738115a2ff1e7243766d4031b8d68ced15890bcc733905b7557d496d28147",
+      "match": true
+    },
+    {
+      "stage": "first-green",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/first-green-source/deny-network.sb",
+      "expected": "5c358b8d847211333e7ba22df82d84f796b5f30a41a2682209a949d783adbd08",
+      "actual": "5c358b8d847211333e7ba22df82d84f796b5f30a41a2682209a949d783adbd08",
+      "match": true
+    },
+    {
+      "stage": "final-source",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-source/check-bin/go",
+      "actual": "eafed32e38ea69de0f73272df5c9cc817ec0741726b54fc19d27466742f57076",
+      "matches_live_v7": true
+    },
+    {
+      "stage": "final-source",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-source/check-bin/pnpm",
+      "actual": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "matches_live_v7": true
+    },
+    {
+      "stage": "final-source",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-source/check-go-package-binding-test.py",
+      "actual": "ffafa89ada008bd1829ec74e3dbe58dd1058fc0fbdef95d99be61156af753d1a",
+      "matches_live_v7": true
+    },
+    {
+      "stage": "final-source",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-source/check-go-isolation-test.py",
+      "actual": "3248d5b6b30f10012e46355acbb0cd451864beaaf9afe665e6461a96c4fce92d",
+      "matches_live_v7": true
+    },
+    {
+      "stage": "final-source",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-source/check-pnpm-reporting-test.py",
+      "actual": "369738115a2ff1e7243766d4031b8d68ced15890bcc733905b7557d496d28147",
+      "matches_live_v7": true
+    },
+    {
+      "stage": "final-source",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-source/deny-network.sb",
+      "actual": "5c358b8d847211333e7ba22df82d84f796b5f30a41a2682209a949d783adbd08",
+      "matches_live_v7": true
+    }
+  ],
+  "source_sha256": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go": "eafed32e38ea69de0f73272df5c9cc817ec0741726b54fc19d27466742f57076",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py": "ffafa89ada008bd1829ec74e3dbe58dd1058fc0fbdef95d99be61156af753d1a",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-isolation-test.py": "3248d5b6b30f10012e46355acbb0cd451864beaaf9afe665e6461a96c4fce92d",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-pnpm-reporting-test.py": "369738115a2ff1e7243766d4031b8d68ced15890bcc733905b7557d496d28147",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-reference.py": "c620374586e9c1fbc65471621811c797183c1bec347f7628324d57eb21037418",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/reused-independent-contracts.py": "e54681b593acf0227414b4ceffd1bbd6111b5da63be0cf2d8fd454c282b33de8",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-build-value-contracts.py": "2caca196cb17917e1b1d61db7ec450369bb00bb6bf794afdc5fdfcc20ede7fe4",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-dash-alias-contracts.py": "0d699120391ff047a1671e8ef3a8903a16a2fa42003509dada5252d51d061db6",
+    "/opt/homebrew/opt/go/libexec/src/cmd/go/internal/work/build.go": "42ee70dc662499a36dc527b7590ae4df2e55bdc43c3a6ecea6cf06f3e838a353",
+    "/opt/homebrew/opt/go/libexec/src/cmd/go/internal/test/testflag.go": "5fdf7f4c3b57158231bd3b8fea988e6a21c716fa56032848a7a181f28379b50d",
+    "/opt/homebrew/opt/go/libexec/src/cmd/go/internal/cmdflag/flag.go": "49f4b387f80e46a674e755c8c767170aacf98851746ee18e7f1cf1f9d1902327",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/database-test-isolation.md": "5a4a045224976a10eb9644d68faca00fcae6dd1350e46b91e83979065135e996",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/e2e-run-environment.md": "23325552ca9131cb4ab87cfd44b2c78657863c076bbd8f1fca0cf47aa8635e43",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-preparation.md": "5a5c20c8c74a0484eac9be8102df26e7923cb0aff3d496db9019bcd2d48974cf",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v5/check-bin/go": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v5/check-bin/pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v5/check-go-isolation-test.py": "5c5aad4d0e04427a1c53eadec2067a2ac355701c9d4605e722a87ccf9acad4e7",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v6/check-bin/go": "b8c5d5adbece4f781a00a230b4f6ffbbfed195f4e44826d53997d72b3f160079",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v6/check-bin/pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v6/check-go-isolation-test.py": "ddeb1c96fbefa7aaa4f88b8b0478f313eda4abc4eb26eff369c2b5e284aed66a",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming/adapter-v6/check-launcher-test.py": "fae87da21e6807a1aaf07951cef9e9765d6a324175121fd800e7a160d3bdb500",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/first-green-source/check-bin/go": "c987ea45cf75e4fa2fe5858a6bc5d82bb1f30ac289162015ebe544dab8b6382f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/first-green-source/check-bin/pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/first-green-source/check-go-isolation-test.py": "3248d5b6b30f10012e46355acbb0cd451864beaaf9afe665e6461a96c4fce92d",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/first-green-source/check-go-package-binding-test.py": "fa6449b9ecb9194b3e3f7a5a4d29af08b8dccfe4a741ba99c4d5d79e489176f8",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/first-green-source/check-pnpm-reporting-test.py": "369738115a2ff1e7243766d4031b8d68ced15890bcc733905b7557d496d28147",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/first-green-source/deny-network.sb": "5c358b8d847211333e7ba22df82d84f796b5f30a41a2682209a949d783adbd08",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-source/check-bin/go": "eafed32e38ea69de0f73272df5c9cc817ec0741726b54fc19d27466742f57076",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-source/check-bin/pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-source/check-go-package-binding-test.py": "ffafa89ada008bd1829ec74e3dbe58dd1058fc0fbdef95d99be61156af753d1a",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-source/check-go-isolation-test.py": "3248d5b6b30f10012e46355acbb0cd451864beaaf9afe665e6461a96c4fce92d",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-source/check-pnpm-reporting-test.py": "369738115a2ff1e7243766d4031b8d68ced15890bcc733905b7557d496d28147",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-source/deny-network.sb": "5c358b8d847211333e7ba22df82d84f796b5f30a41a2682209a949d783adbd08",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/check-source.py": "62f3b98f0ce9f7227601bf6d74a3dc25c1e1a89fecc77dac0176815802ba3926"
+  },
+  "artifact_sha256": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-red-v7-command.json": "5e9c3c5f310f2049a51f5755510882c701cdc70dcd2f37d63fae7ce43dd6b542",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/source-manifest.json": "4463b0687e93263eb8d17845efac7ca48e0a3232d2d34fded0ec57245bc06a69",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/handoff.json": "71a3258ed0292229cc9b88ee299810f3c8f7563535c86082cf35765fbdd86e22",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/artifact-hashes.json": "4316d35269989c2c8f3c3c3a1ebea45abeeda0e80ec428c2b2d263ad22d91ca0",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-green-v7.json": "c6b2f8ef2adb7de601843def7383219405480ad87d1b9ffbb72d7864875a4257",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-green-v7-command.json": "18164de5fb0ed76c16eed8eecfb28dfdd6cffe420dc88c75f26f583b9f2e5b9f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-green-v7.json": "56f136509a41d2424d695d3ebdd82f3b2ece5d743296395d29acf8cc0830159f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/pnpm-v7-command.json": "9695b6b5c78b4e258024167b94ad3f3d0a02e555dd3d47384a9d5ea2bd7a84cd",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-red-v7.json": "076c8075e107cb066e10c72f58ddbea60116e2ab916672e7afabf4e765637ca9",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/green-v7-command.json": "3351fa86ac5d7f3cd2ea523e8f7a32fc0536b736dc460a254b6c78968eb14a3a",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/legacy-v7-command.json": "87e6840b974383b68462fab25c6c8401e2506b9cb2a0036cea03d95615b1c0f0",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-red-v5.json": "7bed1bf77842ead81125299c0b325f4b4a824323faac9da745e9485e14549b99",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/red-v5-command.json": "dc9b258c887b68df58af7dc5826897ceb9578e9f40cac4e67b3317675d78b60f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/source-v7-command.json": "46ce7351e65e195c616679fa812852cae294340a88f466ef4be9008959109297",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/first-green-manifest.json": "37b629ac6d574b791340b3f03eeb8cecbfb8f1cda865730dfd38c96031de5312",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/red-v5.json": "dbfa54dc8a6ce0ae9563260cdb3e700516923ff791017af0eb4331a63b97ca7d",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/cached-go-testflag-reference.json": "01da85ac2c92de4570cba2a76e61ed9d4a8693970016d64b11994332b288acc7",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/source-check.json": "eb90e23c4ad1be47f23a7378e4b1394939707f23a0a5e4261be874ccd833a824",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/incoming-manifest.json": "c839ecfffb77e7049952ef5d54b822d065aa71fd58ef00ddcfe312e91205db47",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/pnpm-v7.json": "d18b3728bbbcf1e048674b6b41d00049c0dc173195b3c9b5ac43d77ebf81a0c4",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/green-v7.json": "bb363c4d6e0297dd402f4d9b80b0aa862be2a8a6dd5d0ee3bbf536669ee073d3",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/red-finding-summary.json": "a34c350e69cf078cc01925ae1776a0a38e07f7a73f3e2725cb6a62fb9a7b92d1",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-green-v7-command.json": "bd7ce924da578563b159db87097d9cc1e7baa9f13bddf87f6712c55b57ff4a6f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-red-v5-command.json": "99d12cbc5eeabe8c6a70805950f5263e588b33f577ada3255efb97b2bbf6fb3a",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/legacy-final-v7-command.json": "fe2a006516ec485643b187e964803831d0d1a15956f9c296e84b0c46df69e0d6",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/v6-to-v7-go-and-fixtures.patch": "843268bd093429fe7a1488b2e62b2a0ba63204faf084241f1c552122bf5db465",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/adapter-v5-to-v7.diff": "3bccfb3263af494a30de6fe8556892e1ce0e5b86b86da182da538b2d0451d0a3",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/adapter-v6-to-v7.diff": "aa1badc823f5c2214d32b29d11b20e93b25fd4509cba34ed5b5e8bc13327376d",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-dash-alias-contracts.json": "38022b4c3f9e541a861dbc235d30e01650b7d6ddd84723f6e62fd26bc3e6dc23",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-double-dash-reference.json": "8c48091a4efc2eb3750dc9d109588972fa6f7ea6dfcb834f556075b4cb5b299a",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/build-value-flag-initial-probe.json": "da9978a4caaee43a5ea7bfb5dd804f87b72b8027f549cc4add1737c25398e653",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/provided-legacy-command.json": "734c042a1175bdfc621bf5f74ce1e01bca4ab362af94559669b158f935c9f861",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/independent-contracts.json": "2e877a4032ce2239d5b79eee867ee9cef113c4b565827112c49ae89b623a5ac3",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/provided-pnpm.json": "7d7bfb9c46d45ab4204bc72ce5a802c6e4d1414cf810f85ecc6ecf1b461224c1",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/provided-pnpm-command.json": "068c0d9ec1129a3a8d6450ab7acb23ea4b59320c5ee61f7f950fcb9e17eb1964",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-dash-alias-contracts-command.json": "f89bda8de3e7b31131a5a27f7f8be0b3eedd16ec878ac826fc4a85b3d01817af",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-reference.json": "27b8a622c0cf45db5ffbb71e078c4ce79acb5ce4d31fb6d3bc3cac7396930505",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-build-value-contracts-command.json": "b46b48dc4f7b58f9f2decfdd19cd21742f1cd45d8ae8cdb48e14249290c23e87",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/reused-independent-command.json": "4bb5d2c37fafebb3845cf28c926c9ef3cac9f53c2fa847bd6593b720623b6ee9",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/provided-binding-command.json": "ba546467d544c36977c2f7fdc0d78d95e5bb4b70f79038de3116a7683c2a9083",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/provided-binding.json": "238af2b6bba27932beaa311988123f924c143ba50abead8fe7d3913b5884a439",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-build-value-contracts.json": "2cbf384056708d0b61ec94e5890185fe0dfc9b033b2394b95253c75e270a5438",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/reused-fixture-correction.json": "199a50f37115f73f1cba1c8558f097c8583fd4ff117550f4cd7edfa4f59a43dc",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/initial-source-binding.json": "049c23602fd07af32935dde292794812cd1cb07106518023ca9a008941547c18"
+  },
+  "raw_sha256": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-red-v5.log": "bfe4555b1cee1cf71238ee80a3880924d9ac6511c579fe5cb60acd22f8b7c013",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-red-v7.log": "0cac30af13b7287092d508c8be095d872edb7ca9f50b308754102e5fb727a1fe",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-green-v7.log": "ec4e64700839f4c1a9be0fdce5b19f83bca15a8d49fcce4bcf0ff1c2042f033b",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/green-v7.log": "9565dc9b2f09f714553311aa5659ec187a1a80f54a0c9a0a2e003800be610387",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/source-v7.log": "eb90e23c4ad1be47f23a7378e4b1394939707f23a0a5e4261be874ccd833a824",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-green-v7.log": "b9aaaf49b46f5f917fc7d542c6372f700b1ba39637895d9b063bc3da91300f03",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/legacy-v7.log": "7d5840163194abaeee559f47b4f37f8c0d0a5cee6a2ca1391129f298adb24be8",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/red-v5.log": "4f148175797bb13c8f0877969d2c4fd6655c49a6df1b34074cb0f4b6591dfc4e",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/pnpm-v7.log": "294dd2a681fc6f8ec5b73dbb77b2fafe081cb4720604d8e4b4f5cd7fe5d54b55",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/legacy-final-v7.log": "07e6f22c8e743ffb37fc41c6868236df351b63d2bb1d426cc17753cf785c336e",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-version.log": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-list-C-equals-relative.log": "931efd342e89e6de1822a0c10eb8f9736cb00743b5ece4c263ae70ea1fcfa321",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-dash-alias-contracts.log": "0fc4cfd8785ea585ea735c93d8c4eec30ed664bc3676cca9f8b92c2331b86970",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-list-C-absolute.log": "931efd342e89e6de1822a0c10eb8f9736cb00743b5ece4c263ae70ea1fcfa321",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-help-testflag.log": "88dd79603f31a6033422757103889ce759736cdc0434f9b38aacdd10a35c2d4f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-list-gccgoflags-value.log": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/provided-binding.log": "c0efb3cecb9b6b3eb829bf6f1b45d468f788c35036eb9baf033fdfc8e614e2c9",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-list-installsuffix-value.log": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/provided-pnpm.log": "4c0a8d8dfd4606ae9cfe3d17fcbd385501b3d4522cda522cf9cd43fd74a56b76",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-list-C-selector.log": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-help-build.log": "0ee58285e7ff14a2cb62c1a0b926caa3af8fa46ff7ac9f3a7898ac8d11e50cb9",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/reused-independent.log": "1ac0d4ce37488c927a960507466cb2f977baa8c56981c7677e39c7e026d84197",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/extra-build-value-contracts.log": "1c2ed5c9fbea16ace4272aded22751eaab80804c99f0ea03df6c273bccbf200e",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/provided-legacy.log": "adb4f75430bec8fe732eaff9d7a58940bbb77a4f16fbd4f46d82331e2407d971",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-double-dash-reference.log": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/reused-independent-initial/reused-independent.log": "fe6fe75343ae09aa9fdf0fa83ee1b1568ecd904fe9014ac279f8dabea8248225"
+  },
+  "binding_artifact": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/v7-review-binding.json",
+    "sha256": "2402bd5db0cbbb2d9f062b0469ae8fff6a1bf4098fe767329e2e9b01c5d68d0e"
+  },
+  "retained_repair_evidence": [
+    {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-green-v7-command.json",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py"
+      ],
+      "exit_code": 0,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/final-green-v7.log",
+      "raw_sha256": "b9aaaf49b46f5f917fc7d542c6372f700b1ba39637895d9b063bc3da91300f03",
+      "raw_methods_run": 30,
+      "raw_failure_entries": 0,
+      "raw_error_entries": 0,
+      "recorded_methods_match_raw": true,
+      "test_source_hash_matches_retained_source": true,
+      "wrapper_hash_matches_retained_source": true,
+      "combined_log_digest_present_in_original_record": false
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/green-v7-command.json",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py"
+      ],
+      "exit_code": 0,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/green-v7.log",
+      "raw_sha256": "9565dc9b2f09f714553311aa5659ec187a1a80f54a0c9a0a2e003800be610387",
+      "raw_methods_run": 27,
+      "raw_failure_entries": 0,
+      "raw_error_entries": 0,
+      "recorded_methods_match_raw": true,
+      "test_source_hash_matches_retained_source": null,
+      "wrapper_hash_matches_retained_source": null,
+      "combined_log_digest_present_in_original_record": false
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/legacy-final-v7-command.json",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-isolation-test.py"
+      ],
+      "exit_code": 0,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/legacy-final-v7.log",
+      "raw_sha256": "07e6f22c8e743ffb37fc41c6868236df351b63d2bb1d426cc17753cf785c336e",
+      "raw_methods_run": 14,
+      "raw_failure_entries": 0,
+      "raw_error_entries": 0,
+      "recorded_methods_match_raw": true,
+      "test_source_hash_matches_retained_source": true,
+      "wrapper_hash_matches_retained_source": true,
+      "combined_log_digest_present_in_original_record": false
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/legacy-v7-command.json",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-isolation-test.py"
+      ],
+      "exit_code": 0,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/legacy-v7.log",
+      "raw_sha256": "7d5840163194abaeee559f47b4f37f8c0d0a5cee6a2ca1391129f298adb24be8",
+      "raw_methods_run": 14,
+      "raw_failure_entries": 0,
+      "raw_error_entries": 0,
+      "recorded_methods_match_raw": true,
+      "test_source_hash_matches_retained_source": null,
+      "wrapper_hash_matches_retained_source": true,
+      "combined_log_digest_present_in_original_record": false
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/pnpm-v7-command.json",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-pnpm-reporting-test.py"
+      ],
+      "exit_code": 0,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/pnpm-v7.log",
+      "raw_sha256": "294dd2a681fc6f8ec5b73dbb77b2fafe081cb4720604d8e4b4f5cd7fe5d54b55",
+      "raw_methods_run": 5,
+      "raw_failure_entries": 0,
+      "raw_error_entries": 0,
+      "recorded_methods_match_raw": true,
+      "test_source_hash_matches_retained_source": null,
+      "wrapper_hash_matches_retained_source": true,
+      "combined_log_digest_present_in_original_record": false
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/red-v5-command.json",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py"
+      ],
+      "exit_code": 1,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/red-v5.log",
+      "raw_sha256": "4f148175797bb13c8f0877969d2c4fd6655c49a6df1b34074cb0f4b6591dfc4e",
+      "raw_methods_run": 27,
+      "raw_failure_entries": 55,
+      "raw_error_entries": 0,
+      "recorded_methods_match_raw": true,
+      "test_source_hash_matches_retained_source": null,
+      "wrapper_hash_matches_retained_source": null,
+      "combined_log_digest_present_in_original_record": false
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-green-v7-command.json",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py",
+        "PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+        "PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+        "PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries"
+      ],
+      "exit_code": 0,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-green-v7.log",
+      "raw_sha256": "ec4e64700839f4c1a9be0fdce5b19f83bca15a8d49fcce4bcf0ff1c2042f033b",
+      "raw_methods_run": 3,
+      "raw_failure_entries": 0,
+      "raw_error_entries": 0,
+      "recorded_methods_match_raw": true,
+      "test_source_hash_matches_retained_source": true,
+      "wrapper_hash_matches_retained_source": true,
+      "combined_log_digest_present_in_original_record": false
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-red-v5-command.json",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py",
+        "PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+        "PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+        "PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries"
+      ],
+      "exit_code": 1,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-red-v5.log",
+      "raw_sha256": "bfe4555b1cee1cf71238ee80a3880924d9ac6511c579fe5cb60acd22f8b7c013",
+      "raw_methods_run": 3,
+      "raw_failure_entries": 121,
+      "raw_error_entries": 0,
+      "recorded_methods_match_raw": true,
+      "test_source_hash_matches_retained_source": true,
+      "wrapper_hash_matches_retained_source": true,
+      "combined_log_digest_present_in_original_record": false
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-red-v7-command.json",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py",
+        "PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+        "PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+        "PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries"
+      ],
+      "exit_code": 1,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-red-v7.log",
+      "raw_sha256": "0cac30af13b7287092d508c8be095d872edb7ca9f50b308754102e5fb727a1fe",
+      "raw_methods_run": 3,
+      "raw_failure_entries": 114,
+      "raw_error_entries": 0,
+      "recorded_methods_match_raw": true,
+      "test_source_hash_matches_retained_source": true,
+      "wrapper_hash_matches_retained_source": true,
+      "combined_log_digest_present_in_original_record": false
+    },
+    {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/source-v7-command.json",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/check-source.py",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102"
+      ],
+      "exit_code": 0,
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/source-v7.log",
+      "raw_sha256": "eb90e23c4ad1be47f23a7378e4b1394939707f23a0a5e4261be874ccd833a824",
+      "raw_methods_run": null,
+      "raw_failure_entries": null,
+      "raw_error_entries": null,
+      "recorded_methods_match_raw": null,
+      "test_source_hash_matches_retained_source": true,
+      "wrapper_hash_matches_retained_source": true,
+      "combined_log_digest_present_in_original_record": false
+    }
+  ],
+  "retained_digest_limit": "Some original command records supply source hashes/counts without a combined raw-log digest; this review computes raw digests, checks available source bindings and verifies raw named totals. No prior raw digest comparison is fabricated.",
+  "fixture_correction": {
+    "reason": "V7 correctly adds a Go list record before exec; reused V5 fixture assertion assumed exec was first. Select the exec record while retaining the owner-clone assertion. No adapter changed.",
+    "initial_failure": "KeyError database_name in one reused test; 19pass/1error, no behavioral failures",
+    "initial_raw_sha256": "fe6fe75343ae09aa9fdf0fa83ee1b1568ecd904fe9014ac279f8dabea8248225",
+    "initial_source_sha256": "68223cc538ba9e7af5939e2f2c8022b31fae7f02b6d2bd7f30f58030b432d64a",
+    "corrected_source_sha256": "e54681b593acf0227414b4ceffd1bbd6111b5da63be0cf2d8fd454c282b33de8"
+  },
+  "positive_inherited_invariants": [
+    "Ordinary guarded recursive tests remove DATABASE_MAX_CONNS/MIN_CONNS; non-test forwarding retains service startup pool configuration.",
+    "Per-package mode1 allocation remains fresh/distinct and preserves original check flags; named JSON inventory and silent-TestMain/no-test accounting retain their contracts.",
+    "pnpm is byte-identical: test selection, grep/project, worker/retry/timeout/output arguments remain unchanged; default reporter addition, explicit reporter forms and repository Agent CLI guard path/refusal pass five supplied plus reused contracts."
+  ],
+  "limitations": [
+    "Go/SQL/test process boundaries in all suites are mocked or test-created executables; no actual TestMain or database integration was run.",
+    "Only cached Go version/help/list ran for real, under network denial with read-only minimal private module fixtures and separate caches/HOME.",
+    "The v7 outer mode1 argument splitter and flag-dependent module/overlay listing were inherited; broader compatibility was not certified. The current original make-check command subset was verified.",
+    "No v6 integrated adapter, launcher clearance, live resources, RKI6, complete-check result, renderer/Redis ownership, account/provider or release acceptance is certified.",
+    "No source/adaptor/status/launcher mutation, shared final4 build access, database migration, services, browser, downloads or real agent/account calls occurred.",
+    "The v5 changes-required reports, incoming/first-green snapshots, scanner-red-v5/scanner-red-v7 and all historical failures remain unchanged."
+  ],
+  "reviewer_operations": {
+    "product_or_adapter_edits": 0,
+    "status_or_launcher_edits": 0,
+    "real_Go_tests": 0,
+    "DB_connections_or_migrations": 0,
+    "services_or_browsers": 0,
+    "real_agent_CLIs_or_accounts": 0,
+    "Provider_calls": 0,
+    "downloads": 0,
+    "global_environment_changes": 0,
+    "shared_resource_changes": 0,
+    "commits": 0,
+    "spawned_agents": 0,
+    "cached_Go_metadata_commands": 9
+  },
+  "changed_files": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/continuation-20261102/adapter-v7-review.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/continuation-20261102/adapter-v7-review.json"
+  ],
+  "simplifications_made": "None; review-only correction to private reused fixture indexing, with its initial failure retained.",
+  "markdown_sha256": "d4891f1b7c74257e46d3d6589e1ea908cf6ea29fd4a557f2a388a08243f770af"
+}

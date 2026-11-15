@@ -1,0 +1,78 @@
+{
+  "file": "e2e/fixtures/project-knowledge-automation.ts",
+  "source_sha256": "74f9e74a0cf0d33b600eb84eb6f89e20f1412ec9cbb34a855c6408e98788502b",
+  "command": [
+    "/opt/homebrew/bin/pnpm",
+    "exec",
+    "eslint",
+    "--config",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/packages/eslint-config/base.js",
+    "--format",
+    "json",
+    "--stdin",
+    "--stdin-filename",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/e2e/fixtures/project-knowledge-automation.ts"
+  ],
+  "exit": 1,
+  "messages": [
+    {
+      "ruleId": "import-x/no-extraneous-dependencies",
+      "severity": 2,
+      "message": "'pg' should be listed in the project's dependencies, not devDependencies.",
+      "line": 6,
+      "column": 1,
+      "nodeType": "ImportDeclaration",
+      "messageId": "devDep",
+      "endLine": 6,
+      "endColumn": 21
+    },
+    {
+      "ruleId": "import-x/no-extraneous-dependencies",
+      "severity": 2,
+      "message": "'@playwright/test' should be listed in the project's dependencies, not devDependencies.",
+      "line": 7,
+      "column": 1,
+      "nodeType": "ImportDeclaration",
+      "messageId": "devDep",
+      "endLine": 7,
+      "endColumn": 95
+    },
+    {
+      "ruleId": "import-x/no-extraneous-dependencies",
+      "severity": 2,
+      "message": "'zod' should be listed in the project's dependencies. Run 'pnpm add zod' to add it",
+      "line": 8,
+      "column": 1,
+      "nodeType": "ImportDeclaration",
+      "messageId": "missing",
+      "endLine": 8,
+      "endColumn": 25
+    },
+    {
+      "ruleId": "import-x/no-extraneous-dependencies",
+      "severity": 2,
+      "message": "'@multica/core' should be listed in the project's dependencies. Run 'pnpm add @multica/core' to add it",
+      "line": 9,
+      "column": 1,
+      "nodeType": "ImportDeclaration",
+      "messageId": "missing",
+      "endLine": 10,
+      "endColumn": 100
+    },
+    {
+      "ruleId": "import-x/no-extraneous-dependencies",
+      "severity": 2,
+      "message": "'@multica/core' should be listed in the project's dependencies. Run 'pnpm add @multica/core' to add it",
+      "line": 11,
+      "column": 1,
+      "nodeType": "ImportDeclaration",
+      "messageId": "missing",
+      "endLine": 11,
+      "endColumn": 51
+    }
+  ],
+  "new_diagnostics": [],
+  "original_baseline_receipt": "p6-managed-lint-baseline-comparison-f5822947.json",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-deployment-static-d9db49eb/lint.log",
+  "standalone_lint_passed": false
+}

@@ -1,0 +1,7 @@
+# P6 source-project edit integration repair
+
+The current full service replay failed before the intended knowledge authority interleaving: real `EditIssue` returned `stage_schema_unavailable`. The project has no `project_stage_policy` row. The stage policy contract defines an absent row as virtual revision 0/disabled, but `CheckStageProjectDeleteInTx` compares the empty absent-row contract to the named stage contract.
+
+Keep the real issue editor and both database commit orders. First replace `FatalNow` inside the active transaction hook with an ordinary error propagated to `ProposeKnowledge`; retain a fresh RED replay showing the actual source-edit refusal without a leaked transaction. Then honor the absent-policy disabled case in `collaboration_stage_project.go` while retaining schema readiness, explicit-contract and enabled-policy fences. No policy row, migration, authority bypass or raw database replacement for the editing interleaving will be introduced.
+
+Write scope: `server/internal/service/collaboration_knowledge_concurrency_test.go` (safe error propagation in the existing hook), `server/internal/service/collaboration_stage_project.go` (the missing found-row guard). Existing source-project commit-order tests are the behavior regression. Replay them plus current stage policy/completion tests, builtin template/source-map checks and the complete service package against new owned databases. Preserve the original failed/stalled evidence.

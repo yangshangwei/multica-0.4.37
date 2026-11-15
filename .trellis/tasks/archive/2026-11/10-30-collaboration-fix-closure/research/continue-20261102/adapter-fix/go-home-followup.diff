@@ -1,0 +1,28 @@
+--- .trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/adapter-fix/v6-before-make-dollar-fix/check-bin/go
++++ .omx/private/collaboration-resume-20261101/adapter-v6/check-bin/go
+@@ -57,7 +57,7 @@
+     os.execv(real_go, [real_go, *args])
+ 
+ # API pool limits belong to service startup; tests own their unset/default cases.
+-for key in ("DATABASE_MAX_CONNS", "DATABASE_MIN_CONNS"):
++for key in ("DATABASE_MAX_CONNS", "DATABASE_MIN_CONNS", "MULTICA_TASK_CONFIG_ROOT", "MULTICA_TASK_WORKSPACES_ROOT"):
+     os.environ.pop(key, None)
+ 
+ mode = os.environ.get("MULTICA_TASK_PACKAGE_DB_MODE")
+@@ -137,10 +137,15 @@
+     sql(admin, f'CREATE DATABASE "{database}" TEMPLATE "{template}"')
+     if sql(selected, "SELECT current_database()") != database:
+         refuse("clone identity mismatch")
++    homes = output / "homes"
++    homes.mkdir(mode=0o700, exist_ok=True)
++    package_home = homes / database
++    package_home.mkdir(mode=0o700)
+     environment = os.environ.copy()
+-    environment.update(DATABASE_URL=selected, POSTGRES_DB=database, MULTICA_TASK_PACKAGE_DB_MODE="0")
++    environment.update(DATABASE_URL=selected, POSTGRES_DB=database, MULTICA_TASK_PACKAGE_DB_MODE="0", HOME=str(package_home))
+     command = [real_go, *global_args, "test", *flags, package]
+     evidence = {"package": package, "database": database, "template": template, "command": command,
++                "home": str(package_home), "Go_cache_paths": {key: environment.get(key) for key in ("GOCACHE", "GOMODCACHE", "GOPATH")},
+                 "started_at": datetime.datetime.now(datetime.timezone.utc).isoformat(), "state": "running"}
+     metadata = output / (database + ".json")
+     metadata.write_text(json.dumps(evidence, indent=2) + "\n")

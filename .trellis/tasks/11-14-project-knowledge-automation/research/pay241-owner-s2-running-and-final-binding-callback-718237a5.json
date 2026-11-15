@@ -1,0 +1,44 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "related_task": "PAY-241",
+  "created_at": "2026-11-15T12:14:34.393875+00:00",
+  "source_thread": "01a1dde9-4bd6-7c00-9fa1-e29bf5ddb142",
+  "evidence_kind": "same-session-owner-callback-not-new-code-verdict",
+  "owner_reported": {
+    "manifest_sha256": "fffeec5a7c48ad8fee7a4bc0933e0a0416d1357fc8ec56c93cc77b0e06c3bda4",
+    "source_input_files": 4968,
+    "actual_top_level_ast_tests": 116,
+    "test_groups": [
+      37,
+      79
+    ],
+    "fresh_database_configurations": 4,
+    "independent_input_bindings_verified_by_owner": true,
+    "root_permit_reported_sha256_prefix": "69d967e0",
+    "existing_two_checkers_state": "executing_normal_then_race"
+  },
+  "original_r03_full_verdict": "NOT_ACCEPTABLE",
+  "p2_readiness": false,
+  "product_passed": 0,
+  "product_total": 4,
+  "final_source_binding": "pending_new_independent_code_acceptance",
+  "next_dependency_order": [
+    "new_independent_code_acceptance",
+    "actual_P2_readiness_enable_disable_original_key_recovery",
+    "freeze_and_build_matching_five_binaries",
+    "bind_production_Web_Desktop_and_actual_API_WebSocket",
+    "four_scenarios_and_A01_A12_audit_and_cleanup",
+    "S3_recovery"
+  ],
+  "root_hold": "released",
+  "preserves": [
+    "knowledge865",
+    "knowledge_lifecycle_hooks",
+    "stronger_LIVE_assertions",
+    "retained_fffeec_unified_source"
+  ],
+  "knowledge_shared_fixture_binding_receipt": "p6-root-narrow-fixture-binding-b7dc8f78.json",
+  "knowledge_private_candidate_source_id": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+  "knowledge_root_acceptance_verified": false,
+  "duplicate_implementation_or_test_owner_created": false
+}

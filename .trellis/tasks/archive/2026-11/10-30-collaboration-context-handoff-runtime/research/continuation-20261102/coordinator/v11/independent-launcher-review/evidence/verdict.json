@@ -1,0 +1,178 @@
+{
+  "schema": "v11-independent-artifact-source-evidence-verdict-v1",
+  "status": "blocked_label_and_corrected_RK1_binding_pending",
+  "scope": "Read-only source/artifact/provenance and evidence reuse review; no product changes or runtime gate execution",
+  "owner_scope": "01a19c0e-5cc4-77e0-b2d3-bd2842d39899",
+  "candidate_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+  "identities": {
+    "head": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+    "head_verified": true,
+    "head_and_status_stable": true,
+    "canonical_product_source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+    "canonical_product_source_files": 7962,
+    "independent_collector_and_standard_helper_agree": true,
+    "file_set_matches": true,
+    "file_hash_differences": 0,
+    "tracked_snapshot_fingerprint": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+    "tracked_snapshot_verified": true,
+    "checkout_head_overlay_identity": "3f9788baf2ad3d922df86c4817b7fe0f3183e1a5c6c0e40d43fc76cd4f2c1d88",
+    "overlay_method_name": "checkout-source-id-v11.cjs",
+    "overlay_method_sha256": "817348f249009f05e0e05a4a08d0f76581cda60fac9f9ce88b18255fd4e85bc8",
+    "overlay_method_basis": "Owner-returned statically read HEAD/binary-overlay/normalized-next-env/untracked-source method; no reviewer method execution",
+    "finding": "3f97 is the checkout HEAD/overlay normalization identity. Its original label as the standard product SourceID was incorrect. Canonical product462 and tracked snapshot26e38 remain verified; corrected RK1 binding JSON is pending. This is not a candidate-corruption or product-code finding."
+  },
+  "original_binding": {
+    "path": "<candidate>/.omx/private/final-check-v11/owned-bindings-v11.json",
+    "sha256": "ccc11e4d7e79a19c964b75d4b2c3354268a4bf28fa7ad153c23aa0a95b30b6ba",
+    "byte_pin_matches": true,
+    "scope": "Original immutable collector snapshot; this hash must not be presented as the not-yet-reviewed corrected binding"
+  },
+  "artifact_bytes": {
+    "observation_receipt": "artifact-actual-observation.json",
+    "observation_route": "Targeted read-only actual-file observation returned by the root owner; generic collector hash associations were excluded",
+    "cli": {
+      "sha256": "c008c02377c4c52665000a0620a5a7b3f90f4d10d54d53e1d74bce97dccc6197",
+      "bytes": 29314610,
+      "matches": true
+    },
+    "renderer": {
+      "installed_file_count": 493,
+      "staged_file_count": 493,
+      "file_sets_identical": true,
+      "each_file_sha256_size_mode_matches": true,
+      "declared_file_list_manifest_sha256": "bc46754412b91fac5f6649b7b37ad537e067bb9ab6fa6f0c4012cb0fced91d18",
+      "hash_scope": "493-file manifest, not an individual renderer JavaScript file hash"
+    },
+    "preload": {
+      "installed_file_count": 1,
+      "staged_file_count": 1,
+      "file_sets_identical": true,
+      "each_file_sha256_size_mode_matches": true,
+      "file_sha256": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5",
+      "declared_file_list_manifest_sha256": "eb6f5654d511b3b23a8856597deeabf4277c8a21afffcce04c8703ad6b4c128e"
+    },
+    "main": {
+      "installed_file_count": 1,
+      "staged_file_count": 1,
+      "file_sets_identical": true,
+      "each_file_sha256_size_mode_matches": true,
+      "file_sha256": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678",
+      "declared_file_list_manifest_sha256": "7e4cfb3a45cb26761edb8b73b3f2cd2fe433d2d25e67010ea22156d4287a0360"
+    },
+    "limit": "Disk bytes and file-record equality do not prove current process ownership, installed full-Main runtime acceptance, or a production Web/Next/SSR build"
+  },
+  "workspace_and_delta": {
+    "graph_export_count": 66,
+    "all_export_realpaths_under_candidate": true,
+    "source_identity_scope": "Static own-workspace source/export resolution; compiled module graph and SSR remain untested",
+    "production_delta_path_count_owner_observed": 12,
+    "adjacent_test_path_count_owner_observed": 6,
+    "adjacent_test_domains": [
+      "account-picker",
+      "creation-form",
+      "field-editing",
+      "field-inputs",
+      "property-picker",
+      "server/internal/service/collaboration_source_fields_test.go"
+    ],
+    "source_code_review": "Separate source/code lane owns semantic and preserved-guard review; no guard weakening or code blocker was reported",
+    "e2e_original_commit": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+    "e2e_original_patch_id": "3a28b3fc5a05aa7c39e9c6e310d1cc5427441f8a",
+    "e2e_current_patch_id": "3a28b3fc5a05aa7c39e9c6e310d1cc5427441f8a",
+    "e2e_patch_ids_match": true,
+    "e2e_delta_sha256": "fef30433f9117b94d4ed03a2d48d134b225dffbd4e58a6a7ab850627744db58f",
+    "e2e_test_executed": false,
+    "delta_evidence_route": "Root-returned targeted source-delta and patch observations; exact source path inventories remain in the preparation/observation artifacts"
+  },
+  "tool_provenance": {
+    "node": {"version": "22.23.2", "sha256_prefix_owner_returned": "18e387c9"},
+    "pnpm": {"version": "10.28.2", "binary_sha256_prefix_owner_returned": "b276da", "bundle_sha256_prefix_owner_returned": "930fe7"},
+    "go": {"version": "1.26.6", "sha256_prefix_owner_returned": "a1c838"},
+    "independent_code_lane": {
+      "report": "../code/review.json",
+      "report_sha256": "4c4e45192733c052dd259ae421fc8c5c6008fbf297a2a890bd5557e1421f37b8",
+      "blocking_findings": 0,
+      "pnpm_sdk_file_hashes_matched": 1069,
+      "launcher_environment_original_binding_bytes_checked": true,
+      "retained_preflight_case_logs": 42,
+      "retained_negative_case_logs": 5,
+      "cases_replayed": false
+    },
+    "limit": "Tool and retained-log hash observations are attributed to the independent code lane. This reviewer executed no tool binary or preflight case."
+  },
+  "evidence_reuse": {
+    "historical_runtime_fake": {
+      "normal_count": 62,
+      "race_count": 62,
+      "source_ids_recorded_prefixes": ["639", "9f72"],
+      "framework_baseline_recorded_prefix": "5eaea44f",
+      "go_version_recorded": "1.27",
+      "cli_sha256_recorded_prefix": "b1d54",
+      "current_source_equivalence": false,
+      "reuse": "Historical result and narrowly proven unchanged code/protocol coverage only; never relabel62+62 as current canonical462/HEAD304/Go1.26.6/CLIc008 results"
+    },
+    "historical_knowledge_ccg": {
+      "source_id_recorded_prefix": "9f72",
+      "reuse": "Retain original source/model/run attribution. These results do not automatically establish the new canonical product identity or current knowledge comprehension gates."
+    },
+    "narrow_byte_unchanged_support": {
+      "reuse": "Explicitly cited unchanged file/protocol/guard contracts and exact retained helper/log bytes may support review within their proven scope. They are not new current-source runtime, CLI, SSR, full-run or paid tests.",
+      "limit": "File counts, matching exports or a changed whole-source ID alone do not prove the entire runtime closure unchanged"
+    },
+    "current_required_gates": {
+      "canonical_source_binding": "pending_corrected_JSON_narrow_recheck",
+      "same_source_fake_normal_and_race": "pending",
+      "current_source_cli_runtime": "pending",
+      "production_next_build_and_ssr": "pending",
+      "full_runtime_and_installed_acceptance": "pending",
+      "real_provider_knowledge_and_ccg": "pending",
+      "paid_gate": "inactive"
+    }
+  },
+  "collector_provenance_and_limits": {
+    "collector_md_sha256": "ab51ab619af21c2007a6c592d70a47b10ecd10c031ab0e591dc92d4ab310a8c4",
+    "executed_code_sha256": "15d8ace69b04209353422d2d09750524dc4ec908f776d1949ffea82324ac0a85",
+    "result_sha256": "8ff7626840b14c29206f9796898fc30c4cfc767a031aa9857e13d7b3d026f184",
+    "result_bytes": 60526174,
+    "owner_execution_exit_code": 0,
+    "collector_errors": [],
+    "execution_count": 1,
+    "executed_snapshot_preserved": true,
+    "transport_failure": "One reviewer exec request failed explicitly; no transport retry. Root executed the standalone collector once.",
+    "raw_heuristic_declaration_count": 51710,
+    "raw_heuristic_declarations_used_as_authoritative_mismatches": false,
+    "heuristic_limit": "Multi-file/hash dictionaries can create cross-associated comparisons, including an SDK LICENSE resolved to candidate/LICENSE. Targeted actual-file observations supersede these heuristic rows; immutable executed data was not rewritten."
+  },
+  "budget_and_state": {
+    "runtime_budget": 25,
+    "runtime_consumed": 0,
+    "original_budget": 14,
+    "budgets_separate": true,
+    "paid_gate": "inactive",
+    "source_binding_gate": "inactive_pending_owner_follow_up",
+    "runtime_or_service_state_changed_by_reviewer": false
+  },
+  "required_owner_follow_up": [
+    "Return corrected binding JSON/hash with canonical product462, checkout HEAD/overlay3f97 and tracked snapshot26e38 labeled separately; narrow recheck against the preserved snapshot/artifact pins.",
+    "Keep historical62+62 and knowledge/CCG evidence tied to their original source/toolchain; obtain registered current-source fake/CLI/runtime/real evidence when prerequisites are met.",
+    "Obtain production Next/SSR and full installed/runtime evidence separately; static export/disk equality does not satisfy those gates.",
+    "Keep paid/source gate and distinct budget state unchanged until the owner satisfies the registered prerequisites."
+  ],
+  "verification": {
+    "artifact_byte_bindings": "pass_owner_targeted_actual_observations",
+    "canonical_product_source_manifest": "pass_two_agreeing_checks",
+    "tracked_snapshot": "pass",
+    "current_RK1_binding_label": "blocked_pending_corrected_JSON",
+    "lint": "not_run_read_only_scope",
+    "typecheck": "not_run_read_only_scope",
+    "repository_tests": "not_run_owner_prohibited_execution",
+    "build_database_API_Provider_network_git_mutations": "not_run"
+  },
+  "clearances": {
+    "paid": false,
+    "wholecheck": false,
+    "task_completion": false,
+    "compiled_next_or_ssr_graph": false,
+    "current_source_fake_or_real_gate": false
+  }
+}

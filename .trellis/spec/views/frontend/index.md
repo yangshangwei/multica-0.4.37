@@ -23,7 +23,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Collaboration Detail](./collaboration-detail.md) | Facts-first result/decision, role action, one-action comments, auxiliary recovery and anchors | Shared production Web/Electron human journey verified |
 | [Collaboration Source Picker](./collaboration-source-picker.md) | Click-open recent parents, visible search/retry, selected UUID and protected Query recovery | Active |
 | [Collaboration Creation Interaction](./collaboration-creation.md) | Scoped completion, recipient identity/ARIA, painted focus, visible feedback/actions and debounced parents | Active |
-| [Collaboration knowledge](./collaboration-knowledge.md) | Shared source selection, exact human review/audit, target panels and outcome recovery | Shared Web/Desktop contract; scoped evidence separate |
+| [Collaboration knowledge](./collaboration-knowledge.md) | Shared automatic status/policy, human/system audit, exact review, target panels and outcome recovery | Shared Web/Desktop contract; scoped evidence separate |
 | [Add a computer](./connect-remote-computer.md) | Per-system installers, safe commands, inventory baselines and factual connection states | Active |
 | [Workspace Naming](./workspace-naming.md) | Series catalog, personal preference and manual URL/prefix ownership | Active |
 | [Automation Template Discovery](./automation-template-discovery.md) | Empty-state routing, template semantics and two-step gallery restoration | Active |

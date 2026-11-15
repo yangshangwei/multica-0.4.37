@@ -1,0 +1,25 @@
+{
+  "state": "pass",
+  "source_report": "research/p6-router-current-full-race-fd976616.json",
+  "counts": {
+    "run": 1022,
+    "pass": 1014,
+    "skip": 8
+  },
+  "source_sha256": "f827689ea5d568481fafbce19efac4a30a143198ce461391e391b9d71b0c7f4e",
+  "source_stable": true,
+  "connections_after": 0,
+  "skips": {
+    "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux": "=== RUN   TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux\n    collaboration_daemon_cli_routes_test.go:27: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux (0.00s)",
+    "TestCollaborationPartialResumeRoutesLinux": "=== RUN   TestCollaborationPartialResumeRoutesLinux\n    collaboration_hold_routes_test.go:155: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationPartialResumeRoutesLinux (0.00s)",
+    "TestCollaborationSingleAgentRuntimeRoutesLinux": "=== RUN   TestCollaborationSingleAgentRuntimeRoutesLinux\n    collaboration_single_agent_routes_test.go:418: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationSingleAgentRuntimeRoutesLinux (0.00s)",
+    "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux": "=== RUN   TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux\n    collaboration_single_agent_routes_test.go:585: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux (0.00s)",
+    "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux": "=== RUN   TestCollaborationRuntimeProofSurvivesOwnerDisableLinux\n    collaboration_single_agent_routes_test.go:688: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationRuntimeProofSurvivesOwnerDisableLinux (0.00s)",
+    "TestCollaborationSquadCapacityOneRoutesLinux": "=== RUN   TestCollaborationSquadCapacityOneRoutesLinux\n    collaboration_squad_routes_test.go:173: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationSquadCapacityOneRoutesLinux (0.00s)",
+    "TestCollaborationStageExecutionHarness": "=== RUN   TestCollaborationStageExecutionHarness\n    collaboration_stage_execution_control_test.go:375: dedicated coordinator-owned stage harness only\n--- SKIP: TestCollaborationStageExecutionHarness (0.00s)",
+    "TestDeliveryCompletionM1BrowserFixture": "=== RUN   TestDeliveryCompletionM1BrowserFixture\n    delivery_completion_preview_integration_test.go:103: opt-in M1 browser fixture\n--- SKIP: TestDeliveryCompletionM1BrowserFixture (0.00s)"
+  },
+  "raw_log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-router-current-full-race-fd976616/tests.jsonl",
+  "raw_sha256": "397445aee188de48a8bce434178f93ccdde7f02f43f93cbfed974f30396bbb99",
+  "created_at": "2026-11-15T06:54:41.791802+00:00"
+}

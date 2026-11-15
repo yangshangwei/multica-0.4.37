@@ -1,0 +1,35 @@
+{
+  "created_at": "2026-11-15T06:40:10.373425+00:00",
+  "status": "pass",
+  "source_sha256_before": "f827689ea5d568481fafbce19efac4a30a143198ce461391e391b9d71b0c7f4e",
+  "source_sha256_after": "f827689ea5d568481fafbce19efac4a30a143198ce461391e391b9d71b0c7f4e",
+  "source_stable": true,
+  "steps": [
+    {
+      "command": [
+        "/opt/homebrew/bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server",
+        "vet",
+        "./internal/handler"
+      ],
+      "exit_code": 0,
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-handler-static-wi21402t/check-0.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_empty": true
+    },
+    {
+      "command": [
+        "/opt/homebrew/bin/gofmt",
+        "-l",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/config_test.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/issue_autopilot_assignment_authority_test.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/workspace_delete_manifest_test.go"
+      ],
+      "exit_code": 0,
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-handler-static-wi21402t/check-1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_empty": true
+    }
+  ]
+}

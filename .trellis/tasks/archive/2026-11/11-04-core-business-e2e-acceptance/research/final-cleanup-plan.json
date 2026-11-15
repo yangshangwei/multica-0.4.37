@@ -1,0 +1,13 @@
+{
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "services": [
+    "core-e2e-1a32-20261104 api/web via private registry",
+    "renderer via exact launcher pgid in renderer.json",
+    "Redis multica-core-e2e-20261104-redis exactlabel/id"
+  ],
+  "databases": "retain owned database rows; verify zero connections, no drop of shared or unrelated data",
+  "source": "recompute 8203-file manifest normalizedexactnextimport; only declared e2e test files differ",
+  "artifacts": "recheck current Mac/Linux/DEB hashes recorded; report any mutation",
+  "raw": "private evidence remains local/ignored; no secrets staged",
+  "root_sidecar": "preserve .cursor/mcp.json observedhash; no guessed restoration"
+}

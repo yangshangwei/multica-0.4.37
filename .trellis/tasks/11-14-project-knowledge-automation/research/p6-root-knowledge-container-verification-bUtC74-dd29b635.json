@@ -1,0 +1,1111 @@
+{
+  "format_version": 1,
+  "kind": "bounded_ROOT_knowledge_container_and_threaded_discussion_verification",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "created_at": "2026-11-15T13:20:37.755Z",
+  "receipt_path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-container-verification-bUtC74-dd29b635.json",
+  "private_run_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74",
+  "scope": {
+    "selection_reason": "ROOT preflight a34fa9cc4e45ecca identified a changed containing collaboration-detail/comment tree despite matching direct knowledge modules. This follow-up executes only the four current existing canonical containing-wiring/threading suites assigned by the user.",
+    "canonical_files": [
+      "packages/core/collaboration/comment-threads.test.ts",
+      "packages/views/collaboration/collaboration-detail.test.tsx",
+      "packages/views/collaboration/comment-list.test.tsx",
+      "packages/views/collaboration/detail-auxiliary.test.tsx"
+    ],
+    "canonical_extension_changed": false,
+    "excluded": [
+      "15 previously accepted direct knowledge test files",
+      "package typecheck and lint commands",
+      "stage-approvals/client3d scenario matrices",
+      "full repository or package suites",
+      "new tests, source/config/rule edits, new dependencies or cache pruning",
+      "API/DB/model/account/allocation/application-runtime operations"
+    ],
+    "no_child_delegation": true,
+    "installed_dependencies_only": true,
+    "max_vitest_workers": 2,
+    "simultaneous_vitest_runs": 1,
+    "actual_vitest_run_count": 2,
+    "actual_package_typecheck_run_count": 0,
+    "actual_lint_run_count": 0,
+    "compiler_program_readonly_enumeration": "Only discovers complete input paths using existing unchanged TS config. No diagnostic queries, emit or typecheck command is executed.",
+    "cache_handling": "Existing Vitest supports --cache=false; no cache deleted, pruned or overwritten."
+  },
+  "preflight": {
+    "receipt": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-integration-preflight-a34fa9cc4e45ecca.json",
+      "sha256": "1f80ab283ac17597cd40a63dff4392267226dc5ea695496b362e2aa67c5062e1",
+      "bytes": 472883,
+      "mode": "0644"
+    },
+    "confirmed_source_incompatibilities": 0,
+    "scope": "Containing Views/current threaded discussion closure only; other preflight follow-up lanes remain with their owners."
+  },
+  "method_reuse": {
+    "receipt": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/method-reuse-receipt.json",
+      "sha256": "218b0b7c1d8a3c1039bd523879df9a465555cb1bbc776d42e3eaad700689f227",
+      "bytes": 1844,
+      "mode": "0600"
+    },
+    "accepted_previous_receipt": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-frontend-verification-jOgYVN-c1c27d4b.json",
+      "sha256": "24a02e39e12be1897c1cb839a7550051fe26a4f8aeea1afc569ef92cb3283a9c",
+      "bytes": 86924,
+      "mode": "0600"
+    },
+    "accepted_previous_run_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN",
+    "old_accepted_receipt_immutable": true,
+    "old_primary_receipts_or_source_changed": false,
+    "original_history_not_rewritten": true
+  },
+  "source_input_binding": {
+    "definition": "Same validated complete non-output Core/Views workspace source/config/assets closure, all workspace package manifests, root TS/Vitest/ESLint/pnpm configs and lockfiles, every existing TypeScript program input, installed direct dependency manifests/links and tool shims, installed node/pnpm/tsc executables. Private full manifests retain exact file SHA-256, mode, bytes, symlink identity and timestamps.",
+    "workspace_closure": [
+      {
+        "name": "@multica/core",
+        "directory": "packages/core",
+        "scripts": {
+          "typecheck": "tsc --noEmit",
+          "lint": "eslint .",
+          "test": "vitest run"
+        }
+      },
+      {
+        "name": "@multica/eslint-config",
+        "directory": "packages/eslint-config",
+        "scripts": {}
+      },
+      {
+        "name": "@multica/plugin-sdk",
+        "directory": "packages/plugin-sdk",
+        "scripts": {
+          "typecheck": "tsc --noEmit",
+          "lint": "eslint ."
+        }
+      },
+      {
+        "name": "@multica/tsconfig",
+        "directory": "packages/tsconfig",
+        "scripts": {}
+      },
+      {
+        "name": "@multica/ui",
+        "directory": "packages/ui",
+        "scripts": {
+          "typecheck": "tsc --noEmit",
+          "lint": "eslint ."
+        }
+      },
+      {
+        "name": "@multica/views",
+        "directory": "packages/views",
+        "scripts": {
+          "typecheck": "tsc --noEmit",
+          "lint": "eslint .",
+          "test": "vitest run"
+        }
+      }
+    ],
+    "workspace_dependency_graph": [
+      {
+        "from": "@multica/core",
+        "to": "@multica/eslint-config",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/core",
+        "to": "@multica/tsconfig",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/plugin-sdk",
+        "to": "@multica/eslint-config",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/plugin-sdk",
+        "to": "@multica/tsconfig",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/ui",
+        "to": "@multica/eslint-config",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/ui",
+        "to": "@multica/tsconfig",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/views",
+        "to": "@multica/core",
+        "group": "dependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/views",
+        "to": "@multica/eslint-config",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/views",
+        "to": "@multica/plugin-sdk",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/views",
+        "to": "@multica/tsconfig",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/views",
+        "to": "@multica/ui",
+        "group": "dependencies",
+        "version": "workspace:*"
+      }
+    ],
+    "manifest_entries": 6265,
+    "regular_files": 6113,
+    "before": {
+      "label": "session-before",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/001-session-before-input.json",
+      "startedAt": "2026-11-15T13:17:10.134Z",
+      "finishedAt": "2026-11-15T13:17:10.448Z",
+      "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+      "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+      "entryCount": 6265,
+      "regularFileCount": 6113,
+      "enumerationStable": true,
+      "stableReads": true
+    },
+    "after": {
+      "label": "session-after",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/007-session-after-input.json",
+      "startedAt": "2026-11-15T13:17:45.774Z",
+      "finishedAt": "2026-11-15T13:17:46.011Z",
+      "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+      "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+      "entryCount": 6265,
+      "regularFileCount": 6113,
+      "enumerationStable": true,
+      "stableReads": true
+    },
+    "before_manifest": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/001-session-before-input.json",
+      "sha256": "0c3f314bf587c514045a6e08c9b6fe483ef61b8c795badcdcce3ae52c91a929a",
+      "bytes": 2334445,
+      "mode": "0600"
+    },
+    "after_manifest": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/007-session-after-input.json",
+      "sha256": "b165c9f69346715e5a95ba10089b5108d2bd3f7d1defb9a815cd63b75ebbde4b",
+      "bytes": 2334444,
+      "mode": "0600"
+    },
+    "snapshots": [
+      {
+        "label": "session-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/001-session-before-input.json",
+        "startedAt": "2026-11-15T13:17:10.134Z",
+        "finishedAt": "2026-11-15T13:17:10.448Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "core-comment-threads-tests-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/002-core-comment-threads-tests-before-input.json",
+        "startedAt": "2026-11-15T13:17:34.872Z",
+        "finishedAt": "2026-11-15T13:17:35.487Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "core-comment-threads-tests-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/003-core-comment-threads-tests-after-input.json",
+        "startedAt": "2026-11-15T13:17:36.636Z",
+        "finishedAt": "2026-11-15T13:17:36.895Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-knowledge-container-tests-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/004-views-knowledge-container-tests-before-input.json",
+        "startedAt": "2026-11-15T13:17:36.931Z",
+        "finishedAt": "2026-11-15T13:17:37.153Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-knowledge-container-tests-during",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/005-views-knowledge-container-tests-during-input.json",
+        "startedAt": "2026-11-15T13:17:42.175Z",
+        "finishedAt": "2026-11-15T13:17:42.583Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-knowledge-container-tests-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/006-views-knowledge-container-tests-after-input.json",
+        "startedAt": "2026-11-15T13:17:42.934Z",
+        "finishedAt": "2026-11-15T13:17:43.176Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "session-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/007-session-after-input.json",
+        "startedAt": "2026-11-15T13:17:45.774Z",
+        "finishedAt": "2026-11-15T13:17:46.011Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      }
+    ],
+    "snapshot_count": 7,
+    "sample_interval_milliseconds": 5000,
+    "all_content_and_mode_hashes_match": true,
+    "all_temporal_hashes_match": true,
+    "all_enumerations_stable": true,
+    "all_reads_stable": true,
+    "compiler_input_discovery_before": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/compiler-input-discovery-before.json",
+      "sha256": "8944cf8ed4fcfecdce0f47fb1442541f0185125842cb99d1db31cfff1f60a5d8",
+      "bytes": 2374147,
+      "mode": "0600"
+    },
+    "compiler_input_discovery_after": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/compiler-input-discovery-after.json",
+      "sha256": "8944cf8ed4fcfecdce0f47fb1442541f0185125842cb99d1db31cfff1f60a5d8",
+      "bytes": 2374147,
+      "mode": "0600"
+    },
+    "compiler_input_discovery_bytes_match": true,
+    "observed_input_stable": true,
+    "observed_source_changes": [],
+    "source_freeze_permit": false,
+    "observer_text": {
+      "classification": "separate_observer_UTF8_BOM_normalization",
+      "observations": [
+        {
+          "label": "compiler-discovery-before",
+          "path": "node_modules/.pnpm/@types+json5@0.0.29/node_modules/@types/json5/index.d.ts",
+          "rawSourceSha256": "c5a14bdeb170e0e67fb4200c54e0e02fd0ec94aca894c212c9d43c2916891542",
+          "rawSourceMode": "0644",
+          "rawSourceBytes": 1210,
+          "compilerTextSha256": "96d14f21b7652903852eef49379d04dbda28c16ed36468f8c9fa08f7c14c9538",
+          "utf8BomPrefix": "efbbbf",
+          "bomStrippedTextSha256": "96d14f21b7652903852eef49379d04dbda28c16ed36468f8c9fa08f7c14c9538",
+          "knownObserverNormalization": true,
+          "sourceFileChangedOrRewritten": false
+        },
+        {
+          "label": "compiler-discovery-after",
+          "path": "node_modules/.pnpm/@types+json5@0.0.29/node_modules/@types/json5/index.d.ts",
+          "rawSourceSha256": "c5a14bdeb170e0e67fb4200c54e0e02fd0ec94aca894c212c9d43c2916891542",
+          "rawSourceMode": "0644",
+          "rawSourceBytes": 1210,
+          "compilerTextSha256": "96d14f21b7652903852eef49379d04dbda28c16ed36468f8c9fa08f7c14c9538",
+          "utf8BomPrefix": "efbbbf",
+          "bomStrippedTextSha256": "96d14f21b7652903852eef49379d04dbda28c16ed36468f8c9fa08f7c14c9538",
+          "knownObserverNormalization": true,
+          "sourceFileChangedOrRewritten": false
+        }
+      ],
+      "receipt": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/observer-text-observations.json",
+        "sha256": "69a788494c22b6e317649f06ec52f7f2980d8427650ab069719884c8eb38da47",
+        "bytes": 1430,
+        "mode": "0600"
+      },
+      "all_issues_reconciled": true,
+      "explanation": "The installed @types/json5 declaration keeps its original EF BB BF prefix. TypeScript strips that BOM on decoded text reads. Both raw source identities and compiler text identities independently match before/after; the mismatch is an observer-text difference, not source mutation. No prior raw result, source or accepted receipt is rewritten."
+    }
+  },
+  "tools": {
+    "node_version": "v22.23.2",
+    "node_executable": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "pnpm_version": "10.28.2",
+    "pnpm_entrypoint": "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+    "typescript_input_reader_version": "5.9.3",
+    "vitest_version": "4.1.0",
+    "environment": "Explicit ordinary runtime environment allowlist; account/API/DB/model credentials not inherited by tests.",
+    "raw_stderr_retained": true
+  },
+  "checks": [
+    {
+      "name": "core-comment-threads-tests",
+      "result": "PASS",
+      "exit_code": 0,
+      "signal": null,
+      "command": {
+        "executable": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+          "--filter",
+          "@multica/core",
+          "test",
+          "collaboration/comment-threads.test.ts",
+          "--maxWorkers=2",
+          "--cache=false",
+          "--reporter=verbose",
+          "--reporter=json",
+          "--outputFile=/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/core-comment-threads-tests.vitest.json"
+        ],
+        "cwd": "/Volumes/artisan/code/2026/multica-0.4.37"
+      },
+      "started_at": "2026-11-15T13:17:35.525Z",
+      "finished_at": "2026-11-15T13:17:36.636Z",
+      "before_input": {
+        "label": "core-comment-threads-tests-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/002-core-comment-threads-tests-before-input.json",
+        "startedAt": "2026-11-15T13:17:34.872Z",
+        "finishedAt": "2026-11-15T13:17:35.487Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "after_input": {
+        "label": "core-comment-threads-tests-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/003-core-comment-threads-tests-after-input.json",
+        "startedAt": "2026-11-15T13:17:36.636Z",
+        "finishedAt": "2026-11-15T13:17:36.895Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "observed_input_stable": true,
+      "counts": {
+        "files": 1,
+        "total": 13,
+        "passed": 13,
+        "failed": 0,
+        "skip": 0,
+        "todo": 0
+      },
+      "raw_report_counters": {
+        "numTotalTestSuites": 2,
+        "numPassedTestSuites": 2,
+        "numFailedTestSuites": 0,
+        "numPendingTestSuites": 0,
+        "numTotalTests": 13,
+        "numPassedTests": 13,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numTodoTests": 0
+      },
+      "denominator_reconciled": true,
+      "selected_files": [
+        "packages/core/collaboration/comment-threads.test.ts"
+      ],
+      "missing_files": [],
+      "unexpected_files": [],
+      "duplicate_files": [],
+      "duplicate_named_tests": [],
+      "exact_named_inventory": [
+        {
+          "path": "packages/core/collaboration/comment-threads.test.ts",
+          "file_status": "passed",
+          "total": 13,
+          "passed": 13,
+          "failed": 0,
+          "skip": 0,
+          "todo": 0,
+          "tests": [
+            {
+              "ordinal": 1,
+              "name": "deriveCollaborationCommentThreads returns no threads for an empty page",
+              "status": "passed"
+            },
+            {
+              "ordinal": 2,
+              "name": "deriveCollaborationCommentThreads treats a single unresolved comment as one pending thread resolved at its root",
+              "status": "passed"
+            },
+            {
+              "ordinal": 3,
+              "name": "deriveCollaborationCommentThreads orders a thread depth-first with siblings ascending and threads by their first comment",
+              "status": "passed"
+            },
+            {
+              "ordinal": 4,
+              "name": "deriveCollaborationCommentThreads breaks equal creation times by id",
+              "status": "passed"
+            },
+            {
+              "ordinal": 5,
+              "name": "deriveCollaborationCommentThreads marks the whole thread resolved when any member carries the resolution",
+              "status": "passed"
+            },
+            {
+              "ordinal": 6,
+              "name": "deriveCollaborationCommentThreads does not count a deleted root without replies as pending",
+              "status": "passed"
+            },
+            {
+              "ordinal": 7,
+              "name": "deriveCollaborationCommentThreads does not count a thread whose members are all deleted as pending",
+              "status": "passed"
+            },
+            {
+              "ordinal": 8,
+              "name": "deriveCollaborationCommentThreads keeps a deleted root with a surviving reply pending and resolves at the first resolvable member",
+              "status": "passed"
+            },
+            {
+              "ordinal": 9,
+              "name": "deriveCollaborationCommentThreads prefers a resolvable root over an earlier-listed resolvable reply",
+              "status": "passed"
+            },
+            {
+              "ordinal": 10,
+              "name": "deriveCollaborationCommentThreads keeps a deleted comment that still carries a resolution as the resolved marker",
+              "status": "passed"
+            },
+            {
+              "ordinal": 11,
+              "name": "deriveCollaborationCommentThreads groups replies of an unloaded parent under that missing id with a null root",
+              "status": "passed"
+            },
+            {
+              "ordinal": 12,
+              "name": "deriveCollaborationCommentThreads keeps separate groups for different unloaded parents",
+              "status": "passed"
+            },
+            {
+              "ordinal": 13,
+              "name": "deriveCollaborationCommentThreads terminates on cyclic parents and keeps every comment exactly once",
+              "status": "passed"
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "raw_command": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/core-comment-threads-tests.command.json",
+        "sha256": "b106508e929b2d779f66e6593d0bfc424ef3380edc530eb78f1b55cd7a387c95",
+        "bytes": 3072,
+        "mode": "0600"
+      },
+      "raw_stdout": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/core-comment-threads-tests.stdout.log",
+        "sha256": "3680ab82ada866cb268c2b1e09bc9796c9c4c98412deb1aaba1fbc24d7dee586",
+        "bytes": 2809,
+        "mode": "0600"
+      },
+      "raw_stderr": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/core-comment-threads-tests.stderr.log",
+        "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+        "bytes": 211,
+        "mode": "0600"
+      },
+      "raw_exit_result": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/core-comment-threads-tests.raw-result.json",
+        "sha256": "ebc333bf99f4e164dd297a50d851df70a144cd3a9c6e8c21931618f3d37ea884",
+        "bytes": 1884,
+        "mode": "0600"
+      },
+      "raw_bound_result": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/core-comment-threads-tests.result.json",
+        "sha256": "6fe8bb3d5d884bfa201b5a8eb667a15c91f65358de883c4536e5723fd93f2d15",
+        "bytes": 3574,
+        "mode": "0600"
+      },
+      "raw_report": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/core-comment-threads-tests.vitest.json",
+        "sha256": "026bc767a0ed93c7e8e76efcc5d258f8c0f337dd0f7122c7f58091a3c984f4f7",
+        "bytes": 5066,
+        "mode": "0600"
+      },
+      "raw_named_inventory": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/core-comment-threads-tests.named-inventory.json",
+        "sha256": "4133aaa477118351c3bd30a10382bf171263849d3d180d81dbea559d6434708d",
+        "bytes": 6191,
+        "mode": "0600"
+      }
+    },
+    {
+      "name": "views-knowledge-container-tests",
+      "result": "PASS",
+      "exit_code": 0,
+      "signal": null,
+      "command": {
+        "executable": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+          "--filter",
+          "@multica/views",
+          "test",
+          "collaboration/collaboration-detail.test.tsx",
+          "collaboration/comment-list.test.tsx",
+          "collaboration/detail-auxiliary.test.tsx",
+          "--maxWorkers=2",
+          "--cache=false",
+          "--reporter=verbose",
+          "--reporter=json",
+          "--outputFile=/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/views-knowledge-container-tests.vitest.json"
+        ],
+        "cwd": "/Volumes/artisan/code/2026/multica-0.4.37"
+      },
+      "started_at": "2026-11-15T13:17:37.175Z",
+      "finished_at": "2026-11-15T13:17:42.934Z",
+      "before_input": {
+        "label": "views-knowledge-container-tests-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/004-views-knowledge-container-tests-before-input.json",
+        "startedAt": "2026-11-15T13:17:36.931Z",
+        "finishedAt": "2026-11-15T13:17:37.153Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "after_input": {
+        "label": "views-knowledge-container-tests-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/006-views-knowledge-container-tests-after-input.json",
+        "startedAt": "2026-11-15T13:17:42.934Z",
+        "finishedAt": "2026-11-15T13:17:43.176Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "observed_input_stable": true,
+      "counts": {
+        "files": 3,
+        "total": 54,
+        "passed": 54,
+        "failed": 0,
+        "skip": 0,
+        "todo": 0
+      },
+      "raw_report_counters": {
+        "numTotalTestSuites": 3,
+        "numPassedTestSuites": 3,
+        "numFailedTestSuites": 0,
+        "numPendingTestSuites": 0,
+        "numTotalTests": 54,
+        "numPassedTests": 54,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numTodoTests": 0
+      },
+      "denominator_reconciled": true,
+      "selected_files": [
+        "packages/views/collaboration/collaboration-detail.test.tsx",
+        "packages/views/collaboration/comment-list.test.tsx",
+        "packages/views/collaboration/detail-auxiliary.test.tsx"
+      ],
+      "missing_files": [],
+      "unexpected_files": [],
+      "duplicate_files": [],
+      "duplicate_named_tests": [],
+      "exact_named_inventory": [
+        {
+          "path": "packages/views/collaboration/collaboration-detail.test.tsx",
+          "file_status": "passed",
+          "total": 15,
+          "passed": 15,
+          "failed": 0,
+          "skip": 0,
+          "todo": 0,
+          "tests": [
+            {
+              "ordinal": 1,
+              "name": "keeps the main journey visible and task metadata in its resource drawer in en",
+              "status": "passed"
+            },
+            {
+              "ordinal": 2,
+              "name": "keeps the main journey visible and task metadata in its resource drawer in zh-Hans",
+              "status": "passed"
+            },
+            {
+              "ordinal": 3,
+              "name": "opens reference files directly from requirements without exposing the other auxiliaries",
+              "status": "passed"
+            },
+            {
+              "ordinal": 4,
+              "name": "reopens and focuses shared context on each explicit anchor navigation",
+              "status": "passed"
+            },
+            {
+              "ordinal": 5,
+              "name": "shows the loaded range only beside Load more and keeps an older server's unknown total explicit",
+              "status": "passed"
+            },
+            {
+              "ordinal": 6,
+              "name": "counts unresolved threads beside the heading and focuses the first one in en",
+              "status": "passed"
+            },
+            {
+              "ordinal": 7,
+              "name": "counts unresolved threads beside the heading and focuses the first one in zh-Hans",
+              "status": "passed"
+            },
+            {
+              "ordinal": 8,
+              "name": "hands each explicit comment navigation to the list so a folded thread can open before focus",
+              "status": "passed"
+            },
+            {
+              "ordinal": 9,
+              "name": "restores an anchored detail on scope resume and refocuses repeated explicit opens",
+              "status": "passed"
+            },
+            {
+              "ordinal": 10,
+              "name": "opens ordinary children in their returned source workspace and downgrades to references after source access changes",
+              "status": "passed"
+            },
+            {
+              "ordinal": 11,
+              "name": "distinguishes missing child support from an explicitly empty projected list",
+              "status": "passed"
+            },
+            {
+              "ordinal": 12,
+              "name": "focuses the selected run and copies its account anchor from the shared detail",
+              "status": "passed"
+            },
+            {
+              "ordinal": 13,
+              "name": "keeps one comment list and composer across loading, polling and first-comment updates",
+              "status": "passed"
+            },
+            {
+              "ordinal": 14,
+              "name": "removes an open resource drawer when its protected issue is no longer available",
+              "status": "passed"
+            },
+            {
+              "ordinal": 15,
+              "name": "C01 mounts only the account recovery surface after issue access is denied",
+              "status": "passed"
+            }
+          ]
+        },
+        {
+          "path": "packages/views/collaboration/comment-list.test.tsx",
+          "file_status": "passed",
+          "total": 35,
+          "passed": 35,
+          "failed": 0,
+          "skip": 0,
+          "todo": 0,
+          "tests": [
+            {
+              "ordinal": 1,
+              "name": "distinguishes a named Agent from a same-named person in en without fetching Agent details",
+              "status": "passed"
+            },
+            {
+              "ordinal": 2,
+              "name": "distinguishes a named Agent from a same-named person in zh-Hans without fetching Agent details",
+              "status": "passed"
+            },
+            {
+              "ordinal": 3,
+              "name": "shows one generic Agent label in 'en' when the Agent name is undefined",
+              "status": "passed"
+            },
+            {
+              "ordinal": 4,
+              "name": "shows one generic Agent label in 'en' when the Agent name is ''",
+              "status": "passed"
+            },
+            {
+              "ordinal": 5,
+              "name": "shows one generic Agent label in 'en' when the Agent name is '   '",
+              "status": "passed"
+            },
+            {
+              "ordinal": 6,
+              "name": "shows one generic Agent label in 'zh-Hans' when the Agent name is undefined",
+              "status": "passed"
+            },
+            {
+              "ordinal": 7,
+              "name": "shows one generic Agent label in 'zh-Hans' when the Agent name is ''",
+              "status": "passed"
+            },
+            {
+              "ordinal": 8,
+              "name": "shows one generic Agent label in 'zh-Hans' when the Agent name is '   '",
+              "status": "passed"
+            },
+            {
+              "ordinal": 9,
+              "name": "uses the en app locale for comment and history timestamps while preserving ISO values",
+              "status": "passed"
+            },
+            {
+              "ordinal": 10,
+              "name": "uses the zh-Hans app locale for comment and history timestamps while preserving ISO values",
+              "status": "passed"
+            },
+            {
+              "ordinal": 11,
+              "name": "loads a placeholder through the human detail route before exposing editing",
+              "status": "passed"
+            },
+            {
+              "ordinal": 12,
+              "name": "does not restore a different revision into a placeholder editor",
+              "status": "passed"
+            },
+            {
+              "ordinal": 13,
+              "name": "moves focus into the delete confirmation and back to the More actions trigger when it is dismissed",
+              "status": "passed"
+            },
+            {
+              "ordinal": 14,
+              "name": "keeps the author's edit after a conflict and requires an explicit new baseline",
+              "status": "passed"
+            },
+            {
+              "ordinal": 15,
+              "name": "keeps a tombstone on one line and threads its surviving reply beneath it",
+              "status": "passed"
+            },
+            {
+              "ordinal": 16,
+              "name": "links a reply to its parent only while that parent is outside the loaded comments",
+              "status": "passed"
+            },
+            {
+              "ordinal": 17,
+              "name": "resolves a thread and removes only the viewer's reaction through dedicated account routes",
+              "status": "passed"
+            },
+            {
+              "ordinal": 18,
+              "name": "keeps a recovered conflict editor visible when its comment is outside the loaded page",
+              "status": "passed"
+            },
+            {
+              "ordinal": 19,
+              "name": "shows byte-limit feedback without losing pasted text or submitting an oversized edit",
+              "status": "passed"
+            },
+            {
+              "ordinal": 20,
+              "name": "confirms an older oversized refusal before unlocking its preserved input",
+              "status": "passed"
+            },
+            {
+              "ordinal": 21,
+              "name": "shows a recent comment's relative time in en and keeps the full time on hover",
+              "status": "passed"
+            },
+            {
+              "ordinal": 22,
+              "name": "shows a recent comment's relative time in zh-Hans and keeps the full time on hover",
+              "status": "passed"
+            },
+            {
+              "ordinal": 23,
+              "name": "moves the author's permission context into the menu in en",
+              "status": "passed"
+            },
+            {
+              "ordinal": 24,
+              "name": "moves the author's permission context into the menu in zh-Hans",
+              "status": "passed"
+            },
+            {
+              "ordinal": 25,
+              "name": "keeps one action row and prepares a result only from the explicit menu item",
+              "status": "passed"
+            },
+            {
+              "ordinal": 26,
+              "name": "marks only an edited comment and opens its history from that marker",
+              "status": "passed"
+            },
+            {
+              "ordinal": 27,
+              "name": "shows one Resolve control per unresolved thread and keeps the others in their menus",
+              "status": "passed"
+            },
+            {
+              "ordinal": 28,
+              "name": "folds an already resolved thread into one bar and reopens it after expanding in en",
+              "status": "passed"
+            },
+            {
+              "ordinal": 29,
+              "name": "folds an already resolved thread into one bar and reopens it after expanding in zh-Hans",
+              "status": "passed"
+            },
+            {
+              "ordinal": 30,
+              "name": "keeps a thread open when it becomes resolved while the page is open",
+              "status": "passed"
+            },
+            {
+              "ordinal": 31,
+              "name": "keeps a resolved thread open while one of its requests is unconfirmed",
+              "status": "passed"
+            },
+            {
+              "ordinal": 32,
+              "name": "hides a folded thread without discarding an unsent edit inside it",
+              "status": "passed"
+            },
+            {
+              "ordinal": 33,
+              "name": "opens a folded thread for each explicit navigation to one of its comments",
+              "status": "passed"
+            },
+            {
+              "ordinal": 34,
+              "name": "opens the thread of a navigation target that loads after the intent",
+              "status": "passed"
+            },
+            {
+              "ordinal": 35,
+              "name": "keeps visible replies open when an older page loads their resolved root",
+              "status": "passed"
+            }
+          ]
+        },
+        {
+          "path": "packages/views/collaboration/detail-auxiliary.test.tsx",
+          "file_status": "passed",
+          "total": 4,
+          "passed": 4,
+          "failed": 0,
+          "skip": 0,
+          "todo": 0,
+          "tests": [
+            {
+              "ordinal": 1,
+              "name": "keeps one editor mounted through category switches and close, with inactive content hidden",
+              "status": "passed"
+            },
+            {
+              "ordinal": 2,
+              "name": "reports attention without opening a modal and only displays confirmed counts",
+              "status": "passed"
+            },
+            {
+              "ordinal": 3,
+              "name": "returns focus to an external opener and waits for the modal to close before main navigation",
+              "status": "passed"
+            },
+            {
+              "ordinal": 4,
+              "name": "does not reopen on scope resume and fences editor lifetime by issue identity",
+              "status": "passed"
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "raw_command": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/views-knowledge-container-tests.command.json",
+        "sha256": "11964b6e68c854021547e240b9c44e46f86eed8fa9f1b04dc8b6db9a4e10c148",
+        "bytes": 3174,
+        "mode": "0600"
+      },
+      "raw_stdout": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/views-knowledge-container-tests.stdout.log",
+        "sha256": "7421f7290c744b37a522f3f2d2867fd8ba5281e37d5c216448cd74259a8eaed5",
+        "bytes": 7955,
+        "mode": "0600"
+      },
+      "raw_stderr": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/views-knowledge-container-tests.stderr.log",
+        "sha256": "99c4bcff44e6a8dd9cc6667a77bdeb32c9d675bffab2ef939a0f1b86ddc6e983",
+        "bytes": 1316,
+        "mode": "0600"
+      },
+      "raw_exit_result": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/views-knowledge-container-tests.raw-result.json",
+        "sha256": "4bef5c939b7b3012626cec89f70e84d5d09dd1c74415b5e979490e1989bbe253",
+        "bytes": 2007,
+        "mode": "0600"
+      },
+      "raw_bound_result": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/views-knowledge-container-tests.result.json",
+        "sha256": "4fce47cd998f76118f68886f62a422bdf862ee45392e33b17ae074590e9abc9d",
+        "bytes": 3849,
+        "mode": "0600"
+      },
+      "raw_report": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/views-knowledge-container-tests.vitest.json",
+        "sha256": "3abe0b47e1603a80255b95484295adecf2639321f680c465482f7a2071ca1de0",
+        "bytes": 16887,
+        "mode": "0600"
+      },
+      "raw_named_inventory": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/views-knowledge-container-tests.named-inventory.json",
+        "sha256": "daf1aca6be64d6f3b24fad09b907d471904154276d0b8037ae77aeb30b2daa23",
+        "bytes": 20720,
+        "mode": "0600"
+      }
+    }
+  ],
+  "verification": {
+    "tests": {
+      "files": 4,
+      "total": 67,
+      "passed": 67,
+      "failed": 0,
+      "skip": 0,
+      "todo": 0,
+      "missingFiles": [],
+      "unexpectedFiles": [],
+      "duplicateFiles": [],
+      "duplicateNamedTests": []
+    },
+    "observed_container_checks_passed": true,
+    "observed_input_stable": true,
+    "typecheck": "NOT_RUN per bounded user scope; accepted earlier checks not rerun",
+    "lint": "NOT_RUN per bounded user scope; accepted earlier checks not rerun",
+    "full_ROOT_acceptance": false,
+    "final_acceptance_verified": false,
+    "product_acceptance": false,
+    "source_readiness": false,
+    "source_freeze_permit": false
+  },
+  "findings": {
+    "fixed": [],
+    "not_fixed": [],
+    "statement": "No actual failure was observed in these four assigned canonical suites; no source/config/rule changes or new tests were made."
+  },
+  "peer_preservation": {
+    "public_write_scope": [
+      ".trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-container-verification-bUtC74-dd29b635.json"
+    ],
+    "source_changed_by_this_lane": [],
+    "config_or_rule_changed_by_this_lane": [],
+    "new_tests": [],
+    "existing_git_status_entry_count_before": 2568,
+    "existing_git_status_entry_count_after": 2568,
+    "git_status_bytes_unchanged_during_checks": true,
+    "status_delta_during_checks": {
+      "added": [],
+      "removed": []
+    },
+    "head_before": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+    "head_after": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+    "accepted_previous_receipt_unchanged": true,
+    "accepted_before": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/accepted-receipt-immutable-before.json",
+      "sha256": "ea936bb32984cacded3b0e760996a5a6329b77afa7a95d9f6db371f2cbc01de7",
+      "bytes": 883,
+      "mode": "0600"
+    },
+    "accepted_after": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/accepted-receipt-immutable-after.json",
+      "sha256": "e106cca38b130b9cf14c8a1b73f1ecd962a3dbc285d1e7b0747a9aa0195204cf",
+      "bytes": 1022,
+      "mode": "0600"
+    }
+  },
+  "retained_evidence": {
+    "directory_mode": "0700",
+    "raw_file_mode": "0600",
+    "raw_inventory_index": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/raw-receipt-inventory.json",
+      "sha256": "06388f671f6b4070cce66545308880ad15df03debfd3856156493c5ce562c2d8",
+      "bytes": 20501,
+      "mode": "0600"
+    },
+    "raw_summary": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/verification-summary.json",
+      "sha256": "6c0e1ebaa11765e4980478a1eaf5885084f661a2cbaee59acd37cb2b4ad7e57d",
+      "bytes": 19611,
+      "mode": "0600"
+    },
+    "input_and_history_audit": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/binding-and-history-audit.json",
+      "sha256": "cbbbd6f7d029f842cec2d6a61afebac1eca6f6ec53f56f9d772e6f59838e7139",
+      "bytes": 448,
+      "mode": "0600"
+    },
+    "private_permissions_audit": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/private-permissions-audit.json",
+      "sha256": "d4798c45966c627fab18fe0cbd541f273cb74b9bed7434133c66747dbb0af951",
+      "bytes": 15253,
+      "mode": "0600"
+    },
+    "context_identities": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/loaded-context-identities.json",
+      "sha256": "b66bd694b3f408afe5f1b897136957bc5f908ee1448fee1a4ac8c1aa76baad48",
+      "bytes": 8683,
+      "mode": "0600"
+    },
+    "launcher_command": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/launcher-command.json",
+      "sha256": "16d729a0602a261e2c2006acbb9da70f72a7196a19a23f9c58702cea89e70b32",
+      "bytes": 955,
+      "mode": "0600"
+    },
+    "runner": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-container-verification-bUtC74/run-container-verification.mjs",
+      "sha256": "79e7906d5371cf2b098570661a7dcc905ad797395aa081669379ee8f02af2e28",
+      "bytes": 24561,
+      "mode": "0600"
+    },
+    "all_commands_have_separate_private_unmodified_stdout_stderr_and_raw_exit_receipts": true
+  },
+  "handoff": {
+    "scoped_implementation_handoff_needed": false,
+    "actual_failure_trigger": null,
+    "recommendation": "No scoped source fix is indicated by this run. Main session retains the remaining ROOT/build/runtime/product/AC acceptance work; this bounded containing closure does not authorize source readiness or freeze."
+  }
+}
