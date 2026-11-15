@@ -98,7 +98,7 @@
 
 ### P6：完整验证与最终交付
 
-2026-11-16检查点：新完整SOURCE已实体封存，wrapperv2的58项离线检查及独立准入已通过；整棵SOURCE独立closure尚待完成。旧TMP运行资产缺失、原因未知，历史私有4e最终AC与原失败证据继续保留。任务维持`in_progress`／P6，ROOT最终验收仍false；本检查点尚未创建新PG配置、environment、DB、allocation、build或runtime。最新顺序及证据见 `research/progress-2026-11-16.md`。
+2026-11-16检查点：新完整SOURCE已实体封存，wrapperv2的58项离线检查及独立准入已通过；NEW mutable PG-only `.env`已独占创建并validate-only通过。当前SOURCE的220项前端检查、2个typecheck、34文件lint及完整Go build／vet已执行通过，独立inventory／整棵SOURCE closure尚待完成。旧TMP运行资产缺失、原因未知，历史私有4e最终AC与原失败证据继续保留。任务维持`in_progress`／P6，ROOT最终验收仍false；新runtime environment、DB、allocation、生产build和runtime尚未创建。最新顺序及证据见 `research/progress-2026-11-16.md`。
 
 既有封存输入已完成前端lint/typecheck/test14,112PASS（Docs64缓存）、service race3840/0/0、handler5912/0/7、router1014/0/8、新布局迁移569/0/0、知识/authority/mixed428/0/0及testutil18/0/0；完整具名分母、skip原因及原失败见进度文件。Go build/vet、非DB和UI入口检查也有各自源码绑定，不能将这些报告视为最新ROOT全量通过。
 
@@ -170,6 +170,8 @@ ROOT三文件已窄整合，5,035保护路径0漂移、35peer产品差异／865�
 
 新完整ROOT已一次实体COPY为`frozen-source`和`mutable-source`：source_id `5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33`，选定private HEAD `2f6989bfa5630ff2790d37a539c1522d2d29d094`，各10,408文件／32workspace links。ROOT3、RK3、Final5及stage activation三after-image已在两份目录核对，完整字节／权限／链接无漂移。post-COPY guard证明后续controller的代码、Markdown及workspace源码读取只使用private SOURCE；原始许可、patch和manifest已另行持久保留。见 `research/p6-physical-full-source-wrapper-v2-bindings-20261116-5dee3553b10a.json` 和 `research/p6-post-copy-sealed-source-independence-20261116-5dee3553b10a.json`。
 
-NEW wrapperv2封闭PG URI的host／dbname query覆盖、编码／重复项、非法port和fragment；原7项、49 URI场景及2保留守卫共58项离线通过。独立审查`WRAPPER_V2_ACCEPTED_FOR_FRESH_RUNTIME_PREPARATION`／0阻塞／PW-PG1 closed，整棵SOURCE review仍待关闭。本检查点actual env／DB／build／runtime为0；主会话随后仅授权NEW mutable `.env`独占0600的PG-only配置与validate-only pin。实际SQL／createDB／allocation须等整棵SOURCE独立closure及主会话新handoff，source-ready和最终ROOT验收仍false。
+NEW wrapperv2封闭PG URI的host／dbname query覆盖、编码／重复项、非法port和fragment；原7项、49 URI场景及2保留守卫共58项离线通过。独立审查`WRAPPER_V2_ACCEPTED_FOR_FRESH_RUNTIME_PREPARATION`／0阻塞／PW-PG1 closed。NEW mutable `.env`已独占0600写入单一`DATABASE_URL`，validate-only PASS，config SHA `023175cea43e8d88c06c0e298b9e7ba4459ce0e2ff2aba3114f4124eb9582569`；frozen无`.env`，原SOURCE清单不变。实际SQL／createDB／allocation及新runtime environment／生产build／runtime为0，须等整棵SOURCE独立closure及主会话新handoff，source-ready和最终ROOT验收仍false。
+
+主会话已从该SOURCE完成8条既有前端检查：220 PASS（107＋46＋13＋54）、0 FAIL／SKIP／TODO，2个typecheck退出0，34文件lint 0 error；完整`./...` Go build／vet以`-p 2`各退出0，Go tests／SQL为0。初后完整10,408文件／32links均稳定，Go工具哈希不变；两个actual result.json已交独立inventory review，尚未提前登记接受。
 
 PAY四产品场景的首项真实失败：HTTP400 `unknown execution_view_version`，后3项NOT_RUN。原失败保留，下一步由PAY owner修复私有`collaboration-multi-account-closure.ts`的`workflowAuthority`，review后再写ROOT fixture。该窗口已经释放，后续ROOT fixture／任务Markdown更新不会自动导入本次封存SOURCE。
