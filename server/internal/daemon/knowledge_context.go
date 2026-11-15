@@ -126,7 +126,7 @@ func (d *Daemon) knowledgeInvocation(runtimeID string) *protocol.TaskKnowledgeIn
 		return nil
 	}
 	return &protocol.TaskKnowledgeInvocation{
-		ProtocolVersion: protocol.TaskKnowledgeVersion, Provider: rt.Provider, Mode: "local", Builtin: true,
+		ProtocolVersion: protocol.TaskKnowledgeLatestVersion, Provider: rt.Provider, Mode: "local", Builtin: true,
 		ConfigurationID: configuration,
 		ExtraArgs:       append([]string{}, defaultArgsForProvider(d.cfg, rt.Provider)...),
 	}
@@ -219,7 +219,9 @@ func (c *Client) postKnowledge(ctx context.Context, taskID, action string, reque
 			}
 			_ = json.Unmarshal(body, &failure)
 			lastReason = agent.KnowledgeUnavailable
-			if knowledgeFailureCode(failure.Error) {
+			if failure.Error == "knowledge_protocol_unsupported" {
+				lastReason = agent.KnowledgeInvocationUnsupported
+			} else if knowledgeFailureCode(failure.Error) {
 				lastReason = failure.Error
 			} else if res.StatusCode == http.StatusForbidden || res.StatusCode == http.StatusUnauthorized {
 				lastReason = agent.KnowledgeAuthorizationDenied
@@ -255,7 +257,7 @@ func validateKnowledgeClaim(task Task, provider, configuration string, opts agen
 	dropped := d.Session.NativeSessionID != "" && task.droppedPriorSessionID == d.Session.NativeSessionID &&
 		task.PriorSessionID == "" && opts.ResumeSessionID == ""
 	exact := d.Session.NativeSessionID == opts.ResumeSessionID && d.Session.NativeSessionID == task.PriorSessionID
-	if d.ProtocolVersion != protocol.TaskKnowledgeVersion || !d.PreparationRequired ||
+	if !protocol.IsKnowledgeProtocolVersion(d.ProtocolVersion) || !d.PreparationRequired ||
 		d.Provider != provider || d.Mode != "local" || d.TaskID != task.ID || d.RuntimeID != task.RuntimeID ||
 		d.ConfigurationID != configuration || d.Session.Provider != provider || d.Session.RuntimeID != task.RuntimeID ||
 		d.Session.AgentID != task.AgentID || d.Session.ConfigurationID != d.ConfigurationID ||
@@ -298,8 +300,8 @@ func knowledgePreparedSession(claimed protocol.TaskKnowledgeSessionBinding, rebi
 }
 
 func validateKnowledgePreparation(task Task, claimed protocol.TaskKnowledgeSessionBinding, rebind bool, fingerprint string, p protocol.TaskKnowledgePrepareResponse) error {
-	if p.ProtocolVersion != protocol.TaskKnowledgeVersion || p.InvocationFingerprint != fingerprint ||
-		!knowledgePreparedSession(claimed, rebind, p.Session) || p.Manifest.ProtocolVersion != protocol.TaskKnowledgeVersion ||
+	if task.KnowledgeContext == nil || p.ProtocolVersion != task.KnowledgeContext.ProtocolVersion || !protocol.IsKnowledgeProtocolVersion(p.ProtocolVersion) || p.InvocationFingerprint != fingerprint ||
+		!knowledgePreparedSession(claimed, rebind, p.Session) || p.Manifest.ProtocolVersion != p.ProtocolVersion ||
 		p.Manifest.Entries == nil || p.Contributions == nil || p.Targets == nil ||
 		len(p.Manifest.Entries) != len(p.Contributions) || len(p.Targets) > 2 {
 		return knowledgeRefusal(agent.KnowledgeContextChanged)
@@ -316,6 +318,9 @@ func validateKnowledgePreparation(task Task, claimed protocol.TaskKnowledgeSessi
 	if err != nil || len(p.Contributions) > protocol.CollaborationKnowledgeMaxRuntimeItems || material > protocol.CollaborationKnowledgeMaxRuntimeBytes || wire > protocol.CollaborationKnowledgeMaxRuntimeJSONBytes {
 		return knowledgeRefusal(agent.KnowledgeUnavailable)
 	}
+	if protocol.ValidateTaskKnowledgeManifestContributions(p.ProtocolVersion, p.Manifest, p.Contributions) != nil {
+		return knowledgeRefusal(agent.KnowledgeContextChanged)
+	}
 	targets := map[protocol.CollaborationKnowledgeTarget]bool{}
 	for _, target := range p.Targets {
 		revision, err := strconv.ParseInt(target.Revision, 10, 64)
@@ -328,15 +333,10 @@ func validateKnowledgePreparation(task Task, claimed protocol.TaskKnowledgeSessi
 		}
 		targets[target.Target] = true
 	}
-	seen := map[string]bool{}
-	for i, item := range p.Contributions {
-		entry := protocol.TaskKnowledgeManifestEntry{CandidateID: item.CandidateID, Version: item.Version,
-			ContentSHA256: item.ContentSHA256, SourceIssueID: item.SourceIssueID, Target: item.Target}
-		if entry != p.Manifest.Entries[i] || seen[item.CandidateID] || !targets[item.Target] ||
-			item.ContentSHA256 != protocol.CollaborationKnowledgeHash(item.Content) {
+	for _, item := range p.Contributions {
+		if !targets[item.Target] {
 			return knowledgeRefusal(agent.KnowledgeContextChanged)
 		}
-		seen[item.CandidateID] = true
 	}
 	return nil
 }
@@ -370,7 +370,7 @@ func (d *Daemon) prepareKnowledgePrompt(ctx context.Context, task Task, provider
 	claim := *task.KnowledgeContext
 	// A dropped resume still names the original claimed binding; the server
 	// answers with the fresh binding this input must launch under.
-	request := protocol.TaskKnowledgePrepareRequest{ProtocolVersion: protocol.TaskKnowledgeVersion, RequestID: uuid.NewString(),
+	request := protocol.TaskKnowledgePrepareRequest{ProtocolVersion: claim.ProtocolVersion, RequestID: uuid.NewString(),
 		ClaimGeneration: claim.ClaimGeneration, DispatchedAt: claim.DispatchedAt, Session: claim.Session, InvocationFingerprint: fingerprint,
 		ResumeUnavailable: dropped}
 	var prepared protocol.TaskKnowledgePrepareResponse
@@ -429,7 +429,7 @@ func (o *ordinaryKnowledgeObserver) BeforeLaunch(ctx context.Context, info agent
 		o.attempts[info.Attempt] = requestID
 	}
 	o.mu.Unlock()
-	req := protocol.TaskKnowledgeAuthorizeRequest{ProtocolVersion: protocol.TaskKnowledgeVersion, RequestID: requestID,
+	req := protocol.TaskKnowledgeAuthorizeRequest{ProtocolVersion: o.claim.ProtocolVersion, RequestID: requestID,
 		PrepareID: o.prepared.PrepareID, ClaimGeneration: o.claim.ClaimGeneration, DispatchedAt: o.claim.DispatchedAt,
 		ManifestSHA256: o.prepared.ManifestSHA256, PromptSHA256: o.promptSHA256, InvocationFingerprint: o.intent.InvocationFingerprint,
 		AttemptSequence: info.Attempt.Sequence, AttemptNonce: info.Attempt.Nonce, Session: o.prepared.Session}
@@ -443,7 +443,7 @@ func (o *ordinaryKnowledgeObserver) BeforeLaunch(ctx context.Context, info agent
 		return agent.LaunchCallbacks{}, knowledgeRefusal(agent.KnowledgeContextChanged)
 	}
 	observe := func(v protocol.TaskKnowledgeObservation) error {
-		v.ProtocolVersion, v.RequestID = protocol.TaskKnowledgeVersion, uuid.NewString()
+		v.ProtocolVersion, v.RequestID = req.ProtocolVersion, uuid.NewString()
 		v.PrepareID, v.ClaimGeneration, v.DispatchedAt = req.PrepareID, req.ClaimGeneration, req.DispatchedAt
 		v.AttemptSequence, v.AttemptNonce = req.AttemptSequence, req.AttemptNonce
 		// Cleanup facts remain reportable after caller cancellation or gate closure.

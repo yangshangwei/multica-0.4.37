@@ -21,6 +21,9 @@ import {
   type CollaborationKnowledgeApproveRequest, type CollaborationKnowledgeDecisionRequest, type CollaborationKnowledgePageParams,
   type CollaborationKnowledgeProposal, type CollaborationKnowledgeReceipt, type CollaborationKnowledgeTarget,
 } from "../collaboration/knowledge-schema";
+import { ProjectKnowledgePolicyRequestSchema, KnowledgeAutomationRetryRequestSchema, parseProjectKnowledgePolicy,
+  parseProjectKnowledgePolicyReceipt, parseKnowledgeAutomationJobs, parseKnowledgeAutomationRetryReceipt,
+  type ProjectKnowledgePolicyRequest, type KnowledgeAutomationRetryRequest, type KnowledgeAutomationReceipt } from "../collaboration/knowledge-automation-schema";
 import { parseCollaborationMemory, parseCollaborationMemoryReceipt, parseCollaborationMemoryVersion, parseCollaborationMemoryVersions,
   type CollaborationMemoryActionName, type CollaborationMemoryReceipt } from "../collaboration/memory-schema";
 import { positiveVersion } from "../collaboration/version";
@@ -1394,11 +1397,12 @@ export class ApiClient {
   }
 
   /** Knowledge uses optional routes, but a structured denial is never unsupported. */
-  private async fetchCollaborationKnowledge(path: string, options: RequestInit = {}, recovery = false): Promise<unknown> {
+  private async fetchCollaborationKnowledge(path: string, options: RequestInit = {}, recovery = false, protocolVersion: 1 | 2 = 2): Promise<unknown> {
     const session = this.getSessionScope(), authEpoch = this.authEpoch;
     return withRequestDeadline({ signal: options.signal ?? undefined, timeoutMs: RECOVERY_REQUEST_TIMEOUT_MS }, this.endpointController.signal, async (signal) => {
       try {
-        const response = await this.fetchRaw(path, { ...options, signal, cache: "no-store", extraHeaders: { "Content-Type": "application/json" } });
+        const response = await this.fetchRaw(path, { ...options, signal, cache: "no-store",
+          extraHeaders: { "Content-Type": "application/json", "X-Multica-Knowledge-Version": String(protocolVersion) } });
         const raw: unknown = await response.json();
         if (session !== this.getSessionScope() || authEpoch !== this.authEpoch) throw new DOMException("Knowledge request superseded", "AbortError");
         signal.throwIfAborted();
@@ -1464,11 +1468,11 @@ export class ApiClient {
   }
 
   /** Candidate-only recovery is deliberately independent of current source/target membership. */
-  async getCollaborationKnowledgeOperation(candidateId: string, requestId: string, options?: { signal?: AbortSignal }) {
+  async getCollaborationKnowledgeOperation(candidateId: string, requestId: string, options?: { signal?: AbortSignal; protocolVersion?: 1 | 2 }) {
     const id = z.uuid().parse(candidateId).toLowerCase();
     const key = z.uuid().parse(requestId).toLowerCase();
     const result = parseCollaborationKnowledgeReceipt(await this.fetchCollaborationKnowledge(
-      `/api/collaboration/knowledge-candidates/${id}/operations/${key}`, options, true));
+      `/api/collaboration/knowledge-candidates/${id}/operations/${key}`, { signal: options?.signal }, true, options?.protocolVersion ?? 2));
     if (result && (result.candidate_id !== id || result.request_id !== key)) throw new CollaborationKnowledgeProtocolError();
     return result;
   }
@@ -1487,20 +1491,82 @@ export class ApiClient {
     try {
       result = parseCollaborationKnowledgeReceipt(await this.fetchCollaborationKnowledge(path, {
         method: "POST", body: JSON.stringify(input), headers: { "Idempotency-Key": input.request_id }, signal: options?.signal,
-      }));
+      }, false, input.protocol_version));
     } catch (error) {
       if (!(error instanceof ApiError) || error.status < 400 || error.status >= 500 ||
-        !z.object({ protocol_version: z.literal(1), candidate_id: z.string() }).safeParse(error.body).success) throw error;
+        !z.object({ protocol_version: z.union([z.literal(1), z.literal(2)]), candidate_id: z.string() }).safeParse(error.body).success) throw error;
       result = parseCollaborationKnowledgeReceipt(error.body);
       refusalStatus = error.status;
     }
-    if (result && (result.candidate_id !== candidateId || result.request_id !== input.request_id || result.action !== action)) throw new CollaborationKnowledgeProtocolError();
+    if (result && (result.protocol_version !== input.protocol_version || result.candidate_id !== candidateId || result.request_id !== input.request_id || result.action !== action)) throw new CollaborationKnowledgeProtocolError();
     if (result && knowledgeReceiptRefusalStatus(result.code) !== refusalStatus) throw new CollaborationKnowledgeProtocolError();
     if (result?.code === `knowledge_${action === "propose" ? "proposed" : action === "approve" ? "approved" : action === "reject" ? "rejected" : "withdrawn"}`) {
       if ("expected_state_revision" in input && result.state_revision !== String(BigInt(input.expected_state_revision) + 1n)) throw new CollaborationKnowledgeProtocolError();
       if (action === "approve" && "expected_version" in input && (result.version !== input.expected_version ||
         result.target_knowledge_revision === undefined || result.target_knowledge_revision === "0")) throw new CollaborationKnowledgeProtocolError();
     }
+    return result;
+  }
+
+  async getProjectKnowledgePolicy(workspaceId: string, projectId: string, options?: { signal?: AbortSignal }) {
+    const ws = z.uuid().parse(workspaceId).toLowerCase(), id = z.uuid().parse(projectId).toLowerCase();
+    const result = parseProjectKnowledgePolicy(await this.fetchCollaborationKnowledge(`/api/projects/${id}/knowledge-policy`,
+      workspaceRequestInit({ workspaceId: ws, signal: options?.signal })));
+    if (result && (result.project_id !== id || result.workspace_id !== ws)) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async updateProjectKnowledgePolicy(workspaceId: string, projectId: string, request: ProjectKnowledgePolicyRequest, options?: { signal?: AbortSignal }) {
+    const ws = z.uuid().parse(workspaceId).toLowerCase(), id = z.uuid().parse(projectId).toLowerCase();
+    const input = ProjectKnowledgePolicyRequestSchema.parse(request);
+    const result = await this.writeKnowledgeAutomation(`/api/projects/${id}/knowledge-policy`,
+      { ...workspaceRequestInit({ workspaceId: ws, signal: options?.signal }), method: "PUT", body: JSON.stringify(input) }, parseProjectKnowledgePolicyReceipt);
+    if (result && (result.project_id !== id || result.request_id !== input.request_id ||
+      result.code === "knowledge_policy_updated" && result.revision !== String(BigInt(input.expected_revision) + 1n))) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async getProjectKnowledgePolicyOperation(projectId: string, requestId: string, options?: { signal?: AbortSignal }) {
+    const id = z.uuid().parse(projectId).toLowerCase(), request = z.uuid().parse(requestId).toLowerCase();
+    const result = parseProjectKnowledgePolicyReceipt(await this.fetchCollaborationKnowledge(`/api/projects/${id}/knowledge-policy/operations/${request}`, options, true));
+    if (result && (result.project_id !== id || result.request_id !== request)) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async getCollaborationKnowledgeJobs(issueId: string, options?: { signal?: AbortSignal }) {
+    const id = z.uuid().parse(issueId).toLowerCase();
+    const result = parseKnowledgeAutomationJobs(await this.fetchCollaborationKnowledge(`/api/collaboration/issues/${id}/knowledge-jobs`, options));
+    if (result && result.issue_id !== id) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async retryCollaborationKnowledgeJob(issueId: string, jobId: string, request: KnowledgeAutomationRetryRequest, options?: { signal?: AbortSignal }) {
+    const issue = z.uuid().parse(issueId).toLowerCase(), job = z.uuid().parse(jobId).toLowerCase();
+    const input = KnowledgeAutomationRetryRequestSchema.parse(request);
+    const result = await this.writeKnowledgeAutomation(`/api/collaboration/issues/${issue}/knowledge-jobs/${job}/retry`,
+      { method: "POST", body: JSON.stringify(input), signal: options?.signal }, parseKnowledgeAutomationRetryReceipt);
+    if (result && (result.issue_id !== issue || result.job_id !== job || result.request_id !== input.request_id ||
+      result.code === "knowledge_job_retried" && result.revision !== String(BigInt(input.expected_revision) + 1n))) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async getCollaborationKnowledgeJobOperation(issueId: string, jobId: string, requestId: string, options?: { signal?: AbortSignal }) {
+    const issue = z.uuid().parse(issueId).toLowerCase(), job = z.uuid().parse(jobId).toLowerCase(), request = z.uuid().parse(requestId).toLowerCase();
+    const result = parseKnowledgeAutomationRetryReceipt(await this.fetchCollaborationKnowledge(
+      `/api/collaboration/issues/${issue}/knowledge-jobs/${job}/operations/${request}`, options, true));
+    if (result && (result.issue_id !== issue || result.job_id !== job || result.request_id !== request)) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  private async writeKnowledgeAutomation<T extends KnowledgeAutomationReceipt>(path: string, init: RequestInit, parse: (value: unknown) => T | null): Promise<T | null> {
+    let result: T | null;
+    let status = 200;
+    try { result = parse(await this.fetchCollaborationKnowledge(path, init)); }
+    catch (error) {
+      if (!(error instanceof ApiError) || error.status !== 409 || !z.object({ protocol_version: z.literal(2) }).safeParse(error.body).success) throw error;
+      result = parse(error.body); status = error.status;
+    }
+    if (result && status !== (result.code === "knowledge_policy_updated" || result.code === "knowledge_job_retried" ? 200 : 409)) throw new CollaborationKnowledgeProtocolError();
     return result;
   }
 
@@ -2588,7 +2654,7 @@ export class ApiClient {
     const sourceIssueRequest = /^\/api\/(?:issues|delivery-completion-authorizations|admin\/collaboration\/issues\/[^/?]+\/delivery-evidence)(?:[/?]|$)/.test(path);
     // Target knowledge stays workspace-scoped for headers, but its cursor and
     // server error text need the same private logging boundary as source reads.
-    const targetKnowledgeRequest = /^\/api\/(?:projects|workspaces)\/[^/?]+\/knowledge(?:[/?]|$)/.test(path);
+    const targetKnowledgeRequest = /^\/api\/(?:projects|workspaces)\/[^/?]+\/knowledge(?:-policy)?(?:[/?]|$)/.test(path);
     const logPath = collaborationRequest || sourceIssueRequest || targetKnowledgeRequest ? path.split("?", 1)[0] : path;
 
     // Captured where the headers are built: this is the credential the
@@ -2603,7 +2669,7 @@ export class ApiClient {
       ...((init?.headers as Record<string, string>) ?? {}),
     };
 
-    if (path.startsWith("/api/admin/") || collaborationRequest) {
+    if (path.startsWith("/api/admin/") || collaborationRequest || /^\/api\/projects\/[^/?]+\/knowledge-policy\/operations\//.test(path)) {
       for (const name of Object.keys(headers)) {
         if (["x-workspace-id", "x-workspace-slug"].includes(name.toLowerCase())) delete headers[name];
       }

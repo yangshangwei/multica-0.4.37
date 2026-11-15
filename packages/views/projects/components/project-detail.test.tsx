@@ -14,6 +14,7 @@ import { emptyProjectUpdateDraft, projectP1Keys, projectProgressDraftKey, usePro
 import { p1Overview, p1Preview, p1Project } from "@multica/core/projects/test-fixtures/p1";
 // Knowledge interactions are canonical in collaboration/knowledge-panel.test.tsx.
 vi.mock("../../collaboration/knowledge-panel", () => ({ ManagedKnowledgePanel: ({ workspaceId, projectId }: { workspaceId: string; projectId?: string }) => <div data-testid="knowledge-target-mount" data-workspace={workspaceId} data-project={projectId} /> }));
+vi.mock("./project-knowledge-policy", () => ({ ProjectKnowledgePolicy: ({ workspaceId, projectId }: { workspaceId: string; projectId: string }) => <div data-testid="knowledge-policy-mount" data-workspace={workspaceId} data-project={projectId} /> }));
 
 const mocks = vi.hoisted(() => ({
   role: "admin",

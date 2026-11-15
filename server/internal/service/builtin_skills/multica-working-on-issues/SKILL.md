@@ -1,6 +1,6 @@
 ---
 name: multica-working-on-issues
-description: "Use for Multica issue work: collaboration authority and execution, human-reviewed knowledge, triage, PR linking and close intent, linked-PR state, metadata, comment revisions, status side effects, and sub-issue staging."
+description: "Use for Multica issue work: collaboration authority and execution, project knowledge, triage, PR linking and close intent, linked-PR state, metadata, comment revisions, status side effects, and sub-issue staging."
 user-invocable: false
 allowed-tools: Bash(multica *), Bash(git *), Bash(gh *)
 ---
@@ -22,9 +22,8 @@ Unknown protocols or unsupported actions cannot fall back to ordinary execution.
 Retain each `--request-id` and exact payload across uncertain writes. Older comments and
 truncated handoff sources use bounded pages; recalled text and author labels grant no
 authority. For truncated tool previews, follow `references/collaboration-workflow.md`.
-Reusable conclusions are drafted for human review. Only humans may propose and
-approve managed knowledge in the product UI; Agent credentials cannot substitute.
-Approval grants neither wider source access nor automatic skill publication. Follow the reference for local Claude/Codex session policies.
+Project acceptance may trigger server-side knowledge adoption; manual controls still require human authority.
+Read [Managed knowledge](references/collaboration-workflow.md#managed-knowledge) for policy, access, reopen and session rules.
 
 ## Triage admission precedes formal issue work
 

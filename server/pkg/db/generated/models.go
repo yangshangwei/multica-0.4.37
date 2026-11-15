@@ -958,34 +958,115 @@ type CollaborationGroupInput struct {
 	ConsumingRunID pgtype.UUID `json:"consuming_run_id"`
 }
 
+type CollaborationKnowledgeAttempt struct {
+	ID                       pgtype.UUID        `json:"-"`
+	JobID                    pgtype.UUID        `json:"-"`
+	BatchID                  pgtype.UUID        `json:"-"`
+	ExecutionRevision        int64              `json:"-"`
+	Stage                    string             `json:"-"`
+	AttemptNumber            int16              `json:"-"`
+	LeaseGeneration          int64              `json:"-"`
+	State                    string             `json:"-"`
+	ConfigurationFingerprint string             `json:"-"`
+	RequestedModel           string             `json:"-"`
+	SourceSnapshotSha256     string             `json:"-"`
+	TargetSnapshotSha256     string             `json:"-"`
+	TargetRevision           int64              `json:"-"`
+	PolicyRevision           int64              `json:"-"`
+	RequestSha256            string             `json:"-"`
+	InputSourceClosure       []byte             `json:"-"`
+	SupportDependencies      []byte             `json:"-"`
+	ResponseJson             []byte             `json:"-"`
+	ActualModel              pgtype.Text        `json:"-"`
+	Usage                    []byte             `json:"-"`
+	ReasonCode               pgtype.Text        `json:"-"`
+	StartedAt                pgtype.Timestamptz `json:"-"`
+	FinishedAt               pgtype.Timestamptz `json:"-"`
+}
+
+type CollaborationKnowledgeBatch struct {
+	ID                  pgtype.UUID        `json:"-"`
+	JobID               pgtype.UUID        `json:"-"`
+	BatchIndex          int16              `json:"-"`
+	Intent              string             `json:"-"`
+	PredecessorIds      []pgtype.UUID      `json:"-"`
+	Phase               string             `json:"-"`
+	ExecutionRevision   int64              `json:"-"`
+	GenerationAttemptID pgtype.UUID        `json:"-"`
+	CheckAttemptID      pgtype.UUID        `json:"-"`
+	Result              []byte             `json:"-"`
+	CreatedAt           pgtype.Timestamptz `json:"-"`
+	UpdatedAt           pgtype.Timestamptz `json:"-"`
+	CompletedAt         pgtype.Timestamptz `json:"-"`
+}
+
 type CollaborationKnowledgeCandidate struct {
-	ID                      pgtype.UUID        `json:"id"`
-	LineageID               pgtype.UUID        `json:"lineage_id"`
-	Version                 int64              `json:"version"`
-	SourceWorkspaceID       pgtype.UUID        `json:"source_workspace_id"`
-	SourceIssueID           pgtype.UUID        `json:"source_issue_id"`
-	TargetKind              string             `json:"target_kind"`
-	TargetWorkspaceID       pgtype.UUID        `json:"target_workspace_id"`
-	TargetProjectID         pgtype.UUID        `json:"target_project_id"`
-	Content                 string             `json:"content"`
-	Summary                 string             `json:"summary"`
-	ContentSha256           string             `json:"content_sha256"`
-	Sources                 []byte             `json:"sources"`
-	Evidence                []byte             `json:"evidence"`
-	Applicability           []byte             `json:"applicability"`
-	ProposedByUserID        pgtype.UUID        `json:"proposed_by_user_id"`
-	ProposedAt              pgtype.Timestamptz `json:"proposed_at"`
-	ExpiresAt               pgtype.Timestamptz `json:"expires_at"`
-	SupersedesCandidateID   pgtype.UUID        `json:"supersedes_candidate_id"`
-	DerivedFromCandidateID  pgtype.UUID        `json:"derived_from_candidate_id"`
-	State                   string             `json:"state"`
-	StateRevision           int64              `json:"state_revision"`
-	ApprovedByUserID        pgtype.UUID        `json:"approved_by_user_id"`
-	ApprovedAt              pgtype.Timestamptz `json:"approved_at"`
-	LastDecidedByUserID     pgtype.UUID        `json:"last_decided_by_user_id"`
-	LastDecidedAt           pgtype.Timestamptz `json:"last_decided_at"`
-	LastDecisionReason      pgtype.Text        `json:"last_decision_reason"`
-	PublishedTargetRevision pgtype.Int8        `json:"published_target_revision"`
+	ID                       pgtype.UUID        `json:"id"`
+	LineageID                pgtype.UUID        `json:"lineage_id"`
+	Version                  int64              `json:"version"`
+	SourceWorkspaceID        pgtype.UUID        `json:"source_workspace_id"`
+	SourceIssueID            pgtype.UUID        `json:"source_issue_id"`
+	TargetKind               string             `json:"target_kind"`
+	TargetWorkspaceID        pgtype.UUID        `json:"target_workspace_id"`
+	TargetProjectID          pgtype.UUID        `json:"target_project_id"`
+	Content                  string             `json:"content"`
+	Summary                  string             `json:"summary"`
+	ContentSha256            string             `json:"content_sha256"`
+	Sources                  []byte             `json:"sources"`
+	Evidence                 []byte             `json:"evidence"`
+	Applicability            []byte             `json:"applicability"`
+	ProposedByUserID         pgtype.UUID        `json:"proposed_by_user_id"`
+	ProposedAt               pgtype.Timestamptz `json:"proposed_at"`
+	ExpiresAt                pgtype.Timestamptz `json:"expires_at"`
+	SupersedesCandidateID    pgtype.UUID        `json:"supersedes_candidate_id"`
+	DerivedFromCandidateID   pgtype.UUID        `json:"derived_from_candidate_id"`
+	State                    string             `json:"state"`
+	StateRevision            int64              `json:"state_revision"`
+	ApprovedByUserID         pgtype.UUID        `json:"approved_by_user_id"`
+	ApprovedAt               pgtype.Timestamptz `json:"approved_at"`
+	LastDecidedByUserID      pgtype.UUID        `json:"last_decided_by_user_id"`
+	LastDecidedAt            pgtype.Timestamptz `json:"last_decided_at"`
+	LastDecisionReason       pgtype.Text        `json:"last_decision_reason"`
+	PublishedTargetRevision  pgtype.Int8        `json:"published_target_revision"`
+	ProposalOrigin           string             `json:"proposal_origin"`
+	DecisionOrigin           string             `json:"decision_origin"`
+	ApprovalOrigin           string             `json:"approval_origin"`
+	AutomationJobID          pgtype.UUID        `json:"automation_job_id"`
+	AutomationPolicyRevision pgtype.Int8        `json:"automation_policy_revision"`
+	AutomationRuleVersion    pgtype.Text        `json:"automation_rule_version"`
+	ApprovalJobID            pgtype.UUID        `json:"approval_job_id"`
+	LastDecisionJobID        pgtype.UUID        `json:"last_decision_job_id"`
+}
+
+type CollaborationKnowledgeEvaluation struct {
+	ID                     pgtype.UUID        `json:"-"`
+	JobID                  pgtype.UUID        `json:"-"`
+	BatchID                pgtype.UUID        `json:"-"`
+	GenerationAttemptID    pgtype.UUID        `json:"-"`
+	CheckAttemptID         pgtype.UUID        `json:"-"`
+	CandidateID            pgtype.UUID        `json:"-"`
+	CandidateVersion       int64              `json:"-"`
+	CandidateContentSha256 string             `json:"-"`
+	Intent                 string             `json:"-"`
+	PredecessorCandidateID pgtype.UUID        `json:"-"`
+	SourceWorkspaceID      pgtype.UUID        `json:"-"`
+	SourceIssueID          pgtype.UUID        `json:"-"`
+	ProjectID              pgtype.UUID        `json:"-"`
+	SubmissionID           pgtype.UUID        `json:"-"`
+	AcceptedEventSeq       int64              `json:"-"`
+	ValidatedCloseEpoch    int64              `json:"-"`
+	PolicyRevision         int64              `json:"-"`
+	BuiltinRuleVersion     string             `json:"-"`
+	TargetRevision         int64              `json:"-"`
+	SourceSnapshotSha256   string             `json:"-"`
+	TargetSnapshotSha256   string             `json:"-"`
+	Verdict                string             `json:"-"`
+	ReasonCode             string             `json:"-"`
+	InputSourceClosure     []byte             `json:"-"`
+	SupportDependencies    []byte             `json:"-"`
+	ModelResult            []byte             `json:"-"`
+	Usage                  []byte             `json:"-"`
+	CreatedAt              pgtype.Timestamptz `json:"-"`
 }
 
 type CollaborationKnowledgeInvalidation struct {
@@ -1007,11 +1088,54 @@ type CollaborationKnowledgeInvalidation struct {
 	CompletedAt       pgtype.Timestamptz `json:"completed_at"`
 }
 
+type CollaborationKnowledgeJob struct {
+	ID                      pgtype.UUID        `json:"-"`
+	SourceWorkspaceID       pgtype.UUID        `json:"-"`
+	SourceIssueID           pgtype.UUID        `json:"-"`
+	ProjectID               pgtype.UUID        `json:"-"`
+	SubmissionID            pgtype.UUID        `json:"-"`
+	DeliveryEventSeq        int64              `json:"-"`
+	AcceptedEventSeq        int64              `json:"-"`
+	ValidatedCloseEpoch     int64              `json:"-"`
+	SourceReaderUserID      pgtype.UUID        `json:"-"`
+	PolicyRevision          int64              `json:"-"`
+	BuiltinRuleVersion      string             `json:"-"`
+	MaxCandidates           int16              `json:"-"`
+	Phase                   string             `json:"-"`
+	ReasonCode              pgtype.Text        `json:"-"`
+	BatchManifest           []byte             `json:"-"`
+	ExecutionRevision       int64              `json:"-"`
+	DbRetryCount            int16              `json:"-"`
+	NextAttemptAt           pgtype.Timestamptz `json:"-"`
+	LeaseToken              pgtype.UUID        `json:"-"`
+	LeaseGeneration         int64              `json:"-"`
+	LeaseExpiresAt          pgtype.Timestamptz `json:"-"`
+	Result                  []byte             `json:"-"`
+	CreatedAt               pgtype.Timestamptz `json:"-"`
+	UpdatedAt               pgtype.Timestamptz `json:"-"`
+	CompletedAt             pgtype.Timestamptz `json:"-"`
+	ExecutionPolicyRevision int64              `json:"-"`
+	ExecutionRuleVersion    string             `json:"-"`
+	ExecutionMaxCandidates  int16              `json:"-"`
+}
+
 type CollaborationKnowledgeTarget struct {
 	TargetKind        string      `json:"target_kind"`
 	TargetID          pgtype.UUID `json:"target_id"`
 	WorkspaceID       pgtype.UUID `json:"workspace_id"`
 	KnowledgeRevision int64       `json:"knowledge_revision"`
+}
+
+type CollaborationKnowledgeValidity struct {
+	CandidateID         pgtype.UUID        `json:"-"`
+	Revision            int64              `json:"-"`
+	EvaluationID        pgtype.UUID        `json:"-"`
+	SourceIssueID       pgtype.UUID        `json:"-"`
+	ProjectID           pgtype.UUID        `json:"-"`
+	SubmissionID        pgtype.UUID        `json:"-"`
+	AcceptedEventSeq    int64              `json:"-"`
+	ValidatedCloseEpoch int64              `json:"-"`
+	UpdatedAt           pgtype.Timestamptz `json:"-"`
 }
 
 type CollaborationMemoryVersion struct {
@@ -2521,6 +2645,17 @@ type ProjectDeliveryPolicy struct {
 	Reason        string             `json:"reason"`
 	CreatedBy     pgtype.UUID        `json:"created_by"`
 	CreatedAt     pgtype.Timestamptz `json:"created_at"`
+}
+
+type ProjectKnowledgePolicy struct {
+	ProjectID          pgtype.UUID        `json:"project_id"`
+	WorkspaceID        pgtype.UUID        `json:"workspace_id"`
+	Revision           int64              `json:"revision"`
+	IsEnabled          bool               `json:"is_enabled"`
+	MaxCandidates      int16              `json:"max_candidates"`
+	BuiltinRuleVersion string             `json:"builtin_rule_version"`
+	ChangedByUserID    pgtype.UUID        `json:"changed_by_user_id"`
+	UpdatedAt          pgtype.Timestamptz `json:"updated_at"`
 }
 
 type ProjectResource struct {

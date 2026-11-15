@@ -33,7 +33,7 @@ func knowledgeTx(t *testing.T, pool *pgxpool.Pool) pgx.Tx {
 }
 
 func TestKnowledgeQueriesCorrectionCASAndAtomicReplacement(t *testing.T) {
-	pool, fx := knowledgeSchema(t)
+	pool, fx := knowledgeAutomationSchema(t)
 	q := db.New(pool)
 	ctx := context.Background()
 	p := knowledgeQueryProposal()
@@ -122,7 +122,7 @@ func TestKnowledgeQueriesCorrectionCASAndAtomicReplacement(t *testing.T) {
 }
 
 func TestKnowledgeQueriesTargetInitializationIsBoundedAndCannotResurrect(t *testing.T) {
-	pool, fx := knowledgeSchema(t)
+	pool, fx := knowledgeAutomationSchema(t)
 	ctx := context.Background()
 	ws := knowledgeUUID()
 	fx.InsertNoID(t, "workspace", testutil.Cols{"id": ws}, "id=$1", ws)
@@ -184,7 +184,7 @@ func TestKnowledgeQueriesTargetInitializationIsBoundedAndCannotResurrect(t *test
 }
 
 func TestKnowledgeQueriesParentLocksKeepOrdinaryEditsIndependent(t *testing.T) {
-	pool, fx := knowledgeSchema(t)
+	pool, fx := knowledgeAutomationSchema(t)
 	ctx := context.Background()
 	ws, project := knowledgeUUID(), knowledgeUUID()
 	fx.InsertNoID(t, "workspace", testutil.Cols{"id": ws}, "id=$1", ws)
@@ -224,7 +224,7 @@ func TestKnowledgeQueriesParentLocksKeepOrdinaryEditsIndependent(t *testing.T) {
 }
 
 func TestKnowledgeQueriesScanAndHintsRetainRoutingAcrossRollback(t *testing.T) {
-	pool, fx := knowledgeSchema(t)
+	pool, fx := knowledgeAutomationSchema(t)
 	ctx := context.Background()
 	q := db.New(pool)
 	p := knowledgeQueryProposal()

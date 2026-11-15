@@ -7,7 +7,10 @@ import (
 	"github.com/google/uuid"
 )
 
-const CollaborationRunKnowledgeVersion = 1
+const (
+	CollaborationRunKnowledgeVersion       = 1
+	CollaborationRunKnowledgeLatestVersion = 2
+)
 
 // This descriptor is source-free. Namespace is exclusive to this run, even
 // when its authorized contribution set is empty.
@@ -51,7 +54,7 @@ type CollaborationRunKnowledgeStatus struct {
 }
 
 func ValidateCollaborationRunKnowledgePrepare(p CollaborationRunKnowledgePrepare) error {
-	if p.ProtocolVersion != 1 || !HandoffDigest(p.InvocationFingerprint) {
+	if !IsKnowledgeProtocolVersion(p.ProtocolVersion) || !HandoffDigest(p.InvocationFingerprint) {
 		return errors.New("invalid collaboration knowledge preparation")
 	}
 	for _, id := range []string{p.RequestID, p.HandoffID, p.Identity.RunID} {
@@ -65,27 +68,12 @@ func ValidateCollaborationRunKnowledgePrepare(p CollaborationRunKnowledgePrepare
 
 func ValidateCollaborationRunKnowledgeBundle(p CollaborationRunKnowledgeBundle, wireBytes int) error {
 	if ValidateCollaborationRunKnowledgePrepare(p.CollaborationRunKnowledgePrepare) != nil ||
-		p.Manifest.ProtocolVersion != 1 || p.Manifest.Entries == nil || p.Contributions == nil || p.Targets == nil ||
-		len(p.Manifest.Entries) != len(p.Contributions) || len(p.Targets) > 2 {
+		ValidateTaskKnowledgeManifestContributions(p.ProtocolVersion, p.Manifest, p.Contributions) != nil || p.Targets == nil || len(p.Targets) > 2 {
 		return errors.New("invalid collaboration knowledge bundle")
 	}
 	raw, err := json.Marshal(p.Manifest)
 	if err != nil || CollaborationKnowledgeHash(string(raw)) != p.ManifestSHA256 {
 		return errors.New("invalid collaboration knowledge manifest")
-	}
-	for i, entry := range p.Manifest.Entries {
-		if i > 0 && p.Manifest.Entries[i-1].CandidateID >= entry.CandidateID {
-			return errors.New("invalid collaboration knowledge manifest order")
-		}
-		found := false
-		for _, c := range p.Contributions {
-			if c.CandidateID == entry.CandidateID && c.Version == entry.Version && c.ContentSHA256 == entry.ContentSHA256 && c.SourceIssueID == entry.SourceIssueID && c.Target == entry.Target {
-				found = true
-			}
-		}
-		if !found {
-			return errors.New("invalid collaboration knowledge contribution")
-		}
 	}
 	if err := ValidateCollaborationKnowledgeRuntimeBudget(p.Contributions, wireBytes); err != nil {
 		return err
@@ -94,5 +82,62 @@ func ValidateCollaborationRunKnowledgeBundle(p CollaborationRunKnowledgeBundle, 
 	if err != nil || material > CollaborationKnowledgeMaxRuntimeBytes || encoded+1 > CollaborationKnowledgeMaxRuntimeJSONBytes {
 		return errors.New("collaboration knowledge wire budget exceeded")
 	}
+	return nil
+}
+
+func (v *CollaborationRunKnowledgeClaim) UnmarshalJSON(raw []byte) error {
+	type wire CollaborationRunKnowledgeClaim
+	var w wire
+	if err := decodeKnowledgeObject(raw, &w, "protocol_version", "identity", "configuration_digest", "namespace"); err != nil {
+		return err
+	}
+	if !IsKnowledgeProtocolVersion(w.ProtocolVersion) || !HandoffDigest(w.ConfigurationDigest) || !preparationUUID(w.Identity.RunID) || w.Namespace != w.Identity.RunID {
+		return ErrInvalidCollaborationKnowledge
+	}
+	*v = CollaborationRunKnowledgeClaim(w)
+	return nil
+}
+
+// Decode concrete envelopes. A decoder on the embedded preparation would
+// otherwise consume the complete bundle or authorization as that smaller type.
+func (v *CollaborationRunKnowledgeBundle) UnmarshalJSON(raw []byte) error {
+	if len(raw) > CollaborationKnowledgeMaxRuntimeJSONBytes {
+		return ErrCollaborationKnowledgeTooLarge
+	}
+	type wire CollaborationRunKnowledgeBundle
+	var w wire
+	if err := decodeKnowledgeObject(raw, &w, "protocol_version", "identity", "request_id", "handoff_id", "invocation_fingerprint", "manifest", "manifest_sha256", "contributions", "targets"); err != nil {
+		return err
+	}
+	if err := ValidateCollaborationRunKnowledgeBundle(CollaborationRunKnowledgeBundle(w), len(raw)); err != nil {
+		return err
+	}
+	*v = CollaborationRunKnowledgeBundle(w)
+	return nil
+}
+
+func (v *CollaborationRunKnowledgeAuthorization) UnmarshalJSON(raw []byte) error {
+	type wire CollaborationRunKnowledgeAuthorization
+	var w wire
+	if err := decodeKnowledgeObject(raw, &w, "protocol_version", "identity", "request_id", "handoff_id", "invocation_fingerprint", "manifest_sha256", "prompt_sha256", "attempt_seq", "attempt_nonce"); err != nil {
+		return err
+	}
+	if ValidateCollaborationRunKnowledgePrepare(w.CollaborationRunKnowledgePrepare) != nil || !HandoffDigest(w.ManifestSHA256) || !HandoffDigest(w.PromptSHA256) || !preparationVersion(w.AttemptSeq) || !preparationUUID(w.AttemptNonce) {
+		return ErrInvalidCollaborationKnowledge
+	}
+	*v = CollaborationRunKnowledgeAuthorization(w)
+	return nil
+}
+
+func (v *CollaborationRunKnowledgeStatus) UnmarshalJSON(raw []byte) error {
+	type wire CollaborationRunKnowledgeStatus
+	var w wire
+	if err := decodeKnowledgeObject(raw, &w, "protocol_version", "identity", "prepared"); err != nil {
+		return err
+	}
+	if !IsKnowledgeProtocolVersion(w.ProtocolVersion) || !preparationUUID(w.Identity.RunID) || w.Prepared && !preparationUUID(w.RequestID) || !w.Prepared && !knowledgeAbsent(raw, "request_id") {
+		return ErrInvalidCollaborationKnowledge
+	}
+	*v = CollaborationRunKnowledgeStatus(w)
 	return nil
 }

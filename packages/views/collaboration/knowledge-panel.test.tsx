@@ -33,13 +33,14 @@ const otherProject: Project = { id: "00000000-0000-4000-8000-000000000091", work
 let api: ApiClient, client: QueryClient, scope: CollaborationScope;
 let candidate: CollaborationKnowledgeCandidate;
 let historyTruncated = false;
-const lease = () => { const start = Date.now(); return { protocol_version: 1, projection_checked_at: new Date(start).toISOString(), valid_until: new Date(start + 30_000).toISOString(), next_expiry_at: null }; };
+let knowledgeVersion: 1 | 2 = 1;
+const lease = () => { const start = Date.now(); return { protocol_version: knowledgeVersion, projection_checked_at: new Date(start).toISOString(), valid_until: new Date(start + 30_000).toISOString(), next_expiry_at: null }; };
 const summary = () => candidate.availability === "available" ? Object.fromEntries(Object.entries(candidate).filter(([key]) => key !== "content")) : candidate;
 const sourcePage = () => parseCollaborationKnowledgeCandidates({ ...lease(), issue_id: issue.id, items: [summary()], next_cursor: null, capabilities: { can_propose: true } });
 const detail = () => parseCollaborationKnowledgeDetail({ ...lease(), candidate, history: [], history_truncated: historyTruncated });
 
 beforeEach(() => {
-  localStorage.clear(); auth.userId = issue.handler.user_id; historyTruncated = false;
+  localStorage.clear(); auth.userId = issue.handler.user_id; historyTruncated = false; knowledgeVersion = 1;
   Object.defineProperty(globalThis.crypto, "subtle", { configurable: true, value: webcrypto.subtle });
   api = new ApiClient("https://knowledge-ui.example"); setApiInstance(api); scope = collaborationScope(auth.userId);
   client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
@@ -73,6 +74,37 @@ function receipt(requestId: string, action: CollaborationKnowledgeReceipt["actio
     state_revision: "2", action, code: `knowledge_${action === "approve" ? "approved" : action === "reject" ? "rejected" : action === "withdraw" ? "withdrawn" : "proposed"}`,
     state: action === "approve" ? "approved" : action === "reject" ? "rejected" : action === "withdraw" ? "withdrawn" : "pending", target_knowledge_revision: "1" };
 }
+
+it("shows system adoption and paused usage and reuses the exact delivery source in a human correction", async () => {
+  knowledgeVersion = 2;
+  const source = { kind: "delivery" as const, issue_id: issue.id, submission_id: commentId,
+    delivery_event_seq: "10", accepted_event_seq: "11", sha256: "c".repeat(64) };
+  const parsed = parseCollaborationKnowledgeDetail({ ...lease(), history: [], history_truncated: false, candidate: {
+    ...knowledgeCandidateFixture, version: "1", state: "approved", state_revision: "2", source_issue_id: issue.id,
+    source_workspace_id: issue.source_workspace.id, target: { kind: "project", workspace_id: issue.source_workspace.id, project_id: projectId },
+    proposed_by_user_id: null, approved_by_user_id: null, proposed_at: "2026-11-01T00:00:00Z", approved_at: "2026-11-01T00:00:01Z",
+    published_target_revision: "1", proposal_origin: "automation", decision_origin: "automation", usage_status: "paused_review",
+    automation: { job_id: commentId, policy_revision: "0", rule_version: "project-knowledge-v1" },
+    decision: { actor_user_id: null, at: "2026-11-01T00:00:01Z", reason: null }, sources: [source],
+    capabilities: { can_approve: false, can_reject: false, can_withdraw: true },
+  } });
+  if (!parsed) throw new Error("Invalid automatic fixture");
+  candidate = parsed.candidate;
+  const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockRejectedValue(new TypeError("Lost response"));
+  mount(); await openReview();
+  expect(screen.getByText("Server AI")).toBeInTheDocument();
+  expect(screen.getByText("System rule")).toBeInTheDocument();
+  expect(screen.getByText("project-knowledge-v1")).toBeInTheDocument();
+  expect(screen.getAllByText(/Paused for review/).length).toBeGreaterThan(0);
+  expect(screen.getByRole("link", { name: /Delivery/ })).toHaveAttribute("href", `/account?view=participating&issue=${issue.id}#delivery-${commentId}`);
+  await userEvent.click(screen.getByRole("button", { name: "Propose correction" }));
+  await userEvent.type(screen.getByLabelText("Summary"), "Human corrected summary");
+  await userEvent.type(screen.getByLabelText("Conclusion (Markdown)"), "Human corrected conclusion");
+  await userEvent.click(await screen.findByRole("checkbox", { name: /Delivery/ }));
+  await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
+  await waitFor(() => expect(send).toHaveBeenCalledOnce());
+  expect(send.mock.calls[0]?.[1]).toMatchObject({ protocol_version: 2, sources: [source], supersedes_candidate_id: knowledgeCandidateFixture.candidate_id });
+});
 
 it("recovers after rapid candidate switches overlap authorization refreshes", async () => {
   const first = candidate;
@@ -110,6 +142,7 @@ it("recovers after rapid candidate switches overlap authorization refreshes", as
 
 it("reloads the list and opens a newly submitted candidate for confirmation", async () => {
   const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockImplementation(async (_issue, input) => {
+    if (input.protocol_version !== 1) throw new Error("This legacy fixture must preserve its v1 request");
     candidate = { ...knowledgeCandidateFixture, source_issue_id: issue.id, source_workspace_id: issue.source_workspace.id,
       candidate_id: input.candidate_id, lineage_id: input.candidate_id, version: "1", target: input.target,
       summary: input.summary, content: input.content, sources: input.sources, applicability: input.applicability,
@@ -231,7 +264,7 @@ it("recovers a lost result through the enclosing auxiliary disclosure after remo
   vi.mocked(api.getCollaborationKnowledgeOperation).mockResolvedValue(receipt(key, "approve"));
   await userEvent.click(await screen.findByRole("button", { name: "Check original result" }));
   await screen.findByText("Decision recorded.");
-  expect(api.getCollaborationKnowledgeOperation).toHaveBeenCalledWith(candidate.candidate_id, key); expect(send).toHaveBeenCalledOnce();
+  expect(api.getCollaborationKnowledgeOperation).toHaveBeenCalledWith(candidate.candidate_id, key, { protocolVersion: 1 }); expect(send).toHaveBeenCalledOnce();
   expect(readPendingKnowledgeOperations(scope)).toEqual([]);
 });
 
@@ -590,7 +623,7 @@ it("recovering a request whose candidate belongs to another source does not open
   expect(screen.queryByRole("region", { name: "Review candidate" })).not.toBeInTheDocument();
   expect(screen.getByText("Open this candidate from the knowledge list it belongs to.")).toBeInTheDocument();
   expect(api.getCollaborationKnowledgeCandidate).toHaveBeenCalledTimes(detailReads + 1);
-  expect(api.getCollaborationKnowledgeOperation).toHaveBeenCalledWith(recovered.candidate_id, key);
+  expect(api.getCollaborationKnowledgeOperation).toHaveBeenCalledWith(recovered.candidate_id, key, { protocolVersion: 1 });
 });
 
 // L12: every panel lists every stored request of this viewer; knowledge-actions.test.ts owns dismissKnowledgeOperation's contract.

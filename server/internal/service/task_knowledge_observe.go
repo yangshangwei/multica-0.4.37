@@ -148,7 +148,7 @@ func (s *TaskService) ObserveTaskKnowledgeLaunch(ctx context.Context, caller Tas
 	if err != nil {
 		return err
 	}
-	if c.Prepared == nil || c.Prepared.ID != req.PrepareID || req.AttemptSequence > int64(len(c.Attempts)) {
+	if req.ProtocolVersion != c.Descriptor.ProtocolVersion || c.Prepared == nil || c.Prepared.ID != req.PrepareID || req.AttemptSequence > int64(len(c.Attempts)) {
 		return knowledgeFailure(409, "knowledge_context_changed")
 	}
 	a := &c.Attempts[req.AttemptSequence-1]
@@ -206,7 +206,7 @@ func (s *TaskService) ObserveTaskKnowledgeLaunch(ctx context.Context, caller Tas
 	if err != nil {
 		return err
 	}
-	if _, err = q.SetTaskKnowledgeDelivery(ctx, db.SetTaskKnowledgeDeliveryParams{TaskID: task.ID, ClaimGeneration: task.ClaimGeneration, Delivery: raw}); err != nil {
+	if _, err = q.SetTaskKnowledgeDelivery(ctx, db.SetTaskKnowledgeDeliveryParams{TaskID: task.ID, ClaimGeneration: task.ClaimGeneration, Delivery: raw, KnowledgeContextVersion: pgtype.Int4{Int32: int32(d.Version), Valid: true}}); err != nil {
 		return taskKnowledgeError(err)
 	}
 	if req.Kind == "native_session" && !refused {

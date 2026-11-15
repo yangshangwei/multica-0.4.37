@@ -14,7 +14,7 @@ import { useT } from "../i18n";
 import { KnowledgeByteLimit, KnowledgeSelect } from "./knowledge-controls";
 import { KnowledgeSourcePicker } from "./knowledge-source-picker";
 
-export interface KnowledgeProposalMode { target?: CollaborationKnowledgeTarget; supersedesId?: string; derivedId?: string }
+export interface KnowledgeProposalMode { target?: CollaborationKnowledgeTarget; supersedesId?: string; derivedId?: string; deliveryCandidateId?: string }
 
 /** Join the panel's in-flight list read, bounded by one refresh interval so a paused offline query cannot hang submit. */
 async function awaitRefreshedView(refreshView: () => Promise<CollaborationKnowledgeCandidates | undefined>) {
@@ -130,7 +130,7 @@ export function KnowledgeProposalForm({ scope, issue, view, refreshView, mode, l
         {destination === "other" && <OtherTarget disabled={disabled} onChange={setOtherTarget} />}
       </>}
     </div>
-    <KnowledgeSourcePicker scope={scope} issue={issue} selected={selected} onChange={setSelected} disabled={disabled} />
+    <KnowledgeSourcePicker scope={scope} issue={issue} selected={selected} onChange={setSelected} disabled={disabled} deliveryCandidateId={mode.deliveryCandidateId} />
     <div className="space-y-2"><label htmlFor={`${id}-evidence`} className="text-body font-medium">{t(($) => $.knowledge.evidence)}</label>
       <Textarea id={`${id}-evidence`} value={evidence} onChange={(event) => setEvidence(event.target.value)} disabled={disabled} rows={2}
         aria-invalid={evidenceOver || undefined} aria-describedby={evidenceOver ? `${id}-evidence-limit` : undefined} />

@@ -29,6 +29,8 @@ vi.mock("./execution-panel", () => ({ CollaborationExecutionPanel: ({ selectedRu
 // query/mutation behavior is covered by memory-panel.test.tsx.
 vi.mock("./memory-panel", () => ({ CollaborationMemoryPanel: () => <section id="memory" data-testid="memory-mount" tabIndex={-1} /> }));
 vi.mock("./knowledge-panel", () => ({ CollaborationKnowledgePanel: ({ issue: value }: { issue: CollaborationIssue }) => <div data-testid="knowledge-mount">{value.id}</div> }));
+// The real status/query/recovery flow is covered by knowledge-automation.test.tsx.
+vi.mock("./knowledge-automation-status", () => ({ KnowledgeAutomationStatus: ({ issue: value }: { issue: CollaborationIssue }) => <div data-testid="knowledge-status-mount">{value.id}</div> }));
 // Stage reads, forms and recovery are covered by stage-panel.test.tsx; this suite owns only where the panel is mounted.
 vi.mock("./stage-panel", () => ({ CollaborationStageRecovery: ({ issueId }: { issueId: string }) => <section data-testid="stage-recovery-mount">{issueId}</section>, CollaborationStagePanel: ({ issue: value }: { issue: CollaborationIssue }) => <section id="stage" data-testid="stage-mount">{value.id}</section> }));
 vi.mock("./activity", () => ({ CollaborationActivity: () => null }));

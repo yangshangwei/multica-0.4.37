@@ -645,5 +645,11 @@ func (t *collaborationWorkflowTx) finishStatusChange(ctx context.Context, code, 
 	// R52 does not subscribe users to status or lifecycle edits. The durable
 	// event remains the history/outbox fact, without creating inbox work.
 	_, err = t.q.CreateCollaborationEvent(ctx, db.CreateCollaborationEventParams{IssueID: t.access.Issue.ID, EventSeq: seq, ActorUserID: t.actor, Kind: code, Payload: payload})
+	if err == nil && code == "completed" {
+		err = enqueueAcceptedKnowledgeAutomation(ctx, t, seq)
+	}
+	if err == nil && code == "reopened" {
+		err = EnqueueKnowledgeSourceInvalidation(ctx, t.q, t.operation.ID, "source_issue", t.access.Issue.ID)
+	}
 	return receipt, err
 }

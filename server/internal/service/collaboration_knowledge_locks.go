@@ -18,7 +18,7 @@ import (
 // nil manifest discovers the current collection; a supplied manifest discovers
 // exactly its historical exposures. Neither path grants body-read authority.
 func (s *CollaborationService) CollectKnowledgeReadLockHints(ctx context.Context, q *db.Queries, f KnowledgeConsumerFacts, manifest *KnowledgeManifest) (KnowledgeReadLockHints, error) {
-	out := KnowledgeReadLockHints{Targets: []KnowledgeTargetRevision{}, Sources: []KnowledgeSourceLockHint{}, CandidateIDs: []pgtype.UUID{}}
+	out := KnowledgeReadLockHints{Targets: []KnowledgeTargetRevision{}, Sources: []KnowledgeSourceLockHint{}, CandidateIDs: []pgtype.UUID{}, Validities: map[pgtype.UUID]knowledgeAutomaticProof{}}
 	if q == nil {
 		return out, knowledgeFailure(503, "knowledge_unavailable")
 	}
@@ -59,6 +59,64 @@ func (s *CollaborationService) CollectKnowledgeReadLockHints(ctx context.Context
 		}
 		return nil
 	}
+	addCandidate := func(id, ws, issue pgtype.UUID, raw []byte, approvalOrigin string) error {
+		var refs []protocol.CollaborationKnowledgeSource
+		if json.Unmarshal(raw, &refs) != nil {
+			return knowledgeFailure(503, "knowledge_unavailable")
+		}
+		if knowledgeConsumerVersion(f) == 1 {
+			if approvalOrigin == "automation" {
+				return knowledgeFailure(409, "knowledge_protocol_unsupported")
+			}
+			for _, ref := range refs {
+				if ref.Kind == "delivery" {
+					return knowledgeFailure(409, "knowledge_protocol_unsupported")
+				}
+			}
+		}
+		if err := add(id, ws, issue, raw); err != nil {
+			return err
+		}
+		if approvalOrigin != "automation" || !slices.Contains(out.CandidateIDs, id) {
+			return nil
+		}
+		heads, err := q.ListKnowledgeValidityLockHints(ctx, []pgtype.UUID{id})
+		if err != nil {
+			return err
+		}
+		if len(heads) != 1 {
+			if manifest != nil {
+				return knowledgeFailure(409, "knowledge_context_changed")
+			}
+			return nil
+		}
+		head := heads[0]
+		dependencies, valid := knowledgeSupportDependencies(head.SupportDependencies)
+		if !valid || head.SourceIssueID != issue {
+			if manifest != nil {
+				return knowledgeFailure(409, "knowledge_context_changed")
+			}
+			return nil
+		}
+		proof := knowledgeAutomaticProof{Binding: protocol.TaskKnowledgeValidity{Revision: strconv.FormatInt(head.Revision, 10), AcceptedEventSeq: strconv.FormatInt(head.AcceptedEventSeq, 10), SubmissionID: util.UUIDToString(head.SubmissionID), ValidatedCloseEpoch: strconv.FormatInt(head.ValidatedCloseEpoch, 10)}, EvaluationID: head.EvaluationID, Dependencies: dependencies}
+		for _, ref := range dependencies {
+			if ref.IssueID != util.UUIDToString(issue) {
+				if manifest != nil {
+					return knowledgeFailure(409, "knowledge_context_changed")
+				}
+				return nil
+			}
+			encoded, err := json.Marshal([]protocol.CollaborationKnowledgeSource{ref})
+			if err != nil {
+				return err
+			}
+			if err = add(id, ws, issue, encoded); err != nil {
+				return err
+			}
+		}
+		out.Validities[id] = proof
+		return nil
+	}
 	for _, target := range knowledgeConsumerTargets(f) {
 		before, err := knowledgeReadTargetRevision(ctx, q, target)
 		if err != nil {
@@ -76,7 +134,7 @@ func (s *CollaborationService) CollectKnowledgeReadLockHints(ctx context.Context
 				return out, knowledgeFailure(503, "knowledge_unavailable")
 			}
 			for _, row := range rows {
-				if err = add(row.ID, row.SourceWorkspaceID, row.SourceIssueID, row.Sources); err != nil {
+				if err = addCandidate(row.ID, row.SourceWorkspaceID, row.SourceIssueID, row.Sources, row.ApprovalOrigin); err != nil {
 					return out, err
 				}
 			}
@@ -90,7 +148,7 @@ func (s *CollaborationService) CollectKnowledgeReadLockHints(ctx context.Context
 		}
 	}
 	if manifest != nil {
-		if manifest.ProtocolVersion != 1 || manifest.Entries == nil || len(manifest.Entries) > 32 {
+		if manifest.ProtocolVersion > knowledgeConsumerVersion(f) || protocol.ValidateTaskKnowledgeManifest(*manifest) != nil {
 			return out, knowledgeFailure(409, "knowledge_context_changed")
 		}
 		for _, entry := range manifest.Entries {
@@ -108,8 +166,14 @@ func (s *CollaborationService) CollectKnowledgeReadLockHints(ctx context.Context
 			if err != nil {
 				return out, err
 			}
-			if err = add(row.ID, row.SourceWorkspaceID, row.SourceIssueID, row.Sources); err != nil {
+			if err = addCandidate(row.ID, row.SourceWorkspaceID, row.SourceIssueID, row.Sources, row.ApprovalOrigin); err != nil {
 				return out, err
+			}
+			if entry.Validity != nil {
+				proof, ok := out.Validities[id]
+				if !ok || proof.Binding != *entry.Validity {
+					return out, knowledgeFailure(409, "knowledge_context_changed")
+				}
 			}
 		}
 	}
@@ -129,6 +193,25 @@ func knowledgeSourcePotential(ctx context.Context, q *db.Queries, issue, workspa
 	for _, ref := range refs {
 		if ref.IssueID != util.UUIDToString(issue) {
 			return false, knowledgeFailure(503, "knowledge_unavailable")
+		}
+		if ref.Kind == "delivery" {
+			submission, err := util.ParseUUID(ref.SubmissionID)
+			if err != nil {
+				return false, nil
+			}
+			delivery, err := strconv.ParseInt(ref.DeliveryEventSeq, 10, 64)
+			if err != nil {
+				return false, nil
+			}
+			accepted, err := strconv.ParseInt(ref.AcceptedEventSeq, 10, 64)
+			if err != nil {
+				return false, nil
+			}
+			available, err = q.KnowledgeDeliverySourcePotentiallyAvailable(ctx, db.KnowledgeDeliverySourcePotentiallyAvailableParams{IssueID: issue, SubmissionID: submission, DeliveryEventSeq: delivery, AcceptedEventSeq: accepted})
+			if err != nil || !available {
+				return false, err
+			}
+			continue
 		}
 		version, _ := strconv.ParseInt(ref.Version, 10, 64)
 		comment, _ := util.ParseUUID(ref.CommentID)
@@ -163,6 +246,27 @@ func ValidateKnowledgeResolutionLocks(resolution KnowledgeResolution, hints Know
 		entry, ok := entries[item.CandidateID]
 		if !ok || entry.Version != item.Version || entry.ContentSHA256 != item.ContentSHA256 || entry.SourceIssueID != item.SourceIssueID || entry.Target != item.Target {
 			return knowledgeFailure(409, "knowledge_context_changed")
+		}
+		required := append([]protocol.CollaborationKnowledgeSource{}, item.Sources...)
+		if entry.Validity != nil {
+			id, _ := util.ParseUUID(entry.CandidateID)
+			proof, ok := hints.Validities[id]
+			if !ok || proof.Binding != *entry.Validity {
+				return knowledgeFailure(409, "knowledge_context_changed")
+			}
+			required = append(required, proof.Dependencies...)
+		}
+		for _, ref := range required {
+			found := false
+			for _, source := range hints.Sources {
+				if util.UUIDToString(source.IssueID) == ref.IssueID && slices.Contains(source.Sources, ref) {
+					found = true
+					break
+				}
+			}
+			if !found {
+				return knowledgeFailure(409, "knowledge_context_changed")
+			}
 		}
 		delete(entries, item.CandidateID)
 	}
@@ -251,12 +355,32 @@ func (s *CollaborationService) LockKnowledgeReadSources(ctx context.Context, q *
 	if len(rows) != len(hints.CandidateIDs) {
 		return knowledgeFailure(409, "knowledge_context_changed")
 	}
+	validityIDs := make([]pgtype.UUID, 0, len(hints.Validities))
+	for id := range hints.Validities {
+		validityIDs = append(validityIDs, id)
+	}
+	slices.SortFunc(validityIDs, knowledgeCompareUUID)
+	if len(validityIDs) > 0 {
+		heads, err := q.LockKnowledgeValiditiesForRead(ctx, validityIDs)
+		if err != nil {
+			return err
+		}
+		if len(heads) != len(validityIDs) {
+			return knowledgeFailure(409, "knowledge_context_changed")
+		}
+		for _, head := range heads {
+			proof := hints.Validities[head.CandidateID]
+			if head.EvaluationID != proof.EvaluationID || knowledgeValidityBinding(head) != proof.Binding {
+				return knowledgeFailure(409, "knowledge_context_changed")
+			}
+		}
+	}
 	for _, source := range hints.Sources {
 		if len(source.Sources) > 1024 {
 			return knowledgeFailure(409, "knowledge_context_changed")
 		}
-		var versions []int64
-		var comments, runs []pgtype.UUID
+		var versions, deliveryEvents []int64
+		var comments, runs, deliveries []pgtype.UUID
 		for _, ref := range source.Sources {
 			switch ref.Kind {
 			case "memory":
@@ -282,6 +406,23 @@ func (s *CollaborationService) LockKnowledgeReadSources(ctx context.Context, q *
 				}
 				if !slices.Contains(runs, id) {
 					runs = append(runs, id)
+				}
+			case "delivery":
+				id, err := util.ParseUUID(ref.SubmissionID)
+				if err != nil {
+					return knowledgeFailure(409, "knowledge_context_changed")
+				}
+				if !slices.Contains(deliveries, id) {
+					deliveries = append(deliveries, id)
+				}
+				for _, text := range []string{ref.DeliveryEventSeq, ref.AcceptedEventSeq} {
+					seq, err := strconv.ParseInt(text, 10, 64)
+					if err != nil {
+						return knowledgeFailure(409, "knowledge_context_changed")
+					}
+					if !slices.Contains(deliveryEvents, seq) {
+						deliveryEvents = append(deliveryEvents, seq)
+					}
 				}
 			default:
 				return knowledgeFailure(409, "knowledge_context_changed")
@@ -311,6 +452,22 @@ func (s *CollaborationService) LockKnowledgeReadSources(ctx context.Context, q *
 				return err
 			}
 			if len(rows) != len(runs) {
+				return knowledgeFailure(409, "knowledge_context_changed")
+			}
+		}
+		if len(deliveries) > 0 {
+			rows, err := q.LockKnowledgeDeliverySources(ctx, db.LockKnowledgeDeliverySourcesParams{IssueID: source.IssueID, Ids: deliveries})
+			if err != nil {
+				return err
+			}
+			if len(rows) != len(deliveries) {
+				return knowledgeFailure(409, "knowledge_context_changed")
+			}
+			seqs, err := q.LockKnowledgeDeliveryEvents(ctx, db.LockKnowledgeDeliveryEventsParams{IssueID: source.IssueID, EventSeqs: deliveryEvents})
+			if err != nil {
+				return err
+			}
+			if len(seqs) != len(deliveryEvents) {
 				return knowledgeFailure(409, "knowledge_context_changed")
 			}
 		}

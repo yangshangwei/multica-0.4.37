@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY IF NOT EXISTS collaboration_knowledge_validity_source_idx ON collaboration_knowledge_validity (source_issue_id, candidate_id);

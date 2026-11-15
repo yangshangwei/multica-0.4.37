@@ -120,6 +120,23 @@ var commentContentBigramIndex = usableIndexRequirement{
 // they are still pending: a fresh self-hosted install, which is exactly where an
 // interrupted build would otherwise leave a permanently unusable index.
 var concurrentIndexCleanups = map[string]string{
+	"845_project_knowledge_automation_policy_id":            "project_knowledge_policy_id_idx",
+	"846_project_knowledge_automation_policy_workspace":     "project_knowledge_policy_workspace_idx",
+	"847_project_knowledge_automation_job_id":               "collaboration_knowledge_job_id_idx",
+	"848_project_knowledge_automation_job_accepted":         "collaboration_knowledge_job_accepted_idx",
+	"849_project_knowledge_automation_job_ready":            "collaboration_knowledge_job_ready_idx",
+	"850_project_knowledge_automation_job_source":           "collaboration_knowledge_job_source_idx",
+	"851_project_knowledge_automation_batch_id":             "collaboration_knowledge_batch_id_idx",
+	"852_project_knowledge_automation_batch_slot":           "collaboration_knowledge_batch_slot_idx",
+	"853_project_knowledge_automation_attempt_id":           "collaboration_knowledge_attempt_id_idx",
+	"854_project_knowledge_automation_attempt_identity":     "collaboration_knowledge_attempt_identity_idx",
+	"855_project_knowledge_automation_evaluation_id":        "collaboration_knowledge_evaluation_id_idx",
+	"856_project_knowledge_automation_evaluation_attempt":   "collaboration_knowledge_evaluation_attempt_idx",
+	"857_project_knowledge_automation_evaluation_candidate": "collaboration_knowledge_evaluation_candidate_idx",
+	"858_project_knowledge_automation_validity_candidate":   "collaboration_knowledge_validity_candidate_idx",
+	"859_project_knowledge_automation_validity_source":      "collaboration_knowledge_validity_source_idx",
+	"865_knowledge_automation_origin":                       "collaboration_knowledge_automation_origin_idx",
+
 	"862_collaboration_stage_submission_id":                "collaboration_stage_submission_id_idx",
 	"863_collaboration_stage_submission_issue":             "collaboration_stage_submission_issue_idx",
 	"830_collaboration_stage_execution_intent_id":          "collaboration_stage_execution_intent_id_idx",

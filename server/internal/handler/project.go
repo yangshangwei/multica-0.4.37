@@ -933,6 +933,9 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 		if err = service.DeleteKnowledgeTargetsInTx(r.Context(), q, operationID, ws, id); err != nil {
 			return err
 		}
+		if _, err = q.DeleteProjectKnowledgePolicy(r.Context(), db.DeleteProjectKnowledgePolicyParams{ProjectID: id, WorkspaceID: ws}); err != nil {
+			return err
+		}
 
 		// Lock automation parents before triggers, matching every binding writer.
 		if _, err = q.LockProjectAutopilotsForDelete(r.Context(), db.LockProjectAutopilotsForDeleteParams{ProjectID: id, WorkspaceID: ws}); err != nil {

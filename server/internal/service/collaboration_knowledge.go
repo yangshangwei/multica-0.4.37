@@ -198,6 +198,18 @@ func (s *CollaborationService) mutateKnowledge(ctx context.Context, issueID, can
 		if !errors.Is(err, pgx.ErrNoRows) {
 			return protocol.CollaborationKnowledgeReceipt{}, err
 		}
+		// An old original receipt remains recoverable above. A new v1 write
+		// cannot act on a collection whose current provenance it cannot read.
+		if knowledgePayloadVersion(payload) == 1 {
+			if err = knowledgeRequireLegacy(w.q.KnowledgeSourceRequiresV2(ctx, issueID)); err != nil {
+				return protocol.CollaborationKnowledgeReceipt{}, err
+			}
+			workspace, _ := util.ParseUUID(w.target.WorkspaceID)
+			project, _ := util.ParseUUID(w.target.ProjectID)
+			if err = knowledgeRequireLegacy(w.q.KnowledgeTargetRequiresV2(ctx, db.KnowledgeTargetRequiresV2Params{TargetKind: w.target.Kind, TargetWorkspaceID: workspace, ProjectID: project})); err != nil {
+				return protocol.CollaborationKnowledgeReceipt{}, err
+			}
+		}
 		w.operation, err = w.q.CreateCollaborationOperation(ctx, db.CreateCollaborationOperationParams{ScopeKind: "issue", ScopeID: issueID, ActorUserID: actor, RequestID: request, Kind: "knowledge_" + action, PayloadHash: hash})
 		if err != nil {
 			return protocol.CollaborationKnowledgeReceipt{}, err
@@ -214,6 +226,7 @@ func (s *CollaborationService) mutateKnowledge(ctx context.Context, issueID, can
 		if _, err = knowledgePAT(ctx, w.q, actor, false); err != nil {
 			return protocol.CollaborationKnowledgeReceipt{}, err
 		}
+		receipt.ProtocolVersion = knowledgePayloadVersion(payload)
 		encoded, err := json.Marshal(receipt)
 		if err != nil {
 			return protocol.CollaborationKnowledgeReceipt{}, err

@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { collaborationTextByteLength, KNOWLEDGE_REASON_MAX_BYTES, prepareKnowledgeDecision, useCollaborationKnowledgeCandidate, type CollaborationIssue, type CollaborationKnowledgeCandidate,
+import { collaborationTextByteLength, KNOWLEDGE_REASON_MAX_BYTES, isKnowledgeProtocolUnsupported, prepareKnowledgeDecision, useCollaborationKnowledgeCandidate, type CollaborationIssue, type CollaborationKnowledgeCandidate,
   type CollaborationScope, type KnowledgeIntent } from "@multica/core/collaboration";
 import { accountPath } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
@@ -22,18 +22,19 @@ export function KnowledgeReview({ scope, candidateId, issue, canPropose, locked,
   const query = useCollaborationKnowledgeCandidate(scope, candidateId);
   const candidate = query.data?.value.candidate;
   const loadFailed = query.error !== null || !query.isFetching;
-  const actorLabel = (userId: string) => issue?.creator.user_id === userId && issue.creator.name.trim() ? issue.creator.name
+  const actorLabel = (userId: string | null) => userId === null ? t(($) => $.knowledge.system) : issue?.creator.user_id === userId && issue.creator.name.trim() ? issue.creator.name
     : issue?.handler.user_id === userId && issue.handler.name.trim() ? issue.handler.name : userId;
   const decisionRepeatsApproval = candidate?.availability !== "restricted" && candidate?.decision !== null && candidate?.decision !== undefined &&
     candidate.decision.actor_user_id === candidate.approved_by_user_id && candidate.decision.at === candidate.approved_at;
-  const identity = candidate ? JSON.stringify([candidate.candidate_id, candidate.state_revision, candidate.availability,
+  const protocolVersion = query.data?.value.protocol_version ?? 1;
+  const identity = candidate ? JSON.stringify([protocolVersion, candidate.candidate_id, candidate.state_revision, candidate.availability,
     candidate.availability === "available" ? candidate.content_sha256 : null, candidate.availability !== "restricted" ? candidate.version : null]) : null;
   // Human input survives lease erasure and an unchanged refetch; a different reviewed tuple starts a fresh decision.
   const [decisionKey, setDecisionKey] = useState<string | null>(identity);
   if (identity !== null && identity !== decisionKey) setDecisionKey(identity);
   return <section ref={root} tabIndex={-1} aria-label={t(($) => $.knowledge.review)} className="min-w-0 space-y-4 border-t border-border pt-5 outline-none focus-visible:ring-2 focus-visible:ring-ring">
     <div className="flex flex-wrap items-center justify-between gap-3"><h4 className="text-body font-semibold">{t(($) => $.knowledge.review)}</h4><Button type="button" variant="ghost" size="sm" disabled={locked} onClick={onClose}>{t(($) => $.knowledge.close)}</Button></div>
-    {!candidate && <div role={loadFailed ? "alert" : "status"} className="space-y-2 text-body"><p>{loadFailed ? t(($) => $.knowledge.loadError) : t(($) => $.knowledge.loading)}</p>
+    {!candidate && <div role={loadFailed ? "alert" : "status"} className="space-y-2 text-body"><p>{isKnowledgeProtocolUnsupported(query.error) ? t(($) => $.knowledge.protocolUnsupported) : loadFailed ? t(($) => $.knowledge.loadError) : t(($) => $.knowledge.loading)}</p>
       {loadFailed && <Button type="button" variant="outline" onClick={() => void query.refetch()}>{t(($) => $.knowledge.refresh)}</Button>}</div>}
     {candidate && <>
       <KnowledgeState candidate={candidate} />
@@ -43,9 +44,10 @@ export function KnowledgeReview({ scope, candidateId, issue, canPropose, locked,
           <div><dt>{t(($) => $.knowledge.target)}</dt><dd>{t(($) => $.knowledge[candidate.target.kind])} · {candidate.target.kind === "project"
             ? issue?.source_structure?.project?.id === candidate.target.project_id ? issue.source_structure.project.name : candidate.target.project_id
             : issue?.source_workspace.id === candidate.target.workspace_id ? issue.source_workspace.name : candidate.target.workspace_id}</dd></div>
-          <div><dt>{t(($) => $.knowledge.proposedBy)}</dt><dd>{actorLabel(candidate.proposed_by_user_id)}</dd></div>
+          <div><dt>{t(($) => $.knowledge.proposedBy)}</dt><dd>{"proposal_origin" in candidate && candidate.proposal_origin === "automation" ? t(($) => $.knowledge.automatedProposal) : actorLabel(candidate.proposed_by_user_id)}</dd></div>
           <div><dt>{t(($) => $.knowledge.proposedAt)}</dt><dd><time dateTime={candidate.proposed_at}>{new Date(candidate.proposed_at).toLocaleString(locale)}</time></dd></div>
-          {candidate.approved_by_user_id && <div><dt>{t(($) => $.knowledge.approvedBy)}</dt><dd>{actorLabel(candidate.approved_by_user_id)}</dd></div>}
+          {candidate.approved_at && (candidate.approved_by_user_id !== null || "automation" in candidate && candidate.automation !== null) && <div><dt>{t(($) => $.knowledge.approvedBy)}</dt><dd>{actorLabel(candidate.approved_by_user_id)}</dd></div>}
+          {"automation" in candidate && candidate.automation && <div><dt>{t(($) => $.knowledge.ruleVersion)}</dt><dd>{candidate.automation.rule_version}</dd></div>}
           {candidate.approved_at && <div><dt>{t(($) => $.knowledge.approvedAt)}</dt><dd><time dateTime={candidate.approved_at}>{new Date(candidate.approved_at).toLocaleString(locale)}</time></dd></div>}
           {candidate.decision && !decisionRepeatsApproval && <>
             <div><dt>{t(($) => $.knowledge.decisionBy)}</dt><dd>{actorLabel(candidate.decision.actor_user_id)}</dd></div>
@@ -64,7 +66,8 @@ export function KnowledgeReview({ scope, candidateId, issue, canPropose, locked,
         <RichContent resourcePolicy="restricted" content={candidate.content} />
         <div className="space-y-2"><h5 className="text-caption font-medium">{t(($) => $.knowledge.sources)}</h5><ul className="space-y-2 text-caption">{candidate.sources.map((source, index) => <li key={index}>
           <AppLink className="inline-block underline underline-offset-4 pointer-coarse:min-h-11 pointer-coarse:py-3" href={accountPath({ view: "participating", issueId: source.issue_id,
-            ...(source.kind === "memory" ? { memoryVersion: source.version } : source.kind === "comment" ? { commentId: source.comment_id } : { runId: source.run_id }) })}><KnowledgeSourceLabel source={source} /></AppLink>
+            ...(source.kind === "memory" ? { memoryVersion: source.version } : source.kind === "comment" ? { commentId: source.comment_id }
+              : source.kind === "delivery" ? { submissionId: source.submission_id } : { runId: source.run_id }) })}><KnowledgeSourceLabel source={source} /></AppLink>
         </li>)}</ul></div>
         <div className="flex flex-wrap gap-2 text-caption text-muted-foreground">{candidate.applicability.surfaces.map((surface) => <span key={surface}>{t(($) => $.knowledge.surfaces[surface])}</span>)}</div>
         {candidate.evidence.length > 0 && <div className="space-y-2"><h5 className="text-caption font-medium">{t(($) => $.knowledge.verification)}</h5><ul className="space-y-2 text-body">{candidate.evidence.map((evidence, index) => <li key={index} className="[overflow-wrap:anywhere]">
@@ -72,12 +75,14 @@ export function KnowledgeReview({ scope, candidateId, issue, canPropose, locked,
         </li>)}</ul></div>}
         <details className="text-caption"><summary className="cursor-pointer text-muted-foreground pointer-coarse:min-h-11 pointer-coarse:py-3">{t(($) => $.knowledge.digest)}</summary><code className="mt-2 block break-all">{candidate.content_sha256}</code></details>
         {canPropose && issue?.id === candidate.source_issue_id && <div className="flex flex-wrap gap-2">
-          <Button type="button" variant="outline" disabled={locked} onClick={() => onProposal({ target: candidate.target, supersedesId: candidate.candidate_id })}>{t(($) => $.knowledge.correct)}</Button>
-          {candidate.state === "approved" && candidate.target.kind === "project" && <Button type="button" variant="outline" disabled={locked} onClick={() => onProposal({ target: { kind: "workspace", workspace_id: candidate.target.workspace_id }, derivedId: candidate.candidate_id })}>{t(($) => $.knowledge.derive)}</Button>}
+          <Button type="button" variant="outline" disabled={locked} onClick={() => onProposal({ target: candidate.target, supersedesId: candidate.candidate_id,
+            deliveryCandidateId: candidate.sources.some((source) => source.kind === "delivery") ? candidate.candidate_id : undefined })}>{t(($) => $.knowledge.correct)}</Button>
+          {candidate.state === "approved" && candidate.target.kind === "project" && <Button type="button" variant="outline" disabled={locked} onClick={() => onProposal({ target: { kind: "workspace", workspace_id: candidate.target.workspace_id }, derivedId: candidate.candidate_id,
+            deliveryCandidateId: candidate.sources.some((source) => source.kind === "delivery") ? candidate.candidate_id : undefined })}>{t(($) => $.knowledge.derive)}</Button>}
         </div>}
       </>}
     </>}
-    {decisionKey !== null && <KnowledgeDecision key={decisionKey} scope={scope} candidate={identity === decisionKey ? candidate : undefined} locked={locked} onSubmit={onSubmit} />}
+    {decisionKey !== null && <KnowledgeDecision key={decisionKey} scope={scope} protocolVersion={protocolVersion} candidate={identity === decisionKey ? candidate : undefined} locked={locked} onSubmit={onSubmit} />}
     {candidate && candidate.availability !== "restricted" && <details className="space-y-3"><summary className="cursor-pointer text-body font-medium pointer-coarse:min-h-11 pointer-coarse:py-3">{t(($) => $.knowledge.history)}</summary>
       <ul className="space-y-2">{query.data?.value.history.map((version) => <li key={version.candidate_id}><Button type="button" variant="ghost" size="sm" onClick={() => onSelect(version.candidate_id)}>{version.availability === "restricted" ? t(($) => $.knowledge.restricted) : t(($) => $.knowledge.version, { version: version.version })} · {t(($) => $.knowledge.states[version.state])}</Button></li>)}</ul>
       {query.data?.value.history_truncated === true && <p className="text-caption text-muted-foreground">{t(($) => $.knowledge.historyTruncated)}</p>}
@@ -85,7 +90,7 @@ export function KnowledgeReview({ scope, candidateId, issue, canPropose, locked,
   </section>;
 }
 
-function KnowledgeDecision({ scope, candidate, locked, onSubmit }: { scope: CollaborationScope; candidate: CollaborationKnowledgeCandidate | undefined; locked: boolean; onSubmit: (intent: KnowledgeIntent) => Promise<void> }) {
+function KnowledgeDecision({ scope, candidate, protocolVersion, locked, onSubmit }: { scope: CollaborationScope; protocolVersion: 1 | 2; candidate: CollaborationKnowledgeCandidate | undefined; locked: boolean; onSubmit: (intent: KnowledgeIntent) => Promise<void> }) {
   const { t } = useT("collaboration"); const id = useId(); const [reviewed, setReviewed] = useState(false), [reason, setReason] = useState("");
   const [error, setError] = useState(false);
   // Erased or loading: keep the typed state, but render no control derived from an absent projection.
@@ -98,7 +103,7 @@ function KnowledgeDecision({ scope, candidate, locked, onSubmit }: { scope: Coll
   const reasonOver = collaborationTextByteLength(reason) > KNOWLEDGE_REASON_MAX_BYTES;
   const submit = (action: "approve" | "reject" | "withdraw") => {
     if (locked || action !== "approve" && reasonOver) return;
-    try { const intent = prepareKnowledgeDecision(scope, candidate, action, reason); setError(false); void onSubmit(intent); }
+    try { const intent = prepareKnowledgeDecision(scope, candidate, action, reason, protocolVersion); setError(false); void onSubmit(intent); }
     catch { setError(true); }
   };
   return <div className="space-y-3">

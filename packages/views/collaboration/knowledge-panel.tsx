@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { useMutation, useQueryClient, type UseQueryResult } from "@tanstack/react-query";
-import { CollaborationUnavailableError, KnowledgeRecoveryStorageError, KnowledgeUnusedIntentError, KnowledgeReceiptCleanupError, collaborationKnowledgeCandidateOptions, dismissKnowledgeOperation, executeKnowledgeIntent, knowledgeTargetsEqual,
+import { CollaborationUnavailableError, isKnowledgeProtocolUnsupported, KnowledgeRecoveryStorageError, KnowledgeUnusedIntentError, KnowledgeReceiptCleanupError, collaborationKnowledgeCandidateOptions, dismissKnowledgeOperation, executeKnowledgeIntent, knowledgeTargetsEqual,
   readPendingKnowledgeOperations, recoverKnowledgeOperation,
   useCollaborationKnowledgeCandidates, useCollaborationKnowledgeTarget, useCollaborationScope,
   type AuthorizedKnowledgeProjection, type CollaborationIssue, type CollaborationKnowledgeCandidates, type CollaborationKnowledgeTarget, type CollaborationKnowledgeTargetList,
@@ -167,9 +167,10 @@ function KnowledgeCollection({ scope, issue, target, query, page, setPage, sourc
       </div>)}
       {pending.some(dismissable) && <p id={`${id}-dismiss-hint`} className="max-w-prose text-caption text-muted-foreground">{t(($) => $.knowledge.dismissHint)}</p>}
     </div>}
-    {!current && <div className="space-y-3"><p role={loadFailed ? "alert" : "status"} className="text-body text-muted-foreground">{query.error instanceof CollaborationUnavailableError ? t(($) => $.knowledge.unavailable) : loadFailed ? t(($) => $.knowledge.loadError) : t(($) => $.knowledge.loading)}</p>
+    {!current && <div className="space-y-3"><p role={loadFailed ? "alert" : "status"} className="text-body text-muted-foreground">{isKnowledgeProtocolUnsupported(query.error) ? t(($) => $.knowledge.protocolUnsupported) : query.error instanceof CollaborationUnavailableError ? t(($) => $.knowledge.unavailable) : loadFailed ? t(($) => $.knowledge.loadError) : t(($) => $.knowledge.loading)}</p>
       {loadFailed && <Button type="button" variant="outline" onClick={() => { setPage({}); void query.refetch(); }}>{t(($) => $.knowledge.refresh)}</Button>}</div>}
     {current && <>
+      {current.value.protocol_version === 1 && <p className="text-caption text-muted-foreground">{t(($) => $.knowledge.legacyOnly)}</p>}
       {current.value.items.length === 0 && <p className="text-body text-muted-foreground">{issue ? t(($) => $.knowledge.empty) : t(($) => $.knowledge.targetEmpty)}</p>}
       <ul className="space-y-2">{current.value.items.map((candidate) => <li key={candidate.candidate_id}>
         <button type="button" aria-pressed={selectedId === candidate.candidate_id} onClick={() => setSelectedId(candidate.candidate_id)}

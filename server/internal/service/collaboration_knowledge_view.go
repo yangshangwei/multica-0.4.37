@@ -71,14 +71,25 @@ type knowledgeCandidateMaterial struct {
 // expose a zero-valued source/version field or a quoted decision reason.
 type KnowledgeCandidateView struct {
 	knowledgeCandidateControl
-	Metadata     knowledgeCandidateMetadata
-	Material     knowledgeCandidateMaterial
-	Decision     *KnowledgeDecision
-	Capabilities collaboration.KnowledgeCapabilities
-	Content      *string
+	ProtocolVersion int
+	ProposalOrigin  string
+	DecisionOrigin  string
+	UsageStatus     string
+	Automation      *knowledgeAutomationAudit
+	Metadata        knowledgeCandidateMetadata
+	Material        knowledgeCandidateMaterial
+	Decision        *KnowledgeDecision
+	Capabilities    collaboration.KnowledgeCapabilities
+	Content         *string
 }
 
 func (v KnowledgeCandidateView) MarshalJSON() ([]byte, error) {
+	if v.ProtocolVersion == 2 && v.Availability != "restricted" {
+		return v.marshalV2()
+	}
+	if v.Availability != "restricted" && (v.ProposalOrigin == "automation" || v.DecisionOrigin == "automation" || v.Automation != nil || v.UsageStatus == "paused_review" || knowledgeMaterialRequiresV2(v.Material)) {
+		return nil, knowledgeFailure(409, "knowledge_protocol_unsupported")
+	}
 	switch v.Availability {
 	case "restricted":
 		return json.Marshal(struct {
@@ -149,9 +160,9 @@ type knowledgePageCursor struct {
 	ThroughID       string     `json:"through_id"`
 }
 
-func knowledgeNewProjection() KnowledgeProjection {
+func knowledgeNewProjection(ctx context.Context) KnowledgeProjection {
 	now := time.Now().UTC()
-	return KnowledgeProjection{ProtocolVersion: 1, CheckedAt: now, ValidUntil: now.Add(30 * time.Second)}
+	return KnowledgeProjection{ProtocolVersion: knowledgePublicVersion(ctx), CheckedAt: now, ValidUntil: now.Add(30 * time.Second)}
 }
 func (p *KnowledgeProjection) expiry(at *time.Time) {
 	if at != nil && at.After(p.CheckedAt) && (p.NextExpiryAt == nil || at.Before(*p.NextExpiryAt)) {
@@ -162,11 +173,11 @@ func (p *KnowledgeProjection) expiry(at *time.Time) {
 	}
 }
 func knowledgeCursor(p KnowledgeProjection, scope string, viewer pgtype.UUID, after db.CollaborationKnowledgeCandidate, throughAt time.Time, throughID string) *string {
-	raw, _ := json.Marshal(knowledgePageCursor{ProtocolVersion: 1, Scope: scope, ViewerID: util.UUIDToString(viewer), CheckedAt: p.CheckedAt, ValidUntil: p.ValidUntil, NextExpiryAt: p.NextExpiryAt, AfterAt: after.ProposedAt.Time.UTC(), AfterID: util.UUIDToString(after.ID), ThroughAt: throughAt, ThroughID: throughID})
+	raw, _ := json.Marshal(knowledgePageCursor{ProtocolVersion: p.ProtocolVersion, Scope: scope, ViewerID: util.UUIDToString(viewer), CheckedAt: p.CheckedAt, ValidUntil: p.ValidUntil, NextExpiryAt: p.NextExpiryAt, AfterAt: after.ProposedAt.Time.UTC(), AfterID: util.UUIDToString(after.ID), ThroughAt: throughAt, ThroughID: throughID})
 	v := base64.RawURLEncoding.EncodeToString(raw)
 	return &v
 }
-func knowledgeParsePage(p KnowledgePageQuery, scope string, viewer pgtype.UUID) (KnowledgePageQuery, knowledgePageCursor, error) {
+func knowledgeParsePage(p KnowledgePageQuery, scope string, viewer pgtype.UUID, version int) (KnowledgePageQuery, knowledgePageCursor, error) {
 	if p.Limit == 0 {
 		p.Limit = 20
 	}
@@ -180,7 +191,7 @@ func knowledgeParsePage(p KnowledgePageQuery, scope string, viewer pgtype.UUID) 
 	raw, err := base64.RawURLEncoding.DecodeString(p.Cursor)
 	decoder := json.NewDecoder(bytes.NewReader(raw))
 	decoder.DisallowUnknownFields()
-	if err != nil || iteration.ValidateObjectJSON(raw) != nil || decoder.Decode(&cursor) != nil || decoder.Decode(new(any)) != io.EOF || cursor.ProtocolVersion != 1 || cursor.Scope != scope || cursor.ViewerID != util.UUIDToString(viewer) {
+	if err != nil || iteration.ValidateObjectJSON(raw) != nil || decoder.Decode(&cursor) != nil || decoder.Decode(new(any)) != io.EOF || cursor.ProtocolVersion != version || cursor.Scope != scope || cursor.ViewerID != util.UUIDToString(viewer) {
 		return p, cursor, knowledgeFailure(400, "invalid_knowledge_request")
 	}
 	var fields map[string]json.RawMessage
@@ -205,7 +216,7 @@ func knowledgeParsePage(p KnowledgePageQuery, scope string, viewer pgtype.UUID) 
 	return p, cursor, nil
 }
 func (c knowledgePageCursor) projection() KnowledgeProjection {
-	return KnowledgeProjection{ProtocolVersion: 1, CheckedAt: c.CheckedAt, ValidUntil: c.ValidUntil, NextExpiryAt: c.NextExpiryAt}
+	return KnowledgeProjection{ProtocolVersion: c.ProtocolVersion, CheckedAt: c.CheckedAt, ValidUntil: c.ValidUntil, NextExpiryAt: c.NextExpiryAt}
 }
 
 type knowledgeViewBuilder struct {
@@ -219,6 +230,9 @@ type knowledgeViewBuilder struct {
 }
 
 func (s *CollaborationService) readKnowledge(ctx context.Context, fn func(*knowledgeViewBuilder) error) error {
+	if !protocol.IsKnowledgeProtocolVersion(knowledgePublicVersion(ctx)) {
+		return knowledgeFailure(409, "knowledge_protocol_unsupported")
+	}
 	tx, err := s.TxStarter.Begin(ctx)
 	if err != nil {
 		return knowledgePublicError(err)
@@ -294,7 +308,7 @@ func knowledgeReadTargetAuthority(ctx context.Context, q *db.Queries, viewer pgt
 }
 
 func (v *knowledgeViewBuilder) candidate(ctx context.Context, row db.CollaborationKnowledgeCandidate, detail bool) (KnowledgeCandidateView, error) {
-	out := KnowledgeCandidateView{knowledgeCandidateControl: knowledgeCandidateControl{CandidateID: util.UUIDToString(row.ID), State: row.State, StateRevision: strconv.FormatInt(row.StateRevision, 10), Availability: "restricted"}}
+	out := KnowledgeCandidateView{ProtocolVersion: knowledgePublicVersion(ctx), knowledgeCandidateControl: knowledgeCandidateControl{CandidateID: util.UUIDToString(row.ID), State: row.State, StateRevision: strconv.FormatInt(row.StateRevision, 10), Availability: "restricted"}}
 	a, err := v.source(ctx, row.SourceIssueID)
 	if err != nil {
 		return out, err
@@ -307,13 +321,29 @@ func (v *knowledgeViewBuilder) candidate(ctx context.Context, row db.Collaborati
 		if !knowledgeTargetConfirmer(target) {
 			return out, knowledgeFailure(404, "knowledge_candidate_not_found")
 		}
+		if out.ProtocolVersion == 1 && knowledgeCandidateRequiresV2(row) {
+			return out, knowledgeFailure(409, "knowledge_protocol_unsupported")
+		}
 		out.Capabilities.Withdraw = row.State == "pending" || row.State == "approved"
 		return out, nil
+	}
+	if out.ProtocolVersion == 1 && knowledgeCandidateRequiresV2(row) {
+		return out, knowledgeFailure(409, "knowledge_protocol_unsupported")
+	}
+	out.ProposalOrigin, out.DecisionOrigin = row.ProposalOrigin, row.DecisionOrigin
+	if row.ProposalOrigin == "automation" {
+		out.Automation = &knowledgeAutomationAudit{JobID: util.UUIDToString(row.AutomationJobID), PolicyRevision: strconv.FormatInt(row.AutomationPolicyRevision.Int64, 10), RuleVersion: row.AutomationRuleVersion.String}
+	}
+	if out.ProtocolVersion == 2 {
+		out.UsageStatus, err = v.s.KnowledgeUsageStatus(ctx, v.q, row)
+		if err != nil {
+			return out, err
+		}
 	}
 	out.Metadata = knowledgeCandidateMetadata{LineageID: util.UUIDToString(row.LineageID), Version: strconv.FormatInt(row.Version, 10), Target: knowledgeTarget(row), SourceWorkspaceID: util.UUIDToString(row.SourceWorkspaceID), SourceIssueID: util.UUIDToString(row.SourceIssueID), ProposedByUserID: util.UUIDToString(row.ProposedByUserID), ProposedAt: row.ProposedAt.Time.UTC(), ExpiresAt: knowledgeTime(row.ExpiresAt), SupersedesCandidateID: knowledgeIDPointer(row.SupersedesCandidateID), DerivedFromCandidateID: knowledgeIDPointer(row.DerivedFromCandidateID), ApprovedByUserID: knowledgeIDPointer(row.ApprovedByUserID), ApprovedAt: knowledgeTime(row.ApprovedAt), PublishedTargetRevision: knowledgeVersionPointer(row.PublishedTargetRevision)}
 	if row.LastDecidedAt.Valid {
 		out.Decision = &KnowledgeDecision{ActorUserID: util.UUIDToString(row.LastDecidedByUserID), At: row.LastDecidedAt.Time.UTC()}
-		if row.LastDecisionReason.Valid {
+		if row.LastDecisionReason.Valid && row.DecisionOrigin != "automation" {
 			reason := row.LastDecisionReason.String
 			out.Decision.Reason = &reason
 		}
@@ -355,7 +385,7 @@ func (v *knowledgeViewBuilder) candidate(ctx context.Context, row db.Collaborati
 }
 
 func (s *CollaborationService) ListKnowledgeCandidates(ctx context.Context, issueID pgtype.UUID, p KnowledgePageQuery) (KnowledgeCandidatesPage, error) {
-	out := KnowledgeCandidatesPage{KnowledgeProjection: knowledgeNewProjection(), IssueID: util.UUIDToString(issueID), Items: []KnowledgeCandidateView{}}
+	out := KnowledgeCandidatesPage{KnowledgeProjection: knowledgeNewProjection(ctx), IssueID: util.UUIDToString(issueID), Items: []KnowledgeCandidateView{}}
 	err := s.readKnowledge(ctx, func(v *knowledgeViewBuilder) error {
 		out.clampCredential(v.patExpiry)
 		a, err := v.source(ctx, issueID)
@@ -365,9 +395,14 @@ func (s *CollaborationService) ListKnowledgeCandidates(ctx context.Context, issu
 		if !a.Capabilities.Read {
 			return knowledgeFailure(404, "knowledge_candidate_not_found")
 		}
+		if out.ProtocolVersion == 1 {
+			if err = knowledgeRequireLegacy(v.q.KnowledgeSourceRequiresV2(ctx, issueID)); err != nil {
+				return err
+			}
+		}
 		out.Capabilities.CanPropose = knowledgeManager(a.Issue, v.viewer, true)
 		scope := "source:" + out.IssueID
-		p, cursor, err := knowledgeParsePage(p, scope, v.viewer)
+		p, cursor, err := knowledgeParsePage(p, scope, v.viewer, out.ProtocolVersion)
 		if err != nil {
 			return err
 		}
@@ -428,7 +463,7 @@ func (s *CollaborationService) ListKnowledgeCandidates(ctx context.Context, issu
 }
 
 func (s *CollaborationService) KnowledgeCandidate(ctx context.Context, id pgtype.UUID) (KnowledgeCandidateDetail, error) {
-	out := KnowledgeCandidateDetail{KnowledgeProjection: knowledgeNewProjection(), History: []KnowledgeCandidateView{}}
+	out := KnowledgeCandidateDetail{KnowledgeProjection: knowledgeNewProjection(ctx), History: []KnowledgeCandidateView{}}
 	err := s.readKnowledge(ctx, func(v *knowledgeViewBuilder) error {
 		out.clampCredential(v.patExpiry)
 		row, err := v.q.GetKnowledgeCandidate(ctx, id)
@@ -441,6 +476,11 @@ func (s *CollaborationService) KnowledgeCandidate(ctx context.Context, id pgtype
 		}
 		if out.Candidate.Availability == "restricted" {
 			return knowledgeProjectionCurrent(out.KnowledgeProjection)
+		}
+		if out.ProtocolVersion == 1 {
+			if err = knowledgeRequireLegacy(v.q.KnowledgeLineageRequiresV2(ctx, row.LineageID)); err != nil {
+				return err
+			}
 		}
 		expiry, err := v.q.GetKnowledgeSourceNextExpiry(ctx, row.SourceIssueID)
 		if err != nil {
@@ -468,7 +508,7 @@ func (s *CollaborationService) KnowledgeCandidate(ctx context.Context, id pgtype
 }
 
 func (s *CollaborationService) ListTargetKnowledge(ctx context.Context, target protocol.CollaborationKnowledgeTarget, p KnowledgePageQuery) (KnowledgeTargetPage, error) {
-	out := KnowledgeTargetPage{KnowledgeProjection: knowledgeNewProjection(), Target: target, Items: []KnowledgeCandidateView{}}
+	out := KnowledgeTargetPage{KnowledgeProjection: knowledgeNewProjection(ctx), Target: target, Items: []KnowledgeCandidateView{}}
 	err := s.readKnowledge(ctx, func(v *knowledgeViewBuilder) error {
 		out.clampCredential(v.patExpiry)
 		auth, err := knowledgeReadTargetAuthority(ctx, v.q, v.viewer, target)
@@ -478,12 +518,19 @@ func (s *CollaborationService) ListTargetKnowledge(ctx context.Context, target p
 		if !auth.Exists || !auth.Member {
 			return knowledgeFailure(404, "knowledge_target_not_found")
 		}
+		if out.ProtocolVersion == 1 {
+			project, _ := util.ParseUUID(target.ProjectID)
+			workspace, _ := util.ParseUUID(target.WorkspaceID)
+			if err = knowledgeRequireLegacy(v.q.KnowledgeTargetRequiresV2(ctx, db.KnowledgeTargetRequiresV2Params{TargetKind: target.Kind, TargetWorkspaceID: workspace, ProjectID: project})); err != nil {
+				return err
+			}
+		}
 		out.KnowledgeRevision, err = knowledgeReadTargetRevision(ctx, v.q, target)
 		if err != nil {
 			return err
 		}
 		scope := "target:" + target.Kind + ":" + target.WorkspaceID + ":" + knowledgeUUIDString(knowledgeTargetID(target))
-		p, cursor, err := knowledgeParsePage(p, scope, v.viewer)
+		p, cursor, err := knowledgeParsePage(p, scope, v.viewer, out.ProtocolVersion)
 		if err != nil {
 			return err
 		}

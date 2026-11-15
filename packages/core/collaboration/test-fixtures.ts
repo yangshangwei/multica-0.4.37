@@ -143,3 +143,4 @@ export { knowledgeCandidateFixture, knowledgeUnavailableCandidateFixture } from 
 // PAY-241 S2 stage fixtures, shared with the views suite through this entry.
 export * from "./stage-test-fixtures";
 export * from "./stage-test-report-fixtures";
+export { knowledgePolicyFixture, knowledgeJobFixture, knowledgeJobsFixture } from "./knowledge-test-fixtures";

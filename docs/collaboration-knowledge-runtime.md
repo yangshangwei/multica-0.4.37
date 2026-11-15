@@ -1,8 +1,11 @@
 # Collaboration knowledge runtime operations
 
-Private knowledge execution is **off by default**. Human proposals and approvals
-create retained, source-bound contributions; approval does not itself enable
-execution, grant source access or write project/workspace base text or skills.
+Guarded knowledge use is **on by default** when its startup setting is unset or
+empty. Explicit disables remain effective. Formal project collaboration
+acceptance can generate and adopt source-bound knowledge through the configured
+server model and project policy; manual human proposals and decisions remain
+available. Adoption never grants wider source access or writes project/workspace
+base text or skills.
 Built-in local Claude and Codex have provider-specific private-consumption
 adapters. Custom profiles and remote runtimes are not admitted. Production
 enablement still requires acceptance for the actual provider/version/platform.
@@ -10,11 +13,11 @@ enablement still requires acceptance for the actual provider/version/platform.
 ## Startup setting
 
 ```dotenv
-MULTICA_KNOWLEDGE_CONTEXT_ENABLED=false
+MULTICA_KNOWLEDGE_CONTEXT_ENABLED=true
 ```
 
-Only the exact string `true` opts in. Empty, `1`, `TRUE` and whitespace variants
-remain off. The router reads it once at construction, passes it through
+Unset and empty values enable use. For a nonempty value, only the exact string
+`true` enables it; `false`, `1`, `TRUE` and whitespace variants remain off. The router reads it once at construction, passes it through
 `handler.Config` to its `TaskService`, and collaboration runtime helpers use that
 same instance gate. Change the configured value and restart/recreate every API
 process to apply it; changing a shell after startup or a database flag does not
@@ -22,22 +25,31 @@ update an existing instance. Mixed settings across replicas cause inconsistent
 admission and must not be used as a rollout method.
 
 [`docker-compose.selfhost.yml`](../docker-compose.selfhost.yml) forwards the value
-with a false default; [`.env.example`](../.env.example) documents it.
+with a true default; [`.env.example`](../.env.example) documents it.
 [`scripts/check.sh`](../scripts/check.sh) forces its generated check environment
 to false even when inherited configuration enables it. Existing collaboration
 creation, host execution and owner-consent gates still apply independently.
 
-## Before enabling a deployment
+## Upgrade order
 
-1. Install migrations through 763 and the matching server/daemon/client code.
+1. Apply the current migrations, including the automation records introduced in
+   844–860 and 865, and matching server/daemon/client code.
    Use the repository migration runner; index migrations run individually and
    concurrently. Verify retained candidate, target revision, invalidation and
    internal task delivery support are present, not merely a migration ledger row.
-2. Retain current claim readers, preparation/authorization/observation handlers,
-   exact-session history and fenced pointer writers on every serving instance.
-   Deploying an older reader can bypass protection even if its injection is off.
-3. Check the final source-bound G2 disposition and integrated evidence in the
-   [knowledge task](../.trellis/tasks/10-30-collaboration-knowledge-promotion/implement.md).
+2. Use a maintenance window to quiesce writes while all serving API instances,
+   clients and daemons acquire strict v1/v2 readers and current source/session
+   fences. Restore traffic only after those readers are present. Do not mix old
+   API instances with writers of new records. Keep existing explicit startup and
+   project-policy disables; a default upgrade must not overwrite them.
+3. Check current automatic-knowledge acceptance and exact source/configuration
+   evidence in the
+   [automation task](../.trellis/tasks/11-14-project-knowledge-automation/implement.md).
+   Its Web/Desktop journey must prove formal acceptance, adoption, actual daemon
+   input, immediate reopen refusal and reacceptance with a fresh proof, plus
+   no-project/manual zero-work cases. Also retain the source-bound G2 disposition
+   and integrated evidence in the
+   [knowledge task](../.trellis/tasks/archive/2026-11/10-30-collaboration-knowledge-promotion/implement.md).
    Required coverage includes ordinary HTTP/batch/live WS and managed claims,
    all ordinary prompt branches, real server/DB/daemon composition, collaboration
    HostExecutor composition, role/purge/expiry races, native history, private logs
@@ -56,14 +68,113 @@ creation, host execution and owner-consent gates still apply independently.
 5. Keep the invalidation worker, relay and current credential checks running.
    Ensure operators can observe the content-free backlog diagnostics below.
 
-The retained [ordinary composite report](../.trellis/tasks/10-30-collaboration-knowledge-promotion/research/composite-acceptance-2026-11-01/handoff.md),
-[C4 handoff](../.trellis/tasks/10-30-collaboration-knowledge-promotion/research/collaboration-runtime-integration-2026-11-01/handoff.md)
-and [UI evidence](../.trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-platform-acceptance-2026-11-01/summary.md)
+The retained [ordinary composite report](../.trellis/tasks/archive/2026-11/10-30-collaboration-knowledge-promotion/research/composite-acceptance-2026-11-01/handoff.md),
+[C4 handoff](../.trellis/tasks/archive/2026-11/10-30-collaboration-knowledge-promotion/research/collaboration-runtime-integration-2026-11-01/handoff.md)
+and [UI evidence](../.trellis/tasks/archive/2026-11/10-30-collaboration-knowledge-promotion/research/ui-platform-acceptance-2026-11-01/summary.md)
 describe bounded snapshots and distinct scopes. They do not collectively declare
 G2 passed. Final integrated/privacy checks and the task's final disposition own
 that decision. Fake Provider processes prove application input/lifecycle delivery;
 they do not prove model comprehension or a real Provider/version/OS acceptance
 matrix. Windows, installers and multi-account/quota acceptance remain separate.
+
+## Project extraction and adoption
+
+Three controls are independent:
+
+| Control | Effect |
+| --- | --- |
+| `MULTICA_KNOWLEDGE_CONTEXT_ENABLED` | Controls new use/disclosure/launch authorization; it does not disable extraction. |
+| Project knowledge policy | Defaults to system-enabled, max3 new candidates. Current human project lead or workspace owner/admin may disable or lower max to1–3. Off stops new work and in-flight adoption, preserving already valid knowledge. |
+| `MULTICA_LLM_*` | The router-owned server assist client generates/checks knowledge and bears the model charges. With both key and base URL absent there are zero upstream requests; jobs wait for configuration. No personal CLI account or original daemon queue is used. |
+
+Only exact formal project collaboration acceptance (including self-acceptance)
+creates a durable job. No-project/manual/disabled-policy cases create none.
+Ordinary done, execution success, return and cancellation are not acceptance.
+The acceptance transaction writes a lightweight intent; model requests happen
+after commit and cannot undo the business result.
+
+Each new batch has0–3 candidates (body2KiB, summary256B, up to4 exact quotes),
+complete source material up to8 items/128KiB and complete target comparison up
+to16 items/128KiB. Each request includes at most288KiB decoded input and2MiB
+wire JSON. Generation and checking have separate60s deadlines,6000/3000 output
+tokens and24/16KiB output limits. Each API instance processes at most2 batches;
+a120s batch uses a180s lease. Reacceptance fixes all affected predecessors into
+up to6 review batches plus1 new batch. These are per-instance/per-batch limits,
+not a global billing cap; SDK transport/parameter retries share the deadline.
+
+Job status preserves up to 42 complete latest-execution stage-attempt records per
+job (7 batches × 2 stages × 3 allowed attempt numbers); 43 records are rejected.
+The current worker writes attempt 1 only and normally produces at most 14 records.
+Keep additional valid retained attempts; the normal worker count is not a
+projection limit. SDK transport/parameter retries are not separate stage records.
+
+Authorize and budget-check the complete target comparison before either model
+call. Generation sees permitted source material and same-source predecessors
+only; a valid empty result completes without checking. Checking also sees the
+complete currently readable target comparison. Raw model
+reasons and their full actual input-source closure remain private; public status
+uses fixed reason codes. Usage preserves real zero, partial and missing counts;
+unknown or failed calls are not reported as zero cost. Rule adoption is not a
+claim that a model's statements or quoted test claims were independently proven.
+
+Duplicates are skipped. Conflicts, incomplete evidence/comparison, changed
+bindings or capacity become review work. No old contribution is evicted or body
+truncated. Completed outcomes and successful phases are retained; uncertain calls
+require an authorized explicit retry. Retry keeps the accepted-job identity and
+old attempts, binds the current policy to a new execution, and preserves already
+saved new lineages, settled predecessor slots and the accepted event's
+new-knowledge quota.
+That quota counts each automation-root lineage once any version was published,
+including later human approval and withdrawn/superseded history. Pending
+unpublished proposals do not consume it, and existing-lineage restoration or
+revision does not consume new-lineage quota. The current execution's policy
+limit bounds further automatic publication; human decisions do not reset the
+retained count.
+
+Reopening changes the source epoch, immediately invalidating automatic proofs
+for new disclosure/authorization without waiting for an outbox scan. History
+stays approved with paused usage. Reacceptance restores unchanged supported
+body and summary or approves an exact-lineage revision; conflicting, expired,
+unavailable or manually overridden items stay paused/pending. Untouched automatic pending
+successors do not become a human veto. Manual withdrawals cannot be resurrected
+under a fresh candidate ID. Paused unexpired approvals still reserve capacity.
+Automatic validity follows the original approval origin. A human-approved
+automated proposal retains human approval's consumption semantics.
+
+A v2 manifest binds the candidate/version/content hash plus validity revision,
+accepted event, submission and closed epoch. Original sources and new positive
+support dependencies are locked and rechecked. Old automatic exposures cannot
+be silently replaced with a new proof or replayed into a fresh fallback session;
+a separately authorized fresh execution prepares the current proof.
+
+Candidate APIs negotiate `X-Multica-Knowledge-Version: 2`; an absent header means
+v1, and the candidate body's `protocol_version` must agree. Policy/jobs require
+header version 2, with no `protocol_version` in policy/retry bodies. Duplicate
+header values return `400 invalid_knowledge_request`; an unsupported single
+value (including empty), or v1 negotiation for policy/jobs, returns
+`409 knowledge_protocol_unsupported`. A supported candidate header/body mismatch
+returns `400 invalid_knowledge_request`. Malformed/duplicate/unknown policy/retry
+JSON fields use the workflow decoder's `400 invalid_request`; decoded required
+field and canonical/range validation uses `400 invalid_knowledge_request`.
+V1 serves only complete representable legacy scopes, never filtered fake-empty
+collections or fabricated human actors. Original v1 receipts keep their sealed
+version and values.
+Ordinary retained metadata reads1/2 explicitly, with old nested claims retained
+in a monotonic v2 envelope. Collaboration keeps the discoverable database slots
+`knowledge:claim:v1` and `knowledge:prepare:v1` while versioning their payloads.
+After new records exist, disabling automation is not permission to deploy an
+older reader or delete history to force a downgrade.
+
+Project policy lives at `/api/projects/{id}/knowledge-policy`; issue job status
+and authorized retry live at `/api/collaboration/issues/{id}/knowledge-jobs`.
+Policy/retry writes have original-key recovery endpoints and source-safe display
+leases. These endpoints do not expose a public system-approval command.
+An exact policy/retry write refusal, including same-key write replay, returns
+HTTP 409 with its sealed version, code, request/resource identity and revision.
+Operation GET returns HTTP 200 with those same sealed values and no body `status`
+field; a refusal code remains a refusal. After transport
+uncertainty, query that original request; role loss does not erase a committed
+actor-owned receipt. Do not replace an uncertain write with a new request ID.
 
 ## Expected behavior and diagnosis
 
@@ -127,6 +238,12 @@ to a release that reads every version written since. An older reader refuses the
 affected tasks with `knowledge_context_changed`; it never rewrites them. Target deletion must not
 resurrect a target from delayed scans. Preserve backups and use forward repairs
 for a nonempty deployment.
+
+Authorized project/workspace deletion removes its policy overrides and target
+counters, retaining final hints for published targets. Candidate, job, batch, attempt,
+evaluation, validity and invalidation history remain retained without cascading
+deletion. Deleting a target does not recreate it through delayed work or authorize
+removal of that history.
 
 Implementation details and regression ownership are in the
 [server candidate](../.trellis/spec/server/collaboration-knowledge.md),

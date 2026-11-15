@@ -39,16 +39,29 @@ function detail(submission: CollaborationSubmission, completed = false) {
   if (!issue) throw new Error("Invalid delivery detail fixture");
   return issue;
 }
-function mount(issue: CollaborationIssue, locale: "en" | "zh-Hans" = "en") {
+function mount(issue: CollaborationIssue, locale: "en" | "zh-Hans" = "en", options: { submissionId?: string; onSubmissionReady?: (element: HTMLElement) => void } = {}) {
   setApiInstance(new ApiClient("https://server.example"));
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   clients.push(client);
   const navigation = { pathname: "/account", searchParams: new URLSearchParams(), hash: "", push: vi.fn(), replace: vi.fn(), back: vi.fn(),
     getShareableUrl: (path: string) => `https://server.example${path}` };
   return renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={navigation}>
-    <CollaborationDeliveryPanel scope={collaborationScope(issueId)} issue={issue} />
+    <CollaborationDeliveryPanel scope={collaborationScope(issueId)} issue={issue} {...options} />
   </NavigationProvider></QueryClientProvider>, { locale });
 }
+
+it("opens and locates an exact linked submission through bounded existing history pages", async () => {
+  const ready = vi.fn();
+  const fetch = vi.fn(async (url: string) => new Response(JSON.stringify(new URL(url).searchParams.has("cursor")
+    ? { issue_id: issueId, items: [prior], next_cursor: null }
+    : { issue_id: issueId, items: [current], next_cursor: "older" })));
+  vi.stubGlobal("fetch", fetch);
+  mount(detail(current), "en", { submissionId: prior.id, onSubmissionReady: ready });
+  await waitFor(() => expect(ready).toHaveBeenCalledOnce());
+  expect(ready.mock.calls[0]?.[0]).toHaveAttribute("id", `delivery-${prior.id}`);
+  expect(within(ready.mock.calls[0]?.[0]).getByText(prior.result!)).toBeInTheDocument();
+  expect(fetch).toHaveBeenCalledTimes(2);
+});
 
 it("keeps exact current and earlier results distinct while loading prior decisions and only selected evidence", async () => {
   const file = { id: "00000000-0000-4000-8000-000000000010", draft_id: current.id, issue_id: issueId, intended_issue_id: issueId,

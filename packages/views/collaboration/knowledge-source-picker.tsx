@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
-import { collaborationCommentsOptions, collaborationMemoryOptions, collaborationMemoryVersionsOptions, collaborationRunRecordsOptions,
+import { collaborationCommentsOptions, collaborationKnowledgeCandidateOptions, collaborationMemoryOptions, collaborationMemoryVersionsOptions, collaborationRunRecordsOptions,
   knowledgeSourceSelectionKey, type CollaborationIssue, type CollaborationScope, type KnowledgeSourceSelection } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import { useT } from "../i18n";
 import { KnowledgeSelect, KnowledgeSourceLabel } from "./knowledge-controls";
 
-export function KnowledgeSourcePicker({ scope, issue, selected, onChange, disabled }: {
+export function KnowledgeSourcePicker({ scope, issue, selected, onChange, disabled, deliveryCandidateId }: {
   scope: CollaborationScope; issue: CollaborationIssue; selected: KnowledgeSourceSelection[];
-  onChange: (next: KnowledgeSourceSelection[]) => void; disabled: boolean;
+  onChange: (next: KnowledgeSourceSelection[]) => void; disabled: boolean; deliveryCandidateId?: string;
 }) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
-  const [kind, setKind] = useState("memory"), [runId, setRunId] = useState("");
+  const [kind, setKind] = useState(deliveryCandidateId ? "delivery" : "memory"), [runId, setRunId] = useState("");
+  const delivery = useQuery({ ...collaborationKnowledgeCandidateOptions(client, scope, deliveryCandidateId ?? ""), enabled: kind === "delivery" && !!deliveryCandidateId });
   const memory = useQuery({ ...collaborationMemoryOptions(client, scope, issue.id), enabled: kind === "memory" });
   const versions = useInfiniteQuery({ ...collaborationMemoryVersionsOptions(client, scope, issue.id), enabled: kind === "memory" });
   const comments = useInfiniteQuery({ ...collaborationCommentsOptions(client, scope, issue.id), enabled: kind === "comment" });
@@ -25,8 +26,12 @@ export function KnowledgeSourcePicker({ scope, issue, selected, onChange, disabl
     : kind === "comment" ? (!comments.error ? comments.data?.pages.flatMap((page) => page.items.filter((item) => item.deleted_at === null).map((item) => ({
       source: { kind: "comment" as const, issue_id: issue.id, comment_id: item.id, version: item.comment_revision }, preview: item.content.slice(0, 160), name: item.author?.name,
     }))) ?? [] : [])
-      : (!records.error ? records.data?.pages.flatMap((page) => page.items.map((item) => ({ source: { kind: "run_record" as const, issue_id: issue.id, run_id: runId, record_id: item.id }, preview: item.body.slice(0, 160) }))) ?? [] : []);
-  const query = kind === "memory" ? versions : kind === "comment" ? comments : records;
+      : kind === "delivery" ? (!delivery.error && delivery.data?.value.candidate.availability === "available"
+        ? delivery.data.value.candidate.sources.flatMap((source) => source.kind === "delivery" && source.issue_id === issue.id && deliveryCandidateId ? [{ source: { kind: "delivery" as const,
+          issue_id: source.issue_id, candidate_id: deliveryCandidateId, submission_id: source.submission_id, delivery_event_seq: source.delivery_event_seq, accepted_event_seq: source.accepted_event_seq } }] : []) : [])
+        : (!records.error ? records.data?.pages.flatMap((page) => page.items.map((item) => ({ source: { kind: "run_record" as const, issue_id: issue.id, run_id: runId, record_id: item.id }, preview: item.body.slice(0, 160) }))) ?? [] : []);
+  const collection = kind === "memory" ? versions : kind === "comment" ? comments : records;
+  const query = kind === "delivery" ? delivery : collection;
   const selectedKeys = new Set(selected.map(knowledgeSourceSelectionKey));
   function toggle(source: KnowledgeSourceSelection) {
     const key = knowledgeSourceSelectionKey(source);
@@ -36,7 +41,8 @@ export function KnowledgeSourcePicker({ scope, issue, selected, onChange, disabl
     <legend className="mb-2 text-body font-medium">{t(($) => $.knowledge.sources)}</legend>
     <p className="text-caption text-muted-foreground">{t(($) => $.knowledge.sourcesHint)}</p>
     <KnowledgeSelect label={t(($) => $.knowledge.sources)} value={kind} onChange={setKind} disabled={disabled}
-      items={(["memory", "comment", "run_record"] as const).map((value) => ({ value, label: t(($) => $.knowledge[value]) }))} />
+      items={[...(["memory", "comment", "run_record"] as const).map((value) => ({ value, label: t(($) => $.knowledge[value]) })),
+        ...(deliveryCandidateId ? [{ value: "delivery", label: t(($) => $.knowledge.delivery) }] : [])]} />
     {kind === "run_record" && <KnowledgeSelect label={t(($) => $.knowledge.chooseRun)} value={runId} onChange={setRunId} disabled={disabled}
       items={[{ value: "", label: t(($) => $.knowledge.chooseRun) }, ...(issue.execution?.runs ?? []).map((run) => ({ value: run.id, label: `${t(($) => $.execution[run.step_kind])} · ${run.id.slice(-8)}` }))]} />}
     {query.isFetching && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.knowledge.loading)}</p>}
@@ -48,7 +54,7 @@ export function KnowledgeSourcePicker({ scope, issue, selected, onChange, disabl
         <span className="min-w-0 flex-1"><KnowledgeSourceLabel source={source} />{name && <span> · {name}</span>}{preview && <span className="mt-1 block text-muted-foreground [overflow-wrap:anywhere]">{preview}</span>}</span>
       </label>)}
     </div>
-    {query.hasNextPage && <Button type="button" variant="outline" size="sm" disabled={query.isFetchingNextPage || disabled} onClick={() => void query.fetchNextPage()}>{t(($) => $.knowledge.more)}</Button>}
+    {kind !== "delivery" && collection.hasNextPage && <Button type="button" variant="outline" size="sm" disabled={collection.isFetchingNextPage || disabled} onClick={() => void collection.fetchNextPage()}>{t(($) => $.knowledge.more)}</Button>}
     {selected.length > 0 && <div className="space-y-2"><p className="text-caption font-medium">{t(($) => $.knowledge.selected)}</p><ul className="space-y-2">
       {selected.map((source) => <li key={knowledgeSourceSelectionKey(source)} className="flex min-w-0 items-center justify-between gap-3 text-caption"><KnowledgeSourceLabel source={source} />
         <Button type="button" variant="ghost" size="sm" onClick={() => toggle(source)} disabled={disabled}>{t(($) => $.knowledge.removeSource)}</Button></li>)}

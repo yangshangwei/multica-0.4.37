@@ -98,6 +98,7 @@ RETURNING *;
 
 -- name: ApproveKnowledgeCandidate :one
 UPDATE collaboration_knowledge_candidate SET state = 'approved', state_revision = (state_revision + 1)::bigint,
+    approval_origin = 'human', approval_job_id = NULL, decision_origin = 'human', last_decision_job_id = NULL,
     approved_by_user_id = sqlc.arg(actor_id), approved_at = clock_timestamp(),
     last_decided_by_user_id = sqlc.arg(actor_id), last_decided_at = clock_timestamp(),
     published_target_revision = sqlc.arg(target_revision)
@@ -108,16 +109,19 @@ RETURNING *;
 
 -- name: RejectKnowledgeCandidate :one
 UPDATE collaboration_knowledge_candidate SET state = 'rejected', state_revision = (state_revision + 1)::bigint,
+    decision_origin = 'human', last_decision_job_id = NULL,
     last_decided_by_user_id = sqlc.arg(actor_id), last_decided_at = clock_timestamp(), last_decision_reason = sqlc.arg(reason)
 WHERE id = sqlc.arg(id) AND state = 'pending' AND state_revision = sqlc.arg(expected_state_revision) RETURNING *;
 
 -- name: WithdrawKnowledgeCandidate :one
 UPDATE collaboration_knowledge_candidate SET state = 'withdrawn', state_revision = (state_revision + 1)::bigint,
+    decision_origin = 'human', last_decision_job_id = NULL,
     last_decided_by_user_id = sqlc.arg(actor_id), last_decided_at = clock_timestamp(), last_decision_reason = sqlc.arg(reason)
 WHERE id = sqlc.arg(id) AND state IN ('pending', 'approved') AND state_revision = sqlc.arg(expected_state_revision) RETURNING *;
 
 -- name: SupersedeKnowledgeCandidate :one
 UPDATE collaboration_knowledge_candidate SET state = 'superseded', state_revision = (state_revision + 1)::bigint,
+    decision_origin = 'human', last_decision_job_id = NULL,
     last_decided_by_user_id = sqlc.arg(actor_id), last_decided_at = clock_timestamp()
 WHERE id = sqlc.arg(id) AND state = 'approved' AND state_revision = sqlc.arg(expected_state_revision) RETURNING *;
 

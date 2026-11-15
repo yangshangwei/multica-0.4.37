@@ -8,7 +8,8 @@ import { dismissKnowledgeOperation, executeKnowledgeIntent, KnowledgeUnusedInten
 import { collaborationKnowledgeKeys } from "./knowledge-queries";
 import { knowledgeCandidateFixture, knowledgeCandidatesFixture, knowledgeIds, knowledgeProposalFixture, knowledgeReceiptFixture, knowledgeUnavailableCandidateFixture } from "./knowledge-test-fixtures";
 import { expireKnowledgeProjections } from "./knowledge-cache";
-import { KnowledgeRecoveryStorageError, readPendingKnowledgeOperations } from "./knowledge-recovery";
+import { KnowledgeRecoveryStorageError, readPendingKnowledgeOperations, saveKnowledgeOperationIdentity } from "./knowledge-recovery";
+import { parseCollaborationKnowledgeReceipt } from "./knowledge-schema";
 import type { StorageAdapter } from "../types/storage";
 
 vi.mock("../auth", () => ({ useAuthStore: { getState: () => ({ user: { id: "00000000-0000-4000-8000-000000000001" } }) } }));
@@ -34,6 +35,57 @@ it("allocates a new request UUID per intent and preselects the recoverable candi
   expect(first.requestId).not.toBe(second.requestId); expect(first.candidateId).not.toBe(second.candidateId);
   expect(JSON.parse(first.requestJSON)).toMatchObject({ candidate_id: first.candidateId, request_id: first.requestId });
   expect(Object.isFrozen(first)).toBe(true);
+});
+
+it("preserves selected recovery versions while leaving legacy identity bytes unchanged", () => {
+  const f = setup();
+  const legacy = { scope: { server: f.scope.server, userId: f.scope.userId }, candidateId: knowledgeIds.candidate,
+    requestId: knowledgeIds.request, action: "approve" as const };
+  saveKnowledgeOperationIdentity(legacy);
+  const original = [...saved.values()][0];
+  const selected = { ...legacy, requestId: knowledgeIds.project, protocolVersion: 2 as const };
+  saveKnowledgeOperationIdentity(selected);
+  expect(readPendingKnowledgeOperations(f.scope)).toEqual([legacy, selected]);
+  expect([...saved.values()][0]).toBe(original);
+  expect(original).not.toContain("protocolVersion");
+  expect(() => saveKnowledgeOperationIdentity({ ...selected, protocolVersion: 1 as const })).toThrow(KnowledgeRecoveryStorageError);
+});
+
+it("requires the original operation version when matching a recovered receipt", () => {
+  const f = setup(); const intent = prepareKnowledgeDecision(f.scope, knowledgeCandidateFixture, "approve");
+  const v1 = { ...knowledgeReceiptFixture, request_id: intent.requestId };
+  const v2 = parseCollaborationKnowledgeReceipt({ ...v1, protocol_version: 2 });
+  const selected = { ...intent, protocolVersion: 2 as const };
+  expect(matchesKnowledgeReceipt(intent, v1)).toBe(true);
+  expect(matchesKnowledgeReceipt(intent, v2)).toBe(false);
+  expect(matchesKnowledgeReceipt(selected, v1)).toBe(false);
+  expect(matchesKnowledgeReceipt(selected, v2)).toBe(true);
+});
+
+it("retains an explicitly selected v2 across uncertain retries without changing the default v1", async () => {
+  const f = setup();
+  const legacy = prepareKnowledgeDecision(f.scope, knowledgeCandidateFixture, "approve");
+  expect(JSON.parse(legacy.requestJSON).protocol_version).toBe(1);
+  const intent = prepareKnowledgeDecision(f.scope, knowledgeCandidateFixture, "approve", undefined, 2);
+  expect(intent).toHaveProperty("protocolVersion", 2);
+  const originalJSON = intent.requestJSON;
+  expect(JSON.parse(originalJSON).protocol_version).toBe(2);
+  const receipt = parseCollaborationKnowledgeReceipt({ ...knowledgeReceiptFixture, request_id: intent.requestId, protocol_version: 2 });
+  const send = vi.spyOn(f.api, "approveCollaborationKnowledge").mockRejectedValueOnce(new TypeError("Lost response")).mockResolvedValueOnce(receipt);
+  await expect(executeKnowledgeIntent(f.client, f.scope, intent)).rejects.toThrow("Lost response");
+  expect(readPendingKnowledgeOperations(f.scope)[0]).toHaveProperty("protocolVersion", 2);
+  await expect(executeKnowledgeIntent(f.client, f.scope, intent)).resolves.toMatchObject({ protocol_version: 2 });
+  expect(send.mock.calls[0]).toEqual(send.mock.calls[1]);
+  expect(intent.requestJSON).toBe(originalJSON);
+});
+
+it("does not dispatch an intent whose serialized version differs from its recovery identity", async () => {
+  const f = setup(); const intent = prepareKnowledgeDecision(f.scope, knowledgeCandidateFixture, "approve");
+  const request = { ...JSON.parse(intent.requestJSON), protocol_version: 2 };
+  const send = vi.spyOn(f.api, "approveCollaborationKnowledge").mockResolvedValue({ ...knowledgeReceiptFixture, request_id: intent.requestId });
+  await expect(executeKnowledgeIntent(f.client, f.scope, { ...intent, requestJSON: JSON.stringify(request) }))
+    .rejects.toBeInstanceOf(KnowledgeUnusedIntentError);
+  expect(send).not.toHaveBeenCalled();
 });
 
 it.each([null, "2020-01-01T00:00:00Z"])("can reject an unavailable pending candidate expiring at %s using only its exact state revision", async (expires_at) => {
@@ -88,7 +140,7 @@ it("recovers a content-free original receipt with candidate/request only after l
   const write = vi.spyOn(f.api, "withdrawCollaborationKnowledge");
   const identity = { scope: intent.scope, candidateId: intent.candidateId, requestId: intent.requestId, action: intent.action };
   await expect(recoverKnowledgeOperation(f.client, f.scope, identity)).resolves.toMatchObject({ code: "knowledge_withdrawn" });
-  expect(read).toHaveBeenCalledExactlyOnceWith(intent.candidateId, intent.requestId); expect(write).not.toHaveBeenCalled();
+  expect(read).toHaveBeenCalledExactlyOnceWith(intent.candidateId, intent.requestId, { protocolVersion: 1 }); expect(write).not.toHaveBeenCalled();
 });
 
 it("keeps unknown/mismatched receipts uncertain and clears private projections for explicit conflict reread", async () => {

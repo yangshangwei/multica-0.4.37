@@ -6,6 +6,8 @@ export interface AccountDestination {
   issueId: string | null;
   commentId: string | null;
   runId?: string | null;
+  /** Exact formal delivery; opens retained submission history when needed. */
+  submissionId?: string | null;
   anchor?: "description" | "memory";
   /** Exact shared-context version; implies the memory section. */
   memoryVersion?: string | null;
@@ -42,17 +44,21 @@ export function parseAccountPath(path: string): AccountDestination | null {
     const runId = url.hash.slice("#run-".length);
     return issueId && uuid.test(runId) ? { view, issueId: issueId.toLowerCase(), commentId: null, runId: runId.toLowerCase() } : null;
   }
+  if (url.hash.startsWith("#delivery-")) {
+    const submissionId = url.hash.slice("#delivery-".length);
+    return issueId && uuid.test(submissionId) ? { view, issueId: issueId.toLowerCase(), commentId: null, submissionId: submissionId.toLowerCase() } : null;
+  }
   const commentId = url.hash ? url.hash.slice("#comment-".length) : null;
   if (url.hash && (!issueId || !url.hash.startsWith("#comment-") || !uuid.test(commentId ?? ""))) return null;
   return { view, issueId: issueId?.toLowerCase() ?? null, commentId: commentId?.toLowerCase() ?? null };
 }
 
 export function accountPath(input: Partial<AccountDestination> = {}): string {
-  if ([input.runId, input.commentId, input.anchor, input.memoryVersion].filter(Boolean).length > 1) throw new TypeError("Invalid account destination");
+  if ([input.runId, input.submissionId, input.commentId, input.anchor, input.memoryVersion].filter(Boolean).length > 1) throw new TypeError("Invalid account destination");
   const query = new URLSearchParams({ view: input.view ?? "current" });
   if (input.administration) query.set("administration", "collaboration");
   if (input.issueId) query.set("issue", input.issueId.toLowerCase());
-  const hash = input.runId ? `#run-${input.runId.toLowerCase()}`
+  const hash = input.submissionId ? `#delivery-${input.submissionId.toLowerCase()}` : input.runId ? `#run-${input.runId.toLowerCase()}`
     : input.commentId ? `#comment-${input.commentId.toLowerCase()}`
       : input.memoryVersion ? `#memory-v${input.memoryVersion}` : input.anchor ? `#${input.anchor}` : "";
   const path = `/account?${query}${hash}`;

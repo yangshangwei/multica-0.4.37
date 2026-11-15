@@ -73,7 +73,7 @@ func TestKnowledgeRebindPreparationPreservesClaimIdentity(t *testing.T) {
 			claimed.Generation = claimedGeneration
 			claimed.NativeSessionID = "claimed-native"
 			fingerprint := protocol.CollaborationKnowledgeHash("actual invocation")
-			prepared := f.prepare(protocol.TaskKnowledgePrepareRequest{Session: claimed, InvocationFingerprint: fingerprint})
+			prepared := f.prepare(protocol.TaskKnowledgePrepareRequest{ProtocolVersion: f.task.KnowledgeContext.ProtocolVersion, Session: claimed, InvocationFingerprint: fingerprint})
 			prepared.Session.Generation, prepared.Session.NativeSessionID = uuid.NewString(), ""
 			if err := validateKnowledgePreparation(f.task, claimed, true, fingerprint, prepared); err != nil {
 				t.Fatalf("unchanged fresh binding refused: %v", err)

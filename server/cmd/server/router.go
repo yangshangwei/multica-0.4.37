@@ -81,6 +81,7 @@ var corsAllowedHeaders = []string{
 	"X-Client-Version",
 	"X-Client-OS",
 	"X-Client-Capabilities",
+	handler.HeaderKnowledgeVersion,
 	// Sent by the host page when it relays a plugin surface's Action API call.
 	"X-Multica-Plugin-Installation",
 }
@@ -97,6 +98,7 @@ var corsExposedHeaders = []string{
 	"ETag",
 	"X-Request-ID",
 	"Retry-After",
+	handler.HeaderKnowledgeVersion,
 	handler.HeaderCommentsTruncated,
 	handler.HeaderTimelineTruncated,
 }
@@ -427,10 +429,11 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 
 	cfSigner := auth.NewCloudFrontSignerFromEnv()
 	origins := allowedOrigins()
+	knowledgeSetting := os.Getenv("MULTICA_KNOWLEDGE_CONTEXT_ENABLED")
 
 	signupConfig := handler.Config{
 		ArtifactConfig:                artifact.Config{StagingRoot: strings.TrimSpace(os.Getenv("MULTICA_ARTIFACT_STAGING_ROOT")), OutputRoot: strings.TrimSpace(os.Getenv("MULTICA_ARTIFACT_OUTPUT_ROOT")), Identity: strings.TrimSpace(os.Getenv("MULTICA_ARTIFACT_CONFIG_ID"))},
-		KnowledgeContextEnabled:       os.Getenv("MULTICA_KNOWLEDGE_CONTEXT_ENABLED") == "true",
+		KnowledgeContextEnabled:       knowledgeSetting == "" || knowledgeSetting == "true",
 		ManagedInstallationsEnabled:   os.Getenv("MULTICA_MANAGED_INSTALLATIONS_ENABLED") == "true",
 		DeploymentID:                  auth.ManagedDeploymentID(),
 		PlatformAdminEnabled:          os.Getenv("MULTICA_PLATFORM_ADMIN_ENABLED") == "true",
@@ -1783,6 +1786,10 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Post("/api/collaboration/knowledge-candidates/{candidateId}/reject", h.RejectCollaborationKnowledge)
 		r.Post("/api/collaboration/knowledge-candidates/{candidateId}/withdraw", h.WithdrawCollaborationKnowledge)
 		r.Get("/api/collaboration/knowledge-candidates/{candidateId}/operations/{requestId}", h.GetCollaborationKnowledgeOperation)
+		r.Get("/api/collaboration/issues/{id}/knowledge-jobs", h.ListCollaborationKnowledgeJobs)
+		r.Post("/api/collaboration/issues/{id}/knowledge-jobs/{jobId}/retry", h.RetryCollaborationKnowledgeJob)
+		r.Get("/api/collaboration/issues/{id}/knowledge-jobs/{jobId}/operations/{requestId}", h.GetCollaborationKnowledgeJobOperation)
+		r.With(handler.RequireHumanActor).Get("/api/projects/{id}/knowledge-policy/operations/{requestId}", h.GetProjectKnowledgePolicyOperation)
 		r.Patch("/api/collaboration/issues/{id}", h.UpdateCollaborationIssue)
 		r.Post("/api/collaboration/issues/{id}/lifecycle", h.ChangeCollaborationLifecycle)
 		r.Post("/api/installations/challenges", h.InstallationChallenge)
@@ -2368,6 +2375,8 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				r.Route("/{id}", func(r chi.Router) {
 					r.Get("/", h.GetProject)
 					r.Get("/knowledge", h.GetProjectKnowledge)
+					r.With(handler.RequireHumanActor).Get("/knowledge-policy", h.GetProjectKnowledgePolicy)
+					r.With(handler.RequireHumanActor).Put("/knowledge-policy", h.UpdateProjectKnowledgePolicy)
 					r.With(handler.RequireHumanActor).Get("/delivery-policy", h.GetDeliveryPolicy)
 					r.With(handler.RequireHumanActor).Put("/delivery-policy", h.UpdateDeliveryPolicy)
 					r.With(handler.RequireHumanActor).Get("/stage-policy", h.GetStagePolicy)

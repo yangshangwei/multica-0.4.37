@@ -7,6 +7,7 @@ const prefix = "multica_knowledge_request:";
 const identitySchema = z.strictObject({
   scope: z.strictObject({ server: z.string().min(1), userId: z.uuid() }),
   candidateId: z.uuid(), requestId: z.uuid(), action: z.enum(["propose", "approve", "reject", "withdraw"]),
+  protocolVersion: z.union([z.literal(1), z.literal(2)]).optional(),
 });
 const scopePrefix = (scope: KnowledgeOperationIdentity["scope"]) => `${prefix}${encodeURIComponent(JSON.stringify([scope.server, scope.userId]))}:`;
 const keyFor = (identity: KnowledgeOperationIdentity) => `${scopePrefix(identity.scope)}${identity.requestId}`;
@@ -18,7 +19,8 @@ export class KnowledgeRecoveryStorageError extends Error {
 export function saveKnowledgeOperationIdentity(identity: KnowledgeOperationIdentity, storage: StorageAdapter = defaultStorage): boolean {
   let previouslyStored: boolean | undefined;
   try {
-    const record = identitySchema.parse({ scope: identity.scope, candidateId: identity.candidateId, requestId: identity.requestId, action: identity.action });
+    const record = identitySchema.parse({ scope: identity.scope, candidateId: identity.candidateId, requestId: identity.requestId, action: identity.action,
+      ...(identity.protocolVersion !== undefined ? { protocolVersion: identity.protocolVersion } : {}) });
     const encoded = JSON.stringify(record), key = keyFor(record), previous = storage.getItem(key);
     previouslyStored = previous !== null;
     if (!storage.keys || previous !== null && previous !== encoded) throw new KnowledgeRecoveryStorageError();

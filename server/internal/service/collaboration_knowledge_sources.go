@@ -130,6 +130,21 @@ func knowledgeSourceText(ctx context.Context, q *db.Queries, issue db.Issue, ref
 		return "", false, nil
 	case "run_record":
 		return knowledgeRunRecordText(ctx, q, issue.ID, ref)
+	case "delivery":
+		id, err := util.ParseUUID(ref.SubmissionID)
+		if err != nil {
+			return "", false, nil
+		}
+		delivery, err := strconv.ParseInt(ref.DeliveryEventSeq, 10, 64)
+		if err != nil || strconv.FormatInt(delivery, 10) != ref.DeliveryEventSeq {
+			return "", false, nil
+		}
+		accepted, err := strconv.ParseInt(ref.AcceptedEventSeq, 10, 64)
+		if err != nil || strconv.FormatInt(accepted, 10) != ref.AcceptedEventSeq {
+			return "", false, nil
+		}
+		snapshot, available, err := knowledgeAcceptedDelivery(ctx, q, issue, id, delivery, accepted)
+		return snapshot.Canonical, available, err
 	default:
 		return "", false, nil
 	}

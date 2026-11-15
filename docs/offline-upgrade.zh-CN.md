@@ -55,7 +55,7 @@
 | `MULTICA_CLI_INSTALL_COMMAND` | 空 | 保留旧客户端命令；新版仅作为 macOS/Linux 的备用命令 |
 | `MULTICA_DESKTOP_DOWNLOAD_URL`（新增，可选） | 空 | Web 端"下载桌面端"入口指向的下载页，通常是桌面下载服务的 `http://<下载服务器>:18080/desktop/`；必须是 http(s) 绝对地址，主机用 IP 或 ASCII 主机名，不含用户名密码；留空或非法时隐藏所有下载入口，非法值会在后端启动日志中警告 |
 | `MULTICA_COLLABORATION_MEMORY_MAX_BYTES` | `131072`（128 KiB） | 协作上下文文档上限，按 UTF-8 字节计算；可调范围 `32768`–`524288`，越界时 API 启动失败 |
-| `MULTICA_KNOWLEDGE_CONTEXT_ENABLED`（新增，可选） | `false` | 只有字面值`true`开启知识交付；普通升级保持关闭。开启前须完成同一候选的人工确认、纠错/撤回、权限及普通/协作执行验收；不要仅为升级或排错而开启 |
+| `MULTICA_KNOWLEDGE_CONTEXT_ENABLED`（可选） | `true` | 未设置或空值默认开启，字面值 `true` 开启，`false` 和其他非空值关闭；保留原环境中的显式 `false`。新版本支持知识 v1/v2 严格读取、自动知识暂停和精确会话授权；先升级所有服务端读者及匹配客户端、守护进程，再允许新形态写入，不混用旧 API 实例 |
 | `MULTICA_COLLABORATION_DIRECTORY_ENABLED`（新增，可选） | `true` | 接收人选择器列出本 Server 全部可用账号的姓名和头像；只有设为 `false` 时改为只列出共享工作空间或共同参与过协作单的人，其他人仍可精确查找。开启且未关闭 `ALLOW_SIGNUP` 时，API 启动日志会警告 |
 | 协作开关（数据库，非环境变量） | 新建协作任务开放，AI 执行关闭 | 迁移 744 开放新建，但保留管理员已在后台成功设置的状态；在平台管理后台修改，见 [8.3 节](#collaboration-gates) |
 

@@ -9,6 +9,8 @@ import { parseCollaborationMemoryVersion } from "./memory-schema";
 import { parseCollaborationComment, parseCollaborationCommentHistory } from "./content-schema";
 import { parseCollaborationRunRecords } from "./run-records-schema";
 import { collaborationRunRecordsFixture } from "./run-records-test-fixtures";
+import { parseCollaborationKnowledgeDetail } from "./knowledge-schema";
+import { knowledgeCandidateFixture, knowledgeDetailFixture, knowledgeUnavailableCandidateFixture } from "./knowledge-test-fixtures";
 
 const actor = "00000000-0000-4000-8000-000000000001", commentId = "00000000-0000-4000-8000-000000000002";
 const issueId = collaborationRunRecordsFixture.issue_id;
@@ -37,6 +39,19 @@ it("hashes the selected historical memory version exactly when latest has advanc
   const result = await buildKnowledgeSources(f.client, f.scope, issueId, [{ kind: "memory", issue_id: issueId, version: "7" }]);
   expect(read.mock.calls[0]?.slice(0, 2)).toEqual([issueId, "7"]);
   expect(result).toEqual([{ kind: "memory", issue_id: issueId, version: "7", sha256: createHash("sha256").update(content).digest("hex") }]);
+});
+
+it("restores an exact delivery reference from a fresh authorized server projection without guessing its canonical hash", async () => {
+  const f = setup();
+  const reference = { kind: "delivery" as const, issue_id: issueId, submission_id: commentId, delivery_event_seq: "10", accepted_event_seq: "11", sha256: "c".repeat(64) };
+  const available = parseCollaborationKnowledgeDetail({ ...knowledgeDetailFixture, protocol_version: 2, candidate: { ...knowledgeCandidateFixture,
+    source_issue_id: issueId, content: "Private content with <>& and \u2028", sources: [reference], proposal_origin: "human", decision_origin: "human", automation: null, usage_status: "inactive" } });
+  const read = vi.spyOn(f.api, "getCollaborationKnowledgeCandidate").mockResolvedValue(available);
+  const selection = { kind: "delivery" as const, candidate_id: knowledgeCandidateFixture.candidate_id, issue_id: issueId, submission_id: commentId, delivery_event_seq: "10", accepted_event_seq: "11" };
+  expect(await buildKnowledgeSources(f.client, f.scope, issueId, [selection])).toEqual([reference]);
+  expect(read.mock.calls[0]?.[0]).toBe(knowledgeCandidateFixture.candidate_id);
+  read.mockResolvedValue(parseCollaborationKnowledgeDetail({ ...knowledgeDetailFixture, candidate: { ...knowledgeUnavailableCandidateFixture, source_issue_id: issueId } }));
+  await expect(buildKnowledgeSources(f.client, f.scope, issueId, [selection])).rejects.toThrow();
 });
 
 it("uses retained comment revision text, while a tombstone blocks every old revision", async () => {

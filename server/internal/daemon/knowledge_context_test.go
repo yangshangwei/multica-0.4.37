@@ -42,6 +42,7 @@ type knowledgeDaemonFixture struct {
 	mu                                           sync.Mutex
 	calls                                        []knowledgeHTTPCall
 	empty                                        bool
+	automaticSource                              bool
 	refuseAction, refuseCode, observationRefusal string
 	refuseStatus                                 int
 	dropAction                                   string
@@ -114,6 +115,9 @@ func (f *knowledgeDaemonFixture) bindClaim(kind, scope string) {
 
 func (f *knowledgeDaemonFixture) prepare(req protocol.TaskKnowledgePrepareRequest) protocol.TaskKnowledgePrepareResponse {
 	target := protocol.CollaborationKnowledgeTarget{Kind: "workspace", WorkspaceID: f.task.WorkspaceID}
+	if f.automaticSource {
+		target.Kind, target.ProjectID = "project", f.task.ProjectID
+	}
 	items := []protocol.CollaborationKnowledgeContribution{}
 	entries := []protocol.TaskKnowledgeManifestEntry{}
 	if !f.empty {
@@ -123,10 +127,14 @@ func (f *knowledgeDaemonFixture) prepare(req protocol.TaskKnowledgePrepareReques
 			Evidence: []protocol.CollaborationKnowledgeEvidence{}, Applicability: protocol.CollaborationKnowledgeApplicability{Surfaces: []string{"issue", "chat", "quick_create", "autopilot"}}}
 		items = append(items, item)
 		entries = append(entries, protocol.TaskKnowledgeManifestEntry{CandidateID: item.CandidateID, Version: item.Version, ContentSHA256: item.ContentSHA256, SourceIssueID: item.SourceIssueID, Target: item.Target})
+		if f.automaticSource {
+			items[0].Sources = []protocol.CollaborationKnowledgeSource{{Kind: "delivery", IssueID: f.sourceIssueID, SubmissionID: f.prepareID, DeliveryEventSeq: "4", AcceptedEventSeq: "9", SHA256: strings.Repeat("a", 64)}}
+			entries[0].Validity = &protocol.TaskKnowledgeValidity{Revision: "2", AcceptedEventSeq: "9", SubmissionID: f.prepareID, ValidatedCloseEpoch: "5"}
+		}
 	}
-	manifest := protocol.TaskKnowledgeManifest{ProtocolVersion: 1, Entries: entries}
+	manifest := protocol.TaskKnowledgeManifest{ProtocolVersion: req.ProtocolVersion, Entries: entries}
 	raw, _ := json.Marshal(manifest)
-	p := protocol.TaskKnowledgePrepareResponse{ProtocolVersion: 1, PrepareID: f.prepareID, InvocationFingerprint: req.InvocationFingerprint,
+	p := protocol.TaskKnowledgePrepareResponse{ProtocolVersion: req.ProtocolVersion, PrepareID: f.prepareID, InvocationFingerprint: req.InvocationFingerprint,
 		Session: req.Session, Contributions: items, Manifest: manifest, ManifestSHA256: protocol.CollaborationKnowledgeHash(string(raw)),
 		Targets: []protocol.TaskKnowledgeTargetRevision{{Target: target, Revision: "3"}}}
 	if f.wrongPreparation {
@@ -214,7 +222,7 @@ func (f *knowledgeDaemonFixture) serve(t *testing.T, w http.ResponseWriter, r *h
 			w.WriteHeader(400)
 			return
 		}
-		resp := protocol.TaskKnowledgeAuthorization{ProtocolVersion: 1, PrepareID: req.PrepareID, AttemptSequence: req.AttemptSequence, AttemptNonce: req.AttemptNonce,
+		resp := protocol.TaskKnowledgeAuthorization{ProtocolVersion: req.ProtocolVersion, PrepareID: req.PrepareID, AttemptSequence: req.AttemptSequence, AttemptNonce: req.AttemptNonce,
 			ManifestSHA256: req.ManifestSHA256, PromptSHA256: req.PromptSHA256, InvocationFingerprint: req.InvocationFingerprint, Session: req.Session}
 		if f.wrongAuthorization {
 			resp.AttemptNonce = uuid.NewString()
@@ -268,6 +276,56 @@ func (f *knowledgeDaemonFixture) run(t *testing.T) TaskResult {
 		t.Fatal(err)
 	}
 	return result
+}
+
+func TestKnowledgeV2AutomaticDeliveryReachesActualStdin(t *testing.T) {
+	f := newKnowledgeDaemonFixture(t)
+	f.task.ProjectID = uuid.NewString()
+	f.task.KnowledgeContext.ProtocolVersion = 2
+	f.automaticSource = true
+	result := f.run(t)
+	if result.Status != "completed" || result.SessionID != f.native {
+		t.Fatalf("v2 execution failed: %s %s", result.Status, result.FailureReason)
+	}
+	input, err := os.ReadFile(f.capture)
+	if err != nil || !strings.Contains(string(input), privateKnowledgeTestBody) || !strings.Contains(string(input), `\"kind\":\"delivery\"`) {
+		t.Fatalf("v2 exact delivery did not reach fake process stdin: %v", err)
+	}
+	var prepare protocol.TaskKnowledgePrepareRequest
+	var authorization protocol.TaskKnowledgeAuthorizeRequest
+	preparations, authorizations := f.callsFor("prepare"), f.callsFor("authorize")
+	if len(preparations) != 1 || len(authorizations) != 1 {
+		t.Fatal("expected one exact preparation and physical authorization")
+	}
+	if json.Unmarshal(preparations[0].body, &prepare) != nil || json.Unmarshal(authorizations[0].body, &authorization) != nil || prepare.ProtocolVersion != 2 || authorization.ProtocolVersion != 2 || authorization.ManifestSHA256 != f.prepare(prepare).ManifestSHA256 {
+		t.Fatal("actual launch did not bind the original v2 validity manifest")
+	}
+	observations := f.callsFor("observations")
+	if len(observations) != 3 {
+		t.Fatal("v2 execution lost physical/native/termination observations")
+	}
+	for _, call := range observations {
+		var observation protocol.TaskKnowledgeObservation
+		if json.Unmarshal(call.body, &observation) != nil || observation.ProtocolVersion != 2 {
+			t.Fatal("launch observation downgraded the retained v2 claim")
+		}
+	}
+}
+
+func TestKnowledgeV1CannotConsumeAutomaticDeliveryResponse(t *testing.T) {
+	f := newKnowledgeDaemonFixture(t)
+	f.task.ProjectID = uuid.NewString()
+	f.automaticSource = true
+	result := f.run(t)
+	if result.Status != "blocked" || result.FailureReason != agent.KnowledgeUnavailable {
+		t.Fatalf("v1 silently consumed or dropped v2 source: %s %s", result.Status, result.FailureReason)
+	}
+	if _, err := os.Stat(f.capture); !os.IsNotExist(err) {
+		t.Fatal("invalid v1 bundle launched a physical provider")
+	}
+	if _, err := os.Stat(f.argv); !os.IsNotExist(err) {
+		t.Fatal("invalid v1 bundle started a provider before rejecting stdin")
+	}
 }
 
 func TestKnowledgeAllOrdinaryPromptBranchesReachActualStdin(t *testing.T) {

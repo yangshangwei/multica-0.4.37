@@ -170,13 +170,15 @@ func (h *Handler) ClaimCollaborationRuntimeRun(w http.ResponseWriter, r *http.Re
 	}
 	for _, key := range []string{"handoff_version", "recording_version", "knowledge_version"} {
 		if values, present := r.URL.Query()[key]; present &&
-			(body.ProtocolVersion != protocol.CollaborationHostRuntimeProtocolVersion || len(values) != 1 || values[0] != "1") {
+			(body.ProtocolVersion != protocol.CollaborationHostRuntimeProtocolVersion || len(values) != 1 || values[0] != "1" && (key != "knowledge_version" || values[0] != "2")) {
 			writeJSON(w, http.StatusBadRequest, map[string]string{"code": "unsupported_runtime_read_version", "error": "Unsupported collaboration runtime extension"})
 			return
 		}
 	}
 	if r.URL.Query().Get("knowledge_version") == "1" {
 		body.KnowledgeVersion = protocol.CollaborationRunKnowledgeVersion
+	} else if r.URL.Query().Get("knowledge_version") == "2" {
+		body.KnowledgeVersion = protocol.CollaborationRunKnowledgeLatestVersion
 	}
 	run, ok := collaborationRuntimeRunID(w, r, nil)
 	if !ok {

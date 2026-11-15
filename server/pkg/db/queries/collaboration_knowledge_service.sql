@@ -113,12 +113,12 @@ WHERE p.issue_id=$1 AND p.revoked_at IS NULL AND u.disabled_at IS NULL ORDER BY 
 
 -- Pre-lock discovery must not retrieve candidate bodies or summaries.
 -- name: ListKnowledgeTargetLockHints :many
-SELECT id,source_workspace_id,source_issue_id,sources FROM collaboration_knowledge_candidate
+SELECT id,source_workspace_id,source_issue_id,sources,approval_origin FROM collaboration_knowledge_candidate
 WHERE target_kind=$1 AND target_workspace_id=$2 AND target_project_id IS NOT DISTINCT FROM sqlc.narg(project_id)::uuid
   AND state='approved' AND (expires_at IS NULL OR expires_at>clock_timestamp()) ORDER BY id LIMIT 17;
 
 -- name: GetKnowledgeCandidateLockHint :one
-SELECT id,source_workspace_id,source_issue_id,sources FROM collaboration_knowledge_candidate WHERE id=$1;
+SELECT id,source_workspace_id,source_issue_id,sources,approval_origin FROM collaboration_knowledge_candidate WHERE id=$1;
 
 -- Potential availability is metadata-only. A positive result still requires
 -- the full source/version/hash and current-reader checks after locks.

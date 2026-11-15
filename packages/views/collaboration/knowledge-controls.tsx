@@ -1,6 +1,6 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@multica/ui/components/ui/select";
 import { useT } from "../i18n";
-import { collaborationTextByteLength, type CollaborationKnowledgeCandidateSummary, type KnowledgeSourceSelection } from "@multica/core/collaboration";
+import { collaborationTextByteLength, type CollaborationKnowledgeCandidateSummary, type CollaborationKnowledgeSource, type KnowledgeSourceSelection } from "@multica/core/collaboration";
 
 export function KnowledgeSelect({ label, value, items, onChange, disabled = false }: {
   label: string; value: string; items: { value: string; label: string }[]; onChange: (value: string) => void; disabled?: boolean;
@@ -14,12 +14,15 @@ export function KnowledgeSelect({ label, value, items, onChange, disabled = fals
 export function KnowledgeState({ candidate }: { candidate: CollaborationKnowledgeCandidateSummary }) {
   const { t } = useT("collaboration");
   return <span className="text-caption text-muted-foreground">{t(($) => $.knowledge.states[candidate.state])}
+    {"usage_status" in candidate && candidate.usage_status === "paused_review" && <> · {t(($) => $.knowledge.pausedReview)}</>}
+    {"usage_status" in candidate && candidate.usage_status === "inactive" && candidate.state === "approved" && <> · {t(($) => $.knowledge.inactive)}</>}
     {candidate.availability !== "restricted" && candidate.expires_at && Date.parse(candidate.expires_at) <= Date.now() && <> · {t(($) => $.knowledge.expired)}</>}
   </span>;
 }
 
-export function KnowledgeSourceLabel({ source }: { source: KnowledgeSourceSelection }) {
+export function KnowledgeSourceLabel({ source }: { source: KnowledgeSourceSelection | CollaborationKnowledgeSource }) {
   const { t } = useT("collaboration");
+  if (source.kind === "delivery") return <span className="[overflow-wrap:anywhere]">{t(($) => $.knowledge.deliverySource, { submission: source.submission_id.slice(0, 8), event: source.accepted_event_seq })}</span>;
   return <span className="[overflow-wrap:anywhere]">{t(($) => $.knowledge[source.kind])} · {source.kind === "run_record" ? source.record_id
     : `${source.kind === "comment" ? `${source.comment_id.slice(0, 8)} · ` : ""}${t(($) => $.knowledge.version, { version: source.version })}`}</span>;
 }

@@ -37,6 +37,7 @@ type hostKnowledgeFixture struct {
 	preparations               []protocol.CollaborationRunKnowledgePrepare
 	authorizations             []protocol.CollaborationRunKnowledgeAuthorization
 	contribution               protocol.CollaborationKnowledgeContribution
+	validity                   *protocol.TaskKnowledgeValidity
 	refuse                     bool
 	empty                      bool
 	losePrepare, loseAuthorize bool
@@ -49,7 +50,7 @@ func newHostKnowledgeFixture(t *testing.T) *hostKnowledgeFixture {
 
 func attachHostKnowledgeFixture(t *testing.T, h *launchHandoffFixture) *hostKnowledgeFixture {
 	t.Helper()
-	h.claim.KnowledgeContext = &protocol.CollaborationRunKnowledgeClaim{ProtocolVersion: 1, Identity: h.claim.Identity, ConfigurationDigest: h.claim.Preparation.Host.ConfigurationDigest, Namespace: h.claim.Identity.RunID}
+	h.claim.KnowledgeContext = &protocol.CollaborationRunKnowledgeClaim{ProtocolVersion: protocol.CollaborationRunKnowledgeLatestVersion, Identity: h.claim.Identity, ConfigurationDigest: h.claim.Preparation.Host.ConfigurationDigest, Namespace: h.claim.Identity.RunID}
 	f := &hostKnowledgeFixture{launchHandoffFixture: h, contribution: protocol.CollaborationKnowledgeContribution{CandidateID: uuid.NewString(), Version: "2", Content: "PRIVATE_C4_APPROVED_INPUT", Summary: "Approved current version", Target: protocol.CollaborationKnowledgeTarget{Kind: "workspace", WorkspaceID: uuid.NewString()}, SourceIssueID: h.claim.Identity.IssueID, Sources: []protocol.CollaborationKnowledgeSource{}, Evidence: []protocol.CollaborationKnowledgeEvidence{}, Applicability: protocol.CollaborationKnowledgeApplicability{Surfaces: []string{"collaboration"}}}}
 	f.contribution.ContentSHA256 = protocol.CollaborationKnowledgeHash(f.contribution.Content)
 	f.contribution.Sources = []protocol.CollaborationKnowledgeSource{{Kind: "memory", IssueID: h.claim.Identity.IssueID, Version: "3", SHA256: protocol.CollaborationKnowledgeHash(h.memoryContent)}}
@@ -80,7 +81,7 @@ func attachHostKnowledgeFixture(t *testing.T, h *launchHandoffFixture) *hostKnow
 				return
 			}
 			c := f.contribution
-			manifest := protocol.TaskKnowledgeManifest{ProtocolVersion: 1, Entries: []protocol.TaskKnowledgeManifestEntry{{CandidateID: c.CandidateID, Version: c.Version, ContentSHA256: c.ContentSHA256, SourceIssueID: c.SourceIssueID, Target: c.Target}}}
+			manifest := protocol.TaskKnowledgeManifest{ProtocolVersion: p.ProtocolVersion, Entries: []protocol.TaskKnowledgeManifestEntry{{CandidateID: c.CandidateID, Version: c.Version, ContentSHA256: c.ContentSHA256, SourceIssueID: c.SourceIssueID, Target: c.Target, Validity: f.validity}}}
 			contributions := []protocol.CollaborationKnowledgeContribution{c}
 			if f.empty {
 				manifest.Entries = []protocol.TaskKnowledgeManifestEntry{}
@@ -125,6 +126,105 @@ func knowledgeCapturedPrompt(t *testing.T, start map[string]any) string {
 		t.Fatal("missing captured stdin")
 	}
 	return frame.Message.Content[0].Text
+}
+
+func TestHostKnowledgeV2DeliveryAndValidityBindActualInput(t *testing.T) {
+	f := newHostKnowledgeFixture(t)
+	f.contribution.Target.Kind, f.contribution.Target.ProjectID = "project", uuid.NewString()
+	f.contribution.Sources = []protocol.CollaborationKnowledgeSource{{Kind: "delivery", IssueID: f.claim.Identity.IssueID, SubmissionID: uuid.NewString(), DeliveryEventSeq: "7", AcceptedEventSeq: "9", SHA256: strings.Repeat("a", 64)}}
+	f.validity = &protocol.TaskKnowledgeValidity{Revision: "2", AcceptedEventSeq: "9", SubmissionID: f.contribution.Sources[0].SubmissionID, ValidatedCloseEpoch: "5"}
+	if err := f.runner.Run(t.Context(), f.claim.Identity.RunID, f.request); err != nil {
+		t.Fatal(err)
+	}
+	starts := f.starts(t)
+	if len(starts) != 1 || len(f.preparations) != 1 || len(f.authorizations) != 1 || f.preparations[0].ProtocolVersion != 2 || f.authorizations[0].ProtocolVersion != 2 {
+		t.Fatal("v2 host did not retain one exact preparation and launch")
+	}
+	prompt := knowledgeCapturedPrompt(t, starts[0])
+	if !strings.Contains(prompt, f.contribution.Content) || !strings.Contains(prompt, `"kind":"delivery"`) || !strings.Contains(prompt, f.envelope.Sources[1].Content) {
+		t.Fatal("actual host input omitted exact delivery or original assignment")
+	}
+	c := f.contribution
+	manifest := protocol.TaskKnowledgeManifest{ProtocolVersion: 2, Entries: []protocol.TaskKnowledgeManifestEntry{{CandidateID: c.CandidateID, Version: c.Version, ContentSHA256: c.ContentSHA256, SourceIssueID: c.SourceIssueID, Target: c.Target, Validity: f.validity}}}
+	raw, err := json.Marshal(manifest)
+	if err != nil || f.authorizations[0].ManifestSHA256 != protocol.CollaborationKnowledgeHash(string(raw)) || f.authorizations[0].PromptSHA256 != protocol.CollaborationHandoffHash(prompt) {
+		t.Fatal("physical authorization lost the exact v2 proof or actual input hash")
+	}
+}
+
+func TestHostKnowledgeRetainsExplicitV1Namespace(t *testing.T) {
+	f := newHostKnowledgeFixture(t)
+	legacy := f.claim
+	descriptor := *legacy.KnowledgeContext
+	descriptor.ProtocolVersion = 1
+	legacy.KnowledgeContext = &descriptor
+	if err := validateHostKnowledgeClaim(legacy, 1); err != nil {
+		t.Fatal("explicit legacy knowledge reader was removed:", err)
+	}
+	oldKey, err := hostSessionKey(legacy)
+	if err != nil {
+		t.Fatal(err)
+	}
+	newKey, err := hostSessionKey(f.claim)
+	if err != nil || oldKey == newKey {
+		t.Fatal("v2 local namespace relabeled the retained v1 namespace")
+	}
+	if validateHostKnowledgeClaim(f.claim, 1) == nil || validateHostKnowledgeClaim(legacy, 2) == nil {
+		t.Fatal("host claim changed its negotiated protocol version")
+	}
+}
+
+func TestHostKnowledgeLedgerRestartPreservesVersionedHistory(t *testing.T) {
+	for _, version := range []int{1, 2} {
+		t.Run(fmt.Sprint(version), func(t *testing.T) {
+			f := newHostKnowledgeFixture(t)
+			f.claim.KnowledgeContext.ProtocolVersion = version
+			key, err := hostSessionKey(f.claim)
+			if err != nil {
+				t.Fatal(err)
+			}
+			local, err := f.runner.Ledger.Lock(f.claim.Identity.DeploymentID, f.claim.Identity.InstallationID, f.claim.Identity.RunID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := local.registerHost(f.claim, key, f.request.CapabilityDigest, f.claim.Preparation.Host.ConfigurationDigest); err != nil {
+				t.Fatal(err)
+			}
+			if err := local.Close(); err != nil {
+				t.Fatal(err)
+			}
+			restarted, err := OpenLedger(f.runner.Ledger.dir)
+			if err != nil {
+				t.Fatal(err)
+			}
+			local, err = restarted.Lock(f.claim.Identity.DeploymentID, f.claim.Identity.InstallationID, f.claim.Identity.RunID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer local.Close()
+			if local.record.Host.SessionKey != key || local.record.Host.Claim.KnowledgeContext.ProtocolVersion != version {
+				t.Fatal("restart lost or relabeled retained knowledge history")
+			}
+			raw, err := json.Marshal(local.record)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, drop := range []bool{false, true} {
+				var changed ledgerRecord
+				if err := json.Unmarshal(raw, &changed); err != nil {
+					t.Fatal(err)
+				}
+				if drop {
+					changed.Host.Claim.KnowledgeContext = nil
+				} else {
+					changed.Host.Claim.KnowledgeContext.ProtocolVersion = 3 - version
+				}
+				if validateHostLedgerRecord(changed) == nil {
+					t.Fatal("retained namespace accepted a removed or changed knowledge protocol")
+				}
+			}
+		})
+	}
 }
 
 func TestHostKnowledgeActualInputPreservesHandoffAndFreshNamespace(t *testing.T) {
@@ -396,7 +496,7 @@ func TestHostKnowledgeOldServerStrictClaimBodyRemainsCompatible(t *testing.T) {
 	f.server.Config.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasSuffix(r.URL.Path, "/claim") {
 			seen = true
-			if r.URL.Query().Get("knowledge_version") != "1" {
+			if r.URL.Query().Get("knowledge_version") != "2" {
 				t.Error("capability was not negotiated on URL")
 			}
 			var request protocol.CollaborationRunClaimRequest

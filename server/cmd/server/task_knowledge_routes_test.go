@@ -15,7 +15,8 @@ import (
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
-func TestTaskKnowledgeProductionRoutesKeepMachineScopeAndClosedGate(t *testing.T) {
+func TestTaskKnowledgeProductionRoutesKeepMachineScopeWithExplicitlyDisabledGate(t *testing.T) {
+	t.Setenv("MULTICA_KNOWLEDGE_CONTEXT_ENABLED", "false")
 	f := newPlatformAdminRouterFixture(t)
 	user := f.user(t, "")
 	workspace := f.fx.Workspace(t, "Knowledge route scope", "knowledge-router-"+uuid.NewString())

@@ -30,6 +30,7 @@ it("routes every human read with the source-independent scope and exact paginati
   ]);
   fetchMock.mock.calls.forEach(([_url, init], index) => {
     expect(new Headers(init.headers).get("X-Workspace-ID")).toBe(index === 2 || index === 3 ? knowledgeIds.workspace : null);
+    expect(new Headers(init.headers).get("X-Multica-Knowledge-Version")).toBe("2");
     expect(init.cache).toBe("no-store");
   });
 });
@@ -46,8 +47,24 @@ it("serializes all writes with the preselected candidate/request and exact revis
   await client.withdrawCollaborationKnowledge(knowledgeIds.candidate, decision);
   await client.approveCollaborationKnowledge(knowledgeIds.candidate, approve);
   expect(fetchMock.mock.calls.map(([, init]) => JSON.parse(init.body))).toEqual([knowledgeProposalFixture, approve, decision, decision, approve]);
-  for (const [, init] of fetchMock.mock.calls) expect(new Headers(init.headers).get("Idempotency-Key")).toBe(knowledgeIds.request);
+  for (const [, init] of fetchMock.mock.calls) {
+    expect(new Headers(init.headers).get("Idempotency-Key")).toBe(knowledgeIds.request);
+    expect(new Headers(init.headers).get("X-Multica-Knowledge-Version")).toBe("1");
+  }
   expect(fetchMock.mock.calls[1]?.[1].body).toBe(fetchMock.mock.calls[4]?.[1].body);
+});
+
+it("uses each original write/recovery version without retrying a v2 write as v1", async () => {
+  const fetchMock = vi.fn().mockResolvedValueOnce(json({ ...knowledgeReceiptFixture, protocol_version: 2 }))
+    .mockResolvedValueOnce(json(knowledgeReceiptFixture))
+    .mockResolvedValueOnce(json({ code: "knowledge_protocol_unsupported" }, 409));
+  vi.stubGlobal("fetch", fetchMock);
+  const client = api();
+  await client.approveCollaborationKnowledge(knowledgeIds.candidate, { ...approve, protocol_version: 2 });
+  await client.getCollaborationKnowledgeOperation(knowledgeIds.candidate, knowledgeIds.request, { protocolVersion: 1 });
+  await expect(client.approveCollaborationKnowledge(knowledgeIds.candidate, { ...approve, protocol_version: 2 })).rejects.toMatchObject({ status: 409 });
+  expect(fetchMock.mock.calls.map(([, init]) => new Headers(init.headers).get("X-Multica-Knowledge-Version"))).toEqual(["2", "1", "2"]);
+  expect(fetchMock).toHaveBeenCalledTimes(3);
 });
 
 it("does not misclassify structured access loss or malformed claimed support as an older route", async () => {

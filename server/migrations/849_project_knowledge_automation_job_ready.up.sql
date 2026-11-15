@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY IF NOT EXISTS collaboration_knowledge_job_ready_idx ON collaboration_knowledge_job (next_attempt_at, id) WHERE phase IN ('queued','generating','checking','settling','waiting_configuration');

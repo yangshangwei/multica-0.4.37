@@ -1,5 +1,6 @@
 import type { CollaborationKnowledgeCandidate, CollaborationKnowledgeCandidates, CollaborationKnowledgeDetail,
   CollaborationKnowledgeProposal, CollaborationKnowledgeReceipt, CollaborationKnowledgeTargetList } from "./knowledge-schema";
+import type { ProjectKnowledgePolicy, KnowledgeAutomationJob, KnowledgeAutomationJobs } from "./knowledge-automation-schema";
 
 export const knowledgeIds = {
   actor: "00000000-0000-4000-8000-000000000001", issue: "00000000-0000-4000-8000-000000000002",
@@ -35,3 +36,12 @@ export const knowledgeTargetFixture: CollaborationKnowledgeTargetList = { ...kno
   knowledge_revision: "9007199254740993", items: [summary], next_cursor: null };
 export const knowledgeReceiptFixture: CollaborationKnowledgeReceipt = { protocol_version: 1, request_id: knowledgeIds.request, action: "approve",
   code: "knowledge_approved", candidate_id: knowledgeIds.candidate, version: "9007199254740993", state_revision: "2", state: "approved", target_knowledge_revision: "9007199254740993" };
+
+export const knowledgePolicyFixture: ProjectKnowledgePolicy = { ...knowledgeLeaseFixture, protocol_version: 2,
+  project_id: knowledgeIds.project, workspace_id: knowledgeIds.workspace, revision: "0", is_enabled: true, max_candidates: 3,
+  rule_version: "project-knowledge-v1", origin: "system", changed_by_user_id: null, updated_at: null, can_manage: true };
+export const knowledgeJobFixture: KnowledgeAutomationJob = { id: knowledgeIds.request, issue_id: knowledgeIds.issue, project_id: knowledgeIds.project,
+  submission_id: knowledgeIds.candidate, accepted_event_seq: "11", revision: "1", phase: "completed", reason_code: null,
+  source_current: true, can_retry: false, counts: { saved: 1, restored: 0, revised: 0, pending: 0, skipped: 0 }, attempts: [] };
+export const knowledgeJobsFixture: KnowledgeAutomationJobs = { ...knowledgeLeaseFixture, protocol_version: 2,
+  issue_id: knowledgeIds.issue, items: [knowledgeJobFixture], has_more: false };

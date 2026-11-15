@@ -55,13 +55,14 @@ func (q *Queries) AdvanceKnowledgeTarget(ctx context.Context, arg AdvanceKnowled
 
 const approveKnowledgeCandidate = `-- name: ApproveKnowledgeCandidate :one
 UPDATE collaboration_knowledge_candidate SET state = 'approved', state_revision = (state_revision + 1)::bigint,
+    approval_origin = 'human', approval_job_id = NULL, decision_origin = 'human', last_decision_job_id = NULL,
     approved_by_user_id = $1, approved_at = clock_timestamp(),
     last_decided_by_user_id = $1, last_decided_at = clock_timestamp(),
     published_target_revision = $2
 WHERE id = $3 AND state = 'pending' AND state_revision = $4
     AND version = $5 AND content_sha256 = $6
     AND (expires_at IS NULL OR expires_at > clock_timestamp())
-RETURNING id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision
+RETURNING id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision, proposal_origin, decision_origin, approval_origin, automation_job_id, automation_policy_revision, automation_rule_version, approval_job_id, last_decision_job_id
 `
 
 type ApproveKnowledgeCandidateParams struct {
@@ -111,6 +112,14 @@ func (q *Queries) ApproveKnowledgeCandidate(ctx context.Context, arg ApproveKnow
 		&i.LastDecidedAt,
 		&i.LastDecisionReason,
 		&i.PublishedTargetRevision,
+		&i.ProposalOrigin,
+		&i.DecisionOrigin,
+		&i.ApprovalOrigin,
+		&i.AutomationJobID,
+		&i.AutomationPolicyRevision,
+		&i.AutomationRuleVersion,
+		&i.ApprovalJobID,
+		&i.LastDecisionJobID,
 	)
 	return i, err
 }
@@ -155,7 +164,7 @@ WHERE ($15::uuid IS NULL AND $17::bigint = 0
     SELECT 1 FROM collaboration_knowledge_candidate origin WHERE origin.id = $16
       AND origin.source_workspace_id = $2 AND origin.source_issue_id = $3
       AND origin.state = 'approved' AND origin.target_kind = 'project' AND $4::text = 'workspace'))
-RETURNING id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision
+RETURNING id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision, proposal_origin, decision_origin, approval_origin, automation_job_id, automation_policy_revision, automation_rule_version, approval_job_id, last_decision_job_id
 `
 
 type CreateKnowledgeCandidateParams struct {
@@ -229,6 +238,14 @@ func (q *Queries) CreateKnowledgeCandidate(ctx context.Context, arg CreateKnowle
 		&i.LastDecidedAt,
 		&i.LastDecisionReason,
 		&i.PublishedTargetRevision,
+		&i.ProposalOrigin,
+		&i.DecisionOrigin,
+		&i.ApprovalOrigin,
+		&i.AutomationJobID,
+		&i.AutomationPolicyRevision,
+		&i.AutomationRuleVersion,
+		&i.ApprovalJobID,
+		&i.LastDecisionJobID,
 	)
 	return i, err
 }
@@ -310,7 +327,7 @@ func (q *Queries) EnqueueKnowledgeTargetHint(ctx context.Context, arg EnqueueKno
 }
 
 const getKnowledgeCandidate = `-- name: GetKnowledgeCandidate :one
-SELECT id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision FROM collaboration_knowledge_candidate WHERE id = $1
+SELECT id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision, proposal_origin, decision_origin, approval_origin, automation_job_id, automation_policy_revision, automation_rule_version, approval_job_id, last_decision_job_id FROM collaboration_knowledge_candidate WHERE id = $1
 `
 
 func (q *Queries) GetKnowledgeCandidate(ctx context.Context, id pgtype.UUID) (CollaborationKnowledgeCandidate, error) {
@@ -344,6 +361,14 @@ func (q *Queries) GetKnowledgeCandidate(ctx context.Context, id pgtype.UUID) (Co
 		&i.LastDecidedAt,
 		&i.LastDecisionReason,
 		&i.PublishedTargetRevision,
+		&i.ProposalOrigin,
+		&i.DecisionOrigin,
+		&i.ApprovalOrigin,
+		&i.AutomationJobID,
+		&i.AutomationPolicyRevision,
+		&i.AutomationRuleVersion,
+		&i.ApprovalJobID,
+		&i.LastDecisionJobID,
 	)
 	return i, err
 }
@@ -496,7 +521,7 @@ func (q *Queries) InitializeKnowledgeTarget(ctx context.Context, arg InitializeK
 }
 
 const listKnowledgeActiveTargetCandidates = `-- name: ListKnowledgeActiveTargetCandidates :many
-SELECT id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision FROM collaboration_knowledge_candidate
+SELECT id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision, proposal_origin, decision_origin, approval_origin, automation_job_id, automation_policy_revision, automation_rule_version, approval_job_id, last_decision_job_id FROM collaboration_knowledge_candidate
 WHERE target_kind = $1 AND target_workspace_id = $2 AND target_project_id IS NOT DISTINCT FROM $3::uuid
     AND state = 'approved' AND (expires_at IS NULL OR expires_at > $4::timestamptz)
 ORDER BY id
@@ -553,6 +578,14 @@ func (q *Queries) ListKnowledgeActiveTargetCandidates(ctx context.Context, arg L
 			&i.LastDecidedAt,
 			&i.LastDecisionReason,
 			&i.PublishedTargetRevision,
+			&i.ProposalOrigin,
+			&i.DecisionOrigin,
+			&i.ApprovalOrigin,
+			&i.AutomationJobID,
+			&i.AutomationPolicyRevision,
+			&i.AutomationRuleVersion,
+			&i.ApprovalJobID,
+			&i.LastDecisionJobID,
 		); err != nil {
 			return nil, err
 		}
@@ -643,7 +676,7 @@ func (q *Queries) ListKnowledgeSourceCandidates(ctx context.Context, arg ListKno
 }
 
 const lockKnowledgeCandidates = `-- name: LockKnowledgeCandidates :many
-SELECT id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision FROM collaboration_knowledge_candidate WHERE id = ANY($1::uuid[]) ORDER BY id FOR UPDATE NOWAIT
+SELECT id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision, proposal_origin, decision_origin, approval_origin, automation_job_id, automation_policy_revision, automation_rule_version, approval_job_id, last_decision_job_id FROM collaboration_knowledge_candidate WHERE id = ANY($1::uuid[]) ORDER BY id FOR UPDATE NOWAIT
 `
 
 func (q *Queries) LockKnowledgeCandidates(ctx context.Context, ids []pgtype.UUID) ([]CollaborationKnowledgeCandidate, error) {
@@ -683,6 +716,14 @@ func (q *Queries) LockKnowledgeCandidates(ctx context.Context, ids []pgtype.UUID
 			&i.LastDecidedAt,
 			&i.LastDecisionReason,
 			&i.PublishedTargetRevision,
+			&i.ProposalOrigin,
+			&i.DecisionOrigin,
+			&i.ApprovalOrigin,
+			&i.AutomationJobID,
+			&i.AutomationPolicyRevision,
+			&i.AutomationRuleVersion,
+			&i.ApprovalJobID,
+			&i.LastDecisionJobID,
 		); err != nil {
 			return nil, err
 		}
@@ -935,8 +976,9 @@ func (q *Queries) RecordKnowledgeJobAttempt(ctx context.Context, id pgtype.UUID)
 
 const rejectKnowledgeCandidate = `-- name: RejectKnowledgeCandidate :one
 UPDATE collaboration_knowledge_candidate SET state = 'rejected', state_revision = (state_revision + 1)::bigint,
+    decision_origin = 'human', last_decision_job_id = NULL,
     last_decided_by_user_id = $1, last_decided_at = clock_timestamp(), last_decision_reason = $2
-WHERE id = $3 AND state = 'pending' AND state_revision = $4 RETURNING id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision
+WHERE id = $3 AND state = 'pending' AND state_revision = $4 RETURNING id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision, proposal_origin, decision_origin, approval_origin, automation_job_id, automation_policy_revision, automation_rule_version, approval_job_id, last_decision_job_id
 `
 
 type RejectKnowledgeCandidateParams struct {
@@ -982,6 +1024,14 @@ func (q *Queries) RejectKnowledgeCandidate(ctx context.Context, arg RejectKnowle
 		&i.LastDecidedAt,
 		&i.LastDecisionReason,
 		&i.PublishedTargetRevision,
+		&i.ProposalOrigin,
+		&i.DecisionOrigin,
+		&i.ApprovalOrigin,
+		&i.AutomationJobID,
+		&i.AutomationPolicyRevision,
+		&i.AutomationRuleVersion,
+		&i.ApprovalJobID,
+		&i.LastDecisionJobID,
 	)
 	return i, err
 }
@@ -1032,8 +1082,9 @@ func (q *Queries) StartKnowledgeScan(ctx context.Context, id pgtype.UUID) (Colla
 
 const supersedeKnowledgeCandidate = `-- name: SupersedeKnowledgeCandidate :one
 UPDATE collaboration_knowledge_candidate SET state = 'superseded', state_revision = (state_revision + 1)::bigint,
+    decision_origin = 'human', last_decision_job_id = NULL,
     last_decided_by_user_id = $1, last_decided_at = clock_timestamp()
-WHERE id = $2 AND state = 'approved' AND state_revision = $3 RETURNING id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision
+WHERE id = $2 AND state = 'approved' AND state_revision = $3 RETURNING id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision, proposal_origin, decision_origin, approval_origin, automation_job_id, automation_policy_revision, automation_rule_version, approval_job_id, last_decision_job_id
 `
 
 type SupersedeKnowledgeCandidateParams struct {
@@ -1073,14 +1124,23 @@ func (q *Queries) SupersedeKnowledgeCandidate(ctx context.Context, arg Supersede
 		&i.LastDecidedAt,
 		&i.LastDecisionReason,
 		&i.PublishedTargetRevision,
+		&i.ProposalOrigin,
+		&i.DecisionOrigin,
+		&i.ApprovalOrigin,
+		&i.AutomationJobID,
+		&i.AutomationPolicyRevision,
+		&i.AutomationRuleVersion,
+		&i.ApprovalJobID,
+		&i.LastDecisionJobID,
 	)
 	return i, err
 }
 
 const withdrawKnowledgeCandidate = `-- name: WithdrawKnowledgeCandidate :one
 UPDATE collaboration_knowledge_candidate SET state = 'withdrawn', state_revision = (state_revision + 1)::bigint,
+    decision_origin = 'human', last_decision_job_id = NULL,
     last_decided_by_user_id = $1, last_decided_at = clock_timestamp(), last_decision_reason = $2
-WHERE id = $3 AND state IN ('pending', 'approved') AND state_revision = $4 RETURNING id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision
+WHERE id = $3 AND state IN ('pending', 'approved') AND state_revision = $4 RETURNING id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision, proposal_origin, decision_origin, approval_origin, automation_job_id, automation_policy_revision, automation_rule_version, approval_job_id, last_decision_job_id
 `
 
 type WithdrawKnowledgeCandidateParams struct {
@@ -1126,6 +1186,14 @@ func (q *Queries) WithdrawKnowledgeCandidate(ctx context.Context, arg WithdrawKn
 		&i.LastDecidedAt,
 		&i.LastDecisionReason,
 		&i.PublishedTargetRevision,
+		&i.ProposalOrigin,
+		&i.DecisionOrigin,
+		&i.ApprovalOrigin,
+		&i.AutomationJobID,
+		&i.AutomationPolicyRevision,
+		&i.AutomationRuleVersion,
+		&i.ApprovalJobID,
+		&i.LastDecisionJobID,
 	)
 	return i, err
 }

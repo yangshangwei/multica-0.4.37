@@ -59,7 +59,7 @@ func TestKnowledgeProposalStrictBoundary(t *testing.T) {
 
 func TestKnowledgeProposalIdentityAndBudgets(t *testing.T) {
 	for name, change := range map[string]func(*CollaborationKnowledgeProposal){
-		"protocol":             func(p *CollaborationKnowledgeProposal) { p.ProtocolVersion = 2 },
+		"protocol":             func(p *CollaborationKnowledgeProposal) { p.ProtocolVersion = 3 },
 		"uuid":                 func(p *CollaborationKnowledgeProposal) { p.CandidateID = "not-a-uuid" },
 		"request":              func(p *CollaborationKnowledgeProposal) { p.RequestID = "old-non-uuid-key" },
 		"overflow version":     func(p *CollaborationKnowledgeProposal) { p.Sources[0].Version = "9223372036854775808" },

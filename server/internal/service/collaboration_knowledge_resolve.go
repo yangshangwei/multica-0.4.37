@@ -20,6 +20,9 @@ import (
 // owner after authenticating and resolving its real consumer and output scope.
 // It is deliberately not an HTTP DTO. Accountable attribution is never a field.
 type KnowledgeConsumerFacts struct {
+	// Zero is the existing trusted caller's legacy-v1 behavior. Runtime
+	// transaction owners set the exact negotiated version before resolution.
+	ProtocolVersion      int
 	Supported            bool
 	Surface              string
 	WorkspaceID          pgtype.UUID
@@ -55,6 +58,30 @@ type KnowledgeReadLockHints struct {
 	Targets      []KnowledgeTargetRevision
 	Sources      []KnowledgeSourceLockHint
 	CandidateIDs []pgtype.UUID
+	Validities   map[pgtype.UUID]knowledgeAutomaticProof `json:"-"`
+}
+
+func knowledgeConsumerVersion(f KnowledgeConsumerFacts) int {
+	if f.ProtocolVersion == 0 {
+		return protocol.TaskKnowledgeVersion
+	}
+	return f.ProtocolVersion
+}
+
+func knowledgeCandidateRequiresV2(row db.CollaborationKnowledgeCandidate) bool {
+	if row.ProposalOrigin != "human" || row.ApprovalOrigin != "human" || row.DecisionOrigin != "human" {
+		return true
+	}
+	refs, err := knowledgeCandidateSources(row)
+	if err != nil {
+		return true
+	}
+	for _, ref := range refs {
+		if ref.Kind == "delivery" {
+			return true
+		}
+	}
+	return false
 }
 
 func knowledgeConsumerTargets(f KnowledgeConsumerFacts) []protocol.CollaborationKnowledgeTarget {
@@ -86,7 +113,11 @@ func knowledgeTargetApplies(f KnowledgeConsumerFacts, target protocol.Collaborat
 // HTTP principal impersonation or stable-context writes. C owns the independent
 // authorization transaction and verifies its lock hints before exposing bytes.
 func (s *CollaborationService) ResolveApprovedKnowledge(ctx context.Context, q *db.Queries, f KnowledgeConsumerFacts) (KnowledgeResolution, error) {
-	out := KnowledgeResolution{Contributions: []protocol.CollaborationKnowledgeContribution{}, Manifest: KnowledgeManifest{ProtocolVersion: 1, Entries: []KnowledgeManifestEntry{}}, Targets: []KnowledgeTargetRevision{}}
+	version := knowledgeConsumerVersion(f)
+	out := KnowledgeResolution{Contributions: []protocol.CollaborationKnowledgeContribution{}, Manifest: KnowledgeManifest{ProtocolVersion: version, Entries: []KnowledgeManifestEntry{}}, Targets: []KnowledgeTargetRevision{}}
+	if !protocol.IsKnowledgeProtocolVersion(version) {
+		return out, knowledgeFailure(409, "knowledge_protocol_unsupported")
+	}
 	finish := func(reason string) (KnowledgeResolution, error) {
 		out.Reason = reason
 		raw, _ := json.Marshal(out.Manifest)
@@ -107,7 +138,10 @@ func (s *CollaborationService) ResolveApprovedKnowledge(ctx context.Context, q *
 		}
 		out.Targets = append(out.Targets, KnowledgeTargetRevision{Target: target, Revision: revision})
 		for _, row := range rows {
-			eligible, why, err := s.knowledgeEligible(ctx, q, f, row)
+			if version == 1 && knowledgeCandidateRequiresV2(row) {
+				return out, knowledgeFailure(409, "knowledge_protocol_unsupported")
+			}
+			proof, eligible, why, err := s.knowledgeEligible(ctx, q, f, row)
 			if err != nil {
 				return out, err
 			}
@@ -122,7 +156,7 @@ func (s *CollaborationService) ResolveApprovedKnowledge(ctx context.Context, q *
 				return out, err
 			}
 			out.Contributions = append(out.Contributions, item)
-			out.Manifest.Entries = append(out.Manifest.Entries, knowledgeManifestEntry(row))
+			out.Manifest.Entries = append(out.Manifest.Entries, knowledgeManifestEntry(row, proof))
 		}
 	}
 	slices.SortFunc(out.Manifest.Entries, func(a, b KnowledgeManifestEntry) int {
@@ -144,14 +178,18 @@ func (s *CollaborationService) ResolveApprovedKnowledge(ctx context.Context, q *
 	return finish(out.Reason)
 }
 
-func knowledgeManifestEntry(row db.CollaborationKnowledgeCandidate) KnowledgeManifestEntry {
-	return KnowledgeManifestEntry{CandidateID: util.UUIDToString(row.ID), Version: strconv.FormatInt(row.Version, 10), ContentSHA256: row.ContentSha256, SourceIssueID: util.UUIDToString(row.SourceIssueID), Target: knowledgeTarget(row)}
+func knowledgeManifestEntry(row db.CollaborationKnowledgeCandidate, proof knowledgeAutomaticProof) KnowledgeManifestEntry {
+	entry := KnowledgeManifestEntry{CandidateID: util.UUIDToString(row.ID), Version: strconv.FormatInt(row.Version, 10), ContentSHA256: row.ContentSha256, SourceIssueID: util.UUIDToString(row.SourceIssueID), Target: knowledgeTarget(row)}
+	if row.ApprovalOrigin == "automation" {
+		entry.Validity = &proof.Binding
+	}
+	return entry
 }
 
 // Revalidation checks the exact disclosed identities and never substitutes the
 // current target collection. The response contains no candidate body.
 func (s *CollaborationService) RevalidateKnowledgeManifest(ctx context.Context, q *db.Queries, f KnowledgeConsumerFacts, manifest KnowledgeManifest) (bool, string, error) {
-	if manifest.ProtocolVersion != 1 || manifest.Entries == nil || len(manifest.Entries) > protocol.CollaborationKnowledgeMaxRuntimeItems {
+	if manifest.ProtocolVersion > knowledgeConsumerVersion(f) || protocol.ValidateTaskKnowledgeManifest(manifest) != nil {
 		return false, "source_unavailable", nil
 	}
 	raw, err := json.Marshal(manifest)
@@ -179,12 +217,15 @@ func (s *CollaborationService) RevalidateKnowledgeManifest(ctx context.Context, 
 		if err != nil {
 			return false, "", err
 		}
-		if knowledgeManifestEntry(row) != entry {
+		if manifest.ProtocolVersion == 1 && knowledgeCandidateRequiresV2(row) {
 			return false, "source_unavailable", nil
 		}
-		ok, reason, err := s.knowledgeEligible(ctx, q, f, row)
+		proof, ok, reason, err := s.knowledgeEligible(ctx, q, f, row)
 		if err != nil || !ok {
 			return false, reason, err
+		}
+		if !protocol.EqualTaskKnowledgeManifestEntry(knowledgeManifestEntry(row, proof), entry) {
+			return false, "source_unavailable", nil
 		}
 	}
 	return true, "", nil
@@ -360,36 +401,59 @@ func knowledgeUserReadsSource(ctx context.Context, q *db.Queries, issueID, userI
 	return collaborationRecipientEligible(ctx, q, userID, row.Issue.WorkspaceID)
 }
 
-func (s *CollaborationService) knowledgeEligible(ctx context.Context, q *db.Queries, f KnowledgeConsumerFacts, row db.CollaborationKnowledgeCandidate) (bool, string, error) {
+func (s *CollaborationService) knowledgeEligible(ctx context.Context, q *db.Queries, f KnowledgeConsumerFacts, row db.CollaborationKnowledgeCandidate) (knowledgeAutomaticProof, bool, string, error) {
+	var proof knowledgeAutomaticProof
 	issue, err := q.GetIssue(ctx, row.SourceIssueID)
 	if errors.Is(err, pgx.ErrNoRows) {
-		return false, "source_unavailable", nil
+		return proof, false, "source_unavailable", nil
 	}
 	if err != nil {
-		return false, "", err
+		return proof, false, "", err
 	}
 	if issue.WorkspaceID != row.SourceWorkspaceID {
-		return false, "source_unavailable", nil
+		return proof, false, "source_unavailable", nil
 	}
 	if row.State != "approved" || !knowledgeTargetApplies(f, knowledgeTarget(row)) {
-		return false, "target_not_applicable", nil
+		return proof, false, "target_not_applicable", nil
 	}
 	if row.ExpiresAt.Valid && !row.ExpiresAt.Time.After(time.Now()) {
-		return false, "expired", nil
+		return proof, false, "expired", nil
 	}
 	var applicable protocol.CollaborationKnowledgeApplicability
 	if json.Unmarshal(row.Applicability, &applicable) != nil {
-		return false, "source_unavailable", nil
+		return proof, false, "source_unavailable", nil
 	}
 	if !slices.Contains(applicable.Surfaces, f.Surface) {
-		return false, "target_not_applicable", nil
+		return proof, false, "target_not_applicable", nil
 	}
+	if ok, reason, err := knowledgeConsumerReadsSource(ctx, q, f, row.SourceIssueID, row.SourceWorkspaceID); err != nil || !ok {
+		return proof, false, reason, err
+	}
+	proof, valid, err := knowledgeAutomaticValidity(ctx, q, row)
+	if err != nil || !valid {
+		return proof, false, "paused_review", err
+	}
+	refs, err := knowledgeCandidateSources(row)
+	if err != nil {
+		return proof, false, "source_unavailable", nil
+	}
+	available, err := s.KnowledgeSourceAvailability(ctx, q, row.SourceIssueID, refs)
+	if err != nil {
+		return proof, false, "", err
+	}
+	if !available {
+		return proof, false, "source_unavailable", nil
+	}
+	return proof, true, "", nil
+}
+
+func knowledgeConsumerReadsSource(ctx context.Context, q *db.Queries, f KnowledgeConsumerFacts, issueID, workspaceID pgtype.UUID) (bool, string, error) {
 	users := append([]pgtype.UUID{f.OriginatorUserID, f.RuntimeOwnerUserID}, f.InputAuthorUserIDs...)
 	if len(users) > 1026 {
 		return false, "audience_unavailable", nil
 	}
 	for _, user := range users {
-		allowed, err := knowledgeUserReadsSource(ctx, q, row.SourceIssueID, user)
+		allowed, err := knowledgeUserReadsSource(ctx, q, issueID, user)
 		if err != nil {
 			return false, "", err
 		}
@@ -399,11 +463,11 @@ func (s *CollaborationService) knowledgeEligible(ctx context.Context, q *db.Quer
 	}
 	switch f.Audience {
 	case "workspace":
-		if row.SourceWorkspaceID != f.WorkspaceID {
+		if workspaceID != f.WorkspaceID {
 			return false, "audience_unavailable", nil
 		}
 	case "collaboration":
-		if row.SourceIssueID != f.CollaborationIssueID {
+		if issueID != f.CollaborationIssueID {
 			issue, err := q.GetIssue(ctx, f.CollaborationIssueID)
 			if errors.Is(err, pgx.ErrNoRows) {
 				return false, "audience_unavailable", nil
@@ -411,7 +475,7 @@ func (s *CollaborationService) knowledgeEligible(ctx context.Context, q *db.Quer
 			if err != nil {
 				return false, "", err
 			}
-			if issue.WorkspaceID != row.SourceWorkspaceID {
+			if issue.WorkspaceID != workspaceID {
 				return false, "audience_unavailable", nil
 			}
 			people, err := q.ListKnowledgeAudienceUsers(ctx, issue.ID)
@@ -422,7 +486,7 @@ func (s *CollaborationService) knowledgeEligible(ctx context.Context, q *db.Quer
 				return false, "audience_unavailable", nil
 			}
 			for _, user := range people {
-				allowed, err := knowledgeUserReadsSource(ctx, q, row.SourceIssueID, user)
+				allowed, err := knowledgeUserReadsSource(ctx, q, issueID, user)
 				if err != nil {
 					return false, "", err
 				}
@@ -431,17 +495,6 @@ func (s *CollaborationService) knowledgeEligible(ctx context.Context, q *db.Quer
 				}
 			}
 		}
-	}
-	refs, err := knowledgeCandidateSources(row)
-	if err != nil {
-		return false, "source_unavailable", nil
-	}
-	available, err := s.KnowledgeSourceAvailability(ctx, q, row.SourceIssueID, refs)
-	if err != nil {
-		return false, "", err
-	}
-	if !available {
-		return false, "source_unavailable", nil
 	}
 	return true, "", nil
 }

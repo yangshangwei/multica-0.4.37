@@ -12,7 +12,7 @@ import (
 )
 
 const getKnowledgeApprovedLineage = `-- name: GetKnowledgeApprovedLineage :one
-SELECT id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision FROM collaboration_knowledge_candidate WHERE lineage_id=$1 AND state='approved'
+SELECT id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision, proposal_origin, decision_origin, approval_origin, automation_job_id, automation_policy_revision, automation_rule_version, approval_job_id, last_decision_job_id FROM collaboration_knowledge_candidate WHERE lineage_id=$1 AND state='approved'
 `
 
 func (q *Queries) GetKnowledgeApprovedLineage(ctx context.Context, lineageID pgtype.UUID) (CollaborationKnowledgeCandidate, error) {
@@ -46,12 +46,20 @@ func (q *Queries) GetKnowledgeApprovedLineage(ctx context.Context, lineageID pgt
 		&i.LastDecidedAt,
 		&i.LastDecisionReason,
 		&i.PublishedTargetRevision,
+		&i.ProposalOrigin,
+		&i.DecisionOrigin,
+		&i.ApprovalOrigin,
+		&i.AutomationJobID,
+		&i.AutomationPolicyRevision,
+		&i.AutomationRuleVersion,
+		&i.ApprovalJobID,
+		&i.LastDecisionJobID,
 	)
 	return i, err
 }
 
 const getKnowledgeCandidateLockHint = `-- name: GetKnowledgeCandidateLockHint :one
-SELECT id,source_workspace_id,source_issue_id,sources FROM collaboration_knowledge_candidate WHERE id=$1
+SELECT id,source_workspace_id,source_issue_id,sources,approval_origin FROM collaboration_knowledge_candidate WHERE id=$1
 `
 
 type GetKnowledgeCandidateLockHintRow struct {
@@ -59,6 +67,7 @@ type GetKnowledgeCandidateLockHintRow struct {
 	SourceWorkspaceID pgtype.UUID `json:"source_workspace_id"`
 	SourceIssueID     pgtype.UUID `json:"source_issue_id"`
 	Sources           []byte      `json:"sources"`
+	ApprovalOrigin    string      `json:"approval_origin"`
 }
 
 func (q *Queries) GetKnowledgeCandidateLockHint(ctx context.Context, id pgtype.UUID) (GetKnowledgeCandidateLockHintRow, error) {
@@ -69,6 +78,7 @@ func (q *Queries) GetKnowledgeCandidateLockHint(ctx context.Context, id pgtype.U
 		&i.SourceWorkspaceID,
 		&i.SourceIssueID,
 		&i.Sources,
+		&i.ApprovalOrigin,
 	)
 	return i, err
 }
@@ -383,7 +393,7 @@ func (q *Queries) ListKnowledgeAudienceUsers(ctx context.Context, issueID pgtype
 }
 
 const listKnowledgeLineageRows = `-- name: ListKnowledgeLineageRows :many
-SELECT id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision FROM collaboration_knowledge_candidate WHERE lineage_id=$1 ORDER BY version DESC LIMIT $2
+SELECT id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision, proposal_origin, decision_origin, approval_origin, automation_job_id, automation_policy_revision, automation_rule_version, approval_job_id, last_decision_job_id FROM collaboration_knowledge_candidate WHERE lineage_id=$1 ORDER BY version DESC LIMIT $2
 `
 
 type ListKnowledgeLineageRowsParams struct {
@@ -428,6 +438,14 @@ func (q *Queries) ListKnowledgeLineageRows(ctx context.Context, arg ListKnowledg
 			&i.LastDecidedAt,
 			&i.LastDecisionReason,
 			&i.PublishedTargetRevision,
+			&i.ProposalOrigin,
+			&i.DecisionOrigin,
+			&i.ApprovalOrigin,
+			&i.AutomationJobID,
+			&i.AutomationPolicyRevision,
+			&i.AutomationRuleVersion,
+			&i.ApprovalJobID,
+			&i.LastDecisionJobID,
 		); err != nil {
 			return nil, err
 		}
@@ -440,7 +458,7 @@ func (q *Queries) ListKnowledgeLineageRows(ctx context.Context, arg ListKnowledg
 }
 
 const listKnowledgeSourceRows = `-- name: ListKnowledgeSourceRows :many
-SELECT id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision FROM collaboration_knowledge_candidate
+SELECT id, lineage_id, version, source_workspace_id, source_issue_id, target_kind, target_workspace_id, target_project_id, content, summary, content_sha256, sources, evidence, applicability, proposed_by_user_id, proposed_at, expires_at, supersedes_candidate_id, derived_from_candidate_id, state, state_revision, approved_by_user_id, approved_at, last_decided_by_user_id, last_decided_at, last_decision_reason, published_target_revision, proposal_origin, decision_origin, approval_origin, automation_job_id, automation_policy_revision, automation_rule_version, approval_job_id, last_decision_job_id FROM collaboration_knowledge_candidate
 WHERE source_issue_id = $1
   AND ($2::timestamptz IS NULL OR (proposed_at,id) > ($2::timestamptz,$3::uuid))
   AND ($4::timestamptz IS NULL OR (proposed_at,id) <= ($4::timestamptz,$5::uuid))
@@ -500,6 +518,14 @@ func (q *Queries) ListKnowledgeSourceRows(ctx context.Context, arg ListKnowledge
 			&i.LastDecidedAt,
 			&i.LastDecisionReason,
 			&i.PublishedTargetRevision,
+			&i.ProposalOrigin,
+			&i.DecisionOrigin,
+			&i.ApprovalOrigin,
+			&i.AutomationJobID,
+			&i.AutomationPolicyRevision,
+			&i.AutomationRuleVersion,
+			&i.ApprovalJobID,
+			&i.LastDecisionJobID,
 		); err != nil {
 			return nil, err
 		}
@@ -512,7 +538,7 @@ func (q *Queries) ListKnowledgeSourceRows(ctx context.Context, arg ListKnowledge
 }
 
 const listKnowledgeTargetLockHints = `-- name: ListKnowledgeTargetLockHints :many
-SELECT id,source_workspace_id,source_issue_id,sources FROM collaboration_knowledge_candidate
+SELECT id,source_workspace_id,source_issue_id,sources,approval_origin FROM collaboration_knowledge_candidate
 WHERE target_kind=$1 AND target_workspace_id=$2 AND target_project_id IS NOT DISTINCT FROM $3::uuid
   AND state='approved' AND (expires_at IS NULL OR expires_at>clock_timestamp()) ORDER BY id LIMIT 17
 `
@@ -528,6 +554,7 @@ type ListKnowledgeTargetLockHintsRow struct {
 	SourceWorkspaceID pgtype.UUID `json:"source_workspace_id"`
 	SourceIssueID     pgtype.UUID `json:"source_issue_id"`
 	Sources           []byte      `json:"sources"`
+	ApprovalOrigin    string      `json:"approval_origin"`
 }
 
 // Pre-lock discovery must not retrieve candidate bodies or summaries.
@@ -545,6 +572,7 @@ func (q *Queries) ListKnowledgeTargetLockHints(ctx context.Context, arg ListKnow
 			&i.SourceWorkspaceID,
 			&i.SourceIssueID,
 			&i.Sources,
+			&i.ApprovalOrigin,
 		); err != nil {
 			return nil, err
 		}
@@ -557,7 +585,7 @@ func (q *Queries) ListKnowledgeTargetLockHints(ctx context.Context, arg ListKnow
 }
 
 const listKnowledgeTargetRows = `-- name: ListKnowledgeTargetRows :many
-SELECT c.id, c.lineage_id, c.version, c.source_workspace_id, c.source_issue_id, c.target_kind, c.target_workspace_id, c.target_project_id, c.content, c.summary, c.content_sha256, c.sources, c.evidence, c.applicability, c.proposed_by_user_id, c.proposed_at, c.expires_at, c.supersedes_candidate_id, c.derived_from_candidate_id, c.state, c.state_revision, c.approved_by_user_id, c.approved_at, c.last_decided_by_user_id, c.last_decided_at, c.last_decision_reason, c.published_target_revision FROM collaboration_knowledge_candidate c
+SELECT c.id, c.lineage_id, c.version, c.source_workspace_id, c.source_issue_id, c.target_kind, c.target_workspace_id, c.target_project_id, c.content, c.summary, c.content_sha256, c.sources, c.evidence, c.applicability, c.proposed_by_user_id, c.proposed_at, c.expires_at, c.supersedes_candidate_id, c.derived_from_candidate_id, c.state, c.state_revision, c.approved_by_user_id, c.approved_at, c.last_decided_by_user_id, c.last_decided_at, c.last_decision_reason, c.published_target_revision, c.proposal_origin, c.decision_origin, c.approval_origin, c.automation_job_id, c.automation_policy_revision, c.automation_rule_version, c.approval_job_id, c.last_decision_job_id FROM collaboration_knowledge_candidate c
 WHERE c.target_kind=$1 AND c.target_workspace_id=$2
   AND c.target_project_id IS NOT DISTINCT FROM $3::uuid
   AND c.published_target_revision IS NOT NULL
@@ -634,6 +662,14 @@ func (q *Queries) ListKnowledgeTargetRows(ctx context.Context, arg ListKnowledge
 			&i.LastDecidedAt,
 			&i.LastDecisionReason,
 			&i.PublishedTargetRevision,
+			&i.ProposalOrigin,
+			&i.DecisionOrigin,
+			&i.ApprovalOrigin,
+			&i.AutomationJobID,
+			&i.AutomationPolicyRevision,
+			&i.AutomationRuleVersion,
+			&i.ApprovalJobID,
+			&i.LastDecisionJobID,
 		); err != nil {
 			return nil, err
 		}

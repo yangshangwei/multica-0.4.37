@@ -49,7 +49,7 @@ func (r *Runner) runHost(ctx context.Context, local *RunLedger, runID string, re
 		// registered capability and never changes the capability digest.
 		request.MemoryVersion = protocol.CollaborationMemoryVersion
 		if r.Host.supportsKnowledge() {
-			request.KnowledgeVersion = 1
+			request.KnowledgeVersion = protocol.CollaborationRunKnowledgeLatestVersion
 		}
 		claim, err := r.Client.Claim(ctx, runID, request)
 		if err != nil {

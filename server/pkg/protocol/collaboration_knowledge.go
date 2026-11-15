@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"reflect"
+	"strconv"
 	"strings"
 	"time"
 	"unicode/utf8"
@@ -13,6 +14,7 @@ import (
 
 const (
 	CollaborationKnowledgeVersion                 = 1
+	CollaborationKnowledgeLatestVersion           = 2
 	CollaborationKnowledgeMaxContentBytes         = 64 << 10
 	CollaborationKnowledgeMaxSummaryBytes         = 2 << 10
 	CollaborationKnowledgeMaxReferences           = 32
@@ -33,11 +35,18 @@ const (
 )
 
 var (
-	ErrInvalidCollaborationKnowledge          = errors.New("invalid_knowledge_request")
-	ErrCollaborationKnowledgeRevisionRequired = errors.New("knowledge_revision_required")
-	ErrCollaborationKnowledgeTooLarge         = errors.New("knowledge_candidate_too_large")
-	ErrCollaborationKnowledgeTargetBudget     = errors.New("knowledge_target_budget_exceeded")
+	ErrInvalidCollaborationKnowledge             = errors.New("invalid_knowledge_request")
+	ErrCollaborationKnowledgeRevisionRequired    = errors.New("knowledge_revision_required")
+	ErrCollaborationKnowledgeTooLarge            = errors.New("knowledge_candidate_too_large")
+	ErrCollaborationKnowledgeTargetBudget        = errors.New("knowledge_target_budget_exceeded")
+	ErrCollaborationKnowledgeProtocolUnsupported = errors.New("knowledge_protocol_unsupported")
 )
+
+// The legacy constants remain version 1 so existing writers and retained
+// receipts do not change until their complete reader chain negotiates v2.
+func IsKnowledgeProtocolVersion(version int) bool {
+	return version == CollaborationKnowledgeVersion || version == CollaborationKnowledgeLatestVersion
+}
 
 type CollaborationKnowledgeTarget struct {
 	Kind        string `json:"kind"`
@@ -48,13 +57,16 @@ type CollaborationKnowledgeTarget struct {
 // All required sources are immutable references to the same collaboration
 // issue. The service must resolve their current availability before disclosure.
 type CollaborationKnowledgeSource struct {
-	Kind      string `json:"kind"`
-	IssueID   string `json:"issue_id"`
-	Version   string `json:"version,omitempty"`
-	SHA256    string `json:"sha256"`
-	CommentID string `json:"comment_id,omitempty"`
-	RunID     string `json:"run_id,omitempty"`
-	RecordID  string `json:"record_id,omitempty"`
+	Kind             string `json:"kind"`
+	IssueID          string `json:"issue_id"`
+	Version          string `json:"version,omitempty"`
+	SHA256           string `json:"sha256"`
+	CommentID        string `json:"comment_id,omitempty"`
+	RunID            string `json:"run_id,omitempty"`
+	RecordID         string `json:"record_id,omitempty"`
+	SubmissionID     string `json:"submission_id,omitempty"`
+	DeliveryEventSeq string `json:"delivery_event_seq,omitempty"`
+	AcceptedEventSeq string `json:"accepted_event_seq,omitempty"`
 }
 
 // Verification is the proposer's attributed claim, never server verification.
@@ -196,15 +208,19 @@ func (v *CollaborationKnowledgeSource) UnmarshalJSON(raw []byte) error {
 	}
 	switch w.Kind {
 	case "memory":
-		if !knowledgeAbsent(raw, "comment_id", "run_id", "record_id") {
+		if !knowledgeAbsent(raw, "comment_id", "run_id", "record_id", "submission_id", "delivery_event_seq", "accepted_event_seq") {
 			return ErrInvalidCollaborationKnowledge
 		}
 	case "comment":
-		if !knowledgeAbsent(raw, "run_id", "record_id") {
+		if !knowledgeAbsent(raw, "run_id", "record_id", "submission_id", "delivery_event_seq", "accepted_event_seq") {
 			return ErrInvalidCollaborationKnowledge
 		}
 	case "run_record":
-		if !knowledgeAbsent(raw, "comment_id", "version") {
+		if !knowledgeAbsent(raw, "comment_id", "version", "submission_id", "delivery_event_seq", "accepted_event_seq") {
+			return ErrInvalidCollaborationKnowledge
+		}
+	case "delivery":
+		if !knowledgeAbsent(raw, "version", "comment_id", "run_id", "record_id") {
 			return ErrInvalidCollaborationKnowledge
 		}
 	}
@@ -219,6 +235,9 @@ func validKnowledgeSource(v CollaborationKnowledgeSource) bool {
 	if !preparationUUID(v.IssueID) || !preparationHex(v.SHA256, 64) {
 		return false
 	}
+	if v.Kind != "delivery" && (v.SubmissionID != "" || v.DeliveryEventSeq != "" || v.AcceptedEventSeq != "") {
+		return false
+	}
 	switch v.Kind {
 	case "memory":
 		return preparationVersion(v.Version) && v.CommentID == "" && v.RunID == "" && v.RecordID == ""
@@ -226,6 +245,13 @@ func validKnowledgeSource(v CollaborationKnowledgeSource) bool {
 		return preparationVersion(v.Version) && preparationUUID(v.CommentID) && v.RunID == "" && v.RecordID == ""
 	case "run_record":
 		return v.Version == "" && v.CommentID == "" && preparationUUID(v.RunID) && knowledgeText(v.RecordID, CollaborationKnowledgeMaxRecordIDBytes)
+	case "delivery":
+		if v.Version != "" || v.CommentID != "" || v.RunID != "" || v.RecordID != "" || !preparationUUID(v.SubmissionID) || !preparationVersion(v.DeliveryEventSeq) || !preparationVersion(v.AcceptedEventSeq) {
+			return false
+		}
+		delivery, _ := strconv.ParseInt(v.DeliveryEventSeq, 10, 64)
+		accepted, _ := strconv.ParseInt(v.AcceptedEventSeq, 10, 64)
+		return accepted > delivery
 	default:
 		return false
 	}
@@ -315,7 +341,7 @@ func (v *CollaborationKnowledgeProposal) UnmarshalJSON(raw []byte) error {
 // sourceIssueID comes from the authenticated route, never a workspace header.
 // The service rechecks expiry against its post-lock transaction time.
 func ValidateCollaborationKnowledgeProposal(v CollaborationKnowledgeProposal, sourceIssueID string) error {
-	if v.ProtocolVersion != CollaborationKnowledgeVersion || !preparationUUID(v.CandidateID) || !preparationUUID(v.RequestID) || !validKnowledgeTarget(v.Target) || !validKnowledgeApplicability(v.Applicability) {
+	if !IsKnowledgeProtocolVersion(v.ProtocolVersion) || !preparationUUID(v.CandidateID) || !preparationUUID(v.RequestID) || !validKnowledgeTarget(v.Target) || !validKnowledgeApplicability(v.Applicability) {
 		return ErrInvalidCollaborationKnowledge
 	}
 	if len(v.Content) > CollaborationKnowledgeMaxContentBytes || len(v.Summary) > CollaborationKnowledgeMaxSummaryBytes || len(v.Sources)+len(v.Evidence) > CollaborationKnowledgeMaxReferences {
@@ -342,7 +368,7 @@ func ValidateCollaborationKnowledgeProposal(v CollaborationKnowledgeProposal, so
 		sourceIssueID = v.Sources[0].IssueID
 	}
 	for _, s := range v.Sources {
-		if !validKnowledgeSource(s) || s.IssueID != sourceIssueID {
+		if !validKnowledgeSource(s) || s.IssueID != sourceIssueID || v.ProtocolVersion == 1 && s.Kind == "delivery" {
 			return ErrInvalidCollaborationKnowledge
 		}
 	}
@@ -404,12 +430,21 @@ func (v *CollaborationKnowledgeContribution) UnmarshalJSON(raw []byte) error {
 	if !collaborationRecallHasFields(raw, "expires_at") || !preparationVersion(w.Version) || !preparationUUID(w.SourceIssueID) || !preparationHex(w.ContentSHA256, 64) || w.ContentSHA256 != CollaborationKnowledgeHash(w.Content) {
 		return ErrInvalidCollaborationKnowledge
 	}
-	p := CollaborationKnowledgeProposal{ProtocolVersion: 1, CandidateID: w.CandidateID, RequestID: w.CandidateID, Target: w.Target, Summary: w.Summary, Content: w.Content, Sources: w.Sources, Evidence: w.Evidence, Applicability: w.Applicability, ExpiresAt: w.ExpiresAt}
-	if err := ValidateCollaborationKnowledgeProposal(p, w.SourceIssueID); err != nil {
+	if err := ValidateCollaborationKnowledgeContributionVersion(CollaborationKnowledgeContribution(w), CollaborationKnowledgeLatestVersion); err != nil {
 		return err
 	}
 	*v = CollaborationKnowledgeContribution(w)
 	return nil
+}
+
+// Contributions have no independent wire version. Their runtime envelope must
+// call this after decoding, so a v1 response cannot silently carry v2 sources.
+func ValidateCollaborationKnowledgeContributionVersion(c CollaborationKnowledgeContribution, version int) error {
+	if !IsKnowledgeProtocolVersion(version) || !preparationVersion(c.Version) || !preparationUUID(c.SourceIssueID) || c.ContentSHA256 != CollaborationKnowledgeHash(c.Content) {
+		return ErrInvalidCollaborationKnowledge
+	}
+	p := CollaborationKnowledgeProposal{ProtocolVersion: version, CandidateID: c.CandidateID, RequestID: c.CandidateID, Target: c.Target, Summary: c.Summary, Content: c.Content, Sources: c.Sources, Evidence: c.Evidence, Applicability: c.Applicability, ExpiresAt: c.ExpiresAt}
+	return ValidateCollaborationKnowledgeProposal(p, c.SourceIssueID)
 }
 
 func (v *CollaborationKnowledgeApproveRequest) UnmarshalJSON(raw []byte) error {
@@ -421,7 +456,7 @@ func (v *CollaborationKnowledgeApproveRequest) UnmarshalJSON(raw []byte) error {
 	if !knowledgePresentValues(raw, "expected_state_revision", "expected_version", "expected_content_sha256") {
 		return ErrCollaborationKnowledgeRevisionRequired
 	}
-	if w.ProtocolVersion != 1 || !preparationUUID(w.RequestID) || !preparationVersion(w.ExpectedStateRevision) || !preparationVersion(w.ExpectedVersion) || !preparationHex(w.ExpectedContentSHA256, 64) {
+	if !IsKnowledgeProtocolVersion(w.ProtocolVersion) || !preparationUUID(w.RequestID) || !preparationVersion(w.ExpectedStateRevision) || !preparationVersion(w.ExpectedVersion) || !preparationHex(w.ExpectedContentSHA256, 64) {
 		return ErrInvalidCollaborationKnowledge
 	}
 	*v = CollaborationKnowledgeApproveRequest(w)
@@ -437,7 +472,7 @@ func (v *CollaborationKnowledgeDecisionRequest) UnmarshalJSON(raw []byte) error 
 	if !knowledgePresentValues(raw, "expected_state_revision") {
 		return ErrCollaborationKnowledgeRevisionRequired
 	}
-	if w.ProtocolVersion != 1 || !preparationUUID(w.RequestID) || !preparationVersion(w.ExpectedStateRevision) || !knowledgeText(w.Reason, CollaborationKnowledgeMaxReasonBytes) {
+	if !IsKnowledgeProtocolVersion(w.ProtocolVersion) || !preparationUUID(w.RequestID) || !preparationVersion(w.ExpectedStateRevision) || !knowledgeText(w.Reason, CollaborationKnowledgeMaxReasonBytes) {
 		return ErrInvalidCollaborationKnowledge
 	}
 	*v = CollaborationKnowledgeDecisionRequest(w)
@@ -464,7 +499,7 @@ func (v *CollaborationKnowledgeReceipt) UnmarshalJSON(raw []byte) error {
 	if err := decodeKnowledgeObject(raw, &w, "protocol_version", "request_id", "action", "code", "candidate_id", "version", "state_revision", "state"); err != nil {
 		return err
 	}
-	if w.ProtocolVersion != 1 || !preparationUUID(w.RequestID) || !preparationUUID(w.CandidateID) || !preparationVersion(w.Version) || !preparationVersion(w.StateRevision) || !knowledgeText(w.Code, 128) {
+	if !IsKnowledgeProtocolVersion(w.ProtocolVersion) || !preparationUUID(w.RequestID) || !preparationUUID(w.CandidateID) || !preparationVersion(w.Version) || !preparationVersion(w.StateRevision) || !knowledgeText(w.Code, 128) {
 		return ErrInvalidCollaborationKnowledge
 	}
 	switch w.Action {

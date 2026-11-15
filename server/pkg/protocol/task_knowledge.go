@@ -10,7 +10,10 @@ import (
 	"github.com/google/uuid"
 )
 
-const TaskKnowledgeVersion = 1
+const (
+	TaskKnowledgeVersion       = 1
+	TaskKnowledgeLatestVersion = 2
+)
 
 type TaskKnowledgeObservationAck struct {
 	Accepted bool `json:"accepted"`
@@ -85,6 +88,16 @@ type TaskKnowledgeManifestEntry struct {
 	ContentSHA256 string                       `json:"content_sha256"`
 	SourceIssueID string                       `json:"source_issue_id"`
 	Target        CollaborationKnowledgeTarget `json:"target"`
+	Validity      *TaskKnowledgeValidity       `json:"validity,omitempty"`
+}
+
+// Validity binds the particular reacceptance proof disclosed to a runtime.
+// It is never replaced with the latest proof when reauthorizing old input.
+type TaskKnowledgeValidity struct {
+	Revision            string `json:"revision"`
+	AcceptedEventSeq    string `json:"accepted_event_seq"`
+	SubmissionID        string `json:"submission_id"`
+	ValidatedCloseEpoch string `json:"validated_close_epoch"`
 }
 type TaskKnowledgeManifest struct {
 	ProtocolVersion int                          `json:"protocol_version"`
@@ -194,7 +207,7 @@ func ValidateTaskKnowledgeSession(b TaskKnowledgeSessionBinding) error {
 	return nil
 }
 func ValidateTaskKnowledgeRequest(version int, requestID, generation, dispatchedAt string) error {
-	if version != TaskKnowledgeVersion {
+	if !IsKnowledgeProtocolVersion(version) {
 		return errors.New("unsupported knowledge version")
 	}
 	if _, err := uuid.Parse(requestID); err != nil {
@@ -207,6 +220,146 @@ func ValidateTaskKnowledgeRequest(version int, requestID, generation, dispatched
 	if _, err := time.Parse(time.RFC3339Nano, dispatchedAt); err != nil {
 		return errors.New("invalid dispatch identity")
 	}
+	return nil
+}
+
+func (v *TaskKnowledgeValidity) UnmarshalJSON(raw []byte) error {
+	type wire TaskKnowledgeValidity
+	var w wire
+	if err := decodeKnowledgeObject(raw, &w, "revision", "accepted_event_seq", "submission_id", "validated_close_epoch"); err != nil {
+		return err
+	}
+	if !validTaskKnowledgeValidity(TaskKnowledgeValidity(w)) {
+		return ErrInvalidCollaborationKnowledge
+	}
+	*v = TaskKnowledgeValidity(w)
+	return nil
+}
+
+func validTaskKnowledgeValidity(v TaskKnowledgeValidity) bool {
+	return preparationVersion(v.Revision) && preparationVersion(v.AcceptedEventSeq) && preparationUUID(v.SubmissionID) && preparationVersion(v.ValidatedCloseEpoch)
+}
+
+func (v *TaskKnowledgeManifestEntry) UnmarshalJSON(raw []byte) error {
+	type wire TaskKnowledgeManifestEntry
+	var w wire
+	if err := decodeKnowledgeObject(raw, &w, "candidate_id", "version", "content_sha256", "source_issue_id", "target"); err != nil {
+		return err
+	}
+	if !validTaskKnowledgeManifestEntry(TaskKnowledgeManifestEntry(w)) || w.Validity == nil && !knowledgeAbsent(raw, "validity") {
+		return ErrInvalidCollaborationKnowledge
+	}
+	*v = TaskKnowledgeManifestEntry(w)
+	return nil
+}
+
+func validTaskKnowledgeManifestEntry(v TaskKnowledgeManifestEntry) bool {
+	return preparationUUID(v.CandidateID) && preparationVersion(v.Version) && preparationHex(v.ContentSHA256, 64) && preparationUUID(v.SourceIssueID) && validKnowledgeTarget(v.Target) && (v.Validity == nil || validTaskKnowledgeValidity(*v.Validity) && v.Target.Kind == "project")
+}
+
+// EqualTaskKnowledgeManifestEntry compares proof values, not pointer identity.
+func EqualTaskKnowledgeManifestEntry(a, b TaskKnowledgeManifestEntry) bool {
+	aValidity, bValidity := a.Validity, b.Validity
+	a.Validity, b.Validity = nil, nil
+	if a != b {
+		return false
+	}
+	return aValidity == nil && bValidity == nil || aValidity != nil && bValidity != nil && *aValidity == *bValidity
+}
+
+func ValidateTaskKnowledgeManifest(v TaskKnowledgeManifest) error {
+	if !IsKnowledgeProtocolVersion(v.ProtocolVersion) || v.Entries == nil || len(v.Entries) > CollaborationKnowledgeMaxRuntimeItems {
+		return ErrInvalidCollaborationKnowledge
+	}
+	for i, entry := range v.Entries {
+		if !validTaskKnowledgeManifestEntry(entry) || v.ProtocolVersion == TaskKnowledgeVersion && entry.Validity != nil || i > 0 && v.Entries[i-1].CandidateID >= entry.CandidateID {
+			return ErrInvalidCollaborationKnowledge
+		}
+	}
+	return nil
+}
+
+func (v *TaskKnowledgeManifest) UnmarshalJSON(raw []byte) error {
+	type wire TaskKnowledgeManifest
+	var w wire
+	if err := decodeKnowledgeObject(raw, &w, "protocol_version", "entries"); err != nil {
+		return err
+	}
+	if err := ValidateTaskKnowledgeManifest(TaskKnowledgeManifest(w)); err != nil {
+		return err
+	}
+	*v = TaskKnowledgeManifest(w)
+	return nil
+}
+
+// ValidateTaskKnowledgeManifestContributions verifies the complete versioned
+// pair, including legacy representability, before any input is assembled.
+func ValidateTaskKnowledgeManifestContributions(version int, manifest TaskKnowledgeManifest, contributions []CollaborationKnowledgeContribution) error {
+	if manifest.ProtocolVersion != version || ValidateTaskKnowledgeManifest(manifest) != nil || contributions == nil || len(manifest.Entries) != len(contributions) {
+		return ErrInvalidCollaborationKnowledge
+	}
+	for i, c := range contributions {
+		if err := ValidateCollaborationKnowledgeContributionVersion(c, version); err != nil {
+			return err
+		}
+		entry := manifest.Entries[i]
+		if c.CandidateID != entry.CandidateID || c.Version != entry.Version || c.ContentSHA256 != entry.ContentSHA256 || c.SourceIssueID != entry.SourceIssueID || c.Target != entry.Target {
+			return ErrInvalidCollaborationKnowledge
+		}
+	}
+	return nil
+}
+
+func (v *TaskKnowledgePrepareResponse) UnmarshalJSON(raw []byte) error {
+	if len(raw) > CollaborationKnowledgeMaxRuntimeJSONBytes {
+		return ErrCollaborationKnowledgeTooLarge
+	}
+	type wire TaskKnowledgePrepareResponse
+	var w wire
+	if err := decodeKnowledgeObject(raw, &w, "invocation_fingerprint", "protocol_version", "prepare_id", "manifest", "manifest_sha256", "contributions", "targets", "session"); err != nil {
+		return err
+	}
+	if ValidateTaskKnowledgeManifestContributions(w.ProtocolVersion, w.Manifest, w.Contributions) != nil || !preparationUUID(w.PrepareID) || !ValidTaskKnowledgeDigest(w.InvocationFingerprint) || w.Targets == nil || len(w.Targets) > 2 {
+		return ErrInvalidCollaborationKnowledge
+	}
+	manifest, err := json.Marshal(w.Manifest)
+	if err != nil || CollaborationKnowledgeHash(string(manifest)) != w.ManifestSHA256 {
+		return ErrInvalidCollaborationKnowledge
+	}
+	if err = ValidateCollaborationKnowledgeRuntimeBudget(w.Contributions, len(raw)); err != nil {
+		return err
+	}
+	material, wireBytes, err := CollaborationKnowledgeSizes(w)
+	if err != nil || material > CollaborationKnowledgeMaxRuntimeBytes || wireBytes > CollaborationKnowledgeMaxRuntimeJSONBytes {
+		return ErrCollaborationKnowledgeTooLarge
+	}
+	*v = TaskKnowledgePrepareResponse(w)
+	return nil
+}
+
+func (v *TaskKnowledgeClaimDescriptor) UnmarshalJSON(raw []byte) error {
+	type wire TaskKnowledgeClaimDescriptor
+	var w wire
+	if err := decodeKnowledgeObject(raw, &w, "protocol_version", "task_id", "runtime_id", "claim_generation", "dispatched_at", "provider", "mode", "configuration_id", "preparation_required", "session"); err != nil {
+		return err
+	}
+	if !IsKnowledgeProtocolVersion(w.ProtocolVersion) {
+		return ErrInvalidCollaborationKnowledge
+	}
+	*v = TaskKnowledgeClaimDescriptor(w)
+	return nil
+}
+
+func (v *TaskKnowledgeAuthorization) UnmarshalJSON(raw []byte) error {
+	type wire TaskKnowledgeAuthorization
+	var w wire
+	if err := decodeKnowledgeObject(raw, &w, "invocation_fingerprint", "protocol_version", "prepare_id", "attempt_seq", "attempt_nonce", "manifest_sha256", "prompt_sha256", "session"); err != nil {
+		return err
+	}
+	if !IsKnowledgeProtocolVersion(w.ProtocolVersion) {
+		return ErrInvalidCollaborationKnowledge
+	}
+	*v = TaskKnowledgeAuthorization(w)
 	return nil
 }
 func TaskKnowledgeRequestHash(v any) (string, error) {
@@ -223,7 +376,7 @@ func (v *TaskKnowledgeInvocation) UnmarshalJSON(raw []byte) error {
 	if err := decodeKnowledgeObject(raw, &w, "protocol_version", "provider", "mode", "builtin", "configuration_id"); err != nil {
 		return err
 	}
-	if !knowledgeText(w.Provider, 128) || !knowledgeText(w.Mode, 64) || !knowledgeText(w.ConfigurationID, 256) || len(w.ExtraArgs) > 64 {
+	if !IsKnowledgeProtocolVersion(w.ProtocolVersion) || !knowledgeText(w.Provider, 128) || !knowledgeText(w.Mode, 64) || !knowledgeText(w.ConfigurationID, 256) || len(w.ExtraArgs) > 64 {
 		return ErrInvalidCollaborationKnowledge
 	}
 	for _, arg := range w.ExtraArgs {
@@ -254,6 +407,9 @@ func (v *TaskKnowledgePrepareRequest) UnmarshalJSON(raw []byte) error {
 	if err := decodeKnowledgeObject(raw, &w, "protocol_version", "request_id", "claim_generation", "dispatched_at", "session", "invocation_fingerprint"); err != nil {
 		return err
 	}
+	if !IsKnowledgeProtocolVersion(w.ProtocolVersion) {
+		return ErrInvalidCollaborationKnowledge
+	}
 	*v = TaskKnowledgePrepareRequest(w)
 	return nil
 }
@@ -264,6 +420,9 @@ func (v *TaskKnowledgeAuthorizeRequest) UnmarshalJSON(raw []byte) error {
 	if err := decodeKnowledgeObject(raw, &w, "protocol_version", "request_id", "prepare_id", "claim_generation", "dispatched_at", "manifest_sha256", "prompt_sha256", "attempt_seq", "attempt_nonce", "session", "invocation_fingerprint"); err != nil {
 		return err
 	}
+	if !IsKnowledgeProtocolVersion(w.ProtocolVersion) {
+		return ErrInvalidCollaborationKnowledge
+	}
 	*v = TaskKnowledgeAuthorizeRequest(w)
 	return nil
 }
@@ -273,6 +432,9 @@ func (v *TaskKnowledgeObservation) UnmarshalJSON(raw []byte) error {
 	var w wire
 	if err := decodeKnowledgeObject(raw, &w, "protocol_version", "request_id", "prepare_id", "claim_generation", "dispatched_at", "attempt_seq", "attempt_nonce", "kind"); err != nil {
 		return err
+	}
+	if !IsKnowledgeProtocolVersion(w.ProtocolVersion) {
+		return ErrInvalidCollaborationKnowledge
 	}
 	switch w.Kind {
 	case "started":

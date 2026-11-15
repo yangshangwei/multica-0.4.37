@@ -14,7 +14,7 @@ ORDER BY created_at DESC, id DESC
 LIMIT sqlc.arg(page_size)::int;
 
 -- name: SetTaskKnowledgeDelivery :one
-UPDATE agent_task_queue SET knowledge_context_version=1, knowledge_delivery=sqlc.arg(delivery)::jsonb
+UPDATE agent_task_queue SET knowledge_context_version=sqlc.arg(knowledge_context_version), knowledge_delivery=sqlc.arg(delivery)::jsonb
 WHERE id=sqlc.arg(task_id)::uuid AND claim_generation=sqlc.arg(claim_generation)::bigint
 RETURNING *;
 

@@ -41,7 +41,7 @@ func TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries(t *testing
 	})
 	// Runner.Run declares knowledge_version for local Claude hosts, so both the
 	// plain and the knowledge-declaring claim must pass the smoke authorizer.
-	for _, knowledge := range []int{0, 1} {
+	for _, knowledge := range []int{0, 1, 2} {
 		request := f.request
 		request.MemoryVersion, request.KnowledgeVersion = protocol.CollaborationMemoryVersion, knowledge
 		if _, err := f.runner.Client.Claim(t.Context(), f.claim.Identity.RunID, request); err != nil {
@@ -56,7 +56,8 @@ func TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries(t *testing
 		{"both", "POST", "claim", "handoff_version=1&recording_version=1", "mdt_fixture", true},
 		{"handoff_only", "POST", "claim", "handoff_version=1", "mdt_fixture", true},
 		{"with_knowledge", "POST", "claim", "handoff_version=1&recording_version=1&knowledge_version=1", "mdt_fixture", true},
-		{"newer_knowledge", "POST", "claim", "handoff_version=1&recording_version=1&knowledge_version=2", "mdt_fixture", false},
+		{"current_knowledge", "POST", "claim", "handoff_version=1&recording_version=1&knowledge_version=2", "mdt_fixture", true},
+		{"newer_knowledge", "POST", "claim", "handoff_version=1&recording_version=1&knowledge_version=3", "mdt_fixture", false},
 		{"duplicate_knowledge", "POST", "claim", "knowledge_version=1&knowledge_version=1", "mdt_fixture", false},
 		{"unknown", "POST", "claim", "handoff_version=1&extra=1", "mdt_fixture", false},
 		{"duplicate", "POST", "claim", "handoff_version=1&handoff_version=1", "mdt_fixture", false},

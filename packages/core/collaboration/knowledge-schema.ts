@@ -17,35 +17,51 @@ const hash = z.string().regex(/^[a-f0-9]{64}$/);
 const text = (max: number) => z.string().min(1).refine((value) =>
   value.trim() !== "" && !value.includes("\0") && value.isWellFormed() && collaborationTextByteLength(value) <= max);
 const cursor = z.string().min(1).max(2048);
+const protocolVersion = z.union([z.literal(1), z.literal(2)]);
 
 export const CollaborationKnowledgeTargetSchema = z.discriminatedUnion("kind", [
   z.strictObject({ kind: z.literal("workspace"), workspace_id: uuid }),
   z.strictObject({ kind: z.literal("project"), workspace_id: uuid, project_id: uuid }),
 ]);
-export const CollaborationKnowledgeSourceSchema = z.discriminatedUnion("kind", [
+const legacySource = z.discriminatedUnion("kind", [
   z.strictObject({ kind: z.literal("memory"), issue_id: uuid, version: positiveVersion, sha256: hash }),
   z.strictObject({ kind: z.literal("comment"), issue_id: uuid, comment_id: uuid, version: positiveVersion, sha256: hash }),
   z.strictObject({ kind: z.literal("run_record"), issue_id: uuid, run_id: uuid, record_id: text(256), sha256: hash }),
 ]);
-const verification = z.enum(["unverified", "observed", "verified"]);
-export const CollaborationKnowledgeEvidenceSchema = z.discriminatedUnion("kind", [
-  z.strictObject({ kind: z.literal("run_record"), run_id: uuid, record_id: text(256), verification }),
-  z.strictObject({ kind: z.literal("commit"), source: CollaborationKnowledgeSourceSchema, reference: text(KNOWLEDGE_REFERENCE_MAX_BYTES), verification }),
-  z.strictObject({ kind: z.literal("test"), source: CollaborationKnowledgeSourceSchema, reference: text(KNOWLEDGE_REFERENCE_MAX_BYTES), verification }),
+export const CollaborationKnowledgeSourceSchema = z.discriminatedUnion("kind", [
+  ...legacySource.options,
+  z.strictObject({ kind: z.literal("delivery"), issue_id: uuid, submission_id: uuid,
+    delivery_event_seq: positiveVersion, accepted_event_seq: positiveVersion, sha256: hash })
+    .refine((value) => BigInt(value.accepted_event_seq) > BigInt(value.delivery_event_seq)),
 ]);
+const verification = z.enum(["unverified", "observed", "verified"]);
+function evidenceFor<S extends z.ZodType>(source: S) {
+  return z.discriminatedUnion("kind", [
+    z.strictObject({ kind: z.literal("run_record"), run_id: uuid, record_id: text(256), verification }),
+    z.strictObject({ kind: z.literal("commit"), source, reference: text(KNOWLEDGE_REFERENCE_MAX_BYTES), verification }),
+    z.strictObject({ kind: z.literal("test"), source, reference: text(KNOWLEDGE_REFERENCE_MAX_BYTES), verification }),
+  ]);
+}
+const legacyEvidence = evidenceFor(legacySource);
+export const CollaborationKnowledgeEvidenceSchema = evidenceFor(CollaborationKnowledgeSourceSchema);
 export const CollaborationKnowledgeApplicabilitySchema = z.strictObject({
   surfaces: z.array(z.enum(["issue", "chat", "quick_create", "autopilot", "collaboration"])).min(1).max(5)
     .refine((values) => new Set(values).size === values.length),
 });
 const material = {
-  summary: text(KNOWLEDGE_SUMMARY_MAX_BYTES), sources: z.array(CollaborationKnowledgeSourceSchema).min(1).max(32),
-  evidence: z.array(CollaborationKnowledgeEvidenceSchema).max(32), applicability: CollaborationKnowledgeApplicabilitySchema,
+  summary: text(KNOWLEDGE_SUMMARY_MAX_BYTES), sources: z.array(legacySource).min(1).max(32),
+  evidence: z.array(legacyEvidence).max(32), applicability: CollaborationKnowledgeApplicabilitySchema,
 };
-export const CollaborationKnowledgeProposalSchema = z.strictObject({
+const materialV2 = { ...material, sources: z.array(CollaborationKnowledgeSourceSchema).min(1).max(32),
+  evidence: z.array(CollaborationKnowledgeEvidenceSchema).max(32) };
+const proposalV1 = z.strictObject({
   protocol_version: z.literal(1), candidate_id: uuid, request_id: uuid,
   target: CollaborationKnowledgeTargetSchema, ...material, content: text(KNOWLEDGE_CONTENT_MAX_BYTES),
   expires_at: utcTimestamp.nullable(), supersedes_candidate_id: uuid.nullable(), derived_from_candidate_id: uuid.nullable(),
-}).refine((value) => {
+});
+export const CollaborationKnowledgeProposalSchema = z.discriminatedUnion("protocol_version", [
+  proposalV1, proposalV1.extend({ protocol_version: z.literal(2), ...materialV2 }),
+]).refine((value) => {
   const metadata = { ...value, content: undefined, summary: undefined };
   return value.sources.length + value.evidence.length <= 32 && knowledgeMaterialBytes(metadata) <= 16_384;
 }, "Knowledge proposal metadata exceeds its budget").refine((value) => value.evidence.every((item) =>
@@ -55,16 +71,16 @@ export const CollaborationKnowledgeProposalSchema = z.strictObject({
   .refine((value) => value.sources.every((source) => source.issue_id === value.sources[0]?.issue_id) &&
     !(value.supersedes_candidate_id && value.derived_from_candidate_id) && value.supersedes_candidate_id !== value.candidate_id && value.derived_from_candidate_id !== value.candidate_id);
 export const CollaborationKnowledgeApproveRequestSchema = z.strictObject({
-  protocol_version: z.literal(1), request_id: uuid, expected_state_revision: positiveVersion,
+  protocol_version: protocolVersion, request_id: uuid, expected_state_revision: positiveVersion,
   expected_version: positiveVersion, expected_content_sha256: hash,
 });
 export const CollaborationKnowledgeDecisionRequestSchema = z.strictObject({
-  protocol_version: z.literal(1), request_id: uuid, expected_state_revision: positiveVersion, reason: text(KNOWLEDGE_REASON_MAX_BYTES),
+  protocol_version: protocolVersion, request_id: uuid, expected_state_revision: positiveVersion, reason: text(KNOWLEDGE_REASON_MAX_BYTES),
 });
 export const CollaborationKnowledgeStateSchema = z.enum(["pending", "approved", "rejected", "withdrawn", "superseded"]);
 const action = z.enum(["propose", "approve", "reject", "withdraw"]);
 export const CollaborationKnowledgeReceiptSchema = z.strictObject({
-  protocol_version: z.literal(1), request_id: uuid, action, code: z.string().min(1).max(128),
+  protocol_version: protocolVersion, request_id: uuid, action, code: z.string().min(1).max(128),
   candidate_id: uuid, version: positiveVersion, state_revision: positiveVersion, state: CollaborationKnowledgeStateSchema,
   target_knowledge_revision: nonnegativeVersion.optional(),
 });
@@ -90,27 +106,83 @@ const restricted = z.strictObject({ ...control, availability: z.literal("restric
 });
 const available = z.strictObject({ ...metadata, availability: z.literal("available"), ...material, content_sha256: hash, capabilities })
   .refine((value) => value.sources.every((source) => source.issue_id === value.source_issue_id));
-export const CollaborationKnowledgeCandidateSummarySchema = z.union([available, unavailable, restricted]);
-export const CollaborationKnowledgeCandidateSchema = z.union([available.safeExtend({ content: text(KNOWLEDGE_CONTENT_MAX_BYTES) }), unavailable, restricted]);
+const summaryV1 = z.union([available, unavailable, restricted]);
+const candidateV1 = z.union([available.safeExtend({ content: text(KNOWLEDGE_CONTENT_MAX_BYTES) }), unavailable, restricted]);
+const origin = z.enum(["human", "automation"]);
+const auditV2 = z.strictObject({
+  ...metadata,
+  proposal_origin: origin,
+  decision_origin: origin,
+  proposed_by_user_id: uuid.nullable(),
+  automation: z.strictObject({ job_id: uuid, policy_revision: nonnegativeVersion, rule_version: text(128) }).nullable(),
+  usage_status: z.enum(["active", "paused_review", "inactive"]),
+  decision: z.strictObject({ actor_user_id: uuid.nullable(), at: timestamp, reason: text(KNOWLEDGE_REASON_MAX_BYTES).nullable() }).nullable(),
+});
+function validV2Audit(value: Omit<z.infer<typeof auditV2>, "decision"> & {
+  decision: { actor_user_id: string | null; at: string } | null;
+}): boolean {
+  if (value.proposal_origin === "human"
+    ? value.proposed_by_user_id === null || value.automation !== null
+    : value.proposed_by_user_id !== null || value.automation === null) return false;
+  if (value.decision_origin === "automation"
+    ? value.automation === null || value.decision === null || value.decision.actor_user_id !== null || value.approved_by_user_id !== null
+    : value.decision !== null && value.decision.actor_user_id === null) return false;
+  if (value.approved_at === null
+    ? value.approved_by_user_id !== null || value.published_target_revision !== null
+    : value.published_target_revision === null || value.approved_by_user_id === null && value.automation === null) return false;
+  if (value.state === "approved" && (value.approved_at === null || value.decision === null)) return false;
+  if (value.usage_status !== "inactive" && value.state !== "approved") return false;
+  return value.usage_status !== "paused_review" || value.automation !== null && value.approved_by_user_id === null;
+}
+const availableV2 = z.strictObject({ ...auditV2.shape, availability: z.literal("available"), ...materialV2,
+  content_sha256: hash, capabilities,
+}).refine(validV2Audit)
+  .refine((value) => value.sources.every((source) => source.issue_id === value.source_issue_id))
+  .refine((value) => value.decision_origin !== "automation" || value.decision?.reason === null);
+const unavailableV2 = z.strictObject({ ...auditV2.shape, availability: z.literal("source_unavailable"), capabilities,
+  decision: z.strictObject({ actor_user_id: uuid.nullable(), at: timestamp }).nullable(),
+}).refine(validV2Audit).refine((value) => !value.capabilities.can_approve);
+const summaryV2 = z.union([availableV2, unavailableV2, restricted]);
+const candidateV2 = z.union([availableV2.safeExtend({ content: text(KNOWLEDGE_CONTENT_MAX_BYTES) }), unavailableV2, restricted]);
+export const CollaborationKnowledgeCandidateSummarySchema = z.union([summaryV1, summaryV2]);
+export const CollaborationKnowledgeCandidateSchema = z.union([candidateV1, candidateV2]);
 export const CollaborationKnowledgeProjectionSchema = z.object({
-  protocol_version: z.literal(1), projection_checked_at: timestamp, valid_until: timestamp, next_expiry_at: timestamp.nullable(),
+  protocol_version: protocolVersion, projection_checked_at: timestamp, valid_until: timestamp, next_expiry_at: timestamp.nullable(),
 }).refine((value) => Date.parse(value.valid_until) > Date.parse(value.projection_checked_at));
-export const CollaborationKnowledgeCandidatesSchema = CollaborationKnowledgeProjectionSchema.safeExtend({
-  issue_id: uuid, items: z.array(CollaborationKnowledgeCandidateSummarySchema).max(50), next_cursor: cursor.nullable(),
+const candidatesV1 = CollaborationKnowledgeProjectionSchema.safeExtend({
+  protocol_version: z.literal(1), issue_id: uuid, items: z.array(summaryV1).max(50), next_cursor: cursor.nullable(),
   capabilities: z.object({ can_propose: permission }).prefault({}),
-}).refine((value) => new Set(value.items.map((item) => item.candidate_id)).size === value.items.length &&
+});
+const candidatesV2 = CollaborationKnowledgeProjectionSchema.safeExtend({
+  protocol_version: z.literal(2), issue_id: uuid, items: z.array(summaryV2).max(50), next_cursor: cursor.nullable(),
+  capabilities: z.object({ can_propose: permission }).prefault({}),
+}).strict();
+export const CollaborationKnowledgeCandidatesSchema = z.discriminatedUnion("protocol_version", [candidatesV1, candidatesV2])
+  .refine((value) => new Set(value.items.map((item) => item.candidate_id)).size === value.items.length &&
   value.items.every((item) => item.availability !== "restricted" && item.source_issue_id === value.issue_id));
-export const CollaborationKnowledgeDetailSchema = CollaborationKnowledgeProjectionSchema.safeExtend({
-  candidate: CollaborationKnowledgeCandidateSchema, history: z.array(CollaborationKnowledgeCandidateSummarySchema).max(50),
+const detailV1 = CollaborationKnowledgeProjectionSchema.safeExtend({
+  protocol_version: z.literal(1), candidate: candidateV1, history: z.array(summaryV1).max(50),
   history_truncated: z.boolean(),
-}).refine((value) => value.candidate.availability === "restricted" ? value.history.length === 0 :
+});
+const detailV2 = CollaborationKnowledgeProjectionSchema.safeExtend({
+  protocol_version: z.literal(2), candidate: candidateV2, history: z.array(summaryV2).max(50),
+  history_truncated: z.boolean(),
+}).strict();
+export const CollaborationKnowledgeDetailSchema = z.discriminatedUnion("protocol_version", [detailV1, detailV2])
+  .refine((value) => value.candidate.availability === "restricted" ? value.history.length === 0 :
   new Set(value.history.map((item) => item.candidate_id)).size === value.history.length &&
   value.history.every((item) => item.availability !== "restricted" && value.candidate.availability !== "restricted" &&
     item.lineage_id === value.candidate.lineage_id && item.source_issue_id === value.candidate.source_issue_id && knowledgeTargetsEqual(item.target, value.candidate.target)));
-export const CollaborationKnowledgeTargetListSchema = CollaborationKnowledgeProjectionSchema.safeExtend({
-  target: CollaborationKnowledgeTargetSchema, knowledge_revision: nonnegativeVersion,
-  items: z.array(CollaborationKnowledgeCandidateSummarySchema).max(50), next_cursor: cursor.nullable(),
-}).refine((value) => new Set(value.items.map((item) => item.candidate_id)).size === value.items.length &&
+const targetListV1 = CollaborationKnowledgeProjectionSchema.safeExtend({
+  protocol_version: z.literal(1), target: CollaborationKnowledgeTargetSchema, knowledge_revision: nonnegativeVersion,
+  items: z.array(summaryV1).max(50), next_cursor: cursor.nullable(),
+});
+const targetListV2 = CollaborationKnowledgeProjectionSchema.safeExtend({
+  protocol_version: z.literal(2), target: CollaborationKnowledgeTargetSchema, knowledge_revision: nonnegativeVersion,
+  items: z.array(summaryV2).max(50), next_cursor: cursor.nullable(),
+}).strict();
+export const CollaborationKnowledgeTargetListSchema = z.discriminatedUnion("protocol_version", [targetListV1, targetListV2])
+  .refine((value) => new Set(value.items.map((item) => item.candidate_id)).size === value.items.length &&
   value.items.every((item) => item.availability === "restricted" || knowledgeTargetsEqual(item.target, value.target)));
 export const CollaborationKnowledgeHintSchema = z.strictObject({
   target_kind: z.enum(["workspace", "project"]), target_id: uuid, knowledge_revision: nonnegativeVersion,
@@ -168,6 +240,9 @@ export function knowledgeTargetsEqual(a: CollaborationKnowledgeTarget, b: Collab
 }
 export class CollaborationKnowledgeProtocolError extends Error {
   constructor() { super("Knowledge response does not match its declared protocol"); this.name = "CollaborationKnowledgeProtocolError"; }
+}
+export function isKnowledgeProtocolUnsupported(error: unknown): boolean {
+  return error instanceof CollaborationKnowledgeProtocolError || z.object({ body: z.object({ code: z.literal("knowledge_protocol_unsupported") }) }).safeParse(error).success;
 }
 /** null means an older response with no knowledge protocol, never a malformed v1. */
 function parse<T>(data: unknown, schema: z.ZodType<T>): T | null {

@@ -1,5 +1,8 @@
 export { CollaborationIssueSchema, CollaborationWorkbenchSchema, CollaborationOperationSchema, CollaborationStatusOptionsSchema, parseCollaborationIssue, parseCollaborationWorkbench, parseCollaborationOperation, parseCollaborationStatusOptions } from "./schema";
 export * from "./delivery-schema";
+export * from "./knowledge-automation-schema";
+export * from "./knowledge-automation-queries";
+export * from "./knowledge-automation-actions";
 export { collaborationDeliveryHistoryOptions } from "./delivery-queries";
 export { deriveCollaborationDetailState, collaborationHasAIActivity } from "./presentation";
 export type { CollaborationDetailAction, CollaborationDetailStage } from "./presentation";

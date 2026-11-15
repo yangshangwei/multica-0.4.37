@@ -70,14 +70,14 @@ func (f *taskKnowledgeFixture) finalize(t *testing.T, chosen string) *protocol.T
 }
 
 func (f *taskKnowledgeFixture) prepareRequest(d *protocol.TaskKnowledgeClaimDescriptor) protocol.TaskKnowledgePrepareRequest {
-	return protocol.TaskKnowledgePrepareRequest{ProtocolVersion: 1, RequestID: uuid.NewString(), ClaimGeneration: d.ClaimGeneration, DispatchedAt: d.DispatchedAt, Session: d.Session, InvocationFingerprint: strings.Repeat("a", 64)}
+	return protocol.TaskKnowledgePrepareRequest{ProtocolVersion: d.ProtocolVersion, RequestID: uuid.NewString(), ClaimGeneration: d.ClaimGeneration, DispatchedAt: d.DispatchedAt, Session: d.Session, InvocationFingerprint: strings.Repeat("a", 64)}
 }
 func (f *taskKnowledgeFixture) authorizeRequest(p protocol.TaskKnowledgePrepareResponse, d *protocol.TaskKnowledgeClaimDescriptor) protocol.TaskKnowledgeAuthorizeRequest {
-	return protocol.TaskKnowledgeAuthorizeRequest{ProtocolVersion: 1, RequestID: uuid.NewString(), PrepareID: p.PrepareID, ClaimGeneration: d.ClaimGeneration, DispatchedAt: d.DispatchedAt, ManifestSHA256: p.ManifestSHA256, InvocationFingerprint: p.InvocationFingerprint, PromptSHA256: strings.Repeat("b", 64), AttemptSequence: 1, AttemptNonce: uuid.NewString(), Session: d.Session}
+	return protocol.TaskKnowledgeAuthorizeRequest{ProtocolVersion: d.ProtocolVersion, RequestID: uuid.NewString(), PrepareID: p.PrepareID, ClaimGeneration: d.ClaimGeneration, DispatchedAt: d.DispatchedAt, ManifestSHA256: p.ManifestSHA256, InvocationFingerprint: p.InvocationFingerprint, PromptSHA256: strings.Repeat("b", 64), AttemptSequence: 1, AttemptNonce: uuid.NewString(), Session: d.Session}
 }
 func (f *taskKnowledgeFixture) observe(t *testing.T, d *protocol.TaskKnowledgeClaimDescriptor, a protocol.TaskKnowledgeAuthorization, kind, native string) {
 	t.Helper()
-	req := protocol.TaskKnowledgeObservation{ProtocolVersion: 1, RequestID: uuid.NewString(), PrepareID: a.PrepareID, ClaimGeneration: d.ClaimGeneration, DispatchedAt: d.DispatchedAt, AttemptSequence: a.AttemptSequence, AttemptNonce: a.AttemptNonce, Kind: kind}
+	req := protocol.TaskKnowledgeObservation{ProtocolVersion: d.ProtocolVersion, RequestID: uuid.NewString(), PrepareID: a.PrepareID, ClaimGeneration: d.ClaimGeneration, DispatchedAt: d.DispatchedAt, AttemptSequence: a.AttemptSequence, AttemptNonce: a.AttemptNonce, Kind: kind}
 	switch kind {
 	case "started":
 		req.ProcessID = 42

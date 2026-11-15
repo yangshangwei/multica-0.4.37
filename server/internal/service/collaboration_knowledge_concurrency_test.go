@@ -109,7 +109,7 @@ func knowledgeAssertSealedExpiry(t *testing.T, f *collaborationQueueFixture, can
 type knowledgeBeforeSourceStarter struct {
 	TxStarter
 	once   *sync.Once
-	before func()
+	before func() error
 }
 
 func (s knowledgeBeforeSourceStarter) Begin(ctx context.Context) (pgx.Tx, error) {
@@ -123,14 +123,18 @@ func (s knowledgeBeforeSourceStarter) Begin(ctx context.Context) (pgx.Tx, error)
 type knowledgeBeforeSourceTx struct {
 	pgx.Tx
 	once   *sync.Once
-	before func()
+	before func() error
 }
 
 func (tx knowledgeBeforeSourceTx) Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error) {
 	// Workflow edits lock every affected participant's user row. Interleave
 	// before that shared actor fence, where the real editor can actually win.
 	if strings.Contains(sql, "-- name: LockCollaborationUsers ") {
-		tx.once.Do(tx.before)
+		var err error
+		tx.once.Do(func() { err = tx.before() })
+		if err != nil {
+			return nil, err
+		}
 	}
 	return tx.Tx.Query(ctx, sql, args...)
 }
@@ -194,6 +198,43 @@ func knowledgeWaitForBlock(t *testing.T, pool *pgxpool.Pool, holder uint32) {
 	t.Fatal("competing transaction never reached the observed PostgreSQL lock barrier")
 }
 
+func TestKnowledgeSourceProjectEditRespectsStagePolicy(t *testing.T) {
+	for _, tc := range []struct {
+		name    string
+		policy  bool
+		enabled bool
+	}{
+		{name: "absent"},
+		{name: "explicit_disabled", policy: true},
+		{name: "enabled", policy: true, enabled: true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			f := newCollaborationStageFixture(t)
+			if tc.policy {
+				f.revise(t, tc.enabled)
+			}
+			next := util.MustParseUUID(f.fx.Project(t, "Next project"))
+			receipt, err := f.svc.EditIssue(f.ctx, CollaborationEditParams{CollaborationWorkflowRequest: f.req(t, f.ctx), ProjectID: &next})
+			wantCode, wantStatus := "issue_edited", http.StatusOK
+			wantProject := util.UUIDToString(next)
+			if tc.enabled {
+				wantCode, wantStatus = "stage_policy_exit_required", http.StatusConflict
+				wantProject = f.project
+			}
+			if receipt.Code != wantCode || receipt.Status != wantStatus ||
+				(tc.enabled && stageGateCode(err) != wantCode) || (!tc.enabled && err != nil) {
+				t.Fatalf("source edit under %s policy: %+v %v", tc.name, receipt, err)
+			}
+			if f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND project_id=$2`, f.issue.Issue.ID, wantProject) != 1 {
+				t.Fatal("source edit did not preserve the current policy outcome")
+			}
+			if !tc.policy && f.fx.Count(t, `SELECT count(*) FROM project_stage_policy WHERE project_id=$1`, f.project) != 0 {
+				t.Fatal("the virtual disabled policy was unexpectedly persisted")
+			}
+		})
+	}
+}
+
 func TestKnowledgeSourceProjectProposalRevalidatesCurrentRelationship(t *testing.T) {
 	f := newCollaborationMemoryFixture(t)
 	p := knowledgeServiceProposal(t, f)
@@ -203,10 +244,11 @@ func TestKnowledgeSourceProjectProposalRevalidatesCurrentRelationship(t *testing
 	p.Target.Kind = "project"
 	p.Target.ProjectID = util.UUIDToString(oldProject)
 	editor := NewCollaborationService(f.svc.Queries, f.pool, f.svc.Issues)
-	f.svc.TxStarter = knowledgeBeforeSourceStarter{TxStarter: f.pool, once: &sync.Once{}, before: func() {
+	f.svc.TxStarter = knowledgeBeforeSourceStarter{TxStarter: f.pool, once: &sync.Once{}, before: func() error {
 		if _, err := editor.EditIssue(f.ctx, CollaborationEditParams{CollaborationWorkflowRequest: workflowRequest(f, 1), ProjectID: &newProject}); err != nil {
-			t.Fatalf("actual source edit before proposal actor fence: %v", err)
+			return fmt.Errorf("actual source edit before proposal actor fence: %w", err)
 		}
+		return nil
 	}}
 	if _, err := f.svc.ProposeKnowledge(collaborationContext(f.handler), f.issue.Issue.ID, p); !collaborationErrorCode(err, "knowledge_target_not_found") {
 		t.Fatalf("stale source-project reference was accepted: %v", err)

@@ -700,6 +700,9 @@ func main() {
 	go h.CollaborationConfigReconciler.Run(sweepCtx)
 	go (&service.CollaborationRealtime{Queries: queries, TxStarter: pool, Publisher: broadcaster}).Run(sweepCtx)
 	go (&service.CollaborationKnowledgeInvalidation{Queries: queries, TxStarter: pool, Publisher: broadcaster}).Run(sweepCtx)
+	// Extraction uses the router's configured assist client and durable jobs;
+	// it never dispatches work into a completed collaboration session.
+	go service.NewKnowledgeAutomationWorker(service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService), h.LLM).Run(sweepCtx)
 	var taskObservation, cancellationObservation adminWorkerObservation
 	go service.NewAdminOperationService(queries, pool, taskSvc).Run(sweepCtx, cancellationObservation.record)
 	registerAutopilotListeners(bus, autopilotSvc)

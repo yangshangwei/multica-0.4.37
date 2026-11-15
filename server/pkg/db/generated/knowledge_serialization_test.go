@@ -84,3 +84,28 @@ func TestKnowledgeGeneratedMetadataTagInventory(t *testing.T) {
 	}
 	t.Logf("verified %d generated server-only metadata fields", count)
 }
+
+func TestKnowledgeAutomationRowsRequireAuthorizedProjections(t *testing.T) {
+	for name, value := range map[string]any{
+		"job":        CollaborationKnowledgeJob{},
+		"batch":      CollaborationKnowledgeBatch{},
+		"attempt":    CollaborationKnowledgeAttempt{},
+		"evaluation": CollaborationKnowledgeEvaluation{},
+		"validity":   CollaborationKnowledgeValidity{},
+		"lock hints": ListKnowledgeValidityLockHintsRow{},
+	} {
+		t.Run(name, func(t *testing.T) {
+			typ := reflect.TypeOf(value)
+			for index := 0; index < typ.NumField(); index++ {
+				field := typ.Field(index)
+				if field.Tag.Get("json") != "-" {
+					t.Errorf("%s.%s must not bypass a current-authority projection", typ.Name(), field.Name)
+				}
+			}
+			raw, err := json.Marshal(value)
+			if err != nil || string(raw) != "{}" {
+				t.Fatalf("private row marshaled as %s: %v", raw, err)
+			}
+		})
+	}
+}

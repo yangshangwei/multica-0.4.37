@@ -13,6 +13,18 @@ sql:
         # Reserved server-only columns also pass through CTE result tables;
         # table-qualified overrides alone miss those derived task rows.
         overrides:
+          # Automation records contain model input closures and retained private
+          # outputs. Public endpoints must build current-authority projections.
+          - column: "collaboration_knowledge_job.*"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_knowledge_batch.*"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_knowledge_attempt.*"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_knowledge_evaluation.*"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_knowledge_validity.*"
+            go_struct_tag: 'json:"-"'
           - column: "collaboration_stage_execution_intent.invocation"
             go_struct_tag: 'json:"-"'
           - column: "collaboration_stage_execution_intent.dependencies"

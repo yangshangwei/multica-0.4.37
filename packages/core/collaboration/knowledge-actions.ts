@@ -14,6 +14,8 @@ import {
 export interface KnowledgeOperationIdentity {
   readonly scope: Pick<CollaborationScope, "server" | "userId">; readonly candidateId: string; readonly requestId: string;
   readonly action: CollaborationKnowledgeReceipt["action"];
+  /** Absence is the retained v1 identity format, never permission to upgrade it. */
+  readonly protocolVersion?: 1 | 2;
 }
 /** Frozen serialized client intent: retries cannot silently adopt a newer reviewed revision. Never persist server projections. */
 export interface KnowledgeIntent extends KnowledgeOperationIdentity { readonly requestJSON: string; readonly issueId?: string }
@@ -67,19 +69,19 @@ function finishKnowledgeReceipt(client: QueryClient, scope: CollaborationScope, 
 }
 
 export function prepareKnowledgeProposal(scope: CollaborationScope, view: CollaborationKnowledgeCandidates,
-  proposal: Omit<CollaborationKnowledgeProposal, "protocol_version" | "candidate_id" | "request_id">): KnowledgeIntent {
+  proposal: Omit<CollaborationKnowledgeProposal, "protocol_version" | "candidate_id" | "request_id">, protocolVersion: 1 | 2 = view.protocol_version): KnowledgeIntent {
   if (!isCollaborationScopeCurrent(scope) || view.capabilities.can_propose !== true) throw new CollaborationUnavailableError();
-  const input = CollaborationKnowledgeProposalSchema.parse({ ...proposal, protocol_version: 1, candidate_id: crypto.randomUUID(), request_id: crypto.randomUUID() });
+  const input = CollaborationKnowledgeProposalSchema.parse({ ...proposal, protocol_version: protocolVersion, candidate_id: crypto.randomUUID(), request_id: crypto.randomUUID() });
   if (!input.sources.every((source) => source.issue_id === view.issue_id)) throw new TypeError("Knowledge sources must belong to the source issue");
   return Object.freeze({ scope: Object.freeze({ server: scope.server, userId: scope.userId }), issueId: view.issue_id, candidateId: input.candidate_id,
-    requestId: input.request_id, action: "propose", requestJSON: JSON.stringify(input) });
+    requestId: input.request_id, action: "propose", requestJSON: JSON.stringify(input), ...(protocolVersion === 2 ? { protocolVersion } : {}) });
 }
 
 export function prepareKnowledgeDecision(scope: CollaborationScope, candidate: CollaborationKnowledgeCandidate,
-  action: "approve" | "reject" | "withdraw", reason?: string): KnowledgeIntent {
+  action: "approve" | "reject" | "withdraw", reason?: string, protocolVersion: 1 | 2 = 1): KnowledgeIntent {
   if (!isCollaborationScopeCurrent(scope)) throw new CollaborationUnavailableError();
   const requestId = crypto.randomUUID();
-  const base = { protocol_version: 1, request_id: requestId, expected_state_revision: candidate.state_revision };
+  const base = { protocol_version: protocolVersion, request_id: requestId, expected_state_revision: candidate.state_revision };
   let input;
   switch (action) {
     case "approve":
@@ -96,17 +98,20 @@ export function prepareKnowledgeDecision(scope: CollaborationScope, candidate: C
       break;
     default: throw new CollaborationUnavailableError();
   }
-  return Object.freeze({ scope: Object.freeze({ server: scope.server, userId: scope.userId }), candidateId: candidate.candidate_id, requestId, action, requestJSON: JSON.stringify(input) });
+  return Object.freeze({ scope: Object.freeze({ server: scope.server, userId: scope.userId }), candidateId: candidate.candidate_id, requestId, action,
+    requestJSON: JSON.stringify(input), ...(protocolVersion === 2 ? { protocolVersion } : {}) });
 }
 
 export function matchesKnowledgeReceipt(identity: KnowledgeOperationIdentity, receipt: CollaborationKnowledgeReceipt | null): receipt is CollaborationKnowledgeReceipt {
-  if (!receipt || receipt.candidate_id !== identity.candidateId || receipt.request_id !== identity.requestId || receipt.action !== identity.action) return false;
+  if (!receipt || receipt.candidate_id !== identity.candidateId || receipt.request_id !== identity.requestId || receipt.action !== identity.action ||
+    receipt.protocol_version !== (identity.protocolVersion ?? 1)) return false;
   return knowledgeReceiptConfirmed(receipt);
 }
 
 function checkScope(scope: CollaborationScope, identity: KnowledgeOperationIdentity): void {
   if (!isCollaborationScopeCurrent(scope) || identity.scope.server !== scope.server || identity.scope.userId !== scope.userId ||
     !["propose", "approve", "reject", "withdraw"].includes(identity.action) ||
+    identity.protocolVersion !== undefined && identity.protocolVersion !== 1 && identity.protocolVersion !== 2 ||
     !z.uuid().safeParse(identity.candidateId).success || !z.uuid().safeParse(identity.requestId).success) throw new CollaborationUnavailableError();
 }
 
@@ -114,7 +119,7 @@ function checkScope(scope: CollaborationScope, identity: KnowledgeOperationIdent
 export async function recoverKnowledgeOperation(client: QueryClient, scope: CollaborationScope, identity: KnowledgeOperationIdentity, storage?: StorageAdapter): Promise<CollaborationKnowledgeReceipt> {
   checkScope(scope, identity);
   const result = await protectCollaborationRead(client, scope, null, async () => {
-    const receipt = await getApi().getCollaborationKnowledgeOperation(identity.candidateId, identity.requestId);
+    const receipt = await getApi().getCollaborationKnowledgeOperation(identity.candidateId, identity.requestId, { protocolVersion: identity.protocolVersion ?? 1 });
     return matchesKnowledgeReceipt(identity, receipt) ? receipt : null;
   });
   return finishKnowledgeReceipt(client, scope, identity, result, storage);
@@ -155,16 +160,17 @@ export async function executeKnowledgeIntent(client: QueryClient, scope: Collabo
       let receipt: CollaborationKnowledgeReceipt | null;
       if (intent.action === "propose") {
         const input = CollaborationKnowledgeProposalSchema.parse(raw);
-        if (!intent.issueId || input.candidate_id !== intent.candidateId || input.request_id !== intent.requestId) throw new CollaborationUnavailableError();
+        if (!intent.issueId || input.candidate_id !== intent.candidateId || input.request_id !== intent.requestId ||
+          input.protocol_version !== (intent.protocolVersion ?? 1)) throw new CollaborationUnavailableError();
         receipt = await dispatch(() => api.proposeCollaborationKnowledge(intent.issueId!, input));
       } else if (intent.action === "approve") {
         const input = CollaborationKnowledgeApproveRequestSchema.parse(raw);
-        if (input.request_id !== intent.requestId) throw new CollaborationUnavailableError();
+        if (input.request_id !== intent.requestId || input.protocol_version !== (intent.protocolVersion ?? 1)) throw new CollaborationUnavailableError();
         receipt = await dispatch(() => api.approveCollaborationKnowledge(intent.candidateId, input));
         if (receipt?.code === "knowledge_approved" && receipt.version !== input.expected_version) throw new CollaborationUnavailableError();
       } else {
         const input = CollaborationKnowledgeDecisionRequestSchema.parse(raw);
-        if (input.request_id !== intent.requestId) throw new CollaborationUnavailableError();
+        if (input.request_id !== intent.requestId || input.protocol_version !== (intent.protocolVersion ?? 1)) throw new CollaborationUnavailableError();
         receipt = await dispatch(() => intent.action === "reject" ? api.rejectCollaborationKnowledge(intent.candidateId, input) : api.withdrawCollaborationKnowledge(intent.candidateId, input));
       }
       return matchesKnowledgeReceipt(intent, receipt) ? receipt : null;

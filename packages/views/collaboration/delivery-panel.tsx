@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationAttachmentsOptions, collaborationDeliveryHistoryOptions,
   type CollaborationIssue, type CollaborationScope, type CollaborationSubmission } from "@multica/core/collaboration";
@@ -10,26 +10,49 @@ import { AppLink } from "../navigation";
 import { RichContent } from "../rich-content";
 import { CollaborationAttachmentList } from "./attachment-panel";
 import { CollaborationQueryState } from "./query-state";
+import { KnowledgeAutomationStatus } from "./knowledge-automation-status";
 
-export function CollaborationDeliveryPanel({ scope, issue }: { scope: CollaborationScope; issue: CollaborationIssue }) {
+export function CollaborationDeliveryPanel({ scope, issue, submissionId, navigationKey = 0, isScopeResume = false, onSubmissionReady, onOpenKnowledge }: {
+  scope: CollaborationScope; issue: CollaborationIssue; submissionId?: string | null; navigationKey?: number; isScopeResume?: boolean;
+  onSubmissionReady?: (element: HTMLElement) => void; onOpenKnowledge?: (opener: HTMLElement) => void;
+}) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
   const [historyOpen, setHistoryOpen] = useState(false);
-  const history = useInfiniteQuery({ ...collaborationDeliveryHistoryOptions(client, scope, issue.id), enabled: historyOpen && issue.delivery?.has_history === true });
+  const root = useRef<HTMLElement>(null), consumed = useRef<string | null>(null);
   const submission = issue.delivery?.current ?? issue.delivery?.latest;
+  const requestedHistory = Boolean(submissionId && submissionId !== submission?.id && !isScopeResume);
+  const history = useInfiniteQuery({ ...collaborationDeliveryHistoryOptions(client, scope, issue.id), enabled: (historyOpen || requestedHistory) && issue.delivery?.has_history === true });
+  const { data: historyData, hasNextPage: historyHasNextPage, isFetching: historyFetching, fetchNextPage: fetchMoreHistory } = history;
   const prior = [...new Map((history.data?.pages.flatMap((page) => page.items) ?? []).map((item) => [item.id, item])).values()]
     .filter((item) => item.id !== submission?.id);
-  return <section id="delivery" tabIndex={-1} aria-label={t(($) => $.delivery.title)} className="min-w-0 space-y-5 outline-none focus-visible:ring-2 focus-visible:ring-ring">
+  useEffect(() => {
+    if (!submissionId || isScopeResume) return;
+    const identity = `${navigationKey}:${submissionId}`;
+    if (consumed.current === identity) return;
+    if (requestedHistory && !historyOpen) { setHistoryOpen(true); return; }
+    const target = root.current?.querySelector<HTMLElement>(`[id="delivery-${submissionId}"]`);
+    if (target) {
+      consumed.current = identity;
+      if (onSubmissionReady) onSubmissionReady(target);
+      else { target.scrollIntoView?.({ block: "start" }); target.focus({ preventScroll: true }); }
+    } else if (requestedHistory && historyData && historyHasNextPage && !historyFetching && historyData.pages.length < 10) {
+      void fetchMoreHistory();
+    }
+  }, [submissionId, navigationKey, isScopeResume, requestedHistory, historyOpen, historyData, historyHasNextPage, historyFetching, fetchMoreHistory, onSubmissionReady]);
+  return <section ref={root} id="delivery" tabIndex={-1} aria-label={t(($) => $.delivery.title)} className="min-w-0 space-y-5 outline-none focus-visible:ring-2 focus-visible:ring-ring">
     <h3 className="text-title-sm font-semibold">{t(($) => $.delivery.title)}</h3>
     {submission ? <CollaborationSubmissionRecord scope={scope} issueId={issue.id} submission={submission} />
       : <p className="text-body text-muted-foreground">{issue.delivery === undefined ? t(($) => $.delivery.unavailable) : t(($) => $.delivery.empty)}</p>}
     {issue.status_category === "done" && submission?.decision === null && <p className="text-body text-muted-foreground">{t(($) => $.delivery.noAcceptanceRecorded)}</p>}
+    <KnowledgeAutomationStatus scope={scope} issue={issue} onOpenKnowledge={onOpenKnowledge} />
     {issue.delivery?.has_history === true && <Collapsible open={historyOpen} onOpenChange={setHistoryOpen} className="min-w-0 space-y-4">
       <CollapsibleTrigger render={<Button type="button" variant="ghost" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11" />}>{t(($) => $.delivery.history)}</CollapsibleTrigger>
       <CollapsibleContent className="min-w-0 space-y-5">
         {history.isPending && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.page.loading)}</p>}
         {history.error && <CollaborationQueryState error={history.error} retry={() => void history.refetch()} />}
         {history.isSuccess && !history.hasNextPage && prior.length === 0 && <p className="text-body text-muted-foreground">{t(($) => $.delivery.emptyHistory)}</p>}
+        {requestedHistory && history.data && !prior.some((item) => item.id === submissionId) && !history.isFetching && <p className="text-caption text-muted-foreground">{t(($) => $.knowledge.deliveryNotLoaded)}</p>}
         <ol className="min-w-0 space-y-8">{prior.map((item) => <li key={item.id} className="min-w-0">
           <CollaborationSubmissionRecord scope={scope} issueId={issue.id} submission={item} />
         </li>)}</ol>
@@ -44,7 +67,7 @@ export function CollaborationSubmissionRecord({ scope, issueId, submission }: { 
   const { t } = useT("collaboration");
   const locale = useLocale();
   const decision = submission.decision;
-  return <div data-submission-id={submission.id} className="min-w-0 space-y-5">
+  return <div id={`delivery-${submission.id}`} tabIndex={-1} data-submission-id={submission.id} className="min-w-0 space-y-5 outline-none focus-visible:ring-2 focus-visible:ring-ring">
     <dl className="flex min-w-0 flex-wrap gap-x-6 gap-y-2 text-caption [&_dt]:text-muted-foreground [&_dd]:mt-1 [&_dd]:[overflow-wrap:anywhere]">
       <div><dt>{t(($) => $.delivery.author)}</dt><dd>{submission.author?.name ?? t(($) => $.detail.unknownAuthor)}</dd></div>
       <div><dt>{t(($) => $.delivery.submittedAt)}</dt><dd><time dateTime={submission.created_at}>{new Date(submission.created_at).toLocaleString(locale)}</time></dd></div>

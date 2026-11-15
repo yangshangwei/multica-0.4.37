@@ -637,7 +637,7 @@ func TestKnowledgeCleanupObservationSurvivesCallerCancellation(t *testing.T) {
 func TestKnowledgePreparationBudgetIncludesFullEnvelope(t *testing.T) {
 	f := newKnowledgeDaemonFixture(t)
 	fingerprint := strings.Repeat("a", 64)
-	p := f.prepare(protocol.TaskKnowledgePrepareRequest{Session: f.task.KnowledgeContext.Session, InvocationFingerprint: fingerprint})
+	p := f.prepare(protocol.TaskKnowledgePrepareRequest{ProtocolVersion: f.task.KnowledgeContext.ProtocolVersion, Session: f.task.KnowledgeContext.Session, InvocationFingerprint: fingerprint})
 	item := p.Contributions[0]
 	p.Contributions, p.Manifest.Entries = nil, nil
 	for i := 0; i < 4; i++ {

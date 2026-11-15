@@ -98,6 +98,12 @@ var workspaceDeletionManifest = map[string]workspaceDeleteAction{
 	"collaboration_knowledge_candidate":    workspaceDeleteKeep,
 	"collaboration_knowledge_invalidation": workspaceDeleteKeep,
 	"collaboration_knowledge_target":       workspaceDelete,
+	"project_knowledge_policy":             workspaceDelete,
+	"collaboration_knowledge_job":          workspaceDeleteKeep,
+	"collaboration_knowledge_batch":        workspaceDeleteKeep,
+	"collaboration_knowledge_attempt":      workspaceDeleteKeep,
+	"collaboration_knowledge_evaluation":   workspaceDeleteKeep,
+	"collaboration_knowledge_validity":     workspaceDeleteKeep,
 	// Workspace teardown purges I1 history/outbox through
 	// DeleteWorkspaceIterationData in the existing owner transaction.
 	"workspace_iteration_settings": workspaceDelete,
@@ -311,6 +317,80 @@ func TestWorkspaceDeletionManifestPreservesKnowledgeHistory(t *testing.T) {
 	response := testutil.Call(t, testHandler.DeleteWorkspace, withURLParam(r, "id", source)).Want(409)
 	if response.Map()["code"] != "workspace_has_collaboration_records" || snapshot() != before {
 		t.Fatal("source history deletion guard or retained knowledge changed")
+	}
+}
+
+func TestProjectDeletionPreservesKnowledgeAutomationHistory(t *testing.T) {
+	t.Setenv("MULTICA_AUTH_MODE", "legacy")
+	workspace := knowledgeHookWorkspace(t)
+	project := dbfx.Project(t, "Automation retention", testutil.Cols{"workspace_id": workspace})
+	issue := collaborationBoundaryIssue(t, workspace)
+	dbfx.Exec(t, `UPDATE issue SET project_id=$1 WHERE id=$2`, project, issue)
+	ctx := context.Background()
+	if _, err := testHandler.Queries.CreateProjectKnowledgePolicy(ctx, db.CreateProjectKnowledgePolicyParams{ProjectID: parseUUID(project),
+		WorkspaceID: parseUUID(workspace), IsEnabled: false, MaxCandidates: 2, BuiltinRuleVersion: "2026-11-14-v1", ChangedByUserID: parseUUID(testUserID)}); err != nil {
+		t.Fatal(err)
+	}
+	job, err := testHandler.Queries.CreateKnowledgeAutomationJob(ctx, db.CreateKnowledgeAutomationJobParams{ID: parseUUID(uuid.NewString()),
+		SourceWorkspaceID: parseUUID(workspace), SourceIssueID: parseUUID(issue), ProjectID: parseUUID(project), SubmissionID: parseUUID(uuid.NewString()),
+		DeliveryEventSeq: 3, AcceptedEventSeq: 4, ValidatedCloseEpoch: 2, SourceReaderUserID: parseUUID(testUserID), PolicyRevision: 1,
+		BuiltinRuleVersion: "2026-11-14-v1", MaxCandidates: 2})
+	if err != nil {
+		t.Fatal(err)
+	}
+	// This fixture tests parent deletion/retention, not model or acceptance
+	// orchestration. The retained evaluation is seeded through the DB fixture.
+	hash := protocol.CollaborationKnowledgeHash("retained evaluation fixture")
+	evaluation := dbfx.Insert(t, "collaboration_knowledge_evaluation", testutil.Cols{
+		"job_id": job.ID, "batch_id": uuid.NewString(), "generation_attempt_id": uuid.NewString(), "check_attempt_id": uuid.NewString(),
+		"candidate_id": uuid.NewString(), "candidate_version": 1, "candidate_content_sha256": hash, "intent": "create",
+		"source_workspace_id": workspace, "source_issue_id": issue, "project_id": project, "submission_id": job.SubmissionID,
+		"accepted_event_seq": 4, "validated_close_epoch": 2, "policy_revision": 1, "builtin_rule_version": "2026-11-14-v1", "target_revision": 0,
+		"source_snapshot_sha256": hash, "target_snapshot_sha256": hash, "verdict": "review_pending", "reason_code": "comparison_unavailable",
+		"input_source_closure": `[]`, "support_dependencies": `[]`, "model_result": `{}`, "usage": `{"status":"unknown"}`,
+	})
+	snapshot := func() string {
+		var value string
+		dbfx.QueryRow(t, `SELECT jsonb_build_object('job',(SELECT to_jsonb(j) FROM collaboration_knowledge_job j WHERE id=$1),
+			'evaluation',(SELECT to_jsonb(e) FROM collaboration_knowledge_evaluation e WHERE id=$2))::text`, job.ID, evaluation).Scan(&value)
+		return value
+	}
+	before := snapshot()
+	r := newRequest("DELETE", "/api/projects/"+project, nil)
+	r.Header.Set("X-Workspace-ID", workspace)
+	refused := testutil.Call(t, testHandler.DeleteProject, withURLParam(r, "id", project)).Want(409)
+	if refused.Map()["code"] != "project_has_collaboration_issues" || snapshot() != before ||
+		dbfx.Count(t, `SELECT count(*) FROM project_knowledge_policy WHERE project_id=$1`, project) != 1 {
+		t.Fatal("refused deletion failed to roll back policy cleanup or changed retained history")
+	}
+	// Move the live association out in the fixture. Retained automation keeps
+	// its original target identity and must survive the now-permitted deletion.
+	dbfx.Exec(t, `UPDATE issue SET project_id=NULL WHERE id=$1`, issue)
+	r = newRequest("DELETE", "/api/projects/"+project, nil)
+	r.Header.Set("X-Workspace-ID", workspace)
+	testutil.Call(t, testHandler.DeleteProject, withURLParam(r, "id", project)).Want(204)
+	if snapshot() != before {
+		t.Fatal("project deletion changed retained automation job or evaluation")
+	}
+	if dbfx.Count(t, `SELECT count(*) FROM project_knowledge_policy WHERE project_id=$1`, project) != 0 || dbfx.Count(t, `SELECT count(*) FROM project WHERE id=$1`, project) != 0 {
+		t.Fatal("project deletion retained target-owned policy or project")
+	}
+}
+
+func TestWorkspaceDeletionRemovesKnowledgePolicy(t *testing.T) {
+	t.Setenv("MULTICA_AUTH_MODE", "legacy")
+	workspace := knowledgeHookWorkspace(t)
+	project := dbfx.Project(t, "Workspace policy cleanup", testutil.Cols{"workspace_id": workspace})
+	if _, err := testHandler.Queries.CreateProjectKnowledgePolicy(context.Background(), db.CreateProjectKnowledgePolicyParams{
+		ProjectID: parseUUID(project), WorkspaceID: parseUUID(workspace), IsEnabled: false, MaxCandidates: 1,
+		BuiltinRuleVersion: "2026-11-14-v1", ChangedByUserID: parseUUID(testUserID)}); err != nil {
+		t.Fatal(err)
+	}
+	r := newRequest("DELETE", "/api/workspaces/"+workspace, nil)
+	r.Header.Set("X-Workspace-ID", workspace)
+	testutil.Call(t, testHandler.DeleteWorkspace, withURLParam(r, "id", workspace)).Want(204)
+	if dbfx.Count(t, `SELECT count(*) FROM project_knowledge_policy WHERE workspace_id=$1`, workspace) != 0 {
+		t.Fatal("workspace deletion retained project knowledge policy")
 	}
 }
 

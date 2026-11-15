@@ -42,10 +42,10 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
   const restoreScroll = useRestoredScrollRef("account-detail");
   useEffect(() => {
     if (!query.data || !comments.data || restored.current) return;
-    if (!navigation.isScopeResume && (destination.commentId || destination.runId || destination.anchor)) return;
+    if (!navigation.isScopeResume && (destination.commentId || destination.runId || destination.submissionId || destination.anchor)) return;
     restoreScroll(root.current?.closest<HTMLElement>('[data-tab-scroll-root="account-detail"]') ?? null);
     restored.current = true;
-  }, [query.data, comments.data, restoreScroll, destination.commentId, destination.runId, destination.anchor, navigation.isScopeResume]);
+  }, [query.data, comments.data, restoreScroll, destination.commentId, destination.runId, destination.submissionId, destination.anchor, navigation.isScopeResume]);
   useEffect(() => {
     const anchor = destination.runId ? `run-${destination.runId}` : destination.commentId ? `comment-${destination.commentId}` : destination.anchor;
     if (!anchor || navigation.isScopeResume) { consumedAnchor.current = null; return; }
@@ -108,7 +108,17 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
       <Button variant="link" size="sm" className="h-auto max-w-full whitespace-normal px-0 py-1 text-caption text-muted-foreground underline-offset-4 pointer-coarse:min-h-11" onClick={(event) => auxiliary.current?.open("files", event.currentTarget)}>{t(($) => $.detail.referenceFiles)}</Button>
     </section>
     <CollaborationStagePanel key={`stage:${identity}`} scope={scope} issue={issue} readUnavailable={query.isError} />
-    <CollaborationDeliveryPanel key={`delivery:${identity}`} scope={scope} issue={issue} />
+    <CollaborationDeliveryPanel key={`delivery:${identity}`} scope={scope} issue={issue} submissionId={destination.submissionId}
+      navigationKey={navigation.navigationKey} isScopeResume={navigation.isScopeResume}
+      onOpenKnowledge={(opener) => auxiliary.current?.open("knowledge", opener)} onSubmissionReady={(element) => {
+        const focus = () => {
+          const container = element.closest<HTMLElement>('[data-tab-scroll-root="account-detail"]');
+          if (container) container.scrollTop += element.getBoundingClientRect().top - container.getBoundingClientRect().top;
+          else element.scrollIntoView?.({ block: "start" });
+          element.focus({ preventScroll: true });
+        };
+        if (auxiliary.current) auxiliary.current.closeForNavigation(focus); else focus();
+      }} />
     <CollaborationIssueReactions scope={scope} issue={issue} />
     <section id="discussion" tabIndex={-1} className="min-w-0 space-y-4"><h3 className="text-title-sm font-semibold">{t(($) => $.detail.comments)}</h3>
       {comments.isPending && <p role="status" className="text-body text-muted-foreground">{t(($) => $.page.loading)}</p>}

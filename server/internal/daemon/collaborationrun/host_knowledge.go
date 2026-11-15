@@ -21,7 +21,7 @@ func validateHostKnowledgeClaim(claim protocol.CollaborationRunClaimResponse, ve
 	if d == nil {
 		return nil
 	}
-	if version != 1 || d.ProtocolVersion != 1 || d.Identity != claim.Identity || d.Namespace != claim.Identity.RunID || claim.HandoffVersion != 1 || claim.Preparation == nil || claim.Preparation.Host == nil || !agent.KnowledgeLifecycleSupported(claim.Preparation.Provider.Provider, claim.Preparation.Host.ProviderMode, true) || claim.Preparation.Host.ProviderMode != "local" || d.ConfigurationDigest != claim.Preparation.Host.ConfigurationDigest {
+	if !protocol.IsKnowledgeProtocolVersion(version) || d.ProtocolVersion != version || d.Identity != claim.Identity || d.Namespace != claim.Identity.RunID || claim.HandoffVersion != 1 || claim.Preparation == nil || claim.Preparation.Host == nil || !agent.KnowledgeLifecycleSupported(claim.Preparation.Provider.Provider, claim.Preparation.Host.ProviderMode, true) || claim.Preparation.Host.ProviderMode != "local" || d.ConfigurationDigest != claim.Preparation.Host.ConfigurationDigest {
 		return ErrProtocol
 	}
 	return nil
@@ -106,7 +106,7 @@ func (s *hostSupervisor) prepareKnowledge(ctx context.Context, prompt string, op
 	if err != nil {
 		return "", ErrProtocol
 	}
-	request := protocol.CollaborationRunKnowledgePrepare{ProtocolVersion: 1, Identity: s.claim.Identity, RequestID: uuid.NewSHA1(id, []byte("multica:collaboration-knowledge:v1")).String(), HandoffID: handoff.SnapshotID, InvocationFingerprint: fingerprint}
+	request := protocol.CollaborationRunKnowledgePrepare{ProtocolVersion: s.claim.KnowledgeContext.ProtocolVersion, Identity: s.claim.Identity, RequestID: uuid.NewSHA1(id, []byte("multica:collaboration-knowledge:v1")).String(), HandoffID: handoff.SnapshotID, InvocationFingerprint: fingerprint}
 	var bundle protocol.CollaborationRunKnowledgeBundle
 	err = s.runner.retryHandoff(ctx, func() error { var e error; bundle, e = s.runner.Client.PrepareKnowledge(ctx, request); return e })
 	if err != nil {

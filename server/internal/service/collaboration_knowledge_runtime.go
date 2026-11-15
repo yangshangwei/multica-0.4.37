@@ -28,6 +28,20 @@ type collaborationKnowledgePreparation struct {
 	Targets        []KnowledgeTargetRevision                 `json:"targets"`
 }
 
+func (v *collaborationKnowledgePreparation) UnmarshalJSON(raw []byte) error {
+	type wire collaborationKnowledgePreparation
+	var w wire
+	if decodeCollaborationPreparationJSON(raw, &w) != nil || protocol.ValidateCollaborationRunKnowledgePrepare(w.Request) != nil || w.Manifest.ProtocolVersion != w.Request.ProtocolVersion || protocol.ValidateTaskKnowledgeManifest(w.Manifest) != nil || w.Targets == nil || len(w.Targets) > 2 {
+		return knowledgeFailure(503, "knowledge_unavailable")
+	}
+	manifest, err := json.Marshal(w.Manifest)
+	if err != nil || protocol.CollaborationKnowledgeHash(string(manifest)) != w.ManifestSHA256 {
+		return knowledgeFailure(503, "knowledge_unavailable")
+	}
+	*v = collaborationKnowledgePreparation(w)
+	return nil
+}
+
 func loadCollaborationKnowledge[T any](ctx context.Context, q *db.Queries, run pgtype.UUID, key, kind string) (T, error) {
 	var out T
 	e, err := q.GetCollaborationRuntimeEvent(ctx, db.GetCollaborationRuntimeEventParams{RunID: run, ProducerEventID: key})
@@ -52,7 +66,7 @@ func storeCollaborationKnowledge(ctx context.Context, q *db.Queries, run, issue 
 func (s *CollaborationService) claimRuntimeKnowledge(ctx context.Context, r *collaborationRuntimeState, p protocol.CollaborationRunClaimRequest, claim protocol.CollaborationRunClaimResponse, freezing bool) (*protocol.CollaborationRunKnowledgeClaim, error) {
 	old, err := loadCollaborationKnowledge[protocol.CollaborationRunKnowledgeClaim](ctx, r.q, r.run.ID, collaborationKnowledgeClaimKey, "knowledge_claim")
 	if err == nil {
-		if p.KnowledgeVersion != 1 || !s.KnowledgeContextEnabled || old.Identity != claim.Identity || claim.Preparation == nil || claim.Preparation.Host == nil || old.ConfigurationDigest != claim.Preparation.Host.ConfigurationDigest {
+		if p.KnowledgeVersion != old.ProtocolVersion || !s.KnowledgeContextEnabled || old.Identity != claim.Identity || claim.Preparation == nil || claim.Preparation.Host == nil || old.ConfigurationDigest != claim.Preparation.Host.ConfigurationDigest {
 			return nil, knowledgeFailure(409, "knowledge_context_changed")
 		}
 		return &old, nil
@@ -60,7 +74,7 @@ func (s *CollaborationService) claimRuntimeKnowledge(ctx context.Context, r *col
 	if !errors.Is(err, pgx.ErrNoRows) {
 		return nil, err
 	}
-	if p.KnowledgeVersion != 0 && p.KnowledgeVersion != 1 {
+	if p.KnowledgeVersion != 0 && !protocol.IsKnowledgeProtocolVersion(p.KnowledgeVersion) {
 		return nil, knowledgeFailure(400, "invalid_knowledge_request")
 	}
 	if !freezing || !s.KnowledgeContextEnabled || p.KnowledgeVersion == 0 || claim.ProtocolVersion != protocol.CollaborationHostRuntimeProtocolVersion || claim.Preparation == nil || claim.Preparation.Host == nil || !agent.KnowledgeLifecycleSupported(claim.Preparation.Provider.Provider, claim.Preparation.Host.ProviderMode, true) || claim.Preparation.Host.ProviderMode != "local" {
@@ -73,7 +87,7 @@ func (s *CollaborationService) claimRuntimeKnowledge(ctx context.Context, r *col
 	if runtime.ProfileID.Valid || runtime.Provider != claim.Preparation.Provider.Provider || !agent.KnowledgeLifecycleSupported(runtime.Provider, runtime.RuntimeMode, true) || runtime.RuntimeMode != "local" {
 		return nil, nil
 	}
-	d := protocol.CollaborationRunKnowledgeClaim{ProtocolVersion: 1, Identity: claim.Identity, ConfigurationDigest: claim.Preparation.Host.ConfigurationDigest, Namespace: claim.Identity.RunID}
+	d := protocol.CollaborationRunKnowledgeClaim{ProtocolVersion: p.KnowledgeVersion, Identity: claim.Identity, ConfigurationDigest: claim.Preparation.Host.ConfigurationDigest, Namespace: claim.Identity.RunID}
 	if err = storeCollaborationKnowledge(ctx, r.q, r.run.ID, r.access.Issue.ID, collaborationKnowledgeClaimKey, "knowledge_claim", d); err != nil {
 		return nil, err
 	}
@@ -130,6 +144,11 @@ func (s *CollaborationService) lockCollaborationKnowledge(ctx context.Context, t
 	if err != nil {
 		return fail(err)
 	}
+	claim, err := loadCollaborationKnowledge[protocol.CollaborationRunKnowledgeClaim](ctx, q, runID, collaborationKnowledgeClaimKey, "knowledge_claim")
+	if err != nil {
+		return fail(err)
+	}
+	f.ProtocolVersion = claim.ProtocolVersion
 	hints, err = s.CollectKnowledgeReadLockHints(ctx, q, f, exact)
 	if err != nil {
 		return fail(err)
@@ -280,6 +299,7 @@ func (s *CollaborationService) lockCollaborationKnowledge(ctx context.Context, t
 	if err != nil {
 		return fail(err)
 	}
+	currentFacts.ProtocolVersion = f.ProtocolVersion
 	if !reflect.DeepEqual(f, currentFacts) || current.RuntimeID != run.RuntimeID || current.ClaimGeneration != run.ClaimGeneration || current.LaunchNonce != run.LaunchNonce {
 		return fail(knowledgeFailure(409, "knowledge_context_changed"))
 	}
@@ -352,7 +372,7 @@ func (s *CollaborationService) lockCollaborationKnowledge(ctx context.Context, t
 	if err != nil {
 		return fail(err)
 	}
-	if d.Identity != collaborationRunIdentity(current, issue.ID) || d.Namespace != util.UUIDToString(runID) || d.ProtocolVersion != 1 || preparation.Host == nil || d.ConfigurationDigest != preparation.Host.ConfigurationDigest || runtime.Provider != preparation.Provider.Provider || !agent.KnowledgeLifecycleSupported(runtime.Provider, runtime.RuntimeMode, true) || runtime.RuntimeMode != "local" || runtime.ProfileID.Valid {
+	if d.Identity != collaborationRunIdentity(current, issue.ID) || d.Namespace != util.UUIDToString(runID) || d.ProtocolVersion != f.ProtocolVersion || !protocol.IsKnowledgeProtocolVersion(d.ProtocolVersion) || preparation.Host == nil || d.ConfigurationDigest != preparation.Host.ConfigurationDigest || runtime.Provider != preparation.Provider.Provider || !agent.KnowledgeLifecycleSupported(runtime.Provider, runtime.RuntimeMode, true) || runtime.RuntimeMode != "local" || runtime.ProfileID.Valid {
 		return fail(knowledgeFailure(409, "knowledge_context_changed"))
 	}
 	return r, f, hints, nil
@@ -401,7 +421,7 @@ func (s *CollaborationService) PrepareRuntimeKnowledge(ctx context.Context, runI
 		if e != nil {
 			return empty, e
 		}
-		if p.Identity != collaborationRunIdentity(r.run, r.access.Issue.ID) {
+		if p.ProtocolVersion != f.ProtocolVersion || p.Identity != collaborationRunIdentity(r.run, r.access.Issue.ID) {
 			return empty, knowledgeFailure(409, "knowledge_context_changed")
 		}
 		savedHandoff, e := loadStoredHandoff(ctx, q, runID, p.HandoffID)
@@ -493,7 +513,7 @@ func (s *CollaborationService) AuthorizeRuntimeKnowledge(ctx context.Context, ru
 		if e != nil {
 			return empty, e
 		}
-		if p.Identity != collaborationRunIdentity(r.run, r.access.Issue.ID) || r.run.AuthorizedAttemptSeq != seq {
+		if p.ProtocolVersion != f.ProtocolVersion || p.Identity != collaborationRunIdentity(r.run, r.access.Issue.ID) || r.run.AuthorizedAttemptSeq != seq {
 			return empty, knowledgeFailure(409, "knowledge_context_changed")
 		}
 		attempt, e := q.GetCollaborationAttempt(ctx, db.GetCollaborationAttemptParams{RunID: runID, AttemptSeq: seq})
@@ -564,6 +584,6 @@ func (s *CollaborationService) RuntimeKnowledgeStatus(ctx context.Context, runID
 	if stored.Request.Identity != identity {
 		return out, knowledgeFailure(409, "knowledge_context_changed")
 	}
-	out.Prepared, out.RequestID = true, stored.Request.RequestID
+	out.ProtocolVersion, out.Prepared, out.RequestID = stored.Request.ProtocolVersion, true, stored.Request.RequestID
 	return out, nil
 }

@@ -19,6 +19,39 @@ func (h *Handler) knowledgeService() *service.CollaborationService {
 func knowledgeRequestError(w http.ResponseWriter, status int, code string) {
 	writeJSON(w, status, map[string]string{"code": code, "error": "Knowledge request unavailable"})
 }
+
+const HeaderKnowledgeVersion = "X-Multica-Knowledge-Version"
+
+func knowledgeRequestProtocol(w http.ResponseWriter, r *http.Request) (int, bool) {
+	values := r.Header.Values(HeaderKnowledgeVersion)
+	if len(values) == 0 {
+		return 1, true
+	}
+	if len(values) != 1 {
+		knowledgeRequestError(w, 400, "invalid_knowledge_request")
+		return 0, false
+	}
+	switch values[0] {
+	case "1":
+		return 1, true
+	case "2":
+		return 2, true
+	default:
+		knowledgeRequestError(w, 409, "knowledge_protocol_unsupported")
+		return 0, false
+	}
+}
+
+func prepareKnowledgeProtocol(w http.ResponseWriter, r *http.Request) bool {
+	version, ok := knowledgeRequestProtocol(w, r)
+	if !ok {
+		return false
+	}
+	*r = *r.WithContext(service.WithKnowledgeProtocolVersion(r.Context(), version))
+	w.Header().Set(HeaderKnowledgeVersion, strconv.Itoa(version))
+	return true
+}
+
 func decodeKnowledgeBody(w http.ResponseWriter, r *http.Request, value any) bool {
 	if r.Body == nil {
 		knowledgeRequestError(w, 400, "invalid_knowledge_request")
@@ -34,6 +67,17 @@ func decodeKnowledgeBody(w http.ResponseWriter, r *http.Request, value any) bool
 		err = json.Unmarshal(raw, value)
 	}
 	if err == nil {
+		var envelope struct {
+			ProtocolVersion int `json:"protocol_version"`
+		}
+		version, ok := knowledgeRequestProtocol(w, r)
+		if !ok {
+			return false
+		}
+		if json.Unmarshal(raw, &envelope) != nil || envelope.ProtocolVersion != version {
+			knowledgeRequestError(w, 400, "invalid_knowledge_request")
+			return false
+		}
 		return true
 	}
 	switch {
@@ -91,6 +135,9 @@ func writeKnowledgeReceipt(w http.ResponseWriter, r protocol.CollaborationKnowle
 
 func (h *Handler) ProposeCollaborationKnowledge(w http.ResponseWriter, r *http.Request) {
 	prepareCollaborationContentRequest(w, r)
+	if !prepareKnowledgeProtocol(w, r) {
+		return
+	}
 	id, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "issue_id")
 	if !ok {
 		return
@@ -104,6 +151,9 @@ func (h *Handler) ProposeCollaborationKnowledge(w http.ResponseWriter, r *http.R
 }
 func (h *Handler) ApproveCollaborationKnowledge(w http.ResponseWriter, r *http.Request) {
 	prepareCollaborationContentRequest(w, r)
+	if !prepareKnowledgeProtocol(w, r) {
+		return
+	}
 	id, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "candidateId"), "candidate_id")
 	if !ok {
 		return
@@ -123,6 +173,9 @@ func (h *Handler) WithdrawCollaborationKnowledge(w http.ResponseWriter, r *http.
 }
 func (h *Handler) decideCollaborationKnowledge(w http.ResponseWriter, r *http.Request, withdraw bool) {
 	prepareCollaborationContentRequest(w, r)
+	if !prepareKnowledgeProtocol(w, r) {
+		return
+	}
 	id, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "candidateId"), "candidate_id")
 	if !ok {
 		return
@@ -142,6 +195,9 @@ func (h *Handler) decideCollaborationKnowledge(w http.ResponseWriter, r *http.Re
 }
 func (h *Handler) GetCollaborationKnowledgeOperation(w http.ResponseWriter, r *http.Request) {
 	prepareCollaborationContentRequest(w, r)
+	if !prepareKnowledgeProtocol(w, r) {
+		return
+	}
 	id, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "candidateId"), "candidate_id")
 	if !ok {
 		return
@@ -151,10 +207,18 @@ func (h *Handler) GetCollaborationKnowledgeOperation(w http.ResponseWriter, r *h
 		writeCollaborationError(w, err)
 		return
 	}
+	version, _ := knowledgeRequestProtocol(w, r)
+	if receipt.ProtocolVersion > version {
+		knowledgeRequestError(w, 409, "knowledge_protocol_unsupported")
+		return
+	}
 	writeJSON(w, 200, receipt)
 }
 func (h *Handler) ListCollaborationKnowledgeCandidates(w http.ResponseWriter, r *http.Request) {
 	prepareCollaborationContentRequest(w, r)
+	if !prepareKnowledgeProtocol(w, r) {
+		return
+	}
 	id, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "issue_id")
 	if !ok {
 		return
@@ -172,6 +236,9 @@ func (h *Handler) ListCollaborationKnowledgeCandidates(w http.ResponseWriter, r 
 }
 func (h *Handler) GetCollaborationKnowledgeCandidate(w http.ResponseWriter, r *http.Request) {
 	prepareCollaborationContentRequest(w, r)
+	if !prepareKnowledgeProtocol(w, r) {
+		return
+	}
 	id, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "candidateId"), "candidate_id")
 	if !ok {
 		return
@@ -191,6 +258,9 @@ func (h *Handler) GetWorkspaceKnowledge(w http.ResponseWriter, r *http.Request) 
 }
 func (h *Handler) getTargetKnowledge(w http.ResponseWriter, r *http.Request, kind string) {
 	w.Header().Set("Cache-Control", "no-store")
+	if !prepareKnowledgeProtocol(w, r) {
+		return
+	}
 	id, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "target_id")
 	if !ok {
 		return

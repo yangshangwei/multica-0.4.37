@@ -7,6 +7,16 @@ const commentId = "00000000-0000-4000-8000-000000000002";
 const runId = "00000000-0000-4000-8000-0000000000ab";
 
 describe("account destinations", () => {
+  it("round-trips an exact delivery submission in the existing account route", () => {
+    const path = accountPath({ view: "participating", issueId, submissionId: runId });
+    expect(path).toBe(`/account?view=participating&issue=${issueId}#delivery-${runId}`);
+    expect(parseAccountPath(path)?.submissionId).toBe(runId);
+    expect(accountPath(parseAccountPath(path)!)).toBe(path);
+    expect(accountRouteKey(path)).toBe(accountPath({ view: "participating", issueId }));
+    expect(parseAccountPath(`/account#delivery-${runId}`)).toBeNull();
+    expect(parseAccountPath(`/account?issue=${issueId}#delivery-not-a-uuid`)).toBeNull();
+    expect(() => accountPath({ issueId, runId, submissionId: runId })).toThrow();
+  });
   it("preserves the view, exact issue identity and comment anchor across platforms", () => {
     const path = accountPath({ view: "participating", issueId, commentId });
     expect(path).toBe(`/account?view=participating&issue=${issueId}#comment-${commentId}`);

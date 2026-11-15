@@ -97,8 +97,11 @@ func (c *Client) Claim(ctx context.Context, runID string, in protocol.Collaborat
 	path := runPath(runID, "claim")
 	if host {
 		path += "?handoff_version=1&recording_version=1"
-		if in.KnowledgeVersion == 1 {
-			path += "&knowledge_version=1"
+		if in.KnowledgeVersion != 0 {
+			if !protocol.IsKnowledgeProtocolVersion(in.KnowledgeVersion) {
+				return out, ErrProtocol
+			}
+			path += fmt.Sprintf("&knowledge_version=%d", in.KnowledgeVersion)
 		}
 	}
 	if err := c.request(ctx, http.MethodPost, path, c.managedToken, in, &out); err != nil {

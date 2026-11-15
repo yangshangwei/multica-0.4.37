@@ -68,7 +68,7 @@ func decodeTaskKnowledge(version pgtype.Int4, raw []byte) (*taskKnowledgeDeliver
 	if !version.Valid && (len(raw) == 0 || bytes.Equal(raw, []byte("null"))) {
 		return nil, nil
 	}
-	if !version.Valid || version.Int32 != 1 || len(raw) == 0 || len(raw) > protocol.CollaborationKnowledgeMaxDeliveryBytes {
+	if !version.Valid || !protocol.IsKnowledgeProtocolVersion(int(version.Int32)) || len(raw) == 0 || len(raw) > protocol.CollaborationKnowledgeMaxDeliveryBytes {
 		return nil, knowledgeFailure(409, "knowledge_context_changed")
 	}
 	var d taskKnowledgeDelivery
@@ -77,7 +77,7 @@ func decodeTaskKnowledge(version pgtype.Int4, raw []byte) (*taskKnowledgeDeliver
 	if err := decoder.Decode(&d); err != nil {
 		return nil, knowledgeFailure(409, "knowledge_context_changed")
 	}
-	if decoder.Decode(new(any)) != io.EOF || d.Version != 1 || d.ScopeID == "" || len(d.Claims) == 0 || len(d.Claims) > maxTaskKnowledgeClaims {
+	if decoder.Decode(new(any)) != io.EOF || d.Version != int(version.Int32) || d.ScopeID == "" || len(d.Claims) == 0 || len(d.Claims) > maxTaskKnowledgeClaims {
 		return nil, knowledgeFailure(409, "knowledge_context_changed")
 	}
 	seen := map[string]bool{}
@@ -92,7 +92,9 @@ func decodeTaskKnowledge(version pgtype.Int4, raw []byte) (*taskKnowledgeDeliver
 			return nil, knowledgeFailure(409, "knowledge_context_changed")
 		}
 		c := claim.Descriptor
-		if protocol.ValidateTaskKnowledgeRequest(c.ProtocolVersion, c.TaskID, c.ClaimGeneration, c.DispatchedAt) != nil || !agent.KnowledgeLifecycleSupported(c.Provider, c.Mode, true) || c.Mode != "local" || !c.PreparationRequired || c.RuntimeID != c.Session.RuntimeID || c.Provider != c.Session.Provider || c.ConfigurationID != c.Session.ConfigurationID || seen[c.ClaimGeneration] || !protocol.ValidTaskKnowledgeDigest(claim.ConfigurationDigest) ||
+		// A v2 outer record may retain an original v1 claim. Its nested proof,
+		// authorization and observations keep that claim's version and hashes.
+		if c.ProtocolVersion > d.Version || protocol.ValidateTaskKnowledgeRequest(c.ProtocolVersion, c.TaskID, c.ClaimGeneration, c.DispatchedAt) != nil || !agent.KnowledgeLifecycleSupported(c.Provider, c.Mode, true) || c.Mode != "local" || !c.PreparationRequired || c.RuntimeID != c.Session.RuntimeID || c.Provider != c.Session.Provider || c.ConfigurationID != c.Session.ConfigurationID || seen[c.ClaimGeneration] || !protocol.ValidTaskKnowledgeDigest(claim.ConfigurationDigest) ||
 			protocol.ValidateTaskKnowledgeSession(c.Session) != nil || c.Session.ScopeID != d.ScopeID || c.Session.ScopeKind != d.ScopeKind || len(claim.Attempts) > 32 || claim.Attempts == nil {
 			return nil, knowledgeFailure(409, "knowledge_context_changed")
 		}
@@ -101,7 +103,7 @@ func decodeTaskKnowledge(version pgtype.Int4, raw []byte) (*taskKnowledgeDeliver
 			hash, err := protocol.TaskKnowledgeRequestHash(p.Manifest)
 			_, idErr := uuid.Parse(p.ID)
 			_, requestErr := uuid.Parse(p.RequestID)
-			if err != nil || idErr != nil || requestErr != nil || !protocol.ValidTaskKnowledgeDigest(p.RequestHash) || p.Manifest.ProtocolVersion != 1 || p.Manifest.Entries == nil || len(p.Manifest.Entries) > 32 || hash != p.ManifestSHA256 || !protocol.ValidTaskKnowledgeDigest(p.InvocationFingerprint) || p.DisclosedAt.IsZero() {
+			if err != nil || idErr != nil || requestErr != nil || !protocol.ValidTaskKnowledgeDigest(p.RequestHash) || p.Manifest.ProtocolVersion != c.ProtocolVersion || protocol.ValidateTaskKnowledgeManifest(p.Manifest) != nil || hash != p.ManifestSHA256 || !protocol.ValidTaskKnowledgeDigest(p.InvocationFingerprint) || p.DisclosedAt.IsZero() {
 				return nil, knowledgeFailure(409, "knowledge_context_changed")
 			}
 		}
@@ -109,7 +111,7 @@ func decodeTaskKnowledge(version pgtype.Int4, raw []byte) (*taskKnowledgeDeliver
 		for i, a := range claim.Attempts {
 			_, nonceErr := uuid.Parse(a.Authorization.AttemptNonce)
 			_, requestErr := uuid.Parse(a.RequestID)
-			if claim.Prepared == nil || nonceErr != nil || requestErr != nil || attemptKeys[a.RequestID] || attemptKeys[a.Authorization.AttemptNonce] || !protocol.ValidTaskKnowledgeDigest(a.RequestHash) || a.Authorization.ProtocolVersion != 1 || a.Authorization.ManifestSHA256 != claim.Prepared.ManifestSHA256 || a.Authorization.InvocationFingerprint != claim.Prepared.InvocationFingerprint || !protocol.ValidTaskKnowledgeDigest(a.Authorization.PromptSHA256) || a.Authorization.AttemptSequence != int64(i+1) || a.Authorization.PrepareID != claim.Prepared.ID || a.Authorization.Session != c.Session || len(a.Observations) > 8 || a.Observations == nil || !validTaskKnowledgeObservations(c, a) {
+			if claim.Prepared == nil || nonceErr != nil || requestErr != nil || attemptKeys[a.RequestID] || attemptKeys[a.Authorization.AttemptNonce] || !protocol.ValidTaskKnowledgeDigest(a.RequestHash) || a.Authorization.ProtocolVersion != c.ProtocolVersion || a.Authorization.ManifestSHA256 != claim.Prepared.ManifestSHA256 || a.Authorization.InvocationFingerprint != claim.Prepared.InvocationFingerprint || !protocol.ValidTaskKnowledgeDigest(a.Authorization.PromptSHA256) || a.Authorization.AttemptSequence != int64(i+1) || a.Authorization.PrepareID != claim.Prepared.ID || a.Authorization.Session != c.Session || len(a.Observations) > 8 || a.Observations == nil || !validTaskKnowledgeObservations(c, a) {
 				return nil, knowledgeFailure(409, "knowledge_context_changed")
 			}
 			attemptKeys[a.RequestID] = true
@@ -125,7 +127,7 @@ func validTaskKnowledgeObservations(claim protocol.TaskKnowledgeClaimDescriptor,
 	denied := []string{}
 	seen := map[string]bool{}
 	for _, o := range attempt.Observations {
-		if protocol.ValidateTaskKnowledgeRequest(o.ProtocolVersion, o.RequestID, o.ClaimGeneration, o.DispatchedAt) != nil || o.ClaimGeneration != claim.ClaimGeneration || o.DispatchedAt != claim.DispatchedAt || o.PrepareID != attempt.Authorization.PrepareID || o.AttemptNonce != attempt.Authorization.AttemptNonce || o.AttemptSequence != attempt.Authorization.AttemptSequence || seen[o.RequestID] {
+		if o.ProtocolVersion != claim.ProtocolVersion || protocol.ValidateTaskKnowledgeRequest(o.ProtocolVersion, o.RequestID, o.ClaimGeneration, o.DispatchedAt) != nil || o.ClaimGeneration != claim.ClaimGeneration || o.DispatchedAt != claim.DispatchedAt || o.PrepareID != attempt.Authorization.PrepareID || o.AttemptNonce != attempt.Authorization.AttemptNonce || o.AttemptSequence != attempt.Authorization.AttemptSequence || seen[o.RequestID] {
 			return false
 		}
 		seen[o.RequestID] = true
@@ -173,11 +175,14 @@ func validTaskKnowledgeObservations(claim protocol.TaskKnowledgeClaimDescriptor,
 }
 
 func encodeTaskKnowledge(d *taskKnowledgeDelivery) ([]byte, error) {
+	if d == nil || !protocol.IsKnowledgeProtocolVersion(d.Version) {
+		return nil, knowledgeFailure(409, "knowledge_context_changed")
+	}
 	raw, err := json.Marshal(d)
 	if err != nil || len(raw) > protocol.CollaborationKnowledgeMaxDeliveryBytes {
 		return nil, knowledgeFailure(409, "knowledge_context_changed")
 	}
-	if _, err = decodeTaskKnowledge(pgtype.Int4{Int32: 1, Valid: true}, raw); err != nil {
+	if _, err = decodeTaskKnowledge(pgtype.Int4{Int32: int32(d.Version), Valid: true}, raw); err != nil {
 		return nil, err
 	}
 	return raw, nil
@@ -315,7 +320,7 @@ func taskKnowledgeConfigurationDigest(r db.AgentRuntime, a db.Agent) (string, er
 }
 
 func taskKnowledgeInvocationSupported(inv *protocol.TaskKnowledgeInvocation, r db.AgentRuntime, a db.Agent) bool {
-	if inv == nil || inv.ProtocolVersion != 1 || !inv.Builtin || r.ProfileID.Valid || !r.OwnerID.Valid || !r.DaemonID.Valid || !protocol.ValidTaskKnowledgeIdentity(r.DaemonID.String) || r.Provider != inv.Provider || r.RuntimeMode != "local" || inv.Mode != "local" || !protocol.ValidTaskKnowledgeIdentity(inv.ConfigurationID) || len(inv.ConfigurationID) > 256 {
+	if inv == nil || !protocol.IsKnowledgeProtocolVersion(inv.ProtocolVersion) || !inv.Builtin || r.ProfileID.Valid || !r.OwnerID.Valid || !r.DaemonID.Valid || !protocol.ValidTaskKnowledgeIdentity(r.DaemonID.String) || r.Provider != inv.Provider || r.RuntimeMode != "local" || inv.Mode != "local" || !protocol.ValidTaskKnowledgeIdentity(inv.ConfigurationID) || len(inv.ConfigurationID) > 256 {
 		return false
 	}
 	if !agent.KnowledgeLifecycleSupported(inv.Provider, inv.Mode, inv.Builtin) || validateTaskKnowledgeOrdinaryArgs(inv.Provider, inv.ExtraArgs) != nil {
@@ -350,7 +355,7 @@ func (s *TaskService) BuildTaskKnowledgeClaim(ctx context.Context, task db.Agent
 	if err != nil {
 		return nil, "", err
 	}
-	if inv != nil && inv.ProtocolVersion == 1 && agent.KnowledgeLifecycleSupported(r.Provider, r.RuntimeMode, true) {
+	if inv != nil && protocol.IsKnowledgeProtocolVersion(inv.ProtocolVersion) && agent.KnowledgeLifecycleSupported(r.Provider, r.RuntimeMode, true) {
 		var custom []string
 		if len(a.CustomArgs) > 0 && !bytes.Equal(a.CustomArgs, []byte("null")) {
 			if json.Unmarshal(a.CustomArgs, &custom) != nil {
@@ -390,17 +395,31 @@ func (s *TaskService) BuildTaskKnowledgeClaim(ctx context.Context, task db.Agent
 		}
 		return nil, chosen, nil
 	}
+	if task.KnowledgeContextVersion.Valid {
+		retained, err := decodeTaskKnowledge(task.KnowledgeContextVersion, task.KnowledgeDelivery)
+		if err != nil {
+			return nil, "", err
+		}
+		if retained != nil {
+			for _, claim := range retained.Claims {
+				if claim.Descriptor.ProtocolVersion > inv.ProtocolVersion {
+					return nil, "", knowledgeFailure(409, "knowledge_context_changed")
+				}
+			}
+		}
+	}
 	f, r, a, err := s.taskKnowledgeFacts(ctx, s.Queries, task)
 	if err != nil {
 		return nil, "", err
 	}
+	f.ProtocolVersion = inv.ProtocolVersion
 	if !taskKnowledgeInvocationSupported(inv, r, a) {
 		return nil, "", knowledgeFailure(409, "knowledge_context_changed")
 	}
 	kind, id := taskKnowledgeScope(task, f)
 	binding := protocol.TaskKnowledgeSessionBinding{Provider: r.Provider, RuntimeID: util.UUIDToString(r.ID), AgentID: util.UUIDToString(a.ID), ConfigurationID: inv.ConfigurationID, ScopeKind: kind, ScopeID: id, Generation: uuid.NewString()}
 	if chosen != "" {
-		existing, managed, err := s.taskKnowledgeResume(ctx, task, f, binding, chosen, true)
+		existing, managed, err := s.taskKnowledgeResume(ctx, task, f, binding, chosen, inv.ProtocolVersion)
 		if err != nil {
 			return nil, "", err
 		}
@@ -412,7 +431,7 @@ func (s *TaskService) BuildTaskKnowledgeClaim(ctx context.Context, task db.Agent
 			binding.NativeSessionID = chosen
 		}
 	}
-	d := &protocol.TaskKnowledgeClaimDescriptor{ProtocolVersion: 1, TaskID: util.UUIDToString(task.ID), RuntimeID: util.UUIDToString(task.RuntimeID), ClaimGeneration: strconv.FormatInt(task.ClaimGeneration, 10), DispatchedAt: task.DispatchedAt.Time.UTC().Format(time.RFC3339Nano), Provider: r.Provider, Mode: inv.Mode, ConfigurationID: inv.ConfigurationID, PreparationRequired: true, Session: binding}
+	d := &protocol.TaskKnowledgeClaimDescriptor{ProtocolVersion: inv.ProtocolVersion, TaskID: util.UUIDToString(task.ID), RuntimeID: util.UUIDToString(task.RuntimeID), ClaimGeneration: strconv.FormatInt(task.ClaimGeneration, 10), DispatchedAt: task.DispatchedAt.Time.UTC().Format(time.RFC3339Nano), Provider: r.Provider, Mode: inv.Mode, ConfigurationID: inv.ConfigurationID, PreparationRequired: true, Session: binding}
 	return d, chosen, nil
 }
 
@@ -460,11 +479,14 @@ func (s *TaskService) taskKnowledgeRuntimeExposure(ctx context.Context, r db.Age
 	return false, nil
 }
 
-func (s *TaskService) taskKnowledgeResume(ctx context.Context, task db.AgentTaskQueue, f KnowledgeConsumerFacts, want protocol.TaskKnowledgeSessionBinding, native string, supported bool) (*protocol.TaskKnowledgeSessionBinding, bool, error) {
+func (s *TaskService) taskKnowledgeResume(ctx context.Context, task db.AgentTaskQueue, f KnowledgeConsumerFacts, want protocol.TaskKnowledgeSessionBinding, native string, version int) (*protocol.TaskKnowledgeSessionBinding, bool, error) {
 	want.NativeSessionID = native
-	binding, managed, manifest, err := s.taskKnowledgeExposure(ctx, s.Queries, task, want, supported)
+	binding, managed, manifest, err := s.taskKnowledgeExposure(ctx, s.Queries, task, want, true)
 	if err != nil {
 		return nil, managed, err
+	}
+	if manifest.ProtocolVersion > version {
+		return nil, managed, knowledgeFailure(409, "knowledge_context_changed")
 	}
 	if managed && binding != nil {
 		ok, _, err := (&CollaborationService{}).RevalidateKnowledgeManifest(ctx, s.Queries, f, manifest)
@@ -472,6 +494,11 @@ func (s *TaskService) taskKnowledgeResume(ctx context.Context, task db.AgentTask
 			return nil, true, err
 		}
 		if !ok {
+			for _, entry := range manifest.Entries {
+				if entry.Validity != nil {
+					return nil, true, knowledgeFailure(409, "knowledge_context_changed")
+				}
+			}
 			return nil, true, nil
 		}
 	}
@@ -502,6 +529,8 @@ func (s *TaskService) taskKnowledgeExposure(ctx context.Context, q *db.Queries, 
 	}
 	var binding *protocol.TaskKnowledgeSessionBinding
 	managed := false
+	compatible, automatic := true, false
+	historyVersion := manifest.ProtocolVersion
 	for {
 		rows, err := q.ListTaskKnowledgeHistoryPage(ctx, page)
 		if err != nil {
@@ -520,7 +549,7 @@ func (s *TaskService) taskKnowledgeExposure(ctx context.Context, q *db.Queries, 
 				matches := b.NativeSessionID == want.NativeSessionID
 				for _, attempt := range c.Attempts {
 					if supported && attempt.Refused && (attempt.BoundSessionID == want.NativeSessionID || b.NativeSessionID == want.NativeSessionID) {
-						return nil, true, manifest, nil
+						managed, compatible = true, false
 					}
 					if attempt.BoundSessionID == want.NativeSessionID {
 						matches = true
@@ -548,24 +577,26 @@ func (s *TaskService) taskKnowledgeExposure(ctx context.Context, q *db.Queries, 
 				if !supported {
 					return nil, true, manifest, knowledgeFailure(409, "knowledge_invocation_unsupported")
 				}
-				if c.ConfigurationDigest != configuration {
-					return nil, true, manifest, nil
+				// Retained exposure still governs a requested resume when its
+				// old binding cannot be reused. Finish the relevant history scan
+				// before allowing a legacy fresh-binding fallback.
+				historyVersion = max(historyVersion, c.Prepared.Manifest.ProtocolVersion)
+				automatic = automatic || slices.ContainsFunc(c.Prepared.Manifest.Entries, func(entry KnowledgeManifestEntry) bool {
+					return entry.Validity != nil
+				})
+				if c.ConfigurationDigest != configuration ||
+					b.Provider != want.Provider || b.RuntimeID != want.RuntimeID || b.AgentID != want.AgentID || b.ConfigurationID != want.ConfigurationID || b.ScopeKind != want.ScopeKind || b.ScopeID != want.ScopeID ||
+					(binding != nil && *binding != b) {
+					compatible = false
 				}
-				if b.Provider != want.Provider || b.RuntimeID != want.RuntimeID || b.AgentID != want.AgentID || b.ConfigurationID != want.ConfigurationID || b.ScopeKind != want.ScopeKind || b.ScopeID != want.ScopeID {
-					return nil, true, manifest, nil
-				}
-				if binding != nil && *binding != b {
-					return nil, true, manifest, nil
+				if !compatible {
+					continue
 				}
 				copy := b
 				binding = &copy
-				for _, entry := range c.Prepared.Manifest.Entries {
-					if !slices.Contains(manifest.Entries, entry) {
-						manifest.Entries = append(manifest.Entries, entry)
-					}
-				}
-				if len(manifest.Entries) > 32 {
-					return nil, true, manifest, nil
+				manifest, err = taskKnowledgeManifestUnion(manifest, c.Prepared.Manifest)
+				if err != nil {
+					return nil, true, manifest, err
 				}
 			}
 		}
@@ -574,6 +605,12 @@ func (s *TaskService) taskKnowledgeExposure(ctx context.Context, q *db.Queries, 
 		}
 		last := rows[len(rows)-1]
 		page.BeforeCreatedAt, page.BeforeID = last.CreatedAt, last.ID
+	}
+	if !compatible {
+		if automatic {
+			return nil, true, manifest, knowledgeFailure(409, "knowledge_context_changed")
+		}
+		return nil, managed, KnowledgeManifest{ProtocolVersion: historyVersion, Entries: []KnowledgeManifestEntry{}}, nil
 	}
 	slices.SortFunc(manifest.Entries, func(a, b KnowledgeManifestEntry) int {
 		if a.CandidateID < b.CandidateID {
@@ -604,7 +641,10 @@ func (s *TaskService) finalizeTaskKnowledgeClaim(ctx context.Context, q *db.Quer
 		return err
 	}
 	if d == nil {
-		d = &taskKnowledgeDelivery{Version: 1, ScopeKind: descriptor.Session.ScopeKind, ScopeID: descriptor.Session.ScopeID, Claims: []taskKnowledgeClaim{}}
+		d = &taskKnowledgeDelivery{Version: descriptor.ProtocolVersion, ScopeKind: descriptor.Session.ScopeKind, ScopeID: descriptor.Session.ScopeID, Claims: []taskKnowledgeClaim{}}
+	}
+	if descriptor.ProtocolVersion > d.Version {
+		d.Version = descriptor.ProtocolVersion
 	}
 	if c, e := taskKnowledgeClaimAt(d, task.ClaimGeneration); e == nil {
 		if c.Descriptor != *descriptor {
@@ -639,6 +679,6 @@ func (s *TaskService) finalizeTaskKnowledgeClaim(ctx context.Context, q *db.Quer
 	if err != nil {
 		return err
 	}
-	_, err = q.SetTaskKnowledgeDelivery(ctx, db.SetTaskKnowledgeDeliveryParams{TaskID: task.ID, ClaimGeneration: task.ClaimGeneration, Delivery: raw})
+	_, err = q.SetTaskKnowledgeDelivery(ctx, db.SetTaskKnowledgeDeliveryParams{TaskID: task.ID, ClaimGeneration: task.ClaimGeneration, KnowledgeContextVersion: pgtype.Int4{Int32: int32(d.Version), Valid: true}, Delivery: raw})
 	return err
 }

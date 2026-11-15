@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { queryOptions, useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query";
 import { getApi } from "../api";
 import { useKnowledgeRealtime } from "../realtime/knowledge";
-import { CollaborationUnavailableError, collaborationKeys, protectCollaborationRead, type CollaborationScope } from "./access";
+import { CollaborationUnavailableError, collaborationKeys, isCollaborationDenied, protectCollaborationRead, type CollaborationScope } from "./access";
 import { bindKnowledgeProjectionLifecycle, knowledgeScopeKey, readKnowledgeProjection } from "./knowledge-cache";
 import type { KnowledgeProjectionBoundary } from "./knowledge-lease";
-import { KNOWLEDGE_REFRESH_MS, type CollaborationKnowledgePageParams, type CollaborationKnowledgeTarget } from "./knowledge-schema";
+import { KNOWLEDGE_REFRESH_MS, isKnowledgeProtocolUnsupported, type CollaborationKnowledgePageParams, type CollaborationKnowledgeTarget } from "./knowledge-schema";
 
 export const collaborationKnowledgeKeys = {
   root: knowledgeScopeKey,
@@ -17,10 +17,10 @@ export const collaborationKnowledgeKeys = {
   operation: (scope: CollaborationScope, candidateId: string, requestId: string) => [...collaborationKeys.scope(scope), "knowledge-operation", candidateId.toLowerCase(), requestId.toLowerCase()] as const,
 };
 export interface KnowledgePageOptions extends CollaborationKnowledgePageParams { boundary?: KnowledgeProjectionBoundary }
-const freshness = {
+export const knowledgeQueryFreshness = {
   staleTime: 0, gcTime: 0, retry: false, refetchOnMount: "always" as const, refetchOnWindowFocus: "always" as const,
   refetchOnReconnect: "always" as const,
-  refetchInterval: (query: { state: { error: Error | null } }) => query.state.error instanceof CollaborationUnavailableError ? false : KNOWLEDGE_REFRESH_MS,
+  refetchInterval: (query: { state: { error: Error | null } }) => query.state.error instanceof CollaborationUnavailableError || isKnowledgeProtocolUnsupported(query.state.error) || isCollaborationDenied(query.state.error) ? false : KNOWLEDGE_REFRESH_MS,
   refetchIntervalInBackground: false,
 };
 function pageKey(root: readonly string[], page: KnowledgePageOptions) {
@@ -33,7 +33,7 @@ export function collaborationKnowledgeCandidatesOptions(client: QueryClient, sco
   const root = collaborationKnowledgeKeys.source(scope, issueId);
   const key = pageKey(root, page);
   return queryOptions({
-    queryKey: key, ...freshness,
+    queryKey: key, ...knowledgeQueryFreshness,
     queryFn: ({ signal }) => readKnowledgeProjection(client, scope, root, key,
       () => getApi().getCollaborationKnowledgeCandidates(issueId, { cursor: page.cursor, limit: page.limit }, { signal }), page.boundary, issueId),
   });
@@ -41,7 +41,7 @@ export function collaborationKnowledgeCandidatesOptions(client: QueryClient, sco
 
 export function collaborationKnowledgeCandidateOptions(client: QueryClient, scope: CollaborationScope, candidateId: string) {
   const key = collaborationKnowledgeKeys.candidate(scope, candidateId);
-  return queryOptions({ queryKey: key, ...freshness,
+  return queryOptions({ queryKey: key, ...knowledgeQueryFreshness,
     queryFn: ({ signal }) => readKnowledgeProjection(client, scope, key, key, () => getApi().getCollaborationKnowledgeCandidate(candidateId, { signal })),
   });
 }
@@ -49,7 +49,7 @@ export function collaborationKnowledgeCandidateOptions(client: QueryClient, scop
 export function collaborationKnowledgeTargetOptions(client: QueryClient, scope: CollaborationScope, target: CollaborationKnowledgeTarget, page: KnowledgePageOptions = {}) {
   const root = collaborationKnowledgeKeys.target(scope, target);
   const key = pageKey(root, page);
-  return queryOptions({ queryKey: key, ...freshness,
+  return queryOptions({ queryKey: key, ...knowledgeQueryFreshness,
     queryFn: ({ signal }) => readKnowledgeProjection(client, scope, root, key,
       () => getApi().getCollaborationKnowledgeTarget(target, { cursor: page.cursor, limit: page.limit }, { signal }), page.boundary),
   });
@@ -61,7 +61,7 @@ export function collaborationKnowledgeOperationOptions(client: QueryClient, scop
   });
 }
 
-function useKnowledgeLifecycle(scope: CollaborationScope) {
+export function useKnowledgeLifecycle(scope: CollaborationScope) {
   const client = useQueryClient();
   useKnowledgeRealtime(scope);
   useEffect(() => bindKnowledgeProjectionLifecycle(client, scope), [client, scope]);

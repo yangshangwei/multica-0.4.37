@@ -8,6 +8,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/multica-ai/multica/server/pkg/protocol"
@@ -37,10 +38,10 @@ func hostSessionKey(claim protocol.CollaborationRunClaimResponse) (string, error
 		parts = append(parts, claim.Identity.GroupID, c.StepKey)
 	}
 	if claim.KnowledgeContext != nil {
-		if validateHostKnowledgeClaim(claim, 1) != nil {
+		if validateHostKnowledgeClaim(claim, claim.KnowledgeContext.ProtocolVersion) != nil {
 			return "", ErrProtocol
 		}
-		parts = append(parts, "knowledge:v1", claim.KnowledgeContext.Namespace)
+		parts = append(parts, "knowledge:v"+strconv.Itoa(claim.KnowledgeContext.ProtocolVersion), claim.KnowledgeContext.Namespace)
 	}
 	raw, err := json.Marshal(parts)
 	if err != nil {

@@ -5,8 +5,54 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/multica-ai/multica/server/internal/handler"
+	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/testutil"
 )
+
+func TestKnowledgePolicyRecoveryRouteSurvivesWorkspaceDeparture(t *testing.T) {
+	seed := testutil.New(testPool, testWorkspaceID, testUserID)
+	email := "knowledge-route-" + uuid.NewString() + "@example.test"
+	user := seed.User(t, "Knowledge project lead", email)
+	workspace := seed.Workspace(t, "Knowledge policy route", "knowledge-route-"+uuid.NewString())
+	f := testutil.New(testPool, workspace, user)
+	f.Member(t, workspace, testUserID, "owner")
+	f.Member(t, workspace, user, "member")
+	project := f.Project(t, "Knowledge policy recovery", testutil.Cols{"lead_id": user, "lead_type": "member"})
+	f.Cleanup(t, `DELETE FROM project_knowledge_policy WHERE project_id=$1`, project)
+	token, err := generateTestJWT(user, email, "Knowledge project lead")
+	if err != nil {
+		t.Fatal(err)
+	}
+	request := func(method, path string, body any) *http.Request {
+		return testutil.WithHeaders(testutil.JSONRequest(method, path, body), "Authorization", "Bearer "+token,
+			"X-Workspace-ID", workspace, handler.HeaderKnowledgeVersion, "2")
+	}
+	path := "/api/projects/" + project + "/knowledge-policy"
+	var policy service.ProjectKnowledgePolicyView
+	testutil.Call(t, testServer.Config.Handler.ServeHTTP, request("GET", path, nil)).Want(200).JSON(&policy)
+	if policy.Revision != "0" || !policy.IsEnabled || !policy.CanManage {
+		t.Fatal("current project lead cannot read the built-in policy")
+	}
+	id := uuid.NewString()
+	var receipt service.ProjectKnowledgePolicyReceipt
+	testutil.Call(t, testServer.Config.Handler.ServeHTTP, request("PUT", path, service.ProjectKnowledgePolicyRequest{
+		RequestID: id, ExpectedRevision: "0", IsEnabled: false, MaxCandidates: 1,
+	})).Want(200).JSON(&receipt)
+	testutil.Call(t, testServer.Config.Handler.ServeHTTP, request("POST", "/api/workspaces/"+workspace+"/leave", nil)).Want(204)
+	testutil.Call(t, testServer.Config.Handler.ServeHTTP, request("GET", path, nil)).Want(404)
+	for _, sendWorkspace := range []bool{true, false} {
+		r := request("GET", path+"/operations/"+id, nil)
+		if !sendWorkspace {
+			r.Header.Del("X-Workspace-ID")
+		}
+		var recovered service.ProjectKnowledgePolicyReceipt
+		testutil.Call(t, testServer.Config.Handler.ServeHTTP, r).Want(200).JSON(&recovered)
+		if recovered != receipt {
+			t.Fatal("actual project route lost the original receipt after workspace departure")
+		}
+	}
+}
 
 func TestProjectPermissionErrorsSurviveActualWorkspaceRoutes(t *testing.T) {
 	seed := testutil.New(testPool, testWorkspaceID, testUserID)

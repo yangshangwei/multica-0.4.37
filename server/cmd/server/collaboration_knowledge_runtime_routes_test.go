@@ -31,7 +31,8 @@ func TestCollaborationKnowledgeRuntimeProductionRoutesRejectBusinessCredential(t
 	}
 }
 
-func TestCollaborationKnowledgeRuntimeProductionManagedRoutesRemainDefaultClosed(t *testing.T) {
+func TestCollaborationKnowledgeRuntimeProductionManagedRoutesHonorExplicitlyDisabledGate(t *testing.T) {
+	t.Setenv("MULTICA_KNOWLEDGE_CONTEXT_ENABLED", "false")
 	f := newCollaborationRouteFixture(t)
 	run := uuid.NewString()
 	p := protocol.CollaborationRunKnowledgePrepare{ProtocolVersion: 1, Identity: protocol.CollaborationRunIdentity{RunID: run}, RequestID: uuid.NewString(), HandoffID: uuid.NewString(), InvocationFingerprint: strings.Repeat("a", 64)}

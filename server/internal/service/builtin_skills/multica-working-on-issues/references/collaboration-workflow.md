@@ -170,6 +170,20 @@ identical bundles and presentation-only changes preserve consent.
 
 ## Managed knowledge
 
+Formal acceptance of a project collaboration issue can trigger independent
+server-model extraction and rule adoption. Project defaults enable it; current
+human project leads or workspace owners/admins may disable or adjust the policy.
+No-project/manual cases skip it, and background failure preserves the accepted
+business result. This system purpose grants no extra Agent command or human API
+authority. Keep the closed business queue closed.
+
+Automatic knowledge pauses for new use immediately when its source reopens.
+Reacceptance reviews the complete affected set, restoring supported unchanged
+material or creating an exact-lineage revision; conflict and missing evidence
+remain pending. Human withdrawal/correction wins. Existing manual approvals and
+other sources retain their own validity. Old automatic session proofs cannot be
+silently renewed or replayed through a fresh fallback.
+
 Humans can propose a source-bound conclusion from the collaboration detail's
 knowledge panel, selecting exact shared-context versions, comments or run
 records. A current creator or handler with source Read may propose; an external
@@ -178,8 +192,9 @@ without browsing a new directory. A human target project lead or workspace
 owner/admin must also retain source Read to approve the exact displayed version.
 
 Agents may draft a conclusion, list exact source references and describe what
-was actually verified through their existing authorized work. Leave proposal,
-approval and target publication to the human product controls. There is no
+was actually verified through their existing authorized work. Leave manual proposal,
+approval and policy changes to the human product controls; the server owns the
+separate automatic workflow. There is no
 knowledge CLI command. Agent credentials cannot borrow a human identity for these
 APIs, auto-approve a proposal, or write a skill as a consequence of this workflow.
 
@@ -190,7 +205,7 @@ separate proposal. Withdrawal and expiry prevent future use; source purge/access
 loss suppresses unavailable text. Target management alone may permit withdrawal
 without exposing the private source.
 
-Approval is not execution authority. Private consumption remains off by default
+Approval is not execution authority. Private consumption defaults on when unset/empty, preserves explicit disables,
 and admits built-in local Claude/Codex runtimes with provider-specific session
 policies. Ordinary Codex knowledge requires an acknowledged exact thread;
 collaboration Codex knowledge requires a fresh ephemeral thread. The server checks
