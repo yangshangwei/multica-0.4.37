@@ -9,7 +9,11 @@ import { refreshDirectedIssue } from "./collaboration-handoff-chain";
 export type ClosureActor = HostActor & { name: string };
 export type ClosureResource = Awaited<ReturnType<typeof createClosureResource>>;
 export const readClosureIssue = (actor: HostActor, id: string) => actor.client.requestJSON<CollaborationIssue>(versioned(issueRoot(id)));
-export const workflowAuthority = (issue: CollaborationIssue) => ({ ...hostAuthority(issue), expected_collaboration_revision: issue.collaboration_revision });
+export const workflowAuthority = (issue: CollaborationIssue) => {
+  const authority = hostAuthority(issue);
+  return { expected_lifecycle_epoch: authority.expected_lifecycle_epoch, expected_participant_epoch: authority.expected_participant_epoch,
+    expected_account_epoch: authority.expected_account_epoch, expected_collaboration_revision: issue.collaboration_revision };
+};
 
 export async function closureActor(apiUrl: string, label: string, suffix: string): Promise<ClosureActor> {
   return { ...await createHostActor(apiUrl, label, suffix), name: `Host collaborator ${label}` };
