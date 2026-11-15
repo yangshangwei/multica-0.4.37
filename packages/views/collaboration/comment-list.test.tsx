@@ -19,7 +19,7 @@ const client = new QueryClient();
 const issue = parseCollaborationIssue(collaborationIssueFixture)!;
 const comment = parseCollaborationComment({ id: commentId, issue_id: actor, author_type: "member", author: issue.creator, content: "Original comment", type: "comment", parent_id: null,
   comment_revision: "9007199254740993", attachment_ids: [], created_at: timestamp, updated_at: timestamp, deleted_at: null, resolved_at: null, resolved_by: null, can_edit: true, can_resolve: true, reactions: [{ emoji: "👍", count: 2, viewer_reacted: true }] })!;
-afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); });
+afterEach(() => { client.clear(); localStorage.clear(); vi.unstubAllGlobals(); vi.restoreAllMocks(); delete (Element.prototype as { getAnimations?: unknown }).getAnimations; });
 const row = (id: string) => document.getElementById(`comment-${id}`)!;
 // Low-frequency comment actions live in each row's portaled Comment actions menu.
 async function openMenu(id = commentId, name = "Comment actions") {
@@ -133,6 +133,47 @@ it("moves focus into the delete confirmation and back to the Comment actions tri
   await waitFor(() => expect(screen.getByRole("form", { name: "Delete comment" })).toHaveFocus());
   await user.click(screen.getByRole("button", { name: "Close" }));
   await waitFor(() => expect(screen.getByRole("button", { name: "Comment actions" })).toHaveFocus());
+});
+
+// jsdom removes a closing menu at once and reports no focus loss when a
+// focused node is removed. Chromium does both differently: the popup stays for
+// its exit animation, and removing the chosen item makes the menu take focus
+// back. These cases reproduce that order; the plain jsdom order is above.
+function closeMenusLikeChromium() {
+  Object.defineProperty(Element.prototype, "getAnimations", { configurable: true, value(this: Element) {
+    return this.matches('[data-slot="dropdown-menu-content"][data-closed]') ? [{ finished: new Promise<void>((resolve) => setTimeout(resolve, 100)) }] : [];
+  } });
+  const removeChild = Node.prototype.removeChild;
+  vi.spyOn(Node.prototype, "removeChild").mockImplementation(function (this: Node, child: Node) {
+    const active = document.activeElement;
+    if (active && active !== document.body && child.contains(active)) active.dispatchEvent(new FocusEvent("focusout", { bubbles: true }));
+    return removeChild.call(this, child);
+  } as typeof removeChild);
+}
+
+it("focuses the delete confirmation after a menu that keeps focus while it closes", async () => {
+  setApiInstance(new ApiClient("https://comments.example"));
+  vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ issue_id: actor, attachments: [] }))));
+  closeMenusLikeChromium();
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentList scope={collaborationScope(actor)} issue={issue} comments={[comment]} onReply={vi.fn()} /></QueryClientProvider>);
+  await chooseMenuItem("Delete comment");
+  // The closing menu, not the page, holds focus when the form first asks for it.
+  expect(screen.getByRole("menu")).toContainElement(document.activeElement as HTMLElement);
+  await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
+  await waitFor(() => expect(screen.getByRole("form", { name: "Delete comment" })).toHaveFocus());
+});
+
+it("prepares a result only after a slowly closing menu has returned focus to its trigger", async () => {
+  setApiInstance(new ApiClient("https://comments.example"));
+  closeMenusLikeChromium();
+  const focusedAtPreparation: (Element | null)[] = [];
+  const onPrepareResult = vi.fn(() => { focusedAtPreparation.push(document.activeElement); });
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationCommentList scope={collaborationScope(actor)} issue={issue} comments={[comment]} onReply={vi.fn()} onPrepareResult={onPrepareResult} /></QueryClientProvider>);
+  await chooseMenuItem("Use in result");
+  // Still closing: the chosen item is focused and would vanish with the menu.
+  expect(onPrepareResult).not.toHaveBeenCalled();
+  await waitFor(() => expect(onPrepareResult).toHaveBeenCalledWith(comment));
+  expect(focusedAtPreparation).toEqual([within(row(commentId)).getByRole("button", { name: "Comment actions" })]);
 });
 
 it("keeps the author's edit after a conflict and requires an explicit new baseline", async () => {
@@ -323,7 +364,8 @@ it("keeps one action row and prepares a result only from the explicit menu item"
   expect(screen.getAllByRole("menuitem").map((item) => item.textContent)).toEqual(["Edit comment", "Delete comment", "Comment history", "Use in result"]);
   expect(onPrepareResult).not.toHaveBeenCalled();
   await userEvent.click(screen.getByRole("menuitem", { name: "Use in result" }));
-  expect(onPrepareResult).toHaveBeenCalledWith(comment);
+  // Preparation waits for the closed menu to return focus to the trigger.
+  await waitFor(() => expect(onPrepareResult).toHaveBeenCalledWith(comment));
   expect(focusedAtPreparation).toEqual([within(row(commentId)).getByRole("button", { name: "Comment actions" })]);
 });
 
