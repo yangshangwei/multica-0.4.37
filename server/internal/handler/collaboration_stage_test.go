@@ -2,15 +2,21 @@ package handler
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"net/http"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/testutil"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
 type stageHTTP struct {
@@ -92,7 +98,8 @@ func (s *stageHTTP) body(t *testing.T, actor string, fields map[string]any) map[
 	return body
 }
 
-// revise switches the policy through the service: no HTTP route can enable it.
+// revise prepares policy rows for issue-action fixtures. Policy HTTP journeys
+// use the actual route instead of this setup helper.
 func (s *stageHTTP) revise(t *testing.T, enabled bool) {
 	t.Helper()
 	_, err := s.svc.ReviseStagePolicy(t.Context(), service.StagePolicyRevisionParams{WorkspaceID: parseUUID(s.fx.WorkspaceID), ProjectID: parseUUID(s.project),
@@ -121,19 +128,34 @@ func (s *stageHTTP) roles() map[string]any {
 	return map[string]any{"business_owner_user_id": s.actor, "implementer_user_id": s.recipient, "product_approver_user_id": s.actor}
 }
 
-func TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists(t *testing.T) {
+func TestStagePolicyHTTPActivationAndOriginalKey(t *testing.T) {
 	s := stageHTTPFixture(t)
 	rows := func() int {
 		return s.fx.Count(t, `SELECT count(*) FROM project_stage_policy WHERE project_id=$1`, s.project)
 	}
-	enable := map[string]any{"expected_policy_revision": "0", "enabled": true, "reason": "switch the stage gates on"}
-	out := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, uuid.NewString(), enable)).Want(http.StatusServiceUnavailable).Map()
-	if out["code"] != "stage_policy_unavailable" || rows() != 0 {
-		t.Fatalf("an owner enabled the stage policy over HTTP: %v rows=%d", out, rows())
-	}
 	read := testutil.Call(t, s.h.GetStagePolicy, s.policyRequest(http.MethodGet, "", s.actor, "", nil)).Want(http.StatusOK).Map()
-	if read["policy_revision"] != "0" || read["enabled"] != false || read["activation_available"] != false || read["contract"] != "collaboration-stage-v1" || read["created_by"] != nil {
+	if read["policy_revision"] != "0" || read["enabled"] != false || read["contract"] != "collaboration-stage-v1" || read["created_by"] != nil || rows() != 0 {
 		t.Fatalf("virtual policy read: %v", read)
+	}
+	witness, err := readStagePolicyReadinessWitness(t.Context(), s.fx.Pool)
+	if err != nil || !witness.healthy() || s.fx.Count(t, `SELECT count(*) FROM member WHERE workspace_id=$1 AND user_id=$2 AND role IN ('owner','admin')`, s.fx.WorkspaceID, s.actor) != 1 {
+		t.Fatalf("healthy native schema and current owner required: %+v error=%s", witness, stagePolicySQLFailure(err))
+	}
+	before := s.stagePolicyBusinessSnapshot(t)
+	enableKey := uuid.NewString()
+	enable := map[string]any{"expected_policy_revision": "0", "enabled": true, "reason": "switch the stage gates on"}
+	enabledCall := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, enableKey, enable))
+	enabled := enabledCall.Map()
+	// Record the real PUT before asserting 200. The initial false/503 RED must
+	// reach this request, rather than fail early on the GET capability flag.
+	t.Logf("P2 healthy activation PUT status=%d response=%v policy_rows=%d schema=%+v", enabledCall.Code, enabled, rows(), witness)
+	enabledCall.Want(http.StatusOK)
+	confirmation, _ := enabled["stage_confirmation"].(map[string]any)
+	if enabled["code"] != "stage_policy_revised" || confirmation["action"] != "revise_policy" || confirmation["project_id"] != s.project || confirmation["policy_revision"] != "1" || confirmation["enabled"] != true || len(confirmation) != 4 || rows() != 1 {
+		t.Fatalf("enable confirmation: %v rows=%d", enabled, rows())
+	}
+	if read["activation_available"] != true || s.stagePolicyBusinessSnapshot(t) != before {
+		t.Fatalf("enabling did not advertise availability or changed business facts: %v", read)
 	}
 	for name, tc := range map[string]struct {
 		body any
@@ -148,7 +170,7 @@ func TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists(t *testing.T) 
 		"leading_zero":   {map[string]any{"expected_policy_revision": "01", "enabled": false, "reason": "x"}, uuid.NewString(), "invalid_stage_policy_request"},
 		"missing_key":    {map[string]any{"expected_policy_revision": "0", "enabled": false, "reason": "x"}, "", "invalid_request_id"},
 	} {
-		if got := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, tc.key, tc.body)).Want(http.StatusBadRequest).Map(); got["code"] != tc.code || rows() != 0 {
+		if got := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, tc.key, tc.body)).Want(http.StatusBadRequest).Map(); got["code"] != tc.code || rows() != 1 {
 			t.Fatalf("%s: %v", name, got)
 		}
 	}
@@ -157,38 +179,386 @@ func TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists(t *testing.T) 
 	if got := testutil.Call(t, s.h.UpdateStagePolicy, machine).Want(http.StatusForbidden).Map(); got["code"] != "stage_policy_denied" {
 		t.Fatalf("agent actor reached the policy write: %v", got)
 	}
-	// Disabling is the rollback path and stays available.
-	s.revise(t, true)
+	if got := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", "", uuid.NewString(), enable)).Want(http.StatusForbidden).Map(); got["code"] != "stage_policy_denied" || rows() != 1 {
+		t.Fatalf("unauthenticated handler policy write: %v", got)
+	}
 	read = testutil.Call(t, s.h.GetStagePolicy, s.policyRequest(http.MethodGet, "", s.actor, "", nil)).Want(http.StatusOK).Map()
-	if read["policy_revision"] != "1" || read["enabled"] != true || read["activation_available"] != false {
+	if read["policy_revision"] != "1" || read["enabled"] != true || read["activation_available"] != true {
 		t.Fatalf("enabled policy read: %v", read)
 	}
-	key := uuid.NewString()
-	disable := map[string]any{"expected_policy_revision": "1", "enabled": false, "reason": "explicit rollback"}
-	first := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, key, disable)).Want(http.StatusOK).Map()
-	confirmation, _ := first["stage_confirmation"].(map[string]any)
-	if first["code"] != "stage_policy_revised" || confirmation["action"] != "revise_policy" || confirmation["policy_revision"] != "2" || confirmation["enabled"] != false ||
-		confirmation["project_id"] != s.project || len(confirmation) != 4 {
-		t.Fatalf("disable confirmation: %v", first)
+	view := testutil.Call(t, s.h.GetCollaborationStage, s.request(http.MethodGet, "/stage", s.actor, "", nil)).Want(http.StatusOK).Map()
+	missing, _ := view["missing"].([]any)
+	stage, _ := view["stage"].(map[string]any)
+	if view["managed"] != true || view["needs_confirmation"] != true || len(missing) != 2 || stage["current"] != "development" || s.stagePolicyBusinessSnapshot(t) != before {
+		t.Fatalf("first enable automatically configured or advanced the root: %v", view)
 	}
-	replay := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, key, disable)).Want(http.StatusOK).Map()
-	recovered := testutil.Call(t, s.h.GetStagePolicyOperation, s.policyRequest(http.MethodGet, "/operations/"+key, s.actor, key, nil)).Want(http.StatusOK).Map()
-	for _, got := range []map[string]any{replay, recovered} {
-		if c, _ := got["stage_confirmation"].(map[string]any); c["policy_revision"] != "2" || rows() != 2 {
-			t.Fatalf("original key did not recover its own revision: %v", got)
+	disableKey := uuid.NewString()
+	disable := map[string]any{"expected_policy_revision": "1", "enabled": false, "reason": "explicit rollback"}
+	disabled := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, disableKey, disable)).Want(http.StatusOK).Map()
+	confirmation, _ = disabled["stage_confirmation"].(map[string]any)
+	if disabled["code"] != "stage_policy_revised" || confirmation["action"] != "revise_policy" || confirmation["policy_revision"] != "2" || confirmation["enabled"] != false ||
+		confirmation["project_id"] != s.project || len(confirmation) != 4 {
+		t.Fatalf("disable confirmation: %v", disabled)
+	}
+	againKey := uuid.NewString()
+	again := map[string]any{"expected_policy_revision": "2", "enabled": true, "reason": "re-enable"}
+	reenabled := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, againKey, again)).Want(http.StatusOK).Map()
+	confirmation, _ = reenabled["stage_confirmation"].(map[string]any)
+	if reenabled["code"] != "stage_policy_revised" || confirmation["action"] != "revise_policy" || confirmation["project_id"] != s.project || confirmation["policy_revision"] != "3" || confirmation["enabled"] != true || len(confirmation) != 4 || rows() != 3 {
+		t.Fatalf("re-enable confirmation: %v rows=%d", reenabled, rows())
+	}
+	for _, original := range []struct {
+		key     string
+		body    map[string]any
+		receipt map[string]any
+	}{{enableKey, enable, enabled}, {disableKey, disable, disabled}, {againKey, again, reenabled}} {
+		replay := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, original.key, original.body)).Want(http.StatusOK).Map()
+		recovered := testutil.Call(t, s.h.GetStagePolicyOperation, s.policyRequest(http.MethodGet, "/operations/"+original.key, s.actor, original.key, nil)).Want(http.StatusOK).Map()
+		if !reflect.DeepEqual(replay, original.receipt) || !reflect.DeepEqual(recovered, original.receipt) || rows() != 3 || s.stagePolicyBusinessSnapshot(t) != before {
+			t.Fatalf("original key adopted a new revision or effect: replay=%v recovered=%v", replay, recovered)
 		}
 	}
-	if got := testutil.Call(t, s.h.GetStagePolicyOperation, s.policyRequest(http.MethodGet, "/operations/x", s.actor, uuid.NewString(), nil)).Want(http.StatusNotFound).Map(); got["code"] != "stage_policy_operation_not_found" {
+	unknownKey := uuid.NewString()
+	if got := testutil.Call(t, s.h.GetStagePolicyOperation, s.policyRequest(http.MethodGet, "/operations/"+unknownKey, s.actor, unknownKey, nil)).Want(http.StatusNotFound).Map(); got["code"] != "stage_policy_operation_not_found" {
 		t.Fatalf("unknown key: %v", got)
 	}
 	stale := map[string]any{"expected_policy_revision": "1", "enabled": false, "reason": "stale"}
 	if got := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, uuid.NewString(), stale)).Want(http.StatusConflict).Map(); got["code"] != "stage_policy_revision_conflict" {
 		t.Fatalf("stale revision: %v", got)
 	}
-	again := map[string]any{"expected_policy_revision": "2", "enabled": true, "reason": "re-enable"}
-	if got := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, uuid.NewString(), again)).Want(http.StatusServiceUnavailable).Map(); got["code"] != "stage_policy_unavailable" || rows() != 2 {
-		t.Fatalf("re-enable over HTTP: %v rows=%d", got, rows())
+	for _, changed := range []map[string]any{
+		{"expected_policy_revision": "0", "enabled": false, "reason": enable["reason"]},
+		{"expected_policy_revision": "0", "enabled": true, "reason": "a changed intent"},
+		{"expected_policy_revision": "3", "enabled": true, "reason": enable["reason"]},
+	} {
+		if got := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, enableKey, changed)).Want(http.StatusConflict).Map(); got["code"] != "idempotency_conflict" || rows() != 3 {
+			t.Fatalf("changed body reused original key: %v", got)
+		}
 	}
+	sameKey := uuid.NewString()
+	same := map[string]any{"expected_policy_revision": "3", "enabled": true, "reason": "explicit same-value policy revision"}
+	sameReceipt := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, sameKey, same)).Want(http.StatusOK).Map()
+	confirmation, _ = sameReceipt["stage_confirmation"].(map[string]any)
+	if sameReceipt["code"] != "stage_policy_revised" || confirmation["action"] != "revise_policy" || confirmation["project_id"] != s.project || confirmation["policy_revision"] != "4" || confirmation["enabled"] != true || len(confirmation) != 4 || rows() != 4 {
+		t.Fatalf("explicit same-value revision: %v rows=%d", sameReceipt, rows())
+	}
+	if got := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, sameKey, same)).Want(http.StatusOK).Map(); !reflect.DeepEqual(got, sameReceipt) || rows() != 4 {
+		t.Fatalf("same-value replay wrote again: %v", got)
+	}
+	member := s.fx.User(t, "Policy reader", "stage-policy-"+uuid.NewString()+"@example.invalid")
+	s.fx.Member(t, s.fx.WorkspaceID, member, "member")
+	if got := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", member, uuid.NewString(), map[string]any{"expected_policy_revision": "4", "enabled": false, "reason": "not a manager"})).Want(http.StatusForbidden).Map(); got["code"] != "stage_policy_management_denied" || rows() != 4 {
+		t.Fatalf("plain member wrote a policy: %v", got)
+	}
+	if got := testutil.Call(t, s.h.GetStagePolicyOperation, s.policyRequest(http.MethodGet, "/operations/"+enableKey, member, enableKey, nil)).Want(http.StatusNotFound).Map(); got["code"] != "stage_policy_operation_not_found" {
+		t.Fatalf("another actor recovered the original key: %v", got)
+	}
+	otherProject := s.fx.Project(t, "Other policy project")
+	other := *s
+	other.project = otherProject
+	if got := testutil.Call(t, s.h.GetStagePolicyOperation, other.policyRequest(http.MethodGet, "/operations/"+enableKey, s.actor, enableKey, nil)).Want(http.StatusNotFound).Map(); got["code"] != "stage_policy_operation_not_found" {
+		t.Fatalf("another project recovered the original key: %v", got)
+	}
+	s.fx.Exec(t, `UPDATE member SET role='member' WHERE workspace_id=$1 AND user_id=$2`, s.fx.WorkspaceID, s.actor)
+	if got := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, enableKey, enable)).Want(http.StatusOK).Map(); !reflect.DeepEqual(got, enabled) || rows() != 4 {
+		t.Fatalf("former manager lost the historical receipt: %v", got)
+	}
+	if got := testutil.Call(t, s.h.GetStagePolicyOperation, s.policyRequest(http.MethodGet, "/operations/"+enableKey, s.actor, enableKey, nil)).Want(http.StatusOK).Map(); !reflect.DeepEqual(got, enabled) {
+		t.Fatalf("former manager GET changed the historical receipt: %v", got)
+	}
+	if got := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, uuid.NewString(), map[string]any{"expected_policy_revision": "4", "enabled": false, "reason": "new write after demotion"})).Want(http.StatusForbidden).Map(); got["code"] != "stage_policy_management_denied" || rows() != 4 {
+		t.Fatalf("former manager wrote a fresh revision: %v", got)
+	}
+	expired := stagePrincipal(s.actor)
+	expired.ExpiresAt = time.Now().Add(-time.Minute)
+	expiredRequest := s.policyRequest(http.MethodGet, "/operations/"+enableKey, s.actor, enableKey, nil)
+	expiredRequest = expiredRequest.WithContext(auth.WithAuthenticatedPrincipal(expiredRequest.Context(), expired))
+	if got := testutil.Call(t, s.h.GetStagePolicyOperation, expiredRequest).Want(http.StatusForbidden).Map(); got["code"] != "stage_policy_denied" {
+		t.Fatalf("expired credential recovered the original key: %v", got)
+	}
+	s.fx.Exec(t, `DELETE FROM member WHERE workspace_id=$1 AND user_id=$2`, s.fx.WorkspaceID, s.actor)
+	if got := testutil.Call(t, s.h.GetStagePolicyOperation, s.policyRequest(http.MethodGet, "/operations/"+enableKey, s.actor, enableKey, nil)).Want(http.StatusForbidden).Map(); got["code"] != "stage_policy_denied" {
+		t.Fatalf("removed source member recovered the original key: %v", got)
+	}
+	if rows() != 4 || s.stagePolicyBusinessSnapshot(t) != before {
+		t.Fatal("policy requests changed unrelated business facts")
+	}
+}
+
+type stagePolicyReadinessWitness struct {
+	Tables                bool
+	Ledger                bool
+	Execution             bool
+	Submission            bool
+	SubmissionIndexOID    int64
+	ExecutionIndexOID     int64
+	PolicyRequestIndexOID int64
+}
+
+func (w stagePolicyReadinessWitness) healthy() bool {
+	return w.Tables && w.Ledger && w.Execution && w.Submission && w.SubmissionIndexOID > 0 && w.ExecutionIndexOID > 0 && w.PolicyRequestIndexOID > 0
+}
+
+func readStagePolicyReadinessWitness(ctx context.Context, source db.DBTX) (out stagePolicyReadinessWitness, err error) {
+	q := db.New(source)
+	if out.Tables, err = q.CollaborationStageSchemaReady(ctx); err != nil {
+		return out, err
+	}
+	execution, err := q.StageExecutionSchemaReady(ctx)
+	if err != nil {
+		return out, err
+	}
+	out.Execution = execution.Valid && execution.Bool
+	submission, err := q.CollaborationStageSubmissionReady(ctx)
+	if err != nil {
+		return out, err
+	}
+	out.Submission = submission.Valid && submission.Bool
+	err = source.QueryRow(ctx, `SELECT EXISTS (SELECT 1 FROM schema_migrations WHERE version='864_collaboration_stage_submission_ready'),
+ COALESCE(to_regclass('collaboration_stage_submission_id_idx')::oid::bigint,0),
+ COALESCE(to_regclass('collaboration_stage_execution_approval_idx')::oid::bigint,0),
+ COALESCE(to_regclass('project_stage_policy_request_idx')::oid::bigint,0)`).Scan(&out.Ledger, &out.SubmissionIndexOID, &out.ExecutionIndexOID, &out.PolicyRequestIndexOID)
+	return out, err
+}
+
+func stagePolicySQLFailure(err error) string {
+	if err == nil {
+		return "none"
+	}
+	var pgerr *pgconn.PgError
+	if errors.As(err, &pgerr) {
+		return "SQLSTATE " + pgerr.Code
+	}
+	return fmt.Sprintf("%T", err)
+}
+
+func (s *stageHTTP) stagePolicyBusinessSnapshot(t *testing.T) string {
+	t.Helper()
+	var snapshot string
+	s.fx.QueryRow(t, `SELECT jsonb_build_object(
+ 'stage_tasks',(SELECT count(*) FROM collaboration_stage_task WHERE issue_id=$1),
+ 'roles',(SELECT count(*) FROM collaboration_stage_role WHERE issue_id=$1),
+ 'candidates',(SELECT count(*) FROM collaboration_stage_candidate WHERE issue_id=$1),
+ 'decisions',(SELECT count(*) FROM collaboration_stage_decision WHERE issue_id=$1),
+ 'scope_children',(SELECT count(*) FROM collaboration_stage_child WHERE root_issue_id=$1),
+ 'submissions',(SELECT count(*) FROM collaboration_stage_submission WHERE issue_id=$1),
+ 'children',(SELECT count(*) FROM issue WHERE parent_issue_id=$1),
+ 'tasks',(SELECT jsonb_agg(jsonb_build_object('id',id,'status',status) ORDER BY id) FROM agent_task_queue WHERE issue_id=$1 OR issue_id IN (SELECT id FROM issue WHERE parent_issue_id=$1)),
+ 'runs',(SELECT count(*) FROM collaboration_run WHERE session_id IN (SELECT id FROM collaboration_session WHERE issue_id=$1)),
+ 'events',(SELECT count(*) FROM collaboration_event WHERE issue_id=$1),
+ 'notifications',(SELECT count(*) FROM collaboration_notification WHERE issue_id=$1))::text`, s.issue).Scan(&snapshot)
+	return snapshot
+}
+
+// The fixture changes real PostgreSQL state before returning the same native
+// transaction. It does not substitute any query, row, readiness result or commit.
+type stagePolicySchemaMutationStarter struct {
+	service.TxStarter
+	mutation    string
+	calls       int
+	affected    int64
+	transaction pgx.Tx
+	before      stagePolicyReadinessWitness
+	after       stagePolicyReadinessWitness
+	err         error
+}
+
+func (s *stagePolicySchemaMutationStarter) Begin(ctx context.Context) (pgx.Tx, error) {
+	tx, err := s.TxStarter.Begin(ctx)
+	if err != nil {
+		s.err = err
+		return nil, err
+	}
+	s.calls++
+	s.transaction = tx
+	returned := false
+	defer func() {
+		if !returned {
+			_ = tx.Rollback(ctx)
+		}
+	}()
+	if s.before, err = readStagePolicyReadinessWitness(ctx, tx); err != nil {
+		s.err = err
+		return nil, err
+	}
+	result, err := tx.Exec(ctx, s.mutation)
+	if err != nil {
+		s.err = err
+		return nil, err
+	}
+	s.affected = result.RowsAffected()
+	if s.after, err = readStagePolicyReadinessWitness(ctx, tx); err != nil {
+		s.err = err
+		return nil, err
+	}
+	returned = true
+	return tx, nil
+}
+
+func TestStagePolicyHTTPReadinessUsesActualSchema(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		mutation string
+	}{
+		{"missing_864_ledger", `DELETE FROM schema_migrations WHERE version='864_collaboration_stage_submission_ready';`},
+		{"submission_id_index", `DROP INDEX collaboration_stage_submission_id_idx;`},
+		{"execution_approval_index", `DROP INDEX collaboration_stage_execution_approval_idx;`},
+		{"foundation_policy_index", `DROP INDEX project_stage_policy_request_idx;`},
+	} {
+		if !t.Run(tc.name, func(t *testing.T) {
+			s := stageHTTPFixture(t)
+			testutil.Call(t, s.h.GetStagePolicy, s.policyRequest(http.MethodGet, "", s.actor, "", nil)).Want(http.StatusOK)
+			before, err := readStagePolicyReadinessWitness(t.Context(), s.fx.Pool)
+			if err != nil || !before.healthy() {
+				t.Fatalf("actual ready fixture required: %+v error=%s", before, stagePolicySQLFailure(err))
+			}
+			business := s.stagePolicyBusinessSnapshot(t)
+			starter := &stagePolicySchemaMutationStarter{TxStarter: s.h.TxStarter, mutation: tc.mutation}
+			mutating := *s.h
+			mutating.TxStarter = starter
+			key := uuid.NewString()
+			body := map[string]any{"expected_policy_revision": "0", "enabled": true, "reason": "actual schema negative"}
+			response := testutil.Call(t, mutating.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, key, body))
+			out := response.Map()
+			rows := s.fx.Count(t, `SELECT count(*) FROM project_stage_policy WHERE project_id=$1`, s.project)
+			after, afterErr := readStagePolicyReadinessWitness(t.Context(), s.fx.Pool)
+			t.Logf("P2 native schema control=%s status=%d response=%v calls=%d tx=%T affected=%d before=%+v inside=%+v after=%+v error=%s", tc.name, response.Code, out, starter.calls, starter.transaction, starter.affected, starter.before, starter.after, after, stagePolicySQLFailure(starter.err))
+			if starter.err != nil || afterErr != nil {
+				t.Fatalf("schema fixture/control failure: mutation=%s after=%s", stagePolicySQLFailure(starter.err), stagePolicySQLFailure(afterErr))
+			}
+			response.Want(http.StatusServiceUnavailable)
+			if out["code"] != "stage_schema_unavailable" || out["error"] != "stage_schema_unavailable" || out["stage_confirmation"] != nil || starter.calls != 1 || starter.transaction == nil || starter.before != before {
+				t.Fatalf("actual schema control was not consumed: %v calls=%d before=%+v", out, starter.calls, starter.before)
+			}
+			switch tc.name {
+			case "missing_864_ledger":
+				want := before
+				want.Ledger = false
+				if starter.affected != 1 || starter.after != want {
+					t.Fatalf("actual missing ledger did not isolate exact864: affected=%d inside=%+v", starter.affected, starter.after)
+				}
+			case "submission_id_index":
+				want := before
+				want.Submission, want.SubmissionIndexOID = false, 0
+				if starter.after != want {
+					t.Fatalf("actual missing submission index witness: %+v", starter.after)
+				}
+			case "execution_approval_index":
+				want := before
+				want.Execution, want.ExecutionIndexOID = false, 0
+				if starter.after != want {
+					t.Fatalf("actual missing execution index witness: %+v", starter.after)
+				}
+			case "foundation_policy_index":
+				want := before
+				want.PolicyRequestIndexOID = 0
+				if starter.after != want {
+					t.Fatalf("actual missing foundation index witness: %+v", starter.after)
+				}
+			}
+			if after != before || rows != 0 || s.stagePolicyBusinessSnapshot(t) != business {
+				t.Fatalf("actual refusal did not roll back schema and business effects: after=%+v rows=%d", after, rows)
+			}
+			recovered := testutil.Call(t, s.h.GetStagePolicyOperation, s.policyRequest(http.MethodGet, "/operations/"+key, s.actor, key, nil)).Want(http.StatusNotFound).Map()
+			if recovered["code"] != "stage_policy_operation_not_found" {
+				t.Fatalf("schema refusal became a successful original-key receipt: %v", recovered)
+			}
+		}) {
+			// An unexpected commit may have changed this dedicated test database.
+			// Keep its failed state and do not run another control against it.
+			break
+		}
+	}
+}
+
+const stagePolicySubmissionIndexRestoreSQL = `CREATE UNIQUE INDEX CONCURRENTLY collaboration_stage_submission_id_idx ON collaboration_stage_submission (submission_id);`
+
+func restoreStagePolicySubmissionIndex(ctx context.Context, source db.DBTX) (stagePolicyReadinessWitness, error) {
+	witness, err := readStagePolicyReadinessWitness(ctx, source)
+	if err != nil {
+		return witness, err
+	}
+	if witness.SubmissionIndexOID == 0 {
+		if _, err = source.Exec(ctx, stagePolicySubmissionIndexRestoreSQL); err != nil {
+			return witness, err
+		}
+	}
+	return readStagePolicyReadinessWitness(ctx, source)
+}
+
+func TestStagePolicyHTTPDisableWithIncompleteSubmissionSchema(t *testing.T) {
+	s := stageHTTPFixture(t)
+	before, err := readStagePolicyReadinessWitness(t.Context(), s.fx.Pool)
+	if err != nil || !before.healthy() {
+		t.Fatalf("actual ready fixture required: %+v error=%s", before, stagePolicySQLFailure(err))
+	}
+	business := s.stagePolicyBusinessSnapshot(t)
+	rows := func() int {
+		return s.fx.Count(t, `SELECT count(*) FROM project_stage_policy WHERE project_id=$1`, s.project)
+	}
+	enableKey := uuid.NewString()
+	enable := map[string]any{"expected_policy_revision": "0", "enabled": true, "reason": "enable before schema rollback control"}
+	enableCall := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, enableKey, enable))
+	enabled := enableCall.Map()
+	t.Logf("P2 rollback setup actual enable status=%d response=%v schema=%+v", enableCall.Code, enabled, before)
+	enableCall.Want(http.StatusOK)
+	confirmation, _ := enabled["stage_confirmation"].(map[string]any)
+	if enabled["code"] != "stage_policy_revised" || confirmation["action"] != "revise_policy" || confirmation["project_id"] != s.project || confirmation["policy_revision"] != "1" || confirmation["enabled"] != true || len(confirmation) != 4 || rows() != 1 {
+		t.Fatalf("actual enabling confirmation: %v", enabled)
+	}
+	// This restores only the deliberate test index control, on this exact test
+	// database, using the original 862 statement outside an explicit transaction.
+	t.Cleanup(func() {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+		witness, restoreErr := restoreStagePolicySubmissionIndex(ctx, s.fx.Pool)
+		if restoreErr != nil || !witness.healthy() {
+			t.Errorf("test-only submission index restoration: %+v error=%s", witness, stagePolicySQLFailure(restoreErr))
+		}
+	})
+	starter := &stagePolicySchemaMutationStarter{TxStarter: s.h.TxStarter, mutation: `DROP INDEX collaboration_stage_submission_id_idx;`}
+	mutating := *s.h
+	mutating.TxStarter = starter
+	disableKey := uuid.NewString()
+	disable := map[string]any{"expected_policy_revision": "1", "enabled": false, "reason": "explicit disable while final schema is unavailable"}
+	disableCall := testutil.Call(t, mutating.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, disableKey, disable))
+	disabled := disableCall.Map()
+	t.Logf("P2 actual disable with native missing index status=%d response=%v calls=%d tx=%T inside=%+v error=%s", disableCall.Code, disabled, starter.calls, starter.transaction, starter.after, stagePolicySQLFailure(starter.err))
+	disableCall.Want(http.StatusOK)
+	confirmation, _ = disabled["stage_confirmation"].(map[string]any)
+	inside := before
+	inside.Submission, inside.SubmissionIndexOID = false, 0
+	if starter.err != nil || starter.calls != 1 || starter.transaction == nil || starter.before != before || starter.after != inside || disabled["code"] != "stage_policy_revised" || confirmation["action"] != "revise_policy" || confirmation["project_id"] != s.project || confirmation["policy_revision"] != "2" || confirmation["enabled"] != false || len(confirmation) != 4 || rows() != 2 {
+		t.Fatalf("actual disable did not commit its own revision/control: %v inside=%+v", disabled, starter.after)
+	}
+	missing, err := readStagePolicyReadinessWitness(t.Context(), s.fx.Pool)
+	if err != nil || missing != inside {
+		t.Fatalf("test-only missing index was not actually committed: %+v error=%s", missing, stagePolicySQLFailure(err))
+	}
+	for _, original := range []struct {
+		key     string
+		body    map[string]any
+		receipt map[string]any
+	}{{enableKey, enable, enabled}, {disableKey, disable, disabled}} {
+		replay := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, original.key, original.body)).Want(http.StatusOK).Map()
+		recovered := testutil.Call(t, s.h.GetStagePolicyOperation, s.policyRequest(http.MethodGet, "/operations/"+original.key, s.actor, original.key, nil)).Want(http.StatusOK).Map()
+		if !reflect.DeepEqual(replay, original.receipt) || !reflect.DeepEqual(recovered, original.receipt) || rows() != 2 || s.stagePolicyBusinessSnapshot(t) != business {
+			t.Fatalf("missing final schema changed historical receipt/effects: replay=%v recovered=%v", replay, recovered)
+		}
+	}
+	newKey := uuid.NewString()
+	refused := testutil.Call(t, s.h.UpdateStagePolicy, s.policyRequest(http.MethodPut, "", s.actor, newKey, map[string]any{"expected_policy_revision": "2", "enabled": true, "reason": "new enabling with actual missing index"})).Want(http.StatusServiceUnavailable).Map()
+	if refused["code"] != "stage_schema_unavailable" || refused["error"] != "stage_schema_unavailable" || refused["stage_confirmation"] != nil || rows() != 2 || s.stagePolicyBusinessSnapshot(t) != business {
+		t.Fatalf("new enabling bypassed actual missing schema: %v", refused)
+	}
+	if recovered := testutil.Call(t, s.h.GetStagePolicyOperation, s.policyRequest(http.MethodGet, "/operations/"+newKey, s.actor, newKey, nil)).Want(http.StatusNotFound).Map(); recovered["code"] != "stage_policy_operation_not_found" {
+		t.Fatalf("refused new enabling got an original success: %v", recovered)
+	}
+	restored, err := restoreStagePolicySubmissionIndex(t.Context(), s.fx.Pool)
+	if err != nil || !restored.healthy() || restored.ExecutionIndexOID != before.ExecutionIndexOID || restored.PolicyRequestIndexOID != before.PolicyRequestIndexOID || rows() != 2 || s.stagePolicyBusinessSnapshot(t) != business {
+		t.Fatalf("original862 logical schema restoration: %+v error=%s", restored, stagePolicySQLFailure(err))
+	}
+	t.Logf("P2 actual submission index OID before=%d missing=%d restored=%d logical_submission_ready=%t", before.SubmissionIndexOID, missing.SubmissionIndexOID, restored.SubmissionIndexOID, restored.Submission)
 }
 
 func TestStageHTTPStrictBodies(t *testing.T) {

@@ -18,7 +18,7 @@ import (
 // HTTP. It stays false until every completion, submission, project-detach and
 // delete writer consumes the final stage guard: an intermediate build must not
 // be switchable on in a real project. Disabling is never gated.
-const stagePolicyActivationAvailable = false
+const stagePolicyActivationAvailable = true
 
 type collaborationStageRolesBody struct {
 	collaborationWorkflowBody
