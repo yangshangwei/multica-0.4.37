@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
-import { collaborationCommentsOptions, collaborationCommentOptions, collaborationIssueAccessDenied, deriveCollaborationDetailState, isCollaborationDenied, useCollaborationIssue, type CollaborationComment, type CollaborationScope } from "@multica/core/collaboration";
+import { collaborationCommentsOptions, collaborationCommentOptions, collaborationIssueAccessDenied, deriveCollaborationCommentThreads, deriveCollaborationDetailState, isCollaborationDenied, useCollaborationIssue, type CollaborationComment, type CollaborationScope } from "@multica/core/collaboration";
 import { accountPath, type AccountDestination } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
 import { copyText } from "@multica/ui/lib/clipboard";
@@ -66,6 +66,12 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
     if (auxiliary.current) auxiliary.current.closeForNavigation(focusTarget);
     else focusTarget();
   }, [destination.commentId, destination.runId, destination.anchor, query.data, comments.data, linkedComment.data, navigation.isScopeResume, navigation.navigationKey]);
+  const pages = comments.data?.pages;
+  const linked = linkedComment.data;
+  const rows = useMemo(() => [...new Map([...(linked ? [linked] : []), ...(pages?.flatMap((page) => page.items) ?? [])].map((comment) => [comment.id, comment])).values()]
+    .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime() || a.id.localeCompare(b.id)), [pages, linked]);
+  // One derivation feeds both the header count and the list's thread layout.
+  const threads = useMemo(() => deriveCollaborationCommentThreads(rows), [rows]);
   const denied = collaborationIssueAccessDenied(client, scope, issueId);
   if (!query.data || denied || isCollaborationDenied(query.error)) return <>
     {query.isPending ? <p role="status" className="py-10 text-body text-muted-foreground">{t(($) => $.page.loading)}</p>
@@ -76,8 +82,19 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
   const state = deriveCollaborationDetailState(issue, scope.userId);
   const stage = state.stage;
   const canPrepareResult = state.canSelfComplete || state.primary === "submit_acceptance" || state.secondary.includes("submit_acceptance");
-  const rows = [...new Map([...(linkedComment.data ? [linkedComment.data] : []), ...(comments.data?.pages.flatMap((page) => page.items) ?? [])].map((comment) => [comment.id, comment])).values()]
-    .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime() || a.id.localeCompare(b.id));
+  const total = pages?.[0]?.total;
+  // Without every page, an older comment may still carry a thread's resolution.
+  const allLoaded = comments.isSuccess && comments.hasNextPage !== true;
+  const pendingThreads = threads.filter((thread) => thread.pending);
+  const firstPending = pendingThreads[0]?.items[0]?.comment.id;
+  function focusFirstPending() {
+    const element = firstPending ? root.current?.querySelector<HTMLElement>(`[id="comment-${firstPending}"]`) : null;
+    if (!element) return;
+    const container = element.closest<HTMLElement>('[data-tab-scroll-root="account-detail"]');
+    if (container) container.scrollTop += element.getBoundingClientRect().top - container.getBoundingClientRect().top;
+    else element.scrollIntoView?.({ block: "start" });
+    element.focus({ preventScroll: true });
+  }
   return <div ref={root} className="@container/collaboration-detail mx-auto w-full min-w-0 max-w-4xl space-y-8">
     {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
     <header className="space-y-4">
@@ -120,19 +137,29 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
         if (auxiliary.current) auxiliary.current.closeForNavigation(focus); else focus();
       }} />
     <CollaborationIssueReactions scope={scope} issue={issue} />
-    <section id="discussion" tabIndex={-1} className="min-w-0 space-y-4"><h3 className="text-title-sm font-semibold">{t(($) => $.detail.comments)}</h3>
+    <section id="discussion" tabIndex={-1} className="min-w-0"><div className="min-w-0 max-w-[75ch] space-y-4">
+      <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
+        <h3 className="text-title-sm font-semibold">{t(($) => $.detail.comments)}</h3>
+        {comments.isSuccess && total !== undefined && <><span data-comment-total aria-hidden className="text-body tabular-nums text-muted-foreground">{total}</span>
+          <span className="sr-only">{t(($) => $.detail.threadComments, { count: total })}</span></>}
+        {comments.isSuccess && pendingThreads.length > 0 && <Button type="button" variant="link" size="sm" className="h-auto max-w-full whitespace-normal px-0 py-1 text-left text-caption text-foreground underline underline-offset-4 pointer-coarse:min-h-11" onClick={focusFirstPending}>
+          {allLoaded ? t(($) => $.detail.pendingThreads, { count: pendingThreads.length }) : t(($) => $.detail.pendingThreadsLoaded, { count: pendingThreads.length })}
+        </Button>}
+      </div>
       {comments.isPending && <p role="status" className="text-body text-muted-foreground">{t(($) => $.page.loading)}</p>}
       {comments.error && <CollaborationQueryState error={comments.error} retry={() => void comments.refetch()} />}
       {linkedComment.error && <CollaborationQueryState error={linkedComment.error} retry={() => void linkedComment.refetch()} />}
       {comments.isSuccess && rows.length === 0 && <p className="text-body text-muted-foreground">{t(($) => $.detail.noComments)}</p>}
-      {comments.isSuccess && <p className="text-caption text-muted-foreground">{comments.data?.pages[0]?.total !== undefined
-        ? t(($) => $.recall.loaded, { loaded: new Set(comments.data.pages.flatMap((page) => page.items.map((item) => item.id))).size, total: comments.data.pages[0].total })
-        : t(($) => $.recall.coverageUnknown)}</p>}
-      <CollaborationCommentList key={`comments:${identity}`} scope={scope} issue={issue} comments={rows} onReply={(comment) => setReplyTo({ identity, comment })}
+      {comments.isSuccess && total === undefined && <p className="text-caption text-muted-foreground">{t(($) => $.recall.coverageUnknown)}</p>}
+      <CollaborationCommentList key={`comments:${identity}`} scope={scope} issue={issue} comments={rows} threads={threads} allLoaded={allLoaded}
+        revealCommentId={navigation.isScopeResume ? null : destination.commentId} revealKey={navigation.navigationKey} onReply={(comment) => setReplyTo({ identity, comment })}
         onPrepareResult={canPrepareResult ? (comment) => setResultComment({ identity, comment }) : undefined} />
-      {comments.hasNextPage && <Button variant="outline" className="pointer-coarse:min-h-11" disabled={comments.isFetchingNextPage} onClick={() => void comments.fetchNextPage()}>{t(($) => $.page.more)}</Button>}
+      {comments.hasNextPage && <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2">
+        <Button variant="outline" className="pointer-coarse:min-h-11" disabled={comments.isFetchingNextPage} onClick={() => void comments.fetchNextPage()}>{t(($) => $.page.more)}</Button>
+        {total !== undefined && <p className="text-caption text-muted-foreground">{t(($) => $.recall.loaded, { loaded: new Set((pages ?? []).flatMap((page) => page.items.map((item) => item.id))).size, total })}</p>}
+      </div>}
       <CollaborationCommentComposer key={`composer:${identity}`} scope={scope} issue={issue} replyTo={replyTo?.identity === identity ? replyTo.comment : null} onCancelReply={() => setReplyTo(null)} onSent={() => setReplyTo(null)} />
-    </section>
+    </div></section>
     <CollaborationExecutionPanel scope={scope} issue={issue} selectedRunId={destination.runId} />
     </div>
 

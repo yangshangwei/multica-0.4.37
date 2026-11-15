@@ -118,3 +118,4 @@ export * from "./stage-test-subject-schema";
 export * from "./stage-test-report-schema";
 export * from "./stage-test-report-queries";
 export * from "./stage-test-presentation";
+export * from "./comment-threads";

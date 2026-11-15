@@ -3,13 +3,13 @@ import { afterEach, expect, it, vi } from "vitest";
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient } from "@tanstack/react-query";
-import { collaborationScope, clearCollaborationAccess, parseCollaborationIssue, type CollaborationIssue } from "@multica/core/collaboration";
+import { collaborationScope, clearCollaborationAccess, parseCollaborationComment, parseCollaborationIssue, type CollaborationCommentThread, type CollaborationIssue } from "@multica/core/collaboration";
 import { collaborationIssueFixture } from "@multica/core/collaboration/test-fixtures";
 import { ApiClient, setApiInstance } from "@multica/core/api";
 import { renderWithI18n } from "../test/i18n";
 import { CollaborationDetail } from "./collaboration-detail";
 
-const state = vi.hoisted(() => ({ comments: [] as { id: string; created_at: string }[], total: undefined as number | undefined, pending: true, available: true, children: undefined as CollaborationIssue["ordinary_children"] }));
+const state = vi.hoisted(() => ({ comments: [] as { id: string; created_at: string }[], total: undefined as number | undefined, pending: true, hasNextPage: false, available: true, children: undefined as CollaborationIssue["ordinary_children"] }));
 const navigation = vi.hoisted(() => ({ push: vi.fn(), prefetch: vi.fn(), isScopeResume: false, navigationKey: 0, getShareableUrl: (path: string) => `https://detail.example${path}` }));
 const restoreScroll = vi.hoisted(() => vi.fn());
 const client = new QueryClient();
@@ -19,7 +19,7 @@ vi.mock("../navigation/context", () => ({ useNavigation: () => navigation }));
 vi.mock("@tanstack/react-query", async (original) => ({ ...await original<typeof import("@tanstack/react-query")>(),
   useQueryClient: () => client,
   useQuery: () => ({ data: undefined }),
-  useInfiniteQuery: () => ({ data: { pages: [{ items: state.comments, total: state.total }] }, isPending: state.pending, isSuccess: !state.pending }),
+  useInfiniteQuery: () => ({ data: { pages: [{ items: state.comments, total: state.total }] }, isPending: state.pending, isSuccess: !state.pending, hasNextPage: state.hasNextPage }),
 }));
 vi.mock("../platform", () => ({ useRestoredScrollRef: () => restoreScroll }));
 vi.mock("../rich-content", () => ({ RichContent: () => null }));
@@ -39,12 +39,13 @@ vi.mock("./attachment-panel", () => ({ CollaborationAttachmentPanel: () => <sect
 vi.mock("./field-summary", () => ({ CollaborationFieldSummary: () => <section data-testid="fields-mount" /> }));
 // The detail owns these two sibling component identities; their behavior is
 // tested separately in comment-list and comment-composer suites.
-vi.mock("./comment-list", () => ({ CollaborationCommentList: ({ comments }: { comments: { id: string }[] }) => <ol data-testid="comment-list">{comments.map((comment) => <li id={`comment-${comment.id}`} key={comment.id} />)}</ol> }));
+vi.mock("./comment-list", () => ({ CollaborationCommentList: ({ comments, threads, allLoaded, revealCommentId, revealKey }: { comments: { id: string }[]; threads: CollaborationCommentThread[]; allLoaded: boolean; revealCommentId: string | null; revealKey?: number | string }) =>
+  <ol data-testid="comment-list" data-threads={threads.map((thread) => thread.items.length).join(",")} data-all-loaded={String(allLoaded)} data-reveal={`${revealKey}:${revealCommentId}`}>{comments.map((comment) => <li id={`comment-${comment.id}`} key={comment.id} tabIndex={-1} />)}</ol> }));
 vi.mock("./comment-composer", () => ({ CollaborationCommentComposer: function Composer() {
   const [value, setValue] = useState("");
   return <form data-testid="comment-composer"><textarea aria-label="Composer draft" value={value} onChange={(event) => setValue(event.target.value)} /></form>;
 } }));
-afterEach(() => { client.clear(); state.comments = []; state.total = undefined; state.pending = true; state.available = true; state.children = undefined; navigation.push.mockClear(); navigation.prefetch.mockClear(); navigation.isScopeResume = false; navigation.navigationKey = 0; restoreScroll.mockReset(); vi.restoreAllMocks(); });
+afterEach(() => { client.clear(); state.comments = []; state.total = undefined; state.pending = true; state.hasNextPage = false; state.available = true; state.children = undefined; navigation.push.mockClear(); navigation.prefetch.mockClear(); navigation.isScopeResume = false; navigation.navigationKey = 0; restoreScroll.mockReset(); vi.restoreAllMocks(); });
 
 it.each(["en", "zh-Hans"] as const)("keeps the main journey visible and task metadata in its resource drawer in %s", async (locale) => {
   setApiInstance(new ApiClient("https://detail.example"));
@@ -97,18 +98,80 @@ it("reopens and focuses shared context on each explicit anchor navigation", asyn
   await waitFor(() => expect(memory).toHaveFocus());
 });
 
-it("shows the loaded range and keeps an older server's unknown total explicit", () => {
+it("shows the loaded range only beside Load more and keeps an older server's unknown total explicit", () => {
   setApiInstance(new ApiClient("https://detail.example"));
   state.pending = false;
   state.total = 5;
+  state.hasNextPage = true;
   state.comments = [{ id: "00000000-0000-4000-8000-000000000009", created_at: "2026-10-31T00:00:00Z" }];
   const view = () => <CollaborationDetail scope={collaborationScope(issue.creator.user_id)} destination={{ view: "participating", issueId: issue.id, commentId: null }} />;
   const mounted = renderWithI18n(view());
   expect(screen.getByTestId("knowledge-mount")).toHaveTextContent(issue.id);
-  expect(screen.getByText("Loaded 1 of 5 comments")).toBeInTheDocument();
+  expect(document.querySelector("[data-comment-total]")).toHaveTextContent(/^5$/);
+  expect(screen.getByText("5 comments")).toBeInTheDocument();
+  expect(screen.getByText("Loaded 1 of 5 comments").parentElement).toContainElement(screen.getByRole("button", { name: "Load more" }));
+  expect(screen.getByTestId("comment-list")).toHaveAttribute("data-all-loaded", "false");
+  state.total = 1;
+  state.hasNextPage = false;
+  mounted.rerender(view());
+  expect(document.querySelector("[data-comment-total]")).toHaveTextContent(/^1$/);
+  expect(screen.getByText("1 comment")).toBeInTheDocument();
+  expect(screen.queryByText(/^Loaded /)).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Load more" })).not.toBeInTheDocument();
+  expect(screen.getByTestId("comment-list")).toHaveAttribute("data-all-loaded", "true");
   state.total = undefined;
   mounted.rerender(view());
+  expect(document.querySelector("[data-comment-total]")).toBeNull();
   expect(screen.getByText("Comment count is unavailable on this server.")).toBeInTheDocument();
+});
+
+// The unresolved definition and thread order are core's comment-threads.test.ts matrix.
+it.each(["en", "zh-Hans"] as const)("counts unresolved threads beside the heading and focuses the first one in %s", async (locale) => {
+  setApiInstance(new ApiClient("https://detail.example"));
+  const id = (n: number) => `00000000-0000-4000-8000-0000000000${n}`;
+  const at = (minute: number) => `2026-10-19T00:${minute}:00Z`;
+  const comment = (n: number, over: Record<string, unknown> = {}) => parseCollaborationComment({ id: id(n), issue_id: issue.id, author_type: "member", author: issue.creator, content: `Comment ${n}`, type: "comment",
+    parent_id: null, comment_revision: "1", attachment_ids: [], created_at: at(n), updated_at: at(n), deleted_at: null, resolved_at: null, resolved_by: null, can_edit: false, can_resolve: true, reactions: [], ...over })!;
+  state.pending = false;
+  state.total = 9;
+  state.hasNextPage = true;
+  state.comments = [comment(11, { resolved_at: at(50), resolved_by: issue.creator }), comment(12), comment(13, { parent_id: id(12) }),
+    comment(14, { deleted_at: at(51), content: "", can_resolve: false }), comment(15)];
+  const view = () => <section data-tab-scroll-root="account-detail"><CollaborationDetail scope={collaborationScope(issue.creator.user_id)} destination={{ view: "participating", issueId: issue.id, commentId: null }} /></section>;
+  const mounted = renderWithI18n(view(), { locale });
+  const en = locale === "en";
+  expect(screen.getByTestId("comment-list")).toHaveAttribute("data-threads", "1,2,1,1");
+  expect(screen.getByRole("button", { name: en ? "2 unresolved threads in loaded comments" : "已加载评论中有 2 个未解决讨论" })).toBeInTheDocument();
+  state.hasNextPage = false;
+  mounted.rerender(view());
+  await userEvent.click(screen.getByRole("button", { name: en ? "2 unresolved threads" : "2 个未解决讨论" }));
+  expect(document.getElementById(`comment-${id(12)}`)).toHaveFocus();
+  state.comments = [state.comments[0]!, state.comments[3]!];
+  mounted.rerender(view());
+  expect(screen.queryByRole("button", { name: en ? /unresolved thread/ : /未解决讨论/ })).not.toBeInTheDocument();
+});
+
+it("hands each explicit comment navigation to the list so a folded thread can open before focus", () => {
+  setApiInstance(new ApiClient("https://detail.example"));
+  const commentId = "00000000-0000-4000-8000-000000000009";
+  state.pending = false;
+  state.comments = [{ id: commentId, created_at: "2026-10-31T00:00:00Z" }];
+  navigation.navigationKey = 3;
+  // Returning to a tab restores its scroll; it is not a new request to reveal.
+  navigation.isScopeResume = true;
+  const view = () => <section data-tab-scroll-root="account-detail"><CollaborationDetail scope={collaborationScope(issue.creator.user_id)} destination={{ view: "participating", issueId: issue.id, commentId }} /></section>;
+  const mounted = renderWithI18n(view());
+  expect(screen.getByTestId("comment-list")).toHaveAttribute("data-reveal", "3:null");
+  expect(document.getElementById(`comment-${commentId}`)).not.toHaveFocus();
+  navigation.isScopeResume = false;
+  mounted.rerender(view());
+  expect(screen.getByTestId("comment-list")).toHaveAttribute("data-reveal", `3:${commentId}`);
+  expect(document.getElementById(`comment-${commentId}`)).toHaveFocus();
+  screen.getByLabelText("Composer draft").focus();
+  navigation.navigationKey = 4;
+  mounted.rerender(view());
+  expect(screen.getByTestId("comment-list")).toHaveAttribute("data-reveal", `4:${commentId}`);
+  expect(document.getElementById(`comment-${commentId}`)).toHaveFocus();
 });
 
 it("restores an anchored detail on scope resume and refocuses repeated explicit opens", () => {

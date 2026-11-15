@@ -7,11 +7,13 @@ import { QuickEmojiPicker } from "@multica/ui/components/common/quick-emoji-pick
 import { useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
 
-export function CollaborationDiscussionActions({ scope, issue, comment, reactions = [] }: {
-  scope: CollaborationScope; issue: CollaborationIssue; comment?: CollaborationComment; reactions?: CollaborationComment["reactions"];
-}) {
+/**
+ * Owns one discussion target's reaction/resolution writes and their recovery.
+ * Callers place the controls; `status` carries pending, error, result and
+ * original-key recovery feedback and must stay rendered next to them.
+ */
+export function useCollaborationDiscussion(scope: CollaborationScope, issue: CollaborationIssue, comment?: CollaborationComment, reactions: CollaborationComment["reactions"] = []) {
   const { t } = useT("collaboration");
-  const countId = useId();
   const client = useQueryClient();
   const drafts = useCollaborationPendingDrafts({ ...scope, issueId: issue.id });
   const pending = drafts.discussion.filter((draft) => parseCollaborationDiscussionDraft(draft).commentId === (comment?.id ?? null));
@@ -34,21 +36,7 @@ export function CollaborationDiscussionActions({ scope, issue, comment, reaction
     if (comment?.deleted_at && !own) return;
     submit({ action: own ? "remove_reaction" : "add_reaction", commentId: comment?.id ?? null, emoji });
   }
-  return <div className="min-w-0 space-y-2">
-    <div role="group" aria-label={t(($) => $.commentActions.discussion)} className="flex flex-wrap items-center gap-2">
-      {canResolve && comment && <Button type="button" variant="ghost" size="sm" disabled={locked} className="h-auto min-h-8 whitespace-normal pointer-coarse:min-h-11"
-        onClick={() => submit({ action: comment.resolved_at === null ? "resolve" : "unresolve", commentId: comment.id })}>
-        {comment.resolved_at === null ? t(($) => $.commentActions.resolve) : t(($) => $.commentActions.unresolve)}
-      </Button>}
-      {currentReactions.map((reaction, index) => <Button key={reaction.emoji} type="button" variant={reaction.viewer_reacted ? "secondary" : "ghost"} size="sm"
-        disabled={locked || !canReact || Boolean(comment?.deleted_at && !reaction.viewer_reacted)} aria-pressed={reaction.viewer_reacted} aria-describedby={`${countId}-${index}`}
-        aria-label={reaction.viewer_reacted ? t(($) => $.commentActions.removeReaction, { emoji: reaction.emoji }) : t(($) => $.commentActions.addReaction, { emoji: reaction.emoji })}
-        className={`h-auto min-h-8 gap-2 rounded-full pointer-coarse:min-h-11 ${reaction.viewer_reacted ? "font-semibold" : ""}`} onClick={() => toggle(reaction.emoji)}>
-        <span>{reaction.emoji}</span><span id={`${countId}-${index}`} className="tabular-nums">{reaction.count}</span>
-      </Button>)}
-      {canReact && !comment?.deleted_at && <QuickEmojiPicker onSelect={toggle} disabled={locked} label={t(($) => $.commentActions.chooseReaction)}
-        moreLabel={t(($) => $.commentActions.moreEmojis)} loadingLabel={t(($) => $.page.loading)} className="min-h-8 min-w-8 pointer-coarse:min-h-11 pointer-coarse:min-w-11" />}
-    </div>
+  const status = <>
     {send.isPending && <p role="status" className="text-caption">{t(($) => $.workflow.pending)}</p>}
     {send.error && <CollaborationQueryState error={send.error} />}
     {send.data && <p role="status" className="text-caption">{send.data.status === 200 ? t(($) => $.commentActions.updated) : t(($) => $.workflow.refused)}</p>}
@@ -56,6 +44,50 @@ export function CollaborationDiscussionActions({ scope, issue, comment, reaction
       <div className="flex flex-wrap gap-2"><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={send.isPending || drafts.error} onClick={() => send.mutate({ draft, recovery: true })}>{t(($) => $.workflow.recover)}</Button>
         <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={send.isPending || drafts.error} onClick={() => send.mutate({ draft, recovery: false })}>{t(($) => $.workflow.retryOriginal)}</Button></div>
     </div>)}
+  </>;
+  return { submit, toggle, locked, canReact, canResolve, reactions: currentReactions, status };
+}
+
+type Discussion = ReturnType<typeof useCollaborationDiscussion>;
+
+export function CollaborationResolveButton({ discussion, comment }: { discussion: Discussion; comment: CollaborationComment }) {
+  const { t } = useT("collaboration");
+  if (!discussion.canResolve) return null;
+  // Resolving is the one visible action of an unresolved thread; reopening is rarer and stays quiet.
+  return <Button type="button" variant={comment.resolved_at === null ? "outline" : "ghost"} size="sm" disabled={discussion.locked}
+    className={`h-auto min-h-8 whitespace-normal pointer-coarse:min-h-11 ${comment.resolved_at === null ? "" : "font-normal text-muted-foreground"}`}
+    onClick={() => discussion.submit({ action: comment.resolved_at === null ? "resolve" : "unresolve", commentId: comment.id })}>
+    {comment.resolved_at === null ? t(($) => $.commentActions.resolve) : t(($) => $.commentActions.unresolve)}
+  </Button>;
+}
+
+export function CollaborationReactionButtons({ discussion, comment }: { discussion: Discussion; comment?: CollaborationComment }) {
+  const { t } = useT("collaboration");
+  const countId = useId();
+  const { locked, canReact, toggle } = discussion;
+  return <>
+    {discussion.reactions.map((reaction, index) => <Button key={reaction.emoji} type="button" variant={reaction.viewer_reacted ? "secondary" : "ghost"} size="sm"
+      disabled={locked || !canReact || Boolean(comment?.deleted_at && !reaction.viewer_reacted)} aria-pressed={reaction.viewer_reacted} aria-describedby={`${countId}-${index}`}
+      aria-label={reaction.viewer_reacted ? t(($) => $.commentActions.removeReaction, { emoji: reaction.emoji }) : t(($) => $.commentActions.addReaction, { emoji: reaction.emoji })}
+      className={`h-auto min-h-8 gap-2 rounded-full pointer-coarse:min-h-11 ${reaction.viewer_reacted ? "font-semibold" : ""}`} onClick={() => toggle(reaction.emoji)}>
+      <span>{reaction.emoji}</span><span id={`${countId}-${index}`} className="tabular-nums">{reaction.count}</span>
+    </Button>)}
+    {canReact && !comment?.deleted_at && <QuickEmojiPicker onSelect={toggle} disabled={locked} label={t(($) => $.commentActions.chooseReaction)}
+      moreLabel={t(($) => $.commentActions.moreEmojis)} loadingLabel={t(($) => $.page.loading)} className="min-h-8 min-w-8 pointer-coarse:min-h-11 pointer-coarse:min-w-11" />}
+  </>;
+}
+
+export function CollaborationDiscussionActions({ scope, issue, comment, reactions = [] }: {
+  scope: CollaborationScope; issue: CollaborationIssue; comment?: CollaborationComment; reactions?: CollaborationComment["reactions"];
+}) {
+  const { t } = useT("collaboration");
+  const discussion = useCollaborationDiscussion(scope, issue, comment, reactions);
+  return <div className="min-w-0 space-y-2">
+    <div role="group" aria-label={t(($) => $.commentActions.discussion)} className="flex flex-wrap items-center gap-2">
+      {comment && <CollaborationResolveButton discussion={discussion} comment={comment} />}
+      <CollaborationReactionButtons discussion={discussion} comment={comment} />
+    </div>
+    {discussion.status}
   </div>;
 }
 
