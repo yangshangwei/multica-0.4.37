@@ -51,6 +51,25 @@ import { Callout } from "fumadocs-ui/components/callout";
 
 **仅运行**要求运行时在触发时可用；否则本次运行会显示为"已跳过"，不会留下一个等待中的 issue。
 
+时间表、Webhook 或手动触发通过过滤和权限检查后，两种模式的结果去向如下。小队作为执行方时，运行时检查针对它的队长。
+
+```mermaid
+flowchart TB
+    accTitle: 自动化触发后的输出与运行时分支
+    accDescr: 时间表、Webhook 或手动触发通过检查后，创建任务模式保留任务和执行记录，运行时单纯离线时可以排队等待。仅运行模式要求运行时当时可用，不可用则跳过，可用则创建执行任务并在自动化运行历史查看结果。
+    trigger["触发已受理"] --> mode{"输出模式？"}
+    mode -->|创建任务| issue["创建任务并分配"]
+    issue --> queue["排队等待领取"]
+    queue --> timeline["结果写回任务"]
+    mode -->|仅运行| ready{"运行时可用？"}
+    ready -->|否| skipped["跳过并记录原因"]
+    ready -->|是| run["直接执行"]
+    run --> history["运行历史查看结果"]
+    skipped --> history
+```
+
+创建任务模式可以在运行时暂时离线时排队等待恢复；这仅适用于已绑定运行时、只是暂时离线的执行方，未绑定、已归档或不可用等情况仍可能被跳过。仅运行模式的“直接执行”只创建执行记录，不创建业务任务。Webhook 的忽略与去重发生在创建运行之前，详见下文响应速查；两种模式都会保留自动化运行记录。
+
 ## 按时间运行
 
 时间表编辑器可以选择运行时间、重复日期、时间窗口和时区，并预览接下来的运行时间。一条自动化可以添加多个时间表；单独启停某个触发器通过 CLI 的 `autopilot trigger-update` 完成，参数见 [CLI 命令](/cli)。
@@ -71,7 +90,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
 Cron 不包含秒，时区使用 `Asia/Shanghai` 这样的 IANA 名称。保存前，用页面显示的"接下来"时间核对结果。
 
-![自动化编辑器：Runbook、时间表设置与接下来几次运行的预览](/images/docs/autopilot-schedule.webp)
+![自动化详情：时间表、时区与下次运行时间](/images/docs/autopilot-schedule-zh.webp)
 
 ## 通过 Webhook 运行
 
