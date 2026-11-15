@@ -36,6 +36,21 @@ var workspaceDeletionManifest = map[string]workspaceDeleteAction{
 	"delivery_completion_authorization": workspaceRetainAudit,
 	"delivery_completion_terminal":      workspaceRetainAudit,
 	"delivery_project_change":           workspaceRetainAudit,
+	// Stage policy revisions, role revisions, candidates, decisions and the
+	// approval mapping are retained decisions. A source workspace with
+	// collaboration records cannot be deleted at all; nothing here is torn down.
+	"project_stage_policy":                      workspaceRetainAudit,
+	"collaboration_stage_task":                  workspaceRetainAudit,
+	"collaboration_stage_role":                  workspaceRetainAudit,
+	"collaboration_stage_candidate":             workspaceRetainAudit,
+	"collaboration_stage_decision":              workspaceRetainAudit,
+	"collaboration_stage_revocation":            workspaceRetainAudit,
+	"collaboration_stage_execution_intent":      workspaceRetainAudit,
+	"collaboration_stage_execution_observation": workspaceRetainAudit,
+	"collaboration_stage_rollback_observation":  workspaceRetainAudit,
+	"collaboration_test_subject":                workspaceRetainAudit,
+	"collaboration_stage_child":                 workspaceRetainAudit,
+	"collaboration_stage_submission":            workspaceRetainAudit,
 	// Collaboration identity, rollout and invalidation state belong to the
 	// deployment/accounts, rather than to the workspace being deleted.
 	"collaboration_account_fence":        workspaceDeleteKeep,
@@ -208,6 +223,8 @@ var workspaceDeletionManifest = map[string]workspaceDeleteAction{
 	"project_update_request":             workspaceDelete,
 	"project_update_notification":        workspaceDelete,
 	"quick_action":                       workspaceDelete,
+	"report_snapshot":                    workspaceDelete,
+	"report_snapshot_control":            workspaceDelete,
 	"runtime_profile":                    workspaceDelete,
 	"schema_migrations":                  workspaceDeleteKeep,
 	"seat_capacity_outbox":               workspaceDeleteSettle,

@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, useSyncExternalStore, type ReactNode, type CSSProperties } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore, type ReactElement, type ReactNode, type CSSProperties } from "react";
 import { ChevronRight, Maximize2, Minimize2, SlidersHorizontal, XIcon } from "lucide-react";
 import { keepPreviousData, useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationCreationOptions, collaborationDeliveryKey, collaborationDeliveryRevision, collaborationKeys,
@@ -26,7 +26,9 @@ import { PillButton } from "../common/pill-button";
 import { recoverFocus } from "./focus";
 import { CollaborationCreationDescriptionAssist } from "./creation-description-assist";
 
-export function CollaborationCreationEntry({ scope, sourceWorkspaceId }: { scope: CollaborationScope; sourceWorkspaceId?: string }) {
+export function CollaborationCreationEntry({ scope, sourceWorkspaceId, renderTrigger }: {
+  scope: CollaborationScope; sourceWorkspaceId?: string; renderTrigger?: (label: string) => ReactElement;
+}) {
   const { t } = useT("collaboration");
   const navigation = useNavigation();
   const [open, setOpen] = useState(false);
@@ -49,7 +51,8 @@ export function CollaborationCreationEntry({ scope, sourceWorkspaceId }: { scope
     if (next) { setSize("default"); explicitlySized.current = false; }
     setOpen(next);
   }}>
-    <DialogTrigger ref={trigger} render={<Button className="pointer-coarse:min-h-11 focus-visible:ring-faint-foreground focus-visible:border-faint-foreground" />}>{t(($) => $.creation.entry)}</DialogTrigger>
+    <DialogTrigger ref={trigger} render={renderTrigger?.(t(($) => $.creation.entry)) ??
+      <Button className="pointer-coarse:min-h-11 focus-visible:ring-faint-foreground focus-visible:border-faint-foreground">{t(($) => $.creation.entry)}</Button>} />
     <DialogContent ref={dialog} showCloseButton={false} data-expanded={expanded}
       style={{ WebkitAppRegion: "no-drag" } as CSSProperties}
       initialFocus={() => {

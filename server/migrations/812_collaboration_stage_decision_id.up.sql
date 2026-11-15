@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY collaboration_stage_decision_id_idx ON collaboration_stage_decision (decision_id);

@@ -9,6 +9,8 @@ import {
   type CompletionPreviewInput, type CompletionWriteResult,
 } from "../issues/completion-schema";
 import { parseCollaborationActivity } from "../collaboration/activity-schema";
+import { CollaborationCompletionCandidatesSchema, AdminCollaborationCompletionCandidatesSchema, CollaborationCompletionPreviewInputSchema, CollaborationCompletionPreviewSchema,
+  type CollaborationCompletionCandidates, type CollaborationCompletionPreviewInput, type CollaborationCompletionPreview, type CollaborationCompletionRead } from "../collaboration/completion-schema";
 import { collaborationDeliveryRefusalStatus, parseCollaborationDeliveryHistory } from "../collaboration/delivery-schema";
 import { parseCollaborationRunRecords } from "../collaboration/run-records-schema";
 import { COLLABORATION_HANDOFF_MAX_JSON_BYTES, parseCollaborationRunHandoff } from "../collaboration/run-handoff-schema";
@@ -55,6 +57,16 @@ import { CollaborationResourceInputSchema, collaborationResourceRequest, matches
   type CollaborationResourceInput } from "../collaboration/resource-schema";
 import { parseCollaborationResourceOffer, parseCollaborationResourceOffersPage } from "../collaboration/resource-offer-schema";
 import { parseCollaborationCommandHistory } from "../collaboration/command-history-schema";
+import {
+  classifyCollaborationStageError, classifyCollaborationStageResponse, collaborationStageErrorCode, hasCollaborationStageRefusalData, isCollaborationStageAccessAnswer,
+  parseCollaborationStageCodeCandidate, parseCollaborationStagePolicy, parseCollaborationStageProposalDetail, parseCollaborationStageProposalPage, parseCollaborationStageView,
+  COLLABORATION_STAGE_LIMITS,
+  type CollaborationStageIssueAction, type CollaborationStagePolicy, type CollaborationStageProposalDetail, type CollaborationStageProposalPage,
+  type CollaborationStageRead, type CollaborationStageSettledResult, type CollaborationStageTransportMode, type CollaborationStageTransportTarget,
+  type CollaborationStageView, type CollaborationStageWriteResult, type CollaborationStageCodeCandidate,
+} from "../collaboration/stage-schema";
+import { parseCollaborationTestReport, parseCollaborationTestReports, verifyCollaborationTestReportLogs,
+  type CollaborationTestReportRead, type CollaborationTestReport, type CollaborationTestReports } from "../collaboration/stage-test-report-schema";
 export type { ApiRequestOptions } from "./request-lifecycle";
 export type CompletionRequestOptions = ApiRequestOptions & { workspaceId: string };
 import type { ProjectUpdateDraft, ProjectUpdateWriteInput, ProjectRiskSignal } from "../types/project-p1";
@@ -1588,6 +1600,7 @@ export class ApiClient {
       priority?: CollaborationEditInput["priority"]; label_ids?: CollaborationEditInput["labelIds"]; properties?: CollaborationEditInput["properties"];
       project_id?: string | null; parent_issue_id?: string | null; stage?: number | null;
       current_iteration_id?: string | null; expected_revision?: string; expected_iteration_revision?: string; iteration_reason?: string; allow_completed?: boolean;
+      completion?: DeliveryCompletionBinding;
     },
     options?: { signal?: AbortSignal },
     method: "POST" | "PATCH" | "PUT" = "POST",
@@ -1680,7 +1693,219 @@ export class ApiClient {
 
   async getCollaborationOperation(id: string, requestId: string, options?: { signal?: AbortSignal }) {
     const raw = await this.fetchCollaborationWorkflow(`/api/collaboration/issues/${encodeURIComponent(id)}/operations/${encodeURIComponent(requestId)}`, { signal: options?.signal });
-    return parseCollaborationOperation(raw);
+    const result = parseCollaborationOperation(raw);
+    if (!result && hasCollaborationStageRefusalData(raw)) throw new Error("Collaboration stage refusal is unavailable");
+    return result;
+  }
+
+  // --- PAY-241 S2 stage gates (contract `collaboration-stage-v1`) ---------
+  // Stage reads answer with a state instead of null: an absent route, an
+  // unready schema and a malformed body are all "unavailable", never "passed".
+  // Only the structured object denial of the account group is thrown, so the
+  // ordinary collaboration cleanup keeps its single meaning.
+
+  private collaborationStageFailure(error: ApiError): ApiError {
+    // Never forward the HTTP body: it may quote private stage content.
+    return new ApiError("Collaboration stage request failed", error.status, error.statusText, undefined, () => !error.isStaleAuthResponse, error.retryAfterSeconds);
+  }
+
+  private async readCollaborationTestReport<T>(path: string, options: { signal?: AbortSignal } | undefined, parse: (raw: unknown) => T | null): Promise<CollaborationTestReportRead<T>> {
+    try {
+      const value = parse(await this.fetchCollaboration(path, { signal: options?.signal, cache: "no-store" }));
+      return value === null ? { state: "unavailable", reason: "malformed" } : { state: "available", value };
+    } catch (error) {
+      if (!(error instanceof ApiError) || error.isStaleAuthResponse) throw error;
+      const code = collaborationStageErrorCode(error.body);
+      if (error.status === 404 && code === "not_found") return { state: "not_found" };
+      if ((error.status === 404 || error.status === 405) && code === null) return { state: "unsupported" };
+      if (error.status === 404 || error.status === 405 || error.status === 410 || error.status === 403 && code !== "forbidden") return { state: "unavailable", reason: "malformed" };
+      if (error.status === 409 && code === "test_report_log_not_retained") return { state: "unavailable", reason: "log_not_retained" };
+      if (error.status === 503 && code === "test_report_unavailable") return { state: "unavailable", reason: "storage" };
+      throw this.collaborationStageFailure(error);
+    }
+  }
+
+  private collaborationTestReportPath(issueId: string, runId: string): string {
+    if (![issueId, runId].every((id) => z.uuid().safeParse(id).success)) throw new TypeError("Invalid collaboration test report identity");
+    return `/api/collaboration/issues/${issueId.toLowerCase()}/runs/${runId.toLowerCase()}/test-reports`;
+  }
+
+  async getCollaborationTestReports(issueId: string, runId: string, params: { limit?: number; cursor?: string } = {}, options?: { signal?: AbortSignal }): Promise<CollaborationTestReportRead<CollaborationTestReports>> {
+    const limit = params.limit ?? 20;
+    if (!Number.isInteger(limit) || limit < 1 || limit > 50 || params.cursor !== undefined && !params.cursor.length) throw new TypeError("Invalid collaboration test report query");
+    const query = new URLSearchParams({ limit: String(limit) });
+    if (params.cursor !== undefined) query.set("cursor", params.cursor);
+    return this.readCollaborationTestReport(`${this.collaborationTestReportPath(issueId, runId)}?${query}`, options, (raw) => {
+      const page = parseCollaborationTestReports(raw);
+      return page && page.issue_id === issueId.toLowerCase() && page.run_id === runId.toLowerCase() && page.items.length <= limit &&
+        (page.next_cursor === null || page.next_cursor !== params.cursor) ? page : null;
+    });
+  }
+
+  async getCollaborationTestReport(issueId: string, runId: string, reportId: string, options?: { signal?: AbortSignal }): Promise<CollaborationTestReportRead<CollaborationTestReport>> {
+    if (!z.uuid().safeParse(reportId).success) throw new TypeError("Invalid collaboration test report");
+    const session = this.getSessionScope();
+    const result = await this.readCollaborationTestReport(`${this.collaborationTestReportPath(issueId, runId)}/${reportId.toLowerCase()}`, options, (raw) => {
+      const report = parseCollaborationTestReport(raw);
+      return report && report.issue_id === issueId.toLowerCase() && report.run_id === runId.toLowerCase() && report.report_id === reportId.toLowerCase() ? report : null;
+    });
+    if (result.state !== "available") return result;
+    const valid = await verifyCollaborationTestReportLogs(result.value, options?.signal);
+    if (session !== this.getSessionScope()) throw new DOMException("Collaboration request superseded", "AbortError");
+    options?.signal?.throwIfAborted();
+    return valid ? result : { state: "unavailable", reason: "malformed" };
+  }
+
+  private async readCollaborationStage<T>(
+    path: string, init: RequestInit, parse: (raw: unknown) => T | null,
+    codes: { notFound?: string; busy?: string; workspaceScoped?: boolean } = {},
+  ): Promise<CollaborationStageRead<T>> {
+    let raw: unknown;
+    try { raw = await this.fetchCollaboration(path, init); }
+    catch (error) {
+      if (!(error instanceof ApiError) || error.isStaleAuthResponse) throw error;
+      const code = collaborationStageErrorCode(error.body);
+      if (error.status === 503 && code === "stage_schema_unavailable") return { state: "unavailable", reason: "schema" };
+      if (code !== null && code === codes.busy) return { state: "unavailable", reason: "busy" };
+      if (error.status === 404 && code !== null && code === codes.notFound) return { state: "not_found" };
+      if ((error.status === 404 || error.status === 405) && code === null) return { state: "unsupported" };
+      if (codes.workspaceScoped === true) {
+        // Source membership is independent of collaboration access: a member
+        // refusal here says nothing about the issue the panel belongs to.
+        if (error.status === 403 || error.status === 404) return { state: "denied" };
+        if (error.status === 410) return { state: "unavailable", reason: "malformed" };
+      } else if ([403, 404].includes(error.status) && !isCollaborationStageAccessAnswer(error.status, code)) {
+        return { state: "unavailable", reason: "malformed" };
+      }
+      throw this.collaborationStageFailure(error);
+    }
+    const value = parse(raw);
+    return value === null ? { state: "unavailable", reason: "malformed" } : { state: "available", value };
+  }
+
+  private async writeCollaborationStage(
+    path: string, init: RequestInit, mode: CollaborationStageTransportMode, target: CollaborationStageTransportTarget,
+  ): Promise<CollaborationStageSettledResult> {
+    let result: CollaborationStageWriteResult;
+    try { result = classifyCollaborationStageResponse(200, await this.fetchCollaboration(path, init, 200), mode, target); }
+    catch (error) {
+      if (!(error instanceof ApiError) || error.isStaleAuthResponse) throw error;
+      result = classifyCollaborationStageError(error.status, error.body, mode, target);
+      if (result.type === "denied") throw this.collaborationStageFailure(error);
+    }
+    if (result.type === "denied") throw new ApiError("Collaboration stage request failed", 403, "Forbidden");
+    return result;
+  }
+
+  private collaborationStagePath(issueId: string, suffix = ""): string {
+    if (!z.uuid().safeParse(issueId).success) throw new TypeError("Invalid collaboration stage issue");
+    return `/api/collaboration/issues/${issueId.toLowerCase()}/stage${suffix}`;
+  }
+
+  /** R1. */
+  async getCollaborationStage(issueId: string, options?: { signal?: AbortSignal }): Promise<CollaborationStageRead<CollaborationStageView>> {
+    const id = issueId.toLowerCase();
+    return this.readCollaborationStage(this.collaborationStagePath(issueId), { signal: options?.signal, cache: "no-store" }, (raw) => {
+      const view = parseCollaborationStageView(raw);
+      return view && view.issue_id === id ? view : null;
+    });
+  }
+
+  /** R2. A page that repeats its own cursor would never end and is refused. */
+  async getCollaborationStageProposals(issueId: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }): Promise<CollaborationStageRead<CollaborationStageProposalPage>> {
+    const limit = params.limit ?? 20;
+    if (!Number.isInteger(limit) || limit < 1 || limit > COLLABORATION_STAGE_LIMITS.proposalPage ||
+      params.cursor !== undefined && (params.cursor.length < 1 || params.cursor.length > 1024)) throw new TypeError("Invalid collaboration stage proposal query");
+    const query = new URLSearchParams({ limit: String(limit) });
+    if (params.cursor !== undefined) query.set("cursor", params.cursor);
+    const id = issueId.toLowerCase();
+    return this.readCollaborationStage(this.collaborationStagePath(issueId, `/proposals?${query}`), { signal: options?.signal, cache: "no-store" }, (raw) => {
+      const page = parseCollaborationStageProposalPage(raw);
+      return page && page.issue_id === id && page.items.length <= limit && (page.next_cursor === null || page.next_cursor !== params.cursor) ? page : null;
+    });
+  }
+
+  /** R3. A missing proposal is not a statement about access to the issue. */
+  async getCollaborationStageProposal(issueId: string, proposalId: string, options?: { signal?: AbortSignal }): Promise<CollaborationStageRead<CollaborationStageProposalDetail>> {
+    if (!z.uuid().safeParse(proposalId).success) throw new TypeError("Invalid collaboration stage proposal");
+    const id = issueId.toLowerCase(), proposal = proposalId.toLowerCase();
+    return this.readCollaborationStage(this.collaborationStagePath(issueId, `/proposals/${proposal}`), { signal: options?.signal, cache: "no-store" }, (raw) => {
+      const detail = parseCollaborationStageProposalDetail(raw);
+      return detail && detail.issue_id === id && detail.proposal_id === proposal ? detail : null;
+    }, { notFound: "stage_proposal_not_found" });
+  }
+
+  /** R4. Candidate identity and protected source evidence are never inferred from a missing route. */
+  async getCollaborationStageCodeCandidate(issueId: string, candidateId: string, options?: { signal?: AbortSignal }): Promise<CollaborationStageRead<CollaborationStageCodeCandidate>> {
+    if (!z.uuid().safeParse(candidateId).success) throw new TypeError("Invalid collaboration stage candidate");
+    const id = issueId.toLowerCase(), candidate = candidateId.toLowerCase();
+    return this.readCollaborationStage(this.collaborationStagePath(issueId, `/code-candidates/${candidate}`), { signal: options?.signal, cache: "no-store" }, (raw) => {
+      const detail = parseCollaborationStageCodeCandidate(raw);
+      return detail && detail.issue_id === id && detail.candidate.candidate_id === candidate ? detail : null;
+    }, { notFound: "stage_candidate_not_found" });
+  }
+
+  /** A1-A9. Sends the frozen key and the exact frozen body; the caller owns the intent. */
+  async sendCollaborationStageRequest(
+    request: { action: CollaborationStageIssueAction; issueId: string; proposalId?: string; decisionId?: string; requestId: string; bodyJSON: string },
+    options?: { signal?: AbortSignal },
+  ) {
+    const needsProposal = request.action === "revise_proposal" || request.action === "decide_proposal";
+    if (needsProposal !== (request.proposalId !== undefined) || request.proposalId !== undefined && !z.uuid().safeParse(request.proposalId).success ||
+      (request.action === "revoke_decision") !== (request.decisionId !== undefined) || request.decisionId !== undefined && !z.uuid().safeParse(request.decisionId).success ||
+      request.requestId.length < 1 || request.requestId.length > 128) throw new TypeError("Invalid collaboration stage request");
+    const proposal = request.proposalId?.toLowerCase();
+    let suffix: string;
+    switch (request.action) {
+      case "configure_roles": suffix = "/roles"; break;
+      case "create_proposal": suffix = "/proposals"; break;
+      case "revise_proposal": suffix = `/proposals/${proposal}/versions`; break;
+      case "decide_proposal": suffix = `/proposals/${proposal}/decisions`; break;
+      case "confirm_scope": suffix = "/scope-confirmations"; break;
+      case "create_code_candidate": suffix = "/code-candidates"; break;
+      case "decide_stage": suffix = "/decisions"; break;
+      case "revoke_decision": suffix = `/decisions/${request.decisionId!.toLowerCase()}/revocations`; break;
+      case "advance_stage": suffix = "/advance"; break;
+      default: throw new TypeError("Invalid collaboration stage request");
+    }
+    return this.writeCollaborationStage(this.collaborationStagePath(request.issueId, suffix),
+      { method: "POST", signal: options?.signal, headers: { "Idempotency-Key": request.requestId }, body: request.bodyJSON }, "write", "issue");
+  }
+
+  /** O1. GET only: a missing receipt is an unknown result, never a reason to write. */
+  async getCollaborationStageOperation(issueId: string, requestId: string, options?: { signal?: AbortSignal }) {
+    if (!z.uuid().safeParse(issueId).success || requestId.length < 1 || requestId.length > 128) throw new TypeError("Invalid collaboration stage operation");
+    return this.writeCollaborationStage(`/api/collaboration/issues/${issueId.toLowerCase()}/operations/${encodeURIComponent(requestId)}`,
+      { signal: options?.signal, cache: "no-store" }, "recovery", "issue");
+  }
+
+  private projectStagePolicyPath(workspaceId: string, projectId: string, suffix = ""): string {
+    if (![workspaceId, projectId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid project stage policy");
+    return `/api/projects/${projectId.toLowerCase()}/stage-policy${suffix}`;
+  }
+
+  /** P1. Workspace-scoped: the captured source workspace is named explicitly. */
+  async getProjectStagePolicy(workspaceId: string, projectId: string, options?: { signal?: AbortSignal }): Promise<CollaborationStageRead<CollaborationStagePolicy>> {
+    const project = projectId.toLowerCase();
+    return this.readCollaborationStage(this.projectStagePolicyPath(workspaceId, projectId), { ...workspaceRequestInit({ workspaceId, signal: options?.signal }), cache: "no-store" }, (raw) => {
+      const policy = parseCollaborationStagePolicy(raw);
+      return policy && policy.project_id === project ? policy : null;
+    }, { notFound: "stage_policy_project_not_found", busy: "stage_policy_busy", workspaceScoped: true });
+  }
+
+  /** P2. */
+  async reviseProjectStagePolicy(request: { workspaceId: string; projectId: string; requestId: string; bodyJSON: string }, options?: { signal?: AbortSignal }) {
+    if (request.requestId.length < 1 || request.requestId.length > 128) throw new TypeError("Invalid project stage policy request");
+    const init = workspaceRequestInit({ workspaceId: request.workspaceId, signal: options?.signal });
+    return this.writeCollaborationStage(this.projectStagePolicyPath(request.workspaceId, request.projectId),
+      { ...init, method: "PUT", headers: { ...(init.headers as Record<string, string>), "Idempotency-Key": request.requestId }, body: request.bodyJSON }, "write", "policy");
+  }
+
+  /** P3. The original success body, or an unknown result that is never inferred from the current policy. */
+  async getProjectStagePolicyOperation(workspaceId: string, projectId: string, requestId: string, options?: { signal?: AbortSignal }) {
+    if (requestId.length < 1 || requestId.length > 128) throw new TypeError("Invalid project stage policy operation");
+    return this.writeCollaborationStage(this.projectStagePolicyPath(workspaceId, projectId, `/operations/${encodeURIComponent(requestId)}`),
+      { ...workspaceRequestInit({ workspaceId, signal: options?.signal }), cache: "no-store" }, "recovery", "policy");
   }
 
   private async requestCollaborationCommandCancel(id: string, commandId: string, requestId: string, input: CollaborationCommandCancelInput, recovery: boolean) {
@@ -1956,6 +2181,8 @@ export class ApiClient {
   }
 
   async changeCollaborationLifecycle(id: string, input: CollaborationLifecycleInput, options?: { signal?: AbortSignal }) {
+    const completion = input.completion === undefined ? undefined : CompletionBindingSchema.parse(input.completion);
+    if (completion && (input.action !== "complete" || completion.operation_id !== input.requestId)) throw new Error("Completion operation identity mismatch");
     return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/lifecycle`, input, {
       action: input.action,
       status: input.status,
@@ -1966,7 +2193,48 @@ export class ApiClient {
       draft_id: input.draftId,
       attachment_ids: input.attachmentIds,
       source_comment_id: input.sourceCommentId,
+      completion,
     }, options);
+  }
+
+  private async readCollaborationCompletion<T>(path: string, schema: z.ZodType<T>, init: RequestInit): Promise<CollaborationCompletionRead<T>> {
+    try {
+      const value = parseWithFallback<T | null>(await this.fetchCollaboration(path, { ...init, cache: "no-store" }), schema, null, { endpoint: path.split("?", 1)[0]!, redact: true });
+      return value === null ? { state: "unavailable", code: null } : { state: "available", value };
+    } catch (error) {
+      if (!(error instanceof ApiError) || error.isStaleAuthResponse) throw error;
+      const code = collaborationStageErrorCode(error.body);
+      if ((error.status === 404 || error.status === 405) && code === null) return { state: "unavailable", code: null };
+      if (error.status === 403 || error.status === 404) return { state: "denied" };
+      if ([400, 405, 409, 503].includes(error.status)) return { state: "unavailable", code };
+      throw error;
+    }
+  }
+
+  async listCollaborationCompletionCandidates(issueId: string, sourceIssueId: string, params: { limit?: number; cursor?: string } = {}, options: { admin?: boolean; signal?: AbortSignal } = {}): Promise<CollaborationCompletionRead<CollaborationCompletionCandidates>> {
+    completionUUID.parse(issueId); completionUUID.parse(sourceIssueId);
+    const page = z.strictObject({ limit: z.number().int().min(1).max(50).optional(), cursor: z.string().min(1).max(2048).optional() }).parse(params);
+    const query = new URLSearchParams({ source_issue_id: sourceIssueId, limit: String(page.limit ?? 20) });
+    if (page.cursor) query.set("cursor", page.cursor);
+    const result = await this.readCollaborationCompletion(`/api/${options.admin ? "admin/" : ""}collaboration/issues/${issueId}/delivery-evidence/candidates?${query}`,
+      options.admin ? AdminCollaborationCompletionCandidatesSchema : CollaborationCompletionCandidatesSchema, { signal: options.signal });
+    if (result.state !== "available") return result;
+    const value = result.value;
+    return value.issue_id === issueId && value.source_issue_id === sourceIssueId && value.items.length <= (page.limit ?? 20) &&
+      (value.next_cursor === null || value.next_cursor !== page.cursor) ? result : { state: "unavailable", code: null };
+  }
+
+  async previewCollaborationCompletion(issueId: string, input: CollaborationCompletionPreviewInput, options: { admin?: boolean; signal?: AbortSignal } = {}): Promise<CollaborationCompletionRead<CollaborationCompletionPreview>> {
+    completionUUID.parse(issueId);
+    const body = CollaborationCompletionPreviewInputSchema.parse(input);
+    if (body.target.issue_id !== issueId || (body.target.kind === "collaboration_admin") !== (options.admin === true)) throw new Error("Completion target scope mismatch");
+    const result = await this.readCollaborationCompletion(`/api/${options.admin ? "admin/" : ""}collaboration/issues/${issueId}/delivery-evidence/completion-preview`, CollaborationCompletionPreviewSchema,
+      { method: "POST", signal: options.signal, body: JSON.stringify(body) });
+    if (result.state !== "available") return result;
+    const value = result.value;
+    return value.issue_id === issueId && value.issue_revision === body.target.expected_issue_revision && value.source_issue_id === body.source_issue_id && value.target_status === body.target.target_status &&
+      (value.observation === null || value.observation.approval_id === body.approval_id) &&
+      (value.authorization_binding === null || JSON.stringify(value.authorization_binding.target) === JSON.stringify(body.target)) ? result : { state: "unavailable", code: null };
   }
 
   async getAdminMe(options?: { signal?: AbortSignal }) {
@@ -2002,11 +2270,12 @@ export class ApiClient {
     z.uuid().parse(id);
     z.uuid().parse(key);
     const input = AdminCollaborationChangeSchema.parse(body);
+    if (input.completion && input.completion.operation_id !== key) throw new Error("Completion operation identity mismatch");
     const raw = await this.fetch<unknown>(`/api/admin/collaboration/issues/${encodeURIComponent(id)}/lifecycle`, {
       method: "POST", headers: { "Idempotency-Key": key }, body: JSON.stringify({ action: input.action,
         expected_collaboration_revision: input.expectedCollaborationRevision, expected_status: input.expectedStatus,
         target_status: input.targetStatus, status_options_version: input.statusOptionsVersion, reason: input.reason,
-        successor_user_id: input.successorUserId }),
+        successor_user_id: input.successorUserId, completion: input.completion }),
     });
     const result = parseAdminCollaborationResult(raw);
     return result && matchesAdminCollaborationResult(result, id, key, input) ? result : null;
@@ -2316,7 +2585,7 @@ export class ApiClient {
     const start = Date.now();
     const method = init?.method ?? "GET";
     const collaborationRequest = path.startsWith("/api/collaboration/") || /^\/api\/me\/(?:workbench|collaboration-notifications)(?:[/?]|$)/.test(path);
-    const sourceIssueRequest = /^\/api\/(?:issues|delivery-completion-authorizations)(?:[/?]|$)/.test(path);
+    const sourceIssueRequest = /^\/api\/(?:issues|delivery-completion-authorizations|admin\/collaboration\/issues\/[^/?]+\/delivery-evidence)(?:[/?]|$)/.test(path);
     // Target knowledge stays workspace-scoped for headers, but its cursor and
     // server error text need the same private logging boundary as source reads.
     const targetKnowledgeRequest = /^\/api\/(?:projects|workspaces)\/[^/?]+\/knowledge(?:[/?]|$)/.test(path);
@@ -2411,7 +2680,7 @@ export class ApiClient {
       data = await res.json();
     } catch (error) {
       // JSON syntax errors can quote source issue bodies before schema redaction.
-      if (/^\/api\/(?:issues|delivery-completion-authorizations)(?:[/?]|$)/.test(path) && error instanceof SyntaxError) {
+      if (/^\/api\/(?:issues|delivery-completion-authorizations|admin\/collaboration\/issues\/[^/?]+\/delivery-evidence)(?:[/?]|$)/.test(path) && error instanceof SyntaxError) {
         throw new Error("Issue response could not be decoded");
       }
       throw error;

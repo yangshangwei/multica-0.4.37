@@ -30,7 +30,7 @@ func (h *Handler) GetCollaborationStatusOptions(w http.ResponseWriter, r *http.R
 	if !ok {
 		return
 	}
-	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	svc := h.stageService()
 	options, err := svc.StatusOptions(r.Context(), id, r.URL.Query().Get("action"))
 	if err != nil {
 		writeCollaborationError(w, err)
@@ -77,7 +77,7 @@ func (h *Handler) ChangeCollaborationLifecycle(w http.ResponseWriter, r *http.Re
 		}
 		p.SubmissionID = &id
 	}
-	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	svc := h.stageService()
 	receipt, err := svc.ChangeLifecycle(r.Context(), p)
 	if err == nil && receipt.ParentWakeup != nil {
 		h.notifyParentOfChildDone(r.Context(), receipt.ParentWakeup.Before, receipt.ParentWakeup.After)

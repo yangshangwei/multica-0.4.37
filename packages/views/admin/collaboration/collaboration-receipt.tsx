@@ -4,15 +4,15 @@ import { useId } from "react";
 import type { AdminCollaborationInput, AdminCollaborationResult } from "@multica/core/admin";
 import { useT } from "../../i18n";
 
-export function AdminCollaborationReceipt({ input, receipt }: { input: AdminCollaborationInput; receipt?: AdminCollaborationResult }) {
+export function AdminCollaborationReceipt({ input, receipt, refused = false }: { input: AdminCollaborationInput; receipt?: AdminCollaborationResult; refused?: boolean }) {
   const { t } = useT("admin");
   const id = useId();
   const result = receipt?.result;
   return <section aria-labelledby={`${id}-title`} className="min-w-0 space-y-4">
-    <h2 id={`${id}-title`} className="text-body-lg font-semibold">{result ? t($ => $.collaboration.receiptTitle) : t($ => $.collaboration.pendingTitle)}</h2>
+    <h2 id={`${id}-title`} className="text-body-lg font-semibold">{result ? t($ => $.collaboration.receiptTitle) : refused ? t($ => $.collaboration.rejectedTitle) : t($ => $.collaboration.pendingTitle)}</h2>
     {result && <p role="status" className="text-body font-medium">{t($ => $.collaboration.outcomes[result.code])}</p>}
     {!result && <p className="text-body font-medium">{t($ => $.collaboration.actions[input.body.action])}</p>}
-    <p className="max-w-prose text-body text-muted-foreground">{result ? t($ => $.collaboration.receiptHint) : t($ => $.collaboration.pendingHint)}</p>
+    {!refused && <p className="max-w-prose text-body text-muted-foreground">{result ? t($ => $.collaboration.receiptHint) : t($ => $.collaboration.pendingHint)}</p>}
     <dl className="grid min-w-0 gap-4 text-body sm:grid-cols-2">
       <div className="min-w-0"><dt className="text-caption text-muted-foreground">{t($ => $.collaboration.currentStatus)}</dt><dd>{input.body.expectedStatus}</dd></div>
       <div className="min-w-0"><dt className="text-caption text-muted-foreground">{t($ => $.collaboration.targetStatus)}</dt><dd>{input.body.targetStatus}</dd></div>

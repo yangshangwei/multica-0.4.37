@@ -93,6 +93,10 @@ type IssueCreateParams struct {
 	// Its immutable snapshot and cloned attachment rows commit in the same
 	// transaction as the new issue.
 	SourceContext *SourceContextCapture
+	// stagePermit is set only by an accepted stage proposal's materialization
+	// inside its own transaction. It is unexported on purpose: no transport or
+	// request field can claim that a machine-driven child was approved.
+	stagePermit *stageMaterializationPermit
 }
 
 // IssueCreateOpts groups optional knobs for IssueService.Create. Most
@@ -441,8 +445,10 @@ func (s *IssueService) CreateInTx(ctx context.Context, tx pgx.Tx, p IssueCreateP
 	// WorkspaceID — there is no path from this service to a row in a
 	// foreign workspace.
 	projectID := p.ProjectID
+	var parent db.Issue
 	if p.ParentIssueID.Valid {
-		parent, err := qtx.GetIssueInWorkspace(ctx, db.GetIssueInWorkspaceParams{
+		var err error
+		parent, err = qtx.GetIssueInWorkspace(ctx, db.GetIssueInWorkspaceParams{
 			ID:          p.ParentIssueID,
 			WorkspaceID: p.WorkspaceID,
 		})
@@ -472,6 +478,12 @@ func (s *IssueService) CreateInTx(ctx context.Context, tx pgx.Tx, p IssueCreateP
 			}
 			return IssueCreateResult{}, fmt.Errorf("lock project association: %w", err)
 		}
+	}
+
+	// A machine-driven child of a stage-managed collaboration root exists only
+	// through an accepted proposal. Read after the project fence above.
+	if err := checkStageChildCreate(ctx, qtx, p, parent); err != nil {
+		return IssueCreateResult{}, err
 	}
 
 	if err := CheckDeliveryCreateInTx(ctx, tx, p.WorkspaceID, projectID, p.Status); err != nil {

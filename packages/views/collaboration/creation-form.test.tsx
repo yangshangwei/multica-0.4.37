@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
 import { collaborationScope, saveCollaborationDeliveryRecord } from "@multica/core/collaboration";
 import { collaborationIssueFixture } from "@multica/core/collaboration/test-fixtures";
+import { SidebarMenuButton, SidebarProvider } from "@multica/ui/components/ui/sidebar";
 import { renderWithI18n } from "../test/i18n";
 import { NavigationProvider, type NavigationAdapter } from "../navigation";
 import { CollaborationCreationEntry, CollaborationCreationPanel } from "./creation-form";
@@ -261,6 +262,31 @@ it("keeps account creation entry usable with zero sources and returns keyboard f
   await user.click(trigger);
   await user.click(screen.getByRole("button", { name: "Cancel" }));
   await waitFor(() => expect(trigger).toHaveFocus());
+});
+
+it("opens from a sidebar trigger with the current source and restores its keyboard focus", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  vi.stubGlobal("fetch", vi.fn(async (input: string) => json({ ...options,
+    sources: [{ id: otherSource, name: "Other workspace", slug: "other" }, sourceChoice],
+    source: new URL(input).searchParams.has("source_workspace_id") ? sourceChoice : null,
+  })));
+  const client = new QueryClient(); clients.push(client);
+  const navigation: NavigationAdapter = { push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/source/issues", searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path };
+  renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={navigation}><SidebarProvider>
+    <CollaborationCreationEntry scope={collaborationScope(actor)} sourceWorkspaceId={source}
+      renderTrigger={(label) => <SidebarMenuButton><span aria-hidden>+</span><span>{label}</span></SidebarMenuButton>} />
+  </SidebarProvider></NavigationProvider></QueryClientProvider>);
+  const trigger = screen.getByRole("button", { name: "New collaboration issue" });
+  expect(trigger).toHaveAttribute("data-sidebar", "menu-button");
+  const user = userEvent.setup();
+  trigger.focus();
+  await user.keyboard("{Enter}");
+  expect(await screen.findByRole("dialog", { name: "New collaboration issue" })).toBeInTheDocument();
+  expect(await screen.findByLabelText("Source workspace")).toHaveValue(source);
+  await screen.findByLabelText("Title");
+  await user.click(screen.getByRole("button", { name: "Cancel" }));
+  await waitFor(() => expect(trigger).toHaveFocus());
+  expect(navigation.push).not.toHaveBeenCalled();
 });
 
 it("keeps a durably rejected form through reload and sends identical input only on explicit resubmission", async () => {

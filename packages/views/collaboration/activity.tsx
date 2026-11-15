@@ -8,10 +8,12 @@ import { RichContent } from "../rich-content";
 import { useLocale, useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
 import type { CollaborationPanelStatusChange } from "./panel-status";
+import { useCollaborationStageLabels } from "./stage-labels";
 
 export function CollaborationActivity({ scope, destination, onStatusChange }: { scope: CollaborationScope; destination: AccountDestination; onStatusChange?: CollaborationPanelStatusChange }) {
   const { t } = useT("collaboration");
   const locale = useLocale();
+  const stageLabels = useCollaborationStageLabels();
   const client = useQueryClient();
   const query = useInfiniteQuery(collaborationActivityOptions(client, scope, destination.issueId!));
   useEffect(() => { onStatusChange?.({ attention: query.isError }); }, [onStatusChange, query.isError]);
@@ -28,6 +30,10 @@ export function CollaborationActivity({ scope, destination, onStatusChange }: { 
         <time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString(locale)}</time>
       </div>
       {!item.details_available && <p className="text-caption text-muted-foreground">{t(($) => $.activity.detailsUnavailable)}</p>}
+      {item.details_available && item.stage && <dl className="space-y-2 text-caption [overflow-wrap:anywhere]">{Object.entries(item.stage).map(([field, value]) => value !== null && <div key={field}>
+        <dt className="text-muted-foreground">{t(($) => $.activity.stageFields[field as keyof typeof $.activity.stageFields])}</dt>
+        <dd>{field === "current" ? stageLabels.stage(value) : field === "step" ? stageLabels.codeStep(value) : value}</dd>
+      </div>)}</dl>}
       {item.details_available && item.kind === "iteration_changed" && item.note && <p className="text-body whitespace-pre-wrap [overflow-wrap:anywhere]">{item.note}</p>}
       {item.handoff ? <div className="space-y-2 text-body">
         <p>{t(($) => $.activity.handoff, { from: item.handoff.from?.name ?? t(($) => $.detail.unknownAuthor), to: item.handoff.to?.name ?? t(($) => $.detail.unknownAuthor) })}</p>

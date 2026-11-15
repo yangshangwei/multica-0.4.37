@@ -26,6 +26,7 @@ import { Layers,
   Plus,
   Check,
   SquarePen,
+  UsersRound,
   X,
 } from "lucide-react";
 import { WorkspaceAvatar } from "../workspace/workspace-avatar";
@@ -89,6 +90,7 @@ import {
 } from "@multica/core/shortcuts";
 import { ShortcutKeycaps } from "../common/shortcut-keycaps";
 import { useAppForeground } from "../common/use-app-foreground";
+import { SourceCollaborationCreation } from "../collaboration/source-bridge";
 
 // Top-level nav items stay active when the user is on a child route
 // (e.g. "Projects" stays lit on /:slug/projects/:id). Pinned items keep
@@ -815,6 +817,16 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
                 ) : null}
               </SidebarMenuButton>
             </SidebarMenuItem>
+            {wsId && (
+              <SidebarMenuItem key={wsId}>
+                <SourceCollaborationCreation workspaceId={wsId} renderTrigger={(label) => (
+                  <SidebarMenuButton className="text-muted-foreground">
+                    <UsersRound aria-hidden />
+                    <span className="min-w-0 flex-1 truncate">{label}</span>
+                  </SidebarMenuButton>
+                )} />
+              </SidebarMenuItem>
+            )}
           </SidebarMenu>
         </SidebarHeader>
 

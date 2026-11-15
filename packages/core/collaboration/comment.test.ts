@@ -7,6 +7,7 @@ import { parseCollaborationMentionTargets, parseCollaborationTriggerPreview } fr
 import { readCollaborationDrafts } from "./draft";
 import { collaborationMentionMarkdown, executeCollaborationComment, parseCollaborationCommentDraft, prepareCollaborationComment } from "./comment";
 import { newCollaborationDeliveryForm, readCollaborationDeliveryRecords, saveCollaborationDeliveryRecord } from "./delivery-draft";
+import { stageTestSubjectFixture } from "./stage-test-report-fixtures";
 
 const actor = "00000000-0000-4000-8000-000000000001";
 const other = "00000000-0000-4000-8000-000000000002";
@@ -68,6 +69,24 @@ it("saves immutable preview authority before comment send and recovers by GET wi
   expect(fetch.mock.calls[1]?.[1].method ?? "GET").toBe("GET");
   expect(JSON.parse(fetch.mock.calls[0]?.[1].body).expected_lifecycle_epoch).toBe("9007199254740993");
   expect(readCollaborationDrafts(draft.scope, storage)).toEqual([]);
+});
+
+it("keeps a lost test-input subject and original request unchanged during comment recovery", async () => {
+  const api = new ApiClient("https://server.example"); setApiInstance(api);
+  const scope = collaborationScope(actor);
+  const preview = parseCollaborationTriggerPreview({ protocol_version: 2, execution_view_version: 6, issue_id: actor, lifecycle_epoch: "1",
+    write_context: { participant_epoch: "2", account_epoch: "3" }, recipients: [], targets: [{ target_id: key, kind: "agent", resource_id: other,
+      target_epoch: "4", config_version: "5", hold_reason: null, hold_version: "1", state: "waiting", code: "waiting", command_id: null }] })!;
+  const source = { ...stageTestSubjectFixture };
+  const draft = prepareCollaborationComment(scope, actor, key, `[@Runner](mention://agent/${other}) test this`, [], preview, undefined, null, source);
+  const fetch = vi.fn().mockRejectedValueOnce(new TypeError("lost response")).mockResolvedValueOnce(json(receipt)); vi.stubGlobal("fetch", fetch);
+  await expect(executeCollaborationComment(client, scope, draft, false, storage)).rejects.toThrow();
+  source.candidate_version = "2";
+  expect(parseCollaborationCommentDraft(readCollaborationDrafts(draft.scope, storage)[0]!).test_subject).toEqual(stageTestSubjectFixture);
+  await executeCollaborationComment(client, scope, draft, true, storage);
+  expect(fetch.mock.calls.map(([, init]) => init.method ?? "GET")).toEqual(["POST", "GET"]);
+  expect(JSON.parse(fetch.mock.calls[0]![1].body).test_subject).toEqual(stageTestSubjectFixture);
+  expect(fetch.mock.calls[1]![0]).toContain(`/comments/operations/${key}`);
 });
 
 it("makes malformed or wrong-issue comment recovery unavailable", async () => {

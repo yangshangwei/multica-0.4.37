@@ -41,6 +41,30 @@ func graphqlSnapshotPage(head string, hasNext bool, endCursor string) string {
 		}}}}]}}}}`, head, hasNext, endCursor)
 }
 
+// Synthetic GraphQL responses must not shrink a mixed check set into only its
+// successful recognizable nodes. A partial snapshot cannot prove complete CI.
+func TestFetchPRSnapshotRejectsIncompleteNormalizedCheckSet(t *testing.T) {
+	for name, bad := range map[string]string{
+		"unknown_union":       `{"__typename":"FutureCheck","state":"FAILURE"}`,
+		"null_node":           `null`,
+		"malformed_check":     `{"__typename":"CheckRun","name":7,"status":"COMPLETED","conclusion":"FAILURE"}`,
+		"missing_check_name":  `{"__typename":"CheckRun","status":"COMPLETED","conclusion":"SUCCESS"}`,
+		"missing_status_name": `{"__typename":"StatusContext","state":"SUCCESS"}`,
+	} {
+		t.Run(name, func(t *testing.T) {
+			srv := graphqlServer(t, func(map[string]any) string {
+				page := graphqlSnapshotPage("synthetic-head", false, "")
+				return strings.Replace(page, `"nodes":[]`, `"nodes":[{"__typename":"CheckRun","name":"valid","status":"COMPLETED","conclusion":"SUCCESS"},`+bad+`]`, 1)
+			})
+			defer srv.Close()
+			snap, err := FetchPRSnapshot(t.Context(), newTestClient(t, srv.URL), 1, "synthetic", "repo", 1)
+			if err == nil || snap != nil {
+				t.Fatalf("incomplete normalized check set returned a usable snapshot: %+v err=%v", snap, err)
+			}
+		})
+	}
+}
+
 // TestFetchPRSnapshotPaginatesContexts is the acceptance-criterion-2 test:
 // contexts spanning two pages must all be collected — never assume <100.
 func TestFetchPRSnapshotPaginatesContexts(t *testing.T) {
@@ -80,8 +104,8 @@ func TestFetchPRSnapshotPaginatesContexts(t *testing.T) {
 	if !snap.HasChecks || snap.RollupState != "FAILURE" {
 		t.Fatalf("rollup = %q hasChecks=%v", snap.RollupState, snap.HasChecks)
 	}
-	if len(snap.Contexts) != 4 {
-		t.Fatalf("collected %d contexts across pages, want 4", len(snap.Contexts))
+	if len(snap.Contexts) != 4 || !snap.complete {
+		t.Fatalf("collected %d contexts across pages, complete=%v; want all 4 verified contexts", len(snap.Contexts), snap.complete)
 	}
 	// StatusContext normalization: SUCCESS → completed/success, is_status_context.
 	last := snap.Contexts[3]

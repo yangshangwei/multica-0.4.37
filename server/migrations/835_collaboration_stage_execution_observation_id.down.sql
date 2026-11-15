@@ -1,0 +1,1 @@
+DROP INDEX CONCURRENTLY IF EXISTS collaboration_stage_execution_observation_id_idx;

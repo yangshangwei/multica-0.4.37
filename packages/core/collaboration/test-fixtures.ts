@@ -139,3 +139,7 @@ export const collaborationFieldOptionsFixture = {
 };
 export { collaborationCommandHistoryFixture, collaborationUnknownCancellationFixture } from "./command-history-test-fixtures";
 export { knowledgeCandidateFixture, knowledgeUnavailableCandidateFixture } from "./knowledge-test-fixtures";
+
+// PAY-241 S2 stage fixtures, shared with the views suite through this entry.
+export * from "./stage-test-fixtures";
+export * from "./stage-test-report-fixtures";

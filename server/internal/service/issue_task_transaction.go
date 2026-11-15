@@ -51,6 +51,11 @@ func (s *TaskService) EnqueuePreparedIssueTaskInTx(ctx context.Context, tx pgx.T
 	if err := s.checkIssueExecution(ctx, q, issue.ID, pgtype.UUID{}, nil); err != nil {
 		return task, false, err
 	}
+	// The caller already holds this issue's row: fence the root lifecycle
+	// without waiting, then decide again under that fence.
+	if err := checkStageChildExecutionLocked(ctx, q, issue.ID, pgtype.UUID{}); err != nil {
+		return task, false, err
+	}
 	agent, err := q.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: agentID, WorkspaceID: issue.WorkspaceID})
 	if err != nil {
 		return task, false, err

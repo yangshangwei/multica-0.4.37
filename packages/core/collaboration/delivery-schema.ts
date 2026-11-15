@@ -65,14 +65,17 @@ export function collaborationDeliveryRefusalStatus(code: string): number | null 
   switch (code) {
     case "result_required": case "basis_required": case "result_too_large": case "basis_too_large":
     case "revision_reason_required": case "revision_reason_too_large": case "invalid_ai_policy":
-    case "invalid_workflow_request": case "invalid_status_request": case "invalid_attachment_selection": case "invalid_comment_request": return 400;
-    case "forbidden": return 403;
-    case "attachment_not_found": case "comment_not_found": return 404;
+    case "invalid_workflow_request": case "invalid_status_request": case "invalid_attachment_selection": case "invalid_comment_request": case "invalid_delivery_completion_request": return 400;
+    case "forbidden": case "delivery_completion_denied": return 403;
+    case "attachment_not_found": case "comment_not_found": case "delivery_completion_not_found": return 404;
+    case "delivery_completion_authorization_required": return 428;
+    case "delivery_completion_conflict": case "delivery_completion_content_changed": case "delivery_completion_expiry_invalid":
+    case "delivery_completion_consumer_unsupported": case "delivery_skip_not_supported": return 409;
     case "delivery_required": case "submission_changed": case "submission_not_pending": case "delivery_unavailable":
     case "acceptance_pending": case "task_manual": case "stale_revision": case "stale_authority":
     case "status_options_changed": case "status_unavailable": case "target_unavailable": case "return_target_unavailable":
     case "information_request_not_active": case "already_creator": case "issue_closed": case "attachment_scope_mismatch":
-    case "attachment_draft_consumed": return 409;
+    case "attachment_draft_consumed": case "stage_incomplete": case "stage_policy_exit_required": return 409;
     default: return null;
   }
 }

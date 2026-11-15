@@ -120,6 +120,22 @@ var commentContentBigramIndex = usableIndexRequirement{
 // they are still pending: a fresh self-hosted install, which is exactly where an
 // interrupted build would otherwise leave a permanently unusable index.
 var concurrentIndexCleanups = map[string]string{
+	"862_collaboration_stage_submission_id":                "collaboration_stage_submission_id_idx",
+	"863_collaboration_stage_submission_issue":             "collaboration_stage_submission_issue_idx",
+	"830_collaboration_stage_execution_intent_id":          "collaboration_stage_execution_intent_id_idx",
+	"831_collaboration_stage_execution_approval":           "collaboration_stage_execution_approval_idx",
+	"832_collaboration_stage_execution_request":            "collaboration_stage_execution_request_idx",
+	"833_collaboration_stage_execution_target":             "collaboration_stage_execution_target_idx",
+	"834_collaboration_stage_execution_candidate":          "collaboration_stage_execution_candidate_idx",
+	"835_collaboration_stage_execution_observation_id":     "collaboration_stage_execution_observation_id_idx",
+	"836_collaboration_stage_execution_observation_native": "collaboration_stage_execution_observation_native_idx",
+	"837_collaboration_stage_execution_terminal":           "collaboration_stage_execution_terminal_idx",
+	"838_collaboration_stage_execution_observation_order":  "collaboration_stage_execution_observation_order_idx",
+	"839_collaboration_stage_rollback_observation_id":      "collaboration_stage_rollback_observation_id_idx",
+	"840_collaboration_stage_rollback_observation_version": "collaboration_stage_rollback_observation_version_idx",
+	"841_collaboration_stage_rollback_observation_content": "collaboration_stage_rollback_observation_content_idx",
+	"842_collaboration_stage_rollback_observation_order":   "collaboration_stage_rollback_observation_order_idx",
+
 	"795_report_snapshot_id":                  "report_snapshot_id_key",
 	"796_report_snapshot_request":             "report_snapshot_request_key",
 	"797_report_snapshot_sequence":            "report_snapshot_sequence_key",
@@ -517,6 +533,23 @@ var concurrentIndexCleanups = map[string]string{
 	"443_issue_project_status_index":                            "idx_issue_project_status",
 	"453_agent_approval_request_workspace_index":                "idx_agent_approval_request_workspace",
 	"454_agent_approval_request_agent_index":                    "idx_agent_approval_request_agent",
+	"806_project_stage_policy_revision":                         "project_stage_policy_revision_idx",
+	"807_project_stage_policy_request":                          "project_stage_policy_request_idx",
+	"808_collaboration_stage_task_issue":                        "collaboration_stage_task_issue_idx",
+	"809_collaboration_stage_role_revision":                     "collaboration_stage_role_revision_idx",
+	"810_collaboration_stage_candidate_id":                      "collaboration_stage_candidate_id_idx",
+	"811_collaboration_stage_candidate_version":                 "collaboration_stage_candidate_version_idx",
+	"812_collaboration_stage_decision_id":                       "collaboration_stage_decision_id_idx",
+	"813_collaboration_stage_decision_issue":                    "collaboration_stage_decision_issue_idx",
+	"814_collaboration_stage_decision_candidate":                "collaboration_stage_decision_candidate_idx",
+	"815_collaboration_stage_decision_accept":                   "collaboration_stage_decision_accept_idx",
+	"816_collaboration_stage_child_issue":                       "collaboration_stage_child_issue_idx",
+	"817_collaboration_stage_child_root":                        "collaboration_stage_child_root_idx",
+	"818_collaboration_stage_child_materialization":             "collaboration_stage_child_materialization_idx",
+	"822_collaboration_stage_code_version":                      "collaboration_stage_code_version_idx",
+	"823_collaboration_stage_revocation_decision":               "collaboration_stage_revocation_decision_idx",
+	"824_collaboration_stage_revocation_id":                     "collaboration_stage_revocation_id_idx",
+	"827_collaboration_test_subject_command":                    "collaboration_test_subject_command_idx",
 }
 
 // concurrentDownIndexCleanups covers every migration whose down direction

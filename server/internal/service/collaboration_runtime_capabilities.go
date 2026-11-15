@@ -320,6 +320,9 @@ func (s *CollaborationService) claimPromptSnapshot(ctx context.Context, r *colla
 		if err = s.freezeResourceRecording(ctx, r); err != nil {
 			return nil, err
 		}
+		if err = s.freezeRuntimeTestSubject(ctx, r, inputs); err != nil {
+			return nil, err
+		}
 	}
 	inputs, err := decodeCollaborationRoster[protocol.CollaborationRunInput](r.run.PromptSnapshot)
 	if err != nil {

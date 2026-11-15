@@ -199,3 +199,39 @@ describe("durable original-key submission and recovery", () => {
     expect(() => dismissAdminCollaborationReceipt(scope, input, receipt)).toThrow("session changed");
   });
 });
+
+it("S2 first complete refusal keeps typed stage blockers and removes only the attempt record", async () => {
+  const { successorUserId: _successor, ...body } = input.body;
+  const complete = { ...input, body: { ...body, action: "complete" as const, expectedStatus: "in_progress", targetStatus: "done" } };
+  const error = new ApiError("PRIVATE server message", 409, "Conflict", { code: "stage_incomplete", error: "PRIVATE server message", request_id: "trace",
+    stage_blockers: [{ code: "stage_ci_missing", stage: "code_review" }], stage_blockers_truncated: false });
+  state.api.changeAdminCollaborationLifecycle.mockRejectedValueOnce(error);
+  const result = await submitAdminCollaboration(scope, complete).catch((e: unknown) => e);
+  expect(result).toBeInstanceOf(AdminCollaborationRejectedError);
+  expect(result).toMatchObject({ stageRefusal: { code: "stage_incomplete", status: 409, stage_blockers: [{ code: "stage_ci_missing", stage: "code_review" }] } });
+  expect(pending()).toBeNull();expect(state.api.getAdminCollaborationOperation).not.toHaveBeenCalled();
+  expect(JSON.stringify(result)).not.toContain("PRIVATE");
+});
+it("S2 a refused retry does not settle the original unknown administration request", async () => {
+  const { successorUserId: _successor, ...body } = input.body;
+  const complete = { ...input, body: { ...body, action: "complete" as const, expectedStatus: "in_progress", targetStatus: "done" } };
+  saveAdminControlDraft(storageScope(), complete);
+  state.api.changeAdminCollaborationLifecycle.mockRejectedValueOnce(new ApiError("Refused", 409, "Conflict", { code: "stage_incomplete", error: "Refused", request_id: "trace",
+    stage_blockers: [{ code: "stage_qa_missing", stage: "qa" }], stage_blockers_truncated: false }));
+  state.api.getAdminCollaborationOperation.mockRejectedValueOnce(notFound());
+  const result = await submitAdminCollaboration(scope, complete).catch((e: unknown) => e);
+  expect(result).toBeInstanceOf(AdminControlUncertainError);
+  expect(result).toMatchObject({ stageRefusal: { code: "stage_incomplete", status: 409 } });
+  expect(pending()?.input).toEqual(complete);
+  expect(state.api.changeAdminCollaborationLifecycle).toHaveBeenCalledTimes(1);
+  expect(state.api.getAdminCollaborationOperation).toHaveBeenCalledExactlyOnceWith(complete.id, complete.key, { signal: undefined });
+});
+it("S2 a malformed administration refusal stays unknown", async () => {
+  const { successorUserId: _successor, ...body } = input.body;
+  const complete = { ...input, body: { ...body, action: "complete" as const, expectedStatus: "in_progress", targetStatus: "done" } };
+  state.api.changeAdminCollaborationLifecycle.mockRejectedValueOnce(new ApiError("Refused", 409, "Conflict", { code: "stage_incomplete", error: "Refused", request_id: "trace",
+    stage_blockers: [], stage_blockers_truncated: false }));
+  state.api.getAdminCollaborationOperation.mockRejectedValueOnce(notFound());
+  await expect(submitAdminCollaboration(scope, complete)).rejects.toBeInstanceOf(AdminControlUncertainError);
+  expect(pending()?.input).toEqual(complete);
+});

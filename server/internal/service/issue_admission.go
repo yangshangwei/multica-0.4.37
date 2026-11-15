@@ -16,6 +16,11 @@ func (s *TaskService) checkIssueExecution(ctx context.Context, q *db.Queries, is
 	if err := checkOrdinaryExecutionSource(ctx, q, issueID); err != nil {
 		return err
 	}
+	// Ordinary children keep their own contract; this only refuses machine-origin
+	// children of a stage-managed root that have no current approval.
+	if _, err := checkStageChildExecution(ctx, q, issueID); err != nil {
+		return err
+	}
 	ids := append(append([]pgtype.UUID{}, coalesced...), triggerID)
 	for _, id := range ids {
 		if !id.Valid {

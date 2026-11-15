@@ -22,9 +22,10 @@ import (
 // AdminCollaborationService owns only R38/R40 lifecycle administration. It
 // never grants ordinary collaboration participation or resource authority.
 type AdminCollaborationService struct {
-	Queries   *db.Queries
-	TxStarter TxStarter
-	Enabled   bool
+	StageExecutionSources StageExecutionSources
+	Queries               *db.Queries
+	TxStarter             TxStarter
+	Enabled               bool
 }
 
 func NewAdminCollaborationService(q *db.Queries, tx TxStarter, enabled bool) *AdminCollaborationService {
@@ -133,6 +134,12 @@ func adminCollaborationHash(p AdminCollaborationLifecycleParams) (string, error)
 }
 
 func adminCollaborationServiceError(err error) error {
+	var stage *StageCompletionError
+	if errors.As(err, &stage) {
+		// The administrative handler projects the bounded original blockers.
+		// Converting through the generic collaboration error would erase them.
+		return err
+	}
 	var gate DeliveryCompletionError
 	if errors.As(err, &gate) {
 		return platformError(gate.Status, gate.Code, "Completion authorization is required or no longer valid")
@@ -233,21 +240,18 @@ func (s *AdminCollaborationService) ChangeLifecycle(ctx context.Context, p Admin
 		if p.Completion != nil && (p.Completion.Validate() != nil || p.Completion.OperationID != util.UUIDToString(p.IdempotencyKey)) {
 			return out, completionInvalid()
 		}
-		var intent *DeliveryCompletionTarget
-		if p.Completion != nil {
-			current, err := t.currentDelivery(ctx)
-			if err != nil {
-				return out, err
-			}
-			bound := completionAdminTarget(t, p, current)
-			intent = &bound
+		current, readErr := t.currentDelivery(ctx)
+		if readErr != nil && (p.Completion != nil || !errors.Is(readErr, errCollaborationDeliveryEvidence)) {
+			return out, readErr
 		}
+		bound := completionAdminTarget(t, p, current)
+		intent := &bound
 		candidate := t.access.Issue
 		candidate.Status = p.TargetStatus
 		// Without an explicit binding the common gate checks the current policy:
 		// enforce refuses, while off/observe retain administrative disposition
 		// without treating legacy delivery history as initiator acceptance.
-		prepared, err = PrepareDeliveryMutationInTx(ctx, tx, DeliveryMutationIntent{Before: t.access.Issue, Candidate: candidate, Completion: p.Completion, Credential: completionRequestCredential(ctx), Collaboration: intent})
+		prepared, err = PrepareDeliveryMutationInTx(ctx, tx, DeliveryMutationIntent{Before: t.access.Issue, Candidate: candidate, Completion: p.Completion, Credential: completionRequestCredential(ctx), Collaboration: intent, StageExecutionSources: s.StageExecutionSources, StageOperationID: t.operation.ID, StageAdminOperationID: op.ID, StageAdminOrganizationID: p.OrganizationID})
 		if err != nil {
 			return out, err
 		}
@@ -283,10 +287,20 @@ func (s *AdminCollaborationService) ChangeLifecycle(ctx context.Context, p Admin
 	if err != nil {
 		return out, err
 	}
+	if prepared.stage != nil {
+		if err = prepared.stage.freezeResult(tx, DeliveryWriterResult{CollaborationOperationID: t.operation.ID, AdminOperationID: op.ID, CollaborationRevision: t.access.Revision}, encoded); err != nil {
+			return out, err
+		}
+	}
 	if _, err = t.q.CompleteCollaborationOperation(ctx, db.CompleteCollaborationOperationParams{
 		ID: t.operation.ID, ResultCode: result.Code, Result: encoded, ResolvedIssueID: p.IssueID,
 	}); err != nil {
 		return out, err
+	}
+	if p.Action == "complete" {
+		if err = FinishStageMutationInTx(ctx, tx, prepared, t.access.Issue, DeliveryWriterResult{CollaborationOperationID: t.operation.ID, AdminOperationID: op.ID, CollaborationRevision: t.access.Revision}); err != nil {
+			return out, err
+		}
 	}
 	if err = tx.Commit(ctx); err != nil {
 		// Do not retry even a serialization-looking commit failure. The only

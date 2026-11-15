@@ -17,6 +17,7 @@ import { CollaborationCommentList } from "./comment-list";
 import { CollaborationIssueReactions } from "./discussion-actions";
 import { CollaborationDetailAuxiliary, type CollaborationDetailAuxiliaryHandle } from "./detail-auxiliary";
 import { CollaborationDeliveryPanel } from "./delivery-panel";
+import { CollaborationStagePanel, CollaborationStageRecovery } from "./stage-panel";
 import { useRestoredScrollRef } from "../platform";
 import { useNavigation } from "../navigation";
 
@@ -66,9 +67,11 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
     else focusTarget();
   }, [destination.commentId, destination.runId, destination.anchor, query.data, comments.data, linkedComment.data, navigation.isScopeResume, navigation.navigationKey]);
   const denied = collaborationIssueAccessDenied(client, scope, issueId);
-  if (!query.data || denied || isCollaborationDenied(query.error)) return query.isPending
-    ? <p role="status" className="py-10 text-body text-muted-foreground">{t(($) => $.page.loading)}</p>
-    : <CollaborationQueryState error={query.error} denied={denied} retry={() => void query.refetch()} />;
+  if (!query.data || denied || isCollaborationDenied(query.error)) return <>
+    {query.isPending ? <p role="status" className="py-10 text-body text-muted-foreground">{t(($) => $.page.loading)}</p>
+      : <CollaborationQueryState error={query.error} denied={denied} retry={() => void query.refetch()} />}
+    {(denied || isCollaborationDenied(query.error)) && <CollaborationStageRecovery key={`stage-recovery:${identity}`} scope={scope} issueId={issueId} />}
+  </>;
   const issue = query.data;
   const state = deriveCollaborationDetailState(issue, scope.userId);
   const stage = state.stage;
@@ -104,6 +107,7 @@ export function CollaborationDetail({ scope, destination }: { scope: Collaborati
       <div className="max-w-[75ch]"><RichContent resourcePolicy="restricted" content={issue.description} /></div>
       <Button variant="link" size="sm" className="h-auto max-w-full whitespace-normal px-0 py-1 text-caption text-muted-foreground underline-offset-4 pointer-coarse:min-h-11" onClick={(event) => auxiliary.current?.open("files", event.currentTarget)}>{t(($) => $.detail.referenceFiles)}</Button>
     </section>
+    <CollaborationStagePanel key={`stage:${identity}`} scope={scope} issue={issue} readUnavailable={query.isError} />
     <CollaborationDeliveryPanel key={`delivery:${identity}`} scope={scope} issue={issue} />
     <CollaborationIssueReactions scope={scope} issue={issue} />
     <section id="discussion" tabIndex={-1} className="min-w-0 space-y-4"><h3 className="text-title-sm font-semibold">{t(($) => $.detail.comments)}</h3>

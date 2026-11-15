@@ -7,6 +7,8 @@ import { Button } from "@multica/ui/components/ui/button";
 import { Textarea } from "@multica/ui/components/ui/textarea";
 import { useT } from "../../i18n";
 import { adminSelectClass } from "../filter-feedback";
+import { CollaborationCompletionTargetSchema, deliveryCompletionScope } from "@multica/core/issues";
+import { CollaborationCompletionAuthorization, type CompletionAuthorizationSelection } from "../../collaboration/completion-authorization";
 
 export function AdminCollaborationForm({ scope, snapshot, action, current, refreshing, disabled, onSubmit, onClose }: {
   scope: AdminScope; snapshot: AdminCollaborationDetail; action: AdminCollaborationChange["action"]; current: AdminCollaborationDetail | null;
@@ -20,6 +22,8 @@ export function AdminCollaborationForm({ scope, snapshot, action, current, refre
   const options = snapshot.actions.find(option => option.action === action);
   const [status, setStatus] = useState(options?.default_status ?? "");
   const [reason, setReason] = useState("");
+  const [completion, setCompletion] = useState<CompletionAuthorizationSelection>({ active: false, binding: null });
+  const [authorizationBusy, setAuthorizationBusy] = useState(false);
   const [successor, setSuccessor] = useState<string | null>(null);
   const [expired, setExpired] = useState(false);
   const [invalid, setInvalid] = useState<"reason" | "reason_invalid" | "successor" | "input" | null>(null);
@@ -36,14 +40,15 @@ export function AdminCollaborationForm({ scope, snapshot, action, current, refre
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (blocked) return;
+    if (blocked || authorizationBusy || action === "complete" && completion.active && !completion.binding) return;
     if (!reason.trim()) { setInvalid("reason"); reasonRef.current?.focus(); return; }
     if (!isAdminCollaborationReasonValid(reason)) { setInvalid("reason_invalid"); reasonRef.current?.focus(); return; }
     if (needsSuccessor && !successor) { setInvalid("successor"); successorRef.current?.focus(); return; }
     try {
       const body: AdminCollaborationChange = { action, expectedCollaborationRevision: snapshot.collaborationRevision, expectedStatus: snapshot.status,
-        targetStatus: status, statusOptionsVersion: options?.status_options_version ?? "", reason, ...(needsSuccessor && successor ? { successorUserId: successor } : {}) };
-      const input = captureAdminCollaborationInput(snapshot, key, body, candidates.data?.pages);
+        targetStatus: status, statusOptionsVersion: options?.status_options_version ?? "", reason, ...(needsSuccessor && successor ? { successorUserId: successor } : {}),
+        ...(action === "complete" && completion.binding ? { completion: completion.binding } : {}) };
+      const input = captureAdminCollaborationInput(snapshot, body.completion?.operation_id ?? key, body, candidates.data?.pages);
       setInvalid(null); onSubmit(input);
     } catch { setInvalid("input"); }
   }
@@ -93,9 +98,15 @@ export function AdminCollaborationForm({ scope, snapshot, action, current, refre
         </p>}
       </div>
       {invalid === "input" && <p role="alert" className="text-body">{t($ => $.collaboration.invalid)}</p>}
+      {action === "complete" && <CollaborationCompletionAuthorization scope={{ ...deliveryCompletionScope(scope.userId, snapshot.sourceWorkspaceId, snapshot.issueId), adminOrganizationId: scope.organizationId }}
+        targetStatus={status} disabled={blocked || !isAdminCollaborationReasonValid(reason)} onChange={setCompletion} onBusyChange={setAuthorizationBusy}
+        makeTarget={(revision, context) => { const value = context && CollaborationCompletionTargetSchema.safeParse({ kind: "collaboration_admin", issue_id: snapshot.issueId,
+          expected_issue_revision: revision, expected_status: snapshot.status, target_status: status, expected_collaboration_revision: snapshot.collaborationRevision,
+          expected_lifecycle_epoch: context.expected_lifecycle_epoch, status_options_version: options?.status_options_version, submission_id: context.submission_id, administration_reason: reason.trim() });
+          return value?.success ? value.data : null; }} />}
       <div className="flex flex-wrap gap-2">
-        <Button type="submit" className="h-auto min-h-11 whitespace-normal" disabled={blocked}>{t($ => $.collaboration.confirm)}</Button>
-        <Button type="button" variant="ghost" className="h-auto min-h-11 whitespace-normal" disabled={disabled} onClick={onClose}>{t($ => $.collaboration.close)}</Button>
+        <Button type="submit" className="h-auto min-h-11 whitespace-normal" disabled={blocked || authorizationBusy || action === "complete" && completion.active && !completion.binding}>{t($ => $.collaboration.confirm)}</Button>
+        <Button type="button" variant="ghost" className="h-auto min-h-11 whitespace-normal" disabled={disabled || authorizationBusy} onClick={onClose}>{t($ => $.collaboration.close)}</Button>
       </div>
     </form>
   </section>;

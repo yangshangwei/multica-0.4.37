@@ -1,13 +1,14 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { AdminCollaborationRejectedError, AdminControlDraftError, dismissAdminCollaborationReceipt,
+import { AdminCollaborationRejectedError, AdminCollaborationStageUncertainError, AdminControlDraftError, dismissAdminCollaborationReceipt,
   useAdminCollaborationDraft, useAdminCollaborationMutation, useAdminCollaborationOperation,
-  type AdminCollaborationChange, type AdminCollaborationDetail, type AdminCollaborationInput, type AdminScope } from "@multica/core/admin";
+  type AdminCollaborationChange, type AdminCollaborationDetail, type AdminCollaborationInput, type AdminCollaborationStageRefusal, type AdminScope } from "@multica/core/admin";
 import { Button } from "@multica/ui/components/ui/button";
 import { useT } from "../../i18n";
 import { AdminCollaborationForm } from "./collaboration-form";
 import { AdminCollaborationReceipt } from "./collaboration-receipt";
+import { CollaborationStageRefusalNotice } from "../../collaboration/stage-refusal-notice";
 import { recoverFocus } from "../../collaboration/focus";
 
 export function AdminCollaborationControls({ scope, issueId, detail, refreshing }: {
@@ -19,6 +20,7 @@ export function AdminCollaborationControls({ scope, issueId, detail, refreshing 
   const [sent, setSent] = useState<AdminCollaborationInput | null>(null);
   const [rejected, setRejected] = useState(false);
   const [feedback, setFeedback] = useState("");
+  const [stageRefusal, setStageRefusal] = useState<AdminCollaborationStageRefusal | null>(null);
   const trigger = useRef<HTMLButtonElement | null>(null);
   const triggerAction = useRef<AdminCollaborationChange["action"] | null>(null);
   const panel = useRef<HTMLDivElement | null>(null);
@@ -31,18 +33,19 @@ export function AdminCollaborationControls({ scope, issueId, detail, refreshing 
   const buttonClass = "h-auto min-h-11 whitespace-normal text-left";
 
   function close() {
-    setSnapshot(null); setSent(null); setRejected(false); setFeedback(""); mutation.reset(); saved.reload();
+    setSnapshot(null); setSent(null); setRejected(false); setFeedback(""); setStageRefusal(null); mutation.reset(); saved.reload();
     requestAnimationFrame(() => (trigger.current ?? panel.current)?.focus());
   }
   async function submit(value: AdminCollaborationInput) {
     if (busy || submitting.current) return;
     submitting.current = true;
-    setSent(value); setFeedback("");
+    setSent(value); setFeedback(""); setStageRefusal(null);
     // Sending hides the form that held focus; the receipt replaces it in this panel.
     recoverFocus(() => panel.current);
     try { await mutation.mutateAsync(value); }
     catch (error) {
-      if (error instanceof AdminCollaborationRejectedError) { setRejected(true); setFeedback(t($ => $.collaboration.rejected)); }
+      if (error instanceof AdminCollaborationRejectedError) { setRejected(true); setStageRefusal(error.stageRefusal ?? null); setFeedback(t($ => $.collaboration.rejected)); }
+      else if (error instanceof AdminCollaborationStageUncertainError) { setRejected(false); setStageRefusal(error.stageRefusal); setFeedback(t($ => $.collaboration.failed)); }
       else if (error instanceof AdminControlDraftError) { setSent(null); setFeedback(t($ => $.operations.storageFailed)); }
       else setFeedback(t($ => $.collaboration.failed));
     } finally { submitting.current = false; }
@@ -60,7 +63,8 @@ export function AdminCollaborationControls({ scope, issueId, detail, refreshing 
         onSubmit={value => { void submit(value); }} onClose={close} />
     </div>}
     {input && <div className="min-w-0 space-y-4 rounded-md border border-surface-border p-4 sm:p-5">
-      <AdminCollaborationReceipt input={input} receipt={receipt ?? undefined} />
+      <AdminCollaborationReceipt input={input} receipt={receipt ?? undefined} refused={rejected} />
+      {!receipt && stageRefusal && <CollaborationStageRefusalNotice refusal={stageRefusal} originalUnknown={!rejected} />}
       {busy && <p role="status" className="text-body text-muted-foreground">{t($ => $.operations.restoring)}</p>}
       {!receipt && !busy && !rejected && lookup.isSuccess && lookup.data === null && <p role="status" className="text-body">{t($ => $.collaboration.notRecorded)}</p>}
       {!receipt && lookup.isError && <p role="alert" className="text-body">{t($ => $.collaboration.failed)}</p>}

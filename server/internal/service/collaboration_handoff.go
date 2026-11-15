@@ -10,6 +10,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/collaboration"
+	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
@@ -317,7 +318,16 @@ func (s *CollaborationService) SubmitAcceptance(ctx context.Context, p Collabora
 			}
 			return CollaborationWorkflowReceipt{}, err
 		}
+		candidate := t.access.Issue
+		candidate.Status = p.ExpectedStatus
+		intent := DeliveryCompletionTarget{Kind: "collaboration_submission", IssueID: util.UUIDToString(t.access.Issue.ID), ExpectedIssueRevision: t.access.Issue.Revision,
+			ExpectedStatus: t.access.Issue.Status, TargetStatus: p.ExpectedStatus, ExpectedCollaborationRevision: stageVersion(p.ExpectedCollaborationRevision),
+			ExpectedLifecycleEpoch: stageVersion(p.ExpectedLifecycleEpoch), ExpectedParticipantEpoch: stageVersion(p.ExpectedParticipantEpoch), ExpectedAccountEpoch: stageVersion(p.ExpectedAccountEpoch), StatusOptionsVersion: p.StatusOptionsVersion}
 		input := collaborationDeliveryInput{note: p.Note, basis: p.Basis, draft: p.DraftID, attachments: p.AttachmentIDs, sourceComment: p.SourceCommentID}
+		guard, err := prepareStageMutation(ctx, t.tx, DeliveryMutationIntent{Before: t.access.Issue, Candidate: candidate, Collaboration: &intent, Credential: completionRequestCredential(ctx), StageExecutionSources: s.StageExecutionSources, StageOperationID: t.operation.ID, stageSubmissionInput: &input}, true)
+		if err != nil {
+			return completionWorkflowRefusal(t, err)
+		}
 		if refusal, err := t.prepareDelivery(ctx, input); refusal != nil || err != nil {
 			if refusal != nil {
 				return *refusal, nil
@@ -344,7 +354,13 @@ func (s *CollaborationService) SubmitAcceptance(ctx context.Context, p Collabora
 		if err := t.supersedeInformation(ctx); err != nil {
 			return CollaborationWorkflowReceipt{}, err
 		}
-		return t.finishWith(ctx, "acceptance_submitted", creator, nil, map[string]any{"status": t.access.Issue.Status, "delivery": t.deliveryPayload(input, handoff)})
+		if err = guard.bindSubmission(ctx, handoff.ID, t.operation.ID); err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		receipt, err := t.finishWith(ctx, "acceptance_submitted", creator, nil, map[string]any{"status": t.access.Issue.Status, "delivery": t.deliveryPayload(input, handoff)})
+		t.stagePrepared = DeliveryPrepareResult{State: DeliveryNotApplicable, stage: guard}
+		t.stageWriterResult = DeliveryWriterResult{CollaborationOperationID: t.operation.ID, CollaborationRevision: t.access.Revision, SubmissionID: handoff.ID}
+		return receipt, err
 	})
 }
 

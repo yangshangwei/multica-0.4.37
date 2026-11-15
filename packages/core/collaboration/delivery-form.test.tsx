@@ -46,3 +46,16 @@ it("keeps result basis/source snapshot separate from the concurrently mounted di
   expect(comment.result.current.form.content).toBe("Discussion");
   expect(remounted.result.current.form).toMatchObject({ content: "", basis: "", sourceCommentId: null });
 });
+
+it("adopts a prepared shared comment into an untouched composer and preserves later edits", () => {
+  const composer = renderHook(() => useCollaborationDeliveryForm(scope, "comment"));
+  const preparation = renderHook(() => useCollaborationDeliveryForm(scope, "comment"));
+  const testSubject = { candidate_id: scope.context.issueId, candidate_version: "1", candidate_digest: "a".repeat(64) };
+  act(() => preparation.result.current.update({ testSubject }));
+  expect(composer.result.current.form.testSubject).toEqual(testSubject);
+  expect(composer.result.current.form.draftId).toBe(preparation.result.current.form.draftId);
+  act(() => composer.result.current.update({ content: "Existing input" }));
+  act(() => preparation.result.current.update({ testSubject: undefined }));
+  expect(composer.result.current.form.content).toBe("Existing input");
+  expect(composer.result.current.form.testSubject).toBeUndefined();
+});

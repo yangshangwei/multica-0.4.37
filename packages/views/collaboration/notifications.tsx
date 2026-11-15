@@ -36,6 +36,9 @@ export function CollaborationNotifications({ scope, view }: { scope: Collaborati
       case "transferred": case "information_requested": case "information_returned": case "acceptance_submitted":
       case "comment_created": case "comment_edited": case "comment_deleted": case "issue_edited":
       case "status_changed": case "iteration_changed": case "completed": case "cancelled": case "reopened":
+      case "stage_roles_configured": case "stage_roles_unchanged": case "stage_proposal_created": case "stage_proposal_revised":
+      case "stage_proposal_accepted": case "stage_proposal_rejected": case "stage_scope_confirmed": case "stage_code_candidate_created":
+      case "stage_decision_recorded": case "stage_decision_revoked": case "stage_advanced": case "stage_execution_admitted": case "stage_execution_observed": case "stage_rollback_observed":
         return t(($) => $.activity.kinds[kind]);
       default: return t(($) => $.activity.kinds.other);
     }

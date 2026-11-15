@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY collaboration_stage_execution_intent_id_idx ON collaboration_stage_execution_intent (intent_id);

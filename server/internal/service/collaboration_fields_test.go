@@ -115,7 +115,7 @@ func TestCollaborationFieldsTypedValuesAndHistory(t *testing.T) {
 		f.fx.Count(t, `SELECT count(*) FROM member WHERE workspace_id=$1 AND user_id=$2`, f.workspace, f.handler) != 0 {
 		t.Fatal("field edit changed execution, notifications, resources or membership")
 	}
-	if replay, err := f.svc.EditIssue(collaborationContext(f.handler), p); err != nil || replay != r {
+	if replay, err := f.svc.EditIssue(collaborationContext(f.handler), p); err != nil || !reflect.DeepEqual(replay, r) {
 		t.Fatalf("same-key field replay: %+v %v", replay, err)
 	}
 }
@@ -278,7 +278,7 @@ func TestCollaborationFieldsPriorMetadataReceiptCompatibility(t *testing.T) {
 		"request_id": p.RequestID, "kind": "edit_issue", "payload_hash": hex.EncodeToString(digest[:]), "result_code": receipt.Code,
 		"result": fieldJSON(t, receipt), "resolved_issue_id": f.issue.Issue.ID, "completed_at": time.Now()})
 	got, err := f.svc.EditIssue(f.ctx, p)
-	if err != nil || got != receipt || f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND title=$2`, f.issue.Issue.ID, f.issue.Issue.Title) != 1 {
+	if err != nil || !reflect.DeepEqual(got, receipt) || f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND title=$2`, f.issue.Issue.ID, f.issue.Issue.Title) != 1 {
 		t.Fatalf("new optional fields invalidated or reapplied an original metadata key: %+v %v", got, err)
 	}
 }
@@ -306,7 +306,7 @@ func TestCollaborationFieldsOriginalKeyRecoveryAndDurableRefusal(t *testing.T) {
 	}
 	f.fx.Exec(t, `UPDATE issue_property SET archived_at=NULL WHERE id=$1`, property)
 	got, err := f.svc.EditIssue(f.ctx, p)
-	if !collaborationErrorCode(err, "property_archived") || got != refused ||
+	if !collaborationErrorCode(err, "property_archived") || !reflect.DeepEqual(got, refused) ||
 		f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND properties=jsonb_build_object($2::text,true)`, f.issue.Issue.ID, property) != 1 {
 		t.Fatalf("definition restoration revived refused intent: %+v %v", got, err)
 	}

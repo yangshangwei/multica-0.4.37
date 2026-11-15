@@ -31,6 +31,7 @@ func (s *TaskService) startTaskAtomically(ctx context.Context, current db.AgentT
 	q := s.Queries.WithTx(tx)
 	var issue db.Issue
 	var lockedIteration db.Iteration
+	var stageRootFence pgtype.UUID
 	if current.IssueID.Valid {
 		// This read only resolves the workspace; facts are read after the fence.
 		issue, err = q.GetIssue(ctx, current.IssueID)
@@ -48,6 +49,11 @@ func (s *TaskService) startTaskAtomically(ctx context.Context, current db.AgentT
 		}
 		lockedIteration, err = iteration.LockIssueIteration(ctx, tx, issue.WorkspaceID, issue.ID)
 		if err != nil {
+			return db.AgentTaskQueue{}, err
+		}
+		// Root before child, the same order as proposal approval: a stage-gated
+		// child fences its root lifecycle before taking its own row lock.
+		if stageRootFence, err = lockStageChildRoot(ctx, q, issue.ID); err != nil {
 			return db.AgentTaskQueue{}, err
 		}
 		issue, err = q.LockIssueForDescriptionUpdate(ctx, db.LockIssueForDescriptionUpdateParams{ID: issue.ID, WorkspaceID: issue.WorkspaceID})
@@ -68,6 +74,10 @@ func (s *TaskService) startTaskAtomically(ctx context.Context, current db.AgentT
 		return db.AgentTaskQueue{}, errors.New("task issue changed before start; retry task start")
 	}
 	if err = s.checkIssueExecution(ctx, q, lockedTask.IssueID, lockedTask.TriggerCommentID, lockedTask.CoalescedCommentIds); err != nil {
+		return db.AgentTaskQueue{}, err
+	}
+	// The real queued-to-started boundary: decide under the root lifecycle fence.
+	if err = checkStageChildExecutionLocked(ctx, q, lockedTask.IssueID, stageRootFence); err != nil {
 		return db.AgentTaskQueue{}, err
 	}
 	record, err := iteration.PrepareIssueRecord(ctx, tx, issue, lockedIteration)

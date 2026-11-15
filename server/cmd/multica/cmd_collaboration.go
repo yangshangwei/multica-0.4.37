@@ -15,7 +15,8 @@ import (
 func collaborationCommandAllowed(operation string) bool {
 	switch operation {
 	case "issue get", "issue comment list", "issue comment content", "issue comment add", "squad activity",
-		"collaboration memory show", "collaboration memory update", "collaboration handoff show", "collaboration handoff source":
+		"collaboration memory show", "collaboration memory update", "collaboration handoff show", "collaboration handoff source",
+		"collaboration test-report subject", "collaboration test-report submit", "collaboration test-report receipt":
 		return true
 	default:
 		return false
@@ -60,6 +61,12 @@ func validateCollaborationCLI(run *cli.CollaborationContext, cmd *cobra.Command,
 	if operation == "collaboration handoff source" {
 		allowed["kind"], allowed["source-run-id"], allowed["version"], allowed["sha256"], allowed["offset"] = true, true, true, true, true
 	}
+	if operation == "collaboration test-report submit" {
+		allowed["request-id"], allowed["report-stdin"] = true, true
+	}
+	if operation == "collaboration test-report receipt" {
+		allowed["request-id"] = true
+	}
 	var unsupported string
 	cmd.Flags().Visit(func(flag *pflag.Flag) {
 		if !allowed[flag.Name] && unsupported == "" {
@@ -69,7 +76,7 @@ func validateCollaborationCLI(run *cli.CollaborationContext, cmd *cobra.Command,
 	if unsupported != "" {
 		return fmt.Errorf("--%s is unavailable inside a collaboration run", unsupported)
 	}
-	if operation == "issue comment add" || operation == "squad activity" || operation == "collaboration memory update" {
+	if operation == "issue comment add" || operation == "squad activity" || operation == "collaboration memory update" || operation == "collaboration test-report submit" || operation == "collaboration test-report receipt" {
 		request, _ := cmd.Flags().GetString("request-id")
 		id, err := uuid.Parse(request)
 		if err != nil || id == uuid.Nil || id.String() != request {

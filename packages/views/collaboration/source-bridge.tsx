@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, type ReactElement, type ReactNode } from "react";
 import { toast } from "sonner";
 import { isCollaborationDenied, useCollaborationIssue, useCollaborationScope } from "@multica/core/collaboration";
 import type { SourceCollaborationAction } from "@multica/core/issues";
@@ -16,9 +16,11 @@ import { CollaborationDetail } from "./collaboration-detail";
 import { CollaborationQueryState } from "./query-state";
 import { CollaborationWorkflow } from "./workflow";
 
-export function SourceCollaborationCreation({ workspaceId }: { workspaceId: string }) {
+export function SourceCollaborationCreation({ workspaceId, renderTrigger }: {
+  workspaceId: string; renderTrigger?: (label: string) => ReactElement;
+}) {
   const scope = useCollaborationScope();
-  return scope ? <CollaborationCreationEntry scope={scope} sourceWorkspaceId={workspaceId} /> : null;
+  return scope ? <CollaborationCreationEntry scope={scope} sourceWorkspaceId={workspaceId} renderTrigger={renderTrigger} /> : null;
 }
 
 export function SourceCollaborationAccount({ account, showName = true }: {

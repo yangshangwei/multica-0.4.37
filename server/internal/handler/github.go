@@ -1585,6 +1585,12 @@ func (h *Handler) mirrorPullRequestForWorkspace(ctx context.Context, wsID pgtype
 		Deletions:           p.PullRequest.Deletions,
 		ChangedFiles:        p.PullRequest.ChangedFiles,
 	})
+	if errors.Is(err, pgx.ErrNoRows) {
+		// A newer observation won, or equal timestamps could not order heads.
+		// The upsert atomically invalidates CI for ambiguity; neither refusal
+		// may derive associations or completion intent from this callback.
+		return
+	}
 	if err != nil {
 		slog.Warn("github: upsert pr failed", "err", err)
 		return
@@ -1592,7 +1598,7 @@ func (h *Handler) mirrorPullRequestForWorkspace(ctx context.Context, wsID pgtype
 	proof.PullRequestID = pr.ID
 
 	workspaceID := uuidToString(wsID)
-	resp := githubPullRequestToResponse(pr, h.PRRefresh.Enabled())
+	resp := githubPullRequestToResponse(db.GithubPullRequest(pr), h.PRRefresh.Enabled())
 
 	// Auto-link: scan title/body/branch for issue identifiers, look them
 	// up in this workspace, attach the link rows. Idempotent (ON CONFLICT
@@ -1666,17 +1672,25 @@ func (h *Handler) mirrorPullRequestForWorkspace(ctx context.Context, wsID pgtype
 			closeIntent := declared && !preserveCloseIntent
 			_, qualifies := qualifyingIdents[id]
 			referenceOnly := !qualifies
-			if err := h.Queries.LinkIssueToPullRequest(ctx, db.LinkIssueToPullRequestParams{
+			linked, err := h.Queries.LinkIssueToObservedGitHubPullRequest(ctx, db.LinkIssueToObservedGitHubPullRequestParams{
 				IssueID:             issue.ID,
 				PullRequestID:       pr.ID,
+				WorkspaceID:         wsID,
+				HeadSha:             pr.HeadSha,
+				PrUpdatedAt:         pr.PrUpdatedAt,
 				CloseIntent:         closeIntent,
 				ReferenceOnly:       referenceOnly,
 				PreserveCloseIntent: preserveCloseIntent,
 				LinkedByType:        strToText("system"),
 				LinkedByID:          pgtype.UUID{},
-			}); err != nil {
+			})
+			if err != nil {
 				slog.Warn("github: link failed", "err", err)
 				continue
+			}
+			if linked == 0 {
+				// Do not broadcast or advance from the superseded event either.
+				return
 			}
 			linkedIssueIDs = append(linkedIssueIDs, uuidToString(issue.ID))
 			reevalIssues = append(reevalIssues, issue)
@@ -1936,7 +1950,7 @@ func (h *Handler) advanceIssueToDone(ctx context.Context, issue db.Issue, worksp
 			return false, err
 		}
 		return counts.OpenCount == 0 && counts.MergedWithCloseIntentCount > 0, nil
-	}, proof)
+	}, proof, h.StageExecutionSources)
 	if err != nil {
 		slog.Warn("github: advance issue to done failed", "err", err)
 		return

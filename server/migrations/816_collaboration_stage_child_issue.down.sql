@@ -1,0 +1,1 @@
+DROP INDEX CONCURRENTLY IF EXISTS collaboration_stage_child_issue_idx;

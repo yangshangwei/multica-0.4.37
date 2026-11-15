@@ -4,7 +4,9 @@ import { CollaborationAccountSummarySchema, CollaborationStatusOptionsSchema } f
 import { nonnegativeVersion, positiveVersion } from "../collaboration/version";
 import { collaborationTextByteLength } from "../collaboration/text-limits";
 import { CollaborationMemoryVersionMetaSchema, compareCollaborationMemoryVersions } from "../collaboration/memory-schema";
+import { CollaborationStageRefusalFieldsSchema, parseCollaborationStageRefusalFields } from "../collaboration/stage-schema";
 import { adminOperationSchema } from "./operation-schema";
+import { CompletionBindingSchema } from "../issues/completion-schema";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const lifecycleAction = z.enum(["complete", "cancel", "reopen"]);
@@ -57,10 +59,13 @@ export const AdminCollaborationChangeSchema = z.strictObject({
   action: lifecycleAction, expectedCollaborationRevision: positiveVersion, expectedStatus: statusKey,
   targetStatus: statusKey, statusOptionsVersion: z.string().regex(/^[a-f0-9]{64}$/),
   reason: z.string().trim().min(1).refine((value) => !value.includes("\0") && collaborationTextByteLength(value) <= 1000), successorUserId: uuid.optional(),
-}).refine((value) => value.action === "reopen" || value.successorUserId === undefined);
+  completion: CompletionBindingSchema.optional(),
+}).refine((value) => (value.action === "reopen" || value.successorUserId === undefined) && (value.action === "complete" || value.completion === undefined));
 export type AdminCollaborationChange = z.output<typeof AdminCollaborationChangeSchema>;
 
+const noStageRefusal = { stage_blockers: z.never().optional(), stage_blockers_truncated: z.never().optional() };
 const receipt = z.object({
+  ...noStageRefusal,
   issue_id: uuid, request_id: uuid, action: lifecycleAction, code: z.enum(["completed", "cancelled", "reopened"]),
   collaboration_revision: positiveVersion, creator_user_id: uuid, previous_handler_user_id: uuid, handler_user_id: uuid,
   previous_status: z.string().min(1), status: z.string().min(1), queue_state: z.enum(["paused", "closed"]),
@@ -72,7 +77,7 @@ const receipt = z.object({
     previousHandlerUserId: value.previous_handler_user_id, handlerUserId: value.handler_user_id,
     previousStatus: value.previous_status, status: value.status, queueState: value.queue_state,
     controlVersion: value.control_version, unsettledRuns: value.unsettled_runs }));
-export const AdminCollaborationResultSchema = z.object({ operation: adminOperationSchema, result: receipt })
+export const AdminCollaborationResultSchema = z.object({ ...noStageRefusal, operation: adminOperationSchema, result: receipt })
   .refine(({ operation, result }) => operation.targetKind === "collaboration_issue" && operation.targetId.toLowerCase() === result.issueId &&
     operation.actorId !== null && operation.kind === `collaboration.${result.action}` && operation.resultCode === result.code &&
     operation.state === "applied" && operation.confirmation === "not_required");
@@ -132,3 +137,15 @@ export const parseAdminCollaborationCandidates = (raw: unknown): AdminCollaborat
   parseWithFallback(raw, AdminCollaborationCandidatesSchema, null, { endpoint: "GET /api/admin/collaboration/issues/:id/reopen-candidates", redact: true });
 export const parseAdminCollaborationResult = (raw: unknown): AdminCollaborationResult | null =>
   parseWithFallback(raw, AdminCollaborationResultSchema, null, { endpoint: "admin collaboration lifecycle result", redact: true });
+
+/** R38 errors roll back the transaction. This is diagnostic refusal data, never an operation receipt. */
+const AdminCollaborationStageRefusalSchema = z.object({
+  ...CollaborationStageRefusalFieldsSchema.shape, code: z.literal("stage_incomplete"), error: z.string(), request_id: z.string().min(1),
+  status: z.literal(409).optional(), operation: z.never().optional(), result: z.never().optional(), collaboration_revision: z.never().optional(),
+  delivery_confirmation: z.never().optional(), stage_confirmation: z.never().optional(),
+}).refine((value) => parseCollaborationStageRefusalFields(value, value.code) !== null)
+  .transform((value) => ({ code: value.code, status: 409 as const, stage_blockers: value.stage_blockers!, stage_blockers_truncated: value.stage_blockers_truncated! }));
+export type AdminCollaborationStageRefusal = z.output<typeof AdminCollaborationStageRefusalSchema>;
+export function parseAdminCollaborationStageRefusal(raw: unknown, status: number): AdminCollaborationStageRefusal | null {
+  return status === 409 ? parseWithFallback(raw, AdminCollaborationStageRefusalSchema, null, { endpoint: "admin collaboration stage refusal", redact: true }) : null;
+}

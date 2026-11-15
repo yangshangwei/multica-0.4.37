@@ -3955,6 +3955,11 @@ func (h *Handler) MarkTaskWaitingLocalDirectory(w http.ResponseWriter, r *http.R
 
 	task, err := h.TaskService.MarkTaskWaitingLocalDirectory(r.Context(), parseUUID(taskID), req.Reason)
 	if err != nil {
+		var domain *service.CollaborationError
+		if errors.As(err, &domain) {
+			writeTaskKnowledgeError(w, err)
+			return
+		}
 		if writeIssueAdmissionError(w, err) {
 			return
 		}

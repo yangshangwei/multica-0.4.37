@@ -35,6 +35,7 @@ type CollaborationActivityHandoff struct {
 }
 
 type CollaborationActivityEntry struct {
+	Stage            json.RawMessage               `json:"stage"`
 	ID               pgtype.UUID                   `json:"id"`
 	IssueID          pgtype.UUID                   `json:"issue_id"`
 	EventSeq         int64                         `json:"event_seq,string"`
@@ -57,6 +58,7 @@ type CollaborationActivityPage struct {
 // Only fields with an explicit display contract are decoded. Stored receipts,
 // resource identities, request bodies and unknown payload keys never leave here.
 type collaborationActivityPayload struct {
+	Stage          json.RawMessage `json:"stage"`
 	TargetUserID   pgtype.UUID     `json:"target_user_id"`
 	HandoffID      pgtype.UUID     `json:"handoff_id"`
 	CommentID      pgtype.UUID     `json:"comment_id"`
@@ -69,6 +71,8 @@ type collaborationActivityPayload struct {
 
 func collaborationActivityKind(kind string) string {
 	switch kind {
+	case "stage_roles_configured", "stage_roles_unchanged", "stage_proposal_created", "stage_proposal_revised", "stage_proposal_accepted", "stage_proposal_rejected", "stage_scope_confirmed", "stage_code_candidate_created", "stage_decision_recorded", "stage_decision_revoked", "stage_advanced", "stage_execution_admitted", "stage_execution_observed", "stage_rollback_observed":
+		return kind
 	case "created", "participant_added", "participant_removed", "participant_left", "transferred",
 		"information_requested", "information_returned", "acceptance_submitted", "status_changed",
 		"completed", "cancelled", "reopened", "issue_edited", "iteration_changed", "comment_created", "comment_edited", "comment_deleted":
@@ -136,6 +140,11 @@ func (s *CollaborationService) ListActivity(ctx context.Context, issueID pgtype.
 
 func projectCollaborationActivity(entry *CollaborationActivityEntry, payload collaborationActivityPayload, actor pgtype.UUID,
 	accounts map[pgtype.UUID]*CollaborationContentAccount, handoffs map[pgtype.UUID]db.ListCollaborationActivityHandoffsRow) bool {
+	if strings.HasPrefix(entry.Kind, "stage_") {
+		var valid bool
+		entry.Stage, valid = stageActivityProjection(entry.Kind, payload.Stage)
+		return valid
+	}
 	switch entry.Kind {
 	case "created":
 		return true

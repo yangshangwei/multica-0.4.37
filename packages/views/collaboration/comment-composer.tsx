@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationCommentOptions, collaborationKeys, collaborationMentionMarkdown, collaborationMentionTargetsOptions, executeCollaborationComment,
   prepareCollaborationComment, useCollaborationCommentPreview, useCollaborationPendingDrafts,
   useCollaborationDeliveryForm, readCollaborationDeliveryRecords, collaborationExecutionViewInput,
+  collaborationStageViewOptions, useCollaborationStageCodeCandidate, canPrepareCollaborationTest,
   type CollaborationComment, type CollaborationDraft, type CollaborationIssue, type CollaborationScope, type CollaborationTriggerPreview } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
 import { Textarea } from "@multica/ui/components/ui/textarea";
@@ -38,6 +39,14 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
     if (parentId) { textarea.current?.focus(); textarea.current?.scrollIntoView?.({ block: "nearest" }); }
   }, [parentId]);
   const content = delivery.form.content;
+  const testSubject = delivery.form.testSubject;
+  const testView = useQuery({ ...collaborationStageViewOptions(client, scope, issue.id, issue.source_workspace.id), enabled: testSubject !== undefined });
+  const testCode = useCollaborationStageCodeCandidate(scope, issue.id, testSubject?.candidate_id ?? null, issue.source_workspace.id,
+    testView.data?.state === "available" ? testView.data.value.code_candidates : undefined);
+  const subjectIdentity = JSON.stringify(testSubject);
+  useEffect(() => {
+    if (subjectIdentity) { setMentionsOpen(true); textarea.current?.focus(); textarea.current?.scrollIntoView?.({ block: "nearest" }); }
+  }, [subjectIdentity]);
   const [uploading, setUploading] = useState(false);
   const [mentionsOpen, setMentionsOpen] = useState(false);
   const [attachmentsOpen, setAttachmentsOpen] = useState(false);
@@ -50,6 +59,10 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
   const mounted = useRef(true);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   const mentions = useQuery({ ...collaborationMentionTargetsOptions(client, scope, issue.id), enabled: issue.capabilities.comment === true });
+  const testEligible = () => testSubject === undefined || !testView.error && !testCode.error && canPrepareCollaborationTest(issue,
+    testView.data?.state === "available" ? testView.data.value : null, testCode.data?.state === "available" ? testCode.data.value : null, scope.userId,
+    !mentions.error && mentions.data?.can_submit_commands === true, testSubject);
+  const testReady = testEligible();
   const drafts = useCollaborationPendingDrafts({ ...scope, issueId: issue.id });
   const inspect = useCollaborationCommentPreview(scope, issue.id);
   const [inspectedDraftId, setInspectedDraftId] = useState<string | null>(null);
@@ -65,7 +78,7 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
     ? inspect.data : undefined;
   const intentVersion = JSON.stringify([scope.server, scope.apiScope, scope.userId, issue.id, delivery.form.draftId, content, parentId,
     delivery.form.selectedAttachmentIds, suppressed, executionView, issue.collaboration_revision, issue.lifecycle_epoch,
-    issue.write_context?.participant_epoch, issue.write_context?.account_epoch, issue.capabilities.comment]);
+    issue.write_context?.participant_epoch, issue.write_context?.account_epoch, issue.capabilities.comment, testSubject, testReady]);
   const currentIntent = useRef(intentVersion);
   currentIntent.current = intentVersion;
   const preview = inspectedIntentVersion === intentVersion ? matchingPreview : undefined;
@@ -74,14 +87,15 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
   const locked = inspect.isPending || send.isPending || drafts.comments.length > 0 || drafts.error || uploading || delivery.uploads.length > 0 || Boolean(delivery.error);
   function change(next: string) { delivery.update({ content: next }); inspect.reset(); send.reset(); setDraftChanged(false); }
   async function publish() {
-    if (locked || !content.trim() || submitting.current) return;
+    if (locked || !content.trim() || submitting.current || !testEligible()) return;
     const capturedVersion = intentVersion;
-    const captured = { draftId: delivery.form.draftId, content, parentId, attachmentIds: [...delivery.form.selectedAttachmentIds], suppressed: [...suppressed] };
+    const captured = { draftId: delivery.form.draftId, content, parentId, attachmentIds: [...delivery.form.selectedAttachmentIds], suppressed: [...suppressed], testSubject };
     const stillCurrent = () => {
-      if (!mounted.current || currentIntent.current !== capturedVersion) return false;
+      if (!mounted.current || currentIntent.current !== capturedVersion || !testEligible()) return false;
       const current = readCollaborationDeliveryRecords(delivery.form.scope).find((record) => record.kind === "form" && record.purpose === "comment");
       return current?.kind === "form" && current.draftId === captured.draftId && current.content === captured.content &&
-        (current.parentCommentId ?? null) === captured.parentId && current.selectedAttachmentIds.join(",") === captured.attachmentIds.join(",");
+        (current.parentCommentId ?? null) === captured.parentId && current.selectedAttachmentIds.join(",") === captured.attachmentIds.join(",") &&
+        JSON.stringify(current.testSubject) === JSON.stringify(captured.testSubject);
     };
     submitting.current = true;
     setDraftChanged(false);
@@ -102,7 +116,7 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
       }
       if (!stillCurrent()) return;
       const draft = prepareCollaborationComment(scope, issue.id, crypto.randomUUID(), captured.content, captured.suppressed, reviewed,
-        { draftId: captured.draftId, attachmentIds: captured.attachmentIds }, captured.parentId);
+        { draftId: captured.draftId, attachmentIds: captured.attachmentIds }, captured.parentId, captured.testSubject);
       await send.mutateAsync({ draft, recovery: false });
     } catch { /* Validated preflight errors and original-key recovery remain visible. */ }
     finally { submitting.current = false; }
@@ -115,6 +129,12 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
     void publish();
   }}>
     <label htmlFor={fieldId} className="block text-body font-medium">{t(($) => $.composer.label)}</label>
+    {testSubject && <section aria-label={t(($) => $.stage.testInput.title)} className="space-y-2 rounded-md border border-border p-3 text-caption [overflow-wrap:anywhere]">
+      <p>{t(($) => $.stage.testInput.subject, { candidate: testSubject.candidate_id, version: testSubject.candidate_version })}</p>
+      <p className="text-muted-foreground">{t(($) => $.stage.testInput.hint)}</p>
+      {!testReady && <p role="status">{t(($) => $.stage.testInput.unavailable)}</p>}
+      <Button type="button" variant="ghost" size="sm" disabled={locked} onClick={() => { delivery.update({ testSubject: undefined }); inspect.reset(); }}>{t(($) => $.stage.testInput.remove)}</Button>
+    </section>}
     {parentId && <div className="flex min-w-0 flex-wrap items-center gap-3 text-caption text-muted-foreground"><span className="min-w-0 [overflow-wrap:anywhere]">{t(($) => $.commentActions.replyingTo, { name: parentAuthor.name })}</span>
       {parentAuthor.agentLabel && <span className="shrink-0 rounded bg-muted px-1.5 py-0.5">{parentAuthor.agentLabel}</span>}
       <Button type="button" variant="ghost" size="sm" disabled={locked} className="pointer-coarse:min-h-11" onClick={() => { delivery.update({ parentCommentId: null }); inspect.reset(); onCancelReply?.(); recoverFocus(() => textarea.current); }}>{t(($) => $.commentActions.cancelReply)}</Button></div>}
@@ -158,7 +178,7 @@ export function CollaborationCommentComposer({ scope, issue, replyTo = null, onC
       inspect.mutate({ ...executionView, content, parent_id: parentId, suppressed_target_ids: suppressed,
         ...(delivery.form.selectedAttachmentIds.length ? { draft_id: delivery.form.draftId, attachment_ids: delivery.form.selectedAttachmentIds } : {}) });
     }} className="pointer-coarse:min-h-11">{t(($) => $.composer.preview)}</Button>
-      <Button type="submit" aria-describedby={preview?.targets.length ? `${fieldId}-ai-confirmation` : undefined} disabled={locked || !content.trim()} className="pointer-coarse:min-h-11">{t(($) => $.composer.send)}</Button>
+      <Button type="submit" aria-describedby={preview?.targets.length ? `${fieldId}-ai-confirmation` : undefined} disabled={locked || !content.trim() || !testReady || testSubject !== undefined && preview !== undefined && !preview.targets.some((target) => target.target_id !== null && target.target_epoch !== undefined && target.config_version !== undefined)} className="pointer-coarse:min-h-11">{t(($) => $.composer.send)}</Button>
       </div>
     </div>
     {draftChanged && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.composer.draftChanged)}</p>}

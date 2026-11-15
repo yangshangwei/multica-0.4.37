@@ -17,6 +17,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/collaboration"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 // Content submission does not inherit changes to the execution read protocol.
@@ -40,6 +41,7 @@ type CollaborationCreateCommentParams struct {
 	CollaborationQueueRequest
 	CollaborationCommentInput
 	TargetVersions []CollaborationCommentTargetVersion
+	TestSubject    *protocol.CollaborationTestSubjectRef `json:",omitempty"`
 }
 
 type CollaborationEditCommentParams struct {

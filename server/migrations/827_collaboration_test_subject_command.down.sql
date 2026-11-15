@@ -1,0 +1,1 @@
+DROP INDEX CONCURRENTLY IF EXISTS collaboration_test_subject_command_idx;

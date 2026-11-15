@@ -3,7 +3,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient } from "@tanstack/react-query";
-import { collaborationScope, parseCollaborationIssue, type CollaborationIssue } from "@multica/core/collaboration";
+import { collaborationScope, clearCollaborationAccess, parseCollaborationIssue, type CollaborationIssue } from "@multica/core/collaboration";
 import { collaborationIssueFixture } from "@multica/core/collaboration/test-fixtures";
 import { ApiClient, setApiInstance } from "@multica/core/api";
 import { renderWithI18n } from "../test/i18n";
@@ -29,6 +29,8 @@ vi.mock("./execution-panel", () => ({ CollaborationExecutionPanel: ({ selectedRu
 // query/mutation behavior is covered by memory-panel.test.tsx.
 vi.mock("./memory-panel", () => ({ CollaborationMemoryPanel: () => <section id="memory" data-testid="memory-mount" tabIndex={-1} /> }));
 vi.mock("./knowledge-panel", () => ({ CollaborationKnowledgePanel: ({ issue: value }: { issue: CollaborationIssue }) => <div data-testid="knowledge-mount">{value.id}</div> }));
+// Stage reads, forms and recovery are covered by stage-panel.test.tsx; this suite owns only where the panel is mounted.
+vi.mock("./stage-panel", () => ({ CollaborationStageRecovery: ({ issueId }: { issueId: string }) => <section data-testid="stage-recovery-mount">{issueId}</section>, CollaborationStagePanel: ({ issue: value }: { issue: CollaborationIssue }) => <section id="stage" data-testid="stage-mount">{value.id}</section> }));
 vi.mock("./activity", () => ({ CollaborationActivity: () => null }));
 vi.mock("./discussion-actions", () => ({ CollaborationIssueReactions: () => null }));
 vi.mock("./attachment-panel", () => ({ CollaborationAttachmentPanel: () => <section data-testid="files-mount" /> }));
@@ -49,8 +51,10 @@ it.each(["en", "zh-Hans"] as const)("keeps the main journey visible and task met
   const requirements = document.getElementById("description")!;
   const delivery = document.getElementById("delivery")!;
   const discussion = document.getElementById("discussion")!;
+  const stage = screen.getByTestId("stage-mount");
+  expect(stage).toHaveTextContent(issue.id);
   const resources = screen.getByRole("group", { name: locale === "en" ? "Issue resources" : "任务资料" });
-  for (const [before, after] of [[resources, requirements], [requirements, delivery], [delivery, discussion]]) {
+  for (const [before, after] of [[resources, requirements], [requirements, stage], [stage, delivery], [delivery, discussion]]) {
     expect(before!.compareDocumentPosition(after!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   }
   expect(screen.getByTestId("comment-composer")).toBeVisible();
@@ -211,4 +215,13 @@ it("removes an open resource drawer when its protected issue is no longer availa
   expect(screen.queryByRole("dialog")).toBeNull();
   expect(screen.queryByText(issue.source_workspace.name)).toBeNull();
   expect(screen.queryByTestId("knowledge-mount")).toBeNull();
+});
+
+it("C01 mounts only the account recovery surface after issue access is denied", () => {
+  setApiInstance(new ApiClient("https://detail.example"));const scope = collaborationScope(issue.creator.user_id);
+  clearCollaborationAccess(client, scope, issue.id);
+  renderWithI18n(<CollaborationDetail scope={scope} destination={{ view: "participating", issueId: issue.id, commentId: null }} />);
+  expect(screen.getByTestId("stage-recovery-mount")).toHaveTextContent(issue.id);
+  expect(screen.queryByTestId("stage-mount")).not.toBeInTheDocument();
+  expect(screen.queryByTestId("comment-composer")).not.toBeInTheDocument();
 });

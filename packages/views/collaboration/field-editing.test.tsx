@@ -151,7 +151,8 @@ it("allows clearing obsolete initial choices when the source changes", async () 
     ...(input.includes("source_workspace_id") ? { fields: { labels: [], properties: [], statuses: [{ key: "todo", name: "Todo", category: "todo" }], default_status: "todo", source_options: { ...sourceOptions, iterations: [], iterations_enabled: false } } } : {}) }) : json({ draft_id: input.split("/").pop(), attachments: [] })));
   renderWithI18n(<QueryClientProvider client={client}><CollaborationCreationPanel scope={scope} onCreated={vi.fn()} /></QueryClientProvider>);
   const user = userEvent.setup();
-  await user.click(await screen.findByText("Initial fields"));
+  // An invalid retained selection opens the section without a click.
+  await waitFor(() => expect(screen.getByText("Initial fields").closest("button")).toHaveAttribute("aria-expanded", "true"));
   expect(screen.getByRole("button", { name: "Create collaboration issue" })).toBeDisabled();
   await user.click(screen.getByRole("button", { name: "Clear" }));
   await user.selectOptions(screen.getByLabelText("Iteration"), "");

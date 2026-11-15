@@ -96,3 +96,12 @@ it("retains current administration denial for the shared access guard", async ()
   vi.stubGlobal("fetch", vi.fn<typeof fetch>().mockResolvedValueOnce(response({ code: "admin_scope_forbidden", error: "Outside scope" }, 403)));
   await expect(new ApiClient("https://admin.example").getAdminCollaborationIssue(id(1))).rejects.toMatchObject({ status: 403 });
 });
+it("S2 never accepts stage blockers attached to a successful R38 receipt", async () => {
+  const blocker = { stage_blockers: [{ code: "stage_ci_missing", stage: "code_review" }], stage_blockers_truncated: false };
+  const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(response({ ...result, ...blocker }))
+    .mockResolvedValueOnce(response({ ...result, result: { ...result.result, ...blocker } }));vi.stubGlobal("fetch", fetcher);
+  const api = new ApiClient("https://admin.example");
+  expect(await api.getAdminCollaborationOperation(id(1), id(7))).toBeNull();
+  expect(await api.getAdminCollaborationOperation(id(1), id(7))).toBeNull();
+  expect(fetcher.mock.calls.every(([, init]) => init?.method === undefined && init?.body === undefined)).toBe(true);
+});

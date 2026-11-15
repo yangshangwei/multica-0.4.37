@@ -414,6 +414,13 @@ func (h *Handler) writeLifecycleError(w http.ResponseWriter, err error) {
 		writeError(w, http.StatusConflict, err.Error())
 		return
 	}
+	// A stage-gated child refuses its enqueue with a stable code instead of a
+	// generic failure; other collaboration errors keep their existing mapping.
+	var stage *service.CollaborationError
+	if errors.As(err, &stage) && strings.HasPrefix(stage.Code, "stage_") {
+		writeJSON(w, stage.Status, map[string]string{"code": stage.Code, "error": stage.Code})
+		return
+	}
 	if errors.Is(err, service.ErrAttributionFailClosed) {
 		writeError(w, http.StatusForbidden, err.Error())
 		return

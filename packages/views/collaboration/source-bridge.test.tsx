@@ -1,4 +1,4 @@
-import { useState, type ComponentProps } from "react";
+import { useState, type ComponentProps, type ReactElement } from "react";
 import { cleanup, fireEvent, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
@@ -18,7 +18,9 @@ vi.mock("@multica/core/collaboration", async (original) => ({
 }));
 vi.mock("sonner", () => ({ toast: { success: vi.fn() } }));
 vi.mock("@multica/core/realtime", () => ({ useCollaborationRealtime: vi.fn() }));
-vi.mock("./creation-form", () => ({ CollaborationCreationEntry: ({ sourceWorkspaceId }: { sourceWorkspaceId?: string }) => <button>New collaboration in {sourceWorkspaceId}</button> }));
+vi.mock("./creation-form", () => ({ CollaborationCreationEntry: ({ sourceWorkspaceId, renderTrigger }: {
+  sourceWorkspaceId?: string; renderTrigger?: (label: string) => ReactElement;
+}) => renderTrigger?.(`New collaboration in ${sourceWorkspaceId}`) ?? <button>New collaboration in {sourceWorkspaceId}</button> }));
 vi.mock("./collaboration-detail", () => ({ CollaborationDetail: ({ destination }: { destination: { issueId: string; commentId?: string; runId?: string } }) => <p data-testid="shared-detail" data-run-id={destination.runId}>{destination.issueId}:{destination.commentId}</p> }));
 vi.mock("./workflow", () => ({ CollaborationWorkflow: ({ initialAction, initialStatus, embedded, onBusyChange, onApplied, onDismiss }: { initialAction?: string; initialStatus?: string; embedded?: boolean; onApplied?: () => void; onDismiss?: () => void; onBusyChange?: (busy: boolean) => void }) => {
   const [draft, setDraft] = useState("");
@@ -32,6 +34,11 @@ describe("source collaboration bridge", () => {
   it("reuses creation with the explicit source workspace", () => {
     renderWithI18n(<SourceCollaborationCreation workspaceId="source-workspace" />);
     expect(screen.getByRole("button", { name: "New collaboration in source-workspace" })).toBeInTheDocument();
+  });
+  it("passes a custom creation trigger through with the source workspace", () => {
+    renderWithI18n(<SourceCollaborationCreation workspaceId="source-workspace"
+      renderTrigger={(label) => <button title="Source collaboration">{label}</button>} />);
+    expect(screen.getByRole("button", { name: "New collaboration in source-workspace" })).toHaveAttribute("title", "Source collaboration");
   });
   it("keeps the same UUID and comment anchor in shared source detail", () => {
     const commentId = "00000000-0000-4000-8000-000000000002";

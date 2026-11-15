@@ -28,6 +28,7 @@ SET api_mergeable          = sqlc.narg('api_mergeable'),
     checks_rollup_state    = sqlc.narg('checks_rollup_state'),
     snapshot_head_sha      = sqlc.arg('head_sha'),
     snapshot_fetched_at    = sqlc.arg('fetched_at'),
+    snapshot_complete      = sqlc.arg('snapshot_complete')::boolean,
     updated_at             = now()
 WHERE id = sqlc.arg('pr_id') AND head_sha = sqlc.arg('head_sha');
 

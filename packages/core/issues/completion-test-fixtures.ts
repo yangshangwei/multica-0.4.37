@@ -48,6 +48,19 @@ export function completionReceiptFixture(operationId = completionIds.operation) 
   return { authorization_id: completionIds.authorization, operation_id: operationId, issue_id: completionIds.issue, completed_revision: 8, target_status: "done", completed_at: "2099-01-01T00:01:00Z", replayed: false };
 }
 
+export function completionCollaborationRequestFixture(kind: "collaboration_submission" | "collaboration_self" | "collaboration_admin") {
+  const base = completionPreviewFixture().authorization_binding;
+  const target = { issue_id: completionIds.issue, expected_issue_revision: 7, expected_status: "in_review", target_status: "done",
+    expected_collaboration_revision: "9007199254740993", expected_lifecycle_epoch: "1", status_options_version: "a".repeat(64) };
+  const person = { expected_participant_epoch: "1", expected_account_epoch: "1" };
+  return { ...base, target: kind === "collaboration_submission" ? { ...target, ...person, kind, submission_id: completionIds.authorization, acceptance_note: "" }
+    : kind === "collaboration_self" ? { ...target, ...person, kind, result: "Exact result", basis: "Exact evidence", draft_id: null, attachment_ids: [], source_comment_id: null }
+      : { ...target, kind, submission_id: null, administration_reason: "Close disabled creator issue" },
+    consumer: kind === "collaboration_admin" ? { kind: "admin", user_id: completionIds.user, organization_id: "99999999-9999-4999-8999-999999999999" } : base.consumer,
+    evidence: { ...base.evidence, issue_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", expected_issue_revision: 5 },
+    operation_id: completionIds.operation, expires_at: "2099-01-01T00:15:00Z", reason: "Accept exact shared result" };
+}
+
 export function completionIssueFixture(overrides: Partial<Issue> = {}): Issue {
   return {
     id: completionIds.issue, workspace_id: completionIds.workspace, number: 1, identifier: "M1-1", title: "Delivery", description: null,

@@ -22,7 +22,8 @@ const inputSchema = z.discriminatedUnion("action", [
 ]);
 const collaborationInputSchema = z.strictObject({
   ...base, action: z.literal("collaboration"), creatorUserId: z.uuid(), handlerUserId: z.uuid(), body: AdminCollaborationChangeSchema,
-});
+  completionSourceWorkspaceId: z.uuid().optional(),
+}).refine((value) => value.body.completion === undefined ? value.completionSourceWorkspaceId === undefined : value.completionSourceWorkspaceId !== undefined && value.body.completion.operation_id === value.key);
 const storedInputSchema = z.discriminatedUnion("action", [...inputSchema.options, collaborationInputSchema]);
 const draftSchema = z.object({ scope: scopeSchema, input: storedInputSchema, createdAt: z.number().int().positive() });
 export type AdminControlDraftScope = z.output<typeof scopeSchema>;

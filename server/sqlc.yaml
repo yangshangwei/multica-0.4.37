@@ -13,6 +13,28 @@ sql:
         # Reserved server-only columns also pass through CTE result tables;
         # table-qualified overrides alone miss those derived task rows.
         overrides:
+          - column: "collaboration_stage_execution_intent.invocation"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_execution_intent.dependencies"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_execution_intent.request_digest"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_execution_intent.consumer_subject"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_execution_intent.physical_target_key"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_execution_observation.observation"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_execution_observation.observation_digest"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_rollback_observation.metric"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_rollback_observation.stream_key"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_rollback_observation.native_version"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_decision.signer_credential"
+            go_struct_tag: 'json:"-"'
           - column: "*.knowledge_delivery"
             go_struct_tag: 'json:"-"'
           - column: "*.knowledge_context_version"

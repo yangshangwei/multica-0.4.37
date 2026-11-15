@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY collaboration_stage_revocation_decision_idx ON collaboration_stage_revocation (decision_id);

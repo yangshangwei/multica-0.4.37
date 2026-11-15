@@ -4,9 +4,26 @@ import { CollaborationAccountSummarySchema } from "./schema";
 import { positiveVersion } from "./version";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
+const stageId = uuid.refine((value) => value !== "00000000-0000-0000-0000-000000000000");
+const stageMetadata = {
+  stage_roles_configured: z.strictObject({ role_revision: positiveVersion }),
+  stage_roles_unchanged: z.strictObject({ role_revision: positiveVersion }),
+  stage_proposal_created: z.strictObject({ proposal_id: stageId, candidate_id: stageId, version: positiveVersion }),
+  stage_proposal_revised: z.strictObject({ proposal_id: stageId, candidate_id: stageId, version: positiveVersion, parent_candidate_id: stageId }),
+  stage_proposal_accepted: z.strictObject({ proposal_id: stageId, candidate_id: stageId, version: positiveVersion, decision_id: stageId }),
+  stage_proposal_rejected: z.strictObject({ proposal_id: stageId, candidate_id: stageId, version: positiveVersion, decision_id: stageId }),
+  stage_scope_confirmed: z.strictObject({ decision_id: stageId, scope_revision: positiveVersion, lifecycle_epoch: positiveVersion }),
+  stage_code_candidate_created: z.strictObject({ candidate_id: stageId, version: positiveVersion, parent_candidate_id: stageId.nullable() }),
+  stage_decision_recorded: z.strictObject({ candidate_id: stageId, decision_id: stageId, step: z.enum(["code_review", "qa", "release", "rollback"]) }),
+  stage_decision_revoked: z.strictObject({ decision_id: stageId, revocation_id: stageId }),
+  stage_advanced: z.strictObject({ candidate_id: stageId, current: z.enum(["development", "code_review", "qa", "release", "verification"]), stage_revision: positiveVersion }),
+};
+function stageKind(value: string): value is keyof typeof stageMetadata { return Object.hasOwn(stageMetadata, value); }
 const kind = z.enum(["created", "participant_added", "participant_removed", "participant_left", "transferred", "information_requested",
   "information_returned", "acceptance_submitted", "status_changed", "completed", "cancelled", "reopened", "issue_edited",
-  "iteration_changed", "comment_created", "comment_edited", "comment_deleted", "other"]);
+  "iteration_changed", "comment_created", "comment_edited", "comment_deleted", "other",
+  "stage_roles_configured", "stage_roles_unchanged", "stage_proposal_created", "stage_proposal_revised", "stage_proposal_accepted", "stage_proposal_rejected",
+  "stage_scope_confirmed", "stage_code_candidate_created", "stage_decision_recorded", "stage_decision_revoked", "stage_advanced", "stage_execution_admitted", "stage_execution_observed", "stage_rollback_observed"]);
 const change = z.object({
   field: z.enum(["title", "description", "start_date", "due_date", "priority", "labels", "properties", "status", "project_id", "parent_issue_id", "stage", "current_iteration_id"]),
   before: z.string().nullable(), after: z.string().nullable(),
@@ -21,6 +38,16 @@ export const CollaborationActivityEntrySchema = z.object({
   details_available: z.boolean(), target: CollaborationAccountSummarySchema.nullable(),
   note: z.string().max(2000).optional(),
   handoff: handoff.nullable(), comment_id: uuid.nullable(), changes: z.array(change),
+  stage: z.unknown().optional(),
+}).transform((entry) => {
+  if (stageKind(entry.kind) || entry.kind === "stage_execution_admitted" || entry.kind === "stage_execution_observed" || entry.kind === "stage_rollback_observed") {
+    const parsed = stageKind(entry.kind) ? stageMetadata[entry.kind].safeParse(entry.stage) : null;
+    if (!parsed?.success || !entry.details_available || entry.target !== null || entry.handoff !== null || entry.comment_id !== null || entry.changes.length > 0 || entry.note !== undefined) {
+      return { ...entry, stage: null, details_available: false, target: null, handoff: null, comment_id: null, changes: [], note: undefined };
+    }
+    return { ...entry, stage: parsed.data };
+  }
+  return { ...entry, stage: undefined };
 }).refine((entry) => {
   if (!entry.details_available) return entry.target === null && entry.handoff === null && entry.comment_id === null && entry.changes.length === 0 && !entry.note;
   if (entry.note !== undefined && entry.kind !== "iteration_changed") return false;

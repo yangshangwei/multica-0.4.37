@@ -796,16 +796,17 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 }
 
 type ProjectDeleteImpact struct {
-	WorkspaceID         string `json:"workspace_id"`
-	ProjectID           string `json:"project_id"`
-	ProjectRevision     int64  `json:"project_revision"`
-	IssueCount          int64  `json:"issue_count"`
-	FormalIssueCount    int64  `json:"formal_issue_count"`
-	ResourceCount       int64  `json:"resource_count"`
-	UpdateCount         int64  `json:"update_count"`
-	AutopilotCount      int64  `json:"autopilot_count"`
-	PreservesIssues     bool   `json:"preserves_issues"`
-	PreservesExecutions bool   `json:"preserves_executions"`
+	BlockingReasons     []string `json:"blocking_reasons,omitempty"`
+	WorkspaceID         string   `json:"workspace_id"`
+	ProjectID           string   `json:"project_id"`
+	ProjectRevision     int64    `json:"project_revision"`
+	IssueCount          int64    `json:"issue_count"`
+	FormalIssueCount    int64    `json:"formal_issue_count"`
+	ResourceCount       int64    `json:"resource_count"`
+	UpdateCount         int64    `json:"update_count"`
+	AutopilotCount      int64    `json:"autopilot_count"`
+	PreservesIssues     bool     `json:"preserves_issues"`
+	PreservesExecutions bool     `json:"preserves_executions"`
 }
 
 func (h *Handler) GetProjectDeleteImpact(w http.ResponseWriter, r *http.Request) {
@@ -823,7 +824,7 @@ func (h *Handler) GetProjectDeleteImpact(w http.ResponseWriter, r *http.Request)
 		return
 	}
 	var out ProjectDeleteImpact
-	err = h.runProjectTransaction(r.Context(), ws, actor, func(_ pgx.Tx, q *db.Queries) error {
+	err = h.runProjectTransaction(r.Context(), ws, actor, func(tx pgx.Tx, q *db.Queries) error {
 		if err := requireProjectAdministrator(r.Context(), q, ws, actor); err != nil {
 			return err
 		}
@@ -838,6 +839,17 @@ func (h *Handler) GetProjectDeleteImpact(w http.ResponseWriter, r *http.Request)
 			return err
 		}
 		out = ProjectDeleteImpact{WorkspaceID: uuidToString(ws), ProjectID: uuidToString(id), ProjectRevision: impact.ProjectRevision, IssueCount: impact.IssueCount, FormalIssueCount: impact.FormalIssueCount, ResourceCount: impact.ResourceCount, UpdateCount: impact.UpdateCount, AutopilotCount: impact.AutopilotCount, PreservesIssues: true, PreservesExecutions: true}
+		project, err := q.GetProjectInWorkspace(r.Context(), db.GetProjectInWorkspaceParams{ID: id, WorkspaceID: ws})
+		if err != nil {
+			return err
+		}
+		if err = service.CheckStageProjectDeleteInTx(r.Context(), tx, project); err != nil {
+			var refusal service.DeliveryCompletionError
+			if !errors.As(err, &refusal) || refusal.Code != "stage_policy_exit_required" {
+				return err
+			}
+			out.BlockingReasons = []string{refusal.Code}
+		}
 		return nil
 	})
 	if err != nil {

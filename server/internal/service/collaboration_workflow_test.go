@@ -424,7 +424,7 @@ func TestCollaborationWorkflowConcurrentIdentityAndRevision(t *testing.T) {
 	close(start)
 	wg.Wait()
 	a, b := <-results, <-results
-	if a.err != nil || b.err != nil || a.r != b.r || f.fx.Count(t, `SELECT count(*) FROM collaboration_event WHERE issue_id=$1 AND kind='participant_added'`, f.issue.Issue.ID) != 1 {
+	if a.err != nil || b.err != nil || !reflect.DeepEqual(a.r, b.r) || f.fx.Count(t, `SELECT count(*) FROM collaboration_event WHERE issue_id=$1 AND kind='participant_added'`, f.issue.Issue.ID) != 1 {
 		t.Fatalf("concurrent same-key join: %+v %+v", a, b)
 	}
 	p.TargetUserID = util.MustParseUUID(f.handler)
@@ -713,7 +713,7 @@ func TestCollaborationWorkflowInviteTransferPreservesExecution(t *testing.T) {
 		t.Fatalf("invite: %+v %v", added, err)
 	}
 	replay, err := f.svc.InviteParticipant(f.ctx, p)
-	if err != nil || replay != added {
+	if err != nil || !reflect.DeepEqual(replay, added) {
 		t.Fatalf("invite replay: %+v %v", replay, err)
 	}
 	transfer := CollaborationTransferParams{CollaborationParticipantParams: CollaborationParticipantParams{

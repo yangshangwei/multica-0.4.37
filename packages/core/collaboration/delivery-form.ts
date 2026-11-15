@@ -15,10 +15,11 @@ export function useCollaborationDeliveryForm(scope: CollaborationDeliveryScope, 
   const stored = records.find((record): record is CollaborationDeliveryForm => record.kind === "form" && record.purpose === purpose && record.draftId === current.form.draftId);
   // A request may finish after its original component unmounts. A remounted
   // form must observe retirement rather than resurrect the consumed draft.
-  if (!storedError && stored && !current.persisted) setCurrent({ ...current, persisted: true });
+  if (!storedError && saved && !stored && !current.persisted) setCurrent({ form: saved, persisted: true });
+  else if (!storedError && stored && !current.persisted) setCurrent({ ...current, persisted: true });
   else if (!storedError && !stored && current.persisted) setCurrent({ form: saved ?? newCollaborationDeliveryForm(scope, purpose), persisted: saved !== undefined });
-  const form = stored ?? current.form;
-  const update = (fields: Partial<Pick<CollaborationDeliveryForm, "title" | "content" | "recipientQuery" | "recipient" | "selectedAttachmentIds" | "initialFields" | "parentCommentId" | "basis" | "sourceCommentId" | "aiPolicy">>) => {
+  const form = stored ?? (!current.persisted && saved ? saved : current.form);
+  const update = (fields: Partial<Pick<CollaborationDeliveryForm, "title" | "content" | "recipientQuery" | "recipient" | "selectedAttachmentIds" | "initialFields" | "parentCommentId" | "basis" | "sourceCommentId" | "aiPolicy" | "testSubject">>) => {
     try {
       const latest = readCollaborationDeliveryRecords(scope).find((record): record is CollaborationDeliveryForm => record.kind === "form" && record.purpose === purpose && record.draftId === form.draftId) ?? form;
       saveCollaborationDeliveryRecord({ ...latest, ...fields });

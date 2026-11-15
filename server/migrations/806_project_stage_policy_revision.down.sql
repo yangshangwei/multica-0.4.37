@@ -1,0 +1,1 @@
+DROP INDEX CONCURRENTLY IF EXISTS project_stage_policy_revision_idx;

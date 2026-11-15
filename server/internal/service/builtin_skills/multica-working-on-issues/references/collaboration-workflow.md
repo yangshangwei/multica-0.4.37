@@ -231,14 +231,53 @@ multica collaboration memory show <issue-uuid> --output table|json
 multica collaboration memory update <issue-uuid> --base-version <n> --request-id <uuid> --content-stdin|--content-file <file>
 multica collaboration handoff show <issue-uuid> [--cursor <next_cursor>|<readers_cursor>]
 multica collaboration handoff source <issue-uuid> <source-uuid> --kind <kind> [--source-run-id <run_id> --version <version>] --sha256 <sha256> [--offset <next_offset>]
+multica collaboration test-report subject <issue-uuid> --output json
+multica collaboration test-report submit <issue-uuid> --request-id <uuid> --report-stdin --output json
+multica collaboration test-report receipt <issue-uuid> --request-id <uuid> --output json
 ```
 
 Comment add permits `--parent <comment-uuid>`; activity permits `--reason`.
-The three writers require `--request-id` in this run context. Keep a distinct UUID
-for each intended comment/activity/memory write, and repeat the exact UUID and
+The four writers require `--request-id` in this run context. Keep a distinct UUID
+for each intended comment/activity/memory/report write, and repeat the exact UUID and
 payload after an uncertain response. Do not create a replacement key. This
 contract does not add idempotency to ordinary task commands. Authorization
 rejection means stop; do not sign in as the runtime owner or switch credentials.
+
+### Typed test reports
+
+Read `test-report subject` before testing. It returns the exact human-selected
+candidate and Git source prepared for this run. Use that complete `subject`
+unchanged in the report; `artifact_digest:null` means source-only testing and
+does not prove a build. A run without this binding refuses typed reports. Do
+not fill in a candidate from the current issue or a SHA from another checkout.
+If you change the prepared code or build, obtain a new explicitly authorized
+test run rather than claiming the original subject was verified.
+
+`--report-stdin` reads a JSON object with `subject`, `suite_id`, `cases`, and
+`logs`. Each case has a unique `id`, an `outcome` of `passed`, `failed`, `error`
+or `skipped`, and a zero-based `log_index`. Logs are either
+`{"kind":"inline","body":"actual test output"}` or an already retained
+`{"kind":"record","event_id":"<uuid>","message_index":0,"body_sha256":"<hash>"}`
+from this exact run attempt. Reference the actual event and message, not a page
+cursor, URL or filesystem path. If its checkpoint is not yet acknowledged,
+wait for that acknowledgment or provide bounded inline output in the first
+report. The server never fetches arbitrary paths or URLs.
+
+Capture 1–256 cases, 1–64 logs, case IDs up to 256 UTF-8 bytes, suite IDs up to
+128 bytes, inline logs totaling at most 64 KiB, and a canonical report up to
+256 KiB. Each referenced log body is at most 64 KiB. The stdin/HTTP input limit
+is 2 MiB to permit JSON escaping. The server redacts retained free text and
+derives the reported result: any failed/error case is failed; skipped cases
+make a report incomplete; only all-passed cases yield passed.
+
+There is one immutable report per attempt. Combine suites before submitting.
+To preserve a submitted failure and test again, start a new authorized run.
+After an uncertain response, keep the exact request UUID and report and use
+`test-report receipt`; 404 means the result remains unconfirmed. Never change
+the key to overwrite a failure. The receipt confirms storage only. Reports
+remain `runtime_reported`, separate from final process success, remote CI,
+human QA approval and release authorization. A later process failure or stale
+source makes an otherwise passing report unusable for QA.
 
 The legacy list without paging flags returns the newest 200 comments as an
 array. Specifying `--limit`, `--max-bytes` or `--cursor` returns a JSON page
@@ -331,3 +370,26 @@ edits/handoffs retain original versions and keys; stale status confirmation need
 an explicit human decision. Full contracts and source anchors are in
 [working-on-issues-source-map.md](working-on-issues-source-map.md); ordinary rules below are not shared APIs.
 
+
+## Release and rollback evidence
+
+A human release approval authorizes an exact build and registered target. It is
+not a deployment result. Runtime credentials and typed test reports cannot
+create deployment facts or sign release/rollback decisions. The server's trusted
+integration boundary records actual operation results separately; an
+unconfigured integration remains unavailable.
+
+Keep the original operation identity when execution is pending or unknown.
+Neither a timeout, a changed request key nor a new approval authorizes retrying
+an unresolved physical target. An admitted intent consumes its approval's one
+call opportunity; revocation cannot cancel an already admitted external action.
+`not_started` is operation history and is never a successful deployment.
+
+Rollback is approved during verification, using an exact successful deployment,
+its observed immediate predecessor artifact and a current authenticated anomaly.
+A metric observation is evidence, not permission. Conflicting contents for the
+same native metric version make that version ambiguous; do not choose a winner
+from arrival order or reuse its old approval. Late authenticated execution
+results remain history and do not renew approvals, invoke another execution or
+advance the stage automatically. Current authority and all final completion
+gates still apply.

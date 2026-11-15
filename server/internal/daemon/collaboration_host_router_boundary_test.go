@@ -8,10 +8,45 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"sync/atomic"
 	"testing"
 	"time"
+
+	"github.com/multica-ai/multica/server/internal/daemon/collaborationrun"
 )
+
+func TestCollaborationHostHarnessGitUsesExistingConfigValidation(t *testing.T) {
+	input := collaborationHostRouterInput{}
+	config, err := input.hostConfiguration()
+	if err != nil || config.Git != nil {
+		t.Fatalf("default Git changed: %+v %v", config, err)
+	}
+	input.Git = &collaborationrun.HostGitConfig{Executable: "/owned/git", BundleFile: "/owned/source.bundle", BundleDigest: strings.Repeat("a", 64), SizeBytes: 128, ObjectFormat: "sha1", CommitOID: strings.Repeat("b", 40)}
+	config, err = input.hostConfiguration()
+	if err != nil || config.Git == nil || *config.Git != *input.Git {
+		t.Fatalf("Git input not forwarded before registration: %+v %v", config, err)
+	}
+	for _, kind := range []string{"relative_git", "relative_bundle", "bad_digest", "wrong_object_format", "empty_size"} {
+		copy := *input.Git
+		switch kind {
+		case "relative_git":
+			copy.Executable = "git"
+		case "relative_bundle":
+			copy.BundleFile = "source.bundle"
+		case "bad_digest":
+			copy.BundleDigest = "caller-attestation"
+		case "wrong_object_format":
+			copy.ObjectFormat = "sha256"
+		case "empty_size":
+			copy.SizeBytes = 0
+		}
+		invalid := collaborationHostRouterInput{Git: &copy}
+		if _, err := invalid.hostConfiguration(); err == nil || strings.Contains(err.Error(), "/owned/") {
+			t.Fatalf("%s did not safely refuse: %v", kind, err)
+		}
+	}
+}
 
 func TestCollaborationHostHarnessTimeoutBoundary(t *testing.T) {
 	for _, tc := range []struct {

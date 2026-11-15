@@ -15,6 +15,8 @@ import type { AnchorHTMLAttributes } from "react";
 import en from "../../locales/en/admin.json";
 import { RESOURCES } from "../../test/i18n";
 import { AdminCollaborationEntry, AdminCollaborationPage } from "./collaboration-page";
+import { CollaborationCompletionPreviewSchema } from "@multica/core/collaboration";
+import { clearCompletionDrafts, type CompletionAuthorizationRequest } from "@multica/core/issues";
 
 vi.mock("../../navigation", () => ({ AppLink: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} /> }));
 const user = { ...EMPTY_USER, id: id(1), name: "Administrator" };
@@ -42,7 +44,7 @@ beforeEach(() => {
   vi.spyOn(api, "changeAdminCollaborationLifecycle").mockImplementation(async (_issueId, body, key) => ({ ...receipt,
     result: { ...receipt.result, requestId: key, status: body.targetStatus, handlerUserId: body.successorUserId ?? receipt.result.previousHandlerUserId } }));
 });
-afterEach(() => { cleanup(); client.clear(); vi.restoreAllMocks(); });
+afterEach(() => { cleanup(); client.clear(); clearCompletionDrafts(); vi.restoreAllMocks(); });
 function content(issueId: string | null = detail.issueId, entry = false, locale: "en" | "zh-Hans" = "en") {
   return <QueryClientProvider client={client}><I18nProvider locale={locale} resources={RESOURCES}>
     {entry ? <AdminCollaborationEntry href="/account?view=current&administration=collaboration" /> : <AdminCollaborationPage issueId={issueId} hrefForIssue={hrefForIssue} />}
@@ -269,4 +271,87 @@ it.each(["complete", "cancel"] as const)("does not add successor or ordinary exe
   expect(sent).not.toHaveProperty("successorUserId");
   expect(api.getAdminCollaborationCandidates).not.toHaveBeenCalled();
   expect(screen.queryByRole("button", { name: /Resume|Stop AI/ })).not.toBeInTheDocument();
+});
+
+it("authorizes the exact R38 target and consumes it through the existing administrative workflow", async () => {
+  const at = "2099-01-01T00:00:00Z", until = "2099-01-01T01:00:00Z";
+  vi.spyOn(Date, "now").mockReturnValue(Date.parse(at));
+  vi.mocked(api.getAdminCollaborationIssue).mockResolvedValue({ ...detail, status: "todo", statusCategory: "todo", queueState: "paused", successorRequired: false,
+    actions: [{ action: "complete", default_status: "done", status_options_version: "a".repeat(64), options: [{ key: "done", name: "Done", category: "done" }] }] });
+  const evidence = { issue_id: id(30), expected_issue_revision: 17, approval_id: id(31), expected_source_revision: "a".repeat(40), expected_spec_digest: "b".repeat(64), expected_artifact_digest: "c".repeat(64) };
+  vi.spyOn(api, "listCollaborationCompletionCandidates").mockResolvedValue({ state: "available", value: { protocol_version: 1, issue_id: detail.issueId, issue_revision: 42,
+    source_issue_id: evidence.issue_id, source_issue_revision: 17, project_id: id(32), checked_at: at, next_cursor: null, has_more: false,
+    target_context: { expected_lifecycle_epoch: "2", submission_id: null }, items: [{ approval_id: evidence.approval_id, execution_id: id(33), source_revision: evidence.expected_source_revision,
+      spec_digest: evidence.expected_spec_digest, artifact_digest: evidence.expected_artifact_digest, receipt_digest: "d".repeat(64), created_at: at, expires_at: until, summary: "Admin source artifact", status: "succeeded", result_code: null, selectable: true }] } });
+  vi.spyOn(api, "previewCollaborationCompletion").mockImplementation(async (_issueId, input) => ({ state: "available", value: CollaborationCompletionPreviewSchema.parse({
+    protocol_version: 1, issue_id: detail.issueId, issue_revision: 42, source_issue_id: evidence.issue_id, source_issue_revision: 17,
+    current_status: "todo", current_category: "todo", target_status: "done", target_category: "done", project_id: id(32), project_revision: 2, policy_mode: "enforce", policy_revision: 1,
+    checked_at: at, reason: "authorization_available", max_expires_at: until, enforced: false, usable_for_completion: false, skip_supported: false, stage_blockers: [], stage_blockers_truncated: false,
+    observation: { mode: "observe", policy_version: "delivery-artifact-observe-v1", verdict: "pass", reason: "artifact_matches", issue_id: evidence.issue_id, issue_revision: 17,
+      project_id: id(32), project_revision: 2, approval_id: evidence.approval_id, source_revision: evidence.expected_source_revision, observed_head_sha: evidence.expected_source_revision,
+      revision_provenance: "database_observed_pr_head_not_remote_verified", spec_digest: evidence.expected_spec_digest, artifact_digest: evidence.expected_artifact_digest, producer_task_generation: 0, observed_at: at, valid_until: until },
+    authorization_binding: { contract_version: "delivery-completion-enforcement-v1", source_workspace_id: detail.sourceWorkspaceId, target: input.target,
+      project: { id: id(32), expected_revision: 2, expected_policy_revision: 1 }, evidence, consumer: { kind: "admin", user_id: user.id, organization_id: id(2) } } }) }));
+  let request: CompletionAuthorizationRequest | null = null, consumed = false;
+  const grant = (value: CompletionAuthorizationRequest) => ({ authorization_id: id(34), operation_id: value.operation_id, issue_id: detail.issueId, issue_revision: 42, target_status: "done",
+    contract_version: "delivery-completion-enforcement-v1" as const, created_at: at, expires_at: value.expires_at, state: "issued" as const, applicability: "not_checked" as const, replayed: false });
+  vi.spyOn(api, "createDeliveryCompletionAuthorization").mockImplementation(async (_key, value) => { request = value; return grant(value); });
+  vi.spyOn(api, "getDeliveryCompletionAuthorization").mockImplementation(async () => {
+    if (!request) throw new Error("No authorization");
+    return consumed ? { ...grant(request), state: "consumed", applicability: "consumed", completion_receipt: { authorization_id: id(34), operation_id: request.operation_id,
+      issue_id: detail.issueId, completed_revision: 43, target_status: "done", completed_at: at, collaboration_revision: "8", replayed: false } } : grant(request);
+  });
+  vi.mocked(api.changeAdminCollaborationLifecycle).mockImplementation(async (_issueId, _body, key) => {
+    consumed = true;
+    return { ...receipt, operation: { ...receipt.operation, kind: "collaboration.complete", resultCode: "completed" },
+      result: { ...receipt.result, requestId: key, action: "complete", code: "completed", collaborationRevision: "8", previousStatus: "todo", status: "done", handlerUserId: detail.handler.userId, queueState: "closed" } };
+  });
+  render(content());
+  await userEvent.click(await screen.findByRole("button", { name: "Complete task" }));
+  await userEvent.type(screen.getByRole("textbox", { name: "Reason" }), "Exact administrative closure");
+  await userEvent.click(screen.getByRole("checkbox", { name: "Use completion authorization" }));
+  await userEvent.type(screen.getByRole("textbox", { name: "Source sub-issue" }), evidence.issue_id);
+  await userEvent.selectOptions(await screen.findByRole("combobox", { name: "Artifact evidence" }), evidence.approval_id);
+  await userEvent.type(screen.getByRole("textbox", { name: "Authorization reason" }), "I reviewed the source artifact");
+  await userEvent.click(await screen.findByRole("button", { name: "Use latest expiry" }));
+  await userEvent.click(screen.getByRole("button", { name: "Authorize exact completion" }));
+  await screen.findByText("The selected authorization is ready for this completion.");
+  await userEvent.click(screen.getByRole("button", { name: "Confirm change" }));
+  await screen.findByRole("region", { name: "Recorded administration change" });
+  expect(api.createDeliveryCompletionAuthorization).toHaveBeenCalledOnce();
+  const saved = vi.mocked(api.createDeliveryCompletionAuthorization).mock.calls[0]![1];
+  expect(saved.target).toMatchObject({ kind: "collaboration_admin", expected_lifecycle_epoch: "2", submission_id: null, administration_reason: "Exact administrative closure" });
+  expect(api.changeAdminCollaborationLifecycle).toHaveBeenCalledWith(detail.issueId, expect.objectContaining({ completion: { authorization_id: id(34), operation_id: saved.operation_id, expected_issue_revision: 42 } }), saved.operation_id);
+  expect(api.getDeliveryCompletionAuthorization).toHaveBeenCalledWith(id(34), { workspaceId: detail.sourceWorkspaceId });
+});
+
+it("S2 renders an R38 stage refusal without a completed receipt or loss of the entered reason", async () => {
+  vi.mocked(api.getAdminCollaborationIssue).mockResolvedValue({ ...detail, status: "in_progress", statusCategory: "in_progress", queueState: "paused", successorRequired: false,
+    actions: [{ action: "complete", status_options_version: "a".repeat(64), default_status: "done", options: [{ key: "done", name: "Done", category: "done" }] }] });
+  vi.mocked(api.changeAdminCollaborationLifecycle).mockRejectedValueOnce(new ApiError("PRIVATE raw error", 409, "Conflict", {
+    code: "stage_incomplete", error: "PRIVATE raw error", request_id: "transport-trace", stage_blockers: [{ code: "stage_ci_missing", stage: "code_review" }], stage_blockers_truncated: false }));
+  render(content());await userEvent.click(await screen.findByRole("button", { name: "Complete task" }));
+  await userEvent.type(screen.getByRole("textbox", { name: "Reason" }), "Administrator completion reason");
+  await userEvent.click(screen.getByRole("button", { name: "Confirm change" }));
+  expect(await screen.findByRole("heading", { name: "Change refused" })).toBeVisible();
+  expect(screen.getByText(/CI evidence is missing for this code version/)).toBeVisible();
+  expect(screen.getByText(/HTTP 409.*stage_incomplete/)).toBeVisible();
+  expect(screen.getByText("Administrator completion reason", { selector: "dd" })).toBeVisible();
+  expect(screen.queryByText("PRIVATE raw error")).not.toBeInTheDocument();
+  expect(api.getAdminCollaborationOperation).not.toHaveBeenCalled();
+});
+it("S2 a rejected retry stays visibly unconfirmed and preserves original administration recovery", async () => {
+  const { successorUserId: _successor, ...body } = original.body;
+  const input = { ...original, body: { ...body, action: "complete" as const, expectedStatus: "in_progress", targetStatus: "done" } };
+  saveAdminControlDraft(storageScope, input);
+  vi.mocked(api.changeAdminCollaborationLifecycle).mockRejectedValueOnce(new ApiError("Refused", 409, "Conflict", { code: "stage_incomplete", error: "Refused", request_id: "trace",
+    stage_blockers: [{ code: "stage_qa_missing", stage: "qa" }], stage_blockers_truncated: false }));
+  render(content());
+  const retry = await screen.findByRole("button", { name: "Retry original request" });await waitFor(() => expect(retry).toBeEnabled());
+  await userEvent.click(retry);
+  expect(await screen.findByText("This attempt was refused, but the original request is still unconfirmed. Check its original result.")).toBeVisible();
+  expect(screen.getByRole("button", { name: "Check original result" })).toBeEnabled();
+  expect(screen.queryByRole("heading", { name: "Change refused" })).not.toBeInTheDocument();
+  expect(readAdminCollaborationDraft(storageScope, input.id)?.input).toEqual(input);
+  expect(api.changeAdminCollaborationLifecycle).toHaveBeenCalledExactlyOnceWith(input.id, input.body, input.key);
 });

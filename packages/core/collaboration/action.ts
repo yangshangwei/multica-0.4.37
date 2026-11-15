@@ -7,6 +7,7 @@ import { CollaborationUnavailableError, isCollaborationScopeCurrent, type Collab
 import type { CollaborationDraft } from "./draft";
 import { CollaborationAIPolicySchema, collaborationBoundedResultText, collaborationResultText } from "./delivery-schema";
 import { collaborationAttachmentIds } from "./attachment-schema";
+import { CompletionBindingSchema, completionUUID } from "../issues/completion-schema";
 
 const base = {
   requestId: z.uuid(), expectedCollaborationRevision: positiveVersion, expectedLifecycleEpoch: positiveVersion,
@@ -25,11 +26,13 @@ export const CollaborationActionSchema = z.discriminatedUnion("action", [
   z.object({ ...base, action: z.literal("change_ai_policy"), aiPolicy: CollaborationAIPolicySchema }),
   z.object({ ...base, action: z.enum(["change_status", "cancel", "reopen"]), status: z.string().min(1), statusOptionsVersion: directed.statusOptionsVersion }),
   z.object({ ...base, ...evidence, action: z.literal("complete"), status: z.string().min(1), statusOptionsVersion: directed.statusOptionsVersion,
+    completion: CompletionBindingSchema.optional(), completionSourceWorkspaceId: completionUUID.optional(),
     submissionId: z.uuid().optional(), submissionAttachmentIds: collaborationAttachmentIds.optional(), note: collaborationBoundedResultText.optional(), basis: collaborationResultText.optional() })
     .refine((value) => value.submissionId !== undefined ? value.basis === undefined && value.draftId === undefined && value.deliveryDraftId === undefined &&
       value.attachmentIds === undefined && value.sourceCommentId === undefined && value.submissionAttachmentIds !== undefined :
       collaborationResultText.safeParse(value.note).success && value.basis !== undefined && value.submissionAttachmentIds === undefined)
-    .refine((value) => value.draftId === undefined || value.deliveryDraftId === undefined || value.draftId === value.deliveryDraftId),
+    .refine((value) => value.draftId === undefined || value.deliveryDraftId === undefined || value.draftId === value.deliveryDraftId)
+    .refine((value) => value.completion === undefined ? value.completionSourceWorkspaceId === undefined : value.completionSourceWorkspaceId !== undefined && value.completion.operation_id === value.requestId),
   z.object({ ...base, action: z.literal("leave") }),
   z.object({ ...base, action: z.literal("remove"), targetUserId: z.uuid() }),
   z.object({ ...base, action: z.literal("edit"), title: z.string().min(1), description: z.string(), startDate: z.iso.date().nullable(), dueDate: z.iso.date().nullable(), priority: z.enum(["none", "low", "medium", "high", "urgent"]),
@@ -93,5 +96,6 @@ export async function recoverCollaborationAction(scope: CollaborationScope, draf
   } catch (error) {
     if (!(error instanceof ApiError) || error.status !== 404) throw error;
   }
+  if (action.action === "complete" && action.completion) throw new CollaborationUnavailableError();
   return sendCollaborationAction(scope, draft.scope.issueId, action);
 }

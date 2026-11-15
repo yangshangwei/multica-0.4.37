@@ -10,7 +10,7 @@ import { copyText } from "@multica/ui/lib/clipboard";
 import { toast } from "sonner";
 import type { ProjectStatus, ProjectPriority, ProjectRiskSignal } from "@multica/core/types";
 import { useAuthStore } from "@multica/core/auth";
-import { ApiError } from "@multica/core/api";
+import { ApiError, errorCode } from "@multica/core/api";
 import { projectDetailOptions } from "@multica/core/projects/queries";
 import { useUpdateProject, useDeleteProject } from "@multica/core/projects/mutations";
 import { pinListOptions } from "@multica/core/pins";
@@ -264,6 +264,11 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   const handleDelete = useCallback(() => {
     if (!project) return;
     deleteProject.mutate(project.id, {
+      onError: (error) => {
+        if (error instanceof ApiError && !error.isStaleAuthResponse && error.status === 409 && errorCode(error) === "stage_policy_exit_required") {
+          toast.error(t(($) => $.delete_dialog.stage_policy_exit_required));
+        }
+      },
       onSuccess: () => {
         toast.success(t(($) => $.detail.toast_project_deleted));
         router.push(wsPaths.projects());

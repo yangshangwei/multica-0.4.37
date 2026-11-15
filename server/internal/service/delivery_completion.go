@@ -22,15 +22,20 @@ import (
 // Candidate is never a client-supplied issue snapshot. AuxiliaryChanges covers
 // attachment/label/property writes not represented by the issue row.
 type DeliveryMutationIntent struct {
-	Before            db.Issue
-	Candidate         db.Issue
-	Completion        *DeliveryCompletionBinding
-	Credential        ArtifactCredentialSnapshot
-	RequestedPosition *float64
-	AuxiliaryChanges  bool
-	Webhook           *DeliveryWebhookProof
-	Collaboration     *DeliveryCompletionTarget
-	Metrics           *obsmetrics.BusinessMetrics
+	Before                   db.Issue
+	Candidate                db.Issue
+	Completion               *DeliveryCompletionBinding
+	Credential               ArtifactCredentialSnapshot
+	RequestedPosition        *float64
+	AuxiliaryChanges         bool
+	Webhook                  *DeliveryWebhookProof
+	Collaboration            *DeliveryCompletionTarget
+	Metrics                  *obsmetrics.BusinessMetrics
+	StageExecutionSources    StageExecutionSources
+	StageOperationID         pgtype.UUID
+	StageAdminOperationID    pgtype.UUID
+	StageAdminOrganizationID pgtype.UUID
+	stageSubmissionInput     *collaborationDeliveryInput
 }
 type DeliveryPrepareState string
 
@@ -41,6 +46,7 @@ const (
 )
 
 type DeliveryPrepareResult struct {
+	stage    *stageMutationGuard
 	State    DeliveryPrepareState
 	Prepared *DeliveryPreparedMutation
 	Receipt  *DeliveryCompletionReceipt
@@ -165,6 +171,9 @@ func CheckDeliveryCreateInTx(ctx context.Context, tx pgx.Tx, workspace, project 
 	return nil
 }
 func CheckDeliveryProjectDeleteInTx(ctx context.Context, tx pgx.Tx, project db.Project) error {
+	if err := CheckStageProjectDeleteInTx(ctx, tx, project); err != nil {
+		return err
+	}
 	_, policy, err := LockDeliveryProjectPolicy(ctx, tx, project.WorkspaceID, project.ID)
 	if err != nil {
 		return err
@@ -274,8 +283,18 @@ func PrepareDeliveryMutationInTx(ctx context.Context, tx pgx.Tx, in DeliveryMuta
 		if e = completionRevalidateEvidence(ctx, tx, row, request, current, in.Metrics); e != nil {
 			return out, e
 		}
+		guard, e := prepareStageMutation(ctx, tx, in, false)
+		if e != nil {
+			return out, e
+		}
+		if guard != nil && !stageCompletionMatchesM1(guard.evidence, request.Evidence) {
+			return out, stageCompletionRefusal("verification", "stage_evidence_changed")
+		}
 		prepared := &DeliveryPreparedMutation{tx: tx, authorization: row, request: request, credential: in.Credential, webhook: in.Webhook, before: current, candidate: in.Candidate, mutationDigest: digest, metrics: in.Metrics}
-		return DeliveryPrepareResult{State: DeliveryPrepared, Prepared: prepared}, nil
+		if guard != nil {
+			guard.delivery = prepared
+		}
+		return DeliveryPrepareResult{State: DeliveryPrepared, Prepared: prepared, stage: guard}, nil
 	}
 	// The writer owns normal permissions. An unchanged persisted custom key may
 	// have been archived; only a new requested key needs active-target resolution.
@@ -294,6 +313,10 @@ func PrepareDeliveryMutationInTx(ctx context.Context, tx pgx.Tx, in DeliveryMuta
 	if oldCategory == "done" || targetCategory != "done" {
 		return DeliveryPrepareResult{State: DeliveryNotApplicable}, nil
 	}
+	guard, err := prepareStageMutation(ctx, tx, in, false)
+	if err != nil {
+		return out, err
+	}
 	_, policy, err := LockDeliveryProjectPolicy(ctx, tx, current.WorkspaceID, current.ProjectID)
 	if err != nil {
 		return out, err
@@ -301,7 +324,7 @@ func PrepareDeliveryMutationInTx(ctx context.Context, tx pgx.Tx, in DeliveryMuta
 	if policy.Mode == "enforce" {
 		return out, DeliveryCompletionError{428, "delivery_completion_authorization_required"}
 	}
-	return DeliveryPrepareResult{State: DeliveryNotApplicable}, nil
+	return DeliveryPrepareResult{State: DeliveryNotApplicable, stage: guard}, nil
 }
 func FinishDeliveryMutationInTx(ctx context.Context, tx pgx.Tx, p *DeliveryPreparedMutation, after db.Issue, result DeliveryWriterResult) (out DeliveryCompletionReceipt, err error) {
 	defer func() { err = deliveryCompletionError(err) }()

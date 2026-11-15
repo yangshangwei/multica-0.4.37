@@ -33,10 +33,12 @@ func collaborationError(status int, code string) error {
 }
 
 type CollaborationService struct {
-	Queries   *db.Queries
-	TxStarter TxStarter
-	Issues    *IssueService
-	Storage   storage.Storage
+	// Trusted server construction only. Nil disables stage execution.
+	StageExecutionSources StageExecutionSources
+	Queries               *db.Queries
+	TxStarter             TxStarter
+	Issues                *IssueService
+	Storage               storage.Storage
 	// MemoryMaxBytes is the deployment shared-context limit. Zero (tests and
 	// callers that never touch shared context) means the documented default.
 	MemoryMaxBytes int

@@ -4046,6 +4046,17 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 		return db.Issue{}, current, issueUpdateOutcome{}, err
 	}
 	candidate := issueDeliveryCandidate(current, params)
+	// Stage child admission is decided here, in the actual write transaction
+	// shared by Update, Move and Batch, from the verified actor of this request.
+	var stageActor struct {
+		Type string `json:"type"`
+	}
+	if err = json.Unmarshal(actor, &stageActor); err != nil {
+		return db.Issue{}, current, issueUpdateOutcome{}, err
+	}
+	if err = service.CheckStageChildUpdateInTx(ctx, tx, current, candidate, stageActor.Type == "agent" || credential.Principal.AgentActor); err != nil {
+		return db.Issue{}, current, issueUpdateOutcome{}, err
+	}
 	if completion == nil {
 		if err = service.CheckDeliveryProjectChangeInTx(ctx, tx, current, candidate, credential, projectReason, operationID); err != nil {
 			return db.Issue{}, current, issueUpdateOutcome{}, err
@@ -4058,7 +4069,7 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 			value := params.Position.Float64
 			position = &value
 		}
-		prepared, err = service.PrepareDeliveryMutationInTx(ctx, tx, service.DeliveryMutationIntent{Before: current, Candidate: candidate, Completion: completion, Credential: credential, RequestedPosition: position, AuxiliaryChanges: auxiliaryChanges, Metrics: h.Metrics})
+		prepared, err = service.PrepareDeliveryMutationInTx(ctx, tx, service.DeliveryMutationIntent{Before: current, Candidate: candidate, Completion: completion, Credential: credential, RequestedPosition: position, AuxiliaryChanges: auxiliaryChanges, Metrics: h.Metrics, StageExecutionSources: h.StageExecutionSources})
 		if err != nil {
 			return db.Issue{}, current, issueUpdateOutcome{}, err
 		}
@@ -4136,6 +4147,9 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 			return db.Issue{}, current, issueUpdateOutcome{}, e
 		}
 		outcome.CompletionReceipt = &receipt
+	}
+	if err := service.FinishStageMutationInTx(ctx, tx, prepared, issue, service.DeliveryWriterResult{}); err != nil {
+		return db.Issue{}, current, issueUpdateOutcome{}, err
 	}
 	if err := tx.Commit(ctx); err != nil {
 		return db.Issue{}, current, issueUpdateOutcome{}, &issueUpdateCommitUnknown{cause: err}
@@ -4783,10 +4797,6 @@ func (h *Handler) DeleteIssue(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.TaskService.CancelTasksForIssue(r.Context(), issue.ID)
-	// Fail any linked autopilot runs before delete (ON DELETE SET NULL clears issue_id).
-	_ = h.AutopilotService.FailAutopilotRunsByIssue(r.Context(), issue.ID)
-
 	deleteResult, err := h.deleteIssueAndCollectAttachmentURLs(r, issue, nil)
 	if err != nil {
 		if errors.Is(err, errIssueHasCollaborationChildren) {
@@ -4800,6 +4810,7 @@ func (h *Handler) DeleteIssue(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	h.TaskService.PublishIssueDeletionTaskCancellations(r.Context(), issue.WorkspaceID, deleteResult.CancelledTasks)
 	h.deleteS3Objects(r.Context(), deleteResult.AttachmentURLs)
 	actorType, actorID := deleteResult.ActorType, deleteResult.ActorID
 	// Always emit the resolved UUID — frontend caches key by UUID, so an
@@ -4820,6 +4831,7 @@ func (h *Handler) DeleteIssue(w http.ResponseWriter, r *http.Request) {
 type issueDeleteResult struct {
 	AttachmentURLs   []string
 	DetachedChildren []db.Issue
+	CancelledTasks   []db.AgentTaskQueue
 	ActorType        string
 	ActorID          string
 }
@@ -4915,9 +4927,40 @@ func (h *Handler) deleteIssuesAndCollectAttachmentURLs(r *http.Request, issues [
 	if err != nil {
 		return issueDeleteResult{}, err
 	}
+	// Completion, credential minting and quota writers may hold their rows
+	// before an issue row. Never wait on those intersections while retaining
+	// the deletion's issue locks. A refused/contended delete cancels nothing.
+	if err = qtx.LockIssueDeleteTasks(ctx, db.LockIssueDeleteTasksParams{WorkspaceID: workspaceID, IssueIds: issueIDs}); err != nil {
+		return issueDeleteResult{}, err
+	}
+	if err = qtx.LockIssueDeleteTaskTokens(ctx, db.LockIssueDeleteTaskTokensParams{WorkspaceID: workspaceID, IssueIds: issueIDs}); err != nil {
+		return issueDeleteResult{}, err
+	}
+	if err = qtx.LockIssueDeleteAutopilotRuns(ctx, db.LockIssueDeleteAutopilotRunsParams{WorkspaceID: workspaceID, IssueIds: issueIDs}); err != nil {
+		return issueDeleteResult{}, err
+	}
+	if err = qtx.LockIssueDeleteAutopilotQuotaReservations(ctx, db.LockIssueDeleteAutopilotQuotaReservationsParams{WorkspaceID: workspaceID, IssueIds: issueIDs}); err != nil {
+		return issueDeleteResult{}, err
+	}
+	if err = qtx.LockIssueDeleteAutopilotQuotaPeriods(ctx, db.LockIssueDeleteAutopilotQuotaPeriodsParams{WorkspaceID: workspaceID, IssueIds: issueIDs}); err != nil {
+		return issueDeleteResult{}, err
+	}
 
 	result := issueDeleteResult{ActorType: actorType, ActorID: actorID}
 	for i, issue := range issues {
+		cancelled, err := qtx.CancelAgentTasksByIssue(ctx, issue.ID)
+		if err != nil {
+			return issueDeleteResult{}, fmt.Errorf("cancel deleted issue tasks: %w", err)
+		}
+		result.CancelledTasks = append(result.CancelledTasks, cancelled...)
+		for _, task := range cancelled {
+			if err = qtx.DeleteTaskTokensByTask(ctx, task.ID); err != nil {
+				return issueDeleteResult{}, fmt.Errorf("revoke deleted issue task credentials: %w", err)
+			}
+		}
+		if _, err = qtx.FailAutopilotRunsByIssue(ctx, issue.ID); err != nil {
+			return issueDeleteResult{}, fmt.Errorf("fail deleted issue autopilot runs: %w", err)
+		}
 		detached, err := qtx.DetachDirectChildIssues(ctx, db.DetachDirectChildIssuesParams{
 			WorkspaceID: issue.WorkspaceID, ParentIssueID: issue.ID, ExcludedIssueIds: excludedIssueIDs,
 		})
@@ -5088,6 +5131,8 @@ func batchDeliveryFailure(err error) (int, string, bool) {
 		return 503, "commit_unknown", true
 	case errors.As(err, &delivery):
 		switch delivery.Code {
+		case "stage_proposal_required", "stage_ancestry_unresolved":
+			return delivery.Status, delivery.Code, false
 		case "delivery_completion_authorization_required", "delivery_project_change_denied", "delivery_project_change_reason_required", "delivery_project_change_conflict", "delivery_skip_not_supported":
 			return delivery.Status, delivery.Code, false
 		}
@@ -5760,8 +5805,6 @@ func (h *Handler) BatchDeleteIssues(w http.ResponseWriter, r *http.Request) {
 		seenIssueIDs[issueUUID] = struct{}{}
 		issues = append(issues, issue)
 		excludedIDs = append(excludedIDs, issue.ID)
-		h.TaskService.CancelTasksForIssue(r.Context(), issue.ID)
-		_ = h.AutopilotService.FailAutopilotRunsByIssue(r.Context(), issue.ID)
 	}
 	deleteResult, err := h.deleteIssuesAndCollectAttachmentURLs(r, issues, excludedIDs)
 	if err != nil {
@@ -5776,6 +5819,7 @@ func (h *Handler) BatchDeleteIssues(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "failed to delete issues")
 		return
 	}
+	h.TaskService.PublishIssueDeletionTaskCancellations(r.Context(), wsUUID, deleteResult.CancelledTasks)
 	h.deleteS3Objects(r.Context(), deleteResult.AttachmentURLs)
 	actorType, actorID := deleteResult.ActorType, deleteResult.ActorID
 	for _, issue := range issues {

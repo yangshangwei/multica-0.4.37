@@ -2,6 +2,7 @@ import { z } from "zod";
 import { defaultStorage } from "../platform/storage";
 import type { StorageAdapter } from "../types/storage";
 import { clearCollaborationDeliveryDrafts, retainCollaborationDeliveryScope } from "./delivery-draft";
+import { clearCollaborationStageIntents, retainCollaborationStageIntentScope } from "./stage-intent";
 
 const prefix = "multica_collaboration_draft:";
 const scopeSchema = z.object({ server: z.string(), userId: z.uuid().transform((value) => value.toLowerCase()), issueId: z.uuid().transform((value) => value.toLowerCase()) });
@@ -64,6 +65,7 @@ export function removeCollaborationDraft(draft: CollaborationDraft, storage: Sto
 /** Only object access loss or session teardown clears private pending inputs. */
 export function clearCollaborationDrafts(storage: StorageAdapter = defaultStorage, scope?: CollaborationDraftScope): void {
   clearCollaborationDeliveryDrafts(storage, scope);
+  clearCollaborationStageIntents(storage, scope);
   try {
     const match = scope ? scopePrefix(scope) : prefix;
     for (const key of storage.keys?.() ?? []) if (key.startsWith(match)) storage.removeItem(key);
@@ -74,6 +76,7 @@ export function clearCollaborationDrafts(storage: StorageAdapter = defaultStorag
 /** Endpoint/account changes discard private input from the previous identity. */
 export function retainCollaborationDraftScope(scope: Pick<CollaborationDraftScope, "server" | "userId">, storage: StorageAdapter = defaultStorage): void {
   retainCollaborationDeliveryScope(scope, storage);
+  retainCollaborationStageIntentScope({ server: scope.server, userId: scope.userId }, storage);
   try {
     for (const key of storage.keys?.() ?? []) {
       if (!key.startsWith(prefix)) continue;

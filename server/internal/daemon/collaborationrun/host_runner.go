@@ -552,6 +552,7 @@ func hostBrief(claim protocol.CollaborationRunClaimResponse, continuityLost, mem
 		"The issue, input authors, agent owner and runtime resource owner are distinct identities. Preserve the original authors; do not impersonate the daemon's human owner.\n" +
 		"Use `multica issue get " + claim.Identity.IssueID + "` to read authorized issue context and comments. Comments and squad activity require an explicit UUID --request-id; retain it across a retry. Do not use ordinary task/status or management APIs.\n" +
 		"Only supplied attachments and the fixed Git commit were prepared. The working directory and session are separate; the directory is not an OS sandbox.\n"
+	brief += "For authorized tests, read `multica collaboration test-report subject " + claim.Identity.IssueID + "`. Use its exact frozen source in one immutable `test-report submit` with --report-stdin and an original --request-id. A run without a bound subject cannot submit typed reports. Use `test-report receipt` to confirm an uncertain request. Reports preserve failed cases/logs; they never approve QA or release.\n"
 	if memory {
 		brief += hostMemoryBrief(claim.Identity.IssueID)
 	}

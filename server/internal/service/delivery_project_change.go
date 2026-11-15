@@ -50,6 +50,9 @@ func CheckDeliveryProjectChangeInTx(ctx context.Context, tx pgx.Tx, before, cand
 		policies[id] = policy
 		projects[id] = project
 	}
+	if err = CheckStageProjectChangeInTx(ctx, tx, before, candidate); err != nil {
+		return err
+	}
 	oldPolicy, newPolicy := policies[before.ProjectID], policies[candidate.ProjectID]
 	if oldPolicy.Mode != "enforce" && newPolicy.Mode != "enforce" {
 		return nil

@@ -2674,9 +2674,9 @@ func (s *TaskService) OpenMikaOnboardingChat(ctx context.Context, session db.Cha
 	return &out, nil
 }
 
-// CancelTasksForIssue cancels every active task on the issue, reconciles each
-// affected agent's status, and broadcasts task:cancelled events so frontends
-// clear their live cards.
+// PublishIssueDeletionTaskCancellations publishes only known committed task
+// cancellation rows and reconciles their agents. The owning issue deletion
+// transaction cancels the rows and revokes their task tokens atomically.
 //
 // Callers are explicit issue-lifecycle cleanup paths only — DeleteIssue and
 // BatchDeleteIssues, where the owning issue row is going away so its tasks
@@ -2688,14 +2688,14 @@ func (s *TaskService) OpenMikaOnboardingChat(ctx context.Context, session db.Cha
 // agent stuck at status="working" indefinitely, requiring a manual
 // `multica agent update <id> --status idle` to unwedge. It now reconciles agent
 // status and broadcasts task:cancelled, matching CancelTask and RerunIssue.
-func (s *TaskService) CancelTasksForIssue(ctx context.Context, issueID pgtype.UUID) error {
-	cancelled, err := s.Queries.CancelAgentTasksByIssue(ctx, issueID)
-	if err != nil {
-		return err
-	}
+func (s *TaskService) PublishIssueDeletionTaskCancellations(ctx context.Context, workspaceID pgtype.UUID, cancelled []db.AgentTaskQueue) {
 	for _, t := range cancelled {
-		s.captureTaskCancelled(ctx, t)
-		s.broadcastTaskEvent(ctx, protocol.EventTaskCancelled, t)
+		// Tokens were revoked in the deletion transaction. Record the terminal
+		// metric without a second, post-commit credential mutation.
+		s.captureTaskCompleted(ctx, t)
+		// The issue no longer exists. Use the deletion's already-authorized
+		// workspace instead of trying to resolve it through the removed row.
+		s.publishTaskEvent(protocol.EventTaskCancelled, util.UUIDToString(workspaceID), t)
 	}
 	// Reconcile once per distinct agent instead of once per cancelled row:
 	// cancelling an issue often stops several tasks owned by the same agent,
@@ -2705,7 +2705,6 @@ func (s *TaskService) CancelTasksForIssue(ctx context.Context, issueID pgtype.UU
 		s.ReconcileAgentStatus(ctx, agentID)
 	}
 	s.notifyTasksFinished(cancelled)
-	return nil
 }
 
 // distinctAgentIDs returns each agent id appearing in the cancelled rows once,
@@ -2729,7 +2728,7 @@ func distinctAgentIDs(cancelled []db.AgentTaskQueue) []pgtype.UUID {
 // CancelTasksForAgent cancels every active task belonging to an agent
 // (queued + dispatched + running), reconciles the agent's status, and
 // broadcasts task:cancelled events. Used by the agent-level "Cancel all
-// tasks" action — same shape as CancelTasksForIssue but scoped on agent_id.
+// tasks" action — scoped on agent_id rather than issue-deletion cleanup.
 //
 // Returns the cancelled rows so callers can report counts / log them.
 func (s *TaskService) CancelTasksForAgent(ctx context.Context, agentID pgtype.UUID) ([]db.AgentTaskQueue, error) {
@@ -5954,7 +5953,7 @@ func (s *TaskService) HandleFailedTasks(ctx context.Context, tasks []db.AgentTas
 				effectiveStatus := issuestatus.Effective(ctx, s.Queries, issue.WorkspaceID, issue.Status)
 				if effectiveStatus == "in_progress" && !processedIssues[issueKey] && !retriedIssues[issueKey] {
 					processedIssues[issueKey] = true
-					before, updatedIssue, changed, updateErr := WriteIssueStatus(ctx, s.TxStarter, s.Queries, issue, "todo", "failed_task_reset", resetFailedIssuePolicy, nil)
+					before, updatedIssue, changed, updateErr := WriteIssueStatus(ctx, s.TxStarter, s.Queries, issue, "todo", "failed_task_reset", resetFailedIssuePolicy, nil, nil)
 					if updateErr != nil {
 						slog.Warn("handle failed tasks: reset stuck issue failed", "issue_id", issueKey, "error", updateErr)
 					} else if changed {

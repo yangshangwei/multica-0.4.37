@@ -6,13 +6,15 @@ import { ApiError, errorCode, getApi } from "../api";
 import { useAuthStore } from "../auth";
 import { adminApiScope, adminKeys, AdminUnsupportedError, type AdminScope } from "./queries";
 import { AdminControlUncertainError } from "./operation-queries";
+import { matchesCollaborationCompletionConsumption } from "../collaboration/completion-schema";
+import { readCompletionDrafts, removeCompletionDraft, saveCompletionDraft } from "../issues/completion-draft";
 import {
   readAdminCollaborationDraft, removeAdminControlDraft, saveAdminControlDraft,
   type AdminCollaborationDraft, type AdminCollaborationInput, type AdminControlDraftScope,
 } from "./operation-draft";
 import {
-  AdminCollaborationChangeSchema, matchesAdminCollaborationResult,
-  type AdminCollaborationCandidates, type AdminCollaborationChange, type AdminCollaborationDetail, type AdminCollaborationResult,
+  AdminCollaborationChangeSchema, matchesAdminCollaborationResult, parseAdminCollaborationStageRefusal,
+  type AdminCollaborationCandidates, type AdminCollaborationChange, type AdminCollaborationDetail, type AdminCollaborationResult, type AdminCollaborationStageRefusal,
 } from "./collaboration-schema";
 
 const reads = { retry: false as const, staleTime: 0, gcTime: 0, refetchOnWindowFocus: false };
@@ -22,7 +24,10 @@ export class AdminCollaborationStaleError extends Error {
   constructor() { super("The collaboration confirmation is no longer current"); this.name = "AdminCollaborationStaleError"; }
 }
 export class AdminCollaborationRejectedError extends Error {
-  constructor(readonly response: ApiError) { super(response.message); this.name = "AdminCollaborationRejectedError"; }
+  constructor(readonly response: ApiError, readonly stageRefusal?: AdminCollaborationStageRefusal) { super(response.message); this.name = "AdminCollaborationRejectedError"; }
+}
+export class AdminCollaborationStageUncertainError extends AdminControlUncertainError {
+  constructor(key: string, readonly stageRefusal: AdminCollaborationStageRefusal) { super(key); this.name = "AdminCollaborationStageUncertainError"; }
 }
 function assertScope(scope: AdminScope): void {
   const auth = useAuthStore.getState();
@@ -110,7 +115,19 @@ export function captureAdminCollaborationInput(
     if (!parsed.successorUserId || !candidates.length || candidates.some(page => page.scope !== snapshot.scope || page.issueId !== snapshot.issueId || page.collaborationRevision !== snapshot.collaborationRevision) ||
       !candidates.some(page => page.items.some(candidate => candidate.userId === parsed.successorUserId))) throw new AdminCollaborationStaleError();
   } else if (parsed.successorUserId !== undefined) throw new AdminCollaborationStaleError();
-  return { id: snapshot.issueId, key, action: "collaboration", creatorUserId: snapshot.creator.userId, handlerUserId: snapshot.handler.userId, body: parsed };
+  if (parsed.completion && parsed.completion.operation_id !== key) throw new AdminCollaborationStaleError();
+  return { id: snapshot.issueId, key, action: "collaboration", creatorUserId: snapshot.creator.userId, handlerUserId: snapshot.handler.userId, body: parsed,
+    ...(parsed.completion ? { completionSourceWorkspaceId: snapshot.sourceWorkspaceId } : {}) };
+}
+async function verifyCompletion(scope: AdminScope, input: AdminCollaborationInput, receipt: AdminCollaborationResult): Promise<void> {
+  if (!input.body.completion) return;
+  try {
+    if (!input.completionSourceWorkspaceId) throw new AdminUnsupportedError();
+    const grant = await getApi().getDeliveryCompletionAuthorization(input.body.completion.authorization_id, { workspaceId: input.completionSourceWorkspaceId });
+    assertScope(scope);
+    if (!matchesCollaborationCompletionConsumption(grant, input.body.completion, input.id, input.body.targetStatus, input.body.expectedCollaborationRevision, "admin") ||
+      grant.completion_receipt?.collaboration_revision !== receipt.result.collaborationRevision) throw new AdminUnsupportedError();
+  } catch { throw new AdminUnsupportedError(); }
 }
 function matches(scope: AdminScope, input: AdminCollaborationInput, receipt: AdminCollaborationResult): boolean {
   return receipt.operation.organizationId === scope.organizationId && receipt.operation.actorId === scope.userId &&
@@ -123,6 +140,7 @@ export async function findAdminCollaborationOperation(scope: AdminScope, input: 
     const result = await getApi().getAdminCollaborationOperation(input.id, input.key, { signal });
     assertScope(scope);
     if (!result || !matches(scope, input, result)) throw new AdminUnsupportedError();
+    await verifyCompletion(scope, input, result);
     return result;
   } catch (error) {
     assertScope(scope);
@@ -135,21 +153,34 @@ export async function findAdminCollaborationOperation(scope: AdminScope, input: 
 // request remains uncertain even if a later attempt receives the same refusal.
 const rejectedCodes = new Set(["creator_not_disabled", "successor_required", "successor_forbidden", "successor_unavailable",
   "stale_revision", "stale_status", "stale_source", "status_options_changed", "invalid_lifecycle_request", "invalid_status_request", "invalid_reason",
-  "issue_closed", "issue_not_closed", "status_unavailable"]);
+  "issue_closed", "issue_not_closed", "status_unavailable", "delivery_completion_authorization_required", "delivery_completion_conflict", "delivery_completion_content_changed",
+  "delivery_completion_expiry_invalid", "delivery_completion_consumer_unsupported", "invalid_delivery_completion_request"]);
 export async function submitAdminCollaboration(scope: AdminScope, input: AdminCollaborationInput): Promise<AdminCollaborationResult> {
   assertScope(scope);
   const storageScope = persistentScope(scope);
   const existing = readAdminCollaborationDraft(storageScope, input.id);
   saveAdminControlDraft(storageScope, input);
+  if (input.body.completion && input.completionSourceWorkspaceId) {
+    const owner = { server: getApi().getBaseUrl(), userId: scope.userId, workspaceId: input.completionSourceWorkspaceId, issueId: input.id };
+    const grant = readCompletionDrafts(owner).find((item) => item.authorizationId === input.body.completion?.authorization_id && item.request.operation_id === input.key);
+    if (grant) saveCompletionDraft({ ...grant, submissionDispatched: true });
+  }
   try {
     const result = await getApi().changeAdminCollaborationLifecycle(input.id, input.body, input.key);
     assertScope(scope);
     if (!result || !matches(scope, input, result)) throw new AdminUnsupportedError();
+    await verifyCompletion(scope, input, result);
     return result;
   } catch (error) {
     assertScope(scope);
     if (error instanceof ApiError && [401, 403].includes(error.status)) throw error;
-    if (!existing && error instanceof ApiError && [400, 409].includes(error.status) && rejectedCodes.has(errorCode(error) ?? "")) {
+    const stageRefusal = input.body.action === "complete" && error instanceof ApiError && !error.isStaleAuthResponse ? parseAdminCollaborationStageRefusal(error.body, error.status) : null;
+    if (!existing && stageRefusal && error instanceof ApiError) {
+      try { removeAdminControlDraft(storageScope, input.id, input.key); }
+      catch { throw new AdminCollaborationStageUncertainError(input.key, stageRefusal); }
+      throw new AdminCollaborationRejectedError(new ApiError("Stage evidence is incomplete", error.status, error.statusText, { code: stageRefusal.code }), stageRefusal);
+    }
+    if (!existing && error instanceof ApiError && [400, 409, 428].includes(error.status) && rejectedCodes.has(errorCode(error) ?? "")) {
       try { removeAdminControlDraft(storageScope, input.id, input.key); }
       catch { throw new AdminControlUncertainError(input.key); }
       throw new AdminCollaborationRejectedError(error);
@@ -161,6 +192,7 @@ export async function submitAdminCollaboration(scope: AdminScope, input: AdminCo
       assertScope(scope);
       if (lookupError instanceof ApiError && [401, 403].includes(lookupError.status)) throw lookupError;
     }
+    if (stageRefusal) throw new AdminCollaborationStageUncertainError(input.key, stageRefusal);
     throw new AdminControlUncertainError(input.key);
   }
 }
@@ -168,6 +200,11 @@ export function dismissAdminCollaborationReceipt(scope: AdminScope, input: Admin
   assertScope(scope);
   if (!matches(scope, input, receipt)) throw new AdminUnsupportedError();
   removeAdminControlDraft(persistentScope(scope), input.id, input.key);
+  if (input.body.completion && input.completionSourceWorkspaceId) {
+    const owner = { server: getApi().getBaseUrl(), userId: scope.userId, workspaceId: input.completionSourceWorkspaceId, issueId: input.id };
+    const grant = readCompletionDrafts(owner).find((item) => item.authorizationId === input.body.completion?.authorization_id && item.request.operation_id === input.key);
+    if (grant) removeCompletionDraft(grant);
+  }
 }
 export function adminCollaborationOperationOptions(scope: AdminScope, input: AdminCollaborationInput | null) {
   return queryOptions({

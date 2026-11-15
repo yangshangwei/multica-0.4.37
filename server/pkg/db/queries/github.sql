@@ -102,6 +102,7 @@ SELECT * FROM github_pending_installation WHERE installation_id = $1
 --      mergeability, and silently clobbering a known clean/dirty would lose
 --      information that GitHub only re-computes lazily.
 -- INSERT path always writes the incoming value (NULL acceptable for a new row).
+WITH applied AS (
 INSERT INTO github_pull_request (
     workspace_id, installation_id, repo_owner, repo_name, pr_number,
     title, state, html_url, branch, author_login, author_avatar_url,
@@ -127,6 +128,7 @@ ON CONFLICT (workspace_id, repo_owner, repo_name, pr_number) DO UPDATE SET
     closed_at = EXCLUDED.closed_at,
     pr_updated_at = EXCLUDED.pr_updated_at,
     head_sha = EXCLUDED.head_sha,
+    snapshot_complete = CASE WHEN github_pull_request.head_sha <> EXCLUDED.head_sha THEN FALSE ELSE github_pull_request.snapshot_complete END,
     mergeable_state = CASE
         WHEN COALESCE(sqlc.narg('clear_mergeable_state')::boolean, FALSE) THEN NULL
         WHEN EXCLUDED.mergeable_state IS NOT NULL THEN EXCLUDED.mergeable_state
@@ -136,7 +138,18 @@ ON CONFLICT (workspace_id, repo_owner, repo_name, pr_number) DO UPDATE SET
     deletions     = EXCLUDED.deletions,
     changed_files = EXCLUDED.changed_files,
     updated_at = now()
-RETURNING *;
+WHERE EXCLUDED.pr_updated_at > github_pull_request.pr_updated_at
+ OR (EXCLUDED.pr_updated_at = github_pull_request.pr_updated_at AND EXCLUDED.head_sha = github_pull_request.head_sha)
+RETURNING *
+), invalidated AS (
+ -- Equal timestamps cannot order different heads. Invalidate strict CI in
+ -- this same statement, while returning no admitted row to the caller.
+ UPDATE github_pull_request SET snapshot_complete=false
+ WHERE workspace_id=$1 AND repo_owner=$3 AND repo_name=$4 AND pr_number=$5
+  AND pr_updated_at=$10 AND head_sha<>$11 AND NOT EXISTS (SELECT 1 FROM applied)
+ RETURNING id
+)
+SELECT * FROM applied;
 
 -- name: GetGitHubPullRequest :one
 SELECT * FROM github_pull_request
@@ -293,3 +306,20 @@ ON CONFLICT (issue_id, pull_request_id) DO UPDATE SET
 -- name: UnlinkIssueFromPullRequest :exec
 DELETE FROM issue_pull_request
 WHERE issue_id = $1 AND pull_request_id = $2;
+
+-- A webhook may win the mirror upsert and then lose to a newer observation
+-- before deriving links. Fence its exact source row in the link transaction.
+-- Manual linking retains LinkIssueToPullRequest's existing contract.
+-- name: LinkIssueToObservedGitHubPullRequest :execrows
+WITH current_pr AS MATERIALIZED (
+ SELECT id FROM github_pull_request
+ WHERE id=sqlc.arg(pull_request_id)::uuid AND workspace_id=sqlc.arg(workspace_id)::uuid
+ AND head_sha=sqlc.arg(head_sha)::text AND pr_updated_at=sqlc.arg(pr_updated_at)::timestamptz
+ FOR SHARE
+)
+INSERT INTO issue_pull_request (issue_id,pull_request_id,linked_by_type,linked_by_id,close_intent,reference_only)
+SELECT sqlc.arg(issue_id)::uuid,id,sqlc.narg(linked_by_type)::text,sqlc.narg(linked_by_id)::uuid,
+ sqlc.arg(close_intent)::boolean,sqlc.arg(reference_only)::boolean FROM current_pr
+ON CONFLICT (issue_id,pull_request_id) DO UPDATE SET
+ close_intent=CASE WHEN sqlc.arg(preserve_close_intent)::boolean THEN issue_pull_request.close_intent ELSE EXCLUDED.close_intent END,
+ reference_only=CASE WHEN sqlc.arg(preserve_close_intent)::boolean THEN issue_pull_request.reference_only ELSE EXCLUDED.reference_only END;

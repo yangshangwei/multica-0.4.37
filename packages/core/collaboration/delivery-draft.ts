@@ -5,6 +5,7 @@ import { CollaborationCreationInputSchema, CollaborationCreationFieldsSchema } f
 import { CollaborationAttachmentSelectionSchema, collaborationAttachmentIds } from "./attachment-schema";
 import { CollaborationAccountSummarySchema } from "./schema";
 import { CollaborationAIPolicySchema } from "./delivery-schema";
+import { CollaborationTestSubjectSchema } from "./stage-test-subject-schema";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const prefix = "multica_collaboration_delivery:";
@@ -22,12 +23,13 @@ export const CollaborationDeliveryFormSchema = z.strictObject({
   recipientQuery: z.string().max(1000),
   recipient: CollaborationAccountSummarySchema.nullable(), selectedAttachmentIds: collaborationAttachmentIds,
   parentCommentId: uuid.nullable().optional(),
+  testSubject: CollaborationTestSubjectSchema.optional(),
   // A mutable form retains an unfinished numeric value; immutable requests
   // still use the stricter creation schema before any transport begins.
   initialFields: CollaborationCreationFieldsSchema.safeExtend({ stage: z.number().nullable().optional() }).optional(),
 }).refine((form) => (form.purpose === "creation") === (form.scope.context.kind === "creation") && (form.parentCommentId == null || form.purpose === "comment") &&
   (form.basis === undefined || form.purpose === "result") && (form.sourceCommentId == null || form.purpose === "result") &&
-  (form.aiPolicy === undefined || form.purpose === "creation"));
+  (form.aiPolicy === undefined || form.purpose === "creation") && (form.testSubject === undefined || form.purpose === "comment"));
 const fileSchema = z.strictObject({ name: z.string().min(1), type: z.string(), size: z.number().int().nonnegative().max(104857600), sha256: z.string().regex(/^[a-f0-9]{64}$/) });
 export const CollaborationUploadDraftSchema = z.strictObject({ ...base, kind: z.literal("upload"), requestId: uuid, file: fileSchema });
 export const CollaborationCreationDraftSchema = z.strictObject({ ...base, kind: z.literal("creation"), requestId: uuid, input: CollaborationCreationInputSchema.nullable() })

@@ -70,11 +70,14 @@ type collaborationAcceptanceReturnBody struct {
 }
 
 type collaborationOperationResponse struct {
-	Code                  string                                     `json:"code"`
-	CollaborationRevision string                                     `json:"collaboration_revision"`
-	StatusOptions         *service.CollaborationStatusOptions        `json:"status_options,omitempty"`
-	DeliveryConfirmation  *service.CollaborationDeliveryConfirmation `json:"delivery_confirmation,omitempty"`
-	Status                int                                        `json:"status,omitempty"`
+	StageBlockers          []service.CollaborationStageBlocker        `json:"stage_blockers,omitempty"`
+	StageBlockersTruncated *bool                                      `json:"stage_blockers_truncated,omitempty"`
+	Code                   string                                     `json:"code"`
+	CollaborationRevision  string                                     `json:"collaboration_revision"`
+	StatusOptions          *service.CollaborationStatusOptions        `json:"status_options,omitempty"`
+	DeliveryConfirmation   *service.CollaborationDeliveryConfirmation `json:"delivery_confirmation,omitempty"`
+	StageConfirmation      *service.CollaborationStageConfirmation    `json:"stage_confirmation,omitempty"`
+	Status                 int                                        `json:"status,omitempty"`
 }
 
 func collaborationResultSelection(w http.ResponseWriter, body collaborationResultBody) (*pgtype.UUID, []pgtype.UUID, *pgtype.UUID, bool) {
@@ -128,6 +131,10 @@ func decodeCollaborationWorkflowBodyLimit(w http.ResponseWriter, r *http.Request
 	}
 	// Reuse the strict object validator: duplicate keys and trailing JSON must
 	// not give the version/idempotency digest a different meaning to a caller.
+	if _, createComment := target.(*collaborationCreateCommentBody); createComment && !validCreateCommentTestSubject(raw) {
+		writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_test_subject", "error": "Invalid test subject"})
+		return false
+	}
 	decoder := json.NewDecoder(bytes.NewReader(raw))
 	decoder.DisallowUnknownFields()
 	if iteration.ValidateObjectJSON(raw) != nil || decoder.Decode(target) != nil {
@@ -228,7 +235,7 @@ func (h *Handler) mutateCollaborationParticipants(w http.ResponseWriter, r *http
 	if !ok {
 		return
 	}
-	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	svc := h.stageService()
 	var receipt service.CollaborationWorkflowReceipt
 	var err error
 	if action == "leave" {
@@ -273,7 +280,7 @@ func (h *Handler) ReturnCollaborationInformation(w http.ResponseWriter, r *http.
 	if !ok {
 		return
 	}
-	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	svc := h.stageService()
 	receipt, err := svc.ReturnInformation(r.Context(), service.CollaborationInformationReturnParams{CollaborationWorkflowRequest: request,
 		InformationRequestID: requestID, ExpectedStatus: body.ExpectedStatus, StatusOptionsVersion: body.StatusOptionsVersion, Note: body.Note})
 	writeCollaborationWorkflowResponse(w, receipt, err)
@@ -296,7 +303,7 @@ func (h *Handler) SubmitCollaborationAcceptance(w http.ResponseWriter, r *http.R
 	if !ok {
 		return
 	}
-	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	svc := h.stageService()
 	receipt, err := svc.SubmitAcceptance(r.Context(), service.CollaborationAcceptanceParams{CollaborationWorkflowRequest: request,
 		ExpectedStatus: body.ExpectedStatus, StatusOptionsVersion: body.StatusOptionsVersion, Note: body.Note, Basis: body.Basis,
 		DraftID: draft, AttachmentIDs: attachments, SourceCommentID: comment})
@@ -321,7 +328,7 @@ func (h *Handler) ReturnCollaborationAcceptance(w http.ResponseWriter, r *http.R
 	if !ok {
 		return
 	}
-	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	svc := h.stageService()
 	receipt, err := svc.ReturnAcceptance(r.Context(), service.CollaborationAcceptanceReturnParams{CollaborationWorkflowRequest: request,
 		SubmissionID: submission, TargetUserID: target, Note: body.Note, ExpectedStatus: body.ExpectedStatus, StatusOptionsVersion: body.StatusOptionsVersion})
 	writeCollaborationWorkflowResponse(w, receipt, err)
@@ -349,7 +356,7 @@ func (h *Handler) ListCollaborationAcceptanceSubmissions(w http.ResponseWriter, 
 		query.Limit = value
 	}
 	query.Cursor = r.URL.Query().Get("cursor")
-	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	svc := h.stageService()
 	page, err := svc.ListAcceptanceSubmissions(r.Context(), id, query)
 	if err != nil {
 		writeCollaborationError(w, err)
@@ -367,6 +374,10 @@ func writeCollaborationWorkflowResponse(w http.ResponseWriter, receipt service.C
 			// status lets clients settle it as final instead of an unknown result.
 			body := map[string]any{"code": receipt.Code, "error": receipt.Code, "status": receipt.Status,
 				"collaboration_revision": strconv.FormatInt(receipt.CollaborationRevision, 10)}
+			if len(receipt.StageBlockers) > 0 {
+				body["stage_blockers"] = receipt.StageBlockers
+				body["stage_blockers_truncated"] = receipt.StageBlockersTruncated
+			}
 			if receipt.StatusOptions != nil {
 				body["status_options"] = receipt.StatusOptions
 			}
@@ -377,7 +388,7 @@ func writeCollaborationWorkflowResponse(w http.ResponseWriter, receipt service.C
 		return
 	}
 	writeJSON(w, receipt.Status, collaborationOperationResponse{Code: receipt.Code, CollaborationRevision: strconv.FormatInt(receipt.CollaborationRevision, 10), StatusOptions: receipt.StatusOptions,
-		DeliveryConfirmation: receipt.DeliveryConfirmation})
+		DeliveryConfirmation: receipt.DeliveryConfirmation, StageConfirmation: receipt.StageConfirmation, StageBlockers: receipt.StageBlockers, StageBlockersTruncated: receipt.StageBlockersTruncated})
 }
 
 func (h *Handler) GetCollaborationOperation(w http.ResponseWriter, r *http.Request) {
@@ -388,13 +399,14 @@ func (h *Handler) GetCollaborationOperation(w http.ResponseWriter, r *http.Reque
 	if !ok {
 		return
 	}
-	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	svc := h.stageService()
 	receipt, err := svc.GetWorkflowOperation(r.Context(), id, chi.URLParam(r, "requestId"))
 	if err != nil {
 		writeCollaborationError(w, err)
 		return
 	}
-	out := collaborationOperationResponse{Code: receipt.Code, CollaborationRevision: strconv.FormatInt(receipt.CollaborationRevision, 10), DeliveryConfirmation: receipt.DeliveryConfirmation}
+	out := collaborationOperationResponse{Code: receipt.Code, CollaborationRevision: strconv.FormatInt(receipt.CollaborationRevision, 10), DeliveryConfirmation: receipt.DeliveryConfirmation,
+		StageConfirmation: receipt.StageConfirmation, StageBlockers: receipt.StageBlockers, StageBlockersTruncated: receipt.StageBlockersTruncated}
 	if receipt.Status >= 400 {
 		out.Status = receipt.Status
 	}

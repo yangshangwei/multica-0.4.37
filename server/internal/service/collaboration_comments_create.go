@@ -9,11 +9,15 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 // CreateComment is the sole human comment/input transaction. A domain refusal
 // belongs to its target; a database failure rolls back the entire operation.
 func (s *CollaborationService) CreateComment(ctx context.Context, p CollaborationCreateCommentParams) (CollaborationCommentReceipt, error) {
+	if p.TestSubject != nil && (protocol.ValidateCollaborationTestSubjectRef(*p.TestSubject) != nil || p.ExecutionViewVersion != 6 || p.ExpectedLifecycleEpoch < 1 || p.ExpectedParticipantEpoch < 1 || p.ExpectedAccountEpoch < 1) {
+		return CollaborationCommentReceipt{}, collaborationError(400, "invalid_test_subject")
+	}
 	if err := validateCollaborationCommentInput(p.CollaborationCommentInput); err != nil {
 		return CollaborationCommentReceipt{}, err
 	}
@@ -31,6 +35,10 @@ func (s *CollaborationService) CreateComment(ctx context.Context, p Collaboratio
 		versions[version.TargetID] = version
 	}
 	return s.mutateCollaborationContent(ctx, p.IssueID, p.RequestID, "create_comment", p, func(t *collaborationContentTx) (CollaborationCommentReceipt, error) {
+		boundSubject, err := s.validateCommentTestSubject(ctx, t, p)
+		if err != nil {
+			return CollaborationCommentReceipt{}, err
+		}
 		if err := validateCollaborationCommentParent(ctx, t.q, t.access, p.ParentID); err != nil {
 			return CollaborationCommentReceipt{}, err
 		}
@@ -108,11 +116,21 @@ func (s *CollaborationService) CreateComment(ctx context.Context, p Collaboratio
 			if !queued.CommandID.Valid || queued.CommandSequence < 1 || !queued.ChannelID.Valid || !queued.BatchID.Valid {
 				return CollaborationCommentReceipt{}, invalidCollaborationLedger("comment append returned no input or batch")
 			}
+			if err = bindCommentTestSubject(ctx, t, queued.CommandID, boundSubject); err != nil {
+				return CollaborationCommentReceipt{}, err
+			}
 			item.Code, item.CommandID, item.CommandSequence = queued.Code, queued.CommandID, queued.CommandSequence
 			item.ChannelID, item.BatchID = queued.ChannelID, queued.BatchID
 			if queued.Code == "command_joined_squad" {
 				item.GroupID = queued.GroupID
 				item.WaitingReason = "joined_squad"
+			}
+		}
+		if boundSubject != nil {
+			// Appending targets may wait on additional runtime/resource locks.
+			// Recheck the original approval at the final comment write boundary.
+			if _, err := s.validateCommentTestSubject(ctx, t, p); err != nil {
+				return CollaborationCommentReceipt{}, err
 			}
 		}
 		receipt.Targets = targets

@@ -5,6 +5,7 @@ import { CollaborationExecutionViewVersionSchema, CollaborationTargetHoldReasonS
 import { positiveVersion } from "./version";
 import { collaborationAttachmentIds } from "./attachment-schema";
 import { collaborationTextByteLength } from "./text-limits";
+import { CollaborationTestSubjectSchema } from "./stage-test-subject-schema";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const timestamp = z.iso.datetime({ offset: true });
@@ -143,7 +144,9 @@ export const CollaborationCommentInputSchema = z.object({
   expected_lifecycle_epoch: positiveVersion,
   expected_participant_epoch: positiveVersion.nullable(), expected_account_epoch: positiveVersion.nullable(),
   target_versions: z.array(z.object({ target_id: uuid, expected_target_epoch: positiveVersion, expected_config_version: positiveVersion })),
-});
+  test_subject: CollaborationTestSubjectSchema.optional(),
+}).refine((input) => input.test_subject === undefined || input.execution_view_version === 6 && input.expected_participant_epoch !== null &&
+  input.expected_account_epoch !== null && input.target_versions.length > 0);
 export type CollaborationCommentInput = z.infer<typeof CollaborationCommentInputSchema>;
 export interface CollaborationPreviewInput { content: string; parent_id: string | null; suppressed_target_ids: string[]; draft_id?: string; attachment_ids?: string[]; execution_view_version?: 6 }
 

@@ -8,7 +8,7 @@ import { issueKeys } from "./queries";
 import { invalidateIssueOwnerProjections, reconcileIssueFullSnapshotRevision } from "./ws-updaters";
 import { assertCompletionScope, completionDraftScope, completionOutcome, isCompletionScopeCurrent, validateCompletionPreview, type CompletionResult, type CompletionScope } from "./completion";
 import { CompletionDraftError, readCompletionDrafts, removeCompletionDraft, saveCompletionDraft, type CompletionDraft } from "./completion-draft";
-import { CompletionAuthorizationRequestSchema, completionReason, matchesCompletionAuthorization, type CompletionAuthorization, type CompletionPreview, type CompletionPreviewInput } from "./completion-schema";
+import { CompletionAuthorizationRequestSchema, OrdinaryCompletionAuthorizationRequestSchema, completionReason, matchesCompletionAuthorization, type CompletionAuthorizationRequest, type CompletionAuthorization, type CompletionPreview, type CompletionPreviewInput } from "./completion-schema";
 
 export type CompletionActionOptions = ApiRequestOptions & { storage?: StorageAdapter };
 export const completionKeys = {
@@ -86,6 +86,8 @@ function acceptAuthorization(scope: CompletionScope, draft: CompletionDraft, aut
   return { ...baseResult(updated), ...completionOutcome(updated, authorization), authorization };
 }
 async function withCurrentIssue(scope: CompletionScope, result: CompletionResult, options?: CompletionActionOptions): Promise<CompletionResult> {
+  // Collaboration keeps its own protected issue reader and completion writer.
+  if (result.draft.request.target.kind !== "ordinary") return result;
   try {
     const issue = await getApi().getDeliveryCompletionIssue(scope.issueId, requestOptions(scope, options));
     assertCompletionScope(scope, options?.signal);
@@ -115,8 +117,21 @@ export function authorizeIssueCompletion(scope: CompletionScope, preview: Comple
   return singleFlight(scope, JSON.stringify(["authorize", preview, input]), async () => {
     assertCompletionScope(scope, options?.signal);
     const reviewed = validateCompletionPreview(scope, preview, input.expiresAt);
+    const request = OrdinaryCompletionAuthorizationRequestSchema.parse({ ...reviewed.authorization_binding, operation_id: crypto.randomUUID(), reason: input.reason, expires_at: input.expiresAt });
+    return dispatchCompletionAuthorization(scope, request, options);
+  });
+}
+
+/** The common M1 authorizer preserves one reviewed request; target-specific preview owners validate their observations first. */
+export function authorizeCompletionRequest(scope: CompletionScope, input: CompletionAuthorizationRequest, options?: CompletionActionOptions): Promise<CompletionResult> {
+  const request = CompletionAuthorizationRequestSchema.parse(input);
+  if (request.source_workspace_id !== scope.workspaceId || request.target.issue_id !== scope.issueId || request.consumer.user_id !== scope.userId || Date.parse(request.expires_at) <= Date.now()) throw new Error("Completion request does not match its current scope");
+  return singleFlight(scope, JSON.stringify(["authorize", request]), () => dispatchCompletionAuthorization(scope, request, options));
+}
+
+async function dispatchCompletionAuthorization(scope: CompletionScope, request: CompletionAuthorizationRequest, options?: CompletionActionOptions): Promise<CompletionResult> {
+    assertCompletionScope(scope, options?.signal);
     if (readCompletionDrafts(scope, options?.storage).length) throw new Error("Recover the original completion operation first");
-    const request = CompletionAuthorizationRequestSchema.parse({ ...reviewed.authorization_binding, operation_id: crypto.randomUUID(), reason: input.reason, expires_at: input.expiresAt });
     const draft: CompletionDraft = { version: 1, scope: completionDraftScope(scope), requestKey: crypto.randomUUID(), request, createdAt: Date.now(), creationDispatched: true, authorizationId: null, submissionDispatched: false, revocation: null };
     saveCompletionDraft(draft, options?.storage);
     assertCompletionScope(scope, options?.signal);
@@ -129,7 +144,7 @@ export function authorizeIssueCompletion(scope: CompletionScope, preview: Comple
       assertCompletionScope(scope, options?.signal);
       return failureResult(draft, error, false);
     }
-  });
+
 }
 
 export function recoverIssueCompletion(scope: CompletionScope, draft: CompletionDraft, options?: CompletionActionOptions): Promise<CompletionResult> {
@@ -137,6 +152,7 @@ export function recoverIssueCompletion(scope: CompletionScope, draft: Completion
 }
 
 export function submitIssueCompletion(scope: CompletionScope, input: CompletionDraft, options?: CompletionActionOptions): Promise<CompletionResult> {
+  if (input.request.target.kind !== "ordinary") return Promise.reject(new Error("Collaboration completion requires its original workflow writer"));
   return singleFlight(scope, `submit:${input.requestKey}`, async () => {
     assertCompletionScope(scope, options?.signal);
     let draft = loadDraft(scope, input, options);

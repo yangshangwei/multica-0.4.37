@@ -1,17 +1,59 @@
 package handler
 
 import (
+	"bytes"
+	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/multica-ai/multica/server/internal/service"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
+
+// Classify the create-only extension before the generic workflow decoder
+// rejects duplicate fields. Unrelated malformed JSON keeps its old error.
+func validCreateCommentTestSubject(raw []byte) bool {
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	open, err := decoder.Token()
+	if err != nil || open != json.Delim('{') {
+		return true
+	}
+	seen := false
+	for decoder.More() {
+		key, err := decoder.Token()
+		if err != nil {
+			return true
+		}
+		name, ok := key.(string)
+		if !ok {
+			return true
+		}
+		var value json.RawMessage
+		if decoder.Decode(&value) != nil {
+			return true
+		}
+		if !strings.EqualFold(name, "test_subject") {
+			continue
+		}
+		if name != "test_subject" || seen {
+			return false
+		}
+		seen = true
+		var subject protocol.CollaborationTestSubjectRef
+		if json.Unmarshal(value, &subject) != nil || protocol.ValidateCollaborationTestSubjectRef(subject) != nil {
+			return false
+		}
+	}
+	return true
+}
 
 type collaborationCreateCommentBody struct {
 	collaborationCommentInputBody
-	ExpectedLifecycleEpoch   string  `json:"expected_lifecycle_epoch"`
-	ExpectedParticipantEpoch *string `json:"expected_participant_epoch"`
-	ExpectedAccountEpoch     *string `json:"expected_account_epoch"`
+	ExpectedLifecycleEpoch   string          `json:"expected_lifecycle_epoch"`
+	ExpectedParticipantEpoch *string         `json:"expected_participant_epoch"`
+	ExpectedAccountEpoch     *string         `json:"expected_account_epoch"`
+	TestSubject              json.RawMessage `json:"test_subject,omitempty"`
 	TargetVersions           []struct {
 		TargetID              string `json:"target_id"`
 		ExpectedTargetEpoch   string `json:"expected_target_epoch"`
@@ -40,6 +82,14 @@ func (h *Handler) CreateCollaborationComment(w http.ResponseWriter, r *http.Requ
 	p := service.CollaborationCreateCommentParams{CollaborationCommentInput: input,
 		CollaborationQueueRequest: service.CollaborationQueueRequest{IssueID: issue, RequestID: r.Header.Get("Idempotency-Key"), ExecutionViewVersion: viewVersion},
 		TargetVersions:            make([]service.CollaborationCommentTargetVersion, 0, len(body.TargetVersions))}
+	if body.TestSubject != nil {
+		var subject protocol.CollaborationTestSubjectRef
+		if json.Unmarshal(body.TestSubject, &subject) != nil || protocol.ValidateCollaborationTestSubjectRef(subject) != nil {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_test_subject", "error": "Invalid test subject"})
+			return
+		}
+		p.TestSubject = &subject
+	}
 	for _, version := range []struct {
 		value *string
 		out   *int64

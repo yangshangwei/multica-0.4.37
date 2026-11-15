@@ -231,7 +231,7 @@ func TestCollaborationEditStaleVersionsAndExactRecovery(t *testing.T) {
 		t.Fatalf("large edit revision: %+v %v", r, err)
 	}
 	replay, err := f.svc.EditIssue(f.ctx, valid)
-	if err != nil || replay != r {
+	if err != nil || !reflect.DeepEqual(replay, r) {
 		t.Fatalf("same request changed result: %+v %v", replay, err)
 	}
 	encoded, err := json.Marshal(replay)
@@ -289,7 +289,7 @@ func TestCollaborationEditConcurrentIdentityAndRevision(t *testing.T) {
 		close(start)
 		wg.Wait()
 		a, b := <-results, <-results
-		if sameKey && (a.err != nil || b.err != nil || a.receipt != b.receipt) {
+		if sameKey && (a.err != nil || b.err != nil || !reflect.DeepEqual(a.receipt, b.receipt)) {
 			t.Fatalf("same key: %+v %+v", a, b)
 		}
 		if !sameKey && ((a.err == nil) == (b.err == nil) || (a.err != nil && !collaborationErrorCode(a.err, "stale_revision")) || (b.err != nil && !collaborationErrorCode(b.err, "stale_revision"))) {

@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY collaboration_stage_execution_observation_native_idx ON collaboration_stage_execution_observation (intent_id, origin, native_id, native_version);

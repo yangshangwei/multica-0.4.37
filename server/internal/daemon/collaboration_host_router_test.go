@@ -27,8 +27,18 @@ const collaborationHostRouterHarnessArg = "__multica_collaboration_host_router_p
 type collaborationHostRouterInput struct {
 	collaborationRouterHarnessInput
 	RuntimeConfigEpoch string
-	AgentTimeoutMS     json.RawMessage `json:"agent_timeout_ms,omitempty"`
-	HoldReceiptACKs    bool            `json:"hold_receipt_acks,omitempty"`
+	AgentTimeoutMS     json.RawMessage                 `json:"agent_timeout_ms,omitempty"`
+	HoldReceiptACKs    bool                            `json:"hold_receipt_acks,omitempty"`
+	Git                *collaborationrun.HostGitConfig `json:"git,omitempty"`
+}
+
+func (input collaborationHostRouterInput) hostConfiguration() (*collaborationrun.HostConfig, error) {
+	config := &collaborationrun.HostConfig{Provider: "claude", ProviderVersion: "fixture-1", ProviderMode: "local", AccountSource: "test-owned-empty-account", Git: input.Git,
+		Limits: protocol.CollaborationPreparationLimits{FileCount: 32, PerFileBytes: 100 << 20, TotalInputBytes: 256 << 20, WorkspaceBytes: 512 << 20, GitExpandedBytes: 256 << 20, EntryCount: 65536, TimeoutSeconds: 600}}
+	if err := config.Validate(); err != nil {
+		return nil, fmt.Errorf("host fixture configuration is unsupported")
+	}
+	return config, nil
 }
 
 func (input collaborationHostRouterInput) executionTimeout() (time.Duration, error) {
@@ -151,6 +161,10 @@ func runCollaborationHostRouterHarness() error {
 	if err != nil {
 		return err
 	}
+	host, err := input.hostConfiguration()
+	if err != nil {
+		return err
+	}
 	for _, id := range []string{input.DeploymentID, input.InstallationID, input.WorkspaceID, input.RuntimeID, input.DaemonID} {
 		if !managedUUID.MatchString(id) {
 			return fmt.Errorf("host fixture requires issued runtime identities")
@@ -171,9 +185,7 @@ func runCollaborationHostRouterHarness() error {
 		RuntimeID: input.RuntimeID, CLIExecutable: input.CLIExecutable,
 		LedgerDirectory:    filepath.Join(parent, "collaboration-runs", input.InstallationID),
 		WorkspaceDirectory: filepath.Join(input.Directory, "collaboration-work"), ExpectedRuntimeConfigEpoch: input.RuntimeConfigEpoch,
-		Host: &collaborationrun.HostConfig{Provider: "claude", ProviderVersion: "fixture-1", ProviderMode: "local", AccountSource: "test-owned-empty-account",
-			Limits: protocol.CollaborationPreparationLimits{FileCount: 32, PerFileBytes: 100 << 20, TotalInputBytes: 256 << 20,
-				WorkspaceBytes: 512 << 20, GitExpandedBytes: 256 << 20, EntryCount: 65536, TimeoutSeconds: 600}},
+		Host: host,
 	}
 	d := New(Config{ServerBaseURL: input.ServerURL, DaemonID: input.DaemonID, CLIVersion: "0.4.40-test", WorkspacesRoot: filepath.Join(input.Directory, "ordinary-work"),
 		Agents: map[string]AgentEntry{"claude": {Path: input.Executable}}, MaxConcurrentTasks: 1, PollInterval: 50 * time.Millisecond,
@@ -211,10 +223,14 @@ func runCollaborationHostRouterHarness() error {
 	if err != nil {
 		return fmt.Errorf("host fixture capability registration was refused: %w", err)
 	}
-	if err := json.NewEncoder(os.Stdout).Encode(map[string]any{"ready": true, "protocol_version": identity.ProtocolVersion,
+	ready := map[string]any{"ready": true, "protocol_version": identity.ProtocolVersion,
 		"execution_mode": identity.Containment, "preparation_version": capabilities.PreparationVersion,
 		"runtime_config_epoch": registration.RuntimeConfigEpoch, "max_concurrent_tasks": 1, "os": runtime.GOOS, "arch": runtime.GOARCH,
-		"agent_timeout_ms": agentTimeout.Milliseconds(), "hold_receipt_acks": input.HoldReceiptACKs}); err != nil {
+		"agent_timeout_ms": agentTimeout.Milliseconds(), "hold_receipt_acks": input.HoldReceiptACKs}
+	if capabilities.Git != nil {
+		ready["git"] = capabilities.Git
+	}
+	if err := json.NewEncoder(os.Stdout).Encode(ready); err != nil {
 		return err
 	}
 	if os.Getenv("COLLABORATION_HOST_READY_ONLY") == "1" {

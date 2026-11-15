@@ -7,6 +7,7 @@ import { CollaborationCommentInputSchema, matchesCollaborationCommentAttachments
 import { collaborationKeys, CollaborationUnavailableError, isCollaborationDenied, protectCollaborationRead, type CollaborationScope } from "./access";
 import { clearCollaborationDrafts, removeCollaborationDraft, saveCollaborationDraft, type CollaborationDraft } from "./draft";
 import { finishCollaborationDeliveryDraft, readCollaborationDeliveryRecords } from "./delivery-draft";
+import type { CollaborationTestSubject } from "./stage-test-subject-schema";
 
 const payload = z.strictObject({ domain: z.literal("create_comment"), input: CollaborationCommentInputSchema, deliveryDraftId: z.uuid().optional() });
 export function parseCollaborationCommentDraft(draft: CollaborationDraft) {
@@ -14,9 +15,10 @@ export function parseCollaborationCommentDraft(draft: CollaborationDraft) {
   if (draft.kind !== "comment" || !parsed.success) throw new CollaborationUnavailableError();
   return parsed.data.input;
 }
-export function prepareCollaborationComment(scope: CollaborationScope, issueId: string, requestId: string, content: string, suppressed: string[], preview: CollaborationTriggerPreview, attachments?: { draftId?: string; attachmentIds: string[] }, parentId: string | null = null): CollaborationDraft {
+export function prepareCollaborationComment(scope: CollaborationScope, issueId: string, requestId: string, content: string, suppressed: string[], preview: CollaborationTriggerPreview, attachments?: { draftId?: string; attachmentIds: string[] }, parentId: string | null = null, testSubject?: CollaborationTestSubject): CollaborationDraft {
   if (preview.issue_id !== issueId.toLowerCase() || !z.uuid().safeParse(requestId).success) throw new CollaborationUnavailableError();
   const input = CollaborationCommentInputSchema.parse({ content, parent_id: parentId, suppressed_target_ids: suppressed,
+    ...(testSubject === undefined ? {} : { test_subject: testSubject }),
     ...(preview.execution_view_version === undefined ? {} : { execution_view_version: preview.execution_view_version }),
     ...(attachments?.attachmentIds.length ? { ...(attachments.draftId ? { draft_id: attachments.draftId } : {}), attachment_ids: attachments.attachmentIds } : {}),
     expected_lifecycle_epoch: preview.lifecycle_epoch, expected_participant_epoch: preview.write_context?.participant_epoch ?? null,

@@ -1,9 +1,11 @@
 import { z } from "zod";
+import type { DeliveryCompletionBinding } from "../types";
 import { parseWithFallback } from "../api/schema";
 import { isReservedSlug } from "../paths/reserved-slugs";
 import type { IssuePriority } from "../types/issue";
 import { ISSUE_PROPERTY_TYPES, parseActorRef, type IssuePropertyValue } from "../types/property";
 import { CollaborationExecutionSchema } from "./execution-schema";
+import { CollaborationStageRefusalFieldsSchema, parseCollaborationStageRefusalFields } from "./stage-schema";
 import { nonnegativeVersion, positiveVersion } from "./version";
 import { CollaborationAccountSummarySchema } from "./account-schema";
 import { CollaborationAIPolicySchema, CollaborationDeliverySummarySchema, CollaborationDeliveryConfirmationSchema, type CollaborationAIPolicy } from "./delivery-schema";
@@ -348,12 +350,16 @@ export const CollaborationStatusOptionsSchema = z.object({
 export type CollaborationStatusOptions = z.infer<typeof CollaborationStatusOptionsSchema>;
 
 export const CollaborationOperationSchema = z.object({
+  ...CollaborationStageRefusalFieldsSchema.shape,
+  stage_confirmation: z.never().optional(),
   status: z.number().int().min(200).max(599).optional(),
   code: z.string().refine((value) => value.trim().length > 0, "Operation code must not be empty"),
   collaboration_revision: positiveVersion,
   status_options: CollaborationStatusOptionsSchema.nullish(),
   delivery_confirmation: CollaborationDeliveryConfirmationSchema.optional(),
-});
+}).refine((value) => parseCollaborationStageRefusalFields(value, value.code) !== null &&
+  ((value.code !== "stage_incomplete" && value.code !== "stage_policy_exit_required") || value.status === 409 && value.delivery_confirmation === undefined),
+  "Stage refusals require their exact status and content-free evidence shape");
 
 export type CollaborationOperation = z.infer<typeof CollaborationOperationSchema>;
 
@@ -443,6 +449,7 @@ export interface CollaborationLifecycleInput extends CollaborationStatusInput {
   draftId?: string;
   attachmentIds?: string[];
   sourceCommentId?: string;
+  completion?: DeliveryCompletionBinding;
 }
 
 /** Null means unavailable, never an ordinary issue or an empty successful list. */

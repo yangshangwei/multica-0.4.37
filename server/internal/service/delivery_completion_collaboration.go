@@ -511,6 +511,14 @@ func completionTargetEqual(a, b DeliveryCompletionTarget) bool {
 	return e1 == nil && e2 == nil && reflect.DeepEqual(ra, rb)
 }
 func completionWorkflowRefusal(t *collaborationWorkflowTx, err error) (CollaborationWorkflowReceipt, error) {
+	var stage *StageCompletionError
+	if errors.As(err, &stage) {
+		r := t.result("stage_incomplete", 409)
+		r.StageBlockers = stage.Blockers
+		truncated := false
+		r.StageBlockersTruncated = &truncated
+		return r, nil
+	}
 	var e DeliveryCompletionError
 	if errors.As(err, &e) {
 		return t.result(e.Code, e.Status), nil

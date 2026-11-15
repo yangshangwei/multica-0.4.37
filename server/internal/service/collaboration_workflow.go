@@ -41,19 +41,26 @@ type CollaborationTransferParams struct {
 // Receipts describe this operation only. Clients must reload current authority
 // and state; replaying a receipt never reconstructs an old private projection.
 type CollaborationWorkflowReceipt struct {
-	Status                int                                `json:"status"`
-	Code                  string                             `json:"code"`
-	CollaborationRevision int64                              `json:"collaboration_revision,string"`
-	QueueState            string                             `json:"queue_state"`
-	ControlVersion        int64                              `json:"control_version,string"`
-	RunID                 pgtype.UUID                        `json:"run_id"`
-	RunSettled            bool                               `json:"run_settled"`
-	Execution             *CollaborationQueueReceipt         `json:"execution,omitempty"`
-	StatusOptions         *CollaborationStatusOptions        `json:"status_options,omitempty"`
-	DeliveryConfirmation  *CollaborationDeliveryConfirmation `json:"delivery_confirmation,omitempty"`
+	StageBlockers          []CollaborationStageBlocker        `json:"stage_blockers,omitempty"`
+	StageBlockersTruncated *bool                              `json:"stage_blockers_truncated,omitempty"`
+	Status                 int                                `json:"status"`
+	Code                   string                             `json:"code"`
+	CollaborationRevision  int64                              `json:"collaboration_revision,string"`
+	QueueState             string                             `json:"queue_state"`
+	ControlVersion         int64                              `json:"control_version,string"`
+	RunID                  pgtype.UUID                        `json:"run_id"`
+	RunSettled             bool                               `json:"run_settled"`
+	Execution              *CollaborationQueueReceipt         `json:"execution,omitempty"`
+	StatusOptions          *CollaborationStatusOptions        `json:"status_options,omitempty"`
+	DeliveryConfirmation   *CollaborationDeliveryConfirmation `json:"delivery_confirmation,omitempty"`
+	StageConfirmation      *CollaborationStageConfirmation    `json:"stage_confirmation,omitempty"`
 	// ParentWakeup is a best-effort effect of this committed invocation only.
 	// It never enters operation/history JSON, so replay cannot dispatch it again.
 	ParentWakeup *CollaborationParentWakeup `json:"-"`
+	// stageMaterialized lists ordinary issues created by this committed
+	// invocation for post-commit list refresh. A replayed receipt has none. It
+	// is a pointer so receipts stay comparable.
+	stageMaterialized *stageMaterialization
 }
 
 type CollaborationParentWakeup struct {
@@ -63,10 +70,13 @@ type CollaborationParentWakeup struct {
 
 // This is the only recovery projection allowed after object access is lost.
 type CollaborationWorkflowOperationReceipt struct {
-	Status                int                                `json:"status"`
-	Code                  string                             `json:"code"`
-	CollaborationRevision int64                              `json:"collaboration_revision,string"`
-	DeliveryConfirmation  *CollaborationDeliveryConfirmation `json:"delivery_confirmation,omitempty"`
+	StageBlockers          []CollaborationStageBlocker        `json:"stage_blockers,omitempty"`
+	StageBlockersTruncated *bool                              `json:"stage_blockers_truncated,omitempty"`
+	Status                 int                                `json:"status"`
+	Code                   string                             `json:"code"`
+	CollaborationRevision  int64                              `json:"collaboration_revision,string"`
+	DeliveryConfirmation   *CollaborationDeliveryConfirmation `json:"delivery_confirmation,omitempty"`
+	StageConfirmation      *CollaborationStageConfirmation    `json:"stage_confirmation,omitempty"`
 }
 
 type collaborationWorkflowTx struct {
@@ -76,17 +86,22 @@ type collaborationWorkflowTx struct {
 	iterations           map[pgtype.UUID]db.Iteration
 	iterationsEnabled    bool
 	sourceMemberLocked   bool
+	sourceMember         db.Member
 	catalog              []db.IssueStatus
 	users                map[pgtype.UUID]db.User
 	operation            db.CollaborationOperation
 	handoffID            pgtype.UUID
 	deliveryConfirmation *CollaborationDeliveryConfirmation
 	deliveryDecision     *collaborationDeliveryDecisionPayload
+	stageConfirmation    *CollaborationStageConfirmation
+	stagePrepared        DeliveryPrepareResult
+	stageWriterResult    DeliveryWriterResult
 }
 
 func (t *collaborationWorkflowTx) result(code string, status int) CollaborationWorkflowReceipt {
 	return CollaborationWorkflowReceipt{Status: status, Code: code, CollaborationRevision: t.access.Revision,
-		QueueState: t.session.QueueState, ControlVersion: t.session.ControlVersion, DeliveryConfirmation: t.deliveryConfirmation}
+		QueueState: t.session.QueueState, ControlVersion: t.session.ControlVersion, DeliveryConfirmation: t.deliveryConfirmation,
+		StageConfirmation: t.stageConfirmation}
 }
 
 func (s *CollaborationService) InviteParticipant(ctx context.Context, p CollaborationParticipantParams) (CollaborationWorkflowReceipt, error) {
@@ -380,6 +395,12 @@ func workflowRoleAllowed(t *collaborationWorkflowTx, kind string) bool {
 		// Directed handoffs check current responsibility inside the action, so a
 		// successful key still replays after responsibility moves away.
 		return t.access.Capabilities.ControlAI
+	case stageKindConfigureRoles, stageKindCreateProposal, stageKindReviseProposal, stageKindDecideProposal, stageKindConfirmScope,
+		stageKindCreateCode, stageKindDecide, stageKindRevoke, stageKindAdvance:
+		// Stage actions need current participation here. Source administration
+		// and the exact configured role are checked inside the action, so a
+		// successful key still replays after a role or membership change.
+		return t.access.Capabilities.ControlAI
 	default:
 		return false
 	}
@@ -465,8 +486,16 @@ func (s *CollaborationService) workflowInTx(ctx context.Context, tx pgx.Tx, acto
 	if _, err = t.q.LockWorkspaceForChatSessionCreate(ctx, hint.Issue.WorkspaceID); err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
-	if kind == "edit_source_structure" || kind == "change_iteration" {
-		_, err = t.q.LockCollaborationSourceMember(ctx, db.LockCollaborationSourceMemberParams{WorkspaceID: hint.Issue.WorkspaceID, UserID: actor})
+	if collaborationStageSourceMemberKind(kind) {
+		members, lockErr := t.q.LockArtifactMembers(ctx, db.LockArtifactMembersParams{WorkspaceID: hint.Issue.WorkspaceID, UserIds: []pgtype.UUID{actor}})
+		if lockErr != nil {
+			return CollaborationWorkflowReceipt{}, lockErr
+		}
+		if len(members) == 1 {
+			t.sourceMember, t.sourceMemberLocked = members[0], true
+		}
+	} else if kind == "edit_source_structure" || kind == "change_iteration" {
+		t.sourceMember, err = t.q.LockCollaborationSourceMember(ctx, db.LockCollaborationSourceMemberParams{WorkspaceID: hint.Issue.WorkspaceID, UserID: actor})
 		t.sourceMemberLocked = err == nil
 		if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 			return CollaborationWorkflowReceipt{}, err
@@ -555,6 +584,8 @@ func (s *CollaborationService) workflowInTx(ctx context.Context, tx pgx.Tx, acto
 	if err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
+	stageSavepoint := false
+	stageBefore := t.access
 	receipt := t.result("forbidden", http.StatusForbidden)
 	if allowed {
 		t.participant, err = t.q.LockCollaborationParticipant(ctx, db.LockCollaborationParticipantParams{IssueID: p.IssueID, UserID: actor})
@@ -570,6 +601,12 @@ func (s *CollaborationService) workflowInTx(ctx context.Context, tx pgx.Tx, acto
 		} else if t.access.Revision != p.ExpectedCollaborationRevision {
 			receipt = t.result("stale_revision", http.StatusConflict)
 		} else {
+			if kind == "submit_acceptance" || kind == "complete" {
+				if _, err = tx.Exec(ctx, "SAVEPOINT stage_completion_writer"); err != nil {
+					return CollaborationWorkflowReceipt{}, err
+				}
+				stageSavepoint = true
+			}
 			receipt, err = mutate(t)
 			if err != nil {
 				return CollaborationWorkflowReceipt{}, err
@@ -580,8 +617,30 @@ func (s *CollaborationService) workflowInTx(ctx context.Context, tx pgx.Tx, acto
 	if err != nil {
 		return CollaborationWorkflowReceipt{}, err
 	}
+	if t.stagePrepared.stage != nil && receipt.Status < http.StatusBadRequest {
+		if err = t.stagePrepared.stage.freezeResult(tx, t.stageWriterResult, encoded); err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+	}
 	_, err = t.q.CompleteCollaborationOperation(ctx, db.CompleteCollaborationOperationParams{ID: t.operation.ID, ResultCode: receipt.Code,
 		Result: encoded, ResolvedIssueID: p.IssueID})
+	if err == nil && receipt.Status < http.StatusBadRequest && (kind == "submit_acceptance" || kind == "complete") {
+		err = FinishStageMutationInTx(ctx, tx, t.stagePrepared, t.access.Issue, t.stageWriterResult)
+	}
+	var blocked *StageCompletionError
+	if stageSavepoint && errors.As(err, &blocked) {
+		if _, err = tx.Exec(ctx, "ROLLBACK TO SAVEPOINT stage_completion_writer"); err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		t.access = stageBefore
+		t.deliveryConfirmation = nil
+		receipt, _ = completionWorkflowRefusal(t, blocked)
+		encoded, err = json.Marshal(receipt)
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		_, err = t.q.CompleteCollaborationOperation(ctx, db.CompleteCollaborationOperationParams{ID: t.operation.ID, ResultCode: receipt.Code, Result: encoded, ResolvedIssueID: p.IssueID})
+	}
 	return receipt, err
 }
 
@@ -618,6 +677,12 @@ func decodeWorkflowReceipt(op db.CollaborationOperation) (CollaborationWorkflowR
 	if confirmation := receipt.DeliveryConfirmation; confirmation != nil && (!confirmation.SubmissionID.Valid || confirmation.AttachmentIDs == nil ||
 		validateCollaborationAttachmentIDs(confirmation.AttachmentIDs) != nil || (op.Kind != "submit_acceptance" && op.Kind != "complete") || receipt.Status >= 400) {
 		return CollaborationWorkflowReceipt{}, errors.New("invalid collaboration delivery confirmation")
+	}
+	if confirmation := receipt.StageConfirmation; confirmation != nil && (receipt.Status >= 400 || !confirmation.valid(op.Kind)) {
+		return CollaborationWorkflowReceipt{}, errors.New("invalid collaboration stage confirmation")
+	}
+	if receipt.StageConfirmation == nil && collaborationStageKind(op.Kind) && receipt.Status < 400 {
+		return CollaborationWorkflowReceipt{}, errors.New("invalid collaboration stage confirmation")
 	}
 	return receipt, nil
 }
@@ -659,7 +724,9 @@ func (s *CollaborationService) GetWorkflowOperation(ctx context.Context, issueID
 	}
 	switch op.Kind {
 	case "invite_participant", "transfer", "remove_participant", "leave", "complete", "cancel", "reopen", "change_status", "edit_issue", "edit_source_structure", "change_iteration",
-		"request_information", "return_information", "submit_acceptance", "return_acceptance", "change_ai_policy":
+		"request_information", "return_information", "submit_acceptance", "return_acceptance", "change_ai_policy",
+		stageKindConfigureRoles, stageKindCreateProposal, stageKindReviseProposal, stageKindDecideProposal, stageKindConfirmScope,
+		stageKindCreateCode, stageKindDecide, stageKindRevoke, stageKindAdvance:
 	default:
 		return CollaborationWorkflowOperationReceipt{}, collaborationError(http.StatusNotFound, "not_found")
 	}
@@ -671,5 +738,5 @@ func (s *CollaborationService) GetWorkflowOperation(ctx context.Context, issueID
 		return CollaborationWorkflowOperationReceipt{}, err
 	}
 	return CollaborationWorkflowOperationReceipt{Status: r.Status, Code: r.Code, CollaborationRevision: r.CollaborationRevision,
-		DeliveryConfirmation: r.DeliveryConfirmation}, nil
+		DeliveryConfirmation: r.DeliveryConfirmation, StageConfirmation: r.StageConfirmation, StageBlockers: r.StageBlockers, StageBlockersTruncated: r.StageBlockersTruncated}, nil
 }

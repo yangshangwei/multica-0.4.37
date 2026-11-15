@@ -23,7 +23,7 @@ type IssueStatusWritePolicy func(context.Context, *db.Queries, db.Issue) (bool, 
 // FOR UPDATE is intentional: execution admission holds KEY SHARE, which would
 // not conflict with NO KEY UPDATE. Callers retain their existing retry budget
 // and may broadcast or notify only after changed=true is returned.
-func WriteIssueStatus(ctx context.Context, starter TxStarter, queries *db.Queries, issue db.Issue, target, source string, policy IssueStatusWritePolicy, webhook *DeliveryWebhookProof) (before, after db.Issue, changed bool, err error) {
+func WriteIssueStatus(ctx context.Context, starter TxStarter, queries *db.Queries, issue db.Issue, target, source string, policy IssueStatusWritePolicy, webhook *DeliveryWebhookProof, stageSources StageExecutionSources) (before, after db.Issue, changed bool, err error) {
 	if starter == nil || queries == nil || policy == nil || strings.TrimSpace(source) == "" || !issuestatus.IsBuiltIn(target) {
 		return before, after, false, errors.New("status write requires transaction, policy, source and canonical target")
 	}
@@ -86,7 +86,7 @@ func WriteIssueStatus(ctx context.Context, starter TxStarter, queries *db.Querie
 		}
 		candidate := before
 		candidate.Status = target
-		prepared, err = PrepareDeliveryMutationInTx(ctx, tx, DeliveryMutationIntent{Before: before, Candidate: candidate, Completion: binding, Webhook: webhook})
+		prepared, err = PrepareDeliveryMutationInTx(ctx, tx, DeliveryMutationIntent{Before: before, Candidate: candidate, Completion: binding, Webhook: webhook, StageExecutionSources: stageSources})
 		if err != nil {
 			return before, after, false, err
 		}
@@ -131,6 +131,9 @@ func WriteIssueStatus(ctx context.Context, starter TxStarter, queries *db.Querie
 		if _, err = FinishDeliveryMutationInTx(ctx, tx, prepared.Prepared, after, DeliveryWriterResult{ProviderEventID: webhook.EventID, ProviderEventDigest: webhook.EventDigest}); err != nil {
 			return before, after, false, err
 		}
+	}
+	if err = FinishStageMutationInTx(ctx, tx, prepared, after, DeliveryWriterResult{}); err != nil {
+		return before, after, false, err
 	}
 	if err = tx.Commit(ctx); err != nil {
 		return before, after, false, fmt.Errorf("commit issue status write: %w", err)

@@ -32,6 +32,28 @@ function setup(files: string[] = []) {
 }
 afterEach(() => { stored.clear(); client.clear(); vi.unstubAllGlobals(); });
 
+it("retains a bound completion until the exact M1 terminal is confirmed, then recovers without another lifecycle write", async () => {
+  const { scope, issue } = setup();
+  const submission = { id: id(3), issue_id: issue.id, event_seq: "1", lifecycle_epoch: "1", author_user_id: id(9), author: null,
+    created_at: "2026-11-03T00:00:00Z", result: "External delivery", basis: "External checks", attachment_ids: [], source_comment_id: null, evidence_state: "available", decision: null };
+  const pending = parseCollaborationIssue({ ...issue, execution: undefined, status: "review", status_category: "in_review", delivery: { current: submission, latest: submission, has_history: true } })!;
+  const completion = { authorization_id: id(6), operation_id: id(4), expected_issue_revision: 7 };
+  const draft = prepareCollaborationAction(scope, pending, id(4), { action: "complete", submissionId: submission.id, status: "done", statusOptionsVersion: "a".repeat(64), completion });
+  const completedRevision = (BigInt(pending.collaboration_revision) + 1n).toString();
+  const receipt = { code: "completed", collaboration_revision: completedRevision, delivery_confirmation: { submission_id: submission.id, attachment_ids: [] } };
+  const grant = { authorization_id: id(6), operation_id: id(4), issue_id: issue.id, issue_revision: 7, target_status: "done", contract_version: "delivery-completion-enforcement-v1",
+    created_at: "2026-11-03T00:00:00Z", expires_at: "2099-01-01T00:00:00Z", state: "issued", applicability: "not_checked", replayed: false };
+  const fetch = vi.fn().mockResolvedValueOnce(json(receipt)).mockResolvedValueOnce(json(grant)).mockResolvedValueOnce(json(receipt))
+    .mockResolvedValueOnce(json({ ...grant, state: "consumed", applicability: "consumed", completion_receipt: { authorization_id: id(6), operation_id: id(4), issue_id: issue.id,
+      completed_revision: 8, target_status: "done", completed_at: "2026-11-03T00:01:00Z", replayed: false, collaboration_revision: completedRevision, submission_id: submission.id } }));
+  vi.stubGlobal("fetch", fetch);
+  await expect(executeCollaborationAction(client, scope, draft, false, storage)).rejects.toThrow();
+  expect(readCollaborationDrafts(draft.scope, storage)).toEqual([draft]);
+  await expect(executeCollaborationAction(client, scope, draft, true, storage)).resolves.toMatchObject({ code: "completed" });
+  expect(readCollaborationDrafts(draft.scope, storage)).toEqual([]);
+  expect(fetch.mock.calls.filter(([, init]) => init?.method === "POST")).toHaveLength(1);
+});
+
 describe("formal result original intent and bundle retirement", () => {
   it("confirms an exact pending submission's retained evidence without binding those files again", async () => {
     const { scope, issue, resultForm } = setup();
@@ -187,4 +209,47 @@ describe("formal result original intent and bundle retirement", () => {
     expect(fetch.mock.calls[0]?.[0]).toContain(`/operations/${draft.requestId}`);
     expect(fetch.mock.calls[0]?.[1]?.method ?? "GET").toBe("GET");
   });
+});
+
+describe("stage refusal through the existing completion operation", () => {
+  const blockers = [{ code: "stage_ci_missing", stage: "code_review", candidate_id: id(5) }];
+  const refusal = { code: "stage_incomplete", error: "stage_incomplete", status: 409, collaboration_revision: "12", stage_blockers: blockers, stage_blockers_truncated: false };
+  it.each([false, true])("retains original result input and historical blockers on stored refusal (recovery=%s)", async (recovery) => {
+    const { scope, draft, resultForm } = setup([id(8)]);
+    const fetcher = vi.fn().mockResolvedValue(json(refusal, recovery ? 200 : 409));vi.stubGlobal("fetch", fetcher);
+    await expect(executeCollaborationAction(client, scope, draft, recovery, storage)).resolves.toMatchObject({ code: "stage_incomplete", status: 409, stage_blockers: blockers, stage_blockers_truncated: false });
+    expect(readCollaborationDrafts(draft.scope, storage)).toEqual([]);
+    expect(readCollaborationDeliveryRecords(resultForm.scope, storage)).toContainEqual(resultForm);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(fetcher.mock.calls[0]?.[1]?.method ?? "GET").toBe(recovery ? "GET" : "POST");
+  });
+  it("keeps a malformed stage GET result unknown without invoking generic missing-receipt resend", async () => {
+    const { scope, draft } = setup();const fetcher = vi.fn().mockResolvedValue(json({ ...refusal, stage_blockers: [] }));vi.stubGlobal("fetch", fetcher);
+    await expect(executeCollaborationAction(client, scope, draft, true, storage)).rejects.toThrow();
+    expect(readCollaborationDrafts(draft.scope, storage)).toEqual([draft]);
+    expect(fetcher).toHaveBeenCalledTimes(1);expect(fetcher.mock.calls[0]?.[1]?.method ?? "GET").toBe("GET");
+  });
+  it("preserves the original request and result input on a contradictory POST refusal", async () => {
+    const { scope, draft, resultForm } = setup();vi.stubGlobal("fetch", vi.fn().mockResolvedValue(json({ ...refusal, stage_blockers: [] }, 409)));
+    await expect(executeCollaborationAction(client, scope, draft, false, storage)).rejects.toThrow();
+    expect(readCollaborationDrafts(draft.scope, storage)).toEqual([draft]);expect(readCollaborationDeliveryRecords(resultForm.scope, storage)).toContainEqual(resultForm);
+  });
+});
+
+it.each(["self_complete", "accept_submission", "source_exit"] as const)("S2 preserves the %s input and consumes only its stored refusal", async (kind) => {
+  const { scope, issue, resultForm } = setup([id(8)]);
+  const current = { id: id(3), issue_id: issue.id, event_seq: "1", lifecycle_epoch: "1", author_user_id: id(9), author: null, created_at: "2026-11-03T00:00:00Z",
+    result: "Delivered", basis: "Checked", attachment_ids: [id(8)], source_comment_id: null, evidence_state: "available", decision: null };
+  const pendingIssue = parseCollaborationIssue({ ...issue, execution: undefined, status: "review", status_category: "in_review", delivery: { has_history: true, latest: current, current } })!;
+  const input = kind === "source_exit" ? { action: "edit_source_structure" as const, projectId: null, parentIssueId: null, stage: null }
+    : kind === "accept_submission" ? { action: "complete" as const, submissionId: id(3), status: "done", statusOptionsVersion: "a".repeat(64) }
+    : { action: "complete" as const, status: "done", statusOptionsVersion: "a".repeat(64), note: resultForm.content, basis: resultForm.basis!, attachmentIds: [id(8)], deliveryDraftId: resultForm.draftId };
+  const draft = prepareCollaborationAction(scope, kind === "accept_submission" ? pendingIssue : issue, id(4), input);
+  const refusal = kind === "source_exit" ? { code: "stage_policy_exit_required", status: 409, collaboration_revision: "12" }
+    : { code: "stage_incomplete", status: 409, collaboration_revision: "12", stage_blockers: [{ code: "stage_qa_missing", stage: "qa" }], stage_blockers_truncated: false };
+  const fetcher = vi.fn().mockResolvedValue(json(refusal, 409));vi.stubGlobal("fetch", fetcher);
+  await expect(executeCollaborationAction(client, scope, draft, false, storage)).resolves.toEqual(refusal);
+  expect(readCollaborationDrafts(draft.scope, storage)).toEqual([]);expect(readCollaborationDeliveryRecords(resultForm.scope, storage)).toContainEqual(resultForm);
+  expect(fetcher.mock.calls[0]?.[1]?.method).toBe(kind === "source_exit" ? "PATCH" : "POST");
+  expect(fetcher).toHaveBeenCalledTimes(1);
 });

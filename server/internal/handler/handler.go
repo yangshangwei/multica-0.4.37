@@ -245,6 +245,7 @@ type DaemonPendingWorkNotifier interface {
 }
 
 type Handler struct {
+	StageExecutionSources  service.StageExecutionSources
 	ArtifactPackager       artifactExecutor
 	AdminHealthSnapshot    func(context.Context) AdminHealthSnapshot
 	AdminReadConfig        AdminReadConfig

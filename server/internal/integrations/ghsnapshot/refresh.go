@@ -380,6 +380,7 @@ func (m *Manager) applySnapshot(ctx context.Context, prID pgtype.UUID, snap *PRS
 		ChecksRollupState:   rollup,
 		HeadSha:             snap.HeadSHA,
 		FetchedAt:           tsFromTime(m.now()),
+		SnapshotComplete:    snap.complete,
 		PrID:                prID,
 	})
 	if err != nil {

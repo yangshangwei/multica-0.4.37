@@ -1203,6 +1203,180 @@ type CollaborationSession struct {
 	TargetSetVersion int64              `json:"target_set_version"`
 }
 
+type CollaborationStageCandidate struct {
+	CandidateID       pgtype.UUID        `json:"candidate_id"`
+	IssueID           pgtype.UUID        `json:"issue_id"`
+	WorkspaceID       pgtype.UUID        `json:"workspace_id"`
+	Kind              string             `json:"kind"`
+	ProposalID        pgtype.UUID        `json:"proposal_id"`
+	Version           int64              `json:"version"`
+	ParentCandidateID pgtype.UUID        `json:"parent_candidate_id"`
+	Content           []byte             `json:"content"`
+	ContentDigest     string             `json:"content_digest"`
+	Source            []byte             `json:"source"`
+	LifecycleEpoch    int64              `json:"lifecycle_epoch"`
+	SubmittedBy       pgtype.UUID        `json:"submitted_by"`
+	OperationID       pgtype.UUID        `json:"operation_id"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+}
+
+type CollaborationStageChild struct {
+	ChildIssueID      pgtype.UUID        `json:"child_issue_id"`
+	RootIssueID       pgtype.UUID        `json:"root_issue_id"`
+	WorkspaceID       pgtype.UUID        `json:"workspace_id"`
+	Origin            string             `json:"origin"`
+	ProposalID        pgtype.UUID        `json:"proposal_id"`
+	CandidateID       pgtype.UUID        `json:"candidate_id"`
+	Ordinal           pgtype.Int4        `json:"ordinal"`
+	DecisionID        pgtype.UUID        `json:"decision_id"`
+	LifecycleEpoch    int64              `json:"lifecycle_epoch"`
+	ScopeDecisionID   pgtype.UUID        `json:"scope_decision_id"`
+	SemanticVersion   int64              `json:"semantic_version"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt         pgtype.Timestamptz `json:"updated_at"`
+	CodeProvider      pgtype.Text        `json:"code_provider"`
+	CodePullRequestID pgtype.UUID        `json:"code_pull_request_id"`
+	CodeHeadSha       pgtype.Text        `json:"code_head_sha"`
+}
+
+type CollaborationStageDecision struct {
+	DecisionID       pgtype.UUID        `json:"decision_id"`
+	IssueID          pgtype.UUID        `json:"issue_id"`
+	WorkspaceID      pgtype.UUID        `json:"workspace_id"`
+	Step             string             `json:"step"`
+	Decision         string             `json:"decision"`
+	ProposalID       pgtype.UUID        `json:"proposal_id"`
+	CandidateID      pgtype.UUID        `json:"candidate_id"`
+	CandidateVersion pgtype.Int8        `json:"candidate_version"`
+	ContentDigest    pgtype.Text        `json:"content_digest"`
+	Role             string             `json:"role"`
+	RoleRevision     int64              `json:"role_revision"`
+	PolicyRevision   int64              `json:"policy_revision"`
+	LifecycleEpoch   int64              `json:"lifecycle_epoch"`
+	ActorUserID      pgtype.UUID        `json:"actor_user_id"`
+	ParticipantEpoch int64              `json:"participant_epoch"`
+	AccountEpoch     int64              `json:"account_epoch"`
+	CredentialKind   string             `json:"credential_kind"`
+	Reason           string             `json:"reason"`
+	Payload          []byte             `json:"payload"`
+	OperationID      pgtype.UUID        `json:"operation_id"`
+	CreatedAt        pgtype.Timestamptz `json:"created_at"`
+	SignerCredential []byte             `json:"-"`
+	ExpiresAt        pgtype.Timestamptz `json:"expires_at"`
+}
+
+type CollaborationStageExecutionIntent struct {
+	IntentID           pgtype.UUID        `json:"intent_id"`
+	WorkspaceID        pgtype.UUID        `json:"workspace_id"`
+	IssueID            pgtype.UUID        `json:"issue_id"`
+	CandidateID        pgtype.UUID        `json:"candidate_id"`
+	CandidateVersion   int64              `json:"candidate_version"`
+	CandidateDigest    string             `json:"candidate_digest"`
+	LifecycleEpoch     int64              `json:"lifecycle_epoch"`
+	RoleRevision       int64              `json:"role_revision"`
+	PolicyRevision     int64              `json:"policy_revision"`
+	ApprovalDecisionID pgtype.UUID        `json:"approval_decision_id"`
+	RequestID          pgtype.UUID        `json:"request_id"`
+	RequestDigest      string             `json:"-"`
+	ConsumerSubject    string             `json:"-"`
+	PhysicalTargetKey  string             `json:"-"`
+	TargetDigest       string             `json:"target_digest"`
+	ArtifactDigest     string             `json:"artifact_digest"`
+	Kind               string             `json:"kind"`
+	Invocation         []byte             `json:"-"`
+	Dependencies       []byte             `json:"-"`
+	AdmittedAt         pgtype.Timestamptz `json:"admitted_at"`
+	DispatchExpiresAt  pgtype.Timestamptz `json:"dispatch_expires_at"`
+}
+
+type CollaborationStageExecutionObservation struct {
+	ObservationID       pgtype.UUID        `json:"observation_id"`
+	IntentID            pgtype.UUID        `json:"intent_id"`
+	WorkspaceID         pgtype.UUID        `json:"workspace_id"`
+	IssueID             pgtype.UUID        `json:"issue_id"`
+	Origin              string             `json:"origin"`
+	NativeID            string             `json:"native_id"`
+	NativeVersion       string             `json:"native_version"`
+	ObservationDigest   string             `json:"-"`
+	Result              string             `json:"result"`
+	ExternalOperationID pgtype.Text        `json:"external_operation_id"`
+	Observation         []byte             `json:"-"`
+	CreatedAt           pgtype.Timestamptz `json:"created_at"`
+}
+
+type CollaborationStageRevocation struct {
+	RevocationID pgtype.UUID        `json:"revocation_id"`
+	DecisionID   pgtype.UUID        `json:"decision_id"`
+	IssueID      pgtype.UUID        `json:"issue_id"`
+	WorkspaceID  pgtype.UUID        `json:"workspace_id"`
+	ActorUserID  pgtype.UUID        `json:"actor_user_id"`
+	OperationID  pgtype.UUID        `json:"operation_id"`
+	Reason       string             `json:"reason"`
+	CreatedAt    pgtype.Timestamptz `json:"created_at"`
+}
+
+type CollaborationStageRole struct {
+	IssueID               pgtype.UUID        `json:"issue_id"`
+	WorkspaceID           pgtype.UUID        `json:"workspace_id"`
+	Revision              int64              `json:"revision"`
+	BusinessOwnerUserID   pgtype.UUID        `json:"business_owner_user_id"`
+	ImplementerUserID     pgtype.UUID        `json:"implementer_user_id"`
+	ProductApproverUserID pgtype.UUID        `json:"product_approver_user_id"`
+	CodeReviewerUserID    pgtype.UUID        `json:"code_reviewer_user_id"`
+	QaApproverUserID      pgtype.UUID        `json:"qa_approver_user_id"`
+	ReleaseApproverUserID pgtype.UUID        `json:"release_approver_user_id"`
+	PolicyRevision        int64              `json:"policy_revision"`
+	LifecycleEpoch        int64              `json:"lifecycle_epoch"`
+	ConfiguredBy          pgtype.UUID        `json:"configured_by"`
+	OperationID           pgtype.UUID        `json:"operation_id"`
+	CreatedAt             pgtype.Timestamptz `json:"created_at"`
+}
+
+type CollaborationStageRollbackObservation struct {
+	ObservationID     pgtype.UUID        `json:"observation_id"`
+	WorkspaceID       pgtype.UUID        `json:"workspace_id"`
+	IssueID           pgtype.UUID        `json:"issue_id"`
+	CandidateID       pgtype.UUID        `json:"candidate_id"`
+	DeploymentID      pgtype.UUID        `json:"deployment_id"`
+	StreamKey         string             `json:"-"`
+	Version           int64              `json:"version"`
+	NativeVersion     int64              `json:"-"`
+	ObservationDigest string             `json:"observation_digest"`
+	Metric            []byte             `json:"-"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+}
+
+type CollaborationStageSubmission struct {
+	SubmissionID           pgtype.UUID        `json:"submission_id"`
+	IssueID                pgtype.UUID        `json:"issue_id"`
+	WorkspaceID            pgtype.UUID        `json:"workspace_id"`
+	LifecycleEpoch         int64              `json:"lifecycle_epoch"`
+	PolicyRevision         int64              `json:"policy_revision"`
+	RoleRevision           int64              `json:"role_revision"`
+	StageRevision          int64              `json:"stage_revision"`
+	ScopeDecisionID        pgtype.UUID        `json:"scope_decision_id"`
+	CandidateID            pgtype.UUID        `json:"candidate_id"`
+	CandidateVersion       int64              `json:"candidate_version"`
+	ContentDigest          string             `json:"content_digest"`
+	ReleaseDecisionID      pgtype.UUID        `json:"release_decision_id"`
+	ExecutionObservationID pgtype.UUID        `json:"execution_observation_id"`
+	OperationID            pgtype.UUID        `json:"operation_id"`
+	ActorUserID            pgtype.UUID        `json:"actor_user_id"`
+	CreatedAt              pgtype.Timestamptz `json:"created_at"`
+}
+
+type CollaborationStageTask struct {
+	IssueID         pgtype.UUID        `json:"issue_id"`
+	WorkspaceID     pgtype.UUID        `json:"workspace_id"`
+	Stage           string             `json:"stage"`
+	StageRevision   int64              `json:"stage_revision"`
+	RoleRevision    int64              `json:"role_revision"`
+	ScopeRevision   int64              `json:"scope_revision"`
+	ScopeDecisionID pgtype.UUID        `json:"scope_decision_id"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt       pgtype.Timestamptz `json:"updated_at"`
+}
+
 type CollaborationSwitchConsent struct {
 	ProposalID            pgtype.UUID        `json:"proposal_id"`
 	AgentID               pgtype.UUID        `json:"agent_id"`
@@ -1274,6 +1448,21 @@ type CollaborationTermination struct {
 	CreatedAt       pgtype.Timestamptz `json:"created_at"`
 	RuntimeIdentity []byte             `json:"runtime_identity"`
 	TokenCiphertext []byte             `json:"token_ciphertext"`
+}
+
+type CollaborationTestSubject struct {
+	IssueID          pgtype.UUID        `json:"issue_id"`
+	WorkspaceID      pgtype.UUID        `json:"workspace_id"`
+	CommandID        pgtype.UUID        `json:"command_id"`
+	CandidateID      pgtype.UUID        `json:"candidate_id"`
+	CandidateVersion int64              `json:"candidate_version"`
+	CandidateDigest  string             `json:"candidate_digest"`
+	Subject          []byte             `json:"subject"`
+	BoundByUserID    pgtype.UUID        `json:"bound_by_user_id"`
+	ParticipantEpoch int64              `json:"participant_epoch"`
+	AccountEpoch     int64              `json:"account_epoch"`
+	LifecycleEpoch   int64              `json:"lifecycle_epoch"`
+	CreatedAt        pgtype.Timestamptz `json:"created_at"`
 }
 
 type Comment struct {
@@ -1609,6 +1798,7 @@ type GithubPullRequest struct {
 	ChecksRollupState   pgtype.Text        `json:"checks_rollup_state"`
 	SnapshotHeadSha     string             `json:"snapshot_head_sha"`
 	SnapshotFetchedAt   pgtype.Timestamptz `json:"snapshot_fetched_at"`
+	SnapshotComplete    bool               `json:"snapshot_complete"`
 }
 
 type GithubPullRequestCheckRun struct {
@@ -2343,6 +2533,19 @@ type ProjectResource struct {
 	Position     int32              `json:"position"`
 	CreatedAt    pgtype.Timestamptz `json:"created_at"`
 	CreatedBy    pgtype.UUID        `json:"created_by"`
+}
+
+type ProjectStagePolicy struct {
+	WorkspaceID   pgtype.UUID        `json:"workspace_id"`
+	ProjectID     pgtype.UUID        `json:"project_id"`
+	Revision      int64              `json:"revision"`
+	Contract      string             `json:"contract"`
+	Enabled       bool               `json:"enabled"`
+	Reason        string             `json:"reason"`
+	CreatedBy     pgtype.UUID        `json:"created_by"`
+	RequestID     string             `json:"request_id"`
+	RequestDigest string             `json:"request_digest"`
+	CreatedAt     pgtype.Timestamptz `json:"created_at"`
 }
 
 type ProjectStateChange struct {

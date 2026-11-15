@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY collaboration_stage_execution_target_idx ON collaboration_stage_execution_intent (physical_target_key, admitted_at);

@@ -484,3 +484,22 @@ it("embeds the source action in its existing dialog without creating another mod
   await userEvent.click(within(screen.getByRole("form", { name: "Edit issue" })).getByRole("button", { name: "Close" }));
   expect(dismissed).toHaveBeenCalledOnce();
 });
+
+it("S2 shows stored stage blockers while keeping completion result and basis editable", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const source = { ...issue, ai_policy: "manual" as const, delivery: { current: null, latest: null, has_history: false } };
+  const fetcher = vi.fn(async (url: string, init?: RequestInit) => new Response(JSON.stringify(new URL(url).pathname.endsWith("status-options")
+    ? { action: "complete", status_options_version: "a".repeat(64), default_status: "done", options: [{ key: "done", name: "Done", category: "done" }] }
+    : { code: "stage_incomplete", status: 409, collaboration_revision: "9007199254740994", stage_blockers: [{ code: "stage_ci_missing", stage: "code_review" }], stage_blockers_truncated: false }), { status: init?.method === "POST" ? 409 : 200 }));
+  vi.stubGlobal("fetch", fetcher);
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={source} /></QueryClientProvider>);
+  await userEvent.click(screen.getByRole("button", { name: "Record result and complete" }));
+  const form = await screen.findByRole("form", { name: "Record result and complete" });
+  await userEvent.type(within(form).getByLabelText("Result"), "Keep my result");await userEvent.type(within(form).getByLabelText("Basis"), "Keep my basis");
+  await userEvent.click(within(form).getByRole("button", { name: "Record result and complete" }));
+  expect(await within(form).findByText(/CI evidence is missing for this code version/)).toBeVisible();
+  expect(within(form).getByText(/HTTP 409.*stage_incomplete/)).toBeVisible();
+  expect(within(form).getByLabelText("Result")).toHaveValue("Keep my result");expect(within(form).getByLabelText("Basis")).toHaveValue("Keep my basis");
+  expect(screen.queryByText("Action confirmed.")).not.toBeInTheDocument();
+  expect(fetcher.mock.calls.filter(([, init]) => init?.method === "POST")).toHaveLength(1);
+});

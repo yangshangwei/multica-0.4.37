@@ -100,3 +100,18 @@ export * from "./discussion-schema";
 export { parseCollaborationDiscussionDraft, prepareCollaborationDiscussion, executeCollaborationDiscussion } from "./discussion";
 export { collaborationIssueReactionsOptions } from "./content-queries";
 export { collaborationCommentsOptions, collaborationCommentOptions, collaborationCommentHistoryOptions, collaborationMentionTargetsOptions, collaborationNotificationsOptions, collaborationActivityOptions, useCollaborationCommentPreview, useUpdateCollaborationNotification } from "./content-queries";
+// PAY-241 S2 stage gates (contract `collaboration-stage-v1`).
+export * from "./stage-schema";
+export * from "./stage-presentation";
+export * from "./stage-queries";
+export * from "./stage-actions";
+export { CollaborationStageIntentStorageError, isCollaborationStageSendable, readCollaborationStageIntents, useCollaborationStageIntents } from "./stage-intent";
+export type { CollaborationStageIntent, CollaborationStageStoredIntent, CollaborationStageIntentScope, CollaborationStageIntentTarget } from "./stage-intent";
+export * from "./stage-code-presentation";
+export * from "./stage-execution";
+export * from "./completion-schema";
+export * from "./completion-queries";
+export * from "./stage-test-subject-schema";
+export * from "./stage-test-report-schema";
+export * from "./stage-test-report-queries";
+export * from "./stage-test-presentation";

@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY collaboration_stage_rollback_observation_order_idx ON collaboration_stage_rollback_observation (issue_id, candidate_id, created_at, observation_id);

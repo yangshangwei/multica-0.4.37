@@ -375,7 +375,7 @@ func (s *CollaborationService) ChangeLifecycle(ctx context.Context, p Collaborat
 			candidate.Status = p.TargetStatus
 			intent := completionCollaborationTargetFromWorkflow(t, p)
 			var err error
-			prepared, err = PrepareDeliveryMutationInTx(ctx, t.tx, DeliveryMutationIntent{Before: t.access.Issue, Candidate: candidate, Completion: p.Completion, Credential: completionRequestCredential(ctx), Collaboration: &intent})
+			prepared, err = PrepareDeliveryMutationInTx(ctx, t.tx, DeliveryMutationIntent{Before: t.access.Issue, Candidate: candidate, Completion: p.Completion, Credential: completionRequestCredential(ctx), Collaboration: &intent, StageExecutionSources: s.StageExecutionSources, StageOperationID: t.operation.ID})
 			if err != nil {
 				return completionWorkflowRefusal(t, err)
 			}
@@ -405,6 +405,18 @@ func (s *CollaborationService) ChangeLifecycle(ctx context.Context, p Collaborat
 		receipt, err := t.changeLifecycle(ctx, p.Action, p.TargetStatus)
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err
+		}
+		if p.Action == "complete" {
+			t.stagePrepared = prepared
+			t.stageWriterResult = DeliveryWriterResult{CollaborationOperationID: t.operation.ID, CollaborationRevision: t.access.Revision}
+			if t.deliveryDecision != nil {
+				t.stageWriterResult.SubmissionID = t.deliveryDecision.SubmissionID
+			}
+			if prepared.stage != nil && prepared.stage.target.Kind == "collaboration_self" {
+				if err = prepared.stage.bindSubmission(ctx, t.stageWriterResult.SubmissionID, t.operation.ID); err != nil {
+					return CollaborationWorkflowReceipt{}, err
+				}
+			}
 		}
 		if prepared.State == DeliveryPrepared {
 			result := DeliveryWriterResult{CollaborationOperationID: t.operation.ID, CollaborationRevision: t.access.Revision}
@@ -492,6 +504,9 @@ func (t *collaborationWorkflowTx) prepareCompletionMode(ctx context.Context, p C
 		if !utf8.ValidString(p.Note) || len(p.Note) > collaborationDeliveryTextLimit {
 			return refuse("result_too_large", http.StatusBadRequest)
 		}
+		if !write {
+			return nil, nil
+		}
 		t.deliveryConfirmation = &CollaborationDeliveryConfirmation{SubmissionID: current.ID, AttachmentIDs: slices.Clone(current.AttachmentIDs)}
 		t.deliveryDecision = &collaborationDeliveryDecisionPayload{Version: 1, SubmissionID: current.ID, LifecycleEpoch: t.access.LifecycleEpoch, Kind: "accepted"}
 		if p.Note != "" {
@@ -526,6 +541,9 @@ func (t *collaborationWorkflowTx) changeLifecycle(ctx context.Context, action, t
 	code := "reopened"
 	var stopped *CollaborationQueueReceipt
 	if action == "reopen" {
+		if err := t.q.ResetCollaborationStageOnReopen(ctx, t.access.Issue.ID); err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
 		session, err := t.q.ReopenCollaborationSession(ctx, t.session.ID)
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err

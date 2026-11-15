@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -11,7 +12,9 @@ import (
 )
 
 func (h *Handler) adminCollaborationService() *service.AdminCollaborationService {
-	return service.NewAdminCollaborationService(h.Queries, h.TxStarter, h.cfg.PlatformAdminEnabled)
+	s := service.NewAdminCollaborationService(h.Queries, h.TxStarter, h.cfg.PlatformAdminEnabled)
+	s.StageExecutionSources = h.StageExecutionSources
+	return s
 }
 
 func adminCollaborationPageQuery(w http.ResponseWriter, r *http.Request) (service.AdminCollaborationPageQuery, bool) {
@@ -220,6 +223,11 @@ func (h *Handler) AdminCollaborationLifecycle(w http.ResponseWriter, r *http.Req
 	}
 	result, err := h.adminCollaborationService().ChangeLifecycle(r.Context(), p)
 	if err != nil {
+		var stage *service.StageCompletionError
+		if errors.As(err, &stage) {
+			writeJSON(w, 409, map[string]any{"code": "stage_incomplete", "error": "stage_incomplete", "stage_blockers": stage.Blockers, "stage_blockers_truncated": false})
+			return
+		}
 		adminServiceError(w, r, err)
 		return
 	}

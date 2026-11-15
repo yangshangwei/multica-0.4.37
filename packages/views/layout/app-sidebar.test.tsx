@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "@multica/core/api";
 import { AppSidebar } from "./app-sidebar";
+import { renderWithI18n } from "../test/i18n";
 
 const { iterationCapability, triageSettings, appForeground, chatSessions, chatStore, detail, deletePin, inboxItems, navigation, pins, sidebarState, summary, workspaces } = vi.hoisted(() => ({
   appForeground: { current: true },
@@ -102,6 +103,11 @@ vi.mock("./help-launcher", () => ({
   ),
 }));
 vi.mock("../auth", () => ({ useLogout: () => vi.fn() }));
+vi.mock("../collaboration/source-bridge", () => ({
+  SourceCollaborationCreation: ({ workspaceId, renderTrigger }: {
+    workspaceId: string; renderTrigger: (label: string) => React.ReactElement;
+  }) => <div data-testid="collaboration-creation" data-workspace-id={workspaceId}>{renderTrigger("New collaboration issue")}</div>,
+}));
 vi.mock("../issues/components/status-icon", () => ({ StatusIcon: () => <span /> }));
 vi.mock("../navigation", () => ({
   AppLink: ({ children, href }: { children: React.ReactNode; href: string }) => <a href={href}>{children}</a>,
@@ -202,6 +208,15 @@ vi.mock("@tanstack/react-query", async (importOriginal) => ({
   },
   useQueryClient: () => ({ fetchQuery: vi.fn(), invalidateQueries: vi.fn() }),
 }));
+
+it("places collaboration creation immediately after ordinary creation for the current workspace", () => {
+  renderWithI18n(<AppSidebar />);
+  const buttons = screen.getAllByRole("button");
+  const ordinary = screen.getByRole("button", { name: "New Issue" });
+  const collaboration = screen.getByRole("button", { name: "New collaboration issue" });
+  expect(buttons.indexOf(collaboration)).toBe(buttons.indexOf(ordinary) + 1);
+  expect(screen.getByTestId("collaboration-creation")).toHaveAttribute("data-workspace-id", "ws-1");
+});
 
 describe("PinRow", () => {
   beforeEach(() => {

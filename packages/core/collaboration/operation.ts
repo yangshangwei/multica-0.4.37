@@ -8,6 +8,8 @@ import { parseCollaborationOperation, type CollaborationIssue } from "./schema";
 import { invalidateCollaborationSourceViews, waitForCollaborationIssueRefresh } from "./invalidation";
 import { collaborationDeliveryRefusalStatus, matchesCollaborationDeliveryConfirmation } from "./delivery-schema";
 import { finishCollaborationDeliveryDraft, readCollaborationDeliveryRecords } from "./delivery-draft";
+import { matchesCollaborationCompletionConsumption } from "./completion-schema";
+import { readCompletionDrafts, removeCompletionDraft, saveCompletionDraft } from "../issues/completion-draft";
 
 type Intent<T = CollaborationAction> = T extends CollaborationAction ? Omit<T, keyof ReturnType<typeof collaborationWriteContext>> : never;
 export type CollaborationActionIntent = Intent;
@@ -18,7 +20,8 @@ export function prepareCollaborationAction(scope: CollaborationScope, issue: Col
   const observation = intent.action === "complete" && intent.submissionId !== undefined ? {
     submissionAttachmentIds: submission?.id === intent.submissionId.toLowerCase() ? submission.attachment_ids : undefined,
   } : {};
-  const parsed = CollaborationActionSchema.safeParse({ ...intent, ...observation, ...collaborationWriteContext(issue, requestId) });
+  const completionSource = intent.action === "complete" && intent.completion ? { completionSourceWorkspaceId: issue.source_workspace.id } : {};
+  const parsed = CollaborationActionSchema.safeParse({ ...intent, ...observation, ...completionSource, ...collaborationWriteContext(issue, requestId) });
   if (!parsed.success) throw new CollaborationUnavailableError();
   return { scope: { server: scope.server, userId: scope.userId, issueId: issue.id }, requestId, kind: "operation", payload: parsed.data, createdAt: Date.now() };
 }
@@ -33,6 +36,11 @@ export async function executeCollaborationAction(client: QueryClient, scope: Col
   try {
     const result = await protectCollaborationRead(client, scope, recovery && denied ? null : draft.scope.issueId, async () => {
       if (!denied) saveCollaborationDraft(draft, storage);
+      if (!recovery && action.action === "complete" && action.completion && action.completionSourceWorkspaceId) {
+        const owner = { server: scope.server, userId: scope.userId, workspaceId: action.completionSourceWorkspaceId, issueId: draft.scope.issueId };
+        const grant = readCompletionDrafts(owner, storage).find((item) => item.authorizationId === action.completion?.authorization_id && item.request.operation_id === action.requestId);
+        if (grant) saveCompletionDraft({ ...grant, submissionDispatched: true }, storage);
+      }
       try {
         const result = recovery && denied ? await getApi().getCollaborationOperation(draft.scope.issueId, draft.requestId)
           : await (recovery ? recoverCollaborationAction(scope, draft) : sendCollaborationAction(scope, draft.scope.issueId, action));
@@ -51,6 +59,14 @@ export async function executeCollaborationAction(client: QueryClient, scope: Col
           if (result.code !== expectedCode || !matchesCollaborationDeliveryConfirmation(result.delivery_confirmation, expectedFiles, "submissionId" in action ? action.submissionId : undefined)) {
             throw new CollaborationUnavailableError();
           }
+          if (action.action === "complete" && action.completion && action.completionSourceWorkspaceId) {
+            try {
+              const grant = await getApi().getDeliveryCompletionAuthorization(action.completion.authorization_id, { workspaceId: action.completionSourceWorkspaceId });
+              if (!isCollaborationScopeCurrent(scope) || !matchesCollaborationCompletionConsumption(grant, action.completion, draft.scope.issueId, action.status,
+                action.expectedCollaborationRevision, action.submissionId ?? "self") || grant.completion_receipt?.collaboration_revision !== result.collaboration_revision ||
+                grant.completion_receipt?.submission_id !== result.delivery_confirmation?.submission_id) throw new CollaborationUnavailableError();
+            } catch { throw new CollaborationUnavailableError(); }
+          }
         }
         return result;
       } catch (error) {
@@ -68,6 +84,11 @@ export async function executeCollaborationAction(client: QueryClient, scope: Col
       if (form) finishCollaborationDeliveryDraft(form.scope, form.draftId, storage);
     }
     removeCollaborationDraft(draft, storage);
+    if (result && result.code === "completed" && action.action === "complete" && action.completion && action.completionSourceWorkspaceId) {
+      const owner = { server: scope.server, userId: scope.userId, workspaceId: action.completionSourceWorkspaceId, issueId: draft.scope.issueId };
+      const grant = readCompletionDrafts(owner, storage).find((item) => item.authorizationId === action.completion?.authorization_id && item.request.operation_id === action.requestId);
+      if (grant) removeCompletionDraft(grant, storage);
+    }
     invalidateCollaborationSourceViews(client, scope, draft.scope.issueId);
     if (!denied) {
       // The scope invalidation starts all active account reads, including the

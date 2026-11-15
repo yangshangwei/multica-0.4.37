@@ -472,3 +472,23 @@ partial results use a non-success HTTP status. Refresh the actual affected
 issues, preserve the committed prefix and never report every requested item as
 updated or automatically replay the batch. Old unkeyed requests do not acquire
 a durable whole-batch receipt.
+
+## Collaboration typed test reports
+
+| Contract | Source |
+|---|---|
+| Run-local subject/submit/receipt; original request and no profile fallback | `cmd/multica/cmd_collaboration_test_report.go`, `cmd/multica/cmd_collaboration.go`, `internal/cli/collaboration_test_report.go` |
+| Closed report schema, decoded byte bounds and case-derived result | `pkg/protocol/collaboration_test_report.go` |
+| Actual human command binding and first-claim Git source freeze | `internal/service/collaboration_comments_create.go`, `internal/service/collaboration_test_subject.go`, `internal/service/collaboration_runtime_capabilities.go` |
+| One immutable report per issued capability attempt; historical minimal receipt after settlement/revocation; exact retained logs | `internal/service/collaboration_test_report.go`, `internal/handler/collaboration_test_report.go` |
+| Current human/source reads, execution applicability and explicit QA decisions | `internal/service/collaboration_test_report_view.go`, `internal/service/collaboration_stage_qa.go`, `internal/service/collaboration_stage_review.go` |
+
+### Stage release and rollback boundaries
+
+| Observable behavior | Source |
+| --- | --- |
+| Exact human release/rollback dependency and original signer checks | `internal/service/collaboration_stage_execution_approvals.go`, `internal/service/collaboration_stage_signer.go` |
+| Definite intent commit before one synchronous call; original-key history never dispatches | `internal/service/collaboration_stage_execution.go` |
+| Authenticated immutable operation facts; unknown/not-started are not deployment success | `internal/service/collaboration_stage_execution_observations.go` |
+| Native-order metric ambiguity and current anomaly consumption | `internal/service/collaboration_stage_execution_metrics.go` |
+| Protected target/operation/metric projections; production missing-source unavailability | `internal/service/collaboration_stage_execution_view.go`, `internal/handler/collaboration_stage.go` |

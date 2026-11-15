@@ -708,3 +708,13 @@ it("isolates cached same-tab overview navigation and flushes outgoing text under
   expect(mocks.editorEmitted).not.toHaveBeenCalled();
   view.unmount(); client.clear();
 });
+
+it("S2 explains the project stage-policy exit requirement without success or navigation", async () => {
+  renderProjectDetail();
+  await userEvent.click(screen.getByRole("button", { name: "Delete project" }));
+  await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+  const options = mocks.deleteProject.mock.calls[0]?.[1] as { onError?: (error: Error) => void };
+  options.onError?.(new ApiError("PRIVATE server message", 409, "Conflict", { code: "stage_policy_exit_required", error: "stage_policy_exit_required", message: "PRIVATE server message" }));
+  expect(mocks.toastError).toHaveBeenCalledWith("Disable stage gates before deleting this project.");
+  expect(mocks.push).not.toHaveBeenCalled();expect(mocks.toastSuccess).not.toHaveBeenCalled();
+});

@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY collaboration_stage_child_issue_idx ON collaboration_stage_child (child_issue_id);
