@@ -1,3 +1,4 @@
+import { expectCommentMenuWithout } from "./fixtures/collaboration-comment-menu";
 import { randomUUID } from "node:crypto";
 import { test, expect } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
@@ -58,7 +59,7 @@ test("Web source creation, field edits and discussion share one authorized issue
     const recipientEdit = await revealCollaborationEditingAction(recipientPage, "Edit issue");
     await expect(recipientPage.getByRole("button", { name: "Edit source fields", exact: true, includeHidden: true })).toHaveCount(0);
     await expect(recipientPage.getByRole("button", { name: "Change iteration", exact: true, includeHidden: true })).toHaveCount(0);
-    await expect(recipientPage.locator(`[id="comment-${discussion.replyId}"]`).getByRole("button", { name: "Edit comment", exact: true })).toHaveCount(0);
+    await expectCommentMenuWithout(recipientPage.locator(`[id="comment-${discussion.replyId}"]`), ["Edit comment"]);
     const options = await fixture.recipient.requestJSON<{ source_options?: unknown }>(`/api/collaboration/issues/${issue.id}/field-options`);
     expect(options.source_options).toBeUndefined();
 

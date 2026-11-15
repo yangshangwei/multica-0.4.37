@@ -64,8 +64,10 @@ test("Web recipient recalls retained handoff sources and omitted comments, then 
   await comments.getByRole("button", { name: "Load more", exact: true }).click();
   await expect(comments.getByText("Loaded 51 of 55 comments", { exact: true })).toBeVisible();
   await comments.getByRole("button", { name: "Load more", exact: true }).click();
-  await expect(comments.getByText("Loaded 55 of 55 comments", { exact: true })).toBeVisible();
   await expect(comments.getByRole("button", { name: "Load more", exact: true })).toHaveCount(0);
+  // The loaded range is shown only while another page exists.
+  await expect(comments.getByText(/^Loaded \d+ of \d+ comments$/)).toHaveCount(0);
+  await expect(comments.locator("[data-comment-total]")).toHaveText("55");
   for (const id of [fixture.olderCommentIds[0]!, fixture.olderCommentIds.at(-1)!, fixture.longCommentId]) {
     await expect(page.locator(`[id="comment-${id}"]`)).toHaveCount(1);
   }

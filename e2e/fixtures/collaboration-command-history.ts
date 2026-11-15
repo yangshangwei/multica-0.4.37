@@ -1,3 +1,4 @@
+import { commentMenuItem } from "./collaboration-comment-menu";
 import { expect, type Locator, type Page } from "@playwright/test";
 import type { CollaborationCommandHistory, CollaborationCommandHistoryEntry } from "../../packages/core/collaboration/command-history-schema";
 import { resourceOfferAccountPath, type CollaborationResourceOfferJourney } from "./collaboration-resource-offers";
@@ -79,7 +80,7 @@ export async function exerciseCollaborationCommandHistory(
 
   const comment = authorPage.locator(`[id="comment-${identities.comment_id}"]`);
   const edited = `Edited discussion after cancelling ${original.id}`;
-  await comment.getByRole("button", { name: "Edit comment", exact: true }).click();
+  await (await commentMenuItem(comment, "Edit comment")).click();
   await comment.getByLabel("Edit comment text", { exact: true }).fill(edited);
   const editPending = authorPage.waitForResponse((result) => new URL(result.url()).pathname === `${root}/comments/${identities.comment_id}`
     && result.request().method() === "PATCH");
@@ -92,7 +93,7 @@ export async function exerciseCollaborationCommandHistory(
   await adapter.inspectDeletion?.("before-open", authorPage, comment);
   let deletionUsedLatest = false;
   try {
-    await comment.getByRole("button", { name: "Delete comment", exact: true }).click();
+    await (await commentMenuItem(comment, "Delete comment")).click();
     await adapter.inspectDeletion?.("confirmation", authorPage, comment);
     const confirm = comment.getByRole("button", { name: "Confirm deletion", exact: true });
     try {

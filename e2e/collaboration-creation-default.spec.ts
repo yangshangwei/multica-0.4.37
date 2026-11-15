@@ -5,7 +5,7 @@ import { legacyLaneMissing, loginLegacyOwner, openLegacySession, rawRequest, rea
 
 // Migration 744 makes a fresh installation open collaboration creation while
 // AI execution and host admission stay closed. The entry point is the
-// "New collaboration issue" button in the Issues page header
+// "New collaboration issue" button in the workspace sidebar
 // (packages/views/collaboration/creation-form.tsx). Both tests change the
 // deployment-wide gate and restore its original booleans in `finally`.
 // Copy: packages/views/locales/en/collaboration.json creation.*.
@@ -13,7 +13,7 @@ const DISABLED = "Creating collaboration issues is not enabled on this server.";
 
 async function openCreation(page: Page, slug: string) {
   await page.goto(`/${slug}/issues`, { waitUntil: "domcontentloaded" });
-  await page.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+  await page.locator('[data-slot="sidebar-header"]').getByRole("button", { name: "New collaboration issue", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
   await expect(dialog.getByRole("combobox", { name: "Source workspace", exact: true })).toBeVisible();
   return dialog;

@@ -1,3 +1,4 @@
+import { commentMenuItem } from "./collaboration-comment-menu";
 import { revealCollaborationMentions } from "./collaboration-disclosures";
 import { randomUUID } from "node:crypto";
 import { expect, type Locator, type Page, type Request, type Route } from "@playwright/test";
@@ -506,7 +507,7 @@ export async function sendOfflineHumanMention(page: Page, fixture: Collaboration
 
 async function editComment(page: Page, fixture: CollaborationMentionJourney, commentId: string, content: string) {
   const row = page.locator(`[id="comment-${commentId}"]`);
-  await row.getByRole("button", { name: "Edit comment", exact: true }).click();
+  await (await commentMenuItem(row, "Edit comment")).click();
   await row.getByLabel("Edit comment text", { exact: true }).fill(content);
   const responsePending = page.waitForResponse((response) => new URL(response.url()).pathname === `${issuePath(fixture)}/comments/${commentId}`
     && response.request().method() === "PATCH");

@@ -1,3 +1,4 @@
+import { expectCommentMenuWithout } from "./fixtures/collaboration-comment-menu";
 import { randomUUID } from "node:crypto";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -167,14 +168,13 @@ test("three account owners and three native agents close one cross-workspace iss
     record("plain comment created no execution and stale memory update rejected", { comment_id: ordinary.receipt.comment_id, stale_memory_status: staleWrite.status });
 
     const runs: { run_id: string; comment_id: string; command_id: string; owner_id: string; agent_id: string; agent_name: string; base_version: string; written_version: string; result: string }[] = [];
-    const commentAuthorHeader = (comment: Locator) => comment.locator("xpath=./div[time]");
+    const commentAuthorHeader = (comment: Locator) => comment.locator("xpath=./div/div[time]");
     const checkAgentAuthor = async (page: Page, commentId: string, name: string, reply = false) => {
       const comment = page.locator(`[id="comment-${commentId}"]`);
       const header = commentAuthorHeader(comment);
       await expect(header.getByText(name, { exact: true })).toBeVisible();
       await expect(header.getByText("Agent", { exact: true })).toBeVisible();
-      await expect(comment.getByRole("button", { name: "Edit comment", exact: true })).toHaveCount(0);
-      await expect(comment.getByRole("button", { name: "Delete comment", exact: true })).toHaveCount(0);
+      await expectCommentMenuWithout(comment, ["Edit comment", "Delete comment"]);
       if (reply) {
         await comment.getByRole("button", { name: "Reply", exact: true }).click();
         const composer = page.getByRole("form", { name: "Comments", exact: true });

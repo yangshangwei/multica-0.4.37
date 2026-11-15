@@ -5,6 +5,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"context"
 	"crypto/rand"
 	"crypto/sha256"
@@ -31,6 +32,10 @@ func main() {
 		fmt.Println("fixture-1 (Claude Code)")
 		return
 	}
+	if len(os.Args) == 2 && os.Args[1] == "--fixture-capabilities" {
+		fmt.Println(`{"test_report":true,"failure_release":true,"prepared_git_marker":true}`)
+		return
+	}
 	if err := runHostFixture(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -52,12 +57,15 @@ type fixtureAction struct {
 	Outcome   string `json:"outcome"`
 	Reason    string `json:"reason"`
 	Path      string `json:"path"`
+	Fault     string `json:"fault"`
 }
 
 func runFixtureAction(cli, issueID, work string, action fixtureAction) map[string]any {
 	receipt := map[string]any{"kind": action.Kind, "request_id": action.RequestID}
 	var args []string
 	switch action.Kind {
+	case "test_subject", "test_report":
+		return runFixtureTestReport(cli, issueID, work, action)
 	case "comment":
 		args = []string{"issue", "comment", "add", issueID, "--request-id", action.RequestID, "--content", action.Content, "--output", "json"}
 	case "squad_activity":
@@ -102,6 +110,145 @@ func runFixtureAction(cli, issueID, work string, action fixtureAction) map[strin
 		return receipt
 	}
 	receipt["result"] = result
+	return receipt
+}
+
+// Do not embed Buffer: io.Copy would use its promoted ReaderFrom and bypass Write.
+type fixtureBoundedOutput struct{ buffer bytes.Buffer }
+
+func (b *fixtureBoundedOutput) Len() int       { return b.buffer.Len() }
+func (b *fixtureBoundedOutput) Bytes() []byte  { return b.buffer.Bytes() }
+func (b *fixtureBoundedOutput) String() string { return b.buffer.String() }
+
+func (b *fixtureBoundedOutput) Write(p []byte) (int, error) {
+	if b.Len()+len(p) > 64<<10 {
+		return 0, fmt.Errorf("fixture CLI output exceeded 64 KiB")
+	}
+	return b.buffer.Write(p)
+}
+
+func fixtureReportCLI(ctx context.Context, cli string, args []string, input []byte) (json.RawMessage, string, error) {
+	command := exec.CommandContext(ctx, cli, args...)
+	command.Stdin = bytes.NewReader(input)
+	var stdout, stderr fixtureBoundedOutput
+	command.Stdout, command.Stderr = &stdout, &stderr
+	if err := command.Run(); err != nil {
+		return nil, stderr.String(), err
+	}
+	raw := bytes.TrimSpace(stdout.Bytes())
+	if !json.Valid(raw) {
+		return nil, "", fmt.Errorf("fixture CLI response was not JSON")
+	}
+	return append(json.RawMessage(nil), raw...), "", nil
+}
+
+// The tiny deterministic case reads the selected Git file. The fault switch is
+// a fixture-only duplicate-side-effect injection, never a production override.
+func fixturePaymentCases(raw []byte, fault string) ([]map[string]any, []map[string]string, error) {
+	var marker struct {
+		Version         int      `json:"version"`
+		Revision        int      `json:"revision"`
+		Callbacks       []string `json:"callbacks"`
+		ExpectedEffects int      `json:"expected_effects"`
+	}
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	decoder.DisallowUnknownFields()
+	if len(raw) > 16<<10 || decoder.Decode(&marker) != nil || marker.Version != 1 || marker.Revision < 1 ||
+		len(marker.Callbacks) < 1 || len(marker.Callbacks) > 16 || marker.ExpectedEffects < 1 || marker.ExpectedEffects > 16 ||
+		(fault != "none" && fault != "duplicate_effect") {
+		return nil, nil, fmt.Errorf("prepared test marker or fault selection was invalid")
+	}
+	var extra any
+	if decoder.Decode(&extra) != io.EOF {
+		return nil, nil, fmt.Errorf("prepared test marker had trailing data")
+	}
+	seen, effects := map[string]bool{}, 0
+	for _, callback := range marker.Callbacks {
+		if callback == "" || len(callback) > 128 {
+			return nil, nil, fmt.Errorf("prepared callback identity was invalid")
+		}
+		if !seen[callback] || fault == "duplicate_effect" {
+			effects++
+		}
+		seen[callback] = true
+	}
+	outcome := "passed"
+	if effects != marker.ExpectedEffects {
+		outcome = "failed"
+	}
+	cases := []map[string]any{{"id": "prepared-source", "outcome": "passed", "log_index": 0},
+		{"id": "duplicate-callback", "outcome": outcome, "log_index": 1}}
+	logs := []map[string]string{{"kind": "inline", "body": fmt.Sprintf("Synthetic prepared Git marker revision %d; SHA-256 %s", marker.Revision, fixtureDigest(raw))},
+		{"kind": "inline", "body": fmt.Sprintf("Synthetic callback case: callbacks=%d effects=%d expected=%d injected_fault=%s", len(marker.Callbacks), effects, marker.ExpectedEffects, fault)}}
+	return cases, logs, nil
+}
+
+func runFixtureTestReport(cli, issueID, work string, action fixtureAction) map[string]any {
+	receipt := map[string]any{"kind": action.Kind, "request_id": action.RequestID}
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
+	subjectArgs := []string{"collaboration", "test-report", "subject", issueID, "--output", "json"}
+	subject, stderr, err := fixtureReportCLI(ctx, cli, subjectArgs, nil)
+	if action.Kind == "test_subject" {
+		if err != nil {
+			for _, code := range []string{"test_subject_unavailable", "test_source_unbound"} {
+				if strings.Contains(stderr, code) {
+					receipt["result"] = map[string]any{"available": false, "code": code, "command": subjectArgs}
+					return receipt
+				}
+			}
+			receipt["error"] = "CLI test subject failed without a recognized unavailable result"
+			return receipt
+		}
+		receipt["result"] = map[string]any{"available": true, "subject": subject, "stdout_sha256": fixtureDigest(subject), "command": subjectArgs}
+		return receipt
+	}
+	if err != nil {
+		receipt["error"] = "CLI test subject was unavailable"
+		return receipt
+	}
+	var binding struct {
+		Version int             `json:"version"`
+		IssueID string          `json:"issue_id"`
+		RunID   string          `json:"run_id"`
+		Subject json.RawMessage `json:"subject"`
+	}
+	if json.Unmarshal(subject, &binding) != nil || binding.Version != 1 || binding.IssueID != issueID || !fixtureUUID.MatchString(binding.RunID) || !json.Valid(binding.Subject) {
+		receipt["error"] = "CLI test subject identity was invalid"
+		return receipt
+	}
+	markerFile, err := os.Open(filepath.Join(work, "stage-regression.json"))
+	if err != nil {
+		receipt["error"] = "prepared test marker was missing"
+		return receipt
+	}
+	marker, readErr := io.ReadAll(io.LimitReader(markerFile, (16<<10)+1))
+	closeErr := markerFile.Close()
+	cases, logs, err := fixturePaymentCases(marker, action.Fault)
+	if readErr != nil || closeErr != nil || err != nil {
+		receipt["error"] = "prepared test marker was invalid"
+		return receipt
+	}
+	report, err := json.Marshal(map[string]any{"subject": binding.Subject, "suite_id": "synthetic-payment-regression", "cases": cases, "logs": logs})
+	if err != nil {
+		receipt["error"] = "test report could not be encoded"
+		return receipt
+	}
+	submitArgs := []string{"collaboration", "test-report", "submit", issueID, "--request-id", action.RequestID, "--report-stdin", "--output", "json"}
+	submitted, _, err := fixtureReportCLI(ctx, cli, submitArgs, report)
+	if err != nil {
+		receipt["error"] = "CLI test report submit failed; keep the original request and report"
+		return receipt
+	}
+	receiptArgs := []string{"collaboration", "test-report", "receipt", issueID, "--request-id", action.RequestID, "--output", "json"}
+	recovered, _, err := fixtureReportCLI(ctx, cli, receiptArgs, nil)
+	if err != nil || !bytes.Equal(submitted, recovered) {
+		receipt["error"] = "CLI original test report receipt did not match the submit reply"
+		return receipt
+	}
+	receipt["result"] = map[string]any{"subject": subject, "report": json.RawMessage(report), "submit": submitted, "receipt": recovered,
+		"source_file_sha256": fixtureDigest(marker), "report_input_sha256": fixtureDigest(report),
+		"commands": [][]string{subjectArgs, submitArgs, receiptArgs}, "stdout_sha256": []string{fixtureDigest(subject), fixtureDigest(submitted), fixtureDigest(recovered)}}
 	return receipt
 }
 
@@ -364,12 +511,14 @@ func runHostFixture() error {
 	// 'r' ends the turn. 'a' plus one JSON line asks the fixture to perform
 	// scripted business writes through the same run-local CLI an agent uses.
 	reader := bufio.NewReader(connection)
+	failed := false
 	for {
 		control, err := reader.ReadByte()
 		if err != nil {
 			return fmt.Errorf("fixture release was not received")
 		}
-		if control == 'r' {
+		if control == 'r' || control == 'f' {
+			failed = control == 'f'
 			break
 		}
 		if control != 'a' {
@@ -391,7 +540,14 @@ func runHostFixture() error {
 			return fmt.Errorf("fixture action receipts could not be returned")
 		}
 	}
-	return encoder.Encode(map[string]any{"type": "result", "subtype": "success", "is_error": false, "session_id": session,
-		"result": "Host fixture result for " + runID, "model": "host-fixture-model", "num_turns": 1,
-		"usage": map[string]int{"input_tokens": 7, "output_tokens": 3}})
+	return encoder.Encode(fixtureHostResult(session, runID, failed))
+}
+
+func fixtureHostResult(session, runID string, failed bool) map[string]any {
+	subtype, result := "success", "Host fixture result for "+runID
+	if failed {
+		subtype, result = "error_during_execution", "Synthetic controlled test execution failed for "+runID
+	}
+	return map[string]any{"type": "result", "subtype": subtype, "is_error": failed, "session_id": session,
+		"result": result, "model": "host-fixture-model", "num_turns": 1, "usage": map[string]int{"input_tokens": 7, "output_tokens": 3}}
 }

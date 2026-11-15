@@ -1,3 +1,4 @@
+import { closeCommentHistory, commentMenuItem, openCommentHistory } from "./collaboration-comment-menu";
 import { revealCollaborationDisclosure, revealCollaborationMentions } from "./collaboration-disclosures";
 import { createHash, randomUUID } from "node:crypto";
 import { expect, type Locator, type Page } from "@playwright/test";
@@ -186,17 +187,12 @@ export async function exerciseTypedCreation(session: RetainedSession, fixture: R
 }
 
 async function historyContainer(page: Page, commentId: string) {
-  const comment = page.locator(`[id="comment-${commentId}"]`);
-  const toggle = comment.getByRole("button", { name: "Comment history", exact: true });
-  if (await toggle.getAttribute("aria-expanded") !== "true") await toggle.click();
-  const controls = await toggle.getAttribute("aria-controls");
-  expect(controls).not.toBeNull();
-  return comment.locator(`[id="${controls}"]`);
+  return openCommentHistory(page.locator(`[id="comment-${commentId}"]`));
 }
 
 async function removeDisplayReference(page: Page, fixture: RetainedAttachmentFixture, commentId: string, file: CollaborationAttachment) {
   const comment = page.locator(`[id="comment-${commentId}"]`);
-  await comment.getByRole("button", { name: "Edit comment", exact: true }).click();
+  await (await commentMenuItem(comment, "Edit comment")).click();
   const editor = comment.getByRole("form", { name: "Edit comment", exact: true });
   await editor.getByLabel("Edit comment text", { exact: true }).fill("Current display no longer references the retained file.");
   await editor.getByRole("checkbox", { name: file.name, exact: true }).uncheck();
@@ -217,7 +213,7 @@ async function removeDisplayReference(page: Page, fixture: RetainedAttachmentFix
 
 async function deleteComment(page: Page, fixture: RetainedAttachmentFixture, commentId: string, file: CollaborationAttachment) {
   const comment = page.locator(`[id="comment-${commentId}"]`);
-  await comment.getByRole("button", { name: "Delete comment", exact: true }).click();
+  await (await commentMenuItem(comment, "Delete comment")).click();
   const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${issueRoot(fixture.issueId)}/comments/${commentId}` && response.request().method() === "DELETE");
   await comment.getByRole("button", { name: "Confirm deletion", exact: true }).click();
   const response = await pending;
@@ -234,7 +230,7 @@ async function displayAndDownload(session: RetainedSession, file: CollaborationA
   const page = session.page;
   for (const id of [removedId, deletedId]) {
     const comment = page.locator(`[id="comment-${id}"]`);
-    await expect(comment.getByRole("button", { name: "Comment history", exact: true })).toHaveAttribute("aria-expanded", "false");
+    await expect(comment.getByRole("region", { name: "Comment history", exact: true })).toHaveCount(0);
     await expect(comment.getByRole("button", { name: `Preview ${file.name}`, exact: true })).toHaveCount(0);
   }
   await expect(page.locator(`[id="comment-${deletedId}"]`).getByText("Comment deleted", { exact: true })).toBeVisible();
@@ -246,11 +242,11 @@ async function displayAndDownload(session: RetainedSession, file: CollaborationA
   const history = await historyContainer(page, removedId);
   await preview(session, history, file, bytes);
   const historyDownload = await session.download(history.getByRole("button", { name: `Download ${file.name}`, exact: true }).first(), file.name, bytes, `${stage}-history`);
-  await page.locator(`[id="comment-${removedId}"]`).getByRole("button", { name: "Comment history", exact: true }).click();
+  await closeCommentHistory(page.locator(`[id="comment-${removedId}"]`));
   const deletedHistory = await historyContainer(page, deletedId);
   await preview(session, deletedHistory, file, bytes);
   const deletedHistoryDownload = await session.download(deletedHistory.getByRole("button", { name: `Download ${file.name}`, exact: true }).first(), file.name, bytes, `${stage}-deleted-history`);
-  await page.locator(`[id="comment-${deletedId}"]`).getByRole("button", { name: "Comment history", exact: true }).click();
+  await closeCommentHistory(page.locator(`[id="comment-${deletedId}"]`));
   const commandToggle = page.getByRole("button", { name: "Command history", exact: true });
   if (await commandToggle.getAttribute("aria-expanded") !== "true") await commandToggle.click();
   const command = page.getByRole("region", { name: "Command history", exact: true }).locator(`[data-command-id="${commandId}"]`);

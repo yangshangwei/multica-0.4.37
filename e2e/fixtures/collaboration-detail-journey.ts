@@ -1,3 +1,4 @@
+import { commentMenuItem } from "./collaboration-comment-menu";
 import { execFileSync } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
 import { mkdtempSync, readFileSync, realpathSync, rmSync } from "node:fs";
@@ -5,7 +6,7 @@ import { tmpdir } from "node:os";
 import { isAbsolute, join, relative, resolve } from "node:path";
 import pg from "pg";
 import {
-  expect, type Browser, type Frame, type Locator, type Page, type Request, type Route, type TestInfo,
+  expect, type APIResponse, type Browser, type Frame, type Locator, type Page, type Request, type Route, type TestInfo,
 } from "@playwright/test";
 import {
   CollaborationCommentReceiptSchema, CollaborationCommentSchema, CollaborationDeliveryHistorySchema,
@@ -27,6 +28,7 @@ const sha256 = (bytes: string | Buffer) => createHash("sha256").update(bytes).di
 
 export type DetailJourneyPlatform = "web" | "desktop";
 export type DetailJourneyLocale = "en" | "zh-Hans";
+export type DetailJourneyAuthMode = "legacy" | "password";
 
 interface ServiceProof {
   listener_pid: number;
@@ -36,6 +38,7 @@ interface ServiceProof {
 }
 
 export interface DetailJourneyProvenance {
+  auth_mode: DetailJourneyAuthMode;
   task: string;
   source_root: string;
   api_url: string;
@@ -109,7 +112,7 @@ function assertListener(url: string, expected: number): void {
 
 /** The root session supplies this permit after building and proving its listeners.
  * A configured mismatch fails before TestApiClient's login can touch a database. */
-export async function detailJourneyProvenance(): Promise<DetailJourneyProvenance> {
+export async function detailJourneyProvenance(authMode: DetailJourneyAuthMode = "legacy"): Promise<DetailJourneyProvenance> {
   const filename = process.env.COLLABORATION_DETAIL_PROVENANCE_FILE;
   if (!filename || !isAbsolute(filename)) throw new Error("Explicit detail journey runtime provenance is required");
   const task = process.env.COLLABORATION_DETAIL_TASK;
@@ -119,6 +122,10 @@ export async function detailJourneyProvenance(): Promise<DetailJourneyProvenance
     throw new Error("Explicit current detail journey task and allocation are required");
   }
   const raw = object(JSON.parse(readFileSync(filename, "utf8")));
+  if (authMode === "password" && (raw.auth_mode !== authMode || raw.managed_installation_supported !== true
+    || process.env.MULTICA_AUTH_MODE !== authMode || process.env.MULTICA_MANAGED_INSTALLATIONS_ENABLED !== "true")) {
+    throw new Error("Password journey requires an explicit managed runtime authentication permit");
+  }
   if (raw.runtime_permitted !== true || raw.task !== task || realpathSync(textField(raw, "source_root")) !== checkout) {
     throw new Error("Detail journey runtime permit does not match this task and checkout");
   }
@@ -182,7 +189,9 @@ export async function detailJourneyProvenance(): Promise<DetailJourneyProvenance
   }
   const health = object(await healthResponse.json());
   const config = object(await configResponse.json());
-  if (health.pid !== api.listener_pid || health.commit !== api.commit || config.auth_mode !== "legacy") {
+  if (health.pid !== api.listener_pid || health.commit !== api.commit || config.auth_mode !== authMode
+    || authMode === "password" && (config.managed_installation_supported !== true || typeof raw.deployment_id !== "string"
+      || config.deployment_id !== raw.deployment_id)) {
     throw new Error("Detail journey API launch or authentication identity does not match");
   }
   if (sha256(Buffer.from(await rendererResponse.arrayBuffer())) !== artifactHashes["apps/desktop/out/renderer/index.html"]) {
@@ -203,7 +212,7 @@ export async function detailJourneyProvenance(): Promise<DetailJourneyProvenance
       throw new Error("Detail journey database or manual-only deployment gates do not match");
     }
   } finally { await db.end(); }
-  return { task, source_root: checkout, api_url: apiUrl, production_web_url: webUrl, renderer_url: rendererUrl, database, api,
+  return { auth_mode: authMode, task, source_root: checkout, api_url: apiUrl, production_web_url: webUrl, renderer_url: rendererUrl, database, api,
     web: { ...web, mode: "production", build_id: buildId }, renderer: { ...renderer, mode: "production", artifact_hashes: artifactHashes }, source_hashes: sourceHashes };
 }
 
@@ -211,14 +220,29 @@ async function journeyActor(provenance: DetailJourneyProvenance, suffix: string,
   const client = new TestApiClient();
   const email = `detail-${role}-${suffix}@example.invalid`;
   const name = `Detail ${role} ${suffix}`;
-  await client.login(email, name);
-  await client.markUserOnboarded();
+  const username = `detail_${role.replaceAll("-", "_").slice(0, 12)}_${suffix}`;
+  const password = `P6-${randomUUID()}-9a`;
+  if (provenance.auth_mode === "password") {
+    const registered = await client.registerPassword(username, password, name);
+    await client.requestJSON("/api/me/onboarding", { method: "PATCH", body: { questionnaire: { source: ["friends_colleagues"] } } });
+    const onboarded = await client.requestJSON<{ id: string; onboarded_at: string | null }>("/api/me/onboarding/complete", { method: "POST" });
+    expect(onboarded.id).toBe(registered.id);
+    expect(onboarded.onboarded_at).not.toBeNull();
+  } else {
+    await client.login(email, name);
+    await client.markUserOnboarded();
+  }
   const user = await client.requestJSON<{ id: string; name: string }>("/api/me");
   expect(user.name).toBe(name);
   return { client, id: user.id, name, async authenticateWeb(page: Page) {
-    const sent = await page.request.post(`${provenance.api_url}/auth/send-code`, { data: { email } });
-    expect(sent.status()).toBe(200);
-    const verified = await page.request.post(`${provenance.api_url}/auth/verify-code`, { data: { email, code: process.env.MULTICA_DEV_VERIFICATION_CODE } });
+    let verified: APIResponse;
+    if (provenance.auth_mode === "password") {
+      verified = await page.request.post(`${provenance.api_url}/auth/login`, { data: { username, password } });
+    } else {
+      const sent = await page.request.post(`${provenance.api_url}/auth/send-code`, { data: { email } });
+      expect(sent.status()).toBe(200);
+      verified = await page.request.post(`${provenance.api_url}/auth/verify-code`, { data: { email, code: process.env.MULTICA_DEV_VERIFICATION_CODE } });
+    }
     expect(verified.status()).toBe(200);
     const response = object(await verified.json());
     expect(object(response.user).id).toBe(user.id);
@@ -231,8 +255,8 @@ export type DetailJourneyActor = Awaited<ReturnType<typeof journeyActor>>;
 
 export interface OrdinaryJourneyIssue { id: string; identifier: string; title: string; status: string; revision: number; stage: number | null }
 
-export async function seedDetailJourney() {
-  const provenance = await detailJourneyProvenance();
+export async function seedDetailJourney(authMode: DetailJourneyAuthMode = "legacy") {
+  const provenance = await detailJourneyProvenance(authMode);
   const suffix = randomUUID().replaceAll("-", "").slice(0, 12);
   const creator = await journeyActor(provenance, suffix, "initiator");
   const handler = await journeyActor(provenance, suffix, "external-handler");
@@ -282,7 +306,7 @@ export function journeyCopy(locale: DetailJourneyLocale) {
     sourceComment: read("delivery", "sourceComment"), useComment: read("delivery", "useComment"), delivery: read("delivery", "title"),
     requirements: read("detail", "description"), comments: read("detail", "comments"), commentLabel: read("composer", "label"),
     publish: read("composer", "send"), preview: read("composer", "preview"), commentConfirmed: read("composer", "sent"),
-    editComment: read("commentActions", "edit"), editText: read("commentActions", "editText"), saveComment: read("commentActions", "save"),
+    editComment: read("commentActions", "edit"), commentMore: read("commentActions", "more"), editText: read("commentActions", "editText"), saveComment: read("commentActions", "save"),
     deleteComment: read("commentActions", "delete"), confirmDelete: read("commentActions", "confirmDelete"), deleted: read("detail", "deleted"),
     unknown: read("workflow", "unknown"), recover: read("workflow", "recover"), manual: read("policy", "manual"),
     ai: read("execution", "title"), external: read("detail", "external"), handler: read("detail", "handler"),
@@ -448,8 +472,12 @@ export async function openJourneyAction(session: DetailJourneySession, id: strin
   const optionsPending = session.page.waitForResponse((response) => new URL(response.url()).pathname === `${issuePath(id)}/status-options`
     && new URL(response.url()).searchParams.get("action") === action && response.request().method() === "GET");
   if (settings.commentId) {
-    const button = session.page.locator(`#comment-${settings.commentId}`).getByRole("button", { name: copy.useComment, exact: true });
+    const more = session.page.locator(`#comment-${settings.commentId}`).getByRole("button", { name: copy.commentMore, exact: true });
+    await more.focus();
+    await more.press("Enter");
+    const button = session.page.getByRole("menuitem", { name: copy.useComment, exact: true });
     await button.focus();
+    await expect(button).toBeFocused();
     await button.press("Enter");
   } else {
     let trigger = workflow.getByRole("button", { name: label, exact: true });
@@ -622,7 +650,7 @@ export async function submitJourneyWithLostResponse(opened: JourneyActionForm) {
 export async function changeJourneySourceComment(session: DetailJourneySession, id: string, commentId: string, content: string) {
   const copy = journeyCopy(session.locale);
   const row = session.page.locator(`#comment-${commentId}`);
-  await row.getByRole("button", { name: copy.editComment, exact: true }).click();
+  await (await commentMenuItem(row, copy.editComment, copy.commentMore)).click();
   const editor = row.getByRole("form", { name: copy.editComment, exact: true });
   await expect(editor).toBeVisible();
   await expect.poll(() => editor.evaluate((element) => element === document.activeElement || element.contains(document.activeElement))).toBe(true);
@@ -635,9 +663,9 @@ export async function changeJourneySourceComment(session: DetailJourneySession, 
   expect(editedResponse.status()).toBe(200);
   const edited = CollaborationCommentReceiptSchema.parse(await editedResponse.json());
   await expect(editor).toHaveCount(0);
-  await expect(row.getByRole("button", { name: copy.editComment, exact: true })).toBeFocused();
+  await expect(row.getByRole("button", { name: copy.commentMore, exact: true })).toBeFocused();
   await expect(row.getByText(content, { exact: true })).toBeVisible();
-  await row.getByRole("button", { name: copy.deleteComment, exact: true }).click();
+  await (await commentMenuItem(row, copy.deleteComment, copy.commentMore)).click();
   const deletion = row.getByRole("form", { name: copy.deleteComment, exact: true });
   const deletedPending = session.page.waitForResponse((response) => new URL(response.url()).pathname === `${issuePath(id)}/comments/${commentId}` && response.request().method() === "DELETE");
   await deletion.getByRole("button", { name: copy.confirmDelete, exact: true }).press("Enter");

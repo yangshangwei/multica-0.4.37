@@ -1,3 +1,4 @@
+import { closeCommentHistory, commentMenuItem, openCommentHistory } from "./collaboration-comment-menu";
 import { randomUUID } from "node:crypto";
 import { expect, type Locator, type Page, type Route } from "@playwright/test";
 import { TestApiClient } from "../fixtures";
@@ -97,7 +98,7 @@ async function setTextProperty(page: Page, container: Locator, name: string, val
 }
 
 export async function createCollaborationWithInitialFields(page: Page, fixture: CollaborationEditingFixture) {
-  await page.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+  await page.locator('[data-slot="sidebar-header"]').getByRole("button", { name: "New collaboration issue", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
   await expect(dialog.getByLabel("Source workspace", { exact: true })).toHaveValue(fixture.workspace.id);
   await dialog.getByLabel("Title", { exact: true }).fill(fixture.title);
@@ -198,7 +199,7 @@ export async function exerciseCollaborationDiscussion(page: Page, source: TestAp
   const reply = await sendCollaborationComment(page, "A reply that survives parent editing and deletion.");
   expect(await source.requestJSON(`/api/collaboration/issues/${issueId}/comments/${reply.comment_id}`)).toMatchObject({ parent_id: parent.comment_id });
 
-  await parentRow.getByRole("button", { name: "Edit comment", exact: true }).click();
+  await (await commentMenuItem(parentRow, "Edit comment")).click();
   await parentRow.getByLabel("Edit comment text", { exact: true }).fill(edited);
   const commentURL = `**/api/collaboration/issues/${issueId}/comments/${parent.comment_id}`;
   let intercepted = false;
@@ -231,11 +232,11 @@ export async function exerciseCollaborationDiscussion(page: Page, source: TestAp
     page.off("request", countPatch);
     if (recover) await page.unroute(commentURL, loseResponse);
   }
-  await parentRow.getByRole("button", { name: "Comment history", exact: true }).click();
+  await openCommentHistory(parentRow);
   // Creation records the original as "after"; the edit records it as "before".
   await expect(parentRow.getByText(original, { exact: true })).toHaveCount(2);
   for (const entry of await parentRow.getByText(original, { exact: true }).all()) await expect(entry).toBeVisible();
-  await parentRow.getByRole("button", { name: "Comment history", exact: true }).click();
+  await closeCommentHistory(parentRow);
 
   const before = await source.requestJSON<{ comment_revision: string }>(`/api/collaboration/issues/${issueId}/comments/${parent.comment_id}`);
   await parentRow.getByRole("button", { name: "Choose a reaction", exact: true }).click();
@@ -254,14 +255,16 @@ export async function exerciseCollaborationDiscussion(page: Page, source: TestAp
   await page.getByRole("button", { name: "🎉", exact: true }).click();
   await expect(issueReactions.getByRole("button", { name: "Remove your 🎉 reaction", exact: true })).toHaveAttribute("aria-pressed", "true");
 
-  await parentRow.getByRole("button", { name: "Delete comment", exact: true }).click();
+  await (await commentMenuItem(parentRow, "Delete comment")).click();
   await parentRow.getByRole("button", { name: "Confirm deletion", exact: true }).click();
   await expect(parentRow.getByText("Comment deleted", { exact: true })).toBeVisible();
   const replyRow = page.locator(`[id="comment-${reply.comment_id}"]`);
   await expect(replyRow.getByText("A reply that survives parent editing and deletion.", { exact: true })).toBeVisible();
-  await replyRow.getByRole("link", { name: "View parent comment", exact: true }).click();
+  // A loaded parent keeps its reply threaded beneath it, so the reply needs no parent link.
+  await expect(replyRow).toHaveAttribute("data-depth", "1");
+  await expect(replyRow.getByRole("link", { name: "View parent comment", exact: true })).toHaveCount(0);
   await expect(parentRow).toBeVisible();
-  await parentRow.getByRole("button", { name: "Comment history", exact: true }).click();
+  await openCommentHistory(parentRow);
   await expect(parentRow.getByText(original, { exact: true })).toHaveCount(2);
   for (const entry of await parentRow.getByText(original, { exact: true }).all()) await expect(entry).toBeVisible();
   return { parentId: parent.comment_id, replyId: reply.comment_id, recovered: recover, patchCount };

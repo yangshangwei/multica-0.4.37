@@ -1,3 +1,4 @@
+import { commentMenuItem, expectCommentMenuWithout } from "./collaboration-comment-menu";
 import { randomUUID } from "node:crypto";
 import pg from "pg";
 import { expect, type Page } from "@playwright/test";
@@ -135,11 +136,13 @@ export async function assertRuntimeHandoff(page: Page, fixture: RuntimeHandoffFi
 }
 
 export async function recoverLongComment(page: Page, fixture: RuntimeHandoffFixture) {
-  const comments = page.getByRole("heading", { name: "Comments", exact: true }).locator("..");
+  // The heading now sits in its own row; the whole discussion section holds the range and paging.
+  const comments = page.locator("#discussion");
+  await expect(comments.getByRole("heading", { name: "Comments", exact: true })).toBeVisible();
   await expect(comments.getByText(`Loaded 1 of ${fixture.totalComments} comments`, { exact: true })).toBeVisible();
   const comment = page.locator(`[id="comment-${fixture.longCommentId}"]`);
   await expect(comment.getByText("This comment is longer than the page budget. Load its full text to read or edit it.", { exact: true })).toBeVisible();
-  await expect(comment.getByRole("button", { name: "Edit comment", exact: true })).toHaveCount(0);
+  await expectCommentMenuWithout(comment, ["Edit comment"]);
   const pending = page.waitForResponse(response => new URL(response.url()).pathname === `${fixture.root}/comments/${fixture.longCommentId}` && response.request().method() === "GET");
   await comment.getByRole("button", { name: "Load full text", exact: true }).click();
   const response = await pending;
@@ -147,7 +150,8 @@ export async function recoverLongComment(page: Page, fixture: RuntimeHandoffFixt
   const full: CollaborationComment = await response.json();
   expect(full).toMatchObject({ id: fixture.longCommentId, content: fixture.longContent });
   await expect(comment.getByText(fixture.longContent, { exact: true })).toBeVisible();
-  await expect(comment.getByRole("button", { name: "Edit comment", exact: true })).toBeVisible();
+  await expect(await commentMenuItem(comment, "Edit comment")).toBeVisible();
+  await page.keyboard.press("Escape");
   return { comments, comment, full };
 }
 

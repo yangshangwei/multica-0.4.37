@@ -43,7 +43,7 @@ test("actual host timeout retains its failure and recovers committed receipts af
     await expect(target.getByRole("heading", { name: main.title, exact: true })).toBeVisible();
     const comment = target.locator(`[id="comment-${visit.result_comment_id}"]`);
     await expect(comment).toContainText(visit.result_text);
-    await expect(comment.locator("xpath=./div[time]").getByText(main.name, { exact: true })).toBeVisible();
+    await expect(comment.locator("xpath=./div/div[time]").getByText(main.name, { exact: true })).toBeVisible();
     const disclosure = hostPanel(target).locator(`[id="run-${visit.identity.run_id}"]`);
     const button = disclosure.getByRole("button", { name: `View records for ${visit.identity.run_id}`, exact: true });
     if (await button.count()) await button.click();

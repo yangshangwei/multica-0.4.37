@@ -62,7 +62,9 @@ export interface HostVisit {
 export type HostAction =
   | { kind: "comment"; request_id: string; content: string }
   | { kind: "squad_activity"; request_id: string; outcome: "action" | "no_action" | "failed"; reason: string }
-  | { kind: "write_file"; path: string; content: string };
+  | { kind: "write_file"; path: string; content: string }
+  | { kind: "test_subject" }
+  | { kind: "test_report"; request_id: string; fault: "none" | "duplicate_effect" };
 export interface HostActionReceipt { kind: string; request_id?: string; result?: unknown; error?: string; sha256?: string }
 interface HostActionReply { receipts: HostActionReceipt[] }
 export interface HostIssue {
@@ -73,13 +75,22 @@ interface HostHTTPFact { operation: string; run_id: string; protocol_version: nu
   event_id?: string; receipt_id?: string; request_sha256?: string; response_sha256?: string; acknowledgement_held?: boolean }
 interface HostDaemonSummary { claims: number; invalid_capacity: boolean; available_slots: number; active_tasks: number; http: HostHTTPFact[] }
 interface HostReady { ready: true; protocol_version: number; execution_mode: string; preparation_version: number; runtime_config_epoch: string; max_concurrent_tasks: number; os: string; arch: string;
-  agent_timeout_ms?: number; hold_receipt_acks?: boolean }
+  agent_timeout_ms?: number; hold_receipt_acks?: boolean; git?: { object_format: string; commit_oid: string; bundle_digest: string } }
+
+export interface HostGitInput {
+  executable: string; bundle_file: string; bundle_digest: string; size_bytes: number;
+  object_format: "sha1" | "sha256"; commit_oid: string;
+}
 
 export interface HostDaemonOptions {
   /** Test-poller deadline; omission retains its existing three-minute default. */
   agentTimeoutMs?: number;
   /** Drop actual successful outcome/proof replies until this process is stopped. */
   holdReceiptACKs?: boolean;
+  /** Explicit owned bundle; the actual daemon registers and freezes this source. */
+  git?: HostGitInput;
+  /** Require this provider's optional report/failure callback contract. */
+  testReport?: true;
 }
 
 interface CollaborationGateState {
@@ -231,6 +242,17 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
   if (options.holdReceiptACKs !== undefined && typeof options.holdReceiptACKs !== "boolean") {
     throw new Error("Host fixture holdReceiptACKs must be a boolean");
   }
+  if (options.testReport !== undefined && options.testReport !== true) throw new Error("Host testReport opt-in must be true");
+  if (options.git) {
+    const git = options.git;
+    if (!isAbsolute(git.executable) || !isAbsolute(git.bundle_file) || !statSync(git.executable).isFile() || !statSync(git.bundle_file).isFile() ||
+      !Number.isSafeInteger(git.size_bytes) || git.size_bytes < 1 || git.size_bytes > 256 * 1024 * 1024 ||
+      !/^[0-9a-f]{64}$/.test(git.bundle_digest) || !["sha1", "sha256"].includes(git.object_format) ||
+      !(git.object_format === "sha1" ? /^[0-9a-f]{40}$/ : /^[0-9a-f]{64}$/).test(git.commit_oid)) throw new Error("Host Git input is invalid");
+    if (statSync(git.bundle_file).size !== git.size_bytes) throw new Error("Host Git bundle size changed");
+    const bytes = readFileSync(git.bundle_file);
+    if (bytes.length !== git.size_bytes || createHash("sha256").update(bytes).digest("hex") !== git.bundle_digest) throw new Error("Host Git bundle identity changed");
+  }
   const directory = mkdtempSync(join(tmpdir(), "multica-host-runtime-"));
   const extension = process.platform === "win32" ? ".exe" : "";
   const provider = join(directory, `fixture-provider${extension}`);
@@ -240,8 +262,17 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
   const cliHash = createHash("sha256").update(readFileSync(cli)).digest("hex");
   chmodSync(provider, 0o700);
   chmodSync(cli, 0o700);
-  const kind = await execute(provider, ["--fixture-kind"], { timeout: 5000 });
-  expect(kind.stdout.trim()).toBe("multica-host-e2e-provider-v1");
+  try {
+    const kind = await execute(provider, ["--fixture-kind"], { timeout: 5000 });
+    expect(kind.stdout.trim()).toBe("multica-host-e2e-provider-v1");
+    if (options.testReport) {
+      const capabilities = await execute(provider, ["--fixture-capabilities"], { timeout: 5000 });
+      expect(JSON.parse(capabilities.stdout)).toEqual({ test_report: true, failure_release: true, prepared_git_marker: true });
+    }
+  } catch (error) {
+    rmSync(directory, { recursive: true, force: true });
+    throw error;
+  }
   const visits: HostVisit[] = [];
   const errors: string[] = [];
   const sockets = new Set<Socket>();
@@ -332,6 +363,7 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
     child.stdin.write(`${JSON.stringify({ ServerURL: apiUrl, WorkspaceID: runtime.workspaceId, RuntimeID: runtime.runtimeId,
       DaemonID: runtime.daemonId, DeploymentID: runtime.deploymentId, InstallationID: runtime.installationId,
       RuntimeConfigEpoch: runtime.runtimeConfigEpoch, Directory: directory, Executable: provider, CLIExecutable: cli, Credential: runtime.credential,
+      ...(options.git === undefined ? {} : { git: options.git }),
       ...(options.agentTimeoutMs === undefined ? {} : { agent_timeout_ms: options.agentTimeoutMs }), hold_receipt_acks: holdReceiptACKs })}\n`);
     return { child, exit };
   };
@@ -365,6 +397,7 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
     expect(BigInt(ready.runtime_config_epoch)).toBeGreaterThan(BigInt(runtime.runtimeConfigEpoch));
     if (options.agentTimeoutMs !== undefined) expect(ready.agent_timeout_ms).toBe(options.agentTimeoutMs);
     if (options.holdReceiptACKs === true) expect(ready.hold_receipt_acks).toBe(true);
+    if (options.git) expect(ready.git).toEqual({ object_format: options.git.object_format, commit_oid: options.git.commit_oid, bundle_digest: options.git.bundle_digest });
     return { ready, visits, errors, close, cliHash,
       ledgerEvidence: () => hostLedgerEvidence(ledgerDirectory),
       /** Stop this poller only; keep the exact run ledger and callback owner. */
@@ -398,10 +431,11 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
           .toEqual({ errors: [], exit: null, count });
         return visits[count - 1]!;
       },
-      release(visit: HostVisit) {
+      release(visit: HostVisit, outcome: "success" | "failure" = "success") {
         if (visit.released_ms !== null || visit.socket.destroyed) throw new Error("Provider cannot be released twice or after Stop");
+        if (outcome === "failure" && options.testReport !== true) throw new Error("Controlled failure requires the host test-report provider contract");
         visit.released_ms = now();
-        visit.socket.write("r");
+        visit.socket.write(outcome === "failure" ? "f" : "r");
       },
       /**
        * Suspends the native daemon process so the server cannot receive its
