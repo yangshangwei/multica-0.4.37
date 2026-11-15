@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-3.md`
-- **Total Sessions**: 156
-- **Last Active**: 2026-11-15
+- **Total Sessions**: 157
+- **Last Active**: 2026-11-16
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-3.md` | ~1240 | Active |
+| `journal-3.md` | ~1288 | Active |
 | `journal-2.md` | ~1968 | Archived |
 | `journal-1.md` | ~2037 | Archived |
 <!-- @@@/auto:active-documents -->
@@ -31,6 +31,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 157 | 2026-11-16 | Preserve business batches and verified branch integration | `df61136451d7b6f4fa5b9bc86467edf47bc8fdda`, `5aee2f2032289d77f0c4afd1e2bf10c99d438016`, `56fef1cef7cd317ffaeff35ce48601728131fcb6`, `a9e364a0a6c0198ca140f900dbbcdf28e0ed3b22`, `eb2bbde855e1c2afcfe16e0d473666514db61d47`, `ec7a15d5f287cd30631fea04a22905f02313ee2a`, `979853a5db4092be11139d9c3ca142d52e99f2bf`, `d39bc4f90809adb7160469d2b5a6e9a3b8b1229d`, `475bd975ae097a75ce3d25f1f4ab8039eab0924f`, `7d0655a55088d84301a3a015012eff4548c5165e`, `2d6d79a03e8b63711d1ba62a8e840649a1171170` | `codex/cross-workspace-collaboration` |
 | 156 | 2026-11-15 | 项目知识接续：ROOT service复核收口 | - | `codex/cross-workspace-collaboration` |
 | 155 | 2026-11-13 | S1 具体 Agent 身份与闭环回归验收 | `eafe68109` | `codex/cross-workspace-collaboration` |
 | 154 | 2026-11-12 | 归档六个已交付阶段并移交后续功能与真实验收 | `e08ab34ce228cf11a39c153ccd33d61626ebd75b`, `c5c6fd29a74deee2b52726c92d6c05fbfc289748` | `codex/cross-workspace-collaboration` |

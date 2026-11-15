@@ -1240,3 +1240,49 @@ Expanded spare height now grows the description editor; local popup no-drag rest
 - 接受P2最终源后封存共享ROOT输入，复用既有P6 allocation完成匹配构建、Web/Desktop两端知识旅程、资源审计和最终AC；任务继续in_progress，不归档。
 
 - 接续回执补充（2026-11-15T14:56:46.867929+00:00）：PAY GREEN18b3f4bd候选4,968输入／3owned／4,965protected零漂移已绑定并获执行许可；19总profile中的18未用profile待实际P2验证，最多2suite。知识suite0，P2／LIVE／最终ROOT验收仍false。
+
+
+## Session 157: Preserve business batches and verified branch integration
+<!-- trellis-session: v=2 fp=8d4f86def2903f36 -->
+
+**Date**: 2026-11-16
+**Task**: Preserve business batches and verified branch integration
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Audited68local branches,20origin refs and100worktree heads; joined equivalent history, restored7notes and integrated missing3file RK1 slice. Committed existing work by business without replacing peer source or private evidence.
+
+### Main Changes
+
+- Business source, stage activation, knowledge, comments, runtime and closure regressions, product help, archive and engineering evidence were committed separately with Lore trailers.
+- Preserved109formerly tracked archive files and all peer/private/scratch evidence in their actual locations.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `df61136451d7b6f4fa5b9bc86467edf47bc8fdda` | fix(migrate): keep interrupted report index builds safely retryable |
+| `5aee2f2032289d77f0c4afd1e2bf10c99d438016` | feat(collaboration): require recorded stage approvals before accepting results |
+| `56fef1cef7cd317ffaeff35ce48601728131fcb6` | feat(knowledge): retain accepted project knowledge with current source authority |
+| `a9e364a0a6c0198ca140f900dbbcdf28e0ed3b22` | feat(collaboration): enable ready stage policies with exact original-key recovery |
+| `eb2bbde855e1c2afcfe16e0d473666514db61d47` | feat(collaboration): make unresolved discussions easier to find and resume |
+| `ec7a15d5f287cd30631fea04a22905f02313ee2a` | test(runtime): bind Codex migrations to reviewed executable and account evidence |
+| `979853a5db4092be11139d9c3ca142d52e99f2bf` | test(collaboration): preserve shared workflow and recovery acceptance journeys |
+| `d39bc4f90809adb7160469d2b5a6e9a3b8b1229d` | docs: make current Chinese workflows visible in tutorials and embedded help |
+| `475bd975ae097a75ce3d25f1f4ab8039eab0924f` | test(collaboration): keep focus recovery correct after the menu exit animation |
+| `7d0655a55088d84301a3a015012eff4548c5165e` | test(collaboration): keep closure writes within the exact workflow authority envelope |
+| `2d6d79a03e8b63711d1ba62a8e840649a1171170` | chore(trellis): retain the scope and evidence behind concurrent delivery work |
+
+### Testing
+
+- [OK] Lint/typecheck, full TS suites with original-timeout failed-file replay, Go packages with fresh isolated DBs, affected migration/router reruns and current stage/comment regressions passed.
+- [OK] Web/Desktop/Docs production builds passed;157embedded help files match source; gated E2E discovery16cases only.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Existing real-provider, installed-client and shared-ROOT acceptance remains owned by the active knowledge/PAY tasks.
