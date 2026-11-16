@@ -28,7 +28,7 @@
 
 当前 CORS／v2／严格 legacy 边界和生产 Web／原生 renderer 已通过。真实模型语义质量、安装版 Main／installer／updater 和其他平台保留独立验收，未在本次声明中通过。所有模型与 Provider 为受控本地夹具；未使用真实账户模型，未创建 PR、推送或部署。
 
-本地提交与任务归档属于后续收尾记录。并行 Desktop／LAN 和 PAY-241 改动按原负责人范围保留；本任务不会把它们作为自身提交的代码改动。
+本地工作提交为 `86690a919`；任务已标记 `completed` 并归档至 `archive/2026-11/11-14-project-knowledge-automation`。会话记录按后续日志步骤登记。并行 Desktop／LAN 和 PAY-241 改动按原负责人范围保留；本任务没有把它们作为自身提交的代码改动。
 
 ## 主证据
 
