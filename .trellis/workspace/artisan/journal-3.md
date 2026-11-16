@@ -1333,3 +1333,40 @@ Audited68local branches,20origin refs and100worktree heads; joined equivalent hi
 - 未运行：collaboration-detail-journey、collaboration-multi-account-closure、project-knowledge-automation（各需额外环境）。
 - 已知取舍：父评论未加载的回复按直接父级分组，同一未加载串的两个分支会计为两个未解决讨论，文案已限定为已加载评论中。
 - E2E 环境脚本与日志保留在 /Volumes/artisan/code/2026/mc-cct-20261116/env/，容器、密钥与工作树已删除。
+
+
+## Session 159: 项目知识自动沉淀 P6 当前 ROOT 最终验收
+<!-- trellis-session: v=2 fp=f594f646dbfc8d3a -->
+
+**Date**: 2026-11-16
+**Task**: 项目知识自动沉淀 P6 当前 ROOT 最终验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成当前 ROOT 源 ed6f 的生产构建、Web/Electron 两端知识旅程与 14 行 AC 独立验收；修复协议协商和原生配置入口，记录 Git raw/clean 契约，清理所属资源并归档任务。
+
+### Main Changes
+
+- Host 验收按最新协议常量协商并继续拒绝降级；P6 原生入口捕获原 payload 后单次 configured IPC 回包。
+- 任务最终验证指针统一到 ed6f/start6b/testfe2b/stopped，旧 406 条验证记录保留历史；补齐 server/Web E2E 规格与完成记录。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `86690a919` | fix(knowledge): keep acceptance aligned with negotiated runtimes |
+
+### Testing
+
+- [OK] 完整生产 API/CLI/迁移工具/Web/Desktop 构建通过；实际 Web 与 Electron 各 1 PASS，0 FAIL/SKIP/RETRY。
+- [OK] 当前输入闭包接受 Go6 各 546 named、TAG3 各 17、Core/Views 222；Desktop74/两tsc/6lint、索引8/原生5回归通过。
+- [OK] 独立 AC14、1681产物/8工具/完整10409文件32链接；四服务/两daemon/四fakeprovider与Playwright组无残留，BrowserDB连接0，Go6Redis一次所属清理闭合。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 真实模型语义质量、安装版 Main/installer/updater 和其他平台保留独立验收；未创建PR、推送或部署。
