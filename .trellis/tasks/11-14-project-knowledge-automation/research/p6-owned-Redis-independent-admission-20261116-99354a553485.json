@@ -1,0 +1,416 @@
+{
+  "schema_version": 1,
+  "kind": "independent_owned_Redis_fixture_current_resource_and_readonly_helper_preparation_admission",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "role": "trellis-check",
+  "at": "2026-11-16T00:09:36.319858+00:00",
+  "verdict": "OWNED_REDIS_FIXTURE_ADMITTED_FOR_NEW_SCOPED_ADAPTER_PREPARATION",
+  "accepted": true,
+  "blocking_findings_open": 0,
+  "blocking_findings": [],
+  "checks": {
+    "allocation_helper_config_connection_source_refs_exact_SHA_and_private_modes": true,
+    "owned_canonical_fixture_and_trusted_ancestor_chain": true,
+    "live_pinned_helper_actual_verify_only_exit0": true,
+    "independent_actual_Docker_CID_labels_user_network_membership_and_port_match": true,
+    "cached_pinned_image_ARM64_Redis748_match": true,
+    "copied_config_SHA_no_anonymous_volumes_and_no_bind_mounts": true,
+    "host_container_runid_same_original1446_authenticated_PONG_DB12empty": true,
+    "noeviction_and_no_persistence_configuration_preserved": true,
+    "helper_pure_owned_guard_and_RESP_negative_cases_pass": true,
+    "prior_bind_UID_internal_bridge_failures_and_owned_cleanup_evidence_preserved": true,
+    "no_SQL_Go_stop_create_modify_or_other_resource_operations": true,
+    "credential_values_and_connection_URL_not_emitted": true
+  },
+  "references": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/allocation.json",
+      "sha256": "d97a861c3904490f38e9ac4fe2f937bb20882f88751238654e54e5711f981807",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-owned-redis.py",
+      "sha256": "0f26332ac34f285bd7ec6d1e57fd864a1e3f4ea669e161ab44748fb7c7d30de5",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/actual-resource-receipt.json",
+      "sha256": "9d75b25a0b014f24d130ef3bcae390bdae8fd9832198d29434e514532fcf64c9",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/first-verify.stdout.json",
+      "sha256": "3e4fdf7338c74853543177f277c6b311a30298d3c3395047f063a1318932631d",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/redis.conf",
+      "sha256": "23c0d6e452780380b770933f48799f07490c56026a3e72dd49bdcb1c7d903a44",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/connection.json",
+      "sha256": "6836ff8eae60b6cd0de897dd0a04feae359eacc8ea020a44f5b9b04401a24e3f",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/manifests/full-source-input.json",
+      "sha256": "d00cf4bd187d7d26471bd570190eb28aefc214585d55b92daaa56fbc0f35dd84",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/first-verify.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/create-diagnostic.stderr.log",
+      "sha256": "22a7261586db57e520a1817782269aef88185e13f31f54c400ee42293ffcf4f2",
+      "retained_setup_or_owned_cleanup_evidence": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/create-diagnostic.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retained_setup_or_owned_cleanup_evidence": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/current-owned-container.json",
+      "sha256": "b6f7f55106f1d31809410a3fcd32f3c5d5b4353616b004b1189ae5321d3d07c4",
+      "retained_setup_or_owned_cleanup_evidence": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/current-owned-network.json",
+      "sha256": "1ee4c87d5cc1c09959d5d3531db01fe2948227ed53c1ba93f39161a347581f56",
+      "retained_setup_or_owned_cleanup_evidence": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/docker-copy-provision-commands.json",
+      "sha256": "24f76983b5ce572fd1a67a1677d4ca327e75081299f6f915ac45da352cc626a7",
+      "retained_setup_or_owned_cleanup_evidence": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/docker-copy-startup-failure.log",
+      "sha256": "d040a7a36bff4be531bf359b926e8fc9ce88134d34f264d0f542316e09f2f8d8",
+      "retained_setup_or_owned_cleanup_evidence": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/failed-root-config-access-container.json",
+      "sha256": "a17864d07c0e3f8e2f2753fe9ac40f0757c0b1d5b9dfe65c679b9d25669af039",
+      "retained_setup_or_owned_cleanup_evidence": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/host-bridge-after-owned-restart.json",
+      "sha256": "b6f7f55106f1d31809410a3fcd32f3c5d5b4353616b004b1189ae5321d3d07c4",
+      "retained_setup_or_owned_cleanup_evidence": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/host-bridge-commands.json",
+      "sha256": "055977eefa71d2f0ee7d43d4275e9cd6cbe662dffb472027415833119fa68547",
+      "retained_setup_or_owned_cleanup_evidence": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/host-bridge-current-container.json",
+      "sha256": "9e6f9acb4e31a638259f47f7d24669ac5cd316d0ba6f87bc2eb2c7c3a356c498",
+      "retained_setup_or_owned_cleanup_evidence": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/prior-internal-network-before-owned-removal.json",
+      "sha256": "73322b77b8dc6d69590a100b3e1f00dea9b12d54ac5dca5a5e8666179bfd2508",
+      "retained_setup_or_owned_cleanup_evidence": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/provision-commands.json",
+      "sha256": "7850340be9c53a610c90f8143ea7788dcc138dbe4e5a1a2dd3e08e3334294cea",
+      "retained_setup_or_owned_cleanup_evidence": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/provision-plan.json",
+      "sha256": "98acbe8141a5368ec6659b4cdf83b87b21216c0b284fae7e1953b849d007bdb2",
+      "retained_setup_or_owned_cleanup_evidence": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/uid501-provision-commands.json",
+      "sha256": "909351a8aa7d3226a1b6351e34d61787287413d5fd07afa32b041f58413da15e",
+      "retained_setup_or_owned_cleanup_evidence": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/uid501-startup-observation.log",
+      "sha256": "1bad56695c25bd4d5c5af9b60163a049973477342bbccf934fe36ea9c4d7efcd",
+      "retained_setup_or_owned_cleanup_evidence": true
+    }
+  ],
+  "allocation": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/allocation.json",
+    "sha256": "d97a861c3904490f38e9ac4fe2f937bb20882f88751238654e54e5711f981807"
+  },
+  "recorded_first_proof": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/first-verify.stdout.json",
+    "sha256": "3e4fdf7338c74853543177f277c6b311a30298d3c3395047f063a1318932631d"
+  },
+  "independent_live_verify_only": {
+    "command": [
+      "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "-I",
+      "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-owned-redis.py",
+      "--allocation",
+      "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/allocation.json",
+      "--allocation-sha256",
+      "d97a861c3904490f38e9ac4fe2f937bb20882f88751238654e54e5711f981807",
+      "--verify-only"
+    ],
+    "exit": 0,
+    "stdout_sha256": "5dcab9b69eaf0022e974dcffd6f6c0e8cfa1879d5f86f9fa5b453a13f6053b68",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "proof": {
+      "status": "verified_owned_running",
+      "fixture_id": "knowledge-redis-20261116-845aff0d7ad2",
+      "source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+      "container_id": "692628b72aeaad7b1ef3c5ca36ad7e9050795fdae6f6d05cdbf27288df36d133",
+      "network_id": "3f188721bae173b82f9b483c53f35f167d6d8eaadee3dcc011539fb59a9f336f",
+      "image_id": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "host": "127.0.0.1",
+      "port": 61471,
+      "connection_file_sha256": "6836ff8eae60b6cd0de897dd0a04feae359eacc8ea020a44f5b9b04401a24e3f",
+      "URL_sha256": "6d1bb7e79cecc318c8eb34f49226ecc6ae8705e6390f881a0fedf3af27d84ed4",
+      "proof": {
+        "authenticated_ping": "PONG",
+        "database": 12,
+        "DBSIZE": 0,
+        "redis_run_id": "144659754d4dbc659943945579aef6b6dc6a389f",
+        "redis_version": "7.4.8",
+        "host_and_container_runtime_match": true
+      },
+      "at": "2026-11-16T00:04:21.334845+00:00",
+      "helper_sha256": "0f26332ac34f285bd7ec6d1e57fd864a1e3f4ea669e161ab44748fb7c7d30de5"
+    }
+  },
+  "independent_actual_resource_inspection": {
+    "container_id": "692628b72aeaad7b1ef3c5ca36ad7e9050795fdae6f6d05cdbf27288df36d133",
+    "network_id": "3f188721bae173b82f9b483c53f35f167d6d8eaadee3dcc011539fb59a9f336f",
+    "image_id": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+    "image_architecture": "arm64",
+    "user": "501:20",
+    "container_labels": {
+      "multica.acceptance.task": "11-14-project-knowledge-automation",
+      "multica.acceptance.fixture": "knowledge-redis-20261116-845aff0d7ad2",
+      "multica.acceptance.owner.uid": "501",
+      "multica.acceptance.source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33"
+    },
+    "only_actual_network": "mca-knowledge-redis-host-845aff0d7ad2",
+    "ordinary_bridge_internal": false,
+    "only_published_port": {
+      "host": "127.0.0.1",
+      "port": 61471,
+      "container_port": 6379
+    },
+    "mounts_count": 0,
+    "privileged": false,
+    "cap_drop": [
+      "ALL"
+    ],
+    "actual_network_settings_used": "HostConfig.NetworkMode retains the previous bridge ID after the recorded owned bridge transition; current NetworkSettings has only the admitted ordinary network."
+  },
+  "configuration": {
+    "private_config_SHA": "23c0d6e452780380b770933f48799f07490c56026a3e72dd49bdcb1c7d903a44",
+    "private_connection_file_SHA": "6836ff8eae60b6cd0de897dd0a04feae359eacc8ea020a44f5b9b04401a24e3f",
+    "connection_URL_digest_only": "6d1bb7e79cecc318c8eb34f49226ecc6ae8705e6390f881a0fedf3af27d84ed4",
+    "database": 12,
+    "protected_mode": true,
+    "daemonize": false,
+    "appendonly": false,
+    "save_disabled": true,
+    "maxmemory": "64mb",
+    "maxmemory_policy": "noeviction",
+    "synthetic_authentication_only": true
+  },
+  "pure_helper_probes": [
+    {
+      "case": "exact_owned_snapshot",
+      "passed": true,
+      "accepted": true,
+      "expected": true
+    },
+    {
+      "case": "wrong_CID",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "wrong_name",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "wrong_image",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "wrong_container_labels",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "stopped_container",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "new_start_time",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "wrong_command",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "foreign_mount",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "public_port",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "wrong_network_ID",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "wrong_network_name",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "wrong_network_labels",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "wrong_internal_flag",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "foreign_network_member",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "copied_config_hash_drift",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "wrong_allocation_hash_before_Docker",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "RESP_simple",
+      "passed": true,
+      "accepted": true,
+      "expected": true
+    },
+    {
+      "case": "RESP_integer",
+      "passed": true,
+      "accepted": true,
+      "expected": true
+    },
+    {
+      "case": "RESP_bulk",
+      "passed": true,
+      "accepted": true,
+      "expected": true
+    },
+    {
+      "case": "RESP_error",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "RESP_incomplete",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "RESP_nil_bulk",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "RESP_oversized",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "RESP_truncated",
+      "passed": true,
+      "accepted": false,
+      "expected": false
+    }
+  ],
+  "original_setup_and_cleanup": {
+    "actual_resource_receipt": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/actual-resource-receipt.json",
+      "sha256": "9d75b25a0b014f24d130ef3bcae390bdae8fd9832198d29434e514532fcf64c9"
+    },
+    "historical_failures_unchanged": true,
+    "only_owned_prior_cleanup_recorded": true,
+    "other_resources_changed_by_reviewer": false
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "verification": {
+    "Lint": "not rerun: private helper/evidence review only",
+    "TypeCheck": "not rerun: private helper/evidence review only",
+    "PythonSyntax": "pass in-memory parse/compile",
+    "OfflineTests": "pass owned-guard and RESP probes",
+    "ActualReadonlyRedis": "PASS pinned helper verify-only and exact owned Docker inspect; authenticated DB12empty",
+    "GoOrSQL": "not run"
+  },
+  "ownership": {
+    "new_exclusive_review_JSON_only": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-owned-Redis-independent-admission-20261116-99354a553485.json",
+    "actual_readonly_approved_fixture_verification": true,
+    "actual_Redis_data_write_SQL_Go_container_stop_create_modify_or_ROOT_business_writes": 0,
+    "existing_proof_or_secret_file_rewrites": 0,
+    "subagents": 0
+  },
+  "acceptance_limits": {
+    "Redis_fixture_preparation_accepted": true,
+    "new_four_step_adapter_accepted": false,
+    "actual_new_Go_permission_granted": false,
+    "owned_teardown_permission_granted": false,
+    "tag9_actual_accepted": false,
+    "Go6_final": false,
+    "ROOT_adopt_or_production_source_ready": false,
+    "final_knowledge": false,
+    "P2_product": false,
+    "LIVE": false
+  }
+}

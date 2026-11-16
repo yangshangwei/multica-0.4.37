@@ -1,0 +1,90 @@
+{
+  "kind": "independent_MAIN_authorized_one_exact_Go6_Redis_cleanup",
+  "at": "2026-11-16T04:34:50.526550+00:00",
+  "reviewer": "/root/p6_progress_audit",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "status": "TEARDOWN_FAILED_DO_NOT_REPLAY",
+  "teardown_executions": 1,
+  "grant_sha256": "8e3fcfc2e0a94d0e85c38488b5ee562b31b5c4ddb63c2278780146fb41606aea",
+  "fixture_id": "knowledge-redis-20261116-845aff0d7ad2",
+  "allowed_resources": {
+    "container_id": "692628b72aeaad7b1ef3c5ca36ad7e9050795fdae6f6d05cdbf27288df36d133",
+    "network_id": "3f188721bae173b82f9b483c53f35f167d6d8eaadee3dcc011539fb59a9f336f",
+    "port": 61471,
+    "database": 12
+  },
+  "immediate_preconditions": {
+    "verify_exit": 0,
+    "original_runID": "144659754d4dbc659943945579aef6b6dc6a389f",
+    "authenticated_ping": "PONG",
+    "exclusive_network_members": [
+      "692628b72aeaad7b1ef3c5ca36ad7e9050795fdae6f6d05cdbf27288df36d133"
+    ],
+    "external_client_counts": [
+      0,
+      0
+    ],
+    "DB12_sizes": [
+      0,
+      0
+    ]
+  },
+  "post_teardown": null,
+  "protected_snapshot": null,
+  "result": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/result.json",
+    "sha256": "e559fdb1d7fd5c1edf4b7a168e7b0eb50934af4155623f16c3f8209ce329eba3"
+  },
+  "new_references": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/container-after.stderr.log",
+      "sha256": "44ad392c0a76879a83a05e6bc86b2edb42cb0aba9f46d494ea6ef2b7419aa08e"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/container-after.stdout.log",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/exact-teardown.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/exact-teardown.stdout.json",
+      "sha256": "f4c099327029bc36f7446a4d5d0befe17253df477204de4b25dfff891f65e9e3"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/immediate-client-preconditions.sanitized.json",
+      "sha256": "a03870a249ba3aac248c09c78c5461282b9e3016b087391869d89871ee7990c3"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/immediate-verify.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/immediate-verify.stdout.json",
+      "sha256": "5b8931f298a6b77b0a3a5e2fbd9ca927877b7f098cc40d8b3f8e09cc85909ac4"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/network-after.stderr.log",
+      "sha256": "d866f52a091b7e196df16f7d87c9bbe73227b9afac11aec313e208d0cf912760"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/network-after.stdout.log",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/protected-immutable-before.json",
+      "sha256": "a16afd14e186804657951fb343083a6518cf77ac3f87164fa9e90b5c8c2106ba"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/result.json",
+      "sha256": "e559fdb1d7fd5c1edf4b7a168e7b0eb50934af4155623f16c3f8209ce329eba3"
+    }
+  ],
+  "original_readonly_audit_preserved": true,
+  "original_helper_allocation_config_connection_and_SOURCE_ENV_preserved": true,
+  "existing_PG_history_or_unowned_resource_operations": 0,
+  "main_four_production_service_audits_repeated": 0,
+  "Go_test_model_or_new_DB_calls": 0,
+  "extra_teardown_or_replayed_cleanup": false
+}

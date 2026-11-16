@@ -1,0 +1,110 @@
+{
+  "kind": "independent_exact26_path_same_device_source_adoption_executor_admission",
+  "at": "2026-11-16T03:08:23.542171+00:00",
+  "reviewer": "/root/p6_source_check",
+  "status": "SOURCE8877_EXECUTOR_ACCEPTED_FOR_MAIN_EXACT_ADOPTION",
+  "accepted": true,
+  "blocking_findings_open": 0,
+  "source_id": "8877eb98b7e60add8a4b4e3d94dfad976dc51f3c49b7cce7b9e620891dc1d0d7",
+  "source_root": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/candidate-source",
+  "HEAD": "1a5e537b0531aa51bd7e3eded83bbb801f1c5133",
+  "source_preparation_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root8877-source-adoption-preparation-independent-review-20261116-ff3f7ac2a613.json",
+    "sha256": "be53aa63fc5298dd0774d9fbb8d35e812003b9b3ef8296cc8b754ed9f209aa42",
+    "bytes": 7310,
+    "mode": 384
+  },
+  "executor": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/execute-reviewed-adoption.py",
+    "sha256": "1bc25d9db9a137284acfa270a6fc6562f57b9dd0a6c43fe5435888f412f46837",
+    "bytes": 21006,
+    "mode": 420
+  },
+  "fixture": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/adoption-executor-fixtures.py",
+    "sha256": "e4b118a0f0badd202397144e57acb4e1d680c052d39c83a16d9dceebe5817fe4",
+    "bytes": 7400,
+    "mode": 420
+  },
+  "proposal": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/reports/NEW-same-PATH-adoption-proposal.json",
+    "sha256": "d6e337ef6136bf7cd615cd35d97c2f3895fb770ba8be143d5e8f41dbd782f1b7",
+    "bytes": 46739,
+    "mode": 384
+  },
+  "Python_parse": "PASS three source scripts",
+  "isolated_fixture_tests": {
+    "pass": 6,
+    "fail": 0,
+    "scope": "disposable owned files and private Git repositories; no source/DB/runtime operation"
+  },
+  "actual_validate_only": {
+    "validated": true,
+    "action_executed": false,
+    "old_source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+    "candidate_source_id": "8877eb98b7e60add8a4b4e3d94dfad976dc51f3c49b7cce7b9e620891dc1d0d7",
+    "proposal_sha256": "d6e337ef6136bf7cd615cd35d97c2f3895fb770ba8be143d5e8f41dbd782f1b7",
+    "executor_sha256": "1bc25d9db9a137284acfa270a6fc6562f57b9dd0a6c43fe5435888f412f46837"
+  },
+  "commands": [
+    {
+      "name": "isolated-fixtures",
+      "argv": [
+        "python3",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/adoption-executor-fixtures.py"
+      ],
+      "exit": 0,
+      "stdout": {
+        "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/independent-executor-review-de129e6c96bb/isolated-fixtures.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      },
+      "stderr": {
+        "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/independent-executor-review-de129e6c96bb/isolated-fixtures.stderr.log",
+        "sha256": "ad0682362754f46c0308d2ed1ceb50c90c4cc5fa78e7911c3fbae9a1d4dfcd7f",
+        "bytes": 1020,
+        "mode": 384
+      }
+    },
+    {
+      "name": "actual-validate-only",
+      "argv": [
+        "python3",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/execute-reviewed-adoption.py"
+      ],
+      "exit": 0,
+      "stdout": {
+        "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/independent-executor-review-de129e6c96bb/actual-validate-only.stdout.log",
+        "sha256": "72792cf1102c813add70eb0b83c0216b04f9de7181a91445d0917caf8db8ba25",
+        "bytes": 396,
+        "mode": 384
+      },
+      "stderr": {
+        "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/independent-executor-review-de129e6c96bb/actual-validate-only.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      }
+    }
+  ],
+  "reviewed_controls": [
+    "default validate-only; execute needs source review/executor exact hashes supplied by MAIN",
+    "exact26 prepared source paths only, complete10,407/32 source before/after and old5dee guards",
+    "owned0700 source/backup/quarantine directories on original same volume; no foreign links",
+    "same-parent temporary staging with SHA/mode/fsync and atomic replacements; quarantine originals retained",
+    "exact10407 NUL private index and actual blob/mode validation; detached HEAD/index staged inside old .git",
+    "original allocation lifecycle lock and source lock; PG/config/allocation/env protected at every operation",
+    "SIGTERM enters guarded rollback; before-image Git controls skip already-restored paths",
+    "rollback restores known before-images, retains exact added bytes, refuses unknown/peer bytes; no reset/clean/history deletion"
+  ],
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "original_source_and_report_mutation": false,
+  "actual_adoption": false,
+  "source_ready": false,
+  "production_build": false,
+  "runtime_journeys": false,
+  "final_ROOT_acceptance": false,
+  "next_step": "MAIN may issue a concrete exact adoption grant with this receipt and stable executor SHA. Independently audit actual adoption receipt before production build/start/journeys on the unchanged original allocation."
+}

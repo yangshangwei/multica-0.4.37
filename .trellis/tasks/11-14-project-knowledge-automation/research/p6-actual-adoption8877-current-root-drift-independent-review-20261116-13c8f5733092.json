@@ -1,0 +1,258 @@
+{
+  "kind": "independent_actual_v2_adoption8877_acceptance_current_ROOT_drift_gate",
+  "at": "2026-11-16T03:32:06.412188+00:00",
+  "reviewer": "/root/p6_source_check",
+  "status": "ADOPTION8877_ACCEPTED_LATEST_ROOT_TECHNICAL_INPUT_GATE_HELD",
+  "accepted": true,
+  "blocking_findings_open": 1,
+  "accepted_scope": "Exact committed private26-path adoption to8877 succeeded and preserves original allocation; latest ROOT equality is a distinct open gate.",
+  "source_id": "8877eb98b7e60add8a4b4e3d94dfad976dc51f3c49b7cce7b9e620891dc1d0d7",
+  "source_root": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+  "HEAD": "1a5e537b0531aa51bd7e3eded83bbb801f1c5133",
+  "files": 10407,
+  "workspace_links": 32,
+  "actual_initial_final_source_equal": true,
+  "complete_actual_raw_rows_and_modes_match_candidate": true,
+  "actual_after_source_matches_transaction_proof": true,
+  "original_before5dee_and_controls_retained": true,
+  "current_ROOT_technical_input_delta": {
+    "changed": [
+      "apps/desktop/src/renderer/src/platform/issue-window-navigation.tsx",
+      "apps/desktop/src/renderer/src/platform/navigation.test.tsx",
+      "apps/desktop/src/renderer/src/platform/navigation.tsx",
+      "apps/desktop/src/shared/runtime-config.test.ts",
+      "apps/desktop/src/shared/runtime-config.ts",
+      "docs/offline-upgrade.zh-CN.md",
+      "scripts/dev-env.sh"
+    ],
+    "added": [
+      "apps/desktop/src/renderer/src/platform/app-url.ts"
+    ],
+    "removed": []
+  },
+  "exact_current_ROOT_input_deltas": [
+    {
+      "path": "apps/desktop/src/renderer/src/platform/app-url.ts",
+      "adopted8877": null,
+      "current_ROOT": {
+        "sha256": "451074aa1922a19f9f449e02342b78714117a12e3eb207c2a7bb51df1f3bbf97",
+        "normalized_sha256": "451074aa1922a19f9f449e02342b78714117a12e3eb207c2a7bb51df1f3bbf97",
+        "mode": 420,
+        "link": null
+      }
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/platform/issue-window-navigation.tsx",
+      "adopted8877": {
+        "sha256": "d4bb3b70abb3bdc4777faf31f1fc2d6321e6c73da5ee0961856c9f42c442ad80",
+        "normalized_sha256": "d4bb3b70abb3bdc4777faf31f1fc2d6321e6c73da5ee0961856c9f42c442ad80",
+        "mode": 493,
+        "link": null
+      },
+      "current_ROOT": {
+        "sha256": "5bbed09ba31d285d627fe29c16c2ab440e3f24417e07512ab1d4b1d9d14f9b12",
+        "normalized_sha256": "5bbed09ba31d285d627fe29c16c2ab440e3f24417e07512ab1d4b1d9d14f9b12",
+        "mode": 493,
+        "link": null
+      }
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/platform/navigation.test.tsx",
+      "adopted8877": {
+        "sha256": "1af3b5d9245234bfeddfb121b8451f1c034cc68bcfb48936888b7db8c68e450c",
+        "normalized_sha256": "1af3b5d9245234bfeddfb121b8451f1c034cc68bcfb48936888b7db8c68e450c",
+        "mode": 493,
+        "link": null
+      },
+      "current_ROOT": {
+        "sha256": "590186448abbc152940f56ecb4f64a929c01e6f8ac58c3c23d5b021b333fc6ed",
+        "normalized_sha256": "590186448abbc152940f56ecb4f64a929c01e6f8ac58c3c23d5b021b333fc6ed",
+        "mode": 493,
+        "link": null
+      }
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/platform/navigation.tsx",
+      "adopted8877": {
+        "sha256": "95e514a2696bc9b7e741cffa730f4fca08a9b3bf64ef2ab310bbc215c492ce25",
+        "normalized_sha256": "95e514a2696bc9b7e741cffa730f4fca08a9b3bf64ef2ab310bbc215c492ce25",
+        "mode": 493,
+        "link": null
+      },
+      "current_ROOT": {
+        "sha256": "13a0f4671ef76e718eea387516dffb5f4efc55805a14e5f07931b664035620e9",
+        "normalized_sha256": "13a0f4671ef76e718eea387516dffb5f4efc55805a14e5f07931b664035620e9",
+        "mode": 493,
+        "link": null
+      }
+    },
+    {
+      "path": "apps/desktop/src/shared/runtime-config.test.ts",
+      "adopted8877": {
+        "sha256": "fe2e8f655a247c351ca5f17f7b6bcd96961f3cddd1ac99e94b749491355c2173",
+        "normalized_sha256": "fe2e8f655a247c351ca5f17f7b6bcd96961f3cddd1ac99e94b749491355c2173",
+        "mode": 493,
+        "link": null
+      },
+      "current_ROOT": {
+        "sha256": "e46ba69ab2104ebf1232ea3f8b2ec936f5f6ad17aaa1918f6d3b62730f37159f",
+        "normalized_sha256": "e46ba69ab2104ebf1232ea3f8b2ec936f5f6ad17aaa1918f6d3b62730f37159f",
+        "mode": 493,
+        "link": null
+      }
+    },
+    {
+      "path": "apps/desktop/src/shared/runtime-config.ts",
+      "adopted8877": {
+        "sha256": "06a9def1bdb68ce113a30c6accfb87fdd030406f9c6cfa853f4cc00fe4f67da9",
+        "normalized_sha256": "06a9def1bdb68ce113a30c6accfb87fdd030406f9c6cfa853f4cc00fe4f67da9",
+        "mode": 493,
+        "link": null
+      },
+      "current_ROOT": {
+        "sha256": "600c435569bb9070283fee548d3560c547fddedfc022e41357f6b0ec64a2b601",
+        "normalized_sha256": "600c435569bb9070283fee548d3560c547fddedfc022e41357f6b0ec64a2b601",
+        "mode": 493,
+        "link": null
+      }
+    },
+    {
+      "path": "docs/offline-upgrade.zh-CN.md",
+      "adopted8877": {
+        "sha256": "0f38eef2098c3016cd42dc1990bc9683a497d36871011c28f666b5245d024d82",
+        "normalized_sha256": "0f38eef2098c3016cd42dc1990bc9683a497d36871011c28f666b5245d024d82",
+        "mode": 420,
+        "link": null
+      },
+      "current_ROOT": {
+        "sha256": "f13e2e8b2f3412a2119dc15d6ed6f5760a25827c6b9b4c220144276d6e7e2bee",
+        "normalized_sha256": "f13e2e8b2f3412a2119dc15d6ed6f5760a25827c6b9b4c220144276d6e7e2bee",
+        "mode": 420,
+        "link": null
+      }
+    },
+    {
+      "path": "scripts/dev-env.sh",
+      "adopted8877": {
+        "sha256": "14b18460e68b15bc26aefe92da64144759ee6d5f93f3f33a828ebb8de0b0c4fc",
+        "normalized_sha256": "14b18460e68b15bc26aefe92da64144759ee6d5f93f3f33a828ebb8de0b0c4fc",
+        "mode": 493,
+        "link": null
+      },
+      "current_ROOT": {
+        "sha256": "6fb4a38c75ffe51c4e1a60712f52887263ee2a21ab205432c3bc90fdf25e001e",
+        "normalized_sha256": "6fb4a38c75ffe51c4e1a60712f52887263ee2a21ab205432c3bc90fdf25e001e",
+        "mode": 493,
+        "link": null
+      }
+    }
+  ],
+  "exact26_operations_applied": true,
+  "old3_harness_raw_bytes_preserved_in_same_volume_quarantine": true,
+  "protected_config_allocation_ENV": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.env",
+      "sha256": "023175cea43e8d88c06c0e298b9e7ba4459ce0e2ff2aba3114f4124eb9582569",
+      "bytes": 98,
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-allocation.json",
+      "sha256": "c005866cf315f588f251353a489c3f0b839362eba18ceac8c17b96f8408bc3dd",
+      "bytes": 1541,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-browser-25c0cd1e/allocation.json",
+      "sha256": "c005866cf315f588f251353a489c3f0b839362eba18ceac8c17b96f8408bc3dd",
+      "bytes": 1541,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-browser-25c0cd1e/environment.json",
+      "sha256": "2e85e5ff7183b5db84b9a165119b59c750f8aef26534b2634ce94ae953c4ced9",
+      "bytes": 8583,
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/frozen-full-manifest.json",
+      "sha256": "7a34a4f4821b323a1e3376fad2115be2b8cadb01139326f2cc921013fab4b1bf",
+      "bytes": 3110342,
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-full-manifest.json",
+      "sha256": "d00cf4bd187d7d26471bd570190eb28aefc214585d55b92daaa56fbc0f35dd84",
+      "bytes": 3110343,
+      "mode": 384
+    }
+  ],
+  "actual_receipt": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/reports/actual-adoption-a25e174383fa.json",
+    "sha256": "d8ee731043928529ffba7850d6ffd5cd4ea312b7399d6ee69979622e17d17887",
+    "bytes": 2478,
+    "mode": 384
+  },
+  "main_v2_handoff": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/reports/main-native-adoption-v2-handoff-cd64e28b148b.json",
+    "sha256": "c46caef7096d3d4f4fcf2432d812c173f51a36a862b60a9ee765dc30a5b1707a",
+    "bytes": 5203,
+    "mode": 384
+  },
+  "new_index": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.git/index",
+    "sha256": "b52a635de1bf7ceff24e1031c526201404c25bb3f87bd09af5ad2f5a35b1dda9",
+    "bytes": 1239630,
+    "mode": 384
+  },
+  "new_HEAD": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.git/HEAD",
+    "sha256": "562246d692264c10b3eb2d58556bda263e6d1cb9c1efa3368e77b7ea354bcc66",
+    "bytes": 41,
+    "mode": 420
+  },
+  "Git_index_exact10407_and_mode_OID_matches_captured_candidate": true,
+  "Git_index_stage_proof": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/independent-post-adoption-67328b446b57/actual-and-candidate-index-stage.nul",
+    "sha256": "d37dadecb474e2c81338764e7787792337f56ebc44fed0b2ae3aee8727e90929",
+    "bytes": 1078305,
+    "mode": 384
+  },
+  "attribute_cleaned_paths": [
+    {
+      "path": "scripts/uninstall-desktop-windows.bat",
+      "raw_blob": "d7ce106c371f12a56e78c4b2a77bfa8bf46c4917",
+      "clean_blob": "91a75ec17b4432d8cd2ad0d64fba4a0eb4bae117",
+      "mode": "100644",
+      "raw_sha256": "b42fc96300d51840c575971783f0e17588088a7643594d277a5b7c00251a9a12"
+    }
+  ],
+  "Windows_BAT_raw_CRLF": 389,
+  "original_failed_adoption_preserved": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/reports/failed-adoption-9b0291c83697.json",
+    "sha256": "fc2427ea45c8321371400e1b34af8f09d2b527b63b9f6cb43677157bc0a0f232",
+    "bytes": 586,
+    "mode": 384
+  },
+  "source_ready": false,
+  "source_ready_8877_qualified": true,
+  "source_ready_latest_ROOT": false,
+  "production_build_executed": false,
+  "runtime_journeys_executed": false,
+  "final_ROOT_acceptance": false,
+  "installed_Main_installer_or_real_model_quality_accepted": false,
+  "metadata_deltas_after_COPY": [
+    "ROOT task progress/journal reconciliation",
+    "ROOT raw/clean spec contract; separate from eight technical drift paths"
+  ],
+  "reviewer_Go_SQL_build_browser_or_runtime_executions": 0,
+  "reviewer_existing_source_mutations": false,
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "issue": "Current ROOT gained Desktop runtime-config/navigation/app-url and dev-env changes after8877 COPY",
+      "why_not_fixed": "peer-owned edits; main coordinates scope and fresh candidate, checker preserves both versions",
+      "next_gate": "Capture stable current Desktop technical delta into NEW private source, qualify affected platform checks and publish with fresh concrete main authority before declaring latest ROOT source-ready/final"
+    }
+  ]
+}

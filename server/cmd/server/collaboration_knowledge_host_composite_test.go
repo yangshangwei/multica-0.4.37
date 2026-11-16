@@ -12,6 +12,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -531,7 +532,9 @@ func TestCollaborationKnowledgeHostCompositeHappyPath(t *testing.T) {
 	var launch protocol.CollaborationRunKnowledgeAuthorization
 	for _, call := range f.transport.snapshot() {
 		if strings.HasSuffix(call.Path, "/claim") {
-			if call.Status != 200 || call.Credential != "mdt" || !strings.Contains(call.Query, "knowledge_version=1") {
+			query, err := url.ParseQuery(call.Query)
+			versions := query["knowledge_version"]
+			if call.Status != 200 || call.Credential != "mdt" || err != nil || len(versions) != 1 || versions[0] != strconv.Itoa(protocol.CollaborationRunKnowledgeLatestVersion) {
 				t.Fatal("real claim did not negotiate managed knowledge")
 			}
 			if json.Unmarshal(call.Response, &claim) != nil {
@@ -824,7 +827,7 @@ func TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCanno
 			run := f.nextRun(t)
 			request := f.request
 			if negotiated {
-				request.KnowledgeVersion = 1
+				request.KnowledgeVersion = protocol.CollaborationRunKnowledgeLatestVersion
 			}
 			claim, err := f.runner.Client.Claim(t.Context(), run, request)
 			if err != nil {
@@ -833,6 +836,11 @@ func TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCanno
 			if negotiated {
 				if claim.KnowledgeContext == nil {
 					t.Fatal("knowledge claim was not actually admitted")
+				}
+				legacy := request
+				legacy.KnowledgeVersion = 1
+				if _, err = f.runner.Client.Claim(t.Context(), run, legacy); err == nil {
+					t.Fatal("legacy version downgraded admitted private run")
 				}
 				if _, err = f.runner.Client.Claim(t.Context(), run, f.request); err == nil {
 					t.Fatal("old daemon downgraded admitted private run")

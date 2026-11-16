@@ -1,0 +1,57 @@
+{
+  "kind": "native_current_progress_documentation_consistency_check",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "reviewer": "/root/p6_progress_audit",
+  "original_reconciliation": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-progress-reconciliation-20261116-native-audit.json",
+    "sha256": "2e4b502c1de0b192c52d7dade66a3ee18e9d6df8ee22ed3140fd8839cb8c7120"
+  },
+  "check": {
+    "at": "2026-11-16T03:04:15.857932+00:00",
+    "status": "PASS_METADATA_CURRENT8877_GATE_CONSISTENT",
+    "shared_file_mutations": 0,
+    "original112_reference_audit_preserved": true,
+    "checks": {
+      "task_in_progress": true,
+      "current_phase_matches_audit": true,
+      "all_final_flags_false": true,
+      "Go6_counts_match": true,
+      "TAG3_counts_match": true,
+      "TAG3_source_and_acceptance_match": true,
+      "new8877_candidate_matches": true,
+      "exact26_operations_match": true,
+      "current_gate_names8877_adoption_and_two_journeys": true,
+      "historical_prep_separated": true,
+      "TAG2_red_preserved": true,
+      "existing_allocation_preserved": true,
+      "frontend_counts_match": true,
+      "current_local_links_exist": true,
+      "new_acceptance_reference_hashes_match": true
+    },
+    "input_snapshots": [
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/task.json",
+        "sha256": "4fed83fd802f5a476e659ced1af0208dc5ade3d20d22668b99f90279c60de250"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/implement.md",
+        "sha256": "f84526f8ca658c2507382cf5b0dcdbbb78dc4d03b0482880a571af2c6d0c840a"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-16.md",
+        "sha256": "81d6e6e5c432891f95c4177a3ad82f8789491e366b718b267fee839eb5e5963b"
+      }
+    ],
+    "current_local_links_checked": 11,
+    "all_current_local_links_exist": true,
+    "acceptance_hash_references_match": true,
+    "scope": "Current meta/lead/latest paragraphs only; older preparation and TAG2 failure records remain historical. No source/Go/SQL/build/test acceptance."
+  },
+  "correction": {
+    "earlier_instruction_authorized_in_place_documentation_field": true,
+    "temporary_amended_sha256": "1fa292e8186189a70f489de3d1ff5290f3514f4ed08e21a65439e0030ab667fb",
+    "later_instruction_requested_new_separate_receipt": true,
+    "original_bytes_restored_and_exact_sha256_verified": true,
+    "shared_task_plan_progress_mutations": 0
+  }
+}

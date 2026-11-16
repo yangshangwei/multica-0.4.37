@@ -1,0 +1,193 @@
+{
+  "kind": "native_scoped_Desktop_LAN_owner_intake",
+  "at": "2026-11-16T03:41:58.697422+00:00",
+  "reviewer": "/root/p6_progress_audit",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "status": "OWNER_EDIT_CHECK_CHECKPOINT_IDENTIFIED_SOURCE8_STILL_STABLE",
+  "owner": {
+    "platform": "claude",
+    "session_id": "710e7054-5c8a-48dd-96f7-f7ef3649607d",
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "session_log": "/Users/artisan/.claude/projects/-Volumes-artisan-code-2026-multica-0-4-37/710e7054-5c8a-48dd-96f7-f7ef3649607d.jsonl",
+    "explicit_Trellis_task": "none; user directed direct modification, owner stated no Trellis task and raw session has no task.py create/start Bash invocation",
+    "last_edit_check_final": {
+      "session_line": 583,
+      "at": "2026-11-16T03:19:52.568Z",
+      "conclusion": "Edit complete; tests/type/lint passed; no commit or actual native/window restart acceptance.",
+      "dev_env_revert_explicit": true
+    },
+    "mem_search_last_summary_label": "2026-11-16 03:25 UTC (approximate index time; raw final at03:19:52 UTC)",
+    "scope": "Desktop share/copy/open-browser App URL consumes published daemon_app_url with explicit configured appUrl precedence and localhost fallback protection; primary and issue-window navigation plus deployment config docs. Earlier VITE_APP_URL dev-env change was intentionally reverted."
+  },
+  "evidence": {
+    "raw_tool_results": {
+      "focused_test": {
+        "session_line": 532,
+        "tool_use_id": "toolu_bdrk_01836tgGZWSQs2XQfwoZbvEi",
+        "at": "2026-11-16T03:11:16.134Z",
+        "is_error": false,
+        "output_sha256": "33e2d551685793f50083b23a40680915c5464154a023bb6508c75888a0259db7",
+        "summary": [
+          "exit=0",
+          " Test Files  3 passed (3)",
+          "      Tests  74 passed (74)"
+        ]
+      },
+      "typecheck_lint": {
+        "session_line": 542,
+        "tool_use_id": "toolu_bdrk_01QQuG9CAaTgYWxDc9Go26vC",
+        "at": "2026-11-16T03:13:57.947Z",
+        "is_error": false,
+        "output_sha256": "db9d49762622e0851b0971a92626d8a1749fef21b0dfbdea664988dec983289a",
+        "summary": [
+          "typecheck exit=0",
+          "lint exit=0"
+        ]
+      },
+      "full_desktop_test": {
+        "session_line": 574,
+        "tool_use_id": "toolu_bdrk_01BWxzwwVs3QeT8T9jqM9eVP",
+        "at": "2026-11-16T03:18:02.888Z",
+        "is_error": false,
+        "output_sha256": "291ff4c211c8ee2352007d6217534c36e81a630b88447622a01844bbc49a185c",
+        "summary": [
+          "exit=0",
+          " Test Files  103 passed (103)",
+          "      Tests  1294 passed (1294)"
+        ]
+      }
+    },
+    "retained_log_files": [
+      {
+        "label": "focused",
+        "path": "/private/tmp/desktop-appurl-test.log",
+        "sha256": "baba3a46c8a45bf6a207a93c99ff66dacb2fccbb0f0a22d89a465038707ee216",
+        "bytes": 596,
+        "mtimeUTC": "2026-11-16T03:11:16.082798+00:00",
+        "test_summary": [
+          "Test Files  3 passed (3)",
+          "Tests  74 passed (74)"
+        ]
+      },
+      {
+        "label": "typecheck",
+        "path": "/private/tmp/desktop-appurl-tc.log",
+        "sha256": "74d41313345542d85754cd21866de627005510f89e6976ffee3bd686746878a7",
+        "bytes": 657,
+        "mtimeUTC": "2026-11-16T03:13:13.106041+00:00",
+        "test_summary": []
+      },
+      {
+        "label": "lint",
+        "path": "/private/tmp/desktop-appurl-lint.log",
+        "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+        "bytes": 211,
+        "mtimeUTC": "2026-11-16T03:13:56.115416+00:00",
+        "test_summary": []
+      },
+      {
+        "label": "full_desktop",
+        "path": "/private/tmp/desktop-full-test.log",
+        "sha256": "0a432142c386ccb345f469738e676db986db4100573bdb126eabb9b9f0d6a2e4",
+        "bytes": 610,
+        "mtimeUTC": "2026-11-16T03:18:02.755642+00:00",
+        "test_summary": [
+          "Test Files  103 passed (103)",
+          "Tests  1294 passed (1294)"
+        ]
+      }
+    ],
+    "focused_test": {
+      "files": 3,
+      "passed": 74,
+      "command": "pnpm exec vitest run src/shared/runtime-config.test.ts src/renderer/src/platform/navigation.test.tsx src/renderer/src/platform/issue-window-navigation.test.tsx"
+    },
+    "full_desktop_test": {
+      "files": 103,
+      "passed": 1294,
+      "command": "pnpm exec vitest run",
+      "completed_at": "2026-11-16T03:18:02.888Z"
+    },
+    "typecheck": {
+      "command": "pnpm run typecheck",
+      "node_and_web_tsconfig": true,
+      "exit": 0
+    },
+    "lint": {
+      "command": "pnpm exec eslint src/shared/runtime-config.ts src/shared/runtime-config.test.ts src/renderer/src/platform/app-url.ts src/renderer/src/platform/navigation.tsx src/renderer/src/platform/navigation.test.tsx src/renderer/src/platform/issue-window-navigation.tsx",
+      "selected_files": 6,
+      "exit": 0
+    }
+  },
+  "current_source_stability": {
+    "drift_reference": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-actual-adoption8877-current-root-drift-independent-review-20261116-13c8f5733092.json",
+      "sha256": "cb8ea454a3af82dcfcfeac0ba7210fc4532ac5097e4387888e660bd2995665f2"
+    },
+    "all8_match_reference": true,
+    "rows": [
+      {
+        "path": "apps/desktop/src/renderer/src/platform/app-url.ts",
+        "sha256": "451074aa1922a19f9f449e02342b78714117a12e3eb207c2a7bb51df1f3bbf97",
+        "matches03_32_drift_reference": true,
+        "mtimeUTC": "2026-11-16T03:05:26.537441+00:00"
+      },
+      {
+        "path": "apps/desktop/src/renderer/src/platform/issue-window-navigation.tsx",
+        "sha256": "5bbed09ba31d285d627fe29c16c2ab440e3f24417e07512ab1d4b1d9d14f9b12",
+        "matches03_32_drift_reference": true,
+        "mtimeUTC": "2026-11-16T03:07:18.247239+00:00"
+      },
+      {
+        "path": "apps/desktop/src/renderer/src/platform/navigation.test.tsx",
+        "sha256": "590186448abbc152940f56ecb4f64a929c01e6f8ac58c3c23d5b021b333fc6ed",
+        "matches03_32_drift_reference": true,
+        "mtimeUTC": "2026-11-16T03:11:12.187729+00:00"
+      },
+      {
+        "path": "apps/desktop/src/renderer/src/platform/navigation.tsx",
+        "sha256": "13a0f4671ef76e718eea387516dffb5f4efc55805a14e5f07931b664035620e9",
+        "matches03_32_drift_reference": true,
+        "mtimeUTC": "2026-11-16T03:05:36.017866+00:00"
+      },
+      {
+        "path": "apps/desktop/src/shared/runtime-config.test.ts",
+        "sha256": "e46ba69ab2104ebf1232ea3f8b2ec936f5f6ad17aaa1918f6d3b62730f37159f",
+        "matches03_32_drift_reference": true,
+        "mtimeUTC": "2026-11-16T03:09:15.210871+00:00"
+      },
+      {
+        "path": "apps/desktop/src/shared/runtime-config.ts",
+        "sha256": "600c435569bb9070283fee548d3560c547fddedfc022e41357f6b0ec64a2b601",
+        "matches03_32_drift_reference": true,
+        "mtimeUTC": "2026-11-16T03:09:15.210380+00:00"
+      },
+      {
+        "path": "docs/offline-upgrade.zh-CN.md",
+        "sha256": "f13e2e8b2f3412a2119dc15d6ed6f5760a25827c6b9b4c220144276d6e7e2bee",
+        "matches03_32_drift_reference": true,
+        "mtimeUTC": "2026-11-16T03:15:44.541761+00:00"
+      },
+      {
+        "path": "scripts/dev-env.sh",
+        "sha256": "6fb4a38c75ffe51c4e1a60712f52887263ee2a21ab205432c3bc90fdf25e001e",
+        "matches03_32_drift_reference": true,
+        "mtimeUTC": "2026-11-16T03:15:44.490716+00:00"
+      }
+    ],
+    "claim_limit": "Owner final+recorded tool outputs identify a completed edit/check checkpoint; this is not a full candidate provenance audit or permission to reuse all1294 tests as new1468 execution."
+  },
+  "not_verified_by_owner": [
+    "actual native/window product journey or restart",
+    "production deployment/release",
+    "browser-auth entry migration",
+    "join reserved-slug conflict"
+  ],
+  "main_handoff": "Runtime captured NEW1468 complete source. Source check owns current candidate narrow Desktop tests/type/lint and source input equivalence; no duplicate tests needed from this lookup. Preserve originalGo6/TAG3/CoreViews evidence and dev-env intentional revert.",
+  "this_lookup": {
+    "source_or_progress_edits": 0,
+    "code_review_or_test_reruns": 0,
+    "Go_SQL_build_browser_external_messages": 0,
+    "read_only_searches": "Scoped task/progress metadata then one Claude session located with trellis mem; no broad historical conversation excavation."
+  }
+}

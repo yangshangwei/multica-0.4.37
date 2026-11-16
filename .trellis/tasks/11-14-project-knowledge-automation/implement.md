@@ -1,5 +1,7 @@
 # 项目知识自动沉淀与默认启用：实施与推进计划
 
+> 最终进度（2026-11-16）：P0–P6 的批准范围已完成。当前 ROOT 验收源 `ed6f6ff0…` 的生产 API／CLI／Web／Desktop 构建及两条实际 Web／Electron 旅程通过，0 FAIL／SKIP／RETRY；AC1–AC12 的 14 行已独立接受，0 阻塞，`final_acceptance_verified=true`。四服务、两个 daemon、四个 fake provider 和 Go6 所属 Redis 均已清理，数据库及原失败证据保留。Go6 各 546 named、TAG3 各 17 named、Core／Views 222、Desktop 74 及两项 tsc／6 文件 lint 的输入绑定已核对。最终结果见 `research/progress-2026-11-16.md`；提交／归档按后续收尾步骤登记。
+
 > 进度更新（2026-11-15）：任务保持 `in_progress`，沿用已批准的 `2026-11-14-v1`。私有候选 `4e0f7cbe...` 的 API／CLI／production Web／Desktop 完整构建和两条实际旅程均通过：2 PASS、0 FAIL／SKIP／RETRY，源码稳定。所属服务与资源审计通过；私有最终 AC1–AC12 独立接受、0 阻塞；共享 ROOT 预审0知识冲突，Core107／Views46测试、2个typecheck和34文件定向lint已通过。PAY正式CODE_ACCEPTED_R06，进入P2 r07；共享 ROOT 最终整合仍开放，`final_acceptance_verified=false`。依据见 `research/progress-2026-11-15.md`。
 
 > 依赖 `prd.md` D1–D10 与 `design.md`。勾选表示该项实现已核对；未勾选项可能已有部分实现，不能据此推断整个阶段尚未开始。定向测试、当前源码复验和完整产品验收分别记录，P6 通过前不宣称全部 AC 完成。
@@ -79,9 +81,11 @@
 - [x] 交付完成处展示整理/未配置/已保存/待处理/无复用内容；项目提供默认策略与覆盖控件，不增加验收必填项。
 - [x] 知识详情展示human/automation、来源、规则和证据，暂停状态独立于approved历史；未知协议清楚显示不支持。
 - [x] 待处理仅对当前可读来源且有目标权限的人开放，引用和通知不泄露其他受限来源；人工决定与后台迟到响应的UI保持一致。
-- [ ] 新header覆盖CORS和安装版Desktop；新增来源链接沿现有任务/交付历史入口，不新增全局路由。
+- [x] 新 header 的当前 CORS／v2／legacy 兼容边界和原生 Desktop 接线已验证；来源链接沿现有任务／交付历史入口，不新增全局路由。
 
 实现核对：Core/Views 历史定向测试分别为 113/156 项通过；P4 文件清单 37/38 个哈希一致，全部 23 个生产/翻译文件一致。发生变化的是增加拒绝重试用例的 Core 测试文件，该文件此次复验 6/6 通过。HTTP 拒绝回执已保留原非成功状态及封存身份，修复后 8/8 通过，策略失权恢复和两种工作拒绝恢复断言均已执行到，见 `research/p6-sealed-refusal-fixed-f070f6fc.json`。私有 P6 的实际 Web/Desktop 消费已通过；共享 ROOT 的 CORS 和平台证据需随最终源码联调重新绑定。
+
+最终 `ed6f` 绑定已补齐当前跨源 v2 请求、严格 legacy 拒绝和生产 Web／原生 Electron renderer 完整旅程。安装版 Main／installer／updater、真实模型语义质量及其他平台仍为独立验收范围，本任务未声称通过。
 
 文件边界：`packages/core/collaboration/knowledge-*.ts`及项目策略相关Query、`packages/views/collaboration/knowledge-*`和交付详情、`packages/views/projects/`、两种locale。共享逻辑不落到app目录，平台接线分别验证。
 
@@ -98,7 +102,9 @@
 
 ### P6：完整验证与最终交付
 
-2026-11-16检查点：新完整SOURCE已实体封存，wrapperv2的58项离线检查及独立准入已通过；NEW mutable PG-only `.env`已独占创建并validate-only通过。当前SOURCE的220项前端检查、2个typecheck、34文件lint及完整Go build／vet已执行通过，独立inventory／整棵SOURCE closure尚待完成。旧TMP运行资产缺失、原因未知，历史私有4e最终AC与原失败证据继续保留。任务维持`in_progress`／P6，ROOT最终验收仍false；新runtime environment、DB、allocation、生产build和runtime尚未创建。最新顺序及证据见 `research/progress-2026-11-16.md`。
+2026-11-16 最终检查点：当前 ROOT 源 `ed6f6ff015cfe40bcb20eeaee9504d60ce2fb3f3937732b5d8e389663aa156a5`、10,409 文件／32 工作空间链接已完成最后 13 项窄接入并独立接受，ROOT 技术输入差异为 0。原 allocation 的完整生产构建、启动、两端知识旅程、停止和资源审计全部通过。Web BUILD_ID 为 `D8M3fs-jQU9KZq5kh81eG`；Server 公布的 Web 地址和原生 configured IPC／当前 CORS 均有实际绑定。1,681 个构建产物、8 个执行工具、14 行 AC 和所属进程／端口／Browser DB 连接已核对。Go6 Redis 完成一次所属清理并独立闭合；历史失败与所有保护文件未改写。下面早期检查点保留当时状态，最终结果以此处及进度文件为准。
+
+初始检查点（2026-11-15 17:24 UTC）：新完整SOURCE已实体封存，wrapperv2的58项离线检查及独立准入已通过；NEW mutable PG-only `.env`已独占创建并validate-only通过。当前SOURCE的220项前端检查、2个typecheck、34文件lint及完整Go build／vet已执行通过，独立inventory／整棵SOURCE closure尚待完成。旧TMP运行资产缺失、原因未知，历史私有4e最终AC与原失败证据继续保留。任务维持`in_progress`／P6，ROOT最终验收仍false；新runtime environment、DB、allocation、生产build和runtime尚未创建。最新顺序及证据见 `research/progress-2026-11-16.md`。
 
 既有封存输入已完成前端lint/typecheck/test14,112PASS（Docs64缓存）、service race3840/0/0、handler5912/0/7、router1014/0/8、新布局迁移569/0/0、知识/authority/mixed428/0/0及testutil18/0/0；完整具名分母、skip原因及原失败见进度文件。Go build/vet、非DB和UI入口检查也有各自源码绑定，不能将这些报告视为最新ROOT全量通过。
 
@@ -106,9 +112,9 @@ P6私有 `f8a313ea125c357cc3a05f90770da33e15d6d0dc7d733854d7d533615eb339fc` 已�
 
 C3原prepare/authorize直接重放在指定冻结b91 Go图上normal2/race2逻辑叶PASS，见 `research/p6-c3-direct-replay-20261115-0f943220c767.json`；这不替代ROOT或后续build。两次独立AC检查仅为interim准入，均未给出final AC/P6验收，见 `research/p6-final-independent-ac-review-20261115-fa158b1b.json` 与 `research/p6-final-independent-ac-review-20261115-deployment-3ae86e4b.json`。其后私有4e最终独立AC已接受、0阻塞，见 `research/p6-independent-final-candidate-ac-review-20261115-a710db0a.json`。共享ROOT最终验收尚未完成，`final_acceptance_verified` 仍false。
 
-- [ ] 执行下面的验证矩阵，修复真实失败并保留原始证据。
-- [ ] 独立审查系统权限、事务竞态、旧读者和隐私投影；主会话核对实际测试清单及所有AC。
-- [ ] 汇总已改文件、实际通过/失败/跳过、未覆盖的真实模型语义/平台范围和部署注意事项。
+- [x] 执行批准范围的验证矩阵，修复实际失败并保留原始证据。
+- [x] 独立审查系统权限、事务竞态、旧读者和隐私投影；实际测试清单及 AC1–AC12 共 14 行全部接受。
+- [x] 汇总已改文件、实际通过／失败／跳过、真实模型语义／平台未测范围和交付注意事项。
 - [ ] 在获得相应后续授权后进入提交/交付；本规划不自行创建PR、推送或部署。
 
 ## 3. 验证矩阵
@@ -160,7 +166,7 @@ Go编译可用 `go -C server build ./...`；执行前必须依照 `.trellis/spec
 
 本轮新增的 password／onboarding 与 managed profile owner 可执行夹具契约已写入 Web E2E spec，见 `research/p6-password-managed-spec-update-42ee8838.json`；独立文档契约检查 PASS／0 阻塞，见 `research/p6-password-managed-spec-check-52067d2e.json`。审查补齐现有 `requires_password_change` 拒绝条件；独立夹具 lint 的原 8／5 个诊断仍保留。它记录现有生产前置条件，未改变产品接口或认证规则。
 
-## 最终ROOT推进检查点（2026-11-16）
+## 历史 ROOT 推进检查点（2026-11-16 早期）
 
 P2已取得 `P2_CODE_ACCEPTED_R09_SCOPED`／0阻塞／ready_for_ROOT_narrow_integration=true，源80abb746／4,968；18成功profile，10新命令＋8明确绑定复用，N／R具名集合相等，4native SQL controls／862恢复／历史与资源审计通过，0所属连接／PID。原R07／R08失败保留；Live／完整S2／四业务场景仍未接受。
 

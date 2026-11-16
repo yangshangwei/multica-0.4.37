@@ -231,3 +231,63 @@ zero failures, skips or incomplete identities. The private v3 parser passes
 valid empty string. The original recorder failure and earlier parser versions
 remain intact. This accepts the bounded service check, not final shared ROOT,
 PAY P2 or product acceptance.
+
+## Frozen source bytes and Git index blobs
+
+### 1. Scope / trigger
+
+Apply when publishing a private source snapshot or validating a newly staged
+Git index. The repository's `.gitattributes` uses `* text=auto` and
+`*.bat text eol=crlf`: a Windows BAT worktree can retain CRLF while its clean
+Git blob contains LF.
+
+### 2. Signatures
+
+Use the pinned Git executable with the selected checkout and isolated Git
+configuration. Path-aware clean hashing is:
+
+```sh
+git -C "$TASK_SOURCE" hash-object --path="$TASK_RELATIVE_PATH" --stdin \
+  < "$TASK_SOURCE/$TASK_RELATIVE_PATH"
+```
+
+### 3. Contracts
+
+Bind physical source bytes with the raw SHA256 manifest, full permissions,
+discovered path set and workspace edges. Separately validate index paths,
+executable modes and clean Git object IDs under the captured attributes.
+Do not rewrite source files, attributes or raw manifests to make those two
+representations equal. An index validation failure must preserve its receipt
+and roll back the exact owned source delta before another reviewed attempt.
+
+### 4. Validation / error matrix
+
+| Observation | Required result |
+| --- | --- |
+| CRLF BAT source and its correct LF clean blob | Accept when raw source and index contracts both match |
+| Raw byte, permission, path or workspace-edge drift | Refuse even if the clean Git blob is unchanged |
+| Incorrect index path, executable mode or clean blob | Refuse and preserve the failed index |
+| Failed publication with exact before-state restored | Accept rollback only; source readiness remains closed |
+
+### 5. Good / base / bad cases
+
+Good: raw snapshot and attribute-aware index checks both pass. Base: retain a
+failed attempt and independently verify its complete rollback. Bad: assume
+`SHA1(blob_header + raw_bytes)` must equal an attribute-normalized index entry.
+
+### 6. Required tests and assertion points
+
+Use a disposable repository with `*.bat text eol=crlf` and a CRLF BAT file.
+Require the original raw-blob comparison to reject that valid staged index,
+then require the corrected comparison to accept it. Keep separate raw-drift,
+path/mode, partial-publication rollback and protected-configuration assertions.
+
+### 7. Wrong vs correct
+
+Wrong: normalize the BAT file or weaken the raw manifest guard after an index
+mismatch. Correct: preserve its exact raw bytes and compare the index with
+Git's path-aware clean object ID. The P6 `9b0291c83697` failure involved only
+`scripts/uninstall-desktop-windows.bat`; its 389 CRLFs and executable mode were
+unchanged, and the source/configuration rollback was independently accepted.
+The new executor's CRLF regression changes from one named failure to passing
+while all eight bounded fixture cases remain covered.

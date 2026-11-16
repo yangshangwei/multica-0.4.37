@@ -1,0 +1,684 @@
+{
+  "schema_version": 1,
+  "kind": "independent_tagged_nine_fake_composite_preparation_initial_review",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "role": "trellis-check",
+  "at": "2026-11-15T18:12:03.577707+00:00",
+  "verdict": "TAGGED_RUNNER_V1_REFUSED_DATABASE_IDENTITY_MISMATCH",
+  "accepted": false,
+  "blocking_findings_open": 1,
+  "blocking_findings": [
+    {
+      "id": "TAG-DB1",
+      "severity": "blocking",
+      "issue": "The unchanged tagged DB fixture rejects every database name allocated by the reused no-tags runner before its product assertions.",
+      "evidence": [
+        {
+          "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/frozen-source/server/cmd/server/collaboration_knowledge_host_composite_test.go",
+          "line": 230,
+          "sha256": "65ae484fd2124cfb18403b2dfaa4200c5d65694fd527db0668fe2075011af1e0",
+          "guard_line": "if err != nil || !strings.HasPrefix(cfg.ConnConfig.Database, \"multica_knowledge_host_composite_20261101_\") {"
+        },
+        {
+          "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.trellis/tasks/11-14-project-knowledge-automation/research/run-owned-go.py",
+          "line": 217,
+          "sha256": "983a7895b0ce815b0f86344d0b802d15de6805e0aff0bbd57e987aae198b994e",
+          "name_assignment": "name = \"mca_knowledge_\" + PACKAGES[args.package] + \"_\" + uuid.uuid4().hex[:12]"
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-final-runner.py",
+          "line": 263,
+          "sha256": "da0a17d0afed083466290a0b390ca67e135dac36a1a4515d0723b9048060a911",
+          "boundary": "CREATE DATABASE matches only mca_knowledge_<step.slug>_<12hex>"
+        }
+      ],
+      "pure_counterexample": {
+        "fixture_required_prefix": "multica_knowledge_host_composite_20261101_",
+        "original_name_assignment": "name = \"mca_knowledge_\" + PACKAGES[args.package] + \"_\" + uuid.uuid4().hex[:12]",
+        "original_router_slug": "router",
+        "allocated_name_example": "mca_knowledge_router_0123456789ab",
+        "prefix_matches": false,
+        "actual_SQL_or_Go_executed": false,
+        "db_backed_selected_tops_blocked_before_intended_assertions": 8,
+        "one_database_independent_top": "TestCollaborationKnowledgeHostCompositeLostMarkerCannotEnterTestMain"
+      },
+      "not_fixed_reason": "Runner, config, original launcher and private source are immutable inputs outside reviewer write ownership; changing database identity is an execution-boundary decision.",
+      "recommendation": "Prepare a separately hash-bound tagged v2 with one explicit owned composite DB identity propagated through allocation, URL, environment, current_database witness, receipt, ledger and final connection checks. Preserve source helper/assertions and all v1 evidence; do not emulate database identity or amend old results."
+    }
+  ],
+  "checks": {
+    "immutable_hashes_match": true,
+    "raw_AST_scope_and_exact_nine_source_declarations_match": true,
+    "tagged_only_two_selected_source_files": true,
+    "three_extra_compiled_files_including_recovery_helper": true,
+    "known_four_compiled_test_init_guards_reviewed": true,
+    "fake_self_copy_0700_and_explicit_provider_CLI_paths": true,
+    "lost_capture_marker_basename_guard_before_TestMain": true,
+    "independent_empty_DATABASE_URL_guard_before_pool": true,
+    "Host_capabilities_probes_stat_only_no_provider_execution": true,
+    "source_10408_and_32_links_current_matches": true,
+    "producer_offline_37_distinct_results_and_raw_logs_bound": true,
+    "independent_pure_permit_and_mocked_argv_probes_pass": true,
+    "exact_tag_only_on_classified_normal_race_children": true,
+    "migration_remains_untagged": true,
+    "same_no_tags_suite_lock_and_single_use_marker": true,
+    "accepted_six_no_tags_prerequisite_gate_present": true,
+    "db_allocation_matches_fixture": false
+  },
+  "references": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-tagged-runner.py",
+      "sha256": "d8c73aacfad5945dee9755af18386f02d9806418d956ba1ba4937cab13822c8d",
+      "mode": 384,
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/tagged-runner-config.json",
+      "sha256": "06a749076045ef0f7072a98dfc3d1756a03a7da78deb746ad40679e3c3ad75bc",
+      "mode": 384,
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/tagged-permit-template.json",
+      "sha256": "4eab4492ea6abae7760aa58ef5391003dae6424813f7c1c8be46a6bfaae6702c",
+      "mode": 384,
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/tagged-permit-schema.json",
+      "sha256": "2f5f0363e5c46a230248397351bfc3de10f8bf47079f63c6b2f01cacc798a86b",
+      "mode": 384,
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/manifests/tagged-knowledge-scope.json",
+      "sha256": "92ab05d2ff1f864368cf081d1c90aa06c165e2f23e35fa58d0ea7b074ba8fd78",
+      "mode": 384,
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/tagged-offline-refusal-fixtures.py",
+      "sha256": "4ee28458a2dbac99f064de847f2f8cf001e87686d416766d45051cc7a274416f",
+      "mode": 384,
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/reports/tagged-offline-refusal-fixtures.json",
+      "sha256": "308591b32f5afe907aaa7910473e4ef1b82c72de13b36e7a9678e6f7a32d45b0",
+      "mode": 384,
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/reports/tagged-AST-stdout.json",
+      "sha256": "c4794790c9f7791f66327992d103bdf28fd999c1ba26fdd2a60aae7ab718de24",
+      "mode": 384,
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-final-runner.py",
+      "sha256": "da0a17d0afed083466290a0b390ca67e135dac36a1a4515d0723b9048060a911",
+      "config_key": "base_runner",
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/runner-config.json",
+      "sha256": "7d0b65fdcb2dcc582cd182423d9221d95ce128ab20c4351295dbbdc62f9f1758",
+      "config_key": "base_config",
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/manifests/final-knowledge-scope.json",
+      "sha256": "fe6a495674bb748d3e6d6e080be4003f629ec657d0c83f42ad811dcdfe725819",
+      "config_key": "base_scope",
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/inventory-parser-v3.cjs",
+      "sha256": "7c10d5d3b60ba701767acbb2be128d12b18542460c3711540c76d7f312b7e3e2",
+      "config_key": "parser",
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/parse-run.cjs",
+      "sha256": "63958a7c826b990f464f4c9e01359acc7a2ec65d59780437c299b97ca8c819d2",
+      "config_key": "parse_driver",
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper-v2.py",
+      "sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8",
+      "config_key": "wrapper",
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.trellis/tasks/11-14-project-knowledge-automation/research/run-owned-go.py",
+      "sha256": "983a7895b0ce815b0f86344d0b802d15de6805e0aff0bbd57e987aae198b994e",
+      "config_key": "original",
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+      "sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+      "config_key": "controller",
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/manifests/full-source-input.json",
+      "sha256": "d00cf4bd187d7d26471bd570190eb28aefc214585d55b92daaa56fbc0f35dd84",
+      "config_key": "source_manifest",
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/reports/tagged-AST-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/reports/tagged-offline-fixtures.stdout.log",
+      "sha256": "1f35b1c4ffd18e159c2e24454edc7ab3d8933571065f32315ddd3ecdd8974a2e"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/reports/tagged-offline-fixtures.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/reports/tagged-static-input-admission.json",
+      "sha256": "21bda73f9522e4afc2d66d1bb6bfa71211ffd11d4e544822c355d1522a311c12"
+    }
+  ],
+  "static_input_readonly_probe": {
+    "source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+    "file_count": 10408,
+    "workspace_link_count": 32,
+    "head": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+    "manifest_sha256": "d00cf4bd187d7d26471bd570190eb28aefc214585d55b92daaa56fbc0f35dd84",
+    "pg_config_sha256": "023175cea43e8d88c06c0e298b9e7ba4459ce0e2ff2aba3114f4124eb9582569",
+    "config_sha256": "06a749076045ef0f7072a98dfc3d1756a03a7da78deb746ad40679e3c3ad75bc",
+    "tools": {
+      "go": {
+        "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+      },
+      "psql": {
+        "path": "/opt/homebrew/Cellar/libpq/18.6/bin/psql",
+        "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07"
+      },
+      "node": {
+        "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572"
+      },
+      "git": {
+        "path": "/opt/homebrew/Cellar/git/2.52.0/bin/git",
+        "sha256": "ca78d2c62e0d25037f2aa7353c0e28bebaca2f8b40c20b164c5781b885b2d197"
+      },
+      "bash": {
+        "path": "/bin/bash",
+        "sha256": "07ad8525844ce61471e08e8c515b76bf063bac482394152bad814026cd577f69"
+      },
+      "python3": {
+        "path": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "sha256": "cbf84109626aa1013bbe408fbb9590bd0f1c1548f038b2221c6b8b87de26ca43"
+      }
+    },
+    "tagged_scope_sha256": "92ab05d2ff1f864368cf081d1c90aa06c165e2f23e35fa58d0ea7b074ba8fd78",
+    "tagged_top_count": 9
+  },
+  "scope_source_checks": [
+    {
+      "name": "TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch",
+      "file": "collaboration_knowledge_correction_composite_test.go",
+      "line": 18,
+      "sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+      "mode": 420,
+      "mutable_and_frozen_match": true
+    },
+    {
+      "name": "TestCollaborationKnowledgeHostCompositeFreshRunsUseDifferentNativeNamespaces",
+      "file": "collaboration_knowledge_host_composite_test.go",
+      "line": 794,
+      "sha256": "65ae484fd2124cfb18403b2dfaa4200c5d65694fd527db0668fe2075011af1e0",
+      "mode": 420,
+      "mutable_and_frozen_match": true
+    },
+    {
+      "name": "TestCollaborationKnowledgeHostCompositeHappyPath",
+      "file": "collaboration_knowledge_host_composite_test.go",
+      "line": 501,
+      "sha256": "65ae484fd2124cfb18403b2dfaa4200c5d65694fd527db0668fe2075011af1e0",
+      "mode": 420,
+      "mutable_and_frozen_match": true
+    },
+    {
+      "name": "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch",
+      "file": "collaboration_knowledge_host_composite_test.go",
+      "line": 624,
+      "sha256": "65ae484fd2124cfb18403b2dfaa4200c5d65694fd527db0668fe2075011af1e0",
+      "mode": 420,
+      "mutable_and_frozen_match": true
+    },
+    {
+      "name": "TestCollaborationKnowledgeHostCompositeLostMarkerCannotEnterTestMain",
+      "file": "collaboration_knowledge_host_composite_test.go",
+      "line": 101,
+      "sha256": "65ae484fd2124cfb18403b2dfaa4200c5d65694fd527db0668fe2075011af1e0",
+      "mode": 420,
+      "mutable_and_frozen_match": true
+    },
+    {
+      "name": "TestCollaborationKnowledgeHostCompositeLostResponseRechecksWithdrawnSource",
+      "file": "collaboration_knowledge_host_composite_test.go",
+      "line": 759,
+      "sha256": "65ae484fd2124cfb18403b2dfaa4200c5d65694fd527db0668fe2075011af1e0",
+      "mode": 420,
+      "mutable_and_frozen_match": true
+    },
+    {
+      "name": "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity",
+      "file": "collaboration_knowledge_host_composite_test.go",
+      "line": 731,
+      "sha256": "65ae484fd2124cfb18403b2dfaa4200c5d65694fd527db0668fe2075011af1e0",
+      "mode": 420,
+      "mutable_and_frozen_match": true
+    },
+    {
+      "name": "TestCollaborationKnowledgeHostCompositePrivateStderrKeepsOnlyBoundedRunEvidence",
+      "file": "collaboration_knowledge_host_composite_test.go",
+      "line": 864,
+      "sha256": "65ae484fd2124cfb18403b2dfaa4200c5d65694fd527db0668fe2075011af1e0",
+      "mode": 420,
+      "mutable_and_frozen_match": true
+    },
+    {
+      "name": "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose",
+      "file": "collaboration_knowledge_host_composite_test.go",
+      "line": 820,
+      "sha256": "65ae484fd2124cfb18403b2dfaa4200c5d65694fd527db0668fe2075011af1e0",
+      "mode": 420,
+      "mutable_and_frozen_match": true
+    }
+  ],
+  "scope_details": {
+    "selected_top_count": 9,
+    "compiled_test_file_count": 116,
+    "compiled_additions_vs_no_tags": [
+      "collaboration_knowledge_correction_composite_test.go",
+      "collaboration_knowledge_host_composite_test.go",
+      "recording_recovery_errors_test.go"
+    ],
+    "known_test_init_files": [
+      "collaboration_knowledge_host_composite_test.go",
+      "collaboration_single_agent_routes_test.go",
+      "collaboration_squad_routes_test.go",
+      "platform_admin_credentials_process_test.go"
+    ],
+    "selector": "^TestCollaborationKnowledgeHostComposite",
+    "package": "./cmd/server",
+    "build_tags": [
+      "knowledgeintegration"
+    ],
+    "mode_order": [
+      "normal",
+      "race"
+    ],
+    "expected_tops": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/manifests/tagged-router-expected-tops.json",
+      "sha256": "6957483edf719bd994e6e3f6e12c177a8b65145ae37c7dfb4973e13759e3169c"
+    }
+  },
+  "producer_fixtures": {
+    "case_count": 37,
+    "all_passed": true,
+    "mocked_child_invocations": 3,
+    "actual_SQL_Go_models": 0,
+    "full_fixed_output_fixture_script_not_reexecuted": true,
+    "missing_contract": "No fixture compared actual allocated database naming against newHostCompositeFixture prefix."
+  },
+  "independent_offline_probes": [
+    {
+      "case": "positive_shape_only_never_an_actual_permit",
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "error": null
+    },
+    {
+      "case": "immutable_unapproved_template",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Accepted no-tags result is required before tag execution"
+    },
+    {
+      "case": "wrong_tag",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Exact tagged execution permit differs"
+    },
+    {
+      "case": "extra_tag",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Exact tagged execution permit differs"
+    },
+    {
+      "case": "wrong_RK1_selector",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Exact tagged execution permit differs"
+    },
+    {
+      "case": "wildcard_package",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Exact tagged execution permit differs"
+    },
+    {
+      "case": "reverse_mode_order",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Exact tagged execution permit differs"
+    },
+    {
+      "case": "missing_race",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Exact tagged execution permit differs"
+    },
+    {
+      "case": "no_tags_unaccepted",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Accepted no-tags result is required before tag execution"
+    },
+    {
+      "case": "no_tags_truthy_number",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Accepted no-tags result is required before tag execution"
+    },
+    {
+      "case": "no_tags_extra_key",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Accepted no-tags result is required before tag execution"
+    },
+    {
+      "case": "source_not_ready",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Separate actual execution is unapproved"
+    },
+    {
+      "case": "wrong_recipient",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit task or knowledge role differs"
+    },
+    {
+      "case": "wrong_config_hash",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit tooling or scope differs"
+    },
+    {
+      "case": "unaccepted_review",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Independent review is not accepted"
+    },
+    {
+      "case": "open_review_blocker",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Independent review is not accepted"
+    },
+    {
+      "case": "expired",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit is future, expired or excessively broad"
+    },
+    {
+      "case": "extra_key",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Tagged permit shape differs"
+    },
+    {
+      "case": "normal_one_exact_tag_at_actual_mocked_child",
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "error": null
+    },
+    {
+      "case": "normal_refuse_['-tags=agentintegration']",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Tagged subprocess is not the exact nine-test command"
+    },
+    {
+      "case": "normal_refuse_['-overlay=x']",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Tagged subprocess is not the exact nine-test command"
+    },
+    {
+      "case": "normal_refuse_['-modfile=x']",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Tagged subprocess is not the exact nine-test command"
+    },
+    {
+      "case": "normal_refuse_['./internal/handler']",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Tagged subprocess is not the exact nine-test command"
+    },
+    {
+      "case": "normal_refuse_['-args', '-c']",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Tagged subprocess is not the exact nine-test command"
+    },
+    {
+      "case": "normal_refuse_RK1",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Tagged subprocess is not the exact nine-test command"
+    },
+    {
+      "case": "normal_refuse_tag_in_GOFLAGS",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Tags must not leak through GOFLAGS"
+    },
+    {
+      "case": "race_one_exact_tag_at_actual_mocked_child",
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "error": null
+    },
+    {
+      "case": "race_refuse_['-tags=agentintegration']",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Tagged subprocess is not the exact nine-test command"
+    },
+    {
+      "case": "race_refuse_['-overlay=x']",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Tagged subprocess is not the exact nine-test command"
+    },
+    {
+      "case": "race_refuse_['-modfile=x']",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Tagged subprocess is not the exact nine-test command"
+    },
+    {
+      "case": "race_refuse_['./internal/handler']",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Tagged subprocess is not the exact nine-test command"
+    },
+    {
+      "case": "race_refuse_['-args', '-c']",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Tagged subprocess is not the exact nine-test command"
+    },
+    {
+      "case": "race_refuse_RK1",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Tagged subprocess is not the exact nine-test command"
+    },
+    {
+      "case": "race_refuse_tag_in_GOFLAGS",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Tags must not leak through GOFLAGS"
+    },
+    {
+      "case": "migration_mocked_child_remains_untagged",
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "error": null
+    }
+  ],
+  "independent_mocked_children": [
+    {
+      "command": [
+        "/bin/bash",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "-C",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server",
+        "test",
+        "-json",
+        "-count=1",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-timeout=15m",
+        "-tags=knowledgeintegration",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationKnowledgeHostComposite"
+      ],
+      "env": {
+        "GOFLAGS": "-mod=readonly"
+      }
+    },
+    {
+      "command": [
+        "/bin/bash",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "-C",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server",
+        "test",
+        "-json",
+        "-count=1",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-timeout=15m",
+        "-race",
+        "-tags=knowledgeintegration",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationKnowledgeHostComposite"
+      ],
+      "env": {
+        "GOFLAGS": "-mod=readonly"
+      }
+    },
+    {
+      "command": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "-C",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server",
+        "run",
+        "./cmd/migrate",
+        "up"
+      ],
+      "env": {
+        "GOFLAGS": "-mod=readonly"
+      }
+    }
+  ],
+  "syntax_checks": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-tagged-runner.py",
+      "in_memory_parse_compile": "pass",
+      "executed": false
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/tagged-offline-refusal-fixtures.py",
+      "in_memory_parse_compile": "pass",
+      "executed": false
+    }
+  ],
+  "changes": {
+    "new_exclusive_review_JSON_only": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-tagged-runner-v1-initial-independent-review-20261116-cda4d0f975ef.json",
+    "source_wrapper_config_existing_receipt_raw_log_writes": 0,
+    "SQL_Go_repository_tests_model_runtime_network_actions": 0,
+    "recursive_subagents": 0
+  },
+  "verification": {
+    "Lint": "not rerun: review JSON only; prior fresh5dee frontend lint evidence remains separately accepted",
+    "TypeCheck": "not rerun: review JSON only; prior fresh5dee package typechecks remain separately accepted",
+    "Tests": "offline pure/mock probes pass; actual repository Go/SQL not run",
+    "PythonSyntax": "in-memory parse/compile pass",
+    "JSON": "serialized and round-trip checked"
+  },
+  "acceptance_limits": {
+    "preparation_accepted": false,
+    "actual_tag_execution_permit_granted": false,
+    "actual_tag_tests_executed": false,
+    "six_no_tags_actual_acceptance_claimed": false,
+    "original_P6_production_source_ready": false,
+    "current_ROOT_copy_adoption": false,
+    "final_ROOT": false,
+    "final_knowledge": false,
+    "P2_product": false
+  }
+}

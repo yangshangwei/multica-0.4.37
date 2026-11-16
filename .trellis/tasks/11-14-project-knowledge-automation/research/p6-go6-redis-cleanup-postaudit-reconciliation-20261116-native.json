@@ -1,0 +1,193 @@
+{
+  "kind": "independent_readonly_reconciliation_of_successful_exact_Go6_Redis_cleanup_and_failed_post_classifier",
+  "at": "2026-11-16T04:37:30.757275+00:00",
+  "reviewer": "/root/p6_progress_audit",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "status": "EXACT_Go6_REDIS_CLEANUP_CLOSED_READONLY_POST_AUDIT_ACCEPTED",
+  "accepted": true,
+  "blocking_findings_open": 0,
+  "actual_teardown_executions_total": 1,
+  "new_teardown_or_resource_mutation_executions": 0,
+  "actual_cleanup_receipt": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/exact-teardown.stdout.json",
+    "sha256": "f4c099327029bc36f7446a4d5d0befe17253df477204de4b25dfff891f65e9e3",
+    "exit": 0,
+    "status": "owned_teardown_complete"
+  },
+  "immediate_preconditions": {
+    "verify_exit": 0,
+    "original_runID": "144659754d4dbc659943945579aef6b6dc6a389f",
+    "authenticated_ping": "PONG",
+    "exclusive_network_members": [
+      "692628b72aeaad7b1ef3c5ca36ad7e9050795fdae6f6d05cdbf27288df36d133"
+    ],
+    "external_client_counts": [
+      0,
+      0
+    ],
+    "DB12_sizes": [
+      0,
+      0
+    ]
+  },
+  "original_failed_post_classifier": {
+    "report": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-go6-redis-exact-teardown-20261116-native-audit.json",
+    "report_sha256": "7d6163c0fd2a8fad1a4203c9d16a1f54d1cd373051364facc9d88c50a7ff0bf5",
+    "result": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/result.json",
+    "result_sha256": "e559fdb1d7fd5c1edf4b7a168e7b0eb50934af4155623f16c3f8209ce329eba3",
+    "retained_status": "TEARDOWN_FAILED_DO_NOT_REPLAY",
+    "cause": "The original post-classifier accepted No such network but did not recognize the native exact daemon network <ID> not found wording. Actual helper returned0 and removed both recorded resources; the original controller/receipt remains failed.",
+    "new_readonly_rule": "Require pinned local Docker executable/socket, inspect exit1, empty [] JSON and exact daemon missing-resource message including the full recorded CID/networkID; transport/permission/other errors never qualify."
+  },
+  "exact_resources_absent": [
+    {
+      "resource": "container",
+      "id": "692628b72aeaad7b1ef3c5ca36ad7e9050795fdae6f6d05cdbf27288df36d133",
+      "argv": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "--host",
+        "unix:///Users/artisan/.docker/run/docker.sock",
+        "container",
+        "inspect",
+        "692628b72aeaad7b1ef3c5ca36ad7e9050795fdae6f6d05cdbf27288df36d133"
+      ],
+      "exit": 1,
+      "stdout_empty_inspect_array": true,
+      "exact_daemon_resource_not_found": true,
+      "accepted_native_Docker_error": "Error response from daemon: No such container: 692628b72aeaad7b1ef3c5ca36ad7e9050795fdae6f6d05cdbf27288df36d133",
+      "daemon_or_transport_error_accepted_as_absence": false
+    },
+    {
+      "resource": "network",
+      "id": "3f188721bae173b82f9b483c53f35f167d6d8eaadee3dcc011539fb59a9f336f",
+      "argv": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "--host",
+        "unix:///Users/artisan/.docker/run/docker.sock",
+        "network",
+        "inspect",
+        "3f188721bae173b82f9b483c53f35f167d6d8eaadee3dcc011539fb59a9f336f"
+      ],
+      "exit": 1,
+      "stdout_empty_inspect_array": true,
+      "exact_daemon_resource_not_found": true,
+      "accepted_native_Docker_error": "Error response from daemon: network 3f188721bae173b82f9b483c53f35f167d6d8eaadee3dcc011539fb59a9f336f not found",
+      "daemon_or_transport_error_accepted_as_absence": false
+    }
+  ],
+  "port61471": {
+    "host": "127.0.0.1",
+    "connect_errno": 61,
+    "connection_refused": true,
+    "lsof_exit": 1,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0,
+    "listener_empty": true
+  },
+  "immutable_cleanup_snapshot": {
+    "before_path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/protected-immutable-before.json",
+    "before_sha256": "a16afd14e186804657951fb343083a6518cf77ac3f87164fa9e90b5c8c2106ba",
+    "after_path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-postaudit-reconciliation-20261116T043730/protected-immutable-after.json",
+    "after_sha256": "a16afd14e186804657951fb343083a6518cf77ac3f87164fa9e90b5c8c2106ba",
+    "file_count": 29,
+    "all_original_hashes_modes_uids_equal": true,
+    "entire_original_fixture_file_path_set_equal": true,
+    "original_POST_failure_grant_consumption_and_prior_audit_unchanged": true
+  },
+  "preserved_input_references": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-go6-redis-exact-teardown-20261116-native-audit.json",
+      "sha256": "7d6163c0fd2a8fad1a4203c9d16a1f54d1cd373051364facc9d88c50a7ff0bf5"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/container-after.stderr.log",
+      "sha256": "44ad392c0a76879a83a05e6bc86b2edb42cb0aba9f46d494ea6ef2b7419aa08e"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/container-after.stdout.log",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/exact-teardown.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/exact-teardown.stdout.json",
+      "sha256": "f4c099327029bc36f7446a4d5d0befe17253df477204de4b25dfff891f65e9e3"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/immediate-client-preconditions.sanitized.json",
+      "sha256": "a03870a249ba3aac248c09c78c5461282b9e3016b087391869d89871ee7990c3"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/immediate-verify.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/immediate-verify.stdout.json",
+      "sha256": "5b8931f298a6b77b0a3a5e2fbd9ca927877b7f098cc40d8b3f8e09cc85909ac4"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/network-after.stderr.log",
+      "sha256": "d866f52a091b7e196df16f7d87c9bbe73227b9afac11aec313e208d0cf912760"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/network-after.stdout.log",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/protected-immutable-before.json",
+      "sha256": "a16afd14e186804657951fb343083a6518cf77ac3f87164fa9e90b5c8c2106ba"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-native-20261116T043448/result.json",
+      "sha256": "e559fdb1d7fd5c1edf4b7a168e7b0eb50934af4155623f16c3f8209ce329eba3"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/native-owned-Redis-teardown-consumed-9c6f5efcf510.json",
+      "sha256": "cf673178f83575f2ed3d6a0d82696a5200c18208080ce91217ac0c4abda43642"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/main-native-owned-Redis-teardown-9c6f5efcf510.json",
+      "sha256": "8e3fcfc2e0a94d0e85c38488b5ee562b31b5c4ddb63c2278780146fb41606aea"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-go6-redis-resource-followup-20261116-native-audit.json",
+      "sha256": "ebeb54043d8b6beb789846f97484fcd7b505fd58715a18e5d5ca4139dbb1bd00"
+    }
+  ],
+  "new_observation_references": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-postaudit-reconciliation-20261116T043730/container.stderr.log",
+      "sha256": "44ad392c0a76879a83a05e6bc86b2edb42cb0aba9f46d494ea6ef2b7419aa08e"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-postaudit-reconciliation-20261116T043730/container.stdout.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-postaudit-reconciliation-20261116T043730/network.stderr.log",
+      "sha256": "d866f52a091b7e196df16f7d87c9bbe73227b9afac11aec313e208d0cf912760"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-postaudit-reconciliation-20261116T043730/network.stdout.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-postaudit-reconciliation-20261116T043730/port61471.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-postaudit-reconciliation-20261116T043730/port61471.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-teardown-postaudit-reconciliation-20261116T043730/protected-immutable-after.json",
+      "sha256": "a16afd14e186804657951fb343083a6518cf77ac3f87164fa9e90b5c8c2106ba"
+    }
+  ],
+  "no_other_container_network_volume_PG_history_or_SOURCE_writes": true,
+  "other_four_production_service_audit_duplicated": false,
+  "Go_tests_real_models_or_new_databases": 0,
+  "authority": "MAIN exact one-shot cleanup handoff8e3fcfc2 consumed once; subsequent work is readonly evidence reconciliation only."
+}

@@ -1,0 +1,705 @@
+{
+  "schema_version": 1,
+  "kind": "independent_A_v2_handler_full_and_router_PASS_subset_plus_original_SKIP_resource_evidence_qualification",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "role": "trellis-check",
+  "at": "2026-11-15T23:43:46.589968+00:00",
+  "verdict": "HANDLER_NORMAL_AND_ROUTER_21_PASS_SUBSET_QUALIFIED_FOR_NEW_COMPLETION",
+  "accepted": true,
+  "blocking_findings_open": 0,
+  "blocking_findings": [],
+  "checks": {
+    "immutable_actual_run_raw_results_inventory_permit_and_failure_SHA_match": true,
+    "two_independent_pinned_v3_full_reparses_exact": true,
+    "second_raw_named_terminal_inventory_matches": true,
+    "handler36_93_80_allPASS": true,
+    "router10_22_19_21PASS1SKIP_preserved": true,
+    "original_router_step_and_whole_A_failure_stay_false": true,
+    "exact_original_missing_Redis_guard_no_three_subtests_entered": true,
+    "actual_GO_env_command_PG_source_and_tool_pins_bind": true,
+    "before_after5dee10408_32_source_match_recent_full_physical_review": true,
+    "both_legacy0_and_readonly_typed_all_client_other0": true,
+    "consumed_a33_permit_and_three_races_NOT_RUN_preserved": true,
+    "owned_PGID71812_now0": true,
+    "original_service_v1_count1_unknown_type_and_failure_bytes_preserved": true,
+    "no_additional_Go_SQL_Redis_runtime_or_source_actions": true
+  },
+  "references": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/main-knowledge-remaining-five-20261116-95280b499792.json",
+      "sha256": "a33ff4a46336704f2b36003819a57ca87f7e222a85eb6e6e0cd98ec4a1cb5147",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/failed.json",
+      "sha256": "11d99c2623e5a14ac679b1ac59411c811fa3680d8a5900f6c0577216051b6446",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/reports/remaining-five-95280b499792-execute-result.json",
+      "sha256": "3d20336cc03d6aa386a96bd3959ea3c8f4f9d85ccb63ce187188eb2c5506d9c9",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/reports/remaining-five-95280b499792-execute.stdout.log",
+      "sha256": "90ac5d706ee82366075ae8b9bdcf3cef25b3e7d4062ae7ad1e6d04b18a9b8c8d",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/reports/remaining-five-95280b499792-execute.stderr.log",
+      "sha256": "471248f592141b877cd8be52540f4f49be4abeef67f8f2283c418356c80ca041",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/permit-consumed-a33ff4a46336704f2b36003819a57ca87f7e222a85eb6e6e0cd98ec4a1cb5147.json",
+      "sha256": "77d826eb943f11a15ca60936f851b46b67eae644b26bd666cbb63e0f216d3d37"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/reports/knowledge-v2-handler-normal-61738ee1.json",
+      "sha256": "731ed311ecc33493fd48b2d9e612ebb7044c5c6ffe1bf4280e56e7df0943b755",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/result.json",
+      "sha256": "f33ceccc8281fbe30dbce771fe2405f166c27b0a9fbd3d9f3da9d14db2735f24",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/strict-v3-inventory.json",
+      "sha256": "7ff06410d5bce704d0c247bd1b91ce9fc8db5f24e120b5d61e3e5bd93827b47f",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-v2-handler-normal-61738ee1/tests.jsonl",
+      "sha256": "68843804bd9eb59c43561fdd898a8e7362c92dcc3d17288c5333a3442b4ead67",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/typed-resources/1.observation.json",
+      "sha256": "22193941cb971f6944481bbae8e031ca9023ebf886ced9d0d4af61ba33b3a277",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/actual-child-environment-10.json",
+      "sha256": "be98d6eeb373083697dbae680b42203bd49fdba57dbdc6cd63cec39bd6725d32",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/actual-child-environment-2.json",
+      "sha256": "0cc46e730c486d1bcbbe06ee20c0ebba1f0f568e9e630716e6385bdc6f3ba339",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/actual-child-environment-3.json",
+      "sha256": "0cc46e730c486d1bcbbe06ee20c0ebba1f0f568e9e630716e6385bdc6f3ba339",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/actual-child-environment-4.json",
+      "sha256": "c2c5d062b50794b4415b81548faee3a6f0fcc1340a9c84549aaed172f63af7d2",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/actual-child-environment-7.json",
+      "sha256": "be98d6eeb373083697dbae680b42203bd49fdba57dbdc6cd63cec39bd6725d32",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/actual-child-environment-8.json",
+      "sha256": "c2c5d062b50794b4415b81548faee3a6f0fcc1340a9c84549aaed172f63af7d2",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/actual-child-environment-9.json",
+      "sha256": "c2c5d062b50794b4415b81548faee3a6f0fcc1340a9c84549aaed172f63af7d2",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/actual-child-environment-11.json",
+      "sha256": "0cc46e730c486d1bcbbe06ee20c0ebba1f0f568e9e630716e6385bdc6f3ba339",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/subprocess-transcript.json",
+      "sha256": "b0e8bf9979c6619352a77abc5dad05a9fa94611de5d39f7dd17c21f130d0da9f",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/typed-resources/result.json",
+      "sha256": "43bb0088606fb6f4342d95c54c0a78f7eaee670d214b87a1e4292d189d6b397f",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/typed-resources/1.stdout.json",
+      "sha256": "b89d01d9b3da40e96ec0ff7a25f2b17927a07e785759580bf64cd5266595bf7e",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/typed-resources/1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/typed-resources/transcript.json",
+      "sha256": "cf197be9d674cb5cc1b407389dae6663657daf476b3709108b9c5cce143f07a1",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-v2-handler-normal-61738ee1/environment.json",
+      "sha256": "1e189f2f5485e6fffea6c8db71ef646ccd9cf5f6fccd4a87775b97eb62b121a1",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-v2-handler-normal-61738ee1/migrate.log",
+      "sha256": "92b4417cb7ee9f83248e1c1c9456713d5e81a7668291fd9f2cd104bc2efd5b29",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/reports/knowledge-v2-router-normal-0676ef71.json",
+      "sha256": "b6d3470301d28085ec6ada88b68773d256c0a9a0654f3add23b34aea5d6b63d4",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/result.json",
+      "sha256": "d6b76c4a6229adb1d0a3b9b0043400088f374468af9d6ba7ff34bbbfc12d54f1",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/strict-v3-inventory.json",
+      "sha256": "ae119e7a94c676c7d6655e89212bc939801ffb110fc4b9f46df5efe9f4734b0c",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-v2-router-normal-0676ef71/tests.jsonl",
+      "sha256": "d6f2fa5eedd871ae1a8e238aa5da1e80428e9fcdc9a42195bb8c9e7b932ac7a2",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/typed-resources/1.observation.json",
+      "sha256": "012ebbd731351d492729bc35486694e713ca4a0fbe761fd1bf95a5b623f29a15",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/actual-child-environment-10.json",
+      "sha256": "e23f95cc90631d568c81d2199019b94d131a4cfc6ce5c0f5dd5e688dec36f16a",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/actual-child-environment-2.json",
+      "sha256": "24d7d638a6a67ed042af53a19e507606029bd1e9812899bd1884ba2cc9b93df2",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/actual-child-environment-3.json",
+      "sha256": "24d7d638a6a67ed042af53a19e507606029bd1e9812899bd1884ba2cc9b93df2",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/actual-child-environment-4.json",
+      "sha256": "d1664f1eeb9efb4a04ffa61baae3d1353b9c37f861f456790cfbd4857b7a1d90",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/actual-child-environment-7.json",
+      "sha256": "e23f95cc90631d568c81d2199019b94d131a4cfc6ce5c0f5dd5e688dec36f16a",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/actual-child-environment-8.json",
+      "sha256": "d1664f1eeb9efb4a04ffa61baae3d1353b9c37f861f456790cfbd4857b7a1d90",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/actual-child-environment-9.json",
+      "sha256": "d1664f1eeb9efb4a04ffa61baae3d1353b9c37f861f456790cfbd4857b7a1d90",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/actual-child-environment-11.json",
+      "sha256": "24d7d638a6a67ed042af53a19e507606029bd1e9812899bd1884ba2cc9b93df2",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/subprocess-transcript.json",
+      "sha256": "494850256b17cc9296222f0e93d6fd22b95baa03c691fd5704a3e14720c75b56",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/typed-resources/result.json",
+      "sha256": "22334a267738e6dad0750702e93ea7bb3ba9f710dfeeeb116d056d8657befc35",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/typed-resources/1.stdout.json",
+      "sha256": "1648dba5ddbbdf45a600bc2d940991f89f9aec7f5a7d03c21ec6823b563ec99c",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/typed-resources/1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/typed-resources/transcript.json",
+      "sha256": "e7ae744dc8567c09a77fbccb5130c7829e2e5f30ca57e0a87573d3db53f6ae1f",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-v2-router-normal-0676ef71/environment.json",
+      "sha256": "e5feede4946a0560f8b722def627b6b7f206e1e480517dc0c9bbe292e6265233",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-v2-router-normal-0676ef71/migrate.log",
+      "sha256": "3ba43edd8a6ad23f5fb9584b1aa9d0ed06b3eccad952b8b8f96c971158e460aa",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/partial-intake.json",
+      "sha256": "16bba7a7d3e4c4d34bbc8efa5cd49895e4c136bce0d52819c254ced4988d7ac4",
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-current-c54-reference-impact-views-independent-review-20261116-b81b0614bceb.json",
+      "sha256": "6b21db980ff3bdf10525e4c162ac433f880658712bd5031e2d7fbf03cd726cc9",
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-service-normal-raw-current-audit-independent-review-20261116-ab86bfbc4618.json",
+      "sha256": "944f1c1ecb9bfcddf3a297a8acd1d4794b793600aed57599c71dd37e13a3bd9a",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/reports/knowledge-final-service-normal-57488156.json",
+      "sha256": "50c682279477eeea47e3328240e47bed9d9a5b104fb6c6fd636051e4c934ac8e",
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-final-go-20261116-e56b0c7e5625-4573badfb786/failed.json",
+      "sha256": "be712d5f57ed012124c3e7226a54b466a897d16cbcad2671960e8c70d0624a25",
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/cmd/server/collaboration_knowledge_realtime_test.go",
+      "sha256": "38bbfc8ec3f952b1ca7ee11e9e243f3d07fcba906a0f0a18bc813520cc5c7378",
+      "mode": 420
+    }
+  ],
+  "qualified_results": [
+    {
+      "step": {
+        "mode": "normal",
+        "package": "./internal/handler",
+        "selector": "^Test(Knowledge|TaskKnowledge|CollaborationKnowledge)|^Test(WorkspaceDeletionManifestPreservesKnowledgeHistory|ProjectDeletionPreservesKnowledgeAutomationHistory|WorkspaceDeletionRemovesKnowledgePolicy)$",
+        "slug": "handler",
+        "expected_tops_sha256": "2dc250ad68559f4f7ee3fdbde911bb5286465c8f79ed28c2f3ca96bfead7068d",
+        "timeout": "15m",
+        "build_tags": []
+      },
+      "original_result": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/result.json",
+        "sha256": "f33ceccc8281fbe30dbce771fe2405f166c27b0a9fbd3d9f3da9d14db2735f24"
+      },
+      "original_receipt": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/reports/knowledge-v2-handler-normal-61738ee1.json",
+        "sha256": "731ed311ecc33493fd48b2d9e612ebb7044c5c6ffe1bf4280e56e7df0943b755"
+      },
+      "raw": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-v2-handler-normal-61738ee1/tests.jsonl",
+        "bytes": 229221,
+        "sha256": "68843804bd9eb59c43561fdd898a8e7362c92dcc3d17288c5333a3442b4ead67"
+      },
+      "inventory": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/strict-v3-inventory.json",
+        "sha256": "7ff06410d5bce704d0c247bd1b91ce9fc8db5f24e120b5d61e3e5bd93827b47f"
+      },
+      "independent_full_reparse": {
+        "identical_full_result": true,
+        "inventory_complete": true,
+        "all_selected_named_tests_passed": true,
+        "raw": {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-v2-handler-normal-61738ee1/tests.jsonl",
+          "bytes": 229221,
+          "sha256": "68843804bd9eb59c43561fdd898a8e7362c92dcc3d17288c5333a3442b4ead67"
+        },
+        "counts": {
+          "run": 93,
+          "pass": 93,
+          "fail": 0,
+          "skip": 0
+        },
+        "top": 36,
+        "named": 93,
+        "leaf": 80,
+        "skip": [],
+        "named_SHA": "73a85267a38608a3c64e4881cff1f3e61963cd5c8217c598d6117a9e7d8bf80b",
+        "leaf_SHA": "6a060f0d4e876384848bab54264b2ea928c1bf2ad90d8d8baf75ec571d5ce1e6"
+      },
+      "second_raw_event_inventory_matches": true,
+      "actual_environment": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/actual-child-environment-10.json",
+        "sha256": "be98d6eeb373083697dbae680b42203bd49fdba57dbdc6cd63cec39bd6725d32"
+      },
+      "before_after": {
+        "source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+        "file_count": 10408,
+        "workspace_link_count": 32,
+        "head": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+        "manifest_sha256": "d00cf4bd187d7d26471bd570190eb28aefc214585d55b92daaa56fbc0f35dd84",
+        "pg_config_sha256": "023175cea43e8d88c06c0e298b9e7ba4459ce0e2ff2aba3114f4124eb9582569",
+        "config_sha256": "9f4228262e611e4a6001c924ba1c69b0be55264954e8f1df506c282442063169",
+        "tools": {
+          "go": {
+            "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+            "sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+          },
+          "psql": {
+            "path": "/opt/homebrew/Cellar/libpq/18.6/bin/psql",
+            "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07"
+          },
+          "node": {
+            "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+            "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572"
+          },
+          "git": {
+            "path": "/opt/homebrew/Cellar/git/2.52.0/bin/git",
+            "sha256": "ca78d2c62e0d25037f2aa7353c0e28bebaca2f8b40c20b164c5781b885b2d197"
+          },
+          "bash": {
+            "path": "/bin/bash",
+            "sha256": "07ad8525844ce61471e08e8c515b76bf063bac482394152bad814026cd577f69"
+          },
+          "python3": {
+            "path": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+            "sha256": "cbf84109626aa1013bbe408fbb9590bd0f1c1548f038b2221c6b8b87de26ca43"
+          }
+        },
+        "v2_core_sha256": "139d3c038083d4dfdd972d9b067cf3cf65a095136fd8639451b9a8e5afe0458b",
+        "selected_scope_sha256": "fe6a495674bb748d3e6d6e080be4003f629ec657d0c83f42ad811dcdfe725819"
+      },
+      "all_recorded_PASS_names": [
+        "TestCollaborationKnowledgeRuntimeClaimRejectsSpoofedBodyCapability",
+        "TestCollaborationKnowledgeRuntimeHTTPRequiresManagedNegotiation",
+        "TestCollaborationKnowledgeRuntimeHTTPStrictBodiesAndClosedGate",
+        "TestKnowledgeAllFirstPartyClaimSurfaces",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/autopilot/batch",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/autopilot/single",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/autopilot/ws",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/chat/batch",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/chat/single",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/chat/ws",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/comment/batch",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/comment/single",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/comment/ws",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/issue/batch",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/issue/single",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/issue/ws",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/quick_create/batch",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/quick_create/single",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/quick_create/ws",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/lead_change/approval_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/lead_change/authority_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/member_removal/approval_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/member_removal/authority_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/project_delete/approval_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/project_delete/authority_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/role_downgrade/approval_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/role_downgrade/authority_first",
+        "TestKnowledgeApprovalHTTPMatrixLegacyDeletedSourceKeepsDeletionGuard",
+        "TestKnowledgeApprovalHTTPMatrixWrongCandidateRecoveryIsContentFree",
+        "TestKnowledgeClaimErrorDisposition",
+        "TestKnowledgeClaimErrorDisposition/cancelled",
+        "TestKnowledgeClaimErrorDisposition/connection_reset",
+        "TestKnowledgeClaimErrorDisposition/deadline",
+        "TestKnowledgeClaimErrorDisposition/missing_row",
+        "TestKnowledgeClaimErrorDisposition/postgres_shutdown",
+        "TestKnowledgeClaimErrorDisposition/typed_refusal",
+        "TestKnowledgeClaimErrorDisposition/wrapped_typed_refusal",
+        "TestKnowledgeClaimFinalizeRefusalAtClaimBoundSettlesTask",
+        "TestKnowledgeClaimFinalizeRefusalAtClaimBoundSettlesTask/batch",
+        "TestKnowledgeClaimFinalizeRefusalAtClaimBoundSettlesTask/single",
+        "TestKnowledgeClaimGateOffSafeArgsDispatchesOrdinaryTask",
+        "TestKnowledgeClaimTransientHistoryErrorRequeuesTask",
+        "TestKnowledgeClaimTransientHistoryErrorRequeuesTask/batch/claude",
+        "TestKnowledgeClaimTransientHistoryErrorRequeuesTask/batch/codex",
+        "TestKnowledgeClaimTransientHistoryErrorRequeuesTask/single/claude",
+        "TestKnowledgeClaimTransientHistoryErrorRequeuesTask/single/codex",
+        "TestKnowledgeDeviceJoinInvalidatesExistingWorkspaceOnly",
+        "TestKnowledgeExplicitRerunUsesSourceSessionExposure",
+        "TestKnowledgeHTTPHumanRoundTripAndPurgedProjection",
+        "TestKnowledgeHTTPNegotiationDoesNotEnableClosedGate",
+        "TestKnowledgeHTTPRejectsHumanCredentialFallback",
+        "TestKnowledgeHTTPStrictErrorsAndOriginalRecovery",
+        "TestKnowledgeHTTPStrictErrorsAndOriginalRecovery/alias",
+        "TestKnowledgeHTTPStrictErrorsAndOriginalRecovery/duplicate",
+        "TestKnowledgeHTTPStrictErrorsAndOriginalRecovery/unknown",
+        "TestKnowledgeHTTPVersionNegotiationAndOriginalReceipts",
+        "TestKnowledgeHeldOwnerApprovalAllowsActualUnrelatedWriters",
+        "TestKnowledgeHeldOwnerApprovalAllowsActualUnrelatedWriters/issue_create",
+        "TestKnowledgeHeldOwnerApprovalAllowsActualUnrelatedWriters/iteration_create",
+        "TestKnowledgeHeldOwnerApprovalAllowsActualUnrelatedWriters/project_association",
+        "TestKnowledgeHeldOwnerApprovalAllowsActualUnrelatedWriters/triage_accept",
+        "TestKnowledgeJobHTTPPreservesSealedRefusal",
+        "TestKnowledgeJobHTTPPreservesSealedRefusal/disabled_policy",
+        "TestKnowledgeJobHTTPPreservesSealedRefusal/stale_revision",
+        "TestKnowledgeMemberRemovalFansOutHistoricalTargetsOutsideSource",
+        "TestKnowledgeMemberRoleAndRemovalAppendInAuthoritativeTransaction",
+        "TestKnowledgeMembershipGrantsAppendOnlyWithCommittedMembership",
+        "TestKnowledgeMembershipGrantsAppendOnlyWithCommittedMembership/invitation",
+        "TestKnowledgeMembershipGrantsAppendOnlyWithCommittedMembership/share_link",
+        "TestKnowledgeOrdinaryCoalescedCommentsCheckEveryCurrentAuthor",
+        "TestKnowledgeOrdinaryCoalescedCommentsCheckEveryCurrentAuthor/eligible",
+        "TestKnowledgeOrdinaryCoalescedCommentsCheckEveryCurrentAuthor/older_author_disabled",
+        "TestKnowledgePATRevocationRetainsOriginalCauseAndRollsBackOnAppendFailure",
+        "TestKnowledgePolicyHTTPRequiresExplicitToggleAndRecoversAfterRoleLoss",
+        "TestKnowledgePolicyHTTPRequiresExplicitToggleAndRecoversAfterRoleLoss/missing_limit",
+        "TestKnowledgePolicyHTTPRequiresExplicitToggleAndRecoversAfterRoleLoss/missing_toggle",
+        "TestKnowledgePolicyHTTPRequiresExplicitToggleAndRecoversAfterRoleLoss/null_toggle",
+        "TestKnowledgePolicyHTTPRequiresExplicitToggleAndRecoversAfterRoleLoss/system_actor",
+        "TestKnowledgePreparationReplayStillFencesActualProjectDeletion",
+        "TestKnowledgePreparationWhileRealOrdinaryWriterIsUncommitted",
+        "TestKnowledgePreparationWhileRealOrdinaryWriterIsUncommitted/issue_number_allocation",
+        "TestKnowledgePreparationWhileRealOrdinaryWriterIsUncommitted/project_description",
+        "TestKnowledgeProjectDeletionRetainsFinalHintAndPendingRouting",
+        "TestKnowledgeResumeDirectChatPointerUsesExactExposure",
+        "TestKnowledgeResumeOlderSessionFallbackUsesChosenKey",
+        "TestKnowledgeUnreachableResumeHTTPRebindsAndBreaksLoop",
+        "TestKnowledgeUnreachableResumeHTTPRebindsAndBreaksLoop/chat",
+        "TestKnowledgeUnreachableResumeHTTPRebindsAndBreaksLoop/issue",
+        "TestKnowledgeWorkspaceDeletionRetainsEveryTargetHint",
+        "TestProjectDeletionPreservesKnowledgeAutomationHistory",
+        "TestWorkspaceDeletionManifestPreservesKnowledgeHistory",
+        "TestWorkspaceDeletionRemovesKnowledgePolicy"
+      ],
+      "retained_SKIP_names": [],
+      "full_original_step_passed": true,
+      "typed_resource_gate": {
+        "passed": true,
+        "client_backends": 0,
+        "observations": 1,
+        "last_all_backends": 0,
+        "last_other_backends": 0,
+        "elapsed_seconds": 0.07569058297667652
+      },
+      "typed_observation": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/1-normal-handler/typed-resources/1.observation.json",
+        "sha256": "22193941cb971f6944481bbae8e031ca9023ebf886ced9d0d4af61ba33b3a277"
+      },
+      "reuse_scope": "full handler normal"
+    },
+    {
+      "step": {
+        "mode": "normal",
+        "package": "./cmd/server",
+        "selector": "^Test(Knowledge|TaskKnowledge|CollaborationKnowledge)|^TestCORSKnowledgeVersionNegotiation$",
+        "slug": "router",
+        "expected_tops_sha256": "9721375a527b52cb8320c63ed3ed8e142d200a6128338ff86d6a0937e2557ca4",
+        "timeout": "15m",
+        "build_tags": []
+      },
+      "original_result": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/result.json",
+        "sha256": "d6b76c4a6229adb1d0a3b9b0043400088f374468af9d6ba7ff34bbbfc12d54f1"
+      },
+      "original_receipt": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/reports/knowledge-v2-router-normal-0676ef71.json",
+        "sha256": "b6d3470301d28085ec6ada88b68773d256c0a9a0654f3add23b34aea5d6b63d4"
+      },
+      "raw": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-v2-router-normal-0676ef71/tests.jsonl",
+        "bytes": 86473,
+        "sha256": "d6f2fa5eedd871ae1a8e238aa5da1e80428e9fcdc9a42195bb8c9e7b932ac7a2"
+      },
+      "inventory": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/strict-v3-inventory.json",
+        "sha256": "ae119e7a94c676c7d6655e89212bc939801ffb110fc4b9f46df5efe9f4734b0c"
+      },
+      "independent_full_reparse": {
+        "identical_full_result": true,
+        "inventory_complete": true,
+        "all_selected_named_tests_passed": false,
+        "raw": {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-v2-router-normal-0676ef71/tests.jsonl",
+          "bytes": 86473,
+          "sha256": "d6f2fa5eedd871ae1a8e238aa5da1e80428e9fcdc9a42195bb8c9e7b932ac7a2"
+        },
+        "counts": {
+          "run": 22,
+          "pass": 21,
+          "fail": 0,
+          "skip": 1
+        },
+        "top": 10,
+        "named": 22,
+        "leaf": 19,
+        "skip": [
+          "TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry"
+        ],
+        "named_SHA": "2646e1b43eaf355fb5bd1808fe25c0df693d39c17d33a0bebf8b280128ca3366",
+        "leaf_SHA": "f5a5a0f4c22bd4e8020ed10d76e3cf8daffb79cc87d1bac250bbf480560b9652"
+      },
+      "second_raw_event_inventory_matches": true,
+      "actual_environment": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/actual-child-environment-10.json",
+        "sha256": "e23f95cc90631d568c81d2199019b94d131a4cfc6ce5c0f5dd5e688dec36f16a"
+      },
+      "before_after": {
+        "source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+        "file_count": 10408,
+        "workspace_link_count": 32,
+        "head": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+        "manifest_sha256": "d00cf4bd187d7d26471bd570190eb28aefc214585d55b92daaa56fbc0f35dd84",
+        "pg_config_sha256": "023175cea43e8d88c06c0e298b9e7ba4459ce0e2ff2aba3114f4124eb9582569",
+        "config_sha256": "9f4228262e611e4a6001c924ba1c69b0be55264954e8f1df506c282442063169",
+        "tools": {
+          "go": {
+            "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+            "sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+          },
+          "psql": {
+            "path": "/opt/homebrew/Cellar/libpq/18.6/bin/psql",
+            "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07"
+          },
+          "node": {
+            "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+            "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572"
+          },
+          "git": {
+            "path": "/opt/homebrew/Cellar/git/2.52.0/bin/git",
+            "sha256": "ca78d2c62e0d25037f2aa7353c0e28bebaca2f8b40c20b164c5781b885b2d197"
+          },
+          "bash": {
+            "path": "/bin/bash",
+            "sha256": "07ad8525844ce61471e08e8c515b76bf063bac482394152bad814026cd577f69"
+          },
+          "python3": {
+            "path": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+            "sha256": "cbf84109626aa1013bbe408fbb9590bd0f1c1548f038b2221c6b8b87de26ca43"
+          }
+        },
+        "v2_core_sha256": "139d3c038083d4dfdd972d9b067cf3cf65a095136fd8639451b9a8e5afe0458b",
+        "selected_scope_sha256": "fe6a495674bb748d3e6d6e080be4003f629ec657d0c83f42ad811dcdfe725819"
+      },
+      "all_recorded_PASS_names": [
+        "TestCORSKnowledgeVersionNegotiation",
+        "TestCollaborationKnowledgeRuntimeProductionManagedRoutesHonorExplicitlyDisabledGate",
+        "TestCollaborationKnowledgeRuntimeProductionRoutesRejectBusinessCredential",
+        "TestKnowledgeContextDefaultEnabled",
+        "TestKnowledgeContextDefaultEnabled/disabled",
+        "TestKnowledgeContextDefaultEnabled/empty",
+        "TestKnowledgeContextDefaultEnabled/enabled",
+        "TestKnowledgeContextDefaultEnabled/noncanonical",
+        "TestKnowledgeContextDefaultEnabled/unset",
+        "TestKnowledgePolicyRecoveryRouteSurvivesWorkspaceDeparture",
+        "TestKnowledgeProductionRoutesPreserveAccountAndTargetScopes",
+        "TestKnowledgeSocketPreservesCurrentJWTAndPasswordGates",
+        "TestKnowledgeSocketPreservesCurrentJWTAndPasswordGates/legacy",
+        "TestKnowledgeSocketPreservesCurrentJWTAndPasswordGates/password",
+        "TestKnowledgeSocketPreservesCurrentJWTAndPasswordGates/password_pat",
+        "TestKnowledgeSocketRejectsPrivateOrAmbiguousOuterEnvelope",
+        "TestKnowledgeSocketRejectsPrivateOrAmbiguousOuterEnvelope/duplicate_payload",
+        "TestKnowledgeSocketRejectsPrivateOrAmbiguousOuterEnvelope/duplicate_type",
+        "TestKnowledgeSocketRejectsPrivateOrAmbiguousOuterEnvelope/malformed",
+        "TestKnowledgeSocketRejectsPrivateOrAmbiguousOuterEnvelope/outer_source",
+        "TestTaskKnowledgeProductionRoutesKeepMachineScopeWithExplicitlyDisabledGate"
+      ],
+      "retained_SKIP_names": [
+        "TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry"
+      ],
+      "full_original_step_passed": false,
+      "typed_resource_gate": {
+        "passed": true,
+        "client_backends": 0,
+        "observations": 1,
+        "last_all_backends": 0,
+        "last_other_backends": 0,
+        "elapsed_seconds": 0.07780300010927022
+      },
+      "typed_observation": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/2-normal-router/typed-resources/1.observation.json",
+        "sha256": "012ebbd731351d492729bc35486694e713ca4a0fbe761fd1bf95a5b623f29a15"
+      },
+      "reuse_scope": "21 successful named tests only; skipped top remains unaccepted"
+    }
+  ],
+  "original_whole_failure": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-remaining-five-20261116-95280b499792-c09ed35248d1/failed.json",
+    "sha256": "11d99c2623e5a14ac679b1ac59411c811fa3680d8a5900f6c0577216051b6446"
+  },
+  "original_consumed_permit": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/main-knowledge-remaining-five-20261116-95280b499792.json",
+    "sha256": "a33ff4a46336704f2b36003819a57ca87f7e222a85eb6e6e0cd98ec4a1cb5147"
+  },
+  "remaining_three_races": "NOT_RUN",
+  "six_suite_normal_race_equality_and_all_final_resources": "NOT_AVAILABLE",
+  "missing_router_top": {
+    "name": "TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry",
+    "source_file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/cmd/server/collaboration_knowledge_realtime_test.go",
+    "source_SHA": "38bbfc8ec3f952b1ca7ee11e9e243f3d07fcba906a0f0a18bc813520cc5c7378",
+    "original_SKIP_reason": "requires isolated REDIS_TEST_URL",
+    "guard_line": 125,
+    "three_not_entered_subtests": [
+      "revoke",
+      "expire",
+      "subject_mismatch"
+    ],
+    "original_missing_fixture_is_not_test_failure_or_PASS": true,
+    "required_new_execution": "Exact missing top on fresh owned DB with explicitly verified dedicated Redis under separately reviewed adapter and new MAIN permit."
+  },
+  "qualified_reuse_contract": {
+    "handler_normal": "Reuse immutable complete36top/93named/80leaf PASS with exact source/environment/raw/resource refs.",
+    "router_normal": "Reuse exactly these21 successful names only. Preserve original22-name stream and1 skipped top; it cannot count as a passed full router normal.",
+    "aggregate_router_completion": "A separately accepted exact missing-top execution may form a NEW complete router normal aggregate by union of the21 original PASS identities and its actual PASS identities, validating duplicate/top sets and matching full race named/leaf sets. Retain original skip and false step/controller status.",
+    "new_three_races": "Each remaining full service/handler/router race needs actual fresh DB execution under new reviewed MAIN permission; router race needs the dedicated Redis fixture.",
+    "final_resources": "Recheck every reused and new owned DB at final aggregate, retaining original resource observations and separate times.",
+    "review_grants_actual_Go_or_Redis_permission": false
+  },
+  "owned_resources": {
+    "handler_router_recorded_typed0_accepted": true,
+    "current_readonly_OS_observed_at": "2026-11-15T23:43:46.590149+00:00",
+    "PGID": 71812,
+    "owned_processes": [],
+    "probe_fields_only": [
+      "pid",
+      "ppid",
+      "pgid"
+    ]
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "ROUTER_REDIS_TOP_NOT_EXECUTED",
+      "issue": "A named router test skipped before revoke/expire/subject_mismatch because isolated REDIS_TEST_URL was absent.",
+      "not_fixed_reason": "Requires a newly verified owned Redis fixture, fresh DB and separate reviewed execution permit; outside reviewer execution ownership.",
+      "blocks_complete_Go6_acceptance": true,
+      "blocks_reuse_of_the21_successful_names": false
+    }
+  ],
+  "verification": {
+    "Lint": "not rerun: evidence review JSON only",
+    "TypeCheck": "not rerun: evidence review JSON only",
+    "Tests": "retained handler93 PASS and router21 PASS independently reconciled; original1 SKIP retained, not rerun",
+    "OfflineParser": "PASS identical full v3 reparse and second terminal inventory",
+    "JSON": "round-trip pass"
+  },
+  "ownership": {
+    "new_exclusive_review_JSON_only": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-A-handler-router-qualified-reuse-independent-review-20261116-589fbfcb56e3.json",
+    "actual_SQL_Go_Redis_runtime_models_adoption_source_or_existing_proof_writes": 0,
+    "read_only_Node_parse_and_numeric_OS_probe_only": true,
+    "subagents": 0
+  },
+  "acceptance_limits": {
+    "handler_normal_full_evidence_accepted": true,
+    "router21_PASS_evidence_accepted": true,
+    "router_full_normal_accepted": false,
+    "original_router_SKIP_relabelled": false,
+    "A_whole_failed_reclassified": false,
+    "new_adapter_or_actual_permit_granted": false,
+    "Go6_or_tag9_final": false,
+    "ROOT_adopt_or_production_source_ready": false,
+    "final_knowledge": false,
+    "P2_product": false,
+    "LIVE": false
+  }
+}

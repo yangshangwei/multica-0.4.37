@@ -73,6 +73,38 @@ remain active without one shared fixture exhausting the account budget.
    Playwright child's environment. The copied env, manifest, allowed origins,
    served build and owned listeners must describe the same check allocation.
 
+### API-only native Knowledge configuration
+
+1. **Scope:** `e2e/fixtures/project-knowledge-electron.mjs` adapts the shared
+   native stub only for the Knowledge acceptance journey. It uses the existing
+   explicit API/WS configuration and production renderer.
+2. **Signature:** synchronous `runtime-config:get` returns
+   `{ ok: true, source: "configured", config: { schemaVersion: 1, apiUrl,
+   wsUrl, appUrl } }`. `/api/config.daemon_app_url` supplies the Server's Web
+   address, derived from the owned `FRONTEND_ORIGIN`.
+3. **Contract:** preserve the original schema/API/WS/app values and report the
+   fixture's API-only configuration as `configured`. Capture the original
+   callback on a plain event before setting the real IPC `returnValue` once.
+   Leave the generic development stub unchanged; do not force `VITE_APP_URL`
+   to bypass Server publication.
+4. **Errors:** reject an unknown listener count, multiple original writes or
+   changed payload shape. Refuse browser admission if live `daemon_app_url`
+   does not match the allocated production Web origin.
+5. **Cases:** a development stub with `appUrl` equal to the API origin can be
+   interpreted as an explicit development address. API-only configured
+   metadata must instead resolve the Server-published Web origin. Explicit
+   development choices retain their normal product behavior.
+6. **Verification:** the original fixture/production resolver combination
+   reproduces the API-versus-Web mismatch. Five bounded fixture cases cover
+   configured resolution, exact payload preservation, single real reply and
+   invalid callbacks. Retain actual Web/native journeys, cross-origin v2
+   traffic and source/artifact/cleanup bindings. Renderer acceptance does not
+   establish packaged Main, installer or updater compatibility.
+7. **Wrong / correct:** calling the original callback on the real event and
+   then overwriting `returnValue` can send the development reply first.
+   Capture its payload separately and emit one configured reply through
+   `configuredKnowledgeRuntimeHandler()`.
+
 ### Password acceptance startup configuration
 
 1. **Scope:** switching a task-owned API from legacy to password authentication,

@@ -1,0 +1,39 @@
+{
+  "kind": "independent_git_raw_source_clean_index_spec_contract_check",
+  "at": "2026-11-16T03:24:36.701008+00:00",
+  "reviewer": "/root/p6_source_check",
+  "accepted": true,
+  "blocking_findings_open": 0,
+  "spec": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/verification-environment.md",
+    "sha256": "32f3f59d93b4679ae4078f908f7605699ddea8c490e12543cf360aa64726dc3f",
+    "new_section": "Frozen source bytes and Git index blobs",
+    "section_lines": 58,
+    "section_sha256": "10738d544038b0dfab95caa50da55ce0e48d61e89a637eb1fa0a38bf64268cc5"
+  },
+  "executor": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/execute-reviewed-adoption-v2.py",
+    "sha256": "9af42ca2a29296b6699781241c46b9a2636654d7b5c7265825318e1592299568"
+  },
+  "v2_admission": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root8877-adoption-v2-executor-independent-admission-20261116-00c46c50164d.json",
+    "sha256": "0438fdba7411cd88e6181402e4dc6d58d4f099c9b2321e84d990298e71aed5a5"
+  },
+  "verified_contracts": [
+    "raw working-tree SHA256/mode/discovery/edges remain separate from attribute-cleaned Git OIDs",
+    "documented --path and --stdin match actual pinned-Git implementation",
+    "canonical LF blob allowed only while original CRLF raw bytes/modes still match",
+    "wrong clean blob/mode/path or raw/source-edge drift still refused",
+    "failure remains failed, exact rollback acceptance opens no source-ready/product gate",
+    "RED7PASS/1FAIL and GREEN8PASS/0FAIL preserved; CRLF raw drift remains negative"
+  ],
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "candidate_source_id": "8877eb98b7e60add8a4b4e3d94dfad976dc51f3c49b7cce7b9e620891dc1d0d7",
+  "candidate_mutated": false,
+  "root_spec_delta_after_COPY": "metadata only; final input qualification must state it was added after physical8877 snapshot",
+  "new_Go_SQL_browser_or_build_tests": 0,
+  "lint_typecheck": "docs-only contract review; Python parse/8 bounded fixtures covered by pinned v2 admission",
+  "commit_required_or_performed": false,
+  "final_ROOT_acceptance": false
+}
