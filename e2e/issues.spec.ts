@@ -142,7 +142,7 @@ test.describe("Issues", () => {
     await newIssueButton.click();
 
     const title = "E2E Created " + Date.now();
-    const titleInput = page.getByRole("textbox", { name: "Title (required)" });
+    const titleInput = page.getByRole("textbox", { name: "Title", exact: true });
     await expect(titleInput).toBeVisible();
     await titleInput.fill(title);
     await page.getByRole("button", { name: "Create Issue" }).click();
@@ -191,7 +191,7 @@ test.describe("Issues", () => {
 
     await page.getByRole("button", { name: "New Issue" }).click();
 
-    const titleInput = page.getByRole("textbox", { name: "Title (required)" });
+    const titleInput = page.getByRole("textbox", { name: "Title", exact: true });
     await expect(titleInput).toBeVisible();
 
     await page.keyboard.press("Escape");

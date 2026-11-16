@@ -309,15 +309,19 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
       </>}>
     {notices}
     <div className="space-y-1">
-      <div className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1 text-caption text-muted-foreground">
-        <label htmlFor={`${id}-title`}>{t(($) => $.creation.titleLabel)}</label>
+      {/* The hint sits at the far end so it reads as a status, not as part of the label. */}
+      <div className="flex min-w-0 flex-wrap items-baseline justify-between gap-x-3 gap-y-1 text-caption text-muted-foreground">
+        <span className="flex items-baseline gap-0.5">
+          <label htmlFor={`${id}-title`}>{t(($) => $.creation.titleLabel)}</label>
+          <span aria-hidden className="text-destructive">*</span>
+        </span>
         {submitHint && <p id={`${id}-submit-hint`}>{submitHint}</p>}
       </div>
-      <Input ref={titleInput} data-creation-title id={`${id}-title`} value={form.title} maxLength={1000} disabled={!editable} onChange={(event) => draft.update({ title: event.target.value })} required aria-describedby={submitHint ? `${id}-submit-hint` : undefined} placeholder={t(($) => $.creation.titlePlaceholder)} className="min-h-11 rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 text-title-lg font-semibold shadow-none focus-visible:border-faint-foreground focus-visible:ring-0 md:text-title-lg dark:bg-transparent" />
+      <Input ref={titleInput} data-creation-title id={`${id}-title`} value={form.title} maxLength={1000} disabled={!editable} onChange={(event) => draft.update({ title: event.target.value })} required aria-describedby={submitHint ? `${id}-submit-hint` : undefined} placeholder={t(($) => $.creation.titlePlaceholder)} className="min-h-11 rounded-none border-0 border-b border-transparent bg-transparent px-0 text-title-lg font-semibold shadow-none placeholder:text-body placeholder:font-normal focus-visible:border-ring focus-visible:ring-0 md:text-title-lg dark:bg-transparent" />
     </div>
     {/* The description owns the spare height of the dialog body at every size. */}
     <div className={constrained ? "flex grow basis-auto flex-col gap-1 [&>*]:shrink-0" : "space-y-1"}><label htmlFor={`${id}-description`} className="block text-caption text-muted-foreground">{t(($) => $.creation.description)}</label>
-      <Textarea ref={descriptionInput} id={`${id}-description`} value={form.content} maxLength={1_000_000} disabled={!editable} onChange={(event) => draft.update({ content: event.target.value })} placeholder={t(($) => $.creation.descriptionPlaceholder)} className={`min-h-16 ${constrained ? "grow basis-auto" : ""} resize-none rounded-sm border-0 bg-transparent px-0 text-body shadow-none focus-visible:ring-2 focus-visible:ring-inset dark:bg-transparent`} />
+      <Textarea ref={descriptionInput} id={`${id}-description`} value={form.content} maxLength={1_000_000} disabled={!editable} onChange={(event) => draft.update({ content: event.target.value })} placeholder={t(($) => $.creation.descriptionPlaceholder)} className={`min-h-16 ${constrained ? "grow basis-auto" : ""} -mx-2 w-[calc(100%+1rem)] resize-none rounded-md border-0 bg-transparent px-2 text-body shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring dark:bg-transparent`} />
       <CollaborationCreationDescriptionAssist key={form.draftId} textareaRef={descriptionInput} sourceId={sourceId} value={form.content} title={form.title}
         uploading={uploading || draft.uploads.length > 0} submitting={create.isPending || draft.creations.length > 0}
         isBlocked={assistBlocked} isCurrent={assistCurrent} onChange={(content) => draft.update({ content })} onNeedsSpace={onNeedsSpace} />

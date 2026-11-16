@@ -980,7 +980,11 @@ export function ManualCreatePanel({
 
             {/* Title */}
             <div className="px-5 pb-2 shrink-0">
-              <p id={titleLabelId} className="mb-1 text-caption text-muted-foreground">{t(($) => $.create_issue.title_label)}</p>
+              {/* The asterisk is visual only; aria-required on the editor carries the meaning. */}
+              <p className="mb-1 flex items-baseline gap-0.5 text-caption text-muted-foreground">
+                <span id={titleLabelId}>{t(($) => $.create_issue.title_label)}</span>
+                <span aria-hidden className="text-destructive">*</span>
+              </p>
               <TitleEditor
                 key={formResetKey}
                 ref={titleEditorRef}
@@ -989,7 +993,7 @@ export function ManualCreatePanel({
                 autoFocus
                 defaultValue={draft.manual.title}
                 placeholder={t(($) => $.create_issue.title_placeholder)}
-                className="text-title font-semibold"
+                className="title-editor-quiet-placeholder text-title font-semibold"
                 onChange={(v) => updateTitle(v)}
                 // Chord only — plain Enter still just ends title editing (#5532).
                 onSubmitShortcut={handleSubmit}

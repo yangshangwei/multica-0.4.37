@@ -61,7 +61,7 @@ test.describe("AI refinement through real server and task creation", () => {
       await page.setViewportSize({ width: 1280, height: 900 });
       const { dialog, editor } = await open(page, workspace.slug);
       const title = "Weekly report " + suffix;
-      await dialog.getByRole("textbox", { name: "Title (required)", exact: true }).fill(title);
+      await dialog.getByRole("textbox", { name: "Title", exact: true }).fill(title);
       await refine(page, dialog, editor, "E2E_ASSIST_TWO");
       await expect(dialog.getByRole("button", { name: "Key details · 2", exact: true })).toHaveAttribute("aria-expanded", "true");
       await dialog.getByLabel(questions[0], { exact: true }).fill("Team members write it; their team lead reads it.");
@@ -146,7 +146,7 @@ test.describe("AI refinement through real server and task creation", () => {
       const { dialog, editor } = await open(page, workspace.slug);
       const title = `Preserved report ${suffix}`;
       const failedDraft = "Preserve my original report requirements E2E_ASSIST_FAIL";
-      await dialog.getByRole("textbox", { name: "Title (required)", exact: true }).fill(title);
+      await dialog.getByRole("textbox", { name: "Title", exact: true }).fill(title);
       await editor.fill(failedDraft);
       const optimized = page.waitForResponse((res) => responseFor(res, optimizePath));
       await dialog.getByRole("button", { name: /^(Refine description|Help me refine)$/ }).click();

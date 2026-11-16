@@ -122,7 +122,7 @@ test.describe("quick-create autonomy guard", () => {
     await dialog.getByRole("button", { name: `Create manually and assign to ${fixture.observer.name}`, exact: true }).click();
     const manual = page.getByRole("dialog", { name: "New Issue", exact: true });
     await expect(manual.getByRole("button", { name: fixture.observer.name })).toBeVisible();
-    await manual.getByRole("textbox", { name: "Title (required)", exact: true }).fill("Slow ES query analysis");
+    await manual.getByRole("textbox", { name: "Title", exact: true }).fill("Slow ES query analysis");
     const created = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/issues" && response.request().method() === "POST");
     await manual.getByRole("button", { name: "Create Issue", exact: true }).click();
     const response = await created;
