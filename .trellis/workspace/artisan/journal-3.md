@@ -1286,3 +1286,50 @@ Audited68local branches,20origin refs and100worktree heads; joined equivalent hi
 ### Next Steps
 
 - Existing real-provider, installed-client and shared-ROOT acceptance remains owned by the active knowledge/PAY tasks.
+
+
+## Session 158: 协作评论区降噪：独立检查、真实 E2E 与规范收尾
+<!-- trellis-session: v=2 fp=4937c07459866136 -->
+
+**Date**: 2026-11-16
+**Task**: 协作评论区降噪：独立检查、真实 E2E 与规范收尾
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成 11-15-collaboration-comment-thread-clarity 的验证与收尾：独立检查修复 4 个缺陷，在独立环境的生产构建上跑通协作详情相关 E2E，修正 3 处过期断言，补充规范并归档任务。功能代码由并行会话在验证期间提交，本会话只提交了 E2E 修正与文档。
+
+### Main Changes
+
+- 功能代码（core 讨论串推导、views 评论列表与行菜单、文案）落在 eb2bbde85、979853a5d、475bd975a、c54b25fd4，由并行会话提交，未经过计划中的提交范围确认；本会话提交 0774d3d0d（E2E）与 4ba3cbe11（规范与设计）。
+- 独立检查修复 4 项：行菜单删除与引用为结果在 Chromium 中丢失焦点（改为在菜单 finalFocus 交接，jsdom 不复现）；评论菜单触发按钮与任务操作菜单重名，改为 Comment actions / 评论操作；加载全文按钮补触屏 44px 高度。AC1–AC15 判定满足。
+- E2E 修正 3 处过期断言：创建弹窗 Assigned to 文案出现两次，改为只认状态行；editing-web 先检查评论菜单再打开任务菜单；runtime-handoff 在全部加载后不再等待 Loaded 1 of 1。
+- 规范 collaboration-detail.md 新增讨论串、折叠、行菜单、焦点交接与测试归属契约；design.md 记录强制展开写入状态这一偏差。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `eb2bbde85` | feat(collaboration): make unresolved discussions easier to find and resume |
+| `979853a5d` | test(collaboration): preserve shared workflow and recovery acceptance journeys |
+| `475bd975a` | test(collaboration): keep focus recovery correct after the menu exit animation |
+| `c54b25fd4` | fix(collaboration): keep recovered content actions usable on touch screens |
+| `0774d3d0d` | test(collaboration): repair three stale detail E2E assertions |
+| `4ba3cbe11` | docs(collaboration): record the comment thread and row menu contract |
+
+### Testing
+
+- [OK] pnpm typecheck 9/9、pnpm lint 0 错误（HEAD c54b25fd4）。
+- [OK] Vitest：views comment-list、collaboration-detail、locales/parity 共 118 通过；core comment-threads 13 通过。
+- [OK] 生产构建独立环境 E2E：editing-web 2/2、command-history-web 1/1、mention-journeys-web 3/3、records-web 1/1、boundaries-web 3/3、preparation-records-web 1/1、runtime-handoff-web 2/2、runtime-handoff-desktop 1/1、retained-attachment 3/3、mention-journeys-desktop 3/3。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- account-desktop 为 8 过 3 败，未查清：432 行是原生焦点断言，运行时屏幕锁定；350 与 581 行卡在 New collaboration issue 入口，未与改动前基线对照，不能断言与本任务无关，建议另开任务。
+- 未运行：collaboration-detail-journey、collaboration-multi-account-closure、project-knowledge-automation（各需额外环境）。
+- 已知取舍：父评论未加载的回复按直接父级分组，同一未加载串的两个分支会计为两个未解决讨论，文案已限定为已加载评论中。
+- E2E 环境脚本与日志保留在 /Volumes/artisan/code/2026/mc-cct-20261116/env/，容器、密钥与工作树已删除。
