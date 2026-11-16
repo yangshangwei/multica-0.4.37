@@ -14,16 +14,7 @@ import {
   useActiveTabUrl,
 } from "@/stores/tab-store";
 import { useWindowOverlayStore } from "@/stores/window-overlay-store";
-
-function requireRuntimeAppUrl(scope: string): string {
-  const runtimeConfig = window.desktopAPI.runtimeConfig;
-  if (!runtimeConfig.ok) {
-    throw new Error(
-      `Invariant violated: ${scope} rendered before App accepted runtime config`,
-    );
-  }
-  return runtimeConfig.config.appUrl;
-}
+import { useAppUrl } from "./app-url";
 
 /**
  * Extract the leading workspace slug from a path, or null if the path isn't
@@ -205,7 +196,12 @@ export function DesktopNavigationProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const appUrl = requireRuntimeAppUrl("DesktopNavigationProvider");
+  const appUrl = useAppUrl();
+  if (appUrl === null) {
+    throw new Error(
+      "Invariant violated: DesktopNavigationProvider rendered before App accepted runtime config",
+    );
+  }
   // The active session's url IS the location. Primitive subscription: this
   // only re-renders when the active url actually changes.
   const activeUrl = useActiveTabUrl();

@@ -31,12 +31,14 @@ import { DesktopNavigationProvider, resumeDesktopScope, routeContentLinkPath } f
 import { currentPath, useNavigation } from "@multica/views/navigation";
 import { useTabStore, getActiveTab } from "@/stores/tab-store";
 import { getCurrentSlug, setCurrentWorkspace } from "@multica/core/platform";
+import { configStore } from "@multica/core/config";
 
 beforeEach(() => {
   overlay.open.mockReset();
   overlay.close.mockReset();
   overlay.overlay = null;
   auth.logout.mockReset();
+  configStore.getState().setDaemonConfig({});
   useTabStore.getState().reset();
   useTabStore.getState().switchWorkspace("acme"); // default tab /acme/issues
   Object.defineProperty(window, "desktopAPI", {
@@ -288,6 +290,31 @@ describe("current location", () => {
     const adapter = getAdapter();
     expect(adapter.getShareableUrl(currentPath(adapter))).toBe(
       "https://app.example/acme/issues/MUL-1#comment-c1",
+    );
+  });
+
+  // Wiring only; the precedence matrix is in shared/runtime-config.test.ts.
+  it("builds share links on the web origin the server publishes", () => {
+    // What an installed desktop holds after the user enters the API address:
+    // appUrl is a guess equal to the API origin, where /join answers 404.
+    Object.defineProperty(window, "desktopAPI", {
+      configurable: true,
+      value: {
+        runtimeConfig: {
+          ok: true,
+          source: "configured",
+          config: {
+            apiUrl: "http://10.10.10.30:8080",
+            appUrl: "http://10.10.10.30:8080",
+          },
+        },
+      },
+    });
+    configStore.getState().setDaemonConfig({ daemonAppUrl: "http://10.10.10.30:3000" });
+    const getAdapter = renderProvider();
+
+    expect(getAdapter().getShareableUrl("/join?code=abc")).toBe(
+      "http://10.10.10.30:3000/join?code=abc",
     );
   });
 });

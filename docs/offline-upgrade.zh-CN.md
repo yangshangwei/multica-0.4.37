@@ -54,6 +54,7 @@
 | `MULTICA_CLI_INSTALL_COMMAND_WINDOWS` / `_MACOS` / `_LINUX` | 空 | 为各系统提供完整内网安装命令；有自定义来源时，未配置系统不会回退公网 |
 | `MULTICA_CLI_INSTALL_COMMAND` | 空 | 保留旧客户端命令；新版仅作为 macOS/Linux 的备用命令 |
 | `MULTICA_DESKTOP_DOWNLOAD_URL`（新增，可选） | 空 | Web 端"下载桌面端"入口指向的下载页，通常是桌面下载服务的 `http://<下载服务器>:18080/desktop/`；必须是 http(s) 绝对地址，主机用 IP 或 ASCII 主机名，不含用户名密码；留空或非法时隐藏所有下载入口，非法值会在后端启动日志中警告 |
+| `MULTICA_APP_URL` | `http://localhost:3000` | 填写用户在浏览器中打开 Web 的地址，例如 `http://10.10.10.30:3000`，不带末尾斜杠；修改后重建后端，并确认 `/api/config` 返回的 `daemon_app_url` 是该地址。桌面端的成员分享链接、复制链接和“在浏览器中打开”都使用它；保持默认值时，桌面端只能改用业务服务器地址，生成的链接打不开 |
 | `MULTICA_COLLABORATION_MEMORY_MAX_BYTES` | `131072`（128 KiB） | 协作上下文文档上限，按 UTF-8 字节计算；可调范围 `32768`–`524288`，越界时 API 启动失败 |
 | `MULTICA_KNOWLEDGE_CONTEXT_ENABLED`（可选） | `true` | 未设置或空值默认开启，字面值 `true` 开启，`false` 和其他非空值关闭；保留原环境中的显式 `false`。新版本支持知识 v1/v2 严格读取、自动知识暂停和精确会话授权；先升级所有服务端读者及匹配客户端、守护进程，再允许新形态写入，不混用旧 API 实例 |
 | `MULTICA_COLLABORATION_DIRECTORY_ENABLED`（新增，可选） | `true` | 接收人选择器列出本 Server 全部可用账号的姓名和头像；只有设为 `false` 时改为只列出共享工作空间或共同参与过协作单的人，其他人仍可精确查找。开启且未关闭 `ALLOW_SIGNUP` 时，API 启动日志会警告 |
