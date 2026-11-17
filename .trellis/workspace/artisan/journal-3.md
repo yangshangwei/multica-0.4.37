@@ -1370,3 +1370,41 @@ Audited68local branches,20origin refs and100worktree heads; joined equivalent hi
 ### Next Steps
 
 - 真实模型语义质量、安装版 Main/installer/updater 和其他平台保留独立验收；未创建PR、推送或部署。
+
+
+## Session 160: 协作空间 Impeccable 审计修复与回归
+<!-- trellis-session: v=2 fp=7ed4a57efe7e57f2 -->
+
+**Date**: 2026-11-18
+**Task**: 协作空间 Impeccable 审计修复与回归
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+修复 C01–C09，完成 590 项 Views、56 项 Core、17 个 Chromium 场景及全仓类型/lint 检查；独立检查通过，任务已归档。
+
+### Main Changes
+
+- 共享选择器过滤与 toggle/真实标签，阶段校验保留 schema 路径
+- 知识续期保留客户端输入与光标，隐藏可选读取停止而租约擦除继续
+- 上下文确认弹窗适应窄屏/长理由，工作流候选可原地重试
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `a8232f9bb` | fix(collaboration): keep audited task interactions reliable |
+
+### Testing
+
+- [OK] 51 Views 文件/590 tests 与 7 Core 文件/56 tests 通过
+- [OK] 17 Chromium 原始组件/CSS 场景通过，含触摸、明暗、中英、200%字号
+- [OK] pnpm typecheck 9/9、pnpm lint 6/6、独立 Trellis 检查与 detector 通过
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 无本任务待办；生产 Web/API、安装版 Electron Main 与物理设备属于后续独立验收
