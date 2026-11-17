@@ -21,7 +21,7 @@ vi.mock("./attachment-panel", () => ({ CollaborationAttachmentPanel: function Fi
   return <section aria-label="File editor"><label>File note<input value={draft} onChange={(e) => setDraft(e.target.value)} /></label></section>;
 } }));
 vi.mock("./memory-panel", () => ({ CollaborationMemoryPanel: ({ active }: { active: boolean }) => <section id="memory" tabIndex={-1}><p>{active ? "Visible memory" : "Hidden memory"}</p></section> }));
-vi.mock("./knowledge-panel", () => ({ CollaborationKnowledgePanel: () => <section><button>Review candidate</button></section> }));
+vi.mock("./knowledge-panel", () => ({ CollaborationKnowledgePanel: ({ active }: { active: boolean }) => <section><p>{active ? "Visible knowledge" : "Hidden knowledge"}</p><button>Review candidate</button></section> }));
 vi.mock("./field-summary", () => ({ CollaborationFieldSummary: () => null }));
 vi.mock("./activity", () => ({ CollaborationActivity: () => <section>Recorded history</section> }));
 vi.mock("./children", () => ({ CollaborationChildren: () => <section>Child references</section> }));
@@ -76,6 +76,26 @@ it("reports attention without opening a modal and only displays confirmed counts
   expect(screen.queryByRole("status")).toBeNull();
   expect(within(resources()).getByRole("button", { name: "Attachments" })).toBeVisible();
   expect(within(resources()).queryByRole("button", { name: /Attachments 0/ })).toBeNull();
+});
+
+it("passes knowledge visibility through open, category switch and close without unmounting", async () => {
+  const user = userEvent.setup();
+  renderWithI18n(setup());
+  const hidden = screen.getByText("Hidden knowledge");
+  expect(hidden).not.toBeVisible();
+  const knowledge = within(resources()).getByRole("button", { name: "Knowledge candidates" });
+  await user.click(knowledge);
+  expect(screen.getByText("Visible knowledge")).toBeVisible();
+  const panel = screen.getByText("Visible knowledge").closest("section");
+  await user.click(within(categories()).getByRole("button", { name: "Shared context" }));
+  expect(screen.getByText("Hidden knowledge").closest("section")).toBe(panel);
+  expect(screen.getByText("Hidden knowledge")).not.toBeVisible();
+  await user.click(within(categories()).getByRole("button", { name: "Knowledge candidates" }));
+  expect(screen.getByText("Visible knowledge").closest("section")).toBe(panel);
+  await user.keyboard("{Escape}");
+  await waitFor(() => expect(knowledge).toHaveFocus());
+  expect(screen.getByText("Hidden knowledge").closest("section")).toBe(panel);
+  expect(screen.getByText("Hidden knowledge")).not.toBeVisible();
 });
 
 it("returns focus to an external opener and waits for the modal to close before main navigation", async () => {

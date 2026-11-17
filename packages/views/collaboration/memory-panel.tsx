@@ -68,8 +68,8 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
   const [feedback, setFeedback] = useState<string | null>(null);
   const memory = memoryQuery.isError ? undefined : memoryQuery.data;
   const denied = collaborationIssueAccessDenied(client, scope, issue.id) || isCollaborationDenied(memoryQuery.error);
-  const historyQuery = useInfiniteQuery({ ...collaborationMemoryVersionsOptions(client, scope, issue.id), enabled: !!memory && historyOpen && !denied });
-  const selectedQuery = useQuery({ ...collaborationMemoryVersionOptions(client, scope, issue.id, selectedVersion ?? "1"), enabled: !!memory && selectedVersion !== null && !denied });
+  const historyQuery = useInfiniteQuery({ ...collaborationMemoryVersionsOptions(client, scope, issue.id), enabled: active && !!memory && historyOpen && !denied });
+  const selectedQuery = useQuery({ ...collaborationMemoryVersionOptions(client, scope, issue.id, selectedVersion ?? "1"), enabled: active && !!memory && selectedVersion !== null && !denied });
   const send = useMutation({
     mutationKey: [...collaborationKeys.issue(scope, issue.id), "memory-write"], retry: false, networkMode: "always",
     mutationFn: ({ draft, recovery }: { draft: CollaborationDraft; recovery: boolean }) => executeCollaborationMemoryChange(client, scope, draft, recovery),
@@ -215,12 +215,18 @@ function MemoryPanel({ scope, issue, destination, isScopeResume = false, navigat
       </DialogContent>
     </Dialog>
     <AlertDialog open={active && confirmation !== null} onOpenChange={open => { if (!open && !send.isPending) { setConfirmation(null); setFeedback(null); } }}>
-      <AlertDialogContent finalFocus={() => active ? root.current : false}>
-        <AlertDialogHeader><AlertDialogTitle>{confirmation?.action === "restore" ? t(($) => $.memory.restoreTitle, { version: confirmation.version }) : t(($) => $.memory.purgeTitle, { version: confirmation?.version ?? "" })}</AlertDialogTitle><AlertDialogDescription>{confirmation?.action === "restore" ? t(($) => $.memory.restoreBody, { version: confirmation.version }) : t(($) => $.memory.purgeBody)}</AlertDialogDescription></AlertDialogHeader>
-        {confirmation?.action === "purge" && <><Textarea aria-label={t(($) => $.memory.purgeReason)} aria-invalid={reasonInvalid || undefined} aria-describedby={reasonInvalid ? `${fieldId}-reason` : undefined} value={reason} onChange={event => setReason(event.target.value)} disabled={locked} className="min-h-20" />{reasonInvalid && <p id={`${fieldId}-reason`} role="alert" className="text-caption text-destructive">{t(($) => $.memory.purgeReasonRequired)}</p>}</>}
-        {feedback && <p role="alert">{feedback}</p>}
-        {staleRestore && <div className="space-y-2"><p className="text-body">{t(($) => $.memory.conflict)}</p><Button type="button" variant="outline" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11" disabled={locked || !canEdit || memoryQuery.isFetching} onClick={() => { if (confirmation) setConfirmation({ ...confirmation, snapshot: memory }); send.reset(); setFeedback(null); }}>{t(($) => $.memory.useCurrent)}</Button></div>}
-        <AlertDialogFooter><AlertDialogCancel disabled={locked}>{t(($) => $.memory.cancel)}</AlertDialogCancel><AlertDialogAction variant={confirmation?.action === "purge" ? "destructive" : "default"} disabled={locked || (confirmation?.action === "restore" ? !canEdit || staleRestore : !memory.can_purge || confirmation?.version === memory.version || !collaborationMemoryReasonValid(reason))} onClick={() => {
+      <AlertDialogContent finalFocus={() => active ? root.current : false} className="flex max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] flex-col overflow-hidden">
+        <AlertDialogHeader className="min-w-0 shrink-0 [overflow-wrap:anywhere]"><AlertDialogTitle>{confirmation?.action === "restore" ? t(($) => $.memory.restoreTitle, { version: confirmation.version }) : t(($) => $.memory.purgeTitle, { version: confirmation?.version ?? "" })}</AlertDialogTitle></AlertDialogHeader>
+        <div className="-m-1 min-h-0 space-y-3 overflow-y-auto overscroll-contain p-1 [overflow-wrap:anywhere]">
+          <AlertDialogDescription>{confirmation?.action === "restore" ? t(($) => $.memory.restoreBody, { version: confirmation.version }) : t(($) => $.memory.purgeBody)}</AlertDialogDescription>
+          {confirmation?.action === "purge" && <div className="space-y-2"><label htmlFor={`${fieldId}-purge-reason`} className="text-body">{t(($) => $.memory.purgeReason)}</label>
+            <Textarea id={`${fieldId}-purge-reason`} aria-invalid={reasonInvalid || undefined} aria-describedby={reasonInvalid ? `${fieldId}-reason` : undefined} value={reason} onChange={event => setReason(event.target.value)} disabled={locked} className="min-h-20 max-h-[40dvh] resize-y" />
+            {reasonInvalid && <p id={`${fieldId}-reason`} role="alert" className="text-caption text-destructive">{t(($) => $.memory.purgeReasonRequired)}</p>}
+          </div>}
+          {feedback && <p role="alert">{feedback}</p>}
+          {staleRestore && <div className="space-y-2"><p className="text-body">{t(($) => $.memory.conflict)}</p><Button type="button" variant="outline" className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11" disabled={locked || !canEdit || memoryQuery.isFetching} onClick={() => { if (confirmation) setConfirmation({ ...confirmation, snapshot: memory }); send.reset(); setFeedback(null); }}>{t(($) => $.memory.useCurrent)}</Button></div>}
+        </div>
+        <AlertDialogFooter className="shrink-0"><AlertDialogCancel disabled={locked} className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11">{t(($) => $.memory.cancel)}</AlertDialogCancel><AlertDialogAction variant={confirmation?.action === "purge" ? "destructive" : "default"} className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11" disabled={locked || (confirmation?.action === "restore" ? !canEdit || staleRestore : !memory.can_purge || confirmation?.version === memory.version || !collaborationMemoryReasonValid(reason))} onClick={() => {
           if (!confirmation) return;
           submit(confirmation.action === "restore" ? { action: "restore", version: confirmation.version } : { action: "purge", version: confirmation.version, reason }, confirmation.snapshot);
         }}>{confirmation?.action === "restore" ? t(($) => $.memory.restoreConfirm) : t(($) => $.memory.purgeConfirm)}</AlertDialogAction></AlertDialogFooter>

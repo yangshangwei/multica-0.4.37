@@ -295,7 +295,7 @@ export function PropertyPicker({
               aria-controls={open ? listboxId : undefined}
               aria-haspopup={listboxId ? "listbox" : undefined}
               aria-activedescendant={open ? activeOptionId : undefined}
-              className="w-full bg-transparent text-body placeholder:text-muted-foreground outline-none"
+              className="w-full bg-transparent text-body placeholder:text-muted-foreground outline-none pointer-coarse:min-h-11"
             />
           </div>
         )}
@@ -321,6 +321,7 @@ export function PickerItem({
   className,
   tooltip,
   emptyValue = false,
+  toggle = false,
   children,
 }: {
   selected: boolean;
@@ -329,6 +330,9 @@ export function PickerItem({
   hoverClassName?: string;
   /** Supplying an option ID opts this native row into listbox semantics. */
   optionId?: string;
+  /** Expose native pressed state for reversible choices. Listbox options and
+   * fixed empty-value commands keep their existing semantics. */
+  toggle?: boolean;
   ariaLabel?: string;
   className?: string;
   /**
@@ -356,12 +360,13 @@ export function PickerItem({
       role={optionId ? "option" : undefined}
       aria-label={ariaLabel}
       aria-selected={optionId ? selected : undefined}
+      aria-pressed={!optionId && toggle && !emptyValue ? selected : undefined}
       aria-disabled={optionId ? disabled === true : undefined}
       tabIndex={optionId ? -1 : undefined}
       {...(emptyValue ? { [EMPTY_ITEM_ATTR]: "" } : {})}
       disabled={disabled}
       onClick={onClick}
-      className={cn("flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-left text-body", disabled ? "opacity-50 cursor-not-allowed" : hoverClassName ?? "hover:bg-accent", "transition-colors", className)}
+      className={cn("flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-left text-body pointer-coarse:min-h-11", disabled ? "opacity-50 cursor-not-allowed" : hoverClassName ?? "hover:bg-accent", "transition-colors", className)}
     >
       {/* min-w-0 lets long children (like truncated label names) shrink
           inside the flex row instead of pushing the selected checkmark off
@@ -417,7 +422,7 @@ export function PickerSection({
 export function PickerEmpty() {
   const { t } = useT("issues");
   return (
-    <div className="px-2 py-3 text-center text-body text-muted-foreground">
+    <div role="status" className="px-2 py-3 text-center text-body text-muted-foreground">
       {t(($) => $.pickers.no_results)}
     </div>
   );

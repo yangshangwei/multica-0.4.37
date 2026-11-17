@@ -301,7 +301,10 @@ function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAc
       </div>}
       {needsStatus && <div className="space-y-2"><label htmlFor={`${fieldId}-status`} className="text-body">{t(($) => $.detail.status)}</label><select id={`${fieldId}-status`} value={chosenStatus} onChange={(event) => setStatus(event.target.value)} className="block min-h-11 max-w-full rounded-md border border-input bg-background px-3 text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
         {chosenStatus && options.data && !options.data.options.some((item) => item.key === chosenStatus) && <option value={chosenStatus}>{t(($) => $.fields.unavailableSelection, { value: chosenStatus })}</option>}
-        {(options.data?.options ?? []).map((option) => <option key={option.key} value={option.key}>{option.name}</option>)}</select>{options.error && <CollaborationQueryState error={options.error} />}</div>}
+        {(options.data?.options ?? []).map((option) => <option key={option.key} value={option.key}>{option.name}</option>)}</select>
+        {options.isFetching ? <p role="status" className="text-body text-muted-foreground">{t(($) => $.page.loading)}</p>
+          : options.error && <CollaborationQueryState error={options.error} retry={() => void options.refetch()} />}
+      </div>}
       {["transfer", "request_information", "return_information", "return_acceptance"].includes(action) && <div className="space-y-2"><label htmlFor={`${fieldId}-note`} className="text-body">{action === "return_acceptance" ? t(($) => $.delivery.revisionReason) : t(($) => $.workflow.note)}</label>
         <Textarea id={`${fieldId}-note`} required={action === "return_acceptance"} aria-invalid={reasonTooLong || undefined}
           aria-describedby={[informationRequest ? `${fieldId}-request` : "", reasonTooLong ? `${fieldId}-note-limit` : ""].filter(Boolean).join(" ") || undefined} value={note} onChange={(event) => setNote(event.target.value)} />

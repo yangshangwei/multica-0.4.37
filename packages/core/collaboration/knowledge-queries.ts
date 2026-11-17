@@ -71,9 +71,9 @@ export function useCollaborationKnowledgeCandidates(scope: CollaborationScope, i
   const client = useKnowledgeLifecycle(scope);
   return useQuery({ ...collaborationKnowledgeCandidatesOptions(client, scope, issueId, page), enabled: scope.userId !== "" });
 }
-export function useCollaborationKnowledgeCandidate(scope: CollaborationScope, candidateId: string) {
+export function useCollaborationKnowledgeCandidate(scope: CollaborationScope, candidateId: string, enabled = true) {
   const client = useKnowledgeLifecycle(scope);
-  return useQuery({ ...collaborationKnowledgeCandidateOptions(client, scope, candidateId), enabled: scope.userId !== "" });
+  return useQuery({ ...collaborationKnowledgeCandidateOptions(client, scope, candidateId), enabled: enabled && scope.userId !== "" });
 }
 export function useCollaborationKnowledgeTarget(scope: CollaborationScope, target: CollaborationKnowledgeTarget, page: KnowledgePageOptions = {}) {
   const client = useKnowledgeLifecycle(scope);

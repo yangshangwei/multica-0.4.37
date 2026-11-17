@@ -251,11 +251,16 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
   };
   const properties: Record<string, IssuePropertyValue> = {};
   for (const [key, value] of Object.entries(initial.properties ?? {})) if (value !== null) properties[key] = value;
-  const initialValid = CollaborationCreationFieldsSchema.safeParse(initial).success && (fields === undefined ? Object.keys(initial).length === 0 :
+  const initialResult = CollaborationCreationFieldsSchema.safeParse(initial);
+  const stageError = !initialResult.success && initialResult.error.issues.some((issue) => issue.path[0] === "stage")
+    ? labels.creationRejection("invalid_stage") : undefined;
+  const catalogValid = fields === undefined ? Object.keys(initial).length === 0 :
     (!initial.status || fields.statuses.some((item) => item.key === initial.status)) &&
     (initial.label_ids ?? []).every((id) => fields.labels.some((item) => item.id === id)) &&
     Object.entries(properties).every(([id, value]) => fields.properties.some((definition) => definition.id === id && collaborationPropertyValueMatchesDefinition(value, definition))) &&
-    (!initial.current_iteration_id || fields.source_options.iterations_enabled && fields.source_options.iterations.some((item) => item.id === initial.current_iteration_id)));
+    (!initial.current_iteration_id || fields.source_options.iterations_enabled && fields.source_options.iterations.some((item) => item.id === initial.current_iteration_id));
+  const initialValid = initialResult.success && catalogValid;
+  const invalidSelection = !catalogValid || (!initialResult.success && initialResult.error.issues.some((issue) => issue.path[0] !== "stage"));
   const iterationChanged = initial.current_iteration_id && fields?.source_options.iterations.some((item) => item.id === initial.current_iteration_id && item.revision !== initial.expected_iteration_revision);
   const initialSection = useRef<HTMLElement>(null);
   const [fieldsOpen, setFieldsOpen] = useState(false);
@@ -357,7 +362,7 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
         </div>)}
         <CollaborationSourceInputs options={fields.source_options} value={{ projectId: initial.project_id ?? null, parentIssueId: initial.parent_issue_id ?? null, stage: initial.stage ?? null }}
           onChange={(value) => updateFields({ project_id: value.projectId, parent_issue_id: value.parentIssueId, stage: value.stage })} parentSearch={parentSearch} onParentSearch={onParentSearch}
-          parentsPending={optionsPending} parentsError={optionsError} onRetryParents={onRetryOptions} disabled={!editable} />
+          parentsPending={optionsPending} parentsError={optionsError} onRetryParents={onRetryOptions} stageError={stageError} disabled={!editable} />
         {initial.parent_issue_id && !initial.project_id && <p className="text-caption text-muted-foreground">{t(($) => $.fields.parentProjectHint)}</p>}
         <CollaborationIterationInput options={fields.source_options} selectedId={initial.current_iteration_id ?? null} disabled={!editable || optionsPending} allowClearWhenDisabled
           onChange={(iterationId) => updateFields({ current_iteration_id: iterationId, expected_iteration_revision: fields.source_options.iterations.find((period) => period.id === iterationId)?.revision })} />
@@ -365,7 +370,7 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
           onClick={() => updateFields({ expected_iteration_revision: fields.source_options.iterations.find((period) => period.id === initial.current_iteration_id)?.revision })}>{t(($) => $.fields.useCurrentVersion)}</Button></div>}
       </fieldset>
     </section>}
-    {!initialValid && <div className="space-y-2"><p role="alert" className="text-body">{t(($) => $.fields.invalidSelection)}</p>
+    {invalidSelection && <div className="space-y-2"><p role="alert" className="text-body">{t(($) => $.fields.invalidSelection)}</p>
       {!fields && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={!editable} onClick={() => draft.update({ initialFields: {} })}>{t(($) => $.fields.clearInitial)}</Button>}</div>}
     {Boolean(draft.error) && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
     {(create.isPending || Boolean(create.error) || draft.creations.length > 0) && <div className="space-y-5">

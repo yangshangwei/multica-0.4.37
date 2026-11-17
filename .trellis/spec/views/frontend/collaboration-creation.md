@@ -134,6 +134,27 @@ must not change its outer row placement and clip an already focused field.
 Verify 320px summary updates and a 520x568 first Start-date edit. Do not solve
 this local layout issue with another observer or unconditional recovery.
 
+Initial-field validation retains the `CollaborationCreationFieldsSchema`
+`safeParse` result. Attribute a stage issue by its actual schema path, show the
+localized positive-whole-number/range correction beside the field, and associate
+it with `aria-invalid`/`aria-describedby`. A stage-only error must not claim the
+catalog value became unavailable; simultaneous status/label/property/iteration
+catalog failures keep their existing unavailable-selection message. Mutable
+drafts still permit an unfinished number for correction. If a restored invalid
+stage has no parent, expose the same editable stage field while that error
+exists rather than leaving submission disabled without a recovery control.
+
+Creation label choices opt into `PickerItem.toggle` for native `aria-pressed`
+state; None is an `emptyValue` command and an unavailable selected label is a
+one-way removal command. Shared custom select/multi-select editors filter actual
+configured choices using `PropertyPicker.onSearchChange`, retain the search
+textbox based on total choice count, and announce `PickerEmpty` for no match.
+Typed Enter never clears the fixed empty row or commits a filtered-out choice.
+Actual text/number/URL popup inputs have instance-scoped visible property-name
+labels. Coarse-pointer row/search/value/URL-action targets are at least 44px;
+fine-pointer density remains compact. Actual component tests own semantics and
+commit behavior, while compiled-browser rectangles own touch/overflow proof.
+
 Splitting attachment presentation must retain one upload owner. Optional
 composition props may place the trigger in the footer and details in the body;
 do not mount a second picker, add another store, or portal form actions. When

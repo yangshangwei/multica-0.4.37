@@ -107,7 +107,7 @@ export const CollaborationDetailAuxiliary = forwardRef<CollaborationDetailAuxili
           </div>
           <div hidden={!open || selected !== "files"} inert={!open || selected !== "files"} className="[&>section>h3]:sr-only"><CollaborationAttachmentPanel scope={scope} issue={issue} onStatusChange={filesStatus} active={open && selected === "files"} /></div>
           <div hidden={!open || selected !== "memory"} inert={!open || selected !== "memory"} className="[&>#memory]:border-0 [&>#memory]:p-0 [&>#memory>div:first-child>h3]:sr-only"><CollaborationMemoryPanel scope={scope} issue={issue} destination={destination} isScopeResume={isScopeResume} navigationKey={navigationKey} active={open && selected === "memory"} onStatusChange={memoryStatus} /></div>
-          <div hidden={!open || selected !== "knowledge"} inert={!open || selected !== "knowledge"} className="[&>section]:border-0 [&>section]:p-0"><CollaborationKnowledgePanel scope={scope} issue={issue} onStatusChange={knowledgeStatus} /></div>
+          <div hidden={!open || selected !== "knowledge"} inert={!open || selected !== "knowledge"} className="[&>section]:border-0 [&>section]:p-0"><CollaborationKnowledgePanel scope={scope} issue={issue} active={open && selected === "knowledge"} onStatusChange={knowledgeStatus} /></div>
           <div hidden={!open || selected !== "children"} inert={!open || selected !== "children"} className="[&>section>h3]:sr-only"><CollaborationChildren issue={issue} /></div>
           <div hidden={!open || selected !== "activity"} inert={!open || selected !== "activity"} className="[&>section>h3]:sr-only"><CollaborationActivity scope={scope} destination={destination} onStatusChange={activityStatus} /></div>
         </div>

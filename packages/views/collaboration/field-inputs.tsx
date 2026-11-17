@@ -21,8 +21,8 @@ export function CollaborationLabelInput({ labels, selectedIds, onChange, disable
     <PropertyPicker open={!disabled && open} onOpenChange={setOpen} searchable onSearchChange={setSearch} searchPlaceholder={t(($) => $.fields.findLabel)} contentClassName={collaborationPickerContentClass} align="start"
       triggerAriaLabel={t(($) => $.fields.labels)} triggerRender={<Button type="button" variant="outline" disabled={disabled} className="h-auto min-h-11 max-w-full whitespace-normal text-left [overflow-wrap:anywhere]" />}
       trigger={selected.length ? selected.join(", ") : t(($) => $.fields.none)}>
-      <PickerItem selected={selectedIds.length === 0} onClick={() => onChange([])}>{t(($) => $.fields.none)}</PickerItem>
-      {labels.filter((label) => label.name.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase())).map((label) => <PickerItem key={label.id} selected={selectedIds.includes(label.id)}
+      <PickerItem emptyValue selected={selectedIds.length === 0} onClick={() => onChange([])}>{t(($) => $.fields.none)}</PickerItem>
+      {labels.filter((label) => label.name.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase())).map((label) => <PickerItem key={label.id} toggle selected={selectedIds.includes(label.id)}
         onClick={() => onChange(selectedIds.includes(label.id) ? selectedIds.filter((id) => id !== label.id) : [...selectedIds, label.id])}>
         <span aria-hidden className="size-2.5 shrink-0 rounded-full" style={{ backgroundColor: label.color }} /><span className="min-w-0 [overflow-wrap:anywhere]">{label.name}</span>
       </PickerItem>)}
@@ -91,10 +91,11 @@ function CollaborationActorPropertyInput({ scope, issueId, sourceId, labelId, pi
 
 export interface CollaborationSourceSelection { projectId: string | null; parentIssueId: string | null; stage: number | null }
 
-export function CollaborationSourceInputs({ options, value, onChange, current, parentSearch, onParentSearch, parentsPending = false, parentsError, onRetryParents, disabled }: {
+export function CollaborationSourceInputs({ options, value, onChange, current, parentSearch, onParentSearch, parentsPending = false, parentsError, onRetryParents, stageError, disabled }: {
   options: CollaborationSourceOptions; value: CollaborationSourceSelection; onChange: (value: CollaborationSourceSelection) => void;
   current?: CollaborationSourceStructure; parentSearch: string; onParentSearch: (search: string) => void; disabled: boolean;
   parentsPending?: boolean; parentsError?: unknown; onRetryParents?: () => void;
+  stageError?: string;
 }) {
   const { t } = useT("collaboration");
   const id = useId();
@@ -142,9 +143,10 @@ export function CollaborationSourceInputs({ options, value, onChange, current, p
       </PropertyPicker>
       <p className="text-caption text-muted-foreground">{t(($) => $.fields.parentHint)}</p>
     </div>
-    {value.parentIssueId && <div className="space-y-2"><label htmlFor={`${id}-stage`} className="text-body">{t(($) => $.fields.stageInputLabel)}</label>
-      <Input id={`${id}-stage`} aria-describedby={`${id}-stage-hint`} className="pointer-coarse:min-h-11" type="number" min={1} max={2147483647} step={1} value={value.stage ?? ""} onChange={(event) => onChange({ ...value, stage: event.target.value === "" ? null : event.target.valueAsNumber })} />
+    {(value.parentIssueId || stageError) && <div className="space-y-2"><label htmlFor={`${id}-stage`} className="text-body">{t(($) => $.fields.stageInputLabel)}</label>
+      <Input id={`${id}-stage`} aria-invalid={stageError ? true : undefined} aria-describedby={stageError ? `${id}-stage-hint ${id}-stage-error` : `${id}-stage-hint`} className="pointer-coarse:min-h-11" type="number" min={1} max={2147483647} step={1} value={value.stage ?? ""} onChange={(event) => onChange({ ...value, stage: event.target.value === "" ? null : event.target.valueAsNumber })} />
       <p id={`${id}-stage-hint`} className="text-caption text-muted-foreground">{t(($) => $.fields.stageHint)}</p>
+      {stageError && <p id={`${id}-stage-error`} role="alert" className="text-body text-destructive">{stageError}</p>}
     </div>}
   </fieldset>;
 }

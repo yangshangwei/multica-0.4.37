@@ -23,7 +23,7 @@ unavailable result merely to schedule another polling request.
   `getCollaborationKnowledgeOperation` in
   [`api/client.ts`](../../../../packages/core/api/client.ts).
 - `useCollaborationKnowledgeCandidates(scope, issueId, page?)`,
-  `useCollaborationKnowledgeCandidate(scope, candidateId)` and
+  `useCollaborationKnowledgeCandidate(scope, candidateId, enabled = true)` and
   `useCollaborationKnowledgeTarget(scope, target, page?)` return Query data
   `{value, boundary}`. Capture `scope` with `useCollaborationScope()`.
 - `prepareKnowledgeProposal` and `prepareKnowledgeDecision` return frozen
@@ -113,6 +113,14 @@ entire current server/viewer knowledge scope because hidden source/target
 relationships cannot be inferred safely. Metadata-only recovery queries remain
 separate. Never put projections or copied source bodies in StorageAdapter,
 Zustand, optimistic state or durable drafts.
+
+The optional candidate `enabled` argument controls only automatic Query reads.
+Hidden review and proposal discovery observers disable their reads; mounted
+lifecycle bindings and projection deadline timers remain active and still erase
+private data. Interval suppression alone leaves an active observer eligible for
+deadline/refocus/realtime rereads. Re-enabling obtains current authorization;
+do not cancel a shared candidate key when another visible observer may own it.
+Required source/target root status observers keep their existing behavior.
 
 `bindKnowledgeRealtime` is reference-counted per QueryClient/viewer/connection.
 Only strict three-field `collaboration:knowledge_changed`, established source/

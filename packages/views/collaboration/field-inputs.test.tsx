@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 import type { CollaborationSourceOptions } from "@multica/core/collaboration";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@multica/ui/components/ui/dialog";
 import { renderWithI18n } from "../test/i18n";
-import { CollaborationSourceInputs, type CollaborationSourceSelection } from "./field-inputs";
+import { CollaborationLabelInput, CollaborationSourceInputs, type CollaborationSourceSelection } from "./field-inputs";
 
 const parent = { id: "00000000-0000-4000-8000-000000000001", identifier: "SRC-12", name: "Prepare the release" };
 const otherParent = { id: "00000000-0000-4000-8000-000000000002", identifier: "SRC-11", name: "Review the design" };
@@ -164,4 +164,76 @@ it("keeps the restored selected name when filtered out and tolerates an older re
   const trigger = screen.getByRole("button", { name: "Parent issue" });
   expect(trigger).toHaveTextContent("Restored source parent");
   expect(trigger).not.toHaveTextContent("undefined");
+});
+
+const labels = [
+  { id: parent.id, name: "Design", color: "#2563eb" },
+  { id: otherParent.id, name: "Release", color: "#16a34a" },
+];
+function LabelHarness({ onChange, unavailable = false }: { onChange: (ids: string[]) => void; unavailable?: boolean }) {
+  const [selectedIds, setSelectedIds] = useState(unavailable ? [parent.id, "removed-label"] : [parent.id]);
+  return <CollaborationLabelInput labels={labels} selectedIds={selectedIds} disabled={false}
+    onChange={(ids) => { setSelectedIds(ids); onChange(ids); }} />;
+}
+
+it("announces the initial, added and removed label state while keeping None a clear command", async () => {
+  const user = userEvent.setup();
+  const onChange = vi.fn();
+  renderWithI18n(<LabelHarness onChange={onChange} />);
+  await user.click(screen.getByRole("button", { name: "Labels" }));
+  const design = await screen.findByRole("button", { name: "Design", pressed: true });
+  const release = screen.getByRole("button", { name: "Release", pressed: false });
+  const clear = screen.getByRole("button", { name: "None" });
+  expect(clear).not.toHaveAttribute("aria-pressed");
+  await user.click(design);
+  expect(design).toHaveAttribute("aria-pressed", "false");
+  await user.keyboard(" ");
+  expect(design).toHaveAttribute("aria-pressed", "true");
+  await user.click(release);
+  expect(release).toHaveAttribute("aria-pressed", "true");
+  await user.click(clear);
+  expect(onChange).toHaveBeenLastCalledWith([]);
+  expect(design).toHaveAttribute("aria-pressed", "false");
+  expect(release).toHaveAttribute("aria-pressed", "false");
+});
+
+it("preserves selected labels when a no-match search is followed by Enter", async () => {
+  const user = userEvent.setup();
+  const onChange = vi.fn();
+  renderWithI18n(<LabelHarness onChange={onChange} />);
+  await user.click(screen.getByRole("button", { name: "Labels" }));
+  await user.type(await screen.findByRole("textbox", { name: "Filter options" }), "absent label");
+  await user.keyboard("{Enter}");
+  expect(onChange).not.toHaveBeenCalled();
+  expect(screen.getByRole("button", { name: "Labels" })).toHaveTextContent("Design");
+  await user.click(screen.getByRole("button", { name: "None" }));
+  expect(onChange).toHaveBeenCalledExactlyOnceWith([]);
+});
+
+it("keeps an unavailable selected label as a one-way removal command", async () => {
+  const user = userEvent.setup();
+  const onChange = vi.fn();
+  renderWithI18n(<LabelHarness onChange={onChange} unavailable />);
+  await user.click(screen.getByRole("button", { name: "Labels" }));
+  const removed = await screen.findByRole("button", { name: /removed-label/ });
+  expect(removed).not.toHaveAttribute("aria-pressed");
+  await user.click(removed);
+  expect(onChange).toHaveBeenCalledExactlyOnceWith([parent.id]);
+  expect(screen.queryByRole("button", { name: /removed-label/ })).not.toBeInTheDocument();
+});
+
+it("associates an optional stage error with its input and removes only that error after correction", () => {
+  const props = { options, value: { projectId: null, parentIssueId: parent.id, stage: 0 }, onChange: vi.fn(),
+    parentSearch: "", onParentSearch: vi.fn(), disabled: false };
+  const error = "Enter a whole number from 1 to 2,147,483,647, or leave the stage blank.";
+  const view = renderWithI18n(<CollaborationSourceInputs {...props} stageError={error} />);
+  const stage = screen.getByRole("spinbutton", { name: "Subtask stage number (optional)" });
+  expect(stage).toHaveAttribute("aria-invalid", "true");
+  expect(stage).toHaveAccessibleDescription(new RegExp(error.replaceAll(".", "\\.")));
+  expect(stage).toHaveAccessibleDescription(/Leave blank if no batches are needed/);
+  expect(screen.getByRole("alert")).toHaveTextContent(error);
+  view.rerender(<CollaborationSourceInputs {...props} value={{ ...props.value, stage: 1 }} />);
+  expect(stage).not.toHaveAttribute("aria-invalid");
+  expect(stage).toHaveAccessibleDescription(/Leave blank if no batches are needed/);
+  expect(screen.queryByRole("alert")).not.toBeInTheDocument();
 });

@@ -100,9 +100,26 @@ value. Approval requires full available content, current server grant, and an
 explicit review checkbox. Mount one decision instance keyed by the last displayed
 tuple (candidate ID, state revision, availability, version, hash) and give it only
 a candidate with that exact tuple. Lease erasure or an unchanged refetch hides the
-controls without clearing the checkbox or reason. A different tuple, including a
-changed availability, resets the checkbox, reason and error.
+private material and current-grant actions without clearing the checkbox or
+human reason. An already typed or focused reason stays in the same keyed DOM
+container, editable during renewal, preserving native focus and selection; do
+not disable it just because the candidate read is pending. That client editor
+does not authorize a decision: submit requires the current candidate, active
+host and existing write lock. Never cache an old candidate or capability to keep
+the editor visible. A different tuple, including a changed availability, resets
+the checkbox, reason and error. Key `KnowledgeReview` by selected candidate ID
+so a new pending selection cannot show the previous selection's draft.
 Await the exact receipt; a refusal cannot display success.
+
+Source knowledge accepts `active?: boolean` (default true for standalone hosts).
+Propagate it to the selected review and retained proposal source picker. Hidden
+candidate/history/discovery observers use `enabled:false`, rather than only
+disabling intervals, so deadline/refocus/realtime cannot keep them reading.
+Keep required root list/current-context status and all lease erasure active;
+reopening reads current authorization without losing client drafts or taking
+focus for an already-consumed selection. Another visible observer of the same
+Query still owns its read; do not cancel a shared key on hide. Explicit authority
+denial removes the reason/control presentation with the protected material.
 
 Show proposer identity, version, target, expiry, original approval actor/time and
 latest decision actor/time. Reuse a lawful source creator/handler name or display
@@ -193,7 +210,9 @@ was never applied. A removal failure keeps the row and shows its own error.
 | Field over its UTF-8 byte limit | Inline used/max error on that field; submit blocked; no source read or request |
 | Local schema refusal after sources resolve | Input message, not source-unavailable |
 | Review candidate/version/revision/hash/availability changed | Reset checkbox and decision controls |
-| Lease erasure or unchanged refetch during review | Hide body and controls; restore the same checkbox/reason when the same tuple returns |
+| Lease erasure or unchanged refetch during review | Hide private body/current-grant actions; retain the typed/focused human reason node and native selection; restore the same checkbox when the same tuple returns |
+| Selected candidate changes before its read returns | Remount the review immediately; do not show the prior reason or confirmation |
+| Auxiliary review/proposal becomes inactive | Suspend optional candidate/history/discovery reads; retain draft and lease erasure, without focus or shared-read cancellation |
 | Source unavailable but pending rejection granted | Show safe audit/reject controls without material |
 | Target-only restricted row | Withdrawal only; no hidden-source navigation |
 | Unknown delivery or missing recovery result | Original intent stays unresolved; no replacement request; a stored identity is removed locally only by explicit human action after a check |
@@ -234,6 +253,15 @@ post-check local removal, safe audit facts, independent source choices,
 external-handler catalog avoidance, correction/derivation and restricted
 withdrawal. Existing page tests assert mount identities; locale
 parity covers both dictionaries. Core owns exhaustive schema/hash/cache matrices.
+
+The unchanged-renewal regression checks the same Textarea node, focus, nontrivial
+native selection and continued typing while a detail read is held, including an
+empty focused reason. Hidden expiry/reopen tests use actual Core hooks and verify
+private cache erasure, zero new candidate reads and the preserved draft. Retained
+automatic correction and older-receipt tests guard hidden second observers and
+focus. `knowledge-source-picker.test.tsx` owns memory/comment/run/delivery
+discovery visibility; auxiliary tests assert the active wiring rather than
+claiming mocked panels prove network suppression.
 
 `e2e/collaboration-knowledge.spec.ts` covers production Web and native Electron
 journeys. Keep actual renderer/routing/IPC evidence, viewport geometry and source

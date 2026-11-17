@@ -113,3 +113,39 @@ describe("PropertyPicker optional external navigation reset", () => {
     expect(await screen.findByPlaceholderText("Search")).toHaveValue("");
   });
 });
+
+describe("PickerItem semantic state", () => {
+  it("exposes changing native toggle state only when explicitly opted in", async () => {
+    function ToggleRow() {
+      const [selected, setSelected] = useState(true);
+      return <PickerItem toggle selected={selected} onClick={() => setSelected((current) => !current)}>Design</PickerItem>;
+    }
+    const user = userEvent.setup();
+    render(<ToggleRow />);
+    const row = screen.getByRole("button", { name: "Design", pressed: true });
+    await user.click(row);
+    expect(row).toHaveAttribute("aria-pressed", "false");
+    await user.keyboard(" ");
+    expect(row).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it.each([
+    { label: "selection command", toggle: false, emptyValue: false },
+    { label: "clear command", toggle: true, emptyValue: true },
+  ])("keeps a $label free of toggle/listbox state", ({ toggle, emptyValue }) => {
+    render(<PickerItem selected toggle={toggle} emptyValue={emptyValue} onClick={vi.fn()}>None</PickerItem>);
+    const row = screen.getByRole("button", { name: "None" });
+    expect(row).not.toHaveAttribute("aria-pressed");
+    expect(row).not.toHaveAttribute("aria-selected");
+    if (emptyValue) expect(row).toHaveAttribute("data-picker-empty");
+  });
+
+  it("preserves account option semantics ahead of a toggle opt-in", () => {
+    render(<PickerItem optionId="account-option" toggle selected disabled onClick={vi.fn()}>Ada</PickerItem>);
+    const row = screen.getByRole("option", { name: "Ada", selected: true });
+    expect(row).toHaveAttribute("id", "account-option");
+    expect(row).toHaveAttribute("aria-disabled", "true");
+    expect(row).toHaveAttribute("tabindex", "-1");
+    expect(row).not.toHaveAttribute("aria-pressed");
+  });
+});
