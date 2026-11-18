@@ -1408,3 +1408,41 @@ Audited68local branches,20origin refs and100worktree heads; joined equivalent hi
 ### Next Steps
 
 - 无本任务待办；生产 Web/API、安装版 Electron Main 与物理设备属于后续独立验收
+
+
+## Session 161: PAY-241 S3 字段并发首增量与 TestMain 清理闭环
+<!-- trellis-session: v=2 fp=b8c0b53197c62d41 -->
+
+**Date**: 2026-11-18
+**Task**: PAY-241 S3 字段并发首增量与 TestMain 清理闭环
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+接续已接受S2，激活现有S3并完成service/HTTP字段并发与原回执首增量；独立检查接受、阻挡项0。TC16更新PARTIAL，父24=2PASS/12PARTIAL/10NOT_RUN，完整S3与S4/S5保持开放。用户后续授权提交后，S3代码与规范已提交96a2bffe3；完整S3未归档。
+
+### Main Changes
+
+- 补齐两个字段并发回归文件，复用真实PostgreSQL提交/PID屏障和现有fixture；原GET回执与fresh continuation不重复副作用。
+- 共享handler TestMain增加五行参数化checked调用目标清理，删除不可达提示结构断言，保留旧失败与RED/GREEN。
+- 更新父矩阵/任务进度、推进计划及两个服务端spec；三个Go路径已精确ROOT整合，保留其他工作。
+
+### Git Commits
+
+- `96a2bffe3` — test(collaboration): keep field conflict recovery verifiable
+
+### Testing
+
+- [OK] service normal/race各7named，handler修正后各3named；名称集合一致、零失败/跳过/缺失/重复/未终结，30关联计数和连接0。
+- [OK] ROOT双包go test-c、go vet、三文件gofmt通过；独立报告cas-independent-check-20261118.md/json接受，未重复已完成DB测试。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 现有S3：当前API/Web/Desktop并发与原回执组合、55评论跨页补读和WS重认证，随后混合通知/上传/撤权/阻塞四项。
+- 真实S4输入齐备后执行沙箱/CI/非生产部署回滚，最终S5正式采样与业务签字；当前第一增量不关闭整个S3。
+
+新会话按 `.trellis/tasks/11-13-pay-241-s3-recovery/research/new-session-handoff-20261118.md` 接续，保留S2/父历史及其他任务WIP。

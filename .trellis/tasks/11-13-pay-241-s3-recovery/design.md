@@ -1,6 +1,8 @@
 # S3 恢复设计
 
-2026-11-15 规划补充已独立通过：`research/recovery-followup-v2-wire-review-r05.md/json` 为 PLANNING PASS，C01/C02 开放规划问题为零。阻塞恢复采用 `research/recovery-followup-block-contract-v2-20261114.md` 与已修正的 `research/recovery-followup-wire-supplement-r05.md`（SHA256 `d9934020f24751ee722bb0bf115a0e587a37a4ee6bb0465cf12e26fee90e76c5`）。仍需绑定最终已接受的 S2 source/锁合同后激活；规划通过不是已实现接口或 S3 验收。
+2026-11-18 最终前置已补齐：S2 R33 的完整代码与合成 A01–A12 已独立接受，原四旅程 4 PASS、零重试。`research/s3-source-binding-20261118.md` 绑定最终 5,056 文件源码、锁 helpers、报告及本轮独立副本；15 个已有相关 ROOT 路径字节一致。首增量沿用既有 priority/transfer 和普通 child writer，补字段、原回执与真实提交顺序验证；未证明新的产品缺陷，暂不改生产实现。此前 intermediate/r03 依赖标签属于历史，不再作为当前激活阻挡项。
+
+2026-11-15 规划补充已独立通过：`research/recovery-followup-v2-wire-review-r05.md/json` 为 PLANNING PASS，C01/C02 开放规划问题为零。阻塞恢复采用 `research/recovery-followup-block-contract-v2-20261114.md` 与已修正的 `research/recovery-followup-wire-supplement-r05.md`（SHA256 `d9934020f24751ee722bb0bf115a0e587a37a4ee6bb0465cf12e26fee90e76c5`）。当时尚需最终 S2 来源；该前置已于2026-11-18补齐。规划通过不是已实现接口或 S3 验收。
 
 ## 已通过的阻塞与历史合同
 
