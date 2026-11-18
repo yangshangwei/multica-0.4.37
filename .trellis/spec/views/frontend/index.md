@@ -31,7 +31,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Issue Description Assist](./issue-description-assist.md) | Text-only AI suggestions, editor snapshots, protected Markdown and cancellation | Active |
 | [Quick-create Actor Picker](./quick-create-actor-picker.md) | Local favorites/recent actors, scoped hydration, full-description search and nested-picker focus | Active |
 | [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
-| [State Management](./state-management.md) | Local state, global state, server state | To fill |
+| [State Management](./state-management.md) | Core StoreApi injection through navigation plumbing; local/server state boundaries | Active contracts; general guide pending |
 | [Global scope navigation](../../core/frontend/global-scope-navigation.md) | Persistent shell switch, restored collaboration state and direct-link focus | Active |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | Active |
 | [Batch issue outcomes](../../core/frontend/issue-batch-outcomes.md) | Shared batch adapters and truthful partial/zero-result feedback | Client contract implemented; backend acceptance separate |

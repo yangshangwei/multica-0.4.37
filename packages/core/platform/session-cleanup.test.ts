@@ -14,6 +14,10 @@ import type { StorageAdapter, Workspace } from "../types";
 import { workspaceKeys } from "../workspace/queries";
 import { clearClientSessionData } from "./session-cleanup";
 import { configureAdminControlStorage, saveAdminControlDraft, readAdminControlDraft } from "../admin/operation-draft";
+import {
+  createIterationParticipationStore,
+  registerIterationParticipationStore,
+} from "../issues/stores/iteration-participation-store";
 
 function makeStorage(
   initial: Record<string, string> = {},
@@ -38,6 +42,31 @@ beforeEach(() => {
 });
 
 describe("clearClientSessionData", () => {
+  it("clears live routed iteration disclosure intent and rejects the old session's toggle", () => {
+    const pathname = "/acme/issues/ACME-1";
+    const store = createIterationParticipationStore(pathname);
+    const previousSession = {
+      workspaceId: "10000000-0000-4000-8000-000000000001",
+      issueId: "20000000-0000-4000-8000-000000000001",
+      sourcePath: pathname,
+      canonicalPath: pathname,
+      generation: store.getState().generation,
+    };
+    store.getState().setOpen(previousSession, true);
+    const unregister = registerIterationParticipationStore(store);
+    try {
+      const queryClient = new QueryClient();
+      clearClientSessionData(queryClient, makeStorage());
+      store.getState().setOpen(previousSession, true);
+      store.getState().selectIssue(previousSession);
+      expect(store.getState().current).toBeNull();
+      expect(store.getState().generation).toBeGreaterThan(previousSession.generation);
+      expect(document.cookie).not.toContain("last_workspace_slug=acme");
+    } finally {
+      unregister();
+    }
+  });
+
   it("clears pending administrative commands even without any loaded workspace", () => {
     const storage = makeStorage();
     configureAdminControlStorage(storage);

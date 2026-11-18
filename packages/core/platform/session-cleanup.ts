@@ -4,6 +4,7 @@ import { resetAllRegisteredDrafts } from "../drafts/cleanup-registry";
 import { clearAdminControlDrafts } from "../admin/operation-draft";
 import { clearCollaborationDrafts } from "../collaboration/draft";
 import { clearCompletionDrafts } from "../issues/completion-draft";
+import { resetIterationParticipationStores } from "../issues/stores/iteration-participation-store";
 import type { StorageAdapter } from "../types/storage";
 import type { Workspace } from "../types";
 import { workspaceKeys } from "../workspace/queries";
@@ -43,6 +44,7 @@ export function clearClientSessionData(
   // user's draft after the next login.
   resetProjectAccessSession(queryClient);
   resetAllRegisteredDrafts();
+  resetIterationParticipationStores();
   clearAdminControlDrafts(storage);
   clearCollaborationDrafts(storage);
   clearCompletionDrafts(storage);

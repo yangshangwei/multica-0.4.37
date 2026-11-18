@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useStore } from "zustand";
 import { useCanonicalIssue } from "@multica/core/issues/canonical-id";
+import type { IterationParticipationScope } from "@multica/core/issues/stores/iteration-participation-store";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { parseAccountPath, useWorkspacePaths } from "@multica/core/paths";
-import { useNavigation } from "../../navigation";
+import { useIterationParticipationStoreApi, useNavigation } from "../../navigation";
 import { IssueDetail, IssueDetailSkeleton, IssueNotFound, IssueLoadError } from "./issue-detail";
 
 interface IssueDetailRouteProps {
@@ -66,10 +68,34 @@ export function IssueDetailRoute({ routeId, onDelete }: IssueDetailRouteProps) {
   const { canonicalId, issue, isResolving, notFound, accessDenied, error, isFetching, refetch } = useCanonicalIssue(wsId, routeId);
   // The adapter owns fragments in both browser and native MemoryRouter routes.
   const { hash = "" } = useNavigation();
+  const paths = useWorkspacePaths();
+  const participationStore = useIterationParticipationStoreApi();
+  const generation = useStore(participationStore, (state) => state.generation);
+  const currentParticipation = useStore(participationStore, (state) => state.current);
+  const sourcePath = paths.issueDetail(routeId);
+  const issueId = issue?.id;
+  const canonicalPath = paths.issueDetail(issue?.identifier ?? routeId);
+  const participationScope = useMemo<IterationParticipationScope | null>(() => issueId ? {
+    workspaceId: wsId, issueId, sourcePath, canonicalPath, generation,
+  } : null, [wsId, issueId, sourcePath, canonicalPath, generation]);
+  const unavailable = notFound || accessDenied || (!isResolving && !issue);
+
+  // Select before normalizing the URL: native replace can commit synchronously.
+  useEffect(() => {
+    if (participationScope) participationStore.getState().selectIssue(participationScope);
+    else if (unavailable) participationStore.getState().clearIssue(sourcePath, generation);
+  }, [participationStore, participationScope, unavailable, sourcePath, generation]);
+  const selectedParticipation = participationScope && currentParticipation
+    && currentParticipation.generation === generation
+    && currentParticipation.workspaceId === wsId && currentParticipation.issueId === issueId
+    ? currentParticipation : null;
+  const onIterationHistoryOpenChange = useCallback((open: boolean) => {
+    if (participationScope) participationStore.getState().setOpen(participationScope, open);
+  }, [participationStore, participationScope]);
   const runId = canonicalId && hash.startsWith("#run-")
     ? parseAccountPath(`/account?issue=${canonicalId}${hash}`)?.runId ?? undefined : undefined;
 
-  useCanonicalIssueUrl(routeId, issue?.identifier, hash);
+  useCanonicalIssueUrl(routeId, selectedParticipation ? issue?.identifier : undefined, hash);
 
   if (isResolving) return <IssueDetailSkeleton />;
 
@@ -85,6 +111,8 @@ export function IssueDetailRoute({ routeId, onDelete }: IssueDetailRouteProps) {
   return (
     <IssueDetail
       issueId={canonicalId}
+      iterationHistoryOpen={selectedParticipation?.open ?? false}
+      onIterationHistoryOpenChange={onIterationHistoryOpenChange}
       onDelete={onDelete}
       highlightCommentId={parseCommentHighlightHash(hash)}
       highlightRunId={runId}

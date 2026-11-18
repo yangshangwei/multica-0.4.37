@@ -991,6 +991,9 @@ function SubIssueDisplayPopover({
 
 interface IssueDetailProps {
   issueId: string;
+  /** Routed details retain only this disclosure intent across address normalization. */
+  iterationHistoryOpen?: boolean;
+  onIterationHistoryOpenChange?: (open: boolean) => void;
   onDelete?: () => void;
   /** Called after the issue is marked as done via the toolbar button. */
   onDone?: () => void;
@@ -1190,7 +1193,7 @@ export function IssueDetail(props: IssueDetailProps) {
   return <OrdinaryIssueDetail {...props} />;
 }
 
-function OrdinaryIssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = true, layoutId = "multica_issue_detail_layout", presentation = "default", reviewContext, highlightCommentId, highlightRequestToken, leadingAction, resolutionError }: IssueDetailProps) {
+function OrdinaryIssueDetail({ issueId, iterationHistoryOpen, onIterationHistoryOpenChange, onDelete, onDone, defaultSidebarOpen = true, layoutId = "multica_issue_detail_layout", presentation = "default", reviewContext, highlightCommentId, highlightRequestToken, leadingAction, resolutionError }: IssueDetailProps) {
   const { t } = useT("issues");
   const timeAgo = useTimeAgo();
   const id = issueId;
@@ -2424,7 +2427,7 @@ function OrdinaryIssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = t
             />
           </PropRow>
 
-          {executionAllowed && <div className="col-span-2 grid min-w-0 grid-cols-subgrid gap-y-0.5"><IterationAssignment wsId={wsId} issueId={issue.id} currentIterationId={issue.current_iteration_id} rolloverCount={issue.iteration_rollover_count} /><IterationParticipation key={`${wsId}:${issue.id}`} wsId={wsId} issueId={issue.id} /></div>}
+          {executionAllowed && <div className="col-span-2 grid min-w-0 grid-cols-subgrid gap-y-0.5"><IterationAssignment wsId={wsId} issueId={issue.id} currentIterationId={issue.current_iteration_id} rolloverCount={issue.iteration_rollover_count} /><IterationParticipation key={`${wsId}:${issue.id}`} wsId={wsId} issueId={issue.id} open={iterationHistoryOpen} onOpenChange={onIterationHistoryOpenChange} /></div>}
 
           {/* Optional props — rendered only when set on the issue OR added
               via "+ Add property" in this session. Row order follows the

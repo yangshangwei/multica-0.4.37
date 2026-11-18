@@ -69,6 +69,56 @@ surfaces but must not become editable through issue create or batch selectors.
 Optional legacy rollover counts and historical metadata remain unknown; never
 render missing values as known zero or an empty label collection.
 
+### Issue participation across canonical address changes
+
+An expanded issue history must survive the same issue's UUID-to-identifier
+page-segment remount. The user can expand it after `replace()` starts but before
+the readable page commits, while the participation GET is still pending. An
+entity key alone cannot retain intent when its parent route unmounts.
+
+`createIterationParticipationStore(pathname)` in Core creates one ephemeral
+current record for one mounted navigation surface. `NavigationProvider` injects
+only that StoreApi through Context; it does not store server data or change the
+NavigationAdapter contract. Store construction is SSR-pure. Register live stores
+in the provider's mount effect and unregister them on unmount.
+
+`IssueDetailRoute` resolves the actual workspace/UUID and selects the record
+before canonical replacement. Its source and canonical paths contain pathname
+only; search and comment/run fragments retain their existing routing behavior.
+The record owns only disclosure intent and scope, not participation rows,
+pagination or durable preferences. Only routed details receive controlled
+`iterationHistoryOpen`/`onIterationHistoryOpenChange`; embedded inbox/dialog
+details keep local disclosure state.
+
+`IterationParticipation({ wsId, issueId, open?, onOpenChange? })` uses the same
+effective boolean for native `details.open` and the history query's `enabled`.
+Query owns response data, cancellation, access protection and refetching. The
+cursor remains local and the workspace/issue key still separates component
+lifetimes. Do not retain a map of every visited issue, persist this state, delay
+canonicalization or change the HTTP lifetime to preserve a disclosure.
+
+| Event | Required result |
+| --- | --- |
+| Expand on UUID, then commit that issue's readable path | Remain open before and after its history response |
+| Navigate in-app from expanded A to ordinary B | B starts closed; no participation GET before its own expansion |
+| Leave the issue, visit login or revisit an earlier issue | Discard the previous disclosure intent |
+| Different workspace/UUID resolves at the same address | Start closed and fence outgoing callbacks |
+| Current issue becomes unavailable | Clear only its current record; stale callbacks cannot reopen it |
+| Session/Server cleanup through `clearClientSessionData` | Reset all mounted surface stores and advance their generations |
+| Old-generation toggle/selection after cleanup | Ignore it, including when a new session uses the same address |
+
+Core `issues/stores/iteration-participation-store.test.ts` owns the lifecycle
+matrix; DOM-aware `platform/session-cleanup.test.ts` covers the real cleanup
+entry point. Views `issue-detail-route.iteration-history.test.tsx` owns the
+real provider/query route-remount wiring and the local embedded control.
+`e2e/iteration-history-navigation.spec.ts` independently gates the real readable
+RSC response and history read, records the actual UUID summary click, releases
+the page first, then opens the correct iteration link. Its A-to-B control uses
+a real AppLink in the same document. Preserve the full original
+`iterations-i1-history.spec.ts` metadata/deletion assertions. Native renderer
+checks assert MemoryRouter paths through the active persisted tab rather than
+the browser document URL; they do not establish packaged-main behavior.
+
 ## Edit baseline and refresh recovery
 
 `IterationForm` owns editable values and their baseline revision together.
