@@ -25,7 +25,7 @@
   "relatedFiles": [
     ".trellis/tasks/11-13-pay-241-s3-recovery/research/new-session-handoff-20261118.md"
   ],
-  "notes": "2026-11-18首增量已独立接受：协作priority/handler两提交顺序、原键/GET回执与普通linked child numericCAS，service普通/race各7名、handler修正后各3名全PASS；ROOT编译/vet/格式和30关联记录/连接恢复通过。共享TestMain遗漏以五行参数化checked清理修复，原失败库/RED与GREEN保留；三Go路径已精准ROOT整合。TC16仅PARTIAL，父24=2PASS12PARTIAL10NOT_RUN。完整S3继续in_progress，当前API/WebDesktop、55评论/WS、混合通知、上传/撤权/阻塞四项下一步；首增量已按用户指令提交96a2bffe3，完整S3仍in_progress且未归档。 2026-11-18当前password API/productionWeb/匹配Electron R06字段组合4top/8order全部PASS/retry0并独立接受，五旧失败保持NOT_ACCEPTED。canonical恢复合同service普通/race18name各、handler3各共42执行独立接受；TC16保持PARTIAL，完整S3仍开放。",
+  "notes": "2026-11-18首增量已独立接受：协作priority/handler两提交顺序、原键/GET回执与普通linked child numericCAS，service普通/race各7名、handler修正后各3名全PASS；ROOT编译/vet/格式和30关联记录/连接恢复通过。共享TestMain遗漏以五行参数化checked清理修复，原失败库/RED与GREEN保留；三Go路径已精准ROOT整合。TC16仅PARTIAL，父24=2PASS12PARTIAL10NOT_RUN。完整S3继续in_progress，当前API/WebDesktop、55评论/WS、混合通知、上传/撤权/阻塞四项下一步；首增量已按用户指令提交96a2bffe3，完整S3仍in_progress且未归档。 2026-11-18当前password API/productionWeb/匹配Electron R06字段组合4top/8order全部PASS/retry0并独立接受，五旧失败保持NOT_ACCEPTED。canonical恢复合同service普通/race18name各、handler3各共42执行独立接受；TC16保持PARTIAL，完整S3仍开放。 当前55评论批次R01两平台2top/114持久ID、每平台两次50+7分页/真实WS重认证已独立接受，TC15=PASS，父24=3PASS/12PARTIAL/9NOT_RUN；全S3仍开放。",
   "meta": {
     "current_verification": {
       "at": "2026-11-18T04:38:27.858410+00:00",
@@ -40,9 +40,9 @@
       "diagnosis": "research/testmain-cleanup-diagnosis-20261118.md",
       "ROOT_integrated_paths": 3,
       "parent24": {
-        "NOT_RUN": 10,
+        "NOT_RUN": 9,
         "PARTIAL": 12,
-        "PASS": 2
+        "PASS": 3
       },
       "scope": "S3 R04 service/HTTP first increment",
       "ROOT_compile_vet_gofmt": "PASS",
@@ -285,6 +285,31 @@
       "TC16": "PARTIAL",
       "ordinary_UI_expected_revision": "optional omitted; explicit numeric API CAS separate"
     },
-    "next": "fresh55comment/realWS thenExtras/blocknormalrace/currentUI"
+    "next": "fresh55comment/realWS thenExtras/blocknormalrace/currentUI",
+    "comment_batch_R01_accepted": {
+      "at": "2026-11-18T10:41:59.665058+00:00",
+      "status": "ACCEPTED_CURRENT_55_COMMENT_PAGINATION_AND_REAUTHENTICATION_BATCH_R01",
+      "report": ".trellis/tasks/11-13-pay-241-s3-recovery/research/comment-batch-r01-independent-check-20261118.json",
+      "sha256": "2b11f91c762147eb3224ef86481dbe8f0f1da994ec1f896ab31b43794304bd46",
+      "tops": 2,
+      "batches": 2,
+      "original_comments_per_batch": 55,
+      "control_comments_per_batch": 2,
+      "persistent_comment_ids": 114,
+      "page_passes_per_platform": 2,
+      "actual_page_counts": [
+        50,
+        7
+      ],
+      "authenticated_sockets_per_platform": 3,
+      "failed_offline_attempts_per_platform": 1,
+      "retry": 0,
+      "observer_business_writes": 0,
+      "run_command_dispatch": 0,
+      "TC15": "PASS",
+      "fullS3accepted": false
+    },
+    "comment_batch_work_commit": null,
+    "field_current_work_commit": "237b172a6e3b1246fe47d8a05e55ed201f9e7310"
   }
 }

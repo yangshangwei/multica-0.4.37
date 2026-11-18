@@ -108,3 +108,17 @@ successful subscribe check.
 
 Correct: publish a scoped invalidation, revalidate at send, and fetch the current
 authorized projection with a fenced Query lifecycle.
+
+## Current batch recovery evidence
+
+`e2e/collaboration-recovery.spec.ts` separately verifies production Web and real
+Electron through two physical disconnect/reconnect cycles. Each quiescent
+writer commits55 original comments plus a baseline/reply control, one edit,
+one tombstone and a final field watermark. Actual Load more reads50+7 per pass;
+raw page IDs/versions, microsecond tuple order and persistent original receipt
+keys match all57 rows on both completed passes. Cookie Web has authenticated
+WS101 but no auth_ack; token Electron receives auth_ack before issue subscribe.
+Record the failed offline reconnect attempt as well as three authenticated
+socket identities. No reconnect replays a business write or creates a new
+command/run. This accepted positive batch does not replace revoked-content,
+notification/upload or structured-block recovery evidence.

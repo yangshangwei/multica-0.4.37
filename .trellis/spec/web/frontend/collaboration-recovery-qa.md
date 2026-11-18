@@ -100,6 +100,25 @@ run/command/dispatch. Its ordinary omitted-version and empty-execution limits
 keep parent TC-16 PARTIAL. The first five failed rounds remain not accepted.
 55-comment/WS, notification, upload, revocation and blocking need separate runs.
 
+The separate fresh batch R01 is now independently accepted for both platforms:
+each has55 original offline comments plus2 explicitly enumerated controls,
+57 unique persistent IDs including one tombstone, one reply and the edited
+revision. Both actual passes have50+7 rows with complete body/tombstone and
+cursor continuity, not just DOM deduplication. Compare exact persisted
+microsecond tuples separately from the UI's existing millisecond/thread order.
+After another real disconnect, a second complete quiescent pass preserves the
+same ID/revision set and every original receipt, with zero observer business
+mutation and zero new run/command/dispatch.
+
+Each observer created four sockets: three authenticated identities (initial and
+two replacements), plus one failed attempt while intentionally offline. Keep
+that full transport denominator. Web's replacements use actual cookie101 and
+issue subscribe acknowledgements; Electron's replacements record auth,
+auth_ack and issue subscription in order. These assertions establish persistent
+read convergence and real reauthentication; they do not assert delivery of
+every invalidation frame. Parent TC-15 can pass this exact batch outcome while
+other S3 recovery and structured-block requirements remain open.
+
 ## 7. Wrong vs correct
 
 Wrong: use fetch/fulfill for a nonlost native response and count the upstream
