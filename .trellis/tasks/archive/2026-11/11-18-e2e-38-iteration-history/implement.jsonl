@@ -1,0 +1,4 @@
+{"file":".trellis/spec/core/frontend/iteration-operations.md","reason":"按稳定事项身份区分参与历史、权限和分页状态。"}
+{"file":".trellis/spec/core/frontend/global-scope-navigation.md","reason":"保留路由与工作区身份边界，不把展开动作变为持久导航偏好。"}
+{"file":".trellis/spec/web/frontend/e2e-run-environment.md","reason":"在生产路由真实提交时验证 UUID 上的点击。"}
+{"file": ".trellis/spec/views/frontend/state-management.md", "reason": "Core store 注入由平台接线持有，不在 Views 创建 Zustand store。"}
