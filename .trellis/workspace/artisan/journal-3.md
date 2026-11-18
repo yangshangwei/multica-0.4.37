@@ -1446,3 +1446,40 @@ Audited68local branches,20origin refs and100worktree heads; joined equivalent hi
 - 真实S4输入齐备后执行沙箱/CI/非生产部署回滚，最终S5正式采样与业务签字；当前第一增量不关闭整个S3。
 
 新会话按 `.trellis/tasks/11-13-pay-241-s3-recovery/research/new-session-handoff-20261118.md` 接续，保留S2/父历史及其他任务WIP。
+
+
+## Session 162: 验收 E2E #37/#38 并保留隔离证据
+<!-- trellis-session: v=2 fp=c741eca68f5ce00c -->
+
+**Date**: 2026-11-19
+**Task**: 验收 E2E #37/#38 并保留隔离证据
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+#37/#38 原样回归与稳定 RED/GREEN、Web14/14、Electron renderer6/6；只归档两子任务，父任务与其余编号保留。
+
+### Main Changes
+
+- 保护普通状态的 UUID 详情读取与 late initialData。
+- 保留当前路由事项的历史展开意图并限定清理生命周期。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `22e0b202f60255f5dc9030139454ec87e4606270` | fix(issues): keep ordinary status visible while a write is pending |
+| `da19f01ddc722396327cda94227cb9a6d7036cc7` | fix(iterations): preserve expansion while an issue address becomes readable |
+
+### Testing
+
+- [OK] Web 四完整文件14/14；Electron真实渲染器6/6；单worker、零自动重试。
+- [OK] Core/Views相关文件与两端导航、lint/typecheck及生产构建通过；既有警告保留。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 父任务继续跟踪其余原编号；PAY-241 S3 与既有创建弹窗任务保持原归属。
