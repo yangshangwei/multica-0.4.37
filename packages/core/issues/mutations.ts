@@ -166,6 +166,14 @@ export function useUpdateIssue() {
       // cache update happens in the same tick as mutate(). Awaiting would
       // yield to the event loop, letting @dnd-kit reset its visual state
       // before the optimistic update lands.
+      const detailKey = issueKeys.detail(wsId, id);
+      const prevDetail = qc.getQueryData<Issue>(detailKey);
+      qc.cancelQueries({ queryKey: detailKey, exact: true });
+      // Identifier initialData may arrive after this read began. Cancellation
+      // can restore its empty pre-fetch state; retain the row being edited.
+      if (prevDetail && qc.getQueryData(detailKey) === undefined) {
+        qc.setQueryData(detailKey, prevDetail);
+      }
       qc.cancelQueries({ queryKey: issueKeys.list(wsId) });
       qc.cancelQueries({ queryKey: issueKeys.myAll(wsId) });
       qc.cancelQueries({ queryKey: issueKeys.flatAll(wsId) });
@@ -173,7 +181,6 @@ export function useUpdateIssue() {
       if (patch.status !== undefined || patch.priority !== undefined) {
         qc.cancelQueries({ queryKey: inboxKeys.all(wsId) });
       }
-      const prevDetail = qc.getQueryData<Issue>(issueKeys.detail(wsId, id));
       // The coordinator owns the cross-cache rules: surgical patch/rebucket
       // where the card is loaded and still belongs, surgical REMOVE where the
       // change moves it off a filtered surface, stale-key bookkeeping where

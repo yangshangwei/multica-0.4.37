@@ -69,3 +69,100 @@ only after a durable receipt, or an endpoint-specific rejection whose locked,
 monotonic version contract makes that exact mutation impossible. Keep generic
 conflicts/network failures on the original key. Server data and operation
 receipts continue to use scoped React Query caches.
+
+## Ordinary issue detail reads during optimistic updates
+
+### 1. Scope / trigger
+
+A predictable ordinary issue field update can overlap a detail GET started
+before the write. Its old response must not replace the optimistic value while
+the PUT is pending. This applies to the shared Core mutation used by Web and
+Desktop; explicit bound completion keeps its separate authoritative flow.
+
+### 2. Signatures
+
+`useCanonicalIssue(wsId, routeId)` resolves either route form to the UUID.
+`useUpdateIssue()` reads and patches `issueKeys.detail(wsId, id)` with that
+resolved UUID. Preserve the currently loaded row across exact cancellation:
+
+```ts
+const detailKey = issueKeys.detail(wsId, id);
+const prevDetail = qc.getQueryData<Issue>(detailKey);
+qc.cancelQueries({ queryKey: detailKey, exact: true });
+if (prevDetail && qc.getQueryData(detailKey) === undefined) {
+  qc.setQueryData(detailKey, prevDetail);
+}
+```
+
+Keep the existing synchronous `onMutate` sequence. Awaiting cancellation before
+the optimistic patch yields to the event loop and changes drag/reset timing.
+
+### 3. Contracts
+
+The reader, mutation snapshot and optimistic patch share one QueryClient and
+the same workspace/UUID detail key. Capture its currently loaded row before
+canceling the exact in-flight query, then use the existing cache coordinator,
+rollback and settlement invalidation. Cancellation prevents the old result from being
+published; HTTP transport abortion is not required when the API promise does
+not consume an AbortSignal.
+
+An identifier can supply `initialData` after an empty UUID fetch has begun.
+Query cancellation can then restore the empty pre-fetch state even though a
+row was visible before cancellation. Restore that already loaded row only if
+cancellation removed it; never manufacture a row when none existed. Keep the
+default cancellation semantics: `{revert:false}` can dispatch a CancelledError
+and change the query's read/error state.
+
+Leave unrelated detail reads running. Route aliases are used for identity
+resolution, not a second authoritative copy of mutable fields. Keep page-mount
+access validation and bound-completion authorization/receipt handling intact.
+
+### 4. Validation and error matrix
+
+| Condition | Expected behavior |
+| --- | --- |
+| Old Todo detail result arrives during ordinary PUT | Pending optimistic In Progress remains visible |
+| Identifier initialData arrives after an empty UUID fetch began | Exact cancellation retains the loaded row before the optimistic patch |
+| Detail was empty before cancellation | Do not synthesize a detail snapshot |
+| Ordinary PUT returns 503 | Existing rollback restores Todo and reports the failure |
+| One explicit retry succeeds | Server read and refresh show In Progress |
+| Another issue or workspace has a pending detail read | Its result can still publish normally |
+| Bound completion is waiting or refused | No optimistic done projection; existing authorization governs |
+
+### 5. Good / base / bad cases
+
+Good: an identifier entry resolves to the UUID, an older UUID GET completes
+during the status PUT, and the detail remains In Progress until settlement.
+Base: an ordinary status update without an overlapping read keeps its existing
+optimistic/rollback behavior. Bad: cancel every issue detail, dual-write mutable
+status into an identifier cache, or render a separate local status to hide the
+stale server cache.
+
+### 6. Required tests
+
+`packages/core/issues/mutations.test.tsx` owns the real QueryClient delayed-read
+matrix for UUID and identifier entry, no-overlap controls, exact issue/workspace
+isolation, late identifier initialData and bound-completion waiting/refusal. Mock only the API boundary;
+release the old GET while the PUT is held, then assert rollback and explicit
+retry. Start an empty UUID fetch before mounting the canonical identifier hook
+for the late-seed case; assert immediate In Progress before releasing either
+request. A passing standalone cache patch is not evidence that an overlapping
+observer was protected.
+
+`e2e/issue-optimistic-status.spec.ts` covers real detail buttons, closed options,
+independent server reads, 503 feedback, one retry and refresh in both route
+forms. It holds all naturally started UUID GETs after successful cold entry
+and before the first PUT, with the canonical address committed. The same GET
+endpoint also feeds `issueReactionsOptions`; holding only the first matching
+request does not prove that the detail observer's response was controlled.
+Keep request counts diagnostic, and never force a test-only fetch or infer
+Query identity/cancellation from an endpoint match alone.
+Keep the original `e2e/issue-mutation-branches.spec.ts` rollback assertions and
+adjacent priority case.
+
+### 7. Wrong versus correct
+
+Wrong: leave the earlier GET active, or cancel it and assume the visible row
+must still exist before the optimistic patch. Correct: preserve the loaded UUID
+row across exact cancellation, apply the synchronous optimistic patch and keep
+normal settlement and authorization behavior.
