@@ -253,3 +253,32 @@ adds explicit authorizations and current checks in actual writers. The historica
 observe/hint increment above remains non-authorizing; its private evidence and
 original actor/retention boundaries remain. Current source-policy enforcement,
 project-change rules and distinct R38 handling follow that shared contract.
+
+## Priority/handler conflicts and original receipts
+
+`TestCollaborationRecoveryPriorityConcurrentIdentity` owns priority-only
+same-key/same-payload convergence, changed-priority idempotency refusal and
+different-key/same-revision competition. Inspect the winning priority, exact
+ordinary/collaboration revisions, event identity and persisted operation hash/JSON;
+the existing title race alone does not identify a priority winner.
+
+`TestCollaborationRecoveryPriorityTransferCommitOrders` uses the existing real
+commit/PID barriers in both orders. Current authority precedes revision: a former
+noncreator handler's priority edit after transfer is forbidden403, while an old
+revision transfer after a priority commit is stale409. After losing write authority,
+recover the actor's content-free original result with `GetWorkflowOperation`;
+reposting an old key does not restore authority. Fresh authorized continuation
+must preserve earlier success/refusal receipts and retained execution identities.
+
+`TestCollaborationOrdinaryChildPriorityAssigneeCASCommitOrders` owns the ordinary
+linked-child field pair: numeric `expected_revision`, one200/one409 with exact
+`revision_conflict`, `resource_type=issue`, child `resource_id`, and numeric
+expected/actual revisions. Only the winning field changes; a deliberate fresh
+request applies the other field once. Ordinary omitted-version compatibility
+remains unchanged. Priority/assignee-only edits emit no parent-reference hint:
+that publisher is selected only for parent, title or admission changes. Keep the
+exact committed ordinary update events and unchanged parent collaboration state.
+
+These Go service/HTTP regressions use legacy-auth JWT fixtures and actual
+PostgreSQL writer waits. They do not replace current password/API/Web/Desktop
+composition or the remaining S3 recovery/notification/upload/blocking matrix.

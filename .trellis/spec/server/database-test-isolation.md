@@ -452,3 +452,25 @@ from the original two r03 race verification gaps. Installed Go1.27
 `8d2437cfdcfb82fd8807e5063783de1d50f70e589e80cad10e17d8ef23f724d9`;
 the static source witness does not make an unexecuted profile or original
 campaign pass. Subsequent corrected-profile results remain separately bound.
+
+## Handler TestMain invocation-target cleanup
+
+`setupHandlerTestFixture` creates an `agent_invocation_target` for its seeded
+workspace agent. That relation has no foreign key/cascade. Before deleting the
+workspace/user, `cleanupHandlerTestFixture(ctx, pool)` must explicitly delete
+targets for agents in its actual handler-test workspace with the existing
+parameterized slug predicate and propagate any SQL failure. Keep the shared seed
+available throughout the package; deleting it in an individual test's cleanup
+would revoke authority needed by later tests.
+
+Audit invocation targets independently of user/workspace/agent counts. PAY-241
+S3 R03 ended with all named child tests passing and those parent counts at zero,
+but one target remained. A fresh intentional TestMain-only run using
+`-test.run '^$'` reproduced the same residue with zero test bodies; the corrected R04
+TestMain-only run returned all 30 concrete fixture relations to zero. Such a
+run requires a recorded fresh database and is not a compile-only probe or a
+named business test. Preserve the failed database/raw source and bind the new
+GREEN source/configuration and final ledger/gate/connection audit separately.
+
+Evidence: PAY-241 S3 `research/testmain-cleanup-diagnosis-20261118.md` and its
+private `testmain-diagnostic-red-r01` / `testmain-diagnostic-green-r04` records.
