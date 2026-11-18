@@ -36,3 +36,11 @@
 证据入口：父任务 `session-progress.md`、S2 `research/r33-full-s2-a01-a12-independent-check-20261118.md`、S3 `research/s3-source-binding-20261118.md` 和父任务 `research/s3-cas-intake-20261118.md`。
 
 新会话入口：`.trellis/tasks/11-13-pay-241-s3-recovery/research/new-session-handoff-20261118.md`。本次代码提交仅含三个Go文件和两个spec；此前S2、父任务历史与其他工作区WIP保留，后续先核对归属和当前来源。
+
+当前会话已接续S3，细化计划见 `.trellis/tasks/11-13-pay-241-s3-recovery/research/current-clients-plan-20261118.md`。共享工作树按完整文件视图保存388条基线，原index为空；已接受R04持有源码无漂移且ROOT生产路径一致。新证据/状态根单独分配，由主会话核对配置、真实专库和构建身份后执行。下一增量先补当前API/Web/Electron字段并发与原回执，后续以完整55条评论分页和真实WS重认证推进，不沿用单条评论旧证据判PASS。
+
+## Current-client field acceptance R06 — 2026-11-18
+
+The complete fresh password API/production Web/matching Electron four-case field run is independently accepted:4tops/8orderings, retry0, source/config/raw/persistent IDs and owned gate/PID/native closure reconciled. Original operations and both current-authority403/stale409 results remain exact through fresh authorized continuation. Ordinary numeric API CAS is separately labelled from actual optional-version UI writes. TC-16 remainsPARTIAL; parent24 stays2PASS/12PARTIAL/10NOT_RUN.
+
+Existing notification/upload/revocation/proven-result contracts were revalidated on four separate normal/race databases: service13tops/18names each, handler3 each,42named executions;30business relations0, protected history retained, originalgate restored andconn0. This does not accept current extra/browser/runtime compositions. Firstfive client failures, native noauth transport probe and all prior failures remain retained. Next: separate fresh55-comment/realWS profile, extras and structured blocking/repair. Blockserver R01's first16DBtops/43names has3failingtopcontracts; candidate/source/DB/raw frozen before R02 repairs. FullS3 remainsinprogress and unarchived.

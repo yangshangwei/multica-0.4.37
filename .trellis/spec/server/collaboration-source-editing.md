@@ -282,3 +282,14 @@ exact committed ordinary update events and unchanged parent collaboration state.
 These Go service/HTTP regressions use legacy-auth JWT fixtures and actual
 PostgreSQL writer waits. They do not replace current password/API/Web/Desktop
 composition or the remaining S3 recovery/notification/upload/blocking matrix.
+
+The separately accepted current-password R06 composition now verifies genuine
+Web/Electron priority/transfer requests in both submission orders, exact
+original GET results, deliberate committed-response loss and a fresh authorized
+UI continuation. Ordinary child numeric CAS is explicit API evidence; its
+unmodified picker writes still omit the optional version and are recorded as
+compatibility evidence. Earlier service/PID-lock tests and these current
+submission-order journeys keep their distinct denominators. See
+[recovery QA](../web/frontend/collaboration-recovery-qa.md) for actual native
+transport, UI pending-intent retirement and retained-failure contracts. Complete
+S3 and parent TC-16 are not accepted by this bounded field composition.

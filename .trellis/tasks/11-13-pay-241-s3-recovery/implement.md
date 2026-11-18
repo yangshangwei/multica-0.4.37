@@ -1,5 +1,7 @@
 # S3 执行计划
 
+当前客户端续接计划：`research/current-clients-plan-20261118.md`。主会话已重新指向现有S3，保存共享工作树逐文件归属/哈希基线，并确认已接受R04的5,058文件无漂移、ROOT生产路径匹配；四个测试差异和两条私有诊断缺失保留。先由唯一E2E owner补当前password/API、production Web和匹配Electron的字段并发/原回执组合，再做55评论分页与真实WS重认证，随后通知/上传/撤权和v2/r05阻塞四项。环境分配、执行、整合、矩阵与逐增量提交由主会话负责。
+
 2026-11-18 续接：最终 S2 R33 已接受，来源见 `research/s3-source-binding-20261118.md`。本轮首增量为独立研究通过的两个新测试文件，复用既有真实 PostgreSQL 屏障与原键恢复；完整 S3 仍按下列余项验收。
 
 - [x] 读取父矩阵、恢复规范与源码，拆出独立timeout-proof子增量。
@@ -46,3 +48,9 @@ go test -json -race -count=1 -run '^TestCollaborationOrdinaryChildPriorityAssign
 ## 首增量当前结论
 
 2026-11-18 `research/cas-independent-check-20261118.md/json` 已独立接受，阻挡项0。两新测试和共享 TestMain 五行退出清理已精准整合 ROOT；service/handler 普通与竞态每模式7/3命名通过，ROOT 编译/vet/格式和30类关联记录/连接恢复通过。TC-16仅PARTIAL；当前API/Web/Desktop组合及全S3验收仍开放，下一步55评论/WS批次补读与同版本客户端竞争。
+
+## Current-client field acceptance R06 — 2026-11-18
+
+The complete fresh password API/production Web/matching Electron four-case field run is independently accepted:4tops/8orderings, retry0, source/config/raw/persistent IDs and owned gate/PID/native closure reconciled. Original operations and both current-authority403/stale409 results remain exact through fresh authorized continuation. Ordinary numeric API CAS is separately labelled from actual optional-version UI writes. TC-16 remainsPARTIAL; parent24 stays2PASS/12PARTIAL/10NOT_RUN.
+
+Existing notification/upload/revocation/proven-result contracts were revalidated on four separate normal/race databases: service13tops/18names each, handler3 each,42named executions;30business relations0, protected history retained, originalgate restored andconn0. This does not accept current extra/browser/runtime compositions. Firstfive client failures, native noauth transport probe and all prior failures remain retained. Next: separate fresh55-comment/realWS profile, extras and structured blocking/repair. Blockserver R01's first16DBtops/43names has3failingtopcontracts; candidate/source/DB/raw frozen before R02 repairs. FullS3 remainsinprogress and unarchived.

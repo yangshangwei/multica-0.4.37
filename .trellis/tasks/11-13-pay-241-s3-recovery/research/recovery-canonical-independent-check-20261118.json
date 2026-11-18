@@ -1,0 +1,954 @@
+{
+  "at": "2026-11-18T10:06:10.241233+00:00",
+  "reviewer": "/root/s3_clients_check",
+  "active_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "status": "ACCEPTED_CURRENT_CANONICAL_RECOVERY_SERVICE_HTTP_PROFILES",
+  "blocking_findings": 0,
+  "scope": "Existing canonical notification/upload/revocation/proven-result contracts on four fresh isolated DB profiles; no real browser/provider/native acceptance",
+  "inventory": {
+    "unique_tops": 16,
+    "unique_names": 21,
+    "unique_leaves": 20,
+    "named_mode_executions": 42,
+    "service_per_mode": {
+      "tops": 13,
+      "names": 18,
+      "leaves": 17
+    },
+    "handler_per_mode": {
+      "tops": 3,
+      "names": 3,
+      "leaves": 3
+    },
+    "normal_race_sets_equal": true,
+    "fail_skip_missing_duplicate_unfinished": 0
+  },
+  "profiles": [
+    {
+      "label": "extras-service-normal-r01",
+      "database": "multica_pay241_s3e_20261118_x4c5mjep_service_normal",
+      "expected_database": "multica_pay241_s3e_20261118_x4c5mjep_service_normal",
+      "package": "./internal/service",
+      "mode": "normal",
+      "tops": 13,
+      "names": 18,
+      "observed_names": [
+        "TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion",
+        "TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner",
+        "TestCollaborationAttachmentScopeCiphertextAndLiveAccess",
+        "TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity",
+        "TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes",
+        "TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage",
+        "TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions",
+        "TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked",
+        "TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants",
+        "TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing",
+        "TestCollaborationNotificationsLoseContentAndAnchorsWithAccess",
+        "TestCollaborationResultNotificationRollbackAndConcurrentReplay",
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup",
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/failure",
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/missing",
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/never_launched",
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/stopped",
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/success"
+      ],
+      "missing": [],
+      "unexpected": [],
+      "errors": [],
+      "runs": {
+        "TestCollaborationAttachmentScopeCiphertextAndLiveAccess": 1,
+        "TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes": 1,
+        "TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner": 1,
+        "TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage": 1,
+        "TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion": 1,
+        "TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity": 1,
+        "TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked": 1,
+        "TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing": 1,
+        "TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants": 1,
+        "TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions": 1,
+        "TestCollaborationNotificationsLoseContentAndAnchorsWithAccess": 1,
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup": 1,
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/success": 1,
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/failure": 1,
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/missing": 1,
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/stopped": 1,
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/never_launched": 1,
+        "TestCollaborationResultNotificationRollbackAndConcurrentReplay": 1
+      },
+      "terminals": {
+        "TestCollaborationAttachmentScopeCiphertextAndLiveAccess": [
+          "pass"
+        ],
+        "TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes": [
+          "pass"
+        ],
+        "TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner": [
+          "pass"
+        ],
+        "TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage": [
+          "pass"
+        ],
+        "TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion": [
+          "pass"
+        ],
+        "TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity": [
+          "pass"
+        ],
+        "TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked": [
+          "pass"
+        ],
+        "TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing": [
+          "pass"
+        ],
+        "TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants": [
+          "pass"
+        ],
+        "TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions": [
+          "pass"
+        ],
+        "TestCollaborationNotificationsLoseContentAndAnchorsWithAccess": [
+          "pass"
+        ],
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/success": [
+          "pass"
+        ],
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/failure": [
+          "pass"
+        ],
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/missing": [
+          "pass"
+        ],
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/stopped": [
+          "pass"
+        ],
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/never_launched": [
+          "pass"
+        ],
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup": [
+          "pass"
+        ],
+        "TestCollaborationResultNotificationRollbackAndConcurrentReplay": [
+          "pass"
+        ]
+      },
+      "build_events": {},
+      "packages": [
+        "github.com/multica-ai/multica/server/internal/service"
+      ],
+      "command_exit": 0,
+      "actual_command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^(TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked|TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing|TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants|TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions|TestCollaborationNotificationsLoseContentAndAnchorsWithAccess|TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes|TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner|TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage|TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion|TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity|TestCollaborationAttachmentScopeCiphertextAndLiveAccess|TestCollaborationResultNotificationsRequireProvenTerminalGroup|TestCollaborationResultNotificationRollbackAndConcurrentReplay)$",
+        "./internal/service"
+      ],
+      "actual_cwd": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server",
+      "config_hash_matches": true,
+      "stdout_hash_matches": true,
+      "stderr_hash_matches": true,
+      "source_before_after_equal": true,
+      "source_drift": [],
+      "ledger_count": 853,
+      "ledger_equal_to_before": true,
+      "indexes_equal_to_before": true,
+      "gate_before": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "gate_after": {
+        "id": 1,
+        "epoch": 3,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "gate_original_flags_match": true,
+      "connections": 0,
+      "business_cleanup_assertion_from_final": true,
+      "all_actual211_nonzero_table_counts": {
+        "organization": 1,
+        "schema_migrations": 853,
+        "collaboration_execution_gate": 1,
+        "task_usage_hourly_rollup_state": 1,
+        "collaboration_config_invalidation": 20,
+        "collaboration_knowledge_invalidation": 2
+      },
+      "required30_known_catalog_missing": [
+        "collaboration_namespace_reservation",
+        "collaboration_launch_permit",
+        "collaboration_termination_proof",
+        "collaboration_command_attachment",
+        "comment_attachment"
+      ],
+      "required30_nonzero": [],
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-normal-r01/stdout.log",
+        "sha256": "d0e11647b6e0905dc5a4181bf4cb6784991549b52692260e89780af7bebc440a"
+      },
+      "audit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-normal-r01/database-after-restoration.json",
+        "sha256": "d227188aab2c8b388bcfc390ccc027af2d3bb96f8b7e7d9b873bf4b4e6cb02c9"
+      },
+      "reviewer_DB_execution": false
+    },
+    {
+      "label": "extras-service-race-r01",
+      "database": "multica_pay241_s3e_20261118_x4c5mjep_service_race",
+      "expected_database": "multica_pay241_s3e_20261118_x4c5mjep_service_race",
+      "package": "./internal/service",
+      "mode": "race",
+      "tops": 13,
+      "names": 18,
+      "observed_names": [
+        "TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion",
+        "TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner",
+        "TestCollaborationAttachmentScopeCiphertextAndLiveAccess",
+        "TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity",
+        "TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes",
+        "TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage",
+        "TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions",
+        "TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked",
+        "TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants",
+        "TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing",
+        "TestCollaborationNotificationsLoseContentAndAnchorsWithAccess",
+        "TestCollaborationResultNotificationRollbackAndConcurrentReplay",
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup",
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/failure",
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/missing",
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/never_launched",
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/stopped",
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/success"
+      ],
+      "missing": [],
+      "unexpected": [],
+      "errors": [],
+      "runs": {
+        "TestCollaborationAttachmentScopeCiphertextAndLiveAccess": 1,
+        "TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes": 1,
+        "TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner": 1,
+        "TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage": 1,
+        "TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion": 1,
+        "TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity": 1,
+        "TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked": 1,
+        "TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing": 1,
+        "TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants": 1,
+        "TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions": 1,
+        "TestCollaborationNotificationsLoseContentAndAnchorsWithAccess": 1,
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup": 1,
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/success": 1,
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/failure": 1,
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/missing": 1,
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/stopped": 1,
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/never_launched": 1,
+        "TestCollaborationResultNotificationRollbackAndConcurrentReplay": 1
+      },
+      "terminals": {
+        "TestCollaborationAttachmentScopeCiphertextAndLiveAccess": [
+          "pass"
+        ],
+        "TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes": [
+          "pass"
+        ],
+        "TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner": [
+          "pass"
+        ],
+        "TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage": [
+          "pass"
+        ],
+        "TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion": [
+          "pass"
+        ],
+        "TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity": [
+          "pass"
+        ],
+        "TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked": [
+          "pass"
+        ],
+        "TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing": [
+          "pass"
+        ],
+        "TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants": [
+          "pass"
+        ],
+        "TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions": [
+          "pass"
+        ],
+        "TestCollaborationNotificationsLoseContentAndAnchorsWithAccess": [
+          "pass"
+        ],
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/success": [
+          "pass"
+        ],
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/failure": [
+          "pass"
+        ],
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/missing": [
+          "pass"
+        ],
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/stopped": [
+          "pass"
+        ],
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup/never_launched": [
+          "pass"
+        ],
+        "TestCollaborationResultNotificationsRequireProvenTerminalGroup": [
+          "pass"
+        ],
+        "TestCollaborationResultNotificationRollbackAndConcurrentReplay": [
+          "pass"
+        ]
+      },
+      "build_events": {},
+      "packages": [
+        "github.com/multica-ai/multica/server/internal/service"
+      ],
+      "command_exit": 0,
+      "actual_command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "-run",
+        "^(TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked|TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing|TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants|TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions|TestCollaborationNotificationsLoseContentAndAnchorsWithAccess|TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes|TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner|TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage|TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion|TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity|TestCollaborationAttachmentScopeCiphertextAndLiveAccess|TestCollaborationResultNotificationsRequireProvenTerminalGroup|TestCollaborationResultNotificationRollbackAndConcurrentReplay)$",
+        "./internal/service"
+      ],
+      "actual_cwd": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server",
+      "config_hash_matches": true,
+      "stdout_hash_matches": true,
+      "stderr_hash_matches": true,
+      "source_before_after_equal": true,
+      "source_drift": [],
+      "ledger_count": 853,
+      "ledger_equal_to_before": true,
+      "indexes_equal_to_before": true,
+      "gate_before": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "gate_after": {
+        "id": 1,
+        "epoch": 3,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "gate_original_flags_match": true,
+      "connections": 0,
+      "business_cleanup_assertion_from_final": true,
+      "all_actual211_nonzero_table_counts": {
+        "organization": 1,
+        "schema_migrations": 853,
+        "collaboration_execution_gate": 1,
+        "task_usage_hourly_rollup_state": 1,
+        "collaboration_config_invalidation": 20,
+        "collaboration_knowledge_invalidation": 2
+      },
+      "required30_known_catalog_missing": [
+        "collaboration_namespace_reservation",
+        "collaboration_launch_permit",
+        "collaboration_termination_proof",
+        "collaboration_command_attachment",
+        "comment_attachment"
+      ],
+      "required30_nonzero": [],
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-race-r01/stdout.log",
+        "sha256": "3ff8035c3d38a93da8aab797f7bce06fff74f71c8dd756cdcdf69fa18f1647e1"
+      },
+      "audit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-race-r01/database-after-restoration.json",
+        "sha256": "c95238c42a76a56070778fd5ee1cc5b94cfd6e9a363a390ca6d4cc621afe1768"
+      },
+      "reviewer_DB_execution": false
+    },
+    {
+      "label": "extras-handler-normal-r01",
+      "database": "multica_pay241_s3e_20261118_x4c5mjep_handler_normal",
+      "expected_database": "multica_pay241_s3e_20261118_x4c5mjep_handler_normal",
+      "package": "./internal/handler",
+      "mode": "normal",
+      "tops": 3,
+      "names": 3,
+      "observed_names": [
+        "TestCollaborationAttachmentForeignDraftDoesNotRevealExistence",
+        "TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes",
+        "TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes"
+      ],
+      "missing": [],
+      "unexpected": [],
+      "errors": [],
+      "runs": {
+        "TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes": 1,
+        "TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes": 1,
+        "TestCollaborationAttachmentForeignDraftDoesNotRevealExistence": 1
+      },
+      "terminals": {
+        "TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes": [
+          "pass"
+        ],
+        "TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes": [
+          "pass"
+        ],
+        "TestCollaborationAttachmentForeignDraftDoesNotRevealExistence": [
+          "pass"
+        ]
+      },
+      "build_events": {},
+      "packages": [
+        "github.com/multica-ai/multica/server/internal/handler"
+      ],
+      "command_exit": 0,
+      "actual_command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^(TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes|TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes|TestCollaborationAttachmentForeignDraftDoesNotRevealExistence)$",
+        "./internal/handler"
+      ],
+      "actual_cwd": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server",
+      "config_hash_matches": true,
+      "stdout_hash_matches": true,
+      "stderr_hash_matches": true,
+      "source_before_after_equal": true,
+      "source_drift": [],
+      "ledger_count": 853,
+      "ledger_equal_to_before": true,
+      "indexes_equal_to_before": true,
+      "gate_before": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "gate_after": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "gate_original_flags_match": true,
+      "connections": 0,
+      "business_cleanup_assertion_from_final": true,
+      "all_actual211_nonzero_table_counts": {
+        "schema_migrations": 853,
+        "collaboration_execution_gate": 1,
+        "task_usage_hourly_rollup_state": 1,
+        "collaboration_config_invalidation": 4
+      },
+      "required30_known_catalog_missing": [
+        "collaboration_namespace_reservation",
+        "collaboration_launch_permit",
+        "collaboration_termination_proof",
+        "collaboration_command_attachment",
+        "comment_attachment"
+      ],
+      "required30_nonzero": [],
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-normal-r01/stdout.log",
+        "sha256": "4d9057a00c1734d4dc9779541cd270e0ae5b3316e073da7c9529e854a39ca21f"
+      },
+      "audit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-normal-r01/database-final-audit.json",
+        "sha256": "8dfe5041ae31e0cf7b02d2861935bca51001ef656c80ef968d57ae70fa56e8b0"
+      },
+      "reviewer_DB_execution": false
+    },
+    {
+      "label": "extras-handler-race-r01",
+      "database": "multica_pay241_s3e_20261118_x4c5mjep_handler_race",
+      "expected_database": "multica_pay241_s3e_20261118_x4c5mjep_handler_race",
+      "package": "./internal/handler",
+      "mode": "race",
+      "tops": 3,
+      "names": 3,
+      "observed_names": [
+        "TestCollaborationAttachmentForeignDraftDoesNotRevealExistence",
+        "TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes",
+        "TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes"
+      ],
+      "missing": [],
+      "unexpected": [],
+      "errors": [],
+      "runs": {
+        "TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes": 1,
+        "TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes": 1,
+        "TestCollaborationAttachmentForeignDraftDoesNotRevealExistence": 1
+      },
+      "terminals": {
+        "TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes": [
+          "pass"
+        ],
+        "TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes": [
+          "pass"
+        ],
+        "TestCollaborationAttachmentForeignDraftDoesNotRevealExistence": [
+          "pass"
+        ]
+      },
+      "build_events": {},
+      "packages": [
+        "github.com/multica-ai/multica/server/internal/handler"
+      ],
+      "command_exit": 0,
+      "actual_command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "-run",
+        "^(TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes|TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes|TestCollaborationAttachmentForeignDraftDoesNotRevealExistence)$",
+        "./internal/handler"
+      ],
+      "actual_cwd": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server",
+      "config_hash_matches": true,
+      "stdout_hash_matches": true,
+      "stderr_hash_matches": true,
+      "source_before_after_equal": true,
+      "source_drift": [],
+      "ledger_count": 853,
+      "ledger_equal_to_before": true,
+      "indexes_equal_to_before": true,
+      "gate_before": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "gate_after": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "gate_original_flags_match": true,
+      "connections": 0,
+      "business_cleanup_assertion_from_final": true,
+      "all_actual211_nonzero_table_counts": {
+        "schema_migrations": 853,
+        "collaboration_execution_gate": 1,
+        "task_usage_hourly_rollup_state": 1,
+        "collaboration_config_invalidation": 4
+      },
+      "required30_known_catalog_missing": [
+        "collaboration_namespace_reservation",
+        "collaboration_launch_permit",
+        "collaboration_termination_proof",
+        "collaboration_command_attachment",
+        "comment_attachment"
+      ],
+      "required30_nonzero": [],
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-race-r01/stdout.log",
+        "sha256": "d5075f35c43733d25982255e1c8161cbb23c9b4edbc5bbbcc9e54e27a1973399"
+      },
+      "audit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-race-r01/database-final-audit.json",
+        "sha256": "80b931cf13f6de97f774218fce1bc64d76f825df6176af2a4630464d09f664dc"
+      },
+      "reviewer_DB_execution": false
+    }
+  ],
+  "exact_actual_fixture_catalog": {
+    "at": "2026-11-18T10:02:22.350572+00:00",
+    "actual_catalog": [
+      "issue",
+      "issue_collaboration",
+      "issue_participant",
+      "issue_handoff",
+      "collaboration_session",
+      "collaboration_event",
+      "collaboration_notification",
+      "collaboration_operation",
+      "collaboration_command",
+      "collaboration_execution_group",
+      "collaboration_channel",
+      "collaboration_batch",
+      "collaboration_run",
+      "agent_task_queue",
+      "comment",
+      "workspace",
+      "user",
+      "collaboration_target",
+      "collaboration_grant",
+      "collaboration_group_input",
+      "collaboration_group_dependency",
+      "agent_runtime",
+      "agent",
+      "member",
+      "collaboration_account_fence",
+      "collaboration_run_event",
+      "collaboration_runtime_enrollment",
+      "project",
+      "issue_status",
+      "agent_invocation_target"
+    ],
+    "catalog_source": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/helpers/check-cas.py",
+      "sha256": "8dec1ec5239009c48c4cdcefafde97b7f5c447506f3e8e58f7d6e56cbd09fedf"
+    },
+    "scope": "Actual declared thirty-table catalog; earlier guessed aliases are not evidence",
+    "profiles": [
+      {
+        "label": "extras-service-normal-r01",
+        "exact_actual_catalog_size": 30,
+        "catalog_missing": [],
+        "catalog_nonzero": {},
+        "connections": 0,
+        "protected_retained_counts": {
+          "organization": 1,
+          "schema_migrations": 853,
+          "collaboration_execution_gate": 1,
+          "task_usage_hourly_rollup_state": 1,
+          "collaboration_config_invalidation": 20,
+          "collaboration_knowledge_invalidation": 2
+        },
+        "normal_race_names": [
+          "TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion",
+          "TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner",
+          "TestCollaborationAttachmentScopeCiphertextAndLiveAccess",
+          "TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity",
+          "TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes",
+          "TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage",
+          "TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions",
+          "TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked",
+          "TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants",
+          "TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing",
+          "TestCollaborationNotificationsLoseContentAndAnchorsWithAccess",
+          "TestCollaborationResultNotificationRollbackAndConcurrentReplay",
+          "TestCollaborationResultNotificationsRequireProvenTerminalGroup",
+          "TestCollaborationResultNotificationsRequireProvenTerminalGroup/failure",
+          "TestCollaborationResultNotificationsRequireProvenTerminalGroup/missing",
+          "TestCollaborationResultNotificationsRequireProvenTerminalGroup/never_launched",
+          "TestCollaborationResultNotificationsRequireProvenTerminalGroup/stopped",
+          "TestCollaborationResultNotificationsRequireProvenTerminalGroup/success"
+        ]
+      },
+      {
+        "label": "extras-service-race-r01",
+        "exact_actual_catalog_size": 30,
+        "catalog_missing": [],
+        "catalog_nonzero": {},
+        "connections": 0,
+        "protected_retained_counts": {
+          "organization": 1,
+          "schema_migrations": 853,
+          "collaboration_execution_gate": 1,
+          "task_usage_hourly_rollup_state": 1,
+          "collaboration_config_invalidation": 20,
+          "collaboration_knowledge_invalidation": 2
+        },
+        "normal_race_names": [
+          "TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion",
+          "TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner",
+          "TestCollaborationAttachmentScopeCiphertextAndLiveAccess",
+          "TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity",
+          "TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes",
+          "TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage",
+          "TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions",
+          "TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked",
+          "TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants",
+          "TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing",
+          "TestCollaborationNotificationsLoseContentAndAnchorsWithAccess",
+          "TestCollaborationResultNotificationRollbackAndConcurrentReplay",
+          "TestCollaborationResultNotificationsRequireProvenTerminalGroup",
+          "TestCollaborationResultNotificationsRequireProvenTerminalGroup/failure",
+          "TestCollaborationResultNotificationsRequireProvenTerminalGroup/missing",
+          "TestCollaborationResultNotificationsRequireProvenTerminalGroup/never_launched",
+          "TestCollaborationResultNotificationsRequireProvenTerminalGroup/stopped",
+          "TestCollaborationResultNotificationsRequireProvenTerminalGroup/success"
+        ]
+      },
+      {
+        "label": "extras-handler-normal-r01",
+        "exact_actual_catalog_size": 30,
+        "catalog_missing": [],
+        "catalog_nonzero": {},
+        "connections": 0,
+        "protected_retained_counts": {
+          "schema_migrations": 853,
+          "collaboration_execution_gate": 1,
+          "task_usage_hourly_rollup_state": 1,
+          "collaboration_config_invalidation": 4
+        },
+        "normal_race_names": [
+          "TestCollaborationAttachmentForeignDraftDoesNotRevealExistence",
+          "TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes",
+          "TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes"
+        ]
+      },
+      {
+        "label": "extras-handler-race-r01",
+        "exact_actual_catalog_size": 30,
+        "catalog_missing": [],
+        "catalog_nonzero": {},
+        "connections": 0,
+        "protected_retained_counts": {
+          "schema_migrations": 853,
+          "collaboration_execution_gate": 1,
+          "task_usage_hourly_rollup_state": 1,
+          "collaboration_config_invalidation": 4
+        },
+        "normal_race_names": [
+          "TestCollaborationAttachmentForeignDraftDoesNotRevealExistence",
+          "TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes",
+          "TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes"
+        ]
+      }
+    ],
+    "all_actual30_zero": true
+  },
+  "cleanup": {
+    "actual30_business_relations_present_zero": true,
+    "all211_nonzero_inspected": true,
+    "service_protected_retained": {
+      "organization": 1,
+      "collaboration_config_invalidation": 20,
+      "collaboration_knowledge_invalidation": 2
+    },
+    "handler_protected_retained": {
+      "collaboration_config_invalidation": 4
+    },
+    "service_original_flags_restored_epoch3": true,
+    "handler_original_flags_epoch2": true,
+    "all_connections0": true,
+    "ledger853_indexes663_unchanged": true,
+    "whole_DB_empty_claim": false
+  },
+  "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server",
+  "source_config_raw": "All four exact command/config/raw hashes and before/after declared sources match",
+  "test_fixture_limits": [
+    "Synthetic protocol proof/failed writes/current-authority fixtures; no kernel/provider proof",
+    "Handler actual HTTP adapters do not replace live password/router/browser",
+    "Protected retained history intentionally not deleted"
+  ],
+  "reviewer_executions": {
+    "testbodies": 0,
+    "DB": 0,
+    "API": 0,
+    "browser": 0,
+    "build": 0,
+    "process_control": 0,
+    "Git_mutations": 0
+  },
+  "parent_recommendation": "Only append owning-layer contract evidence; no business-case PASS/24 denominator or fullS3/archive inference",
+  "references": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/extras-canonical-result-r01.json",
+      "sha256": "dabefbe2164333586418a214d03e7e0d3ed2fa03d8a229e7a4d8bd53d1b06522",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/extras-canonical-execution-plan-r01.json",
+      "sha256": "c6a6506983274551d86b16f01d454e9c402f3e6e4ae49dcc7d373de5f1c04bee",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/client-runtime-r06/canonical-raw-and-shutdown-reconciliation.json",
+      "sha256": "19fd60f98c8a9f2cd8e3a6a6211f1821c18775aecb20cacd80b84ab44fd3658c",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/client-runtime-r06/canonical-exact-thirty-catalog-r02.json",
+      "sha256": "3ea4dfe8e34e7084ccaacbcc7ece29823a8d6462ca48f880d18c68250e53a699",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-normal-r01/command.json",
+      "sha256": "bc6da8d5a52ce81bc3b96f6ce87255ded208c35aae9d84d1e6d176aa7475410c",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-normal-r01/result.json",
+      "sha256": "d19ecbebd35e54b5dae440b50971254c44b82ec190724c6323f9218aac47bf78",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-normal-r01/source-before.json",
+      "sha256": "0a62af0deac77e4c1dac384535f2fab9e2c75a19a4965d7af930bfb0f430a93a",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-normal-r01/source-after.json",
+      "sha256": "0a62af0deac77e4c1dac384535f2fab9e2c75a19a4965d7af930bfb0f430a93a",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-normal-r01/stdout.log",
+      "sha256": "d0e11647b6e0905dc5a4181bf4cb6784991549b52692260e89780af7bebc440a",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-normal-r01/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-normal-r01/database-after-restoration.json",
+      "sha256": "d227188aab2c8b388bcfc390ccc027af2d3bb96f8b7e7d9b873bf4b4e6cb02c9",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/configs/extras-service-normal-r01.json",
+      "sha256": "3675cf681072062bfa0d330c40f2af3e2c91401e8b0040fefd9cfc9d4f8c2cf2",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-race-r01/command.json",
+      "sha256": "2e0ae29e257673983f76bd25904eee0250fb64cd57aa1acdece5ae8df67c35a1",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-race-r01/result.json",
+      "sha256": "98727c33e8f6b2b9df461ef764ea19b9da1b63051b1354d8a40af8ebdc433640",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-race-r01/source-before.json",
+      "sha256": "0a62af0deac77e4c1dac384535f2fab9e2c75a19a4965d7af930bfb0f430a93a",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-race-r01/source-after.json",
+      "sha256": "0a62af0deac77e4c1dac384535f2fab9e2c75a19a4965d7af930bfb0f430a93a",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-race-r01/stdout.log",
+      "sha256": "3ff8035c3d38a93da8aab797f7bce06fff74f71c8dd756cdcdf69fa18f1647e1",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-race-r01/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-service-race-r01/database-after-restoration.json",
+      "sha256": "c95238c42a76a56070778fd5ee1cc5b94cfd6e9a363a390ca6d4cc621afe1768",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/configs/extras-service-race-r01.json",
+      "sha256": "37f0e336050182c74440a6731356138b901376087c26906c0764cedec0b6ebab",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-normal-r01/command.json",
+      "sha256": "61f49e9f8c891d0c169eb1932faff8ab63175f767f1069da9aaa5b019d89eabc",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-normal-r01/result.json",
+      "sha256": "7c4c187ef3b2be69f61af8e51ad9fceac7834b8a70d69c0df979ba95fd0ca452",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-normal-r01/source-before.json",
+      "sha256": "0a62af0deac77e4c1dac384535f2fab9e2c75a19a4965d7af930bfb0f430a93a",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-normal-r01/source-after.json",
+      "sha256": "0a62af0deac77e4c1dac384535f2fab9e2c75a19a4965d7af930bfb0f430a93a",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-normal-r01/stdout.log",
+      "sha256": "4d9057a00c1734d4dc9779541cd270e0ae5b3316e073da7c9529e854a39ca21f",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-normal-r01/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-normal-r01/database-final-audit.json",
+      "sha256": "8dfe5041ae31e0cf7b02d2861935bca51001ef656c80ef968d57ae70fa56e8b0",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/configs/extras-handler-normal-r01.json",
+      "sha256": "9535099b2be9780168e81bd5d9b1f3a04b8b68a41c280fe22fc64e88103cc181",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-race-r01/command.json",
+      "sha256": "b39f5b4c08260b24d95d5315ba7553aa0a0783386def75a5566a94221f93e0dc",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-race-r01/result.json",
+      "sha256": "d4d4950c32c6404658bf317954a64b491bdf13fd4276d3b5ac86b4b68b351342",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-race-r01/source-before.json",
+      "sha256": "0a62af0deac77e4c1dac384535f2fab9e2c75a19a4965d7af930bfb0f430a93a",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-race-r01/source-after.json",
+      "sha256": "0a62af0deac77e4c1dac384535f2fab9e2c75a19a4965d7af930bfb0f430a93a",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-race-r01/stdout.log",
+      "sha256": "d5075f35c43733d25982255e1c8161cbb23c9b4edbc5bbbcc9e54e27a1973399",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-race-r01/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-handler-race-r01/database-final-audit.json",
+      "sha256": "80b931cf13f6de97f774218fce1bc64d76f825df6176af2a4630464d09f664dc",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/configs/extras-handler-race-r01.json",
+      "sha256": "4dd55cc64ce2f5bd38e845a0ba583c596f16730e58f8e4592095e20871c41b08",
+      "mode": "0o600"
+    }
+  ],
+  "report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-canonical-independent-check-20261118.md",
+    "sha256": "191880f63c3b18e4b7a7a2c5c1aa741872b015b26c1a94332998c30df9fccc48",
+    "mode": "0o644"
+  }
+}
