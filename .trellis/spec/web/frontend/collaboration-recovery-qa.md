@@ -326,3 +326,53 @@ with zero retries. Preserve failed rounds and require independent raw/source/
 catalog/closure review before accepting the business case. Native Electron
 renderer/preload acceptance does not establish installed production Main,
 OS-pointer behavior, payment execution or real-model quality.
+
+## Positive PAY creation and original identity
+
+`e2e/collaboration-pay-creation.spec.ts` uses
+`PAY241_TC01_CREATION_ACCEPTANCE=1`, password authentication and the same owned
+production Web/native renderer inputs. It registers two journeys, three
+independent actors per platform, one UI-created root, one blank-title prevention,
+one original-key GET, one creation-result GET and one same-body API replay per
+platform. Account/workspace/project setup is public API work; the root must be
+created by the actual New collaboration issue form. QA invitation is a separate
+authorized operation after the original creation baseline.
+
+Record explicit description, selected project, single developer handler,
+start/due dates, actual catalog status key/category and manual AI policy.
+Selecting `high` proves High; it does not map business P1 to that enum. An empty
+title preventing a UI POST proves the existing technical form gate. A complete
+positive example does not establish that optional PAY business fields are
+globally mandatory, and responsibility names in description do not grant S2
+occupational roles. These remaining semantics keep the full parent case open.
+
+Creation identity differs from edit-operation history. Successful
+`CompleteCollaborationCreation` retains actor/source/request/payload hash,
+`resolved_issue_id` and `result_code=created`; its stored `result` is null.
+The created event contains the handler identity, not a request key. Join through
+the exact operation and resolved issue, preserving the complete original row.
+Use `GET /api/collaboration/creations/{key}?source_workspace_id=…` for the
+original issue and the `/result` suffix for narrow outcome metadata. Same-body
+POST replay is an explicit API control, not evidence of UI ACK-loss recovery.
+
+The actual creation POST returns the default execution view v5. Its original-key
+GET comparison must use the same default projection; explicit v6 changes the
+execution DTO even without a business mutation. Actual current UI GETs may
+negotiate v6 and are checked separately for the intended fields. Keep the same
+real browser cookie/native credential for full DTO equality. Do not strip
+arbitrary fields to manufacture equality across unlike projections.
+
+The issue DTO has no issue creation timestamp. Compare the actual Activity
+created event's actor/UTC instant with the SQL issue/event/operation identity
+and server-clock bounds. Preserve generated identifiers rather than assigning
+the scenario number PAY-241. Capture header text after its actual assertions
+and before opening a modal: accessible role locators rooted in the background
+cannot be re-resolved once the modal hides that tree. Do not add `includeHidden`
+or relax the timeout to compensate for evidence collection timing.
+
+Read-only SQL snapshots bracket title prevention, creation, original-key
+controls, QA invitation and observer reads. Require one created issue/session/
+event/operation, unchanged original facts after replay, zero observer business
+writes and no commands/runs/dispatches. Bind the reused product and browser
+artifacts to their accepted hashes, allocate a fresh database per executed
+round, retain failures, and independently reconcile full results and closure.
