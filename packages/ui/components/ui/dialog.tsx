@@ -38,7 +38,7 @@ function DialogOverlay({
         className
       )}
       {...props}
-      hidden={!visible || props.hidden}
+      {...(!visible ? { hidden: true } : {})}
     />
   )
 }
@@ -66,9 +66,7 @@ function DialogContent({
           className
         )}
         {...props}
-        hidden={!visible || props.hidden}
-        inert={!visible || props.inert}
-        aria-hidden={!visible || props["aria-hidden"]}
+        {...(!visible ? { hidden: true, inert: true, "aria-hidden": true } : {})}
         finalFocus={visible ? props.finalFocus : false}
       >
         {children}

@@ -40,6 +40,8 @@ it("keeps one editor mounted through category switches and close, with inactive 
   renderWithI18n(setup());
   expect(within(resources()).getAllByRole("button")).toHaveLength(6);
   expect(screen.queryByRole("dialog")).toBeNull();
+  expect(document.querySelector('[data-slot="dialog-content"]')).not.toBeVisible();
+  expect(document.querySelector('[data-slot="dialog-overlay"]')).not.toBeVisible();
   expect(screen.queryByRole("textbox", { name: "File note" })).toBeNull();
   expect(fileState.mounts).toBe(1);
   const files = within(resources()).getByRole("button", { name: "Attachments" });
@@ -57,6 +59,40 @@ it("keeps one editor mounted through category switches and close, with inactive 
   expect(screen.queryByRole("textbox", { name: "File note" })).toBeNull();
   await user.click(files);
   expect(screen.getByRole("textbox", { name: "File note" })).toHaveValue("Keep this draft");
+  expect(fileState.mounts).toBe(1);
+});
+
+it("hides the complete drawer and backdrop with its close button while retaining drafts for reopening", async () => {
+  const user = userEvent.setup();
+  renderWithI18n(setup());
+  const files = within(resources()).getByRole("button", { name: "Attachments" });
+  await user.click(files);
+  const drawer = screen.getByRole("dialog", { name: "Attachments" });
+  const backdrop = document.querySelector('[data-slot="dialog-overlay"]');
+  const editor = screen.getByRole("textbox", { name: "File note" });
+  await user.type(editor, "Keep this draft after closing");
+  await user.click(within(categories()).getByRole("button", { name: "Activity" }));
+  expect(drawer).toBeVisible();
+  expect(backdrop).toBeVisible();
+  expect(screen.getByText("Recorded history")).toBeVisible();
+
+  await user.click(within(drawer).getByRole("button", { name: "Close resources" }));
+  await waitFor(() => {
+    expect(drawer).not.toBeVisible();
+    expect(backdrop).not.toBeVisible();
+    expect(files).toHaveFocus();
+  });
+  expect(screen.queryByRole("button", { name: "Close resources" })).toBeNull();
+  expect(drawer).toBeInTheDocument();
+  expect(editor).toBeInTheDocument();
+
+  await user.click(within(resources()).getByRole("button", { name: "Activity" }));
+  expect(screen.getByRole("dialog", { name: "Activity" })).toBe(drawer);
+  expect(backdrop).toBeVisible();
+  expect(screen.getByText("Recorded history")).toBeVisible();
+  await user.click(within(categories()).getByRole("button", { name: "Attachments" }));
+  expect(screen.getByRole("textbox", { name: "File note" })).toBe(editor);
+  expect(editor).toHaveValue("Keep this draft after closing");
   expect(fileState.mounts).toBe(1);
 });
 

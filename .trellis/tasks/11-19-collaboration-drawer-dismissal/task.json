@@ -1,0 +1,30 @@
+{
+  "id": "collaboration-drawer-dismissal",
+  "name": "collaboration-drawer-dismissal",
+  "title": "Restore collaboration drawer dismissal",
+  "description": "Fix the confirmed retained collaboration drawer and backdrop after close; preserve drafts, focus return, and hidden-surface suppression.",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-19",
+  "completedAt": null,
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/ui/components/ui/dialog.tsx",
+    "packages/views/collaboration/detail-auxiliary.test.tsx",
+    ".trellis/spec/ui/frontend/component-guidelines.md"
+  ],
+  "notes": "User requested direct repair after confirmed diagnosis. All acceptance criteria verified: 59 relevant tests, UI/Views types, scoped lint, native Electron X/Escape/reopen. No push or deployment.",
+  "meta": {}
+}

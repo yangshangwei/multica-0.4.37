@@ -30,9 +30,34 @@ Questions to answer:
 
 ## Props Conventions
 
-<!-- How props should be defined and typed -->
+### Preserve native popup visibility defaults
 
-(To be filled by the team)
+Base UI merges caller props after its own lifecycle props, including keys whose
+value is `undefined`. For a retained `DialogContent keepMounted`, Popup and
+Backdrop own `hidden: !mounted`. A wrapper must omit its visibility overrides
+while `PopupVisibilityProvider` is visible; forwarding `hidden: undefined`
+replaces native `hidden: true` and leaves a closed drawer and backdrop onscreen.
+
+Preserve caller props first, then add suppression only while the enclosing
+surface is hidden:
+
+```tsx
+<DialogPrimitive.Popup
+  {...props}
+  {...(!visible ? { hidden: true, inert: true, "aria-hidden": true } : {})}
+/>
+```
+
+Use the same omission rule for Backdrop's `hidden`. Do not fix a retained
+drawer by removing `keepMounted`: its editors and pending operations need that
+lifetime. Preserve native open-state ownership and hidden-surface final-focus
+suppression. `hidden={visible ? undefined : true}` still supplies the key and
+is not equivalent to omitting it.
+
+The real-primitive collaboration auxiliary tests must assert the full popup and
+backdrop are hidden before first open and after closing, the close control leaves
+the accessibility tree, focus returns, and reopening preserves the same editor
+and its draft. A hidden body panel alone does not prove the drawer closed.
 
 ---
 
