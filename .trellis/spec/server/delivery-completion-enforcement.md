@@ -217,6 +217,45 @@ locked session event sequence. Off/observe administrative closure keeps its old
 behavior even with legacy or malformed delivery history. Original administrator
 receipt recovery remains separate from permission for a new exception write.
 
+## Claimed-machine refusal proof
+
+`cmd/server/collaboration_machine_completion_refusal_test.go` proves two
+different human boundaries through actual `NewRouter` authentication. Mint
+generic and restricted `mat_` credentials through owned daemon claims, bind
+their persisted owner/Agent/task/workspace identities, and first require a
+successful supported ordinary-issue GET using each same credential. The task
+owner must be the otherwise authorized human signer or collaboration initiator.
+The artifact producer's directly seeded token is setup, not the claimed identity
+used for this proof. A JWT with `X-Agent-ID` is a separate deny-only control;
+`mcb_` is not an authentication credential for these routes.
+
+| Request and identity | Exact boundary |
+| --- | --- |
+| M1 create/revoke, generic claimed task | `RequireHumanActor`:403 with `error="this endpoint is only available to human actors"` |
+| M1 create/revoke, human JWT with Agent hint | M1 human backstop:403 `delivery_completion_denied` |
+| Collaboration lifecycle complete, generic task or hinted JWT | Collaboration human workflow:403 `forbidden` |
+| Any of these writes, restricted claimed task | Capability route guard:403 `error="task capability does not authorize this action or resource"` |
+
+Do not expect a downstream error from a request stopped at an earlier guard or
+accept several unrelated errors as interchangeable. Use current exact artifact,
+submission, policy, observation, operation and grant identities; after all
+refusals the same body and original key must succeed as the actual human.
+This distinguishes human authority from missing evidence, expiry or stale input.
+
+Each refused write compares thirty full business collections, original public
+authorization/submission receipts, immutable delivery history and physical
+archive bytes. Capture setup before the baseline; successful human controls
+follow it. Keep safe public identities/receipts in raw evidence while private
+credential metadata stays out of logs. Existing fixture cleanup may remove
+transient rows; retained grants/terminals/policy/evaluation/knowledge history
+must not be deleted to manufacture an empty database.
+
+The finite regression is two tops and nine refusal leaves, eleven named results
+per mode. Ordinary task consumers explicitly designated by a current human
+grant remain supported under their existing contract. This proof does not
+establish a blanket Agent status-write prohibition, stage/QA reacceptance,
+real-model quality, fresh browser execution or remote PR/CI/payment validity.
+
 ## GitHub and VCS
 
 Actual signed events retain source workspace, local integration UUID, monotonic
