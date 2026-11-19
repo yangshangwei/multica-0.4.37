@@ -1,4 +1,8 @@
-## 2026-11-19 当前切片：TC-13 精确覆盖请求
+## 2026-11-20 已接受切片：TC-02 验收标准同步和历史回看
+
+TC-02完整r02两端2/2通过并独立接受；父矩阵9PASS/9PARTIAL/6NOT_RUN。TC-13已提交推送。沿用[TC-02执行计划](../../../docs/plans/2026-11-19-pay-241-requirements-history.md)，新增双端真实三会话测试，验证description V1→V2→V3实际编辑、同步及Activity完整历史与原回执。预登记2顶层、6会话、4次显式UI编辑、18次当前版本观察和6次Activity回看；生产Web与匹配Desktop renderer/preload，零重试。Main负责隔离环境和整合，原生实施/检查代理分别负责夹具和独立验收。实际结果及剩余范围见research/tc02-independent-check-20261119.md；本轮工作和记录定向提交推送。以下TC-13及更早段落保留历史，不作为当前待办。
+
+## 2026-11-19 已完成切片：TC-13 精确覆盖请求
 
 S1/S2/S3已归档；父矩阵7PASS/10PARTIAL/7NOT_RUN。按[QA决定保护计划](../../../docs/plans/2026-11-19-pay-241-qa-decision-protection.md)继续父任务补充验证。当前仅新增两个Go测试文件：service两个顶层覆盖有效return/approval后机器Decide/Revoke，生产router一个顶层覆盖实际签发mat凭据的正向读取及QA纠正后的拒绝；不调用真实模型，不改变产品行为。普通/竞态按package分别使用新专库，独立验收后再更新TC-13。
 

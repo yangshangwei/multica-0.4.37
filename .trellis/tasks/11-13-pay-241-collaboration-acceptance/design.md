@@ -1,5 +1,7 @@
 # 技术设计草案
 
+当前（2026-11-20）：S1/S2/S3均已提交归档，TC-13及TC-02定义场景已独立接受；父矩阵9PASS/9PARTIAL/6NOT_RUN。TC-02仅复用description编辑和Activity历史补测试，无新版本表或产品行为，真实支付/模型/外部发布、最终性能及业务签字继续开放。以下较早状态是保留的设计快照；当前结果见session-progress.md及research/tc02-independent-check-20261119.md。
+
 状态：S1已完成归档；其设计见 [S1子任务](../archive/2026-11/11-13-collaboration-agent-identity-baseline/design.md)。S2完整代码与合成A01–A12已于2026-11-18独立接受，原四旅程4PASS/零重试，待提交归档。现有S3已完成字段并发、55评论补读、人工恢复和阻塞恢复，当前补普通订阅的持久事件去重与受控运行通知/撤权；S4–S5仍按自身合同和证据推进。最新结果见父 `session-progress.md`。
 
 ## 1. 复用边界
