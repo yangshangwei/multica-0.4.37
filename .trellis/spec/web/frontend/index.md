@@ -25,7 +25,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [E2E Run Environment](./e2e-run-environment.md) | Production Web, password actor/onboarding, managed profile owner and source/runtime binding | Active |
 | [Collaboration closure QA](./collaboration-closure-qa.md) | Same-issue multi-owner execution, attribution, cleanup and honest synthetic evidence | Active |
 | [Collaboration performance QA](./collaboration-performance-qa.md) | Complete 100-user sampling, runtime heartbeat, socket invariants and retained rehearsal evidence | Tool rehearsal verified; final candidate acceptance separate |
-| [Collaboration recovery QA](./collaboration-recovery-qa.md) | Current-client field contention, exact original UI recovery, native transport and complete retained denominators | Field increment accepted; batch and full S3 separate |
+| [Collaboration recovery QA](./collaboration-recovery-qa.md) | Current-client field contention, offline pagination, human recovery, ordinary subscriptions and controlled runs | Field, batch, human, ordinary-subscription and controlled-runtime increments accepted; full S3 separate |
 
 ---
 

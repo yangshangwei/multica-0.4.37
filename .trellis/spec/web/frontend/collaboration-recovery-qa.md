@@ -127,3 +127,84 @@ HTTP status as client success, then remove a pending key to unlock the form.
 Correct: continue the actual browser request, retain its real response, and
 settle any unknown original intent through the application's same-key GET
 recovery owner before a fresh explicit action.
+
+## Human recovery: evidence boundaries
+
+- An issue WebSocket `subscribe_ack` proves transport subscription, not ordinary
+  inbox delivery. Compare notification IDs **and recipients** for the original
+  event before and after replay/reconnect. A waiting Agent command is not a run
+  or a result notification. Test ordinary subscribers and actual runs separately.
+- For a lost upload acknowledgement, match `(uploader, draft, request)` to the
+  winning attachment, stored object, original comment/issue references and
+  authorized download digest. A same-name, same-size file with different bytes
+  must not send another POST. If an upload directory spans rounds, reconcile
+  the retained objects from each database rather than treating them as orphans.
+  Keep the read-only audit SQL with its results; never record keys or file bytes.
+- The file preview and Attachments drawer are separate dialogs. Close each via
+  its own control and assert it is hidden before acting on the comment composer.
+  A request cancelled after access loss does not prove that a stale response
+  reached the renderer or that a slow server-side byte read was interrupted.
+- Compare execution state before and after a handoff using the same negotiated
+  issue-detail projection as the renderer. Do not drop the protocol version
+  from the equality check. An unkeyed recipient search or resolution POST is a
+  lookup, not a handoff; retain the requests and reject any unexpected write.
+- Password registration for large isolated suites may opt in with
+  `E2E_WAIT_FOR_REGISTRATION_WINDOW=1`: only an explicit `429 rate_limited`
+  with a valid `Retry-After` of 1–300 seconds permits one identical registration
+  after the wait. Never retry business writes or relax the product limiter.
+
+## Ordinary subscription recovery
+
+`e2e/collaboration-recovery-subscriptions.spec.ts` has one complete journey per
+platform. Use real source members and an ordinary child, click Subscribe and
+Unsubscribe, and retain the original subscriber row, comment UUID and inbox ID.
+The author, an existing optout and a nonwatcher are separate delivery controls.
+Both comments use the ordinary unkeyed UI submission path. Verify the first
+notice's read state and exact comment anchor through physical workspace socket
+replacement and reload, then prove no delivery for the distinct second comment.
+
+Tiptap's empty-editor placeholder decoration disappears after typing. Retain
+the original editor and its actual submit owner before filling; assert node
+identity, connected state, containment and a unique enabled Send within that
+owner before and after fill. A page-wide Send locator is ambiguous when a reply
+composer is also present. Keep structural diagnostics bounded and content-free.
+The inbox displays the comment preview; do not invent a literal notification
+label that the product does not render.
+
+Keep every transport request in the evidence. Only POST plus the exact pathname
+`/api/issues/table/rows` or `/api/issues/table/facets` is classified as a query
+read for strict business-operation equality: both handlers use
+`beginIssueTableSnapshot` with `REPEATABLE READ READ ONLY`. Other POST routes
+retain their existing classification. Ordinary original-event listener replay
+has a separate server regression; a browser reconnect alone does not prove it.
+
+## Controlled runtime recovery
+
+`e2e/collaboration-recovery-runtime.spec.ts` has four tops and ten subcases:
+success/failure/Stop notification recovery and author/resource-grant withdrawal
+on each platform. The full allocation expects ten controlled Provider turns and
+twelve original human inputs. Record actual denominators and retain incomplete
+rounds; readiness probes and queued commands do not count as Provider turns.
+
+Activate a fresh collaboration session with the existing issue-scope Resume
+before sending initial inputs. A target Resume cannot clear an issue's initial
+paused state and returns the original `409 issue_paused` receipt. Subsequent
+target controls remain target-scoped. Preserve original run, command, attempt,
+grant, capability and reservation identities through recovery and withdrawal.
+Use the original issued business token for before/after requests, retain its
+hash and refusal codes, and never substitute a newly issued credential.
+
+Run notification navigation selects and automatically opens the exact run's
+records. The same toggle has accessible name `View records for <full run UUID>`
+when closed and `Hide records for <full run UUID>` when open. Match both anchored
+names inside the exact run disclosure, inspect `aria-expanded`, and retain all
+panel, launch, host-mode, result and proof assertions.
+
+Bind explicit test-built daemon, CLI and Provider executables. Observe actual
+process descendants with full command width and kernel executable paths; retain
+earlier path/role observations when an exited process is no longer inspectable.
+Classify probes using their original observation, since final process arguments
+may lose their flags. Disclose genuinely unobserved short processes and
+reconcile Provider turns with original run/attempt ledgers and provider records.
+Reservation row counts alone do not prove release: retain the exact run-linked
+release timestamp, revoked capability and terminal observation for every run.
